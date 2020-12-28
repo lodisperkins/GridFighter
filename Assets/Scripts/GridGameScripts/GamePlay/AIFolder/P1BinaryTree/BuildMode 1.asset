@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28198989cec70874eb4acbd17ca0a23b, type: 3}
+  m_Name: BuildMode 1
+  m_EditorClassIdentifier: 
+  parent: {fileID: 11400000, guid: 2399b12a9d54c474ea73b97b7599d52b, type: 2}
+  _childLeft: {fileID: 11400000, guid: 70060cbbfac458e4981a3fdb78f3f1e9, type: 2}
+  _childRight: {fileID: 11400000, guid: c2cddd37d9a9bb8449378236b536f652, type: 2}
+  conditionName: CoreStatusCheck
+  actionNames: []
