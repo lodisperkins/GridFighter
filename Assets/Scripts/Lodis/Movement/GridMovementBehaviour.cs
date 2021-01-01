@@ -8,12 +8,38 @@ namespace Lodis.Movement
 {
     public class GridMovementBehaviour : MonoBehaviour
     {
+        [SerializeField]
         private Vector2 _position;
+        [SerializeField]
+        private Vector2 _velocity;
+        [SerializeField]
+        private float _speed;
+
+        /// <summary>
+        /// How much time it takes to move between panels
+        /// </summary>
+        public float Speed
+        {
+            get { return _speed; }
+            set { _speed = value; }
+        }
+
+        public Vector2 Velocity
+        {
+            get { return _velocity; }
+            set { _velocity = value; }
+        }
+        
+        public Vector2 Position
+        {
+            get { return _position; }
+        }
+
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            StartCoroutine(test());
+            //StartCoroutine(test());
         }
         
 
@@ -40,7 +66,7 @@ namespace Lodis.Movement
             while (transform.position != newPosition)
             {
                 //Sets the current position to be the current position in the interpolation
-                transform.position = Vector3.Lerp(startPosition, newPosition, lerpVal += Time.deltaTime);
+                transform.position = Vector3.Lerp(startPosition, newPosition, lerpVal += Time.deltaTime * _speed);
                 //Waits until the next fixed update before resuming to be in line with any physics calls
                 yield return new WaitForFixedUpdate();
             }
@@ -73,6 +99,7 @@ namespace Lodis.Movement
                 StartCoroutine(LerpPosition(newPosition));
             }
 
+            _position = targetPanel.Position;
             return true;
         }
 
@@ -104,7 +131,14 @@ namespace Lodis.Movement
                 StartCoroutine(LerpPosition(newPosition));
             }
 
+            _position = targetPanel.Position;
             return true;
+        }
+
+        private void Update()
+        {
+            if (Velocity != Vector2.zero)
+                MoveToPanel(_position + Velocity);
         }
     }
 }

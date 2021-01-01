@@ -41,6 +41,7 @@ namespace Lodis.GridScripts
             {
                 GameObject panel = (Instantiate(_panelRef, spawnPosition, new Quaternion(), transform));
                 _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
+                _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
 
                 //If the x position in the grid is equal to the given x dimension,
                 //reset x position to be 0, and increase the y position.
