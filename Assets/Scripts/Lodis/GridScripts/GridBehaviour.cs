@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 namespace Lodis.GridScripts
 {
@@ -29,7 +30,7 @@ namespace Lodis.GridScripts
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.
         /// </summary>
-        private void CreateGrid()
+        public void CreateGrid()
         {
             //The world spawn position for each gameobject in the grid
             Vector3 spawnPosition = transform.position;

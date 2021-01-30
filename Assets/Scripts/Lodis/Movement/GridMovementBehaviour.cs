@@ -9,11 +9,21 @@ namespace Lodis.Movement
     public class GridMovementBehaviour : MonoBehaviour
     {
         [SerializeField]
+        [Tooltip("The position of the object on the grid.")]
         private Vector2 _position;
+        private Vector3 _targetPosition;
         [SerializeField]
+        [Tooltip("This is how close the object has to be to the panel it's moving towards to say its reached it.")]
+        private float _targetTolerance;
+        [SerializeField]
+        [Tooltip("The current direction the object is moving in.")]
         private Vector2 _velocity;
         [SerializeField]
+        [Tooltip("How fast the object can move towards a panel.")]
         private float _speed;
+        private bool _isMoving;
+        [Tooltip("If true, the object can cancel its movement in one direction, and start moving in another direction.")]
+        public bool canCancelMovement;
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -35,22 +45,17 @@ namespace Lodis.Movement
             get { return _position; }
         }
 
-
-        // Start is called before the first frame update
-        private void Start()
+        public bool IsMoving
         {
-            //StartCoroutine(test());
+            get
+            {
+                return _isMoving;
+            }
         }
-        
 
-        /// <summary>
-        /// A test coroutine to move the gameObject to the given location.
-        /// </summary>
-        /// <returns></returns>
-        IEnumerator test()
+        private void Awake()
         {
-            yield return new WaitForEndOfFrame();
-            Debug.Log(MoveToPanel(5, 3));
+            _targetPosition = transform.position;
         }
 
         /// <summary>
@@ -80,6 +85,9 @@ namespace Lodis.Movement
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
         public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false)
         {
+            if (IsMoving && !canCancelMovement)
+                return false;
+
             PanelBehaviour targetPanel;
 
             //If it's not possible to move to the panel at the given position, return false.
@@ -89,6 +97,7 @@ namespace Lodis.Movement
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
             Vector3 newPosition = targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            _targetPosition = newPosition;
 
             if (snapPosition)
             {
@@ -112,6 +121,9 @@ namespace Lodis.Movement
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
         public bool MoveToPanel(int x, int y, bool snapPosition = false)
         {
+            if (IsMoving && !canCancelMovement)
+                return false;
+
             PanelBehaviour targetPanel;
 
             //If it's not possible to move to the panel at the given position, return false.
@@ -121,6 +133,7 @@ namespace Lodis.Movement
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
             Vector3 newPosition = targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            _targetPosition = newPosition;
 
             if (snapPosition)
             {
@@ -137,8 +150,8 @@ namespace Lodis.Movement
 
         private void Update()
         {
-            if (Velocity != Vector2.zero)
-                MoveToPanel(_position + Velocity);
+            MoveToPanel(_position + Velocity);
+            _isMoving = Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance;
         }
     }
 }
