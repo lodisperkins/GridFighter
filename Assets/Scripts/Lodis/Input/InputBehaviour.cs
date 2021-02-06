@@ -11,20 +11,20 @@ namespace Lodis.Input
     {
         private Movement.GridMovementBehaviour _gridMovement;
         private bool _canMove = true;
-        private Vector2 _inputVal;
+        private Vector2 _storedInput;
 
         public void OnMovement(InputAction.CallbackContext context)
         {
+            if (_gridMovement.IsMoving)
+            {
+                _storedInput = context.ReadValue<Vector2>();
+                return;
+            }
+
             if (_canMove)
             {
-                if (context.ReadValue<Vector2>() == new Vector2(1,1))
-                {
-                    _gridMovement.Speed *= 2;
-                    _gridMovement.MoveToPanel(new Vector2(context.ReadValue<Vector2>().x, 0) + _gridMovement.Position);
-                    _gridMovement.MoveToPanel(new Vector2(0, context.ReadValue<Vector2>().y) + _gridMovement.Position);
-                    _gridMovement.Speed /= 2;
-                }
                 _gridMovement.MoveToPanel(context.ReadValue<Vector2>() + _gridMovement.Position);
+                Debug.Log(context.ReadValue<Vector2>());
                 _gridMovement.Velocity = Vector2.zero;
                 _canMove = false;
             }
@@ -39,7 +39,14 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
+            
             _canMove = _gridMovement.Velocity == Vector2.zero;
+            if (!_gridMovement.IsMoving && _storedInput.magnitude > 0)
+            {
+                _gridMovement.MoveToPanel(_storedInput + _gridMovement.Position);
+                _gridMovement.Velocity = Vector2.zero;
+                _storedInput = Vector2.zero;
+            }
         }
     }
 }
