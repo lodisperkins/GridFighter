@@ -20,9 +20,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Movement"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""1b6e4686-58b7-4df6-9262-1b833e147595"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
                 }
@@ -31,7 +31,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": ""WASD"",
                     ""id"": ""d2d7cc91-b181-4067-913e-baf5887b9f64"",
-                    ""path"": ""2DVector"",
+                    ""path"": ""2DVector(mode=1)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -40,7 +40,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""up"",
+                    ""name"": ""Up"",
                     ""id"": ""24917915-c3ee-43a6-a78e-d80e271d8b5c"",
                     ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
@@ -51,7 +51,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""down"",
+                    ""name"": ""Down"",
                     ""id"": ""bae69d26-cbb1-4d44-83ed-9a4e10516bca"",
                     ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
@@ -62,8 +62,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""left"",
-                    ""id"": ""96d93183-485e-4560-8e2f-f181b60e3c2e"",
+                    ""name"": ""Left"",
+                    ""id"": ""f0e2d18c-6616-4c33-95d4-9791a417b42e"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -73,8 +73,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
-                    ""name"": ""right"",
-                    ""id"": ""a7a9b234-c3ef-4ea3-b081-95bcea3ed5ab"",
+                    ""name"": ""Right"",
+                    ""id"": ""c62c1a21-a031-4bef-aaa3-e71372db78cc"",
                     ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
