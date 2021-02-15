@@ -8,27 +8,31 @@ using UnityEngine.InputSystem.Controls;
 namespace Lodis.Input
 {
     [RequireComponent(typeof(Movement.GridMovementBehaviour))]
-    public class InputBehaviour : MonoBehaviour, PlayerControls.IPlayerMovementActions
+    public class InputBehaviour : MonoBehaviour
     {
         private Movement.GridMovementBehaviour _gridMovement;
         private bool _canMove = true;
         private Vector2 _storedInput;
+        private Vector2 _previousInput;
         private int counter = 0;
-        public void OnMovement(InputAction.CallbackContext context)
+        public InputActionAsset actions;
+
+        private void Awake()
         {
-            //if (_gridMovement.IsMoving)
-            //{
-            //    _storedInput = context.ReadValue<Vector2>();
-            //    return;
-            //}
-            //Debug.Log("Input recieved " + counter++);
-            if (_canMove)
-            {
-                _gridMovement.MoveToPanel(context.ReadValue<Vector2>() + _gridMovement.Position);
-                Debug.Log(context.ReadValue<Vector2>());
-                _gridMovement.Velocity = Vector2.zero;
-                _canMove = false;
-            }
+            actions.actionMaps[0].actions[0].started += context => UpdateInputY(1);
+            actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
+            actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
+            actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
+        }
+
+        public void UpdateInputX(int x)
+        {
+            _storedInput = new Vector2(x, 0);
+        }
+
+        public void UpdateInputY(int y)
+        {
+            _storedInput = new Vector2(0, y);
         }
 
         // Start is called before the first frame update
@@ -40,14 +44,12 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
-            
-            _canMove = _gridMovement.Velocity == Vector2.zero;
-            //if (!_gridMovement.IsMoving && _storedInput.magnitude > 0)
-            //{
-            //    _gridMovement.MoveToPanel(_storedInput + _gridMovement.Position);
-            //    _gridMovement.Velocity = Vector2.zero;
-            //    _storedInput = Vector2.zero;
-            //}
+            if (_storedInput.magnitude > 0 && !_gridMovement.IsMoving)
+            {
+                _gridMovement.MoveToPanel(_storedInput + _gridMovement.Position);
+                _gridMovement.Velocity = Vector2.zero;
+                _storedInput = Vector2.zero;
+            }
         }
     }
 }

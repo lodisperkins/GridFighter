@@ -19,69 +19,82 @@ public class @PlayerControls : IInputActionCollection, IDisposable
             ""id"": ""3a0b2e15-147d-4f3e-8590-9b37c7f6a33b"",
             ""actions"": [
                 {
-                    ""name"": ""Movement"",
-                    ""type"": ""Value"",
+                    ""name"": ""MoveUp"",
+                    ""type"": ""Button"",
                     ""id"": ""1b6e4686-58b7-4df6-9262-1b833e147595"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""MoveDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""e0662632-1c37-43bb-ae1f-8574537a37e7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""MoveLeft"",
+                    ""type"": ""Button"",
+                    ""id"": ""3541cc32-54af-4820-8cd7-fd1d0f118547"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""MoveRight"",
+                    ""type"": ""Button"",
+                    ""id"": ""76834e87-8c75-47eb-b6f4-4db68a36d750"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
                 {
-                    ""name"": ""WASD"",
-                    ""id"": ""d2d7cc91-b181-4067-913e-baf5887b9f64"",
-                    ""path"": ""2DVector(mode=1)"",
-                    ""interactions"": """",
+                    ""name"": """",
+                    ""id"": ""54d74de4-552f-4c30-8ccc-ae1516cfef88"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": true,
+                    ""action"": ""MoveUp"",
+                    ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Up"",
-                    ""id"": ""24917915-c3ee-43a6-a78e-d80e271d8b5c"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Down"",
-                    ""id"": ""bae69d26-cbb1-4d44-83ed-9a4e10516bca"",
-                    ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Left"",
-                    ""id"": ""f0e2d18c-6616-4c33-95d4-9791a417b42e"",
+                    ""name"": """",
+                    ""id"": ""9581f419-8578-4a3f-8c04-a94e01a56934"",
                     ""path"": ""<Keyboard>/a"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""MoveLeft"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": ""Right"",
-                    ""id"": ""c62c1a21-a031-4bef-aaa3-e71372db78cc"",
+                    ""name"": """",
+                    ""id"": ""cd83beeb-5073-440e-8949-df3785725846"",
                     ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""MoveRight"",
                     ""isComposite"": false,
-                    ""isPartOfComposite"": true
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b558f233-efec-4a40-acb0-feca593cf22b"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": ""Press"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MoveDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -90,7 +103,10 @@ public class @PlayerControls : IInputActionCollection, IDisposable
 }");
         // PlayerMovement
         m_PlayerMovement = asset.FindActionMap("PlayerMovement", throwIfNotFound: true);
-        m_PlayerMovement_Movement = m_PlayerMovement.FindAction("Movement", throwIfNotFound: true);
+        m_PlayerMovement_MoveUp = m_PlayerMovement.FindAction("MoveUp", throwIfNotFound: true);
+        m_PlayerMovement_MoveDown = m_PlayerMovement.FindAction("MoveDown", throwIfNotFound: true);
+        m_PlayerMovement_MoveLeft = m_PlayerMovement.FindAction("MoveLeft", throwIfNotFound: true);
+        m_PlayerMovement_MoveRight = m_PlayerMovement.FindAction("MoveRight", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -140,12 +156,18 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     // PlayerMovement
     private readonly InputActionMap m_PlayerMovement;
     private IPlayerMovementActions m_PlayerMovementActionsCallbackInterface;
-    private readonly InputAction m_PlayerMovement_Movement;
+    private readonly InputAction m_PlayerMovement_MoveUp;
+    private readonly InputAction m_PlayerMovement_MoveDown;
+    private readonly InputAction m_PlayerMovement_MoveLeft;
+    private readonly InputAction m_PlayerMovement_MoveRight;
     public struct PlayerMovementActions
     {
         private @PlayerControls m_Wrapper;
         public PlayerMovementActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_PlayerMovement_Movement;
+        public InputAction @MoveUp => m_Wrapper.m_PlayerMovement_MoveUp;
+        public InputAction @MoveDown => m_Wrapper.m_PlayerMovement_MoveDown;
+        public InputAction @MoveLeft => m_Wrapper.m_PlayerMovement_MoveLeft;
+        public InputAction @MoveRight => m_Wrapper.m_PlayerMovement_MoveRight;
         public InputActionMap Get() { return m_Wrapper.m_PlayerMovement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -155,22 +177,43 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_PlayerMovementActionsCallbackInterface != null)
             {
-                @Movement.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMovement;
-                @Movement.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMovement;
-                @Movement.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMovement;
+                @MoveUp.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveUp;
+                @MoveUp.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveUp;
+                @MoveUp.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveUp;
+                @MoveDown.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveDown;
+                @MoveDown.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveDown;
+                @MoveDown.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveDown;
+                @MoveLeft.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveLeft;
+                @MoveLeft.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveLeft;
+                @MoveLeft.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveLeft;
+                @MoveRight.started -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveRight;
+                @MoveRight.performed -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveRight;
+                @MoveRight.canceled -= m_Wrapper.m_PlayerMovementActionsCallbackInterface.OnMoveRight;
             }
             m_Wrapper.m_PlayerMovementActionsCallbackInterface = instance;
             if (instance != null)
             {
-                @Movement.started += instance.OnMovement;
-                @Movement.performed += instance.OnMovement;
-                @Movement.canceled += instance.OnMovement;
+                @MoveUp.started += instance.OnMoveUp;
+                @MoveUp.performed += instance.OnMoveUp;
+                @MoveUp.canceled += instance.OnMoveUp;
+                @MoveDown.started += instance.OnMoveDown;
+                @MoveDown.performed += instance.OnMoveDown;
+                @MoveDown.canceled += instance.OnMoveDown;
+                @MoveLeft.started += instance.OnMoveLeft;
+                @MoveLeft.performed += instance.OnMoveLeft;
+                @MoveLeft.canceled += instance.OnMoveLeft;
+                @MoveRight.started += instance.OnMoveRight;
+                @MoveRight.performed += instance.OnMoveRight;
+                @MoveRight.canceled += instance.OnMoveRight;
             }
         }
     }
     public PlayerMovementActions @PlayerMovement => new PlayerMovementActions(this);
     public interface IPlayerMovementActions
     {
-        void OnMovement(InputAction.CallbackContext context);
+        void OnMoveUp(InputAction.CallbackContext context);
+        void OnMoveDown(InputAction.CallbackContext context);
+        void OnMoveLeft(InputAction.CallbackContext context);
+        void OnMoveRight(InputAction.CallbackContext context);
     }
 }
