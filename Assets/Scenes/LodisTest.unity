@@ -326,6 +326,7 @@ MonoBehaviour:
   _velocity: {x: 0, y: 0}
   _speed: 10
   canCancelMovement: 0
+  _defaultAlignment: 3
 --- !u!114 &799602228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -594,6 +595,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _dimensions.y
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _p1MaxColumns
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}

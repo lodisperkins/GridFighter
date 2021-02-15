@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lodis.GridScripts;
 using Lodis.Gameplay;
+using UnityEditor;
 
 namespace Lodis.Movement
 {
@@ -24,6 +25,9 @@ namespace Lodis.Movement
         private bool _isMoving;
         [Tooltip("If true, the object can cancel its movement in one direction, and start moving in another direction.")]
         public bool canCancelMovement;
+        [Tooltip("The side of the grid that this object can move on by default.")]
+        [SerializeField]
+        private GridAlignment _defaultAlignment = GridAlignment.ANY;
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -39,7 +43,7 @@ namespace Lodis.Movement
             get { return _velocity; }
             set { _velocity = value; }
         }
-        
+
         public Vector2 Position
         {
             get { return _position; }
@@ -50,6 +54,19 @@ namespace Lodis.Movement
             get
             {
                 return _isMoving;
+            }
+        }
+
+
+        public GridAlignment Alignment
+        {
+            get
+            {
+                return _defaultAlignment;
+            }
+            set
+            {
+                _defaultAlignment = value;
             }
         }
 
@@ -83,15 +100,18 @@ namespace Lodis.Movement
         /// <param name="panelPosition">The position of the panel on the grid that the gameObject will traver to.</param>
         /// <param name="snapPosition">If true, teh gameObject will immediately teleport to its destination without a smooth transition.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
-        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false)
+        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE)
         {
+            if (tempAlignment == GridAlignment.NONE)
+                tempAlignment = _defaultAlignment;
+
             if (IsMoving && !canCancelMovement)
                 return false;
 
             PanelBehaviour targetPanel;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Grid.GetPanel(panelPosition, out targetPanel, false))
+            if (!BlackBoardBehaviour.Grid.GetPanel(panelPosition, out targetPanel, false, tempAlignment))
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
@@ -119,15 +139,18 @@ namespace Lodis.Movement
         /// /// <param name="y">The y position of the panel on the grid that the gameObject will traver to.</param>
         /// <param name="snapPosition">If true, teh gameObject will immediately teleport to its destination without a smooth transition.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
-        public bool MoveToPanel(int x, int y, bool snapPosition = false)
+        public bool MoveToPanel(int x, int y, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE)
         {
+            if (tempAlignment == GridAlignment.NONE)
+                tempAlignment = _defaultAlignment;
+
             if (IsMoving && !canCancelMovement)
                 return false;
 
             PanelBehaviour targetPanel;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Grid.GetPanel(x, y, out targetPanel, false))
+            if (!BlackBoardBehaviour.Grid.GetPanel(x, y, out targetPanel, false, tempAlignment))
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
