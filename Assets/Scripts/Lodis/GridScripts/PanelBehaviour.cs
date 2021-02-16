@@ -8,6 +8,51 @@ namespace Lodis.GridScripts
     {
         private Vector2 _position;
         private bool _occupied;
+        private GridAlignment _alignment;
+        [SerializeField]
+        private Material _neutralMat;
+        [SerializeField]
+        private Material _leftSideMat;
+        [SerializeField]
+        private Material _rightSideMat;
+        private MeshRenderer _mesh;
+
+        private void Awake()
+        {
+            _mesh = GetComponent<MeshRenderer>();
+        }
+
+        /// <summary>
+        /// The side of the grid this panel this panel belongs to
+        /// </summary>
+        public GridAlignment Alignment
+        {
+            get
+            {
+                return _alignment;
+            }
+            set
+            {
+                _alignment = value;
+                UpdateMaterial();
+            }
+        }
+
+        private void UpdateMaterial()
+        {
+            switch (_alignment)
+            {
+                case GridAlignment.LEFT:
+                    _mesh.material = _leftSideMat;
+                    break;
+                case GridAlignment.RIGHT:
+                    _mesh.material = _rightSideMat;
+                    break;
+                case GridAlignment.ANY:
+                    _mesh.material = _neutralMat;
+                    break;
+            }
+        }
 
         /// <summary>
         /// The position of this panel on the grid.
@@ -34,6 +79,7 @@ namespace Lodis.GridScripts
                 return _occupied;
             }
         }
+
     }
 }
 
