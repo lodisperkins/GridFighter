@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using GridGame.VariableScripts;
 
 namespace Lodis.GridScripts
 {
@@ -27,17 +28,17 @@ namespace Lodis.GridScripts
         private float _panelSpacing;
         [SerializeField]
         private PanelBehaviour[,] _panels;
+        [SerializeField]
+        private ObjectList _panelList;
         [Tooltip("How many columns to give player 1 when the game starts. Use this to decide how much territory to give both players.")]
         [SerializeField]
         private int _p1MaxColumns;
-        private void Awake()
-        {
-            _panels = new PanelBehaviour[(int)_dimensions.x, (int)_dimensions.y];
-        }
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
+            DestroyTempPanels();
+
             CreateGrid();
         }
 
@@ -46,6 +47,8 @@ namespace Lodis.GridScripts
         /// </summary>
         public void CreateGrid()
         {
+            _panels = new PanelBehaviour[(int)_dimensions.x, (int)_dimensions.y];
+
             //The world spawn position for each gameobject in the grid
             Vector3 spawnPosition = transform.position;
 
@@ -55,8 +58,16 @@ namespace Lodis.GridScripts
             for (int i = 0; i < (int)_dimensions.x * (int)_dimensions.y; i++)
             {
                 GameObject panel = (Instantiate(_panelRef, spawnPosition, new Quaternion(), transform));
-                _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
-                _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
+                if (Application.isEditor)
+                {
+                    _panelList.Add(panel.GetComponent<PanelBehaviour>());
+                }
+                else
+                {
+                    _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
+                    _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
+                }
+                
 
                 //If the x position in the grid is equal to the given x dimension,
                 //reset x position to be 0, and increase the y position.
@@ -74,10 +85,44 @@ namespace Lodis.GridScripts
                 spawnPosition.x += _panelRef.transform.localScale.x * _panelSpacing;
             }
 
+
             //After the grid is created, assign each panel a side.
             SetDefaultPanelAlignments();
         }
-        
+
+        public void DestroyTempPanels()
+        {
+            for (int i = 0; i < _panelList.Objects.Count; i++)
+            {
+                DestroyImmediate(_panelList[i]);
+            }
+            _panelList.Clear();
+        }
+
+        public void DestroyGrid()
+        {
+            if (_panels == null)
+                return;
+
+            transform.DetachChildren();
+
+            if (Application.isPlaying)
+            {
+                for (int i = 0; i < _dimensions.x; i++)
+                {
+                    for (int j = 0; j < _dimensions.y; j++)
+                    {
+                        Destroy(_panels[i, j].gameObject);
+                    }
+                }
+                _panels = null;
+            }
+            else
+            {
+                DestroyTempPanels();
+            }
+        }
+
         /// <summary>
         /// Labels each panel to be on either the left side on the right side of the grid based on 
         /// the value given for the maximum columns for player1.
@@ -161,8 +206,11 @@ namespace Lodis.GridScripts
         /// <param name="alignment">Will return false if the panel found doesn't match this alignment.</param>
         /// <returns>Returns true if the panel is found in the list and the canBeOccupied condition is met.</returns>
         public bool GetPanel(Vector2 position, out PanelBehaviour panel, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
-        {
+        { 
             panel = null;
+
+            if (_panels == null)
+                return false;
 
             //If the given position is in range or if the panel is occupied when it shouldn't be, return false.
             if (position.x < 0 || position.x >= _dimensions.x || position.y < 0 || position.y >= _dimensions.y)
@@ -177,5 +225,25 @@ namespace Lodis.GridScripts
             return true;
         }
     }
+
+#if UNITY_EDITOR
+    [CustomEditor(typeof(GridBehaviour))]
+    class GridEditor : Editor
+    {
+        private GridBehaviour _grid;
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            _grid = (GridBehaviour)target;
+
+            if (GUILayout.Button("View Grid"))
+            {
+                _grid.DestroyGrid();
+                _grid.CreateGrid();
+            }
+        }
+    }
+
+#endif
 }
 

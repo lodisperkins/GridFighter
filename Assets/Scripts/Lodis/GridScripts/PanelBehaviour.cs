@@ -40,6 +40,9 @@ namespace Lodis.GridScripts
 
         private void UpdateMaterial()
         {
+            if (_mesh == null)
+                _mesh = GetComponent<MeshRenderer>();
+
             switch (_alignment)
             {
                 case GridAlignment.LEFT:
