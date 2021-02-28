@@ -23,22 +23,25 @@ namespace Lodis.GridScripts
         [SerializeField]
         private GameObject _panelRef;
         [SerializeField]
+        private GameObject _barrierRef;
+        [SerializeField]
         private Vector2 _dimensions;
         [SerializeField]
         private float _panelSpacing;
         [SerializeField]
         private PanelBehaviour[,] _panels;
-        [SerializeField]
-        private ObjectList _panelList;
         [Tooltip("How many columns to give player 1 when the game starts. Use this to decide how much territory to give both players.")]
         [SerializeField]
         private int _p1MaxColumns;
+        [SerializeField]
+        private Vector2[] _lhsBarrierPositions;
+        [SerializeField]
+        private Vector2[] _rhsBarrierPositions;
 
         // Start is called before the first frame update
         void Awake()
         {
             DestroyTempPanels();
-
             CreateGrid();
         }
 
@@ -58,17 +61,9 @@ namespace Lodis.GridScripts
             for (int i = 0; i < (int)_dimensions.x * (int)_dimensions.y; i++)
             {
                 GameObject panel = (Instantiate(_panelRef, spawnPosition, new Quaternion(), transform));
-                if (Application.isEditor)
-                {
-                    _panelList.Add(panel.GetComponent<PanelBehaviour>());
-                }
-                else
-                {
-                    _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
-                    _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
-                }
                 
-
+                _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
+                _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
                 //If the x position in the grid is equal to the given x dimension,
                 //reset x position to be 0, and increase the y position.
                 if (xPos == (int)_dimensions.x - 1)
@@ -88,15 +83,24 @@ namespace Lodis.GridScripts
 
             //After the grid is created, assign each panel a side.
             SetDefaultPanelAlignments();
+            SpawnBarriers();
         }
 
         public void DestroyTempPanels()
         {
-            for (int i = 0; i < _panelList.Objects.Count; i++)
+            int childCount = transform.childCount;
+            for (int i = 0; i < childCount; i++)
             {
-                DestroyImmediate(_panelList[i]);
+                Destroy(transform.GetChild(i).gameObject);
             }
-            _panelList.Clear();
+        }
+
+        public void DestroyTempPanelsInEditor()
+        {
+            while (transform.childCount > 0)
+            {
+                DestroyImmediate(transform.GetChild(0).gameObject);
+            }
         }
 
         public void DestroyGrid()
@@ -106,21 +110,14 @@ namespace Lodis.GridScripts
 
             transform.DetachChildren();
 
-            if (Application.isPlaying)
+            for (int i = 0; i < _dimensions.x; i++)
             {
-                for (int i = 0; i < _dimensions.x; i++)
+                for (int j = 0; j < _dimensions.y; j++)
                 {
-                    for (int j = 0; j < _dimensions.y; j++)
-                    {
-                        Destroy(_panels[i, j].gameObject);
-                    }
+                    Destroy(_panels[i, j].gameObject);
                 }
-                _panels = null;
             }
-            else
-            {
-                DestroyTempPanels();
-            }
+            _panels = null;
         }
 
         /// <summary>
@@ -144,6 +141,35 @@ namespace Lodis.GridScripts
                 {
                     panel.Alignment = GridAlignment.RIGHT;
                 }
+            }
+        }
+
+        private void SpawnBarriers()
+        {
+            foreach (Vector2 position in _lhsBarrierPositions)
+            {
+                GameObject barrierObject = null;
+                PanelBehaviour spawnPanel = null;
+                if(GetPanel(position, out spawnPanel, false))
+                {
+                    Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
+                    barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
+                }
+                Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
+                movement.Position = spawnPanel.Position;
+            }
+            
+            foreach (Vector2 position in _rhsBarrierPositions)
+            {
+                GameObject barrierObject = null;
+                PanelBehaviour spawnPanel = null;
+                if (GetPanel(position, out spawnPanel, false))
+                {
+                    Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
+                    barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
+                }
+                Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
+                movement.Position = spawnPanel.Position;
             }
         }
 
@@ -238,7 +264,7 @@ namespace Lodis.GridScripts
 
             if (GUILayout.Button("View Grid"))
             {
-                _grid.DestroyGrid();
+                _grid.DestroyTempPanelsInEditor();
                 _grid.CreateGrid();
             }
         }

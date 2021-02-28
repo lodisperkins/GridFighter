@@ -28,6 +28,8 @@ namespace Lodis.Movement
         [Tooltip("The side of the grid that this object can move on by default.")]
         [SerializeField]
         private GridAlignment _defaultAlignment = GridAlignment.ANY;
+        private PanelBehaviour _currentPanel;
+
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -46,7 +48,8 @@ namespace Lodis.Movement
 
         public Vector2 Position
         {
-            get { return _position; }
+            get { return _currentPanel.Position; }
+            set { _position = value; }
         }
 
         public bool IsMoving
@@ -56,7 +59,6 @@ namespace Lodis.Movement
                 return _isMoving;
             }
         }
-
 
         public GridAlignment Alignment
         {
@@ -73,6 +75,14 @@ namespace Lodis.Movement
         private void Awake()
         {
             _targetPosition = transform.position;
+        }
+
+        private void Start()
+        {
+            if (BlackBoardBehaviour.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
+                _currentPanel.Occupied = true;
+            else
+                Debug.LogError(name + " could not find starting panel");
         }
 
         /// <summary>
@@ -111,7 +121,7 @@ namespace Lodis.Movement
             PanelBehaviour targetPanel;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Grid.GetPanel(panelPosition, out targetPanel, false, tempAlignment))
+            if (!BlackBoardBehaviour.Grid.GetPanel(panelPosition, out targetPanel, _position == panelPosition, tempAlignment))
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
@@ -128,7 +138,10 @@ namespace Lodis.Movement
                 StartCoroutine(LerpPosition(newPosition));
             }
 
-            _position = targetPanel.Position;
+            _currentPanel.Occupied = false;
+            _currentPanel = targetPanel;
+            _currentPanel.Occupied = true;
+            _position = _currentPanel.Position;
             return true;
         }
 
@@ -150,7 +163,7 @@ namespace Lodis.Movement
             PanelBehaviour targetPanel;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Grid.GetPanel(x, y, out targetPanel, false, tempAlignment))
+            if (!BlackBoardBehaviour.Grid.GetPanel(x, y, out targetPanel, _position == new Vector2( x,y), tempAlignment))
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
@@ -167,7 +180,10 @@ namespace Lodis.Movement
                 StartCoroutine(LerpPosition(newPosition));
             }
 
-            _position = targetPanel.Position;
+            _currentPanel.Occupied = false;
+            _currentPanel = targetPanel;
+            _currentPanel.Occupied = true;
+            _position = _currentPanel.Position;
             return true;
         }
 

@@ -73,13 +73,17 @@ namespace Lodis.GridScripts
         }
 
         /// <summary>
-        /// Returns if there is anything preventing an object from moving on to this panel. READ ONLY
+        /// Returns if there is anything preventing an object from moving on to this panel.
         /// </summary>
         public bool Occupied
         {
             get
             {
                 return _occupied;
+            }
+            set
+            {
+                _occupied = value;
             }
         }
 
