@@ -2,7 +2,7 @@
     "name": "PlayerControls",
     "maps": [
         {
-            "name": "PlayerMovement",
+            "name": "Player",
             "id": "3a0b2e15-147d-4f3e-8590-9b37c7f6a33b",
             "actions": [
                 {
@@ -52,8 +52,30 @@
                 },
                 {
                     "name": "",
+                    "id": "70391c83-0b6b-4ece-a239-07bf20dc091e",
+                    "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/hat/up",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9581f419-8578-4a3f-8c04-a94e01a56934",
                     "path": "<Keyboard>/a",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ee013db9-c0cf-4bd4-81f2-a718bfd6f5f3",
+                    "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/hat/left",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
@@ -74,8 +96,30 @@
                 },
                 {
                     "name": "",
+                    "id": "927542c0-95b7-40c1-95ed-691504cbd4bc",
+                    "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/hat/right",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b558f233-efec-4a40-acb0-feca593cf22b",
                     "path": "<Keyboard>/s",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2cd5c613-df89-4ddc-a1b5-389e1c4e043d",
+                    "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/hat/down",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",

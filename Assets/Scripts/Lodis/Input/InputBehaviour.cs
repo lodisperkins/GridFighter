@@ -15,10 +15,12 @@ namespace Lodis.Input
         private Vector2 _storedInput;
         private Vector2 _previousInput;
         private int counter = 0;
-        public InputActionAsset actions;
+        [SerializeField]
+        private InputActionAsset actions;
 
         private void Awake()
         {
+            actions = GetComponent<PlayerInput>().actions;
             actions.actionMaps[0].actions[0].started += context => UpdateInputY(1);
             actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
             actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
