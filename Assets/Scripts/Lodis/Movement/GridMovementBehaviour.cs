@@ -40,18 +40,27 @@ namespace Lodis.Movement
             set { _speed = value; }
         }
 
+        /// <summary>
+        /// The current velocity of the object moving on the grid.
+        /// </summary>
         public Vector2 Velocity
         {
             get { return _velocity; }
             set { _velocity = value; }
         }
 
+        /// <summary>
+        /// The position of the object on the grid.
+        /// </summary>
         public Vector2 Position
         {
             get { return _currentPanel.Position; }
             set { _position = value; }
         }
 
+        /// <summary>
+        /// True if the object is moving between panels
+        /// </summary>
         public bool IsMoving
         {
             get
@@ -60,6 +69,10 @@ namespace Lodis.Movement
             }
         }
 
+        /// <summary>
+        /// The side of the grid this object is aligned with. Effects
+        /// which side of the grid this object can freely move on.
+        /// </summary>
         public GridAlignment Alignment
         {
             get
@@ -79,6 +92,7 @@ namespace Lodis.Movement
 
         private void Start()
         {
+            //Set the starting panel to be occupied
             if (BlackBoardBehaviour.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
                 _currentPanel.Occupied = true;
             else
@@ -129,6 +143,7 @@ namespace Lodis.Movement
             Vector3 newPosition = targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
             _targetPosition = newPosition;
 
+            //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
                 transform.position = newPosition;
@@ -138,10 +153,15 @@ namespace Lodis.Movement
                 StartCoroutine(LerpPosition(newPosition));
             }
 
-            _currentPanel.Occupied = false;
+            //Sets the current panel to be unoccupied if it isn't null
+            if (_currentPanel)
+                _currentPanel.Occupied = false;
+
+            //Updates the current panel
             _currentPanel = targetPanel;
             _currentPanel.Occupied = true;
             _position = _currentPanel.Position;
+
             return true;
         }
 
@@ -171,6 +191,7 @@ namespace Lodis.Movement
             Vector3 newPosition = targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
             _targetPosition = newPosition;
 
+            //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
                 transform.position = newPosition;
@@ -180,7 +201,11 @@ namespace Lodis.Movement
                 StartCoroutine(LerpPosition(newPosition));
             }
 
-            _currentPanel.Occupied = false;
+            //Sets the current panel to be unoccupied if it isn't null
+            if (_currentPanel)
+                _currentPanel.Occupied = false;
+
+            //Updates the current panel
             _currentPanel = targetPanel;
             _currentPanel.Occupied = true;
             _position = _currentPanel.Position;

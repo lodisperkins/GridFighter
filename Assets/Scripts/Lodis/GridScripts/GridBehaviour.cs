@@ -20,29 +20,52 @@ namespace Lodis.GridScripts
 
     public class GridBehaviour : MonoBehaviour
     {
+        [Tooltip("The grid will use this game object to create the panels. MUST HAVE A PANEL BEHAVIOUR ATTACHED")]
         [SerializeField]
         private GameObject _panelRef;
+        [Tooltip("The grid will use this game object to create the barriers. MUST HAVE A GRID MOVEMENT SCRIPT ATTACHED")]
         [SerializeField]
         private GameObject _barrierRef;
+        [Tooltip("The dimensions to use when building the grid.")]
         [SerializeField]
         private Vector2 _dimensions;
+        [Tooltip("The amount of space that should be between each panel.")]
         [SerializeField]
         private float _panelSpacing;
-        [SerializeField]
         private PanelBehaviour[,] _panels;
         [Tooltip("How many columns to give player 1 when the game starts. Use this to decide how much territory to give both players.")]
         [SerializeField]
         private int _p1MaxColumns;
+        [Tooltip("The coordinates of each barrier on the left hand side.")]
         [SerializeField]
         private Vector2[] _lhsBarrierPositions;
+        [Tooltip("The coordinates of each barrier on the right hand side.")]
         [SerializeField]
         private Vector2[] _rhsBarrierPositions;
+        private PanelBehaviour _lhsPlayerSpawnPanel;
+        private PanelBehaviour _rhsPlayerSpawnPanel;
+
+
+        public PanelBehaviour LhsSpawnPanel
+        {
+            get
+            {
+                return _lhsPlayerSpawnPanel;
+            }
+        }
+
+        public PanelBehaviour RhsSpawnPanel
+        {
+            get
+            {
+                return _rhsPlayerSpawnPanel;
+            }
+        }
 
         // Start is called before the first frame update
         void Awake()
         {
             DestroyTempPanels();
-            CreateGrid();
         }
 
         /// <summary>
@@ -83,9 +106,45 @@ namespace Lodis.GridScripts
 
             //After the grid is created, assign each panel a side.
             SetDefaultPanelAlignments();
+            //Spawn barriers on both side and find the players' spawn location
             SpawnBarriers();
+
+            //If the lhs spawn still hasn't been assigned, set it to be the first open panel in the list
+            if (!_lhsPlayerSpawnPanel)
+            {
+                for (int x = 0; x < _p1MaxColumns; x++)
+                {
+                    for (int y = 0; y < 4; y++)
+                    {
+                        GetPanel(x, y, out _lhsPlayerSpawnPanel, false, GridAlignment.LEFT);
+                    }
+                    if (_lhsPlayerSpawnPanel)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            //If the rhs spawn still hasn't been assigned, set it to be the first open panel in the list
+            if (!_rhsPlayerSpawnPanel)
+            {
+                for (int x = (int)_dimensions.x; x > _dimensions.x - _p1MaxColumns; x--)
+                {
+                    for (int y = 0; y < 4; y++)
+                    {
+                        GetPanel(x, y, out _rhsPlayerSpawnPanel, false, GridAlignment.RIGHT);
+                    }
+                    if (_rhsPlayerSpawnPanel)
+                    {
+                        break;
+                    }
+                }
+            }
         }
 
+        /// <summary>
+        /// Destroys panels that may have existed before the game starts
+        /// </summary>
         public void DestroyTempPanels()
         {
             int childCount = transform.childCount;
@@ -95,6 +154,9 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// Destroys all panels in the grid. (Only for use in editor)
+        /// </summary>
         public void DestroyTempPanelsInEditor()
         {
             while (transform.childCount > 0)
@@ -103,6 +165,9 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// Destroys all panels in the grid.
+        /// </summary>
         public void DestroyGrid()
         {
             if (_panels == null)
@@ -144,32 +209,50 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// Spawns barriers at the given barrier positions for both sides.
+        /// </summary>
         private void SpawnBarriers()
         {
+            //Spawns barriers for the left side
             foreach (Vector2 position in _lhsBarrierPositions)
             {
                 GameObject barrierObject = null;
                 PanelBehaviour spawnPanel = null;
-                if(GetPanel(position, out spawnPanel, false))
-                {
-                    Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
-                    barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
-                }
-                Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
-                movement.Position = spawnPanel.Position;
-            }
-            
-            foreach (Vector2 position in _rhsBarrierPositions)
-            {
-                GameObject barrierObject = null;
-                PanelBehaviour spawnPanel = null;
+
                 if (GetPanel(position, out spawnPanel, false))
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
+
+                    //Searches for a potential player spawn position behind the barrier
+                    Vector2 potentialPlayerSpawn = new Vector2(position.x - 1, position.y);
+                    if (!_lhsPlayerSpawnPanel)
+                        GetPanel(potentialPlayerSpawn, out _lhsPlayerSpawnPanel, false, GridAlignment.LEFT);
                 }
+
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
-                movement.Position = spawnPanel.Position;
+                movement.MoveToPanel(spawnPanel.Position);
+            }
+            //Spawns barriers for the right side
+            foreach (Vector2 position in _rhsBarrierPositions)
+            {
+                GameObject barrierObject = null;
+                PanelBehaviour spawnPanel = null;
+
+                if (GetPanel(position, out spawnPanel, false))
+                {
+                    Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
+                    barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
+
+                    //Searches for a potential player spawn position behind the barrier
+                    Vector2 potentialPlayerSpawn = new Vector2(position.x + 1, position.y);
+                    if (!_rhsPlayerSpawnPanel)
+                        GetPanel(potentialPlayerSpawn, out _rhsPlayerSpawnPanel, false, GridAlignment.RIGHT);
+                }
+
+                Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
+                movement.MoveToPanel(spawnPanel.Position);
             }
         }
 

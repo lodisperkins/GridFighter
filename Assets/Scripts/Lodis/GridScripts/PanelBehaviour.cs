@@ -9,10 +9,13 @@ namespace Lodis.GridScripts
         private Vector2 _position;
         private bool _occupied;
         private GridAlignment _alignment;
+        [Tooltip("The material to give this panel if it is not aligned with either side of the grid.")]
         [SerializeField]
         private Material _neutralMat;
+        [Tooltip("The material to give this panel if it is aligned with the left side of the grid.")]
         [SerializeField]
         private Material _leftSideMat;
+        [Tooltip("The material to give this panel if it is aligned with the right side of the grid.")]
         [SerializeField]
         private Material _rightSideMat;
         private MeshRenderer _mesh;
@@ -38,6 +41,10 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// Changes the material of the panel based on the side of the
+        /// grid that its on.
+        /// </summary>
         private void UpdateMaterial()
         {
             if (_mesh == null)
