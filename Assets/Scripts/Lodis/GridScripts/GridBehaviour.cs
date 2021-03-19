@@ -62,6 +62,22 @@ namespace Lodis.GridScripts
             }
         }
 
+        public GameObject PanelRef
+        {
+            get
+            {
+                return _panelRef;
+            }
+        }
+
+        public float PanelSpacing
+        {
+            get
+            {
+                return _panelSpacing;
+            }
+        }
+
         // Start is called before the first frame update
         void Awake()
         {
