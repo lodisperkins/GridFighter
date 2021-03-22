@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Lodis
+namespace Lodis.Gameplay
 {
-    public class HealthBehaviour : MonoBehaviour
+    public class HealthBehaviour : MonoBehaviour, IDamagable
     {
         [SerializeField]
         private float _health;
@@ -26,15 +26,19 @@ namespace Lodis
             _isAlive = true;
         }
 
-        public void TakeDamage(float damageAmount)
+        public float TakeDamage(params object[] args)
         {
+            float damageAmount = (float)args[0];
+
             if (!IsAlive)
-                return;
+                return 0;
 
             _health -= damageAmount;
 
             if (_health < 0)
                 _health = 0;
+
+            return damageAmount;
         }
 
         // Update is called once per frame

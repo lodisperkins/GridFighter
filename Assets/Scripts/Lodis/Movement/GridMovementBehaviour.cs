@@ -4,9 +4,15 @@ using UnityEngine;
 using Lodis.GridScripts;
 using Lodis.Gameplay;
 using UnityEditor;
+using UnityEngine.Events;
+
 
 namespace Lodis.Movement
 {
+    public delegate bool Condition(object[] args = null);
+
+
+    [RequireComponent(typeof(GridGame.GameEventListener))]
     public class GridMovementBehaviour : MonoBehaviour
     {
         [SerializeField]
@@ -23,13 +29,16 @@ namespace Lodis.Movement
         [Tooltip("How fast the object can move towards a panel.")]
         private float _speed;
         private bool _isMoving;
+        [SerializeField]
+        private bool _canMove = true;
         [Tooltip("If true, the object can cancel its movement in one direction, and start moving in another direction.")]
         public bool canCancelMovement;
         [Tooltip("The side of the grid that this object can move on by default.")]
         [SerializeField]
         private GridAlignment _defaultAlignment = GridAlignment.ANY;
         private PanelBehaviour _currentPanel;
-
+        private Condition _movementEnableCheck;
+        private GridGame.GameEventListener _moveEventListener;
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -92,11 +101,31 @@ namespace Lodis.Movement
 
         private void Start()
         {
+            _moveEventListener = GetComponent<GridGame.GameEventListener>();
             //Set the starting panel to be occupied
             if (BlackBoardBehaviour.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
                 _currentPanel.Occupied = true;
             else
                 Debug.LogError(name + " could not find starting panel");
+        }
+
+        public void AddOnMoveAction(UnityAction action)
+        {
+            _moveEventListener.AddAction(action);
+        }
+
+        public void DisableMovement(Condition enableCondition)
+        {
+            _canMove = false;
+            _movementEnableCheck = enableCondition;
+        }
+
+        public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null)
+        {
+            _canMove = false;
+            _moveEventListener.Event = moveEvent;
+            _moveEventListener.intendedSender = intendedSender;
+            _moveEventListener.AddAction(() => { _canMove = true; });
         }
 
         /// <summary>
@@ -214,8 +243,20 @@ namespace Lodis.Movement
 
         private void Update()
         {
-            MoveToPanel(_position + Velocity);
-            _isMoving = Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance;
+            if (_canMove)
+            {
+                MoveToPanel(_position + Velocity);
+                _isMoving = Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance;
+                _movementEnableCheck = null;
+            }
+            else if (_movementEnableCheck != null)
+            {
+                if (_movementEnableCheck.Invoke())
+                { 
+                    _canMove = true;
+                    _moveEventListener.Invoke(gameObject);
+                }
+            }
         }
     }
 }
