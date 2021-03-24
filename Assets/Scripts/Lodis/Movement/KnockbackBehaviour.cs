@@ -87,7 +87,10 @@ namespace Lodis.Movement
             //Uses the total knockback and panel distance to find how far the object is travelling
             float displacement = (panelSize * totalKnockback) + (panelSpacing * (totalKnockback - 1));
             //Finds the magnitude of the force vector to be applied 
-            float magnitude = Mathf.Sqrt((displacement * Physics.gravity.magnitude) / Mathf.Sin(2 * hitAngle));
+            float val1 = displacement * Physics.gravity.magnitude;
+            float val2 = Mathf.Sin(2 * hitAngle);
+            float val3 = Mathf.Sqrt(val1 / val2);
+            float magnitude = val3;
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
             if (float.IsNaN(magnitude))
@@ -102,13 +105,13 @@ namespace Lodis.Movement
             if (!collision.gameObject.GetComponent<GridMovementBehaviour>() || !InHitStun)
                 return;
 
-            IDamagable damageScript = GetComponent<IDamagable>();
+            IDamagable damageScript = collision.gameObject.GetComponent<IDamagable>();
 
             if (damageScript == null)
                 return;
 
             ContactPoint contactPoint = collision.GetContact(0);
-            Vector3 direction = new Vector3(contactPoint.normal.x, 0, contactPoint.normal.y);
+            Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, direction);
             float hitAngle = Mathf.Acos(dotProduct);
 
