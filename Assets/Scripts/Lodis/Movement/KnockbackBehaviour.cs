@@ -23,6 +23,7 @@ namespace Lodis.Movement
         private Condition _onRigidbodyInactive;
         private Vector2 _newPanelPosition;
         private float _currentKnockBackScale;
+        private float _maxMagnitude = 100;
         /// <summary>
         /// Returns if the object is in knockback
         /// </summary>
@@ -77,6 +78,8 @@ namespace Lodis.Movement
             //Apply the damage and weight to find the amount of knock back to be applied
             float totalKnockback = (knockbackScale + (knockbackScale * (_damageAccumulated /100))) - _weight;
 
+            hitAngle = Mathf.Clamp(hitAngle, 0.6f, 2.6f);
+
             //If the knockback was too weak return an empty vector
             if (totalKnockback <= 0)
                 return new Vector3();
@@ -89,12 +92,14 @@ namespace Lodis.Movement
             //Finds the magnitude of the force vector to be applied 
             float val1 = displacement * Physics.gravity.magnitude;
             float val2 = Mathf.Sin(2 * hitAngle);
-            float val3 = Mathf.Sqrt(val1 / val2);
+            float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
             float magnitude = val3;
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
             if (float.IsNaN(magnitude))
                 return new Vector3();
+
+            magnitude = Mathf.Clamp(magnitude, 0, 100);
 
             //Return the knockback force
             return new Vector3(Mathf.Cos(hitAngle), Mathf.Sin(hitAngle)) * magnitude;
