@@ -19,11 +19,13 @@ namespace Lodis.Movement
         [Tooltip("The total amount of damage taken. The higher this value is, the farther it travels when knocked back.")]
         [SerializeField]
         private float _damageAccumulated;
+        [SerializeField]
+        private VariableScripts.FloatVariable _maxMagnitude;
         private GridMovementBehaviour _movementBehaviour;
         private Condition _onRigidbodyInactive;
         private Vector2 _newPanelPosition;
         private float _currentKnockBackScale;
-        private float _maxMagnitude = 100;
+
         /// <summary>
         /// Returns if the object is in knockback
         /// </summary>
@@ -78,7 +80,7 @@ namespace Lodis.Movement
             //Apply the damage and weight to find the amount of knock back to be applied
             float totalKnockback = (knockbackScale + (knockbackScale * (_damageAccumulated /100))) - _weight;
 
-            hitAngle = Mathf.Clamp(hitAngle, 0.6f, 2.6f);
+            //hitAngle = Mathf.Clamp(hitAngle, 0.6f, 2.6f);
 
             //If the knockback was too weak return an empty vector
             if (totalKnockback <= 0)
@@ -99,7 +101,7 @@ namespace Lodis.Movement
             if (float.IsNaN(magnitude))
                 return new Vector3();
 
-            magnitude = Mathf.Clamp(magnitude, 0, 100);
+            magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Val);
 
             //Return the knockback force
             return new Vector3(Mathf.Cos(hitAngle), Mathf.Sin(hitAngle)) * magnitude;
@@ -120,8 +122,8 @@ namespace Lodis.Movement
             float dotProduct = Vector3.Dot(Vector3.right, direction);
             float hitAngle = Mathf.Acos(dotProduct);
 
-            damageScript.TakeDamage(_currentKnockBackScale * 2, _currentKnockBackScale, hitAngle);
-            TakeDamage(_currentKnockBackScale * 2, _currentKnockBackScale, hitAngle);
+            damageScript.TakeDamage(_currentKnockBackScale * 2, _currentKnockBackScale / 2, hitAngle);
+            TakeDamage(_currentKnockBackScale * 2, _currentKnockBackScale / 2, hitAngle);
         }
 
         /// <summary>

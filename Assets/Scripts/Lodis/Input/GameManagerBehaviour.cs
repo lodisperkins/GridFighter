@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEditor;
+
 
 namespace Lodis.Gameplay
 {
@@ -45,12 +47,41 @@ namespace Lodis.Gameplay
             player2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
         }
 
+        public void Restart()
+        {
+            SceneManager.LoadScene(0);
+        }
+
         // Update is called once per frame
         void Update()
         {
 
         }
     }
+
+#if UNITY_EDITOR
+
+    [CustomEditor(typeof(GameManagerBehaviour))]
+    class GameManagerEditor : Editor
+    {
+        private GameManagerBehaviour _manager;
+
+        private void Awake()
+        {
+            _manager = (GameManagerBehaviour)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            if (GUILayout.Button("Reset Game"))
+            {
+                _manager.Restart();
+            }
+        }
+    }
+
+#endif
 }
 
 

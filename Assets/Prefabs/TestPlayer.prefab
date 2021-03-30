@@ -115,6 +115,7 @@ MonoBehaviour:
   _targetTolerance: 0.05
   _velocity: {x: 0, y: 0}
   _speed: 10
+  _canMove: 1
   canCancelMovement: 0
   _defaultAlignment: 3
 --- !u!114 &2765739998997917296
@@ -251,6 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weight: 2
   _damageAccumulated: 0
+  _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
