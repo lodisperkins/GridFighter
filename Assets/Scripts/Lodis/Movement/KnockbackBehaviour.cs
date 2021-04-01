@@ -122,6 +122,9 @@ namespace Lodis.Movement
             float dotProduct = Vector3.Dot(Vector3.right, direction);
             float hitAngle = Mathf.Acos(dotProduct);
 
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+
             damageScript.TakeDamage(_currentKnockBackScale * 2, _currentKnockBackScale / 2, hitAngle);
             TakeDamage(_currentKnockBackScale * 2, _currentKnockBackScale / 2, hitAngle);
         }
@@ -134,7 +137,7 @@ namespace Lodis.Movement
         /// </summary>
         public float TakeDamage(params object[] args)
         {
-
+            
             if (!_movementBehaviour || !_rigidbody)
                 return 0;
 
