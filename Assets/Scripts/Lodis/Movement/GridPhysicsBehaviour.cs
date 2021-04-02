@@ -45,6 +45,8 @@ namespace Lodis.Movement
         {
             if (!IsOnGrid())
                 _force += new Vector3(0, -_gravity, 0);
+            else
+                _force = new Vector3(_force.x, 0, _force.y);
 
             _force = Vector3.ClampMagnitude(_force, _maxForceMagnitude);
 
