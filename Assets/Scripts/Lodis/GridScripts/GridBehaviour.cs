@@ -42,6 +42,8 @@ namespace Lodis.GridScripts
         [Tooltip("The coordinates of each barrier on the right hand side.")]
         [SerializeField]
         private Vector2[] _rhsBarrierPositions;
+        [SerializeField]
+        private GameObject _collisionPlaneRef;
         private PanelBehaviour _lhsPlayerSpawnPanel;
         private PanelBehaviour _rhsPlayerSpawnPanel;
 
@@ -156,6 +158,17 @@ namespace Lodis.GridScripts
                     }
                 }
             }
+
+            GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
+
+            float collisionPlaneScaleX = (_dimensions.x * _panelRef.transform.localScale.x) + ((PanelSpacing - PanelRef.transform.localScale.x) * _dimensions.x);
+            float collisionPlaneScaleY = (_dimensions.y * _panelRef.transform.localScale.z) + ((PanelSpacing - PanelRef.transform.localScale.z) * _dimensions.y);
+
+            float collisionPlaneOffsetX = ((_dimensions.x - 1) * _panelRef.transform.localScale.x) + ((PanelSpacing - PanelRef.transform.localScale.x) * (_dimensions.x - 1));
+            float collisionPlaneOffsetY = ((_dimensions.y - 1) * _panelRef.transform.localScale.z) + ((PanelSpacing - PanelRef.transform.localScale.z) * (_dimensions.y - 1));
+
+            collisionPlane.transform.localScale = new Vector3(collisionPlaneScaleX / 10, collisionPlane.transform.localScale.y, collisionPlaneScaleY / 10);
+            collisionPlane.transform.position += new Vector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
         }
 
         /// <summary>

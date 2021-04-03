@@ -111,7 +111,8 @@ namespace Lodis.Movement
 
         public void AddOnMoveAction(UnityAction action)
         {
-            _moveEventListener.AddAction(action);
+            if (_moveEventListener)
+                _moveEventListener.AddAction(action);
         }
 
         public void DisableMovement(Condition enableCondition)

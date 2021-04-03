@@ -45,6 +45,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _panelRef: {fileID: 3853593270357521993, guid: 7508c41929b4ff64aa30beda90810caf,
     type: 3}
+  _barrierRef: {fileID: 0}
   _dimensions: {x: 5, y: 3}
   _panelSpacing: 1.2
-  _panels: []
+  _p1MaxColumns: 0
+  _lhsBarrierPositions: []
+  _rhsBarrierPositions: []
+  _collisionPlaneRef: {fileID: 6261796229167299558, guid: 37c6c812562b20a4c86d421371e5b25e,
+    type: 3}

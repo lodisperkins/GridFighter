@@ -19,12 +19,15 @@ namespace Lodis.Movement
         [Tooltip("The total amount of damage taken. The higher this value is, the farther it travels when knocked back.")]
         [SerializeField]
         private float _damageAccumulated;
+        [Tooltip("How fast will objects be allowed to travel in knockback")]
         [SerializeField]
         private VariableScripts.FloatVariable _maxMagnitude;
         private GridMovementBehaviour _movementBehaviour;
         private Condition _onRigidbodyInactive;
         private Vector2 _newPanelPosition;
         private float _currentKnockBackScale;
+        private Vector3 _velocityOnLaunch;
+        private Vector3 _lastVelocity;
 
         /// <summary>
         /// Returns if the object is in knockback
@@ -80,11 +83,15 @@ namespace Lodis.Movement
             //Apply the damage and weight to find the amount of knock back to be applied
             float totalKnockback = (knockbackScale + (knockbackScale * (_damageAccumulated /100))) - _weight;
 
-            //hitAngle = Mathf.Clamp(hitAngle, 0.6f, 2.6f);
-
             //If the knockback was too weak return an empty vector
             if (totalKnockback <= 0)
+            {
+                _newPanelPosition = _movementBehaviour.Position;
                 return new Vector3();
+            }
+
+            //Clamps hit angle to prevent completely horizontal movement
+            hitAngle = Mathf.Clamp(hitAngle, .2f, 3.0f);
 
             //Find the new panel's grid position based on the knock back
             _newPanelPosition = _movementBehaviour.Position + (new Vector2(Mathf.Cos(hitAngle), 0)).normalized * totalKnockback;
@@ -99,8 +106,12 @@ namespace Lodis.Movement
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
             if (float.IsNaN(magnitude))
+            {
+                _newPanelPosition = _movementBehaviour.Position;
                 return new Vector3();
+            }
 
+            //Clamps magnitude to be within the limit
             magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Val);
 
             //Return the knockback force
@@ -109,24 +120,30 @@ namespace Lodis.Movement
 
         private void OnCollisionEnter(Collision collision)
         {
+            //Checks if the object is not grid moveable and isn't in hit stun
             if (!collision.gameObject.GetComponent<GridMovementBehaviour>() || !InHitStun)
                 return;
 
+            //Grab whatever health script is attached to this object. If none return
             IDamagable damageScript = collision.gameObject.GetComponent<IDamagable>();
-
             if (damageScript == null)
                 return;
 
+            //Calculate the knockback and hit angle for the ricochet
             ContactPoint contactPoint = collision.GetContact(0);
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, direction);
             float hitAngle = Mathf.Acos(dotProduct);
+            float velocityMagnitude = _lastVelocity.magnitude;
+            float knockbackScale = _currentKnockBackScale * (velocityMagnitude / _velocityOnLaunch.magnitude);
 
+            //Reset velocity to be zero to instantly change it
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
 
-            damageScript.TakeDamage(_currentKnockBackScale * 2, _currentKnockBackScale / 2, hitAngle);
-            TakeDamage(_currentKnockBackScale * 2, _currentKnockBackScale / 2, hitAngle);
+            //Apply ricochet force and damage
+            damageScript.TakeDamage(knockbackScale * 2, knockbackScale, hitAngle);
+            TakeDamage(knockbackScale * 2, knockbackScale, hitAngle);
         }
 
         /// <summary>
@@ -137,13 +154,16 @@ namespace Lodis.Movement
         /// </summary>
         public float TakeDamage(params object[] args)
         {
-            
+            //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || !_rigidbody)
                 return 0;
 
+            //Variables to store arguments for readability
             float damage = (float)args[0];
             float knockbackScale = (float)args[1];
             float hitAngle = (float)args[2];
+
+            //Update current knockback scale
             _currentKnockBackScale = knockbackScale;
 
             //Adds damage to the total damage
@@ -154,12 +174,24 @@ namespace Lodis.Movement
 
             //Calculates force and applies it to the rigidbody
             _rigidbody.isKinematic = false;
-            _rigidbody.AddForce(CalculateKnockbackForce(knockbackScale, hitAngle), ForceMode.Impulse);
+            _velocityOnLaunch = CalculateKnockbackForce(knockbackScale, hitAngle);
+            _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
+
 
             return damage;
         }
+
+        private void FixedUpdate()
+        {
+            _lastVelocity = _rigidbody.velocity;
+        }
     }
 
+
+
+    /// <summary>
+    /// Editor script to test attacks
+    /// </summary>
 #if UNITY_EDITOR
 
     [CustomEditor(typeof(KnockbackBehaviour))]
