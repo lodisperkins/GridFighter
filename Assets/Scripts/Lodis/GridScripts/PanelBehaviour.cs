@@ -18,8 +18,11 @@ namespace Lodis.GridScripts
         [Tooltip("The material to give this panel if it is aligned with the right side of the grid.")]
         [SerializeField]
         private Material _rightSideMat;
+        [SerializeField]
+        private float _maxBounceForce = 3.0f;
+        [SerializeField]
+        private float _bounceDampening = 3.0f;
         private MeshRenderer _mesh;
-
         private void Awake()
         {
             _mesh = GetComponent<MeshRenderer>();
@@ -94,6 +97,31 @@ namespace Lodis.GridScripts
             }
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            Movement.KnockbackBehaviour knockbackScript = other.GetComponent<Movement.KnockbackBehaviour>();
+
+            if (!knockbackScript)
+                return;
+
+            if (Vector3.Dot(Vector3.down, knockbackScript.LastVelocity) <= 0 || !knockbackScript.InHitStun)
+                return;
+
+            float upMagnitude = Mathf.Clamp(knockbackScript.LastVelocity.magnitude / _bounceDampening, 0, _maxBounceForce);
+
+
+            knockbackScript.StopVelocity();
+            knockbackScript.ApplyImpulseForce(Vector3.up * upMagnitude);
+
+            //Vector3 perpVelocity = new Vector3(-knockbackScript.LastVelocity.y, knockbackScript.LastVelocity.x, 0);
+            //float hitAngle = Vector3.Angle(perpVelocity, Vector3.right) * Mathf.Deg2Rad;
+
+            //float velocityMagnitude = knockbackScript.LastVelocity.magnitude;
+            //float knockbackScale = knockbackScript.CurrentKnockBackScale * (velocityMagnitude / knockbackScript.LaunchVelocity.magnitude);
+
+            ////Apply ricochet force and damage
+            //knockbackScript.TakeDamage(0.0f, knockbackScale, hitAngle);
+        }
     }
 }
 

@@ -96,12 +96,12 @@ namespace Lodis.Movement
 
         private void Awake()
         {
+            _moveEventListener = GetComponent<GridGame.GameEventListener>();
             _targetPosition = transform.position;
         }
 
         private void Start()
         {
-            _moveEventListener = GetComponent<GridGame.GameEventListener>();
             //Set the starting panel to be occupied
             if (BlackBoardBehaviour.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
                 _currentPanel.Occupied = true;
@@ -242,6 +242,12 @@ namespace Lodis.Movement
             _currentPanel.Occupied = true;
             _position = _currentPanel.Position;
             return true;
+        }
+
+        private void OnDestroy()
+        {
+            if (_currentPanel)
+                _currentPanel.Occupied = false;
         }
 
         private void Update()

@@ -40,6 +40,41 @@ namespace Lodis.Movement
             }
         }
 
+        /// <summary>
+        /// Returns the velocity of this object when it was first launched
+        /// </summary>
+        public Vector3 LaunchVelocity
+        {
+            get
+            {
+                return _velocityOnLaunch;
+            }
+        }
+
+
+        /// <summary>
+        /// Returns the velocity of the rigid body in the last fixed update
+        /// </summary>
+        public Vector3 LastVelocity
+        {
+            get
+            {
+                return _lastVelocity;
+            }
+        }
+
+        /// <summary>
+        /// The scale of the last knock back value applied to the object
+        /// </summary>
+        public float CurrentKnockBackScale
+        {
+            get
+            {
+                return _currentKnockBackScale;
+            }
+        }
+
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
@@ -70,6 +105,15 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Sets velocity and angular velocity to be zero
+        /// </summary>
+        public void StopVelocity()
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+        }
+
+        /// <summary>
         /// Finds the force needed to move the game object the given number of panels backwards
         /// </summary>
         /// <param name="knockbackScale">How many panels backwards will the object move assuming its weight is 0</param>
@@ -95,6 +139,7 @@ namespace Lodis.Movement
 
             //Find the new panel's grid position based on the knock back
             _newPanelPosition = _movementBehaviour.Position + (new Vector2(Mathf.Cos(hitAngle), 0)).normalized * totalKnockback;
+            _newPanelPosition = new Vector2(Mathf.Round(_newPanelPosition.x), Mathf.Round(_newPanelPosition.y));
 
             //Uses the total knockback and panel distance to find how far the object is travelling
             float displacement = (panelSize * totalKnockback) + (panelSpacing * (totalKnockback - 1));
@@ -144,6 +189,11 @@ namespace Lodis.Movement
             //Apply ricochet force and damage
             damageScript.TakeDamage(knockbackScale * 2, knockbackScale, hitAngle);
             TakeDamage(knockbackScale * 2, knockbackScale, hitAngle);
+        }
+
+        public void ApplyImpulseForce(Vector3 force)
+        {
+            _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
         /// <summary>

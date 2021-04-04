@@ -109,3 +109,4 @@ MonoBehaviour:
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
+  _maxBounceForce: 3
