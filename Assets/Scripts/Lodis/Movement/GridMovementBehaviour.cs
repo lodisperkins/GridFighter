@@ -244,6 +244,47 @@ namespace Lodis.Movement
             return true;
         }
 
+        /// <summary>
+        /// Moves the gameObject from its current panel to the panel at the given position.
+        /// </summary>
+        /// <param name="targetPanel">The panel on the grid that the gameObject will travel to.</param>
+        /// <param name="snapPosition">If true, teh gameObject will immediately teleport to its destination without a smooth transition.</param>
+        /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
+        public bool MoveToPanel(PanelBehaviour targetPanel, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE)
+        {
+            if (tempAlignment == GridAlignment.NONE)
+                tempAlignment = _defaultAlignment;
+
+            if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY)
+                return false;
+
+            //Sets the new position to be the position of the panel added to half the gameOgjects height.
+            //Adding the height ensures the gameObject is not placed inside the panel.
+            Vector3 newPosition = targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            _targetPosition = newPosition;
+
+            //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
+            if (snapPosition)
+            {
+                transform.position = newPosition;
+            }
+            else
+            {
+                StartCoroutine(LerpPosition(newPosition));
+            }
+
+            //Sets the current panel to be unoccupied if it isn't null
+            if (_currentPanel)
+                _currentPanel.Occupied = false;
+
+            //Updates the current panel
+            _currentPanel = targetPanel;
+            _currentPanel.Occupied = true;
+            _position = _currentPanel.Position;
+
+            return true;
+        }
+
         private void OnDestroy()
         {
             if (_currentPanel)
@@ -263,6 +304,7 @@ namespace Lodis.Movement
                 if (_movementEnableCheck.Invoke())
                 { 
                     _canMove = true;
+                    _isMoving = false;
                     _moveEventListener.Invoke(gameObject);
                 }
             }

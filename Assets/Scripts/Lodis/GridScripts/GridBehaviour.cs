@@ -112,13 +112,13 @@ namespace Lodis.GridScripts
                     xPos = 0;
                     spawnPosition.x = transform.position.x;
                     yPos++;
-                    spawnPosition.z += _panelRef.transform.localScale.z * _panelSpacing;
+                    spawnPosition.z += _panelRef.transform.localScale.z + _panelSpacing;
                     continue;
                 }
 
                 //Increase x position
                 xPos++;
-                spawnPosition.x += _panelRef.transform.localScale.x * _panelSpacing;
+                spawnPosition.x += _panelRef.transform.localScale.x + _panelSpacing;
             }
 
 
@@ -161,11 +161,11 @@ namespace Lodis.GridScripts
 
             GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
 
-            float collisionPlaneScaleX = (_dimensions.x * _panelRef.transform.localScale.x) + ((PanelSpacing - PanelRef.transform.localScale.x) * _dimensions.x);
-            float collisionPlaneScaleY = (_dimensions.y * _panelRef.transform.localScale.z) + ((PanelSpacing - PanelRef.transform.localScale.z) * _dimensions.y);
+            float collisionPlaneScaleX = (_dimensions.x * _panelRef.transform.localScale.x) + (PanelSpacing * _dimensions.x);
+            float collisionPlaneScaleY = (_dimensions.y * _panelRef.transform.localScale.z) + (PanelSpacing* _dimensions.y);
 
-            float collisionPlaneOffsetX = ((_dimensions.x - 1) * _panelRef.transform.localScale.x) + ((PanelSpacing - PanelRef.transform.localScale.x) * (_dimensions.x - 1));
-            float collisionPlaneOffsetY = ((_dimensions.y - 1) * _panelRef.transform.localScale.z) + ((PanelSpacing - PanelRef.transform.localScale.z) * (_dimensions.y - 1));
+            float collisionPlaneOffsetX = ((_dimensions.x - 1) * _panelRef.transform.localScale.x) + (PanelSpacing * (_dimensions.x - 1));
+            float collisionPlaneOffsetY = ((_dimensions.y - 1) * _panelRef.transform.localScale.z) + (PanelSpacing* (_dimensions.y - 1));
 
             collisionPlane.transform.localScale = new Vector3(collisionPlaneScaleX / 10, collisionPlane.transform.localScale.y, collisionPlaneScaleY / 10);
             collisionPlane.transform.position += new Vector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
@@ -351,7 +351,7 @@ namespace Lodis.GridScripts
                 return false;
 
             //If the given position is in range or if the panel is occupied when it shouldn't be, return false.
-            if (position.x < 0 || position.x >= _dimensions.x || position.y < 0 || position.y >= _dimensions.y)
+            if (position.x < 0 || position.x >= _dimensions.x || position.y < 0 || position.y >= _dimensions.y || float.IsNaN(position.x) || float.IsNaN(position.y))
                 return false;
             else if (!canBeOccupied && _panels[(int)position.x, (int)position.y].Occupied)
                 return false;
@@ -359,6 +359,29 @@ namespace Lodis.GridScripts
                 return false;
 
             panel = _panels[(int)position.x, (int)position.y];
+
+            return true;
+        }
+
+        public bool GetPanelAtLocationInWorld(Vector3 location, out PanelBehaviour panel, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
+        {
+            panel = null;
+
+            if (_panels == null)
+                return false;
+
+            int x = Mathf.RoundToInt((location.x / (PanelRef.transform.localScale.x + PanelSpacing)));
+            int y = Mathf.RoundToInt((location.z / (PanelRef.transform.localScale.z + PanelSpacing)));
+
+            //If the given position is in range or if the panel is occupied when it shouldn't be, return false.
+            if (x < 0 || x >= _dimensions.x || y < 0 || y >= _dimensions.y || float.IsNaN(x) || float.IsNaN(y))
+                return false;
+            else if (!canBeOccupied && _panels[x, y].Occupied)
+                return false;
+            else if (_panels[x, y].Alignment != alignment && alignment != GridAlignment.ANY)
+                return false;
+
+            panel = _panels[x, y];
 
             return true;
         }

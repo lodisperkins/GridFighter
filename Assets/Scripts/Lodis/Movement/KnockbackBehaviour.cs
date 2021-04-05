@@ -24,7 +24,7 @@ namespace Lodis.Movement
         private VariableScripts.FloatVariable _maxMagnitude;
         private GridMovementBehaviour _movementBehaviour;
         private Condition _onRigidbodyInactive;
-        private Vector2 _newPanelPosition;
+        private Vector2 _newPanelPosition = new Vector2(float.NaN, float.NaN );
         private float _currentKnockBackScale;
         private Vector3 _velocityOnLaunch;
         private Vector3 _lastVelocity;
@@ -88,6 +88,7 @@ namespace Lodis.Movement
             _onRigidbodyInactive = RigidbodyInactive;
             _movementBehaviour.AddOnMoveAction(() => { _rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveAction(UpdatePanelPosition);
+            
         }
 
         private bool RigidbodyInactive(object[] args)
@@ -101,7 +102,10 @@ namespace Lodis.Movement
         /// </summary>
         private void UpdatePanelPosition()
         {
-            _movementBehaviour.MoveToPanel(_newPanelPosition, false, GridScripts.GridAlignment.ANY);
+            GridScripts.PanelBehaviour panel = null;
+
+            if (BlackBoardBehaviour.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
+                _movementBehaviour.MoveToPanel(panel, false, GridScripts.GridAlignment.ANY);
         }
 
         /// <summary>
@@ -136,10 +140,6 @@ namespace Lodis.Movement
 
             //Clamps hit angle to prevent completely horizontal movement
             hitAngle = Mathf.Clamp(hitAngle, .2f, 3.0f);
-
-            //Find the new panel's grid position based on the knock back
-            _newPanelPosition = _movementBehaviour.Position + (new Vector2(Mathf.Cos(hitAngle), 0)).normalized * totalKnockback;
-            _newPanelPosition = new Vector2(Mathf.Round(_newPanelPosition.x), Mathf.Round(_newPanelPosition.y));
 
             //Uses the total knockback and panel distance to find how far the object is travelling
             float displacement = (panelSize * totalKnockback) + (panelSpacing * (totalKnockback - 1));
