@@ -8,6 +8,12 @@ using UnityEditor;
 
 namespace Lodis.Gameplay
 {
+    public enum GameMode
+    {
+        SINGLEPLAYER,
+        MULTIPLAYER
+    }
+
     public class GameManagerBehaviour : MonoBehaviour
     {
         [SerializeField]
@@ -16,6 +22,8 @@ namespace Lodis.Gameplay
         private GameObject _playerRef;
         [SerializeField]
         private GridScripts.GridBehaviour _grid;
+        [SerializeField]
+        private GameMode _mode;
         private PlayerInput _player1;
         private PlayerInput _player2;
 
@@ -27,24 +35,27 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
-            //Spawn players
-            _inputManager.JoinPlayer(0, 0, "Player", Keyboard.current);
-            _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[2]);
-
-            //Store references to players
-            _player1 = PlayerInput.GetPlayerByIndex(0);
-            _player2 = PlayerInput.GetPlayerByIndex(1);
-
             //Initialize grid
             _grid.CreateGrid();
 
+            //Spawn players
+            _inputManager.JoinPlayer(0, 0, "Player", Keyboard.current);
+            _player1 = PlayerInput.GetPlayerByIndex(0);
+
             //Move players to spawn
             Movement.GridMovementBehaviour player1Movement = _player1.GetComponent<Movement.GridMovementBehaviour>();
-            Movement.GridMovementBehaviour player2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
+
             player1Movement.Position = _grid.LhsSpawnPanel.Position;
             player1Movement.Alignment = GridScripts.GridAlignment.LEFT;
-            player2Movement.Position = _grid.RhsSpawnPanel.Position;
-            player2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
+
+            if (_mode == GameMode.MULTIPLAYER)
+            {
+                _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[2]);
+                _player2 = PlayerInput.GetPlayerByIndex(1);
+                Movement.GridMovementBehaviour player2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
+                player2Movement.Position = _grid.RhsSpawnPanel.Position;
+                player2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
+            }
         }
 
         public void Restart()
