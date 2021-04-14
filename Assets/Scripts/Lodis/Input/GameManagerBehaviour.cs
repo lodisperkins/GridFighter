@@ -48,10 +48,13 @@ namespace Lodis.Gameplay
             player1Movement.Position = _grid.LhsSpawnPanel.Position;
             player1Movement.Alignment = GridScripts.GridAlignment.LEFT;
 
+            _player1.transform.forward = Vector3.right;
+
             if (_mode == GameMode.MULTIPLAYER)
             {
                 _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[2]);
                 _player2 = PlayerInput.GetPlayerByIndex(1);
+                _player2.transform.forward = Vector3.left;
                 Movement.GridMovementBehaviour player2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
                 player2Movement.Position = _grid.RhsSpawnPanel.Position;
                 player2Movement.Alignment = GridScripts.GridAlignment.RIGHT;

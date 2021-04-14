@@ -11,6 +11,7 @@ namespace Lodis.Input
     public class InputBehaviour : MonoBehaviour
     {
         private Movement.GridMovementBehaviour _gridMovement;
+        private Gameplay.MovesetBehaviour _moveset;
         private bool _canMove = true;
         private Vector2 _storedInput;
         private Vector2 _previousInput;
@@ -27,6 +28,13 @@ namespace Lodis.Input
             actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
         }
 
+        // Start is called before the first frame update
+        void Start()
+        {
+            _gridMovement = GetComponent<Movement.GridMovementBehaviour>();
+            _moveset = GetComponent<Gameplay.MovesetBehaviour>();
+        }
+
         public void UpdateInputX(int x)
         {
             _storedInput = new Vector2(x, 0);
@@ -36,12 +44,6 @@ namespace Lodis.Input
         {
             _storedInput = new Vector2(0, y);
         }
-
-        // Start is called before the first frame update
-        void Start()
-        {
-            _gridMovement = GetComponent<Movement.GridMovementBehaviour>();
-        }   
 
         // Update is called once per frame
         void Update()
