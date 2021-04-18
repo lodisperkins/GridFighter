@@ -11,8 +11,6 @@ namespace Lodis.Gameplay
         DOWN
     }
 
-
-
     public class BlackBoardBehaviour : MonoBehaviour
     {
         public static GridScripts.GridBehaviour Grid { get; private set; }
@@ -20,6 +18,11 @@ namespace Lodis.Gameplay
         public static PlayerState player2State = PlayerState.ACTIVE;
 
         private void Awake()
+        {
+            Grid = FindObjectOfType<GridScripts.GridBehaviour>();
+        }
+
+        public static void InitializeGrid()
         {
             Grid = FindObjectOfType<GridScripts.GridBehaviour>();
         }

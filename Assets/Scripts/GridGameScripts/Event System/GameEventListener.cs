@@ -15,6 +15,15 @@ namespace GridGame
         public GridGame.Event Event;
         //The sender the gameobject is waiting for the event to be raiased by
         public GameObject intendedSender;
+
+        public GameEventListener(Event listenerEvent, GameObject sender)
+        {
+            Event = listenerEvent;
+            Event.AddListener(this);
+            intendedSender = sender;
+            actions = new UnityEvent();
+        }
+
         // Use this for initialization
         void Start()
         {
@@ -29,20 +38,20 @@ namespace GridGame
             actions.AddListener(action);
         }
 
-        public void ClearListeners()
+        public void ClearActions()
+        {
+            actions.RemoveAllListeners();
+        }
+
+        public void ClearEvent()
         {
             Event = new Event();
         }
 
         //Invokes the actions delegate
-        public void Invoke(Object Sender)
+        public void Invoke(GameObject Sender)
         {
-            if(intendedSender == null)
-            {
-                actions.Invoke();
-                return;
-            }
-            else if(intendedSender == Sender)
+            if((intendedSender == null || intendedSender == Sender) && actions != null)
             {
                 actions.Invoke();
                 return;

@@ -91,6 +91,9 @@ namespace Lodis.GridScripts
         /// </summary>
         public void CreateGrid()
         {
+            if (!Gameplay.BlackBoardBehaviour.Grid)
+                Gameplay.BlackBoardBehaviour.InitializeGrid();
+
             _panels = new PanelBehaviour[(int)_dimensions.x, (int)_dimensions.y];
 
             //The world spawn position for each gameobject in the grid

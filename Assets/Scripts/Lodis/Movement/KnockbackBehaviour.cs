@@ -86,8 +86,8 @@ namespace Lodis.Movement
         void Start()
         {
             _onRigidbodyInactive = RigidbodyInactive;
-            _movementBehaviour.AddOnMoveAction(() => { _rigidbody.isKinematic = true; });
-            _movementBehaviour.AddOnMoveAction(UpdatePanelPosition);
+            _movementBehaviour.AddOnMoveEnabledAction(() => { _rigidbody.isKinematic = true; });
+            _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
             
         }
 

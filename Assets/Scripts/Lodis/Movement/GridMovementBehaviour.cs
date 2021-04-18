@@ -38,7 +38,11 @@ namespace Lodis.Movement
         private GridAlignment _defaultAlignment = GridAlignment.ANY;
         private PanelBehaviour _currentPanel;
         private Condition _movementEnableCheck;
-        private GridGame.GameEventListener _moveEventListener;
+        private GridGame.GameEventListener _moveEnabledEventListener;
+        private GridGame.GameEventListener _onMoveBegin;
+        private GridGame.GameEventListener _onMoveBeginTemp;
+        private GridGame.GameEventListener _onMoveEnd;
+        private GridGame.GameEventListener _onMoveEndTemp;
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -96,7 +100,14 @@ namespace Lodis.Movement
 
         private void Awake()
         {
-            _moveEventListener = GetComponent<GridGame.GameEventListener>();
+            //initialize events
+            _moveEnabledEventListener = GetComponent<GridGame.GameEventListener>();
+            _onMoveBegin = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
+            _onMoveBeginTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
+            _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
+            _onMoveEndTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
+
+            //Set the starting position
             _targetPosition = transform.position;
         }
 
@@ -109,10 +120,34 @@ namespace Lodis.Movement
                 Debug.LogError(name + " could not find starting panel");
         }
 
-        public void AddOnMoveAction(UnityAction action)
+        public void AddOnMoveEnabledAction(UnityAction action)
         {
-            if (_moveEventListener)
-                _moveEventListener.AddAction(action);
+            if ((object)_moveEnabledEventListener != null)
+                _moveEnabledEventListener.AddAction(action);
+        }
+
+        public void AddOnMoveBeginAction(UnityAction action)
+        {
+            if ((object)_onMoveBegin != null)
+                _onMoveBegin.AddAction(action);
+        }
+
+        public void AddOnMoveBeginTempAction(UnityAction action)
+        {
+            if ((object)_onMoveBeginTemp != null)
+                _onMoveBeginTemp.AddAction(action);
+        }
+
+        public void AddOnMoveEndAction(UnityAction action)
+        {
+            if ((object)_onMoveEnd != null)
+                _onMoveEnd.AddAction(action);
+        }
+
+        public void AddOnMoveEndTempAction(UnityAction action)
+        {
+            if ((object)_onMoveEndTemp != null)
+                _onMoveEndTemp.AddAction(action);
         }
 
         public void DisableMovement(Condition enableCondition)
@@ -125,10 +160,34 @@ namespace Lodis.Movement
         public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null)
         {
             _canMove = false;
-            _moveEventListener.Event = moveEvent;
-            _moveEventListener.intendedSender = intendedSender;
-            _moveEventListener.AddAction(() => { _canMove = true; });
+            _moveEnabledEventListener.Event = moveEvent;
+            _moveEnabledEventListener.intendedSender = intendedSender;
+            _moveEnabledEventListener.AddAction(() => { _canMove = true; });
             StopAllCoroutines();
+        }
+
+        /// <summary>
+        /// Invokes events based on what the is moving is being set to and updates the value.
+        /// </summary>
+        /// <param name="value"></param>
+        private void SetIsMoving(bool value)
+        {
+            //If is moving is being set to true, invoke onMoveBegin
+            if (!_isMoving && value != _isMoving)
+            {
+                _onMoveBegin.Invoke(gameObject);
+                _onMoveBeginTemp.Invoke(gameObject);
+                _onMoveBeginTemp.ClearActions();
+            }
+            //If is moving is being set to false, invoke onMoveEnd
+            else if (_isMoving && value != _isMoving)
+            {
+                _onMoveEnd.Invoke(gameObject);
+                _onMoveEndTemp.Invoke(gameObject);
+                _onMoveEndTemp.ClearActions();
+            }
+
+            _isMoving = value;
         }
 
         /// <summary>
@@ -143,6 +202,7 @@ namespace Lodis.Movement
 
             while (transform.position != newPosition)
             {
+
                 //Sets the current position to be the current position in the interpolation
                 transform.position = Vector3.Lerp(startPosition, newPosition, lerpVal += Time.deltaTime * _speed);
                 //Waits until the next fixed update before resuming to be in line with any physics calls
@@ -296,7 +356,7 @@ namespace Lodis.Movement
             if (_canMove)
             {
                 MoveToPanel(_position + Velocity);
-                _isMoving = Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance;
+                SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
                 _movementEnableCheck = null;
             }
             else if (_movementEnableCheck != null)
@@ -305,7 +365,7 @@ namespace Lodis.Movement
                 { 
                     _canMove = true;
                     _isMoving = false;
-                    _moveEventListener.Invoke(gameObject);
+                    _moveEnabledEventListener.Invoke(gameObject);
                 }
             }
         }

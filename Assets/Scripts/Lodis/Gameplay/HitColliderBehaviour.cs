@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
+    public delegate void CollisionEvent(params object[] args);
     public class HitColliderBehaviour : MonoBehaviour
     {
         [Tooltip("The amount of damage this attack will do.")]
@@ -18,28 +19,20 @@ namespace Lodis.Gameplay
         private float _hitAngle;
         [Tooltip("If true, the hit collider will despawn after the amount of active frames have been surpassed.")]
         [SerializeField]
-        private bool _despawnsAfterFrameLimit = false;
+        private bool _despawnsAfterTimeLimit = false;
         [Tooltip("How many frames the hitbox will be active for.")]
         [SerializeField]
-        private float _activeFrames;
+        private float _timeActive;
         [Tooltip("If true, the hit collider will damage objects that enter it multiple times.")]
         [SerializeField]
         private bool _isMultiHit;
         [SerializeField]
         private bool _destroyOnHit;
-        private float _currentFramesActive;
+        private float _currentTimeActive;
+        private float _startTime;
         private GameObject _owner;
         private List<GameObject> _collisions;
-
-        public HitColliderBehaviour(float damage, float knockBackScale, float hitAngle, bool despawnAfterFrameLimit, float activeFrames = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
-        {
-            Init(damage, knockBackScale, hitAngle, despawnAfterFrameLimit, activeFrames, owner, destroyOnHit, isMultiHit);
-        }
-
-        private void Awake()
-        {
-            _collisions = new List<GameObject>();
-        }
+        public CollisionEvent onHit;
 
         public GameObject Owner
         {
@@ -53,6 +46,21 @@ namespace Lodis.Gameplay
             }
         }
 
+        public HitColliderBehaviour(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
+        {
+            Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit);
+        }
+
+        private void Awake()
+        {
+            _collisions = new List<GameObject>();
+        }
+
+        private void Start()
+        {
+            _startTime = Time.time;
+        }
+
         /// <summary>
         /// Copies the values in collider 1 to collider 2
         /// </summary>
@@ -60,7 +68,8 @@ namespace Lodis.Gameplay
         /// <param name="collider2"></param>
         public static void Copy(HitColliderBehaviour collider1, HitColliderBehaviour collider2)
         {
-            collider2.Init(collider1._damage, collider1._knockBackScale, collider1._hitAngle, collider1._despawnsAfterFrameLimit, collider1._activeFrames, collider1.Owner, collider1._destroyOnHit, collider1._isMultiHit);
+            collider2.Init(collider1._damage, collider1._knockBackScale, collider1._hitAngle, collider1._despawnsAfterTimeLimit, collider1._timeActive, collider1.Owner, collider1._destroyOnHit, collider1._isMultiHit);
+            collider2.onHit = collider1.onHit;
         }
 
         /// <summary>
@@ -69,14 +78,14 @@ namespace Lodis.Gameplay
         /// <param name="damage">The amount of damage this attack will do</param>
         /// <param name="knockBackScale">How far back this attack will knock an object back</param>
         /// <param name="hitAngle">The angle (in radians) that the object in knock back will be launched at</param>
-        /// <param name="activeFrames">If true, the hit collider will damage objects that enter it multiple times</param>
-        public void Init(float damage, float knockBackScale, float hitAngle, bool despawnAfterFrameLimit, float activeFrames = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
+        /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
+        public void Init(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
         {
             _damage = damage;
             _knockBackScale = knockBackScale;
             _hitAngle = hitAngle;
-            _despawnsAfterFrameLimit = despawnAfterFrameLimit;
-            _activeFrames = activeFrames;
+            _despawnsAfterTimeLimit = despawnAfterTimeLimit;
+            _timeActive = timeActive;
             _owner = owner;
             _destroyOnHit = destroyOnHit;
             _isMultiHit = isMultiHit;
@@ -88,6 +97,17 @@ namespace Lodis.Gameplay
             if (_collisions.Contains(other.gameObject) || _isMultiHit || other.gameObject == _owner)
                 return;
 
+            HitColliderBehaviour otherCollider = null;
+
+            if (other.attachedRigidbody)
+                otherCollider = other.attachedRigidbody.gameObject.GetComponent<HitColliderBehaviour>();
+
+            if (otherCollider)
+            {
+                if (otherCollider.Owner == Owner)
+                    return;
+            }
+
             //Add the game object to the list of collisions so it is not collided with again
             _collisions.Add(other.gameObject);
 
@@ -97,6 +117,8 @@ namespace Lodis.Gameplay
             //If the damage script wasn't null damage the object
             if (damageScript != null)
                 damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle);
+
+            onHit?.Invoke();
 
             if (_destroyOnHit)
                 Destroy(gameObject);
@@ -114,6 +136,8 @@ namespace Lodis.Gameplay
             //If the damage script wasn't null damage the object
             if (damageScript != null)
                 damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle);
+
+            onHit?.Invoke();
 
             if (_destroyOnHit)
                 Destroy(gameObject);
@@ -135,18 +159,20 @@ namespace Lodis.Gameplay
             if (damageScript != null)
                 damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle);
 
+            onHit?.Invoke();
+
             if (_destroyOnHit)
                 Destroy(gameObject);
         }
 
         private void FixedUpdate()
         {
-            //Destroy the hit collider if it has exceeded or reach its maximum time active
-            if (_currentFramesActive >= _activeFrames && _despawnsAfterFrameLimit)
-                Destroy(gameObject);
+            //Update the amount of current frames
+            _currentTimeActive = Time.time - _startTime;
 
-            //Increase the the count of active frames
-            _currentFramesActive += Time.deltaTime;
+            //Destroy the hit collider if it has exceeded or reach its maximum time active
+            if (_currentTimeActive >= _timeActive && _despawnsAfterTimeLimit)
+                Destroy(gameObject);
         }
     }
 }

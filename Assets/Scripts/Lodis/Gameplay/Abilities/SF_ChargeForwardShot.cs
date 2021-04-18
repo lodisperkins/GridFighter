@@ -6,39 +6,39 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Shoots a quick firing laser. Lasers have no
-    /// knockback and deal little damage.Useful for
-    /// applying pressure and applying chip damage
+    /// Enter ability description here
     /// </summary>
-    public class WN_Blaster : Ability
+    public class SF_ChargeForwardShot : Ability
     {
         public Transform spawnTransform = null;
         //How fast the laser will travel
-        public float shotSpeed = 20;
+        public float shotSpeed = 0.5f;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
+        private Movement.GridMovementBehaviour _ownerMoveScript;
 
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = Attack.WEAKNEUTRAL;
-            name = "WN_Blaster";
-            timeActive = 5;
+            abilityType = Attack.WEAKFORWARD;
+            name = "WF_ForwardShot";
+            timeActive = 7f;
             recoverTime = 1;
             startUpTime = 1;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, timeActive, owner, true);
+            _projectileCollider = new HitColliderBehaviour(1, 1, 0.2f, true, timeActive, owner, true);
+            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/Laser");
+            _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
         }
 
-        protected override void Activate(params object[] args)
+        public void SpawnProjectile()
         {
             //If no spawn transform has been set, use the default owner transform
             if (!spawnTransform)
@@ -66,7 +66,12 @@ namespace Lodis.Gameplay
 
             MonoBehaviour.Destroy(spawnerObject);
         }
+
+        protected override void Activate(params object[] args)
+        {
+            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            Vector2 moveDir = owner.transform.forward;
+            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
+        }
     }
 }
-
-

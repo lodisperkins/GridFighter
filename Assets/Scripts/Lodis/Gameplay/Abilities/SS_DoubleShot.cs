@@ -6,39 +6,42 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Shoots a quick firing laser. Lasers have no
-    /// knockback and deal little damage.Useful for
-    /// applying pressure and applying chip damage
+    /// Shoots two shots: one shot travels down the row the character was previously,
+    /// and the other travels down the panel character moved towards
     /// </summary>
-    public class WN_Blaster : Ability
+    public class SS_DoubleShot : Ability
     {
         public Transform spawnTransform = null;
         //How fast the laser will travel
-        public float shotSpeed = 20;
+        public float shotSpeed = 10;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
+        private Movement.GridMovementBehaviour _ownerMoveScript;
+        private float _timeBetweenShots;
 
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = Attack.WEAKNEUTRAL;
-            name = "WN_Blaster";
-            timeActive = 5;
+            abilityType = Attack.STRONGSIDE;
+            name = "SS_DoubleShot";
+            timeActive = 3;
             recoverTime = 1;
             startUpTime = 1;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, timeActive, owner, true);
+            _projectileCollider = new HitColliderBehaviour(5, 1, 0.2f, true, timeActive, owner, true);
+            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/Laser");
+            _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
         }
 
-        protected override void Activate(params object[] args)
+        private void SpawnProjectile()
         {
             //If no spawn transform has been set, use the default owner transform
             if (!spawnTransform)
@@ -66,7 +69,20 @@ namespace Lodis.Gameplay
 
             MonoBehaviour.Destroy(spawnerObject);
         }
+
+        private IEnumerator Shoot(Vector2 direction)
+        {
+            SpawnProjectile();
+            yield return new WaitForSeconds(_timeBetweenShots);
+            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment);
+            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+        }
+
+        //Called when ability is used
+        protected override void Activate(params object[] args)
+        {
+            Vector2 direction = (Vector2)args[0];
+            _ownerMoveScript.StartCoroutine(Shoot(direction));
+        }
     }
 }
-
-

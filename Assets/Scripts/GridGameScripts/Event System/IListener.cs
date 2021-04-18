@@ -5,6 +5,6 @@ namespace GridGame
 {
     public interface IListener
     {
-        void Invoke(Object Sender);
+        void Invoke(GameObject Sender);
     }
 }

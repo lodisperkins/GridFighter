@@ -6,38 +6,38 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Shoots a quick firing laser. Lasers have no
-    /// knockback and deal little damage.Useful for
-    /// applying pressure and applying chip damage
+    /// Shoots a single powerful charge shot down the row the character is facing.
     /// </summary>
-    public class WN_Blaster : Ability
+    public class SN_ChargeShot : Ability
     {
         public Transform spawnTransform = null;
         //How fast the laser will travel
-        public float shotSpeed = 20;
+        public float shotSpeed = 15;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
 
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = Attack.WEAKNEUTRAL;
-            name = "WN_Blaster";
-            timeActive = 5;
+            abilityType = Attack.STRONGNEUTRAL;
+            name = "SN_ChargeShot";
+            timeActive = 8;
             recoverTime = 1;
             startUpTime = 1;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, timeActive, owner, true);
+            _projectileCollider = new HitColliderBehaviour(15, 2, 0.4f, true, timeActive, owner, true);
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/Laser");
+            _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
         }
 
+	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
             //If no spawn transform has been set, use the default owner transform
@@ -63,10 +63,6 @@ namespace Lodis.Gameplay
 
             //Fire laser
             spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
-
-            MonoBehaviour.Destroy(spawnerObject);
         }
     }
 }
-
-
