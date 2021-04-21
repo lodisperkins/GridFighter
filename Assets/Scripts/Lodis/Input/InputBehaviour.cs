@@ -47,10 +47,10 @@ namespace Lodis.Input
                 float powerScale = timeHeld * 0.1f + 1;
                 args[1] = powerScale;
 
-                _moveset.UseAbility(abilityType, args);
+                _moveset.UseBasicAbility(abilityType, args);
             }
 
-            _moveset.UseAbility(abilityType);
+            _moveset.UseBasicAbility(abilityType);
         }
 
         public void UpdateInputX(int x)

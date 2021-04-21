@@ -41,7 +41,7 @@ namespace Lodis.Gameplay
             _deck.Init(gameObject);
         }
 
-        public Ability UseAbility(Attack abilityType, params object[] args)
+        public Ability UseBasicAbility(Attack abilityType, params object[] args)
         {
             if (_currentAbilityInUse != null)
                 if (_currentAbilityInUse.InUse && !_currentAbilityInUse.canCancel)

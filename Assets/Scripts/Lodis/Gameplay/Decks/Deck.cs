@@ -1,16 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 namespace Lodis.Gameplay
 {
+    public struct AbilityList
+    {
+        public static string[] Abilities =
+        {
+            "WN_Blaster",
+            "WS_DoubleShot",
+            "WF_ForwardShot",
+            "WB_BackwardShot",
+            "SN_Blaster",
+            "SS_DoubleShot",
+            "SF_ForwardShot",
+            "SB_BackwardShot"
+        };
+    }
+
     /// <summary>
     /// A deck is a list of abilities for a character. 
     /// </summary>
-    public abstract class Deck
+    [CreateAssetMenu(menuName = "Deck")]
+    public class Deck : ScriptableObject
     {
         private List<Ability> _abilities;
-
+        
         public Deck()
         {
             _abilities = new List<Ability>();
@@ -85,5 +102,26 @@ namespace Lodis.Gameplay
         }
 
     }
+
+#if UNITY_EDITOR
+
+    [CustomEditor(typeof(Deck))]
+    public class DeckEditor : Editor
+    {
+        private Deck deck;
+
+        private void Awake()
+        {
+            deck = (Deck)target;
+        }
+
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+            GUIContent content = new GUIContent("Abilities");
+        }
+    }
+
+#endif
 }
 

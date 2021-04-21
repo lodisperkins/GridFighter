@@ -21,7 +21,7 @@ namespace Lodis.Movement
         private float _damageAccumulated;
         [Tooltip("How fast will objects be allowed to travel in knockback")]
         [SerializeField]
-        private VariableScripts.FloatVariable _maxMagnitude;
+        private ScriptableObjects.FloatVariable _maxMagnitude;
         private GridMovementBehaviour _movementBehaviour;
         private Condition _onRigidbodyInactive;
         private Vector2 _newPanelPosition = new Vector2(float.NaN, float.NaN );

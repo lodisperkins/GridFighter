@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Lodis.VariableScripts
+namespace Lodis.ScriptableObjects
 {
     [CreateAssetMenu(menuName = "Variables/Float")]
     public class FloatVariable : ScriptableObject
