@@ -35,8 +35,19 @@ namespace Lodis.Gameplay
         //Called when the ability is used and before the character has recovered
         public UnityAction onDeactivate = null;
 
+        private bool _inUse;
+
+        public bool InUse
+        {
+            get
+            {
+                return _inUse;
+            }
+        }
+        
         private IEnumerator StartAbility(params object[] args)
         {
+            _inUse = true;
             onBegin?.Invoke();
             yield return new WaitForSeconds(startUpTime);
             onActivate?.Invoke();
@@ -46,6 +57,7 @@ namespace Lodis.Gameplay
             Deactivate();
             yield return new WaitForSeconds(recoverTime);
             onEnd?.Invoke();
+            _inUse = false;
         }
 
         public void UseAbility(params object[] args)
@@ -62,6 +74,7 @@ namespace Lodis.Gameplay
         public void StopAbility()
         {
             ownerMoveset.StopAllCoroutines();
+            _inUse = false;
         }
 
         protected abstract void Activate(params object[] args);

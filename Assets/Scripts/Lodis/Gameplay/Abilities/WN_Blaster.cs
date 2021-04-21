@@ -27,12 +27,12 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityType = Attack.WEAKNEUTRAL;
             name = "WN_Blaster";
-            timeActive = 5;
-            recoverTime = 1;
-            startUpTime = 1;
+            timeActive = 0.1f;
+            recoverTime = 0;
+            startUpTime = 0;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, timeActive, owner, true);
+            _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, 3, owner, true);
 
             //Load the projectile prefab
             _projectile = (GameObject)Resources.Load("Projectiles/Laser");

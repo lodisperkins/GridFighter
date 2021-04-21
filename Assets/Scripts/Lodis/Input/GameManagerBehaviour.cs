@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
             _grid.CreateGrid();
 
             //Spawn players
-            _inputManager.JoinPlayer(0, 0, "Player", Keyboard.current);
+            _inputManager.JoinPlayer(0, 0, "Player", Keyboard.current, Mouse.current);
             _player1 = PlayerInput.GetPlayerByIndex(0);
 
             //Move players to spawn

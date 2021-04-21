@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -14,31 +15,46 @@ namespace Lodis.Gameplay
         STRONGNEUTRAL,
         STRONGSIDE,
         STRONGFORWARD,
-        STRONGBACKWARD
+        STRONGBACKWARD,
+        NONE
     }
 
     public class MovesetBehaviour : MonoBehaviour
     {
-        private SF_ChargeForwardShot _blaster;
+        private Attack _attackState = Attack.NONE;
+        [SerializeField]
+        private string _deckName;
+        private Type _deckType;
+        private Deck _deck;
+        private Ability _currentAbilityInUse;
 
         // Start is called before the first frame update
         void Start()
         {
-            _blaster = new SF_ChargeForwardShot();
-            _blaster.Init(gameObject);
+            _deckType = Type.GetType("Lodis.Gameplay." + _deckName);
+            _deck = (Deck)Activator.CreateInstance(_deckType);
+            InitializeAbilities();
+        }
+
+        private void InitializeAbilities()
+        {
+            _deck.Init(gameObject);
+        }
+
+        public Ability UseAbility(Attack abilityType, params object[] args)
+        {
+            if (_currentAbilityInUse != null)
+                if (_currentAbilityInUse.InUse && !_currentAbilityInUse.canCancel)
+                    return _currentAbilityInUse;
+
+            _deck[(int)abilityType].UseAbility(args);
+            _currentAbilityInUse = _deck[(int)abilityType];
+            return _currentAbilityInUse;
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (Keyboard.current[Key.Space].wasPressedThisFrame)
-            {
-                _blaster.UseAbility(new Vector2(0,1));
-            }
-            else if (Keyboard.current[Key.B].wasPressedThisFrame)
-            {
-                _blaster.UseAbility(new Vector2(0, -1));
-            }
         }
     }
 }

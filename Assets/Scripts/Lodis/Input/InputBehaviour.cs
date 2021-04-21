@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.Controls;
+using Lodis.Gameplay;
 
 namespace Lodis.Input
 {
@@ -13,9 +14,9 @@ namespace Lodis.Input
         private Movement.GridMovementBehaviour _gridMovement;
         private Gameplay.MovesetBehaviour _moveset;
         private bool _canMove = true;
-        private Vector2 _storedInput;
-        private Vector2 _previousInput;
-        private int counter = 0;
+        private Vector2 _storedMoveInput;
+        private Vector2 _previousMoveInput;
+        private float _minChargeLimit = 0.5f;
         [SerializeField]
         private InputActionAsset actions;
 
@@ -26,33 +27,50 @@ namespace Lodis.Input
             actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
             actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
             actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
+            actions.actionMaps[0].actions[4].canceled += context => UseAbility(Attack.WEAKNEUTRAL, context);
         }
 
         // Start is called before the first frame update
         void Start()
         {
             _gridMovement = GetComponent<Movement.GridMovementBehaviour>();
-            _moveset = GetComponent<Gameplay.MovesetBehaviour>();
+            _moveset = GetComponent<MovesetBehaviour>();
+        }
+
+        public void UseAbility(Attack abilityType, InputAction.CallbackContext context, params object[] args)
+        {
+            float timeHeld = Mathf.Clamp((float)context.duration, 0, 4);
+
+            if (timeHeld > _minChargeLimit && (int)abilityType < 4)
+            {
+                abilityType += 4;
+                float powerScale = timeHeld * 0.1f + 1;
+                args[1] = powerScale;
+
+                _moveset.UseAbility(abilityType, args);
+            }
+
+            _moveset.UseAbility(abilityType);
         }
 
         public void UpdateInputX(int x)
         {
-            _storedInput = new Vector2(x, 0);
+            _storedMoveInput = new Vector2(x, 0);
         }
 
         public void UpdateInputY(int y)
         {
-            _storedInput = new Vector2(0, y);
+            _storedMoveInput = new Vector2(0, y);
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (_storedInput.magnitude > 0 && !_gridMovement.IsMoving)
+            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving)
             {
-                _gridMovement.MoveToPanel(_storedInput + _gridMovement.Position);
+                _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
                 _gridMovement.Velocity = Vector2.zero;
-                _storedInput = Vector2.zero;
+                _storedMoveInput = Vector2.zero;
             }
         }
     }
