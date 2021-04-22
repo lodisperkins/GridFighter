@@ -26,12 +26,12 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityType = Attack.STRONGNEUTRAL;
             name = "SN_ChargeShot";
-            timeActive = 8;
-            recoverTime = 1;
-            startUpTime = 1;
+            timeActive = 1;
+            recoverTime = .2f;
+            startUpTime = .2f;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(15, 2, 0.4f, true, timeActive, owner, true);
+            _projectileCollider = new HitColliderBehaviour(15, 2, 0.4f, true, 8.0f, owner, true);
 
             //Load the projectile prefab
             _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");

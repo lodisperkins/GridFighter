@@ -8,6 +8,11 @@ namespace Lodis.Gameplay
     {
         public GameObject projectile = null;
 
+        /// <summary>
+        /// Fires a projectile
+        /// </summary>
+        /// <param name="force">The amount of force to apply to the projectile</param>
+        /// <returns></returns>
         public GameObject FireProjectile(Vector3 force)
         {
             if (!projectile)
@@ -22,6 +27,12 @@ namespace Lodis.Gameplay
             return temp;
         }
 
+        /// <summary>
+        /// Fires a projectile
+        /// </summary>
+        /// <param name="force">The amount of force to apply to the projectile</param>
+        /// <param name="hitCollider">The hit collider to attach to the projectile</param>
+        /// <returns></returns>
         public GameObject FireProjectile(Vector3 force, HitColliderBehaviour hitCollider)
         {
             if (!projectile)
@@ -31,8 +42,6 @@ namespace Lodis.Gameplay
 
             HitColliderBehaviour collider = (temp.AddComponent<HitColliderBehaviour>());
             HitColliderBehaviour.Copy(hitCollider, collider);
-
-            Debug.Log(transform.position);
 
             Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
             if (rigidbody)

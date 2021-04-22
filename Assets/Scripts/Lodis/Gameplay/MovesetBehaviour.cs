@@ -23,24 +23,27 @@ namespace Lodis.Gameplay
     {
         private Attack _attackState = Attack.NONE;
         [SerializeField]
-        private string _deckName;
-        private Type _deckType;
         private Deck _deck;
         private Ability _currentAbilityInUse;
 
         // Start is called before the first frame update
         void Start()
         {
-            _deckType = Type.GetType("Lodis.Gameplay." + _deckName);
-            _deck = (Deck)Activator.CreateInstance(_deckType);
-            InitializeAbilities();
+            InitializeDeck();
         }
 
-        private void InitializeAbilities()
+        private void InitializeDeck()
         {
-            _deck.Init(gameObject);
+            _deck.InitAbilities(gameObject);
         }
 
+        /// <summary>
+        /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
+        /// the ability to use will be activated if the current ability in use can be canceled.
+        /// </summary>
+        /// <param name="abilityType">The type of basic ability to use</param>
+        /// <param name="args">Additional arguments to be given to the basic ability</param>
+        /// <returns></returns>
         public Ability UseBasicAbility(Attack abilityType, params object[] args)
         {
             if (_currentAbilityInUse != null)
@@ -50,11 +53,6 @@ namespace Lodis.Gameplay
             _deck[(int)abilityType].UseAbility(args);
             _currentAbilityInUse = _deck[(int)abilityType];
             return _currentAbilityInUse;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
         }
     }
 }

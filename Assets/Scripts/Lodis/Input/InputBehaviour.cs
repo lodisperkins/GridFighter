@@ -27,7 +27,9 @@ namespace Lodis.Input
             actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
             actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
             actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
-            actions.actionMaps[0].actions[4].canceled += context => UseAbility(Attack.WEAKNEUTRAL, context);
+            actions.actionMaps[0].actions[4].started += context => DisableMovement();
+            actions.actionMaps[0].actions[4].canceled += context => UseAbility(Attack.WEAKNEUTRAL, context, new object[1]);
+            actions.actionMaps[0].actions[4].canceled += context => EnableMovement();
         }
 
         // Start is called before the first frame update
@@ -45,12 +47,24 @@ namespace Lodis.Input
             {
                 abilityType += 4;
                 float powerScale = timeHeld * 0.1f + 1;
-                args[1] = powerScale;
+                args[0] = powerScale;
 
                 _moveset.UseBasicAbility(abilityType, args);
+                return;
             }
 
             _moveset.UseBasicAbility(abilityType);
+        }
+
+        public void DisableMovement()
+        {
+            _canMove = false;
+            _gridMovement.DisableMovement(condition =>  _canMove == true );
+        }
+
+        public void EnableMovement()
+        {
+            _canMove = true;
         }
 
         public void UpdateInputX(int x)

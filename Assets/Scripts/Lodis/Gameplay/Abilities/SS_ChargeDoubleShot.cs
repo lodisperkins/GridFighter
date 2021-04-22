@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// Shoots two shots: one shot travels down the row the character was previously,
     /// and the other travels down the panel character moved towards
     /// </summary>
-    public class SS_DoubleShot : Ability
+    public class SS_ChargeDoubleShot : Ability
     {
         public Transform spawnTransform = null;
         //How fast the laser will travel

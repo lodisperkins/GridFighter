@@ -1,23 +1,22 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using System;
 
 namespace Lodis.Gameplay
 {
-    public struct AbilityList
+    public enum AbilityName
     {
-        public static string[] Abilities =
-        {
-            "WN_Blaster",
-            "WS_DoubleShot",
-            "WF_ForwardShot",
-            "WB_BackwardShot",
-            "SN_Blaster",
-            "SS_DoubleShot",
-            "SF_ForwardShot",
-            "SB_BackwardShot"
-        };
+        WN_Blaster,
+        WS_DoubleShot,
+        WF_ForwardShot,
+        WB_LobShot,
+        SN_ChargeShot,
+        SS_ChargeDoubleShot,
+        SF_ChargeForwardShot,
+        SB_ChargeLobShot
     }
 
     /// <summary>
@@ -26,19 +25,45 @@ namespace Lodis.Gameplay
     [CreateAssetMenu(menuName = "Deck")]
     public class Deck : ScriptableObject
     {
-        private List<Ability> _abilities;
-        
-        public Deck()
+        private List<Ability> _abilities = new List<Ability>();
+        [SerializeField]
+        private List<AbilityName> _abilityNames;
+
+        public List<AbilityName> AbilityNames
         {
-            _abilities = new List<Ability>();
+            get
+            {
+                return _abilityNames;
+            }
+        }
+
+        private void InitDeck()
+        {
+            ClearDeck();
+
+            foreach (AbilityName abilityName in AbilityNames)
+            {
+                string name = abilityName.ToString();
+                Type abilityType = Type.GetType("Lodis.Gameplay." + name);
+
+                if (abilityType == null)
+                {
+                    Debug.LogError("Couldn't find ability type. Name was " + name + ". Maybe the ability is mispelled?");
+                    continue;
+                }
+
+                AddAbility((Ability)Activator.CreateInstance(abilityType));
+            }
         }
 
         /// <summary>
         /// Use this to initialize all abilities in the deck
         /// </summary>
         /// <param name="owner"></param>
-        public virtual void Init(GameObject owner)
+        public virtual void InitAbilities(GameObject owner)
         {
+            InitDeck();
+
             foreach (Ability ability in _abilities)
                 ability.Init(owner);
         }
@@ -49,6 +74,9 @@ namespace Lodis.Gameplay
         /// <param name="ability"></param>
         public void AddAbility(Ability ability)
         {
+            if (_abilities == null)
+                _abilities = new List<Ability>();
+
             _abilities.Add(ability);
         }
 
@@ -75,6 +103,12 @@ namespace Lodis.Gameplay
             return true;
         }
 
+        public void ClearDeck()
+        {
+            if (_abilities != null)
+                _abilities.Clear();
+        }
+
         public Ability this[int index]
         {
             get { return _abilities[index]; }
@@ -93,7 +127,7 @@ namespace Lodis.Gameplay
             //Yates shuffle algorithm
             for (int i = _abilities.Count; i > 0; i--)
             {
-                int j = Random.Range(0, i);
+                int j = UnityEngine.Random.Range(0, i);
 
                 Ability temp = _abilities[j];
                 _abilities[j] = _abilities[i];
@@ -102,26 +136,5 @@ namespace Lodis.Gameplay
         }
 
     }
-
-#if UNITY_EDITOR
-
-    [CustomEditor(typeof(Deck))]
-    public class DeckEditor : Editor
-    {
-        private Deck deck;
-
-        private void Awake()
-        {
-            deck = (Deck)target;
-        }
-
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-            GUIContent content = new GUIContent("Abilities");
-        }
-    }
-
-#endif
 }
 

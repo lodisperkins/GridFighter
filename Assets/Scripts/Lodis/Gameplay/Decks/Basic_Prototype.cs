@@ -13,9 +13,9 @@ namespace Lodis.Gameplay
             AddAbility(new WF_ForwardShot());
             AddAbility(new WB_LobShot());
             AddAbility(new SN_ChargeShot());
-            AddAbility(new SS_DoubleShot());
+            AddAbility(new SS_ChargeDoubleShot());
             AddAbility(new SF_ChargeForwardShot());
-            AddAbility(new SB_LobShot());
+            AddAbility(new SB_ChargeLobShot());
         }
     }
 }

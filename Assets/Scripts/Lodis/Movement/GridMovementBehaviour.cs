@@ -221,7 +221,7 @@ namespace Lodis.Movement
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
 
-            if (IsMoving && !canCancelMovement)
+            if (IsMoving && !canCancelMovement || !_canMove)
                 return false;
 
             PanelBehaviour targetPanel;
@@ -269,7 +269,7 @@ namespace Lodis.Movement
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
 
-            if (IsMoving && !canCancelMovement)
+            if (IsMoving && !canCancelMovement ||!_canMove)
                 return false;
 
             PanelBehaviour targetPanel;
@@ -315,7 +315,7 @@ namespace Lodis.Movement
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
 
-            if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY)
+            if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
