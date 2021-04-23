@@ -62,7 +62,9 @@ namespace Lodis.Gameplay
             else if (axis == Vector3.forward || axis == Vector3.back)
                 moveDir = owner.transform.right;
 
+            moveDir.Scale(axis);
             moveDir.Normalize();
+            
             //Clamps hit angle to prevent completely horizontal movement
             float dot = Vector3.Dot(moveDir, axis);
             float shotAngle = 0;
@@ -87,7 +89,7 @@ namespace Lodis.Gameplay
             }
 
             //Return the knockback force
-            return (axis * Mathf.Cos(shotAngle) + new Vector3(0, Mathf.Sin(shotAngle))) * magnitude;
+            return (moveDir * Mathf.Cos(shotAngle) + new Vector3(0, Mathf.Sin(shotAngle))) * magnitude;
         }
 
         private void SpawnWeakShot(Vector3 axis)

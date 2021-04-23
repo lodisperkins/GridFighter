@@ -26,10 +26,14 @@ namespace Lodis.Gameplay
         private Deck _deckRef;
         private Deck _deck;
         private Ability _currentAbilityInUse;
+        [SerializeField]
+        private Renderer _renderer;
+        private Color _defaultColor;
 
         // Start is called before the first frame update
         void Start()
         {
+            _defaultColor = _renderer.material.color;
             _deck = Instantiate(_deckRef);
             InitializeDeck();
         }
@@ -50,8 +54,13 @@ namespace Lodis.Gameplay
         {
             if (_currentAbilityInUse != null)
                 if (_currentAbilityInUse.InUse && !_currentAbilityInUse.canCancel)
+                {
+                    _renderer.material.color = Color.grey;
+                    Debug.Log("ability in use");
                     return _currentAbilityInUse;
+                }
 
+            _renderer.material.color = _defaultColor;
             _deck[(int)abilityType].UseAbility(args);
             _currentAbilityInUse = _deck[(int)abilityType];
             return _currentAbilityInUse;
