@@ -38,10 +38,10 @@ namespace Lodis.Gameplay
             //Initialize grid
             _grid.CreateGrid();
 
+            InputDevice[] devices = { Keyboard.current, Mouse.current };
             //Spawn players
-            _inputManager.JoinPlayer(0, 0, "Player", Keyboard.current, Mouse.current);
+            _inputManager.JoinPlayer(0, 0, "Player", devices);
             _player1 = PlayerInput.GetPlayerByIndex(0);
-
             //Move players to spawn
             Movement.GridMovementBehaviour player1Movement = _player1.GetComponent<Movement.GridMovementBehaviour>();
 

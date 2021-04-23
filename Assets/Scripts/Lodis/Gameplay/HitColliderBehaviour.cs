@@ -28,6 +28,9 @@ namespace Lodis.Gameplay
         private bool _isMultiHit;
         [SerializeField]
         private bool _destroyOnHit;
+        [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
+        [SerializeField]
+        private bool _adjustAngleBasedOnCollision;
         private float _currentTimeActive;
         private float _startTime;
         private GameObject _owner;
@@ -46,9 +49,9 @@ namespace Lodis.Gameplay
             }
         }
 
-        public HitColliderBehaviour(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
+        public HitColliderBehaviour(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true)
         {
-            Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit);
+            Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision);
         }
 
         private void Awake()
@@ -79,7 +82,7 @@ namespace Lodis.Gameplay
         /// <param name="knockBackScale">How far back this attack will knock an object back</param>
         /// <param name="hitAngle">The angle (in radians) that the object in knock back will be launched at</param>
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
-        public void Init(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
+        public void Init(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true)
         {
             _damage = damage;
             _knockBackScale = knockBackScale;
@@ -89,6 +92,7 @@ namespace Lodis.Gameplay
             _owner = owner;
             _destroyOnHit = destroyOnHit;
             _isMultiHit = isMultiHit;
+            _adjustAngleBasedOnCollision = angleChangeOnCollision;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -106,6 +110,19 @@ namespace Lodis.Gameplay
             {
                 if (otherCollider.Owner == Owner)
                     return;
+            }
+
+            if (_adjustAngleBasedOnCollision)
+            {
+                Vector3 directionOfImpact = other.transform.position - transform.position;
+
+                directionOfImpact.Normalize();
+
+                Vector3 currentForceDirection = new Vector3(Mathf.Cos(_hitAngle), Mathf.Sin(_hitAngle), 0);
+
+                currentForceDirection.Scale(directionOfImpact);
+
+                _hitAngle = Mathf.Acos(Vector3.Dot(currentForceDirection, Vector3.right));
             }
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -133,6 +150,20 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object. If none return
             IDamagable damageScript = other.GetComponent<IDamagable>();
 
+
+            if (_adjustAngleBasedOnCollision)
+            {
+                Vector3 directionOfImpact = other.transform.position - transform.position;
+
+                directionOfImpact.Normalize();
+
+                Vector3 currentForceDirection = new Vector3(Mathf.Cos(_hitAngle), Mathf.Sin(_hitAngle), 0);
+
+                currentForceDirection.Scale(directionOfImpact);
+
+                _hitAngle = Mathf.Acos(Vector3.Dot(currentForceDirection, Vector3.right));
+            }
+
             //If the damage script wasn't null damage the object
             if (damageScript != null)
                 damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle);
@@ -154,6 +185,20 @@ namespace Lodis.Gameplay
 
             //Grab whatever health script is attached to this object
             IDamagable damageScript = collision.gameObject.GetComponent<IDamagable>();
+
+            //Adjust the angle of force based on the direction of impact
+            if (_adjustAngleBasedOnCollision)
+            {
+                Vector3 directionOfImpact = collision.gameObject.transform.position - transform.position;
+
+                directionOfImpact.Normalize();
+
+                Vector3 currentForceDirection = new Vector3(Mathf.Cos(_hitAngle), Mathf.Sin(_hitAngle), 0);
+
+                currentForceDirection.Scale(directionOfImpact);
+
+                _hitAngle = Mathf.Acos(Vector3.Dot(currentForceDirection, Vector3.right));
+            }
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)

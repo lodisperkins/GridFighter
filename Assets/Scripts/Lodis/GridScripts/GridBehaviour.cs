@@ -80,6 +80,14 @@ namespace Lodis.GridScripts
             }
         }
 
+        public Vector2 Dimensions
+        {
+            get 
+            {
+                return _dimensions;
+            }
+        }
+
         // Start is called before the first frame update
         void Awake()
         {

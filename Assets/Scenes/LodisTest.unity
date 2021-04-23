@@ -4234,7 +4234,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 0
+  _mode: 1
 --- !u!114 &1441118449
 MonoBehaviour:
   m_ObjectHideFlags: 0

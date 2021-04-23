@@ -33,15 +33,15 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = Attack.STRONGBACKWARD;
+            abilityType = AbilityType.STRONGBACKWARD;
             name = "SB_LobShot";
-            timeActive = 5;
-            recoverTime = 1;
-            startUpTime = 1;
+            timeActive = .2f;
+            recoverTime = .1f;
+            startUpTime = .1f;
             canCancel = false;
             owner = newOwner;
-            _weakProjectileCollider = new HitColliderBehaviour(5, 1, 3f, true, timeActive, owner, true);
-            _strongProjectileCollider = new HitColliderBehaviour(10, 2, 2.5f, true, timeActive, owner, true);
+            _weakProjectileCollider = new HitColliderBehaviour(5, 1, 3f, true, 5, owner, true);
+            _strongProjectileCollider = new HitColliderBehaviour(10, 2, 2.5f, true, 5, owner, true);
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
@@ -62,6 +62,7 @@ namespace Lodis.Gameplay
             else if (axis == Vector3.forward || axis == Vector3.back)
                 moveDir = owner.transform.right;
 
+            moveDir.Normalize();
             //Clamps hit angle to prevent completely horizontal movement
             float dot = Vector3.Dot(moveDir, axis);
             float shotAngle = 0;
@@ -86,7 +87,7 @@ namespace Lodis.Gameplay
             }
 
             //Return the knockback force
-            return (moveDir * Mathf.Cos(shotAngle) + new Vector3(0, Mathf.Sin(shotAngle))) * magnitude;
+            return (axis * Mathf.Cos(shotAngle) + new Vector3(0, Mathf.Sin(shotAngle))) * magnitude;
         }
 
         private void SpawnWeakShot(Vector3 axis)

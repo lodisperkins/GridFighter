@@ -25,14 +25,14 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = Attack.WEAKFORWARD;
+            abilityType = AbilityType.WEAKFORWARD;
             name = "WF_ForwardShot";
-            timeActive = 1.5f;
-            recoverTime = 1;
-            startUpTime = 1;
+            timeActive = .2f;
+            recoverTime = .1f;
+            startUpTime = .1f;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 1, 0.2f, true, timeActive, owner, true);
+            _projectileCollider = new HitColliderBehaviour(1, 1, 0.2f, true, 1.5f, owner, true);
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab

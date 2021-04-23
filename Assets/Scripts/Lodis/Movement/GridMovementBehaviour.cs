@@ -43,6 +43,8 @@ namespace Lodis.Movement
         private GridGame.GameEventListener _onMoveBeginTemp;
         private GridGame.GameEventListener _onMoveEnd;
         private GridGame.GameEventListener _onMoveEndTemp;
+        [SerializeField]
+        private bool _moveToAlignedSideIfStuck = true;
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -106,6 +108,7 @@ namespace Lodis.Movement
             _onMoveBeginTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEndTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
+            //_moveEnabledEventListener.AddAction(MoveToClosestAlignedPanelOnRow);
 
             //Set the starting position
             _targetPosition = transform.position;
@@ -343,6 +346,44 @@ namespace Lodis.Movement
             _position = _currentPanel.Position;
 
             return true;
+        }
+
+        public void MoveToClosestAlignedPanelOnRow()
+        {
+
+            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment)
+                return;
+
+            //NEEDS BETTER IMPLEMENTATION
+
+            int panelsEvaluated = 0;
+
+            PanelBehaviour panel = null;
+
+            while (panelsEvaluated <= BlackBoardBehaviour.Grid.Dimensions.x * BlackBoardBehaviour.Grid.Dimensions.y)
+            {
+                if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.left, out panel, false, Alignment))
+                {
+                    MoveToPanel(panel);
+                    return;
+                }
+                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.right, out panel, false, Alignment))
+                {
+                    MoveToPanel(panel);
+                    return;
+                }
+                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.up, out panel, false, Alignment))
+                {
+                    MoveToPanel(panel);
+                    return;
+                }
+                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.down, out panel, false, Alignment))
+                {
+                    MoveToPanel(panel);
+                    return;
+                }
+                panelsEvaluated += 4;
+            }
         }
 
         private void OnDestroy()

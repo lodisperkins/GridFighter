@@ -27,14 +27,14 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = Attack.STRONGSIDE;
+            abilityType = AbilityType.STRONGSIDE;
             name = "SS_DoubleShot";
-            timeActive = 3;
-            recoverTime = 1;
-            startUpTime = 1;
+            timeActive = .2f;
+            recoverTime = .1f;
+            startUpTime = .1f;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(5, 1, 0.2f, true, timeActive, owner, true);
+            _projectileCollider = new HitColliderBehaviour(5, 1, 0.2f, true, 2, owner, true);
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
@@ -81,7 +81,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            Vector2 direction = (Vector2)args[0];
+            Vector2 direction = (Vector2)args[1];
             _ownerMoveScript.StartCoroutine(Shoot(direction));
         }
     }

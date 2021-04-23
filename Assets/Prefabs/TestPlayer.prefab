@@ -119,6 +119,7 @@ MonoBehaviour:
   _canMove: 1
   canCancelMovement: 0
   _defaultAlignment: 3
+  _moveToAlignedSideIfStuck: 1
 --- !u!114 &2765739998997917296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +223,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3f072b198fe9e4390951728f6f9e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actions: {fileID: -944628639613478452, guid: 8f3fb22a96ec2b949ab4d3146a4928c7, type: 3}
+  _actions: {fileID: 0}
 --- !u!54 &-793800992516922807
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -283,5 +284,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79447850bcd2ba4ea22b79bb1c220d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deckName: Basic_Prototype
-  _deck: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
+  _deckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}

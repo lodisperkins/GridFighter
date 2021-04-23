@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = Attack.WEAKNEUTRAL;
+            abilityType = AbilityType.WEAKNEUTRAL;
             name = "WN_Blaster";
             timeActive = 0.1f;
             recoverTime = 0;

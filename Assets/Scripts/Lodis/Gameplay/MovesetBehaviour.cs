@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace Lodis.Gameplay
 {
-    public enum Attack
+    public enum AbilityType
     {
         WEAKNEUTRAL,
         WEAKSIDE,
@@ -21,14 +21,16 @@ namespace Lodis.Gameplay
 
     public class MovesetBehaviour : MonoBehaviour
     {
-        private Attack _attackState = Attack.NONE;
+        private AbilityType _attackState = AbilityType.NONE;
         [SerializeField]
+        private Deck _deckRef;
         private Deck _deck;
         private Ability _currentAbilityInUse;
 
         // Start is called before the first frame update
         void Start()
         {
+            _deck = Instantiate(_deckRef);
             InitializeDeck();
         }
 
@@ -44,7 +46,7 @@ namespace Lodis.Gameplay
         /// <param name="abilityType">The type of basic ability to use</param>
         /// <param name="args">Additional arguments to be given to the basic ability</param>
         /// <returns></returns>
-        public Ability UseBasicAbility(Attack abilityType, params object[] args)
+        public Ability UseBasicAbility(AbilityType abilityType, params object[] args)
         {
             if (_currentAbilityInUse != null)
                 if (_currentAbilityInUse.InUse && !_currentAbilityInUse.canCancel)
