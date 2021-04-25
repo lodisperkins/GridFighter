@@ -35,6 +35,11 @@ namespace Lodis.Gameplay
         private float _startTime;
         private GameObject _owner;
         private List<GameObject> _collisions;
+        public DamageType damageType = DamageType.DEFAULT;
+        /// <summary>
+        /// Collision event called when this collider hits another. 
+        /// First argument is game object it collided with.
+        /// </summary>
         public CollisionEvent onHit;
 
         public GameObject Owner
@@ -133,9 +138,9 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle);
+                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle, damageType);
 
-            onHit?.Invoke();
+            onHit?.Invoke(other.gameObject);
 
             if (_destroyOnHit)
                 Destroy(gameObject);
@@ -166,9 +171,9 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle);
+                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle, damageType);
 
-            onHit?.Invoke();
+            onHit?.Invoke(other.gameObject);
 
             if (_destroyOnHit)
                 Destroy(gameObject);
@@ -202,9 +207,9 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle);
+                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle, damageType);
 
-            onHit?.Invoke();
+            onHit?.Invoke(collision.gameObject);
 
             if (_destroyOnHit)
                 Destroy(gameObject);

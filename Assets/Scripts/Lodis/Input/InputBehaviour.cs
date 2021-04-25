@@ -17,9 +17,31 @@ namespace Lodis.Input
         private Vector2 _storedMoveInput;
         private Vector2 _previousMoveInput;
         private Vector2 _attackDirection;
-        private float _minChargeLimit = 0.5f;
+        [Tooltip("The minimum amount of time needed to hold the button down to change it to the charge variation.")]
         [SerializeField]
+        private float _minChargeLimit = 0.5f;
+        [Tooltip("The maximum amount of time needed before an attack is fully charged.")]
+        [SerializeField]
+        private float _maxChargeTime = 5;
+        [Tooltip("The amount of time needed to clear the buffer when a direciotn is pressed.")]
+        [SerializeField]
+        private float _attackDirectionBufferClearTime;
+        private float _timeOfLastDirectionInput;
         private InputActionAsset _actions;
+        private int _playerID;
+
+        public int PlayerID
+        {
+            get
+            {
+                return _playerID;
+            }
+            set
+            {
+                _playerID = value;
+            }
+        }
+
 
         private void Awake()
         {
@@ -32,7 +54,6 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[4].started += context => DisableMovement();
             _actions.actionMaps[0].actions[4].canceled += context => UseAbility(context, new object[2]);
             _actions.actionMaps[0].actions[4].canceled += context => EnableMovement();
-            _actions.actionMaps[0].actions[5].performed += context => { _attackDirection = context.ReadValue<Vector2>(); };
         }
 
         // Start is called before the first frame update
@@ -52,15 +73,19 @@ namespace Lodis.Input
         /// index 1 is always the direction of input.</param>
         public void UseAbility(InputAction.CallbackContext context, params object[] args)
         {
+            //Ignore player input if they are in knockback
+            if (BlackBoardBehaviour.GetPlayerStateFromID(PlayerID) == PlayerState.KNOCKBACK)
+                return;
+
             AbilityType abilityType = AbilityType.NONE;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 
             //Decide which ability type to use based on the input
             if (_attackDirection.y != 0)
                 abilityType = AbilityType.WEAKSIDE;
-            else if (_attackDirection.x == -1)
+            else if (_attackDirection.x < 0)
                 abilityType = AbilityType.WEAKBACKWARD;
-            else if (_attackDirection.x == 1)
+            else if (_attackDirection.x > 0)
                 abilityType = AbilityType.WEAKFORWARD;
             else
                 abilityType = AbilityType.WEAKNEUTRAL;
@@ -68,7 +93,7 @@ namespace Lodis.Input
             //Assign the arguments for the ability
             args[1] = _attackDirection;
             //Find the power scale based on the time the button was held to use a charge ability
-            float timeHeld = Mathf.Clamp((float)context.duration, 0, 4);
+            float timeHeld = Mathf.Clamp((float)context.duration, 0, _maxChargeTime);
             if (timeHeld > _minChargeLimit && (int)abilityType < 4)
             {
                 abilityType += 4;
@@ -97,6 +122,10 @@ namespace Lodis.Input
         /// </summary>
         public void EnableMovement()
         {
+            //Don't enable if player is in knockback
+            if (BlackBoardBehaviour.GetPlayerStateFromID(PlayerID) == PlayerState.KNOCKBACK)
+                return;
+
             _canMove = true;
         }
 
@@ -113,12 +142,27 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
+            //Move if the is a movement stored and movement is allowed
             if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
                 _gridMovement.Velocity = Vector2.zero;
                 _storedMoveInput = Vector2.zero;
             }
+
+            //Stores the current attack direction input
+            Vector3 attackDirInput = _actions.actionMaps[0].actions[5].ReadValue<Vector2>();
+
+            //If there is a direction input, update the attack direction buffer and the time of input
+            if (attackDirInput.magnitude > 0)
+            {
+                _attackDirection = attackDirInput;
+                _timeOfLastDirectionInput = Time.time;
+            }
+                
+            //Clear the buffer if its exceeded the alotted time
+            if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
+                _attackDirection = Vector2.zero;
         }
     }
 }

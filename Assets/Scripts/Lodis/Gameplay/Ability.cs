@@ -5,6 +5,14 @@ using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
+    /// <summary>
+    /// The type of damage an ability uses
+    /// </summary>
+    public enum DamageType
+    {
+        DEFAULT,
+        KNOCKBACK
+    }
 
     /// <summary>
     /// Abstract class that all abilities inherit from
@@ -13,6 +21,7 @@ namespace Lodis.Gameplay
     {
         //The type describes the strength and input value for the ability
         public AbilityType abilityType;
+        public DamageType damageType = DamageType.DEFAULT;
         //Name of the ability
         public string name = "Unassigned";
         //The object that is using the ability
@@ -37,6 +46,9 @@ namespace Lodis.Gameplay
 
         private bool _inUse;
 
+        /// <summary>
+        /// Returns false at the end of the ability's recover time
+        /// </summary>
         public bool InUse
         {
             get
@@ -60,8 +72,13 @@ namespace Lodis.Gameplay
             _inUse = false;
         }
 
+        /// <summary>
+        /// Starts the process of using an ability 
+        /// </summary>
+        /// <param name="args">Any additional information the ability may need</param>
         public void UseAbility(params object[] args)
         {
+            //Return if this bullet has no owner
             if (!ownerMoveset)
             {
                 Debug.LogError("Owner moveset component not found. Did you forget to call the base Init function?");

@@ -13,6 +13,8 @@ namespace Lodis.Gameplay
         public Transform spawnTransform = null;
         //How fast the laser will travel
         public float shotSpeed = 15;
+        public float shotDamage = 15;
+        public float knockBackScale = 1;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
@@ -31,7 +33,7 @@ namespace Lodis.Gameplay
             startUpTime = .2f;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(15, 2, 0.4f, true, 8.0f, owner, true);
+           
 
             //Load the projectile prefab
             _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
@@ -40,6 +42,8 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
+            float powerScale = (float)args[0];
+
             //If no spawn transform has been set, use the default owner transform
             if (!spawnTransform)
                 spawnTransform = owner.transform;
@@ -50,6 +54,11 @@ namespace Lodis.Gameplay
                 Debug.LogError("Projectile for " + name + " could not be found.");
                 return;
             }
+
+            shotDamage *= powerScale;
+            knockBackScale *= powerScale;
+
+            _projectileCollider = new HitColliderBehaviour(shotDamage, knockBackScale, 0.4f, true, 8.0f, owner, true);
 
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();
@@ -63,6 +72,9 @@ namespace Lodis.Gameplay
 
             //Fire laser
             spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
+
+            shotDamage /= powerScale;
+            knockBackScale /= powerScale;
         }
     }
 }

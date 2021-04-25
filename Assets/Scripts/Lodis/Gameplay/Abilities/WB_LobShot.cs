@@ -52,7 +52,7 @@ namespace Lodis.Gameplay
             float shotAngle = 0;
 
             if (dot < 0)
-                shotAngle = 3;
+                shotAngle = 2;
             else
                 shotAngle = 1;
 

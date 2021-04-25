@@ -28,6 +28,10 @@ namespace Lodis.Movement
         private float _currentKnockBackScale;
         private Vector3 _velocityOnLaunch;
         private Vector3 _lastVelocity;
+        [SerializeField]
+        private float _bounceDampen = 1;
+        [SerializeField]
+        private float _rangeToIgnoreUpAngle = 0.2f;
 
         /// <summary>
         /// Returns if the object is in knockback
@@ -74,6 +78,9 @@ namespace Lodis.Movement
             }
         }
 
+        public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
+
+        public float Health => _damageAccumulated;
 
         private void Awake()
         {
@@ -138,6 +145,12 @@ namespace Lodis.Movement
                 return new Vector3();
             }
 
+            if (Mathf.Abs(hitAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
+            {
+                ApplyImpulseForce(Vector3.up * knockbackScale * 2);
+                return Vector3.up * knockbackScale * 2;
+            }
+
             //Clamps hit angle to prevent completely horizontal movement
             hitAngle = Mathf.Clamp(hitAngle, .2f, 3.0f);
 
@@ -165,34 +178,35 @@ namespace Lodis.Movement
 
         private void OnCollisionEnter(Collision collision)
         {
-            //Checks if the object is not grid moveable and isn't in hit stun
-            if (!collision.gameObject.GetComponent<GridMovementBehaviour>() || !InHitStun)
-                return;
-
-            //Grab whatever health script is attached to this object. If none return
             IDamagable damageScript = collision.gameObject.GetComponent<IDamagable>();
+
             if (damageScript == null)
                 return;
+
+            KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
+
+            //Checks if the object is not grid moveable and isn't in hit stun
+            if (!knockBackScript)
+                knockBackScript = this;
 
             //Calculate the knockback and hit angle for the ricochet
             ContactPoint contactPoint = collision.GetContact(0);
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
-            float dotProduct = Vector3.Dot(Vector3.right, direction);
+            float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = _lastVelocity.magnitude;
-            float knockbackScale = _currentKnockBackScale * (velocityMagnitude / _velocityOnLaunch.magnitude);
+            float velocityMagnitude = knockBackScript.LastVelocity.magnitude;
+            float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
-            //Reset velocity to be zero to instantly change it
-            _rigidbody.velocity = Vector3.zero;
-            _rigidbody.angularVelocity = Vector3.zero;
+            if (knockbackScale == 0 || float.IsNaN(knockbackScale))
+                return;
 
             //Apply ricochet force and damage
-            damageScript.TakeDamage(knockbackScale * 2, knockbackScale, hitAngle);
-            TakeDamage(knockbackScale * 2, knockbackScale, hitAngle);
+            damageScript.TakeDamage(knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
         }
 
         public void ApplyImpulseForce(Vector3 force)
         {
+            _movementBehaviour.DisableMovement(_onRigidbodyInactive);
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
@@ -202,31 +216,31 @@ namespace Lodis.Movement
         /// Index 1: How many panels backwards will the object move assuming its weight is 0
         /// Index 2: The angle to launch the object
         /// </summary>
-        public float TakeDamage(params object[] args)
+        public float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || !_rigidbody)
                 return 0;
 
-            //Variables to store arguments for readability
-            float damage = (float)args[0];
-            float knockbackScale = (float)args[1];
-            float hitAngle = (float)args[2];
-
             //Update current knockback scale
-            _currentKnockBackScale = knockbackScale;
+            _currentKnockBackScale = knockBackScale;
 
             //Adds damage to the total damage
             _damageAccumulated += damage;
 
-            //Disables object movement on the grid
-            _movementBehaviour.DisableMovement(_onRigidbodyInactive);
-
             //Calculates force and applies it to the rigidbody
             _rigidbody.isKinematic = false;
-            _velocityOnLaunch = CalculateKnockbackForce(knockbackScale, hitAngle);
-            _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
+            Vector3 knockBackForce = CalculateKnockbackForce(knockBackScale, hitAngle);
 
+            if (knockBackForce.magnitude > 0)
+            {
+                _velocityOnLaunch = knockBackForce;
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(_onRigidbodyInactive);
+
+                //Add force to object
+                _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
+            }
 
             return damage;
         }

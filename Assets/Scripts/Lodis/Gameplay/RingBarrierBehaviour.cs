@@ -4,43 +4,39 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
-    public class HealthBehaviour : MonoBehaviour, IDamagable
+    public class RingBarrierBehaviour : MonoBehaviour,IDamagable
     {
+        [Tooltip("How much force has to be exerted on the barrier to break it.")]
         [SerializeField]
-        private float _health;
+        private float _durability = 5;
+        [Tooltip("How much this object will reduce the velocity of objects that bounce off of it.")]
         [SerializeField]
-        private bool _destroyOnDeath;
-        [SerializeField]
-        private bool _isAlive;
-        [SerializeField]
-        private float _bounceDampen = 2;
-
-        public bool IsAlive
-        {
-            get
-            {
-                return _isAlive;
-            }
-        }
+        private float _bounceDampen = 1;
 
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
-        public float Health { get => _health; }
 
-        private void Start()
-        {
-            _isAlive = true;
-        }
+        public float Health => _durability;
 
+        /// <summary>
+        /// Takes damage based on the damage type.
+        /// If the damage is less than the durability
+        /// or if the damage type isn't knockback type,
+        /// no damage is dealt
+        /// </summary>
+        /// <param name="damage"></param>
+        /// <param name="knockBackScale"></param>
+        /// <param name="hitAngle"></param>
+        /// <param name="damageType"></param>
+        /// <returns></returns>
         public float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
-
-            if (!IsAlive)
+            if (damageType != DamageType.KNOCKBACK)
                 return 0;
 
-            _health -= damage;
+            if (damage < _durability)
+                return 0;
 
-            if (_health < 0)
-                _health = 0;
+            _durability -= damage;
 
             return damage;
         }
@@ -63,19 +59,17 @@ namespace Lodis.Gameplay
             if (knockbackScale == 0 || float.IsNaN(knockbackScale))
                 return;
 
+            Debug.Log(knockbackScale * 2);
+
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(knockbackScale * 2, knockbackScale / BounceDampen, hitAngle);
         }
 
         // Update is called once per frame
         void Update()
         {
-            _isAlive = _health > 0;
-
-            if (!IsAlive && _destroyOnDeath)
+            if (_durability <= 0)
                 Destroy(gameObject);
         }
     }
 }
-
-

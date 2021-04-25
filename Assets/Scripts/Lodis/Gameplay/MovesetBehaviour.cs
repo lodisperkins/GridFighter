@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Deck _deckRef;
         private Deck _deck;
-        private Ability _currentAbilityInUse;
+        private Ability _lastAbilityInUse;
         [SerializeField]
         private Renderer _renderer;
         private Color _defaultColor;
@@ -43,6 +43,17 @@ namespace Lodis.Gameplay
             _deck.InitAbilities(gameObject);
         }
 
+        public bool AbilityInUse
+        {
+            get
+            {
+                if (_lastAbilityInUse != null)
+                    return _lastAbilityInUse.InUse;
+
+                return false;
+            }
+        }
+
         /// <summary>
         /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
         /// the ability to use will be activated if the current ability in use can be canceled.
@@ -52,18 +63,25 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public Ability UseBasicAbility(AbilityType abilityType, params object[] args)
         {
-            if (_currentAbilityInUse != null)
-                if (_currentAbilityInUse.InUse && !_currentAbilityInUse.canCancel)
+            if (_lastAbilityInUse != null)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.canCancel)
                 {
-                    _renderer.material.color = Color.grey;
-                    Debug.Log("ability in use");
-                    return _currentAbilityInUse;
+                    return _lastAbilityInUse;
                 }
 
-            _renderer.material.color = _defaultColor;
             _deck[(int)abilityType].UseAbility(args);
-            _currentAbilityInUse = _deck[(int)abilityType];
-            return _currentAbilityInUse;
+            _lastAbilityInUse = _deck[(int)abilityType];
+            return _lastAbilityInUse;
+        }
+
+        private void Update()
+        {
+            if (_lastAbilityInUse != null)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.canCancel)
+                    _renderer.material.color = Color.grey;
+            else
+                    _renderer.material.color = _defaultColor;
+
         }
     }
 }

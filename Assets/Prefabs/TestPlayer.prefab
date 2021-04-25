@@ -19,9 +19,10 @@ GameObject:
   - component: {fileID: -6268856529084459074}
   - component: {fileID: -6459078877488197423}
   - component: {fileID: -2626200582311294016}
-  m_Layer: 0
+  - component: {fileID: -1873711531255504354}
+  m_Layer: 9
   m_Name: TestPlayer
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 1
@@ -223,7 +224,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3f072b198fe9e4390951728f6f9e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _actions: {fileID: 0}
+  _minChargeLimit: 0.2
+  _maxChargeTime: 5
+  _attackDirectionBufferClearTime: 0.1
 --- !u!54 &-793800992516922807
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -255,6 +258,8 @@ MonoBehaviour:
   _weight: 0
   _damageAccumulated: 0
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
+  _bounceDampen: 6
+  _rangeToIgnoreUpAngle: 0.2
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -286,3 +291,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _renderer: {fileID: 2765739998997917301}
+--- !u!114 &-1873711531255504354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2765739998997917290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4e7cd0a642e6544ea7fca05fc8e354e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

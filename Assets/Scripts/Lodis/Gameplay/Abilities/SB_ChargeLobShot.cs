@@ -23,7 +23,11 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _weakProjectileCollider;
         private float _strongShotDistance = 2;
+        private float _strongShotDamage = 10;
+        private float _strongShotKnockBackScale = 1;
         private float _weakShotDistance = 1;
+        private float _weakShotDamage = 5;
+        private float _weakShotForce = 1;
         private Movement.GridMovementBehaviour _ownerMoveScript;
         private Transform _weakSpawnTransform;
 
@@ -40,13 +44,23 @@ namespace Lodis.Gameplay
             startUpTime = .1f;
             canCancel = false;
             owner = newOwner;
-            _weakProjectileCollider = new HitColliderBehaviour(5, 1, 3f, true, 5, owner, true);
-            _strongProjectileCollider = new HitColliderBehaviour(10, 2, 2.5f, true, 5, owner, true);
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
             _strongProjectile = (GameObject)Resources.Load("Projectiles/ChargeLobShot");
             _weakProjectile = (GameObject)Resources.Load("Projectiles/LobShot");
+        }
+
+        private void AddUpwardForce(params object[] args)
+        {
+            GameObject target = (GameObject)args[0];
+
+            Movement.KnockbackBehaviour knockBackScript = target.GetComponent<Movement.KnockbackBehaviour>();
+            
+            if (!knockBackScript)
+                return;
+
+            knockBackScript.ApplyImpulseForce(Vector3.up * _weakShotForce);
         }
 
         private Vector3 CalculateProjectileForce(Vector3 axis, float shotDistance)
@@ -133,6 +147,16 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            float powerScale = (float)args[0];
+            _weakShotDamage *= powerScale;
+            _strongShotDamage *= powerScale;
+            _strongShotKnockBackScale *= powerScale;
+            _strongShotDistance *= powerScale +.5f;
+
+            _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, 0, 0, true, 5, owner, true);
+            _weakProjectileCollider.onHit += AddUpwardForce;
+            _strongProjectileCollider = new HitColliderBehaviour(_strongShotDamage, _strongShotKnockBackScale, 2.5f, true, 5, owner, true);
+
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();
             spawnerObject.transform.parent = spawnTransform;
@@ -151,9 +175,14 @@ namespace Lodis.Gameplay
 
             _strongProjectileCollider.onHit += SpawnWeakShots;
             //Fire laser
-            _weakSpawnTransform = spawnScript.FireProjectile(CalculateProjectileForce(new Vector3(1, 0, 0), _strongShotDistance), _strongProjectileCollider).transform;
+            _weakSpawnTransform = spawnScript.FireProjectile(CalculateProjectileForce(owner.transform.forward, _strongShotDistance), _strongProjectileCollider).transform;
 
             MonoBehaviour.Destroy(spawnerObject);
+
+            _weakShotDamage /= powerScale;
+            _strongShotDamage /= powerScale;
+            _strongShotKnockBackScale /= powerScale;
+            _strongShotDistance /= powerScale +.5f;
         }
     }
 }

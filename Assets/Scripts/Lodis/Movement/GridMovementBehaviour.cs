@@ -84,6 +84,14 @@ namespace Lodis.Movement
             }
         }
 
+        public bool CanMove
+        {
+            get
+            {
+                return _canMove;
+            }
+        }
+
         /// <summary>
         /// The side of the grid this object is aligned with. Effects
         /// which side of the grid this object can freely move on.
@@ -108,7 +116,7 @@ namespace Lodis.Movement
             _onMoveBeginTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEndTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
-            //_moveEnabledEventListener.AddAction(MoveToClosestAlignedPanelOnRow);
+           // _moveEnabledEventListener.AddAction(MoveToClosestAlignedPanelOnRow);
 
             //Set the starting position
             _targetPosition = transform.position;
@@ -351,38 +359,40 @@ namespace Lodis.Movement
         public void MoveToClosestAlignedPanelOnRow()
         {
 
-            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment)
+            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || !CanMove)
                 return;
 
             //NEEDS BETTER IMPLEMENTATION
 
             int panelsEvaluated = 0;
+            int offSet = 0;
 
             PanelBehaviour panel = null;
 
             while (panelsEvaluated <= BlackBoardBehaviour.Grid.Dimensions.x * BlackBoardBehaviour.Grid.Dimensions.y)
             {
-                if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.left, out panel, false, Alignment))
+                if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.left * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
                     return;
                 }
-                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.right, out panel, false, Alignment))
+                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.right * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
                     return;
                 }
-                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.up, out panel, false, Alignment))
+                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.up * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
                     return;
                 }
-                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.down, out panel, false, Alignment))
+                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.down * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
                     return;
                 }
                 panelsEvaluated += 4;
+                offSet++;
             }
         }
 
@@ -409,6 +419,8 @@ namespace Lodis.Movement
                     _moveEnabledEventListener.Invoke(gameObject);
                 }
             }
+
+            MoveToClosestAlignedPanelOnRow();
         }
     }
 }

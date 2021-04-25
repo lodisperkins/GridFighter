@@ -112,15 +112,6 @@ namespace Lodis.GridScripts
 
             knockbackScript.StopVelocity();
             knockbackScript.ApplyImpulseForce(Vector3.up * upMagnitude);
-
-            //Vector3 perpVelocity = new Vector3(-knockbackScript.LastVelocity.y, knockbackScript.LastVelocity.x, 0);
-            //float hitAngle = Vector3.Angle(perpVelocity, Vector3.right) * Mathf.Deg2Rad;
-
-            //float velocityMagnitude = knockbackScript.LastVelocity.magnitude;
-            //float knockbackScale = knockbackScript.CurrentKnockBackScale * (velocityMagnitude / knockbackScript.LaunchVelocity.magnitude);
-
-            ////Apply ricochet force and damage
-            //knockbackScript.TakeDamage(0.0f, knockbackScale, hitAngle);
         }
     }
 }

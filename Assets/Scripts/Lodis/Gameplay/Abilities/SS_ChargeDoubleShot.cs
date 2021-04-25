@@ -14,6 +14,8 @@ namespace Lodis.Gameplay
         public Transform spawnTransform = null;
         //How fast the laser will travel
         public float shotSpeed = 10;
+        private float _shotDamage = 5;
+        private float _shotKnockBack = 1;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
@@ -34,7 +36,6 @@ namespace Lodis.Gameplay
             startUpTime = .1f;
             canCancel = false;
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(5, 1, 0.2f, true, 2, owner, true);
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
@@ -81,8 +82,18 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
+            float powerScale = (float)args[0];
+
+            _shotDamage *= powerScale;
+            _shotKnockBack *= powerScale;
+
+            _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack, 0.2f, true, 2, owner, true);
+
             Vector2 direction = (Vector2)args[1];
             _ownerMoveScript.StartCoroutine(Shoot(direction));
+
+            _shotDamage /= powerScale;
+            _shotKnockBack /= powerScale;
         }
     }
 }
