@@ -17,7 +17,7 @@ namespace Lodis.Gameplay
         private Image _fill;
         [SerializeField]
         private Slider _slider;
-        private float _maxValue;
+        private float _maxValue = 1;
         public IDamagable HealthComponent { get => _healthComponent; set => _healthComponent = value; }
         public float MaxValue { get => _maxValue; set => _maxValue = value; }
 

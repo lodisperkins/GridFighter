@@ -48,7 +48,7 @@ namespace Lodis.Gameplay
             //Initialize grid
             _grid.CreateGrid();
 
-            InputDevice[] devices = { InputSystem.devices[2] };
+            InputDevice[] devices = { Keyboard.current, Mouse.current };
             //Spawn player 1
             _inputManager.JoinPlayer(0, 0, "Player", devices);
             _player1 = PlayerInput.GetPlayerByIndex(0);
@@ -74,7 +74,7 @@ namespace Lodis.Gameplay
             if (_mode == GameMode.MULTIPLAYER)
             {
                 //Spawn player 2
-                _inputManager.JoinPlayer(1, 1, "Player", Keyboard.current, Mouse.current);
+                _inputManager.JoinPlayer(1, 1, "Player", Keyboard.current);
                 _player2 = PlayerInput.GetPlayerByIndex(1);
                 _player2.transform.forward = Vector3.left;
 

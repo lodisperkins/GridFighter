@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
-    public class HealthBehaviour : MonoBehaviour, IDamagable
+    public class HealthBehaviour : MonoBehaviour
     {
         [SerializeField]
         private float _health;
@@ -12,6 +12,7 @@ namespace Lodis.Gameplay
         private bool _destroyOnDeath;
         [SerializeField]
         private bool _isAlive;
+        [Tooltip("How much this object will reduce the velocity of objects that bounce off of it.")]
         [SerializeField]
         private float _bounceDampen = 2;
 
@@ -24,16 +25,15 @@ namespace Lodis.Gameplay
         }
 
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
-        public float Health { get => _health; }
+        public float Health { get => _health; protected set => _health = value; }
 
         private void Start()
         {
             _isAlive = true;
         }
 
-        public float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        public virtual float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
-
             if (!IsAlive)
                 return 0;
 
@@ -45,7 +45,7 @@ namespace Lodis.Gameplay
             return damage;
         }
 
-        private void OnCollisionEnter(Collision collision)
+        public virtual void OnCollisionEnter(Collision collision)
         {
             Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
@@ -68,7 +68,7 @@ namespace Lodis.Gameplay
         }
 
         // Update is called once per frame
-        void Update()
+        public virtual void Update()
         {
             _isAlive = _health > 0;
 

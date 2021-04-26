@@ -300,7 +300,7 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 1.5
+  _bounceDampen: 2
 --- !u!114 &1519654295394309742
 MonoBehaviour:
   m_ObjectHideFlags: 0
