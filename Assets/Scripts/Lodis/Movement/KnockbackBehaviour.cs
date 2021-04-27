@@ -10,15 +10,12 @@ namespace Lodis.Movement
 
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(GridMovementBehaviour))]
-    public class KnockbackBehaviour : MonoBehaviour, IDamagable
+    public class KnockbackBehaviour : HealthBehaviour
     {
         private Rigidbody _rigidbody;
         [Tooltip("How heavy the game object is. The higher the number, the less panels it travels when knocked back.")]
         [SerializeField]
         private float _weight;
-        [Tooltip("The total amount of damage taken. The higher this value is, the farther it travels when knocked back.")]
-        [SerializeField]
-        private float _damageAccumulated;
         [Tooltip("How fast will objects be allowed to travel in knockback")]
         [SerializeField]
         private ScriptableObjects.FloatVariable _maxMagnitude;
@@ -28,8 +25,7 @@ namespace Lodis.Movement
         private float _currentKnockBackScale;
         private Vector3 _velocityOnLaunch;
         private Vector3 _lastVelocity;
-        [SerializeField]
-        private float _bounceDampen = 1;
+        [Tooltip("Any angles for knock back force recieved in this range will send the object directly upwards")]
         [SerializeField]
         private float _rangeToIgnoreUpAngle = 0.2f;
 
@@ -77,10 +73,6 @@ namespace Lodis.Movement
                 return _currentKnockBackScale;
             }
         }
-
-        public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
-
-        public float Health => _damageAccumulated;
 
         private void Awake()
         {
@@ -136,7 +128,7 @@ namespace Lodis.Movement
             float panelSize = BlackBoardBehaviour.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Grid.PanelSpacing;
             //Apply the damage and weight to find the amount of knock back to be applied
-            float totalKnockback = (knockbackScale + (knockbackScale * (_damageAccumulated /100))) - _weight;
+            float totalKnockback = (knockbackScale + (knockbackScale * (Health /100))) - _weight;
 
             //If the knockback was too weak return an empty vector
             if (totalKnockback <= 0)
@@ -176,9 +168,9 @@ namespace Lodis.Movement
             return new Vector3(Mathf.Cos(hitAngle), Mathf.Sin(hitAngle)) * magnitude;
         }
 
-        private void OnCollisionEnter(Collision collision)
+        public override void OnCollisionEnter(Collision collision)
         {
-            IDamagable damageScript = collision.gameObject.GetComponent<IDamagable>();
+            HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
             if (damageScript == null)
                 return;
@@ -216,7 +208,7 @@ namespace Lodis.Movement
         /// Index 1: How many panels backwards will the object move assuming its weight is 0
         /// Index 2: The angle to launch the object
         /// </summary>
-        public float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        public override float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || !_rigidbody)
@@ -226,7 +218,7 @@ namespace Lodis.Movement
             _currentKnockBackScale = knockBackScale;
 
             //Adds damage to the total damage
-            _damageAccumulated += damage;
+            Health += damage;
 
             //Calculates force and applies it to the rigidbody
             _rigidbody.isKinematic = false;

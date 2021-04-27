@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _destroyOnDeath;
         [SerializeField]
-        private bool _isAlive;
+        private bool _isAlive = true;
         [Tooltip("How much this object will reduce the velocity of objects that bounce off of it.")]
         [SerializeField]
         private float _bounceDampen = 2;

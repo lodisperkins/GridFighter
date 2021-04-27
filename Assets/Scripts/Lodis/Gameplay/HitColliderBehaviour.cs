@@ -134,7 +134,7 @@ namespace Lodis.Gameplay
             _collisions.Add(other.gameObject);
 
             //Grab whatever health script is attached to this object
-            IDamagable damageScript = other.GetComponent<IDamagable>();
+            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
@@ -153,7 +153,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Grab whatever health script is attached to this object. If none return
-            IDamagable damageScript = other.GetComponent<IDamagable>();
+            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
 
 
             if (_adjustAngleBasedOnCollision)
@@ -189,7 +189,7 @@ namespace Lodis.Gameplay
             _collisions.Add(collision.gameObject);
 
             //Grab whatever health script is attached to this object
-            IDamagable damageScript = collision.gameObject.GetComponent<IDamagable>();
+            HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
             //Adjust the angle of force based on the direction of impact
             if (_adjustAngleBasedOnCollision)

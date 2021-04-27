@@ -7,12 +7,12 @@ namespace Lodis.Gameplay
     public class PlayerDefenseBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private IDamagable _damageScript;
+        private HealthBehaviour _damageScript;
 
         // Start is called before the first frame update
         void Start()
         {
-            _damageScript = GetComponent<IDamagable>();
+            _damageScript = GetComponent<HealthBehaviour>();
         }
 
         // Update is called once per frame

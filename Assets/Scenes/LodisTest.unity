@@ -1025,7 +1025,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438dda136aaf75e4aa58f774a6f5dba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _durability: 1
+  _health: 5
+  _destroyOnDeath: 1
+  _isAlive: 1
   _bounceDampen: 2
 --- !u!64 &151772238
 MeshCollider:
@@ -2993,7 +2995,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438dda136aaf75e4aa58f774a6f5dba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _durability: 5
+  _health: 5
+  _destroyOnDeath: 1
+  _isAlive: 1
   _bounceDampen: 2
 --- !u!64 &894189966
 MeshCollider:
@@ -4917,6 +4921,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f45d12dc34239e42b71841c0f09b5e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _target: {fileID: 0}
   _healthGradient:
     serializedVersion: 2
     key0: {r: 0, g: 0.9433962, b: 0.2455356, a: 1}
@@ -6529,6 +6534,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f45d12dc34239e42b71841c0f09b5e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _target: {fileID: 0}
   _healthGradient:
     serializedVersion: 2
     key0: {r: 0, g: 1, b: 0.1881628, a: 1}

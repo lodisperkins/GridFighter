@@ -10,7 +10,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private GameObject _target;
 
-        private IDamagable _healthComponent;
+        private HealthBehaviour _healthComponent;
         [SerializeField]
         private Gradient _healthGradient;
         [SerializeField]
@@ -18,7 +18,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Slider _slider;
         private float _maxValue = 1;
-        public IDamagable HealthComponent { get => _healthComponent; set => _healthComponent = value; }
+        public HealthBehaviour HealthComponent { get => _healthComponent; set => _healthComponent = value; }
         public float MaxValue { get => _maxValue; set => _maxValue = value; }
 
 
@@ -28,7 +28,7 @@ namespace Lodis.Gameplay
         {
             if (_target)
             {
-                HealthComponent = _target.GetComponent<IDamagable>();
+                HealthComponent = _target.GetComponent<HealthBehaviour>();
                 MaxValue = HealthComponent.Health;
             }
 
