@@ -101,7 +101,7 @@ namespace Lodis.GridScripts
         {
             Movement.KnockbackBehaviour knockbackScript = other.GetComponent<Movement.KnockbackBehaviour>();
 
-            if (!knockbackScript)
+            if (!knockbackScript || knockbackScript.IsInvincible)
                 return;
 
             if (Vector3.Dot(Vector3.down, knockbackScript.LastVelocity) <= 0 || !knockbackScript.InHitStun)

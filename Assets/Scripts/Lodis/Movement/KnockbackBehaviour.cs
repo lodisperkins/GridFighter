@@ -104,7 +104,7 @@ namespace Lodis.Movement
 
         private bool RigidbodyInactive(object[] args)
         {
-            return _rigidbody.IsSleeping() && _rigidbody.isKinematic;
+            return _rigidbody.IsSleeping();
         }
 
         /// <summary>
@@ -133,6 +133,36 @@ namespace Lodis.Movement
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
             _rigidbody.useGravity = false;
+        }
+
+        private IEnumerator FreezeCoroutine(float time)
+        {
+            float timeStarted = Time.time;
+            float timeElapsed = 0;
+
+            while (timeElapsed < time)
+            {
+                timeElapsed = Time.time - timeStarted;
+                _rigidbody.AddForce(-_rigidbody.velocity, ForceMode.VelocityChange);
+                yield return new WaitForFixedUpdate();
+            }
+            Debug.Log("StopFreezing");
+        }
+
+        public void FreezeInPlaceByTimer(float time)
+        {
+            StartCoroutine(FreezeCoroutine(time));
+        }
+
+        public void UnfreezeObject()
+        {
+            StopCoroutine(FreezeCoroutine(0));
+        }
+
+        public void EnableAllForces()
+        {
+            _rigidbody.useGravity = true;
+            _rigidbody.isKinematic = true;
         }
 
         /// <summary>

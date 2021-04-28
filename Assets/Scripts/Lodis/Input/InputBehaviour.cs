@@ -14,6 +14,7 @@ namespace Lodis.Input
         private Movement.GridMovementBehaviour _gridMovement;
         private PlayerDefenseBehaviour _defense;
         private MovesetBehaviour _moveset;
+        [SerializeField]
         private bool _canMove = true;
         private Vector2 _storedMoveInput;
         private Vector2 _previousMoveInput;

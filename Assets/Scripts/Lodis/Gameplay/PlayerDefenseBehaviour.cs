@@ -20,8 +20,13 @@ namespace Lodis.Gameplay
         private float _invincibilityLength;
         private Material _material;
         private Color _defaultColor;
+        [SerializeField]
+        private bool _canParry = true;
+        [SerializeField]
+        private float _parryCooldown;
 
-        public bool IsParrying { get => _isParrying;}
+        public bool CanParry { get => _canParry; }
+        public bool IsParrying { get => _isParrying; }
 
         // Start is called before the first frame update
         void Start()
@@ -37,31 +42,42 @@ namespace Lodis.Gameplay
         {
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;
+            _canParry = false;
 
             Vector3 moveVelocity = Vector3.zero;
 
             if (_knockBack.InHitStun)
             {
                 moveVelocity = _knockBack.LastVelocity;
-                _knockBack.StopAllForces();
+                _knockBack.FreezeInPlaceByTimer(_parryLength);
             }
 
             yield return new WaitForSeconds(_parryLength);
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
-            _knockBack.UseGravity = true;
 
-            if (_knockBack.InHitStun)
+            if (_knockBack.InHitStun && !_knockBack.IsInvincible)
                 _knockBack.ApplyImpulseForce(moveVelocity);
+
+            StartCoroutine(RechargeParry());
+        }
+
+        private IEnumerator RechargeParry()
+        {
+            yield return new WaitForSeconds(_parryCooldown);
+            _canParry = true;
         }
 
         public void ActivateParry()
         {
-            StartCoroutine(ActivateParryRoutine());
+            if (_canParry)
+                StartCoroutine(ActivateParryRoutine());
         }
 
         private void ActivateInvinciblity(params object[] args)
         {
+            _knockBack.UnfreezeObject();
+
             if (args.Length > 1)
             {
                 ColliderBehaviour collider = (ColliderBehaviour)args[1];
@@ -75,7 +91,6 @@ namespace Lodis.Gameplay
 
             if (_knockBack.InHitStun)
             {
-                _knockBack.StopVelocity();
                 _knockBack.ApplyImpulseForce(Vector3.down * _parryFallSpeed);
                 _knockBack.SetInvincibilityByCondition(context => !(_knockBack.InHitStun));
                 return;

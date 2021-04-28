@@ -226,6 +226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3f072b198fe9e4390951728f6f9e09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _canMove: 1
   _minChargeLimit: 0.2
   _maxChargeTime: 5
   _attackDirectionBufferClearTime: 0.1
@@ -320,11 +321,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22cac12ebeb964846b2b66ea0d94dea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parryLength: 5
+  _parryLength: 0.2
   _parryForce: 5
-  _parryFallSpeed: 2
+  _parryFallSpeed: 40
   _parryCollider: {fileID: 2118775293423436989}
   _invincibilityLength: 5
+  _canParry: 1
+  _parryCooldown: 1
 --- !u!1 &7522991750391922704
 GameObject:
   m_ObjectHideFlags: 0
