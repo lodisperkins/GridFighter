@@ -12,6 +12,7 @@ namespace Lodis.Input
     public class InputBehaviour : MonoBehaviour
     {
         private Movement.GridMovementBehaviour _gridMovement;
+        private PlayerDefenseBehaviour _defense;
         private MovesetBehaviour _moveset;
         private bool _canMove = true;
         private Vector2 _storedMoveInput;
@@ -29,6 +30,8 @@ namespace Lodis.Input
         private float _timeOfLastDirectionInput;
         private InputActionAsset _actions;
         private int _playerID;
+        private Movement.Condition _inputCondition = null;
+        private bool _inputDisabled;
 
         public int PlayerID
         {
@@ -54,6 +57,8 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[4].started += context => DisableMovement();
             _actions.actionMaps[0].actions[4].canceled += context => UseAbility(context, new object[2]);
             _actions.actionMaps[0].actions[4].canceled += context => EnableMovement();
+            _actions.actionMaps[0].actions[6].started += context => _defense.ActivateParry();
+            _actions.actionMaps[0].actions[6].started += context => DisableInput(condition => !_defense.IsParrying);
         }
 
         // Start is called before the first frame update
@@ -61,6 +66,7 @@ namespace Lodis.Input
         {
             _gridMovement = GetComponent<Movement.GridMovementBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
+            _defense = GetComponent<PlayerDefenseBehaviour>();
         }
 
 
@@ -129,6 +135,13 @@ namespace Lodis.Input
             _canMove = true;
         }
 
+        public void DisableInput(Movement.Condition condition)
+        {
+            _inputDisabled = true;
+            _actions.Disable();
+            _inputCondition = condition;
+        }
+
         public void UpdateInputX(int x)
         {
             _storedMoveInput = new Vector2(x, 0);
@@ -142,6 +155,15 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
+
+            if (_inputCondition != null)
+                if (_inputCondition.Invoke())
+                {
+                    _actions.Enable();
+                    _inputDisabled = false;
+                    _inputCondition = null;
+                }
+
             //Move if the is a movement stored and movement is allowed
             if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving)
             {

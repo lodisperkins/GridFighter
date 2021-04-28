@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public override float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
-            if (damageType != DamageType.KNOCKBACK)
+            if (damageType != DamageType.KNOCKBACK || IsInvincible)
                 return 0;
 
             if (damage < Health)

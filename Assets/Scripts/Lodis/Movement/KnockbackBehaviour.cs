@@ -29,6 +29,18 @@ namespace Lodis.Movement
         [SerializeField]
         private float _rangeToIgnoreUpAngle = 0.2f;
 
+        public bool UseGravity
+        {
+            get
+            {
+                return _rigidbody.useGravity;
+            }
+            set
+            {
+                _rigidbody.useGravity = value;
+            }
+        }
+
         /// <summary>
         /// Returns if the object is in knockback
         /// </summary>
@@ -92,7 +104,7 @@ namespace Lodis.Movement
 
         private bool RigidbodyInactive(object[] args)
         {
-            return _rigidbody.IsSleeping();
+            return _rigidbody.IsSleeping() && _rigidbody.isKinematic;
         }
 
         /// <summary>
@@ -114,6 +126,13 @@ namespace Lodis.Movement
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
+        }
+
+        public void StopAllForces()
+        {
+            _rigidbody.velocity = Vector3.zero;
+            _rigidbody.angularVelocity = Vector3.zero;
+            _rigidbody.useGravity = false;
         }
 
         /// <summary>
@@ -198,7 +217,9 @@ namespace Lodis.Movement
 
         public void ApplyImpulseForce(Vector3 force)
         {
-            _movementBehaviour.DisableMovement(_onRigidbodyInactive);
+            if (!InHitStun)
+                _movementBehaviour.DisableMovement(_onRigidbodyInactive);
+
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
@@ -211,7 +232,7 @@ namespace Lodis.Movement
         public override float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
             //Return if there is no rigidbody or movement script attached
-            if (!_movementBehaviour || !_rigidbody)
+            if (!_movementBehaviour || !_rigidbody || IsInvincible)
                 return 0;
 
             //Update current knockback scale

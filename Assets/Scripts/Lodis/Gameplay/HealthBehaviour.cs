@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Movement;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ namespace Lodis.Gameplay
         [Tooltip("How much this object will reduce the velocity of objects that bounce off of it.")]
         [SerializeField]
         private float _bounceDampen = 2;
+        [SerializeField]
+        private bool _isInvincible;
+        private Condition _invincibilityCondition;
 
         public bool IsAlive
         {
@@ -26,6 +30,7 @@ namespace Lodis.Gameplay
 
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
         public float Health { get => _health; protected set => _health = value; }
+        public bool IsInvincible { get => _isInvincible; }
 
         private void Start()
         {
@@ -34,7 +39,7 @@ namespace Lodis.Gameplay
 
         public virtual float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
-            if (!IsAlive)
+            if (!IsAlive || IsInvincible)
                 return 0;
 
             _health -= damage;
@@ -43,6 +48,32 @@ namespace Lodis.Gameplay
                 _health = 0;
 
             return damage;
+        }
+
+        private IEnumerator SetInvincibility(float time)
+        {
+            _isInvincible = true;
+            yield return new WaitForSeconds(time);
+            _isInvincible = false;
+        }
+
+        /// <summary>
+        /// Makes the object invincible. No damage can be taken by the object
+        /// </summary>
+        /// <param name="time">How long in seconds the object is invincible for</param>
+        public void SetInvincibilityByTimer(float time)
+        {
+            StartCoroutine(SetInvincibility(time));
+        }
+
+        /// <summary>
+        /// Makes the object invincible. No damage can be taken by the object
+        /// </summary>
+        /// <param name="condition">Will turn off invincibility when this condition is true</param>
+        public void SetInvincibilityByCondition(Condition condition)
+        {
+            _invincibilityCondition = condition;
+            _isInvincible = true;
         }
 
         public virtual void OnCollisionEnter(Collision collision)
@@ -70,10 +101,21 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         public virtual void Update()
         {
+            //Death check
             _isAlive = _health > 0;
 
             if (!IsAlive && _destroyOnDeath)
                 Destroy(gameObject);
+
+            //Invincibilty check
+            if (_invincibilityCondition != null)
+            {
+                if (_invincibilityCondition.Invoke())
+                {
+                    _isInvincible = false;
+                    _invincibilityCondition = null;
+                }    
+            }
         }
     }
 }

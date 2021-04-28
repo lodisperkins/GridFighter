@@ -65,6 +65,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Parry"",
+                    ""type"": ""Button"",
+                    ""id"": ""c9d9664a-c346-4620-ada4-088ae01453e4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -342,6 +350,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""AttackDirection"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""30042522-a031-47cf-8a11-e35b01957120"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Parry"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93102aea-a9a6-462a-bb9b-3c81a1345c52"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Parry"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -356,6 +386,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_MoveRight = m_Player.FindAction("MoveRight", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
         m_Player_AttackDirection = m_Player.FindAction("AttackDirection", throwIfNotFound: true);
+        m_Player_Parry = m_Player.FindAction("Parry", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -411,6 +442,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_MoveRight;
     private readonly InputAction m_Player_Attack;
     private readonly InputAction m_Player_AttackDirection;
+    private readonly InputAction m_Player_Parry;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -421,6 +453,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @MoveRight => m_Wrapper.m_Player_MoveRight;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
         public InputAction @AttackDirection => m_Wrapper.m_Player_AttackDirection;
+        public InputAction @Parry => m_Wrapper.m_Player_Parry;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -448,6 +481,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @AttackDirection.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackDirection;
                 @AttackDirection.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackDirection;
                 @AttackDirection.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackDirection;
+                @Parry.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnParry;
+                @Parry.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnParry;
+                @Parry.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnParry;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -470,6 +506,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @AttackDirection.started += instance.OnAttackDirection;
                 @AttackDirection.performed += instance.OnAttackDirection;
                 @AttackDirection.canceled += instance.OnAttackDirection;
+                @Parry.started += instance.OnParry;
+                @Parry.performed += instance.OnParry;
+                @Parry.canceled += instance.OnParry;
             }
         }
     }
@@ -482,5 +521,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMoveRight(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnAttackDirection(InputAction.CallbackContext context);
+        void OnParry(InputAction.CallbackContext context);
     }
 }

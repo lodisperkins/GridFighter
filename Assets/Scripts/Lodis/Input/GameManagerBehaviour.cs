@@ -74,7 +74,7 @@ namespace Lodis.Gameplay
             if (_mode == GameMode.MULTIPLAYER)
             {
                 //Spawn player 2
-                _inputManager.JoinPlayer(1, 1, "Player", Keyboard.current);
+                _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[2]);
                 _player2 = PlayerInput.GetPlayerByIndex(1);
                 _player2.transform.forward = Vector3.left;
 

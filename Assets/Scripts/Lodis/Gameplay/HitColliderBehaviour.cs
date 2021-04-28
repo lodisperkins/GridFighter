@@ -5,8 +5,7 @@ using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
-    public delegate void CollisionEvent(params object[] args);
-    public class HitColliderBehaviour : MonoBehaviour
+    public class HitColliderBehaviour : ColliderBehaviour
     {
         [Tooltip("The amount of damage this attack will do.")]
         [SerializeField]
@@ -17,25 +16,11 @@ namespace Lodis.Gameplay
         [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
         [SerializeField]
         private float _hitAngle;
-        [Tooltip("If true, the hit collider will despawn after the amount of active frames have been surpassed.")]
-        [SerializeField]
-        private bool _despawnsAfterTimeLimit = false;
-        [Tooltip("How many frames the hitbox will be active for.")]
-        [SerializeField]
-        private float _timeActive;
-        [Tooltip("If true, the hit collider will damage objects that enter it multiple times.")]
-        [SerializeField]
-        private bool _isMultiHit;
-        [SerializeField]
-        private bool _destroyOnHit;
         [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
         [SerializeField]
         private bool _adjustAngleBasedOnCollision;
-        private float _currentTimeActive;
-        private float _startTime;
-        private GameObject _owner;
-        private List<GameObject> _collisions;
         public DamageType damageType = DamageType.DEFAULT;
+
         /// <summary>
         /// Collision event called when this collider hits another. 
         /// First argument is game object it collided with.
@@ -55,6 +40,7 @@ namespace Lodis.Gameplay
         }
 
         public HitColliderBehaviour(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true)
+            : base()
         {
             Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision);
         }
@@ -106,10 +92,10 @@ namespace Lodis.Gameplay
             if (_collisions.Contains(other.gameObject) || _isMultiHit || other.gameObject == _owner)
                 return;
 
-            HitColliderBehaviour otherCollider = null;
+            ColliderBehaviour otherCollider = null;
 
             if (other.attachedRigidbody)
-                otherCollider = other.attachedRigidbody.gameObject.GetComponent<HitColliderBehaviour>();
+                otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
             if (otherCollider)
             {
@@ -140,7 +126,7 @@ namespace Lodis.Gameplay
             if (damageScript != null)
                 damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle, damageType);
 
-            onHit?.Invoke(other.gameObject);
+            onHit?.Invoke(other.gameObject, otherCollider);
 
             if (_destroyOnHit)
                 Destroy(gameObject);
