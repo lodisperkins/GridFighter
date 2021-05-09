@@ -24,6 +24,13 @@ namespace Lodis.Gameplay
         private bool _canParry = true;
         [SerializeField]
         private float _parryCooldown;
+        [SerializeField]
+        private float _airDodgeDistance;
+        [SerializeField]
+        private float _airDodgeSpeed;
+        private float _airDodgeDistanceTolerance = 0.1f;
+        [SerializeField]
+        private float _parrySpeedLimit;
 
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
@@ -40,24 +47,48 @@ namespace Lodis.Gameplay
 
         private IEnumerator ActivateParryRoutine()
         {
-            _parryCollider.gameObject.SetActive(true);
-            _isParrying = true;
-            _canParry = false;
-
             Vector3 moveVelocity = Vector3.zero;
+            
 
             if (_knockBack.InHitStun)
             {
                 moveVelocity = _knockBack.LastVelocity;
+
+                if (moveVelocity.magnitude >= _parrySpeedLimit)
+                    yield break;
+
                 _knockBack.FreezeInPlaceByTimer(_parryLength);
             }
+
+            _parryCollider.gameObject.SetActive(true);
+            _isParrying = true;
+            _canParry = false;
+            _knockBack.InFreeFall = true;
 
             yield return new WaitForSeconds(_parryLength);
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
 
             if (_knockBack.InHitStun && !_knockBack.IsInvincible)
-                _knockBack.ApplyImpulseForce(moveVelocity);
+                _knockBack.ApplyVelocityChange(moveVelocity);
+
+            StartCoroutine(RechargeParry());
+        }
+
+        private IEnumerator AirDodgeRoutine(Vector2 direction)
+        {
+            float lerpVal = 0;
+            Vector3 airDodgeForce = new Vector3(direction.x, 0, direction.y) * _airDodgeDistance;
+            Vector3 newPosition = transform.position + airDodgeForce;
+            _knockBack.StopVelocity();
+
+            while (Vector3.Distance(transform.position, newPosition) > _airDodgeDistanceTolerance)
+            {
+                //Sets the current position to be the current position in the interpolation
+                _knockBack.MoveRigidBodyToLocation(Vector3.Lerp(transform.position, newPosition, lerpVal += Time.deltaTime * _airDodgeSpeed));
+                //Waits until the next fixed update before resuming to be in line with any physics calls
+                yield return new WaitForFixedUpdate();
+            }
 
             StartCoroutine(RechargeParry());
         }
@@ -74,23 +105,31 @@ namespace Lodis.Gameplay
                 StartCoroutine(ActivateParryRoutine());
         }
 
+        public void ActivateAirDodge(Vector2 direction)
+        {
+            if (_canParry && _knockBack.InHitStun)
+                StartCoroutine(AirDodgeRoutine(direction));
+        }
+
         private void ActivateInvinciblity(params object[] args)
         {
-            _knockBack.UnfreezeObject();
 
-            if (args.Length > 1)
+            if (args.Length > 0)
             {
-                ColliderBehaviour collider = (ColliderBehaviour)args[1];
+                ColliderBehaviour collider = ((GameObject)args[0]).GetComponent<ColliderBehaviour>();
 
                 if (!collider)
                     return;
             }
+
+            _knockBack.UnfreezeObject();
 
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
 
             if (_knockBack.InHitStun)
             {
+                _knockBack.StopVelocity();
                 _knockBack.ApplyImpulseForce(Vector3.down * _parryFallSpeed);
                 _knockBack.SetInvincibilityByCondition(context => !(_knockBack.InHitStun));
                 return;

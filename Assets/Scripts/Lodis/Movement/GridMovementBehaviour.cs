@@ -163,6 +163,9 @@ namespace Lodis.Movement
 
         public void DisableMovement(Condition enableCondition)
         {
+            if (!_canMove)
+                return;
+
             _canMove = false;
             _movementEnableCheck = enableCondition;
             StopAllCoroutines();
@@ -170,6 +173,9 @@ namespace Lodis.Movement
 
         public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null)
         {
+            if (!_canMove)
+                return;
+
             _canMove = false;
             _moveEnabledEventListener.Event = moveEvent;
             _moveEnabledEventListener.intendedSender = intendedSender;

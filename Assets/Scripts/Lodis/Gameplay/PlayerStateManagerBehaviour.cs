@@ -9,6 +9,7 @@ namespace Lodis.Gameplay
         IDLE,
         ATTACKING,
         KNOCKBACK,
+        FREEFALL,
         DOWN
     }
 
@@ -42,6 +43,8 @@ namespace Lodis.Gameplay
                 _currentState = PlayerState.KNOCKBACK;
             else if (_moveset.AbilityInUse)
                 _currentState = PlayerState.ATTACKING;
+            else if (_knockBack.InFreeFall)
+                _currentState = PlayerState.FREEFALL;
             else
                 _currentState = PlayerState.IDLE;
         }

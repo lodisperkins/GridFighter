@@ -124,7 +124,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(name, _damage, _knockBackScale, _hitAngle, damageType);
 
             onHit?.Invoke(other.gameObject, otherCollider);
 
@@ -157,7 +157,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(name, _damage, _knockBackScale, _hitAngle, damageType);
 
             onHit?.Invoke(other.gameObject);
 
@@ -193,7 +193,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(_damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(name, _damage, _knockBackScale, _hitAngle, damageType);
 
             onHit?.Invoke(collision.gameObject);
 

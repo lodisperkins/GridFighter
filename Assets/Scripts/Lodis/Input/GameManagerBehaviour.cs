@@ -36,6 +36,10 @@ namespace Lodis.Gameplay
         private HealthBarBehaviour _p1HealthBar;
         [SerializeField]
         private HealthBarBehaviour _p2HealthBar;
+        [SerializeField]
+        private RingBarrierBehaviour _ringBarrierL;
+        [SerializeField]
+        private RingBarrierBehaviour _ringBarrierR;
 
         private void Awake()
         {
@@ -52,7 +56,9 @@ namespace Lodis.Gameplay
             //Spawn player 1
             _inputManager.JoinPlayer(0, 0, "Player", devices);
             _player1 = PlayerInput.GetPlayerByIndex(0);
-            
+            _player1.name = _player1.name + "(P1)";
+            _ringBarrierL.owner = _player1.name;
+
             //Get reference to player 1 components
             _p1Movement = _player1.GetComponent<Movement.GridMovementBehaviour>();
             _p1StateManager = _player1.GetComponent<PlayerStateManagerBehaviour>();
@@ -76,6 +82,8 @@ namespace Lodis.Gameplay
                 //Spawn player 2
                 _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[2]);
                 _player2 = PlayerInput.GetPlayerByIndex(1);
+                _player2.name = _player2.name + "(P2)";
+                _ringBarrierR.owner = _player2.name;
                 _player2.transform.forward = Vector3.left;
 
                 //Get reference to player 2 components

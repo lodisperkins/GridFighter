@@ -157,7 +157,6 @@ namespace GridGame.GamePlay.BlockScripts
         }
         private void GetSpawnPosition(out PanelBehaviour blackHolePanel)
         {
-            Vector3 spawnPosition = new Vector3();
             PanelBehaviour spawnPanel = new PanelBehaviour();
             Vector2 spawnOffset = GridPhysicsBehaviour.ConvertToGridVector(transform.parent.forward);
             if (block.owner.name == "Player1")

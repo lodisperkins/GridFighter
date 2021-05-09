@@ -101,14 +101,20 @@ namespace Lodis.GridScripts
         {
             Movement.KnockbackBehaviour knockbackScript = other.GetComponent<Movement.KnockbackBehaviour>();
 
-            if (!knockbackScript || knockbackScript.IsInvincible)
+            if (!knockbackScript)
+            {
                 return;
+            }
+            else if (knockbackScript.IsInvincible || knockbackScript.InFreeFall)
+            {
+                //knockbackScript.StopVelocity();
+                return;
+            }
 
             if (Vector3.Dot(Vector3.down, knockbackScript.LastVelocity) <= 0 || !knockbackScript.InHitStun)
                 return;
 
             float upMagnitude = Mathf.Clamp(knockbackScript.LastVelocity.magnitude / _bounceDampening, 0, _maxBounceForce);
-
 
             knockbackScript.StopVelocity();
             knockbackScript.ApplyImpulseForce(Vector3.up * upMagnitude);

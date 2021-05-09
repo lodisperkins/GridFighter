@@ -92,9 +92,18 @@ namespace Lodis.Gameplay
                 return;
 
             ColliderBehaviour otherCollider = null;
+            GameObject otherGameObject = null;
 
             if (other.attachedRigidbody)
-                otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
+            {
+                otherGameObject = other.attachedRigidbody.gameObject;
+                otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
+            }
+            else
+            {
+                otherGameObject = other.gameObject;
+            }
+                
 
             if (otherCollider)
             {
@@ -105,7 +114,7 @@ namespace Lodis.Gameplay
             //Add the game object to the list of collisions so it is not collided with again
             _collisions.Add(other.gameObject);
 
-            onHit?.Invoke(other.gameObject, otherCollider);
+            onHit?.Invoke(otherGameObject, otherCollider);
 
             if (_destroyOnHit)
                 Destroy(gameObject);

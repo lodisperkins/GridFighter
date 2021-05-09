@@ -20,14 +20,20 @@ namespace Lodis.Movement
         [SerializeField]
         private ScriptableObjects.FloatVariable _maxMagnitude;
         private GridMovementBehaviour _movementBehaviour;
-        private Condition _onRigidbodyInactive;
+        private Condition _objectAtRest;
         private Vector2 _newPanelPosition = new Vector2(float.NaN, float.NaN );
         private float _currentKnockBackScale;
         private Vector3 _velocityOnLaunch;
+        private Vector3 _acceleration;
         private Vector3 _lastVelocity;
         [Tooltip("Any angles for knock back force recieved in this range will send the object directly upwards")]
         [SerializeField]
         private float _rangeToIgnoreUpAngle = 0.2f;
+        private float _freeFallMagnitudeMin = 1;
+        private bool _inHitStun;
+        private bool _inFreeFall;
+        private Coroutine _currentCoroutine;
+
 
         public bool UseGravity
         {
@@ -48,7 +54,7 @@ namespace Lodis.Movement
         {
             get
             {
-                return !RigidbodyInactive(null);
+                return _inHitStun;
             }
         }
 
@@ -86,6 +92,21 @@ namespace Lodis.Movement
             }
         }
 
+        public bool InFreeFall 
+        {
+            get
+            {
+                return _inFreeFall;
+            }
+            set 
+            {
+                _inFreeFall = value;
+            }
+        }
+
+        public Vector3 Acceleration { get => _acceleration; }
+
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
@@ -96,13 +117,12 @@ namespace Lodis.Movement
         // Start is called before the first frame update
         void Start()
         {
-            _onRigidbodyInactive = RigidbodyInactive;
+            _objectAtRest = condition => RigidbodyInactive(); 
             _movementBehaviour.AddOnMoveEnabledAction(() => { _rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
-            
         }
 
-        private bool RigidbodyInactive(object[] args)
+        private bool RigidbodyInactive(object[] args = null)
         {
             return _rigidbody.IsSleeping();
         }
@@ -117,6 +137,11 @@ namespace Lodis.Movement
 
             if (BlackBoardBehaviour.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
                 _movementBehaviour.MoveToPanel(panel, false, GridScripts.GridAlignment.ANY);
+        }
+
+        public void MoveRigidBodyToLocation(Vector3 position)
+        {
+            _rigidbody.MovePosition(position);
         }
 
         /// <summary>
@@ -151,12 +176,13 @@ namespace Lodis.Movement
 
         public void FreezeInPlaceByTimer(float time)
         {
-            StartCoroutine(FreezeCoroutine(time));
+            _currentCoroutine = StartCoroutine(FreezeCoroutine(time));
         }
 
         public void UnfreezeObject()
         {
-            StopCoroutine(FreezeCoroutine(0));
+            if (_currentCoroutine != null)
+                StopCoroutine(_currentCoroutine);
         }
 
         public void EnableAllForces()
@@ -242,24 +268,36 @@ namespace Lodis.Movement
                 return;
 
             //Apply ricochet force and damage
-            damageScript.TakeDamage(knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+            damageScript.TakeDamage(name, velocityMagnitude, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+        }
+
+        public void ApplyVelocityChange(Vector3 force)
+        {
+            if (!InHitStun)
+                _movementBehaviour.DisableMovement(_objectAtRest);
+
+            _rigidbody.AddForce(force, ForceMode.VelocityChange);
         }
 
         public void ApplyImpulseForce(Vector3 force)
         {
             if (!InHitStun)
-                _movementBehaviour.DisableMovement(_onRigidbodyInactive);
+                _movementBehaviour.DisableMovement(_objectAtRest);
 
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
-        /// <summary>
+        /// /// <summary>
         /// Damages this game object and applies a backwards force based on the angle
-        /// Index 0: The damage this object will take
-        /// Index 1: How many panels backwards will the object move assuming its weight is 0
-        /// Index 2: The angle to launch the object
         /// </summary>
-        public override float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
+        /// <param name="damage">The amount of damage being applied to the object. 
+        /// Ring barriers only break if the damage amount is greater than the total health</param>
+        /// <param name="knockBackScale"></param>
+        /// <param name="hitAngle"></param>
+        /// <returns></returns>
+        /// <param name="damageType">The type of damage thid object will take</param>
+        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || !_rigidbody || IsInvincible)
@@ -279,7 +317,7 @@ namespace Lodis.Movement
             {
                 _velocityOnLaunch = knockBackForce;
                 //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(_onRigidbodyInactive);
+                _movementBehaviour.DisableMovement(_objectAtRest);
 
                 //Add force to object
                 _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
@@ -290,7 +328,13 @@ namespace Lodis.Movement
 
         private void FixedUpdate()
         {
+            _acceleration = (_rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
             _lastVelocity = _rigidbody.velocity;
+
+            if (_acceleration.magnitude <= 0 && _rigidbody.isKinematic)
+                _inFreeFall = false;
+
+            _inHitStun = !RigidbodyInactive();
         }
     }
 
@@ -320,7 +364,7 @@ namespace Lodis.Movement
 
             if (GUILayout.Button("Test Attack"))
             {
-                _owner.TakeDamage(_damage, _knockbackScale, _hitAngle);
+                _owner.TakeDamage(name, _damage, _knockbackScale, _hitAngle, DamageType.KNOCKBACK);
             }
         }
     }

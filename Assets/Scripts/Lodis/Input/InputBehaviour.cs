@@ -5,9 +5,46 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.Controls;
 using Lodis.Gameplay;
+using UnityEngine.Events;
 
 namespace Lodis.Input
 {
+    public delegate void InputBufferAction(object[] args = null);
+
+    public class BufferedInput
+    {
+        public BufferedInput(InputBufferAction action, Movement.Condition useCondition, float bufferClearTime)
+        {
+            _action = action;
+            _useCondition = useCondition;
+            _bufferClearTime = bufferClearTime;
+            _bufferStartTime = Time.time;
+        }
+
+        public bool UseAction()
+        {
+            if (_useCondition.Invoke())
+            {
+                _action?.Invoke();
+                _action = null;
+                return true;
+            }
+            else if (Time.time - _bufferStartTime >= _bufferClearTime)
+            {
+                _action = null;
+                return false;
+            }
+
+            return false;
+        }
+
+        private InputBufferAction _action;
+        private float _bufferClearTime;
+        private float _bufferStartTime;
+        private Movement.Condition _useCondition;
+    }
+
+
     [RequireComponent(typeof(Movement.GridMovementBehaviour))]
     public class InputBehaviour : MonoBehaviour
     {
@@ -31,8 +68,10 @@ namespace Lodis.Input
         private float _timeOfLastDirectionInput;
         private InputActionAsset _actions;
         private int _playerID;
-        private Movement.Condition _inputCondition = null;
+        private Movement.Condition _inputEnableCondition = null;
         private bool _inputDisabled;
+        private BufferedInput _bufferedAction;
+        private PlayerState _playerState;
 
         public int PlayerID
         {
@@ -46,7 +85,6 @@ namespace Lodis.Input
             }
         }
 
-
         private void Awake()
         {
             //Initialize action delegates
@@ -56,10 +94,9 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
             _actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
             _actions.actionMaps[0].actions[4].started += context => DisableMovement();
-            _actions.actionMaps[0].actions[4].canceled += context => UseAbility(context, new object[2]);
-            _actions.actionMaps[0].actions[4].canceled += context => EnableMovement();
-            _actions.actionMaps[0].actions[6].started += context => _defense.ActivateParry();
-            _actions.actionMaps[0].actions[6].started += context => DisableInput(condition => !_defense.IsParrying);
+            _actions.actionMaps[0].actions[4].performed += context => UseAbility(context, new object[2]);
+            _actions.actionMaps[0].actions[4].performed += context => EnableMovement();
+            _actions.actionMaps[0].actions[6].performed += context => _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
         // Start is called before the first frame update
@@ -69,7 +106,6 @@ namespace Lodis.Input
             _moveset = GetComponent<MovesetBehaviour>();
             _defense = GetComponent<PlayerDefenseBehaviour>();
         }
-
 
         /// <summary>
         /// Decides which ability to use based on the input context and activates it
@@ -81,7 +117,7 @@ namespace Lodis.Input
         public void UseAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
-            if (BlackBoardBehaviour.GetPlayerStateFromID(PlayerID) == PlayerState.KNOCKBACK)
+            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
                 return;
 
             AbilityType abilityType = AbilityType.NONE;
@@ -107,12 +143,20 @@ namespace Lodis.Input
                 float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
                 args[0] = powerScale;
-                _moveset.UseBasicAbility(abilityType, args);
+                _bufferedAction = new BufferedInput(action =>_moveset.UseBasicAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
                 return;
             }
 
             //Use a normal ability if it was not held long enough
-            _moveset.UseBasicAbility(abilityType, args);
+            _bufferedAction = new BufferedInput(action => _moveset.UseBasicAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
+        }
+
+        /// <summary>
+        /// Doesn't work because button is pressed before attack direction is updated in update func
+        /// </summary>
+        private void AirDodge()
+        {
+            _defense.ActivateAirDodge(_attackDirection);
         }
 
         /// <summary>
@@ -129,8 +173,8 @@ namespace Lodis.Input
         /// </summary>
         public void EnableMovement()
         {
-            //Don't enable if player is in knockback
-            if (BlackBoardBehaviour.GetPlayerStateFromID(PlayerID) == PlayerState.KNOCKBACK)
+            //Don't enable if player is in knockback or in free fall
+            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
                 return;
 
             _canMove = true;
@@ -140,7 +184,7 @@ namespace Lodis.Input
         {
             _inputDisabled = true;
             _actions.Disable();
-            _inputCondition = condition;
+            _inputEnableCondition = condition;
         }
 
         public void UpdateInputX(int x)
@@ -156,13 +200,15 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
+            _playerState = BlackBoardBehaviour.GetPlayerStateFromID(PlayerID);
 
-            if (_inputCondition != null)
-                if (_inputCondition.Invoke())
+            //Checks to see if input can be enabled 
+            if (_inputEnableCondition != null)
+                if (_inputEnableCondition.Invoke())
                 {
                     _actions.Enable();
                     _inputDisabled = false;
-                    _inputCondition = null;
+                    _inputEnableCondition = null;
                 }
 
             //Move if the is a movement stored and movement is allowed
@@ -182,10 +228,12 @@ namespace Lodis.Input
                 _attackDirection = attackDirInput;
                 _timeOfLastDirectionInput = Time.time;
             }
-                
+
             //Clear the buffer if its exceeded the alotted time
             if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
                 _attackDirection = Vector2.zero;
+
+            _bufferedAction?.UseAction();
         }
     }
 }

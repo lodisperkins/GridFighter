@@ -37,7 +37,17 @@ namespace Lodis.Gameplay
             _isAlive = true;
         }
 
-        public virtual float TakeDamage(float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        /// <summary>
+        /// Takes damage based on the damage type.
+        /// </summary>
+        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
+        /// <param name="damage">The amount of damage being applied to the object. 
+        /// Ring barriers only break if the damage amount is greater than the total health</param>
+        /// <param name="knockBackScale"></param>
+        /// <param name="hitAngle"></param>
+        /// <returns></returns>
+        /// <param name="damageType">The type of damage this object will take</param>
+        public virtual float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
             if (!IsAlive || IsInvincible)
                 return 0;
@@ -78,7 +88,7 @@ namespace Lodis.Gameplay
 
         public virtual void OnCollisionEnter(Collision collision)
         {
-            Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
+            Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
             if (!knockBackScript || !knockBackScript.InHitStun)
                 return;
@@ -95,7 +105,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(name, knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
         }
 
         // Update is called once per frame
