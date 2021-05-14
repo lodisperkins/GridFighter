@@ -75,9 +75,8 @@ namespace Lodis.Gameplay
         {
             SpawnProjectile();
             yield return new WaitForSeconds(_timeBetweenShots);
-            //_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment);
-            //_ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
-            SpawnProjectile();
+            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment);
+            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
         }
 
         //Called when ability is used

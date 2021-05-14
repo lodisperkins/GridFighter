@@ -76,10 +76,9 @@ namespace Lodis.Gameplay
 
             _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack, 0.2f, true, 7, owner, true);
 
-            //_ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
-            //Vector2 moveDir = owner.transform.forward;
-            //_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
-            SpawnProjectile();
+            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            Vector2 moveDir = owner.transform.forward;
+            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
             _shotDamage /= powerScale;
             _shotKnockBack /= powerScale;
         }

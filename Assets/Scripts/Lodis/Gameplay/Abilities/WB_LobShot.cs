@@ -102,7 +102,7 @@ namespace Lodis.Gameplay
             offSet.x = Mathf.RoundToInt(offSet.x);
             offSet.y = Mathf.RoundToInt(offSet.y);
 
-            //_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
+            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
             //Fire laser
             spawnScript.FireProjectile(CalculateProjectileForce(), _projectileCollider);
 

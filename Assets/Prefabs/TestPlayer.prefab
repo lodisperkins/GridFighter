@@ -229,7 +229,8 @@ MonoBehaviour:
   _canMove: 1
   _minChargeLimit: 0.2
   _maxChargeTime: 5
-  _attackDirectionBufferClearTime: 0.1
+  _attackDirectionBufferClearTime: 0.05
+  _inputDisabled: 0
 --- !u!54 &-793800992516922807
 Rigidbody:
   m_ObjectHideFlags: 0

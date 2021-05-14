@@ -70,10 +70,9 @@ namespace Lodis.Gameplay
 
         protected override void Activate(params object[] args)
         {
-            SpawnProjectile();
-            //_ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
             Vector2 moveDir = owner.transform.forward;
-            //_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
+            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
         }
     }
 }

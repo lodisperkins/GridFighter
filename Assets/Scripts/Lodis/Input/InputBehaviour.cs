@@ -94,7 +94,7 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
             _actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
             _actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
-            _actions.actionMaps[0].actions[4].performed += context => DisableMovement();
+            _actions.actionMaps[0].actions[4].started += context => DisableMovement();
             _actions.actionMaps[0].actions[4].performed += context => BufferAbility(context, new object[2]);
             _actions.actionMaps[0].actions[6].performed += context => _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
         }
@@ -170,7 +170,11 @@ namespace Lodis.Input
         /// </summary>
         public void DisableMovement()
         {
-            _canMove = false;
+            if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
+            {
+                _canMove = false;
+                _storedMoveInput = Vector2.zero;
+            }
         }
 
         /// <summary>
