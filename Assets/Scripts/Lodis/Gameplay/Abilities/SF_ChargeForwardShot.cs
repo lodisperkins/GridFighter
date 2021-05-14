@@ -26,7 +26,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = AbilityType.WEAKFORWARD;
+            abilityType = BasicAbilityType.WEAKFORWARD;
             name = "WF_ForwardShot";
             timeActive = .2f;
             recoverTime = .1f;
@@ -76,10 +76,10 @@ namespace Lodis.Gameplay
 
             _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack, 0.2f, true, 7, owner, true);
 
-            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
-            Vector2 moveDir = owner.transform.forward;
-            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
-
+            //_ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            //Vector2 moveDir = owner.transform.forward;
+            //_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
+            SpawnProjectile();
             _shotDamage /= powerScale;
             _shotKnockBack /= powerScale;
         }

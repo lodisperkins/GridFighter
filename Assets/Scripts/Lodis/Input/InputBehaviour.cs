@@ -54,7 +54,6 @@ namespace Lodis.Input
         [SerializeField]
         private bool _canMove = true;
         private Vector2 _storedMoveInput;
-        private Vector2 _previousMoveInput;
         private Vector2 _attackDirection;
         [Tooltip("The minimum amount of time needed to hold the button down to change it to the charge variation.")]
         [SerializeField]
@@ -69,9 +68,11 @@ namespace Lodis.Input
         private InputActionAsset _actions;
         private int _playerID;
         private Movement.Condition _inputEnableCondition = null;
+        [SerializeField]
         private bool _inputDisabled;
         private BufferedInput _bufferedAction;
         private PlayerState _playerState;
+        private  Ability _lastAbiliyUsed = null;
 
         public int PlayerID
         {
@@ -93,9 +94,8 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
             _actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
             _actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
-            _actions.actionMaps[0].actions[4].started += context => DisableMovement();
-            _actions.actionMaps[0].actions[4].performed += context => UseAbility(context, new object[2]);
-            _actions.actionMaps[0].actions[4].performed += context => EnableMovement();
+            _actions.actionMaps[0].actions[4].performed += context => DisableMovement();
+            _actions.actionMaps[0].actions[4].performed += context => BufferAbility(context, new object[2]);
             _actions.actionMaps[0].actions[6].performed += context => _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
@@ -114,24 +114,24 @@ namespace Lodis.Input
         /// <param name="args">Any additional arguments to give to the ability. 
         /// Index 0 is always the power scale.
         /// index 1 is always the direction of input.</param>
-        public void UseAbility(InputAction.CallbackContext context, params object[] args)
+        public void BufferAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
             if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
                 return;
 
-            AbilityType abilityType = AbilityType.NONE;
+            BasicAbilityType abilityType = BasicAbilityType.NONE;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 
             //Decide which ability type to use based on the input
             if (_attackDirection.y != 0)
-                abilityType = AbilityType.WEAKSIDE;
+                abilityType = BasicAbilityType.WEAKSIDE;
             else if (_attackDirection.x < 0)
-                abilityType = AbilityType.WEAKBACKWARD;
+                abilityType = BasicAbilityType.WEAKBACKWARD;
             else if (_attackDirection.x > 0)
-                abilityType = AbilityType.WEAKFORWARD;
+                abilityType = BasicAbilityType.WEAKFORWARD;
             else
-                abilityType = AbilityType.WEAKNEUTRAL;
+                abilityType = BasicAbilityType.WEAKNEUTRAL;
 
             //Assign the arguments for the ability
             args[1] = _attackDirection;
@@ -143,12 +143,18 @@ namespace Lodis.Input
                 float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
                 args[0] = powerScale;
-                _bufferedAction = new BufferedInput(action =>_moveset.UseBasicAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
                 return;
             }
 
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => _moveset.UseBasicAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
+            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
+        }
+
+        private void UseAbility(BasicAbilityType abilityType, object[] args)
+        {
+            _lastAbiliyUsed = _moveset.UseBasicAbility(abilityType, args);
+            _lastAbiliyUsed.onEnd = EnableMovement;
         }
 
         /// <summary>
@@ -165,7 +171,6 @@ namespace Lodis.Input
         public void DisableMovement()
         {
             _canMove = false;
-            _gridMovement.DisableMovement(condition =>  _canMove == true );
         }
 
         /// <summary>
@@ -189,12 +194,14 @@ namespace Lodis.Input
 
         public void UpdateInputX(int x)
         {
-            _storedMoveInput = new Vector2(x, 0);
+            if (_canMove)
+                _storedMoveInput = new Vector2(x, 0);
         }
 
         public void UpdateInputY(int y)
         {
-            _storedMoveInput = new Vector2(0, y);
+            if (_canMove)
+                _storedMoveInput = new Vector2(0, y);
         }
 
         // Update is called once per frame
@@ -212,7 +219,7 @@ namespace Lodis.Input
                 }
 
             //Move if the is a movement stored and movement is allowed
-            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving)
+            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
                 _gridMovement.Velocity = Vector2.zero;

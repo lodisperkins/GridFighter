@@ -166,9 +166,17 @@ namespace Lodis.Movement
             if (!_canMove)
                 return;
 
-            _canMove = false;
+            if (IsMoving)
+            { 
+                AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); });
+            }
+            else
+            {
+                _canMove = false;
+                StopAllCoroutines();
+            }
+
             _movementEnableCheck = enableCondition;
-            StopAllCoroutines();
         }
 
         public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null)
@@ -176,11 +184,19 @@ namespace Lodis.Movement
             if (!_canMove)
                 return;
 
-            _canMove = false;
+            if (IsMoving)
+            {
+                AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); });
+            }
+            else
+            { 
+                _canMove = false;
+                StopAllCoroutines();
+            }
+
             _moveEnabledEventListener.Event = moveEvent;
             _moveEnabledEventListener.intendedSender = intendedSender;
             _moveEnabledEventListener.AddAction(() => { _canMove = true; });
-            StopAllCoroutines();
         }
 
         /// <summary>

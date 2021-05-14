@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = AbilityType.STRONGSIDE;
+            abilityType = BasicAbilityType.STRONGSIDE;
             name = "SS_DoubleShot";
             timeActive = .2f;
             recoverTime = .1f;
@@ -75,8 +75,9 @@ namespace Lodis.Gameplay
         {
             SpawnProjectile();
             yield return new WaitForSeconds(_timeBetweenShots);
-            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment);
-            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            //_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment);
+            //_ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            SpawnProjectile();
         }
 
         //Called when ability is used

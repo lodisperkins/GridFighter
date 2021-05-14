@@ -334,7 +334,7 @@ namespace Lodis.Movement
             if (_acceleration.magnitude <= 0 && _rigidbody.isKinematic)
                 _inFreeFall = false;
 
-            _inHitStun = !RigidbodyInactive();
+            _inHitStun = !RigidbodyInactive() && !_rigidbody.isKinematic;
         }
     }
 

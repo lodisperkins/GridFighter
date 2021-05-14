@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
     public abstract class Ability
     {
         //The type describes the strength and input value for the ability
-        public AbilityType abilityType;
+        public BasicAbilityType abilityType;
         public DamageType damageType = DamageType.DEFAULT;
         //Name of the ability
         public string name = "Unassigned";

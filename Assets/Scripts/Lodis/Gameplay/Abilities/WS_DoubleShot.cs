@@ -27,7 +27,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = AbilityType.WEAKSIDE;
+            abilityType = BasicAbilityType.WEAKSIDE;
             name = "SN_DoubleShot";
             timeActive = 0.2f;
             recoverTime = .1f;
