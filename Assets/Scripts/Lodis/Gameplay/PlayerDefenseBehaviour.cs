@@ -7,6 +7,7 @@ namespace Lodis.Gameplay
     public class PlayerDefenseBehaviour : MonoBehaviour
     {
         private Movement.KnockbackBehaviour _knockBack;
+        private Input.InputBehaviour _input;
         [SerializeField]
         private float _parryLength;
         [SerializeField]
@@ -31,6 +32,8 @@ namespace Lodis.Gameplay
         private float _airDodgeDistanceTolerance = 0.1f;
         [SerializeField]
         private float _parrySpeedLimit;
+        [SerializeField]
+        private float _parryParryRestTime;
 
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
@@ -39,26 +42,23 @@ namespace Lodis.Gameplay
         void Start()
         {
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
+            _input = GetComponent<Input.InputBehaviour>();
             _material = GetComponent<Renderer>().material;
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
             _parryCollider.Owner = gameObject;
         }
 
-        private IEnumerator ActivateParryRoutine()
+        private IEnumerator ActivateAirParryRoutine()
         {
             Vector3 moveVelocity = Vector3.zero;
-            
 
-            if (_knockBack.InHitStun)
-            {
-                moveVelocity = _knockBack.LastVelocity;
+            moveVelocity = _knockBack.LastVelocity;
 
-                if (moveVelocity.magnitude >= _parrySpeedLimit)
-                    yield break;
+            if (moveVelocity.magnitude >= _parrySpeedLimit)
+                yield break;
 
-                _knockBack.FreezeInPlaceByTimer(_parryLength);
-            }
+            _knockBack.FreezeInPlaceByTimer(_parryLength);
 
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;
@@ -69,10 +69,30 @@ namespace Lodis.Gameplay
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
 
-            if (_knockBack.InHitStun && !_knockBack.IsInvincible)
+            if (!_knockBack.IsInvincible)
                 _knockBack.ApplyVelocityChange(moveVelocity);
 
             StartCoroutine(RechargeParry());
+        }
+
+        private IEnumerator ActivateGroundParryRoutine()
+        {
+            Vector3 moveVelocity = Vector3.zero;
+
+            _parryCollider.gameObject.SetActive(true);
+            _isParrying = true;
+            _input.DisableInput(condition => _isParrying == false);
+            _canParry = false;
+            _knockBack.InFreeFall = true;
+
+            yield return new WaitForSeconds(_parryLength);
+            _parryCollider.gameObject.SetActive(false);
+
+            yield return new WaitForSeconds(_parryParryRestTime);
+
+            _isParrying = false;
+
+            _canParry = true;
         }
 
         private IEnumerator AirDodgeRoutine(Vector2 direction)
@@ -101,8 +121,10 @@ namespace Lodis.Gameplay
 
         public void ActivateParry()
         {
-            if (_canParry)
-                StartCoroutine(ActivateParryRoutine());
+            if (_canParry && !_knockBack.InHitStun)
+                StartCoroutine(ActivateGroundParryRoutine());
+            else if (_canParry)
+                StartCoroutine(ActivateAirParryRoutine());
         }
 
         public void ActivateAirDodge(Vector2 direction)
@@ -143,8 +165,6 @@ namespace Lodis.Gameplay
         {
             if (_knockBack.IsInvincible)
                 _material.color = Color.green;
-            else
-                _material.color = _defaultColor;
         }
     }
 }

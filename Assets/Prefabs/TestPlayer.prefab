@@ -332,6 +332,7 @@ MonoBehaviour:
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
   _parrySpeedLimit: 10
+  _parryParryRestTime: 0.1
 --- !u!1 &7522991750391922704
 GameObject:
   m_ObjectHideFlags: 0
