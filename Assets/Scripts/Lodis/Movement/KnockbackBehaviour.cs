@@ -274,7 +274,7 @@ namespace Lodis.Movement
         public void ApplyVelocityChange(Vector3 force)
         {
             if (!InHitStun)
-                _movementBehaviour.DisableMovement(_objectAtRest);
+                _movementBehaviour.DisableMovement(_objectAtRest, false);
 
             _rigidbody.AddForce(force, ForceMode.VelocityChange);
         }
@@ -282,7 +282,7 @@ namespace Lodis.Movement
         public void ApplyImpulseForce(Vector3 force)
         {
             if (!InHitStun)
-                _movementBehaviour.DisableMovement(_objectAtRest);
+                _movementBehaviour.DisableMovement(_objectAtRest, false);
 
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
@@ -317,7 +317,7 @@ namespace Lodis.Movement
             {
                 _velocityOnLaunch = knockBackForce;
                 //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(_objectAtRest);
+                _movementBehaviour.DisableMovement(_objectAtRest, false);
 
                 //Add force to object
                 _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);

@@ -55,6 +55,14 @@ namespace Lodis.Movement
             set { _speed = value; }
         }
 
+        public PanelBehaviour CurrentPanel
+        {
+            get
+            {
+                return _currentPanel;
+            }
+        }
+
         /// <summary>
         /// The current velocity of the object moving on the grid.
         /// </summary>
@@ -161,12 +169,12 @@ namespace Lodis.Movement
                 _onMoveEndTemp.AddAction(action);
         }
 
-        public void DisableMovement(Condition enableCondition)
+        public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true)
         {
             if (!_canMove)
                 return;
 
-            if (IsMoving)
+            if (IsMoving && waitForEndOfMovement)
             { 
                 AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); });
             }
@@ -179,12 +187,12 @@ namespace Lodis.Movement
             _movementEnableCheck = enableCondition;
         }
 
-        public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null)
+        public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true)
         {
             if (!_canMove)
                 return;
 
-            if (IsMoving)
+            if (IsMoving && waitForEndOfMovement)
             {
                 AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); });
             }
