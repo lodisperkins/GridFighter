@@ -37,17 +37,6 @@ namespace Lodis.Gameplay
             if (knockbackScale == 0 || float.IsNaN(knockbackScale))
                 return;
 
-            if (Mathf.Abs(hitAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
-            {
-                Vector3 forceDirection = Vector3.zero;
-                if (_movement.CurrentPanel.Alignment == GridScripts.GridAlignment.RIGHT)
-                    forceDirection = Vector3.left;
-                else
-                    forceDirection = Vector3.right;
-
-                knockBackScript.ApplyImpulseForce(forceDirection * knockbackScale * 2);
-            }
-
             //Apply ricochet force and damage
             knockBackScript.TakeDamage(name, knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
         }

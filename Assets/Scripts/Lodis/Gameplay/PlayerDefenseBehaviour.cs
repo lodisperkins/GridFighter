@@ -8,6 +8,7 @@ namespace Lodis.Gameplay
     {
         private Movement.KnockbackBehaviour _knockBack;
         private Input.InputBehaviour _input;
+        private Movement.GridMovementBehaviour _movement;
         [SerializeField]
         private float _parryLength;
         [SerializeField]
@@ -20,20 +21,20 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _invincibilityLength;
         private Material _material;
-        private Color _defaultColor;
+        private Color _defaultColor; 
         [SerializeField]
         private bool _canParry = true;
         [SerializeField]
         private float _parryCooldown;
         [SerializeField]
+        private float _parrySpeedLimit;
+        [SerializeField]
+        private float _parryRestTime;
+        [SerializeField]
         private float _airDodgeDistance;
         [SerializeField]
         private float _airDodgeSpeed;
         private float _airDodgeDistanceTolerance = 0.1f;
-        [SerializeField]
-        private float _parrySpeedLimit;
-        [SerializeField]
-        private float _parryParryRestTime;
 
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
@@ -43,10 +44,18 @@ namespace Lodis.Gameplay
         {
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
+            _movement = GetComponent<Movement.GridMovementBehaviour>();
+            _knockBack.AddOnKnockBackAction(MakeInvinvibleOnGetUp);
             _material = GetComponent<Renderer>().material;
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
             _parryCollider.Owner = gameObject;
+        }
+
+        private void MakeInvinvibleOnGetUp()
+        {
+            Movement.Condition invincibilityCondition = condition => !_movement.IsMoving;
+            _movement.AddOnMoveBeginTempAction(() => _knockBack.SetInvincibilityByCondition(invincibilityCondition));
         }
 
         private IEnumerator ActivateAirParryRoutine()
@@ -88,7 +97,7 @@ namespace Lodis.Gameplay
             yield return new WaitForSeconds(_parryLength);
             _parryCollider.gameObject.SetActive(false);
 
-            yield return new WaitForSeconds(_parryParryRestTime);
+            yield return new WaitForSeconds(_parryRestTime);
 
             _isParrying = false;
 

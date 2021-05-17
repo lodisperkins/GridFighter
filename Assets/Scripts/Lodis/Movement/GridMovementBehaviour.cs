@@ -39,6 +39,7 @@ namespace Lodis.Movement
         private PanelBehaviour _currentPanel;
         private Condition _movementEnableCheck;
         private GridGame.GameEventListener _moveEnabledEventListener;
+        private GridGame.GameEventListener _moveDisabledEventListener;
         private GridGame.GameEventListener _onMoveBegin;
         private GridGame.GameEventListener _onMoveBeginTemp;
         private GridGame.GameEventListener _onMoveEnd;
@@ -120,6 +121,7 @@ namespace Lodis.Movement
         {
             //initialize events
             _moveEnabledEventListener = GetComponent<GridGame.GameEventListener>();
+            _moveDisabledEventListener = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveBegin = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveBeginTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
@@ -137,6 +139,12 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = true;
             else
                 Debug.LogError(name + " could not find starting panel");
+        }
+
+        public void AddOnMoveDisabledAction(UnityAction action)
+        {
+            if ((object)_moveDisabledEventListener != null)
+                _moveDisabledEventListener.AddAction(action);
         }
 
         public void AddOnMoveEnabledAction(UnityAction action)
@@ -185,6 +193,7 @@ namespace Lodis.Movement
             }
 
             _movementEnableCheck = enableCondition;
+            _moveDisabledEventListener.Invoke(gameObject);
         }
 
         public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true)
@@ -205,6 +214,7 @@ namespace Lodis.Movement
             _moveEnabledEventListener.Event = moveEvent;
             _moveEnabledEventListener.intendedSender = intendedSender;
             _moveEnabledEventListener.AddAction(() => { _canMove = true; });
+            _moveDisabledEventListener.Invoke(gameObject);
         }
 
         /// <summary>

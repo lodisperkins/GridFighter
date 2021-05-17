@@ -326,13 +326,13 @@ MonoBehaviour:
   _parryForce: 5
   _parryFallSpeed: 20
   _parryCollider: {fileID: 2118775293423436989}
-  _invincibilityLength: 5
+  _invincibilityLength: 0.5
   _canParry: 1
   _parryCooldown: 1
+  _parrySpeedLimit: 10
+  _parryRestTime: 0
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
-  _parrySpeedLimit: 10
-  _parryParryRestTime: 0.1
 --- !u!1 &7522991750391922704
 GameObject:
   m_ObjectHideFlags: 0

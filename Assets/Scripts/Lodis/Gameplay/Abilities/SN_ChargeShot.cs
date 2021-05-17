@@ -28,7 +28,7 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityType = BasicAbilityType.STRONGNEUTRAL;
             name = "SN_ChargeShot";
-            timeActive = 1;
+            timeActive = .2f;
             recoverTime = .2f;
             startUpTime = .2f;
             canCancel = false;

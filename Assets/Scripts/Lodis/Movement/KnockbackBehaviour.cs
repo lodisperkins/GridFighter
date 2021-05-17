@@ -33,7 +33,7 @@ namespace Lodis.Movement
         private bool _inHitStun;
         private bool _inFreeFall;
         private Coroutine _currentCoroutine;
-
+        private UnityAction _onKnockBack;
 
         public bool UseGravity
         {
@@ -243,6 +243,11 @@ namespace Lodis.Movement
             return new Vector3(Mathf.Cos(hitAngle), Mathf.Sin(hitAngle)) * magnitude;
         }
 
+        public void AddOnKnockBackAction(UnityAction action)
+        {
+            _onKnockBack += action;
+        }
+
         public override void OnCollisionEnter(Collision collision)
         {
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
@@ -318,9 +323,11 @@ namespace Lodis.Movement
                 _velocityOnLaunch = knockBackForce;
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(_objectAtRest, false);
-
                 //Add force to object
                 _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
+
+                if (_velocityOnLaunch.magnitude > 0)
+                    _onKnockBack?.Invoke();
             }
 
             return damage;
