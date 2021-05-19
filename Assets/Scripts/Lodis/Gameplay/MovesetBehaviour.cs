@@ -82,10 +82,16 @@ namespace Lodis.Gameplay
         private void Update()
         {
             if (_lastAbilityInUse != null)
+            {
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.canCancel)
                     _renderer.material.color = Color.grey;
                 else
                     _renderer.material.color = _defaultColor;
+            }
+            else
+            { 
+                _renderer.material.color = _defaultColor;
+            }
 
         }
     }

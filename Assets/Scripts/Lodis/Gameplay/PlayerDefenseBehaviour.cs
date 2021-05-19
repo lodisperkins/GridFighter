@@ -19,7 +19,9 @@ namespace Lodis.Gameplay
         private ColliderBehaviour _parryCollider;
         private bool _isParrying;
         [SerializeField]
-        private float _invincibilityLength;
+        private float _parryInvincibilityLength;
+        [SerializeField]
+        private float _recoverInvincibilityLength;
         private Material _material;
         private Color _defaultColor; 
         [SerializeField]
@@ -45,17 +47,24 @@ namespace Lodis.Gameplay
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
-            _knockBack.AddOnKnockBackAction(MakeInvinvibleOnGetUp);
+            _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
             _material = GetComponent<Renderer>().material;
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
             _parryCollider.Owner = gameObject;
         }
 
-        private void MakeInvinvibleOnGetUp()
+        private void MakeInvincibleOnGetUp()
         {
             Movement.Condition invincibilityCondition = condition => !_movement.IsMoving;
             _movement.AddOnMoveBeginTempAction(() => _knockBack.SetInvincibilityByCondition(invincibilityCondition));
+            _movement.AddOnMoveEndTempAction(() => StartCoroutine(RecoverInvincibiltyRoutine()));
+        }
+
+        private IEnumerator RecoverInvincibiltyRoutine()
+        {
+            yield return new WaitForEndOfFrame();
+            _knockBack.SetInvincibilityByTimer(_recoverInvincibilityLength);
         }
 
         private IEnumerator ActivateAirParryRoutine()
@@ -166,7 +175,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            _knockBack.SetInvincibilityByTimer(_invincibilityLength);
+            _knockBack.SetInvincibilityByTimer(_parryInvincibilityLength);
         }
 
         // Update is called once per frame
