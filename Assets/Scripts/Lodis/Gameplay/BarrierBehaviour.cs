@@ -11,12 +11,25 @@ namespace Lodis.Gameplay
         private string[] _visibleLayers;
         private float _rangeToIgnoreUpAngle;
         private Movement.GridMovementBehaviour _movement;
+        private string _owner = "";
+
+        public string Owner { get => _owner; set => _owner = value; }
 
         // Start is called before the first frame update
         void Start()
         {
             _material = GetComponent<Renderer>().material;
             _movement = GetComponent<Movement.GridMovementBehaviour>();
+        }
+
+        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        {
+            if (attacker == Owner && damageType == DamageType.KNOCKBACK || attacker != Owner && damageType != DamageType.KNOCKBACK)
+                return base.TakeDamage(attacker, damage, knockBackScale, hitAngle, damageType);
+            else if (Owner == "")
+                return base.TakeDamage(attacker, damage, knockBackScale, hitAngle, damageType);
+
+            return 0;
         }
 
         public override void OnCollisionEnter(Collision collision)
@@ -36,6 +49,8 @@ namespace Lodis.Gameplay
 
             if (knockbackScale == 0 || float.IsNaN(knockbackScale))
                 return;
+
+            knockBackScript.StopVelocity();
 
             //Apply ricochet force and damage
             knockBackScript.TakeDamage(name, knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);

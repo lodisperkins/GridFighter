@@ -99,7 +99,11 @@ namespace Lodis.Gameplay
                 _p2Input.PlayerID = 1;
                 _p2Movement.Position = _grid.RhsSpawnPanel.Position;
                 _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
+                _grid.AssignOwners(_player1.name, _player2.name);
+                return;
             }
+
+            _grid.AssignOwners(_player1.name);
         }
 
         public void Restart()

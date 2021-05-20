@@ -204,7 +204,10 @@ namespace Lodis.Input
         {
             //Don't enable if player is in knockback or in free fall
             if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
+            {
+                _moveInputEnableCondition = condition => _playerState == PlayerState.IDLE;
                 return;
+            }
 
             _canMove = true;
         }

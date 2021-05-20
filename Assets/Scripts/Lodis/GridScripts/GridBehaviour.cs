@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using GridGame.VariableScripts;
+using Lodis.Gameplay;
 
 namespace Lodis.GridScripts
 {
@@ -46,7 +47,7 @@ namespace Lodis.GridScripts
         private GameObject _collisionPlaneRef;
         private PanelBehaviour _lhsPlayerSpawnPanel;
         private PanelBehaviour _rhsPlayerSpawnPanel;
-
+        private List<BarrierBehaviour> _barriers;
 
         public PanelBehaviour LhsSpawnPanel
         {
@@ -92,6 +93,7 @@ namespace Lodis.GridScripts
         void Awake()
         {
             DestroyTempPanels();
+            _barriers = new List<BarrierBehaviour>();
         }
 
         /// <summary>
@@ -271,8 +273,10 @@ namespace Lodis.GridScripts
                         GetPanel(potentialPlayerSpawn, out _lhsPlayerSpawnPanel, false, GridAlignment.LEFT);
                 }
 
+                _barriers.Add(barrierObject.GetComponent<BarrierBehaviour>());
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
                 movement.MoveToPanel(spawnPanel.Position);
+                movement.Alignment = GridAlignment.LEFT;
             }
             //Spawns barriers for the right side
             foreach (Vector2 position in _rhsBarrierPositions)
@@ -291,9 +295,23 @@ namespace Lodis.GridScripts
                         GetPanel(potentialPlayerSpawn, out _rhsPlayerSpawnPanel, false, GridAlignment.RIGHT);
                 }
 
+                _barriers.Add(barrierObject.GetComponent<BarrierBehaviour>());
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
                 movement.MoveToPanel(spawnPanel.Position);
+                movement.Alignment = GridAlignment.RIGHT;
             }
+        }
+
+        public void AssignOwners(string lhsOwnerName, string rhsOwnerName = "")
+        {
+            foreach (BarrierBehaviour barrier in _barriers)
+            {
+                if (barrier.GetComponent<Movement.GridMovementBehaviour>().Alignment == GridAlignment.LEFT)
+                    barrier.Owner = lhsOwnerName;
+                else if (barrier.GetComponent<Movement.GridMovementBehaviour>().Alignment == GridAlignment.RIGHT)
+                    barrier.Owner = rhsOwnerName;
+            }
+
         }
 
         /// <summary>
