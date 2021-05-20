@@ -54,6 +54,9 @@ namespace Lodis.Gameplay
             _parryCollider.Owner = gameObject;
         }
 
+        /// <summary>
+        /// Makes the player invincible when they get up after being knocked back
+        /// </summary>
         private void MakeInvincibleOnGetUp()
         {
             Movement.Condition invincibilityCondition = condition => !_movement.IsMoving;
@@ -61,6 +64,12 @@ namespace Lodis.Gameplay
             _movement.AddOnMoveEndTempAction(() => StartCoroutine(RecoverInvincibiltyRoutine()));
         }
 
+        /// <summary>
+        /// Sets the player to be invincible after waiting one frame.
+        /// This is so that recover incincibility is activated after the condition check
+        /// for the previous invincibility call.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator RecoverInvincibiltyRoutine()
         {
             yield return new WaitForEndOfFrame();

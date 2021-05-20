@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.Utilities;
 using UnityEngine.InputSystem.Controls;
 using Lodis.Gameplay;
 using UnityEngine.Events;
+using Lodis.Movement;
 
 namespace Lodis.Input
 {
@@ -38,10 +39,15 @@ namespace Lodis.Input
             return false;
         }
 
+        public bool HasAction()
+        {
+            return _action != null;
+        }
+
         private InputBufferAction _action;
         private float _bufferClearTime;
         private float _bufferStartTime;
-        private Movement.Condition _useCondition;
+        private Condition _useCondition;
     }
 
 
@@ -51,6 +57,7 @@ namespace Lodis.Input
         private Movement.GridMovementBehaviour _gridMovement;
         private PlayerDefenseBehaviour _defense;
         private MovesetBehaviour _moveset;
+        private Condition _moveInputEnableCondition;
         [SerializeField]
         private bool _canMove = true;
         private Vector2 _storedMoveInput;
@@ -72,7 +79,7 @@ namespace Lodis.Input
         private bool _inputDisabled;
         private BufferedInput _bufferedAction;
         private PlayerState _playerState;
-        private  Ability _lastAbiliyUsed = null;
+        private Ability _lastAbilityUsed = null;
 
         public int PlayerID
         {
@@ -153,8 +160,8 @@ namespace Lodis.Input
 
         private void UseAbility(BasicAbilityType abilityType, object[] args)
         {
-            _lastAbiliyUsed = _moveset.UseBasicAbility(abilityType, args);
-            _lastAbiliyUsed.onEnd = EnableMovement;
+            _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
+            _moveInputEnableCondition = condition => !_moveset.AbilityInUse || _bufferedAction.HasAction();
         }
 
         /// <summary>
@@ -168,10 +175,23 @@ namespace Lodis.Input
         /// <summary>
         /// Disable player movement on grid
         /// </summary>
-        public void DisableMovement()
+        private void DisableMovement()
         {
             if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
             {
+                _canMove = false;
+                _storedMoveInput = Vector2.zero;
+            }
+        }
+
+        /// <summary>
+        /// Disable player movement on grid
+        /// </summary>
+        public void DisableMovementBasedOnCondition(Movement.Condition condition)
+        {
+            if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
+            {
+                _moveInputEnableCondition = condition;
                 _canMove = false;
                 _storedMoveInput = Vector2.zero;
             }
@@ -222,13 +242,22 @@ namespace Lodis.Input
                     _inputEnableCondition = null;
                 }
 
-            //Move if the is a movement stored and movement is allowed
+
+            //Move if there is a movement stored and movement is allowed
             if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
                 _gridMovement.Velocity = Vector2.zero;
                 _storedMoveInput = Vector2.zero;
             }
+
+            //Checks to see if move input can be enabled 
+            if (_moveInputEnableCondition != null)
+                if (_moveInputEnableCondition.Invoke())
+                {
+                    EnableMovement();
+                    _moveInputEnableCondition = null;
+                }
 
             //Stores the current attack direction input
             Vector3 attackDirInput = _actions.actionMaps[0].actions[5].ReadValue<Vector2>();

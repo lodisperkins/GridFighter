@@ -327,7 +327,7 @@ MonoBehaviour:
   _parryFallSpeed: 20
   _parryCollider: {fileID: 2118775293423436989}
   _parryInvincibilityLength: 0.5
-  _recoverInvincibilityLength: 5
+  _recoverInvincibilityLength: 1
   _canParry: 1
   _parryCooldown: 1
   _parrySpeedLimit: 10
