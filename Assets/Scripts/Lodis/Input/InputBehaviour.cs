@@ -55,7 +55,7 @@ namespace Lodis.Input
     public class InputBehaviour : MonoBehaviour
     {
         private Movement.GridMovementBehaviour _gridMovement;
-        private PlayerDefenseBehaviour _defense;
+        private CharacterDefenseBehaviour _defense;
         private MovesetBehaviour _moveset;
         private Condition _moveInputEnableCondition;
         [SerializeField]
@@ -111,7 +111,7 @@ namespace Lodis.Input
         {
             _gridMovement = GetComponent<Movement.GridMovementBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
-            _defense = GetComponent<PlayerDefenseBehaviour>();
+            _defense = GetComponent<CharacterDefenseBehaviour>();
         }
 
         /// <summary>

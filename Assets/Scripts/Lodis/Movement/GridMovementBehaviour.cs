@@ -141,42 +141,74 @@ namespace Lodis.Movement
                 Debug.LogError(name + " could not find starting panel");
         }
 
+        /// <summary>
+        /// Add a listener to the on move disabled event.
+        /// </summary>
+        /// <param name="action"></param>
         public void AddOnMoveDisabledAction(UnityAction action)
         {
             if ((object)_moveDisabledEventListener != null)
                 _moveDisabledEventListener.AddAction(action);
         }
 
+        /// <summary>
+        /// Add a listener to the on move enabled event.
+        /// </summary>
+        /// <param name="action"></param>
         public void AddOnMoveEnabledAction(UnityAction action)
         {
             if ((object)_moveEnabledEventListener != null)
                 _moveEnabledEventListener.AddAction(action);
         }
 
+        /// <summary>
+        /// Add a listener to the on move begin event.
+        /// </summary>
+        /// <param name="action"></param>
         public void AddOnMoveBeginAction(UnityAction action)
         {
             if ((object)_onMoveBegin != null)
                 _onMoveBegin.AddAction(action);
         }
 
+        /// <summary>
+        /// Add a listener to the on move begin event.
+        /// The listeners for this event are cleared after being invoked.
+        /// </summary>
+        /// <param name="action"></param>
         public void AddOnMoveBeginTempAction(UnityAction action)
         {
             if ((object)_onMoveBeginTemp != null)
                 _onMoveBeginTemp.AddAction(action);
         }
 
+        /// <summary>
+        /// Add a listener to the on move end event.
+        /// </summary>
+        /// <param name="action"></param>
         public void AddOnMoveEndAction(UnityAction action)
         {
             if ((object)_onMoveEnd != null)
                 _onMoveEnd.AddAction(action);
         }
 
+        /// <summary>
+        /// Add a listener to the on move end event.
+        /// The listeners for this event are cleared after being invoked.
+        /// </summary>
+        /// <param name="action"></param>
         public void AddOnMoveEndTempAction(UnityAction action)
         {
             if ((object)_onMoveEndTemp != null)
                 _onMoveEndTemp.AddAction(action);
         }
 
+        /// <summary>
+        /// Disables movement on the grid.
+        /// </summary>
+        /// <param name="enableCondition">When this condition is true, movement will be enabled.</param>
+        /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
+        /// its destination. If false, movement is stopped immediately.</param>
         public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true)
         {
             if (!_canMove)
@@ -196,6 +228,14 @@ namespace Lodis.Movement
             _moveDisabledEventListener.Invoke(gameObject);
         }
 
+        /// <summary>
+        /// Disables movement on the grid.
+        /// </summary>
+        /// <param name="moveEvent">When this event is raised, movement will be enabled.</param>
+        /// <param name="intendedSender">Thhe game object that will send the event. If null, movement will be 
+        /// enabled regardless of what raises the event.</param>
+        /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
+        /// its destination. If false, movement is stopped immediately.</param>
         public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true)
         {
             if (!_canMove)
@@ -265,8 +305,8 @@ namespace Lodis.Movement
         /// <summary>
         /// Moves the gameObject from its current panel to the panel at the given position.
         /// </summary>
-        /// <param name="panelPosition">The position of the panel on the grid that the gameObject will traver to.</param>
-        /// <param name="snapPosition">If true, teh gameObject will immediately teleport to its destination without a smooth transition.</param>
+        /// <param name="panelPosition">The position of the panel on the grid that the gameObject will travel to.</param>
+        /// <param name="snapPosition">If true, the gameObject will immediately teleport to its destination without a smooth transition.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
         public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE)
         {

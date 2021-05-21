@@ -4,40 +4,51 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
-    public class PlayerDefenseBehaviour : MonoBehaviour
+    /// <summary>
+    /// Handles all defensive options for any character on the grid.
+    /// </summary>
+    public class CharacterDefenseBehaviour : MonoBehaviour
     {
         private Movement.KnockbackBehaviour _knockBack;
         private Input.InputBehaviour _input;
         private Movement.GridMovementBehaviour _movement;
+        [Tooltip("How long the object will be parrying for.")]
         [SerializeField]
         private float _parryLength;
-        [SerializeField]
-        private float _parryForce;
+        [Tooltip("How quickly the character will fall after a successful mid-air parry.")]
         [SerializeField]
         private float _parryFallSpeed;
+        [Tooltip("The collision script for the parry object.")]
         [SerializeField]
         private ColliderBehaviour _parryCollider;
         private bool _isParrying;
+        [Tooltip("How long the character will be invincible for after a successful ground parry.")]
         [SerializeField]
         private float _parryInvincibilityLength;
+        [Tooltip("How long the character will be invincible for after getting up from a knockdown.")]
         [SerializeField]
         private float _recoverInvincibilityLength;
         private Material _material;
         private Color _defaultColor; 
+        [Tooltip("True if the parry cooldown timer is 0.")]
         [SerializeField]
         private bool _canParry = true;
+        [Tooltip("How long it takes in seconds for the character to be able to parry again.")]
         [SerializeField]
         private float _parryCooldown;
+        [Tooltip("If the magnitude of the velocity reaches this amount, the character can't parry.")]
         [SerializeField]
         private float _parrySpeedLimit;
+        [Tooltip("How long the character is left immobile after a failed parry.")]
         [SerializeField]
         private float _parryRestTime;
+        [Tooltip("How far the character will travel while air dodging.")]
         [SerializeField]
         private float _airDodgeDistance;
+        [Tooltip("How fast the character will travel while air dodging.")]
         [SerializeField]
         private float _airDodgeSpeed;
         private float _airDodgeDistanceTolerance = 0.1f;
-
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
 
@@ -76,76 +87,112 @@ namespace Lodis.Gameplay
             _knockBack.SetInvincibilityByTimer(_recoverInvincibilityLength);
         }
 
+        /// <summary>
+        /// Enables the parry collider and 
+        /// freezes the character in air for a brief moment.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator ActivateAirParryRoutine()
         {
-            Vector3 moveVelocity = Vector3.zero;
-
-            moveVelocity = _knockBack.LastVelocity;
-
+            //If the velocity the character is moving at is above the speed limit break
+            Vector3 moveVelocity = _knockBack.LastVelocity;
             if (moveVelocity.magnitude >= _parrySpeedLimit)
                 yield break;
 
+            //Stops the character from moving to make parrying easier
             _knockBack.FreezeInPlaceByTimer(_parryLength);
 
+            //Enable parry and update state
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;
             _canParry = false;
             _knockBack.InFreeFall = true;
 
+            //Start timer for parry
             yield return new WaitForSeconds(_parryLength);
+
+            //Disable parry
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
 
+            //If the parry wasn't successful, reapply the old velocity
             if (!_knockBack.IsInvincible)
                 _knockBack.ApplyVelocityChange(moveVelocity);
 
+            //Start the parry cooldown
             StartCoroutine(RechargeParry());
         }
 
+        /// <summary>
+        /// Enables the parry collider and freezes character actions
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator ActivateGroundParryRoutine()
         {
-            Vector3 moveVelocity = Vector3.zero;
-
+            //Enable parry and update states
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;
             _input.DisableInput(condition => _isParrying == false);
             _canParry = false;
             _knockBack.InFreeFall = true;
 
+            //Start timer for parry
             yield return new WaitForSeconds(_parryLength);
+
+            //Disable parry
             _parryCollider.gameObject.SetActive(false);
 
+            //Start timer for player immobility 
             yield return new WaitForSeconds(_parryRestTime);
 
+            //Allow the character to parry again
             _isParrying = false;
-
             _canParry = true;
         }
 
+        /// <summary>
+        /// Finds a new location based on the distance value and direction.
+        /// Then lerps character position to new location.
+        /// </summary>
+        /// <param name="direction">The direction the character is air dodging in.</param>
+        /// <returns></returns>
         private IEnumerator AirDodgeRoutine(Vector2 direction)
         {
+            //Find the new position after air dodging
             float lerpVal = 0;
-            Vector3 airDodgeForce = new Vector3(direction.x, 0, direction.y) * _airDodgeDistance;
-            Vector3 newPosition = transform.position + airDodgeForce;
+            Vector3 airDodgeOffset = new Vector3(direction.x, 0, direction.y) * _airDodgeDistance;
+            Vector3 newPosition = transform.position + airDodgeOffset;
+
+            //Stop all forces acting on the character
             _knockBack.StopVelocity();
 
+            //Move to location while the character isn't in range
             while (Vector3.Distance(transform.position, newPosition) > _airDodgeDistanceTolerance)
             {
                 //Sets the current position to be the current position in the interpolation
-                _knockBack.MoveRigidBodyToLocation(Vector3.Lerp(transform.position, newPosition, lerpVal += Time.deltaTime * _airDodgeSpeed));
+                //_knockBack.MoveRigidBodyToLocation(Vector3.Lerp(transform.position, newPosition, lerpVal += Time.deltaTime * _airDodgeSpeed));
                 //Waits until the next fixed update before resuming to be in line with any physics calls
                 yield return new WaitForFixedUpdate();
             }
 
+            //Start cooldown
             StartCoroutine(RechargeParry());
         }
 
+        /// <summary>
+        /// Gives the character the ability to parry after the cooldown.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator RechargeParry()
         {
             yield return new WaitForSeconds(_parryCooldown);
             _canParry = true;
         }
 
+        /// <summary>
+        /// Starts a parry cororoutine. The effects of the parry changes
+        /// based on whether or not the character is in hit stun.
+        /// </summary>
         public void ActivateParry()
         {
             if (_canParry && !_knockBack.InHitStun)
@@ -154,15 +201,24 @@ namespace Lodis.Gameplay
                 StartCoroutine(ActivateAirParryRoutine());
         }
 
+        /// <summary>
+        /// Moves the character in air for the amount of distance given for 
+        /// the airDodgeDistance value.
+        /// </summary>
+        /// <param name="direction">The direction to air dodge in.</param>
         public void ActivateAirDodge(Vector2 direction)
         {
             if (_canParry && _knockBack.InHitStun)
                 StartCoroutine(AirDodgeRoutine(direction));
         }
 
+        /// <summary>
+        /// Makes the character invincible after a collision occurs
+        /// </summary>
+        /// <param name="args">The collision arguments</param>
         private void ActivateInvinciblity(params object[] args)
         {
-
+            //Return if the object collided with doesn't have a collider script attached
             if (args.Length > 0)
             {
                 ColliderBehaviour collider = ((GameObject)args[0]).GetComponent<ColliderBehaviour>();
@@ -171,11 +227,14 @@ namespace Lodis.Gameplay
                     return;
             }
 
+            //Unfreeze the object if velocity was stopped in air
             _knockBack.UnfreezeObject();
 
+            //Deactivate the parry
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
 
+            //Apply force downward and make the character invincible if the character was in air
             if (_knockBack.InHitStun)
             {
                 _knockBack.StopVelocity();
@@ -184,12 +243,14 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            //Make the character invincible for a short amount of time if they're on the ground
             _knockBack.SetInvincibilityByTimer(_parryInvincibilityLength);
         }
 
         // Update is called once per frame
         void Update()
         {
+            //Update color
             if (_knockBack.IsInvincible)
                 _material.color = Color.green;
         }

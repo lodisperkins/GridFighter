@@ -122,6 +122,11 @@ namespace Lodis.Movement
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
         }
 
+        /// <summary>
+        /// True if the rigidbody is sleeping.
+        /// </summary>
+        /// <param name="args"></param>
+        /// <returns></returns>
         private bool RigidbodyInactive(object[] args = null)
         {
             return _rigidbody.IsSleeping();
@@ -139,10 +144,11 @@ namespace Lodis.Movement
                 _movementBehaviour.MoveToPanel(panel, false, GridScripts.GridAlignment.ANY);
         }
 
-        public void MoveRigidBodyToLocation(Vector3 position)
-        {
-            _rigidbody.MovePosition(position);
-        }
+        ///Was only used for airdodging. A better implementation should be considered.
+        //public void MoveRigidBodyToLocation(Vector3 position)
+        //{
+        //    _rigidbody.MovePosition(position);
+        //}
 
         /// <summary>
         /// Sets velocity and angular velocity to be zero
@@ -153,6 +159,9 @@ namespace Lodis.Movement
             _rigidbody.angularVelocity = Vector3.zero;
         }
 
+        /// <summary>
+        /// Set velocity and angular velocity to be zero and disables gravity.
+        /// </summary>
         public void StopAllForces()
         {
             _rigidbody.velocity = Vector3.zero;
@@ -160,6 +169,12 @@ namespace Lodis.Movement
             _rigidbody.useGravity = false;
         }
 
+        /// <summary>
+        /// Adds a force in the opposite direction of velocity to temporarily
+        /// keep the object in place.
+        /// </summary>
+        /// <param name="time">The amount of time in seconds to freeze for.</param>
+        /// <returns></returns>
         private IEnumerator FreezeCoroutine(float time)
         {
             float timeStarted = Time.time;
@@ -174,6 +189,11 @@ namespace Lodis.Movement
             Debug.Log("StopFreezing");
         }
 
+        /// <summary>
+        /// If the object is being effected by non grid forces, 
+        /// freeze the object in place for the given time.
+        /// </summary>
+        /// <param name="time">The amount of time in seconds to freeze in place.</param>
         public void FreezeInPlaceByTimer(float time)
         {
             _currentCoroutine = StartCoroutine(FreezeCoroutine(time));
@@ -183,12 +203,6 @@ namespace Lodis.Movement
         {
             if (_currentCoroutine != null)
                 StopCoroutine(_currentCoroutine);
-        }
-
-        public void EnableAllForces()
-        {
-            _rigidbody.useGravity = true;
-            _rigidbody.isKinematic = true;
         }
 
         /// <summary>
@@ -212,6 +226,7 @@ namespace Lodis.Movement
                 return new Vector3();
             }
 
+            //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(hitAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
             {
                 ApplyImpulseForce(Vector3.up * knockbackScale * 2);
@@ -243,6 +258,10 @@ namespace Lodis.Movement
             return new Vector3(Mathf.Cos(hitAngle), Mathf.Sin(hitAngle)) * magnitude;
         }
 
+        /// <summary>
+        /// Add a listener to the onKnockBack event.
+        /// </summary>
+        /// <param name="action">The new listener for the event.</param>
         public void AddOnKnockBackAction(UnityAction action)
         {
             _onKnockBack += action;
@@ -276,14 +295,24 @@ namespace Lodis.Movement
             damageScript.TakeDamage(name, velocityMagnitude, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
         }
 
-        public void ApplyVelocityChange(Vector3 force)
+        /// <summary>
+        /// Adds an instant change in velocity to the object ignoring mass.
+        /// </summary>
+        /// <param name="velocity">The new velocity for the object.</param>
+        public void ApplyVelocityChange(Vector3 velocity)
         {
+            //Prevent movement if not in hitstun.
             if (!InHitStun)
                 _movementBehaviour.DisableMovement(_objectAtRest, false);
 
-            _rigidbody.AddForce(force, ForceMode.VelocityChange);
+            _rigidbody.AddForce(velocity, ForceMode.VelocityChange);
         }
 
+        /// <summary>
+        /// Adds an instant force impulse using the objects mass.
+        /// Disables movement if not in hitstun.
+        /// </summary>
+        /// <param name="force">The force to apply to the object.</param>
         public void ApplyImpulseForce(Vector3 force)
         {
             if (!InHitStun)
