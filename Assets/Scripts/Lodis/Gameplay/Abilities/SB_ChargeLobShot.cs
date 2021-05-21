@@ -40,8 +40,8 @@ namespace Lodis.Gameplay
             abilityType = BasicAbilityType.STRONGBACKWARD;
             name = "SB_LobShot";
             timeActive = .2f;
-            recoverTime = .1f;
-            startUpTime = .1f;
+            recoverTime = .3f;
+            startUpTime = .2f;
             canCancel = false;
             owner = newOwner;
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();

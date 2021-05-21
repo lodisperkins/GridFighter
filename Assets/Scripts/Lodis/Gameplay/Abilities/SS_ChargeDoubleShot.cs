@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
             abilityType = BasicAbilityType.STRONGSIDE;
             name = "SS_DoubleShot";
             timeActive = .2f;
-            recoverTime = .1f;
+            recoverTime = .3f;
             startUpTime = .1f;
             canCancel = false;
             owner = newOwner;

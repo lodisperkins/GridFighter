@@ -57,8 +57,10 @@ namespace Lodis.Gameplay
         }
 
         // Update is called once per frame
-        void Update()
+        public override void Update()
         {
+            base.Update();
+
             int layerMask = LayerMask.GetMask(_visibleLayers);
 
             if (Physics.Raycast(transform.position, Vector3.forward, 1, layerMask))

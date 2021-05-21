@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
             abilityType = BasicAbilityType.WEAKFORWARD;
             name = "WF_ForwardShot";
             timeActive = .2f;
-            recoverTime = .1f;
+            recoverTime = .2f;
             startUpTime = .1f;
             canCancel = false;
             owner = newOwner;
