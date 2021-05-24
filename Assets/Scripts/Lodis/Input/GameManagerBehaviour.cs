@@ -11,6 +11,7 @@ namespace Lodis.Gameplay
     public enum GameMode
     {
         SINGLEPLAYER,
+        PRACTICE,
         MULTIPLAYER
     }
 
@@ -40,6 +41,10 @@ namespace Lodis.Gameplay
         private RingBarrierBehaviour _ringBarrierL;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierR;
+        [SerializeField]
+        private AI.AttackDummyBehaviour _dummy;
+        [SerializeField]
+        private Vector2 _dummySpawnLocation;
 
         private void Awake()
         {
@@ -98,6 +103,39 @@ namespace Lodis.Gameplay
                 //Move player to spawn
                 _p2Input.PlayerID = 1;
                 _p2Movement.Position = _grid.RhsSpawnPanel.Position;
+                _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
+                _grid.AssignOwners(_player1.name, _player2.name);
+                return;
+            }
+            else if (_mode == GameMode.PRACTICE)
+            {
+                _inputManager.playerPrefab = _dummy.gameObject;
+
+                _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[2]);
+                _player2 = PlayerInput.GetPlayerByIndex(1);
+                _player2.name = _player2.name + "(Dummy)";
+                _ringBarrierR.owner = _player2.name;
+                _player2.transform.forward = Vector3.left;
+
+                //Get reference to player 2 components
+                _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
+                _p2StateManager = _player2.GetComponent<PlayerStateManagerBehaviour>();
+                _p2Input = _player2.GetComponent<Input.InputBehaviour>();
+
+                //Initialize base UI stats
+                _p2HealthBar.HealthComponent = _player2.GetComponent<Movement.KnockbackBehaviour>();
+                _p2HealthBar.MaxValue = 200;
+
+                //Move player to spawn
+                _p2Input.PlayerID = 1;
+
+                //Find spawn point for dummy
+                GridScripts.PanelBehaviour spawnPanel = null;
+                if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))
+                    _p2Movement.Position = spawnPanel.Position;
+                else
+                    Debug.LogError("Invalid spawn point for dummy. Spawn was " + spawnPanel.Position);
+
                 _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
                 _grid.AssignOwners(_player1.name, _player2.name);
                 return;
