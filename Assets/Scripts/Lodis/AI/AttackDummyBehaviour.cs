@@ -11,27 +11,28 @@ namespace Lodis.AI
         private Gameplay.BasicAbilityType _attackType;
         [SerializeField]
         private float _attackDelay;
+        private float _timeOfLastAttack;
         [SerializeField]
         private float _attackStrength;
         [SerializeField]
         private float _zDirection;
         private Gameplay.PlayerStateManagerBehaviour _playerState;
-
+        private Movement.KnockbackBehaviour _knockbackBehaviour;
         // Start is called before the first frame update
         void Start()
         {
             _moveset = GetComponent<Gameplay.MovesetBehaviour>();
             _playerState = GetComponent<Gameplay.PlayerStateManagerBehaviour>();
-            StartCoroutine(AttackRoutine());
+            _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
         }
 
-        private IEnumerator AttackRoutine()
+        public void Update()
         {
-            while (_playerState.CurrentState == Gameplay.PlayerState.IDLE)
+            if (!_knockbackBehaviour.InHitStun && !_knockbackBehaviour.InFreeFall && Time.time - _timeOfLastAttack >= _attackDelay)
             {
-                yield return new WaitForSeconds(_attackDelay);
                 _zDirection = Mathf.Clamp(_zDirection, -1, 1);
-                _moveset.UseBasicAbility(_attackType, (_attackStrength, _zDirection));
+                _moveset.UseBasicAbility(_attackType, new object[]{_attackStrength, _zDirection});
+                _timeOfLastAttack = Time.time;
             }
         }
     }

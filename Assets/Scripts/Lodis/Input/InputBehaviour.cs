@@ -200,16 +200,17 @@ namespace Lodis.Input
         /// <summary>
         /// Enable player movement
         /// </summary>
-        public void EnableMovement()
+        public bool EnableMovement()
         {
             //Don't enable if player is in knockback or in free fall
             if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
             {
                 _moveInputEnableCondition = condition => _playerState == PlayerState.IDLE;
-                return;
+                return false;
             }
 
             _canMove = true;
+            return true;
         }
 
         public void DisableInput(Movement.Condition condition)
@@ -258,8 +259,8 @@ namespace Lodis.Input
             if (_moveInputEnableCondition != null)
                 if (_moveInputEnableCondition.Invoke())
                 {
-                    EnableMovement();
-                    _moveInputEnableCondition = null;
+                    if (EnableMovement())
+                        _moveInputEnableCondition = null;
                 }
 
             //Stores the current attack direction input

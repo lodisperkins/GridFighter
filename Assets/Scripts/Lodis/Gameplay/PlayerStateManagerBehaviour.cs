@@ -20,6 +20,7 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _moveset;
         private Input.InputBehaviour _input;
         private Movement.GridMovementBehaviour _movement;
+        [SerializeField]
         private PlayerState _currentState;
 
         // Start is called before the first frame update

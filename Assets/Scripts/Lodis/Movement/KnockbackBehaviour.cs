@@ -344,12 +344,12 @@ namespace Lodis.Movement
             Health += damage;
 
             //Calculates force and applies it to the rigidbody
-            _rigidbody.isKinematic = false;
             Vector3 knockBackForce = CalculateKnockbackForce(knockBackScale, hitAngle);
 
             if (knockBackForce.magnitude > 0)
             {
                 _velocityOnLaunch = knockBackForce;
+                _rigidbody.isKinematic = false;
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(_objectAtRest, false);
                 //Add force to object

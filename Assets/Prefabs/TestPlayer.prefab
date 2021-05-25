@@ -310,6 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4e7cd0a642e6544ea7fca05fc8e354e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _currentState: 0
 --- !u!114 &2612010366639249464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -322,10 +323,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515641295c2b6d349bf41285419a96fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parryLength: 0.2
+  _parryLength: 5
   _parryFallSpeed: 20
   _parryCollider: {fileID: 2118775293423436989}
-  _parryInvincibilityLength: 0.5
+  _parryInvincibilityLength: 1
   _recoverInvincibilityLength: 0.5
   _canParry: 1
   _parryCooldown: 1

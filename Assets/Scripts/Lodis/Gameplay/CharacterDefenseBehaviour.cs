@@ -59,6 +59,7 @@ namespace Lodis.Gameplay
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
+            _knockBack.AddOnKnockBackAction(() => _canParry = true);
             _material = GetComponent<Renderer>().material;
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
@@ -142,8 +143,9 @@ namespace Lodis.Gameplay
             //Disable parry
             _parryCollider.gameObject.SetActive(false);
 
-            //Start timer for player immobility 
-            yield return new WaitForSeconds(_parryRestTime);
+            //Start timer for player immobility
+            if (!_knockBack.IsInvincible)
+                yield return new WaitForSeconds(_parryRestTime);
 
             //Allow the character to parry again
             _isParrying = false;
@@ -226,6 +228,9 @@ namespace Lodis.Gameplay
                 if (!collider)
                     return;
             }
+
+            _parryCollider.gameObject.SetActive(false);
+            _isParrying = false;
 
             //Unfreeze the object if velocity was stopped in air
             _knockBack.UnfreezeObject();
