@@ -492,3 +492,4 @@ MonoBehaviour:
   _timeActive: 0
   _isMultiHit: 1
   _destroyOnHit: 0
+  ignoreColliders: 0

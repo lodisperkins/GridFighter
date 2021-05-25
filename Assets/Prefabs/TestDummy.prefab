@@ -158,6 +158,7 @@ MonoBehaviour:
   _timeActive: 0
   _isMultiHit: 1
   _destroyOnHit: 0
+  ignoreColliders: 0
 --- !u!1 &5680485170780137523
 GameObject:
   m_ObjectHideFlags: 0

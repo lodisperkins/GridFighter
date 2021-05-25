@@ -28,6 +28,7 @@ namespace Lodis.Gameplay
         /// First argument is game object it collided with.
         /// </summary>
         public CollisionEvent onHit;
+        public bool ignoreColliders = true;
 
         public GameObject Owner
         {
@@ -41,7 +42,7 @@ namespace Lodis.Gameplay
             }
         }
 
-        public ColliderBehaviour() { }
+        public ColliderBehaviour() {}
 
         public ColliderBehaviour(bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
         {
@@ -105,7 +106,7 @@ namespace Lodis.Gameplay
             }
                 
 
-            if (otherCollider)
+            if (otherCollider && ignoreColliders)
                     return;
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -136,10 +137,10 @@ namespace Lodis.Gameplay
                 otherGameObject = other.gameObject;
             }
 
-            if (otherCollider)
+            if (otherCollider && ignoreColliders)
                 return;
 
-            onHit?.Invoke(other.gameObject);
+            onHit?.Invoke(otherGameObject, otherCollider);
 
             if (_destroyOnHit)
                 Destroy(gameObject);
@@ -164,7 +165,7 @@ namespace Lodis.Gameplay
                 otherGameObject = collision.gameObject;
             }
 
-            if (otherCollider)
+            if (otherCollider && ignoreColliders)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again

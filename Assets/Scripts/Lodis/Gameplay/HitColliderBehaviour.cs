@@ -43,6 +43,7 @@ namespace Lodis.Gameplay
             : base()
         {
             Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision);
+
         }
 
         private void Awake()
@@ -84,6 +85,7 @@ namespace Lodis.Gameplay
             _destroyOnHit = destroyOnHit;
             _isMultiHit = isMultiHit;
             _adjustAngleBasedOnCollision = angleChangeOnCollision;
+            ignoreColliders = true;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -97,7 +99,7 @@ namespace Lodis.Gameplay
             if (other.attachedRigidbody)
                 otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
-            if (otherCollider)
+            if (otherCollider && ignoreColliders)
                     return;
 
             if (_adjustAngleBasedOnCollision)
@@ -140,7 +142,7 @@ namespace Lodis.Gameplay
             if (other.attachedRigidbody)
                 otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
-            if (otherCollider)
+            if (otherCollider && ignoreColliders)
                 return;
 
             //Grab whatever health script is attached to this object. If none return
@@ -181,7 +183,7 @@ namespace Lodis.Gameplay
             if (collision.collider.attachedRigidbody)
                 otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
-            if (otherCollider)
+            if (otherCollider && ignoreColliders)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again
