@@ -106,10 +106,7 @@ namespace Lodis.Gameplay
                 
 
             if (otherCollider)
-            {
-                if (otherCollider.Owner == Owner)
                     return;
-            }
 
             //Add the game object to the list of collisions so it is not collided with again
             _collisions.Add(other.gameObject);
@@ -126,6 +123,22 @@ namespace Lodis.Gameplay
             if (!_isMultiHit || other.gameObject == _owner)
                 return;
 
+            ColliderBehaviour otherCollider = null;
+            GameObject otherGameObject = null;
+
+            if (other.attachedRigidbody)
+            {
+                otherGameObject = other.attachedRigidbody.gameObject;
+                otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
+            }
+            else
+            {
+                otherGameObject = other.gameObject;
+            }
+
+            if (otherCollider)
+                return;
+
             onHit?.Invoke(other.gameObject);
 
             if (_destroyOnHit)
@@ -136,6 +149,22 @@ namespace Lodis.Gameplay
         {
             //If the object has already been hit or if the collider is multihit return
             if (_collisions.Contains(collision.gameObject) || _isMultiHit || collision.gameObject == _owner)
+                return;
+
+            ColliderBehaviour otherCollider = null;
+            GameObject otherGameObject = null;
+
+            if (collision.collider.attachedRigidbody)
+            {
+                otherGameObject = collision.collider.attachedRigidbody.gameObject;
+                otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
+            }
+            else
+            {
+                otherGameObject = collision.gameObject;
+            }
+
+            if (otherCollider)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again

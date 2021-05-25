@@ -43,8 +43,9 @@ namespace Lodis.Gameplay
         public UnityAction onActivate = null;
         //Called when the ability is used and before the character has recovered
         public UnityAction onDeactivate = null;
-
         private bool _inUse;
+
+        
 
         /// <summary>
         /// Returns false at the end of the ability's recover time

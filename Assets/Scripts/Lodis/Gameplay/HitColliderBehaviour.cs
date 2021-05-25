@@ -98,10 +98,7 @@ namespace Lodis.Gameplay
                 otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
             if (otherCollider)
-            {
-                if (otherCollider.Owner == Owner)
                     return;
-            }
 
             if (_adjustAngleBasedOnCollision)
             {
@@ -138,6 +135,14 @@ namespace Lodis.Gameplay
             if (!_isMultiHit || other.gameObject == _owner)
                 return;
 
+            ColliderBehaviour otherCollider = null;
+
+            if (other.attachedRigidbody)
+                otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
+
+            if (otherCollider)
+                return;
+
             //Grab whatever health script is attached to this object. If none return
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
 
@@ -169,6 +174,14 @@ namespace Lodis.Gameplay
         {
             //If the object has already been hit or if the collider is multihit return
             if (_collisions.Contains(collision.gameObject) || _isMultiHit || collision.gameObject == _owner)
+                return;
+
+            ColliderBehaviour otherCollider = null;
+
+            if (collision.collider.attachedRigidbody)
+                otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
+
+            if (otherCollider)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again

@@ -231,6 +231,7 @@ namespace Lodis.Gameplay
 
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
+            _canParry = true;
 
             //Unfreeze the object if velocity was stopped in air
             _knockBack.UnfreezeObject();
