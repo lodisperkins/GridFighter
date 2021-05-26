@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
-            _knockBack.AddOnKnockBackAction(() => _canParry = true);
+            _knockBack.AddOnKnockBackAction(ResetParry);
             _material = GetComponent<Renderer>().material;
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
@@ -135,7 +135,6 @@ namespace Lodis.Gameplay
             _isParrying = true;
             _input.DisableInput(condition => _isParrying == false);
             _canParry = false;
-            _knockBack.InFreeFall = true;
 
             //Start timer for parry
             yield return new WaitForSeconds(_parryLength);
@@ -201,6 +200,14 @@ namespace Lodis.Gameplay
                 StartCoroutine(ActivateGroundParryRoutine());
             else if (_canParry)
                 StartCoroutine(ActivateAirParryRoutine());
+        }
+
+        public void ResetParry()
+        {
+            _knockBack.DisableInvincibility();
+            _parryCollider.gameObject.SetActive(false);
+            _isParrying = false;
+            _canParry = true;
         }
 
         /// <summary>

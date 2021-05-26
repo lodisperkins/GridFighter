@@ -257,11 +257,13 @@ namespace Lodis.Input
 
             //Checks to see if move input can be enabled 
             if (_moveInputEnableCondition != null)
+            {
                 if (_moveInputEnableCondition.Invoke())
                 {
                     if (EnableMovement())
                         _moveInputEnableCondition = null;
                 }
+            }
 
             //Stores the current attack direction input
             Vector3 attackDirInput = _actions.actionMaps[0].actions[5].ReadValue<Vector2>();

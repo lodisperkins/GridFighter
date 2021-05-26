@@ -86,6 +86,13 @@ namespace Lodis.Gameplay
             _isInvincible = true;
         }
 
+        public void DisableInvincibility()
+        {
+            StopAllCoroutines();
+            _invincibilityCondition = null;
+            _isInvincible = false;
+        }
+
         public virtual void OnCollisionEnter(Collision collision)
         {
             Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();

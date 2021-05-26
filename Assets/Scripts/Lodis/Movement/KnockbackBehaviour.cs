@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Lodis.Gameplay;
 using UnityEngine.Events;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.Movement
 {
@@ -34,6 +35,8 @@ namespace Lodis.Movement
         private bool _inFreeFall;
         private Coroutine _currentCoroutine;
         private UnityAction _onKnockBack;
+        [SerializeField]
+        private FloatVariable _velocityDecayRate;
 
         public bool UseGravity
         {
