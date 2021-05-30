@@ -177,6 +177,9 @@ namespace Lodis.Input
         /// </summary>
         private void DisableMovement()
         {
+            if (!_canMove)
+                return;
+
             if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
             {
                 _canMove = false;
@@ -189,6 +192,9 @@ namespace Lodis.Input
         /// </summary>
         public void DisableMovementBasedOnCondition(Movement.Condition condition)
         {
+            if (!_canMove)
+                return;
+
             if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
             {
                 _moveInputEnableCondition = condition;

@@ -3120,7 +3120,7 @@ MonoBehaviour:
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 0
+  _isInvincible: 1
   owner: 
 --- !u!64 &894189966
 MeshCollider:
@@ -6326,6 +6326,7 @@ MonoBehaviour:
   _timeActive: 0
   _isMultiHit: 0
   _destroyOnHit: 0
+  ignoreColliders: 0
   _damage: 0
   _knockBackScale: 0
   _hitAngle: 3

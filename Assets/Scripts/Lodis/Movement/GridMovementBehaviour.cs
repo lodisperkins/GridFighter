@@ -19,9 +19,10 @@ namespace Lodis.Movement
         [Tooltip("The position of the object on the grid.")]
         private Vector2 _position;
         private Vector3 _targetPosition;
+        private PanelBehaviour _targetPanel = null;
         [SerializeField]
         [Tooltip("This is how close the object has to be to the panel it's moving towards to say its reached it.")]
-        private float _targetTolerance;
+        private float _targetTolerance = 0.05f;
         [SerializeField]
         [Tooltip("The current direction the object is moving in.")]
         private Vector2 _velocity;
@@ -46,6 +47,7 @@ namespace Lodis.Movement
         private GridGame.GameEventListener _onMoveEndTemp;
         [SerializeField]
         private bool _moveToAlignedSideIfStuck = true;
+        private KnockbackBehaviour _knockbackBehaviour;
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -117,6 +119,14 @@ namespace Lodis.Movement
             }
         }
 
+        public PanelBehaviour TargetPanel
+        {
+            get
+            {
+                return _targetPanel;
+            }
+        }
+
         private void Awake()
         {
             //initialize events
@@ -126,7 +136,7 @@ namespace Lodis.Movement
             _onMoveBeginTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEndTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
-           // _moveEnabledEventListener.AddAction(MoveToClosestAlignedPanelOnRow);
+            _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
 
             //Set the starting position
             _targetPosition = transform.position;
@@ -139,6 +149,9 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = true;
             else
                 Debug.LogError(name + " could not find starting panel");
+
+            if (_knockbackBehaviour)
+                _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
         }
 
         /// <summary>
@@ -294,7 +307,6 @@ namespace Lodis.Movement
 
             while (transform.position != newPosition)
             {
-
                 //Sets the current position to be the current position in the interpolation
                 transform.position = Vector3.Lerp(startPosition, newPosition, lerpVal += Time.deltaTime * _speed);
                 //Waits until the next fixed update before resuming to be in line with any physics calls
@@ -316,16 +328,16 @@ namespace Lodis.Movement
             if (IsMoving && !canCancelMovement || !_canMove)
                 return false;
 
-            PanelBehaviour targetPanel;
-
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Grid.GetPanel(panelPosition, out targetPanel, _position == panelPosition, tempAlignment))
+            if (!BlackBoardBehaviour.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition, tempAlignment))
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
             _targetPosition = newPosition;
+
+            SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
@@ -342,7 +354,7 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
-            _currentPanel = targetPanel;
+            _currentPanel = _targetPanel;
             _currentPanel.Occupied = true;
             _position = _currentPanel.Position;
 
@@ -364,16 +376,16 @@ namespace Lodis.Movement
             if (IsMoving && !canCancelMovement ||!_canMove)
                 return false;
 
-            PanelBehaviour targetPanel;
-
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Grid.GetPanel(x, y, out targetPanel, _position == new Vector2( x,y), tempAlignment))
+            if (!BlackBoardBehaviour.Grid.GetPanel(x, y, out _targetPanel, _position == new Vector2( x,y), tempAlignment))
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
             _targetPosition = newPosition;
+
+            SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
@@ -390,7 +402,7 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
-            _currentPanel = targetPanel;
+            _currentPanel = _targetPanel;
             _currentPanel.Occupied = true;
             _position = _currentPanel.Position;
             return true;
@@ -410,14 +422,19 @@ namespace Lodis.Movement
             if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
                 return false;
 
+            _targetPanel = targetPanel;
+
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
             _targetPosition = newPosition;
+
+            SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
+                
                 transform.position = newPosition;
             }
             else
@@ -430,7 +447,7 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
-            _currentPanel = targetPanel;
+            _currentPanel = _targetPanel;
             _currentPanel.Occupied = true;
             _position = _currentPanel.Position;
 
@@ -501,6 +518,8 @@ namespace Lodis.Movement
                 }
             }
 
+
+            Debug.Log(_isMoving);
             MoveToClosestAlignedPanelOnRow();
         }
     }
