@@ -36,9 +36,11 @@ namespace Lodis.Gameplay
         [Tooltip("How long it takes in seconds for the character to be able to parry again.")]
         [SerializeField]
         private float _parryCooldown;
+        private float _tempParryCooldown;
         [Tooltip("If the magnitude of the velocity reaches this amount, the character can't parry.")]
         [SerializeField]
         private float _parrySpeedLimit;
+        private float _tempParrySpeedLimit;
         [Tooltip("How long the character is left immobile after a failed parry.")]
         [SerializeField]
         private float _parryRestTime;
@@ -49,6 +51,13 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _airDodgeSpeed;
         private float _airDodgeDistanceTolerance = 0.1f;
+        [SerializeField]
+        private float _parryCoolDownDecreaseRate;
+        [SerializeField]
+        private float _parrySpeedLimitIncreaseRate;
+        [SerializeField]
+        private float _parryUpgradeRate;
+
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
 
@@ -60,6 +69,7 @@ namespace Lodis.Gameplay
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
             _knockBack.AddOnKnockBackAction(ResetParry);
+            _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
             _material = GetComponent<Renderer>().material;
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
@@ -97,7 +107,7 @@ namespace Lodis.Gameplay
         {
             //If the velocity the character is moving at is above the speed limit break
             Vector3 moveVelocity = _knockBack.LastVelocity;
-            if (moveVelocity.magnitude >= _parrySpeedLimit)
+            if (moveVelocity.magnitude >= _tempParrySpeedLimit)
                 yield break;
 
             //Stops the character from moving to make parrying easier
@@ -121,7 +131,7 @@ namespace Lodis.Gameplay
                 _knockBack.ApplyVelocityChange(moveVelocity);
 
             //Start the parry cooldown
-            StartCoroutine(RechargeParry());
+            StartCoroutine(RechargeParry(_tempParryCooldown));
         }
 
         /// <summary>
@@ -177,17 +187,27 @@ namespace Lodis.Gameplay
             }
 
             //Start cooldown
-            StartCoroutine(RechargeParry());
+            StartCoroutine(RechargeParry(_parryCooldown));
         }
 
         /// <summary>
         /// Gives the character the ability to parry after the cooldown.
         /// </summary>
         /// <returns></returns>
-        private IEnumerator RechargeParry()
+        private IEnumerator RechargeParry(float parryCooldown)
         {
-            yield return new WaitForSeconds(_parryCooldown);
+            yield return new WaitForSeconds(parryCooldown);
             _canParry = true;
+        }
+
+        private IEnumerator UpgradeParry()
+        {
+            while (_knockBack.InHitStun || _knockBack.InFreeFall)
+            {
+                yield return new WaitForSeconds(_parryUpgradeRate);
+                _tempParryCooldown -= _parryCoolDownDecreaseRate;
+                _tempParrySpeedLimit += _parrySpeedLimitIncreaseRate;
+            }
         }
 
         /// <summary>
@@ -266,6 +286,12 @@ namespace Lodis.Gameplay
             //Update color
             if (_knockBack.IsInvincible)
                 _material.color = Color.green;
+
+            if (_knockBack.CheckIfAtRest())
+            {
+                _tempParryCooldown = _parryCooldown;
+                _tempParrySpeedLimit = _parrySpeedLimit;
+            }
         }
     }
 }

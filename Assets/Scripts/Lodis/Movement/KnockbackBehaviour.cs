@@ -172,6 +172,11 @@ namespace Lodis.Movement
             _rigidbody.useGravity = false;
         }
 
+        public bool CheckIfAtRest()
+        {
+            return !InHitStun && !InFreeFall && _rigidbody.isKinematic;
+        }
+
         /// <summary>
         /// Adds a force in the opposite direction of velocity to temporarily
         /// keep the object in place.
