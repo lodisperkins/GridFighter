@@ -23,6 +23,7 @@ namespace Lodis.Gameplay
         protected float _startTime;
         protected GameObject _owner;
         protected List<GameObject> _collisions;
+        protected string ownerName = "NoOwner";
         /// <summary>
         /// Collision event called when this collider hits another. 
         /// First argument is game object it collided with.

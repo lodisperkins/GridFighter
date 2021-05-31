@@ -80,7 +80,7 @@ namespace Lodis.Input
         private BufferedInput _bufferedAction;
         private PlayerState _playerState;
         private Ability _lastAbilityUsed = null;
-
+        private bool _attackButtonDown;
         public int PlayerID
         {
             get
@@ -101,9 +101,10 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
             _actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
             _actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
-            _actions.actionMaps[0].actions[4].started += context => DisableMovement();
-            _actions.actionMaps[0].actions[4].performed += context => BufferAbility(context, new object[2]);
-            _actions.actionMaps[0].actions[6].performed += context => _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
+            _actions.actionMaps[0].actions[4].started += context => { DisableMovement(); _attackButtonDown = true; };
+            _actions.actionMaps[0].actions[4].canceled += context => _attackButtonDown = false;
+            _actions.actionMaps[0].actions[4].performed += context => { BufferAbility(context, new object[2]); _attackButtonDown = false; };
+            _actions.actionMaps[0].actions[6].performed += context => BufferParry(context);
         }
 
         // Start is called before the first frame update
@@ -158,6 +159,22 @@ namespace Lodis.Input
             _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
         }
 
+
+        /// <summary>
+        /// Buffers a parry only if the attack button is not being pressed
+        /// </summary>
+        /// <param name="context"></param>
+        public void BufferParry(InputAction.CallbackContext context)
+        {
+            if (_attackButtonDown)
+                return;
+            else if (_bufferedAction == null)
+                _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
+            else if (!_bufferedAction.HasAction() || _playerState == PlayerState.KNOCKBACK
+                || _playerState == PlayerState.FREEFALL)
+                _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
+        }
+
         private void UseAbility(BasicAbilityType abilityType, object[] args)
         {
             _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
@@ -173,11 +190,12 @@ namespace Lodis.Input
         }
 
         /// <summary>
-        /// Disable player movement on grid
+        /// Disable player movement on grid. Mainly used to prevent player from moving while attacking.
+        /// USE CAREFULLY
         /// </summary>
         private void DisableMovement()
         {
-            if (!_canMove)
+            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
                 return;
 
             if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
@@ -192,9 +210,6 @@ namespace Lodis.Input
         /// </summary>
         public void DisableMovementBasedOnCondition(Movement.Condition condition)
         {
-            if (!_canMove)
-                return;
-
             if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
             {
                 _moveInputEnableCondition = condition;
@@ -269,6 +284,10 @@ namespace Lodis.Input
                     if (EnableMovement())
                         _moveInputEnableCondition = null;
                 }
+            }
+            else if (!_attackButtonDown && !_canMove)
+            {
+                EnableMovement();
             }
 
             //Stores the current attack direction input

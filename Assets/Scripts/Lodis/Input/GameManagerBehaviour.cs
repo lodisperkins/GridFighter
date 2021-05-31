@@ -134,7 +134,7 @@ namespace Lodis.Gameplay
                 if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))
                     _p2Movement.Position = spawnPanel.Position;
                 else
-                    Debug.LogError("Invalid spawn point for dummy. Spawn was " + spawnPanel.Position);
+                    Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummySpawnLocation);
 
                 _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
                 _grid.AssignOwners(_player1.name, _player2.name);

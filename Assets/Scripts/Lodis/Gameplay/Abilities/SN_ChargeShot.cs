@@ -15,6 +15,9 @@ namespace Lodis.Gameplay
         public float shotSpeed = 15;
         public float shotDamage = 15;
         public float knockBackScale = 1;
+        public float hitAngle = 0.4f;
+        public float lifeTime = 1.0f;
+
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
@@ -29,8 +32,8 @@ namespace Lodis.Gameplay
             abilityType = BasicAbilityType.STRONGNEUTRAL;
             name = "SN_ChargeShot";
             timeActive = .2f;
-            recoverTime = .2f;
-            startUpTime = .2f;
+            recoverTime = 1.5f;
+            startUpTime = .3f;
             canCancel = false;
             owner = newOwner;
            

@@ -4674,7 +4674,7 @@ MonoBehaviour:
   _ringBarrierL: {fileID: 894189965}
   _ringBarrierR: {fileID: 151772237}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
-  _dummySpawnLocation: {x: 6, y: 0}
+  _dummySpawnLocation: {x: 8, y: 0}
 --- !u!114 &1441118449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6328,9 +6328,9 @@ MonoBehaviour:
   _destroyOnHit: 0
   ignoreColliders: 0
   _damage: 0
-  _knockBackScale: 0
-  _hitAngle: 3
-  _adjustAngleBasedOnCollision: 1
+  _knockBackScale: 1
+  _hitAngle: 2
+  _adjustAngleBasedOnCollision: 0
   damageType: 0
 --- !u!65 &1854253617
 BoxCollider:
@@ -6399,9 +6399,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1854253615}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.05, y: 5.7, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2.937, y: 0.469, z: 0.502}
+  m_LocalScale: {x: 0.28803, y: 0.28803, z: 0.28803}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 9

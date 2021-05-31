@@ -121,9 +121,12 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
 
+            if (Owner)
+                ownerName = Owner.name;
+
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(Owner.name, _damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(ownerName, _damage, _knockBackScale, _hitAngle, damageType);
 
             onHit?.Invoke(other.gameObject, otherCollider);
 
@@ -162,9 +165,12 @@ namespace Lodis.Gameplay
                 _hitAngle = Mathf.Acos(Vector3.Dot(currentForceDirection, Vector3.right));
             }
 
+            if (Owner)
+                ownerName = Owner.name;
+
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(Owner.name, _damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(ownerName, _damage, _knockBackScale, _hitAngle, damageType);
 
             onHit?.Invoke(other.gameObject);
 
@@ -206,9 +212,12 @@ namespace Lodis.Gameplay
                 _hitAngle = Mathf.Acos(Vector3.Dot(currentForceDirection, Vector3.right));
             }
 
+            if (Owner)
+                ownerName = Owner.name;
+
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(Owner.name, _damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(ownerName, _damage, _knockBackScale, _hitAngle, damageType);
 
             onHit?.Invoke(collision.gameObject);
 

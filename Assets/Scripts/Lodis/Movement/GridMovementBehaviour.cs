@@ -419,6 +419,9 @@ namespace Lodis.Movement
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
 
+            if (!targetPanel)
+                return false;
+
             if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
                 return false;
 

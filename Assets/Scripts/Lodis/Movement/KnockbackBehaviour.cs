@@ -304,6 +304,10 @@ namespace Lodis.Movement
         /// <param name="velocity">The new velocity for the object.</param>
         public void ApplyVelocityChange(Vector3 velocity)
         {
+            _movementBehaviour.canCancelMovement = true;
+            _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+            _movementBehaviour.canCancelMovement = false;
+
             //Prevent movement if not in hitstun.
             if (!InHitStun)
                 _movementBehaviour.DisableMovement(_objectAtRest, false);
@@ -318,6 +322,10 @@ namespace Lodis.Movement
         /// <param name="force">The force to apply to the object.</param>
         public void ApplyImpulseForce(Vector3 force)
         {
+            _movementBehaviour.canCancelMovement = true;
+            _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+            _movementBehaviour.canCancelMovement = false;
+
             if (!InHitStun)
                 _movementBehaviour.DisableMovement(_objectAtRest, false);
 
@@ -358,11 +366,11 @@ namespace Lodis.Movement
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
                 _movementBehaviour.canCancelMovement = false;
 
-                //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(_objectAtRest, false);
-
                 //Add force to object
                 _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
+
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(_objectAtRest, false);
 
                 if (_velocityOnLaunch.magnitude > 0)
                     _onKnockBack?.Invoke();
