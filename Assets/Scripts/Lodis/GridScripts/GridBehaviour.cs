@@ -277,6 +277,7 @@ namespace Lodis.GridScripts
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
                 movement.MoveToPanel(spawnPanel.Position);
                 movement.Alignment = GridAlignment.LEFT;
+                barrierObject.transform.forward = Vector3.right;
             }
             //Spawns barriers for the right side
             foreach (Vector2 position in _rhsBarrierPositions)
@@ -299,6 +300,7 @@ namespace Lodis.GridScripts
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
                 movement.MoveToPanel(spawnPanel.Position);
                 movement.Alignment = GridAlignment.RIGHT;
+                barrierObject.transform.forward = Vector3.left;
             }
         }
 

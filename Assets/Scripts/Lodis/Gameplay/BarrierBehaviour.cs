@@ -12,6 +12,8 @@ namespace Lodis.Gameplay
         private float _rangeToIgnoreUpAngle;
         private Movement.GridMovementBehaviour _movement;
         private string _owner = "";
+        [SerializeField]
+        private float _pushScale;
 
         public string Owner { get => _owner; set => _owner = value; }
 
@@ -41,6 +43,13 @@ namespace Lodis.Gameplay
 
             //Calculate the knockback and hit angle for the ricochet
             ContactPoint contactPoint = collision.GetContact(0);
+
+            //Adds a force to objects to push them off of the field barrier if they land on top
+            if (contactPoint.normal == Vector3.down)
+            {
+                knockBackScript.ApplyImpulseForce(transform.forward * _pushScale);
+            }
+
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
