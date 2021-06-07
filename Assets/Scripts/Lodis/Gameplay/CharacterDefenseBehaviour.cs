@@ -57,9 +57,20 @@ namespace Lodis.Gameplay
         private float _parrySpeedLimitIncreaseRate;
         [SerializeField]
         private float _parryUpgradeRate;
+        [SerializeField]
+        private float _braceActiveTime;
+        private bool _canBrace;
+        [SerializeField]
+        private float _braceCooldownTime;
+        [SerializeField]
+        private float _braceInvincibilityTime;
 
+        public float BraceInvincibilityTime { get => _braceInvincibilityTime; }
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
+        public bool IsBraced { get; private set; }
+
+        private Coroutine _cooldownRoutine;
 
         // Start is called before the first frame update
         void Start()
@@ -67,10 +78,13 @@ namespace Lodis.Gameplay
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
+            _material = GetComponent<Renderer>().material;
+
             _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
             _knockBack.AddOnKnockBackAction(ResetParry);
             _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
-            _material = GetComponent<Renderer>().material;
+            _knockBack.AddOnKnockBackAction(() => { _canBrace = true; StopCoroutine(_cooldownRoutine); });
+
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
             _parryCollider.Owner = gameObject;
@@ -228,6 +242,29 @@ namespace Lodis.Gameplay
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
             _canParry = true;
+        }
+
+        public void Brace()
+        {
+            if (!_knockBack.InHitStun || !_canBrace)
+                return;
+
+            StartCoroutine(ActivateBrace());
+        }
+
+        private IEnumerator ActivateBrace()
+        {
+            IsBraced = true;
+            _canBrace = false;
+            yield return new WaitForSeconds(_braceActiveTime);
+            IsBraced = false;
+            _cooldownRoutine = StartCoroutine(ActivateBraceCooldown());
+        }
+
+        private IEnumerator ActivateBraceCooldown()
+        {
+            yield return new WaitForSeconds(_braceCooldownTime);
+            _canBrace = true;
         }
 
         /// <summary>

@@ -37,6 +37,8 @@ namespace Lodis.Movement
         private UnityAction _onKnockBack;
         [SerializeField]
         private FloatVariable _velocityDecayRate;
+        [SerializeField]
+        private CharacterDefenseBehaviour _defenseBehaviour;
 
         public bool UseGravity
         {
@@ -115,6 +117,7 @@ namespace Lodis.Movement
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.isKinematic = true;
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
+            _defenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
         }
 
         // Start is called before the first frame update
@@ -284,9 +287,17 @@ namespace Lodis.Movement
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
 
-            //Checks if the object is not grid moveable and isn't in hit stun
+            //If no knockback script is attached, use this script to add force
             if (!knockBackScript)
                 knockBackScript = this;
+
+            //Prevent knockback if target is braced
+            if (knockBackScript._defenseBehaviour.IsBraced)
+            {
+                knockBackScript.SetInvincibilityByTimer(knockBackScript._defenseBehaviour.BraceInvincibilityTime);
+                knockBackScript.StopVelocity();
+                return;
+            }
 
             //Calculate the knockback and hit angle for the ricochet
             ContactPoint contactPoint = collision.GetContact(0);
