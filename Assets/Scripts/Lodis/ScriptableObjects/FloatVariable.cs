@@ -9,7 +9,7 @@ namespace Lodis.ScriptableObjects
     {
         [SerializeField]
         private float _val;
-        public float Val
+        public float Value
         {
             get
             {

@@ -100,15 +100,21 @@ namespace Lodis.GridScripts
         private void OnTriggerEnter(Collider other)
         {
             Movement.KnockbackBehaviour knockbackScript = other.GetComponent<Movement.KnockbackBehaviour>();
+            Gameplay.CharacterDefenseBehaviour defenseScript = other.GetComponent<Gameplay.CharacterDefenseBehaviour>();
 
             if (!knockbackScript)
-            {
                 return;
-            }
             else if (knockbackScript.IsInvincible || knockbackScript.InFreeFall)
-            {
-                //knockbackScript.StopVelocity();
                 return;
+
+            if (defenseScript)
+            {
+                if (defenseScript.IsBraced)
+                {
+                    knockbackScript.SetInvincibilityByTimer(defenseScript.RecoverInvincibilityLength);
+                    knockbackScript.StopVelocity();
+                    return;
+                }
             }
 
             if (Vector3.Dot(Vector3.down, knockbackScript.LastVelocity) <= 0 || !knockbackScript.InHitStun)

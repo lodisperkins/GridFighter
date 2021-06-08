@@ -267,7 +267,8 @@ MonoBehaviour:
   _weight: 0
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
-  _velocityDecayRate: {fileID: 0}
+  _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
+  _defenseBehaviour: {fileID: 0}
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,6 +339,9 @@ MonoBehaviour:
   _parryCoolDownDecreaseRate: 0.05
   _parrySpeedLimitIncreaseRate: 0.05
   _parryUpgradeRate: 1
+  _braceActiveTime: 0.15
+  _braceCooldownTime: 1
+  _braceInvincibilityTime: 0.3
 --- !u!1 &7822510805826503882
 GameObject:
   m_ObjectHideFlags: 0

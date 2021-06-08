@@ -263,7 +263,7 @@ namespace Lodis.Movement
             }
 
             //Clamps magnitude to be within the limit
-            magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Val);
+            magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Value);
 
             //Return the knockback force
             return new Vector3(Mathf.Cos(hitAngle), Mathf.Sin(hitAngle)) * magnitude;
@@ -291,12 +291,16 @@ namespace Lodis.Movement
             if (!knockBackScript)
                 knockBackScript = this;
 
-            //Prevent knockback if target is braced
-            if (knockBackScript._defenseBehaviour.IsBraced)
+            if (_defenseBehaviour)
             {
-                knockBackScript.SetInvincibilityByTimer(knockBackScript._defenseBehaviour.BraceInvincibilityTime);
-                knockBackScript.StopVelocity();
-                return;
+                //Prevent knockback if target is braced
+                if (_defenseBehaviour.IsBraced && collision.gameObject.CompareTag("Structure"))
+                {
+                    SetInvincibilityByTimer(knockBackScript._defenseBehaviour.BraceInvincibilityTime);
+                    StopVelocity();
+                    _inFreeFall = true;
+                    return;
+                }
             }
 
             //Calculate the knockback and hit angle for the ricochet
@@ -399,6 +403,8 @@ namespace Lodis.Movement
         {
             _acceleration = (_rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
             _lastVelocity = _rigidbody.velocity;
+
+            _rigidbody.velocity -= _rigidbody.velocity.normalized * _velocityDecayRate.Value;
 
             if (_acceleration.magnitude <= 0 && _rigidbody.isKinematic)
                 _inFreeFall = false;

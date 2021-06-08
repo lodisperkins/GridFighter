@@ -5,6 +5,9 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
+  - _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc,
+      type: 2}
+  - _defenseBehaviour: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

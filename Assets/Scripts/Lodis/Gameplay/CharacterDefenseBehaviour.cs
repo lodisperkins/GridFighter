@@ -51,40 +51,50 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _airDodgeSpeed;
         private float _airDodgeDistanceTolerance = 0.1f;
+        [Tooltip("How fast the wait time to parry in air will decrease as an object is in knockback.")]
         [SerializeField]
         private float _parryCoolDownDecreaseRate;
+        [Tooltip("How fast the speed limit to parry in air will increase as an object is in knockback")]
         [SerializeField]
         private float _parrySpeedLimitIncreaseRate;
+        [Tooltip("How fast the objects parry ability will upgrade as it's in air.")]
         [SerializeField]
         private float _parryUpgradeRate;
+        [Tooltip("How long in seconds is the object braced for it's fall.")]
         [SerializeField]
         private float _braceActiveTime;
         private bool _canBrace;
+        [Tooltip("How long in seconds the object has to wait before it can brace itself again.")]
         [SerializeField]
         private float _braceCooldownTime;
+        [Tooltip("How long in seconds the object is invincible after catching it's fall.")]
         [SerializeField]
         private float _braceInvincibilityTime;
+        private Coroutine _cooldownRoutine;
 
         public float BraceInvincibilityTime { get => _braceInvincibilityTime; }
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
         public bool IsBraced { get; private set; }
 
-        private Coroutine _cooldownRoutine;
+        public float RecoverInvincibilityLength { get => _recoverInvincibilityLength; }
 
         // Start is called before the first frame update
         void Start()
         {
+            //Initialize components
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _material = GetComponent<Renderer>().material;
 
+            //Add knock back event listeners
             _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
             _knockBack.AddOnKnockBackAction(ResetParry);
             _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
-            _knockBack.AddOnKnockBackAction(() => { _canBrace = true; StopCoroutine(_cooldownRoutine); });
+            _knockBack.AddOnKnockBackAction(EnableBrace);
 
+            //Initialize default values
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
             _parryCollider.Owner = gameObject;
@@ -214,6 +224,10 @@ namespace Lodis.Gameplay
             _canParry = true;
         }
 
+        /// <summary>
+        /// Increases the stats of the parry while the object is in air.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator UpgradeParry()
         {
             while (_knockBack.InHitStun || _knockBack.InFreeFall)
@@ -236,6 +250,10 @@ namespace Lodis.Gameplay
                 StartCoroutine(ActivateAirParryRoutine());
         }
 
+        /// <summary>
+        /// Disables the parry collider and invincibilty.
+        /// Gives the object the ability to parry again.
+        /// </summary>
         public void ResetParry()
         {
             _knockBack.DisableInvincibility();
@@ -244,6 +262,20 @@ namespace Lodis.Gameplay
             _canParry = true;
         }
 
+        /// <summary>
+        /// Enables the ability to brace and stops the cooldown timer.
+        /// </summary>
+        private void EnableBrace()
+        {
+            _canBrace = true;
+
+            if (_cooldownRoutine != null)
+                StopCoroutine(_cooldownRoutine);
+        }
+
+        /// <summary>
+        /// Braces the object so it may catch it's fall.
+        /// </summary>
         public void Brace()
         {
             if (!_knockBack.InHitStun || !_canBrace)
@@ -252,6 +284,11 @@ namespace Lodis.Gameplay
             StartCoroutine(ActivateBrace());
         }
 
+        /// <summary>
+        /// Braces the object based on the brace active time.
+        /// Starts the cooldown when done.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator ActivateBrace()
         {
             IsBraced = true;
@@ -261,6 +298,10 @@ namespace Lodis.Gameplay
             _cooldownRoutine = StartCoroutine(ActivateBraceCooldown());
         }
 
+        /// <summary>
+        /// Sets can brace to true after the brace cooldown time has passed.
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator ActivateBraceCooldown()
         {
             yield return new WaitForSeconds(_braceCooldownTime);

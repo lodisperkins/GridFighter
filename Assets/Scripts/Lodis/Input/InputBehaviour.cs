@@ -104,7 +104,7 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[4].started += context => { DisableMovement(); _attackButtonDown = true; };
             _actions.actionMaps[0].actions[4].canceled += context => _attackButtonDown = false;
             _actions.actionMaps[0].actions[4].performed += context => { BufferAbility(context, new object[2]); _attackButtonDown = false; };
-            _actions.actionMaps[0].actions[6].performed += context => BufferParry(context);
+            _actions.actionMaps[0].actions[6].performed += context => { BufferParry(context); _defense.Brace(); };
         }
 
         // Start is called before the first frame update

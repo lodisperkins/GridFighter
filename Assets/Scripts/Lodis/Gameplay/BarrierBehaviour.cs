@@ -14,7 +14,8 @@ namespace Lodis.Gameplay
         private string _owner = "";
         [SerializeField]
         private float _pushScale;
-
+        [SerializeField]
+        private float _damageOnCollision;
         public string Owner { get => _owner; set => _owner = value; }
 
         // Start is called before the first frame update
@@ -62,7 +63,7 @@ namespace Lodis.Gameplay
             knockBackScript.StopVelocity();
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
         }
 
         // Update is called once per frame
