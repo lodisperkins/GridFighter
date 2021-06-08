@@ -404,7 +404,8 @@ namespace Lodis.Movement
             _acceleration = (_rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
             _lastVelocity = _rigidbody.velocity;
 
-            _rigidbody.velocity -= _rigidbody.velocity.normalized * _velocityDecayRate.Value;
+            //if (_rigidbody.velocity.magnitude > 0)
+            //    _rigidbody.velocity -= _rigidbody.velocity.normalized * _velocityDecayRate.Value;
 
             if (_acceleration.magnitude <= 0 && _rigidbody.isKinematic)
                 _inFreeFall = false;
