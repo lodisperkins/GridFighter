@@ -25,7 +25,7 @@ namespace Lodis.Movement
         private float _targetTolerance = 0.05f;
         [SerializeField]
         [Tooltip("The current direction the object is moving in.")]
-        private Vector2 _velocity;
+        private Vector2 _moveDirection;
         [SerializeField]
         [Tooltip("How fast the object can move towards a panel.")]
         private float _speed;
@@ -69,10 +69,10 @@ namespace Lodis.Movement
         /// <summary>
         /// The current velocity of the object moving on the grid.
         /// </summary>
-        public Vector2 Velocity
+        public Vector2 MoveDirection
         {
-            get { return _velocity; }
-            set { _velocity = value; }
+            get { return _moveDirection; }
+            set { _moveDirection = value; }
         }
 
         /// <summary>
@@ -312,6 +312,8 @@ namespace Lodis.Movement
                 //Waits until the next fixed update before resuming to be in line with any physics calls
                 yield return new WaitForFixedUpdate();
             }
+
+            MoveDirection = Vector2.zero;
         }
 
         /// <summary>
@@ -338,6 +340,8 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
             SetIsMoving(true);
+
+            MoveDirection = panelPosition - _position;
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
@@ -387,6 +391,8 @@ namespace Lodis.Movement
 
             SetIsMoving(true);
 
+            MoveDirection = new Vector2(x, y) - _position;
+
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
@@ -433,6 +439,8 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
             SetIsMoving(true);
+
+            MoveDirection = targetPanel.Position - _position;
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
@@ -507,7 +515,7 @@ namespace Lodis.Movement
         {
             if (_canMove)
             {
-                MoveToPanel(_position + Velocity);
+                MoveToPanel(_position);
                 SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
                 _movementEnableCheck = null;
             }
@@ -521,8 +529,6 @@ namespace Lodis.Movement
                 }
             }
 
-
-            Debug.Log(_isMoving);
             MoveToClosestAlignedPanelOnRow();
         }
     }

@@ -198,7 +198,7 @@ namespace Lodis.Input
             if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
                 return;
 
-            if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
+            if (_attackDirection.normalized == _gridMovement.MoveDirection.normalized || _gridMovement.MoveDirection == Vector2.zero)
             {
                 _canMove = false;
                 _storedMoveInput = Vector2.zero;
@@ -210,7 +210,7 @@ namespace Lodis.Input
         /// </summary>
         public void DisableMovementBasedOnCondition(Movement.Condition condition)
         {
-            if (_attackDirection.normalized == _gridMovement.Velocity.normalized || _gridMovement.Velocity == Vector2.zero)
+            if (_attackDirection.normalized == _gridMovement.MoveDirection.normalized || _gridMovement.MoveDirection == Vector2.zero)
             {
                 _moveInputEnableCondition = condition;
                 _canMove = false;
@@ -272,7 +272,6 @@ namespace Lodis.Input
             if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
-                _gridMovement.Velocity = Vector2.zero;
                 _storedMoveInput = Vector2.zero;
             }
 

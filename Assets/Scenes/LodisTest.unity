@@ -281,7 +281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 1, y: 0}
   _targetTolerance: 0
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
@@ -653,7 +653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 7, y: 2}
   _targetTolerance: 0
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
@@ -803,7 +803,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 9, y: 3}
   _targetTolerance: 0
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
@@ -1399,7 +1399,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 3, y: 3}
   _targetTolerance: 0
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
@@ -1734,7 +1734,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 3, y: 1}
   _targetTolerance: 0
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
@@ -2663,7 +2663,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 9, y: 0}
   _targetTolerance: 0
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
@@ -3459,7 +3459,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 7, y: 1}
   _targetTolerance: 0
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
@@ -6310,7 +6310,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1854253616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7167,7 +7167,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 1, y: 2}
   _targetTolerance: 0
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
