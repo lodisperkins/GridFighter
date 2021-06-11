@@ -29,14 +29,8 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = BasicAbilityType.STRONGNEUTRAL;
-            name = "SN_ChargeShot";
-            timeActive = .2f;
-            recoverTime = 1.5f;
-            startUpTime = .3f;
-            canCancel = false;
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SN_ChargeShot_Data"));
             owner = newOwner;
-           
 
             //Load the projectile prefab
             _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
@@ -54,7 +48,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
                 return;
             }
 

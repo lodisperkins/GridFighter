@@ -26,12 +26,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = BasicAbilityType.WEAKFORWARD;
-            name = "WF_ForwardShot";
-            timeActive = .2f;
-            recoverTime = .2f;
-            startUpTime = .1f;
-            canCancel = false;
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_ChargeForwardShot_Data")); ;
             owner = newOwner;
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
@@ -48,7 +43,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
                 return;
             }
 

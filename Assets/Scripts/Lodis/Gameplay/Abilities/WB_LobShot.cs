@@ -27,12 +27,7 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
 
             //initialize default stats
-            abilityType = BasicAbilityType.WEAKBACKWARD;
-            name = "WB_LobShot";
-            timeActive = .2f;
-            recoverTime = .1f;
-            startUpTime = .1f;
-            canCancel = false;
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WB_LobShot_Data"));
             owner = newOwner;
             _projectileCollider = new HitColliderBehaviour(2, 1, 3f, true, 5, owner, true);
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
@@ -84,7 +79,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
                 return;
             }
 

@@ -84,7 +84,7 @@ namespace Lodis.Gameplay
         {
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.canCancel)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.abilityData.canCancel)
                 {
                     return _lastAbilityInUse;
                 }
@@ -102,7 +102,7 @@ namespace Lodis.Gameplay
             //Update color for debugging
             if (_lastAbilityInUse != null)
             {
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.canCancel)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.abilityData.canCancel)
                     _renderer.material.color = Color.grey;
                 else
                     _renderer.material.color = _defaultColor;

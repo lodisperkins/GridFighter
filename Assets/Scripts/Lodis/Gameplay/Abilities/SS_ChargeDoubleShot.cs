@@ -29,12 +29,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = BasicAbilityType.STRONGSIDE;
-            name = "SS_DoubleShot";
-            timeActive = .2f;
-            recoverTime = .3f;
-            startUpTime = .1f;
-            canCancel = false;
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SS_ChargeDoubleShot_Data"));
             owner = newOwner;
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
@@ -51,7 +46,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
                 return;
             }
 

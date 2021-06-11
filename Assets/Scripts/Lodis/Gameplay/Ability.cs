@@ -19,22 +19,10 @@ namespace Lodis.Gameplay
     /// </summary>
     public abstract class Ability
     {
-        //The type describes the strength and input value for the ability
-        public BasicAbilityType abilityType;
-        public DamageType damageType = DamageType.DEFAULT;
-        //Name of the ability
-        public string name = "Unassigned";
         //The object that is using the ability
         public GameObject owner = null;
         public MovesetBehaviour ownerMoveset = null;
-        //How long the ability should be active for
-        public float timeActive = 0;
-        //How long does the object that used the ability need before being able to recover
-        public float recoverTime = 0;
-        //How long does the object that used the ability must wait before the ability activates
-        public float startUpTime = 0;
-        //If true, this ability can be canceled into others
-        public bool canCancel = false;
+        public ScriptableObjects.AbilityData abilityData;
         //Called when the character begins to use the ability and before the action actually happens
         public UnityAction onBegin = null;
         //Called when the ability is used and the recover time is up
@@ -62,13 +50,13 @@ namespace Lodis.Gameplay
         {
             _inUse = true;
             onBegin?.Invoke();
-            yield return new WaitForSeconds(startUpTime);
+            yield return new WaitForSeconds(abilityData.startUpTime);
             onActivate?.Invoke();
             Activate(args);
-            yield return new WaitForSeconds(timeActive);
+            yield return new WaitForSeconds(abilityData.timeActive);
             onDeactivate?.Invoke();
             Deactivate();
-            yield return new WaitForSeconds(recoverTime);
+            yield return new WaitForSeconds(abilityData.recoverTime);
             onEnd?.Invoke();
             _inUse = false;
         }
@@ -83,6 +71,11 @@ namespace Lodis.Gameplay
             if (!ownerMoveset)
             {
                 Debug.LogError("Owner moveset component not found. Did you forget to call the base Init function?");
+                return;
+            }
+            else if (!abilityData)
+            {
+                Debug.LogError("Ability data couldn't be found. Did you forget to load the resource?");
                 return;
             }
 

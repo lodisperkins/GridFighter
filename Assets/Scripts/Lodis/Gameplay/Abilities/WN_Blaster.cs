@@ -25,12 +25,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityType = BasicAbilityType.WEAKNEUTRAL;
-            name = "WN_Blaster";
-            timeActive = 0.1f;
-            recoverTime = 0;
-            startUpTime = 0;
-            canCancel = false;
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WN_Blaster_Data"));
             owner = newOwner;
             _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, 3, owner, true);
 
@@ -47,7 +42,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
                 return;
             }
 
