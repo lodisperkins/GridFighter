@@ -35,6 +35,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Renderer _renderer;
         private Color _defaultColor;
+        [SerializeField]
+        private AnimationBehaviour _animationBehaviour;
 
         // Start is called before the first frame update
         void Start()
@@ -89,6 +91,7 @@ namespace Lodis.Gameplay
                     return _lastAbilityInUse;
                 }
 
+            _animationBehaviour.PlayAbilityAnimation(_deck[(int)abilityType]);
             //Find the ability in the deck abd use it
             _deck[(int)abilityType].UseAbility(args);
             _lastAbilityInUse = _deck[(int)abilityType];

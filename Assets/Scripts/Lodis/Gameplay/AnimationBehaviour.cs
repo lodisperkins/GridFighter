@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.Playables;
 
 namespace Lodis.Gameplay
 {
@@ -12,6 +13,7 @@ namespace Lodis.Gameplay
         INACTIVE
     }
 
+    [RequireComponent(typeof(Animator))]
     public class AnimationBehaviour : MonoBehaviour
     {
         [SerializeField]
@@ -19,35 +21,62 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Animator _animator;
         private Ability _currentAbilityAnimating;
+        private AnimationClip _currentClip;
         [SerializeField]
         private RuntimeAnimatorController _runtimeAnimator;
+        private PlayableGraph _playableGraph;
+        private AnimationPlayableOutput _output;
+        private AnimationClipPlayable _currentClipPlayable;
 
         // Start is called before the first frame update
         void Start()
         {
+            _playableGraph = PlayableGraph.Create();
+            _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
+            _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
         }
 
-        private float CalculateAnimationSpeed(AnimationClip animation, AnimationPhase phase)
+        private void CalculateAnimationSpeed(int newPhase)
         {
+            AnimationPhase phase = (AnimationPhase)newPhase;
+            double newTime = 1;
+
             switch (phase)
             {
                 case AnimationPhase.STARTUP:
-                        return (_animator.speed * _currentAbilityAnimating.abilityData.startUpTime) / animation.events[0].time;
+                    if (_currentAbilityAnimating.abilityData.startUpTime <= 0)
+                    {
+                        _currentClipPlayable.SetTime(_currentClip.events[1].time);
+                        break;
+                    }
+
+                    newTime = (_currentClipPlayable.GetSpeed() * _currentAbilityAnimating.abilityData.startUpTime) / _currentClip.events[0].time;
+                    break;
                 case AnimationPhase.ACTIVE:
-                    return (_animator.speed * _currentAbilityAnimating.abilityData.timeActive) / animation.events[1].time - animation.events[0].time;
+                    newTime = (_currentClipPlayable.GetSpeed() * _currentAbilityAnimating.abilityData.timeActive) / _currentClip.events[1].time - _currentClip.events[0].time;
+                    break;
                 case AnimationPhase.INACTIVE:
-                    return (_animator.speed * _currentAbilityAnimating.abilityData.recoverTime) / animation.length - animation.events[1].time;
+                    newTime = (_currentClipPlayable.GetSpeed() * _currentAbilityAnimating.abilityData.recoverTime) / _currentClip.length - _currentClip.events[1].time;
+                    break;
             }
 
-            return 1;
+            _currentClipPlayable.SetSpeed(newTime);
         }
 
         public void PlayAbilityAnimation(Ability ability)
         {
-            AnimationClip animation;
-            if (!ability.abilityData.GetCustomAnimation(out animation))
-                return;
+            _currentAbilityAnimating = ability;
 
+            if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
+                return;
+            
+            _currentClipPlayable = AnimationClipPlayable.Create(_playableGraph, _currentClip);
+
+            _output.SetSourcePlayable(_currentClipPlayable);
+
+            _playableGraph.Play();
+
+            CalculateAnimationSpeed((int)AnimationPhase.STARTUP);
         }
 
         // Update is called once per frame
@@ -55,7 +84,7 @@ namespace Lodis.Gameplay
         {
             _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
             _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
-            Debug.Log(_moveBehaviour.MoveDirection);
+            Debug.Log(_animator.speed);
         }
     }
 }

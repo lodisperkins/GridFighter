@@ -335,6 +335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _deckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _renderer: {fileID: 2765739998997917301}
+  _animationBehaviour: {fileID: 790165711530390187}
 --- !u!114 &-1873711531255504354
 MonoBehaviour:
   m_ObjectHideFlags: 0

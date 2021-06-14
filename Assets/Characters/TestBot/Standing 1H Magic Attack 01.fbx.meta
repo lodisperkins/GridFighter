@@ -60,18 +60,18 @@ ModelImporter:
       curves: []
       events:
       - time: 0.37758616
-        functionName: OnActive
+        functionName: CalculateAnimationSpeed
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 1
         messageOptions: 0
       - time: 0.5456896
-        functionName: OnInactive
+        functionName: CalculateAnimationSpeed
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 2
         messageOptions: 0
       transformMask: []
       maskType: 3
