@@ -27,6 +27,7 @@ namespace Lodis.Gameplay
         private PlayableGraph _playableGraph;
         private AnimationPlayableOutput _output;
         private AnimationClipPlayable _currentClipPlayable;
+        private int _animationPhase;
 
         // Start is called before the first frame update
         void Start()
@@ -36,10 +37,17 @@ namespace Lodis.Gameplay
             _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
         }
 
-        private void CalculateAnimationSpeed(int newPhase)
+        private void IncrementAnimationPhase()
         {
-            AnimationPhase phase = (AnimationPhase)newPhase;
-            double newTime = 1;
+            _animationPhase++;
+            CalculateAnimationSpeed();
+        }
+
+
+        private void CalculateAnimationSpeed()
+        {
+            AnimationPhase phase = (AnimationPhase)_animationPhase;
+            double newSpeed = 1;
 
             switch (phase)
             {
@@ -49,18 +57,17 @@ namespace Lodis.Gameplay
                         _currentClipPlayable.SetTime(_currentClip.events[1].time);
                         break;
                     }
-
-                    newTime = (_currentClipPlayable.GetSpeed() * _currentAbilityAnimating.abilityData.startUpTime) / _currentClip.events[0].time;
+                    newSpeed = (_currentClip.events[0].time / _currentAbilityAnimating.abilityData.startUpTime);
                     break;
                 case AnimationPhase.ACTIVE:
-                    newTime = (_currentClipPlayable.GetSpeed() * _currentAbilityAnimating.abilityData.timeActive) / _currentClip.events[1].time - _currentClip.events[0].time;
+                    newSpeed = (_currentClip.events[1].time - _currentClip.events[0].time) / _currentAbilityAnimating.abilityData.timeActive;
                     break;
                 case AnimationPhase.INACTIVE:
-                    newTime = (_currentClipPlayable.GetSpeed() * _currentAbilityAnimating.abilityData.recoverTime) / _currentClip.length - _currentClip.events[1].time;
+                    newSpeed = (_currentClip.length - _currentClip.events[1].time) / _currentAbilityAnimating.abilityData.recoverTime;
                     break;
             }
 
-            _currentClipPlayable.SetSpeed(newTime);
+            _currentClipPlayable.SetSpeed(newSpeed);
         }
 
         public void PlayAbilityAnimation(Ability ability)
@@ -75,8 +82,8 @@ namespace Lodis.Gameplay
             _output.SetSourcePlayable(_currentClipPlayable);
 
             _playableGraph.Play();
-
-            CalculateAnimationSpeed((int)AnimationPhase.STARTUP);
+            _animationPhase = 0;
+            CalculateAnimationSpeed();
         }
 
         // Update is called once per frame

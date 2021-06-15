@@ -19,6 +19,6 @@ MonoBehaviour:
   damageType: 0
   timeActive: 0.1
   recoverTime: 0
-  startUpTime: 2
+  startUpTime: 0.1
   canCancel: 0
   animationType: 3
