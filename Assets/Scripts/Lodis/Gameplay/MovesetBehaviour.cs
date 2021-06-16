@@ -51,6 +51,17 @@ namespace Lodis.Gameplay
             _deck.InitAbilities(gameObject);
         }
 
+        public bool CanUseAbility
+        {
+            get
+            {
+                if (!AbilityInUse)
+                    return true;
+
+                return _lastAbilityInUse.abilityData.canCancel;
+            }
+        }
+
         /// <summary>
         /// True if there is some ability that is currently active.
         /// </summary>

@@ -151,12 +151,12 @@ namespace Lodis.Input
                 float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
                 args[0] = powerScale;
-                _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => _moveset.CanUseAbility && !_gridMovement.IsMoving, 0.2f);
                 return;
             }
 
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => !_moveset.AbilityInUse && !_gridMovement.IsMoving, 0.2f);
+            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => _moveset.CanUseAbility && !_gridMovement.IsMoving, 0.2f);
         }
 
 
@@ -178,7 +178,7 @@ namespace Lodis.Input
         private void UseAbility(BasicAbilityType abilityType, object[] args)
         {
             _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
-            _moveInputEnableCondition = condition => !_moveset.AbilityInUse || _bufferedAction.HasAction();
+            _moveInputEnableCondition = condition => _moveset.CanUseAbility || _bufferedAction.HasAction();
         }
 
         /// <summary>

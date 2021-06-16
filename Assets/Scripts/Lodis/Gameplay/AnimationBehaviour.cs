@@ -28,6 +28,7 @@ namespace Lodis.Gameplay
         private AnimationPlayableOutput _output;
         private AnimationClipPlayable _currentClipPlayable;
         private int _animationPhase;
+        private bool _animatingMotion;
 
         // Start is called before the first frame update
         void Start()
@@ -37,13 +38,18 @@ namespace Lodis.Gameplay
             _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
         }
 
+        /// <summary>
+        /// Switches to the next animation phase
+        /// </summary>
         private void IncrementAnimationPhase()
         {
             _animationPhase++;
             CalculateAnimationSpeed();
         }
 
-
+        /// <summary>
+        /// Changes the speed of the animation based on the ability data
+        /// </summary>
         private void CalculateAnimationSpeed()
         {
             AnimationPhase phase = (AnimationPhase)_animationPhase;
@@ -70,6 +76,10 @@ namespace Lodis.Gameplay
             _currentClipPlayable.SetSpeed(newSpeed);
         }
 
+        /// <summary>
+        /// Plays the animation attached to this ability.
+        /// </summary>
+        /// <param name="ability"></param>
         public void PlayAbilityAnimation(Ability ability)
         {
             _currentAbilityAnimating = ability;
@@ -82,6 +92,7 @@ namespace Lodis.Gameplay
             _output.SetSourcePlayable(_currentClipPlayable);
 
             _playableGraph.Play();
+            _animatingMotion = false;
             _animationPhase = 0;
             CalculateAnimationSpeed();
         }
@@ -89,6 +100,16 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         void Update()
         {
+            if (_currentClipPlayable.IsValid())
+            {
+                if (_currentClipPlayable.IsDone() && !_animatingMotion)
+                {
+                    _playableGraph.Stop();
+                    _animator.Rebind();
+                    _animatingMotion = true;
+                }
+            }
+
             _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
             _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
             Debug.Log(_animator.speed);
