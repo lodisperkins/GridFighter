@@ -32,6 +32,7 @@ namespace Lodis.ScriptableObjects
         public float startUpTime = 0;
         //If true, this ability can be canceled into others
         public bool canCancel = false;
+        public bool useAbilityTimingForAnimation;
         public AnimationType animationType;
 
         public bool GetCustomAnimation(out AnimationClip customAnimation)
@@ -61,6 +62,7 @@ namespace Lodis.ScriptableObjects
         private SerializedProperty _startUpTime;
         private SerializedProperty _canCancel;
         private SerializedProperty _animationType;
+        private SerializedProperty _useAbilityTiming;
 
         private void OnEnable()
         {
@@ -73,6 +75,7 @@ namespace Lodis.ScriptableObjects
             _startUpTime = serializedObject.FindProperty("startUpTime");
             _canCancel = serializedObject.FindProperty("canCancel");
             _animationType = serializedObject.FindProperty("animationType");
+            _useAbilityTiming = serializedObject.FindProperty("useAbilityTimingForAnimation");
         }
 
         public override void OnInspectorGUI()
@@ -97,6 +100,10 @@ namespace Lodis.ScriptableObjects
 
             EditorGUILayout.PropertyField(_canCancel, new GUIContent("Can Cancel",
                 "If true, this ability can be canceled into others"));
+
+            EditorGUILayout.PropertyField(_useAbilityTiming, new GUIContent("Use Ability Timing For Animation",
+                "If true, uses the animation events attached to the clip to speed up or slow down the animation" +
+                " based on each ability phase duration."));
 
             EditorGUILayout.PropertyField(_animationType, new GUIContent("Animation Type",
                 "The type of animation that will play when the ability is used"));

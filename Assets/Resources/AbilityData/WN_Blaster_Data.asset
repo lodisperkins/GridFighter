@@ -18,7 +18,8 @@ MonoBehaviour:
   abilityType: 0
   damageType: 0
   timeActive: 0.1
-  recoverTime: 0
+  recoverTime: 1
   startUpTime: 0.1
   canCancel: 0
+  useAbilityTimingForAnimation: 0
   animationType: 3

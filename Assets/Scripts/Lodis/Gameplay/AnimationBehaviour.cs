@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.ScriptableObjects;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -44,13 +45,13 @@ namespace Lodis.Gameplay
         private void IncrementAnimationPhase()
         {
             _animationPhase++;
-            CalculateAnimationSpeed();
+            CalculateCustomAnimationSpeed();
         }
 
         /// <summary>
         /// Changes the speed of the animation based on the ability data
         /// </summary>
-        private void CalculateAnimationSpeed()
+        private void CalculateCustomAnimationSpeed()
         {
             AnimationPhase phase = (AnimationPhase)_animationPhase;
             double newSpeed = 1;
@@ -76,6 +77,18 @@ namespace Lodis.Gameplay
             _currentClipPlayable.SetSpeed(newSpeed);
         }
 
+        bool FindAnimationClip(string name)
+        {
+            foreach (AnimationClip animationClip in _runtimeAnimator.animationClips)
+                if(animationClip.name == name)
+                {
+                    _currentClip = animationClip;
+                    return true;
+                }
+
+            return false;
+        }
+
         /// <summary>
         /// Plays the animation attached to this ability.
         /// </summary>
@@ -84,18 +97,54 @@ namespace Lodis.Gameplay
         {
             _currentAbilityAnimating = ability;
 
-            if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
-                return;
-            
-            _currentClipPlayable = AnimationClipPlayable.Create(_playableGraph, _currentClip);
+            switch (_currentAbilityAnimating.abilityData.animationType)
+            {
+                case AnimationType.CAST:
+                    if (FindAnimationClip("Cast"))
+                    {
+                        _animator.SetTrigger("Cast");
+                    }
+                    else
+                    {
+                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Cast clip");
+                    }
+                    break;
+                case AnimationType.MELEE:
+                    if (FindAnimationClip("Melee"))
+                    {
+                        _animator.SetTrigger("Melee");
+                    }
+                    else
+                    {
+                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Melee clip");
+                    }
+                    break;
+                case AnimationType.SUMMON:
+                    if (FindAnimationClip("Summon"))
+                    {
+                        _animator.SetTrigger("Summon");
+                    }
+                    else
+                    {
+                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Summon clip");
+                    }
+                    break;
 
-            _output.SetSourcePlayable(_currentClipPlayable);
+                case AnimationType.CUSTOM:
+                    if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
+                        return;
 
-            _playableGraph.Play();
-            _animatingMotion = false;
-            _animationPhase = 0;
+                    _currentClipPlayable = AnimationClipPlayable.Create(_playableGraph, _currentClip);
 
-            CalculateAnimationSpeed();
+                    _output.SetSourcePlayable(_currentClipPlayable);
+
+                    _playableGraph.Play();
+                    _animatingMotion = false;
+                    _animationPhase = 0;
+
+                    CalculateCustomAnimationSpeed();
+                    break;
+            }
         }
 
         // Update is called once per frame
