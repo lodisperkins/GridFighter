@@ -94,15 +94,16 @@ namespace Lodis.Gameplay
             _playableGraph.Play();
             _animatingMotion = false;
             _animationPhase = 0;
+
             CalculateAnimationSpeed();
         }
 
         // Update is called once per frame
         void Update()
         {
-            if (_currentClipPlayable.IsValid())
+            if (_currentAbilityAnimating != null)
             {
-                if (_currentClipPlayable.IsDone() && !_animatingMotion)
+                if (!_currentAbilityAnimating.InUse && !_animatingMotion)
                 {
                     _playableGraph.Stop();
                     _animator.Rebind();
