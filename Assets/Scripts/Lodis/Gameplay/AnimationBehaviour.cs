@@ -45,7 +45,52 @@ namespace Lodis.Gameplay
         private void IncrementAnimationPhase()
         {
             _animationPhase++;
-            CalculateCustomAnimationSpeed();
+            if (_currentAbilityAnimating.abilityData.animationType == AnimationType.CUSTOM)
+                CalculateCustomAnimationSpeed();
+            else
+                CalculateAnimatorSpeed();
+        }
+
+        /// <summary>
+        /// Changes the speed of the animation based on the ability data
+        /// </summary>
+        private void CalculateAnimatorSpeed()
+        {
+            if (!_currentAbilityAnimating.abilityData.useAbilityTimingForAnimation)
+                return;
+
+            AnimationPhase phase = (AnimationPhase)_animationPhase;
+            float newSpeed = 1;
+
+            switch (phase)
+            {
+                case AnimationPhase.STARTUP:
+                    if (_currentAbilityAnimating.abilityData.startUpTime <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.events[0].time;
+                        break;
+                    }
+                    newSpeed = (_currentClip.events[0].time / _currentAbilityAnimating.abilityData.startUpTime);
+                    break;
+                case AnimationPhase.ACTIVE:
+                    if (_currentAbilityAnimating.abilityData.timeActive <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.events[1].time;
+                        break;
+                    }
+                    newSpeed = (_currentClip.events[1].time - _currentClip.events[0].time) / _currentAbilityAnimating.abilityData.timeActive;
+                    break;
+                case AnimationPhase.INACTIVE:
+                    if (_currentAbilityAnimating.abilityData.recoverTime <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.length;
+                        break;
+                    }
+                    newSpeed = (_currentClip.length - _currentClip.events[1].time) / _currentAbilityAnimating.abilityData.recoverTime;
+                    break;
+            }
+
+            _animator.speed = newSpeed;
         }
 
         /// <summary>
@@ -53,6 +98,9 @@ namespace Lodis.Gameplay
         /// </summary>
         private void CalculateCustomAnimationSpeed()
         {
+            if (!_currentAbilityAnimating.abilityData.useAbilityTimingForAnimation)
+                return;
+
             AnimationPhase phase = (AnimationPhase)_animationPhase;
             double newSpeed = 1;
 
@@ -61,15 +109,25 @@ namespace Lodis.Gameplay
                 case AnimationPhase.STARTUP:
                     if (_currentAbilityAnimating.abilityData.startUpTime <= 0)
                     {
-                        _currentClipPlayable.SetTime(_currentClip.events[1].time);
+                        _currentClipPlayable.SetTime(_currentClip.events[0].time);
                         break;
                     }
                     newSpeed = (_currentClip.events[0].time / _currentAbilityAnimating.abilityData.startUpTime);
                     break;
                 case AnimationPhase.ACTIVE:
+                    if (_currentAbilityAnimating.abilityData.timeActive <= 0)
+                    {
+                        _currentClipPlayable.SetTime(_currentClip.events[1].time);
+                        break;
+                    }
                     newSpeed = (_currentClip.events[1].time - _currentClip.events[0].time) / _currentAbilityAnimating.abilityData.timeActive;
                     break;
                 case AnimationPhase.INACTIVE:
+                    if (_currentAbilityAnimating.abilityData.recoverTime <= 0)
+                    {
+                        _currentClipPlayable.SetTime(_currentClipPlayable.GetDuration());
+                        break;
+                    }
                     newSpeed = (_currentClip.length - _currentClip.events[1].time) / _currentAbilityAnimating.abilityData.recoverTime;
                     break;
             }
@@ -102,37 +160,45 @@ namespace Lodis.Gameplay
                 case AnimationType.CAST:
                     if (FindAnimationClip("Cast"))
                     {
-                        _animator.SetTrigger("Cast");
+                        _animator.Play("Cast", 0, 0);
+                        _animatingMotion = false;
+                        _animationPhase = 0;
+                        CalculateAnimatorSpeed();
                     }
                     else
-                    {
-                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Cast clip");
-                    }
+                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Cast clip for " + ability.abilityData.name);
                     break;
+
                 case AnimationType.MELEE:
                     if (FindAnimationClip("Melee"))
                     {
-                        _animator.SetTrigger("Melee");
+                        _animator.Play("Melee", 0, 0);
+                        _animatingMotion = false;
+                        _animationPhase = 0;
+                        CalculateAnimatorSpeed();
                     }
                     else
-                    {
-                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Melee clip");
-                    }
+                        Debug.LogError("Couldn't play Melee animation. Couldn't find the Melee clip for " + ability.abilityData.name);
                     break;
+
                 case AnimationType.SUMMON:
                     if (FindAnimationClip("Summon"))
                     {
-                        _animator.SetTrigger("Summon");
+                        _animator.Play("Summon", 0, 0);
+                        _animatingMotion = false;
+                        _animationPhase = 0;
+                        CalculateAnimatorSpeed();
                     }
                     else
-                    {
-                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Summon clip");
-                    }
+                        Debug.LogError("Couldn't play Summon animation. Couldn't find the Summon clip for " + ability.abilityData.name);
                     break;
 
                 case AnimationType.CUSTOM:
                     if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
+                    {
+                        Debug.LogError("Can't play custom clip. No custom clip found for " + ability.abilityData.name);
                         return;
+                    }
 
                     _currentClipPlayable = AnimationClipPlayable.Create(_playableGraph, _currentClip);
 
@@ -162,7 +228,7 @@ namespace Lodis.Gameplay
 
             _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
             _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
-            Debug.Log(_animator.speed);
+            //Debug.Log(_animator.speed);
         }
     }
 }

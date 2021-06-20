@@ -284,7 +284,7 @@ namespace Lodis.Input
                         _moveInputEnableCondition = null;
                 }
             }
-            else if (!_attackButtonDown && !_canMove)
+            else if (!_attackButtonDown && !_canMove && !_moveset.AbilityInUse)
             {
                 EnableMovement();
             }

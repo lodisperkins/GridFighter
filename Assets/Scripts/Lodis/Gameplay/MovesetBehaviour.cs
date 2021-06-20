@@ -97,10 +97,12 @@ namespace Lodis.Gameplay
         {
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
+            {
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.abilityData.canCancel)
-                {
                     return _lastAbilityInUse;
-                }
+                else if (_lastAbilityInUse.InUse)
+                    _lastAbilityInUse.StopAbility();
+            }
 
             _animationBehaviour.PlayAbilityAnimation(_deck[(int)abilityType]);
             //Find the ability in the deck abd use it
