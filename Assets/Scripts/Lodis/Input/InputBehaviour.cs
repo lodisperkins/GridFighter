@@ -103,7 +103,7 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
             _actions.actionMaps[0].actions[4].started += context => { DisableMovement(); _attackButtonDown = true; };
             _actions.actionMaps[0].actions[4].canceled += context => _attackButtonDown = false;
-            _actions.actionMaps[0].actions[4].performed += context => { BufferAbility(context, new object[2]); _attackButtonDown = false; };
+            _actions.actionMaps[0].actions[4].performed += context => { BufferAbility(context, new object[2]);};
             _actions.actionMaps[0].actions[6].performed += context => { BufferParry(context); _defense.Brace(); };
         }
 
@@ -175,6 +175,11 @@ namespace Lodis.Input
                 _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
+        /// <summary>
+        /// Uses the basic moveset ability given and updates the move input enabled condition
+        /// </summary>
+        /// <param name="abilityType">The basic ability type to use</param>
+        /// <param name="args">Additional ability arguments like direction and attack strength</param>
         private void UseAbility(BasicAbilityType abilityType, object[] args)
         {
             _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
@@ -234,6 +239,10 @@ namespace Lodis.Input
             return true;
         }
 
+        /// <summary>
+        /// Disables input until the given condition is true
+        /// </summary>
+        /// <param name="condition">Delegate that is checked each update</param>
         public void DisableInput(Movement.Condition condition)
         {
             _inputDisabled = true;
@@ -241,12 +250,20 @@ namespace Lodis.Input
             _inputEnableCondition = condition;
         }
 
+        /// <summary>
+        /// BUffers input on the x axis
+        /// </summary>
+        /// <param name="x"></param>
         public void UpdateInputX(int x)
         {
             if (_canMove)
                 _storedMoveInput = new Vector2(x, 0);
         }
 
+        /// <summary>
+        /// Buffers input on the y axis
+        /// </summary>
+        /// <param name="y"></param>
         public void UpdateInputY(int y)
         {
             if (_canMove)
@@ -284,7 +301,8 @@ namespace Lodis.Input
                         _moveInputEnableCondition = null;
                 }
             }
-            else if (!_attackButtonDown && !_canMove && !_moveset.AbilityInUse)
+            //If player isn't doing anything, enable movement
+            else if (!_attackButtonDown && !_canMove && !_moveset.AbilityInUse && !_bufferedAction.HasAction())
             {
                 EnableMovement();
             }
