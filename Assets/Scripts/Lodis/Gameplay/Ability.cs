@@ -14,6 +14,13 @@ namespace Lodis.Gameplay
         KNOCKBACK
     }
 
+    public enum AbilityPhase
+    {
+        STARTUP,
+        ACTIVE,
+        RECOVER
+    }
+
     /// <summary>
     /// Abstract class that all abilities inherit from
     /// </summary>
@@ -33,7 +40,8 @@ namespace Lodis.Gameplay
         public UnityAction onDeactivate = null;
         private bool _inUse;
 
-        
+        public AbilityPhase AbilityPhase { get; private set; }
+
 
         /// <summary>
         /// Returns false at the end of the ability's recover time
@@ -50,11 +58,14 @@ namespace Lodis.Gameplay
         {
             _inUse = true;
             onBegin?.Invoke();
+            AbilityPhase = AbilityPhase.STARTUP;
             yield return new WaitForSeconds(abilityData.startUpTime);
             onActivate?.Invoke();
+            AbilityPhase = AbilityPhase.ACTIVE;
             Activate(args);
             yield return new WaitForSeconds(abilityData.timeActive);
             onDeactivate?.Invoke();
+            AbilityPhase = AbilityPhase.RECOVER;
             Deactivate();
             yield return new WaitForSeconds(abilityData.recoverTime);
             onEnd?.Invoke();
@@ -80,6 +91,67 @@ namespace Lodis.Gameplay
             }
 
             ownerMoveset.StartCoroutine(StartAbility(args));
+        }
+
+        public bool CheckIfAbilityCanBeCanceled()
+        {
+            switch (AbilityPhase)
+            {
+                case AbilityPhase.STARTUP:
+                    if (abilityData.canCancelStartUp)
+                    {
+                        return true;
+                    }
+                    break;
+                case AbilityPhase.ACTIVE:
+                    if (abilityData.canCancelActive)
+                    {
+                        return true;
+                    }
+                    break;
+                case AbilityPhase.RECOVER:
+                    if (abilityData.canCancelRecover)
+                    {
+                        return true;
+                    }
+                    break;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Tries to cancel the ability
+        /// </summary>
+        /// <returns>Returns true if the current ability phase can be canceled</returns>
+        public bool TryCancel()
+        {
+            switch (AbilityPhase)
+            {
+                case AbilityPhase.STARTUP:
+                    if (abilityData.canCancelStartUp)
+                    {
+                        StopAbility();
+                        return true;
+                    }
+                    break;
+                case AbilityPhase.ACTIVE:
+                    if (abilityData.canCancelActive)
+                    {
+                        StopAbility();
+                        return true;
+                    }
+                    break;
+                case AbilityPhase.RECOVER:
+                    if (abilityData.canCancelRecover)
+                    {
+                        StopAbility();
+                        return true;
+                    }
+                    break;
+            }
+
+            return false;
         }
 
         public void StopAbility()

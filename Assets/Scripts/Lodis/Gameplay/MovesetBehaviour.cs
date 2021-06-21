@@ -51,15 +51,12 @@ namespace Lodis.Gameplay
             _deck.InitAbilities(gameObject);
         }
 
-        public bool CanUseAbility
+        public bool GetCanUseAbility()
         {
-            get
-            {
-                if (!AbilityInUse)
-                    return true;
+            if (!AbilityInUse)
+                return true;
 
-                return _lastAbilityInUse.abilityData.canCancel;
-            }
+            return _lastAbilityInUse.CheckIfAbilityCanBeCanceled();
         }
 
         /// <summary>
@@ -97,12 +94,8 @@ namespace Lodis.Gameplay
         {
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
-            {
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.abilityData.canCancel)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel())
                     return _lastAbilityInUse;
-                else if (_lastAbilityInUse.InUse)
-                    _lastAbilityInUse.StopAbility();
-            }
 
             _animationBehaviour.PlayAbilityAnimation(_deck[(int)abilityType]);
             //Find the ability in the deck abd use it
@@ -118,7 +111,7 @@ namespace Lodis.Gameplay
             //Update color for debugging
             if (_lastAbilityInUse != null)
             {
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.abilityData.canCancel)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.CheckIfAbilityCanBeCanceled())
                     _renderer.material.color = Color.grey;
                 else
                     _renderer.material.color = _defaultColor;

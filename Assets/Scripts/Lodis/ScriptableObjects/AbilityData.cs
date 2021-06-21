@@ -15,6 +15,7 @@ namespace Lodis.ScriptableObjects
     }
 
 
+
     [CreateAssetMenu(menuName = "AbilityData")]
     public class AbilityData : ScriptableObject
     {
@@ -30,8 +31,12 @@ namespace Lodis.ScriptableObjects
         public float recoverTime = 0;
         //How long does the object that used the ability must wait before the ability activates
         public float startUpTime = 0;
-        //If true, this ability can be canceled into others
-        public bool canCancel = false;
+        //If true, this ability can be canceled into others in the start up phase
+        public bool canCancelStartUp = false;
+        //If true, this ability can be canceled into others in the active phase
+        public bool canCancelActive = false;
+        //If true, this ability can be canceled into others in the recover phase
+        public bool canCancelRecover = false;
         public bool useAbilityTimingForAnimation;
         public AnimationType animationType;
 
@@ -60,7 +65,9 @@ namespace Lodis.ScriptableObjects
         private SerializedProperty _timeActive;
         private SerializedProperty _recoverTime;
         private SerializedProperty _startUpTime;
-        private SerializedProperty _canCancel;
+        private SerializedProperty _canCancelStartUp;
+        private SerializedProperty _canCancelActive;
+        private SerializedProperty _canCancelRecover;
         private SerializedProperty _animationType;
         private SerializedProperty _useAbilityTiming;
 
@@ -73,7 +80,9 @@ namespace Lodis.ScriptableObjects
             _timeActive = serializedObject.FindProperty("timeActive");
             _recoverTime = serializedObject.FindProperty("recoverTime");
             _startUpTime = serializedObject.FindProperty("startUpTime");
-            _canCancel = serializedObject.FindProperty("canCancel");
+            _canCancelStartUp = serializedObject.FindProperty("canCancelStartUp");
+            _canCancelActive = serializedObject.FindProperty("canCancelActive");
+            _canCancelRecover = serializedObject.FindProperty("canCancelRecover");
             _animationType = serializedObject.FindProperty("animationType");
             _useAbilityTiming = serializedObject.FindProperty("useAbilityTimingForAnimation");
         }
@@ -83,7 +92,7 @@ namespace Lodis.ScriptableObjects
             EditorGUILayout.PropertyField(_name,
                 new GUIContent("Name", "The name of the ability"));
 
-            EditorGUILayout.PropertyField(_abilityType, 
+            EditorGUILayout.PropertyField(_abilityType,
                 new GUIContent("Ability Type", "The type describes the strength and input value for the ability"));
 
             EditorGUILayout.PropertyField(_damageType,
@@ -98,7 +107,13 @@ namespace Lodis.ScriptableObjects
             EditorGUILayout.PropertyField(_startUpTime,
                 new GUIContent("Start Up Time", "How long should the object that used the ability wait before the ability activates"));
 
-            EditorGUILayout.PropertyField(_canCancel, new GUIContent("Can Cancel",
+            EditorGUILayout.PropertyField(_canCancelStartUp, new GUIContent("Can Cancel Start Up Phase",
+                "If true, this ability can be canceled into others"));
+
+            EditorGUILayout.PropertyField(_canCancelActive, new GUIContent("Can Cancel Active Phase",
+                "If true, this ability can be canceled into others"));
+
+            EditorGUILayout.PropertyField(_canCancelRecover, new GUIContent("Can Cancel Recover Phase",
                 "If true, this ability can be canceled into others"));
 
             EditorGUILayout.PropertyField(_useAbilityTiming, new GUIContent("Use Ability Timing For Animation",
@@ -107,6 +122,8 @@ namespace Lodis.ScriptableObjects
 
             EditorGUILayout.PropertyField(_animationType, new GUIContent("Animation Type",
                 "The type of animation that will play when the ability is used"));
+
+            base.CreateInspectorGUI();
 
             if (_animationType.enumValueIndex == (int)AnimationType.CUSTOM)
             {

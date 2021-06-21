@@ -160,6 +160,9 @@ namespace Lodis.Gameplay
                 case AnimationType.CAST:
                     if (FindAnimationClip("Cast"))
                     {
+                        if (_playableGraph.IsPlaying())
+                            _playableGraph.Stop();
+
                         _animator.Play("Cast", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
@@ -172,6 +175,9 @@ namespace Lodis.Gameplay
                 case AnimationType.MELEE:
                     if (FindAnimationClip("Melee"))
                     {
+                        if (_playableGraph.IsPlaying())
+                            _playableGraph.Stop();
+
                         _animator.Play("Melee", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
@@ -184,6 +190,9 @@ namespace Lodis.Gameplay
                 case AnimationType.SUMMON:
                     if (FindAnimationClip("Summon"))
                     {
+                        if (_playableGraph.IsPlaying())
+                            _playableGraph.Stop();
+
                         _animator.Play("Summon", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
@@ -222,6 +231,7 @@ namespace Lodis.Gameplay
                 {
                     _playableGraph.Stop();
                     _animator.Rebind();
+                    _animator.speed = 1;
                     _animatingMotion = true;
                 }
             }

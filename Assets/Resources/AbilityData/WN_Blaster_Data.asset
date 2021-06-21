@@ -20,6 +20,8 @@ MonoBehaviour:
   timeActive: 0.1
   recoverTime: 1
   startUpTime: 0.1
-  canCancel: 0
-  useAbilityTimingForAnimation: 0
-  animationType: 3
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 1
+  useAbilityTimingForAnimation: 1
+  animationType: 0

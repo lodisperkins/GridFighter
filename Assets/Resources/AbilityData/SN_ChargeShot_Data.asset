@@ -12,12 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: SN_ChargeShot_Data
   m_EditorClassIdentifier: 
-  _customAnimation: {fileID: 0}
+  _customAnimation: {fileID: -203655887218126122, guid: 0ab003f1eab4c424db18ccd36ef0006d,
+    type: 3}
   name: ChargeShot
   abilityType: 4
   damageType: 0
   timeActive: 0.2
   recoverTime: 1.5
   startUpTime: 0.3
-  canCancel: 0
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 0
+  useAbilityTimingForAnimation: 1
   animationType: 0
