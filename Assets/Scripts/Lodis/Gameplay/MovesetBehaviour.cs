@@ -97,7 +97,9 @@ namespace Lodis.Gameplay
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel())
                     return _lastAbilityInUse;
 
-            _animationBehaviour.PlayAbilityAnimation(_deck[(int)abilityType]);
+            if (_animationBehaviour)
+                _animationBehaviour.PlayAbilityAnimation(_deck[(int)abilityType]);
+
             //Find the ability in the deck abd use it
             _deck[(int)abilityType].UseAbility(args);
             _lastAbilityInUse = _deck[(int)abilityType];
