@@ -282,16 +282,16 @@ namespace Lodis.Movement
             //If is moving is being set to true, invoke onMoveBegin
             if (!isMoving && value != isMoving)
             {
-                _onMoveBegin.Invoke(gameObject);
-                _onMoveBeginTemp.Invoke(gameObject);
-                _onMoveBeginTemp.ClearActions();
+                _onMoveBegin?.Invoke(gameObject);
+                _onMoveBeginTemp?.Invoke(gameObject);
+                _onMoveBeginTemp?.ClearActions();
             }
             //If is moving is being set to false, invoke onMoveEnd
             else if (isMoving && value != isMoving)
             {
-                _onMoveEnd.Invoke(gameObject);
-                _onMoveEndTemp.Invoke(gameObject);
-                _onMoveEndTemp.ClearActions();
+                _onMoveEnd?.Invoke(gameObject);
+                _onMoveEndTemp?.Invoke(gameObject);
+                _onMoveEndTemp?.ClearActions();
             }
         }
 

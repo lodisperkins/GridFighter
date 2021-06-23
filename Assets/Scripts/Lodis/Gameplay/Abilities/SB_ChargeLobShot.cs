@@ -22,9 +22,10 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _strongProjectileCollider;
         //The collider attached to the laser
         private HitColliderBehaviour _weakProjectileCollider;
-        private float _strongShotDistance = 2;
+        private float _strongShotDistance = 3;
         private float _strongShotDamage = 10;
         private float _strongShotKnockBackScale = 1;
+        private float _strongForceIncreaseRate = .05f;
         private float _weakShotDistance = 1;
         private float _weakShotDamage = 5;
         private float _weakShotForce = 1;
@@ -146,7 +147,7 @@ namespace Lodis.Gameplay
             _weakShotDamage *= powerScale;
             _strongShotDamage *= powerScale;
             _strongShotKnockBackScale *= powerScale;
-            _strongShotDistance *= powerScale +.5f;
+            _strongShotDistance += (powerScale - 1) / _strongForceIncreaseRate;
 
             _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, 0, 0, true, 5, owner, true);
             _weakProjectileCollider.onHit += AddUpwardForce;
@@ -177,7 +178,7 @@ namespace Lodis.Gameplay
             _weakShotDamage /= powerScale;
             _strongShotDamage /= powerScale;
             _strongShotKnockBackScale /= powerScale;
-            _strongShotDistance /= powerScale +.5f;
+            _strongShotDistance -= (powerScale - 1) / _strongForceIncreaseRate;
         }
     }
 }

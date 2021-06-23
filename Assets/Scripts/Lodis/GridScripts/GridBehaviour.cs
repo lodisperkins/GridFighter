@@ -273,6 +273,10 @@ namespace Lodis.GridScripts
                         GetPanel(potentialPlayerSpawn, out _lhsPlayerSpawnPanel, false, GridAlignment.LEFT);
                 }
 
+                if (_barriers == null)
+                {
+                    _barriers = new List<BarrierBehaviour>();
+                }
                 _barriers.Add(barrierObject.GetComponent<BarrierBehaviour>());
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
                 movement.MoveToPanel(spawnPanel.Position);
@@ -295,6 +299,13 @@ namespace Lodis.GridScripts
                     if (!_rhsPlayerSpawnPanel)
                         GetPanel(potentialPlayerSpawn, out _rhsPlayerSpawnPanel, false, GridAlignment.RIGHT);
                 }
+                if (_barriers == null)
+                {
+                    _barriers = new List<BarrierBehaviour>();
+                }
+
+                if (barrierObject == null)
+                    return;
 
                 _barriers.Add(barrierObject.GetComponent<BarrierBehaviour>());
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
