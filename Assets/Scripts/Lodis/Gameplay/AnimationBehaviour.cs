@@ -30,6 +30,13 @@ namespace Lodis.Gameplay
         private AnimationClipPlayable _currentClipPlayable;
         private int _animationPhase;
         private bool _animatingMotion;
+        private Rigidbody[] _rigidbodies;
+
+        private void Awake()
+        {
+            _rigidbodies = GetComponentsInChildren<Rigidbody>();
+            DisableRagDoll();
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -37,6 +44,18 @@ namespace Lodis.Gameplay
             _playableGraph = PlayableGraph.Create();
             _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
             _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
+        }
+
+        public void EnableRagDoll()
+        {
+            foreach (Rigidbody rigidbody in _rigidbodies)
+                rigidbody.isKinematic = false;
+        }
+
+        public void DisableRagDoll()
+        {
+            foreach (Rigidbody rigidbody in _rigidbodies)
+                rigidbody.isKinematic = true;
         }
 
         /// <summary>
