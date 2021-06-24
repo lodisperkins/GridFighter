@@ -43,3 +43,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ae999ebab2f7e34bb76432602ee2e6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  player1State: 0
+  player2State: 0
+  projectileHeight: 1

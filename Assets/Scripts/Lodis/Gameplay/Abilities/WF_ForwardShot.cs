@@ -37,8 +37,10 @@ namespace Lodis.Gameplay
         public void SpawnProjectile()
         {
             //If no spawn transform has been set, use the default owner transform
-            if (!spawnTransform)
+            if (!ownerMoveset.ProjectileSpawnTransform)
                 spawnTransform = owner.transform;
+            else
+                spawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Log if a projectile couldn't be found
             if (!_projectile)
@@ -51,7 +53,16 @@ namespace Lodis.Gameplay
             GameObject spawnerObject = new GameObject();
             spawnerObject.transform.parent = spawnTransform;
             spawnerObject.transform.localPosition = Vector3.zero;
+            spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
             spawnerObject.transform.forward = owner.transform.forward;
+
+            if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.projectileHeight)
+            {
+                spawnerObject.transform.position = new Vector3
+                    (spawnerObject.transform.position.x,
+                    BlackBoardBehaviour.Instance.projectileHeight,
+                    owner.transform.position.z);
+            }
 
             //Initialize and attach spawn script
             ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();

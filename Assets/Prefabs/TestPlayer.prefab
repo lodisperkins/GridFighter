@@ -336,6 +336,8 @@ MonoBehaviour:
   _deckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _renderer: {fileID: 2765739998997917301}
   _animationBehaviour: {fileID: 790165711530390187}
+  _projectileSpawnPoint: {fileID: 1869156604299146008}
+  _meleeHitBoxSpawnPoint: {fileID: 1869156604299146008}
 --- !u!114 &-1873711531255504354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -620,6 +622,12 @@ GameObject:
 --- !u!4 &562811073288596283 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d1c23e8b5397dd4fa49986fc3c4650c,
+    type: 3}
+  m_PrefabInstance: {fileID: 19484226742684880}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1869156604299146008 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1852576806548013000, guid: 8d1c23e8b5397dd4fa49986fc3c4650c,
     type: 3}
   m_PrefabInstance: {fileID: 19484226742684880}
   m_PrefabAsset: {fileID: 0}

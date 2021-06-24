@@ -8042,11 +8042,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlackBoard
       objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718757, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718763, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: m_RootOrder

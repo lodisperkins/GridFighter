@@ -133,8 +133,10 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //If no spawn transform has been set, use the default owner transform
-            if (!spawnTransform)
+            if (!ownerMoveset.ProjectileSpawnTransform)
                 spawnTransform = owner.transform;
+            else
+                spawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Log if a projectile couldn't be found
             if (!_strongProjectile)
@@ -156,7 +158,8 @@ namespace Lodis.Gameplay
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();
             spawnerObject.transform.parent = spawnTransform;
-            spawnerObject.transform.localPosition = Vector3.up / 2;
+            spawnerObject.transform.localPosition = Vector3.zero;
+            spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
             spawnerObject.transform.forward = owner.transform.forward;
 
             //Initialize and attach spawn script

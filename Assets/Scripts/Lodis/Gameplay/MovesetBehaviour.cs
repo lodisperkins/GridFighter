@@ -37,6 +37,29 @@ namespace Lodis.Gameplay
         private Color _defaultColor;
         [SerializeField]
         private AnimationBehaviour _animationBehaviour;
+        [Tooltip("This transform is where projectile will spawn by default for this object.")]
+        [SerializeField]
+        private Transform _projectileSpawnPoint;
+        [Tooltip("This transform is where melee hit boxes will spawn by default for this object.")]
+        [SerializeField]
+        private Transform _meleeHitBoxSpawnPoint;
+
+
+        public Transform ProjectileSpawnTransform
+        {
+            get
+            {
+                return _projectileSpawnPoint;
+            }
+        }
+
+        public Transform MeleeHitBoxSpawnTransform
+        {
+            get
+            {
+                return _meleeHitBoxSpawnPoint;
+            }
+        }
 
         // Start is called before the first frame update
         void Start()
