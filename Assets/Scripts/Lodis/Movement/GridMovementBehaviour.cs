@@ -145,7 +145,7 @@ namespace Lodis.Movement
         private void Start()
         {
             //Set the starting panel to be occupied
-            if (BlackBoardBehaviour.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
                 _currentPanel.Occupied = true;
             else
                 Debug.LogError(name + " could not find starting panel");
@@ -331,7 +331,7 @@ namespace Lodis.Movement
                 return false;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition, tempAlignment))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition, tempAlignment))
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
@@ -381,7 +381,7 @@ namespace Lodis.Movement
                 return false;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Grid.GetPanel(x, y, out _targetPanel, _position == new Vector2( x,y), tempAlignment))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, _position == new Vector2( x,y), tempAlignment))
                 return false;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
@@ -478,24 +478,24 @@ namespace Lodis.Movement
 
             PanelBehaviour panel = null;
 
-            while (panelsEvaluated <= BlackBoardBehaviour.Grid.Dimensions.x * BlackBoardBehaviour.Grid.Dimensions.y)
+            while (panelsEvaluated <= BlackBoardBehaviour.Instance.Grid.Dimensions.x * BlackBoardBehaviour.Instance.Grid.Dimensions.y)
             {
-                if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.left * offSet, out panel, false, Alignment))
+                if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.left * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
                     return;
                 }
-                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.right * offSet, out panel, false, Alignment))
+                else if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.right * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
                     return;
                 }
-                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.up * offSet, out panel, false, Alignment))
+                else if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.up * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
                     return;
                 }
-                else if (BlackBoardBehaviour.Grid.GetPanel(Position + Vector2.down * offSet, out panel, false, Alignment))
+                else if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.down * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
                     return;

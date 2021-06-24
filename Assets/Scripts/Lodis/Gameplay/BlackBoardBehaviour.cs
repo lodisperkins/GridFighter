@@ -7,16 +7,35 @@ namespace Lodis.Gameplay
 
     public class BlackBoardBehaviour : MonoBehaviour
     {
-        public static GridScripts.GridBehaviour Grid { get; private set; }
-        public static PlayerState player1State = PlayerState.IDLE;
-        public static PlayerState player2State = PlayerState.IDLE;
+        public GridScripts.GridBehaviour Grid { get; private set; }
+        public PlayerState player1State = PlayerState.IDLE;
+        public PlayerState player2State = PlayerState.IDLE;
+        public float projectileHeight;
+        private static BlackBoardBehaviour _instance;
+
+        public static BlackBoardBehaviour Instance
+        {
+            get
+            {
+                if (!_instance)
+                    _instance = FindObjectOfType(typeof(BlackBoardBehaviour)) as BlackBoardBehaviour;
+
+                if (!_instance)
+                {
+                    GameObject blackBoard = new GameObject("BlackBoard");
+                    _instance = blackBoard.AddComponent<BlackBoardBehaviour>();
+                }
+
+                return _instance;
+            }
+        }
 
         /// <summary>
         /// Gets the state of the player that matches the ID
         /// </summary>
         /// <param name="id">The player's ID</param>
         /// <returns></returns>
-        public static PlayerState GetPlayerStateFromID(int id)
+        public PlayerState GetPlayerStateFromID(int id)
         {
             if (id == 0)
                 return player1State;
@@ -31,7 +50,7 @@ namespace Lodis.Gameplay
             Grid = FindObjectOfType<GridScripts.GridBehaviour>();
         }
 
-        public static void InitializeGrid()
+        public void InitializeGrid()
         {
             Grid = FindObjectOfType<GridScripts.GridBehaviour>();
         }

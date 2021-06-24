@@ -152,10 +152,10 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         void Update()
         {
-            BlackBoardBehaviour.player1State = _p1StateManager.CurrentState;
+            BlackBoardBehaviour.Instance.player1State = _p1StateManager.CurrentState;
 
             if (_mode == GameMode.MULTIPLAYER)
-                BlackBoardBehaviour.player2State = _p2StateManager.CurrentState;
+                BlackBoardBehaviour.Instance.player2State = _p2StateManager.CurrentState;
         }
     }
 

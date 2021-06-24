@@ -146,7 +146,7 @@ namespace Lodis.Movement
         {
             GridScripts.PanelBehaviour panel = null;
 
-            if (BlackBoardBehaviour.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
                 _movementBehaviour.MoveToPanel(panel, false, GridScripts.GridAlignment.ANY);
         }
 
@@ -225,8 +225,8 @@ namespace Lodis.Movement
         public Vector3 CalculateKnockbackForce(float knockbackScale, float hitAngle)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Grid.PanelSpacing;
+            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
             //Apply the damage and weight to find the amount of knock back to be applied
             float totalKnockback = (knockbackScale + (knockbackScale * (Health /100))) - _weight;
 

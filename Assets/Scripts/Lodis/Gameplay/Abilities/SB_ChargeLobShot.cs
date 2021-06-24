@@ -62,8 +62,8 @@ namespace Lodis.Gameplay
         private Vector3 CalculateProjectileForce(Vector3 axis, float shotDistance)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Grid.PanelSpacing;
+            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
 
             Vector3 moveDir = new Vector3();
 

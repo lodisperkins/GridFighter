@@ -39,8 +39,8 @@ namespace Lodis.Gameplay
         private Vector3 CalculateProjectileForce()
         {
             //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Grid.PanelSpacing;
+            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
 
             //Clamps hit angle to prevent completely horizontal movement
             float dot = Vector3.Dot(owner.transform.forward, Vector3.right);

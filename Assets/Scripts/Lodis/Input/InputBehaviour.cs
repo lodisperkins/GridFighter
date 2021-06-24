@@ -273,7 +273,7 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
-            _playerState = BlackBoardBehaviour.GetPlayerStateFromID(PlayerID);
+            _playerState = BlackBoardBehaviour.Instance.GetPlayerStateFromID(PlayerID);
 
             //Checks to see if input can be enabled 
             if (_inputEnableCondition != null)
