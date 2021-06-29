@@ -30,13 +30,8 @@ namespace Lodis.Gameplay
         private AnimationClipPlayable _currentClipPlayable;
         private int _animationPhase;
         private bool _animatingMotion;
-        private Rigidbody[] _rigidbodies;
-
-        private void Awake()
-        {
-            _rigidbodies = GetComponentsInChildren<Rigidbody>();
-            DisableRagDoll();
-        }
+        [SerializeField]
+        private PlayerStateManagerBehaviour _playerStateManager;
 
         // Start is called before the first frame update
         void Start()
@@ -44,18 +39,6 @@ namespace Lodis.Gameplay
             _playableGraph = PlayableGraph.Create();
             _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
             _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
-        }
-
-        public void EnableRagDoll()
-        {
-            foreach (Rigidbody rigidbody in _rigidbodies)
-                rigidbody.isKinematic = false;
-        }
-
-        public void DisableRagDoll()
-        {
-            foreach (Rigidbody rigidbody in _rigidbodies)
-                rigidbody.isKinematic = true;
         }
 
         /// <summary>
@@ -241,8 +224,7 @@ namespace Lodis.Gameplay
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        private void UpdateAnimationsBasedOnState()
         {
             if (_currentAbilityAnimating != null)
             {
@@ -251,12 +233,34 @@ namespace Lodis.Gameplay
                     _playableGraph.Stop();
                     _animator.Rebind();
                     _animator.speed = 1;
-                    _animatingMotion = true;
                 }
             }
 
-            _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
-            _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
+            switch (_playerStateManager.CurrentState)
+            {
+                case PlayerState.IDLE:
+                    _animator.Play("IdleRun");
+                    _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
+                    _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
+                    _animatingMotion = true;
+                    break;
+
+                case PlayerState.KNOCKBACK:
+                    _animator.Play("Tumbling");
+                    _animatingMotion = true;
+                    break;
+
+                case PlayerState.FREEFALL:
+                    _animator.Play("FreeFall");
+                    _animatingMotion = true;
+                    break;
+            }
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            UpdateAnimationsBasedOnState();
             //Debug.Log(_animator.speed);
         }
     }
