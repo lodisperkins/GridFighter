@@ -22,7 +22,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _strongProjectileCollider;
         //The collider attached to the laser
         private HitColliderBehaviour _weakProjectileCollider;
-        private float _strongShotDistance = 3;
+        private float _strongShotDistance = 1;
         private float _strongShotDamage = 10;
         private float _strongShotKnockBackScale = 1;
         private float _strongForceIncreaseRate = .05f;

@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5894801440243622393}
   - component: {fileID: 3302727793092609642}
   - component: {fileID: 4910650955507786514}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: CollisionPlane
-  m_TagString: Untagged
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

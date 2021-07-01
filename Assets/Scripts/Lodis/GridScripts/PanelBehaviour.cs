@@ -99,8 +99,8 @@ namespace Lodis.GridScripts
 
         private void OnTriggerEnter(Collider other)
         {
-            Movement.KnockbackBehaviour knockbackScript = other.GetComponent<Movement.KnockbackBehaviour>();
-            Gameplay.CharacterDefenseBehaviour defenseScript = other.GetComponent<Gameplay.CharacterDefenseBehaviour>();
+            Movement.KnockbackBehaviour knockbackScript = other.transform.root.GetComponent<Movement.KnockbackBehaviour>();
+            Gameplay.CharacterDefenseBehaviour defenseScript = other.transform.root.GetComponent<Gameplay.CharacterDefenseBehaviour>();
 
             if (!knockbackScript)
                 return;

@@ -680,7 +680,7 @@ GameObject:
   - component: {fileID: 151772237}
   m_Layer: 0
   m_Name: RingBarrierR
-  m_TagString: Untagged
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3866,7 +3866,7 @@ GameObject:
   - component: {fileID: 894189965}
   m_Layer: 0
   m_Name: RingBarrierL
-  m_TagString: Untagged
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4172,7 +4172,7 @@ GameObject:
   - component: {fileID: 942828865}
   m_Layer: 0
   m_Name: CollisionPlane(Clone)
-  m_TagString: Untagged
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -40,6 +40,12 @@ namespace Lodis.Movement
         [SerializeField]
         private CharacterDefenseBehaviour _defenseBehaviour;
 
+        public CollisionEvent OnCollision
+        {
+            private get;
+            set;
+        }
+
         public bool UseGravity
         {
             get
@@ -283,6 +289,8 @@ namespace Lodis.Movement
 
         public override void OnCollisionEnter(Collision collision)
         {
+            OnCollision?.Invoke(collision.gameObject, collision);
+
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
             if (damageScript == null)

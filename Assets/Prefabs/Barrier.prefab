@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5429340417382997469}
   - component: {fileID: 5771645458105570294}
   - component: {fileID: 6849835655712364424}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HealthDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 2088008142369164254}
   - component: {fileID: 8519873333942511007}
   - component: {fileID: 8936262570103720019}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: -2082121645910576795}
   - component: {fileID: -4499121288340441238}
   - component: {fileID: 1519654295394309742}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Barrier
   m_TagString: Structure
   m_Icon: {fileID: 0}
@@ -278,7 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0}
   _targetTolerance: 0.05
-  _velocity: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
   _speed: 0
   _canMove: 1
   canCancelMovement: 0
@@ -304,6 +304,7 @@ MonoBehaviour:
   _visibleLayers:
   - Player
   _pushScale: 2
+  _damageOnCollision: 0
 --- !u!1 &4444937584539456812
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,7 +317,7 @@ GameObject:
   - component: {fileID: 8078493715340171768}
   - component: {fileID: 525951979203699773}
   - component: {fileID: 1457327384817059765}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -461,7 +462,7 @@ GameObject:
   - component: {fileID: 2658835066018128972}
   - component: {fileID: 6027522228392284762}
   - component: {fileID: 560339110088495939}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}

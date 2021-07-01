@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - Structure
+  - BouncePoint
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - 
   - Panels
   - Player
-  - 
-  - 
+  - Structure
+  - BouncePoint
   - 
   - 
   - 

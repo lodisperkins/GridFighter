@@ -18,7 +18,7 @@ namespace Lodis.Gameplay
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
-        private float _shotDistance = 2;
+        private float _shotDistance = 1;
         private Movement.GridMovementBehaviour _ownerMoveScript;
 
         //Called when ability is created

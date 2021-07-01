@@ -4,6 +4,13 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
+    /// <summary>
+    /// Event used when collisions occur. 
+    /// Arg[0] = The game object collided with.
+    /// Arg[1] = The collision data. Is a collider type when on trigger enter/stay is called,
+    /// and is a collision type when on collision enter is called
+    /// </summary>
+    /// <param name="args"></param>
     public delegate void CollisionEvent(params object[] args);
     public class ColliderBehaviour : MonoBehaviour
     {
@@ -172,7 +179,7 @@ namespace Lodis.Gameplay
             //Add the game object to the list of collisions so it is not collided with again
             _collisions.Add(collision.gameObject);
 
-            onHit?.Invoke(collision.gameObject);
+            onHit?.Invoke(collision.gameObject, collision);
 
             if (_destroyOnHit)
                 Destroy(gameObject);

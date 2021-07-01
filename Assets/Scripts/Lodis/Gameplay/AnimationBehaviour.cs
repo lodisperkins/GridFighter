@@ -20,6 +20,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Movement.GridMovementBehaviour _moveBehaviour;
         [SerializeField]
+        private Movement.KnockbackBehaviour _knockbackBehaviour;
+        [SerializeField]
         private Animator _animator;
         private Ability _currentAbilityAnimating;
         private AnimationClip _currentClip;
