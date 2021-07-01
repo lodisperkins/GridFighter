@@ -10,6 +10,7 @@ namespace Lodis.Gameplay
         ATTACKING,
         KNOCKBACK,
         FREEFALL,
+        PARRYING,
         DOWN
     }
 
@@ -20,6 +21,7 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _moveset;
         private Input.InputBehaviour _input;
         private Movement.GridMovementBehaviour _movement;
+        private CharacterDefenseBehaviour _characterDefense;
         [SerializeField]
         private PlayerState _currentState;
 
@@ -30,6 +32,7 @@ namespace Lodis.Gameplay
             _moveset = GetComponent<MovesetBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
+            _characterDefense = GetComponent<CharacterDefenseBehaviour>();
         }
 
         public PlayerState CurrentState
@@ -40,7 +43,9 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         void Update()
         {
-            if (_knockBack.InHitStun)
+            if (_characterDefense.IsParrying)
+                _currentState = PlayerState.PARRYING;
+            else if (_knockBack.InHitStun)
                 _currentState = PlayerState.KNOCKBACK;
             else if (_moveset.AbilityInUse)
                 _currentState = PlayerState.ATTACKING;

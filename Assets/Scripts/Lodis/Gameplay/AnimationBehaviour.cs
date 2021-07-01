@@ -226,6 +226,9 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// Updates the type of animations playing based on the characters state
+        /// </summary>
         private void UpdateAnimationsBasedOnState()
         {
             if (_currentAbilityAnimating != null)
@@ -254,6 +257,11 @@ namespace Lodis.Gameplay
 
                 case PlayerState.FREEFALL:
                     _animator.Play("FreeFall");
+                    _animatingMotion = true;
+                    break;
+
+                case PlayerState.PARRYING:
+                    _animator.Play("ParryPose");
                     _animatingMotion = true;
                     break;
             }

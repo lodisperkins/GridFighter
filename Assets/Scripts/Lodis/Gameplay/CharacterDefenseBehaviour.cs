@@ -141,7 +141,6 @@ namespace Lodis.Gameplay
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;
             _canParry = false;
-            _knockBack.InFreeFall = true;
 
             //Start timer for parry
             yield return new WaitForSeconds(_parryLength);
@@ -149,6 +148,7 @@ namespace Lodis.Gameplay
             //Disable parry
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
+            _knockBack.InFreeFall = true;
 
             //If the parry wasn't successful, reapply the old velocity
             if (!_knockBack.IsInvincible)
