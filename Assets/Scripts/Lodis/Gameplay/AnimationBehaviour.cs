@@ -41,6 +41,7 @@ namespace Lodis.Gameplay
             _playableGraph = PlayableGraph.Create();
             _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
             _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
+            _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
         }
 
         /// <summary>
@@ -226,6 +227,13 @@ namespace Lodis.Gameplay
             }
         }
 
+        private void ResetAnimationGraph()
+        {
+            _playableGraph.Stop();
+            _animator.Rebind();
+            _animator.speed = 1;
+        }
+
         /// <summary>
         /// Updates the type of animations playing based on the characters state
         /// </summary>
@@ -235,9 +243,7 @@ namespace Lodis.Gameplay
             {
                 if (!_currentAbilityAnimating.InUse && !_animatingMotion)
                 {
-                    _playableGraph.Stop();
-                    _animator.Rebind();
-                    _animator.speed = 1;
+                    ResetAnimationGraph();
                 }
             }
 
@@ -261,6 +267,7 @@ namespace Lodis.Gameplay
                     break;
 
                 case PlayerState.PARRYING:
+                    ResetAnimationGraph();
                     _animator.Play("ParryPose");
                     _animatingMotion = true;
                     break;
