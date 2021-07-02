@@ -47,6 +47,8 @@ namespace Lodis.Movement
         private GridGame.GameEventListener _onMoveEndTemp;
         [SerializeField]
         private bool _moveToAlignedSideIfStuck = true;
+        [SerializeField]
+        private bool _alwaysLookAtOpposingSide = true;
         private KnockbackBehaviour _knockbackBehaviour;
 
         /// <summary>
@@ -518,6 +520,11 @@ namespace Lodis.Movement
                 MoveToPanel(_position);
                 SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
                 _movementEnableCheck = null;
+
+                if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
+                    transform.rotation = Quaternion.Euler(0, -90, 0);
+                else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
+                    transform.rotation = Quaternion.Euler(0, 90, 0);
             }
             else if (_movementEnableCheck != null)
             {
@@ -529,6 +536,7 @@ namespace Lodis.Movement
                 }
             }
 
+            
             MoveToClosestAlignedPanelOnRow();
         }
     }

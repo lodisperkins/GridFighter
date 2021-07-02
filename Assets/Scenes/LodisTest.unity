@@ -366,6 +366,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 1
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 0
 --- !u!114 &33356480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4848,6 +4849,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 0
 --- !u!114 &1082967236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6448,6 +6450,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 0
 --- !u!114 &1439180828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6559,7 +6562,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 0
+  _mode: 1
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _ringBarrierL: {fileID: 894189965}
@@ -7507,6 +7510,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 1
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 0
 --- !u!114 &1553451240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9087,6 +9091,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 0
 --- !u!114 &1921244566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9525,6 +9530,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 0
 --- !u!114 &1992236355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9791,6 +9797,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 1
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 0
 --- !u!114 &2016165840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10390,6 +10397,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 1
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 0
 --- !u!114 &2119259577
 MonoBehaviour:
   m_ObjectHideFlags: 0

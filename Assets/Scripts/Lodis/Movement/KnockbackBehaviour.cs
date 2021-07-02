@@ -206,7 +206,6 @@ namespace Lodis.Movement
                 _rigidbody.AddForce(-_rigidbody.velocity, ForceMode.VelocityChange);
                 yield return new WaitForFixedUpdate();
             }
-            Debug.Log("StopFreezing");
         }
 
         /// <summary>
@@ -309,7 +308,13 @@ namespace Lodis.Movement
                 {
                     SetInvincibilityByTimer(knockBackScript._defenseBehaviour.BraceInvincibilityTime);
                     StopVelocity();
+
+                    if (collision.GetContact(0).normal.x != 0)
+                        transform.LookAt(new Vector2(collision.GetContact(0).normal.x, transform.position.y));
+
+                    _defenseBehaviour.onFallBroken?.Invoke(collision.GetContact(0).normal);
                     _inFreeFall = true;
+                    Debug.Log("teched wall");
                     return;
                 }
             }

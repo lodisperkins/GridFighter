@@ -22,6 +22,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         [SerializeField]
+        private CharacterDefenseBehaviour _defenseBehaviour;
+        [SerializeField]
         private Animator _animator;
         private Ability _currentAbilityAnimating;
         private AnimationClip _currentClip;
@@ -34,6 +36,7 @@ namespace Lodis.Gameplay
         private bool _animatingMotion;
         [SerializeField]
         private PlayerStateManagerBehaviour _playerStateManager;
+        private Vector2 _normal;
 
         // Start is called before the first frame update
         void Start()
@@ -42,6 +45,7 @@ namespace Lodis.Gameplay
             _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
             _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
             _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
+            _defenseBehaviour.onFallBroken += normal => _normal = normal;
         }
 
         /// <summary>
@@ -271,6 +275,28 @@ namespace Lodis.Gameplay
                     _animator.Play("ParryPose");
                     _animatingMotion = true;
                     break;
+
+                case PlayerState.FALLBREAKING:
+                    ResetAnimationGraph();
+                    PlayFallBreakAnimation();
+                    _animatingMotion = true;
+                    break;
+            }
+        }
+
+        private void PlayFallBreakAnimation()
+        {
+            ResetAnimationGraph();
+
+            if (Mathf.Round(_normal.x) != 0)
+            {
+                _animator.Play("WallTech");
+                _animatingMotion = true;
+            }
+            else if (Mathf.Round(_normal.y) == 1)
+            {
+                _animator.Play("GroundTech");
+                _animatingMotion = true;
             }
         }
 

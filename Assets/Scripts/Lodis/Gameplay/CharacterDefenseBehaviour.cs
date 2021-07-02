@@ -4,6 +4,8 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
+
+    public delegate void FallBreakEvent(Vector3 collisionNormal);
     /// <summary>
     /// Handles all defensive options for any character on the grid.
     /// </summary>
@@ -71,7 +73,9 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _braceInvincibilityTime;
         private Coroutine _cooldownRoutine;
+        public FallBreakEvent onFallBroken;
 
+        public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _braceInvincibilityTime; }
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
@@ -92,12 +96,21 @@ namespace Lodis.Gameplay
             _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
             _knockBack.AddOnKnockBackAction(ResetParry);
             _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
+            _knockBack.AddOnKnockBackAction(() => StopAllCoroutines());
+            _knockBack.AddOnKnockBackAction(() => _isParrying = false);
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
             //Initialize default values
             _defaultColor = _material.color;
             _parryCollider.onHit += ActivateInvinciblity;
             _parryCollider.Owner = gameObject;
+            onFallBroken += normal => { BreakingFall = true; StartCoroutine(FallBreakTimer()); };
+        }
+
+        private IEnumerator FallBreakTimer()
+        {
+            yield return new WaitForSeconds(BraceInvincibilityTime);
+            BreakingFall = false;
         }
 
         /// <summary>
@@ -129,6 +142,9 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         private IEnumerator ActivateAirParryRoutine()
         {
+            if (_knockBack.LastVelocity.magnitude == 0)
+                yield return new WaitForFixedUpdate();
+
             //If the velocity the character is moving at is above the speed limit break
             Vector3 moveVelocity = _knockBack.LastVelocity;
             if (moveVelocity.magnitude >= _tempParrySpeedLimit)
@@ -148,6 +164,7 @@ namespace Lodis.Gameplay
             //Disable parry
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
+            _knockBack.UnfreezeObject();
             _knockBack.InFreeFall = true;
 
             //If the parry wasn't successful, reapply the old velocity

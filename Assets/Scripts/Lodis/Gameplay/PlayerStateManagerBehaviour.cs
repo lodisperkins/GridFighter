@@ -11,6 +11,7 @@ namespace Lodis.Gameplay
         KNOCKBACK,
         FREEFALL,
         PARRYING,
+        FALLBREAKING,
         DOWN
     }
 
@@ -43,7 +44,9 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         void Update()
         {
-            if (_characterDefense.IsParrying)
+            if (_characterDefense.BreakingFall)
+                _currentState = PlayerState.FALLBREAKING;
+            else if (_characterDefense.IsParrying)
                 _currentState = PlayerState.PARRYING;
             else if (_knockBack.InHitStun)
                 _currentState = PlayerState.KNOCKBACK;

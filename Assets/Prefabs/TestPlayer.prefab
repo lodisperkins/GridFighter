@@ -33,6 +33,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _moveBehaviour: {fileID: 2765739998997917303}
   _knockbackBehaviour: {fileID: -6268856529084459074}
+  _defenseBehaviour: {fileID: 2612010366639249464}
   _animator: {fileID: 4274826488166718379}
   _runtimeAnimator: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
   _playerStateManager: {fileID: -1873711531255504354}
@@ -161,6 +162,7 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 3
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 1
 --- !u!114 &2765739998997917296
 MonoBehaviour:
   m_ObjectHideFlags: 0

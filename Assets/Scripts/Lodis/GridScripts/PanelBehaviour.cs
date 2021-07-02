@@ -113,6 +113,9 @@ namespace Lodis.GridScripts
                 {
                     knockbackScript.SetInvincibilityByTimer(defenseScript.RecoverInvincibilityLength);
                     knockbackScript.StopVelocity();
+                    Vector3 normal = other.transform.position - transform.position;
+                    defenseScript.onFallBroken?.Invoke(normal.normalized);
+                    Debug.Log("teched floor");
                     return;
                 }
             }
