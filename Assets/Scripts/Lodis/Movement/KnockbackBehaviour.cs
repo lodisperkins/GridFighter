@@ -418,7 +418,12 @@ namespace Lodis.Movement
         private void FixedUpdate()
         {
             _acceleration = (_rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
+
+            if (_rigidbody.velocity.magnitude > _maxMagnitude.Value)
+                _rigidbody.velocity = _rigidbody.velocity.normalized * _maxMagnitude.Value;
+
             _lastVelocity = _rigidbody.velocity;
+
 
             //if (_rigidbody.velocity.magnitude > 0)
             //    _rigidbody.velocity -= _rigidbody.velocity.normalized * _velocityDecayRate.Value;
