@@ -224,9 +224,10 @@ namespace Lodis.Movement
         /// <param name="enableCondition">When this condition is true, movement will be enabled.</param>
         /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
         /// its destination. If false, movement is stopped immediately.</param>
-        public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true)
+        /// <param name="waitForEndOfMovement">This condition to enable movement will override the move condition from an earlier call.</param>
+        public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
-            if (!_canMove)
+            if (!_canMove && !overridesMoveCondition)
                 return;
 
             if (IsMoving && waitForEndOfMovement)
@@ -251,7 +252,8 @@ namespace Lodis.Movement
         /// enabled regardless of what raises the event.</param>
         /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
         /// its destination. If false, movement is stopped immediately.</param>
-        public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true)
+        /// <param name="waitForEndOfMovement">This condition to enable movement will override the move condition from an earlier call.</param>
+        public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
             if (!_canMove)
                 return;

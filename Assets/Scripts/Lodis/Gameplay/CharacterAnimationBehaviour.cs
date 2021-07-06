@@ -15,7 +15,7 @@ namespace Lodis.Gameplay
     }
 
     [RequireComponent(typeof(Animator))]
-    public class AnimationBehaviour : MonoBehaviour
+    public class CharacterAnimationBehaviour : MonoBehaviour
     {
         [SerializeField]
         private Movement.GridMovementBehaviour _moveBehaviour;
@@ -37,6 +37,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private PlayerStateManagerBehaviour _playerStateManager;
         private Vector2 _normal;
+        private Vector3 _modelRestPosition;
 
         // Start is called before the first frame update
         void Start()
@@ -46,6 +47,7 @@ namespace Lodis.Gameplay
             _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
             _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
+            _modelRestPosition = _animator.transform.localPosition;
         }
 
         /// <summary>
@@ -258,6 +260,7 @@ namespace Lodis.Gameplay
                     _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
                     _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
                     _animatingMotion = true;
+                    _animator.transform.localPosition = _modelRestPosition;
                     break;
 
                 case PlayerState.KNOCKBACK:
@@ -277,8 +280,13 @@ namespace Lodis.Gameplay
                     break;
 
                 case PlayerState.FALLBREAKING:
-                    ResetAnimationGraph();
                     PlayFallBreakAnimation();
+                    _animatingMotion = true;
+                    break;
+
+                case PlayerState.LANDING:
+                    _animator.transform.localPosition = Vector3.zero;
+                    _animator.Play("Land");
                     _animatingMotion = true;
                     break;
             }
@@ -286,14 +294,15 @@ namespace Lodis.Gameplay
 
         private void PlayFallBreakAnimation()
         {
-            ResetAnimationGraph();
+            float x = Mathf.Abs(_normal.x);
+            float y = Mathf.Abs(_normal.y);
 
-            if (Mathf.Round(_normal.x) != 0)
+            if (x > y)
             {
                 _animator.Play("WallTech");
                 _animatingMotion = true;
             }
-            else if (Mathf.Round(_normal.y) == 1)
+            else if (y > x)
             {
                 _animator.Play("GroundTech");
                 _animatingMotion = true;

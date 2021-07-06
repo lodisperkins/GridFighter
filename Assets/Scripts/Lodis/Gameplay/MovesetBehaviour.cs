@@ -36,7 +36,7 @@ namespace Lodis.Gameplay
         private Renderer _renderer;
         private Color _defaultColor;
         [SerializeField]
-        private AnimationBehaviour _animationBehaviour;
+        private CharacterAnimationBehaviour _animationBehaviour;
         [Tooltip("This transform is where projectile will spawn by default for this object.")]
         [SerializeField]
         private Transform _projectileSpawnPoint;

@@ -309,6 +309,7 @@ MonoBehaviour:
   _rangeToIgnoreUpAngle: 0.2
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
   _defenseBehaviour: {fileID: 0}
+  _landingTime: 1
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0

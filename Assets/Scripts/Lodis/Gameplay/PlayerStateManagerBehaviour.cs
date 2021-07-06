@@ -12,6 +12,7 @@ namespace Lodis.Gameplay
         FREEFALL,
         PARRYING,
         FALLBREAKING,
+        LANDING,
         DOWN
     }
 
@@ -26,6 +27,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private PlayerState _currentState;
 
+
         // Start is called before the first frame update
         void Start()
         {
@@ -39,6 +41,7 @@ namespace Lodis.Gameplay
         public PlayerState CurrentState
         {
             get { return _currentState; }
+            private set { _currentState = value; }
         }
 
         // Update is called once per frame
@@ -46,6 +49,8 @@ namespace Lodis.Gameplay
         {
             if (_characterDefense.BreakingFall)
                 _currentState = PlayerState.FALLBREAKING;
+            else if (_knockBack.Landing)
+                _currentState = PlayerState.LANDING;
             else if (_characterDefense.IsParrying)
                 _currentState = PlayerState.PARRYING;
             else if (_knockBack.InHitStun)

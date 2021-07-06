@@ -5,6 +5,7 @@ using UnityEditor;
 using Lodis.Gameplay;
 using UnityEngine.Events;
 using Lodis.ScriptableObjects;
+using GridGame.GamePlay.GridScripts;
 
 namespace Lodis.Movement
 {
@@ -39,11 +40,19 @@ namespace Lodis.Movement
         private FloatVariable _velocityDecayRate;
         [SerializeField]
         private CharacterDefenseBehaviour _defenseBehaviour;
-
+        [SerializeField]
+        private float _landingTime;
+        
         public CollisionEvent OnCollision
         {
             private get;
             set;
+        }
+
+        public bool Landing
+        {
+            get;
+            private set;
         }
 
         public bool UseGravity
@@ -135,6 +144,7 @@ namespace Lodis.Movement
             _objectAtRest = condition => RigidbodyInactive(); 
             _movementBehaviour.AddOnMoveEnabledAction(() => { _rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
+            OnCollision += TryStartLandingLag;
         }
 
         /// <summary>
@@ -181,7 +191,7 @@ namespace Lodis.Movement
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
-            _rigidbody.useGravity = false;
+            _rigidbody.isKinematic = true;
         }
 
         public bool CheckIfAtRest()
@@ -286,6 +296,15 @@ namespace Lodis.Movement
             _onKnockBack += action;
         }
 
+        private void TryStartLandingLag(params object[] args)
+        {
+            GameObject plane = (GameObject)args[0];
+            if (!InFreeFall || !plane.CompareTag("Structure"))
+                return;
+
+            _currentCoroutine = StartCoroutine(StartLandingLag());
+        }
+
         public override void OnCollisionEnter(Collision collision)
         {
             OnCollision?.Invoke(collision.gameObject, collision);
@@ -309,10 +328,12 @@ namespace Lodis.Movement
                     SetInvincibilityByTimer(knockBackScript._defenseBehaviour.BraceInvincibilityTime);
                     StopVelocity();
 
-                    if (collision.GetContact(0).normal.x != 0)
-                        transform.LookAt(new Vector2(collision.GetContact(0).normal.x, transform.position.y));
+                    Vector3 collisionDirection = (collision.transform.position - transform.position).normalized;
 
-                    _defenseBehaviour.onFallBroken?.Invoke(collision.GetContact(0).normal);
+                    if (collisionDirection.x != 0)
+                        transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
+
+                    _defenseBehaviour.onFallBroken?.Invoke(collisionDirection);
                     _inFreeFall = true;
                     Debug.Log("teched wall");
                     return;
@@ -332,6 +353,14 @@ namespace Lodis.Movement
 
             //Apply ricochet force and damage
             damageScript.TakeDamage(name, velocityMagnitude, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+        }
+
+        private IEnumerator StartLandingLag()
+        {
+            Landing = true;
+            _movementBehaviour.DisableMovement(condition => !Landing, false, true);
+            yield return new WaitForSeconds(_landingTime);
+            Landing = false;
         }
 
         /// <summary>
