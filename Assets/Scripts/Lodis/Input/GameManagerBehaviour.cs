@@ -27,6 +27,7 @@ namespace Lodis.Gameplay
         private GameMode _mode;
         private PlayerInput _player1;
         private PlayerInput _player2;
+        private GameObject _cpu;
         private Movement.GridMovementBehaviour _p1Movement;
         private Movement.GridMovementBehaviour _p2Movement;
         private PlayerStateManagerBehaviour _p1StateManager;
@@ -111,24 +112,18 @@ namespace Lodis.Gameplay
             {
                 _inputManager.playerPrefab = _dummy.gameObject;
 
-                _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[2]);
-                _player2 = PlayerInput.GetPlayerByIndex(1);
-                _player2.name = _player2.name + "(Dummy)";
-                _ringBarrierR.owner = _player2.name;
-                _player2.transform.forward = Vector3.left;
+                _cpu = Instantiate(_inputManager.playerPrefab);
+                _cpu.name = _inputManager.playerPrefab.name + "(Dummy)";
+                _ringBarrierR.owner = _cpu.name;
+                _cpu.transform.forward = Vector3.left;
 
                 //Get reference to player 2 components
-                _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
-                _p2StateManager = _player2.GetComponent<PlayerStateManagerBehaviour>();
-                _p2Input = _player2.GetComponent<Input.InputBehaviour>();
+                _p2Movement = _cpu.GetComponent<Movement.GridMovementBehaviour>();
+                _p2StateManager = _cpu.GetComponent<PlayerStateManagerBehaviour>();
 
                 //Initialize base UI stats
-                _p2HealthBar.HealthComponent = _player2.GetComponent<Movement.KnockbackBehaviour>();
+                _p2HealthBar.HealthComponent = _cpu.GetComponent<Movement.KnockbackBehaviour>();
                 _p2HealthBar.MaxValue = 200;
-
-                //Move player to spawn
-                _p2Input.PlayerID = 1;
-
                 //Find spawn point for dummy
                 GridScripts.PanelBehaviour spawnPanel = null;
                 if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))
@@ -137,7 +132,7 @@ namespace Lodis.Gameplay
                     Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummySpawnLocation);
 
                 _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
-                _grid.AssignOwners(_player1.name, _player2.name);
+                _grid.AssignOwners(_player1.name, _cpu.name);
                 return;
             }
 

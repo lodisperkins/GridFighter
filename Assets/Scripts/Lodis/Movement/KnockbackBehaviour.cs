@@ -145,6 +145,7 @@ namespace Lodis.Movement
             _movementBehaviour.AddOnMoveEnabledAction(() => { _rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
             OnCollision += TryStartLandingLag;
+            _onKnockBack += () => Landing = false;
         }
 
         /// <summary>

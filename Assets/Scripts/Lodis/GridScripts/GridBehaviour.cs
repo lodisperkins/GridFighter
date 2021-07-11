@@ -315,6 +315,11 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// Gives the field barriers the name of the character they're owned by based on side.
+        /// </summary>
+        /// <param name="lhsOwnerName">The name of the character on the left side.</param>
+        /// <param name="rhsOwnerName">The name of the character on the right side.</param>
         public void AssignOwners(string lhsOwnerName, string rhsOwnerName = "")
         {
             foreach (BarrierBehaviour barrier in _barriers)

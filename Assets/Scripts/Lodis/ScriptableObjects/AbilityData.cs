@@ -39,6 +39,7 @@ namespace Lodis.ScriptableObjects
         public bool canCancelRecover = false;
         public bool useAbilityTimingForAnimation;
         public AnimationType animationType;
+        public Dictionary<string, object> customStats;
 
         public bool GetCustomAnimation(out AnimationClip customAnimation)
         {
@@ -87,6 +88,42 @@ namespace Lodis.ScriptableObjects
             _useAbilityTiming = serializedObject.FindProperty("useAbilityTimingForAnimation");
         }
 
+        public void DrawCustomStatOptions()
+        {
+            string statName = "none";
+            float floatOption = 0;
+            int intOption = 0;
+            string stringOption = "none";
+            bool boolOption = false;
+
+            int selected = 0;
+            string[] options = new string[]
+            {
+                "float", "int", "string", "bool"
+            };
+
+            statName = EditorGUILayout.TextField(statName);
+            selected = EditorGUI.Popup(new Rect(), selected, options);
+
+            switch (selected)
+            {
+                case 0:
+                    floatOption = EditorGUILayout.FloatField(floatOption);
+                    break;
+                case 1:
+                    intOption = EditorGUILayout.IntField(intOption);
+                    break;
+                case 2:
+                    stringOption = EditorGUILayout.TextField(stringOption);
+                    break;
+                case 3:
+                    boolOption = EditorGUILayout.Toggle(boolOption);
+                    break;
+            }
+
+        }
+
+
         public override void OnInspectorGUI()
         {
             EditorGUILayout.PropertyField(_name,
@@ -129,6 +166,11 @@ namespace Lodis.ScriptableObjects
             {
                 EditorGUILayout.PropertyField(_customAnimation,
                     new GUIContent("Custom Animation", "Reference to the animation clip that will play when the ability is used"));
+            }
+
+            if (GUILayout.Button("Create New Custom Stat"))
+            {
+
             }
 
             serializedObject.ApplyModifiedProperties();

@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
         private float _strongShotDistance = 1;
         private float _strongShotDamage = 10;
         private float _strongShotKnockBackScale = 1;
-        private float _strongForceIncreaseRate = .02f;
+        private float _strongForceIncreaseRate = .01f;
         private float _weakShotDistance = 1;
         private float _weakShotDamage = 5;
         private float _weakShotForce = 1;
