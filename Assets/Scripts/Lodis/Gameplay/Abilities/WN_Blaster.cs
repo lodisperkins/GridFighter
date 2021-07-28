@@ -10,9 +10,12 @@ namespace Lodis.Gameplay
     /// knockback and deal little damage.Useful for
     /// applying pressure and applying chip damage
     /// </summary>
+    [System.Serializable]
     public class WN_Blaster : Ability
     {
+        [SerializeField]
         public Transform spawnTransform = null;
+        [SerializeField]
         //How fast the laser will travel
         public float shotSpeed = 20;
         //Usd to store a reference to the laser prefab
@@ -27,7 +30,7 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WN_Blaster_Data"));
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, 3, owner, true);
+            
 
             //Load the projectile prefab
             _projectile = (GameObject)Resources.Load("Projectiles/Laser");
@@ -35,6 +38,8 @@ namespace Lodis.Gameplay
 
         protected override void Activate(params object[] args)
         {
+            _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Damage"), 0, true, 3, owner, true);
+
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
                 spawnTransform = owner.transform;

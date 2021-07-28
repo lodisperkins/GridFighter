@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.ScriptableObjects;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -43,7 +44,6 @@ namespace Lodis.Gameplay
             : base()
         {
             Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision);
-
         }
 
         private void Awake()

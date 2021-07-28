@@ -14,13 +14,17 @@ namespace Lodis.ScriptableObjects
         CUSTOM
     }
 
-
+    [System.Serializable]
+    public class Stat
+    {
+        public string name;
+        public float value;
+    }
 
     [CreateAssetMenu(menuName = "AbilityData")]
     public class AbilityData : ScriptableObject
     {
-        [SerializeField]
-        private AnimationClip _customAnimation;
+        
         public string name = "Unassigned";
         //The type describes the strength and input value for the ability
         public BasicAbilityType abilityType;
@@ -38,8 +42,17 @@ namespace Lodis.ScriptableObjects
         //If true, this ability can be canceled into others in the recover phase
         public bool canCancelRecover = false;
         public bool useAbilityTimingForAnimation;
+        
+        
+
+        [SerializeField]
+        private Stat[] _customStats;
+
         public AnimationType animationType;
-        public Dictionary<string, object> customStats;
+
+        [SerializeField]
+        private AnimationClip _customAnimation;
+
 
         public bool GetCustomAnimation(out AnimationClip customAnimation)
         {
@@ -50,6 +63,17 @@ namespace Lodis.ScriptableObjects
 
             customAnimation = _customAnimation;
             return true;
+        }
+
+        public float GetCustomStatValue(string name)
+        {
+            foreach (Stat stat in _customStats)
+            {
+                if (stat.name == name)
+                    return stat.value;
+            }
+
+            return float.NaN;
         }
     }
 
@@ -88,90 +112,51 @@ namespace Lodis.ScriptableObjects
             _useAbilityTiming = serializedObject.FindProperty("useAbilityTimingForAnimation");
         }
 
-        public void DrawCustomStatOptions()
-        {
-            string statName = "none";
-            float floatOption = 0;
-            int intOption = 0;
-            string stringOption = "none";
-            bool boolOption = false;
-
-            int selected = 0;
-            string[] options = new string[]
-            {
-                "float", "int", "string", "bool"
-            };
-
-            statName = EditorGUILayout.TextField(statName);
-            selected = EditorGUI.Popup(new Rect(), selected, options);
-
-            switch (selected)
-            {
-                case 0:
-                    floatOption = EditorGUILayout.FloatField(floatOption);
-                    break;
-                case 1:
-                    intOption = EditorGUILayout.IntField(intOption);
-                    break;
-                case 2:
-                    stringOption = EditorGUILayout.TextField(stringOption);
-                    break;
-                case 3:
-                    boolOption = EditorGUILayout.Toggle(boolOption);
-                    break;
-            }
-
-        }
-
-
         public override void OnInspectorGUI()
         {
-            EditorGUILayout.PropertyField(_name,
-                new GUIContent("Name", "The name of the ability"));
+            //EditorGUILayout.PropertyField(_name,
+            //    new GUIContent("Name", "The name of the ability"));
 
-            EditorGUILayout.PropertyField(_abilityType,
-                new GUIContent("Ability Type", "The type describes the strength and input value for the ability"));
+            //EditorGUILayout.PropertyField(_abilityType,
+            //    new GUIContent("Ability Type", "The type describes the strength and input value for the ability"));
 
-            EditorGUILayout.PropertyField(_damageType,
-                new GUIContent("Damage Type", "The type of damage this ability deals to objects if any"));
+            //EditorGUILayout.PropertyField(_damageType,
+            //    new GUIContent("Damage Type", "The type of damage this ability deals to objects if any"));
 
-            EditorGUILayout.PropertyField(_timeActive,
-                new GUIContent("Time Active", "How long the ability should be active for"));
+            //EditorGUILayout.PropertyField(_timeActive,
+            //    new GUIContent("Time Active", "How long the ability should be active for"));
 
-            EditorGUILayout.PropertyField(_recoverTime,
-                new GUIContent("Recover Time", "How long does the object that used the ability need before being able to recover"));
+            //EditorGUILayout.PropertyField(_recoverTime,
+            //    new GUIContent("Recover Time", "How long does the object that used the ability need before being able to recover"));
 
-            EditorGUILayout.PropertyField(_startUpTime,
-                new GUIContent("Start Up Time", "How long should the object that used the ability wait before the ability activates"));
+            //EditorGUILayout.PropertyField(_startUpTime,
+            //    new GUIContent("Start Up Time", "How long should the object that used the ability wait before the ability activates"));
 
-            EditorGUILayout.PropertyField(_canCancelStartUp, new GUIContent("Can Cancel Start Up Phase",
-                "If true, this ability can be canceled into others"));
+            //EditorGUILayout.PropertyField(_canCancelStartUp, new GUIContent("Can Cancel Start Up Phase",
+            //    "If true, this ability can be canceled into others"));
 
-            EditorGUILayout.PropertyField(_canCancelActive, new GUIContent("Can Cancel Active Phase",
-                "If true, this ability can be canceled into others"));
+            //EditorGUILayout.PropertyField(_canCancelActive, new GUIContent("Can Cancel Active Phase",
+            //    "If true, this ability can be canceled into others"));
 
-            EditorGUILayout.PropertyField(_canCancelRecover, new GUIContent("Can Cancel Recover Phase",
-                "If true, this ability can be canceled into others"));
+            //EditorGUILayout.PropertyField(_canCancelRecover, new GUIContent("Can Cancel Recover Phase",
+            //    "If true, this ability can be canceled into others"));
 
-            EditorGUILayout.PropertyField(_useAbilityTiming, new GUIContent("Use Ability Timing For Animation",
-                "If true, uses the animation events attached to the clip to speed up or slow down the animation" +
-                " based on each ability phase duration."));
+            //EditorGUILayout.PropertyField(_useAbilityTiming, new GUIContent("Use Ability Timing For Animation",
+            //    "If true, uses the animation events attached to the clip to speed up or slow down the animation" +
+            //    " based on each ability phase duration."));
 
-            EditorGUILayout.PropertyField(_animationType, new GUIContent("Animation Type",
-                "The type of animation that will play when the ability is used"));
+            //EditorGUILayout.PropertyField(_animationType, new GUIContent("Animation Type",
+            //    "The type of animation that will play when the ability is used"));
+
+            DrawDefaultInspector();
 
             base.CreateInspectorGUI();
 
-            if (_animationType.enumValueIndex == (int)AnimationType.CUSTOM)
-            {
-                EditorGUILayout.PropertyField(_customAnimation,
-                    new GUIContent("Custom Animation", "Reference to the animation clip that will play when the ability is used"));
-            }
-
-            if (GUILayout.Button("Create New Custom Stat"))
-            {
-
-            }
+            //if (_animationType.enumValueIndex == (int)AnimationType.CUSTOM)
+            //{
+            //    EditorGUILayout.PropertyField(_customAnimation,
+            //        new GUIContent("Custom Animation", "Reference to the animation clip that will play when the ability is used"));
+            //}
 
             serializedObject.ApplyModifiedProperties();
         }
