@@ -9,18 +9,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Script: {fileID: 0}
   m_Name: SF_ChargeForwardShot_Data
-  m_EditorClassIdentifier: 
-  _customAnimation: {fileID: 0}
-  name: ChargeForwardShot
-  abilityType: 6
+  m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
+  name: Unassigned
+  abilityType: 0
   damageType: 0
-  timeActive: 0.2
-  recoverTime: 0.2
-  startUpTime: 0.1
+  timeActive: 0
+  recoverTime: 0
+  startUpTime: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
-  useAbilityTimingForAnimation: 1
+  useAbilityTimingForAnimation: 0
+  _customStats:
+  - name: Damage
+    value: 0
+  - name: KnockBackScale
+    value: 0
+  - name: HitAngle
+    value: 0
+  - name: Projectile Speed
+    value: 1
+  - name: ProjectileLifetime
+    value: 1
+  - name: MaxInstances
+    value: -1
   animationType: 0
+  _customAnimation: {fileID: 0}

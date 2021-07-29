@@ -15,9 +15,6 @@ namespace Lodis.Gameplay
     {
         [SerializeField]
         public Transform spawnTransform = null;
-        [SerializeField]
-        //How fast the laser will travel
-        public float shotSpeed = 20;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
@@ -30,7 +27,6 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WN_Blaster_Data"));
             owner = newOwner;
-            
 
             //Load the projectile prefab
             _projectile = (GameObject)Resources.Load("Projectiles/Laser");
@@ -38,7 +34,8 @@ namespace Lodis.Gameplay
 
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Damage"), 0, true, 3, owner, true);
+            _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("ProjectileLifetime"), owner, true);
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
@@ -73,7 +70,7 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _projectile;
 
             //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
+            spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("ProjectileSpeed"), _projectileCollider);
 
             MonoBehaviour.Destroy(spawnerObject);
         }

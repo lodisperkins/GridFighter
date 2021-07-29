@@ -17,39 +17,65 @@ namespace Lodis.ScriptableObjects
     [System.Serializable]
     public class Stat
     {
+        public Stat(string newName, float newValue)
+        {
+            name = newName;
+            value = newValue;
+        }
         public string name;
         public float value;
     }
 
-    [CreateAssetMenu(menuName = "AbilityData")]
+    [CreateAssetMenu(menuName = "AbilityData/AttackAbilityData")]
+    class AttackAbilityData : AbilityData
+    {
+        public AttackAbilityData()
+        {
+            _customStats = new Stat[] { new Stat("Damage", 0), new Stat("KnockBackScale", 0), new Stat("HitAngle", 0) };
+        }
+    }
+
+    [CreateAssetMenu(menuName = "AbilityData/ProjectileAbilityData")]
+    class ProjectileAbilityData : AbilityData
+    {
+        public ProjectileAbilityData()
+        {
+            _customStats = new Stat[] { new Stat("Damage", 0), new Stat("KnockBackScale", 0), new Stat("HitAngle", 0), new Stat("Projectile Speed", 1), new Stat("ProjectileLifetime", 1), new Stat("MaxInstances", -1) };
+        }
+    }
+
+    [CreateAssetMenu(menuName = "AbilityData/Default")]
     public class AbilityData : ScriptableObject
     {
         
         public string name = "Unassigned";
-        //The type describes the strength and input value for the ability
+        [Tooltip("The type describes the strength and input value for the ability")]
         public BasicAbilityType abilityType;
+        [Tooltip("The type of damage this attack will deal to other objects")]
         public DamageType damageType = DamageType.DEFAULT;
-        //How long the ability should be active for
+        [Tooltip("How long the ability should be active for")]
         public float timeActive = 0;
-        //How long does the object that used the ability need before being able to recover
+        [Tooltip("How long does the object that used the ability needs before returning to idle")]
         public float recoverTime = 0;
-        //How long does the object that used the ability must wait before the ability activates
+        [Tooltip("How long does the object that used the ability must wait before the ability activates")]
         public float startUpTime = 0;
-        //If true, this ability can be canceled into others in the start up phase
+        [Tooltip("If true, this ability can be canceled into others in the start up phase")]
         public bool canCancelStartUp = false;
-        //If true, this ability can be canceled into others in the active phase
+        [Tooltip("If true, this ability can be canceled into others in the active phase")]
         public bool canCancelActive = false;
-        //If true, this ability can be canceled into others in the recover phase
+        [Tooltip("If true, this ability can be canceled into others in the recover phase")]
         public bool canCancelRecover = false;
+        [Tooltip("If true, the animation will change speed according to the start, active, and recover times")]
         public bool useAbilityTimingForAnimation;
-        
-        
 
+        [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
-        private Stat[] _customStats;
+        protected Stat[] _customStats;
 
+        [Tooltip("The type of animation that will play. If custom is selected the animation in the custom slot will be used")]
         public AnimationType animationType;
 
+        [Tooltip("A unique animation that will be used for the attack instead of one of the defaults")]
         [SerializeField]
         private AnimationClip _customAnimation;
 
@@ -73,6 +99,7 @@ namespace Lodis.ScriptableObjects
                     return stat.value;
             }
 
+            Debug.LogError("Couldn't find stat. Either the stat doesn't exist or the name is mispelled. Attempted stat name was " + name);
             return float.NaN;
         }
     }
@@ -151,12 +178,6 @@ namespace Lodis.ScriptableObjects
             DrawDefaultInspector();
 
             base.CreateInspectorGUI();
-
-            //if (_animationType.enumValueIndex == (int)AnimationType.CUSTOM)
-            //{
-            //    EditorGUILayout.PropertyField(_customAnimation,
-            //        new GUIContent("Custom Animation", "Reference to the animation clip that will play when the ability is used"));
-            //}
 
             serializedObject.ApplyModifiedProperties();
         }

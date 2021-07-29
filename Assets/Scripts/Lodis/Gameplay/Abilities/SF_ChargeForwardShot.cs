@@ -20,6 +20,7 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private Movement.GridMovementBehaviour _ownerMoveScript;
+        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         public override void Init(GameObject newOwner)
         {
@@ -69,9 +70,22 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _projectile;
 
             //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
+            GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
+
+            _activeProjectiles.Add(newProjectile);
 
             MonoBehaviour.Destroy(spawnerObject);
+        }
+
+        private void CleanProjectileList()
+        {
+            for (int i = 0; i < _activeProjectiles.Count; i++)
+            {
+                if (_activeProjectiles[i] == null)
+                {
+                    _activeProjectiles.RemoveAt(i);
+                }
+            }
         }
 
         protected override void Activate(params object[] args)
@@ -80,9 +94,14 @@ namespace Lodis.Gameplay
             _shotDamage *= powerScale;
             _shotKnockBack *= powerScale;
 
-            _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack, 0.2f, true, 7, owner, true);
+            _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("ProjectileLifetime"), owner, true);
 
-            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            CleanProjectileList();
+
+            if (_activeProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
+                _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+
             Vector2 moveDir = owner.transform.forward;
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
             _shotDamage /= powerScale;

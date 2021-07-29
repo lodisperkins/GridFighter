@@ -31,6 +31,10 @@ namespace Lodis.AI
             if (!_knockbackBehaviour.InHitStun && !_knockbackBehaviour.InFreeFall && Time.time - _timeOfLastAttack >= _attackDelay)
             {
                 _zDirection = Mathf.Clamp(_zDirection, -1, 1);
+
+                if ((int)_attackType == 8)
+                    return;
+                
                 _moveset.UseBasicAbility(_attackType, new object[]{_attackStrength, _zDirection});
                 _timeOfLastAttack = Time.time;
             }
