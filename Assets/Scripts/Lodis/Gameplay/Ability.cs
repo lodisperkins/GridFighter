@@ -3,6 +3,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEditor;
+using System;
 
 namespace Lodis.Gameplay
 {
@@ -171,11 +173,34 @@ namespace Lodis.Gameplay
 
 public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor
     {
+        private static string _nameOfClass;
+        public static void TryCreateAbilityData()
+        {
+            string className = "Lodis.Gameplay." + _nameOfClass;
+            Type assetType = Type.GetType(className);
+            Type baseType = Type.GetType("Lodis.Gameplay.Ability");
+            Debug.Log("worked");
+            if (assetType.BaseType != baseType)
+            {
+                
+                return;
+            }
+        }
+
         static void OnWillCreateAsset(string assetName)
         {
-            string name = assetName.TrimEnd(".meta".ToCharArray());
-            name = name.TrimStart("Assets/Scripts/Lodis/Gameplay/Abilities".ToCharArray());
-            Debug.Log("OnWillCreateAsset is being called with the following asset: " + assetName + ".");
+            if (!assetName.Contains(".meta"))
+                return;
+
+            string name = assetName.TrimEnd(".cs.meta".ToCharArray());
+            string[] assets = AssetDatabase.FindAssets("t:MonoBehaviour");
+
+            string[] substrings = assetName.Split('/', '.');
+            _nameOfClass = substrings[substrings.Length - 3];
+
+            AssemblyReloadEvents.beforeAssemblyReload += TryCreateAbilityData;
+
+            //Debug.Log("OnWillCreateAsset is being called with the following asset: " + assetName + ".");
         }
     }
 }
