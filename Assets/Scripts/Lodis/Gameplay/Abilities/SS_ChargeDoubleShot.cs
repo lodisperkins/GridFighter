@@ -12,8 +12,6 @@ namespace Lodis.Gameplay
     public class SS_ChargeDoubleShot : Ability
     {
         public Transform spawnTransform = null;
-        //How fast the laser will travel
-        public float shotSpeed = 10;
         private float _shotDamage = 5;
         private float _shotKnockBack = 1;
         //Usd to store a reference to the laser prefab
@@ -21,7 +19,7 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private Movement.GridMovementBehaviour _ownerMoveScript;
-        private float _timeBetweenShots;
+        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -72,7 +70,9 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _projectile;
 
             //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
+            GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+
+            _activeProjectiles.Add(newProjectile);
 
             MonoBehaviour.Destroy(spawnerObject);
         }
@@ -80,7 +80,7 @@ namespace Lodis.Gameplay
         private IEnumerator Shoot(Vector2 direction)
         {
             SpawnProjectile();
-            yield return new WaitForSeconds(_timeBetweenShots);
+            yield return new WaitForSeconds(abilityData.GetCustomStatValue("TimeBetweenShots"));
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment);
             _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
         }
@@ -90,16 +90,17 @@ namespace Lodis.Gameplay
         {
             float powerScale = (float)args[0];
 
-            _shotDamage *= powerScale;
-            _shotKnockBack *= powerScale;
+            _shotDamage = abilityData.GetCustomStatValue("Damage") * powerScale;
+            _shotKnockBack = abilityData.GetCustomStatValue("KnockBackScale") * powerScale;
 
-            _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack, 0.2f, true, 2, owner, true);
+            _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack,
+                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+
+            if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+                return;
 
             Vector2 direction = (Vector2)args[1];
             _ownerMoveScript.StartCoroutine(Shoot(direction));
-
-            _shotDamage /= powerScale;
-            _shotKnockBack /= powerScale;
         }
     }
 }

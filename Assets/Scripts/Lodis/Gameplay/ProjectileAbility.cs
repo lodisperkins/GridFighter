@@ -6,17 +6,19 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Base class for all projectile abilities
+    /// Shoots a quick firing laser. Lasers have no
+    /// knockback and deal little damage.Useful for
+    /// applying pressure and applying chip damage
     /// </summary>
+    [System.Serializable]
     public class ProjectileAbility : Ability
     {
+        [SerializeField]
         public Transform spawnTransform = null;
-        //How fast the laser will travel
-        public float shotSpeed = 20;
         //Usd to store a reference to the laser prefab
-        protected GameObject _projectile;
+        public GameObject projectile;
         //The collider attached to the laser
-        protected HitColliderBehaviour _projectileCollider;
+        public HitColliderBehaviour projectileCollider;
 
         public override void Init(GameObject newOwner)
         {
@@ -25,14 +27,16 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WN_Blaster_Data"));
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, 3, owner, true);
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/Laser");
+            projectile = (GameObject)Resources.Load("Projectiles/Laser");
         }
 
         protected override void Activate(params object[] args)
         {
+            projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
                 spawnTransform = owner.transform;
@@ -40,7 +44,7 @@ namespace Lodis.Gameplay
                 spawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Log if a projectile couldn't be found
-            if (!_projectile)
+            if (!projectile)
             {
                 Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
                 return;
@@ -63,12 +67,14 @@ namespace Lodis.Gameplay
 
             //Initialize and attach spawn script
             ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
-            spawnScript.projectile = _projectile;
+            spawnScript.projectile = projectile;
 
             //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
+            spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), projectileCollider);
 
             MonoBehaviour.Destroy(spawnerObject);
         }
     }
 }
+
+

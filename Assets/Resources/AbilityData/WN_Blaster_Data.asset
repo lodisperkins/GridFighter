@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: WN_Blaster_Data
   m_EditorClassIdentifier: 
-  _customAnimation: {fileID: -203655887218126122, guid: 0be6f4b1c02421646b30eebf7fe03988,
-    type: 3}
   name: Blaster
   abilityType: 0
   damageType: 0
@@ -24,4 +22,17 @@ MonoBehaviour:
   canCancelActive: 0
   canCancelRecover: 1
   useAbilityTimingForAnimation: 1
+  _customStats:
+  - name: Damage
+    value: 1
+  - name: KnockBackScale
+    value: 0
+  - name: HitAngle
+    value: 0
+  - name: Speed
+    value: 20
+  - name: Lifetime
+    value: 5
   animationType: 0
+  _customAnimation: {fileID: -203655887218126122, guid: 0be6f4b1c02421646b30eebf7fe03988,
+    type: 3}

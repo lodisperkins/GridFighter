@@ -11,12 +11,8 @@ namespace Lodis.Gameplay
     public class SN_ChargeShot : Ability
     {
         public Transform spawnTransform = null;
-        //How fast the laser will travel
-        public float shotSpeed = 15;
         public float shotDamage = 15;
         public float knockBackScale = 1;
-        public float hitAngle = 0.4f;
-        public float lifeTime = 1.0f;
 
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
@@ -54,10 +50,11 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            shotDamage *= powerScale;
-            knockBackScale *= powerScale;
+            shotDamage = abilityData.GetCustomStatValue("Damage") * powerScale;
+            knockBackScale = abilityData.GetCustomStatValue("KnockBackScale") * powerScale;
 
-            _projectileCollider = new HitColliderBehaviour(shotDamage, knockBackScale, 0.4f, true, 8.0f, owner, true);
+            _projectileCollider = new HitColliderBehaviour(shotDamage, knockBackScale, abilityData.GetCustomStatValue("HitAngle"), true,
+                abilityData.GetCustomStatValue("Lifetime"), owner, true);
 
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();
@@ -79,10 +76,7 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _projectile;
 
             //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
-
-            shotDamage /= powerScale;
-            knockBackScale /= powerScale;
+            spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
         }
     }
 }

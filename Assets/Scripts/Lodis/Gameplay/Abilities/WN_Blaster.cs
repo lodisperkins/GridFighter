@@ -35,7 +35,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("ProjectileLifetime"), owner, true);
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
@@ -70,7 +70,7 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _projectile;
 
             //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("ProjectileSpeed"), _projectileCollider);
+            spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
 
             MonoBehaviour.Destroy(spawnerObject);
         }

@@ -31,6 +31,7 @@ namespace Lodis.Gameplay
         private float _weakShotForce = 1;
         private Movement.GridMovementBehaviour _ownerMoveScript;
         private Transform _weakSpawnTransform;
+        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -129,6 +130,17 @@ namespace Lodis.Gameplay
             _strongProjectileCollider.onHit = null;
         }
 
+        private void CleanProjectileList()
+        {
+            for (int i = 0; i < _activeProjectiles.Count; i++)
+            {
+                if (_activeProjectiles[i] == null)
+                {
+                    _activeProjectiles.RemoveAt(i);
+                }
+            }
+        }
+
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
@@ -146,14 +158,21 @@ namespace Lodis.Gameplay
             }
 
             float powerScale = (float)args[0];
-            _weakShotDamage *= powerScale;
-            _strongShotDamage *= powerScale;
-            _strongShotKnockBackScale *= powerScale;
-            _strongShotDistance += (powerScale - 1) / _strongForceIncreaseRate;
+            _weakShotDamage = abilityData.GetCustomStatValue("WeakShotDamage") * powerScale;
+            _strongShotDamage = abilityData.GetCustomStatValue("StrongShotDamage") * powerScale;
+            _strongShotKnockBackScale = abilityData.GetCustomStatValue("StrongShotKnockBackScale") * powerScale;
+            _strongShotDistance = (powerScale - 1) / abilityData.GetCustomStatValue("StrongShotForceIncreaseRate");
 
-            _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, 0, 0, true, 5, owner, true);
+            _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, abilityData.GetCustomStatValue("WeakShotKnockBackScale"),
+                abilityData.GetCustomStatValue("WeakShotHitAngle"), true, abilityData.GetCustomStatValue("WeakShotLifeTime"), owner, true);
             _weakProjectileCollider.onHit += AddUpwardForce;
-            _strongProjectileCollider = new HitColliderBehaviour(_strongShotDamage, _strongShotKnockBackScale, 2.5f, true, 5, owner, true);
+            _strongProjectileCollider = new HitColliderBehaviour(_strongShotDamage, _strongShotKnockBackScale,
+                abilityData.GetCustomStatValue("StrongShotHitAngle"), true, abilityData.GetCustomStatValue("StrongShotLifeTime"), owner, true);
+
+            CleanProjectileList();
+
+            if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+                return;
 
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();
@@ -175,6 +194,8 @@ namespace Lodis.Gameplay
             _strongProjectileCollider.onHit += SpawnWeakShots;
             //Fire laser
             _weakSpawnTransform = spawnScript.FireProjectile(CalculateProjectileForce(owner.transform.forward, _strongShotDistance), _strongProjectileCollider).transform;
+
+            _activeProjectiles.Add(_weakSpawnTransform.gameObject);
 
             MonoBehaviour.Destroy(spawnerObject);
 

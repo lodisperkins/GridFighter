@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -41,7 +42,6 @@ namespace Lodis.Gameplay
         private bool _inUse;
 
         public AbilityPhase AbilityPhase { get; private set; }
-
 
         /// <summary>
         /// Returns false at the end of the ability's recover time
@@ -167,5 +167,15 @@ namespace Lodis.Gameplay
         }
 
         protected virtual void Deactivate() { }
+    }
+
+public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor
+    {
+        static void OnWillCreateAsset(string assetName)
+        {
+            string name = assetName.TrimEnd(".meta".ToCharArray());
+            name = name.TrimStart("Assets/Scripts/Lodis/Gameplay/Abilities".ToCharArray());
+            Debug.Log("OnWillCreateAsset is being called with the following asset: " + assetName + ".");
+        }
     }
 }

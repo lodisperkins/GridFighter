@@ -12,14 +12,12 @@ namespace Lodis.Gameplay
     public class WS_DoubleShot : Ability
     {
         public Transform spawnTransform = null;
-        //How fast the laser will travel
-        public float shotSpeed = 20;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private Movement.GridMovementBehaviour _ownerMoveScript;
-        private float _timeBetweenShots;
+        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -29,7 +27,7 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WS_DoubleShot_Data"));
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 0, 0, true, 3, owner, true);
+            
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
@@ -38,6 +36,8 @@ namespace Lodis.Gameplay
 
         private void SpawnProjectile()
         {
+            
+
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
                 spawnTransform = owner.transform;
@@ -71,7 +71,9 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _projectile;
 
             //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
+            GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+
+            _activeProjectiles.Add(newProjectile);
 
             MonoBehaviour.Destroy(spawnerObject);
         }
@@ -79,7 +81,7 @@ namespace Lodis.Gameplay
         private IEnumerator Shoot(Vector2 direction)
         {
             SpawnProjectile();
-            yield return new WaitForSeconds(_timeBetweenShots);
+            yield return new WaitForSeconds(abilityData.GetCustomStatValue("TimeBetweenShots"));
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment);
             _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
         }
@@ -87,6 +89,12 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
+            _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+
+            if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+                return;
+
             Vector2 direction = (Vector2)args[1];
             _ownerMoveScript.StartCoroutine(Shoot(direction));
         }

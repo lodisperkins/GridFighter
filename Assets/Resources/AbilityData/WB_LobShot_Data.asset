@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: WB_LobShot_Data
   m_EditorClassIdentifier: 
-  _customAnimation: {fileID: -203655887218126122, guid: da57d57903c9d534ea586052b1d63c38,
-    type: 3}
   name: LobShot
   abilityType: 3
   damageType: 0
@@ -24,4 +22,19 @@ MonoBehaviour:
   canCancelActive: 0
   canCancelRecover: 0
   useAbilityTimingForAnimation: 1
+  _customStats:
+  - name: Damage
+    value: 2
+  - name: KnockBackScale
+    value: 1
+  - name: HitAngle
+    value: 3
+  - name: PanelDistance
+    value: 1
+  - name: Lifetime
+    value: 5
+  - name: MaxInstances
+    value: -1
   animationType: 3
+  _customAnimation: {fileID: -203655887218126122, guid: da57d57903c9d534ea586052b1d63c38,
+    type: 3}

@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: SB_ChargeLobShot_Data
   m_EditorClassIdentifier: 
-  _customAnimation: {fileID: -203655887218126122, guid: da57d57903c9d534ea586052b1d63c38,
-    type: 3}
   name: ChargeLobShot
   abilityType: 7
   damageType: 0
@@ -24,4 +22,33 @@ MonoBehaviour:
   canCancelActive: 0
   canCancelRecover: 0
   useAbilityTimingForAnimation: 1
+  _customStats:
+  - name: StrongShotDistance
+    value: 1
+  - name: StrongShotDamage
+    value: 10
+  - name: StrongShotKnockBackScale
+    value: 1
+  - name: StrongShotForceIncreaseRate
+    value: 0.01
+  - name: StrongShotHitAngle
+    value: 2.5
+  - name: StrongShotLifeTime
+    value: 2.5
+  - name: WeakShotDistance
+    value: 1
+  - name: WeakShotDamage
+    value: 5
+  - name: WeakShotForce
+    value: 1
+  - name: WeakShotKnockBackScale
+    value: 0
+  - name: WeakShotHitAngle
+    value: 0
+  - name: WeakShotLifeTime
+    value: 5
+  - name: MaxInstances
+    value: 1
   animationType: 3
+  _customAnimation: {fileID: -203655887218126122, guid: da57d57903c9d534ea586052b1d63c38,
+    type: 3}

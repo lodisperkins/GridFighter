@@ -20,6 +20,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _projectileCollider;
         private float _shotDistance = 1;
         private Movement.GridMovementBehaviour _ownerMoveScript;
+        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -29,7 +30,7 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WB_LobShot_Data"));
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(2, 1, 3f, true, 5, owner, true);
+            
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
@@ -69,9 +70,23 @@ namespace Lodis.Gameplay
             return new Vector3(Mathf.Cos(shotAngle), Mathf.Sin(shotAngle)) * magnitude;
         }
 
-	    //Called when ability is used
+        private void CleanProjectileList()
+        {
+            for (int i = 0; i < _activeProjectiles.Count; i++)
+            {
+                if (_activeProjectiles[i] == null)
+                {
+                    _activeProjectiles.RemoveAt(i);
+                }
+            }
+        }
+
+        //Called when ability is used
         protected override void Activate(params object[] args)
         {
+            _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
                 spawnTransform = owner.transform;
@@ -84,6 +99,11 @@ namespace Lodis.Gameplay
                 Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
                 return;
             }
+
+            CleanProjectileList();
+
+            if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+                return;
 
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();

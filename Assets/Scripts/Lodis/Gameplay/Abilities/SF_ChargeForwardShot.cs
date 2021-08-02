@@ -11,8 +11,6 @@ namespace Lodis.Gameplay
     public class SF_ChargeForwardShot : Ability
     {
         public Transform spawnTransform = null;
-        //How fast the laser will travel
-        public float shotSpeed = 0.5f;
         private float _shotDamage = 15;
         private float _shotKnockBack = 1;
         //Usd to store a reference to the laser prefab
@@ -27,7 +25,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_ChargeForwardShot_Data")); ;
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_ChargeForwardShot_Data"));
             owner = newOwner;
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
@@ -70,7 +68,7 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _projectile;
 
             //Fire laser
-            GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * shotSpeed, _projectileCollider);
+            GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
 
             _activeProjectiles.Add(newProjectile);
 
@@ -91,11 +89,11 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             float powerScale = (float)args[0];
-            _shotDamage *= powerScale;
-            _shotKnockBack *= powerScale;
+            _shotDamage = abilityData.GetCustomStatValue("Damage") * powerScale;
+            _shotKnockBack = abilityData.GetCustomStatValue("KnockBackScale") * powerScale;
 
-            _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("ProjectileLifetime"), owner, true);
+            _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack,
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
 
             CleanProjectileList();
 
@@ -104,8 +102,6 @@ namespace Lodis.Gameplay
 
             Vector2 moveDir = owner.transform.forward;
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
-            _shotDamage /= powerScale;
-            _shotKnockBack /= powerScale;
         }
     }
 }

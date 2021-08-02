@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Script: {fileID: 0}
   m_Name: WF_ForwardShot_Data
-  m_EditorClassIdentifier: 
-  _customAnimation: {fileID: 0}
+  m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   name: ForwardShot
   abilityType: 2
   damageType: 0
@@ -23,4 +22,18 @@ MonoBehaviour:
   canCancelActive: 0
   canCancelRecover: 0
   useAbilityTimingForAnimation: 1
+  _customStats:
+  - name: Damage
+    value: 1
+  - name: KnockBackScale
+    value: 1
+  - name: HitAngle
+    value: 0.2
+  - name: Speed
+    value: 2
+  - name: Lifetime
+    value: 1.5
+  - name: MaxInstances
+    value: 1
   animationType: 0
+  _customAnimation: {fileID: 0}

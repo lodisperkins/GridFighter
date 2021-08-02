@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: SN_ChargeShot_Data
   m_EditorClassIdentifier: 
-  _customAnimation: {fileID: -203655887218126122, guid: 0ab003f1eab4c424db18ccd36ef0006d,
-    type: 3}
   name: ChargeShot
   abilityType: 4
   damageType: 0
@@ -24,4 +22,19 @@ MonoBehaviour:
   canCancelActive: 0
   canCancelRecover: 0
   useAbilityTimingForAnimation: 1
+  _customStats:
+  - name: Damage
+    value: 15
+  - name: KnockBackScale
+    value: 1
+  - name: HitAngle
+    value: 0.4
+  - name: Speed
+    value: 15
+  - name: Lifetime
+    value: 3
+  - name: MaxInstances
+    value: 1
   animationType: 0
+  _customAnimation: {fileID: -203655887218126122, guid: 0ab003f1eab4c424db18ccd36ef0006d,
+    type: 3}
