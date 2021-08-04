@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEditor;
 using System;
+using System.IO;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.Gameplay
 {
@@ -171,36 +173,87 @@ namespace Lodis.Gameplay
         protected virtual void Deactivate() { }
     }
 
-public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor
+    public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor
     {
         private static string _nameOfClass;
-        public static void TryCreateAbilityData()
-        {
-            string className = "Lodis.Gameplay." + _nameOfClass;
-            Type assetType = Type.GetType(className);
-            Type baseType = Type.GetType("Lodis.Gameplay.Ability");
-            Debug.Log("worked");
-            if (assetType.BaseType != baseType)
-            {
-                
-                return;
-            }
-        }
 
         static void OnWillCreateAsset(string assetName)
         {
-            if (!assetName.Contains(".meta"))
+            //If the file wasn't created in the abilities folder, return
+            if (!assetName.Contains("Assets/Scripts/Lodis/Gameplay/Abilities/"))
                 return;
 
-            string name = assetName.TrimEnd(".cs.meta".ToCharArray());
-            string[] assets = AssetDatabase.FindAssets("t:MonoBehaviour");
-
+            //Break apart the string to get the name of the class 
             string[] substrings = assetName.Split('/', '.');
             _nameOfClass = substrings[substrings.Length - 3];
 
-            AssemblyReloadEvents.beforeAssemblyReload += TryCreateAbilityData;
+            //Write the name of the class to a text file for later use
+            Stream stream = File.Open("Assets/Resources/LastAssetCreated.txt", FileMode.OpenOrCreate);
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(_nameOfClass);
 
-            //Debug.Log("OnWillCreateAsset is being called with the following asset: " + assetName + ".");
+            //Close the file
+            writer.Close();
         }
+
+        /// <summary>
+        /// Creates data for a recently created ability if none exists already
+        /// </summary>
+        [UnityEditor.Callbacks.DidReloadScripts]
+        public static void TryCreateAbilityData()
+        {
+            //Return if there is no text file contatining the ability class name
+            if (!File.Exists("Assets/Resources/LastAssetCreated.txt"))
+                return;
+
+            //Initialize stream reader
+            Stream stream = File.Open("Assets/Resources/LastAssetCreated.txt", FileMode.Open);
+            StreamReader reader = new StreamReader(stream);
+
+            //Stores the ability class name
+            _nameOfClass = reader.ReadToEnd();
+
+            //Close reader and delete unneeded file
+            reader.Close();
+            File.Delete("Assets/Resources/LastAssetCreated.txt");
+
+            //Return if no name was found in the text file
+            if (_nameOfClass == "")
+                return;
+
+            //Add the namespace to get the full class name for the ability
+            string className = "Lodis.Gameplay." + _nameOfClass;
+            //Find the new ability type using the full class name
+            Type assetType = Type.GetType(className);
+
+            //Get a reference to the base types
+            Type baseType = Type.GetType("Lodis.Gameplay.Ability");
+            Type projectileType = Type.GetType("Lodis.Gameplay.ProjectileAbility");
+
+            //Check if there is already an ability data asset for this ability
+            string[] results = AssetDatabase.FindAssets(_nameOfClass + "_Data", new[] { "Assets/Resources/AbilityData" });
+            if (results.Length > 0)
+            {
+                return;
+            }
+
+            //If there is no ability data, create an based on it's base type
+            AbilityData newData = null;
+            if (assetType.BaseType == baseType)
+                newData = ScriptableObject.CreateInstance<AbilityData>();
+            else if (assetType.BaseType == projectileType)
+                newData = ScriptableObject.CreateInstance<ProjectileAbilityData>();
+
+            //If the instance was created successfully, create a new asset using the instance 
+            if (newData != null)
+            {
+                AssetDatabase.CreateAsset(newData, "Assets/Resources/AbilityData/" + _nameOfClass + "_Data.Asset");
+                Selection.activeObject = AssetDatabase.LoadMainAssetAtPath("Assets/Resources/AbilityData/" + _nameOfClass + "_Data.Asset");
+                Debug.Log("Generated ability data for " + _nameOfClass);
+            }
+
+        }
+
+        
     }
 }

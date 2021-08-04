@@ -1,23 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Reflection;
 
 namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Shoots a quick firing laser. Lasers have no
-    /// knockback and deal little damage.Useful for
-    /// applying pressure and applying chip damage
+    /// Base class for all projectile based abilities
     /// </summary>
     [System.Serializable]
     public class ProjectileAbility : Ability
     {
-        [SerializeField]
         public Transform spawnTransform = null;
-        //Usd to store a reference to the laser prefab
+        //Usd to store a reference to the projectile prefab
         public GameObject projectile;
-        //The collider attached to the laser
+        //The collider attached to the projectile
         public HitColliderBehaviour projectileCollider;
 
         public override void Init(GameObject newOwner)
@@ -25,7 +23,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WN_Blaster_Data"));
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/" + GetType().Name + "_Data"));
             owner = newOwner;
 
             //Load the projectile prefab
@@ -50,7 +48,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            //Create object to spawn laser from
+            //Create object to spawn projectile from
             GameObject spawnerObject = new GameObject();
             spawnerObject.transform.parent = spawnTransform;
             spawnerObject.transform.localPosition = Vector3.zero;
@@ -69,7 +67,7 @@ namespace Lodis.Gameplay
             ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
             spawnScript.projectile = projectile;
 
-            //Fire laser
+            //Fire projectile
             spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), projectileCollider);
 
             MonoBehaviour.Destroy(spawnerObject);

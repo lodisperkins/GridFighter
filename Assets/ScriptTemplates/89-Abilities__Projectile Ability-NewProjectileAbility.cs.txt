@@ -8,7 +8,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class #SCRIPTNAME# : Ability
+    public class #SCRIPTNAME# : ProjectileAbility
     {
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -19,7 +19,8 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
-
+            //The base activate func fires a single instance of the projectile when called
+            base.Activate(args);
         }
     }
 }
