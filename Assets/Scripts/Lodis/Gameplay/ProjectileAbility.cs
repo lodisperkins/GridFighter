@@ -17,6 +17,7 @@ namespace Lodis.Gameplay
         public GameObject projectile;
         //The collider attached to the projectile
         public HitColliderBehaviour projectileCollider;
+        public List<GameObject> _activeProjectiles = new List<GameObject>();
 
         public override void Init(GameObject newOwner)
         {
@@ -28,6 +29,17 @@ namespace Lodis.Gameplay
 
             //Load the projectile prefab
             projectile = (GameObject)Resources.Load("Projectiles/Laser");
+        }
+
+        public void CleanProjectileList()
+        {
+            for (int i = 0; i < _activeProjectiles.Count; i++)
+            {
+                if (_activeProjectiles[i] == null)
+                {
+                    _activeProjectiles.RemoveAt(i);
+                }
+            }
         }
 
         protected override void Activate(params object[] args)

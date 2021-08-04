@@ -75,7 +75,7 @@ namespace Lodis.Gameplay
             MonoBehaviour.Destroy(spawnerObject);
         }
 
-        private void CleanProjectileList()
+        public void CleanProjectileList()
         {
             for (int i = 0; i < _activeProjectiles.Count; i++)
             {

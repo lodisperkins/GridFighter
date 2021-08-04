@@ -9,15 +9,13 @@ namespace Lodis.Gameplay
     /// Shoots two shots: one shot travels down the row the character was
     /// previously, and the other travels down the panel character moved towards.
     /// </summary>
-    public class WS_DoubleShot : Ability
+    public class WS_DoubleShot : ProjectileAbility
     {
-        public Transform spawnTransform = null;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private Movement.GridMovementBehaviour _ownerMoveScript;
-        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -91,6 +89,8 @@ namespace Lodis.Gameplay
         {
             _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
                  abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+
+            CleanProjectileList();
 
             if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
