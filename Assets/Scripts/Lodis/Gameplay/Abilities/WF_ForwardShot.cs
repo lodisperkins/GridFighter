@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// Shoots a stronger, slow moving shot.
     /// The shot travels for 2 panels before dissipating.
     /// </summary>
-    public class WF_ForwardShot : Ability
+    public class WF_ForwardShot : ProjectileAbility
     {
         public Transform spawnTransform = null;
         //How fast the laser will travel
@@ -19,7 +19,6 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private Movement.GridMovementBehaviour _ownerMoveScript;
-        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         public override void Init(GameObject newOwner)
         {
@@ -75,17 +74,6 @@ namespace Lodis.Gameplay
             _activeProjectiles.Add(newProjectile);
 
             MonoBehaviour.Destroy(spawnerObject);
-        }
-
-        private void CleanProjectileList()
-        {
-            for (int i = 0; i < _activeProjectiles.Count; i++)
-            {
-                if (_activeProjectiles[i] == null)
-                {
-                    _activeProjectiles.RemoveAt(i);
-                }
-            }
         }
 
         protected override void Activate(params object[] args)
