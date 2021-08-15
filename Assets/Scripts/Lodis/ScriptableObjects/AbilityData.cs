@@ -48,9 +48,9 @@ namespace Lodis.ScriptableObjects
     public class AbilityData : ScriptableObject
     {
         
-        public string name = "Unassigned";
+        public string abilityName = "Unassigned";
         [Tooltip("The type describes the strength and input value for the ability")]
-        public BasicAbilityType abilityType;
+        public AbilityType abilityType;
         [Tooltip("The type of damage this attack will deal to other objects")]
         public DamageType damageType = DamageType.DEFAULT;
         [Tooltip("How long the ability should be active for")]
@@ -59,6 +59,8 @@ namespace Lodis.ScriptableObjects
         public float recoverTime = 0;
         [Tooltip("How long does the object that used the ability must wait before the ability activates")]
         public float startUpTime = 0;
+        [Tooltip("The amount of time this ability must be in an active slot before it can be used. Can be ignored if this ability is a normal type.")]
+        public float chargeTime = 0;
         [Tooltip("If true, this ability can be canceled into others in the start up phase")]
         public bool canCancelStartUp = false;
         [Tooltip("If true, this ability can be canceled into others in the active phase")]

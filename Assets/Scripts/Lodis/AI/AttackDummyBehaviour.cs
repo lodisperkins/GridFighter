@@ -8,7 +8,7 @@ namespace Lodis.AI
     {
         private Gameplay.MovesetBehaviour _moveset;
         [SerializeField]
-        private Gameplay.BasicAbilityType _attackType;
+        private Gameplay.AbilityType _attackType;
         [SerializeField]
         private float _attackDelay;
         private float _timeOfLastAttack;

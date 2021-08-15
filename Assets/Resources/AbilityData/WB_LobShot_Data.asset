@@ -10,29 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
-  m_Name: WN_Blaster_Data
+  m_Name: WB_LobShot_Data
   m_EditorClassIdentifier: 
-  name: Blaster
-  abilityType: 0
+  abilityName: LobShot
+  abilityType: 3
   damageType: 0
-  timeActive: 0.1
-  recoverTime: 1
+  timeActive: 0.2
+  recoverTime: 0.1
   startUpTime: 0.1
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 1
+  canCancelRecover: 0
   useAbilityTimingForAnimation: 1
   _customStats:
   - name: Damage
-    value: 1
+    value: 2
   - name: KnockBackScale
-    value: 0
+    value: 1
   - name: HitAngle
-    value: 0
-  - name: Speed
-    value: 20
+    value: 3
+  - name: PanelDistance
+    value: 1
   - name: Lifetime
     value: 5
-  animationType: 0
-  _customAnimation: {fileID: -203655887218126122, guid: 0be6f4b1c02421646b30eebf7fe03988,
+  - name: MaxInstances
+    value: -1
+  animationType: 3
+  _customAnimation: {fileID: -203655887218126122, guid: da57d57903c9d534ea586052b1d63c38,
     type: 3}

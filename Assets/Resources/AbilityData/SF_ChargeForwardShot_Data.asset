@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
-  m_Name: WB_LobShot_Data
-  m_EditorClassIdentifier: 
-  name: LobShot
-  abilityType: 3
+  m_Script: {fileID: 0}
+  m_Name: SF_ChargeForwardShot_Data
+  m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
+  abilityName: ChargeForwardShot
+  abilityType: 6
   damageType: 0
   timeActive: 0.2
   recoverTime: 0.1
@@ -24,17 +24,16 @@ MonoBehaviour:
   useAbilityTimingForAnimation: 1
   _customStats:
   - name: Damage
-    value: 2
+    value: 15
   - name: KnockBackScale
-    value: 1
+    value: 2
   - name: HitAngle
-    value: 3
-  - name: PanelDistance
-    value: 1
+    value: 0.2
+  - name: Speed
+    value: 0.5
   - name: Lifetime
-    value: 5
+    value: 7
   - name: MaxInstances
-    value: -1
-  animationType: 3
-  _customAnimation: {fileID: -203655887218126122, guid: da57d57903c9d534ea586052b1d63c38,
-    type: 3}
+    value: 1
+  animationType: 0
+  _customAnimation: {fileID: 0}

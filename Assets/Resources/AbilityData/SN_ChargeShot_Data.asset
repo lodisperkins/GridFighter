@@ -10,33 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
-  m_Name: SS_ChargeDoubleShot_Data
+  m_Name: SN_ChargeShot_Data
   m_EditorClassIdentifier: 
-  name: ChargeDoubleShot
-  abilityType: 5
+  abilityName: ChargeShot
+  abilityType: 4
   damageType: 0
   timeActive: 0.2
-  recoverTime: 0.3
-  startUpTime: 0.1
+  recoverTime: 1.5
+  startUpTime: 0.3
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   useAbilityTimingForAnimation: 1
   _customStats:
   - name: Damage
-    value: 5
+    value: 15
   - name: KnockBackScale
     value: 1
   - name: HitAngle
-    value: 0.2
+    value: 0.4
   - name: Speed
-    value: 10
+    value: 15
   - name: Lifetime
-    value: 2
+    value: 3
   - name: MaxInstances
-    value: 2
-  - name: TimeBetweenShots
-    value: 0
-  animationType: 3
-  _customAnimation: {fileID: -203655887218126122, guid: 5395243afcd94cc44964cbfb2cbd7bb4,
+    value: 1
+  animationType: 0
+  _customAnimation: {fileID: -203655887218126122, guid: 0ab003f1eab4c424db18ccd36ef0006d,
     type: 3}

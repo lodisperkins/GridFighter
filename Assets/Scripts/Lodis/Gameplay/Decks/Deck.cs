@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.Gameplay
 {
@@ -27,13 +28,31 @@ namespace Lodis.Gameplay
     {
         private List<Ability> _abilities = new List<Ability>();
         [SerializeField]
-        private List<AbilityName> _abilityNames;
+        private List<AbilityData> _abilityData;
+        [SerializeField]
+        private string _deckName;
 
-        public List<AbilityName> AbilityNames
+        public string DeckName
         {
             get
             {
-                return _abilityNames;
+                return _deckName;
+            }
+        }
+
+        public List<AbilityData> AbilityData
+        {
+            get
+            {
+                return _abilityData;
+            }
+        }
+
+        public int Count
+        {
+            get
+            {
+                return _abilities.Count;
             }
         }
 
@@ -41,9 +60,9 @@ namespace Lodis.Gameplay
         {
             ClearDeck();
 
-            foreach (AbilityName abilityName in AbilityNames)
+            foreach (AbilityData ability in AbilityData)
             {
-                string name = abilityName.ToString();
+                string name = ability.name.Substring(0, ability.name.Length - 5);
                 Type abilityType = Type.GetType("Lodis.Gameplay." + name);
 
                 if (abilityType == null)
@@ -103,6 +122,17 @@ namespace Lodis.Gameplay
             return true;
         }
 
+        public Ability PopBack()
+        {
+            if (_abilities.Count == 0)
+                return null;
+
+            Ability ability = _abilities[_abilities.Count - 1];
+            RemoveAbility(ability);
+
+            return ability;
+        }
+
         public void ClearDeck()
         {
             if (_abilities != null)
@@ -112,6 +142,19 @@ namespace Lodis.Gameplay
         public Ability this[int index]
         {
             get { return _abilities[index]; }
+        }
+
+        public Ability GetAbilityByType(AbilityType type)
+        {
+            foreach (Ability ability in _abilities)
+            {
+                if (ability.abilityData.abilityType == type)
+                    return ability;
+            }
+
+            Debug.LogError("Couldn't find ability of type " + type.ToString() + " in deck " + DeckName);
+
+            return null;
         }
 
         public IEnumerator GetEnumerator()
@@ -125,7 +168,7 @@ namespace Lodis.Gameplay
         public void Shuffle()
         {
             //Yates shuffle algorithm
-            for (int i = _abilities.Count; i > 0; i--)
+            for (int i = _abilities.Count - 1; i > 0; i--)
             {
                 int j = UnityEngine.Random.Range(0, i);
 

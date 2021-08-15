@@ -180,7 +180,7 @@ namespace Lodis.Gameplay
                         CalculateAnimatorSpeed();
                     }
                     else
-                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Cast clip for " + ability.abilityData.name);
+                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Cast clip for " + ability.abilityData.abilityName);
                     break;
 
                 case AnimationType.MELEE:
@@ -195,7 +195,7 @@ namespace Lodis.Gameplay
                         CalculateAnimatorSpeed();
                     }
                     else
-                        Debug.LogError("Couldn't play Melee animation. Couldn't find the Melee clip for " + ability.abilityData.name);
+                        Debug.LogError("Couldn't play Melee animation. Couldn't find the Melee clip for " + ability.abilityData.abilityName);
                     break;
 
                 case AnimationType.SUMMON:
@@ -210,13 +210,13 @@ namespace Lodis.Gameplay
                         CalculateAnimatorSpeed();
                     }
                     else
-                        Debug.LogError("Couldn't play Summon animation. Couldn't find the Summon clip for " + ability.abilityData.name);
+                        Debug.LogError("Couldn't play Summon animation. Couldn't find the Summon clip for " + ability.abilityData.abilityName);
                     break;
 
                 case AnimationType.CUSTOM:
                     if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
                     {
-                        Debug.LogError("Can't play custom clip. No custom clip found for " + ability.abilityData.name);
+                        Debug.LogError("Can't play custom clip. No custom clip found for " + ability.abilityData.abilityName);
                         return;
                     }
 

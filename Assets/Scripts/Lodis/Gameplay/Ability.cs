@@ -35,13 +35,21 @@ namespace Lodis.Gameplay
         public GameObject owner = null;
         public MovesetBehaviour ownerMoveset = null;
         public ScriptableObjects.AbilityData abilityData;
-        //Called when the character begins to use the ability and before the action actually happens
+        /// <summary>
+        /// Called when the character begins to use the ability and before the action actually happens
+        /// </summary>
         public UnityAction onBegin = null;
-        //Called when the ability is used and the recover time is up
+        /// <summary>
+        /// Called when the ability is used and the recover time is up
+        /// </summary>
         public UnityAction onEnd = null;
-        //Called when the ability's action happens
+        /// <summary>
+        /// Called when the ability's action happens
+        /// </summary>
         public UnityAction onActivate = null;
-        //Called when the ability is used and before the character has recovered
+        /// <summary>
+        /// Called when the ability is used and before the character has recovered
+        /// </summary>
         public UnityAction onDeactivate = null;
         private bool _inUse;
 

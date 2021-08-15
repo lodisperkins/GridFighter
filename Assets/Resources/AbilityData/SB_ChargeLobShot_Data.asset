@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: SB_ChargeLobShot_Data
   m_EditorClassIdentifier: 
-  name: ChargeLobShot
+  abilityName: ChargeLobShot
   abilityType: 7
   damageType: 0
   timeActive: 0.2
