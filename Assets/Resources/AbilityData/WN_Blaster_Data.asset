@@ -12,12 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: WN_Blaster_Data
   m_EditorClassIdentifier: 
-  abilityName: Unassigned
+  abilityName: Blasster
   abilityType: 0
   damageType: 0
   timeActive: 0.1
   recoverTime: 1
   startUpTime: 0.1
+  chargeTime: 1
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 1

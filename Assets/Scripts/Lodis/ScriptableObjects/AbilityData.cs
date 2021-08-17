@@ -61,6 +61,9 @@ namespace Lodis.ScriptableObjects
         public float startUpTime = 0;
         [Tooltip("The amount of time this ability must be in an active slot before it can be used. Can be ignored if this ability is a normal type.")]
         public float chargeTime = 0;
+        [Tooltip("The amount of time this ability can be used before it is removed from the active slot. Can be ignored if this ability is a normal type.")]
+        public int maxActivationAmount = 0;
+        public int currentActivationAmount = 0;
         [Tooltip("If true, this ability can be canceled into others in the start up phase")]
         public bool canCancelStartUp = false;
         [Tooltip("If true, this ability can be canceled into others in the active phase")]
@@ -69,6 +72,8 @@ namespace Lodis.ScriptableObjects
         public bool canCancelRecover = false;
         [Tooltip("If true, the animation will change speed according to the start, active, and recover times")]
         public bool useAbilityTimingForAnimation;
+        [Tooltip("The prefab that holds the visual this ability will be using.")]
+        public GameObject visualPrefab;
 
         [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
@@ -81,7 +86,13 @@ namespace Lodis.ScriptableObjects
         [SerializeField]
         private AnimationClip _customAnimation;
 
-
+        public bool MaxActivationAmountReached
+        {
+            get
+            {
+                return currentActivationAmount >= maxActivationAmount;
+            }
+        }
         public bool GetCustomAnimation(out AnimationClip customAnimation)
         {
             customAnimation = null;

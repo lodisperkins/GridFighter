@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
             owner = newOwner;
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/Laser");
+            _projectile = abilityData.visualPrefab;
         }
 
         protected override void Activate(params object[] args)

@@ -29,7 +29,6 @@ namespace Lodis.Gameplay
         private float _weakShotDistance = 1;
         private float _weakShotDamage = 5;
         private float _weakShotForce = 1;
-        private Movement.GridMovementBehaviour _ownerMoveScript;
         private Transform _weakSpawnTransform;
         private List<GameObject> _activeProjectiles = new List<GameObject>();
 
@@ -41,10 +40,9 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SB_ChargeLobShot_Data"));
             owner = newOwner;
-            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _strongProjectile = (GameObject)Resources.Load("Projectiles/ChargeLobShot");
+            _strongProjectile = abilityData.visualPrefab;
             _weakProjectile = (GameObject)Resources.Load("Projectiles/LobShot");
         }
 

@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
   m_Name: Prototype_Specials
   m_EditorClassIdentifier: 
-  _abilityData: []
-  _deckName: 
+  _abilityData:
+  - {fileID: 11400000, guid: 5e8e208c598c390478d27e2e07888405, type: 2}
+  - {fileID: 11400000, guid: 2fa6142ed29da744aa654d7ba40f67b4, type: 2}
+  - {fileID: 11400000, guid: eb5ec69e7ebc6014898cbaedc98cea65, type: 2}
+  - {fileID: 11400000, guid: d937fd305576b54478bd6b871dde2f47, type: 2}
+  _deckName: PrototypeSpecials

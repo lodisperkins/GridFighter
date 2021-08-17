@@ -17,7 +17,6 @@ namespace Lodis.Gameplay
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
-        private Movement.GridMovementBehaviour _ownerMoveScript;
         private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         public override void Init(GameObject newOwner)
@@ -27,10 +26,9 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_ChargeForwardShot_Data"));
             owner = newOwner;
-            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
+            _projectile = abilityData.visualPrefab;
         }
 
         public void SpawnProjectile()

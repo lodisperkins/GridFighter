@@ -19,7 +19,6 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private float _shotDistance = 1;
-        private Movement.GridMovementBehaviour _ownerMoveScript;
         private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         //Called when ability is created
@@ -34,7 +33,7 @@ namespace Lodis.Gameplay
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/LobShot");
+            _projectile = abilityData.visualPrefab;
         }
 
         private Vector3 CalculateProjectileForce()

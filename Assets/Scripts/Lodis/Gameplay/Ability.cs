@@ -52,6 +52,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public UnityAction onDeactivate = null;
         private bool _inUse;
+        protected Movement.GridMovementBehaviour _ownerMoveScript;
 
         public AbilityPhase AbilityPhase { get; private set; }
 
@@ -175,6 +176,7 @@ namespace Lodis.Gameplay
         protected abstract void Activate(params object[] args);
         public virtual void Init(GameObject owner)
         {
+            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
             ownerMoveset = owner.GetComponent<MovesetBehaviour>();
         }
 

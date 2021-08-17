@@ -15,7 +15,6 @@ namespace Lodis.Gameplay
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
-        private Movement.GridMovementBehaviour _ownerMoveScript;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -25,11 +24,9 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WS_DoubleShot_Data"));
             owner = newOwner;
-            
-            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/Laser");
+            _projectile = abilityData.visualPrefab;
         }
 
         private void SpawnProjectile()

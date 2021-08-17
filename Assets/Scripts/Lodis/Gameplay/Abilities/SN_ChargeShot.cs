@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
             owner = newOwner;
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
+            _projectile = abilityData.visualPrefab;
         }
 
 	    //Called when ability is used

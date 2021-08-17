@@ -122,6 +122,10 @@ namespace Lodis.Gameplay
             return true;
         }
 
+        /// <summary>
+        /// Removes the last ability in the list
+        /// </summary>
+        /// <returns>The last ability in the list</returns>
         public Ability PopBack()
         {
             if (_abilities.Count == 0)
@@ -133,6 +137,9 @@ namespace Lodis.Gameplay
             return ability;
         }
 
+        /// <summary>
+        /// Removes all abilities from the deck
+        /// </summary>
         public void ClearDeck()
         {
             if (_abilities != null)
@@ -144,6 +151,11 @@ namespace Lodis.Gameplay
             get { return _abilities[index]; }
         }
 
+        /// <summary>
+        /// Gets the first ability in the deck that matches the type
+        /// </summary>
+        /// <param name="type">The type of ability to search for</param>
+        /// <returns></returns>
         public Ability GetAbilityByType(AbilityType type)
         {
             foreach (Ability ability in _abilities)

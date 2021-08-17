@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
-  m_Name: Basic_Prototype
+  m_Name: Prototype_Normals
   m_EditorClassIdentifier: 
   _abilityData:
   - {fileID: 11400000, guid: 2fa6142ed29da744aa654d7ba40f67b4, type: 2}
@@ -21,3 +21,4 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 88c92e50bc6cde54b90596ed06471ba6, type: 2}
   - {fileID: 11400000, guid: d1ea834d06b72014ab54785afb356c6d, type: 2}
   - {fileID: 11400000, guid: dbc565054a0000a44828335acd8663cd, type: 2}
+  _deckName: PrototypeNormals

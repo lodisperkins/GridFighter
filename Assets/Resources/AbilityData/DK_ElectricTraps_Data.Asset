@@ -10,31 +10,34 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 0}
-  m_Name: WF_ForwardShot_Data
+  m_Name: DK_ElectricTraps_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
-  abilityName: ForwardShot
-  abilityType: 2
+  abilityName: Unassigned
+  abilityType: 0
   damageType: 0
-  timeActive: 0.2
-  recoverTime: 0.1
-  startUpTime: 0.1
-  chargeTime: 1
+  timeActive: 0
+  recoverTime: 0
+  startUpTime: 0
+  chargeTime: 0
+  maxActivationAmount: 0
+  currentActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
-  useAbilityTimingForAnimation: 1
+  useAbilityTimingForAnimation: 0
+  visualPrefab: {fileID: 0}
   _customStats:
   - name: Damage
-    value: 1
+    value: 0
   - name: KnockBackScale
-    value: 1
+    value: 0
   - name: HitAngle
-    value: 0.2
+    value: 0
   - name: Speed
-    value: 2
-  - name: Lifetime
-    value: 1.5
-  - name: MaxInstances
     value: 1
+  - name: Lifetime
+    value: 1
+  - name: MaxInstances
+    value: -1
   animationType: 0
   _customAnimation: {fileID: 0}
