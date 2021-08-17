@@ -432,6 +432,28 @@ namespace Lodis.GridScripts
 
             return true;
         }
+
+        public List<PanelBehaviour> GetPanelNeighbors(Vector2 position, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
+        {
+            List<PanelBehaviour> neighbors = new List<PanelBehaviour>();
+
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    Vector2 offset = new Vector2(x, y);
+
+                    if (offset + position == position)
+                        continue;
+
+                    PanelBehaviour panel = null;
+                    if (GetPanel((position + offset), out panel, canBeOccupied, alignment))
+                        neighbors.Add(panel);
+                }
+            }
+
+            return neighbors;
+        }
     }
 
 #if UNITY_EDITOR

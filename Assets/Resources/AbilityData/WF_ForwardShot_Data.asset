@@ -19,10 +19,14 @@ MonoBehaviour:
   recoverTime: 0.1
   startUpTime: 0.1
   chargeTime: 1
+  maxActivationAmount: 0
+  currentActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   useAbilityTimingForAnimation: 1
+  visualPrefab: {fileID: 8897977150452739386, guid: c662ede171e2a26498c91a36fc787336,
+    type: 3}
   _customStats:
   - name: Damage
     value: 1

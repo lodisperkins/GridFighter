@@ -18,10 +18,15 @@ MonoBehaviour:
   timeActive: 0.2
   recoverTime: 0.3
   startUpTime: 0.2
+  chargeTime: 0
+  maxActivationAmount: 0
+  currentActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   useAbilityTimingForAnimation: 1
+  visualPrefab: {fileID: 151366202753034390, guid: c6f18bf7381957749a039c8b5cba9319,
+    type: 3}
   _customStats:
   - name: StrongShotDistance
     value: 1
