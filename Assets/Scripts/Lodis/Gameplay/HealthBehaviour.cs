@@ -19,7 +19,16 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _isInvincible;
         private Condition _invincibilityCondition;
+        private bool _stunned;
 
+        public bool Stunned 
+        {
+            get
+            {
+                return _stunned;
+            }
+
+        }
         public bool IsAlive
         {
             get
@@ -65,6 +74,36 @@ namespace Lodis.Gameplay
             _isInvincible = true;
             yield return new WaitForSeconds(time);
             _isInvincible = false;
+        }
+
+        protected virtual IEnumerator ActivateStun(float time)
+        {
+            MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
+            Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
+
+            if (moveset)
+            {
+                moveset.enabled = false;
+                moveset.StopAllCoroutines();
+            }
+            if (inputBehaviour)
+            {
+                inputBehaviour.enabled = false;
+                inputBehaviour.StopAllCoroutines();
+            }
+
+
+            yield return new WaitForSeconds(time);
+
+            if (moveset)
+                moveset.enabled = true;
+            if (inputBehaviour)
+                inputBehaviour.enabled = true;
+        }
+
+        public void Stun(float time)
+        {
+            StartCoroutine(ActivateStun(time));
         }
 
         /// <summary>

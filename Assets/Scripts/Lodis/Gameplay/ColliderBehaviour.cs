@@ -52,6 +52,14 @@ namespace Lodis.Gameplay
 
         public ColliderBehaviour() {}
 
+        /// <summary>
+        /// Initializes this colliders stats
+        /// </summary>
+        /// <param name="despawnAfterTimeLimit">If true the hit box despawns when its not active</param>
+        /// <param name="timeActive">How long this object will be active it is set to despawn</param>
+        /// <param name="owner">The game object that spawned the collider</param>
+        /// <param name="destroyOnHit">If true, the collider will destroy itself when it hits</param>
+        /// <param name="isMultiHit">If true, the hit collider will trigger a collision with objects that enter it multiple times</param>
         public ColliderBehaviour(bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
         {
             Init(despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit);

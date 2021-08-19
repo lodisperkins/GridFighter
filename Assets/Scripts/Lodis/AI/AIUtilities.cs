@@ -33,21 +33,38 @@ namespace Lodis.AI
 
         public float CalculateManhattanDistance(PanelBehaviour panel, PanelBehaviour goal)
         {
-            return Math.Abs(goal.Position.x - panel.Position.x) + Math.Abs(goal.Position.y - panel.Position.y);
+            return Math.Abs(panel.Position.x - goal.Position.x) + Math.Abs(panel.Position.y - goal.Position.y);
+        }
+
+        private float CustomHeuristic(PanelBehaviour panel, PanelBehaviour goal)
+        {
+            return Vector3.Distance(goal.Position, panel.Position);
+        }
+
+        public float CalculateDiagnolDistance(PanelBehaviour panel, PanelBehaviour goal)
+        {
+            float dx = Math.Abs(panel.Position.x - goal.Position.x);
+            float dy = Math.Abs(panel.Position.y - goal.Position.y);
+            return 2 * (dx + dy) + (3 - 2 * 2) * Math.Min(dx, dy);
+        }
+
+        public float CalculateChebyshevDistance(PanelBehaviour panel, PanelBehaviour goal)
+        {
+            return Math.Max(Math.Abs(goal.Position.x - panel.Position.x), Math.Abs(goal.Position.y - panel.Position.y));
         }
 
         private List<PanelNode> SortNodes(List<PanelNode> nodelist)
         {
             PanelNode temp;
 
-            for (int i = 0; i < nodelist.Count; i++)
+            for (int i = 0; i < nodelist.Count - 1; i++)
             {
-                for (int j = 0; j < nodelist.Count; j++)
+                for (int j = 0; j < nodelist.Count - i - 1; j++)
                 {
-                    if (nodelist[i].fScore > nodelist[j].fScore)
+                    if (nodelist[j].fScore > nodelist[j + 1].fScore)
                     {
-                        temp = nodelist[i];
-                        nodelist[i] = nodelist[j];
+                        temp = nodelist[j + 1];
+                        nodelist[j + 1] = nodelist[j];
                         nodelist[j] = temp;
                     }
                 }
@@ -56,15 +73,15 @@ namespace Lodis.AI
             return nodelist;
         }
 
-        private List<PanelBehaviour> ReconstructPath(PanelBehaviour startPanel, PanelBehaviour endPanel)
+        private List<PanelBehaviour> ReconstructPath(PanelNode startPanel, PanelNode endPanel)
         {
             List<PanelBehaviour> currentPath = new List<PanelBehaviour>();
-            PanelNode temp = new PanelNode { panel = endPanel };
+            PanelNode temp =  endPanel;
 
-            while (temp.panel != startPanel)
+            while (temp != null)
             {
                 currentPath.Insert(0, temp.panel);
-                temp = (PanelNode)temp.parent;
+                temp = temp.parent;
             }
 
             return currentPath;
@@ -90,7 +107,7 @@ namespace Lodis.AI
             openList.Add(start);
             List<PanelNode> closedList = new List<PanelNode>();
             start.fScore =
-                CalculateManhattanDistance(startPanel, endPanel);
+                CustomHeuristic(startPanel, endPanel);
 
             while (openList.Count > 0)
             {
@@ -99,7 +116,7 @@ namespace Lodis.AI
 
                 if (panelNode.panel == end.panel)
                 {
-                    return ReconstructPath(startPanel, endPanel);
+                    return ReconstructPath(start, panelNode);
                 }
 
                 openList.Remove(panelNode);
@@ -119,7 +136,7 @@ namespace Lodis.AI
                     {
                         PanelNode newNode = new PanelNode { panel = neighbor };
                         newNode.gScore += panelNode.gScore;
-                        newNode.fScore = newNode.gScore + CalculateManhattanDistance(neighbor, endPanel);
+                        newNode.fScore = newNode.gScore + CustomHeuristic(neighbor, endPanel);
                         newNode.parent = panelNode;
                         openList.Add(newNode);
                     }

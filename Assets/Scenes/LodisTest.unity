@@ -367,6 +367,7 @@ MonoBehaviour:
   _defaultAlignment: 1
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
 --- !u!114 &33356480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4850,6 +4851,7 @@ MonoBehaviour:
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
 --- !u!114 &1082967236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6451,6 +6453,7 @@ MonoBehaviour:
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
 --- !u!114 &1439180828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7511,6 +7514,7 @@ MonoBehaviour:
   _defaultAlignment: 1
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
 --- !u!114 &1553451240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8726,7 +8730,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1854253616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9092,6 +9096,7 @@ MonoBehaviour:
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
 --- !u!114 &1921244566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9531,6 +9536,7 @@ MonoBehaviour:
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
 --- !u!114 &1992236355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9798,6 +9804,7 @@ MonoBehaviour:
   _defaultAlignment: 1
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
 --- !u!114 &2016165840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10398,6 +10405,7 @@ MonoBehaviour:
   _defaultAlignment: 1
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
 --- !u!114 &2119259577
 MonoBehaviour:
   m_ObjectHideFlags: 0

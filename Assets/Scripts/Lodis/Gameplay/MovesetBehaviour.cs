@@ -159,9 +159,6 @@ namespace Lodis.Gameplay
 
         public IEnumerator ChargeNextAbility(int slot)
         {
-            if (!_specialAbilitySlots[slot].abilityData.MaxActivationAmountReached)
-                yield break;
-
             _specialAbilitySlots[slot] = null;
 
             if (_specialDeck.Count == 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null)
@@ -192,8 +189,13 @@ namespace Lodis.Gameplay
             if (_animationBehaviour)
                 _animationBehaviour.PlayAbilityAnimation(currentAbility);
 
+            //Doesn't increment ability use amount before checking max
             currentAbility.UseAbility(args);
-            currentAbility.onDeactivate += () => StartCoroutine(ChargeNextAbility(abilitySlot));
+
+            currentAbility.abilityData.currentActivationAmount++;
+
+            if (_specialAbilitySlots[abilitySlot].abilityData.MaxActivationAmountReached)
+                currentAbility.onDeactivate += () => StartCoroutine(ChargeNextAbility(abilitySlot));
 
             _lastAbilityInUse = currentAbility;
 

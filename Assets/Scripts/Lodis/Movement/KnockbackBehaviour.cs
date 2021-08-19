@@ -36,6 +36,7 @@ namespace Lodis.Movement
         private bool _inFreeFall;
         private Coroutine _currentCoroutine;
         private UnityAction _onKnockBack;
+        private UnityAction _onKnockBackStart;
         [SerializeField]
         private FloatVariable _velocityDecayRate;
         [SerializeField]
@@ -146,6 +147,7 @@ namespace Lodis.Movement
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
             OnCollision += TryStartLandingLag;
             _onKnockBack += () => Landing = false;
+            _onKnockBackStart += () => { if (Stunned) { UnfreezeObject(); } };
         }
 
         /// <summary>
@@ -206,8 +208,10 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze for.</param>
         /// <returns></returns>
-        private IEnumerator FreezeCoroutine(float time)
+        private IEnumerator FreezeCoroutine(float time, bool keepMomentum = false)
         {
+            Vector3 velocity = LastVelocity;
+
             float timeStarted = Time.time;
             float timeElapsed = 0;
 
@@ -217,6 +221,9 @@ namespace Lodis.Movement
                 _rigidbody.AddForce(-_rigidbody.velocity, ForceMode.VelocityChange);
                 yield return new WaitForFixedUpdate();
             }
+
+            if (keepMomentum)
+                ApplyVelocityChange(velocity);
         }
 
         /// <summary>
@@ -297,6 +304,15 @@ namespace Lodis.Movement
             _onKnockBack += action;
         }
 
+        /// <summary>
+        /// Add a listener to the onKnockBackStart event. Called before knock back is applied.
+        /// </summary>
+        /// <param name="action">The new listener for the event.</param>
+        public void AddOnKnockBackStartAction(UnityAction action)
+        {
+            _onKnockBackStart += action;
+        }
+
         private void TryStartLandingLag(params object[] args)
         {
             GameObject plane = (GameObject)args[0];
@@ -304,6 +320,33 @@ namespace Lodis.Movement
                 return;
 
             _currentCoroutine = StartCoroutine(StartLandingLag());
+        }
+
+        protected override IEnumerator ActivateStun(float time)
+        {
+            MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
+            Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
+
+            if (InFreeFall || InHitStun)
+                FreezeInPlaceByTimer(time);
+
+            if (moveset)
+            {
+                moveset.enabled = false;
+                moveset.StopAllCoroutines();
+            }
+            if (inputBehaviour)
+            {
+                inputBehaviour.enabled = false;
+                inputBehaviour.StopAllCoroutines();
+            }
+
+            yield return new WaitForSeconds(time);
+
+            if (moveset)
+                moveset.enabled = true;
+            if (inputBehaviour)
+                inputBehaviour.enabled = true;
         }
 
         public override void OnCollisionEnter(Collision collision)
@@ -425,6 +468,8 @@ namespace Lodis.Movement
 
             if (knockBackForce.magnitude > 0)
             {
+                _onKnockBackStart?.Invoke();
+
                 _velocityOnLaunch = knockBackForce;
                 _rigidbody.isKinematic = false;
 

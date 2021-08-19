@@ -86,6 +86,11 @@ namespace Lodis.ScriptableObjects
         [SerializeField]
         private AnimationClip _customAnimation;
 
+        private void OnEnable()
+        {
+            currentActivationAmount = 0;
+        }
+
         public bool MaxActivationAmountReached
         {
             get

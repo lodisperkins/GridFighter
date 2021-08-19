@@ -49,7 +49,10 @@ namespace Lodis.Movement
         private bool _moveToAlignedSideIfStuck = true;
         [SerializeField]
         private bool _alwaysLookAtOpposingSide = true;
+        [SerializeField]
+        private bool _canBeWalkedThrough = false;
         private KnockbackBehaviour _knockbackBehaviour;
+        private MeshFilter _meshFilter;
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -142,6 +145,7 @@ namespace Lodis.Movement
 
             //Set the starting position
             _targetPosition = transform.position;
+            _meshFilter = GetComponent<MeshFilter>();
         }
 
         private void Start()
@@ -154,6 +158,7 @@ namespace Lodis.Movement
 
             if (_knockbackBehaviour)
                 _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
+
         }
 
         /// <summary>
@@ -340,7 +345,7 @@ namespace Lodis.Movement
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2, 0);
             _targetPosition = newPosition;
 
             SetIsMoving(true);
@@ -363,7 +368,7 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = true;
+            _currentPanel.Occupied = !_canBeWalkedThrough;
             _position = _currentPanel.Position;
 
             return true;
@@ -413,7 +418,7 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = true;
+            _currentPanel.Occupied = !_canBeWalkedThrough;
             _position = _currentPanel.Position;
             return true;
         }
@@ -463,7 +468,7 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = true;
+            _currentPanel.Occupied = !_canBeWalkedThrough;
             _position = _currentPanel.Position;
 
             return true;

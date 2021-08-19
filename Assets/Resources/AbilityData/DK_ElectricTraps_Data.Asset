@@ -12,20 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: DK_ElectricTraps_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
-  abilityName: Unassigned
-  abilityType: 0
+  abilityName: ElectricTraps
+  abilityType: 8
   damageType: 0
-  timeActive: 0
-  recoverTime: 0
-  startUpTime: 0
+  timeActive: 0.1
+  recoverTime: 1
+  startUpTime: 0.1
   chargeTime: 0
-  maxActivationAmount: 0
+  maxActivationAmount: 3
   currentActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 0
-  useAbilityTimingForAnimation: 0
-  visualPrefab: {fileID: 0}
+  canCancelRecover: 1
+  useAbilityTimingForAnimation: 1
+  visualPrefab: {fileID: 4353001235416084576, guid: 4f8339a5bcfa52747ba63a19d2d5d413,
+    type: 3}
   _customStats:
   - name: Damage
     value: 0
@@ -34,10 +35,12 @@ MonoBehaviour:
   - name: HitAngle
     value: 0
   - name: Speed
-    value: 1
+    value: 20
   - name: Lifetime
     value: 1
-  - name: MaxInstances
-    value: -1
+  - name: StunTime
+    value: 5
+  - name: PanelTravelDistance
+    value: 2
   animationType: 0
   _customAnimation: {fileID: 0}
