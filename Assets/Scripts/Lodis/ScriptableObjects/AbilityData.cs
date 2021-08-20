@@ -25,24 +25,7 @@ namespace Lodis.ScriptableObjects
         public string name;
         public float value;
     }
-
-    [CreateAssetMenu(menuName = "AbilityData/AttackAbilityData")]
-    class AttackAbilityData : AbilityData
-    {
-        public AttackAbilityData()
-        {
-            _customStats = new Stat[] { new Stat("Damage", 0), new Stat("KnockBackScale", 0), new Stat("HitAngle", 0) };
-        }
-    }
-
-    [CreateAssetMenu(menuName = "AbilityData/ProjectileAbilityData")]
-    class ProjectileAbilityData : AbilityData
-    {
-        public ProjectileAbilityData()
-        {
-            _customStats = new Stat[] { new Stat("Damage", 0), new Stat("KnockBackScale", 0), new Stat("HitAngle", 0), new Stat("Speed", 1), new Stat("Lifetime", 1), new Stat("MaxInstances", -1) };
-        }
-    }
+    
 
     [CreateAssetMenu(menuName = "AbilityData/Default")]
     public class AbilityData : ScriptableObject
