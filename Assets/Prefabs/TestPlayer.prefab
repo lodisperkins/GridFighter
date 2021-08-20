@@ -163,6 +163,7 @@ MonoBehaviour:
   _defaultAlignment: 3
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 1
+  _canBeWalkedThrough: 0
 --- !u!114 &2765739998997917296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -379,7 +380,7 @@ MonoBehaviour:
   _canParry: 1
   _parryCooldown: 1
   _parrySpeedLimit: 8
-  _parryRestTime: 1
+  _parryRestTime: 0.5
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
   _parryCoolDownDecreaseRate: 0.05

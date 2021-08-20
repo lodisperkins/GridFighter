@@ -61,7 +61,7 @@ namespace Lodis.Gameplay
             _stunCollider.onHit += StunEntity;
 
             //Gets a path from the first link to the second link
-            List<PanelBehaviour> panels = AI.AIUtilities.Instance.GetPath(_linkMoveScripts[0].CurrentPanel, _linkMoveScripts[1].CurrentPanel);
+            List<PanelBehaviour> panels = AI.AIUtilities.Instance.GetPath(_linkMoveScripts[0].CurrentPanel, _linkMoveScripts[1].CurrentPanel, true);
 
             //Spawns attackLinks on each panel in the path
             for (int i = 0; i < panels.Count; i++)
