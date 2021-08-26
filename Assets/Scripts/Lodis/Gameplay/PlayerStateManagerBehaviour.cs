@@ -7,6 +7,7 @@ namespace Lodis.Gameplay
     public enum PlayerState
     {
         IDLE,
+        MOVING,
         ATTACKING,
         KNOCKBACK,
         FREEFALL,
@@ -59,6 +60,8 @@ namespace Lodis.Gameplay
                 _currentState = PlayerState.ATTACKING;
             else if (_knockBack.InFreeFall)
                 _currentState = PlayerState.FREEFALL;
+            else if (_movement.IsMoving)
+                _currentState = PlayerState.MOVING;
             else
                 _currentState = PlayerState.IDLE;
         }

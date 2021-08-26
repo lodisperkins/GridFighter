@@ -36,6 +36,10 @@ namespace Lodis.Gameplay
         private bool _animatingMotion;
         [SerializeField]
         private PlayerStateManagerBehaviour _playerStateManager;
+        [SerializeField]
+        private float _moveAnimationStartUpTime;
+        [SerializeField]
+        private float _moveAnimationRecoverTime;
         private Vector2 _normal;
         private Vector3 _modelRestPosition;
 
@@ -56,16 +60,19 @@ namespace Lodis.Gameplay
         private void IncrementAnimationPhase()
         {
             _animationPhase++;
-            if (_currentAbilityAnimating.abilityData.animationType == AnimationType.CUSTOM)
+
+            if (_animatingMotion)
+                CalculateMovementAnimationSpeed();
+            else if (_currentAbilityAnimating.abilityData.animationType == AnimationType.CUSTOM)
                 CalculateCustomAnimationSpeed();
             else
-                CalculateAnimatorSpeed();
+                CalculateAbilityAnimationSpeed();
         }
 
         /// <summary>
         /// Changes the speed of the animation based on the ability data
         /// </summary>
-        private void CalculateAnimatorSpeed()
+        private void CalculateAbilityAnimationSpeed()
         {
             if (!_currentAbilityAnimating.abilityData.useAbilityTimingForAnimation)
                 return;
@@ -98,6 +105,53 @@ namespace Lodis.Gameplay
                         break;
                     }
                     newSpeed = (_currentClip.length - _currentClip.events[1].time) / _currentAbilityAnimating.abilityData.recoverTime;
+                    break;
+            }
+
+            _animator.speed = newSpeed;
+        }
+
+        /// <summary>
+        /// Changes the speed of the animation based on the ability data
+        /// </summary>
+        private void CalculateMovementAnimationSpeed()
+        {
+            AnimationPhase phase = (AnimationPhase)_animationPhase;
+            float newSpeed = 1;
+
+            switch (phase)
+            {
+                case AnimationPhase.STARTUP:
+                    if (_moveAnimationStartUpTime <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.events[0].time;
+                        break;
+                    }
+                    newSpeed = (_currentClip.events[0].time / _moveAnimationStartUpTime);
+                    break;
+                case AnimationPhase.ACTIVE:
+                    Vector2 oldPosition = new Vector2();
+
+                    if (_moveBehaviour.PreviousPanel)
+                        oldPosition = _moveBehaviour.PreviousPanel.Position;
+
+                    float travelDistance = (oldPosition - _moveBehaviour.CurrentPanel.Position).magnitude;
+                    float travelTime = travelDistance / _moveBehaviour.Speed;
+
+                    if (travelTime <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.events[1].time;
+                        break;
+                    }
+                    newSpeed = (_currentClip.events[1].time - _currentClip.events[0].time) / travelTime;
+                    break;
+                case AnimationPhase.INACTIVE:
+                    if (_moveAnimationRecoverTime <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.length;
+                        break;
+                    }
+                    newSpeed = (_currentClip.length - _currentClip.events[1].time) / _moveAnimationRecoverTime;
                     break;
             }
 
@@ -146,10 +200,10 @@ namespace Lodis.Gameplay
             _currentClipPlayable.SetSpeed(newSpeed);
         }
 
-        bool FindAnimationClip(string name)
+        bool SetCurrentAnimationClip(string name)
         {
             foreach (AnimationClip animationClip in _runtimeAnimator.animationClips)
-                if(animationClip.name == name)
+                if (animationClip.name.Contains(name))
                 {
                     _currentClip = animationClip;
                     return true;
@@ -169,7 +223,7 @@ namespace Lodis.Gameplay
             switch (_currentAbilityAnimating.abilityData.animationType)
             {
                 case AnimationType.CAST:
-                    if (FindAnimationClip("Cast"))
+                    if (SetCurrentAnimationClip("Cast"))
                     {
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
@@ -177,14 +231,14 @@ namespace Lodis.Gameplay
                         _animator.Play("Cast", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
-                        CalculateAnimatorSpeed();
+                        CalculateAbilityAnimationSpeed();
                     }
                     else
                         Debug.LogError("Couldn't play Cast animation. Couldn't find the Cast clip for " + ability.abilityData.abilityName);
                     break;
 
                 case AnimationType.MELEE:
-                    if (FindAnimationClip("Melee"))
+                    if (SetCurrentAnimationClip("Melee"))
                     {
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
@@ -192,14 +246,14 @@ namespace Lodis.Gameplay
                         _animator.Play("Melee", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
-                        CalculateAnimatorSpeed();
+                        CalculateAbilityAnimationSpeed();
                     }
                     else
                         Debug.LogError("Couldn't play Melee animation. Couldn't find the Melee clip for " + ability.abilityData.abilityName);
                     break;
 
                 case AnimationType.SUMMON:
-                    if (FindAnimationClip("Summon"))
+                    if (SetCurrentAnimationClip("Summon"))
                     {
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
@@ -207,7 +261,7 @@ namespace Lodis.Gameplay
                         _animator.Play("Summon", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
-                        CalculateAnimatorSpeed();
+                        CalculateAbilityAnimationSpeed();
                     }
                     else
                         Debug.LogError("Couldn't play Summon animation. Couldn't find the Summon clip for " + ability.abilityData.abilityName);
@@ -233,6 +287,26 @@ namespace Lodis.Gameplay
             }
         }
 
+        private void PlayMovementAnimation()
+        {
+            _animatingMotion = true;
+            _animationPhase = 0;
+
+            if (_playableGraph.IsPlaying())
+                    _playableGraph.Stop();
+
+            if (_moveBehaviour.MoveDirection.x > 0 && SetCurrentAnimationClip("DashForward"))
+                _animator.Play("DashForward");
+            else if (_moveBehaviour.MoveDirection.x < 0 && SetCurrentAnimationClip("DashBackward"))
+                _animator.Play("DashBackward");
+            else if (_moveBehaviour.MoveDirection.y > 0 && SetCurrentAnimationClip("DashRight"))
+                _animator.Play("DashRight");
+            else if (_moveBehaviour.MoveDirection.y < 0 && SetCurrentAnimationClip("DashLeft"))
+                _animator.Play("DashLeft");
+
+            CalculateMovementAnimationSpeed();
+        }
+
         private void ResetAnimationGraph()
         {
             _playableGraph.Stop();
@@ -256,11 +330,13 @@ namespace Lodis.Gameplay
             switch (_playerStateManager.CurrentState)
             {
                 case PlayerState.IDLE:
-                    _animator.Play("IdleRun");
-                    _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
-                    _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
+                    _animator.Play("Idle");
                     _animatingMotion = true;
                     _animator.transform.localPosition = _modelRestPosition;
+                    break;
+
+                case PlayerState.MOVING:
+                    PlayMovementAnimation();
                     break;
 
                 case PlayerState.KNOCKBACK:

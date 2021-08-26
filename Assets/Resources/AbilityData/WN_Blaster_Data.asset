@@ -39,5 +39,4 @@ MonoBehaviour:
   - name: Lifetime
     value: 5
   animationType: 0
-  _customAnimation: {fileID: -203655887218126122, guid: 0be6f4b1c02421646b30eebf7fe03988,
-    type: 3}
+  _customAnimation: {fileID: 0}

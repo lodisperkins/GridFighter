@@ -51,6 +51,7 @@ namespace Lodis.Movement
         private bool _alwaysLookAtOpposingSide = true;
         [SerializeField]
         private bool _canBeWalkedThrough = false;
+        private PanelBehaviour _previousPanel;
         private KnockbackBehaviour _knockbackBehaviour;
         private MeshFilter _meshFilter;
 
@@ -70,6 +71,15 @@ namespace Lodis.Movement
                 return _currentPanel;
             }
         }
+
+        public PanelBehaviour PreviousPanel
+        {
+            get
+            {
+                return _previousPanel;
+            }
+        }
+
 
         /// <summary>
         /// The current velocity of the object moving on the grid.
@@ -343,6 +353,8 @@ namespace Lodis.Movement
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition, tempAlignment))
                 return false;
 
+            _previousPanel = _currentPanel;
+
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2, 0);
@@ -393,6 +405,8 @@ namespace Lodis.Movement
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, _position == new Vector2( x,y), tempAlignment))
                 return false;
 
+            _previousPanel = _currentPanel;
+
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
@@ -440,6 +454,7 @@ namespace Lodis.Movement
             if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
                 return false;
 
+            _previousPanel = _currentPanel;
             _targetPanel = targetPanel;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
