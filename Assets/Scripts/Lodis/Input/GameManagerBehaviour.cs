@@ -78,7 +78,7 @@ namespace Lodis.Gameplay
             _p1HealthBar.MaxValue = 200;
 
             //Move player to spawn
-            _p1Movement.Position = _grid.LhsSpawnPanel.Position;
+            _p1Movement.MoveToPanel(_grid.LhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
             _player1.transform.forward = Vector3.right;
 
@@ -103,7 +103,7 @@ namespace Lodis.Gameplay
 
                 //Move player to spawn
                 _p2Input.PlayerID = 1;
-                _p2Movement.Position = _grid.RhsSpawnPanel.Position;
+                _p2Movement.MoveToPanel(_grid.RhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
                 _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
                 _grid.AssignOwners(_player1.name, _player2.name);
                 return;
@@ -127,7 +127,7 @@ namespace Lodis.Gameplay
                 //Find spawn point for dummy
                 GridScripts.PanelBehaviour spawnPanel = null;
                 if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))
-                    _p2Movement.Position = spawnPanel.Position;
+                    _p2Movement.MoveToPanel(spawnPanel, true, GridScripts.GridAlignment.ANY);
                 else
                     Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummySpawnLocation);
 

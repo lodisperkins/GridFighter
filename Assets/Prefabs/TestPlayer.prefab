@@ -307,7 +307,7 @@ MonoBehaviour:
   _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _renderer: {fileID: 2765739998997917301}
   _animationBehaviour: {fileID: 4705404459745268771}
-  _projectileSpawnPoint: {fileID: 8493895805536081942}
+  _projectileSpawnPoint: {fileID: 8493895805536082016}
   _meleeHitBoxSpawnPoint: {fileID: 8493895805536081938}
   _deckReloadTime: 0.1
 --- !u!114 &-1873711531255504354
@@ -684,7 +684,7 @@ PrefabInstance:
     - target: {fileID: 13700002, guid: 3067d36b7321e7842932d94ad2dbd80b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 12048ea754e6d0f44aa81f84449f65f0, type: 2}
+      objectReference: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3067d36b7321e7842932d94ad2dbd80b, type: 3}
 --- !u!1 &8493895805536503236 stripped
@@ -705,15 +705,15 @@ Animator:
     type: 3}
   m_PrefabInstance: {fileID: 8493895805536469704}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8493895805536081938 stripped
+--- !u!4 &8493895805536082016 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 400090, guid: 3067d36b7321e7842932d94ad2dbd80b,
+  m_CorrespondingSourceObject: {fileID: 400040, guid: 3067d36b7321e7842932d94ad2dbd80b,
     type: 3}
   m_PrefabInstance: {fileID: 8493895805536469704}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &8493895805536081942 stripped
+--- !u!4 &8493895805536081938 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 400094, guid: 3067d36b7321e7842932d94ad2dbd80b,
+  m_CorrespondingSourceObject: {fileID: 400090, guid: 3067d36b7321e7842932d94ad2dbd80b,
     type: 3}
   m_PrefabInstance: {fileID: 8493895805536469704}
   m_PrefabAsset: {fileID: 0}

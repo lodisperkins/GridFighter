@@ -43,5 +43,4 @@ MonoBehaviour:
   - name: TimeBetweenShots
     value: 0
   animationType: 3
-  _customAnimation: {fileID: -203655887218126122, guid: 5395243afcd94cc44964cbfb2cbd7bb4,
-    type: 3}
+  _customAnimation: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}

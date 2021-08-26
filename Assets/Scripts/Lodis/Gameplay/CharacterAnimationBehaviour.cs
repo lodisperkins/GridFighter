@@ -52,6 +52,7 @@ namespace Lodis.Gameplay
             _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
             _modelRestPosition = _animator.transform.localPosition;
+            _moveBehaviour.AddOnMoveEndAction(() => _animator.speed = 1);
         }
 
         /// <summary>

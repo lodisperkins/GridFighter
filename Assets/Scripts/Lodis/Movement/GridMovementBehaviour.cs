@@ -29,6 +29,7 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("How fast the object can move towards a panel.")]
         private float _speed;
+        [SerializeField]
         private bool _isMoving;
         [SerializeField]
         private bool _canMove = true;
@@ -489,6 +490,23 @@ namespace Lodis.Movement
             return true;
         }
 
+        private void MoveToCurrentPanel()
+        {
+
+            if (IsMoving || !_canMove)
+                return;
+
+            //Sets the new position to be the position of the panel added to half the gameOgjects height.
+            //Adding the height ensures the gameObject is not placed inside the panel.
+            Vector3 newPosition = _currentPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+
+            Vector3 worldMoveDirection = newPosition - transform.position;
+
+            transform.position += worldMoveDirection.normalized * Speed * Time.deltaTime;
+
+            _currentPanel.Occupied = !_canBeWalkedThrough;
+        }
+
         public void MoveToClosestAlignedPanelOnRow()
         {
 
@@ -539,7 +557,7 @@ namespace Lodis.Movement
         {
             if (_canMove)
             {
-                MoveToPanel(_position);
+                MoveToCurrentPanel();
                 SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
                 _movementEnableCheck = null;
 
