@@ -53,8 +53,17 @@ namespace Lodis.Gameplay
         public UnityAction onDeactivate = null;
         private bool _inUse;
         protected Movement.GridMovementBehaviour _ownerMoveScript;
+        public int currentActivationAmount;
 
         public AbilityPhase AbilityPhase { get; private set; }
+
+        public bool MaxActivationAmountReached
+        {
+            get
+            {
+                return currentActivationAmount >= abilityData.maxActivationAmount;
+            }
+        }
 
         /// <summary>
         /// Returns false at the end of the ability's recover time
@@ -176,6 +185,7 @@ namespace Lodis.Gameplay
         protected abstract void Activate(params object[] args);
         public virtual void Init(GameObject owner)
         {
+            currentActivationAmount = 0;
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
             ownerMoveset = owner.GetComponent<MovesetBehaviour>();
         }

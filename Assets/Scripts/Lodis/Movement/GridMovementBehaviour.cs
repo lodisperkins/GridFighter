@@ -361,9 +361,6 @@ namespace Lodis.Movement
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2, 0);
             _targetPosition = newPosition;
 
-            if (Vector3.Distance(transform.position, _targetPosition) <= _targetTolerance)
-                return false;
-
             SetIsMoving(true);
 
             MoveDirection = panelPosition - _position;
@@ -416,9 +413,6 @@ namespace Lodis.Movement
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
             _targetPosition = newPosition;
 
-            if (Vector3.Distance(transform.position, _targetPosition) <= _targetTolerance)
-                return false;
-
             SetIsMoving(true);
 
             MoveDirection = new Vector2(x, y) - _position;
@@ -469,8 +463,6 @@ namespace Lodis.Movement
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
             _targetPosition = newPosition;
 
-            if (Vector3.Distance(transform.position, _targetPosition) <= _targetTolerance)
-                return false;
 
             SetIsMoving(true);
 

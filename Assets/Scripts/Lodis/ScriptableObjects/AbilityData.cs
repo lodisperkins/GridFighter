@@ -46,7 +46,6 @@ namespace Lodis.ScriptableObjects
         public float chargeTime = 0;
         [Tooltip("The amount of time this ability can be used before it is removed from the active slot. Can be ignored if this ability is a normal type.")]
         public int maxActivationAmount = 0;
-        public int currentActivationAmount = 0;
         [Tooltip("If true, this ability can be canceled into others in the start up phase")]
         public bool canCancelStartUp = false;
         [Tooltip("If true, this ability can be canceled into others in the active phase")]
@@ -69,18 +68,8 @@ namespace Lodis.ScriptableObjects
         [SerializeField]
         private AnimationClip _customAnimation;
 
-        private void OnEnable()
-        {
-            currentActivationAmount = 0;
-        }
+        
 
-        public bool MaxActivationAmountReached
-        {
-            get
-            {
-                return currentActivationAmount >= maxActivationAmount;
-            }
-        }
         public bool GetCustomAnimation(out AnimationClip customAnimation)
         {
             customAnimation = null;

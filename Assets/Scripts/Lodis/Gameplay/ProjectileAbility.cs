@@ -18,7 +18,6 @@ namespace Lodis.Gameplay
         //The collider attached to the projectile
         public HitColliderBehaviour projectileCollider;
         public List<GameObject> _activeProjectiles = new List<GameObject>();
-
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);

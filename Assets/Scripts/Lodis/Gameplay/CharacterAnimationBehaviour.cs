@@ -52,7 +52,7 @@ namespace Lodis.Gameplay
             _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
             _modelRestPosition = _animator.transform.localPosition;
-            _moveBehaviour.AddOnMoveEndAction(() => _animator.speed = 1);
+            //_moveBehaviour.AddOnMoveEndAction(() => _animator.speed = 1);
         }
 
         /// <summary>
@@ -334,6 +334,7 @@ namespace Lodis.Gameplay
                     _animator.Play("Idle");
                     _animatingMotion = true;
                     _animator.transform.localPosition = _modelRestPosition;
+                    _animator.speed = 1;
                     break;
 
                 case PlayerState.MOVING:
@@ -390,7 +391,7 @@ namespace Lodis.Gameplay
         void Update()
         {
             UpdateAnimationsBasedOnState();
-            //Debug.Log(_animator.speed);
+            Debug.Log(_animator.speed);
         }
     }
 }

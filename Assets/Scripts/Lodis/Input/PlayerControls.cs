@@ -402,8 +402,30 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""319afb83-5a85-4616-a94f-2b46963bbd7c"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special1"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""5d65c825-aafe-4501-991f-3f7769b67fa9"",
                     ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Special2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b3312ac-24b6-46c0-987f-125192abc25b"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/trigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

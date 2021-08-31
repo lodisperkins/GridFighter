@@ -23,7 +23,6 @@ namespace Lodis.Gameplay
             
             _attackLinkVisual = (GameObject)Resources.Load("Structures/AttackLink");
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
-            abilityData.currentActivationAmount = 0;
         }
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace Lodis.Gameplay
             for (int i = (int)_maxTravelDistance; i >= 0; i--)
             {
                 Vector2 moveOffset = new Vector2(i, 0);
-                if (gridMovement.MoveToPanel(_ownerMoveScript.CurrentPanel.Position + moveOffset * owner.transform.forward, false, GridScripts.GridAlignment.ANY))
+                if (gridMovement.MoveToPanel(_ownerMoveScript.CurrentPanel.Position + moveOffset * owner.transform.forward.x, false, GridScripts.GridAlignment.ANY))
                     break;
             }
         }
@@ -97,7 +96,7 @@ namespace Lodis.Gameplay
                 spawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Switch to know which stage of the ability should be activated
-            switch (abilityData.currentActivationAmount)
+            switch (currentActivationAmount)
             {
                 case 1:
                 case 2:

@@ -192,9 +192,9 @@ namespace Lodis.Gameplay
             //Doesn't increment ability use amount before checking max
             currentAbility.UseAbility(args);
 
-            currentAbility.abilityData.currentActivationAmount++;
+            currentAbility.currentActivationAmount++;
 
-            if (_specialAbilitySlots[abilitySlot].abilityData.MaxActivationAmountReached)
+            if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached)
                 currentAbility.onDeactivate += () => StartCoroutine(ChargeNextAbility(abilitySlot));
 
             _lastAbilityInUse = currentAbility;
