@@ -405,7 +405,9 @@ namespace Lodis.GridScripts
             else if (_panels[(int)position.x, (int)position.y].Alignment != alignment && alignment != GridAlignment.ANY)
                 return false;
 
-            panel = _panels[(int)position.x, (int)position.y];
+            
+
+            panel = _panels[Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y)];
 
             return true;
         }
