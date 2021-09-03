@@ -55,7 +55,7 @@ namespace Lodis.Gameplay
         protected Movement.GridMovementBehaviour _ownerMoveScript;
         public int currentActivationAmount;
 
-        public AbilityPhase AbilityPhase { get; private set; }
+        public AbilityPhase CurrentAbilityPhase { get; private set; }
 
         public bool MaxActivationAmountReached
         {
@@ -80,14 +80,14 @@ namespace Lodis.Gameplay
         {
             _inUse = true;
             onBegin?.Invoke();
-            AbilityPhase = AbilityPhase.STARTUP;
+            CurrentAbilityPhase = AbilityPhase.STARTUP;
             yield return new WaitForSeconds(abilityData.startUpTime);
             onActivate?.Invoke();
-            AbilityPhase = AbilityPhase.ACTIVE;
+            CurrentAbilityPhase = AbilityPhase.ACTIVE;
             Activate(args);
             yield return new WaitForSeconds(abilityData.timeActive);
             onDeactivate?.Invoke();
-            AbilityPhase = AbilityPhase.RECOVER;
+            CurrentAbilityPhase = AbilityPhase.RECOVER;
             Deactivate();
             yield return new WaitForSeconds(abilityData.recoverTime);
             onEnd?.Invoke();
@@ -117,7 +117,7 @@ namespace Lodis.Gameplay
 
         public bool CheckIfAbilityCanBeCanceled()
         {
-            switch (AbilityPhase)
+            switch (CurrentAbilityPhase)
             {
                 case AbilityPhase.STARTUP:
                     if (abilityData.canCancelStartUp)
@@ -148,7 +148,7 @@ namespace Lodis.Gameplay
         /// <returns>Returns true if the current ability phase can be canceled</returns>
         public bool TryCancel()
         {
-            switch (AbilityPhase)
+            switch (CurrentAbilityPhase)
             {
                 case AbilityPhase.STARTUP:
                     if (abilityData.canCancelStartUp)
@@ -183,14 +183,18 @@ namespace Lodis.Gameplay
         }
 
         protected abstract void Activate(params object[] args);
-        public virtual void Init(GameObject owner)
+        public virtual void Init(GameObject newOwner)
         {
+            owner = newOwner;
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/" + GetType().Name + "_Data"));
             currentActivationAmount = 0;
-            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
-            ownerMoveset = owner.GetComponent<MovesetBehaviour>();
+            _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
+            ownerMoveset = newOwner.GetComponent<MovesetBehaviour>();
         }
 
         protected virtual void Deactivate() { }
+
+        public virtual void Update() { }
     }
 
     public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor

@@ -205,18 +205,15 @@ namespace Lodis.Gameplay
 
         private void Update()
         {
-            //Update color for debugging
-            if (_lastAbilityInUse != null)
+
+            if (_lastAbilityInUse != null )
             {
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.CheckIfAbilityCanBeCanceled())
-                    _renderer.material.color = Color.grey;
-                else
-                    _renderer.material.color = _defaultColor;
+                if (_lastAbilityInUse.InUse)
+                    _lastAbilityInUse.Update();
             }
-            else
-            { 
-                _renderer.material.color = _defaultColor;
-            }
+
+
+            //CODE FOR DEBUGGING
 
             string ability1Name = "Empty Slot";
             string ability2Name = "Empty Slot";

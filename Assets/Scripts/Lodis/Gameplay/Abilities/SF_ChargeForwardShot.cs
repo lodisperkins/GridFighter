@@ -25,7 +25,6 @@ namespace Lodis.Gameplay
 
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_ChargeForwardShot_Data"));
-            owner = newOwner;
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;
