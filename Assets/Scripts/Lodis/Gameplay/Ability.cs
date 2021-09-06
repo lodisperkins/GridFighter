@@ -54,8 +54,20 @@ namespace Lodis.Gameplay
         private bool _inUse;
         protected Movement.GridMovementBehaviour _ownerMoveScript;
         public int currentActivationAmount;
+        private bool _canPlayAnimation;
 
         public AbilityPhase CurrentAbilityPhase { get; private set; }
+
+        /// <summary>
+        /// If true, this ability is allowed to play its animation
+        /// </summary>
+        public bool CanPlayAnimation
+        {
+            get
+            {
+                return _canPlayAnimation;
+            }
+        }
 
         public bool MaxActivationAmountReached
         {
@@ -182,6 +194,11 @@ namespace Lodis.Gameplay
             _inUse = false;
         }
 
+        public void PlayAnimation()
+        {
+            _canPlayAnimation = true;
+        }
+
         protected abstract void Activate(params object[] args);
         public virtual void Init(GameObject newOwner)
         {
@@ -190,6 +207,7 @@ namespace Lodis.Gameplay
             currentActivationAmount = 0;
             _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
             ownerMoveset = newOwner.GetComponent<MovesetBehaviour>();
+            _canPlayAnimation = !abilityData.playAnimationManually;
         }
 
         protected virtual void Deactivate() { }

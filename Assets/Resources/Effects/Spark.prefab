@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1043731898483994600}
   - component: {fileID: 1137152550737801980}
   m_Layer: 0
-  m_Name: AttackLink
+  m_Name: Spark
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

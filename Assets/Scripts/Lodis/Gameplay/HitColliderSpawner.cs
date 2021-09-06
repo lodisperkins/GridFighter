@@ -69,6 +69,7 @@ namespace Lodis.Gameplay
             hitObject.name = owner.name + "BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.parent = parent;
+            hitObject.transform.localPosition = Vector3.zero;
             collider.isTrigger = true;
             collider.size = size;
 

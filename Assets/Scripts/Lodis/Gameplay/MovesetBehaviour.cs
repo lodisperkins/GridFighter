@@ -138,7 +138,7 @@ namespace Lodis.Gameplay
                 return null;
 
             if (_animationBehaviour)
-                _animationBehaviour.PlayAbilityAnimation(currentAbility);
+                _animationBehaviour.abilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
             
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
@@ -187,7 +187,7 @@ namespace Lodis.Gameplay
                 return null;
 
             if (_animationBehaviour)
-                _animationBehaviour.PlayAbilityAnimation(currentAbility);
+                _animationBehaviour.abilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
 
             //Doesn't increment ability use amount before checking max
             currentAbility.UseAbility(args);

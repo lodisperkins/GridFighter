@@ -27,6 +27,10 @@ namespace Lodis.Gameplay
         /// First argument is game object it collided with.
         /// </summary>
         public CollisionEvent onHit;
+        /// <summary>
+        /// If enabled, draws the collider in the editor
+        /// </summary>
+        public bool debuggingEnabled;
 
         public GameObject Owner
         {
@@ -225,11 +229,25 @@ namespace Lodis.Gameplay
                 Destroy(gameObject);
         }
 
+        private void OnDrawGizmos()
+        {
+            if (!debuggingEnabled)
+                return;
+
+            BoxCollider boxCollider = GetComponent<BoxCollider>();
+            SphereCollider sphereCollider = GetComponent<SphereCollider>();
+
+            if (boxCollider)
+                Gizmos.DrawCube(transform.position, boxCollider.size);
+            else if (sphereCollider)
+                Gizmos.DrawSphere(transform.position, sphereCollider.radius);
+        }
+
         private void FixedUpdate()
         {
             //Update the amount of current frames
             _currentTimeActive = Time.time - _startTime;
-
+            
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (_currentTimeActive >= _timeActive && _despawnsAfterTimeLimit)
                 Destroy(gameObject);

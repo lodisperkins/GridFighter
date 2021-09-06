@@ -8757,6 +8757,7 @@ MonoBehaviour:
   _hitAngle: 2.6
   _adjustAngleBasedOnCollision: 0
   damageType: 0
+  debuggingEnabled: 0
 --- !u!65 &1854253617
 BoxCollider:
   m_ObjectHideFlags: 0

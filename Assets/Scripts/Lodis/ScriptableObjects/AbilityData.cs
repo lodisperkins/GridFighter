@@ -54,6 +54,8 @@ namespace Lodis.ScriptableObjects
         public bool canCancelRecover = false;
         [Tooltip("If true, the animation will change speed according to the start, active, and recover times")]
         public bool useAbilityTimingForAnimation;
+        [Tooltip("If true, the animation will only play when specified in the ability script")]
+        public bool playAnimationManually = false;
         [Tooltip("The prefab that holds the visual this ability will be using.")]
         public GameObject visualPrefab;
 

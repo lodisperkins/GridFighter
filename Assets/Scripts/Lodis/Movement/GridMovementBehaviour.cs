@@ -153,7 +153,6 @@ namespace Lodis.Movement
             _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEndTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
-
             //Set the starting position
             _targetPosition = transform.position;
             _meshFilter = GetComponent<MeshFilter>();
@@ -240,7 +239,7 @@ namespace Lodis.Movement
         /// <param name="enableCondition">When this condition is true, movement will be enabled.</param>
         /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
         /// its destination. If false, movement is stopped immediately.</param>
-        /// <param name="waitForEndOfMovement">This condition to enable movement will override the move condition from an earlier call.</param>
+        /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
         public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
             if (!_canMove && !overridesMoveCondition)
@@ -268,7 +267,7 @@ namespace Lodis.Movement
         /// enabled regardless of what raises the event.</param>
         /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
         /// its destination. If false, movement is stopped immediately.</param>
-        /// <param name="waitForEndOfMovement">This condition to enable movement will override the move condition from an earlier call.</param>
+        /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
         public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
             if (!_canMove)
@@ -560,7 +559,6 @@ namespace Lodis.Movement
             {
                 MoveToPanel(Position);
                 SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
-                _movementEnableCheck = null;
 
                 if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
                     transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -570,7 +568,8 @@ namespace Lodis.Movement
             else if (_movementEnableCheck != null)
             {
                 if (_movementEnableCheck.Invoke())
-                { 
+                {
+                    _movementEnableCheck = null;
                     _canMove = true;
                     _isMoving = false;
                     _moveEnabledEventListener.Invoke(gameObject);

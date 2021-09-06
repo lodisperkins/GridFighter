@@ -42,6 +42,7 @@ namespace Lodis.Gameplay
         private float _moveAnimationRecoverTime;
         private Vector2 _normal;
         private Vector3 _modelRestPosition;
+        public Coroutine abilityAnimationRoutine;
 
         // Start is called before the first frame update
         void Start()
@@ -217,7 +218,7 @@ namespace Lodis.Gameplay
         /// Plays the animation attached to this ability.
         /// </summary>
         /// <param name="ability"></param>
-        public void PlayAbilityAnimation(Ability ability)
+        public IEnumerator PlayAbilityAnimation(Ability ability)
         {
             _currentAbilityAnimating = ability;
 
@@ -226,6 +227,8 @@ namespace Lodis.Gameplay
                 case AnimationType.CAST:
                     if (SetCurrentAnimationClip("Cast"))
                     {
+                        yield return new WaitUntil(() => ability.CanPlayAnimation);
+
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
 
@@ -241,6 +244,8 @@ namespace Lodis.Gameplay
                 case AnimationType.MELEE:
                     if (SetCurrentAnimationClip("Melee"))
                     {
+                        yield return new WaitUntil(() => ability.CanPlayAnimation);
+
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
 
@@ -256,6 +261,7 @@ namespace Lodis.Gameplay
                 case AnimationType.SUMMON:
                     if (SetCurrentAnimationClip("Summon"))
                     {
+                        yield return new WaitUntil(() => ability.CanPlayAnimation);
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
 
@@ -272,8 +278,11 @@ namespace Lodis.Gameplay
                     if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
                     {
                         Debug.LogError("Can't play custom clip. No custom clip found for " + ability.abilityData.abilityName);
-                        return;
+                        yield return null;
                     }
+
+
+                    yield return new WaitUntil(() => ability.CanPlayAnimation);
 
                     _currentClipPlayable = AnimationClipPlayable.Create(_playableGraph, _currentClip);
 
@@ -326,6 +335,12 @@ namespace Lodis.Gameplay
                 {
                     ResetAnimationGraph();
                 }
+            }
+
+            if (_playerStateManager.CurrentState != PlayerState.ATTACKING && abilityAnimationRoutine != null)
+            {
+                StopCoroutine(abilityAnimationRoutine);
+                abilityAnimationRoutine = null;
             }
 
             switch (_playerStateManager.CurrentState)
