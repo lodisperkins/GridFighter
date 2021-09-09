@@ -473,15 +473,19 @@ namespace Lodis.Movement
                 _velocityOnLaunch = knockBackForce;
                 _rigidbody.isKinematic = false;
 
-                _movementBehaviour.canCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
-
-                //Add force to object
-                _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
+                if (_movementBehaviour.IsMoving)
+                {
+                    _movementBehaviour.canCancelMovement = true;
+                    _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                    _movementBehaviour.canCancelMovement = false;
+                }
 
                 //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(_objectAtRest, false);
+                _movementBehaviour.DisableMovement(_objectAtRest, false, true);
+
+                //Add force to objectd
+                _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
+
 
                 if (_velocityOnLaunch.magnitude > 0)
                     _onKnockBack?.Invoke();

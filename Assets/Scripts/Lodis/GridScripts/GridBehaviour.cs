@@ -92,7 +92,6 @@ namespace Lodis.GridScripts
         // Start is called before the first frame update
         void Awake()
         {
-            DestroyTempPanels();
             _barriers = new List<BarrierBehaviour>();
         }
 

@@ -496,18 +496,31 @@ namespace Lodis.Movement
         private void MoveToCurrentPanel()
         {
 
-            if (IsMoving || !_canMove)
+            if (IsMoving && !canCancelMovement || !_canMove)
                 return;
 
-            //Sets the new position to be the position of the panel added to half the gameOgjects height.
+            //If it's not possible to move to the panel at the given position, return false.
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(_position, out _targetPanel))
+                return;
+
+            _previousPanel = _currentPanel;
+
+            //Sets the new position to be the position of the panel added to half the gameObjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _currentPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2, 0);
+            _targetPosition = newPosition;
 
-            Vector3 worldMoveDirection = newPosition - transform.position;
 
-            transform.position += worldMoveDirection.normalized * Speed * Time.deltaTime;
+            StartCoroutine(LerpPosition(newPosition));
 
+            //Sets the current panel to be unoccupied if it isn't null
+            if (_currentPanel)
+                _currentPanel.Occupied = false;
+
+            //Updates the current panel
+            _currentPanel = _targetPanel;
             _currentPanel.Occupied = !_canBeWalkedThrough;
+            _position = _currentPanel.Position;
         }
 
         public void MoveToClosestAlignedPanelOnRow()
@@ -560,7 +573,7 @@ namespace Lodis.Movement
         {
             if (_canMove)
             {
-                MoveToPanel(Position);
+                MoveToCurrentPanel();
                 SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
 
                 if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)

@@ -50,13 +50,15 @@ namespace Lodis.Gameplay
         private void Awake()
         {
             _inputManager.playerPrefab = _playerRef;
+            _grid.DestroyTempPanels();
+            
+            //Initialize grid
+            _grid.CreateGrid();
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            //Initialize grid
-            _grid.CreateGrid();
 
             InputDevice[] devices = { Keyboard.current, Mouse.current };
             //Spawn player 1
