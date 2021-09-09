@@ -89,12 +89,6 @@ namespace Lodis.GridScripts
             }
         }
 
-        // Start is called before the first frame update
-        void Awake()
-        {
-            _barriers = new List<BarrierBehaviour>();
-        }
-
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.
         /// </summary>

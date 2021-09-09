@@ -11,6 +11,7 @@ namespace Lodis.Gameplay
         private string[] _visibleLayers;
         private float _rangeToIgnoreUpAngle;
         private Movement.GridMovementBehaviour _movement;
+        [SerializeField]
         private string _owner = "";
         [SerializeField]
         private float _pushScale;
