@@ -200,7 +200,7 @@ namespace GridGame.GamePlay.BlockScripts
             _blockRigidbody.isKinematic = true;
             _blockScript.specialActions += Ram;
             transform.SetParent(otherBlock.transform,false);
-            GetComponent<GameEventListener>().intendedSender = otherBlock;
+            GetComponent<GameEventListener>().IntendedSender = otherBlock;
             GetComponent<BulletBehaviour>().Laser = otherBlock;
         }
         public void RemoveOtherSpecialActions()

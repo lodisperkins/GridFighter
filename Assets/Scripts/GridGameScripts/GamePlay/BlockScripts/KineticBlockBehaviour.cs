@@ -99,7 +99,7 @@ namespace GridGame.GamePlay.BlockScripts
             _bullets = new List<BulletBehaviour>();
             velocityVals = new List<Vector3>();
             _ownerBullets = new List<GameObject>();
-            _eventListener.intendedSender = _blockScript.owner;
+            _eventListener.IntendedSender = _blockScript.owner;
             _blockHealth.health.Val = bulletCapacity;
             _blockScript.specialActions += DetonateBlock;
         }

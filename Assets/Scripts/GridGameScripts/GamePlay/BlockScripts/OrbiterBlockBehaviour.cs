@@ -186,8 +186,8 @@ namespace GridGame.GamePlay.BlockScripts
 			_blockScript.componentList.Add(this);
             transform.SetParent(otherBlock.transform,false);
             transform.position = otherBlock.transform.position;
-            _upgradeEventListener.intendedSender = otherBlock;
-            _deleteEventListener.intendedSender = otherBlock;
+            _upgradeEventListener.IntendedSender = otherBlock;
+            _deleteEventListener.IntendedSender = otherBlock;
             ChangeOrbProperties(otherBlock);
             _orb1.GetComponent<OrbBehaviour>().block = _blockScript;
             _orb2.GetComponent<OrbBehaviour>().block = _blockScript;

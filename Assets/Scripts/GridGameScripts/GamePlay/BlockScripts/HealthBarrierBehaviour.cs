@@ -149,7 +149,7 @@ namespace GridGame.GamePlay.BlockScripts
             
             block.componentList.Add(this);
             transform.SetParent(otherBlock.transform, false);
-            _deleteEventListener.intendedSender = otherBlock;
+            _deleteEventListener.IntendedSender = otherBlock;
             if (otherBlock.name != "Repair Block(Clone)" && otherBlock.name != "Orbiter Block(Clone)")
             {
                 _healthScript = otherBlock.GetComponent<HealthBehaviour>();

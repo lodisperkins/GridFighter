@@ -162,7 +162,10 @@ namespace Lodis.Movement
         {
             //Set the starting panel to be occupied
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
+            {
                 _currentPanel.Occupied = true;
+                MoveToPanel(_currentPanel, true);
+            }
             else
                 Debug.LogError(name + " could not find starting panel");
 
@@ -284,7 +287,7 @@ namespace Lodis.Movement
             }
 
             _moveEnabledEventListener.Event = moveEvent;
-            _moveEnabledEventListener.intendedSender = intendedSender;
+            _moveEnabledEventListener.IntendedSender = intendedSender;
             _moveEnabledEventListener.AddAction(() => { _canMove = true; });
             _moveDisabledEventListener.Invoke(gameObject);
         }
