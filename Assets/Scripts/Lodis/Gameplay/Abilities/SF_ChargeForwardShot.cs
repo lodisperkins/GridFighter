@@ -93,12 +93,16 @@ namespace Lodis.Gameplay
                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
 
             CleanProjectileList();
+            
+            Vector2 moveDir = owner.transform.forward;
 
             if (_activeProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
-                _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
-
-            Vector2 moveDir = owner.transform.forward;
-            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
+            { 
+                if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir))
+                    _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+                else
+                    SpawnProjectile();
+            }
         }
     }
 }
