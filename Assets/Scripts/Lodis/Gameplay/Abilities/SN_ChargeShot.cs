@@ -55,6 +55,8 @@ namespace Lodis.Gameplay
 
             _projectileCollider = new HitColliderBehaviour(shotDamage, knockBackScale, abilityData.GetCustomStatValue("HitAngle"), true,
                 abilityData.GetCustomStatValue("Lifetime"), owner, true);
+            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _projectileCollider.Priority = abilityData.ColliderPriority;
 
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();

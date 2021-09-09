@@ -163,9 +163,14 @@ namespace Lodis.Gameplay
 
             _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, abilityData.GetCustomStatValue("WeakShotKnockBackScale"),
                 abilityData.GetCustomStatValue("WeakShotHitAngle"), true, abilityData.GetCustomStatValue("WeakShotLifeTime"), owner, true);
+            _weakProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _weakProjectileCollider.Priority = abilityData.GetCustomStatValue("WeakColliderPriority");
             _weakProjectileCollider.onHit += AddUpwardForce;
+
             _strongProjectileCollider = new HitColliderBehaviour(_strongShotDamage, _strongShotKnockBackScale,
                 abilityData.GetCustomStatValue("StrongShotHitAngle"), true, abilityData.GetCustomStatValue("StrongShotLifeTime"), owner, true);
+            _strongProjectileCollider.Priority = abilityData.ColliderPriority;
+            _strongProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
 
             CleanProjectileList();
 

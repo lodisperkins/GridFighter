@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SB_ChargeLobShot_Data
   m_EditorClassIdentifier: 
   abilityName: ChargeLobShot
-  abilityType: 7
+  AbilityType: 7
   damageType: 0
   timeActive: 0.2
   recoverTime: 0.3
@@ -23,6 +23,8 @@ MonoBehaviour:
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
+  IgnoreColliders: 1
+  ColliderPriority: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 151366202753034390, guid: c6f18bf7381957749a039c8b5cba9319,
@@ -54,5 +56,7 @@ MonoBehaviour:
     value: 5
   - name: MaxInstances
     value: 1
+  - name: WeakColliderPriority
+    value: 0
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}

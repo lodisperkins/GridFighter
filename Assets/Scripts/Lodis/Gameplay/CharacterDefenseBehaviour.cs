@@ -102,8 +102,8 @@ namespace Lodis.Gameplay
 
             //Initialize default values
             _defaultColor = _material.color;
-            _parryCollider.onHit += ActivateInvinciblity;
-            _parryCollider.Owner = gameObject;
+            _parryCollider.OnHit += ActivateInvinciblity;
+            _parryCollider.ColliderOwner = gameObject;
             onFallBroken += normal => { BreakingFall = true; StartCoroutine(FallBreakTimer()); };
         }
 
@@ -284,6 +284,7 @@ namespace Lodis.Gameplay
         /// </summary>
         private void EnableBrace()
         {
+            IsBraced = false;
             _canBrace = true;
 
             if (_cooldownRoutine != null)

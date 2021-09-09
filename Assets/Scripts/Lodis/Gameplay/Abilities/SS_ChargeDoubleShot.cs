@@ -95,6 +95,8 @@ namespace Lodis.Gameplay
 
             _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack,
                  abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _projectileCollider.Priority = abilityData.ColliderPriority;
 
             CleanProjectileList();
 

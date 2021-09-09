@@ -13,18 +13,20 @@ MonoBehaviour:
   m_Name: SS_ChargeDoubleShot_Data
   m_EditorClassIdentifier: 
   abilityName: ChargeDoubleShot
-  abilityType: 5
+  AbilityType: 5
   damageType: 0
   timeActive: 0.2
   recoverTime: 0.3
   startUpTime: 0.1
   chargeTime: 0
   maxActivationAmount: 0
-  currentActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
+  IgnoreColliders: 1
+  ColliderPriority: 1
   useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
   visualPrefab: {fileID: 7648438965634708056, guid: 21e48ff7c2220634887d04ebcd36387a,
     type: 3}
   _customStats:

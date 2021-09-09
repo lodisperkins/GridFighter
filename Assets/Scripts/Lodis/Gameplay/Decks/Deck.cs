@@ -160,7 +160,7 @@ namespace Lodis.Gameplay
         {
             foreach (Ability ability in _abilities)
             {
-                if (ability.abilityData.abilityType == type)
+                if (ability.abilityData.AbilityType == type)
                     return ability;
             }
 
