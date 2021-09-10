@@ -432,6 +432,7 @@ namespace Lodis.Movement
         /// <param name="velocity">The new velocity for the object.</param>
         public void ApplyVelocityChange(Vector3 velocity)
         {
+            _rigidbody.isKinematic = false;
             _movementBehaviour.canCancelMovement = true;
             _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
             _movementBehaviour.canCancelMovement = false;
@@ -453,6 +454,8 @@ namespace Lodis.Movement
             _movementBehaviour.canCancelMovement = true;
             _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
             _movementBehaviour.canCancelMovement = false;
+
+            _rigidbody.isKinematic = false;
 
             if (!InHitStun)
                 _movementBehaviour.DisableMovement(_objectAtRest, false);

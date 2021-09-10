@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_GroundPound_Data
   m_EditorClassIdentifier: 
-  abilityName: Unassigned
-  AbilityType: 0
+  abilityName: GroundPound
+  AbilityType: 8
   damageType: 0
-  timeActive: 0
-  recoverTime: 0
-  startUpTime: 0
+  timeActive: 1
+  recoverTime: 0.2
+  startUpTime: 2
   chargeTime: 0
   maxActivationAmount: 0
   canCancelStartUp: 0
@@ -25,9 +25,22 @@ MonoBehaviour:
   canCancelRecover: 0
   IgnoreColliders: 1
   ColliderPriority: 0
-  useAbilityTimingForAnimation: 0
+  useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 0}
-  _customStats: []
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  visualPrefab: {fileID: 3279573249412428936, guid: 937d652ceff8b964baec60f50c8bafc9,
+    type: 3}
+  _customStats:
+  - name: Damage
+    value: 15
+  - name: HitAngle
+    value: 2
+  - name: Knockback
+    value: 3
+  - name: ShockwaveProgressionDelay
+    value: 0.2
+  - name: JumpForce
+    value: 6
+  - name: ShockWaveTravelDistance
+    value: 5
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: 92bfb16540334ae419cd838f2ab61620, type: 3}

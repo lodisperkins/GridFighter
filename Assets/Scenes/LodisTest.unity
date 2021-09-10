@@ -676,6 +676,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1321618602, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _projectileSpawnPoint
@@ -1258,6 +1262,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1321618602, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _projectileSpawnPoint
@@ -2260,7 +2268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &446117095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3995,6 +4003,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1321618602, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _projectileSpawnPoint
@@ -6379,42 +6391,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310996564}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1321618601
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1321618602}
-  m_Layer: 9
-  m_Name: ProjectileSpawnPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1321618602
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1321618601}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1334257451}
-  m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1334257451 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5680485170780137522, guid: a1d3756919dba494ea801d8fa04b4d6c,
-    type: 3}
-  m_PrefabInstance: {fileID: 1902660495}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1352234677
 GameObject:
   m_ObjectHideFlags: 0
@@ -9516,26 +9492,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
-        type: 3}
-      propertyPath: _projectileSpawnPoint
-      value: 
-      objectReference: {fileID: 1321618602}
-    - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
-        type: 3}
-      propertyPath: _position.x
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
-        type: 3}
-      propertyPath: _position.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
-        type: 3}
-      propertyPath: _defaultAlignment
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137522, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_RootOrder
@@ -9596,10 +9552,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestDummy
       objectReference: {fileID: 0}
-    - target: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c,
+    - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
-      propertyPath: _attackType
-      value: 4
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}

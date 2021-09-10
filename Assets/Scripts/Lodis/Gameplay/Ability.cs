@@ -93,6 +93,7 @@ namespace Lodis.Gameplay
             _inUse = true;
             onBegin?.Invoke();
             CurrentAbilityPhase = AbilityPhase.STARTUP;
+            Start(args);
             yield return new WaitForSeconds(abilityData.startUpTime);
             onActivate?.Invoke();
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
@@ -199,7 +200,6 @@ namespace Lodis.Gameplay
             _canPlayAnimation = true;
         }
 
-        protected abstract void Activate(params object[] args);
         public virtual void Init(GameObject newOwner)
         {
             owner = newOwner;
@@ -209,6 +209,11 @@ namespace Lodis.Gameplay
             ownerMoveset = newOwner.GetComponent<MovesetBehaviour>();
             _canPlayAnimation = !abilityData.playAnimationManually;
         }
+
+        protected virtual void Start(params object[] args) { }
+
+        protected abstract void Activate(params object[] args);
+        
 
         protected virtual void Deactivate() { }
 
