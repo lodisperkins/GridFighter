@@ -488,7 +488,10 @@ namespace Lodis.Movement
 
 
                 if (_velocityOnLaunch.magnitude > 0)
+                {
+                    _inFreeFall = false;
                     _onKnockBack?.Invoke();
+                }
             }
 
             return damage;

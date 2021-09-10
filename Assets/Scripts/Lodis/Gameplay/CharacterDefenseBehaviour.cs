@@ -65,6 +65,7 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds is the object braced for it's fall.")]
         [SerializeField]
         private float _braceActiveTime;
+        [SerializeField]
         private bool _canBrace;
         [Tooltip("How long in seconds the object has to wait before it can brace itself again.")]
         [SerializeField]
