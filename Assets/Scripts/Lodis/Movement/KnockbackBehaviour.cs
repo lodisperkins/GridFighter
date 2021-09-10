@@ -12,6 +12,7 @@ namespace Lodis.Movement
 
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(GridMovementBehaviour))]
+    [RequireComponent(typeof(ConstantForce))]
     public class KnockbackBehaviour : HealthBehaviour
     {
         private Rigidbody _rigidbody;
@@ -43,7 +44,23 @@ namespace Lodis.Movement
         private CharacterDefenseBehaviour _defenseBehaviour;
         [SerializeField]
         private float _landingTime;
+        [SerializeField]
+        private float _gravity = 9.81f;
+        private ConstantForce _constantForceBehaviour;
         
+        public float Gravity
+        {
+            get
+            {
+                return _gravity;
+            }
+            set
+            {
+                _gravity = value;
+            }
+        }
+
+
         public CollisionEvent OnCollision
         {
             private get;
@@ -135,8 +152,10 @@ namespace Lodis.Movement
         {
             _rigidbody = GetComponent<Rigidbody>();
             _rigidbody.isKinematic = true;
+            _rigidbody.useGravity = false;
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
             _defenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
+            _constantForceBehaviour = GetComponent<ConstantForce>();
         }
 
         // Start is called before the first frame update
@@ -514,6 +533,8 @@ namespace Lodis.Movement
                 _inFreeFall = false;
 
             _inHitStun = !RigidbodyInactive() && !_rigidbody.isKinematic && !InFreeFall;
+
+            _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
         }
     }
 
