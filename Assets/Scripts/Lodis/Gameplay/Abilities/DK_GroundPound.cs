@@ -28,7 +28,7 @@ namespace Lodis.Gameplay
         {
             _ownerGravity = _knockBackBehaviour.Gravity;
             _knockBackBehaviour.ApplyVelocityChange(Vector3.up * abilityData.GetCustomStatValue("JumpForce"));
-            _knockBackBehaviour.Gravity = abilityData.GetCustomStatValue("JumpForce") / abilityData.startUpTime;
+            _knockBackBehaviour.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;
         }
 
         private IEnumerator MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)
