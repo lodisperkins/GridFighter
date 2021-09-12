@@ -80,6 +80,22 @@ namespace Lodis.Gameplay
             return hitScript;
         }
 
+        public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderBehaviour hitCollider, GameObject owner = null)
+        {
+            GameObject hitObject = new GameObject();
+            hitObject.name = owner.name + "BoxCollider";
+            BoxCollider collider = hitObject.AddComponent<BoxCollider>();
+            hitObject.transform.parent = parent;
+            hitObject.transform.localPosition = Vector3.zero;
+            collider.isTrigger = true;
+            collider.size = size;
+
+            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
+            HitColliderBehaviour.Copy(hitCollider, hitScript);
+
+            return hitScript;
+        }
+
         public static HitColliderBehaviour SpawnCapsuleCollider(Vector3 position, float radius, float height, 
             float damage, float knockBackScale, float hitAngle, 
             Quaternion rotation, bool despawnAfterTimeLimit, float timeActive = 0,

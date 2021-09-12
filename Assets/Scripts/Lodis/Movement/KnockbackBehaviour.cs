@@ -512,6 +512,7 @@ namespace Lodis.Movement
                 if (_velocityOnLaunch.magnitude > 0)
                 {
                     _inFreeFall = false;
+                    _inHitStun = true;
                     _onKnockBack?.Invoke();
                 }
             }
@@ -535,7 +536,8 @@ namespace Lodis.Movement
             if (_acceleration.magnitude <= 0 && _rigidbody.isKinematic)
                 _inFreeFall = false;
 
-            _inHitStun = !RigidbodyInactive() && !_rigidbody.isKinematic && !InFreeFall;
+            if (RigidbodyInactive() || _rigidbody.isKinematic || InFreeFall)
+                _inHitStun = false;
 
             _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
         }

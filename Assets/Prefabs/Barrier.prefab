@@ -263,7 +263,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Event: {fileID: 0}
-  intendedSender: {fileID: 0}
+  IntendedSender: {fileID: 0}
 --- !u!114 &-4499121288340441238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,10 +280,14 @@ MonoBehaviour:
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 0
+  _isMoving: 0
   _canMove: 1
   canCancelMovement: 0
   _defaultAlignment: 3
   _moveToAlignedSideIfStuck: 1
+  _alwaysLookAtOpposingSide: 1
+  _canBeWalkedThrough: 0
+  _moveOnStart: 1
 --- !u!114 &1519654295394309742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,6 +307,7 @@ MonoBehaviour:
   _isInvincible: 0
   _visibleLayers:
   - Player
+  _owner: 
   _pushScale: 2
   _damageOnCollision: 0
 --- !u!1 &4444937584539456812

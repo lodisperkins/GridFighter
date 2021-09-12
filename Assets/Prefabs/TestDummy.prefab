@@ -317,6 +317,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
+  _moveOnStart: 1
 --- !u!54 &2039876615219471376
 Rigidbody:
   m_ObjectHideFlags: 0

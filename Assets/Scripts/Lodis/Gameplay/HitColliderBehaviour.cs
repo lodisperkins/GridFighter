@@ -31,8 +31,6 @@ namespace Lodis.Gameplay
         /// If enabled, draws the collider in the editor
         /// </summary>
         public bool debuggingEnabled;
-
-        public GameObject Owner;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public float Priority = 0.0f;
 

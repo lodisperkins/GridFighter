@@ -55,6 +55,24 @@ namespace Lodis.Movement
         private PanelBehaviour _previousPanel;
         private KnockbackBehaviour _knockbackBehaviour;
         private MeshFilter _meshFilter;
+        private Collider _collider;
+        [SerializeField]
+        [Tooltip("If true, the object will instantly move to its current position when the start function is called.")]
+        private bool _moveOnStart = true;
+
+
+        public bool MoveOnStart
+        {
+            get
+            {
+                return _moveOnStart;
+            }
+            set 
+            {
+                _moveOnStart = value;
+            }
+        }
+
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -156,6 +174,7 @@ namespace Lodis.Movement
             //Set the starting position
             _targetPosition = transform.position;
             _meshFilter = GetComponent<MeshFilter>();
+            _collider = GetComponent<Collider>();
         }
 
         private void Start()
@@ -164,13 +183,16 @@ namespace Lodis.Movement
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
             {
                 _currentPanel.Occupied = true;
-                MoveToPanel(_currentPanel, true);
+
+                if (MoveOnStart)
+                    MoveToPanel(_currentPanel, true);
             }
             else
                 Debug.LogError(name + " could not find starting panel");
 
             if (_knockbackBehaviour)
                 _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
+
 
         }
 
@@ -344,23 +366,31 @@ namespace Lodis.Movement
         /// <param name="panelPosition">The position of the panel on the grid that the gameObject will travel to.</param>
         /// <param name="snapPosition">If true, the gameObject will immediately teleport to its destination without a smooth transition.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
-        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE)
+        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false)
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
 
             if (IsMoving && !canCancelMovement || !_canMove)
                 return false;
+            else if (canCancelMovement && IsMoving)
+                StopAllCoroutines();
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition, tempAlignment))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition || canBeOccupied, tempAlignment))
                 return false;
 
             _previousPanel = _currentPanel;
 
             //Sets the new position to be the position of the panel added to half the gameObjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2, 0);
+            float offset = 0;
+            if (!_meshFilter)
+                offset = transform.localScale.y / 2;
+            else
+                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
             SetIsMoving(true);
@@ -371,6 +401,7 @@ namespace Lodis.Movement
             if (snapPosition)
             {
                 transform.position = newPosition;
+                SetIsMoving(false);
             }
             else
             {
@@ -412,7 +443,13 @@ namespace Lodis.Movement
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            float offset = 0;
+            if (!_meshFilter)
+                offset = transform.localScale.y / 2;
+            else
+                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
             SetIsMoving(true);
@@ -423,6 +460,7 @@ namespace Lodis.Movement
             if (snapPosition)
             {
                 transform.position = newPosition;
+                SetIsMoving(false);
             }
             else
             {
@@ -462,7 +500,13 @@ namespace Lodis.Movement
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            float offset = 0;
+            if (!_meshFilter)
+                offset = transform.localScale.y / 2;
+            else
+                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
 
@@ -475,6 +519,7 @@ namespace Lodis.Movement
             {
                 
                 transform.position = newPosition;
+                SetIsMoving(false);
             }
             else
             {
@@ -507,7 +552,13 @@ namespace Lodis.Movement
 
             //Sets the new position to be the position of the panel added to half the gameObjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2, 0);
+            float offset = 0;
+            if (!_meshFilter)
+                offset = transform.localScale.y / 2;
+            else
+                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
 
@@ -526,7 +577,7 @@ namespace Lodis.Movement
         public void MoveToClosestAlignedPanelOnRow()
         {
 
-            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || !CanMove)
+            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || !CanMove || Alignment == GridAlignment.ANY)
                 return;
 
             //NEEDS BETTER IMPLEMENTATION

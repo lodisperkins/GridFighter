@@ -75,7 +75,7 @@ namespace Lodis.Gameplay
         private void StunEntity(params object[] args)
         {
             GameObject entity = (GameObject)args[0];
-
+            //test
             HealthBehaviour entityHealth = entity.GetComponent<HealthBehaviour>();
             if (entityHealth)
                 entityHealth.Stun(abilityData.GetCustomStatValue("StunTime"));

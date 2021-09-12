@@ -31,32 +31,45 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;
         }
 
-        private IEnumerator MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)
+        private void MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)
         {
             visualPrefabInstance.AddComponent<GridMovementBehaviour>();
             GridMovementBehaviour movementBehaviour = visualPrefabInstance.GetComponent<GridMovementBehaviour>();
             movementBehaviour.Position = _ownerMoveScript.Position;
+            movementBehaviour.canCancelMovement = true;
+            movementBehaviour.MoveOnStart = false;
+            movementBehaviour.Speed = 5;
 
-            int travelDistance = (int)abilityData.GetCustomStatValue("ShockWaveTravelDistance");
+            int travelDistance = (int)abilityData.GetCustomStatValue("ShockwaveTravelDistance");
+            Vector2 offset = direction * travelDistance;
+            Vector2 movePosition = _ownerMoveScript.Position + offset;
 
-            for (int i = 0; i < travelDistance; i++)
-            {
-                movementBehaviour.MoveToPanel(movementBehaviour.Position + direction, true);
-                yield return new WaitForSeconds(abilityData.GetCustomStatValue("ShockWaveProgressionDelay"));
-            }
+            movePosition.x = Mathf.Clamp(movePosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x);
+            movePosition.x = Mathf.Round(movePosition.x);
+            movePosition.y = Mathf.Clamp(movePosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y);
+            movePosition.y = Mathf.Round(movePosition.y);
+
+            movementBehaviour.MoveToPanel(movePosition, false, GridScripts.GridAlignment.ANY, true);
         }
 
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
             _shockWaveCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, false, false, true);
+                abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true);
 
-            _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, null);
-            _visualPrefabCoroutines.Item1 = _ownerMoveScript.StartCoroutine(MoveHitBox(_visualPrefabInstances.Item1, owner.transform.forward));
+            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
 
-            _visualPrefabInstances.Item2 = MonoBehaviour.Instantiate(abilityData.visualPrefab, null);
-            _visualPrefabCoroutines.Item2 = _ownerMoveScript.StartCoroutine(MoveHitBox(_visualPrefabInstances.Item2, -owner.transform.forward));
+            _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider, owner);
+            MoveHitBox(_visualPrefabInstances.Item1, owner.transform.forward);
+            hitScript.debuggingEnabled = true;
+
+            _visualPrefabInstances.Item2 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item2.transform, _visualPrefabInstances.Item2.transform.localScale, _shockWaveCollider, owner);
+            MoveHitBox(_visualPrefabInstances.Item2, -owner.transform.forward);
+
+            hitScript.debuggingEnabled = true;
         }
 
         protected override void Deactivate()
@@ -69,7 +82,10 @@ namespace Lodis.Gameplay
             if (_visualPrefabCoroutines.Item2 != null)
                 _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
 
+            DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
+            DestroyBehaviour.Destroy(_visualPrefabInstances.Item2);
             _knockBackBehaviour.Gravity = _ownerGravity;
+
         }
     }
 }
