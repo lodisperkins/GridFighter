@@ -98,7 +98,7 @@ namespace Lodis.Gameplay
                     return;
             else if (otherCollider is HitColliderBehaviour)
             {
-                if (((HitColliderBehaviour)otherCollider).Priority >= Priority)
+                if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
                 {
                     Destroy(gameObject);
                     return;
@@ -154,7 +154,7 @@ namespace Lodis.Gameplay
                 return;
             else if (otherCollider is HitColliderBehaviour)
             {
-                if (((HitColliderBehaviour)otherCollider).Priority >= Priority)
+                if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
                 {
                     Destroy(gameObject);
                     return;
@@ -207,7 +207,7 @@ namespace Lodis.Gameplay
                 return;
             else if (otherCollider is HitColliderBehaviour)
             {
-                if (((HitColliderBehaviour)otherCollider).Priority >= Priority)
+                if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
                 {
                     Destroy(gameObject);
                     return;

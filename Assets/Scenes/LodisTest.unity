@@ -370,6 +370,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
+  _moveOnStart: 0
 --- !u!114 &33356480
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -791,7 +792,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &151772237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5283,6 +5284,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
+  _moveOnStart: 0
 --- !u!114 &1082967236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6917,6 +6919,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
+  _moveOnStart: 0
 --- !u!114 &1439180828
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7980,6 +7983,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
+  _moveOnStart: 0
 --- !u!114 &1553451240
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9219,7 +9223,6 @@ MonoBehaviour:
   _adjustAngleBasedOnCollision: 0
   damageType: 0
   debuggingEnabled: 0
-  Owner: {fileID: 0}
   Priority: 0
 --- !u!65 &1854253617
 BoxCollider:
@@ -9555,7 +9558,12 @@ PrefabInstance:
     - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _attackType
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
@@ -9641,6 +9649,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
+  _moveOnStart: 0
 --- !u!114 &1921244566
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10089,6 +10098,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
+  _moveOnStart: 0
 --- !u!114 &1992236355
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10359,6 +10369,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
+  _moveOnStart: 0
 --- !u!114 &2016165840
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10962,6 +10973,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
+  _moveOnStart: 0
 --- !u!114 &2119259577
 MonoBehaviour:
   m_ObjectHideFlags: 0

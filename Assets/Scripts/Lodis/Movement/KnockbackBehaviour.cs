@@ -47,7 +47,8 @@ namespace Lodis.Movement
         [SerializeField]
         private float _gravity = 9.81f;
         private ConstantForce _constantForceBehaviour;
-        
+        private Collider _collider;
+
         public float Gravity
         {
             get
@@ -156,6 +157,7 @@ namespace Lodis.Movement
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
             _defenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
             _constantForceBehaviour = GetComponent<ConstantForce>();
+            _collider = GetComponent<Collider>();
         }
 
         // Start is called before the first frame update
@@ -167,6 +169,7 @@ namespace Lodis.Movement
             OnCollision += TryStartLandingLag;
             _onKnockBack += () => Landing = false;
             _onKnockBackStart += () => { if (Stunned) { UnfreezeObject(); } };
+
         }
 
         /// <summary>
@@ -463,6 +466,15 @@ namespace Lodis.Movement
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
+        private bool IsGrounded()
+        {
+            float extraHeight = 0.0f;
+            bool hit = Physics.Raycast(_collider.bounds.center, Vector3.down, _collider.bounds.extents.y + extraHeight, LayerMask.GetMask(new string[]{ "Structure", "Panels"}));
+            Debug.DrawRay(_collider.bounds.center, Vector3.down * (_collider.bounds.extents.y + extraHeight));
+
+            return hit;
+        }
+
         /// /// <summary>
         /// Damages this game object and applies a backwards force based on the angle
         /// </summary>
@@ -529,17 +541,19 @@ namespace Lodis.Movement
 
             _lastVelocity = _rigidbody.velocity;
 
-
             //if (_rigidbody.velocity.magnitude > 0)
             //    _rigidbody.velocity -= _rigidbody.velocity.normalized * _velocityDecayRate.Value;
-
+            
             if (_acceleration.magnitude <= 0 && _rigidbody.isKinematic)
                 _inFreeFall = false;
 
             if (RigidbodyInactive() || _rigidbody.isKinematic || InFreeFall)
                 _inHitStun = false;
 
-            _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
+            if (!IsGrounded())
+                _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
+            else
+                _constantForceBehaviour.force = Vector3.zero;
         }
     }
 

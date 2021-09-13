@@ -15,9 +15,9 @@ MonoBehaviour:
   abilityName: GroundPound
   AbilityType: 8
   damageType: 0
-  timeActive: 1
+  timeActive: 0.5
   recoverTime: 0.2
-  startUpTime: 2
+  startUpTime: 0.3
   chargeTime: 0
   maxActivationAmount: 0
   canCancelStartUp: 0
@@ -33,14 +33,14 @@ MonoBehaviour:
   - name: Damage
     value: 15
   - name: HitAngle
-    value: 2
+    value: 1
   - name: Knockback
     value: 3
   - name: ShockwaveProgressionDelay
     value: 0.2
   - name: JumpForce
-    value: 6
-  - name: ShockWaveTravelDistance
+    value: 16
+  - name: ShockwaveTravelDistance
     value: 5
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 92bfb16540334ae419cd838f2ab61620, type: 3}
