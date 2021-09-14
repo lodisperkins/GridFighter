@@ -48,6 +48,11 @@ namespace Lodis.Movement
         private float _gravity = 9.81f;
         private ConstantForce _constantForceBehaviour;
         private Collider _collider;
+        [SerializeField]
+        private float _extraHeight = 0.5f;
+
+        private Vector3 _boxPosition;
+        private Vector3 _extents;
 
         public float Gravity
         {
@@ -469,21 +474,24 @@ namespace Lodis.Movement
         private bool IsGrounded()
         {
             bool collidedWithGround = false;
-            float extraHeight = 0.5f;
-            Vector3 boxPosition = transform.position /*- (transform.localScale.y / 2) * Vector3.up*/;
-            Vector3 extents = new Vector3(_collider.bounds.extents.x, extraHeight, _collider.bounds.extents.z);
-            Collider[] hits = Physics.OverlapBox(boxPosition, extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
+            _boxPosition = _collider.bounds.center;
+            _extents = new Vector3(_collider.bounds.extents.x, _extraHeight, _collider.bounds.extents.z);
+            Collider[] hits = Physics.OverlapBox(_collider.bounds.center, _extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
 
             foreach (Collider collider in hits)
             {
                 Vector3 closestPoint = collider.ClosestPoint(transform.position);
-                Vector3 normal = (transform.position - closestPoint).normalized;
-
-                if (normal.y > 0)
+                double normalY = (transform.position - closestPoint).normalized.y;
+                if (normalY >= 0)
                     collidedWithGround = true;
             }
 
             return collidedWithGround;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawCube(_boxPosition, _extents);
         }
 
         /// /// <summary>
