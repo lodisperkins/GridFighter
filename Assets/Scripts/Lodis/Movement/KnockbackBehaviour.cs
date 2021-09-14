@@ -468,11 +468,22 @@ namespace Lodis.Movement
 
         private bool IsGrounded()
         {
-            float extraHeight = 0.0f;
-            bool hit = Physics.Raycast(_collider.bounds.center, Vector3.down, _collider.bounds.extents.y + extraHeight, LayerMask.GetMask(new string[]{ "Structure", "Panels"}));
-            Debug.DrawRay(_collider.bounds.center, Vector3.down * (_collider.bounds.extents.y + extraHeight));
+            bool collidedWithGround = false;
+            float extraHeight = 0.5f;
+            Vector3 boxPosition = transform.position /*- (transform.localScale.y / 2) * Vector3.up*/;
+            Vector3 extents = new Vector3(_collider.bounds.extents.x, extraHeight, _collider.bounds.extents.z);
+            Collider[] hits = Physics.OverlapBox(boxPosition, extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
 
-            return hit;
+            foreach (Collider collider in hits)
+            {
+                Vector3 closestPoint = collider.ClosestPoint(transform.position);
+                Vector3 normal = (transform.position - closestPoint).normalized;
+
+                if (normal.y > 0)
+                    collidedWithGround = true;
+            }
+
+            return collidedWithGround;
         }
 
         /// /// <summary>

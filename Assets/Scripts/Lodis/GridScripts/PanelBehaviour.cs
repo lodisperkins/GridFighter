@@ -120,7 +120,7 @@ namespace Lodis.GridScripts
                 }
             }
 
-            if (Vector3.Dot(Vector3.down, knockbackScript.LastVelocity) <= 0 || !knockbackScript.InHitStun)
+            if (Vector3.Dot(Vector3.down, knockbackScript.LastVelocity) <= 0 || !knockbackScript.InHitStun || knockbackScript.LastVelocity.magnitude <= 1)
                 return;
 
             float upMagnitude = Mathf.Clamp(knockbackScript.LastVelocity.magnitude / _bounceDampening, 0, _maxBounceForce);
