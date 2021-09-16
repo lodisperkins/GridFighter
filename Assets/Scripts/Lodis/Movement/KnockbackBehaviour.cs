@@ -38,6 +38,7 @@ namespace Lodis.Movement
         private Coroutine _currentCoroutine;
         private UnityAction _onKnockBack;
         private UnityAction _onKnockBackStart;
+        private UnityAction _onTakeDamage;
         [SerializeField]
         private FloatVariable _velocityDecayRate;
         [SerializeField]
@@ -53,6 +54,9 @@ namespace Lodis.Movement
 
         private Vector3 _boxPosition;
         private Vector3 _extents;
+        private UnityAction _onKnockBackTemp;
+        private UnityAction _onKnockBackStartTemp;
+        private UnityAction _onTakeDamageTemp;
 
         public float Gravity
         {
@@ -168,7 +172,7 @@ namespace Lodis.Movement
         // Start is called before the first frame update
         void Start()
         {
-            _objectAtRest = condition => RigidbodyInactive(); 
+            _objectAtRest = condition => RigidbodyInactive() && _acceleration.magnitude <= 0.1f; 
             _movementBehaviour.AddOnMoveEnabledAction(() => { _rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
             OnCollision += TryStartLandingLag;
@@ -293,7 +297,6 @@ namespace Lodis.Movement
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(hitAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
             {
-                ApplyImpulseForce(Vector3.up * knockbackScale * 2);
                 return Vector3.up * knockbackScale * 2;
             }
 
@@ -332,12 +335,42 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Add a listener to the onKnockBack event.
+        /// </summary>
+        /// <param name="action">The new listener for the event.</param>
+        public void AddOnKnockBackTempAction(UnityAction action)
+        {
+            _onKnockBackTemp += action;
+        }
+
+        /// <summary>
         /// Add a listener to the onKnockBackStart event. Called before knock back is applied.
         /// </summary>
         /// <param name="action">The new listener for the event.</param>
         public void AddOnKnockBackStartAction(UnityAction action)
         {
             _onKnockBackStart += action;
+        }
+
+
+
+        /// <summary>
+        /// Add a listener to the onKnockBackStart event. Called before knock back is applied.
+        /// </summary>
+        /// <param name="action">The new listener for the event.</param>
+        public void AddOnKnockBackStartTempAction(UnityAction action)
+        {
+            _onKnockBackStartTemp += action;
+        }
+
+        public void AddOnTakeDamageAction(UnityAction action)
+        {
+            _onTakeDamage += action;
+        }
+
+        public void AddOnTakeDamageTempAction(UnityAction action)
+        {
+            _onTakeDamageTemp += action;
         }
 
         private void TryStartLandingLag(params object[] args)
@@ -516,6 +549,9 @@ namespace Lodis.Movement
 
             //Adds damage to the total damage
             Health += damage;
+            _onTakeDamage?.Invoke();
+            _onTakeDamageTemp?.Invoke();
+            _onTakeDamageTemp = null;
 
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = CalculateKnockbackForce(knockBackScale, hitAngle);
@@ -523,6 +559,8 @@ namespace Lodis.Movement
             if (knockBackForce.magnitude > 0)
             {
                 _onKnockBackStart?.Invoke();
+                _onKnockBackStartTemp?.Invoke();
+                _onKnockBackStartTemp = null;
 
                 _velocityOnLaunch = knockBackForce;
                 _rigidbody.isKinematic = false;
@@ -546,6 +584,8 @@ namespace Lodis.Movement
                     _inFreeFall = false;
                     _inHitStun = true;
                     _onKnockBack?.Invoke();
+                    _onKnockBackTemp?.Invoke();
+                    _onKnockBackTemp = null;
                 }
             }
 

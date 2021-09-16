@@ -7,6 +7,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using Lodis.ScriptableObjects;
+using Lodis.Movement;
 
 namespace Lodis.Gameplay
 {
@@ -34,6 +35,7 @@ namespace Lodis.Gameplay
         //The object that is using the ability
         public GameObject owner = null;
         public MovesetBehaviour ownerMoveset = null;
+        protected KnockbackBehaviour _ownerKnockBackScript;
         public ScriptableObjects.AbilityData abilityData;
         /// <summary>
         /// Called when the character begins to use the ability and before the action actually happens
@@ -189,10 +191,28 @@ namespace Lodis.Gameplay
             return false;
         }
 
-        public void StopAbility()
+        /// <summary>
+        /// Stops ability immedialtely without calling any ending events
+        /// </summary>
+        public virtual void StopAbility()
         {
             ownerMoveset.StopAllCoroutines();
             _inUse = false;
+        }
+
+        /// <summary>
+        /// Stops ability, calls ending events, and removes the ability from the current ability slot
+        /// </summary>
+        public virtual void EndAbility()
+        {
+            ownerMoveset.StopAllCoroutines();
+            currentActivationAmount = abilityData.maxActivationAmount;
+            onDeactivate?.Invoke();
+            CurrentAbilityPhase = AbilityPhase.RECOVER;
+            Deactivate();
+            onEnd?.Invoke();
+            _inUse = false;
+            ownerMoveset.RemoveAbilityFromSlot(this);
         }
 
         public void PlayAnimation()
@@ -207,13 +227,21 @@ namespace Lodis.Gameplay
             currentActivationAmount = 0;
             _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
             ownerMoveset = newOwner.GetComponent<MovesetBehaviour>();
+            _ownerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
+
             _canPlayAnimation = !abilityData.playAnimationManually;
         }
 
-        protected virtual void Start(params object[] args) { }
+        protected virtual void Start(params object[] args)
+        {
+            if (abilityData.cancelOnHit && _ownerKnockBackScript)
+                _ownerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
+            else if (abilityData.cancelOnKnockback && _ownerKnockBackScript)
+                _ownerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
+
+        }
 
         protected abstract void Activate(params object[] args);
-        
 
         protected virtual void Deactivate() { }
 

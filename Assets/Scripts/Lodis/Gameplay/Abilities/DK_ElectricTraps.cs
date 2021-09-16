@@ -75,16 +75,20 @@ namespace Lodis.Gameplay
         private void StunEntity(params object[] args)
         {
             GameObject entity = (GameObject)args[0];
-            //test
             HealthBehaviour entityHealth = entity.GetComponent<HealthBehaviour>();
             if (entityHealth)
                 entityHealth.Stun(abilityData.GetCustomStatValue("StunTime"));
         }
 
-        private void DestroyLinks()
+        private void DestroyLinks(float time)
         {
-            MonoBehaviour.Destroy(_linkMoveScripts[0].gameObject, abilityData.GetCustomStatValue("Lifetime"));
-            MonoBehaviour.Destroy(_linkMoveScripts[1].gameObject, abilityData.GetCustomStatValue("Lifetime"));
+            if (_linkMoveScripts.Count == 0)
+                return;
+
+            if (_linkMoveScripts[0])
+                MonoBehaviour.Destroy(_linkMoveScripts[0].gameObject, time);
+            if (_linkMoveScripts[1])
+                MonoBehaviour.Destroy(_linkMoveScripts[1].gameObject, time);
         }
 
 	    //Called when ability is used
@@ -105,10 +109,17 @@ namespace Lodis.Gameplay
                     break;
                 case 3:
                     ActivateStunPath();
-                    DestroyLinks();
+                    DestroyLinks(abilityData.GetCustomStatValue("Lifetime"));
                     break;
             }
 
+        }
+
+        public override void EndAbility()
+        {
+            base.EndAbility();
+
+            DestroyLinks(0);
         }
     }
 }

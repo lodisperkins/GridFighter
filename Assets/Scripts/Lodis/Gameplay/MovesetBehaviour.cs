@@ -157,7 +157,7 @@ namespace Lodis.Gameplay
             _specialAbilitySlots[1] = _specialDeck.PopBack();
         }
 
-        public IEnumerator ChargeNextAbility(int slot)
+        private IEnumerator ChargeNextAbility(int slot)
         {
             _specialAbilitySlots[slot] = null;
 
@@ -201,6 +201,23 @@ namespace Lodis.Gameplay
 
             //Return new ability
             return _lastAbilityInUse;
+        }
+
+        public void RemoveAbilityFromSlot(int index)
+        {
+            _specialAbilitySlots[index] = null;
+            StartCoroutine(ChargeNextAbility(index));
+        }
+
+        public void RemoveAbilityFromSlot(Ability ability)
+        {
+            for (int i = 0; i < _specialAbilitySlots.Length; i++)
+            {
+                if (_specialAbilitySlots[i] == ability)
+                {
+                    RemoveAbilityFromSlot(i);
+                }
+            }
         }
 
         private void Update()
