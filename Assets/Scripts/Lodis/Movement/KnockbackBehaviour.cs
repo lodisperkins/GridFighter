@@ -481,7 +481,8 @@ namespace Lodis.Movement
             foreach (Collider collider in hits)
             {
                 Vector3 closestPoint = collider.ClosestPoint(transform.position);
-                double normalY = (transform.position - closestPoint).normalized.y;
+                float normalY = (transform.position - closestPoint).normalized.y;
+                normalY = Mathf.Ceil(normalY);
                 if (normalY >= 0)
                     collidedWithGround = true;
             }

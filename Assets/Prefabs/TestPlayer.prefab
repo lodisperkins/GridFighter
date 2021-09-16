@@ -129,6 +129,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
+  _moveOnStart: 1
 --- !u!114 &2765739998997917296
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,6 +278,7 @@ MonoBehaviour:
   _defenseBehaviour: {fileID: 0}
   _landingTime: 1
   _gravity: 9.81
+  _extraHeight: 0.2
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
