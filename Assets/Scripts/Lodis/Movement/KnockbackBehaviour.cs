@@ -444,6 +444,12 @@ namespace Lodis.Movement
                 }
             }
 
+            //if (InFreeFall && IsGrounded())
+            //{
+            //    StopVelocity();
+            //    TryStartLandingLag
+            //}
+
             //Calculate the knockback and hit angle for the ricochet
             ContactPoint contactPoint = collision.GetContact(0);
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
