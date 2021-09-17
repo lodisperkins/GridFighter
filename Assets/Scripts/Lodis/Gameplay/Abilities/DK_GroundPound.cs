@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
 
         protected override void Start(params object[] args)
         {
+            base.Start();
             _ownerGravity = _knockBackBehaviour.Gravity;
             _knockBackBehaviour.ApplyVelocityChange(Vector3.up * abilityData.GetCustomStatValue("JumpForce"));
             _knockBackBehaviour.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;

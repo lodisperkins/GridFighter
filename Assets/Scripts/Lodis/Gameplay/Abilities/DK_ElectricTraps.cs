@@ -87,6 +87,10 @@ namespace Lodis.Gameplay
 
             if (_linkMoveScripts[0])
                 MonoBehaviour.Destroy(_linkMoveScripts[0].gameObject, time);
+
+            if (_linkMoveScripts.Count <= 1)
+                return;
+
             if (_linkMoveScripts[1])
                 MonoBehaviour.Destroy(_linkMoveScripts[1].gameObject, time);
         }

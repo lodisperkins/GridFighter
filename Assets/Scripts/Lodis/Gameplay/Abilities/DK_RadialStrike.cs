@@ -63,5 +63,11 @@ namespace Lodis.Gameplay
             base.Deactivate();
             MonoBehaviour.Destroy(_visualPrefabInstance);
         }
+
+        public override void EndAbility()
+        {
+            base.EndAbility();
+            _ownerMoveScript.StopAllCoroutines();
+        }
     }
 }
