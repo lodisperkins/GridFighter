@@ -208,7 +208,6 @@ namespace Lodis.Gameplay
             ownerMoveset.StopAllCoroutines();
             currentActivationAmount = abilityData.maxActivationAmount;
             onDeactivate?.Invoke();
-            CurrentAbilityPhase = AbilityPhase.RECOVER;
             Deactivate();
             onEnd?.Invoke();
             _inUse = false;

@@ -15,9 +15,9 @@ MonoBehaviour:
   abilityName: FootDive
   AbilityType: 8
   damageType: 0
-  timeActive: 0
-  recoverTime: 0
-  startUpTime: 0
+  timeActive: 0.2
+  recoverTime: 1
+  startUpTime: 0.4
   chargeTime: 0
   maxActivationAmount: 0
   canCancelStartUp: 0
@@ -27,9 +27,26 @@ MonoBehaviour:
   cancelOnKnockback: 0
   IgnoreColliders: 1
   ColliderPriority: 0
-  useAbilityTimingForAnimation: 0
+  useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 0}
-  _customStats: []
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  visualPrefab: {fileID: 3279573249412428936, guid: 937d652ceff8b964baec60f50c8bafc9,
+    type: 3}
+  _customStats:
+  - name: TravelDistance
+    value: 3
+  - name: JumpHeight
+    value: 5
+  - name: HangTime
+    value: 0.1
+  - name: DownwardSpeed
+    value: 12
+  - name: DownwardGravityMultiplier
+    value: 8
+  - name: Damage
+    value: 12
+  - name: HitAngle
+    value: -1
+  - name: Knockback
+    value: 2
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: 94bc1ca367d0ca3438de0aa2f84a61cc, type: 3}

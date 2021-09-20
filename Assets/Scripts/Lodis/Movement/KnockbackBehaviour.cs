@@ -219,13 +219,20 @@ namespace Lodis.Movement
         }
 
         /// <summary>
-        /// Set velocity and angular velocity to be zero and disables gravity.
+        /// Makes the object kinematic
+        /// </summary>
+        public void MakeKinematic()
+        {
+            _rigidbody.isKinematic = true;
+        }
+
+        /// <summary>
+        /// Set velocity and angular velocity to be zero.
         /// </summary>
         public void StopAllForces()
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
-            _rigidbody.isKinematic = true;
         }
 
         public bool CheckIfAtRest()
@@ -282,7 +289,7 @@ namespace Lodis.Movement
         public Vector3 CalculateKnockbackForce(float knockbackScale, float hitAngle)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+q            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
             //Apply the damage and weight to find the amount of knock back to be applied
             float totalKnockback = (knockbackScale + (knockbackScale * (Health /100))) - _weight;

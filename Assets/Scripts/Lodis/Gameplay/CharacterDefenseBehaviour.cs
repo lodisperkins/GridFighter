@@ -367,7 +367,7 @@ namespace Lodis.Gameplay
             //Apply force downward and make the character invincible if the character was in air
             if (_knockBack.InHitStun)
             {
-                _knockBack.StopAllForces();
+                _knockBack.MakeKinematic();
                 _knockBack.SetInvincibilityByCondition(context => !(_knockBack.InHitStun));
                 return;
             }

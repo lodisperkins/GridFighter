@@ -18,24 +18,27 @@ namespace Lodis.Gameplay
         private (GameObject, GameObject) _visualPrefabInstances;
         private (Coroutine, Coroutine) _visualPrefabCoroutines;
         private GridBehaviour _grid;
+        private float _timeForceAdded;
+        private bool _forceAdded;
+        private float _riseTime;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
             _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
+            _grid = BlackBoardBehaviour.Instance.Grid;
         }
 
         protected override void Start(params object[] args)
         {
             base.Start();
-            _grid = BlackBoardBehaviour.Instance.Grid;
-            //VoX = x - 1/2aXT;
 
-            AddForce(true);
+            _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
+            _knockBackBehaviour.ApplyVelocityChange(AddForce(true));
         }
 
-        private void AddForce(bool yPositive)
+        private Vector3 AddForce(bool yPositive)
         {
             //Find displacement
             Vector2 targetPanelPos = _ownerMoveScript.Position + ((Vector2)owner.transform.forward * abilityData.GetCustomStatValue("TravelDistance"));
@@ -45,19 +48,32 @@ namespace Lodis.Gameplay
             _grid.GetPanel(targetPanelPos, out panel, true);
             float displacement = Vector3.Distance(_ownerMoveScript.CurrentPanel.transform.position, panel.transform.position) / 2;
 
-            //Get x velocity
-            Vector3 velocityX;
-            velocityX.x = displacement - (0.5f * abilityData.GetCustomStatValue("HorizontalAcceleration") * abilityData.startUpTime);
+            ////Get x velocity
+            //Vector3 velocityX;
+            //velocityX.x = displacement - (0.5f * abilityData.GetCustomStatValue("HorizontalAcceleration") * abilityData.startUpTime);
 
-            //Get y velocity
+            ////Get y velocity
+            //Vector3 velocityY;
+
+            int yDirection = yPositive ? 1 : -1;
+
+            //velocityY.y = yDirection * (abilityData.GetCustomStatValue("JumpHeight") - (0.5f * _knockBackBehaviour.Gravity * abilityData.startUpTime));
+
+            //Find y velocity 
+            _ownerGravity = _knockBackBehaviour.Gravity;
             Vector3 velocityY;
+            velocityY.y = abilityData.GetCustomStatValue("JumpHeight") + (0.5f * _knockBackBehaviour.Gravity * _riseTime);
+            //_knockBackBehaviour.Gravity = ((velocityY.y) / 2) * abilityData.GetCustomStatValue("JumpHeight");
 
-            int yDirection =  yPositive?  1 :  -1;
-
-            velocityY.y = yDirection * (abilityData.GetCustomStatValue("JumpHeight") - (0.5f * _knockBackBehaviour.Gravity * abilityData.startUpTime));
+            //Find x velocity
+            Vector3 velocityX;
+            velocityX.x = displacement / abilityData.startUpTime;
 
             //Apply force
-            _knockBackBehaviour.ApplyImpulseForce(new Vector3(velocityX.x, velocityY.y, 0));
+            return new Vector3(velocityX.x, velocityY.y * yDirection, 0);
+
+            _timeForceAdded = Time.time;
+            _forceAdded = true;
         }
 
         private void MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)
@@ -84,23 +100,45 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            AddForce(false);
+            _shockWaveCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
+                abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true);
+
+            _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
+
+            _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider, owner);
+            hitScript.debuggingEnabled = true;
+
+            Vector3 spikeVelocity = AddForce(false).normalized * abilityData.GetCustomStatValue("DownwardSpeed");
+            _knockBackBehaviour.ApplyVelocityChange(spikeVelocity);
+            _knockBackBehaviour.Gravity = _ownerGravity * abilityData.GetCustomStatValue("DownwardGravityMultiplier");
         }
 
         protected override void Deactivate()
         {
             base.Deactivate();
 
-            if (_visualPrefabCoroutines.Item1 != null)
-                _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item1);
+            //if (_visualPrefabCoroutines.Item1 != null)
+            //    _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item1);
 
-            if (_visualPrefabCoroutines.Item2 != null)
-                _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
+            //if (_visualPrefabCoroutines.Item2 != null)
+            //    _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
 
             DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
-            DestroyBehaviour.Destroy(_visualPrefabInstances.Item2);
+            //DestroyBehaviour.Destroy(_visualPrefabInstances.Item2);
+            //_knockBackBehaviour.StopAllForces();
             _knockBackBehaviour.Gravity = _ownerGravity;
+        }
 
+        public override void Update()
+        {
+            base.Update();
+
+            if (_forceAdded && Time.time - _timeForceAdded >= _riseTime && CurrentAbilityPhase != AbilityPhase.ACTIVE)
+            {
+                _knockBackBehaviour.StopAllForces();
+                _knockBackBehaviour.Gravity = 0;
+            }
         }
     }
 }
