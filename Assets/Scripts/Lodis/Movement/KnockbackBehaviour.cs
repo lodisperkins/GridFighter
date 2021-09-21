@@ -53,10 +53,15 @@ namespace Lodis.Movement
         private float _extraHeight = 0.5f;
 
         private Vector3 _boxPosition;
+        [SerializeField]
         private Vector3 _extents;
         private UnityAction _onKnockBackTemp;
         private UnityAction _onKnockBackStartTemp;
         private UnityAction _onTakeDamageTemp;
+        private Vector3 _normalForce;
+        private Vector3 _force;
+        [SerializeField]
+        private float _bounciness = 0.8f;
 
         public float Gravity
         {
@@ -172,7 +177,7 @@ namespace Lodis.Movement
         // Start is called before the first frame update
         void Start()
         {
-            _objectAtRest = condition => RigidbodyInactive() && _acceleration.magnitude <= 0.1f; 
+            _objectAtRest = condition => LastVelocity.magnitude == 0 && IsGrounded() && _acceleration.magnitude <= 1; 
             _movementBehaviour.AddOnMoveEnabledAction(() => { _rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
             OnCollision += TryStartLandingLag;
@@ -238,6 +243,16 @@ namespace Lodis.Movement
         public bool CheckIfAtRest()
         {
             return !InHitStun && !InFreeFall && _rigidbody.isKinematic;
+        }
+
+        public void EnableBounciness()
+        {
+            _collider.material.bounciness = _bounciness;
+        }
+
+        public void DisableBounciness()
+        {
+            _collider.material.bounciness = 0;
         }
 
         /// <summary>
@@ -499,6 +514,24 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Adds an instant change in velocity to the object ignoring mass.
+        /// </summary>
+        /// <param name="velocity">The new velocity for the object.</param>
+        public void ApplyForce(Vector3 velocity)
+        {
+            _rigidbody.isKinematic = false;
+            _movementBehaviour.canCancelMovement = true;
+            _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+            _movementBehaviour.canCancelMovement = false;
+
+            //Prevent movement if not in hitstun.
+            if (!InHitStun)
+                _movementBehaviour.DisableMovement(_objectAtRest, false);
+
+            _rigidbody.AddForce(velocity, ForceMode.Force);
+        }
+
+        /// <summary>
         /// Adds an instant force impulse using the objects mass.
         /// Disables movement if not in hitstun.
         /// </summary>
@@ -530,7 +563,9 @@ namespace Lodis.Movement
                 float normalY = (transform.position - closestPoint).normalized.y;
                 normalY = Mathf.Ceil(normalY);
                 if (normalY >= 0)
+                {
                     collidedWithGround = true;
+                }
             }
 
             return collidedWithGround;
@@ -591,6 +626,7 @@ namespace Lodis.Movement
                 //Add force to objectd
                 _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
 
+                _lastVelocity = _velocityOnLaunch;
 
                 if (_velocityOnLaunch.magnitude > 0)
                 {
@@ -623,10 +659,24 @@ namespace Lodis.Movement
             if (RigidbodyInactive() || _rigidbody.isKinematic || InFreeFall)
                 _inHitStun = false;
 
-            if (!IsGrounded())
-                _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
+            if (IsGrounded())
+            {
+                float yForce = 0;
+
+                if (_lastVelocity.y < 0)
+                    yForce = _lastVelocity.y;
+
+                _normalForce = new Vector3(0, Gravity + yForce, 0);
+
+                if (LastVelocity.magnitude <= 1 && _acceleration.magnitude <= 1)
+                    StopVelocity();
+            }
             else
-                _constantForceBehaviour.force = Vector3.zero;
+                _normalForce = Vector3.zero;
+
+             _constantForceBehaviour.force = new Vector3(0, -Gravity, 0) + _normalForce;
+
+            _force = _constantForceBehaviour.force + LastVelocity;
         }
     }
 

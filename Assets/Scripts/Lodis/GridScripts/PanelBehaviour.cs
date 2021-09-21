@@ -22,6 +22,8 @@ namespace Lodis.GridScripts
         private float _maxBounceForce = 3.0f;
         [SerializeField]
         private float _bounceDampening = 3.0f;
+        [SerializeField]
+        private float _friction = 3.0f;
         private MeshRenderer _mesh;
         private void Awake()
         {
@@ -119,14 +121,6 @@ namespace Lodis.GridScripts
                     return;
                 }
             }
-
-            if (Vector3.Dot(Vector3.down, knockbackScript.LastVelocity) <= 0 || !knockbackScript.InHitStun || knockbackScript.LastVelocity.magnitude <= 1)
-                return;
-
-            float upMagnitude = Mathf.Clamp(knockbackScript.LastVelocity.magnitude / _bounceDampening, 0, _maxBounceForce);
-
-            knockbackScript.StopVelocity();
-            knockbackScript.ApplyImpulseForce(Vector3.up * upMagnitude);
         }
     }
 }
