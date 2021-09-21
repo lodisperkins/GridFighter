@@ -253,7 +253,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,7 +278,10 @@ MonoBehaviour:
   _defenseBehaviour: {fileID: 0}
   _landingTime: 1
   _gravity: 9.81
+  _bounceCollider: {fileID: 5036224701878357983}
   _extraHeight: 0.2
+  _extents: {x: 0, y: 0, z: 0}
+  _bounciness: 0.8
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -561,6 +564,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: BouncePoint
       objectReference: {fileID: 0}
+    - target: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: ecfbd48aa38306d48aa924a204daf06a,
+        type: 2}
     - target: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}
       propertyPath: m_RootOrder
@@ -621,6 +630,12 @@ PrefabInstance:
 --- !u!4 &7152846400460727597 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
+    type: 3}
+  m_PrefabInstance: {fileID: 5961747996489264755}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &5036224701878357983 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
     type: 3}
   m_PrefabInstance: {fileID: 5961747996489264755}
   m_PrefabAsset: {fileID: 0}

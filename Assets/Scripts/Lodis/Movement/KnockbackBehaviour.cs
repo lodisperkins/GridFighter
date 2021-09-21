@@ -48,7 +48,8 @@ namespace Lodis.Movement
         [SerializeField]
         private float _gravity = 9.81f;
         private ConstantForce _constantForceBehaviour;
-        private Collider _collider;
+        [SerializeField]
+        private Collider _bounceCollider;
         [SerializeField]
         private float _extraHeight = 0.5f;
 
@@ -62,6 +63,27 @@ namespace Lodis.Movement
         private Vector3 _force;
         [SerializeField]
         private float _bounciness = 0.8f;
+        private bool _isSpiked = false;
+
+        public bool IsSpiked
+        {
+            get
+            {
+                return _isSpiked;
+            }
+            set
+            {
+                _isSpiked = value;
+            }
+        }
+
+        public float Bounciness
+        {
+            get
+            {
+                return _bounciness;
+            }
+        }
 
         public float Gravity
         {
@@ -161,7 +183,7 @@ namespace Lodis.Movement
         }
 
         public Vector3 Acceleration { get => _acceleration; }
-
+        public float Weight { get => _weight; }
 
         private void Awake()
         {
@@ -171,7 +193,6 @@ namespace Lodis.Movement
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
             _defenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
             _constantForceBehaviour = GetComponent<ConstantForce>();
-            _collider = GetComponent<Collider>();
         }
 
         // Start is called before the first frame update
@@ -247,12 +268,12 @@ namespace Lodis.Movement
 
         public void EnableBounciness()
         {
-            _collider.material.bounciness = _bounciness;
+            _bounceCollider.material.bounciness = _bounciness;
         }
 
         public void DisableBounciness()
         {
-            _collider.material.bounciness = 0;
+            _bounceCollider.material.bounciness = 0;
         }
 
         /// <summary>
@@ -553,9 +574,9 @@ namespace Lodis.Movement
         private bool IsGrounded()
         {
             bool collidedWithGround = false;
-            _boxPosition = _collider.bounds.center;
-            _extents = new Vector3(_collider.bounds.extents.x, _extraHeight, _collider.bounds.extents.z);
-            Collider[] hits = Physics.OverlapBox(_collider.bounds.center, _extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
+            _boxPosition = _bounceCollider.bounds.center;
+            _extents = new Vector3(_bounceCollider.bounds.extents.x, _extraHeight, _bounceCollider.bounds.extents.z);
+            Collider[] hits = Physics.OverlapBox(_bounceCollider.bounds.center, _extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
 
             foreach (Collider collider in hits)
             {

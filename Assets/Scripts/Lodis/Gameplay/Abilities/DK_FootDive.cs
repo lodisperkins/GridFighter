@@ -36,6 +36,7 @@ namespace Lodis.Gameplay
 
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             _knockBackBehaviour.ApplyVelocityChange(AddForce(true));
+            _knockBackBehaviour.DisableBounciness();
         }
 
         private Vector3 AddForce(bool yPositive)
@@ -118,16 +119,14 @@ namespace Lodis.Gameplay
         {
             base.Deactivate();
 
-            //if (_visualPrefabCoroutines.Item1 != null)
-            //    _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item1);
-
-            //if (_visualPrefabCoroutines.Item2 != null)
-            //    _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
-
             DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
-            //DestroyBehaviour.Destroy(_visualPrefabInstances.Item2);
-            //_knockBackBehaviour.StopAllForces();
             _knockBackBehaviour.Gravity = _ownerGravity;
+        }
+
+        protected override void End()
+        {
+            base.End();
+            _knockBackBehaviour.EnableBounciness();
         }
 
         public override void Update()

@@ -52,6 +52,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _deckReloadTime;
 
+       
         public Transform ProjectileSpawnTransform
         {
             get
@@ -92,6 +93,23 @@ namespace Lodis.Gameplay
 
             return _lastAbilityInUse.CheckIfAbilityCanBeCanceled();
         }
+        
+        public string[] GetAbilityNamesInCurrentSlots()
+        {
+            string[] names = new string[2];
+            if (_specialAbilitySlots[0] != null)
+                names[0] = _specialAbilitySlots[0].abilityData.abilityName;
+            else
+                names[0] = "";
+
+            if (_specialAbilitySlots[1] != null)
+                names[1] = _specialAbilitySlots[1].abilityData.abilityName;
+            else
+                names[1] = "";
+
+            return names;
+        }
+
 
         /// <summary>
         /// True if there is some ability that is currently active.
