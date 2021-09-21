@@ -289,7 +289,7 @@ namespace Lodis.Movement
         public Vector3 CalculateKnockbackForce(float knockbackScale, float hitAngle)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
-q            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
             //Apply the damage and weight to find the amount of knock back to be applied
             float totalKnockback = (knockbackScale + (knockbackScale * (Health /100))) - _weight;

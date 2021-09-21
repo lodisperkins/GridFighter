@@ -107,17 +107,25 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            float newHitAngle = _hitAngle;
+
             if (_adjustAngleBasedOnCollision)
             {
                 Vector3 directionOfImpact = other.transform.position - transform.position;
 
                 directionOfImpact.Normalize();
+                directionOfImpact.x = Mathf.Ceil(directionOfImpact.x);
 
-                Vector3 currentForceDirection = new Vector3(Mathf.Cos(_hitAngle), Mathf.Sin(_hitAngle), 0);
+                Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
 
-                currentForceDirection.Scale(directionOfImpact);
+                currentForceDirection.x *= directionOfImpact.x;
 
-                _hitAngle = Mathf.Acos(Vector3.Dot(currentForceDirection, Vector3.right));
+                float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
+
+                newHitAngle = Mathf.Acos(dotProduct);
+
+                if (Vector3.Dot(currentForceDirection, Vector3.up) < 0)
+                    newHitAngle *= -1;
             }
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -131,7 +139,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType);
 
             onHit?.Invoke(other.gameObject, otherCollider);
 
