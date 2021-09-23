@@ -223,7 +223,7 @@ namespace Lodis.Gameplay
             while (Vector3.Distance(transform.position, newPosition) > _airDodgeDistanceTolerance)
             {
                 //Sets the current position to be the current position in the interpolation
-                //_knockBack.MoveRigidBodyToLocation(Vector3.Lerp(transform.position, newPosition, lerpVal += Time.deltaTime * _airDodgeSpeed));
+                //_knockBack.(Vector3.Lerp(transform.position, newPosition, lerpVal += Time.deltaTime * _airDodgeSpeed));
                 //Waits until the next fixed update before resuming to be in line with any physics calls
                 yield return new WaitForFixedUpdate();
             }
@@ -335,7 +335,8 @@ namespace Lodis.Gameplay
         public void ActivateAirDodge(Vector2 direction)
         {
             if (_canParry && _knockBack.InHitStun)
-                StartCoroutine(AirDodgeRoutine(direction));
+                _knockBack.ApplyVelocityChange(direction * _airDodgeDistance);
+                //StartCoroutine(AirDodgeRoutine(direction));
         }
 
         /// <summary>

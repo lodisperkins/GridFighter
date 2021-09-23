@@ -191,10 +191,10 @@ namespace Lodis.Input
             if (_attackButtonDown)
                 return;
             else if (_bufferedAction == null && (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
-                _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
             else if (!_bufferedAction.HasAction() && (_playerState == PlayerState.KNOCKBACK
                 || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
-                _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
         /// <summary>
@@ -215,6 +215,17 @@ namespace Lodis.Input
                 _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
 
             _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
+        }
+
+        private void UseDefensiveAction()
+        {
+            if (_attackDirection.magnitude > 0)
+            {
+                AirDodge();
+                return;
+            }
+
+            _defense.ActivateParry();
         }
 
         /// <summary>

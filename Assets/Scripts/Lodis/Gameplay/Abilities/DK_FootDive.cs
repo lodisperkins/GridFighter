@@ -71,9 +71,6 @@ namespace Lodis.Gameplay
 
             //Apply force
             return new Vector3(velocityX.x, velocityY.y * yDirection, 0);
-
-            _timeForceAdded = Time.time;
-            _forceAdded = true;
         }
 
         private void MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)

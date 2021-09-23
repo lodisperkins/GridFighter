@@ -588,20 +588,6 @@ namespace Lodis.Movement
             _extents = new Vector3(_bounceCollider.bounds.extents.x, _extraHeight, _bounceCollider.bounds.extents.z);
             Debug.DrawRay(_bounceCollider.bounds.center, new Vector3(0, -(_bounceCollider.bounds.extents.y + _extraHeight), 0));
             return Physics.Raycast(_bounceCollider.bounds.center, new Vector3(0, -_bounceCollider.bounds.extents.y, 0), (_bounceCollider.bounds.extents.y + _extraHeight), LayerMask.GetMask(new string[] { "Structure"}));
-            Collider[] hits = Physics.OverlapBox(_bounceCollider.bounds.center, _extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
-
-            foreach (Collider collider in hits)
-            {
-                Vector3 closestPoint = collider.ClosestPoint(transform.position);
-                float normalY = (transform.position - closestPoint).normalized.y;
-                normalY = Mathf.Ceil(normalY);
-                if (normalY >= 0)
-                {
-                    collidedWithGround = true;
-                }
-            }
-
-            return collidedWithGround;
         }
 
         private void OnDrawGizmos()
