@@ -16,9 +16,7 @@ namespace Lodis.Movement
     public class KnockbackBehaviour : HealthBehaviour
     {
         private Rigidbody _rigidbody;
-        [Tooltip("How heavy the game object is. The higher the number, the less panels it travels when knocked back.")]
-        [SerializeField]
-        private float _weight;
+        [Tooltip("How much mass the game object has. The higher the number, the less panels it travels when knocked back.")]
         [SerializeField]
         private float _mass;
         [Tooltip("How fast will objects be allowed to travel in knockback")]
@@ -54,7 +52,6 @@ namespace Lodis.Movement
         private Collider _bounceCollider;
         [SerializeField]
         private float _extraHeight = 0.5f;
-
         private Vector3 _boxPosition;
         [SerializeField]
         private Vector3 _extents;
@@ -193,7 +190,6 @@ namespace Lodis.Movement
         }
 
         public Vector3 Acceleration { get => _acceleration; }
-        public float Weight { get => _weight; }
 
         private void Awake()
         {
@@ -208,7 +204,7 @@ namespace Lodis.Movement
         // Start is called before the first frame update
         void Start()
         {
-            _objectAtRest = condition => LastVelocity.magnitude == 0 && IsGrounded() && _acceleration.magnitude <= 1; 
+            _objectAtRest = condition => LastVelocity.magnitude <= 0.1 && IsGrounded() && _acceleration.magnitude <= 0.1; 
             _movementBehaviour.AddOnMoveEnabledAction(() => { _rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
             OnCollision += TryStartLandingLag;
@@ -338,7 +334,7 @@ namespace Lodis.Movement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
             //Apply the damage and weight to find the amount of knock back to be applied
-            float totalKnockback = (knockbackScale + (knockbackScale * (Health /100))) - _weight;
+            float totalKnockback = (knockbackScale + (knockbackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
 
             //If the knockback was too weak return an empty vector
             if (totalKnockback <= 0)
@@ -586,6 +582,8 @@ namespace Lodis.Movement
             bool collidedWithGround = false;
             _boxPosition = _bounceCollider.bounds.center;
             _extents = new Vector3(_bounceCollider.bounds.extents.x, _extraHeight, _bounceCollider.bounds.extents.z);
+            Debug.DrawRay(_bounceCollider.bounds.center, new Vector3(0, -(_bounceCollider.bounds.extents.y + _extraHeight), 0));
+            return Physics.Raycast(_bounceCollider.bounds.center, new Vector3(0, -_bounceCollider.bounds.extents.y, 0), (_bounceCollider.bounds.extents.y + _extraHeight), LayerMask.GetMask(new string[] { "Structure"}));
             Collider[] hits = Physics.OverlapBox(_bounceCollider.bounds.center, _extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
 
             foreach (Collider collider in hits)
@@ -628,6 +626,8 @@ namespace Lodis.Movement
 
             //Adds damage to the total damage
             Health += damage;
+            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
+
             _onTakeDamage?.Invoke();
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
@@ -655,7 +655,7 @@ namespace Lodis.Movement
                 _movementBehaviour.DisableMovement(_objectAtRest, false, true);
 
                 //Add force to objectd
-                _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
+                _rigidbody.AddForce(_velocityOnLaunch / Mass, ForceMode.Impulse);
 
                 _lastVelocity = _velocityOnLaunch;
 
@@ -681,14 +681,17 @@ namespace Lodis.Movement
 
             _lastVelocity = _rigidbody.velocity;
 
-            //if (_rigidbody.velocity.magnitude > 0)
-            //    _rigidbody.velocity -= _rigidbody.velocity.normalized * _velocityDecayRate.Value;
-            
+            if (_rigidbody.velocity.magnitude > 0)
+                _rigidbody.velocity /= _velocityDecayRate.Value;
+
             if (_acceleration.magnitude <= 0 && _rigidbody.isKinematic)
                 _inFreeFall = false;
 
             if (RigidbodyInactive() || _rigidbody.isKinematic || InFreeFall)
                 _inHitStun = false;
+
+            if (name == "TestDummy")
+                Debug.Log(IsGrounded());
 
             if (IsGrounded())
             {
@@ -699,7 +702,7 @@ namespace Lodis.Movement
 
                 _normalForce = new Vector3(0, Gravity + yForce, 0);
 
-                if (LastVelocity.magnitude <= 1 && _acceleration.magnitude <= 1)
+                if (LastVelocity.magnitude <= 0.1f && _acceleration.magnitude <= 0.1f)
                     StopVelocity();
             }
             else

@@ -406,7 +406,7 @@ namespace Lodis.Gameplay
         void Update()
         {
             UpdateAnimationsBasedOnState();
-            Debug.Log(_animator.speed);
+            //Debug.Log(_animator.speed);
         }
     }
 }

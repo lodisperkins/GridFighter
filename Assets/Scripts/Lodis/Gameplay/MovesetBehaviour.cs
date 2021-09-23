@@ -258,7 +258,7 @@ namespace Lodis.Gameplay
             if (_specialAbilitySlots[1] != null)
                 ability2Name = _specialAbilitySlots[1].abilityData.abilityName;
 
-            Debug.Log("1. " + ability1Name + "\n2. " + ability2Name);
+            //Debug.Log("1. " + ability1Name + "\n2. " + ability2Name);
         }
     }
 }

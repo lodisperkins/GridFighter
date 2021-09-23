@@ -8835,6 +8835,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
+        type: 3}
+      propertyPath: MaxKnockBackHealth
+      value: 
+      objectReference: {fileID: 11400000, guid: a850879eb5579a94c8611fe9609619f4,
+        type: 2}
     - target: {fileID: 1376129663109718757, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: m_Name
@@ -9545,6 +9551,7 @@ MonoBehaviour:
   _hitAngle: 2.6
   _adjustAngleBasedOnCollision: 0
   damageType: 0
+  CanSpike: 0
   debuggingEnabled: 0
   Priority: 0
 --- !u!65 &1854253617
@@ -9900,17 +9907,41 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 13400000, guid: ecfbd48aa38306d48aa924a204daf06a,
-        type: 2}
+      objectReference: {fileID: 0}
+    - target: {fileID: 2039876615219471376, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2039876615219471376, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_Constraints
       value: 112
       objectReference: {fileID: 0}
+    - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _mass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _gravity
+      value: 9.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _extraHeight
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137517, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_Material
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _position.x
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137522, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}

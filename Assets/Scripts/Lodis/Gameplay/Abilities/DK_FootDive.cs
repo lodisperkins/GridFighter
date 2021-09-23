@@ -64,7 +64,6 @@ namespace Lodis.Gameplay
             _ownerGravity = _knockBackBehaviour.Gravity;
             Vector3 velocityY;
             velocityY.y = abilityData.GetCustomStatValue("JumpHeight") + (0.5f * _knockBackBehaviour.Gravity * _riseTime);
-            //_knockBackBehaviour.Gravity = ((velocityY.y) / 2) * abilityData.GetCustomStatValue("JumpHeight");
 
             //Find x velocity
             Vector3 velocityX;
