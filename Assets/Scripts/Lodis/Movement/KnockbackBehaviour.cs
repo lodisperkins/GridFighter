@@ -62,7 +62,21 @@ namespace Lodis.Movement
         private Vector3 _force;
         [SerializeField]
         private float _bounciness = 0.8f;
+        [SerializeField]
+        private bool _panelBounceEnabled = true;
         private bool _isSpiked = false;
+
+        public bool PanelBounceEnabled
+        {
+            get
+            {
+                return _panelBounceEnabled;
+            }
+            set
+            {
+                _panelBounceEnabled = value;
+            }
+        }
 
         public bool IsSpiked
         {
@@ -270,16 +284,6 @@ namespace Lodis.Movement
         public bool CheckIfAtRest()
         {
             return !InHitStun && !InFreeFall && _rigidbody.isKinematic;
-        }
-
-        public void EnableBounciness()
-        {
-            _bounceCollider.material.bounciness = _bounciness;
-        }
-
-        public void DisableBounciness()
-        {
-            _bounceCollider.material.bounciness = 0;
         }
 
         /// <summary>

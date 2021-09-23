@@ -9921,12 +9921,17 @@ PrefabInstance:
     - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _mass
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _gravity
       value: 9.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _bounciness
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}

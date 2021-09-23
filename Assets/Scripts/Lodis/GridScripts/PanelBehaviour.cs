@@ -121,6 +121,19 @@ namespace Lodis.GridScripts
                     return;
                 }
             }
+
+            //Don't add a force if the object is traveling at a low speed
+            if (knockbackScript.LastVelocity.magnitude <= 0.1f || knockbackScript.Bounciness <= 0 || !knockbackScript.PanelBounceEnabled)
+                return;
+
+            float upMagnitude = 0;
+            upMagnitude = knockbackScript.LastVelocity.magnitude;
+
+            if (_bounceDampening > knockbackScript.Bounciness )
+                //Calculate and apply friction force
+                upMagnitude /= _bounceDampening - knockbackScript.Bounciness;
+
+            knockbackScript.ApplyImpulseForce(Vector3.up * upMagnitude);
         }
 
         private void OnTriggerStay(Collider other)

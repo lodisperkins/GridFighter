@@ -36,7 +36,7 @@ namespace Lodis.Gameplay
 
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             _knockBackBehaviour.ApplyVelocityChange(AddForce(true));
-            _knockBackBehaviour.DisableBounciness();
+            _knockBackBehaviour.PanelBounceEnabled = false;
         }
 
         private Vector3 AddForce(bool yPositive)
@@ -125,7 +125,7 @@ namespace Lodis.Gameplay
         protected override void End()
         {
             base.End();
-            _knockBackBehaviour.EnableBounciness();
+            _knockBackBehaviour.PanelBounceEnabled = true;
         }
 
         public override void Update()
