@@ -19,6 +19,8 @@ namespace Lodis.Movement
         [Tooltip("How heavy the game object is. The higher the number, the less panels it travels when knocked back.")]
         [SerializeField]
         private float _weight;
+        [SerializeField]
+        private float _mass;
         [Tooltip("How fast will objects be allowed to travel in knockback")]
         [SerializeField]
         private ScriptableObjects.FloatVariable _maxMagnitude;
@@ -94,6 +96,14 @@ namespace Lodis.Movement
             set
             {
                 _gravity = value;
+            }
+        }
+
+        public float Mass
+        {
+            get
+            {
+                return _mass;
             }
         }
 

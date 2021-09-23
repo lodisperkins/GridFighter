@@ -121,6 +121,24 @@ namespace Lodis.GridScripts
                     return;
                 }
             }
+
+            
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            Movement.KnockbackBehaviour knockbackScript = other.transform.root.GetComponent<Movement.KnockbackBehaviour>();
+            if (!knockbackScript)
+                return;
+            else if (knockbackScript.IsInvincible || knockbackScript.InFreeFall)
+                return;
+
+            if (knockbackScript.LastVelocity.magnitude <= 0.1f)
+                return;
+
+            Vector3 frictionForce = new Vector3(knockbackScript.Mass * knockbackScript.LastVelocity.x, 0, 0).normalized * _friction;
+
+            knockbackScript.ApplyForce(-frictionForce);
         }
     }
 }
