@@ -120,6 +120,9 @@ namespace Lodis.Gameplay
 
             DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
             _knockBackBehaviour.Gravity = _ownerGravity;
+
+            if (!_knockBackBehaviour.InHitStun)
+                _knockBackBehaviour.StopVelocity();
         }
 
         protected override void End()

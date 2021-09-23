@@ -55,7 +55,7 @@ namespace Lodis.ScriptableObjects
         [Tooltip("If true, this ability will be canceled when the user is hit")]
         public bool cancelOnHit = false;
         [Tooltip("If true, this ability will be canceled when the user is in knockback")]
-        public bool cancelOnKnockback = false;
+        public bool cancelOnKnockback = true;
         [Tooltip("If false, this ability's hit colliders can collide with others. Meaning that this ability's colliders can be destroyed if the other collider has higher priority.")]
         public bool IgnoreColliders = true;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroys colliders with lower levels.")]

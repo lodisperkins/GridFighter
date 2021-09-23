@@ -35,7 +35,7 @@ MonoBehaviour:
   - name: Damage
     value: 15
   - name: HitAngle
-    value: 1
+    value: 2
   - name: Knockback
     value: 3
   - name: ShockwaveProgressionDelay

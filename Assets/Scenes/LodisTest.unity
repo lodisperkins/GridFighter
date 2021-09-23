@@ -761,11 +761,20 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1321618602, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _projectileSpawnPoint
       value: 
       objectReference: {fileID: 1126150258}
+    - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _mass
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -844,7 +853,7 @@ PrefabInstance:
     - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
@@ -1427,11 +1436,20 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1321618602, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _projectileSpawnPoint
       value: 
       objectReference: {fileID: 996571639}
+    - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _mass
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -1510,7 +1528,7 @@ PrefabInstance:
     - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
@@ -4179,11 +4197,20 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1321618602, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _projectileSpawnPoint
       value: 
       objectReference: {fileID: 909001652}
+    - target: {fileID: 4734495943610405351, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _mass
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -4262,7 +4289,7 @@ PrefabInstance:
     - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
@@ -9903,6 +9930,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1321618602, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 1797995424193797808, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_Material
@@ -10016,7 +10047,7 @@ PrefabInstance:
     - target: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _attackType
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}

@@ -185,7 +185,7 @@ namespace Lodis.Gameplay
             //Enable parry and update states
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;
-            _input.DisableInput(condition => _isParrying == false);
+            _movement.DisableMovement(condition => _isParrying == false, true, true);
             _canParry = false;
 
             //Start timer for parry

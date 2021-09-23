@@ -148,7 +148,7 @@ namespace Lodis.GridScripts
                 return;
 
             //Don't add a force if the object is traveling at a low speed
-            if (knockbackScript.LastVelocity.magnitude <= 0.1f)
+            if (knockbackScript.LastVelocity.magnitude <= 0.5f)
                 return;
 
             //Calculate and apply friction force

@@ -190,10 +190,10 @@ namespace Lodis.Input
         {
             if (_attackButtonDown)
                 return;
-            else if (_bufferedAction == null)
+            else if (_bufferedAction == null && (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
                 _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
-            else if (!_bufferedAction.HasAction() || _playerState == PlayerState.KNOCKBACK
-                || _playerState == PlayerState.FREEFALL)
+            else if (!_bufferedAction.HasAction() && (_playerState == PlayerState.KNOCKBACK
+                || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
                 _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
@@ -317,13 +317,13 @@ namespace Lodis.Input
 
 
             //Move if there is a movement stored and movement is allowed
-            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove)
+            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
                 _storedMoveInput = Vector2.zero;
             }
-
             //Checks to see if move input can be enabled 
+
             if (_moveInputEnableCondition != null)
             {
                 if (_moveInputEnableCondition.Invoke())

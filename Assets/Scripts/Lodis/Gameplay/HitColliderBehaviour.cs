@@ -115,7 +115,7 @@ namespace Lodis.Gameplay
                 Vector3 directionOfImpact = other.transform.position - transform.position;
 
                 directionOfImpact.Normalize();
-                directionOfImpact.x = Mathf.Ceil(directionOfImpact.x);
+                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
 
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
 
