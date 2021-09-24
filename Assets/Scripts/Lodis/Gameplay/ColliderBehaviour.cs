@@ -36,6 +36,8 @@ namespace Lodis.Gameplay
         /// First argument is game object it collided with.
         /// </summary>
         public CollisionEvent OnHit;
+        protected float _lastHitFrame;
+        public float HitFrames;
         public bool IgnoreColliders = true;
 
         public GameObject ColliderOwner
@@ -128,7 +130,9 @@ namespace Lodis.Gameplay
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(other.gameObject);
 
-            OnHit?.Invoke(otherGameObject, otherCollider);
+            Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
+
+            OnHit?.Invoke(otherGameObject, otherCollider, collisionDirection);
 
             if (DestroyOnHit)
                 Destroy(gameObject);
@@ -137,7 +141,7 @@ namespace Lodis.Gameplay
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!IsMultiHit || other.gameObject == Owner)
+            if (!IsMultiHit || other.gameObject == Owner || !CheckHitTime())
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -156,10 +160,23 @@ namespace Lodis.Gameplay
             if (otherCollider && IgnoreColliders)
                 return;
 
-            OnHit?.Invoke(otherGameObject, otherCollider);
+            Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
+
+            OnHit?.Invoke(otherGameObject, otherCollider, collisionDirection);
 
             if (DestroyOnHit)
                 Destroy(gameObject);
+        }
+
+        protected bool CheckHitTime()
+        {
+            if (Time.frameCount - _lastHitFrame >= HitFrames)
+            {
+                _lastHitFrame = Time.frameCount;
+                return true;
+            }
+
+            return false;
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -187,7 +204,9 @@ namespace Lodis.Gameplay
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(collision.gameObject);
 
-            OnHit?.Invoke(collision.gameObject, collision);
+            Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
+
+            OnHit?.Invoke(collision.gameObject, collision, collisionDirection);
 
             if (DestroyOnHit)
                 Destroy(gameObject);

@@ -154,7 +154,7 @@ namespace Lodis.Gameplay
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!IsMultiHit || other.gameObject == Owner)
+            if (!IsMultiHit || other.gameObject == Owner || !CheckHitTime())
                 return;
 
             ColliderBehaviour otherCollider = null;

@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 986386592}
   m_Layer: 9
   m_Name: TestDummy
-  m_TagString: Player
+  m_TagString: Entity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 1

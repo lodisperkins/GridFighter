@@ -9623,6 +9623,7 @@ MonoBehaviour:
   TimeActive: 0
   IsMultiHit: 0
   DestroyOnHit: 0
+  HitFrames: 0
   IgnoreColliders: 0
   _damage: 0
   _knockBackScale: 1
@@ -10044,7 +10045,12 @@ PrefabInstance:
     - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _attackType
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
