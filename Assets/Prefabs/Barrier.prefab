@@ -308,7 +308,7 @@ MonoBehaviour:
   _visibleLayers:
   - Player
   _owner: 
-  _pushScale: 4
+  _pushScale: 1
   _damageOnCollision: 0
 --- !u!1 &4444937584539456812
 GameObject:

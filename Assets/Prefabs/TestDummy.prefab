@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321618601}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.25, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5680485170780137522}
@@ -288,7 +288,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_Material: {fileID: 13400000, guid: ecfbd48aa38306d48aa924a204daf06a, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -306,7 +306,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _position: {x: 8, y: 0}
+  _position: {x: 5, y: 0}
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 10
@@ -351,7 +351,7 @@ MonoBehaviour:
   _isAlive: 0
   _bounceDampen: 6
   _isInvincible: 0
-  _weight: 0
+  _mass: 5
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
@@ -359,9 +359,10 @@ MonoBehaviour:
   _landingTime: 0
   _gravity: 9.81
   _bounceCollider: {fileID: 1797995424193797808}
-  _extraHeight: 0.5
+  _extraHeight: 0.1
   _extents: {x: 0, y: 0, z: 0}
-  _bounciness: 0.8
+  _bounciness: 1
+  _panelBounceEnabled: 1
 --- !u!114 &5685934378965997192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,8 +455,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackType: 4
-  _attackDelay: 0.2
-  _attackStrength: 1
+  _attackDelay: 1
+  _attackStrength: 1.08
   _zDirection: 1
 --- !u!75 &986386592
 ConstantForce:
@@ -485,8 +486,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Material
       value: 
-      objectReference: {fileID: 13400000, guid: ecfbd48aa38306d48aa924a204daf06a,
-        type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}
       propertyPath: m_RootOrder

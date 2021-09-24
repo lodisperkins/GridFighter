@@ -72,7 +72,7 @@ namespace Lodis.Gameplay
             //Adds a force to objects to push them off of the field barrier if they land on top
             if (contactPoint.normal == Vector3.down)
             {
-                knockBackScript.ApplyForce(transform.forward * _pushScale);
+                knockBackScript.ApplyVelocityChange(transform.forward * _pushScale);
             }
         }
 

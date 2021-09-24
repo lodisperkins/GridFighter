@@ -221,6 +221,38 @@ namespace Lodis.GridScripts
         }
 
         /// <summary>
+        /// Removes rows from one side of the grid and gives it to the other
+        /// </summary>
+        /// <param name="amountOfRows">The amount of rows to give to the other side</param>
+        /// <param name="receiver">The side receiving the rows</param>
+        /// <param name="seconds">How long will the side have control over the rows</param>
+        public void ExchangeRowsByTimer(int amountOfRows, GridAlignment receiver, float seconds)
+        {
+            StartCoroutine(StartRowExchangeCountdown(amountOfRows, receiver, seconds));
+        }
+
+        private IEnumerator StartRowExchangeCountdown(int amountOfRows, GridAlignment receiver, float seconds)
+        {
+            int oldMaxColumns = _p1MaxColumns;
+            int newMaxColumns = _p1MaxColumns;
+
+            if (receiver == GridAlignment.LEFT)
+                newMaxColumns = _p1MaxColumns + amountOfRows;
+            else if (receiver == GridAlignment.RIGHT)
+                newMaxColumns = _p1MaxColumns - amountOfRows;
+
+            _p1MaxColumns = Mathf.Clamp(newMaxColumns, 0, (int)Dimensions.x);
+
+            SetDefaultPanelAlignments();
+
+            yield return new WaitForSeconds(seconds);
+
+            _p1MaxColumns = oldMaxColumns;
+
+            SetDefaultPanelAlignments();
+        }
+
+        /// <summary>
         /// Labels each panel to be on either the left side on the right side of the grid based on 
         /// the value given for the maximum columns for player1.
         /// </summary>
