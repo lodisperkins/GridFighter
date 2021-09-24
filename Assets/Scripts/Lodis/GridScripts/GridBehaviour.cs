@@ -48,6 +48,8 @@ namespace Lodis.GridScripts
         private PanelBehaviour _lhsPlayerSpawnPanel;
         private PanelBehaviour _rhsPlayerSpawnPanel;
         private List<BarrierBehaviour> _barriers;
+        private Coroutine _panelExchangeRoutine;
+        private int _tempMaxColumns;
 
         public PanelBehaviour LhsSpawnPanel
         {
@@ -129,7 +131,8 @@ namespace Lodis.GridScripts
 
 
             //After the grid is created, assign each panel a side.
-            SetDefaultPanelAlignments();
+            SetPanelAlignments(_p1MaxColumns);
+            _tempMaxColumns = _p1MaxColumns;
             //Spawn barriers on both side and find the players' spawn location
             SpawnBarriers();
 
@@ -228,44 +231,47 @@ namespace Lodis.GridScripts
         /// <param name="seconds">How long will the side have control over the rows</param>
         public void ExchangeRowsByTimer(int amountOfRows, GridAlignment receiver, float seconds)
         {
-            StartCoroutine(StartRowExchangeCountdown(amountOfRows, receiver, seconds));
+            if (_panelExchangeRoutine != null)
+                StopCoroutine(_panelExchangeRoutine);
+
+            _panelExchangeRoutine = StartCoroutine(StartRowExchangeCountdown(amountOfRows, receiver, seconds));
         }
 
         private IEnumerator StartRowExchangeCountdown(int amountOfRows, GridAlignment receiver, float seconds)
         {
-            int oldMaxColumns = _p1MaxColumns;
-            int newMaxColumns = _p1MaxColumns;
+            int newMaxColumns = _tempMaxColumns;
 
             if (receiver == GridAlignment.LEFT)
-                newMaxColumns = _p1MaxColumns + amountOfRows;
+                newMaxColumns = _tempMaxColumns + amountOfRows;
             else if (receiver == GridAlignment.RIGHT)
-                newMaxColumns = _p1MaxColumns - amountOfRows;
+                newMaxColumns = _tempMaxColumns - amountOfRows;
 
-            _p1MaxColumns = Mathf.Clamp(newMaxColumns, 0, (int)Dimensions.x);
+            _tempMaxColumns = Mathf.Clamp(newMaxColumns, 0, (int)Dimensions.x);
 
-            SetDefaultPanelAlignments();
+            SetPanelAlignments(_tempMaxColumns);
 
             yield return new WaitForSeconds(seconds);
 
-            _p1MaxColumns = oldMaxColumns;
+            SetPanelAlignments(_p1MaxColumns);
 
-            SetDefaultPanelAlignments();
+            _panelExchangeRoutine = null;
+            _tempMaxColumns = _p1MaxColumns;
         }
 
         /// <summary>
         /// Labels each panel to be on either the left side on the right side of the grid based on 
         /// the value given for the maximum columns for player1.
         /// </summary>
-        public void SetDefaultPanelAlignments()
+        public void SetPanelAlignments(int columns)
         {
             //Clamp the amount of columns
-            if (_p1MaxColumns > _dimensions.x)
-                _p1MaxColumns = (int)_dimensions.x;
+            if (columns > _dimensions.x)
+                columns = (int)_dimensions.x;
 
             //Loops through the list of panels and sets their label based on position.
             foreach (PanelBehaviour panel in _panels)
             {
-                if (panel.Position.x < _p1MaxColumns)
+                if (panel.Position.x < columns)
                 {
                     panel.Alignment = GridAlignment.LEFT;
                 }
