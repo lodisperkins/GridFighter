@@ -219,11 +219,11 @@ namespace Lodis.Input
 
         private void UseDefensiveAction()
         {
-            if (_attackDirection.magnitude > 0)
-            {
-                AirDodge();
-                return;
-            }
+            //if (_attackDirection.magnitude > 0)
+            //{
+            //    AirDodge();
+            //    return;
+            //}
 
             _defense.ActivateParry();
         }

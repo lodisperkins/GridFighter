@@ -84,7 +84,7 @@ namespace Lodis.Gameplay
             if (moveset)
             {
                 moveset.enabled = false;
-                moveset.StopAllCoroutines();
+                moveset.StopAbilityRoutine();
             }
             if (inputBehaviour)
             {

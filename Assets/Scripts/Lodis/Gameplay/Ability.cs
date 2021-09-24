@@ -128,7 +128,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            ownerMoveset.StartCoroutine(StartAbility(args));
+            ownerMoveset.StartAbilityCoroutine(StartAbility(args));
         }
 
         public bool CheckIfAbilityCanBeCanceled()
@@ -197,7 +197,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void StopAbility()
         {
-            ownerMoveset.StopAllCoroutines();
+            ownerMoveset.StopAbilityRoutine();
             _inUse = false;
         }
 
@@ -206,7 +206,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void EndAbility()
         {
-            ownerMoveset.StopAllCoroutines();
+            ownerMoveset.StopAbilityRoutine();
             currentActivationAmount = abilityData.maxActivationAmount;
             onDeactivate?.Invoke();
             Deactivate();

@@ -446,7 +446,7 @@ namespace Lodis.Movement
             if (moveset)
             {
                 moveset.enabled = false;
-                moveset.StopAllCoroutines();
+                moveset.StopAbilityRoutine();
             }
             if (inputBehaviour)
             {

@@ -51,8 +51,9 @@ namespace Lodis.Gameplay
         private Transform _meleeHitBoxSpawnPoint;
         [SerializeField]
         private float _deckReloadTime;
+        private bool _deckReloading;
+        private Coroutine _abilityRoutine;
 
-       
         public Transform ProjectileSpawnTransform
         {
             get
@@ -166,6 +167,16 @@ namespace Lodis.Gameplay
             return _lastAbilityInUse;
         }
 
+        public void StartAbilityCoroutine(IEnumerator abilityRoutine)
+        {
+            _abilityRoutine = StartCoroutine(abilityRoutine);
+        }
+
+        public void StopAbilityRoutine()
+        {
+            StopCoroutine(_abilityRoutine);
+        }
+
         private void ReloadDeck()
         {
             _specialDeck = Instantiate(_specialDeckRef);
@@ -181,8 +192,10 @@ namespace Lodis.Gameplay
 
             if (_specialDeck.Count == 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null)
             {
+                _deckReloading = true;
                 yield return new WaitForSeconds(_deckReloadTime);
                 ReloadDeck();
+                _deckReloading = false;
             }
             else if (_specialDeck.Count > 0)
             {
@@ -212,7 +225,7 @@ namespace Lodis.Gameplay
 
             currentAbility.currentActivationAmount++;
 
-            if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached)
+            if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached && !_deckReloading)
                 currentAbility.onDeactivate += () => StartCoroutine(ChargeNextAbility(abilitySlot));
 
             _lastAbilityInUse = currentAbility;
@@ -224,7 +237,8 @@ namespace Lodis.Gameplay
         public void RemoveAbilityFromSlot(int index)
         {
             _specialAbilitySlots[index] = null;
-            StartCoroutine(ChargeNextAbility(index));
+            if (!_deckReloading)
+                StartCoroutine(ChargeNextAbility(index));
         }
 
         public void RemoveAbilityFromSlot(Ability ability)
