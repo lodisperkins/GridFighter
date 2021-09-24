@@ -190,11 +190,11 @@ namespace Lodis.Input
         {
             if (_attackButtonDown)
                 return;
-            else if (_bufferedAction == null)
-                _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
-            else if (!_bufferedAction.HasAction() || _playerState == PlayerState.KNOCKBACK
-                || _playerState == PlayerState.FREEFALL)
-                _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
+            else if (_bufferedAction == null && (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
+                _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
+            else if (!_bufferedAction.HasAction() && (_playerState == PlayerState.KNOCKBACK
+                || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
+                _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
         /// <summary>
@@ -215,6 +215,17 @@ namespace Lodis.Input
                 _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
 
             _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
+        }
+
+        private void UseDefensiveAction()
+        {
+            if (_attackDirection.magnitude > 0)
+            {
+                AirDodge();
+                return;
+            }
+
+            _defense.ActivateParry();
         }
 
         /// <summary>
@@ -317,13 +328,13 @@ namespace Lodis.Input
 
 
             //Move if there is a movement stored and movement is allowed
-            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove)
+            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
                 _storedMoveInput = Vector2.zero;
             }
-
             //Checks to see if move input can be enabled 
+
             if (_moveInputEnableCondition != null)
             {
                 if (_moveInputEnableCondition.Invoke())

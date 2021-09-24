@@ -288,7 +288,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: ecfbd48aa38306d48aa924a204daf06a, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -333,7 +333,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &4734495943610405351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,6 +358,10 @@ MonoBehaviour:
   _defenseBehaviour: {fileID: 0}
   _landingTime: 0
   _gravity: 9.81
+  _bounceCollider: {fileID: 1797995424193797808}
+  _extraHeight: 0.5
+  _extents: {x: 0, y: 0, z: 0}
+  _bounciness: 0.8
 --- !u!114 &5685934378965997192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,6 +481,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: BouncePoint
       objectReference: {fileID: 0}
+    - target: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
+        type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: ecfbd48aa38306d48aa924a204daf06a,
+        type: 2}
     - target: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}
       propertyPath: m_RootOrder
@@ -537,6 +547,12 @@ PrefabInstance:
 --- !u!4 &4491077316993889346 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
+    type: 3}
+  m_PrefabInstance: {fileID: 1129245541838569244}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1797995424193797808 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
     type: 3}
   m_PrefabInstance: {fileID: 1129245541838569244}
   m_PrefabAsset: {fileID: 0}

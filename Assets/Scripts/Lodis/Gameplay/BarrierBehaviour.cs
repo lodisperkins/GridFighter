@@ -40,7 +40,30 @@ namespace Lodis.Gameplay
         {
             Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript || !knockBackScript.InHitStun)
+            if (!knockBackScript)
+                return;
+
+            //Calculate the knockback and hit angle for the ricochet
+            ContactPoint contactPoint = collision.GetContact(0);
+
+            Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
+            float dotProduct = Vector3.Dot(Vector3.right, -direction);
+            float hitAngle = Mathf.Acos(dotProduct);
+            float velocityMagnitude = knockBackScript.LastVelocity.magnitude;
+            float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+
+            if (knockbackScale == 0 || float.IsNaN(knockbackScale) || !knockBackScript.InHitStun)
+                return;
+
+            //Apply ricochet force and damage
+            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
+            //Checks if the object is not grid moveable and isn't in hit stun
+            if (!knockBackScript)
                 return;
 
             //Calculate the knockback and hit angle for the ricochet
@@ -49,22 +72,8 @@ namespace Lodis.Gameplay
             //Adds a force to objects to push them off of the field barrier if they land on top
             if (contactPoint.normal == Vector3.down)
             {
-                knockBackScript.ApplyImpulseForce(transform.forward * _pushScale);
+                knockBackScript.ApplyForce(transform.forward * _pushScale);
             }
-
-            Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
-            float dotProduct = Vector3.Dot(Vector3.right, -direction);
-            float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = knockBackScript.LastVelocity.magnitude;
-            float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
-
-            if (knockbackScale == 0 || float.IsNaN(knockbackScale))
-                return;
-
-            knockBackScript.StopVelocity();
-
-            //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
         }
 
         // Update is called once per frame

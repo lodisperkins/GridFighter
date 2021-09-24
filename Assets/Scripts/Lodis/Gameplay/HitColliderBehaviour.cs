@@ -21,6 +21,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _adjustAngleBasedOnCollision;
         public DamageType damageType = DamageType.DEFAULT;
+        public bool CanSpike;
 
         /// <summary>
         /// Collision event called when this collider hits another. 
@@ -114,7 +115,7 @@ namespace Lodis.Gameplay
                 Vector3 directionOfImpact = other.transform.position - transform.position;
 
                 directionOfImpact.Normalize();
-                directionOfImpact.x = Mathf.Ceil(directionOfImpact.x);
+                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
 
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
 
@@ -125,7 +126,10 @@ namespace Lodis.Gameplay
                 newHitAngle = Mathf.Acos(dotProduct);
 
                 if (Vector3.Dot(currentForceDirection, Vector3.up) < 0)
+                {
                     newHitAngle *= -1;
+                    
+                }
             }
 
             //Add the game object to the list of collisions so it is not collided with again

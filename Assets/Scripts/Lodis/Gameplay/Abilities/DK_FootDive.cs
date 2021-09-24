@@ -36,6 +36,7 @@ namespace Lodis.Gameplay
 
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             _knockBackBehaviour.ApplyVelocityChange(AddForce(true));
+            _knockBackBehaviour.PanelBounceEnabled = false;
         }
 
         private Vector3 AddForce(bool yPositive)
@@ -63,7 +64,6 @@ namespace Lodis.Gameplay
             _ownerGravity = _knockBackBehaviour.Gravity;
             Vector3 velocityY;
             velocityY.y = abilityData.GetCustomStatValue("JumpHeight") + (0.5f * _knockBackBehaviour.Gravity * _riseTime);
-            //_knockBackBehaviour.Gravity = ((velocityY.y) / 2) * abilityData.GetCustomStatValue("JumpHeight");
 
             //Find x velocity
             Vector3 velocityX;
@@ -71,9 +71,6 @@ namespace Lodis.Gameplay
 
             //Apply force
             return new Vector3(velocityX.x, velocityY.y * yDirection, 0);
-
-            _timeForceAdded = Time.time;
-            _forceAdded = true;
         }
 
         private void MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)
@@ -118,16 +115,17 @@ namespace Lodis.Gameplay
         {
             base.Deactivate();
 
-            //if (_visualPrefabCoroutines.Item1 != null)
-            //    _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item1);
-
-            //if (_visualPrefabCoroutines.Item2 != null)
-            //    _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
-
             DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
-            //DestroyBehaviour.Destroy(_visualPrefabInstances.Item2);
-            //_knockBackBehaviour.StopAllForces();
             _knockBackBehaviour.Gravity = _ownerGravity;
+
+            if (!_knockBackBehaviour.InHitStun)
+                _knockBackBehaviour.StopVelocity();
+        }
+
+        protected override void End()
+        {
+            base.End();
+            _knockBackBehaviour.PanelBounceEnabled = true;
         }
 
         public override void Update()

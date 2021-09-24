@@ -24,7 +24,7 @@ MonoBehaviour:
   canCancelActive: 0
   canCancelRecover: 0
   cancelOnHit: 0
-  cancelOnKnockback: 0
+  cancelOnKnockback: 1
   IgnoreColliders: 1
   ColliderPriority: 0
   useAbilityTimingForAnimation: 1

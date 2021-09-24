@@ -30,6 +30,7 @@ namespace Lodis.Gameplay
             _ownerGravity = _knockBackBehaviour.Gravity;
             _knockBackBehaviour.ApplyVelocityChange(Vector3.up * abilityData.GetCustomStatValue("JumpForce"));
             _knockBackBehaviour.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;
+            _knockBackBehaviour.PanelBounceEnabled = false;
         }
 
         private void MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)
@@ -86,7 +87,12 @@ namespace Lodis.Gameplay
             DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
             DestroyBehaviour.Destroy(_visualPrefabInstances.Item2);
             _knockBackBehaviour.Gravity = _ownerGravity;
+        }
 
+        protected override void End()
+        {
+            base.End();
+            _knockBackBehaviour.PanelBounceEnabled = true;
         }
     }
 }

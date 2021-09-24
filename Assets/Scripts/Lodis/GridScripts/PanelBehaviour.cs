@@ -22,6 +22,8 @@ namespace Lodis.GridScripts
         private float _maxBounceForce = 3.0f;
         [SerializeField]
         private float _bounceDampening = 3.0f;
+        [SerializeField]
+        private float _friction = 3.0f;
         private MeshRenderer _mesh;
         private void Awake()
         {
@@ -120,13 +122,38 @@ namespace Lodis.GridScripts
                 }
             }
 
-            if (Vector3.Dot(Vector3.down, knockbackScript.LastVelocity) <= 0 || !knockbackScript.InHitStun || knockbackScript.LastVelocity.magnitude <= 1)
+            //Don't add a force if the object is traveling at a low speed
+            if (knockbackScript.LastVelocity.magnitude <= 0.1f || knockbackScript.Bounciness <= 0 || !knockbackScript.PanelBounceEnabled)
                 return;
 
-            float upMagnitude = Mathf.Clamp(knockbackScript.LastVelocity.magnitude / _bounceDampening, 0, _maxBounceForce);
+            float upMagnitude = 0;
+            upMagnitude = knockbackScript.LastVelocity.magnitude;
 
-            knockbackScript.StopVelocity();
+            if (_bounceDampening > knockbackScript.Bounciness )
+                //Calculate and apply friction force
+                upMagnitude /= _bounceDampening - knockbackScript.Bounciness;
+
             knockbackScript.ApplyImpulseForce(Vector3.up * upMagnitude);
+        }
+
+        private void OnTriggerStay(Collider other)
+        {
+            //Get knock back script to apply force
+            Movement.KnockbackBehaviour knockbackScript = other.transform.root.GetComponent<Movement.KnockbackBehaviour>();
+
+            //Return if the object doesn't have one or is invincible
+            if (!knockbackScript)
+                return;
+            else if (knockbackScript.IsInvincible || knockbackScript.InFreeFall)
+                return;
+
+            //Don't add a force if the object is traveling at a low speed
+            if (knockbackScript.LastVelocity.magnitude <= 0.5f)
+                return;
+
+            //Calculate and apply friction force
+            Vector3 frictionForce = new Vector3(knockbackScript.Mass * knockbackScript.LastVelocity.x, 0, 0).normalized * _friction;
+            knockbackScript.ApplyForce(-frictionForce);
         }
     }
 }

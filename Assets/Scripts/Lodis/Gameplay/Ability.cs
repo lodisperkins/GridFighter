@@ -89,7 +89,7 @@ namespace Lodis.Gameplay
                 return _inUse;
             }
         }
-        
+
         private IEnumerator StartAbility(params object[] args)
         {
             _inUse = true;
@@ -105,6 +105,7 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.RECOVER;
             Deactivate();
             yield return new WaitForSeconds(abilityData.recoverTime);
+            End();
             onEnd?.Invoke();
             _inUse = false;
         }
@@ -243,6 +244,8 @@ namespace Lodis.Gameplay
         protected abstract void Activate(params object[] args);
 
         protected virtual void Deactivate() { }
+
+        protected virtual void End() { }
 
         public virtual void Update() { }
     }

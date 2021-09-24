@@ -23,6 +23,8 @@ MonoBehaviour:
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
+  cancelOnHit: 0
+  cancelOnKnockback: 1
   IgnoreColliders: 0
   ColliderPriority: 0
   useAbilityTimingForAnimation: 1
@@ -31,15 +33,15 @@ MonoBehaviour:
     type: 3}
   _customStats:
   - name: Damage
-    value: 1
+    value: 2
   - name: KnockBackScale
-    value: 0
+    value: 0.5
   - name: HitAngle
-    value: 0
+    value: 0.1
   - name: Speed
-    value: 20
+    value: 10
   - name: Lifetime
-    value: 3
+    value: 0.5
   - name: MaxInstances
     value: 2
   - name: TimeBetweenShots
