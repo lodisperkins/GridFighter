@@ -50,6 +50,10 @@ namespace Lodis.Gameplay
                 _reboundCount++;
                 _reboundCollider.ColliderOwner = other;
             }
+            else if(other.CompareTag("Structure"))
+            {
+                MonoBehaviour.Destroy(_reboundCollider.gameObject);
+            }
         }
     }
 }

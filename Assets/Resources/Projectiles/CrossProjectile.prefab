@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 6191764178667241372}
   - component: {fileID: 5527316790417086257}
   - component: {fileID: 5685255286171278264}
-  - component: {fileID: 8959975860369951007}
   m_Layer: 0
   m_Name: LaserCollider
   m_TagString: Untagged
@@ -80,20 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &8959975860369951007
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2611534719253187951}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4595919800187055321
 GameObject:
   m_ObjectHideFlags: 0
@@ -136,7 +121,6 @@ GameObject:
   - component: {fileID: 6740710593715228765}
   - component: {fileID: 6740710593715228760}
   - component: {fileID: 6740710593715228763}
-  - component: {fileID: 6740710593715228762}
   m_Layer: 0
   m_Name: LaserCollider
   m_TagString: Untagged
@@ -205,20 +189,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &6740710593715228762
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6740710593715228764}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6740710594196494068
 GameObject:
   m_ObjectHideFlags: 0
@@ -261,6 +231,7 @@ GameObject:
   - component: {fileID: 6740710594312166089}
   - component: {fileID: 5936926029810059218}
   - component: {fileID: 6529642886446870133}
+  - component: {fileID: 6239634632965324607}
   m_Layer: 0
   m_Name: CrossProjectile
   m_TagString: Untagged
@@ -316,6 +287,19 @@ MonoBehaviour:
   axis: {x: 0, y: 1, z: 0}
   speed: 8
   rotateOnSelf: 0
+--- !u!65 &6239634632965324607
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6740710594312166088}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.1, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &6740710594390925244
 PrefabInstance:
   m_ObjectHideFlags: 0
