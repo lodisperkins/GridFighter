@@ -53,6 +53,7 @@ namespace Lodis.Gameplay
         private float _deckReloadTime;
         private bool _deckReloading;
         private Coroutine _abilityRoutine;
+        private Movement.GridMovementBehaviour _movementBehaviour;
 
         public Transform ProjectileSpawnTransform
         {
@@ -77,6 +78,7 @@ namespace Lodis.Gameplay
             _normalDeck = Instantiate(_normalDeckRef);
             _specialDeck = Instantiate(_specialDeckRef);
             InitializeDecks();
+            _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
         }
 
         private void InitializeDecks()
@@ -252,13 +254,31 @@ namespace Lodis.Gameplay
             }
         }
 
+        private void FixedUpdate()
+        {
+            if (_lastAbilityInUse != null)
+            {
+                if (_lastAbilityInUse.InUse)
+                {
+                    _lastAbilityInUse.FixedUpdate();
+                }
+            }
+        }
+
         private void Update()
         {
 
-            if (_lastAbilityInUse != null )
+            if (_lastAbilityInUse != null)
             {
                 if (_lastAbilityInUse.InUse)
+                {
                     _lastAbilityInUse.Update();
+
+                    if (!_lastAbilityInUse.abilityData.CanMoveWhileActive && _movementBehaviour) 
+                    {
+                        _movementBehaviour.DisableMovement(condition => !_lastAbilityInUse.InUse, true, true);
+                    }
+                }
             }
 
 

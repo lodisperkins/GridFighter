@@ -88,6 +88,11 @@ namespace Lodis.Gameplay
             collider2.OnHit = collider1.OnHit;
         }
 
+        public void ResetActiveTime()
+        {
+            StartTime = Time.time;
+        }
+
         /// <summary>
         /// Initializes this colliders stats
         /// </summary>

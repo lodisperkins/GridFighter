@@ -9,41 +9,39 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
-  m_Name: DK_Boomerang_Data
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: DK_EnergyBarrier_Data
   m_EditorClassIdentifier: 
-  abilityName: Boomerang
+  abilityName: EnergyBarrier
   AbilityType: 8
   damageType: 0
-  timeActive: 0.1
-  recoverTime: 1
-  startUpTime: 0.1
+  timeActive: 1.5
+  recoverTime: 0.8
+  startUpTime: 0.2
   chargeTime: 0
   maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 1
+  canCancelRecover: 0
+  CanMoveWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1
-  IgnoreColliders: 1
+  IgnoreColliders: 0
   ColliderPriority: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 0}
+  visualPrefab: {fileID: 8412238000456877338, guid: ad66597b9b3774445a25644aaaaf61d7,
+    type: 3}
   _customStats:
   - name: Damage
-    value: 5
+    value: 2
   - name: KnockBackScale
-    value: 0.4
-  - name: HitAngle
-    value: 0.6
-  - name: Speed
-    value: 5
-  - name: Lifetime
-    value: 0
-  - name: MaxInstances
     value: 1
-  - name: MaxRebounds
-    value: 5
-  animationType: 3
-  _customAnimation: {fileID: 7400000, guid: f2fdba8a6b7bbc540a4d208285dd348c, type: 3}
+  - name: HitAngle
+    value: 0.5
+  - name: XOffset
+    value: 1
+  - name: YOffset
+    value: 0.5
+  animationType: 0
+  _customAnimation: {fileID: 0}

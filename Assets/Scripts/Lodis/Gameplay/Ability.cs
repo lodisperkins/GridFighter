@@ -248,6 +248,8 @@ namespace Lodis.Gameplay
         protected virtual void End() { }
 
         public virtual void Update() { }
+
+        public virtual void FixedUpdate() { }
     }
 
     public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor
