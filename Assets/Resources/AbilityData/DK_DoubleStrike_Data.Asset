@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: DK_DoubleStrike_Data
+  m_EditorClassIdentifier: 
+  abilityName: DoubleStrike
+  AbilityType: 8
+  damageType: 0
+  timeActive: 0.1
+  recoverTime: 0.2
+  startUpTime: 0.2
+  chargeTime: 0
+  maxActivationAmount: 0
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 0
+  CanMoveWhileActive: 0
+  cancelOnHit: 0
+  cancelOnKnockback: 1
+  IgnoreColliders: 1
+  ColliderPriority: 0
+  useAbilityTimingForAnimation: 0
+  playAnimationManually: 1
+  visualPrefab: {fileID: 0}
+  _customStats: []
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: f1b6c7ee24cb2f144b7613710f9ed26c, type: 3}

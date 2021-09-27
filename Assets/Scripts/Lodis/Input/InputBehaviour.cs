@@ -93,6 +93,14 @@ namespace Lodis.Input
             }
         }
 
+        public Vector2 AttackDirection
+        {
+            get
+            {
+                return _attackDirection;
+            }
+        }
+
         private void Awake()
         {
             //Initialize action delegates
