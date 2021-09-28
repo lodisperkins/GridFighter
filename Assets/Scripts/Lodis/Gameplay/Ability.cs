@@ -55,6 +55,7 @@ namespace Lodis.Gameplay
         public UnityAction onDeactivate = null;
         private bool _inUse;
         protected Movement.GridMovementBehaviour _ownerMoveScript;
+        protected CharacterAnimationBehaviour _ownerAnimationScript;
         public int currentActivationAmount;
         private bool _canPlayAnimation;
 
@@ -169,21 +170,21 @@ namespace Lodis.Gameplay
                 case AbilityPhase.STARTUP:
                     if (abilityData.canCancelStartUp)
                     {
-                        StopAbility();
+                        EndAbility();
                         return true;
                     }
                     break;
                 case AbilityPhase.ACTIVE:
                     if (abilityData.canCancelActive)
                     {
-                        StopAbility();
+                        EndAbility();
                         return true;
                     }
                     break;
                 case AbilityPhase.RECOVER:
                     if (abilityData.canCancelRecover)
                     {
-                        StopAbility();
+                        EndAbility();
                         return true;
                     }
                     break;
@@ -211,11 +212,12 @@ namespace Lodis.Gameplay
             onDeactivate?.Invoke();
             Deactivate();
             onEnd?.Invoke();
+            End();
             _inUse = false;
             ownerMoveset.RemoveAbilityFromSlot(this);
         }
 
-        public void PlayAnimation()
+        public void EnableAnimation()
         {
             _canPlayAnimation = true;
         }

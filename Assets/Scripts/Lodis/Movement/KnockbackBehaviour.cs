@@ -54,7 +54,7 @@ namespace Lodis.Movement
         private float _extraHeight = 0.5f;
         private Vector3 _boxPosition;
         [SerializeField]
-        private Vector3 _extents;
+        private Vector3 _bounceColliderExtents;
         private UnityAction _onKnockBackTemp;
         private UnityAction _onKnockBackStartTemp;
         private UnityAction _onTakeDamageTemp;
@@ -203,6 +203,14 @@ namespace Lodis.Movement
             }
         }
 
+        public Collider BounceCollider
+        {
+            get
+            {
+                return _bounceCollider;
+            }
+        }
+
         public Vector3 Acceleration { get => _acceleration; }
 
         private void Awake()
@@ -224,7 +232,7 @@ namespace Lodis.Movement
             OnCollision += TryStartLandingLag;
             _onKnockBack += () => Landing = false;
             _onKnockBackStart += () => { if (Stunned) { UnfreezeObject(); } };
-
+            _bounceColliderExtents = new Vector3(_bounceCollider.bounds.extents.x, _bounceCollider.bounds.extents.y, _bounceCollider.bounds.extents.z);
         }
 
         /// <summary>
@@ -585,14 +593,13 @@ namespace Lodis.Movement
         {
             bool collidedWithGround = false;
             _boxPosition = _bounceCollider.bounds.center;
-            _extents = new Vector3(_bounceCollider.bounds.extents.x, _extraHeight, _bounceCollider.bounds.extents.z);
             Debug.DrawRay(_bounceCollider.bounds.center, new Vector3(0, -(_bounceCollider.bounds.extents.y + _extraHeight), 0));
             return Physics.Raycast(_bounceCollider.bounds.center, new Vector3(0, -_bounceCollider.bounds.extents.y, 0), (_bounceCollider.bounds.extents.y + _extraHeight), LayerMask.GetMask(new string[] { "Structure"}));
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawCube(_boxPosition, _extents);
+            Gizmos.DrawCube(_boxPosition, _bounceColliderExtents);
         }
 
         /// /// <summary>

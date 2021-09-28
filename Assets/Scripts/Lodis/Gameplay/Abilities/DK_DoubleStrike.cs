@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _fistCollider;
         private GameObject _visualPrefabInstance;
         private Vector2 _attackDirection;
+        private bool _usedFirstStrike;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -27,32 +28,40 @@ namespace Lodis.Gameplay
         {
             base.Start(args);
             _attackDirection = _ownerInput.AttackDirection;
-            PlayAnimation();
+            EnableAnimation();
+            _ownerMoveSpeed = _ownerMoveScript.Speed;
         }
 
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
             _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
-                abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true);
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, false, false, true);
 
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, _visualPrefabInstance.transform.localScale, _fistCollider, owner);
+
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(owner.transform, new Vector3(1, 0.5f, 0.2f), _fistCollider);
             hitScript.debuggingEnabled = true;
 
             Vector2 attackPosition;
-            if (_ownerInput.AttackDirection == Vector2.zero)
-                attackPosition = _ownerMoveScript.Position + (Vector2)(owner.transform.forward * abilityData.GetCustomStatValue("TravelDistance"));
-            else
-                attackPosition = _ownerMoveScript.Position + (_ownerInput.AttackDirection * abilityData.GetCustomStatValue("TravelDistance"));
+            if (_attackDirection == Vector2.zero)
+                _attackDirection = (Vector2)(owner.transform.forward);
+            
+            attackPosition = _ownerMoveScript.Position + (_attackDirection * abilityData.GetCustomStatValue("TravelDistance"));
+
+            attackPosition.x = Mathf.Clamp(attackPosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
+            attackPosition.y = Mathf.Clamp(attackPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
 
             _ownerMoveScript.canCancelMovement = true;
-            _ownerMoveSpeed = _ownerMoveScript.Speed;
-            _ownerMoveScript.Speed = (abilityData.GetCustomStatValue("TravelDistance") * 2) / abilityData.timeActive;
+            float distance = abilityData.GetCustomStatValue("TravelDistance") + (abilityData.GetCustomStatValue("TravelDistance") * BlackBoardBehaviour.Instance.Grid.PanelSpacing);
+            _ownerMoveScript.Speed = (distance * 2/ abilityData.timeActive) * BlackBoardBehaviour.Instance.Grid.PanelSpacing;
 
             _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
             _ownerMoveScript.AlwaysLookAtOpposingSide = false;
-            _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY);
+            owner.transform.forward = new Vector3(_attackDirection.x, 0, _attackDirection.y);
+            _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true);
+
+            
         }
 
         protected override void Deactivate()
@@ -73,10 +82,13 @@ namespace Lodis.Gameplay
         public override void Update()
         {
             base.Update();
-            if (_ownerInput.AttackDirection.magnitude > 0)
+            if (_ownerInput.AttackDirection.magnitude > 0 && !_usedFirstStrike && CurrentAbilityPhase == AbilityPhase.RECOVER)
             {
                 Deactivate();
+                ownerMoveset.StopAbilityRoutine();
+                _attackDirection = _ownerInput.AttackDirection;
                 UseAbility();
+                _usedFirstStrike = true;
             }
         }
     }

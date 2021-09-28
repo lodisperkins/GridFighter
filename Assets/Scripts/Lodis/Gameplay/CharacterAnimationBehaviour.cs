@@ -297,6 +297,12 @@ namespace Lodis.Gameplay
             }
         }
 
+        public void StopCurrentAnimation()
+        {
+            _animator.StopPlayback();
+            _playableGraph.Stop();
+        }
+
         private void PlayMovementAnimation()
         {
             _animatingMotion = true;

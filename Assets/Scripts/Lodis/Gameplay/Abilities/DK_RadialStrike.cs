@@ -14,6 +14,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _hitCollider;
         private GameObject _visualPrefabInstance;
         private bool _inPosition = false;
+        private bool _deactivated = false;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -23,7 +24,10 @@ namespace Lodis.Gameplay
 
         private void SpawnHitBox()
         {
-            PlayAnimation();
+            if (_deactivated)
+                return;
+
+            EnableAnimation();
             _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
             _inPosition = true;
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform);
@@ -62,6 +66,7 @@ namespace Lodis.Gameplay
         {
             base.Deactivate();
             MonoBehaviour.Destroy(_visualPrefabInstance);
+            _deactivated = true;
         }
 
         public override void EndAbility()

@@ -15,8 +15,8 @@ MonoBehaviour:
   abilityName: DoubleStrike
   AbilityType: 8
   damageType: 0
-  timeActive: 0.3
-  recoverTime: 0.2
+  timeActive: 0.4
+  recoverTime: 0.1
   startUpTime: 0.2
   chargeTime: 0
   maxActivationAmount: 0

@@ -297,12 +297,13 @@ namespace Lodis.Movement
 
             if (IsMoving && waitForEndOfMovement)
             { 
-                AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); });
+                AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); _isMoving = false; });
             }
             else
             {
                 _canMove = false;
                 StopAllCoroutines();
+                _isMoving = false;
             }
 
             _movementEnableCheck = enableCondition;

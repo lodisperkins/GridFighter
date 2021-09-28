@@ -63,12 +63,12 @@ namespace Lodis.Gameplay
             _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
 
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider, owner);
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider);
             MoveHitBox(_visualPrefabInstances.Item1, owner.transform.forward);
             hitScript.debuggingEnabled = true;
 
             _visualPrefabInstances.Item2 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
-            hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item2.transform, _visualPrefabInstances.Item2.transform.localScale, _shockWaveCollider, owner);
+            hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item2.transform, _visualPrefabInstances.Item2.transform.localScale, _shockWaveCollider);
             MoveHitBox(_visualPrefabInstances.Item2, -owner.transform.forward);
 
             hitScript.debuggingEnabled = true;
