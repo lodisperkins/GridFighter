@@ -53,7 +53,7 @@ namespace Lodis.ScriptableObjects
         [Tooltip("If true, this ability can be canceled into others in the recover phase")]
         public bool canCancelRecover = false;
         [Tooltip("If false, the user of this ability can't move while it's active")]
-        public bool CanMoveWhileActive = true;
+        public bool CanInputMovementWhileActive = true;
         [Tooltip("If true, this ability will be canceled when the user is hit")]
         public bool cancelOnHit = false;
         [Tooltip("If true, this ability will be canceled when the user is in knockback")]

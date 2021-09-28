@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -41,6 +42,11 @@ namespace Lodis.Gameplay
                 owner, false, false, true);
 
             return hitScript;
+        }
+
+        internal static HitColliderBehaviour SpawnBoxCollider(object transform, object localScale, HitColliderBehaviour fistCollider, GameObject owner)
+        {
+            throw new NotImplementedException();
         }
 
         public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, float damage,

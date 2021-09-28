@@ -14,7 +14,7 @@ namespace Lodis.Gameplay
     {
         private KnockbackBehaviour _knockBackBehaviour;
         private float _ownerGravity;
-        private HitColliderBehaviour _shockWaveCollider;
+        private HitColliderBehaviour _fistCollider;
         private (GameObject, GameObject) _visualPrefabInstances;
         private (Coroutine, Coroutine) _visualPrefabCoroutines;
         private GridBehaviour _grid;
@@ -97,13 +97,13 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            _shockWaveCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
+            _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
                 abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true);
 
             _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
 
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider, owner);
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _fistCollider, owner);
             hitScript.debuggingEnabled = true;
 
             Vector3 spikeVelocity = AddForce(false).normalized * abilityData.GetCustomStatValue("DownwardSpeed");

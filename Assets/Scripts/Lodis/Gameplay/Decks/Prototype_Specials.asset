@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Prototype_Specials
   m_EditorClassIdentifier: 
   _abilityData:
-  - {fileID: 11400000, guid: ca9056643b8b22d4d8745aec9bf4fd47, type: 2}
-  - {fileID: 11400000, guid: ca9056643b8b22d4d8745aec9bf4fd47, type: 2}
+  - {fileID: 11400000, guid: 94c2c8358acbbab48989dbd917fb033e, type: 2}
+  - {fileID: 11400000, guid: 94c2c8358acbbab48989dbd917fb033e, type: 2}
   _deckName: PrototypeSpecials

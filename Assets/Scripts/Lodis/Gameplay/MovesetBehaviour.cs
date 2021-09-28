@@ -54,6 +54,7 @@ namespace Lodis.Gameplay
         private bool _deckReloading;
         private Coroutine _abilityRoutine;
         private Movement.GridMovementBehaviour _movementBehaviour;
+        private Input.InputBehaviour _inputBehaviour;
 
         public Transform ProjectileSpawnTransform
         {
@@ -79,6 +80,7 @@ namespace Lodis.Gameplay
             _specialDeck = Instantiate(_specialDeckRef);
             InitializeDecks();
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
+            _inputBehaviour = GetComponent<Input.InputBehaviour>();
         }
 
         private void InitializeDecks()
@@ -160,7 +162,11 @@ namespace Lodis.Gameplay
 
             if (_animationBehaviour)
                 _animationBehaviour.abilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
-            
+
+
+            if (!currentAbility.abilityData.CanInputMovementWhileActive && _movementBehaviour)
+                _inputBehaviour.DisableMovementBasedOnCondition(condition => !_lastAbilityInUse.InUse);
+
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
              
@@ -273,11 +279,6 @@ namespace Lodis.Gameplay
                 if (_lastAbilityInUse.InUse)
                 {
                     _lastAbilityInUse.Update();
-
-                    if (!_lastAbilityInUse.abilityData.CanMoveWhileActive && _movementBehaviour) 
-                    {
-                        _movementBehaviour.DisableMovement(condition => !_lastAbilityInUse.InUse, true, true);
-                    }
                 }
             }
 

@@ -38,6 +38,7 @@ namespace Lodis.Movement
         [Tooltip("The side of the grid that this object can move on by default.")]
         [SerializeField]
         private GridAlignment _defaultAlignment = GridAlignment.ANY;
+        private GridAlignment _tempAlignment;
         private PanelBehaviour _currentPanel;
         private Condition _movementEnableCheck;
         private GridGame.GameEventListener _moveEnabledEventListener;
@@ -153,6 +154,30 @@ namespace Lodis.Movement
             }
         }
 
+        public bool MoveToAlignedSideWhenStuck
+        {
+            get
+            {
+                return _moveToAlignedSideIfStuck;
+            }
+            set
+            {
+                _moveToAlignedSideIfStuck = value;
+            }
+        }
+
+        public bool AlwaysLookAtOpposingSide
+        {
+            get
+            {
+                return _alwaysLookAtOpposingSide;
+            }
+            set
+            {
+                _alwaysLookAtOpposingSide = value;
+            }
+        }
+
         public PanelBehaviour TargetPanel
         {
             get
@@ -193,7 +218,7 @@ namespace Lodis.Movement
             if (_knockbackBehaviour)
                 _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
 
-
+            _tempAlignment = _defaultAlignment;
         }
 
         /// <summary>
@@ -282,6 +307,7 @@ namespace Lodis.Movement
 
             _movementEnableCheck = enableCondition;
             _moveDisabledEventListener.Invoke(gameObject);
+            _tempAlignment = Alignment;
         }
 
         /// <summary>
@@ -312,6 +338,7 @@ namespace Lodis.Movement
             _moveEnabledEventListener.IntendedSender = intendedSender;
             _moveEnabledEventListener.AddAction(() => { _canMove = true; });
             _moveDisabledEventListener.Invoke(gameObject);
+            _tempAlignment = Alignment;
         }
 
         /// <summary>
@@ -358,6 +385,7 @@ namespace Lodis.Movement
             }
 
             MoveDirection = Vector2.zero;
+            _tempAlignment = Alignment;
         }
 
         /// <summary>
@@ -370,6 +398,8 @@ namespace Lodis.Movement
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
+            else
+                _tempAlignment = tempAlignment;
 
             if (IsMoving && !canCancelMovement || !_canMove)
                 return false;
@@ -431,6 +461,8 @@ namespace Lodis.Movement
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
+            else
+                _tempAlignment = tempAlignment;
 
             if (IsMoving && !canCancelMovement ||!_canMove)
                 return false;
@@ -488,6 +520,8 @@ namespace Lodis.Movement
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
+            else
+                _tempAlignment = tempAlignment;
 
             if (!targetPanel)
                 return false;
@@ -577,7 +611,7 @@ namespace Lodis.Movement
         public void MoveToClosestAlignedPanelOnRow()
         {
 
-            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || !CanMove || Alignment == GridAlignment.ANY)
+            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || !CanMove || Alignment == GridAlignment.ANY || Alignment != _tempAlignment)
                 return;
 
             //NEEDS BETTER IMPLEMENTATION
