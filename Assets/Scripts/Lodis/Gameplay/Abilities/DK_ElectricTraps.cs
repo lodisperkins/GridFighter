@@ -71,14 +71,26 @@ namespace Lodis.Gameplay
 
         }
 
+        /// <summary>
+        /// Stuns the object that came in contact with a link
+        /// </summary>
+        /// <param name="args"></param>
         private void StunEntity(params object[] args)
         {
+            //Get health beahviour
             GameObject entity = (GameObject)args[0];
             HealthBehaviour entityHealth = entity.GetComponent<HealthBehaviour>();
+
+            //If there  is a health behaviour...
             if (entityHealth)
+                //...stun the entity
                 entityHealth.Stun(abilityData.GetCustomStatValue("StunTime"));
         }
 
+        /// <summary>
+        /// Destroys all links
+        /// </summary>
+        /// <param name="time"></param>
         private void DestroyLinks(float time)
         {
             if (_linkMoveScripts.Count == 0)

@@ -6,7 +6,7 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Enter ability description here
+    /// Steals a row of panels in front
     /// </summary>
     public class DK_PanelSteal : Ability
     {
@@ -19,6 +19,7 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
+            //Call row stealing func
             BlackBoardBehaviour.Instance.Grid.ExchangeRowsByTimer((int)abilityData.GetCustomStatValue("AmountOfRows"), _ownerMoveScript.Alignment, abilityData.GetCustomStatValue("OwnershipTime"));
         }
     }
