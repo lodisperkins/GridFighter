@@ -163,14 +163,9 @@ namespace Lodis.Gameplay
             if (_animationBehaviour)
                 _animationBehaviour.abilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
 
-
-            if (!currentAbility.abilityData.CanInputMovementWhileActive && _movementBehaviour)
-                _inputBehaviour.DisableMovementBasedOnCondition(condition => !_lastAbilityInUse.InUse);
-
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
              
-
             //Return new ability
             return _lastAbilityInUse;
         }
@@ -182,7 +177,8 @@ namespace Lodis.Gameplay
 
         public void StopAbilityRoutine()
         {
-            StopCoroutine(_abilityRoutine);
+            if (_abilityRoutine != null)
+                StopCoroutine(_abilityRoutine);
         }
 
         private void ReloadDeck()
@@ -230,13 +226,13 @@ namespace Lodis.Gameplay
 
             //Doesn't increment ability use amount before checking max
             currentAbility.UseAbility(args);
+            _lastAbilityInUse = currentAbility;
 
             currentAbility.currentActivationAmount++;
 
             if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached && !_deckReloading)
                 currentAbility.onDeactivate += () => StartCoroutine(ChargeNextAbility(abilitySlot));
 
-            _lastAbilityInUse = currentAbility;
 
             //Return new ability
             return _lastAbilityInUse;

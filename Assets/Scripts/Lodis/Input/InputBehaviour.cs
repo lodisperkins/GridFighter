@@ -218,11 +218,15 @@ namespace Lodis.Input
                     _lastAbilityUsed = _moveset.UseSpecialAbility(0, args);
                 else if ((int)args[0] == 1)
                     _lastAbilityUsed = _moveset.UseSpecialAbility(1, args);
+
+               if (_lastAbilityUsed?.abilityData.CanInputMovementWhileActive == false)
+                    DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
             }
             else
+            {
                 _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
-
-            _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
+                _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
+            }
         }
 
         private void UseDefensiveAction()
@@ -273,6 +277,7 @@ namespace Lodis.Input
             }
         }
 
+        private int _useCount;
         /// <summary>
         /// Enable player movement
         /// </summary>
@@ -284,7 +289,6 @@ namespace Lodis.Input
                 _moveInputEnableCondition = condition => _playerState == PlayerState.IDLE;
                 return false;
             }
-
             _canMove = true;
             return true;
         }

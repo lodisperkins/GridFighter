@@ -34,7 +34,7 @@ namespace Lodis.Gameplay
             _barrierCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, true, false);
             //Allow canceling on hit
-            _barrierCollider.onHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; _reflected = true; };
+            _barrierCollider.onHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
 
             //Set the position of the barrier in relation to the character
             Vector3 offset = new Vector3(abilityData.GetCustomStatValue("XOffset"), abilityData.GetCustomStatValue("YOffset"), 0) * owner.transform.forward.x;
@@ -73,7 +73,6 @@ namespace Lodis.Gameplay
                 otherHitCollider.ResetActiveTime();
                 otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.Impulse);
 
-                EndAbility();
             }
         }
 
@@ -94,6 +93,7 @@ namespace Lodis.Gameplay
                 if (collider.gameObject != _visualPrefabInstance)
                     TryReflectProjectile(collider.gameObject);
             }
+                
         }
 
         protected override void Deactivate()
