@@ -303,7 +303,7 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
+  _bounceDampen: 1.5
   _isInvincible: 0
   _visibleLayers:
   - Player

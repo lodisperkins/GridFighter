@@ -175,6 +175,7 @@ MonoBehaviour:
   TimeActive: 0
   IsMultiHit: 0
   DestroyOnHit: 0
+  HitFrames: 0
   IgnoreColliders: 1
 --- !u!65 &7080764703363995812
 BoxCollider:
@@ -349,9 +350,9 @@ MonoBehaviour:
   _health: 0
   _destroyOnDeath: 0
   _isAlive: 0
-  _bounceDampen: 6
+  _bounceDampen: 3
   _isInvincible: 0
-  _mass: 5
+  _mass: 2.8
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
@@ -360,7 +361,7 @@ MonoBehaviour:
   _gravity: 9.81
   _bounceCollider: {fileID: 1797995424193797808}
   _extraHeight: 0.1
-  _extents: {x: 0, y: 0, z: 0}
+  _bounceColliderExtents: {x: 0, y: 0, z: 0}
   _bounciness: 1
   _panelBounceEnabled: 1
 --- !u!114 &5685934378965997192
@@ -454,7 +455,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 4
+  _attackType: 8
   _attackDelay: 1
   _attackStrength: 1.08
   _zDirection: 1

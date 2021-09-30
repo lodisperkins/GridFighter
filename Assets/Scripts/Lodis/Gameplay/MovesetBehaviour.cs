@@ -231,7 +231,7 @@ namespace Lodis.Gameplay
             currentAbility.currentActivationAmount++;
 
             if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached && !_deckReloading)
-                currentAbility.onDeactivate += () => StartCoroutine(ChargeNextAbility(abilitySlot));
+                currentAbility.onEnd += () => StartCoroutine(ChargeNextAbility(abilitySlot));
 
 
             //Return new ability

@@ -269,7 +269,7 @@ MonoBehaviour:
   _health: 0
   _destroyOnDeath: 0
   _isAlive: 0
-  _bounceDampen: 6
+  _bounceDampen: 4
   _isInvincible: 0
   _mass: 5
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
@@ -280,7 +280,7 @@ MonoBehaviour:
   _gravity: 9.81
   _bounceCollider: {fileID: 5036224701878357983}
   _extraHeight: 0.1
-  _extents: {x: 0, y: 0, z: 0}
+  _bounceColliderExtents: {x: 0, y: 0, z: 0}
   _bounciness: 0.8
   _panelBounceEnabled: 1
 --- !u!114 &-6459078877488197423
