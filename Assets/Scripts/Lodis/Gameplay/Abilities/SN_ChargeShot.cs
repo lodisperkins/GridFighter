@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
             owner = newOwner;
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
+            _projectile = abilityData.visualPrefab;
         }
 
 	    //Called when ability is used
@@ -46,7 +46,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
                 return;
             }
 
@@ -55,6 +55,8 @@ namespace Lodis.Gameplay
 
             _projectileCollider = new HitColliderBehaviour(shotDamage, knockBackScale, abilityData.GetCustomStatValue("HitAngle"), true,
                 abilityData.GetCustomStatValue("Lifetime"), owner, true);
+            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _projectileCollider.Priority = abilityData.ColliderPriority;
 
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();

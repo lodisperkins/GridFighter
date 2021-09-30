@@ -10,11 +10,6 @@ namespace Lodis.Gameplay
     /// </summary>
     public class #SCRIPTNAME# : Ability
     {
-
-	public #SCRIPTNAME#()
-	{
-		Debug.Log("Constructor Called");
-	}
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
         {

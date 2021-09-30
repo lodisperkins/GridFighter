@@ -34,10 +34,13 @@ namespace Lodis.Gameplay
         private PlayerStateManagerBehaviour _p2StateManager;
         private Input.InputBehaviour _p1Input;
         private Input.InputBehaviour _p2Input;
+        private MovesetBehaviour _player1Moveset;
         [SerializeField]
         private HealthBarBehaviour _p1HealthBar;
         [SerializeField]
         private HealthBarBehaviour _p2HealthBar;
+        [SerializeField]
+        private AbilityDebugTextBehaviour _abilityTextP1;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierL;
         [SerializeField]
@@ -50,13 +53,14 @@ namespace Lodis.Gameplay
         private void Awake()
         {
             _inputManager.playerPrefab = _playerRef;
+            _grid.DestroyTempPanels();
+            //Initialize grid
+            _grid.CreateGrid();
         }
 
         // Start is called before the first frame update
         void Start()
         {
-            //Initialize grid
-            _grid.CreateGrid();
 
             InputDevice[] devices = { Keyboard.current, Mouse.current };
             //Spawn player 1
@@ -69,6 +73,7 @@ namespace Lodis.Gameplay
             _p1Movement = _player1.GetComponent<Movement.GridMovementBehaviour>();
             _p1StateManager = _player1.GetComponent<PlayerStateManagerBehaviour>();
             _p1Input = _player1.GetComponent<Input.InputBehaviour>();
+            _player1Moveset = _player1.GetComponent<MovesetBehaviour>();
 
             //Assign ID 
             _p1Input.PlayerID = 0;
@@ -76,9 +81,10 @@ namespace Lodis.Gameplay
             //Initialize base UI stats
             _p1HealthBar.HealthComponent = _player1.GetComponent<Movement.KnockbackBehaviour>();
             _p1HealthBar.MaxValue = 200;
+            _abilityTextP1.MoveSet = _player1Moveset;
 
             //Move player to spawn
-            _p1Movement.Position = _grid.LhsSpawnPanel.Position;
+            _p1Movement.MoveToPanel(_grid.LhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
             _player1.transform.forward = Vector3.right;
 
@@ -103,7 +109,7 @@ namespace Lodis.Gameplay
 
                 //Move player to spawn
                 _p2Input.PlayerID = 1;
-                _p2Movement.Position = _grid.RhsSpawnPanel.Position;
+                _p2Movement.MoveToPanel(_grid.RhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
                 _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
                 _grid.AssignOwners(_player1.name, _player2.name);
                 return;
@@ -127,7 +133,7 @@ namespace Lodis.Gameplay
                 //Find spawn point for dummy
                 GridScripts.PanelBehaviour spawnPanel = null;
                 if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))
-                    _p2Movement.Position = spawnPanel.Position;
+                    _p2Movement.MoveToPanel(spawnPanel, true, GridScripts.GridAlignment.ANY);
                 else
                     Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummySpawnLocation);
 

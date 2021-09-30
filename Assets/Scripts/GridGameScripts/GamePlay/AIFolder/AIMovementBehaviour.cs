@@ -175,6 +175,7 @@ namespace GridGame.GamePlay.AI
             Debug.Log("Couldn't find neighboors");
             return new List<PanelBehaviour>();
         }
+
     	public List<PanelBehaviour>SortPanels(List<PanelBehaviour> nodelist)
     	{
     		PanelBehaviour temp;

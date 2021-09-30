@@ -7,6 +7,7 @@ using UnityEditor;
 using System;
 using System.IO;
 using Lodis.ScriptableObjects;
+using Lodis.Movement;
 
 namespace Lodis.Gameplay
 {
@@ -34,18 +35,50 @@ namespace Lodis.Gameplay
         //The object that is using the ability
         public GameObject owner = null;
         public MovesetBehaviour ownerMoveset = null;
+        protected KnockbackBehaviour _ownerKnockBackScript;
         public ScriptableObjects.AbilityData abilityData;
-        //Called when the character begins to use the ability and before the action actually happens
+        /// <summary>
+        /// Called when the character begins to use the ability and before the action actually happens
+        /// </summary>
         public UnityAction onBegin = null;
-        //Called when the ability is used and the recover time is up
+        /// <summary>
+        /// Called when the ability is used and the recover time is up
+        /// </summary>
         public UnityAction onEnd = null;
-        //Called when the ability's action happens
+        /// <summary>
+        /// Called when the ability's action happens
+        /// </summary>
         public UnityAction onActivate = null;
-        //Called when the ability is used and before the character has recovered
+        /// <summary>
+        /// Called when the ability is used and before the character has recovered
+        /// </summary>
         public UnityAction onDeactivate = null;
         private bool _inUse;
+        protected Movement.GridMovementBehaviour _ownerMoveScript;
+        protected CharacterAnimationBehaviour _ownerAnimationScript;
+        public int currentActivationAmount;
+        private bool _canPlayAnimation;
 
-        public AbilityPhase AbilityPhase { get; private set; }
+        public AbilityPhase CurrentAbilityPhase { get; private set; }
+
+        /// <summary>
+        /// If true, this ability is allowed to play its animation
+        /// </summary>
+        public bool CanPlayAnimation
+        {
+            get
+            {
+                return _canPlayAnimation;
+            }
+        }
+
+        public bool MaxActivationAmountReached
+        {
+            get
+            {
+                return currentActivationAmount >= abilityData.maxActivationAmount;
+            }
+        }
 
         /// <summary>
         /// Returns false at the end of the ability's recover time
@@ -57,21 +90,23 @@ namespace Lodis.Gameplay
                 return _inUse;
             }
         }
-        
+
         private IEnumerator StartAbility(params object[] args)
         {
             _inUse = true;
             onBegin?.Invoke();
-            AbilityPhase = AbilityPhase.STARTUP;
+            CurrentAbilityPhase = AbilityPhase.STARTUP;
+            Start(args);
             yield return new WaitForSeconds(abilityData.startUpTime);
             onActivate?.Invoke();
-            AbilityPhase = AbilityPhase.ACTIVE;
+            CurrentAbilityPhase = AbilityPhase.ACTIVE;
             Activate(args);
             yield return new WaitForSeconds(abilityData.timeActive);
             onDeactivate?.Invoke();
-            AbilityPhase = AbilityPhase.RECOVER;
+            CurrentAbilityPhase = AbilityPhase.RECOVER;
             Deactivate();
             yield return new WaitForSeconds(abilityData.recoverTime);
+            End();
             onEnd?.Invoke();
             _inUse = false;
         }
@@ -94,12 +129,12 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            ownerMoveset.StartCoroutine(StartAbility(args));
+            ownerMoveset.StartAbilityCoroutine(StartAbility(args));
         }
 
         public bool CheckIfAbilityCanBeCanceled()
         {
-            switch (AbilityPhase)
+            switch (CurrentAbilityPhase)
             {
                 case AbilityPhase.STARTUP:
                     if (abilityData.canCancelStartUp)
@@ -130,26 +165,26 @@ namespace Lodis.Gameplay
         /// <returns>Returns true if the current ability phase can be canceled</returns>
         public bool TryCancel()
         {
-            switch (AbilityPhase)
+            switch (CurrentAbilityPhase)
             {
                 case AbilityPhase.STARTUP:
                     if (abilityData.canCancelStartUp)
                     {
-                        StopAbility();
+                        EndAbility();
                         return true;
                     }
                     break;
                 case AbilityPhase.ACTIVE:
                     if (abilityData.canCancelActive)
                     {
-                        StopAbility();
+                        EndAbility();
                         return true;
                     }
                     break;
                 case AbilityPhase.RECOVER:
                     if (abilityData.canCancelRecover)
                     {
-                        StopAbility();
+                        EndAbility();
                         return true;
                     }
                     break;
@@ -158,19 +193,65 @@ namespace Lodis.Gameplay
             return false;
         }
 
-        public void StopAbility()
+        /// <summary>
+        /// Stops ability immedialtely without calling any ending events
+        /// </summary>
+        public virtual void StopAbility()
         {
-            ownerMoveset.StopAllCoroutines();
+            ownerMoveset.StopAbilityRoutine();
             _inUse = false;
         }
 
-        protected abstract void Activate(params object[] args);
-        public virtual void Init(GameObject owner)
+        /// <summary>
+        /// Stops ability, calls ending events, and removes the ability from the current ability slot
+        /// </summary>
+        public virtual void EndAbility()
         {
-            ownerMoveset = owner.GetComponent<MovesetBehaviour>();
+            ownerMoveset.StopAbilityRoutine();
+            currentActivationAmount = abilityData.maxActivationAmount;
+            onDeactivate?.Invoke();
+            Deactivate();
+            onEnd?.Invoke();
+            End();
+            _inUse = false;
+            ownerMoveset.RemoveAbilityFromSlot(this);
         }
 
+        public void EnableAnimation()
+        {
+            _canPlayAnimation = true;
+        }
+
+        public virtual void Init(GameObject newOwner)
+        {
+            owner = newOwner;
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/" + GetType().Name + "_Data"));
+            currentActivationAmount = 0;
+            _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
+            ownerMoveset = newOwner.GetComponent<MovesetBehaviour>();
+            _ownerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
+
+            _canPlayAnimation = !abilityData.playAnimationManually;
+        }
+
+        protected virtual void Start(params object[] args)
+        {
+            if (abilityData.cancelOnHit && _ownerKnockBackScript)
+                _ownerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
+            else if (abilityData.cancelOnKnockback && _ownerKnockBackScript)
+                _ownerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
+
+        }
+
+        protected abstract void Activate(params object[] args);
+
         protected virtual void Deactivate() { }
+
+        protected virtual void End() { }
+
+        public virtual void Update() { }
+
+        public virtual void FixedUpdate() { }
     }
 
     public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor

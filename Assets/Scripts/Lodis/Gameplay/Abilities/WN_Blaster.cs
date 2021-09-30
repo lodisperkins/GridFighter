@@ -29,13 +29,15 @@ namespace Lodis.Gameplay
             owner = newOwner;
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/Laser");
+            _projectile = abilityData.visualPrefab;
         }
 
         protected override void Activate(params object[] args)
         {
             _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _projectileCollider.Priority = abilityData.ColliderPriority;
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
@@ -46,7 +48,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
                 return;
             }
 

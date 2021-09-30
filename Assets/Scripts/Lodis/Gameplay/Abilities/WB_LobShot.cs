@@ -19,7 +19,6 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private float _shotDistance = 1;
-        private Movement.GridMovementBehaviour _ownerMoveScript;
         private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         //Called when ability is created
@@ -34,7 +33,7 @@ namespace Lodis.Gameplay
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/LobShot");
+            _projectile = abilityData.visualPrefab;
         }
 
         private Vector3 CalculateProjectileForce()
@@ -87,6 +86,9 @@ namespace Lodis.Gameplay
             _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
                  abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
 
+            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _projectileCollider.Priority = abilityData.ColliderPriority;
+
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
                 spawnTransform = owner.transform;
@@ -96,7 +98,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
                 return;
             }
 

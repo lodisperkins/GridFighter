@@ -11,6 +11,7 @@ namespace Lodis.Gameplay
         private string[] _visibleLayers;
         private float _rangeToIgnoreUpAngle;
         private Movement.GridMovementBehaviour _movement;
+        [SerializeField]
         private string _owner = "";
         [SerializeField]
         private float _pushScale;
@@ -39,17 +40,11 @@ namespace Lodis.Gameplay
         {
             Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript || !knockBackScript.InHitStun)
+            if (!knockBackScript)
                 return;
 
             //Calculate the knockback and hit angle for the ricochet
             ContactPoint contactPoint = collision.GetContact(0);
-
-            //Adds a force to objects to push them off of the field barrier if they land on top
-            if (contactPoint.normal == Vector3.down)
-            {
-                knockBackScript.ApplyImpulseForce(transform.forward * _pushScale);
-            }
 
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
@@ -57,13 +52,33 @@ namespace Lodis.Gameplay
             float velocityMagnitude = knockBackScript.LastVelocity.magnitude;
             float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
-            if (knockbackScale == 0 || float.IsNaN(knockbackScale))
+            if (knockbackScale == 0 || float.IsNaN(knockbackScale) || !knockBackScript.InHitStun)
                 return;
-
-            knockBackScript.StopVelocity();
 
             //Apply ricochet force and damage
             knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+            if (contactPoint.normal == Vector3.down)
+            {
+                Vector3 force = new Vector3(0, _pushScale * knockBackScript.Mass, 0) + transform.forward * _pushScale;
+                knockBackScript.ApplyImpulseForce(force);
+            }
+        }
+
+        private void OnCollisionStay(Collision collision)
+        {
+            //Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
+            ////Checks if the object is not grid moveable and isn't in hit stun
+            //if (!knockBackScript)
+            //    return;
+
+            ////Calculate the knockback and hit angle for the ricochet
+            //ContactPoint contactPoint = collision.GetContact(0);
+
+            ////Adds a force to objects to push them off of the field barrier if they land on top
+            //if (contactPoint.normal == Vector3.down)
+            //{
+            //    knockBackScript.ApplyForce(transform.forward * _pushScale);
+            //}
         }
 
         // Update is called once per frame

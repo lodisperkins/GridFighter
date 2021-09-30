@@ -29,7 +29,6 @@ namespace Lodis.Gameplay
         private float _weakShotDistance = 1;
         private float _weakShotDamage = 5;
         private float _weakShotForce = 1;
-        private Movement.GridMovementBehaviour _ownerMoveScript;
         private Transform _weakSpawnTransform;
         private List<GameObject> _activeProjectiles = new List<GameObject>();
 
@@ -41,10 +40,9 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SB_ChargeLobShot_Data"));
             owner = newOwner;
-            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _strongProjectile = (GameObject)Resources.Load("Projectiles/ChargeLobShot");
+            _strongProjectile = abilityData.visualPrefab;
             _weakProjectile = (GameObject)Resources.Load("Projectiles/LobShot");
         }
 
@@ -153,7 +151,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_strongProjectile)
             {
-                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
                 return;
             }
 
@@ -165,9 +163,14 @@ namespace Lodis.Gameplay
 
             _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, abilityData.GetCustomStatValue("WeakShotKnockBackScale"),
                 abilityData.GetCustomStatValue("WeakShotHitAngle"), true, abilityData.GetCustomStatValue("WeakShotLifeTime"), owner, true);
+            _weakProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _weakProjectileCollider.Priority = abilityData.GetCustomStatValue("WeakColliderPriority");
             _weakProjectileCollider.onHit += AddUpwardForce;
+
             _strongProjectileCollider = new HitColliderBehaviour(_strongShotDamage, _strongShotKnockBackScale,
                 abilityData.GetCustomStatValue("StrongShotHitAngle"), true, abilityData.GetCustomStatValue("StrongShotLifeTime"), owner, true);
+            _strongProjectileCollider.Priority = abilityData.ColliderPriority;
+            _strongProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
 
             CleanProjectileList();
 

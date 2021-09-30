@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1321618601
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1321618602}
+  m_Layer: 9
+  m_Name: ProjectileSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1321618602
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321618601}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5680485170780137522}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &59615424948160073
 GameObject:
   m_ObjectHideFlags: 0
@@ -141,11 +171,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _despawnsAfterTimeLimit: 0
-  _timeActive: 0
-  _isMultiHit: 1
-  _destroyOnHit: 0
-  ignoreColliders: 0
+  DespawnsAfterTimeLimit: 0
+  TimeActive: 0
+  IsMultiHit: 0
+  DestroyOnHit: 0
+  HitFrames: 0
+  IgnoreColliders: 1
 --- !u!65 &7080764703363995812
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -179,9 +210,10 @@ GameObject:
   - component: {fileID: 958140273493484615}
   - component: {fileID: 5515637805126966881}
   - component: {fileID: 6183915638186026948}
+  - component: {fileID: 986386592}
   m_Layer: 9
   m_Name: TestDummy
-  m_TagString: Player
+  m_TagString: Entity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 1
@@ -193,12 +225,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5382269484146956920}
   - {fileID: 4491077316993889346}
+  - {fileID: 1321618602}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -274,15 +307,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _position: {x: 0, y: 0}
+  _position: {x: 5, y: 0}
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 10
+  _isMoving: 0
   _canMove: 1
   canCancelMovement: 0
-  _defaultAlignment: 3
+  _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 1
+  _canBeWalkedThrough: 0
+  _moveOnStart: 1
 --- !u!54 &2039876615219471376
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -294,11 +330,11 @@ Rigidbody:
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 3
 --- !u!114 &4734495943610405351
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -314,14 +350,20 @@ MonoBehaviour:
   _health: 0
   _destroyOnDeath: 0
   _isAlive: 0
-  _bounceDampen: 6
+  _bounceDampen: 3
   _isInvincible: 0
-  _weight: 0
+  _mass: 2.8
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
   _defenseBehaviour: {fileID: 0}
   _landingTime: 0
+  _gravity: 9.81
+  _bounceCollider: {fileID: 1797995424193797808}
+  _extraHeight: 0.1
+  _bounceColliderExtents: {x: 0, y: 0, z: 0}
+  _bounciness: 1
+  _panelBounceEnabled: 1
 --- !u!114 &5685934378965997192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,7 +380,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Event: {fileID: 0}
-  intendedSender: {fileID: 0}
+  IntendedSender: {fileID: 0}
 --- !u!114 &3691015139844951449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,11 +393,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79447850bcd2ba4ea22b79bb1c220d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _deckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
+  _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _renderer: {fileID: 5680485170780137516}
   _animationBehaviour: {fileID: 0}
-  _projectileSpawnPoint: {fileID: 0}
+  _projectileSpawnPoint: {fileID: 1321618602}
   _meleeHitBoxSpawnPoint: {fileID: 0}
+  _deckReloadTime: 0
 --- !u!114 &958140273493484615
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396,6 +440,7 @@ MonoBehaviour:
   _parrySpeedLimitIncreaseRate: 0
   _parryUpgradeRate: 0
   _braceActiveTime: 0
+  _canBrace: 0
   _braceCooldownTime: 0
   _braceInvincibilityTime: 0
 --- !u!114 &6183915638186026948
@@ -410,10 +455,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 8
-  _attackDelay: 0.2
-  _attackStrength: 1
+  _attackType: 4
+  _attackDelay: 1
+  _attackStrength: 1.08
   _zDirection: 1
+--- !u!75 &986386592
+ConstantForce:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680485170780137523}
+  m_Enabled: 1
+  m_Force: {x: 0, y: 0, z: 0}
+  m_RelativeForce: {x: 0, y: 0, z: 0}
+  m_Torque: {x: 0, y: 0, z: 0}
+  m_RelativeTorque: {x: 0, y: 0, z: 0}
 --- !u!1001 &1129245541838569244
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -425,6 +482,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BouncePoint
+      objectReference: {fileID: 0}
+    - target: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
+        type: 3}
+      propertyPath: m_Material
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}
@@ -486,6 +548,12 @@ PrefabInstance:
 --- !u!4 &4491077316993889346 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
+    type: 3}
+  m_PrefabInstance: {fileID: 1129245541838569244}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1797995424193797808 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
     type: 3}
   m_PrefabInstance: {fileID: 1129245541838569244}
   m_PrefabAsset: {fileID: 0}

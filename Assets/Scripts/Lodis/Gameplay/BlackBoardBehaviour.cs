@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.ScriptableObjects;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ namespace Lodis.Gameplay
         public PlayerState player1State = PlayerState.IDLE;
         public PlayerState player2State = PlayerState.IDLE;
         public float projectileHeight;
+        public FloatVariable MaxKnockBackHealth;
         private static BlackBoardBehaviour _instance;
 
         public static BlackBoardBehaviour Instance

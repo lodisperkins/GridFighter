@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// Shoots a stronger, slow moving shot.
     /// The shot travels for 2 panels before dissipating.
     /// </summary>
-    public class WF_ForwardShot : Ability
+    public class WF_ForwardShot : ProjectileAbility
     {
         public Transform spawnTransform = null;
         //How fast the laser will travel
@@ -18,8 +18,6 @@ namespace Lodis.Gameplay
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
-        private Movement.GridMovementBehaviour _ownerMoveScript;
-        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         public override void Init(GameObject newOwner)
         {
@@ -29,10 +27,9 @@ namespace Lodis.Gameplay
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WF_ForwardShot_Data"));
             owner = newOwner;
             _projectileCollider = new HitColliderBehaviour(1, 1, 0.2f, true, 1.5f, owner, true);
-            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/Laser");
+            _projectile = abilityData.visualPrefab;
         }
 
         public void SpawnProjectile()
@@ -46,7 +43,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
                 return;
             }
 
@@ -77,29 +74,24 @@ namespace Lodis.Gameplay
             MonoBehaviour.Destroy(spawnerObject);
         }
 
-        private void CleanProjectileList()
-        {
-            for (int i = 0; i < _activeProjectiles.Count; i++)
-            {
-                if (_activeProjectiles[i] == null)
-                {
-                    _activeProjectiles.RemoveAt(i);
-                }
-            }
-        }
-
         protected override void Activate(params object[] args)
         {
             _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
                  abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _projectileCollider.Priority = abilityData.ColliderPriority;
 
             CleanProjectileList();
+            
+            Vector2 moveDir = owner.transform.forward;
 
             if (_activeProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
-                _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
-
-            Vector2 moveDir = owner.transform.forward;
-            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir);
+            {
+                if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir))
+                    _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+                else
+                    SpawnProjectile();
+            }
         }
     }
 }

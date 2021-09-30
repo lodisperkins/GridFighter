@@ -14,13 +14,13 @@ namespace GridGame
 
         public GridGame.Event Event;
         //The sender the gameobject is waiting for the event to be raiased by
-        public GameObject intendedSender;
+        public GameObject IntendedSender;
 
         public GameEventListener(Event listenerEvent, GameObject sender)
         {
             Event = listenerEvent;
             Event.AddListener(this);
-            intendedSender = sender;
+            IntendedSender = sender;
             actions = new UnityEvent();
         }
 
@@ -51,7 +51,7 @@ namespace GridGame
         //Invokes the actions delegate
         public void Invoke(GameObject Sender)
         {
-            if((intendedSender == null || intendedSender == Sender) && actions != null)
+            if((IntendedSender == null || IntendedSender == Sender) && actions != null)
             {
                 actions.Invoke();
                 return;

@@ -18,7 +18,6 @@ namespace Lodis.Gameplay
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
-        private Movement.GridMovementBehaviour _ownerMoveScript;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -28,10 +27,9 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SS_ChargeDoubleShot_Data"));
             owner = newOwner;
-            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
 
             //Load the projectile prefab
-            _projectile = (GameObject)Resources.Load("Projectiles/ChargeShot");
+            _projectile = abilityData.visualPrefab;
         }
 
         private void SpawnProjectile()
@@ -45,7 +43,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
-                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
                 return;
             }
 
@@ -80,8 +78,11 @@ namespace Lodis.Gameplay
         {
             SpawnProjectile();
             yield return new WaitForSeconds(abilityData.GetCustomStatValue("TimeBetweenShots"));
-            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment);
-            _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+
+            if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment))
+                _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            else
+                SpawnProjectile();
         }
 
         //Called when ability is used
@@ -94,6 +95,8 @@ namespace Lodis.Gameplay
 
             _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack,
                  abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            _projectileCollider.Priority = abilityData.ColliderPriority;
 
             CleanProjectileList();
 

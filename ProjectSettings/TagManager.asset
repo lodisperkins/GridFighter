@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Structure
   - BouncePoint
+  - Entity
   layers:
   - Default
   - TransparentFX

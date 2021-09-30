@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
+  m_Name: Prototype_Normals
+  m_EditorClassIdentifier: 
+  _abilityData:
+  - {fileID: 11400000, guid: 2fa6142ed29da744aa654d7ba40f67b4, type: 2}
+  - {fileID: 11400000, guid: eb5ec69e7ebc6014898cbaedc98cea65, type: 2}
+  - {fileID: 11400000, guid: d937fd305576b54478bd6b871dde2f47, type: 2}
+  - {fileID: 11400000, guid: 5e8e208c598c390478d27e2e07888405, type: 2}
+  - {fileID: 11400000, guid: 7483e953ed5d2844d964d9daa4da2cb0, type: 2}
+  - {fileID: 11400000, guid: 88c92e50bc6cde54b90596ed06471ba6, type: 2}
+  - {fileID: 11400000, guid: d1ea834d06b72014ab54785afb356c6d, type: 2}
+  - {fileID: 11400000, guid: dbc565054a0000a44828335acd8663cd, type: 2}
+  _deckName: PrototypeNormals

@@ -29,6 +29,7 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("How fast the object can move towards a panel.")]
         private float _speed;
+        [SerializeField]
         private bool _isMoving;
         [SerializeField]
         private bool _canMove = true;
@@ -37,6 +38,7 @@ namespace Lodis.Movement
         [Tooltip("The side of the grid that this object can move on by default.")]
         [SerializeField]
         private GridAlignment _defaultAlignment = GridAlignment.ANY;
+        private GridAlignment _tempAlignment;
         private PanelBehaviour _currentPanel;
         private Condition _movementEnableCheck;
         private GridGame.GameEventListener _moveEnabledEventListener;
@@ -49,7 +51,29 @@ namespace Lodis.Movement
         private bool _moveToAlignedSideIfStuck = true;
         [SerializeField]
         private bool _alwaysLookAtOpposingSide = true;
+        [SerializeField]
+        private bool _canBeWalkedThrough = false;
+        private PanelBehaviour _previousPanel;
         private KnockbackBehaviour _knockbackBehaviour;
+        private MeshFilter _meshFilter;
+        private Collider _collider;
+        [SerializeField]
+        [Tooltip("If true, the object will instantly move to its current position when the start function is called.")]
+        private bool _moveOnStart = true;
+
+
+        public bool MoveOnStart
+        {
+            get
+            {
+                return _moveOnStart;
+            }
+            set 
+            {
+                _moveOnStart = value;
+            }
+        }
+
 
         /// <summary>
         /// How much time it takes to move between panels
@@ -67,6 +91,15 @@ namespace Lodis.Movement
                 return _currentPanel;
             }
         }
+
+        public PanelBehaviour PreviousPanel
+        {
+            get
+            {
+                return _previousPanel;
+            }
+        }
+
 
         /// <summary>
         /// The current velocity of the object moving on the grid.
@@ -121,6 +154,30 @@ namespace Lodis.Movement
             }
         }
 
+        public bool MoveToAlignedSideWhenStuck
+        {
+            get
+            {
+                return _moveToAlignedSideIfStuck;
+            }
+            set
+            {
+                _moveToAlignedSideIfStuck = value;
+            }
+        }
+
+        public bool AlwaysLookAtOpposingSide
+        {
+            get
+            {
+                return _alwaysLookAtOpposingSide;
+            }
+            set
+            {
+                _alwaysLookAtOpposingSide = value;
+            }
+        }
+
         public PanelBehaviour TargetPanel
         {
             get
@@ -139,21 +196,29 @@ namespace Lodis.Movement
             _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEndTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
-
             //Set the starting position
             _targetPosition = transform.position;
+            _meshFilter = GetComponent<MeshFilter>();
+            _collider = GetComponent<Collider>();
         }
 
         private void Start()
         {
             //Set the starting panel to be occupied
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
+            {
                 _currentPanel.Occupied = true;
+
+                if (MoveOnStart)
+                    MoveToPanel(_currentPanel, true);
+            }
             else
                 Debug.LogError(name + " could not find starting panel");
 
             if (_knockbackBehaviour)
                 _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
+
+            _tempAlignment = _defaultAlignment;
         }
 
         /// <summary>
@@ -224,7 +289,7 @@ namespace Lodis.Movement
         /// <param name="enableCondition">When this condition is true, movement will be enabled.</param>
         /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
         /// its destination. If false, movement is stopped immediately.</param>
-        /// <param name="waitForEndOfMovement">This condition to enable movement will override the move condition from an earlier call.</param>
+        /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
         public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
             if (!_canMove && !overridesMoveCondition)
@@ -232,16 +297,18 @@ namespace Lodis.Movement
 
             if (IsMoving && waitForEndOfMovement)
             { 
-                AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); });
+                AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); _isMoving = false; });
             }
             else
             {
                 _canMove = false;
                 StopAllCoroutines();
+                _isMoving = false;
             }
 
             _movementEnableCheck = enableCondition;
             _moveDisabledEventListener.Invoke(gameObject);
+            _tempAlignment = Alignment;
         }
 
         /// <summary>
@@ -252,7 +319,7 @@ namespace Lodis.Movement
         /// enabled regardless of what raises the event.</param>
         /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
         /// its destination. If false, movement is stopped immediately.</param>
-        /// <param name="waitForEndOfMovement">This condition to enable movement will override the move condition from an earlier call.</param>
+        /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
         public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
             if (!_canMove)
@@ -269,9 +336,10 @@ namespace Lodis.Movement
             }
 
             _moveEnabledEventListener.Event = moveEvent;
-            _moveEnabledEventListener.intendedSender = intendedSender;
+            _moveEnabledEventListener.IntendedSender = intendedSender;
             _moveEnabledEventListener.AddAction(() => { _canMove = true; });
             _moveDisabledEventListener.Invoke(gameObject);
+            _tempAlignment = Alignment;
         }
 
         /// <summary>
@@ -318,6 +386,7 @@ namespace Lodis.Movement
             }
 
             MoveDirection = Vector2.zero;
+            _tempAlignment = Alignment;
         }
 
         /// <summary>
@@ -326,21 +395,33 @@ namespace Lodis.Movement
         /// <param name="panelPosition">The position of the panel on the grid that the gameObject will travel to.</param>
         /// <param name="snapPosition">If true, the gameObject will immediately teleport to its destination without a smooth transition.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
-        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE)
+        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false)
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
+            else
+                _tempAlignment = tempAlignment;
 
             if (IsMoving && !canCancelMovement || !_canMove)
                 return false;
+            else if (canCancelMovement && IsMoving)
+                StopAllCoroutines();
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition, tempAlignment))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition || canBeOccupied, tempAlignment))
                 return false;
 
-            //Sets the new position to be the position of the panel added to half the gameOgjects height.
+            _previousPanel = _currentPanel;
+
+            //Sets the new position to be the position of the panel added to half the gameObjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            float offset = 0;
+            if (!_meshFilter)
+                offset = transform.localScale.y / 2;
+            else
+                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
             SetIsMoving(true);
@@ -351,6 +432,7 @@ namespace Lodis.Movement
             if (snapPosition)
             {
                 transform.position = newPosition;
+                SetIsMoving(false);
             }
             else
             {
@@ -363,7 +445,7 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = true;
+            _currentPanel.Occupied = !_canBeWalkedThrough;
             _position = _currentPanel.Position;
 
             return true;
@@ -380,6 +462,8 @@ namespace Lodis.Movement
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
+            else
+                _tempAlignment = tempAlignment;
 
             if (IsMoving && !canCancelMovement ||!_canMove)
                 return false;
@@ -388,9 +472,17 @@ namespace Lodis.Movement
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, _position == new Vector2( x,y), tempAlignment))
                 return false;
 
+            _previousPanel = _currentPanel;
+
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            float offset = 0;
+            if (!_meshFilter)
+                offset = transform.localScale.y / 2;
+            else
+                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
             SetIsMoving(true);
@@ -401,6 +493,7 @@ namespace Lodis.Movement
             if (snapPosition)
             {
                 transform.position = newPosition;
+                SetIsMoving(false);
             }
             else
             {
@@ -413,7 +506,7 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = true;
+            _currentPanel.Occupied = !_canBeWalkedThrough;
             _position = _currentPanel.Position;
             return true;
         }
@@ -428,6 +521,8 @@ namespace Lodis.Movement
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
+            else
+                _tempAlignment = tempAlignment;
 
             if (!targetPanel)
                 return false;
@@ -435,12 +530,20 @@ namespace Lodis.Movement
             if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
                 return false;
 
+            _previousPanel = _currentPanel;
             _targetPanel = targetPanel;
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, transform.localScale.y / 2, 0);
+            float offset = 0;
+            if (!_meshFilter)
+                offset = transform.localScale.y / 2;
+            else
+                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
+
 
             SetIsMoving(true);
 
@@ -451,6 +554,7 @@ namespace Lodis.Movement
             {
                 
                 transform.position = newPosition;
+                SetIsMoving(false);
             }
             else
             {
@@ -463,16 +567,52 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = true;
+            _currentPanel.Occupied = !_canBeWalkedThrough;
             _position = _currentPanel.Position;
 
             return true;
         }
 
+        private void MoveToCurrentPanel()
+        {
+
+            if (IsMoving && !canCancelMovement || !_canMove)
+                return;
+
+            //If it's not possible to move to the panel at the given position, return false.
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(_position, out _targetPanel))
+                return;
+
+            _previousPanel = _currentPanel;
+
+            //Sets the new position to be the position of the panel added to half the gameObjects height.
+            //Adding the height ensures the gameObject is not placed inside the panel.
+            float offset = 0;
+            if (!_meshFilter)
+                offset = transform.localScale.y / 2;
+            else
+                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
+            _targetPosition = newPosition;
+
+
+            StartCoroutine(LerpPosition(newPosition));
+
+            //Sets the current panel to be unoccupied if it isn't null
+            if (_currentPanel)
+                _currentPanel.Occupied = false;
+
+            //Updates the current panel
+            _currentPanel = _targetPanel;
+            _currentPanel.Occupied = !_canBeWalkedThrough;
+            _position = _currentPanel.Position;
+        }
+
         public void MoveToClosestAlignedPanelOnRow()
         {
 
-            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || !CanMove)
+            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || !CanMove || Alignment == GridAlignment.ANY || Alignment != _tempAlignment)
                 return;
 
             //NEEDS BETTER IMPLEMENTATION
@@ -519,9 +659,8 @@ namespace Lodis.Movement
         {
             if (_canMove)
             {
-                MoveToPanel(_position);
+                MoveToCurrentPanel();
                 SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
-                _movementEnableCheck = null;
 
                 if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
                     transform.rotation = Quaternion.Euler(0, -90, 0);
@@ -531,7 +670,8 @@ namespace Lodis.Movement
             else if (_movementEnableCheck != null)
             {
                 if (_movementEnableCheck.Invoke())
-                { 
+                {
+                    _movementEnableCheck = null;
                     _canMove = true;
                     _isMoving = false;
                     _moveEnabledEventListener.Invoke(gameObject);

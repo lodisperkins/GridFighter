@@ -65,6 +65,7 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds is the object braced for it's fall.")]
         [SerializeField]
         private float _braceActiveTime;
+        [SerializeField]
         private bool _canBrace;
         [Tooltip("How long in seconds the object has to wait before it can brace itself again.")]
         [SerializeField]
@@ -102,8 +103,8 @@ namespace Lodis.Gameplay
 
             //Initialize default values
             _defaultColor = _material.color;
-            _parryCollider.onHit += ActivateInvinciblity;
-            _parryCollider.Owner = gameObject;
+            _parryCollider.OnHit += ActivateInvinciblity;
+            _parryCollider.ColliderOwner = gameObject;
             onFallBroken += normal => { BreakingFall = true; StartCoroutine(FallBreakTimer()); };
         }
 
@@ -184,7 +185,7 @@ namespace Lodis.Gameplay
             //Enable parry and update states
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;
-            _input.DisableInput(condition => _isParrying == false);
+            _movement.DisableMovement(condition => _isParrying == false, true, true);
             _canParry = false;
 
             //Start timer for parry
@@ -222,7 +223,7 @@ namespace Lodis.Gameplay
             while (Vector3.Distance(transform.position, newPosition) > _airDodgeDistanceTolerance)
             {
                 //Sets the current position to be the current position in the interpolation
-                //_knockBack.MoveRigidBodyToLocation(Vector3.Lerp(transform.position, newPosition, lerpVal += Time.deltaTime * _airDodgeSpeed));
+                //_knockBack.(Vector3.Lerp(transform.position, newPosition, lerpVal += Time.deltaTime * _airDodgeSpeed));
                 //Waits until the next fixed update before resuming to be in line with any physics calls
                 yield return new WaitForFixedUpdate();
             }
@@ -284,6 +285,7 @@ namespace Lodis.Gameplay
         /// </summary>
         private void EnableBrace()
         {
+            IsBraced = false;
             _canBrace = true;
 
             if (_cooldownRoutine != null)
@@ -333,7 +335,8 @@ namespace Lodis.Gameplay
         public void ActivateAirDodge(Vector2 direction)
         {
             if (_canParry && _knockBack.InHitStun)
-                StartCoroutine(AirDodgeRoutine(direction));
+                _knockBack.ApplyVelocityChange(direction * _airDodgeDistance);
+                //StartCoroutine(AirDodgeRoutine(direction));
         }
 
         /// <summary>
@@ -365,7 +368,7 @@ namespace Lodis.Gameplay
             //Apply force downward and make the character invincible if the character was in air
             if (_knockBack.InHitStun)
             {
-                _knockBack.StopAllForces();
+                _knockBack.MakeKinematic();
                 _knockBack.SetInvincibilityByCondition(context => !(_knockBack.InHitStun));
                 return;
             }

@@ -25,32 +25,15 @@ namespace Lodis.ScriptableObjects
         public string name;
         public float value;
     }
-
-    [CreateAssetMenu(menuName = "AbilityData/AttackAbilityData")]
-    class AttackAbilityData : AbilityData
-    {
-        public AttackAbilityData()
-        {
-            _customStats = new Stat[] { new Stat("Damage", 0), new Stat("KnockBackScale", 0), new Stat("HitAngle", 0) };
-        }
-    }
-
-    [CreateAssetMenu(menuName = "AbilityData/ProjectileAbilityData")]
-    class ProjectileAbilityData : AbilityData
-    {
-        public ProjectileAbilityData()
-        {
-            _customStats = new Stat[] { new Stat("Damage", 0), new Stat("KnockBackScale", 0), new Stat("HitAngle", 0), new Stat("Speed", 1), new Stat("Lifetime", 1), new Stat("MaxInstances", -1) };
-        }
-    }
+    
 
     [CreateAssetMenu(menuName = "AbilityData/Default")]
     public class AbilityData : ScriptableObject
     {
         
-        public string name = "Unassigned";
+        public string abilityName = "Unassigned";
         [Tooltip("The type describes the strength and input value for the ability")]
-        public BasicAbilityType abilityType;
+        public AbilityType AbilityType;
         [Tooltip("The type of damage this attack will deal to other objects")]
         public DamageType damageType = DamageType.DEFAULT;
         [Tooltip("How long the ability should be active for")]
@@ -59,14 +42,32 @@ namespace Lodis.ScriptableObjects
         public float recoverTime = 0;
         [Tooltip("How long does the object that used the ability must wait before the ability activates")]
         public float startUpTime = 0;
+        [Tooltip("The amount of time this ability must be in an active slot before it can be used. Can be ignored if this ability is a normal type.")]
+        public float chargeTime = 0;
+        [Tooltip("The amount of time this ability can be used before it is removed from the active slot. Can be ignored if this ability is a normal type.")]
+        public int maxActivationAmount = 0;
         [Tooltip("If true, this ability can be canceled into others in the start up phase")]
         public bool canCancelStartUp = false;
         [Tooltip("If true, this ability can be canceled into others in the active phase")]
         public bool canCancelActive = false;
         [Tooltip("If true, this ability can be canceled into others in the recover phase")]
         public bool canCancelRecover = false;
+        [Tooltip("If false, the user of this ability can't move while it's active")]
+        public bool CanInputMovementWhileActive = true;
+        [Tooltip("If true, this ability will be canceled when the user is hit")]
+        public bool cancelOnHit = false;
+        [Tooltip("If true, this ability will be canceled when the user is in knockback")]
+        public bool cancelOnKnockback = true;
+        [Tooltip("If false, this ability's hit colliders can collide with others. Meaning that this ability's colliders can be destroyed if the other collider has higher priority.")]
+        public bool IgnoreColliders = true;
+        [Tooltip("The priority level of the collider. Colliders with higher levels destroys colliders with lower levels.")]
+        public float ColliderPriority = 0.0f;
         [Tooltip("If true, the animation will change speed according to the start, active, and recover times")]
         public bool useAbilityTimingForAnimation;
+        [Tooltip("If true, the animation will only play when specified in the ability script")]
+        public bool playAnimationManually = false;
+        [Tooltip("The prefab that holds the visual this ability will be using.")]
+        public GameObject visualPrefab;
 
         [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
@@ -79,6 +80,7 @@ namespace Lodis.ScriptableObjects
         [SerializeField]
         private AnimationClip _customAnimation;
 
+        
 
         public bool GetCustomAnimation(out AnimationClip customAnimation)
         {

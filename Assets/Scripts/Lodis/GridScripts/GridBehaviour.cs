@@ -48,6 +48,8 @@ namespace Lodis.GridScripts
         private PanelBehaviour _lhsPlayerSpawnPanel;
         private PanelBehaviour _rhsPlayerSpawnPanel;
         private List<BarrierBehaviour> _barriers;
+        private Coroutine _panelExchangeRoutine;
+        private int _tempMaxColumns;
 
         public PanelBehaviour LhsSpawnPanel
         {
@@ -87,13 +89,6 @@ namespace Lodis.GridScripts
             {
                 return _dimensions;
             }
-        }
-
-        // Start is called before the first frame update
-        void Awake()
-        {
-            DestroyTempPanels();
-            _barriers = new List<BarrierBehaviour>();
         }
 
         /// <summary>
@@ -136,7 +131,8 @@ namespace Lodis.GridScripts
 
 
             //After the grid is created, assign each panel a side.
-            SetDefaultPanelAlignments();
+            SetPanelAlignments(_p1MaxColumns);
+            _tempMaxColumns = _p1MaxColumns;
             //Spawn barriers on both side and find the players' spawn location
             SpawnBarriers();
 
@@ -228,19 +224,54 @@ namespace Lodis.GridScripts
         }
 
         /// <summary>
+        /// Removes rows from one side of the grid and gives it to the other
+        /// </summary>
+        /// <param name="amountOfRows">The amount of rows to give to the other side</param>
+        /// <param name="receiver">The side receiving the rows</param>
+        /// <param name="seconds">How long will the side have control over the rows</param>
+        public void ExchangeRowsByTimer(int amountOfRows, GridAlignment receiver, float seconds)
+        {
+            if (_panelExchangeRoutine != null)
+                StopCoroutine(_panelExchangeRoutine);
+
+            _panelExchangeRoutine = StartCoroutine(StartRowExchangeCountdown(amountOfRows, receiver, seconds));
+        }
+
+        private IEnumerator StartRowExchangeCountdown(int amountOfRows, GridAlignment receiver, float seconds)
+        {
+            int newMaxColumns = _tempMaxColumns;
+
+            if (receiver == GridAlignment.LEFT)
+                newMaxColumns = _tempMaxColumns + amountOfRows;
+            else if (receiver == GridAlignment.RIGHT)
+                newMaxColumns = _tempMaxColumns - amountOfRows;
+
+            _tempMaxColumns = Mathf.Clamp(newMaxColumns, 0, (int)Dimensions.x);
+
+            SetPanelAlignments(_tempMaxColumns);
+
+            yield return new WaitForSeconds(seconds);
+
+            SetPanelAlignments(_p1MaxColumns);
+
+            _panelExchangeRoutine = null;
+            _tempMaxColumns = _p1MaxColumns;
+        }
+
+        /// <summary>
         /// Labels each panel to be on either the left side on the right side of the grid based on 
         /// the value given for the maximum columns for player1.
         /// </summary>
-        public void SetDefaultPanelAlignments()
+        public void SetPanelAlignments(int columns)
         {
             //Clamp the amount of columns
-            if (_p1MaxColumns > _dimensions.x)
-                _p1MaxColumns = (int)_dimensions.x;
+            if (columns > _dimensions.x)
+                columns = (int)_dimensions.x;
 
             //Loops through the list of panels and sets their label based on position.
             foreach (PanelBehaviour panel in _panels)
             {
-                if (panel.Position.x < _p1MaxColumns)
+                if (panel.Position.x < columns)
                 {
                     panel.Alignment = GridAlignment.LEFT;
                 }
@@ -405,7 +436,9 @@ namespace Lodis.GridScripts
             else if (_panels[(int)position.x, (int)position.y].Alignment != alignment && alignment != GridAlignment.ANY)
                 return false;
 
-            panel = _panels[(int)position.x, (int)position.y];
+            
+
+            panel = _panels[Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y)];
 
             return true;
         }
@@ -431,6 +464,28 @@ namespace Lodis.GridScripts
             panel = _panels[x, y];
 
             return true;
+        }
+
+        public List<PanelBehaviour> GetPanelNeighbors(Vector2 position, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
+        {
+            List<PanelBehaviour> neighbors = new List<PanelBehaviour>();
+
+            for (int x = -1; x <= 1; x++)
+            {
+                for (int y = -1; y <= 1; y++)
+                {
+                    Vector2 offset = new Vector2(x, y);
+
+                    if (offset + position == position)
+                        continue;
+
+                    PanelBehaviour panel = null;
+                    if (GetPanel((position + offset), out panel, canBeOccupied, alignment))
+                        neighbors.Add(panel);
+                }
+            }
+
+            return neighbors;
         }
     }
 

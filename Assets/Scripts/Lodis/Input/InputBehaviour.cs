@@ -93,6 +93,14 @@ namespace Lodis.Input
             }
         }
 
+        public Vector2 AttackDirection
+        {
+            get
+            {
+                return _attackDirection;
+            }
+        }
+
         private void Awake()
         {
             //Initialize action delegates
@@ -103,8 +111,10 @@ namespace Lodis.Input
             _actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
             _actions.actionMaps[0].actions[4].started += context => { DisableMovement(); _attackButtonDown = true; };
             _actions.actionMaps[0].actions[4].canceled += context => _attackButtonDown = false;
-            _actions.actionMaps[0].actions[4].performed += context => { BufferAbility(context, new object[2]);};
+            _actions.actionMaps[0].actions[4].performed += context => { BufferNormalAbility(context, new object[2]);};
             _actions.actionMaps[0].actions[6].performed += context => { BufferParry(context); _defense.Brace(); };
+            _actions.actionMaps[0].actions[7].started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
+            _actions.actionMaps[0].actions[8].started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
         }
 
         // Start is called before the first frame update
@@ -122,24 +132,24 @@ namespace Lodis.Input
         /// <param name="args">Any additional arguments to give to the ability. 
         /// Index 0 is always the power scale.
         /// index 1 is always the direction of input.</param>
-        public void BufferAbility(InputAction.CallbackContext context, params object[] args)
+        public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
             if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
                 return;
 
-            BasicAbilityType abilityType = BasicAbilityType.NONE;
+            AbilityType abilityType = AbilityType.NONE;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 
             //Decide which ability type to use based on the input
             if (_attackDirection.y != 0)
-                abilityType = BasicAbilityType.WEAKSIDE;
+                abilityType = AbilityType.WEAKSIDE;
             else if (_attackDirection.x < 0)
-                abilityType = BasicAbilityType.WEAKBACKWARD;
+                abilityType = AbilityType.WEAKBACKWARD;
             else if (_attackDirection.x > 0)
-                abilityType = BasicAbilityType.WEAKFORWARD;
+                abilityType = AbilityType.WEAKFORWARD;
             else
-                abilityType = BasicAbilityType.WEAKNEUTRAL;
+                abilityType = AbilityType.WEAKNEUTRAL;
 
             //Assign the arguments for the ability
             args[1] = _attackDirection;
@@ -159,6 +169,26 @@ namespace Lodis.Input
             _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => _moveset.GetCanUseAbility() && !_gridMovement.IsMoving, 0.2f);
         }
 
+        /// <summary>
+        /// Decides which ability to use based on the input context and activates it
+        /// </summary>
+        /// <param name="context">The input callback context</param>
+        /// <param name="args">Any additional arguments to give to the ability. 
+        public void BufferSpecialAbility(InputAction.CallbackContext context, params object[] args)
+        {
+            //Ignore player input if they are in knockback
+            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
+                return;
+
+            AbilityType abilityType = AbilityType.SPECIAL;
+            _attackDirection.x *= Mathf.Round(transform.forward.x);
+
+            //Assign the arguments for the ability
+            args[1] = _attackDirection;
+
+            //Use a normal ability if it was not held long enough
+            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => _moveset.GetCanUseAbility() && !_gridMovement.IsMoving, 0.2f);
+        }
 
         /// <summary>
         /// Buffers a parry only if the attack button is not being pressed
@@ -168,11 +198,11 @@ namespace Lodis.Input
         {
             if (_attackButtonDown)
                 return;
-            else if (_bufferedAction == null)
-                _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
-            else if (!_bufferedAction.HasAction() || _playerState == PlayerState.KNOCKBACK
-                || _playerState == PlayerState.FREEFALL)
-                _bufferedAction = new BufferedInput(action => _defense.ActivateParry(), condition => !_gridMovement.IsMoving, 0.2f);
+            else if (_bufferedAction == null && (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
+                _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
+            else if (!_bufferedAction.HasAction() && (_playerState == PlayerState.KNOCKBACK
+                || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
+                _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
         /// <summary>
@@ -180,10 +210,34 @@ namespace Lodis.Input
         /// </summary>
         /// <param name="abilityType">The basic ability type to use</param>
         /// <param name="args">Additional ability arguments like direction and attack strength</param>
-        private void UseAbility(BasicAbilityType abilityType, object[] args)
+        private void UseAbility(AbilityType abilityType, object[] args)
         {
-            _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
-            _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
+            if (abilityType == AbilityType.SPECIAL)
+            {
+                if ((int)args[0] == 0)
+                    _lastAbilityUsed = _moveset.UseSpecialAbility(0, args);
+                else if ((int)args[0] == 1)
+                    _lastAbilityUsed = _moveset.UseSpecialAbility(1, args);
+
+               if (_lastAbilityUsed?.abilityData.CanInputMovementWhileActive == false)
+                    DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
+            }
+            else
+            {
+                _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
+                _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
+            }
+        }
+
+        private void UseDefensiveAction()
+        {
+            //if (_attackDirection.magnitude > 0)
+            //{
+            //    AirDodge();
+            //    return;
+            //}
+
+            _defense.ActivateParry();
         }
 
         /// <summary>
@@ -223,6 +277,7 @@ namespace Lodis.Input
             }
         }
 
+        private int _useCount;
         /// <summary>
         /// Enable player movement
         /// </summary>
@@ -234,7 +289,6 @@ namespace Lodis.Input
                 _moveInputEnableCondition = condition => _playerState == PlayerState.IDLE;
                 return false;
             }
-
             _canMove = true;
             return true;
         }
@@ -286,13 +340,13 @@ namespace Lodis.Input
 
 
             //Move if there is a movement stored and movement is allowed
-            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove)
+            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
                 _storedMoveInput = Vector2.zero;
             }
-
             //Checks to see if move input can be enabled 
+
             if (_moveInputEnableCondition != null)
             {
                 if (_moveInputEnableCondition.Invoke())

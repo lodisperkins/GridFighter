@@ -17,41 +17,51 @@ namespace Lodis.Gameplay
         
         [Tooltip("If true, the hit collider will despawn after the amount of active frames have been surpassed.")]
         [SerializeField]
-        protected bool _despawnsAfterTimeLimit = false;
+        protected bool DespawnsAfterTimeLimit = false;
         [Tooltip("How many frames the hitbox will be active for.")]
         [SerializeField]
-        protected float _timeActive;
+        protected float TimeActive;
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
         [SerializeField]
-        protected bool _isMultiHit;
+        protected bool IsMultiHit;
         [SerializeField]
-        protected bool _destroyOnHit;
-        protected float _currentTimeActive;
-        protected float _startTime;
-        protected GameObject _owner;
-        protected List<GameObject> _collisions;
-        protected string ownerName = "NoOwner";
+        protected bool DestroyOnHit;
+        protected float CurrentTimeActive;
+        protected float StartTime;
+        protected GameObject Owner;
+        protected List<GameObject> Collisions;
+        protected string OwnerName = "NoOwner";
         /// <summary>
         /// Collision event called when this collider hits another. 
         /// First argument is game object it collided with.
         /// </summary>
-        public CollisionEvent onHit;
-        public bool ignoreColliders = true;
+        public CollisionEvent OnHit;
+        protected float _lastHitFrame;
+        public float HitFrames;
+        public bool IgnoreColliders = true;
 
-        public GameObject Owner
+        public GameObject ColliderOwner
         {
             get
             {
-                return _owner;
+                return Owner;
             }
             set
             {
-                _owner = value;
+                Owner = value;
             }
         }
 
         public ColliderBehaviour() {}
 
+        /// <summary>
+        /// Initializes this colliders stats
+        /// </summary>
+        /// <param name="despawnAfterTimeLimit">If true the hit box despawns when its not active</param>
+        /// <param name="timeActive">How long this object will be active it is set to despawn</param>
+        /// <param name="owner">The game object that spawned the collider</param>
+        /// <param name="destroyOnHit">If true, the collider will destroy itself when it hits</param>
+        /// <param name="isMultiHit">If true, the hit collider will trigger a collision with objects that enter it multiple times</param>
         public ColliderBehaviour(bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
         {
             Init(despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit);
@@ -59,12 +69,12 @@ namespace Lodis.Gameplay
 
         private void Awake()
         {
-            _collisions = new List<GameObject>();
+            Collisions = new List<GameObject>();
         }
 
         private void Start()
         {
-            _startTime = Time.time;
+            StartTime = Time.time;
         }
 
         /// <summary>
@@ -74,8 +84,13 @@ namespace Lodis.Gameplay
         /// <param name="collider2"></param>
         public static void Copy(ColliderBehaviour collider1, ColliderBehaviour collider2)
         {
-            collider2.Init(collider1._despawnsAfterTimeLimit, collider1._timeActive, collider1.Owner, collider1._destroyOnHit, collider1._isMultiHit);
-            collider2.onHit = collider1.onHit;
+            collider2.Init(collider1.DespawnsAfterTimeLimit, collider1.TimeActive, collider1.Owner, collider1.DestroyOnHit, collider1.IsMultiHit);
+            collider2.OnHit = collider1.OnHit;
+        }
+
+        public void ResetActiveTime()
+        {
+            StartTime = Time.time;
         }
 
         /// <summary>
@@ -87,17 +102,17 @@ namespace Lodis.Gameplay
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
         public void Init(bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
         {
-            _despawnsAfterTimeLimit = despawnAfterTimeLimit;
-            _timeActive = timeActive;
-            _owner = owner;
-            _destroyOnHit = destroyOnHit;
-            _isMultiHit = isMultiHit;
+            DespawnsAfterTimeLimit = despawnAfterTimeLimit;
+            TimeActive = timeActive;
+            Owner = owner;
+            DestroyOnHit = destroyOnHit;
+            IsMultiHit = isMultiHit;
         }
 
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (_collisions.Contains(other.gameObject) || _isMultiHit || other.gameObject == _owner)
+            if (Collisions.Contains(other.gameObject) || IsMultiHit || other.gameObject == Owner)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -114,22 +129,24 @@ namespace Lodis.Gameplay
             }
                 
 
-            if (otherCollider && ignoreColliders)
+            if (otherCollider && IgnoreColliders)
                     return;
 
             //Add the game object to the list of collisions so it is not collided with again
-            _collisions.Add(other.gameObject);
+            Collisions.Add(other.gameObject);
 
-            onHit?.Invoke(otherGameObject, otherCollider);
+            Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
 
-            if (_destroyOnHit)
+            OnHit?.Invoke(otherGameObject, otherCollider, collisionDirection);
+
+            if (DestroyOnHit)
                 Destroy(gameObject);
         }
 
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!_isMultiHit || other.gameObject == _owner)
+            if (!IsMultiHit || other.gameObject == Owner || !CheckHitTime())
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -145,19 +162,32 @@ namespace Lodis.Gameplay
                 otherGameObject = other.gameObject;
             }
 
-            if (otherCollider && ignoreColliders)
+            if (otherCollider && IgnoreColliders)
                 return;
 
-            onHit?.Invoke(otherGameObject, otherCollider);
+            Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
 
-            if (_destroyOnHit)
+            OnHit?.Invoke(otherGameObject, otherCollider, collisionDirection);
+
+            if (DestroyOnHit)
                 Destroy(gameObject);
+        }
+
+        protected bool CheckHitTime()
+        {
+            if (Time.frameCount - _lastHitFrame >= HitFrames)
+            {
+                _lastHitFrame = Time.frameCount;
+                return true;
+            }
+
+            return false;
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (_collisions.Contains(collision.gameObject) || _isMultiHit || collision.gameObject == _owner)
+            if (Collisions.Contains(collision.gameObject) || IsMultiHit || collision.gameObject == Owner)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -173,25 +203,27 @@ namespace Lodis.Gameplay
                 otherGameObject = collision.gameObject;
             }
 
-            if (otherCollider && ignoreColliders)
+            if (otherCollider && IgnoreColliders)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again
-            _collisions.Add(collision.gameObject);
+            Collisions.Add(collision.gameObject);
 
-            onHit?.Invoke(collision.gameObject, collision);
+            Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
 
-            if (_destroyOnHit)
+            OnHit?.Invoke(collision.gameObject, collision, collisionDirection);
+
+            if (DestroyOnHit)
                 Destroy(gameObject);
         }
 
         private void FixedUpdate()
         {
             //Update the amount of current frames
-            _currentTimeActive = Time.time - _startTime;
+            CurrentTimeActive = Time.time - StartTime;
 
             //Destroy the hit collider if it has exceeded or reach its maximum time active
-            if (_currentTimeActive >= _timeActive && _despawnsAfterTimeLimit)
+            if (CurrentTimeActive >= TimeActive && DespawnsAfterTimeLimit)
                 Destroy(gameObject);
         }
     }

@@ -18,13 +18,17 @@ namespace Lodis.Gameplay
         //The collider attached to the projectile
         public HitColliderBehaviour projectileCollider;
         public List<GameObject> _activeProjectiles = new List<GameObject>();
+        public bool DestroyOnHit = true;
+        public bool IsMultiHit = false;
+
+        public bool despawnAfterTimeLimit { get; private set; }
 
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
 
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/" + GetType().Name + "_Data"));
+            
             owner = newOwner;
 
             //Load the projectile prefab
@@ -45,7 +49,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
+                abilityData.GetCustomStatValue("HitAngle"), despawnAfterTimeLimit, abilityData.GetCustomStatValue("Lifetime"), owner, DestroyOnHit ,IsMultiHit);
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
@@ -56,7 +60,7 @@ namespace Lodis.Gameplay
             //Log if a projectile couldn't be found
             if (!projectile)
             {
-                Debug.LogError("Projectile for " + abilityData.name + " could not be found.");
+                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
                 return;
             }
 
@@ -80,7 +84,7 @@ namespace Lodis.Gameplay
             spawnScript.projectile = projectile;
 
             //Fire projectile
-            spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), projectileCollider);
+            _activeProjectiles.Add(spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), projectileCollider));
 
             MonoBehaviour.Destroy(spawnerObject);
         }

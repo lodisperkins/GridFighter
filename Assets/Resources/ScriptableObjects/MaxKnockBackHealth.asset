@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
-  m_Name: Basic_Prototype
+  m_Script: {fileID: 11500000, guid: c8f6ea0244cac0b48925350657bf7b83, type: 3}
+  m_Name: MaxKnockBackHealth
   m_EditorClassIdentifier: 
-  _abilityNames: 0000000001000000020000000300000004000000050000000600000007000000
+  _val: 300

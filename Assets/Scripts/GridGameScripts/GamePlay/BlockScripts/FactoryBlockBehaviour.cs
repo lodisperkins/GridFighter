@@ -1,8 +1,6 @@
 ﻿using GridGame.Movement;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using GridGame.Movement;
 
 namespace GridGame.GamePlay.BlockScripts
 {
@@ -17,7 +15,7 @@ namespace GridGame.GamePlay.BlockScripts
         [SerializeField]
         private RoutineBehaviour _spawnRoutine;
         GridScripts.PanelBehaviour _currentPanel;
-        private GridScripts.Condition NeighboorCheck;
+        private GridScripts.Condition _neighboorCheck;
         List<GridScripts.PanelBehaviour> panelsInRange;
         private Color SelectionColor;
         private string colorName;
@@ -109,7 +107,7 @@ namespace GridGame.GamePlay.BlockScripts
             _attachedMaterial = box.GetComponent<MeshRenderer>().material;
             _currentBlock.Block = _playerBlocks[_blockIndex];
             block.specialActions += SwitchBlocks;
-            NeighboorCheck += CheckIfNeighboor;
+            _neighboorCheck += CheckIfNeighboor;
             colorName = "Color_262603E3";
             _blockScript.HealthScript.health.Val = _spawnRoutine.numberOfActionsLeft;
             List<GridScripts.PanelBehaviour> panelsInRange = new List<GridScripts.PanelBehaviour>();
@@ -158,7 +156,7 @@ namespace GridGame.GamePlay.BlockScripts
         {
             if(_canSpawnGlobally)
             {
-                if (GridScripts.GridBehaviour.globalPanelList.GetPanels(NeighboorCheck, out panelsInRange))
+                if (GridScripts.GridBehaviour.globalPanelList.GetPanels(_neighboorCheck, out panelsInRange))
                 {
                     FilterNeighbors();
                     return true;
@@ -166,7 +164,7 @@ namespace GridGame.GamePlay.BlockScripts
                 Debug.Log("Couldn't find neighboors");
                 return false;
             }
-            if (_playerMoveScript.Panels.GetPanels(NeighboorCheck, out panelsInRange))
+            if (_playerMoveScript.Panels.GetPanels(_neighboorCheck, out panelsInRange))
             {
                 FilterNeighbors();
                 return true;

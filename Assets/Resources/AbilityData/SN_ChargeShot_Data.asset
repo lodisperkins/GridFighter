@@ -12,29 +12,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: SN_ChargeShot_Data
   m_EditorClassIdentifier: 
-  name: ChargeShot
-  abilityType: 4
+  abilityName: ChargeShot
+  AbilityType: 4
   damageType: 0
   timeActive: 0.2
-  recoverTime: 1.5
+  recoverTime: 0.5
   startUpTime: 0.3
+  chargeTime: 0
+  maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
+  cancelOnHit: 0
+  cancelOnKnockback: 1
+  IgnoreColliders: 0
+  ColliderPriority: 2
   useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 7648438965634708056, guid: 21e48ff7c2220634887d04ebcd36387a,
+    type: 3}
   _customStats:
   - name: Damage
     value: 15
   - name: KnockBackScale
-    value: 1
+    value: 3
   - name: HitAngle
     value: 0.4
   - name: Speed
     value: 15
   - name: Lifetime
-    value: 3
+    value: 2
   - name: MaxInstances
     value: 1
-  animationType: 0
-  _customAnimation: {fileID: -203655887218126122, guid: 0ab003f1eab4c424db18ccd36ef0006d,
-    type: 3}
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: f2fdba8a6b7bbc540a4d208285dd348c, type: 3}
