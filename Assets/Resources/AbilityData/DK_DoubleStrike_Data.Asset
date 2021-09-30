@@ -38,7 +38,7 @@ MonoBehaviour:
   - name: Knockback
     value: 1
   - name: HitAngle
-    value: 1.5
+    value: 1
   - name: TravelDistance
     value: 4
   animationType: 3
