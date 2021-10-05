@@ -358,7 +358,7 @@ namespace Lodis.Movement
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(hitAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
             {
-                return Vector3.up * knockbackScale * 2;
+                return Vector3.up * Mathf.Sqrt(2 * Gravity * (totalKnockback * BlackBoardBehaviour.Instance.Grid.PanelSpacing));
             }
 
             //Clamps hit angle to prevent completely horizontal movement
