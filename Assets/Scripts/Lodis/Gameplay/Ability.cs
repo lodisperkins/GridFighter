@@ -214,7 +214,6 @@ namespace Lodis.Gameplay
             onEnd?.Invoke();
             End();
             _inUse = false;
-            ownerMoveset.RemoveAbilityFromSlot(this);
         }
 
         public void EnableAnimation()
@@ -247,7 +246,11 @@ namespace Lodis.Gameplay
 
         protected virtual void Deactivate() { }
 
-        protected virtual void End() { }
+        protected virtual void End() 
+        {
+            if (!_ownerKnockBackScript.InHitStun)
+                _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
+        }
 
         public virtual void Update() { }
 

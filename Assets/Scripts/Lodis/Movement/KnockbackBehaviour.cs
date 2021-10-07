@@ -424,6 +424,11 @@ namespace Lodis.Movement
             _onKnockBackStartTemp += action;
         }
 
+        public void RemoveOnKnockBackStartTempAction(UnityAction action)
+        {
+            _onKnockBackStartTemp -= action;
+        }
+
         public void AddOnTakeDamageAction(UnityAction action)
         {
             _onTakeDamage += action;
