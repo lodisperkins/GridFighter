@@ -602,13 +602,24 @@ namespace Lodis.Movement
         {
             bool collidedWithGround = false;
             _boxPosition = _bounceCollider.bounds.center;
-            Debug.DrawRay(_bounceCollider.bounds.center, new Vector3(0, -(_bounceCollider.bounds.extents.y + _extraHeight), 0));
-            return Physics.Raycast(_bounceCollider.bounds.center, new Vector3(0, -_bounceCollider.bounds.extents.y, 0), (_bounceCollider.bounds.extents.y + _extraHeight), LayerMask.GetMask(new string[] { "Structure"}));
+            Vector3 extents = new Vector3(_bounceColliderExtents.x, _bounceColliderExtents.y + _extraHeight, _bounceColliderExtents.z + _bounceCollider.bounds.extents.z);
+            Collider[] hits = Physics.OverlapBox(_bounceCollider.bounds.center, extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
+
+            foreach (Collider collider in hits)
+            {
+                Vector3 closestPoint = collider.ClosestPoint(transform.position);
+                float normalY = (transform.position - closestPoint).normalized.y;
+                normalY = Mathf.Ceil(normalY);
+                if (normalY >= 0)
+                    collidedWithGround = true;
+            }
+
+            return collidedWithGround;
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawCube(_boxPosition, _bounceColliderExtents);
+            Gizmos.DrawCube(_boxPosition, new Vector3(_bounceColliderExtents.x, _bounceColliderExtents.y + _extraHeight, _bounceColliderExtents.z + _bounceCollider.bounds.extents.z));
         }
 
         /// /// <summary>

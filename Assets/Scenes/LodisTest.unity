@@ -347,6 +347,7 @@ MonoBehaviour:
   _owner: 
   _pushScale: 2
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!114 &33356479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4093,7 +4094,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &894189965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5192,6 +5193,7 @@ MonoBehaviour:
   _owner: 
   _pushScale: 2
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!114 &1082967235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6806,6 +6808,7 @@ MonoBehaviour:
   _owner: 
   _pushScale: 2
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!114 &1439180827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7874,6 +7877,7 @@ MonoBehaviour:
   _owner: 
   _pushScale: 2
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!114 &1553451239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9713,6 +9717,7 @@ MonoBehaviour:
   _owner: 
   _pushScale: 2
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!114 &1921244565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10157,6 +10162,7 @@ MonoBehaviour:
   _owner: 
   _pushScale: 2
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!114 &1992236354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10429,6 +10435,7 @@ MonoBehaviour:
   _owner: 
   _pushScale: 2
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!114 &2016165839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11121,6 +11128,7 @@ MonoBehaviour:
   _owner: 
   _pushScale: 2
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!114 &2119259576
 MonoBehaviour:
   m_ObjectHideFlags: 0
