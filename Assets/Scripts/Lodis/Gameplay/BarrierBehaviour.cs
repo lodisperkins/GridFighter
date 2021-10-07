@@ -13,12 +13,12 @@ namespace Lodis.Gameplay
         private Movement.GridMovementBehaviour _movement;
         [SerializeField]
         private string _owner = "";
+        [Tooltip("How much force will be applied to object standing on top of the barrier to push them off.")]
         [SerializeField]
         private float _pushScale;
+        [Tooltip("The amount of damage to deal to objects that collide with the barrier.")]
         [SerializeField]
         private float _damageOnCollision;
-        [SerializeField]
-        private float _bounceScale;
 
         public string Owner { get => _owner; set => _owner = value; }
 
@@ -75,7 +75,8 @@ namespace Lodis.Gameplay
             //Adds a force to objects to push them off of the field barrier if they land on top
             if (contactPoint.normal == Vector3.down)
             {
-                knockBackScript.ApplyForce(transform.forward * (_pushScale + knockBackScript.Gravity));
+                knockBackScript.ApplyForce(Vector3.up * knockBackScript.Gravity);
+                knockBackScript.ApplyForce(transform.forward * _pushScale);
             }
         }
 

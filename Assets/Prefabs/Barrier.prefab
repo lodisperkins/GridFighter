@@ -303,13 +303,14 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 1.5
+  _bounceDampen: 3
   _isInvincible: 0
   _visibleLayers:
   - Player
   _owner: 
-  _pushScale: 1
+  _pushScale: 10
   _damageOnCollision: 0
+  _bounceScale: 0
 --- !u!1 &4444937584539456812
 GameObject:
   m_ObjectHideFlags: 0
