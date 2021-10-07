@@ -51,7 +51,7 @@ namespace Lodis.Gameplay
             GameObject spawnerObject = new GameObject();
             spawnerObject.transform.parent = spawnTransform;
             spawnerObject.transform.localPosition = Vector3.zero;
-            spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
+            spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x + 1, spawnerObject.transform.position.y, owner.transform.position.z);
             spawnerObject.transform.forward = owner.transform.forward;
 
             if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.projectileHeight)
