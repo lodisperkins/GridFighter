@@ -340,13 +340,17 @@ namespace Lodis.Movement
         /// <param name="knockbackScale">How many panels backwards will the object move assuming its weight is 0</param>
         /// <param name="hitAngle">The angle to launch the object</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public Vector3 CalculateKnockbackForce(float knockbackScale, float hitAngle)
+        public Vector3 CalculateKnockbackForce(float knockbackScale, float hitAngle, bool knockBackIsFixed = false)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
             //Apply the damage and weight to find the amount of knock back to be applied
-            float totalKnockback = (knockbackScale + (knockbackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+            float totalKnockback = 0;
+            if (!knockBackIsFixed)
+                totalKnockback = (knockbackScale + (knockbackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+            else
+                totalKnockback = knockbackScale;
 
             //If the knockback was too weak return an empty vector
             if (totalKnockback <= 0)
@@ -358,7 +362,7 @@ namespace Lodis.Movement
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(hitAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
             {
-                return Mass * Vector3.up * Mathf.Sqrt(2 * Gravity * totalKnockback + (totalKnockback * BlackBoardBehaviour.Instance.Grid.PanelSpacing));
+                return Vector3.up * Mathf.Sqrt(2 * Gravity * totalKnockback + (totalKnockback * BlackBoardBehaviour.Instance.Grid.PanelSpacing));
             }
 
             //Clamps hit angle to prevent completely horizontal movement
@@ -658,6 +662,77 @@ namespace Lodis.Movement
 
                 //Add force to objectd
                 _rigidbody.AddForce(_velocityOnLaunch / Mass, ForceMode.Impulse);
+
+                _lastVelocity = _velocityOnLaunch;
+
+                if (_velocityOnLaunch.magnitude > 0)
+                {
+                    _inFreeFall = false;
+                    _inHitStun = true;
+                    _onKnockBack?.Invoke();
+                    _onKnockBackTemp?.Invoke();
+                    _onKnockBackTemp = null;
+                }
+            }
+
+            return damage;
+        }
+
+        /// /// <summary>
+        /// Damages this game object and applies a backwards force based on the angle
+        /// </summary>
+        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
+        /// <param name="damage">The amount of damage being applied to the object. 
+        /// Ring barriers only break if the damage amount is greater than the total health</param>
+        /// <param name="knockBackScale">How many panels far will this attakc make the object travel</param>
+        /// <param name="hitAngle">The angle to launch the object</param>
+        /// <param name="knockBackIsFixed">If true, the knock back won't be scaled based on health</param>
+        /// <param name="ignoreMass">If true, the force applied to the object won't change based in mass</param>
+        /// <param name="damageType">The type of damage this object will take</param>
+        public float TakeDamage(string attacker, float damage, float knockBackScale, float hitAngle, bool knockBackIsFixed, bool ignoreMass, DamageType damageType = DamageType.DEFAULT)
+        {
+            //Return if there is no rigidbody or movement script attached
+            if (!_movementBehaviour || !_rigidbody || IsInvincible)
+                return 0;
+
+            //Update current knockback scale
+            _currentKnockBackScale = knockBackScale;
+
+            //Adds damage to the total damage
+            Health += damage;
+            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
+
+            _onTakeDamage?.Invoke();
+            _onTakeDamageTemp?.Invoke();
+            _onTakeDamageTemp = null;
+
+            //Calculates force and applies it to the rigidbody
+            Vector3 knockBackForce = CalculateKnockbackForce(knockBackScale, hitAngle, knockBackIsFixed);
+
+            if (knockBackForce.magnitude > 0)
+            {
+                _onKnockBackStart?.Invoke();
+                _onKnockBackStartTemp?.Invoke();
+                _onKnockBackStartTemp = null;
+
+                _velocityOnLaunch = knockBackForce;
+                _rigidbody.isKinematic = false;
+
+                if (_movementBehaviour.IsMoving)
+                {
+                    _movementBehaviour.canCancelMovement = true;
+                    _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                    _movementBehaviour.canCancelMovement = false;
+                }
+
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(_objectAtRest, false, true);
+
+                //Add force to objectd
+                if (!ignoreMass)
+                    _rigidbody.AddForce(_velocityOnLaunch / Mass, ForceMode.Impulse);
+                else
+                    _rigidbody.AddForce(_velocityOnLaunch, ForceMode.Impulse);
 
                 _lastVelocity = _velocityOnLaunch;
 

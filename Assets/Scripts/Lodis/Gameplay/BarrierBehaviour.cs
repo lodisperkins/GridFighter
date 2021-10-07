@@ -19,6 +19,8 @@ namespace Lodis.Gameplay
         [Tooltip("The amount of damage to deal to objects that collide with the barrier.")]
         [SerializeField]
         private float _damageOnCollision;
+        [SerializeField]
+        private float _bounceScale;
 
         public string Owner { get => _owner; set => _owner = value; }
 
@@ -59,7 +61,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale * _bounceScale / BounceDampen, hitAngle, true, true, DamageType.KNOCKBACK);
         }
 
         private void OnCollisionStay(Collision collision)
