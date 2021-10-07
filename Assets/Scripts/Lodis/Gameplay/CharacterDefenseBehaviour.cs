@@ -274,6 +274,9 @@ namespace Lodis.Gameplay
         /// </summary>
         public void ResetParry()
         {
+            if (!_isParrying)
+                return;
+
             _knockBack.DisableInvincibility();
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;

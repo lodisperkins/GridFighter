@@ -61,7 +61,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale * _bounceScale / BounceDampen, hitAngle, true, true, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale * _bounceScale / BounceDampen, hitAngle, contactPoint.normal == Vector3.down, contactPoint.normal == Vector3.down, DamageType.KNOCKBACK);
         }
 
         private void OnCollisionStay(Collision collision)

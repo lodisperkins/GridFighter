@@ -27,6 +27,10 @@ namespace Lodis.Gameplay
             {
                 return _stunned;
             }
+            protected set
+            {
+                _stunned = value;
+            }
 
         }
         public bool IsAlive
@@ -78,6 +82,7 @@ namespace Lodis.Gameplay
 
         protected virtual IEnumerator ActivateStun(float time)
         {
+            Stunned = true;
             MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
             Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
 
@@ -99,10 +104,15 @@ namespace Lodis.Gameplay
                 moveset.enabled = true;
             if (inputBehaviour)
                 inputBehaviour.enabled = true;
+
+            Stunned = false;
         }
 
         public void Stun(float time)
         {
+            if (Stunned)
+                return;
+
             StartCoroutine(ActivateStun(time));
         }
 
@@ -127,6 +137,9 @@ namespace Lodis.Gameplay
 
         public void DisableInvincibility()
         {
+            if (!_isInvincible)
+                return;
+
             StopAllCoroutines();
             _invincibilityCondition = null;
             _isInvincible = false;

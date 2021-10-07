@@ -364,6 +364,7 @@ MonoBehaviour:
   _bounceColliderExtents: {x: 0, y: 0, z: 0}
   _bounciness: 1
   _panelBounceEnabled: 1
+  _useGravity: 1
 --- !u!114 &5685934378965997192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -455,7 +456,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 4
+  _attackType: 8
   _attackDelay: 1
   _attackStrength: 1.08
   _zDirection: 1

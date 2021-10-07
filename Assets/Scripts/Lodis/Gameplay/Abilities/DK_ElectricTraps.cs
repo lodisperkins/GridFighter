@@ -19,7 +19,7 @@ namespace Lodis.Gameplay
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
         {
-			base.Init(newOwner);
+            base.Init(newOwner);
             _attackLinkVisual = (GameObject)Resources.Load("Structures/AttackLink");
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
         }

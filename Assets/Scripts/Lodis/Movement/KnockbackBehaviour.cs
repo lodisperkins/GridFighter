@@ -65,6 +65,8 @@ namespace Lodis.Movement
         [SerializeField]
         private bool _panelBounceEnabled = true;
         private bool _isSpiked = false;
+        [SerializeField]
+        private bool _useGravity = true;
 
         public bool PanelBounceEnabled
         {
@@ -135,11 +137,11 @@ namespace Lodis.Movement
         {
             get
             {
-                return _rigidbody.useGravity;
+                return _useGravity;
             }
             set
             {
-                _rigidbody.useGravity = value;
+                _useGravity = value;
             }
         }
 
@@ -231,7 +233,7 @@ namespace Lodis.Movement
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
             OnCollision += TryStartLandingLag;
             _onKnockBack += () => Landing = false;
-            _onKnockBackStart += () => { if (Stunned) { UnfreezeObject(); } };
+            _onKnockBackStart += () => { Stunned = false; };
             _bounceColliderExtents = new Vector3(_bounceCollider.bounds.extents.x, _bounceCollider.bounds.extents.y, _bounceCollider.bounds.extents.z);
         }
 
@@ -287,6 +289,7 @@ namespace Lodis.Movement
         {
             _rigidbody.velocity = Vector3.zero;
             _rigidbody.angularVelocity = Vector3.zero;
+            UseGravity = false;
         }
 
         public bool CheckIfAtRest()
@@ -300,22 +303,41 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze for.</param>
         /// <returns></returns>
-        private IEnumerator FreezeCoroutine(float time, bool keepMomentum = false)
+        private IEnumerator FreezeTimerCoroutine(float time, bool keepMomentum = false)
         {
+            bool gravityEnabled = UseGravity;
             Vector3 velocity = LastVelocity;
 
             float timeStarted = Time.time;
             float timeElapsed = 0;
 
-            while (timeElapsed < time)
-            {
-                timeElapsed = Time.time - timeStarted;
-                _rigidbody.AddForce(-_rigidbody.velocity, ForceMode.VelocityChange);
-                yield return new WaitForFixedUpdate();
-            }
+            StopAllForces();
+            yield return new WaitForSeconds(time);
 
             if (keepMomentum)
                 ApplyVelocityChange(velocity);
+
+            UseGravity = gravityEnabled;
+        }
+
+        CustomYieldInstruction wait;
+        private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false)
+        {
+            bool gravityEnabled = UseGravity;
+            Vector3 velocity = LastVelocity;
+
+            float timeStarted = Time.time;
+            float timeElapsed = 0;
+
+            StopAllForces();
+            _rigidbody.isKinematic = true;
+            wait = new WaitUntil(() => condition.Invoke());
+            yield return wait;
+            _rigidbody.isKinematic = false;
+            if (keepMomentum)
+                ApplyVelocityChange(velocity);
+
+            UseGravity = gravityEnabled;
         }
 
         /// <summary>
@@ -325,13 +347,18 @@ namespace Lodis.Movement
         /// <param name="time">The amount of time in seconds to freeze in place.</param>
         public void FreezeInPlaceByTimer(float time)
         {
-            _currentCoroutine = StartCoroutine(FreezeCoroutine(time));
+            _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time));
+        }
+
+        public void FreezeInPlaceByCondition(Condition condition)
+        {
+            _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true));
         }
 
         public void UnfreezeObject()
         {
             if (_currentCoroutine != null)
-                StopCoroutine(_currentCoroutine);
+                FreezeTimerCoroutine(0, true).MoveNext();
         }
 
         /// <summary>
@@ -456,9 +483,10 @@ namespace Lodis.Movement
         {
             MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
             Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
+            Stunned = true;
 
             if (InFreeFall || InHitStun)
-                FreezeInPlaceByTimer(time);
+               FreezeInPlaceByCondition(condition =>!Stunned);
 
             if (moveset)
             {
@@ -477,6 +505,8 @@ namespace Lodis.Movement
                 moveset.enabled = true;
             if (inputBehaviour)
                 inputBehaviour.enabled = true;
+
+            Stunned = false;
         }
 
         public override void OnCollisionEnter(Collision collision)
@@ -762,6 +792,8 @@ namespace Lodis.Movement
 
         private void FixedUpdate()
         {
+            if (wait != null)
+                Debug.Log(wait.keepWaiting);
             _acceleration = (_rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
 
             if (_rigidbody.velocity.magnitude > _maxMagnitude.Value)
@@ -796,7 +828,10 @@ namespace Lodis.Movement
             else
                 _normalForce = Vector3.zero;
 
-             _constantForceBehaviour.force = new Vector3(0, -Gravity, 0) + _normalForce;
+            if (UseGravity)
+                _constantForceBehaviour.force = new Vector3(0, -Gravity, 0) + _normalForce;
+            else
+                _constantForceBehaviour.force = Vector3.zero;
 
             _force = _constantForceBehaviour.force + LastVelocity;
         }
