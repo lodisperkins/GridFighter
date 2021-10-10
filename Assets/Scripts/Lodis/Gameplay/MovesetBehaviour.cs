@@ -181,6 +181,11 @@ namespace Lodis.Gameplay
                 StopCoroutine(_abilityRoutine);
         }
 
+        public void EndCurrentAbility()
+        {
+            _lastAbilityInUse?.EndAbility();
+        }
+
         private void ReloadDeck()
         {
             _specialDeck = Instantiate(_specialDeckRef);

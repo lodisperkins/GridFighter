@@ -118,6 +118,9 @@ namespace Lodis.Gameplay
         /// </summary>
         private void CalculateMovementAnimationSpeed()
         {
+            if (_currentClip == null)
+                return;
+
             AnimationPhase phase = (AnimationPhase)_animationPhase;
             float newSpeed = 1;
 
@@ -386,6 +389,10 @@ namespace Lodis.Gameplay
                 case PlayerState.LANDING:
                     _animator.transform.localPosition = Vector3.zero;
                     _animator.Play("Land");
+                    _animatingMotion = true;
+                    break;
+                case PlayerState.STUNNED:
+                    _animator.Play("Stunned");
                     _animatingMotion = true;
                     break;
             }

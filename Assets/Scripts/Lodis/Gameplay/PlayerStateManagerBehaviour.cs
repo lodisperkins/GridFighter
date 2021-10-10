@@ -14,7 +14,8 @@ namespace Lodis.Gameplay
         PARRYING,
         FALLBREAKING,
         LANDING,
-        DOWN
+        DOWN,
+        STUNNED
     }
 
     public class PlayerStateManagerBehaviour : MonoBehaviour
@@ -48,7 +49,9 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         void Update()
         {
-            if (_characterDefense.BreakingFall)
+            if (_knockBack.Stunned)
+                _currentState = PlayerState.STUNNED;
+            else if (_characterDefense.BreakingFall)
                 _currentState = PlayerState.FALLBREAKING;
             else if (_knockBack.Landing)
                 _currentState = PlayerState.LANDING;

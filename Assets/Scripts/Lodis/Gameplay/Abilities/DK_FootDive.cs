@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
 
             //Find x velocity
             Vector3 velocityX;
-            velocityX.x = displacement / abilityData.startUpTime;
+            velocityX.x = (displacement / abilityData.startUpTime) * owner.transform.forward.x;
 
             //Apply force
             return new Vector3(velocityX.x, velocityY.y * yDirection, 0);

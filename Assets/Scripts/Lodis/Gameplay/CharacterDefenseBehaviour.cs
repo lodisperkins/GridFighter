@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lodis.Utility;
 
 namespace Lodis.Gameplay
 {
@@ -53,6 +54,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _airDodgeSpeed;
         private float _airDodgeDistanceTolerance = 0.1f;
+        [SerializeField]
+        private float _parryStartUpTime;
         [Tooltip("How fast the wait time to parry in air will decrease as an object is in knockback.")]
         [SerializeField]
         private float _parryCoolDownDecreaseRate;
@@ -73,7 +76,7 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds the object is invincible after catching it's fall.")]
         [SerializeField]
         private float _braceInvincibilityTime;
-        private Coroutine _cooldownRoutine;
+        private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
 
         public bool BreakingFall { get; private set; }
@@ -97,21 +100,13 @@ namespace Lodis.Gameplay
             _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
             _knockBack.AddOnKnockBackAction(ResetParry);
             _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
-            _knockBack.AddOnKnockBackAction(() => StopAllCoroutines());
-            _knockBack.AddOnKnockBackAction(() => _isParrying = false);
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
             //Initialize default values
             _defaultColor = _material.color;
             _parryCollider.OnHit += ActivateInvinciblity;
             _parryCollider.ColliderOwner = gameObject;
-            onFallBroken += normal => { BreakingFall = true; StartCoroutine(FallBreakTimer()); };
-        }
-
-        private IEnumerator FallBreakTimer()
-        {
-            yield return new WaitForSeconds(BraceInvincibilityTime);
-            BreakingFall = false;
+            onFallBroken += normal => { BreakingFall = true; RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, RoutineBehaviour.TimedActionCountType.SCALEDTIME, BraceInvincibilityTime); };
         }
 
         /// <summary>
@@ -121,19 +116,7 @@ namespace Lodis.Gameplay
         {
             Movement.Condition invincibilityCondition = condition => !_movement.IsMoving;
             _movement.AddOnMoveBeginTempAction(() => _knockBack.SetInvincibilityByCondition(invincibilityCondition));
-            _movement.AddOnMoveEndTempAction(() => StartCoroutine(RecoverInvincibiltyRoutine()));
-        }
-
-        /// <summary>
-        /// Sets the player to be invincible after waiting one frame.
-        /// This is so that recover incincibility is activated after the condition check
-        /// for the previous invincibility call.
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator RecoverInvincibiltyRoutine()
-        {
-            yield return new WaitForEndOfFrame();
-            _knockBack.SetInvincibilityByTimer(_recoverInvincibilityLength);
+            _movement.AddOnMoveEndTempAction(() => RoutineBehaviour.Instance.StartNewTimedAction(args => _knockBack.SetInvincibilityByTimer(_recoverInvincibilityLength), RoutineBehaviour.TimedActionCountType.FRAME, 1));
         }
 
         /// <summary>
@@ -141,15 +124,12 @@ namespace Lodis.Gameplay
         /// freezes the character in air for a brief moment.
         /// </summary>
         /// <returns></returns>
-        private IEnumerator ActivateAirParryRoutine()
+        private void ActivateAirParry()
         {
-            if (_knockBack.LastVelocity.magnitude == 0)
-                yield return new WaitForFixedUpdate();
-
             //If the velocity the character is moving at is above the speed limit break
             Vector3 moveVelocity = _knockBack.LastVelocity;
             if (moveVelocity.magnitude >= _tempParrySpeedLimit)
-                yield break;
+                return;
 
             //Stops the character from moving to make parrying easier
             _knockBack.FreezeInPlaceByTimer(_parryLength);
@@ -160,12 +140,14 @@ namespace Lodis.Gameplay
             _canParry = false;
 
             //Start timer for parry
-            yield return new WaitForSeconds(_parryLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateAirParry(moveVelocity), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryLength);
+        }
 
+        private void DeactivateAirParry(Vector3 moveVelocity)
+        {
             //Disable parry
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
-            _knockBack.UnfreezeObject();
             _knockBack.InFreeFall = true;
 
             //If the parry wasn't successful, reapply the old velocity
@@ -173,14 +155,14 @@ namespace Lodis.Gameplay
                 _knockBack.ApplyVelocityChange(moveVelocity);
 
             //Start the parry cooldown
-            StartCoroutine(RechargeParry(_tempParryCooldown));
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _canParry = true, RoutineBehaviour.TimedActionCountType.SCALEDTIME, _tempParryCooldown);
         }
 
         /// <summary>
         /// Enables the parry collider and freezes character actions
         /// </summary>
         /// <returns></returns>
-        private IEnumerator ActivateGroundParryRoutine()
+        private void ActivateGroundParry()
         {
             //Enable parry and update states
             _parryCollider.gameObject.SetActive(true);
@@ -188,15 +170,20 @@ namespace Lodis.Gameplay
             _movement.DisableMovement(condition => _isParrying == false, true, true);
             _canParry = false;
 
-            //Start timer for parry
-            yield return new WaitForSeconds(_parryLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateGroundParry(), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryLength);
+        }
 
+        private void DeactivateGroundParry()
+        {
             //Disable parry
             _parryCollider.gameObject.SetActive(false);
 
             //Start timer for player immobility
             if (!_knockBack.IsInvincible)
-                yield return new WaitForSeconds(_parryRestTime);
+            {
+                RoutineBehaviour.Instance.StartNewTimedAction(args => { _isParrying = false; _canParry = true; }, RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryRestTime);
+                return;
+            }
 
             //Allow the character to parry again
             _isParrying = false;
@@ -229,16 +216,7 @@ namespace Lodis.Gameplay
             }
 
             //Start cooldown
-            StartCoroutine(RechargeParry(_parryCooldown));
-        }
-
-        /// <summary>
-        /// Gives the character the ability to parry after the cooldown.
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator RechargeParry(float parryCooldown)
-        {
-            yield return new WaitForSeconds(parryCooldown);
+            yield return new WaitForSeconds(_parryCooldown);
             _canParry = true;
         }
 
@@ -263,9 +241,9 @@ namespace Lodis.Gameplay
         public void ActivateParry()
         {
             if (_canParry && !_knockBack.InHitStun)
-                StartCoroutine(ActivateGroundParryRoutine());
+                RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateGroundParry(), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryStartUpTime);
             else if (_canParry)
-                StartCoroutine(ActivateAirParryRoutine());
+                RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateAirParry(), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryStartUpTime);
         }
 
         /// <summary>
@@ -291,8 +269,7 @@ namespace Lodis.Gameplay
             IsBraced = false;
             _canBrace = true;
 
-            if (_cooldownRoutine != null)
-                StopCoroutine(_cooldownRoutine);
+            RoutineBehaviour.Instance.StopTimedAction(_cooldownTimedAction);
         }
 
         /// <summary>
@@ -303,7 +280,7 @@ namespace Lodis.Gameplay
             if (!_knockBack.InHitStun || !_canBrace)
                 return;
 
-            StartCoroutine(ActivateBrace());
+            ActivateBrace();
         }
 
         /// <summary>
@@ -311,23 +288,17 @@ namespace Lodis.Gameplay
         /// Starts the cooldown when done.
         /// </summary>
         /// <returns></returns>
-        private IEnumerator ActivateBrace()
+        private void ActivateBrace()
         {
             IsBraced = true;
             _canBrace = false;
-            yield return new WaitForSeconds(_braceActiveTime);
-            IsBraced = false;
-            _cooldownRoutine = StartCoroutine(ActivateBraceCooldown());
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateBrace(), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _braceActiveTime);
         }
 
-        /// <summary>
-        /// Sets can brace to true after the brace cooldown time has passed.
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerator ActivateBraceCooldown()
+        private void DeactivateBrace()
         {
-            yield return new WaitForSeconds(_braceCooldownTime);
-            _canBrace = true;
+            IsBraced = false;
+            _cooldownTimedAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canBrace = true, RoutineBehaviour.TimedActionCountType.SCALEDTIME, _braceCooldownTime);
         }
 
         /// <summary>
@@ -371,8 +342,9 @@ namespace Lodis.Gameplay
             //Apply force downward and make the character invincible if the character was in air
             if (_knockBack.InHitStun)
             {
-                _knockBack.MakeKinematic();
-                _knockBack.SetInvincibilityByCondition(context => !(_knockBack.InHitStun));
+                _knockBack.InFreeFall = true;
+                _knockBack.ApplyVelocityChange(Vector3.down * _parryFallSpeed);
+                _knockBack.SetInvincibilityByCondition(context => !(_knockBack.InFreeFall));
                 return;
             }
 

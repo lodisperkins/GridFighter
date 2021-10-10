@@ -20,6 +20,8 @@ namespace Lodis.AI
         private float _zDirection;
         private Gameplay.PlayerStateManagerBehaviour _playerState;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
+        private int _lastSlot;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -34,10 +36,21 @@ namespace Lodis.AI
             {
                 _zDirection = Mathf.Clamp(_zDirection, -1, 1);
 
-                if ((int)_attackType == 8)
+                if ((int)_attackType == 9)
                     return;
-                
-                _moveset.UseBasicAbility(_attackType, new object[]{_attackStrength, _zDirection});
+
+                if ((int)_attackType == 8)
+                {
+                    if (_lastSlot == 0)
+                        _lastSlot = 1;
+                    else
+                        _lastSlot = 0;
+
+                    _moveset.UseSpecialAbility(_lastSlot, new object[] { _attackStrength, _zDirection });
+                }
+                else
+                    _moveset.UseBasicAbility(_attackType, new object[]{_attackStrength, _zDirection});
+
                 _timeOfLastAttack = Time.time;
             }
         }

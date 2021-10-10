@@ -19,6 +19,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _isInvincible;
         private Condition _invincibilityCondition;
+        [SerializeField]
         private bool _stunned;
 
         public bool Stunned 
@@ -89,7 +90,7 @@ namespace Lodis.Gameplay
             if (moveset)
             {
                 moveset.enabled = false;
-                moveset.StopAbilityRoutine();
+                moveset.EndCurrentAbility();
             }
             if (inputBehaviour)
             {

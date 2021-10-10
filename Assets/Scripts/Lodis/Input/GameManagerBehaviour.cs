@@ -34,6 +34,7 @@ namespace Lodis.Gameplay
         private PlayerStateManagerBehaviour _p2StateManager;
         private Input.InputBehaviour _p1Input;
         private Input.InputBehaviour _p2Input;
+        private MovesetBehaviour _player2Moveset;
         private MovesetBehaviour _player1Moveset;
         [SerializeField]
         private HealthBarBehaviour _p1HealthBar;
@@ -41,6 +42,8 @@ namespace Lodis.Gameplay
         private HealthBarBehaviour _p2HealthBar;
         [SerializeField]
         private AbilityDebugTextBehaviour _abilityTextP1;
+        [SerializeField]
+        private AbilityDebugTextBehaviour _abilityTextP2;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierL;
         [SerializeField]
@@ -102,10 +105,12 @@ namespace Lodis.Gameplay
                 _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
                 _p2StateManager = _player2.GetComponent<PlayerStateManagerBehaviour>();
                 _p2Input = _player2.GetComponent<Input.InputBehaviour>();
+                _player2Moveset = _player2.GetComponent<MovesetBehaviour>();
 
                 //Initialize base UI stats
                 _p2HealthBar.HealthComponent = _player2.GetComponent<Movement.KnockbackBehaviour>();
                 _p2HealthBar.MaxValue = 200;
+                _abilityTextP2.MoveSet = _player2Moveset;
 
                 //Move player to spawn
                 _p2Input.PlayerID = 1;
@@ -126,10 +131,13 @@ namespace Lodis.Gameplay
                 //Get reference to player 2 components
                 _p2Movement = _cpu.GetComponent<Movement.GridMovementBehaviour>();
                 _p2StateManager = _cpu.GetComponent<PlayerStateManagerBehaviour>();
+                _player2Moveset = _cpu.GetComponent<MovesetBehaviour>();
 
                 //Initialize base UI stats
                 _p2HealthBar.HealthComponent = _cpu.GetComponent<Movement.KnockbackBehaviour>();
                 _p2HealthBar.MaxValue = 200;
+                _abilityTextP2.MoveSet = _player2Moveset;
+
                 //Find spawn point for dummy
                 GridScripts.PanelBehaviour spawnPanel = null;
                 if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))

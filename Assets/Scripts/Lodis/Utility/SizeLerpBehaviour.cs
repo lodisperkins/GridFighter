@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace Lodis.Gameplay
+namespace Lodis.Utility
 {
     public class SizeLerpBehaviour : MonoBehaviour
     {

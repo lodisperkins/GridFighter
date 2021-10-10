@@ -30,8 +30,14 @@ namespace Lodis.Gameplay
         protected override void Start(params object[] args)
         {
             base.Start(args);
-            //Set initial attack direction so player can change directions immediately
-            _attackDirection = _ownerInput.AttackDirection;
+            if (_ownerInput)
+            {
+                //Set initial attack direction so player can change directions immediately
+                _attackDirection = _ownerInput.AttackDirection;
+            }
+            else
+                _attackDirection = owner.transform.forward;
+
             //Play animation
             EnableAnimation();
             //Store initial move speed
@@ -102,6 +108,10 @@ namespace Lodis.Gameplay
         public override void Update()
         {
             base.Update();
+
+            if (!_ownerInput)
+                return;
+
             //If the player is trying to change their attack direction...
             if (_ownerInput.AttackDirection.magnitude > 0 && !_usedFirstStrike && CurrentAbilityPhase == AbilityPhase.RECOVER)
             {

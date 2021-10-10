@@ -358,7 +358,9 @@ namespace Lodis.Movement
         public void UnfreezeObject()
         {
             if (_currentCoroutine != null)
-                FreezeTimerCoroutine(0, true).MoveNext();
+                StopCoroutine(_currentCoroutine);
+
+            UseGravity = true;
         }
 
         /// <summary>
@@ -491,7 +493,7 @@ namespace Lodis.Movement
             if (moveset)
             {
                 moveset.enabled = false;
-                moveset.StopAbilityRoutine();
+                moveset.EndCurrentAbility();
             }
             if (inputBehaviour)
             {

@@ -14,6 +14,8 @@ namespace Lodis
         // Update is called once per frame
         void Update()
         {
+            if (!MoveSet)
+                return;
             AbilitySlot1Text.text = MoveSet.GetAbilityNamesInCurrentSlots()[0];
             AbilitySlot2Text.text = MoveSet.GetAbilityNamesInCurrentSlots()[1];
         }

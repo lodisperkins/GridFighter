@@ -342,6 +342,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 0
+  _stunned: 0
   _visibleLayers:
   - Player
   _owner: 
@@ -630,7 +631,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &111634440
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -788,6 +789,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 1
+  _stunned: 0
   owner: 
 --- !u!64 &151772238
 MeshCollider:
@@ -933,7 +935,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &184880004
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2245,6 +2247,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 0
+  _stunned: 0
   owner: 
 --- !u!64 &446117096
 MeshCollider:
@@ -3963,6 +3966,59 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1443548382}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &881170260
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 881170261}
+  - component: {fileID: 881170262}
+  m_Layer: 5
+  m_Name: AbilitiesDisplay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &881170261
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881170260}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1881789371}
+  - {fileID: 1653054114}
+  m_Father: {fileID: 1465255077}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &881170262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 881170260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9a3e2b03a8dba54d904bc64bd4657d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MoveSet: {fileID: 0}
+  AbilitySlot1Text: {fileID: 1881789372}
+  AbilitySlot2Text: {fileID: 1653054115}
 --- !u!1 &891889693
 GameObject:
   m_ObjectHideFlags: 0
@@ -4112,6 +4168,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 1
+  _stunned: 0
   owner: 
 --- !u!64 &894189966
 MeshCollider:
@@ -5188,6 +5245,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 0
+  _stunned: 0
   _visibleLayers:
   - Player
   _owner: 
@@ -6803,6 +6861,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 0
+  _stunned: 0
   _visibleLayers:
   - Player
   _owner: 
@@ -6921,6 +6980,7 @@ GameObject:
   - component: {fileID: 1441118450}
   - component: {fileID: 1441118449}
   - component: {fileID: 1441118448}
+  - component: {fileID: 1441118451}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6948,6 +7008,7 @@ MonoBehaviour:
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}
+  _abilityTextP2: {fileID: 881170262}
   _ringBarrierL: {fileID: 894189965}
   _ringBarrierR: {fileID: 151772237}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
@@ -7009,6 +7070,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1441118451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441118447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 825a625edfd206a4cb6d296031d7b544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1443548382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7382,8 +7455,7 @@ RectTransform:
   m_Children:
   - {fileID: 392485398}
   - {fileID: 1609223289}
-  - {fileID: 1881789371}
-  - {fileID: 1653054114}
+  - {fileID: 881170261}
   m_Father: {fileID: 1865002294}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7872,6 +7944,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 0
+  _stunned: 0
   _visibleLayers:
   - Player
   _owner: 
@@ -8344,8 +8417,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1465255077}
-  m_RootOrder: 3
+  m_Father: {fileID: 881170261}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8384,7 +8457,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &1653054116
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9384,7 +9457,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1854253615}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.08, y: 0.91, z: -0.3}
+  m_LocalPosition: {x: 4.24, y: 3.2, z: -0.3}
   m_LocalScale: {x: 0.28803, y: 0.28803, z: 0.28803}
   m_Children: []
   m_Father: {fileID: 0}
@@ -9609,8 +9682,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1465255077}
-  m_RootOrder: 2
+  m_Father: {fileID: 881170261}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9649,7 +9722,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: 
 --- !u!222 &1881789373
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9712,6 +9785,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 1
+  _stunned: 0
   _visibleLayers:
   - Player
   _owner: 
@@ -10157,6 +10231,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 0
+  _stunned: 0
   _visibleLayers:
   - Player
   _owner: 
@@ -10430,6 +10505,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 1
+  _stunned: 0
   _visibleLayers:
   - Player
   _owner: 
@@ -11123,6 +11199,7 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 2
   _isInvincible: 0
+  _stunned: 0
   _visibleLayers:
   - Player
   _owner: 

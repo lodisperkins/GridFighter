@@ -352,6 +352,7 @@ MonoBehaviour:
   _isAlive: 0
   _bounceDampen: 3
   _isInvincible: 0
+  _stunned: 0
   _mass: 2.8
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
@@ -395,7 +396,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
   _renderer: {fileID: 5680485170780137516}
   _animationBehaviour: {fileID: 0}
   _projectileSpawnPoint: {fileID: 1321618602}
@@ -437,6 +438,7 @@ MonoBehaviour:
   _parryRestTime: 1
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
+  _parryStartUpTime: 0
   _parryCoolDownDecreaseRate: 0
   _parrySpeedLimitIncreaseRate: 0
   _parryUpgradeRate: 0
