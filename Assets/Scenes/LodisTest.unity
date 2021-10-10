@@ -784,11 +784,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438dda136aaf75e4aa58f774a6f5dba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 5
+  _health: 15
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 1
+  _isInvincible: 0
   _stunned: 0
   owner: 
 --- !u!64 &151772238
@@ -2246,7 +2246,7 @@ MonoBehaviour:
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 0
+  _isInvincible: 1
   _stunned: 0
   owner: 
 --- !u!64 &446117096
@@ -4163,11 +4163,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438dda136aaf75e4aa58f774a6f5dba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 5
+  _health: 15
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 1
+  _isInvincible: 0
   _stunned: 0
   owner: 
 --- !u!64 &894189966
@@ -7004,7 +7004,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 1
+  _mode: 2
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}

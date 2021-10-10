@@ -95,7 +95,7 @@ namespace Lodis.Gameplay
             if (_mode == GameMode.MULTIPLAYER)
             {
                 //Spawn player 2
-                _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[2]);
+                _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[3]);
                 _player2 = PlayerInput.GetPlayerByIndex(1);
                 _player2.name = _player2.name + "(P2)";
                 _ringBarrierR.owner = _player2.name;
