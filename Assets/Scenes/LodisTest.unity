@@ -496,6 +496,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -686,6 +687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -990,6 +992,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -1176,6 +1179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -1362,6 +1366,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -1812,6 +1817,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -2070,6 +2076,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -2444,6 +2451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -2556,6 +2564,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -2668,6 +2677,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -2930,6 +2940,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -3042,6 +3053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -3304,6 +3316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -3416,6 +3429,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -3528,6 +3542,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -4065,6 +4080,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -4374,6 +4390,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -4473,20 +4490,19 @@ Transform:
   m_Father: {fileID: 848279247}
   m_RootOrder: 48
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!64 &942828865
-MeshCollider:
+--- !u!65 &942828865
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 942828863}
-  m_Material: {fileID: 13400000, guid: ecfbd48aa38306d48aa924a204daf06a, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 9.999999, y: 0.35, z: 10}
+  m_Center: {x: 0, y: -0.18, z: 0}
 --- !u!23 &942828866
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4654,6 +4670,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -4873,6 +4890,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2039876615219471376, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -4996,6 +5018,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -5399,6 +5422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -5957,6 +5981,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -6069,6 +6094,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -6181,6 +6207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -6293,6 +6320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -6405,6 +6433,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -6517,6 +6546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -6629,6 +6659,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -6741,6 +6772,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -7004,7 +7036,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 2
+  _mode: 0
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}
@@ -7750,6 +7782,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -8098,6 +8131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -8512,6 +8546,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -8660,6 +8695,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2039876615219471376, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -9016,6 +9056,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -9276,6 +9317,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -10385,6 +10427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -10620,6 +10663,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2039876615219471376, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: m_CollisionDetection
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -10743,6 +10791,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -10855,6 +10904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -10967,6 +11017,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -11079,6 +11130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -11353,6 +11405,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
@@ -11465,6 +11518,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}

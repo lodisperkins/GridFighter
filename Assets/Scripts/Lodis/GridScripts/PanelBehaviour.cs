@@ -7,6 +7,7 @@ namespace Lodis.GridScripts
     public class PanelBehaviour : MonoBehaviour
     {
         private Vector2 _position;
+        [SerializeField]
         private bool _occupied;
         private GridAlignment _alignment;
         [Tooltip("The material to give this panel if it is not aligned with either side of the grid.")]

@@ -271,18 +271,20 @@ MonoBehaviour:
   _isAlive: 0
   _bounceDampen: 4
   _isInvincible: 0
+  _stunned: 0
   _mass: 5
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
   _defenseBehaviour: {fileID: 2612010366639249464}
-  _landingTime: 1
+  _landingTime: 0
   _gravity: 9.81
   _bounceCollider: {fileID: 5036224701878357983}
   _extraHeight: 0.1
   _bounceColliderExtents: {x: 0, y: 0, z: 0}
   _bounciness: 0.8
   _panelBounceEnabled: 1
+  _useGravity: 1
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +357,7 @@ MonoBehaviour:
   _parryRestTime: 0.5
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
+  _parryStartUpTime: 0
   _parryCoolDownDecreaseRate: 0.05
   _parrySpeedLimitIncreaseRate: 0.05
   _parryUpgradeRate: 1

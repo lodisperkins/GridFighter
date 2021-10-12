@@ -214,6 +214,7 @@ namespace Lodis.Movement
         }
 
         public Vector3 Acceleration { get => _acceleration; }
+        public float LandingTime { get => _landingTime;}
 
         private void Awake()
         {

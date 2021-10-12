@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5105956325393639370}
   - component: {fileID: 5894801440243622393}
   - component: {fileID: 3302727793092609642}
-  - component: {fileID: 4910650955507786514}
+  - component: {fileID: 7212125777042658491}
   m_Layer: 10
   m_Name: CollisionPlane
   m_TagString: Structure
@@ -80,17 +80,16 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4910650955507786514
-MeshCollider:
+--- !u!65 &7212125777042658491
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6261796229167299558}
-  m_Material: {fileID: 13400000, guid: ecfbd48aa38306d48aa924a204daf06a, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 9.999999, y: 0.35, z: 10}
+  m_Center: {x: 0, y: -0.18, z: 0}
