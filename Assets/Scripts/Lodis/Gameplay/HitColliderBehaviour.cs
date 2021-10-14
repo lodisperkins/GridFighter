@@ -87,16 +87,23 @@ namespace Lodis.Gameplay
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.Contains(other.gameObject) || IsMultiHit || other.gameObject == Owner)
+            if (Collisions.Contains(other.gameObject) || IsMultiHit)
                 return;
 
             ColliderBehaviour otherCollider = null;
 
             if (other.attachedRigidbody)
-                otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
-
-            if (otherCollider && IgnoreColliders)
+            {
+                if (other.attachedRigidbody.gameObject != Owner)
+                    otherCollider = other.attachedRigidbody.gameObject.GetComponentInChildren<ColliderBehaviour>();
+                else
                     return;
+            }
+
+            if (otherCollider)
+                if (IgnoreColliders || otherCollider.IgnoreColliders || otherCollider.ColliderOwner == Owner)
+                    return;
+
             else if (otherCollider is HitColliderBehaviour)
             {
                 if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)

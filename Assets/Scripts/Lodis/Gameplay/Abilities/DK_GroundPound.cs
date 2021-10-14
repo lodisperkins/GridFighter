@@ -80,6 +80,7 @@ namespace Lodis.Gameplay
             //Create collider for shockwaves
             _shockWaveCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
                 abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true);
+            _shockWaveCollider.IgnoreColliders = abilityData.IgnoreColliders;
 
             //Disable movement to prevent the ability being interrupted
             _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
