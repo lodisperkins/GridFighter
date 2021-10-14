@@ -790,7 +790,7 @@ MonoBehaviour:
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 0
+  _isInvincible: 1
   _stunned: 0
   owner: 
 --- !u!64 &151772238
@@ -4183,7 +4183,7 @@ MonoBehaviour:
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 0
+  _isInvincible: 1
   _stunned: 0
   owner: 
 --- !u!64 &894189966
@@ -4272,6 +4272,7 @@ GameObject:
   - component: {fileID: 934786775}
   - component: {fileID: 934786774}
   - component: {fileID: 934786773}
+  - component: {fileID: 934786776}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4344,6 +4345,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 24.407001, y: 0, z: 0}
+--- !u!114 &934786776
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934786772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b52819959716c8447b8e6fb42c341f07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _cameraOffset: {x: 0, y: 3, z: -4}
+  _cameraMoveSpeed: 2
+  _moveSensitivity: {x: 0.5, y: 0, z: 0}
 --- !u!1 &938737660
 GameObject:
   m_ObjectHideFlags: 0

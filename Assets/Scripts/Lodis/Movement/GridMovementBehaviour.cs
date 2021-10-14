@@ -200,6 +200,9 @@ namespace Lodis.Movement
             _targetPosition = transform.position;
             _meshFilter = GetComponent<MeshFilter>();
             _collider = GetComponent<Collider>();
+
+            if (CompareTag("Player") || CompareTag("Entity"))
+                BlackBoardBehaviour.Instance.AddEntityToList(gameObject);
         }
 
         private void Start()

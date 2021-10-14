@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
             _p1StateManager = _player1.GetComponent<PlayerStateManagerBehaviour>();
             _p1Input = _player1.GetComponent<Input.InputBehaviour>();
             _player1Moveset = _player1.GetComponent<MovesetBehaviour>();
-
+            BlackBoardBehaviour.Instance.Player1 = _player1.gameObject;
             //Assign ID 
             _p1Input.PlayerID = 0;
 
@@ -100,7 +100,7 @@ namespace Lodis.Gameplay
                 _player2.name = _player2.name + "(P2)";
                 _ringBarrierR.owner = _player2.name;
                 _player2.transform.forward = Vector3.left;
-
+                BlackBoardBehaviour.Instance.Player2 = _player2.gameObject;
                 //Get reference to player 2 components
                 _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
                 _p2StateManager = _player2.GetComponent<PlayerStateManagerBehaviour>();
@@ -127,7 +127,7 @@ namespace Lodis.Gameplay
                 _cpu.name = _inputManager.playerPrefab.name + "(Dummy)";
                 _ringBarrierR.owner = _cpu.name;
                 _cpu.transform.forward = Vector3.left;
-
+                BlackBoardBehaviour.Instance.Player2 = _cpu.gameObject;
                 //Get reference to player 2 components
                 _p2Movement = _cpu.GetComponent<Movement.GridMovementBehaviour>();
                 _p2StateManager = _cpu.GetComponent<PlayerStateManagerBehaviour>();

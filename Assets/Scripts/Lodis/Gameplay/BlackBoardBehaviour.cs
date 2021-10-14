@@ -13,6 +13,9 @@ namespace Lodis.Gameplay
         public PlayerState player2State = PlayerState.IDLE;
         public float projectileHeight;
         public FloatVariable MaxKnockBackHealth;
+        public GameObject Player1;
+        public GameObject Player2;
+        private List<GameObject> _entitiesInGame = new List<GameObject>();
         private static BlackBoardBehaviour _instance;
 
         public static BlackBoardBehaviour Instance
@@ -31,6 +34,8 @@ namespace Lodis.Gameplay
                 return _instance;
             }
         }
+
+        public List<GameObject> EntitiesInGame { get => _entitiesInGame; }
 
         /// <summary>
         /// Gets the state of the player that matches the ID
@@ -55,6 +60,11 @@ namespace Lodis.Gameplay
         public void InitializeGrid()
         {
             Grid = FindObjectOfType<GridScripts.GridBehaviour>();
+        }
+
+        public void AddEntityToList(GameObject entity)
+        {
+            _entitiesInGame.Add(entity);
         }
     }
 }
