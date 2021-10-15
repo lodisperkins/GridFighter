@@ -284,7 +284,7 @@ MonoBehaviour:
   _canMove: 1
   canCancelMovement: 0
   _defaultAlignment: 3
-  _moveToAlignedSideIfStuck: 1
+  _moveToAlignedSideIfStuck: 0
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
