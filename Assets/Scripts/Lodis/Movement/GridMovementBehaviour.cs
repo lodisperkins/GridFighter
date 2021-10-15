@@ -60,7 +60,7 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("If true, the object will instantly move to its current position when the start function is called.")]
         private bool _moveOnStart = true;
-
+        private Coroutine _MoveRoutine;
 
         public bool MoveOnStart
         {
@@ -439,7 +439,7 @@ namespace Lodis.Movement
             }
             else
             {
-                StartCoroutine(LerpPosition(newPosition));
+                _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -500,7 +500,7 @@ namespace Lodis.Movement
             }
             else
             {
-                StartCoroutine(LerpPosition(newPosition));
+                _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -561,7 +561,7 @@ namespace Lodis.Movement
             }
             else
             {
-                StartCoroutine(LerpPosition(newPosition));
+                _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -600,7 +600,7 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
 
-            StartCoroutine(LerpPosition(newPosition));
+            _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
@@ -650,6 +650,14 @@ namespace Lodis.Movement
                 panelsEvaluated += 4;
                 offSet++;
             }
+        }
+
+        public void CancelMovement()
+        {
+            StopCoroutine(_MoveRoutine);
+            _currentPanel.Occupied = false;
+            _currentPanel = PreviousPanel;
+            _currentPanel.Occupied = !_canBeWalkedThrough;
         }
 
         private void OnDestroy()

@@ -101,6 +101,9 @@ namespace Lodis.Gameplay
         {
             base.End();
             //Reset the movement traits
+            if (_ownerMoveScript.IsMoving)
+                _ownerMoveScript.CancelMovement();
+
             _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
             _ownerMoveScript.AlwaysLookAtOpposingSide = true;
         }

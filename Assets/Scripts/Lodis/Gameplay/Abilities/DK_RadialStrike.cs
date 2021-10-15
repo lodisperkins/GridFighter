@@ -80,6 +80,8 @@ namespace Lodis.Gameplay
         public override void EndAbility()
         {
             base.EndAbility();
+            if (_ownerMoveScript.IsMoving)
+                _ownerMoveScript.CancelMovement();
             _ownerMoveScript.StopAllCoroutines();
         }
     }
