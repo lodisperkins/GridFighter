@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 4038285732116791787}
   - component: {fileID: 508497935253636094}
   - component: {fileID: 2366165063642779593}
-  m_Layer: 0
+  - component: {fileID: 3657027503068153941}
+  m_Layer: 13
   m_Name: Link
-  m_TagString: Untagged
+  m_TagString: Entity
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,7 +98,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   Event: {fileID: 0}
-  intendedSender: {fileID: 0}
+  IntendedSender: {fileID: 0}
 --- !u!114 &2366165063642779593
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,9 +115,25 @@ MonoBehaviour:
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 0
+  _isMoving: 0
   _canMove: 1
   canCancelMovement: 0
   _defaultAlignment: 3
   _moveToAlignedSideIfStuck: 0
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 1
+  _moveOnStart: 1
+--- !u!136 &3657027503068153941
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353001235416084576}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}

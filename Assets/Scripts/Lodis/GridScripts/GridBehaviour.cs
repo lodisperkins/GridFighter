@@ -50,6 +50,8 @@ namespace Lodis.GridScripts
         private List<BarrierBehaviour> _barriers;
         private Coroutine _panelExchangeRoutine;
         private int _tempMaxColumns;
+        private float _width;
+        private float _height;
 
         public PanelBehaviour LhsSpawnPanel
         {
@@ -90,6 +92,9 @@ namespace Lodis.GridScripts
                 return _dimensions;
             }
         }
+
+        public float Width { get => _width; }
+        public float Height { get => _height; }
 
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.
@@ -170,13 +175,13 @@ namespace Lodis.GridScripts
 
             GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
 
-            float collisionPlaneScaleX = (_dimensions.x * _panelRef.transform.localScale.x) + (PanelSpacing * _dimensions.x);
-            float collisionPlaneScaleY = (_dimensions.y * _panelRef.transform.localScale.z) + (PanelSpacing* _dimensions.y);
+            _width = (_dimensions.x * _panelRef.transform.localScale.x) + (PanelSpacing * _dimensions.x);
+            _height = (_dimensions.y * _panelRef.transform.localScale.z) + (PanelSpacing* _dimensions.y);
 
             float collisionPlaneOffsetX = ((_dimensions.x - 1) * _panelRef.transform.localScale.x) + (PanelSpacing * (_dimensions.x - 1));
             float collisionPlaneOffsetY = ((_dimensions.y - 1) * _panelRef.transform.localScale.z) + (PanelSpacing* (_dimensions.y - 1));
 
-            collisionPlane.transform.localScale = new Vector3(collisionPlaneScaleX / 10, collisionPlane.transform.localScale.y, collisionPlaneScaleY / 10);
+            collisionPlane.transform.localScale = new Vector3(_width / 10, collisionPlane.transform.localScale.y, _height / 10);
             collisionPlane.transform.position += new Vector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
         }
 
