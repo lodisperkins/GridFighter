@@ -46,6 +46,6 @@ MonoBehaviour:
   - name: StunTime
     value: 5
   - name: PanelTravelDistance
-    value: 2
+    value: 3
   animationType: 0
   _customAnimation: {fileID: 0}

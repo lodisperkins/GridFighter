@@ -28,10 +28,19 @@ namespace Lodis
         public Vector3 GetNewPosition()
         {
             Vector3 averagePosition = new Vector3();
-            int characterCount = BlackBoardBehaviour.Instance.EntitiesInGame.Count;
+            List<GameObject> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
+            int characterCount = entities.Count;
 
-            foreach (GameObject character in BlackBoardBehaviour.Instance.EntitiesInGame)
+            foreach (GameObject character in entities)
             {
+                Vector3 characterPos = character.transform.position;
+
+                if (characterPos.x < -5 || characterPos.x > BlackBoardBehaviour.Instance.Grid.Width + 5)
+                    continue;
+
+                if (character.CompareTag("Player"))
+                    characterPos *= 5;
+
                 averagePosition += character.transform.position;
             }
 
@@ -43,10 +52,19 @@ namespace Lodis
         public float GetAverageDistance(Vector3 center)
         {
             float averageDistance = 0;
-            int characterCount = BlackBoardBehaviour.Instance.EntitiesInGame.Count;
+            List<GameObject> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
+            int characterCount = entities.Count;
 
-            foreach (GameObject character in BlackBoardBehaviour.Instance.EntitiesInGame)
+            foreach (GameObject character in entities)
             {
+                Vector3 characterPos = character.transform.position;
+
+                if (characterPos.x < 0 || characterPos.x > BlackBoardBehaviour.Instance.Grid.Width)
+                    continue;
+
+                if (character.CompareTag("Player"))
+                    characterPos *= 2;
+
                 averageDistance += Vector3.Distance(character.transform.position, center);
             }
 
@@ -86,7 +104,7 @@ namespace Lodis
 
 
             Vector3 moveDirection = (_cameraPosition - transform.position).normalized;
-            Debug.Log((Vector3.Distance(_cameraPosition, transform.position)));
+            //Debug.Log((Vector3.Distance(_cameraPosition, transform.position)));
             if (Vector3.Distance(_cameraPosition, transform.position) > 0.1f)
                 transform.position += moveDirection * (_cameraMoveSpeed * (Vector3.Distance(_cameraPosition, transform.position))) * Time.deltaTime;
         }

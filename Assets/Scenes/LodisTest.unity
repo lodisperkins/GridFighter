@@ -790,7 +790,7 @@ MonoBehaviour:
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 1
+  _isInvincible: 0
   _stunned: 0
   owner: 
 --- !u!64 &151772238
@@ -4183,7 +4183,7 @@ MonoBehaviour:
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 1
+  _isInvincible: 0
   _stunned: 0
   owner: 
 --- !u!64 &894189966

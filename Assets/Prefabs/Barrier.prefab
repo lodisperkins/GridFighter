@@ -305,8 +305,10 @@ MonoBehaviour:
   _isAlive: 1
   _bounceDampen: 3
   _isInvincible: 0
+  _stunned: 0
   _visibleLayers:
   - Player
+  - StructureNoCollision
   _owner: 
   _pushScale: 10
   _damageOnCollision: 0

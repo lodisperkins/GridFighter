@@ -35,7 +35,15 @@ namespace Lodis.Gameplay
             }
         }
 
-        public List<GameObject> EntitiesInGame { get => _entitiesInGame; }
+        /// <summary>
+        /// Removes all null enemies from the entities list and returns the new list
+        /// </summary>
+        /// <returns>The list of in game entities</returns>
+        public List<GameObject> GetEntitiesInGame()
+        {
+            _entitiesInGame.RemoveAll(entity => entity == null);
+            return _entitiesInGame;
+        }
 
         /// <summary>
         /// Gets the state of the player that matches the ID
