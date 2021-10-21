@@ -9435,7 +9435,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DespawnsAfterTimeLimit: 0
   TimeActive: 0
-  IsMultiHit: 1
+  IsMultiHit: 0
   DestroyOnHit: 0
   HitFrames: 0
   IgnoreColliders: 1

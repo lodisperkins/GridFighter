@@ -57,6 +57,8 @@ namespace Lodis.Gameplay
             //Spawn a game object with the collider attached
             HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(owner.transform, new Vector3(1, 0.5f, 0.2f), _fistCollider);
             hitScript.debuggingEnabled = true;
+            Rigidbody rigid = hitScript.gameObject.AddComponent<Rigidbody>();
+            rigid.useGravity = false;
 
             //Set the direction of the attack
             Vector2 attackPosition;

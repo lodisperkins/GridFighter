@@ -100,19 +100,20 @@ namespace Lodis.Gameplay
                     return;
             }
 
-            if (otherCollider)
+            if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
+            {
                 if (IgnoreColliders || otherCollider.IgnoreColliders || otherCollider.ColliderOwner == Owner)
                     return;
-
-            else if (otherCollider is HitColliderBehaviour)
-            {
-                if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
+                else if (otherCollider is HitColliderBehaviour)
                 {
-                    Destroy(gameObject);
+                    if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
+                    {
+                        Destroy(gameObject);
+                        return;
+                    }
+
                     return;
                 }
-
-                return;
             }
 
             float newHitAngle = _hitAngle;

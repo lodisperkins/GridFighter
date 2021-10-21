@@ -26,7 +26,7 @@ MonoBehaviour:
   CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1
-  IgnoreColliders: 1
+  IgnoreColliders: 0
   ColliderPriority: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
