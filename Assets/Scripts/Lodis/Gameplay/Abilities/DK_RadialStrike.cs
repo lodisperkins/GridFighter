@@ -58,7 +58,7 @@ namespace Lodis.Gameplay
             for (int i = (int)_panelTravelDistance; i >= 0; i--)
             {
                 Vector2 moveOffset = new Vector2(i, 0);
-                if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.CurrentPanel.Position + moveOffset * owner.transform.forward.x, false, GridScripts.GridAlignment.ANY))
+                if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.CurrentPanel.Position + moveOffset * owner.transform.forward.x, false, GridScripts.GridAlignment.ANY, false, false))
                     break;
             }
         }

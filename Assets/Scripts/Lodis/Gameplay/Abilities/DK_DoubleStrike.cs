@@ -85,7 +85,7 @@ namespace Lodis.Gameplay
             owner.transform.forward = new Vector3(_attackDirection.x, 0, _attackDirection.y);
 
             //Move towards panel
-            _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true);
+            _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
         }
 
         protected override void Deactivate()

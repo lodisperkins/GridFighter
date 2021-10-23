@@ -388,6 +388,9 @@ namespace Lodis.Movement
                 yield return new WaitForFixedUpdate();
             }
 
+            if (CurrentPanel)
+                CurrentPanel.Occupied = !_canBeWalkedThrough;
+
             MoveDirection = Vector2.zero;
             _tempAlignment = Alignment;
         }
@@ -398,7 +401,7 @@ namespace Lodis.Movement
         /// <param name="panelPosition">The position of the panel on the grid that the gameObject will travel to.</param>
         /// <param name="snapPosition">If true, the gameObject will immediately teleport to its destination without a smooth transition.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
-        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false)
+        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false, bool reservePanel = true)
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
@@ -448,7 +451,8 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = !_canBeWalkedThrough;
+            if (reservePanel)
+                _currentPanel.Occupied = !_canBeWalkedThrough;
             _position = _currentPanel.Position;
 
             return true;
