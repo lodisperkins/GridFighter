@@ -11,7 +11,7 @@ namespace Lodis
         private float _maxDistance;
         private Vector3 _cameraPosition;
         [SerializeField]
-        private Vector3 _cameraOffset;
+        private float _acceleration;
         [SerializeField]
         private Vector3 _cameraMoveSpeed;
         private Vector3 _lastCameraPosition;
@@ -31,6 +31,7 @@ namespace Lodis
         private float _maxZ;
         [SerializeField]
         private Vector3 _averagePosition;
+        private Vector3 _velocity;
 
         // Start is called before the first frame update
         void Start()
@@ -119,7 +120,14 @@ namespace Lodis
 
 
             Vector3 moveDirection = (_cameraPosition - transform.position).normalized;
-            moveDirection.Scale(_cameraMoveSpeed);
+            float distanceFromNewPosition = Vector3.Distance(_cameraPosition, transform.position);
+            if (distanceFromNewPosition < 0.1)
+                _velocity = Vector3.zero;
+            else if (distanceFromNewPosition > 1)
+                _velocity += moveDirection * _acceleration;
+            else if (distanceFromNewPosition < 1)
+                _velocity -= moveDirection * _acceleration;
+
             //Debug.Log((Vector3.Distance(_cameraPosition, transform.position)));
             if (Vector3.Distance(_cameraPosition, transform.position) > 0.1f)
                 transform.position += moveDirection /** Vector3.Distance(_cameraPosition, transform.position)*/ * Time.deltaTime;
