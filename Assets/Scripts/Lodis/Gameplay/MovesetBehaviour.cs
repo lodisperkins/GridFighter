@@ -87,6 +87,7 @@ namespace Lodis.Gameplay
         {
             _normalDeck.InitAbilities(gameObject);
             _specialDeck.InitAbilities(gameObject);
+            _specialDeck.Shuffle();
             _specialAbilitySlots[0] = _specialDeck.PopBack();
             _specialAbilitySlots[1] = _specialDeck.PopBack();
         }

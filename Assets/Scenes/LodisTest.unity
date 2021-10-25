@@ -790,7 +790,7 @@ MonoBehaviour:
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 1
+  _isInvincible: 0
   _stunned: 0
   owner: 
 --- !u!64 &151772238
@@ -2253,7 +2253,7 @@ MonoBehaviour:
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
-  _isInvincible: 1
+  _isInvincible: 0
   _stunned: 0
   owner: 
 --- !u!64 &446117096
@@ -4357,7 +4357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52819959716c8447b8e6fb42c341f07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _acceleration: 0.05
   _cameraMoveSpeed: {x: 1, y: 0, z: 5}
   _moveSensitivity: {x: 1, y: 0, z: 7}
   _minX: 5
@@ -4367,9 +4366,6 @@ MonoBehaviour:
   _midZ: -4.7
   _maxZ: -2.8
   _averagePosition: {x: 0, y: 0, z: 0}
-  _stoppingDistance: 0.05
-  _accelerationDistance: 1
-  _deccelerationDistance: 0.01
 --- !u!1 &938737660
 GameObject:
   m_ObjectHideFlags: 0
