@@ -13,16 +13,31 @@ namespace Lodis
         [SerializeField]
         private Vector3 _cameraOffset;
         [SerializeField]
-        private float _cameraMoveSpeed;
+        private Vector3 _cameraMoveSpeed;
         private Vector3 _lastCameraPosition;
         [SerializeField]
         private Vector3 _moveSensitivity;
+        [SerializeField]
+        private float _minX;
+        [SerializeField]
+        private float _midX;
+        [SerializeField]
+        private float _maxX;
+        [SerializeField]
+        private float _minZ;
+        [SerializeField]
+        private float _midZ;
+        [SerializeField]
+        private float _maxZ;
+        [SerializeField]
+        private Vector3 _averagePosition;
 
         // Start is called before the first frame update
         void Start()
         {
             _camera = GetComponent<Camera>();
             _maxDistance = BlackBoardBehaviour.Instance.Grid.Width;
+            _lastCameraPosition = transform.position;
         }
 
         public Vector3 GetNewPosition()
@@ -73,40 +88,41 @@ namespace Lodis
             return averageDistance;
         }
 
+        private float GetAxisPositionByAvg(float min, float mid, float max, float averagePositionOnAxis, float moveSensitivity)
+        {
+            if (averagePositionOnAxis - mid >= moveSensitivity)
+            {
+                return max;
+            }
+            else if (averagePositionOnAxis - mid <= -moveSensitivity)
+                return min;
+            else
+                return mid;
+        }
+
+
         private void OnDrawGizmos()
         {
-            Gizmos.DrawSphere(_cameraPosition, 0.5f);
+            Gizmos.DrawSphere(_averagePosition, 0.5f);
         }
 
         // Update is called once per frame
         void Update()
         {
-            Vector3 newMovePosition = GetNewPosition();
-            float avgDistance = GetAverageDistance(newMovePosition);
-            _cameraOffset.z = Mathf.Clamp(-avgDistance * 4, -5, -3);
-            newMovePosition += _cameraOffset;
+            _cameraPosition = _lastCameraPosition;
+            _averagePosition = GetNewPosition();
+            float avgDistance = GetAverageDistance(_averagePosition);
 
-            if (Mathf.Abs(newMovePosition.x - _lastCameraPosition.x) > _moveSensitivity.x)
-            {
-                _cameraPosition.x = newMovePosition.x;
-                _lastCameraPosition = _cameraPosition;
-            }
-            if (Mathf.Abs(newMovePosition.y - _lastCameraPosition.y) > _moveSensitivity.y)
-            {
-                _cameraPosition.y = newMovePosition.y;
-                _lastCameraPosition = _cameraPosition;
-            }
-            if (Mathf.Abs(newMovePosition.z - _lastCameraPosition.z) > _moveSensitivity.z)
-            {
-                _cameraPosition.z = newMovePosition.z;
-                _lastCameraPosition = _cameraPosition;
-            }
+            _cameraPosition.x = GetAxisPositionByAvg(_minX,_midX, _maxX, _averagePosition.x, _moveSensitivity.x);
+            if (Mathf.Abs(_averagePosition.z) > 0)
+                _cameraPosition.z = GetAxisPositionByAvg(_minZ, _midZ, _maxZ, _averagePosition.z, _moveSensitivity.z);
 
 
             Vector3 moveDirection = (_cameraPosition - transform.position).normalized;
+            moveDirection.Scale(_cameraMoveSpeed);
             //Debug.Log((Vector3.Distance(_cameraPosition, transform.position)));
             if (Vector3.Distance(_cameraPosition, transform.position) > 0.1f)
-                transform.position += moveDirection * (_cameraMoveSpeed * (Vector3.Distance(_cameraPosition, transform.position))) * Time.deltaTime;
+                transform.position += moveDirection /** Vector3.Distance(_cameraPosition, transform.position)*/ * Time.deltaTime;
         }
     }
 }
