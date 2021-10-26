@@ -111,12 +111,7 @@ namespace Lodis
             if (Mathf.Abs(_averagePosition.z) > 0)
                 _cameraPosition.z = GetAxisPositionByAvg(_minZ, _midZ, _maxZ, _averagePosition.z, _moveSensitivity.z);
 
-
-            Vector3 moveDirection = (_cameraPosition - transform.position).normalized;
-            moveDirection.Scale(_cameraMoveSpeed);
-            //Debug.Log((Vector3.Distance(_cameraPosition, transform.position)));
-            if (Vector3.Distance(_cameraPosition, transform.position) > 0.1f)
-                transform.position += moveDirection /** Vector3.Distance(_cameraPosition, transform.position)*/ * Time.deltaTime;
+            transform.position = Vector3.Lerp(transform.position, _cameraPosition, 1.5f * Time.deltaTime);
         }
     }
 }

@@ -547,15 +547,59 @@ namespace Lodis.Movement
                 }
             }
 
-            //if (InFreeFall && IsGrounded())
-            //{
-            //    StopVelocity();
-            //    TryStartLandingLag
-            //}
-
             //Calculate the knockback and hit angle for the ricochet
             ContactPoint contactPoint = collision.GetContact(0);
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
+            float dotProduct = Vector3.Dot(Vector3.right, -direction);
+            float hitAngle = Mathf.Acos(dotProduct);
+            float velocityMagnitude = knockBackScript.LastVelocity.magnitude;
+            float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+
+            if (knockbackScale == 0 || float.IsNaN(knockbackScale))
+                return;
+
+            //Apply ricochet force and damage
+            damageScript.TakeDamage(name, velocityMagnitude, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            OnCollision?.Invoke(other.gameObject);
+
+            HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
+
+            if (damageScript == null)
+                return;
+
+            KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
+
+            //If no knockback script is attached, use this script to add force
+            if (!knockBackScript)
+                knockBackScript = this;
+
+            if (_defenseBehaviour)
+            {
+                //Prevent knockback if target is braced
+                if (_defenseBehaviour.IsBraced && other.gameObject.CompareTag("Structure"))
+                {
+                    SetInvincibilityByTimer(knockBackScript._defenseBehaviour.BraceInvincibilityTime);
+                    StopVelocity();
+
+                    Vector3 collisionDirection = (other.transform.position - transform.position).normalized;
+
+                    if (collisionDirection.x != 0)
+                        transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
+
+                    _defenseBehaviour.onFallBroken?.Invoke(collisionDirection);
+                    _inFreeFall = true;
+                    Debug.Log("teched wall");
+                    return;
+                }
+            }
+
+            //Calculate the knockback and hit angle for the ricochet
+            Vector3 contactPoint = other.ClosestPoint(transform.position);
+            Vector3 direction = (contactPoint - transform.position).normalized;
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
             float velocityMagnitude = knockBackScript.LastVelocity.magnitude;

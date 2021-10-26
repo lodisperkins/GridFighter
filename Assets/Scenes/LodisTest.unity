@@ -767,6 +767,7 @@ GameObject:
   - component: {fileID: 151772239}
   - component: {fileID: 151772238}
   - component: {fileID: 151772237}
+  - component: {fileID: 151772242}
   m_Layer: 0
   m_Name: RingBarrierR
   m_TagString: Structure
@@ -786,7 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438dda136aaf75e4aa58f774a6f5dba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 15
+  _health: 1
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
@@ -868,6 +869,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
+--- !u!65 &151772242
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 151772236}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.000002, y: 0.4, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &184880001
 GameObject:
   m_ObjectHideFlags: 0
@@ -4160,6 +4174,7 @@ GameObject:
   - component: {fileID: 894189967}
   - component: {fileID: 894189966}
   - component: {fileID: 894189965}
+  - component: {fileID: 894189970}
   m_Layer: 0
   m_Name: RingBarrierL
   m_TagString: Structure
@@ -4261,6 +4276,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 90}
+--- !u!65 &894189970
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 894189964}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.000002, y: 0.77, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &934786772
 GameObject:
   m_ObjectHideFlags: 0
