@@ -10,6 +10,7 @@ namespace Lodis
         private Vector3 _cameraPosition;
         [SerializeField]
         private Vector3 _cameraMoveSpeed;
+        private float _currentTimeX;
         private Vector3 _lastCameraPosition;
         [SerializeField]
         private Vector3 _moveSensitivity;
@@ -27,11 +28,15 @@ namespace Lodis
         private float _maxZ;
         [SerializeField]
         private Vector3 _averagePosition;
+        [SerializeField]
+        private AnimationCurve _curve;
+        private float _currentTimeZ;
 
         // Start is called before the first frame update
         void Start()
         {
             _lastCameraPosition = transform.position;
+            _cameraPosition = transform.position;
         }
 
         public Vector3 GetNewPosition()
@@ -73,8 +78,9 @@ namespace Lodis
                 if (characterPos.x < 0 || characterPos.x > BlackBoardBehaviour.Instance.Grid.Width)
                     continue;
 
-                if (character.CompareTag("Player"))
-                    characterPos *= 2;
+                //Makes camera have move more towards players
+                //if (character.CompareTag("Player"))
+                //    characterPos *= 2;
 
                 averageDistance += Vector3.Distance(character.transform.position, center);
             }
@@ -105,7 +111,7 @@ namespace Lodis
         // Update is called once per frame
         void Update()
         {
-            _cameraPosition = _lastCameraPosition;
+
             _averagePosition = GetNewPosition();
             float avgDistance = GetAverageDistance(_averagePosition);
 
@@ -113,7 +119,23 @@ namespace Lodis
             if (Mathf.Abs(_averagePosition.z) > 0)
                 _cameraPosition.z = GetAxisPositionByAvg(_minZ, _midZ, _maxZ, _averagePosition.z, _moveSensitivity.z);
 
-            transform.position = Vector3.Lerp(transform.position, _cameraPosition, 1.5f * Time.deltaTime);
+
+            if (_cameraPosition.x != _lastCameraPosition.x)
+                _currentTimeX = 0;
+
+            if (_cameraPosition.z != _lastCameraPosition.z)
+                _currentTimeZ = 0;
+
+            _currentTimeX = Mathf.MoveTowards(_currentTimeX, 1, _cameraMoveSpeed.x * Time.deltaTime);
+            _currentTimeZ = Mathf.MoveTowards(_currentTimeZ, 1, _cameraMoveSpeed.z * Time.deltaTime);
+
+            float newX = 0;
+            newX = Mathf.Lerp(transform.position.x, _cameraPosition.x, _currentTimeX);
+            float newZ = 0;
+            newZ = Mathf.Lerp(transform.position.z, _cameraPosition.z, _currentTimeZ);
+            transform.position = new Vector3(newX, transform.position.y, newZ);
+
+            _lastCameraPosition = _cameraPosition;
         }
     }
 }
