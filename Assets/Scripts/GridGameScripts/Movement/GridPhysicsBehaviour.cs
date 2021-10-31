@@ -11,7 +11,6 @@ using System.IO;
 using System;
 using System.Xml;
 using System.Text;
-using UnityEditor.Build.Content;
 
 namespace GridGame.Movement
 {
@@ -231,10 +230,10 @@ namespace GridGame.Movement
                 return;
             }
             _collisions.Clear();
-            for(int i =0; i< UnityEditorInternal.InternalEditorUtility.tags.Length; i++)
-            {
-                _collisions.Add(GridGame.VariableScripts.CollisionChannel.CreateInstance(UnityEditorInternal.InternalEditorUtility.tags[i], newValues[i]));
-            }
+            //for(int i =0; i< UnityEditorInternal.InternalEditorUtility.tags.Length; i++)
+            //{
+            //    _collisions.Add(GridGame.VariableScripts.CollisionChannel.CreateInstance(UnityEditorInternal.InternalEditorUtility.tags[i], newValues[i]));
+            //}
         }
 
         

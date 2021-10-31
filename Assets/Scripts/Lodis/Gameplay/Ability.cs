@@ -271,6 +271,7 @@ namespace Lodis.Gameplay
         public virtual void FixedUpdate() { }
     }
 
+#if UNITY_EDITOR
     public class CustomAssetModificationProcessor : UnityEditor.AssetModificationProcessor
     {
         private static string _nameOfClass;
@@ -354,4 +355,5 @@ namespace Lodis.Gameplay
 
 
     }
+#endif
 }

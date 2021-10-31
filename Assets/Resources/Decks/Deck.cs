@@ -60,8 +60,10 @@ namespace Lodis.Gameplay
         {
             ClearDeck();
 
-            foreach (AbilityData ability in AbilityData)
+            foreach (AbilityData ability in _abilityData)
             {
+                if (ability == null)
+                    Debug.Log("I'm null!" + _abilityData.Count); 
                 string name = ability.name.Substring(0, ability.name.Length - 5);
                 Type abilityType = Type.GetType("Lodis.Gameplay." + name);
 
@@ -93,6 +95,7 @@ namespace Lodis.Gameplay
         /// <param name="ability"></param>
         public void AddAbility(Ability ability)
         {
+            Debug.Log("test");
             if (_abilities == null)
                 _abilities = new List<Ability>();
 

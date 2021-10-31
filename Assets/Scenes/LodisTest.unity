@@ -787,7 +787,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438dda136aaf75e4aa58f774a6f5dba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 1
+  _health: 15
   _destroyOnDeath: 1
   _isAlive: 1
   _bounceDampen: 2
@@ -7320,6 +7320,7 @@ GameObject:
   - component: {fileID: 1441118449}
   - component: {fileID: 1441118448}
   - component: {fileID: 1441118451}
+  - component: {fileID: 1441118452}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -7420,6 +7421,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 825a625edfd206a4cb6d296031d7b544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1441118452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1441118447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d29409a0d163b824e97bf17cae711606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1443548382

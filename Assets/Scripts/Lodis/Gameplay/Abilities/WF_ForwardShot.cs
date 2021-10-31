@@ -22,7 +22,6 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
-
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WF_ForwardShot_Data"));
             owner = newOwner;
