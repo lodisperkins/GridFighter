@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -122,7 +123,7 @@ namespace Lodis.Gameplay
             {
                 //...restart the ability
                 Deactivate();
-                ownerMoveset.StopAbilityRoutine();
+                RoutineBehaviour.Instance.StopTimedAction(CurrentTimer);
                 _attackDirection = _ownerInput.AttackDirection;
                 UseAbility();
                 _usedFirstStrike = true;

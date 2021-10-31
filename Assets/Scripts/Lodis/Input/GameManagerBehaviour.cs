@@ -52,6 +52,14 @@ namespace Lodis.Gameplay
         private AI.AttackDummyBehaviour _dummy;
         [SerializeField]
         private Vector2 _dummySpawnLocation;
+        [SerializeField]
+        private int _targetFrameRate;
+
+        public int TargetFrameRate
+        {
+            get { return _targetFrameRate; }
+        }
+
 
         private void Awake()
         {
@@ -59,6 +67,7 @@ namespace Lodis.Gameplay
             _grid.DestroyTempPanels();
             //Initialize grid
             _grid.CreateGrid();
+            Application.targetFrameRate = _targetFrameRate;
         }
 
         // Start is called before the first frame update

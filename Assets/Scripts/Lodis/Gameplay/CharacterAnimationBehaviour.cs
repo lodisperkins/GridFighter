@@ -224,6 +224,7 @@ namespace Lodis.Gameplay
         public IEnumerator PlayAbilityAnimation(Ability ability)
         {
             _currentAbilityAnimating = ability;
+            _animator.speed = 1;
 
             switch (_currentAbilityAnimating.abilityData.animationType)
             {

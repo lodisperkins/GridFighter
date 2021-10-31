@@ -8,6 +8,7 @@ using System;
 using System.IO;
 using Lodis.ScriptableObjects;
 using Lodis.Movement;
+using Lodis.Utility;
 
 namespace Lodis.Gameplay
 {
@@ -58,6 +59,7 @@ namespace Lodis.Gameplay
         protected CharacterAnimationBehaviour _ownerAnimationScript;
         public int currentActivationAmount;
         private bool _canPlayAnimation;
+        private RoutineBehaviour.TimedAction _currentTimer;
 
         public AbilityPhase CurrentAbilityPhase { get; private set; }
 
@@ -91,24 +93,36 @@ namespace Lodis.Gameplay
             }
         }
 
-        private IEnumerator StartAbility(params object[] args)
+        public RoutineBehaviour.TimedAction CurrentTimer
+        {
+            get { return _currentTimer; }
+        }
+
+        protected void StartUpPhase(params object[] args)
         {
             _inUse = true;
             onBegin?.Invoke();
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             Start(args);
-            yield return new WaitForSeconds(abilityData.startUpTime);
+            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => ActivePhase(args), TimedActionCountType.SCALEDTIME, abilityData.startUpTime);
+        }
+
+        protected void ActivePhase(params object[] args)
+        {
             onActivate?.Invoke();
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             Activate(args);
-            yield return new WaitForSeconds(abilityData.timeActive);
+            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => RecoverPhase(args), TimedActionCountType.SCALEDTIME, abilityData.timeActive);
+        }
+
+        protected void RecoverPhase(params object[] args)
+        {
             onDeactivate?.Invoke();
             CurrentAbilityPhase = AbilityPhase.RECOVER;
             Deactivate();
-            yield return new WaitForSeconds(abilityData.recoverTime);
-            End();
-            onEnd?.Invoke();
-            _inUse = false;
+            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments =>
+            { End(); onEnd?.Invoke(); _inUse = false; },
+                TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
         }
 
         /// <summary>
@@ -129,7 +143,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            ownerMoveset.StartAbilityCoroutine(StartAbility(args));
+            StartUpPhase(args);
         }
 
         public bool CheckIfAbilityCanBeCanceled()
@@ -198,7 +212,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void StopAbility()
         {
-            ownerMoveset.StopAbilityRoutine();
+            RoutineBehaviour.Instance.StopTimedAction(_currentTimer);
             _inUse = false;
         }
 
@@ -207,7 +221,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void EndAbility()
         {
-            ownerMoveset.StopAbilityRoutine();
+            RoutineBehaviour.Instance.StopTimedAction(_currentTimer);
             currentActivationAmount = abilityData.maxActivationAmount;
             onDeactivate?.Invoke();
             Deactivate();
@@ -246,7 +260,7 @@ namespace Lodis.Gameplay
 
         protected virtual void Deactivate() { }
 
-        protected virtual void End() 
+        protected virtual void End()
         {
             if (!_ownerKnockBackScript.InHitStun)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
@@ -338,6 +352,6 @@ namespace Lodis.Gameplay
 
         }
 
-        
+
     }
 }

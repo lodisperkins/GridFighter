@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lodis.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,7 +53,6 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _deckReloadTime;
         private bool _deckReloading;
-        private Coroutine _abilityRoutine;
         private Movement.GridMovementBehaviour _movementBehaviour;
         private Input.InputBehaviour _inputBehaviour;
 
@@ -171,17 +171,6 @@ namespace Lodis.Gameplay
             return _lastAbilityInUse;
         }
 
-        public void StartAbilityCoroutine(IEnumerator abilityRoutine)
-        {
-            _abilityRoutine = StartCoroutine(abilityRoutine);
-        }
-
-        public void StopAbilityRoutine()
-        {
-            if (_abilityRoutine != null)
-                StopCoroutine(_abilityRoutine);
-        }
-
         public void EndCurrentAbility()
         {
             _lastAbilityInUse?.EndAbility();
@@ -196,21 +185,18 @@ namespace Lodis.Gameplay
             _specialAbilitySlots[1] = _specialDeck.PopBack();
         }
 
-        private IEnumerator ChargeNextAbility(int slot)
+        private void TryChargeNextAbility(int slot)
         {
             _specialAbilitySlots[slot] = null;
 
             if (_specialDeck.Count == 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null)
             {
                 _deckReloading = true;
-                yield return new WaitForSeconds(_deckReloadTime);
-                ReloadDeck();
-                _deckReloading = false;
+                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { ReloadDeck(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
             }
             else if (_specialDeck.Count > 0)
             {
-                yield return new WaitForSeconds(_specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
-                _specialAbilitySlots[slot] = _specialDeck.PopBack();
+                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _specialAbilitySlots[slot] = _specialDeck.PopBack(), TimedActionCountType.SCALEDTIME, _specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
             }
         }
 
@@ -237,7 +223,7 @@ namespace Lodis.Gameplay
             currentAbility.currentActivationAmount++;
 
             if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached && !_deckReloading)
-                currentAbility.onEnd += () => StartCoroutine(ChargeNextAbility(abilitySlot));
+                currentAbility.onEnd += () => TryChargeNextAbility(abilitySlot);
 
 
             //Return new ability
@@ -248,7 +234,7 @@ namespace Lodis.Gameplay
         {
             _specialAbilitySlots[index] = null;
             if (!_deckReloading)
-                StartCoroutine(ChargeNextAbility(index));
+                TryChargeNextAbility(index);
         }
 
         public void RemoveAbilityFromSlot(Ability ability)

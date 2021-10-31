@@ -7243,6 +7243,7 @@ MonoBehaviour:
   _ringBarrierR: {fileID: 151772237}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
   _dummySpawnLocation: {x: 8, y: 0}
+  _targetFrameRate: 30
 --- !u!114 &1441118449
 MonoBehaviour:
   m_ObjectHideFlags: 0

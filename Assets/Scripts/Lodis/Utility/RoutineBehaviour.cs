@@ -5,16 +5,18 @@ using System.Dynamic;
 
 namespace Lodis.Utility
 {
+    public enum TimedActionCountType
+    {
+        SCALEDTIME,
+        UNSCALEDTIME,
+        FRAME
+    }
+
     public class RoutineBehaviour : MonoBehaviour
     {
         public delegate void TimedEvent(params object[] args);
 
-        public enum TimedActionCountType
-        {
-            SCALEDTIME,
-            UNSCALEDTIME,
-            FRAME
-        }
+        
 
         public struct TimedAction
         {
@@ -73,6 +75,11 @@ namespace Lodis.Utility
             return action;
         }
 
+        /// <summary>
+        /// Stops the given timed action; preventing the event from being called
+        /// </summary>
+        /// <param name="action">The timed action to stop</param>
+        /// <returns>False if the action is not in the list of actions</returns>
         public bool StopTimedAction(TimedAction action)
         {
             return _timedActions.Remove(action);
@@ -90,10 +97,12 @@ namespace Lodis.Utility
         // Update is called once per frame
         void Update()
         {
+            //Iterate through all actions to try to invok their events
             for (int i = 0; i < _timedActions.Count; i++)
             {
                 TimedAction currentAction = _timedActions[i];
 
+                //Call event based on the type of counter
                 switch (currentAction.CountType)
                 {
                     case TimedActionCountType.SCALEDTIME:

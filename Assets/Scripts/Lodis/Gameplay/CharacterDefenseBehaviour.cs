@@ -106,7 +106,7 @@ namespace Lodis.Gameplay
             _defaultColor = _material.color;
             _parryCollider.OnHit += ActivateInvinciblity;
             _parryCollider.ColliderOwner = gameObject;
-            onFallBroken += normal => { BreakingFall = true; RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, RoutineBehaviour.TimedActionCountType.SCALEDTIME, BraceInvincibilityTime); };
+            onFallBroken += normal => { BreakingFall = true; RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, BraceInvincibilityTime); };
         }
 
         /// <summary>
@@ -116,7 +116,7 @@ namespace Lodis.Gameplay
         {
             Movement.Condition invincibilityCondition = condition => !_movement.IsMoving;
             _movement.AddOnMoveBeginTempAction(() => _knockBack.SetInvincibilityByCondition(invincibilityCondition));
-            _movement.AddOnMoveEndTempAction(() => RoutineBehaviour.Instance.StartNewTimedAction(args => _knockBack.SetInvincibilityByTimer(_recoverInvincibilityLength), RoutineBehaviour.TimedActionCountType.FRAME, 1));
+            _movement.AddOnMoveEndTempAction(() => RoutineBehaviour.Instance.StartNewTimedAction(args => _knockBack.SetInvincibilityByTimer(_recoverInvincibilityLength), TimedActionCountType.FRAME, 1));
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace Lodis.Gameplay
             _canParry = false;
 
             //Start timer for parry
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateAirParry(moveVelocity), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateAirParry(moveVelocity), TimedActionCountType.SCALEDTIME, _parryLength);
         }
 
         private void DeactivateAirParry(Vector3 moveVelocity)
@@ -155,7 +155,7 @@ namespace Lodis.Gameplay
                 _knockBack.ApplyVelocityChange(moveVelocity);
 
             //Start the parry cooldown
-            RoutineBehaviour.Instance.StartNewTimedAction(args => _canParry = true, RoutineBehaviour.TimedActionCountType.SCALEDTIME, _tempParryCooldown);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _canParry = true, TimedActionCountType.SCALEDTIME, _tempParryCooldown);
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace Lodis.Gameplay
             _movement.DisableMovement(condition => _isParrying == false, true, true);
             _canParry = false;
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateGroundParry(), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
 
         private void DeactivateGroundParry()
@@ -181,7 +181,7 @@ namespace Lodis.Gameplay
             //Start timer for player immobility
             if (!_knockBack.IsInvincible)
             {
-                RoutineBehaviour.Instance.StartNewTimedAction(args => { _isParrying = false; _canParry = true; }, RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryRestTime);
+                RoutineBehaviour.Instance.StartNewTimedAction(args => { _isParrying = false; _canParry = true; }, TimedActionCountType.SCALEDTIME, _parryRestTime);
                 return;
             }
 
@@ -241,9 +241,9 @@ namespace Lodis.Gameplay
         public void ActivateParry()
         {
             if (_canParry && !_knockBack.InHitStun)
-                RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateGroundParry(), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+                RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
             else if (_canParry)
-                RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateAirParry(), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+                RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateAirParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
         }
 
         /// <summary>
@@ -292,13 +292,16 @@ namespace Lodis.Gameplay
         {
             IsBraced = true;
             _canBrace = false;
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateBrace(), RoutineBehaviour.TimedActionCountType.SCALEDTIME, _braceActiveTime);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateBrace(), TimedActionCountType.SCALEDTIME, _braceActiveTime);
         }
 
+        /// <summary>
+        /// Disables the brace and starts the cooldown
+        /// </summary>
         private void DeactivateBrace()
         {
             IsBraced = false;
-            _cooldownTimedAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canBrace = true, RoutineBehaviour.TimedActionCountType.SCALEDTIME, _braceCooldownTime);
+            _cooldownTimedAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canBrace = true, TimedActionCountType.SCALEDTIME, _braceCooldownTime);
         }
 
         /// <summary>
