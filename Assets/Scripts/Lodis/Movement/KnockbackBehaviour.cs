@@ -851,9 +851,6 @@ namespace Lodis.Movement
             if (RigidbodyInactive() || _rigidbody.isKinematic || InFreeFall)
                 _inHitStun = false;
 
-            if (name == "TestDummy")
-                Debug.Log(IsGrounded());
-
             if (IsGrounded())
             {
                 float yForce = 0;
