@@ -95,7 +95,6 @@ namespace Lodis.Gameplay
         /// <param name="ability"></param>
         public void AddAbility(Ability ability)
         {
-            Debug.Log("test");
             if (_abilities == null)
                 _abilities = new List<Ability>();
 
