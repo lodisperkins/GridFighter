@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 3657027503068153941}
   m_Layer: 13
   m_Name: Link
-  m_TagString: Entity
+  m_TagString: Structure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -38,19 +38,21 @@ namespace Lodis
         {
             Vector3 averagePosition = new Vector3();
             List<GameObject> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
-            int characterCount = entities.Count;
+            int characterCount = 0;
 
             foreach (GameObject character in entities)
             {
                 Vector3 characterPos = character.transform.position;
 
-                if (characterPos.x < -5 || characterPos.x > BlackBoardBehaviour.Instance.Grid.Width + 5)
+                if (characterPos.x < -5 || characterPos.x > BlackBoardBehaviour.Instance.Grid.Width + 5 || characterPos.y < -5)
                     continue;
 
-                if (character.CompareTag("Player"))
-                    characterPos *= 5;
+                //Makes camera have move more towards players
+                //if (character.CompareTag("Player"))
+                //    characterPos *= 5;
 
                 averagePosition += character.transform.position;
+                characterCount++;
             }
 
             averagePosition /= characterCount;
