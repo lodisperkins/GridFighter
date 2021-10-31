@@ -31,7 +31,7 @@ namespace Lodis.Gameplay
             //Play animation now that the character has reached the target panel
             EnableAnimation();
             //Disable character movement so the ability isn't interrupted
-            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
+            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !ownerMoveset.AbilityInUse, false, true);
             //Mark that the target position has been reached
             _inPosition = true;
             //Instantiate particles and hit box

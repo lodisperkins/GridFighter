@@ -17,12 +17,13 @@ MonoBehaviour:
   damageType: 0
   timeActive: 0.2
   recoverTime: 0.3
-  startUpTime: 0.1
+  startUpTime: 0.3
   chargeTime: 0
   maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
+  CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnKnockback: 1
   IgnoreColliders: 0
@@ -39,7 +40,7 @@ MonoBehaviour:
   - name: HitAngle
     value: 0.2
   - name: Speed
-    value: 10
+    value: 6.5
   - name: Lifetime
     value: 2
   - name: MaxInstances

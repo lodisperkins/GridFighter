@@ -16,13 +16,14 @@ MonoBehaviour:
   AbilityType: 3
   damageType: 0
   timeActive: 0.2
-  recoverTime: 0.1
+  recoverTime: 0.5
   startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 0
+  canCancelRecover: 1
+  CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnKnockback: 1
   IgnoreColliders: 1

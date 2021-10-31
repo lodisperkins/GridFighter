@@ -15,14 +15,15 @@ MonoBehaviour:
   abilityName: ChargeShot
   AbilityType: 4
   damageType: 0
-  timeActive: 0.2
-  recoverTime: 0.5
-  startUpTime: 0.3
+  timeActive: 0.1
+  recoverTime: 0.2
+  startUpTime: 0.5
   chargeTime: 0
   maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
+  CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnKnockback: 1
   IgnoreColliders: 0
@@ -35,7 +36,7 @@ MonoBehaviour:
   - name: Damage
     value: 15
   - name: KnockBackScale
-    value: 3
+    value: 4
   - name: HitAngle
     value: 0.4
   - name: Speed

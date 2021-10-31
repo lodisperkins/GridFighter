@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   axis: {x: 0, y: 1, z: 0}
-  speed: 8
+  speed: 10
   rotateOnSelf: 0
 --- !u!65 &6239634632965324607
 BoxCollider:
