@@ -307,7 +307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _position: {x: 5, y: 3}
+  _position: {x: 5, y: 0}
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 10
@@ -458,7 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 8
+  _attackType: 9
   _attackDelay: 1
   _attackStrength: 1.08
   _zDirection: 1

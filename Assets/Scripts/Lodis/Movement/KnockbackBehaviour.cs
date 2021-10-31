@@ -234,7 +234,7 @@ namespace Lodis.Movement
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
             OnCollision += TryStartLandingLag;
             _onKnockBack += () => Landing = false;
-            _onKnockBackStart += () => { Stunned = false; };
+            _onKnockBackStart += () => { Stunned = false; _movementBehaviour.CurrentPanel.Occupied = false; };
             _bounceColliderExtents = new Vector3(_bounceCollider.bounds.extents.x, _bounceCollider.bounds.extents.y, _bounceCollider.bounds.extents.z);
         }
 
@@ -259,12 +259,6 @@ namespace Lodis.Movement
             if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
                 _movementBehaviour.MoveToPanel(panel, false, GridScripts.GridAlignment.ANY);
         }
-
-        ///Was only used for airdodging. A better implementation should be considered.
-        //public void MoveRigidBodyToLocation(Vector3 position)
-        //{
-        //    _rigidbody.MovePosition(position);
-        //}
 
         /// <summary>
         /// Sets velocity and angular velocity to be zero
