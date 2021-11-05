@@ -7,6 +7,7 @@ using UnityEngine.InputSystem.Controls;
 using Lodis.Gameplay;
 using UnityEngine.Events;
 using Lodis.Movement;
+using System.Windows.Input;
 
 namespace Lodis.Input
 {
@@ -376,6 +377,10 @@ namespace Lodis.Input
                 _attackDirection = Vector2.zero;
 
             _bufferedAction?.UseAction();
+
+            //Temp quit buttom for first prototype build
+            if (Keyboard.current.escapeKey.isPressed)
+                Application.Quit();
         }
     }
 }
