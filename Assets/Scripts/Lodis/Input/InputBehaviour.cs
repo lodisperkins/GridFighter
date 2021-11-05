@@ -82,6 +82,8 @@ namespace Lodis.Input
         private PlayerState _playerState;
         private Ability _lastAbilityUsed = null;
         private bool _attackButtonDown;
+        private bool _abilityBuffered;
+
         public int PlayerID
         {
             get
@@ -136,7 +138,7 @@ namespace Lodis.Input
         public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
+            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.PARRYING)
                 return;
 
             AbilityType abilityType = AbilityType.NONE;
@@ -162,12 +164,14 @@ namespace Lodis.Input
                 float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
                 args[0] = powerScale;
-                _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => _moveset.GetCanUseAbility() && !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+                _abilityBuffered = true;
                 return;
             }
 
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => _moveset.GetCanUseAbility() && !_gridMovement.IsMoving, 0.2f);
+            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _abilityBuffered = true;
         }
 
         /// <summary>
@@ -178,7 +182,7 @@ namespace Lodis.Input
         public void BufferSpecialAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
+            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.PARRYING)
                 return;
 
             AbilityType abilityType = AbilityType.SPECIAL;
@@ -188,7 +192,8 @@ namespace Lodis.Input
             args[1] = _attackDirection;
 
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => _moveset.GetCanUseAbility() && !_gridMovement.IsMoving, 0.2f);
+            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _abilityBuffered = true;
         }
 
         /// <summary>
@@ -376,7 +381,10 @@ namespace Lodis.Input
             if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
                 _attackDirection = Vector2.zero;
 
-            _bufferedAction?.UseAction();
+            if (_bufferedAction != null)
+                _bufferedAction.UseAction();
+            else
+                _abilityBuffered = false;
 
             //Temp quit buttom for first prototype build
             if (Keyboard.current.escapeKey.isPressed)
