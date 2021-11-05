@@ -662,6 +662,7 @@ namespace Lodis.Movement
             _currentPanel.Occupied = false;
             _currentPanel = PreviousPanel;
             _currentPanel.Occupied = !_canBeWalkedThrough;
+            _isMoving = false;
         }
 
         private void OnDestroy()
