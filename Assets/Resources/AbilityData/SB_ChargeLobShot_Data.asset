@@ -17,7 +17,7 @@ MonoBehaviour:
   damageType: 0
   timeActive: 0.2
   recoverTime: 0.3
-  startUpTime: 0.5
+  startUpTime: 0.3
   chargeTime: 0
   maxActivationAmount: 0
   canCancelStartUp: 0

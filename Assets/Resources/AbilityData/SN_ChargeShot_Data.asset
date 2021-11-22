@@ -34,9 +34,9 @@ MonoBehaviour:
     type: 3}
   _customStats:
   - name: Damage
-    value: 15
+    value: 12
   - name: KnockBackScale
-    value: 4
+    value: 3
   - name: HitAngle
     value: 0.4
   - name: Speed

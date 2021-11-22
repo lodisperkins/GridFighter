@@ -6981,6 +6981,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _specialDeckRef
+      value: 
+      objectReference: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab,
+        type: 2}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -7054,7 +7060,7 @@ PrefabInstance:
     - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
@@ -9124,6 +9130,12 @@ PrefabInstance:
       propertyPath: m_CollisionDetection
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _specialDeckRef
+      value: 
+      objectReference: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab,
+        type: 2}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -9197,7 +9209,7 @@ PrefabInstance:
     - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
@@ -11092,6 +11104,12 @@ PrefabInstance:
       propertyPath: m_CollisionDetection
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 3691015139844951449, guid: a1d3756919dba494ea801d8fa04b4d6c,
+        type: 3}
+      propertyPath: _specialDeckRef
+      value: 
+      objectReference: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab,
+        type: 2}
     - target: {fileID: 5680485170780137518, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: _position.x
@@ -11165,7 +11183,7 @@ PrefabInstance:
     - target: {fileID: 5680485170780137523, guid: a1d3756919dba494ea801d8fa04b4d6c,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
