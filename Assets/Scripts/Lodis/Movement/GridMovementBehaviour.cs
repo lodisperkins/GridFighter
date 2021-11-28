@@ -29,8 +29,10 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("How fast the object can move towards a panel.")]
         private float _speed;
+        [Tooltip("Whether or not this object is moving towards a panel")]
         [SerializeField]
         private bool _isMoving;
+        [Tooltip("Whether or not this object can move to other panels")]
         [SerializeField]
         private bool _canMove = true;
         [Tooltip("If true, the object can cancel its movement in one direction, and start moving in another direction.")]
@@ -47,8 +49,10 @@ namespace Lodis.Movement
         private GridGame.GameEventListener _onMoveBeginTemp;
         private GridGame.GameEventListener _onMoveEnd;
         private GridGame.GameEventListener _onMoveEndTemp;
+        [Tooltip("Whether or not to move to the default aligned side if this object is on a panel belonging to the opposite side")]
         [SerializeField]
         private bool _moveToAlignedSideIfStuck = true;
+        [Tooltip("Whether or not this object should always rotate to face the opposite side")]
         [SerializeField]
         private bool _alwaysLookAtOpposingSide = true;
         [SerializeField]
@@ -62,6 +66,9 @@ namespace Lodis.Movement
         private bool _moveOnStart = true;
         private Coroutine _MoveRoutine;
 
+        /// <summary>
+        /// Whether or not this object should move to its current panel when spawned
+        /// </summary>
         public bool MoveOnStart
         {
             get
@@ -84,6 +91,9 @@ namespace Lodis.Movement
             set { _speed = value; }
         }
 
+        /// <summary>
+        /// The current panel this object is resting on
+        /// </summary>
         public PanelBehaviour CurrentPanel
         {
             get
@@ -92,6 +102,9 @@ namespace Lodis.Movement
             }
         }
 
+        /// <summary>
+        /// The previous panel this object was resting on
+        /// </summary>
         public PanelBehaviour PreviousPanel
         {
             get
@@ -178,6 +191,9 @@ namespace Lodis.Movement
             }
         }
 
+        /// <summary>
+        /// The panel this object is moving towards
+        /// </summary>
         public PanelBehaviour TargetPanel
         {
             get
@@ -580,6 +596,9 @@ namespace Lodis.Movement
             return true;
         }
 
+        /// <summary>
+        /// Moves this object to the panel it should be resting on
+        /// </summary>
         private void MoveToCurrentPanel()
         {
 
@@ -616,6 +635,9 @@ namespace Lodis.Movement
             _position = _currentPanel.Position;
         }
 
+        /// <summary>
+        /// Finds the closest panel that matchers this objects alignment and moves towards it
+        /// </summary>
         public void MoveToClosestAlignedPanelOnRow()
         {
 
@@ -656,6 +678,9 @@ namespace Lodis.Movement
             }
         }
 
+        /// <summary>
+        /// Immediately stops movement and returns to previous panel
+        /// </summary>
         public void CancelMovement()
         {
             StopCoroutine(_MoveRoutine);

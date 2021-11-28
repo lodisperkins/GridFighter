@@ -39,15 +39,19 @@ namespace Lodis.Movement
         private UnityAction _onKnockBack;
         private UnityAction _onKnockBackStart;
         private UnityAction _onTakeDamage;
+        [Tooltip("The rate at which an objects move speed in air will decrease")]
         [SerializeField]
         private FloatVariable _velocityDecayRate;
         [SerializeField]
         private CharacterDefenseBehaviour _defenseBehaviour;
+        [Tooltip("The amount of time it takes for this object to regain footing after landing")]
         [SerializeField]
         private float _landingTime;
+        [Tooltip("The strength of the force pushing downwards on this object once in air")]
         [SerializeField]
         private float _gravity = 9.81f;
         private ConstantForce _constantForceBehaviour;
+        [Tooltip("The collider attached this object that will be used for registering collision against objects while air")]
         [SerializeField]
         private Collider _bounceCollider;
         [SerializeField]
@@ -68,6 +72,9 @@ namespace Lodis.Movement
         [SerializeField]
         private bool _useGravity = true;
 
+        /// <summary>
+        /// Whether or not this object will bounce on panels it falls on
+        /// </summary>
         public bool PanelBounceEnabled
         {
             get
@@ -80,6 +87,9 @@ namespace Lodis.Movement
             }
         }
 
+        /// <summary>
+        /// Whether or not this object is in a spiked state
+        /// </summary>
         public bool IsSpiked
         {
             get
@@ -92,6 +102,9 @@ namespace Lodis.Movement
             }
         }
 
+        /// <summary>
+        /// How bouncy this object is
+        /// </summary>
         public float Bounciness
         {
             get
@@ -120,19 +133,27 @@ namespace Lodis.Movement
             }
         }
 
-
+        /// <summary>
+        /// The event called when this object collides with another
+        /// </summary>
         public CollisionEvent OnCollision
         {
             private get;
             set;
         }
 
+        /// <summary>
+        /// Whether or not this object is current regaining footing after hitting the ground
+        /// </summary>
         public bool Landing
         {
             get;
             private set;
         }
 
+        /// <summary>
+        /// Whether or not this object should be effected by gravity
+        /// </summary>
         public bool UseGravity
         {
             get
@@ -190,6 +211,9 @@ namespace Lodis.Movement
             }
         }
 
+        /// <summary>
+        /// Whether or not this object is in the air without being in a tumble state
+        /// </summary>
         public bool InFreeFall 
         {
             get
@@ -287,6 +311,9 @@ namespace Lodis.Movement
             UseGravity = false;
         }
 
+        /// <summary>
+        /// Gets whether or not this object is on the ground and not being effected by any forces
+        /// </summary>
         public bool CheckIfAtRest()
         {
             return !InHitStun && !InFreeFall && _rigidbody.isKinematic;
@@ -345,11 +372,19 @@ namespace Lodis.Movement
             _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time));
         }
 
+        /// <summary>
+        /// If the object is being effected by non grid forces, 
+        /// freeze the object in place 
+        /// </summary>
+        /// <param name="condition">The condition event that will disable the freeze once true</param>
         public void FreezeInPlaceByCondition(Condition condition)
         {
             _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true));
         }
 
+        /// <summary>
+        /// Immediately enables movement again if the object is frozen
+        /// </summary>
         public void UnfreezeObject()
         {
             if (_currentCoroutine != null)
@@ -445,6 +480,7 @@ namespace Lodis.Movement
 
         /// <summary>
         /// Add a listener to the onKnockBackStart event. Called before knock back is applied.
+        /// Cleared after called
         /// </summary>
         /// <param name="action">The new listener for the event.</param>
         public void AddOnKnockBackStartTempAction(UnityAction action)
@@ -452,21 +488,38 @@ namespace Lodis.Movement
             _onKnockBackStartTemp += action;
         }
 
+        /// <summary>
+        /// Removes the listener from the on knock back start temporary event
+        /// </summary>
+        /// <param name="action"></param>
         public void RemoveOnKnockBackStartTempAction(UnityAction action)
         {
             _onKnockBackStartTemp -= action;
         }
 
+        /// <summary>
+        /// Adds an action to the event called when this object is damaged
+        /// </summary>
+        /// <param name="action">The new listener to to the event</param>
         public void AddOnTakeDamageAction(UnityAction action)
         {
             _onTakeDamage += action;
         }
 
+        /// <summary>
+        /// Adds an action to the event called when this object is damaged.
+        /// Listeners cleared after event is called
+        /// </summary>
+        /// <param name="action">The new listener to to the event</param>
         public void AddOnTakeDamageTempAction(UnityAction action)
         {
             _onTakeDamageTemp += action;
         }
 
+        /// <summary>
+        /// Starts landing lag if the object just fell onto a structure
+        /// </summary>
+        /// <param name="args"></param>
         private void TryStartLandingLag(params object[] args)
         {
             GameObject plane = (GameObject)args[0];
@@ -669,7 +722,11 @@ namespace Lodis.Movement
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
-        private bool IsGrounded()
+        /// <summary>
+        /// Whether or not this object is touching the ground
+        /// </summary>
+        /// <returns></returns>
+        public bool IsGrounded()
         {
             bool collidedWithGround = false;
             _boxPosition = _bounceCollider.bounds.center;

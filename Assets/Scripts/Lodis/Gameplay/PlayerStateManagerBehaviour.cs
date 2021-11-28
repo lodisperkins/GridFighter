@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
         private Input.InputBehaviour _input;
         private Movement.GridMovementBehaviour _movement;
         private CharacterDefenseBehaviour _characterDefense;
+        [Tooltip("The current state the character is in")]
         [SerializeField]
         private PlayerState _currentState;
 

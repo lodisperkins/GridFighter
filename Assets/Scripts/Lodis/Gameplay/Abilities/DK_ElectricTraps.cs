@@ -7,7 +7,13 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Enter ability description here
+    /// Needs to be activated at least three times
+    ///to be fully used.The first activation places
+    ///1 link on the grid, the second activation
+    ///places another.When the ability is activated
+    ///a third time, a current of electricity flows
+    ///between both links. If the opponent is caught
+    ///in the current they are stunned.
     /// </summary>
     public class DK_ElectricTraps : ProjectileAbility
     {
@@ -109,9 +115,13 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
+            //If the owner doesn't have a transform to spawn projectiles from...
             if (!ownerMoveset.ProjectileSpawnTransform)
+                //...use the owners transform
                 spawnTransform = owner.transform;
+            //Otherwise...
             else
+                //...use the projectile transform
                 spawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Switch to know which stage of the ability should be activated

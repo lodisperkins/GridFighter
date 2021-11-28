@@ -13,7 +13,7 @@ namespace Lodis.Gameplay
         public Transform spawnTransform = null;
         private float _shotDamage = 15;
         private float _shotKnockBack = 1;
-        //Usd to store a reference to the laser prefab
+        //Used to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
@@ -72,6 +72,9 @@ namespace Lodis.Gameplay
             MonoBehaviour.Destroy(spawnerObject);
         }
 
+        /// <summary>
+        /// Removes the projectiles that have despawn fromt the active list
+        /// </summary>
         public void CleanProjectileList()
         {
             for (int i = 0; i < _activeProjectiles.Count; i++)
@@ -85,10 +88,10 @@ namespace Lodis.Gameplay
 
         protected override void Activate(params object[] args)
         {
+            //Initialize collider stats
             float powerScale = (float)args[0];
             _shotDamage = abilityData.GetCustomStatValue("Damage") * powerScale;
             _shotKnockBack = abilityData.GetCustomStatValue("KnockBackScale") * powerScale;
-
             _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack,
                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true);
             _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
@@ -98,6 +101,7 @@ namespace Lodis.Gameplay
             
             Vector2 moveDir = owner.transform.forward;
 
+            //If the maximum amount of instances has been reached for this owner, don't spawn a new one
             if (_activeProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             { 
                 if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir))

@@ -84,6 +84,9 @@ namespace Lodis.Input
         private bool _attackButtonDown;
         private bool _abilityBuffered;
 
+        /// <summary>
+        /// The ID number of the player using this component
+        /// </summary>
         public int PlayerID
         {
             get
@@ -96,6 +99,9 @@ namespace Lodis.Input
             }
         }
 
+        /// <summary>
+        /// The direction the player is currently holding for an attack
+        /// </summary>
         public Vector2 AttackDirection
         {
             get

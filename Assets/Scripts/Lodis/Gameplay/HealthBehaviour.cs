@@ -7,18 +7,23 @@ namespace Lodis.Gameplay
 {
     public class HealthBehaviour : MonoBehaviour
     {
+        [Tooltip("The measurement of the amount of damage this object can take or has taken")]
         [SerializeField]
         private float _health;
+        [Tooltip("Whether or not this object should be deleted if the health is 0")]
         [SerializeField]
         private bool _destroyOnDeath;
+        [Tooltip("Whether or not the health value for this object is above 0")]
         [SerializeField]
         private bool _isAlive = true;
         [Tooltip("How much this object will reduce the velocity of objects that bounce off of it.")]
         [SerializeField]
         private float _bounceDampen = 2;
+        [Tooltip("Whether or not this object can be damaged or knocked back")]
         [SerializeField]
         private bool _isInvincible;
         private Condition _invincibilityCondition;
+        [Tooltip("Whether or not this object is in a stunned state")]
         [SerializeField]
         private bool _stunned;
 
@@ -34,6 +39,7 @@ namespace Lodis.Gameplay
             }
 
         }
+
         public bool IsAlive
         {
             get
@@ -74,6 +80,11 @@ namespace Lodis.Gameplay
             return damage;
         }
 
+        /// <summary>
+        /// Starts invincibilty timer
+        /// </summary>
+        /// <param name="time">The amount of time this object is invincible for</param>
+        /// <returns></returns>
         private IEnumerator SetInvincibility(float time)
         {
             _isInvincible = true;
@@ -81,12 +92,17 @@ namespace Lodis.Gameplay
             _isInvincible = false;
         }
 
+        /// <summary>
+        /// Starts the timer for the movement and input being disabled
+        /// </summary>
+        /// <param name="time">The amount of time the object is stunned</param>
         protected virtual IEnumerator ActivateStun(float time)
         {
             Stunned = true;
             MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
             Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
 
+            //Disable components if the object has them attached
             if (moveset)
             {
                 moveset.enabled = false;
@@ -101,6 +117,7 @@ namespace Lodis.Gameplay
 
             yield return new WaitForSeconds(time);
 
+            //Enable components if the actor has them attached
             if (moveset)
                 moveset.enabled = true;
             if (inputBehaviour)
@@ -109,6 +126,10 @@ namespace Lodis.Gameplay
             Stunned = false;
         }
 
+        /// <summary>
+        /// Disables abilty use and input for the object if applicable
+        /// </summary>
+        /// <param name="time">The amount of time to disable the components for</param>
         public void Stun(float time)
         {
             if (Stunned)
@@ -136,6 +157,9 @@ namespace Lodis.Gameplay
             _isInvincible = true;
         }
 
+        /// <summary>
+        /// Deactivates the invincibility and clears the condition event for disabling automatically
+        /// </summary>
         public void DisableInvincibility()
         {
             if (!_isInvincible)

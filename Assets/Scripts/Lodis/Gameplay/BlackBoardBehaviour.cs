@@ -18,6 +18,9 @@ namespace Lodis.Gameplay
         private List<GameObject> _entitiesInGame = new List<GameObject>();
         private static BlackBoardBehaviour _instance;
 
+        /// <summary>
+        /// Gets the static instance of the black board. Creates one if none exists
+        /// </summary>
         public static BlackBoardBehaviour Instance
         {
             get
@@ -65,11 +68,18 @@ namespace Lodis.Gameplay
             Grid = FindObjectOfType<GridScripts.GridBehaviour>();
         }
 
+        /// <summary>
+        /// Finds the grid in the scene to initialize the grid property
+        /// </summary>
         public void InitializeGrid()
         {
             Grid = FindObjectOfType<GridScripts.GridBehaviour>();
         }
 
+        /// <summary>
+        /// Adds the game object to the list of significant characters on the screen
+        /// </summary>
+        /// <param name="entity"></param>
         public void AddEntityToList(GameObject entity)
         {
             _entitiesInGame.Add(entity);

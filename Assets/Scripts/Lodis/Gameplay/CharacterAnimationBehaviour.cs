@@ -17,10 +17,13 @@ namespace Lodis.Gameplay
     [RequireComponent(typeof(Animator))]
     public class CharacterAnimationBehaviour : MonoBehaviour
     {
+        [Tooltip("The move behaviour attached to the owner. Used to update movement animations")]
         [SerializeField]
         private Movement.GridMovementBehaviour _moveBehaviour;
+        [Tooltip("The knock back behaviour attached to the owner. Used to update hit and freefall animations")]
         [SerializeField]
         private Movement.KnockbackBehaviour _knockbackBehaviour;
+        [Tooltip("The defense behaviour attached to the owner. Used to update parry and tech animations")]
         [SerializeField]
         private CharacterDefenseBehaviour _defenseBehaviour;
         [SerializeField]
@@ -36,13 +39,15 @@ namespace Lodis.Gameplay
         private bool _animatingMotion;
         [SerializeField]
         private PlayerStateManagerBehaviour _playerStateManager;
+        [Tooltip("THe amount of time it takes the character to get into the move pose")]
         [SerializeField]
         private float _moveAnimationStartUpTime;
+        [Tooltip("THe amount of time it takes the character to exit the move pose")]
         [SerializeField]
         private float _moveAnimationRecoverTime;
         private Vector2 _normal;
         private Vector3 _modelRestPosition;
-        public Coroutine abilityAnimationRoutine;
+        public Coroutine AbilityAnimationRoutine;
 
         // Start is called before the first frame update
         void Start()
@@ -53,11 +58,10 @@ namespace Lodis.Gameplay
             _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
             _modelRestPosition = _animator.transform.localPosition;
-            //_moveBehaviour.AddOnMoveEndAction(() => _animator.speed = 1);
         }
 
         /// <summary>
-        /// Switches to the next animation phase
+        /// Switches to the next animation phase and calculates the new speed for animations
         /// </summary>
         private void IncrementAnimationPhase()
         {
@@ -72,16 +76,22 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Changes the speed of the animation based on the ability data
+        /// Changes the speed of the animation based on the ability data.
+        /// Uses the ability animation already placed on the animation graph.
         /// </summary>
         private void CalculateAbilityAnimationSpeed()
         {
+            //Return if this ability has a fixed time for the animation
             if (!_currentAbilityAnimating.abilityData.useAbilityTimingForAnimation)
                 return;
 
             AnimationPhase phase = (AnimationPhase)_animationPhase;
             float newSpeed = 1;
 
+            ///Calculates the new animation speed based on the current ability phase.
+            ///If the phases time for animating is 0, the animator is set to the next phase of the animation.
+            ///Otherwise, the new speed is calculated by dividing the current time it takes to get to the next phase, by the
+            /// desired amount of time the animator should take be in that phase.
             switch (phase)
             {
                 case AnimationPhase.STARTUP:
@@ -114,7 +124,8 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Changes the speed of the animation based on the ability data
+        /// Changes the speed of the animation based on the move startup and end values
+        /// to make the movement animation a bit smoother
         /// </summary>
         private void CalculateMovementAnimationSpeed()
         {
@@ -126,6 +137,7 @@ namespace Lodis.Gameplay
 
             switch (phase)
             {
+                ///Changes speed of the animation by dividing the time remaining in this phase by the time the startuo should be
                 case AnimationPhase.STARTUP:
                     if (_moveAnimationStartUpTime <= 0)
                     {
@@ -134,7 +146,12 @@ namespace Lodis.Gameplay
                     }
                     newSpeed = (_currentClip.events[0].time / _moveAnimationStartUpTime);
                     break;
+
+                ///Changes speed of the animation by dividing the time remaining in this phase by the time
+                ///it takes to travel to the destination
                 case AnimationPhase.ACTIVE:
+
+                    //Calculates the time it takes to get to the destination
                     Vector2 oldPosition = new Vector2();
 
                     if (_moveBehaviour.PreviousPanel)
@@ -150,6 +167,7 @@ namespace Lodis.Gameplay
                     }
                     newSpeed = (_currentClip.events[1].time - _currentClip.events[0].time) / travelTime;
                     break;
+                ///Changes speed of the animation by dividing the time remaining in this phase by the time the recover time should be
                 case AnimationPhase.INACTIVE:
                     if (_moveAnimationRecoverTime <= 0)
                     {
@@ -168,12 +186,17 @@ namespace Lodis.Gameplay
         /// </summary>
         private void CalculateCustomAnimationSpeed()
         {
+            //Return if this ability has a fixed time for the animation
             if (!_currentAbilityAnimating.abilityData.useAbilityTimingForAnimation)
                 return;
 
             AnimationPhase phase = (AnimationPhase)_animationPhase;
             double newSpeed = 1;
 
+            ///Calculates the new animation speed based on the current ability phase.
+            ///If the phases time for animating is 0, the current clip is set to the next phase of the animation.
+            ///Otherwise, the new speed is calculated by dividing the current time it takes to get to the next phase, by the
+            ///desired amount of time the current clip should take be in that phase.
             switch (phase)
             {
                 case AnimationPhase.STARTUP:
@@ -218,24 +241,30 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Plays the animation attached to this ability.
+        /// Starts the animation playback for this ability. 
         /// </summary>
-        /// <param name="ability"></param>
+        /// <param name="ability">The ability that the animation belongs to</param>
         public IEnumerator PlayAbilityAnimation(Ability ability)
         {
             _currentAbilityAnimating = ability;
             _animator.speed = 1;
 
+            ///Play animation based on type
             switch (_currentAbilityAnimating.abilityData.animationType)
             {
                 case AnimationType.CAST:
+                    //Set the clip for the animation graph attached
                     if (SetCurrentAnimationClip("Cast"))
                     {
+                        ///Wait until the ability is allowed to play the animation.
+                        ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
 
+                        //Stop whatever animation is currently playing
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
 
+                        //Start the animation with the appropriate speed
                         _animator.Play("Cast", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
@@ -246,13 +275,18 @@ namespace Lodis.Gameplay
                     break;
 
                 case AnimationType.MELEE:
+                    //Set the clip for the animation graph attached
                     if (SetCurrentAnimationClip("Melee"))
                     {
+                        ///Wait until the ability is allowed to play the animation.
+                        ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
 
+                        //Stop whatever animation is currently playing
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
 
+                        //Start the animation with the appropriate speed
                         _animator.Play("Melee", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
@@ -263,12 +297,18 @@ namespace Lodis.Gameplay
                     break;
 
                 case AnimationType.SUMMON:
+                    //Set the clip for the animation graph attached
                     if (SetCurrentAnimationClip("Summon"))
                     {
+                        ///Wait until the ability is allowed to play the animation.
+                        ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
+
+                        //Stop whatever animation is currently playing
                         if (_playableGraph.IsPlaying())
                             _playableGraph.Stop();
 
+                        //Start the animation with the appropriate speed
                         _animator.Play("Summon", 0, 0);
                         _animatingMotion = false;
                         _animationPhase = 0;
@@ -279,34 +319,42 @@ namespace Lodis.Gameplay
                     break;
 
                 case AnimationType.CUSTOM:
+
                     if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
                     {
                         Debug.LogError("Can't play custom clip. No custom clip found for " + ability.abilityData.abilityName);
                         yield return null;
                     }
 
-
+                    ///Wait until the ability is allowed to play the animation.
+                    ///This is here in case the animation is activated manually
                     yield return new WaitUntil(() => ability.CanPlayAnimation);
 
+                    //Create a new anaimation clip and set the playable graphs current clip to it
                     _currentClipPlayable = AnimationClipPlayable.Create(_playableGraph, _currentClip);
-
                     _output.SetSourcePlayable(_currentClipPlayable);
 
+                    //Play custom clip with appropriate speed
                     _playableGraph.Play();
                     _animatingMotion = false;
                     _animationPhase = 0;
-
                     CalculateCustomAnimationSpeed();
                     break;
             }
         }
 
+        /// <summary>
+        /// Stops the animator and playable graph from playing the current animation
+        /// </summary>
         public void StopCurrentAnimation()
         {
             _animator.StopPlayback();
             _playableGraph.Stop();
         }
 
+        /// <summary>
+        /// Plays the appropriate move clip based on the move direction
+        /// </summary>
         private void PlayMovementAnimation()
         {
             _animatingMotion = true;
@@ -327,6 +375,10 @@ namespace Lodis.Gameplay
             CalculateMovementAnimationSpeed();
         }
 
+        /// <summary>
+        /// Stop the playable graph from playing the current clip and
+        /// reset its speed to the default
+        /// </summary>
         private void ResetAnimationGraph()
         {
             _playableGraph.Stop();
@@ -347,10 +399,10 @@ namespace Lodis.Gameplay
                 }
             }
 
-            if (_playerStateManager.CurrentState != PlayerState.ATTACKING && abilityAnimationRoutine != null)
+            if (_playerStateManager.CurrentState != PlayerState.ATTACKING && AbilityAnimationRoutine != null)
             {
-                StopCoroutine(abilityAnimationRoutine);
-                abilityAnimationRoutine = null;
+                StopCoroutine(AbilityAnimationRoutine);
+                AbilityAnimationRoutine = null;
             }
 
             switch (_playerStateManager.CurrentState)
@@ -400,6 +452,10 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// Plays the animation to break a fall based on the 
+        /// direction the structure is to the character
+        /// </summary>
         private void PlayFallBreakAnimation()
         {
             float x = Mathf.Abs(_normal.x);

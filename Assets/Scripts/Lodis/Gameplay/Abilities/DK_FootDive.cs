@@ -62,6 +62,7 @@ namespace Lodis.Gameplay
 
             //Get float representing y direction based on argument given
             int yDirection = yPositive ? 1 : -1;
+
             //Find y velocity 
             _ownerGravity = _knockBackBehaviour.Gravity;
             Vector3 velocityY;

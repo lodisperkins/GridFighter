@@ -118,26 +118,25 @@ namespace Lodis.Gameplay
 
             float newHitAngle = _hitAngle;
 
+            //Calculates new angle if this object should change trajectory based on direction of hit
             if (_adjustAngleBasedOnCollision)
             {
+                //Find a vector that point from the collider to the object hit
                 Vector3 directionOfImpact = other.transform.position - transform.position;
-
                 directionOfImpact.Normalize();
                 directionOfImpact.x = Mathf.Round(directionOfImpact.x);
 
+                //Find the direction this collider was going to apply force originally
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-
                 currentForceDirection.x *= directionOfImpact.x;
 
+                //Find the new angle based on the direction of the attack on the x axis
                 float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
-
                 newHitAngle = Mathf.Acos(dotProduct);
 
+                //Find if the angle should be negative or positive
                 if (Vector3.Dot(currentForceDirection, Vector3.up) < 0)
-                {
                     newHitAngle *= -1;
-                    
-                }
             }
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -186,17 +185,27 @@ namespace Lodis.Gameplay
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
 
 
+            float newHitAngle = _hitAngle;
+
+            //Calculates new angle if this object should change trajectory based on direction of hit
             if (_adjustAngleBasedOnCollision)
             {
+                //Find a vector that point from the collider to the object hit
                 Vector3 directionOfImpact = other.transform.position - transform.position;
-
                 directionOfImpact.Normalize();
+                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
 
-                Vector3 currentForceDirection = new Vector3(Mathf.Cos(_hitAngle), Mathf.Sin(_hitAngle), 0);
+                //Find the direction this collider was going to apply force originally
+                Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
+                currentForceDirection.x *= directionOfImpact.x;
 
-                currentForceDirection.Scale(directionOfImpact);
+                //Find the new angle based on the direction of the attack on the x axis
+                float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
+                newHitAngle = Mathf.Acos(dotProduct);
 
-                _hitAngle = Mathf.Acos(Vector3.Dot(currentForceDirection, Vector3.right));
+                //Find if the angle should be negative or positive
+                if (Vector3.Dot(currentForceDirection, Vector3.up) < 0)
+                    newHitAngle *= -1;
             }
 
             if (Owner)
@@ -204,7 +213,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType);
 
             onHit?.Invoke(other.gameObject);
 
@@ -241,18 +250,27 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
-            //Adjust the angle of force based on the direction of impact
+            float newHitAngle = _hitAngle;
+
+            //Calculates new angle if this object should change trajectory based on direction of hit
             if (_adjustAngleBasedOnCollision)
             {
+                //Find a vector that point from the collider to the object hit
                 Vector3 directionOfImpact = collision.gameObject.transform.position - transform.position;
-
                 directionOfImpact.Normalize();
+                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
 
-                Vector3 currentForceDirection = new Vector3(Mathf.Cos(_hitAngle), Mathf.Sin(_hitAngle), 0);
+                //Find the direction this collider was going to apply force originally
+                Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
+                currentForceDirection.x *= directionOfImpact.x;
 
-                currentForceDirection.Scale(directionOfImpact);
+                //Find the new angle based on the direction of the attack on the x axis
+                float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
+                newHitAngle = Mathf.Acos(dotProduct);
 
-                _hitAngle = Mathf.Acos(Vector3.Dot(currentForceDirection, Vector3.right));
+                //Find if the angle should be negative or positive
+                if (Vector3.Dot(currentForceDirection, Vector3.up) < 0)
+                    newHitAngle *= -1;
             }
 
             if (Owner)
@@ -260,7 +278,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, _hitAngle, damageType);
+                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType);
 
             onHit?.Invoke(collision.gameObject);
 

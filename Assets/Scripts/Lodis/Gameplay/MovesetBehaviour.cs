@@ -28,13 +28,15 @@ namespace Lodis.Gameplay
     public class MovesetBehaviour : MonoBehaviour
     {
         private AbilityType _attackState = AbilityType.NONE;
-        [Tooltip("The deck this character will be using.")]
+        [Tooltip("The basic ability deck this character will be using.")]
         [SerializeField]
         private Deck _normalDeckRef;
         private Deck _normalDeck;
+        [Tooltip("The special ability deck that this character will be using")]
         [SerializeField]
         private Deck _specialDeckRef;
         private Deck _specialDeck;
+        [Tooltip("The slots that store the two loaded abilities from the special deck")]
         [SerializeField]
         private Ability[] _specialAbilitySlots = new Ability[2];
         private Ability _lastAbilityInUse;
@@ -50,6 +52,7 @@ namespace Lodis.Gameplay
         [Tooltip("This transform is where melee hit boxes will spawn by default for this object.")]
         [SerializeField]
         private Transform _meleeHitBoxSpawnPoint;
+        [Tooltip("The amount of time it will take for the special deck to reload once all abilities are used")]
         [SerializeField]
         private float _deckReloadTime;
         private bool _deckReloading;
@@ -83,6 +86,9 @@ namespace Lodis.Gameplay
             _inputBehaviour = GetComponent<Input.InputBehaviour>();
         }
 
+        /// <summary>
+        /// Load abilities into both decks. Shuffles the special deck
+        /// </summary>
         private void InitializeDecks()
         {
             _normalDeck.InitAbilities(gameObject);
@@ -92,6 +98,10 @@ namespace Lodis.Gameplay
             _specialAbilitySlots[1] = _specialDeck.PopBack();
         }
 
+        /// <summary>
+        /// Returns true if there is no ability in use. If there
+        /// is an ability in use, returns true if the ability can be canceled
+        /// </summary>
         public bool GetCanUseAbility()
         {
             if (!AbilityInUse)
@@ -100,6 +110,10 @@ namespace Lodis.Gameplay
             return _lastAbilityInUse.CheckIfAbilityCanBeCanceled();
         }
         
+        /// <summary>
+        /// Gets the names of the special abilities currently placed
+        /// into the characters hand
+        /// </summary>
         public string[] GetAbilityNamesInCurrentSlots()
         {
             string[] names = new string[2];
@@ -162,7 +176,7 @@ namespace Lodis.Gameplay
                 return null;
 
             if (_animationBehaviour)
-                _animationBehaviour.abilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
+                _animationBehaviour.AbilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
 
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
@@ -171,11 +185,17 @@ namespace Lodis.Gameplay
             return _lastAbilityInUse;
         }
 
+        /// <summary>
+        /// Immediately cancels and ends the current ability in use
+        /// </summary>
         public void EndCurrentAbility()
         {
             _lastAbilityInUse?.EndAbility();
         }
 
+        /// <summary>
+        /// Creates a new instance of the special deck and shuffles its abilities
+        /// </summary>
         private void ReloadDeck()
         {
             _specialDeck = Instantiate(_specialDeckRef);
@@ -185,7 +205,12 @@ namespace Lodis.Gameplay
             _specialAbilitySlots[1] = _specialDeck.PopBack();
         }
 
-        private void TryChargeNextAbility(int slot)
+        /// <summary>
+        /// Trys to charge the next ability and place it in the characters hand.
+        /// If there are no abilties left in the deck, it is reloaded 
+        /// </summary>
+        /// <param name="slot"></param>
+        private void UpdateHand(int slot)
         {
             _specialAbilitySlots[slot] = null;
 
@@ -200,6 +225,12 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// Uses a special ability
+        /// </summary>
+        /// <param name="abilitySlot">The index of the ability in the characters hand</param>
+        /// <param name="args">additional arguments the ability may need</param>
+        /// <returns>The ability that was used</returns>
         public Ability UseSpecialAbility(int abilitySlot, params object[] args)
         {
             //Return if there is an ability in use that can't be canceled
@@ -214,7 +245,7 @@ namespace Lodis.Gameplay
                 return null;
 
             if (_animationBehaviour)
-                _animationBehaviour.abilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
+                _animationBehaviour.AbilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
 
             //Doesn't increment ability use amount before checking max
             currentAbility.UseAbility(args);
@@ -223,20 +254,30 @@ namespace Lodis.Gameplay
             currentAbility.currentActivationAmount++;
 
             if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached && !_deckReloading)
-                currentAbility.onEnd += () => TryChargeNextAbility(abilitySlot);
+                currentAbility.onEnd += () => UpdateHand(abilitySlot);
 
 
             //Return new ability
             return _lastAbilityInUse;
         }
 
+        /// <summary>
+        /// Removes the ability from the characters hand.
+        /// Trys to load a new ability if the deck isn't reloading
+        /// </summary>
+        /// <param name="index">The index of the ability in the players hnad</param>
         public void RemoveAbilityFromSlot(int index)
         {
             _specialAbilitySlots[index] = null;
             if (!_deckReloading)
-                TryChargeNextAbility(index);
+                UpdateHand(index);
         }
 
+        /// <summary>
+        /// Removes the ability from the characters hand.
+        /// Trys to load a new ability if the deck isn't reloading
+        /// </summary>
+        /// <param name="ability">The reference to the ability to remove</param>
         public void RemoveAbilityFromSlot(Ability ability)
         {
             for (int i = 0; i < _specialAbilitySlots.Length; i++)
@@ -244,12 +285,15 @@ namespace Lodis.Gameplay
                 if (_specialAbilitySlots[i] == ability)
                 {
                     RemoveAbilityFromSlot(i);
+                    if (!_deckReloading)
+                        UpdateHand(i);
                 }
             }
         }
 
         private void FixedUpdate()
         {
+            //Call fixed update for abilities
             if (_lastAbilityInUse != null)
             {
                 if (_lastAbilityInUse.InUse)
@@ -262,6 +306,7 @@ namespace Lodis.Gameplay
         private void Update()
         {
 
+            //Call update for abilities
             if (_lastAbilityInUse != null)
             {
                 if (_lastAbilityInUse.InUse)

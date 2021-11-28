@@ -6,7 +6,8 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Enter ability description here
+    /// Creates a shield in front
+    /// that reflects projectiles and pushes enemies away.
     /// </summary>
     public class DK_EnergyBarrier : Ability
     {

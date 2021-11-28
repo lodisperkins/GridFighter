@@ -7,6 +7,9 @@ using Lodis.Gameplay;
 
 namespace Lodis.AI
 {
+    /// <summary>
+    /// Class for AI utility function like pathfinding, 
+    /// </summary>
     public sealed class AIUtilities
     {
         private class PanelNode
@@ -20,6 +23,10 @@ namespace Lodis.AI
 
         private AIUtilities() { }
         private static AIUtilities _instance = null;
+
+        /// <summary>
+        /// The static instance of this class
+        /// </summary>
         public static AIUtilities Instance
         {
             get
@@ -31,16 +38,32 @@ namespace Lodis.AI
             }
         }
 
+        /// <summary>
+        /// Calculates distance between two panels without including diagnols
+        /// </summary>
+        /// <param name="panel">The panel to start from</param>
+        /// <param name="goal">The panel the path ends</param>
         public float CalculateManhattanDistance(PanelBehaviour panel, PanelBehaviour goal)
         {
             return Math.Abs(panel.Position.x - goal.Position.x) + Math.Abs(panel.Position.y - goal.Position.y);
         }
 
+        /// <summary>
+        /// A custom heuristic for path finding that gets the world distance between two panels
+        /// </summary>
+        /// <param name="panel">The starting panel</param>
+        /// <param name="goal">The end of the path</param>
         private float CustomHeuristic(PanelBehaviour panel, PanelBehaviour goal)
         {
             return Vector3.Distance(goal.Position, panel.Position);
         }
 
+        /// <summary>
+        /// Finds the distance between two panels while including diagnol distance
+        /// </summary>
+        /// <param name="panel">The panel the path starts at</param>
+        /// <param name="goal">The panel the path ends with</param>
+        /// <returns></returns>
         public float CalculateDiagnolDistance(PanelBehaviour panel, PanelBehaviour goal)
         {
             float dx = Math.Abs(panel.Position.x - goal.Position.x);
@@ -48,11 +71,11 @@ namespace Lodis.AI
             return 2 * (dx + dy) + (3 - 2 * 2) * Math.Min(dx, dy);
         }
 
-        public float CalculateChebyshevDistance(PanelBehaviour panel, PanelBehaviour goal)
-        {
-            return Math.Max(Math.Abs(goal.Position.x - panel.Position.x), Math.Abs(goal.Position.y - panel.Position.y));
-        }
-
+        /// <summary>
+        /// Sorts nodes to be in order from lowest to highest f score using bubble sort
+        /// </summary>
+        /// <param name="nodelist">The list of nodes to sort</param>
+        /// <returns>The sorted list</returns>
         private List<PanelNode> SortNodes(List<PanelNode> nodelist)
         {
             PanelNode temp;
@@ -73,13 +96,20 @@ namespace Lodis.AI
             return nodelist;
         }
 
+        /// <summary>
+        /// Creates a list of panels that represent the path found
+        /// </summary>
+        /// <param name="startPanel">The panel the path starts from</param>
+        /// <param name="endPanel">The panel the path ends with</param>
         private List<PanelBehaviour> ReconstructPath(PanelNode startPanel, PanelNode endPanel)
         {
             List<PanelBehaviour> currentPath = new List<PanelBehaviour>();
-            PanelNode temp =  endPanel;
 
+            //Travels backwards from goal node using the node parent until it reaches the starting node
+            PanelNode temp =  endPanel;
             while (temp != null)
             {
+                //Insert each panel at the beginning of the list so that the path is in the correct order
                 currentPath.Insert(0, temp.panel);
                 temp = temp.parent;
             }
@@ -87,8 +117,15 @@ namespace Lodis.AI
             return currentPath;
         }
 
+        /// <summary>
+        /// Gets whether or not the panel is in the given list
+        /// </summary>
+        /// <param name="panelNodes">The list to look for the panel in</param>
+        /// <param name="panel">The panel to search for in the list</param>
+        /// <returns>Whether or not the panel was within the list</returns>
         private bool ContainsPanel(List<PanelNode> panelNodes, PanelBehaviour panel)
         {
+            //Loop until a panel that matches the argument is found
             foreach (PanelNode node in panelNodes)
             {
                 if (node.panel == panel)
@@ -98,6 +135,14 @@ namespace Lodis.AI
             return false;
         }
 
+        /// <summary>
+        /// Uses A* to find a path from the starting panel to the end panel
+        /// </summary>
+        /// <param name="startPanel">The panel where the path will start</param>
+        /// <param name="endPanel">The panel where the path will end</param>
+        /// <param name="allowOccupiedPanels">Whether or not the path should avoid panels that are occupied</param>
+        /// <param name="alignment">The grid alignment this path can go through</param>
+        /// <returns>A list containing the constructed path</returns>
         public List<PanelBehaviour> GetPath(PanelBehaviour startPanel, PanelBehaviour endPanel, bool allowOccupiedPanels = false, GridAlignment alignment = GridAlignment.ANY)
         {
             PanelNode panelNode;

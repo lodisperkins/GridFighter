@@ -80,14 +80,18 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Copies the values in collider 1 to collider 2
         /// </summary>
-        /// <param name="collider1"></param>
-        /// <param name="collider2"></param>
+        /// <param name="collider1">The collider that will have its values copied</param>
+        /// <param name="collider2">The collider that will have its values overwritten</param>
         public static void Copy(ColliderBehaviour collider1, ColliderBehaviour collider2)
         {
             collider2.Init(collider1.DespawnsAfterTimeLimit, collider1.TimeActive, collider1.Owner, collider1.DestroyOnHit, collider1.IsMultiHit);
             collider2.OnHit = collider1.OnHit;
         }
 
+        /// <summary>
+        /// If this collider despawns over some time,
+        /// this will reset the timer
+        /// </summary>
         public void ResetActiveTime()
         {
             StartTime = Time.time;
@@ -173,6 +177,11 @@ namespace Lodis.Gameplay
                 Destroy(gameObject);
         }
 
+        /// <summary>
+        /// Checks if this collider can register a collision again.
+        /// Useful for multihit colliders
+        /// </summary>
+        /// <returns>Whether or not enough time has passed since the last hit</returns>
         protected bool CheckHitTime()
         {
             if (Time.frameCount - _lastHitFrame >= HitFrames)

@@ -6,7 +6,7 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Enter ability description here
+    /// Travel two panels forward, and deliver a strike that covers a 3x3 panel radius.
     /// </summary>
     public class DK_RadialStrike : Ability
     {
@@ -30,10 +30,13 @@ namespace Lodis.Gameplay
 
             //Play animation now that the character has reached the target panel
             EnableAnimation();
+
             //Disable character movement so the ability isn't interrupted
             _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !ownerMoveset.AbilityInUse, false, true);
+
             //Mark that the target position has been reached
             _inPosition = true;
+
             //Instantiate particles and hit box
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform);
             Vector3 hitBoxDimensions = new Vector3(abilityData.GetCustomStatValue("HitBoxScaleX"), abilityData.GetCustomStatValue("HitBoxScaleY"), abilityData.GetCustomStatValue("HitBoxScaleZ"));
@@ -80,8 +83,11 @@ namespace Lodis.Gameplay
         public override void EndAbility()
         {
             base.EndAbility();
+            //Stop the user from dashing 
             if (_ownerMoveScript.IsMoving)
                 _ownerMoveScript.CancelMovement();
+
+
             _ownerMoveScript.StopAllCoroutines();
         }
     }

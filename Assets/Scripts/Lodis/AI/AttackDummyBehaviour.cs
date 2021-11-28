@@ -9,13 +9,18 @@ namespace Lodis.AI
     public class AttackDummyBehaviour : MonoBehaviour
     {
         private Gameplay.MovesetBehaviour _moveset;
+        [Tooltip("Pick the attack this test dummy should perform")]
         [SerializeField]
         private Gameplay.AbilityType _attackType;
+        [Tooltip("Sets the amount of time the dummy will wait before attacking again")]
         [SerializeField]
         private float _attackDelay;
         private float _timeOfLastAttack;
+        [Tooltip("Sets the value that amplifies the power of strong attacks")]
         [SerializeField]
         private float _attackStrength;
+
+        [Tooltip("The z direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
         [SerializeField]
         private float _zDirection;
         private Gameplay.PlayerStateManagerBehaviour _playerState;
@@ -32,14 +37,17 @@ namespace Lodis.AI
 
         public void Update()
         {
+            //Only attack if the dummy is grounded and delay timer is up
             if (!_knockbackBehaviour.InHitStun && !_knockbackBehaviour.InFreeFall && Time.time - _timeOfLastAttack >= _attackDelay)
             {
+                //Clamps z direction in case its abs value becomes larger than one at runtime
                 _zDirection = Mathf.Clamp(_zDirection, -1, 1);
 
-                if ((int)_attackType == 9)
+                if (_attackType == Gameplay.AbilityType.NONE)
                     return;
 
-                if ((int)_attackType == 8)
+                //Attack based on the ability type selected
+                if (_attackType == Gameplay.AbilityType.SPECIAL)
                 {
                     if (_lastSlot == 0)
                         _lastSlot = 1;

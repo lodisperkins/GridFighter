@@ -46,6 +46,10 @@ namespace Lodis.Gameplay
             _weakProjectile = (GameObject)Resources.Load("Projectiles/LobShot");
         }
 
+        /// <summary>
+        /// Adds a force to the target it by the projectile
+        /// </summary>
+        /// <param name="args"></param>
         private void AddUpwardForce(params object[] args)
         {
             GameObject target = (GameObject)args[0];
@@ -58,6 +62,13 @@ namespace Lodis.Gameplay
             knockBackScript.ApplyImpulseForce(Vector3.up * _weakShotForce);
         }
 
+
+        /// <summary>
+        /// Calculates the force needed to move the projectile 
+        /// </summary>
+        /// <param name="axis">The axis this projectile is moving on</param>
+        /// <param name="shotDistance">The distance this projectile should travel</param>
+        /// <returns>The force and direction needed to move on the axis for the given distance</returns>
         private Vector3 CalculateProjectileForce(Vector3 axis, float shotDistance)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
@@ -66,18 +77,22 @@ namespace Lodis.Gameplay
 
             Vector3 moveDir = new Vector3();
 
+            //If the projectile should travel to the left or right of the stage...
             if (axis == Vector3.right || axis == Vector3.left)
+                //...the move direction is going to be along the owners forward
                 moveDir = owner.transform.forward;
+            //If the projectile should travel away from or towards the camera
             else if (axis == Vector3.forward || axis == Vector3.back)
+                //...the move direction is going to be along the owners right
                 moveDir = owner.transform.right;
 
+            //Scale by the axis and normalize to get the new move direction
             moveDir.Scale(axis);
             moveDir.Normalize();
             
             //Clamps hit angle to prevent completely horizontal movement
             float dot = Vector3.Dot(moveDir, axis);
             float shotAngle = 0;
-
             if (dot < 0)
                 shotAngle = 2*Mathf.PI / 3;
             else
@@ -101,6 +116,10 @@ namespace Lodis.Gameplay
             return (moveDir * Mathf.Cos(shotAngle) + new Vector3(0, Mathf.Sin(shotAngle))) * magnitude;
         }
 
+        /// <summary>
+        /// Spawns the smaller, weaker lobshot
+        /// </summary>
+        /// <param name="axis"></param>
         private void SpawnWeakShot(Vector3 axis)
         {
             //Create object to spawn laser from
@@ -119,6 +138,10 @@ namespace Lodis.Gameplay
             MonoBehaviour.Destroy(spawnerObject);
         }
 
+        /// <summary>
+        /// Spawns the four weak shots
+        /// </summary>
+        /// <param name="args"></param>
         private void SpawnWeakShots(params object[] args)
         {
             SpawnWeakShot(new Vector3(1, 0, 0));
@@ -128,6 +151,9 @@ namespace Lodis.Gameplay
             _strongProjectileCollider.onHit = null;
         }
 
+        /// <summary>
+        /// Removes the projectiles that have despawn fromt the active list
+        /// </summary>
         private void CleanProjectileList()
         {
             for (int i = 0; i < _activeProjectiles.Count; i++)
@@ -155,6 +181,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            //Initialize stats of strong and weak colliders
             float powerScale = (float)args[0];
             _weakShotDamage = abilityData.GetCustomStatValue("WeakShotDamage") * powerScale;
             _strongShotDamage = abilityData.GetCustomStatValue("StrongShotDamage") * powerScale;
@@ -172,8 +199,10 @@ namespace Lodis.Gameplay
             _strongProjectileCollider.Priority = abilityData.ColliderPriority;
             _strongProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
 
+             
             CleanProjectileList();
-
+           
+            //If the maximum amount of lobshot instances has been reached for this owner, don't spawn a new one
             if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
 

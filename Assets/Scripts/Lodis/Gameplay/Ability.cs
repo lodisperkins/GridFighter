@@ -74,6 +74,10 @@ namespace Lodis.Gameplay
             }
         }
 
+
+        /// <summary>
+        /// Gets whether or not this ability has reached its maximum amount of uses
+        /// </summary>
         public bool MaxActivationAmountReached
         {
             get
@@ -93,11 +97,19 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// The timed action that is counting down to the next ability phase
+        /// </summary>
         public RoutineBehaviour.TimedAction CurrentTimer
         {
             get { return _currentTimer; }
         }
 
+        /// <summary>
+        /// The phase before an the ability is activated. This is where the character is building up
+        /// to the ability's activation
+        /// </summary>
+        /// <param name="args"></param>
         protected void StartUpPhase(params object[] args)
         {
             _inUse = true;
@@ -107,6 +119,10 @@ namespace Lodis.Gameplay
             _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => ActivePhase(args), TimedActionCountType.SCALEDTIME, abilityData.startUpTime);
         }
 
+        /// <summary>
+        /// The phase during the ability activation. This is usually where hit boxes or status effects are spawned. 
+        /// </summary>
+        /// <param name="args"></param>
         protected void ActivePhase(params object[] args)
         {
             onActivate?.Invoke();
@@ -115,6 +131,11 @@ namespace Lodis.Gameplay
             _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => RecoverPhase(args), TimedActionCountType.SCALEDTIME, abilityData.timeActive);
         }
 
+        /// <summary>
+        /// The phase after the ability activation. This is usually where the character is winding back into idle
+        /// after activating the ability
+        /// </summary>
+        /// <param name="args"></param>
         protected void RecoverPhase(params object[] args)
         {
             onDeactivate?.Invoke();
@@ -146,6 +167,9 @@ namespace Lodis.Gameplay
             StartUpPhase(args);
         }
 
+        /// <summary>
+        /// Checks to see if the ability is able to be canceled in the current phase
+        /// </summary>
         public bool CheckIfAbilityCanBeCanceled()
         {
             switch (CurrentAbilityPhase)
@@ -174,7 +198,7 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Tries to cancel the ability
+        /// Trys to cancel the ability
         /// </summary>
         /// <returns>Returns true if the current ability phase can be canceled</returns>
         public bool TryCancel()
@@ -230,11 +254,18 @@ namespace Lodis.Gameplay
             _inUse = false;
         }
 
+        /// <summary>
+        /// Manually activates the animation
+        /// </summary>
         public void EnableAnimation()
         {
             _canPlayAnimation = true;
         }
 
+        /// <summary>
+        /// Initializes base stats and members for the ability
+        /// </summary>
+        /// <param name="newOwner">The user of the ability</param>
         public virtual void Init(GameObject newOwner)
         {
             owner = newOwner;
@@ -247,6 +278,10 @@ namespace Lodis.Gameplay
             _canPlayAnimation = !abilityData.playAnimationManually;
         }
 
+        /// <summary>
+        /// Called at the beginning of ability activation
+        /// </summary>
+        /// <param name="args"></param>
         protected virtual void Start(params object[] args)
         {
             if (abilityData.cancelOnHit && _ownerKnockBackScript)
@@ -256,18 +291,34 @@ namespace Lodis.Gameplay
 
         }
 
+        /// <summary>
+        /// Called when the ability is actually in action. Usually used to spawn hit boxes or status effects
+        /// </summary>
+        /// <param name="args"></param>
         protected abstract void Activate(params object[] args);
 
+        /// <summary>
+        /// Called when the ability is entering its recovering phase after use
+        /// </summary>
         protected virtual void Deactivate() { }
 
+        /// <summary>
+        /// Called after the ability has recovered and just before the user goes back to idle
+        /// </summary>
         protected virtual void End()
         {
             if (!_ownerKnockBackScript.InHitStun)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
         }
 
+        /// <summary>
+        /// Called in every update for the ability owner
+        /// </summary>
         public virtual void Update() { }
 
+        /// <summary>
+        /// Called in every fixed update for the ability owner
+        /// </summary>
         public virtual void FixedUpdate() { }
     }
 

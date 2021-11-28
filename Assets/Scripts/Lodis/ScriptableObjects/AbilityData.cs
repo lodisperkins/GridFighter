@@ -81,7 +81,11 @@ namespace Lodis.ScriptableObjects
         private AnimationClip _customAnimation;
 
         
-
+        /// <summary>
+        /// Gets the custom animation attached this data
+        /// </summary>
+        /// <param name="customAnimation">The reference to initialize</param>
+        /// <returns></returns>
         public bool GetCustomAnimation(out AnimationClip customAnimation)
         {
             customAnimation = null;
@@ -93,6 +97,11 @@ namespace Lodis.ScriptableObjects
             return true;
         }
 
+        /// <summary>
+        /// Searches for a stat value that matches the name and returns it if found
+        /// </summary>
+        /// <param name="name">The name of the stat value</param>
+        /// <returns>The value of the stat. Return NaN if the stat couldn't be found</returns>
         public float GetCustomStatValue(string name)
         {
             foreach (Stat stat in _customStats)

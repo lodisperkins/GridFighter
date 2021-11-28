@@ -7,10 +7,12 @@ namespace Lodis.Gameplay
     public class BarrierBehaviour : HealthBehaviour
     {
         private Material _material;
+        [Tooltip("All layers that will be visible if placed behind this barrier")]
         [SerializeField]
         private string[] _visibleLayers;
         private float _rangeToIgnoreUpAngle;
         private Movement.GridMovementBehaviour _movement;
+        [Tooltip("The name of the gameobject that owns this barrier")]
         [SerializeField]
         private string _owner = "";
         [Tooltip("How much force will be applied to object standing on top of the barrier to push them off.")]
@@ -31,6 +33,16 @@ namespace Lodis.Gameplay
             _movement = GetComponent<Movement.GridMovementBehaviour>();
         }
 
+        /// <summary>
+        /// Inherited from health behaviour.
+        /// Barriers only take damage from  owners if the type is knock back damage.
+        /// </summary>
+        /// <param name="attacker">The name of the object that is attacking</param>
+        /// <param name="damage">The amount of damage this attack would do. Ignored if damage type isn't knock back</param>
+        /// <param name="knockBackScale">How far this object will be knocked back. Ignored for barriers</param>
+        /// <param name="hitAngle">The angle to launch this object. Ignore for barriers</param>
+        /// <param name="damageType">The type of damage being received</param>
+        /// <returns>The amount of damage taken. Returns 0 if the attacker was the owner and if the type wasn't knock back </returns>
         public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
         {
             if (attacker == Owner && damageType == DamageType.KNOCKBACK || attacker != Owner && damageType != DamageType.KNOCKBACK)
@@ -87,8 +99,8 @@ namespace Lodis.Gameplay
         {
             base.Update();
 
+            //Make the material transparent if there is an object behind the barrier
             int layerMask = LayerMask.GetMask(_visibleLayers);
-
             if (Physics.Raycast(transform.position, Vector3.forward, 1, layerMask))
                 _material.color = new Color(1, 1, 1, 0.5f);
             else

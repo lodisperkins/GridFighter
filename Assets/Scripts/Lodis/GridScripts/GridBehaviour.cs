@@ -53,6 +53,9 @@ namespace Lodis.GridScripts
         private float _width;
         private float _height;
 
+        /// <summary>
+        /// The spawn point for the character on the left side of the grid
+        /// </summary>
         public PanelBehaviour LhsSpawnPanel
         {
             get
@@ -61,6 +64,9 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// The spawn point for the character on the right side of the grid
+        /// </summary>
         public PanelBehaviour RhsSpawnPanel
         {
             get
@@ -69,6 +75,9 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// A reference to the panel object to use for building the grid
+        /// </summary>
         public GameObject PanelRef
         {
             get
@@ -77,6 +86,9 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// The space in between each panel
+        /// </summary>
         public float PanelSpacing
         {
             get
@@ -85,6 +97,9 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// The dimensions of the panels on the grid
+        /// </summary>
         public Vector2 Dimensions
         {
             get 
@@ -93,7 +108,14 @@ namespace Lodis.GridScripts
             }
         }
 
+        /// <summary>
+        /// The width of the grid in relation to the world space
+        /// </summary>
         public float Width { get => _width; }
+
+        /// <summary>
+        /// The height of the grid in relation to the world space
+        /// </summary>
         public float Height { get => _height; }
 
         /// <summary>
@@ -173,6 +195,7 @@ namespace Lodis.GridScripts
                 }
             }
 
+            //Spawn the collision plane underneath the grid
             GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
 
             _width = (_dimensions.x * _panelRef.transform.localScale.x) + (PanelSpacing * _dimensions.x);
@@ -448,6 +471,14 @@ namespace Lodis.GridScripts
             return true;
         }
 
+        /// <summary>
+        /// Gets the panel that is closest to the given location in the world
+        /// </summary>
+        /// <param name="location">The location to look for the panel in world space</param>
+        /// <param name="panel">The panel reference to assign</param>
+        /// <param name="canBeOccupied">Whether or not panels that are occupied should be ignored</param>
+        /// <param name="alignment">The side of the grid to look for this panel</param>
+        /// <returns></returns>
         public bool GetPanelAtLocationInWorld(Vector3 location, out PanelBehaviour panel, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
         {
             panel = null;
@@ -471,6 +502,13 @@ namespace Lodis.GridScripts
             return true;
         }
 
+        /// <summary>
+        /// Gets a list of panels that are withing a range of 1
+        /// </summary>
+        /// <param name="position">The position of the panel to find neighbors for</param>
+        /// <param name="canBeOccupied">Whether or not to ignore panels that are ooccupied</param>
+        /// <param name="alignment">The side of the grid to look for neighbors. Panels found on the other side will be ignored</param>
+        /// <returns></returns>
         public List<PanelBehaviour> GetPanelNeighbors(Vector2 position, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
         {
             List<PanelBehaviour> neighbors = new List<PanelBehaviour>();
