@@ -31,6 +31,8 @@ namespace Lodis.Gameplay
         protected GameObject Owner;
         protected List<GameObject> Collisions;
         protected string OwnerName = "NoOwner";
+        [SerializeField]
+        private string[] _layersToIgnore;
         /// <summary>
         /// Collision event called when this collider hits another. 
         /// First argument is game object it collided with.
@@ -131,9 +133,9 @@ namespace Lodis.Gameplay
             {
                 otherGameObject = other.gameObject;
             }
-                
 
-            if (otherCollider && IgnoreColliders)
+            int mask = LayerMask.GetMask(_layersToIgnore);
+            if (otherCollider && IgnoreColliders || mask != (mask | 1 << otherGameObject.layer))
                     return;
 
             //Add the game object to the list of collisions so it is not collided with again

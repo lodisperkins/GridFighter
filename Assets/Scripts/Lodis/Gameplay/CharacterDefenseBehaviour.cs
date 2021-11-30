@@ -105,6 +105,7 @@ namespace Lodis.Gameplay
             //Initialize default values
             _defaultColor = _material.color;
             _parryCollider.OnHit += ActivateInvinciblity;
+            _parryCollider.OnHit += TryReflectProjectile;
             _parryCollider.ColliderOwner = gameObject;
             onFallBroken += normal => { BreakingFall = true; RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, BraceInvincibilityTime); };
         }
@@ -156,6 +157,29 @@ namespace Lodis.Gameplay
 
             //Start the parry cooldown
             RoutineBehaviour.Instance.StartNewTimedAction(args => _canParry = true, TimedActionCountType.SCALEDTIME, _tempParryCooldown);
+        }
+
+        /// <summary>
+        /// Checks if the object it collided with is an enemy projectile.
+        /// If so, reverses velocity
+        /// </summary>
+        /// <param name="gameObject"></param>
+        public void TryReflectProjectile(params object[] args)
+        {
+            GameObject other = (GameObject)args[0];
+            //Get collider and rigidbody to check the owner and add the force
+            ColliderBehaviour otherHitCollider = other.GetComponentInParent<ColliderBehaviour>();
+            Rigidbody otherRigidbody = other.GetComponentInParent<Rigidbody>();
+
+            //If the object collided with is an enemy projectile...
+            if (otherHitCollider && otherRigidbody && !otherHitCollider.CompareTag("Player") && !otherHitCollider.CompareTag("Entity"))
+            {
+                //...reset the active time and reverse its velocity
+                otherHitCollider.ColliderOwner = other;
+                otherHitCollider.ResetActiveTime();
+                otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.Impulse);
+
+            }
         }
 
         /// <summary>
