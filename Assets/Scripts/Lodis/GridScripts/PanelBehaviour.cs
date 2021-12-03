@@ -118,7 +118,6 @@ namespace Lodis.GridScripts
                 if (defenseScript.IsBraced)
                 {
                     knockbackScript.SetInvincibilityByTimer(defenseScript.RecoverInvincibilityLength);
-                    knockbackScript.MakeKinematic();
                     Vector3 normal = other.transform.position - transform.position;
                     defenseScript.onFallBroken?.Invoke(normal.normalized);
                     Debug.Log("teched floor");

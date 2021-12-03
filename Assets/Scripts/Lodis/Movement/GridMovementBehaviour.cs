@@ -5,7 +5,8 @@ using Lodis.GridScripts;
 using Lodis.Gameplay;
 using UnityEditor;
 using UnityEngine.Events;
-
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Lodis.Movement
 {
@@ -231,8 +232,8 @@ namespace Lodis.Movement
                 if (MoveOnStart)
                     MoveToPanel(_currentPanel, true);
             }
-            else
-                Debug.LogError(name + " could not find starting panel");
+            //else
+            //    Debug.LogError(name + " could not find starting panel");
 
             if (_knockbackBehaviour)
                 _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
@@ -311,6 +312,15 @@ namespace Lodis.Movement
         /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
         public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
+            StackFrame stackFrame = new StackFrame(1);
+
+            if (stackFrame != null)
+            {
+                MethodBase method = stackFrame.GetMethod();
+                if (method != null)
+                    UnityEngine.Debug.Log(method.DeclaringType.Name);
+            }
+
             if (!_canMove && !overridesMoveCondition)
                 return;
 
