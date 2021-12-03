@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
         protected List<GameObject> Collisions;
         protected string OwnerName = "NoOwner";
         [SerializeField]
-        private string[] _layersToIgnore;
+        private List<string> _layersToIgnore;
         /// <summary>
         /// Collision event called when this collider hits another. 
         /// First argument is game object it collided with.
@@ -54,7 +54,22 @@ namespace Lodis.Gameplay
             }
         }
 
-        public ColliderBehaviour() {}
+        public List<string> LayersToIgnore
+        {
+            get
+            {
+                return _layersToIgnore;
+            }
+            set
+            {
+                _layersToIgnore = value;
+            }
+        }
+
+        public ColliderBehaviour() 
+        {
+            _layersToIgnore = new List<string>();
+        }
 
         /// <summary>
         /// Initializes this colliders stats
@@ -88,6 +103,7 @@ namespace Lodis.Gameplay
         {
             collider2.Init(collider1.DespawnsAfterTimeLimit, collider1.TimeActive, collider1.Owner, collider1.DestroyOnHit, collider1.IsMultiHit);
             collider2.OnHit = collider1.OnHit;
+            collider2.LayersToIgnore = collider1.LayersToIgnore;
         }
 
         /// <summary>
@@ -97,6 +113,15 @@ namespace Lodis.Gameplay
         public void ResetActiveTime()
         {
             StartTime = Time.time;
+        }
+
+        public bool CheckIfLayerShouldBeIgnored(int layer)
+        {
+            int mask = LayerMask.GetMask(_layersToIgnore.ToArray());
+            if (mask != (mask | 1 << layer))
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -134,7 +159,7 @@ namespace Lodis.Gameplay
                 otherGameObject = other.gameObject;
             }
 
-            int mask = LayerMask.GetMask(_layersToIgnore);
+            int mask = LayerMask.GetMask(_layersToIgnore.ToArray());
             if (otherCollider && IgnoreColliders || mask != (mask | 1 << otherGameObject.layer))
                     return;
 

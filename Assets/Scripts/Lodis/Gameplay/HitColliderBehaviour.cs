@@ -43,6 +43,10 @@ namespace Lodis.Gameplay
 
         private void Awake()
         {
+            if (LayersToIgnore == null)
+                LayersToIgnore = new List<string>();
+
+            LayersToIgnore.Add("ParryBox");
             Collisions = new List<GameObject>();
         }
 
@@ -62,6 +66,7 @@ namespace Lodis.Gameplay
             collider2.onHit = collider1.onHit;
             collider2.IgnoreColliders = collider1.IgnoreColliders;
             collider2.Priority = collider1.Priority;
+            collider2.LayersToIgnore = collider1.LayersToIgnore;
         }
 
         /// <summary>
