@@ -169,13 +169,17 @@ namespace Lodis.Gameplay
             GameObject other = (GameObject)args[0];
             //Get collider and rigidbody to check the owner and add the force
             ColliderBehaviour otherHitCollider = other.GetComponentInParent<ColliderBehaviour>();
+
+            if (otherHitCollider.ColliderOwner == _parryCollider.ColliderOwner)
+                return;
+
             Rigidbody otherRigidbody = other.GetComponentInParent<Rigidbody>();
 
             //If the object collided with is an enemy projectile...
             if (otherHitCollider && otherRigidbody && !otherHitCollider.CompareTag("Player") && !otherHitCollider.CompareTag("Entity"))
             {
                 //...reset the active time and reverse its velocity
-                otherHitCollider.ColliderOwner = other;
+                otherHitCollider.ColliderOwner = _parryCollider.ColliderOwner;
                 otherHitCollider.ResetActiveTime();
                 otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.Impulse);
 

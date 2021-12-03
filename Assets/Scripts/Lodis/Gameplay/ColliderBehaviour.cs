@@ -160,7 +160,7 @@ namespace Lodis.Gameplay
             }
 
             int mask = LayerMask.GetMask(_layersToIgnore.ToArray());
-            if (otherCollider && IgnoreColliders || mask != (mask | 1 << otherGameObject.layer))
+            if (otherCollider && IgnoreColliders/* || mask != (mask | 1 << otherGameObject.layer)*/)
                     return;
 
             //Add the game object to the list of collisions so it is not collided with again

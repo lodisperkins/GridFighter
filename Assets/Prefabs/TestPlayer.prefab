@@ -505,6 +505,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1108451635469348776, guid: 3750288d4cc41f440964731ec1982842,
+        type: 3}
+      propertyPath: m_TagString
+      value: ParryBox
+      objectReference: {fileID: 0}
     - target: {fileID: 9130470748693586590, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
       propertyPath: m_RootOrder

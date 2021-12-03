@@ -105,6 +105,9 @@ namespace Lodis.Gameplay
                     return;
             }
 
+            if (other.CompareTag("ParryBox"))
+                return;
+
             if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
             {
                 if (IgnoreColliders || otherCollider.IgnoreColliders || otherCollider.ColliderOwner == Owner)
