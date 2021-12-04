@@ -346,13 +346,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515641295c2b6d349bf41285419a96fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parryLength: 0.2
+  _parryLength: 0.1
   _parryFallSpeed: 20
   _parryCollider: {fileID: 7386840481675835583}
   _parryInvincibilityLength: 0.5
   _recoverInvincibilityLength: 0.5
   _canParry: 1
-  _parryCooldown: 1
+  _parryCooldown: 0.5
   _parrySpeedLimit: 8
   _parryRestTime: 0.5
   _airDodgeDistance: 0

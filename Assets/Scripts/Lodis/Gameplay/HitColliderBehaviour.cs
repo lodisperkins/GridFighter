@@ -177,8 +177,12 @@ namespace Lodis.Gameplay
             if (other.attachedRigidbody)
                 otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
+            if (other.CompareTag("ParryBox"))
+                return;
+
             if (otherCollider && IgnoreColliders)
                 return;
+
             else if (otherCollider is HitColliderBehaviour)
             {
                 if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
@@ -239,6 +243,9 @@ namespace Lodis.Gameplay
 
             if (collision.collider.attachedRigidbody)
                 otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
+
+            if (collision.gameObject.CompareTag("ParryBox"))
+                return;
 
             if (otherCollider && IgnoreColliders)
                 return;

@@ -43,7 +43,7 @@ namespace Lodis.AI
                 //Clamps z direction in case its abs value becomes larger than one at runtime
                 _zDirection = Mathf.Clamp(_zDirection, -1, 1);
 
-                if (_attackType == Gameplay.AbilityType.NONE)
+                if (_attackType == Gameplay.AbilityType.NONE || _playerState.CurrentState == Gameplay.PlayerState.STUNNED)
                     return;
 
                 //Attack based on the ability type selected

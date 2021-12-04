@@ -175,6 +175,7 @@ MonoBehaviour:
   TimeActive: 0
   IsMultiHit: 0
   DestroyOnHit: 0
+  _layersToIgnore: []
   HitFrames: 0
   IgnoreColliders: 1
 --- !u!65 &7080764703363995812
