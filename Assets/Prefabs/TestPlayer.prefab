@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515641295c2b6d349bf41285419a96fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parryLength: 0.1
+  _parryLength: 1
   _parryFallSpeed: 20
   _parryCollider: {fileID: 7386840481675835583}
   _parryInvincibilityLength: 0.5
@@ -365,6 +365,7 @@ MonoBehaviour:
   _canBrace: 0
   _braceCooldownTime: 1
   _braceInvincibilityTime: 0.3
+  _attackerStunTime: 5
 --- !u!75 &-4507364889193390204
 ConstantForce:
   m_ObjectHideFlags: 0

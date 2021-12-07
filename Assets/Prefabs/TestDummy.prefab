@@ -233,6 +233,7 @@ Transform:
   - {fileID: 5382269484146956920}
   - {fileID: 4491077316993889346}
   - {fileID: 1321618602}
+  - {fileID: 6448553971511060157}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -397,11 +398,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
   _renderer: {fileID: 5680485170780137516}
   _animationBehaviour: {fileID: 0}
   _projectileSpawnPoint: {fileID: 1321618602}
-  _meleeHitBoxSpawnPoint: {fileID: 0}
+  _meleeHitBoxSpawnPoint: {fileID: 6448553971511060157}
   _deckReloadTime: 0
 --- !u!114 &958140273493484615
 MonoBehaviour:
@@ -447,6 +448,7 @@ MonoBehaviour:
   _canBrace: 0
   _braceCooldownTime: 0
   _braceInvincibilityTime: 0
+  _attackerStunTime: 0
 --- !u!114 &6183915638186026948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -459,7 +461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 4
+  _attackType: 8
   _attackDelay: 1
   _attackStrength: 1.08
   _zDirection: 1
@@ -475,6 +477,36 @@ ConstantForce:
   m_RelativeForce: {x: 0, y: 0, z: 0}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
+--- !u!1 &6867260188007961694
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6448553971511060157}
+  m_Layer: 9
+  m_Name: MeleeHitBoxSpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6448553971511060157
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6867260188007961694}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5680485170780137522}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1129245541838569244
 PrefabInstance:
   m_ObjectHideFlags: 0

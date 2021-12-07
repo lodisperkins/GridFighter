@@ -325,16 +325,19 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze for.</param>
         /// <returns></returns>
-        private IEnumerator FreezeTimerCoroutine(float time, bool keepMomentum = false)
+        private IEnumerator FreezeTimerCoroutine(float time, bool keepMomentum = false, bool makeKinematic = false)
         {
             bool gravityEnabled = UseGravity;
             Vector3 velocity = LastVelocity;
 
-            float timeStarted = Time.time;
-            float timeElapsed = 0;
+            if (makeKinematic)
+                MakeKinematic();
 
             StopAllForces();
             yield return new WaitForSeconds(time);
+
+            if (makeKinematic)
+                _rigidbody.isKinematic = false;
 
             if (keepMomentum)
                 ApplyVelocityChange(velocity);
@@ -343,7 +346,7 @@ namespace Lodis.Movement
         }
 
         CustomYieldInstruction wait;
-        private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false)
+        private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
         {
             bool gravityEnabled = UseGravity;
             Vector3 velocity = LastVelocity;
@@ -351,11 +354,17 @@ namespace Lodis.Movement
             float timeStarted = Time.time;
             float timeElapsed = 0;
 
+            if (makeKinematic)
+                MakeKinematic();
+
             StopAllForces();
-            _rigidbody.isKinematic = true;
+
             wait = new WaitUntil(() => condition.Invoke());
             yield return wait;
-            _rigidbody.isKinematic = false;
+
+            if (makeKinematic)
+                _rigidbody.isKinematic = false;
+
             if (keepMomentum)
                 ApplyVelocityChange(velocity);
 
@@ -367,9 +376,9 @@ namespace Lodis.Movement
         /// freeze the object in place for the given time.
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze in place.</param>
-        public void FreezeInPlaceByTimer(float time)
+        public void FreezeInPlaceByTimer(float time, bool keepMomentum = false, bool makeKinematic = false)
         {
-            _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time));
+            _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time, keepMomentum, makeKinematic));
         }
 
         /// <summary>
@@ -377,7 +386,7 @@ namespace Lodis.Movement
         /// freeze the object in place 
         /// </summary>
         /// <param name="condition">The condition event that will disable the freeze once true</param>
-        public void FreezeInPlaceByCondition(Condition condition)
+        public void FreezeInPlaceByCondition(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
         {
             _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true));
         }
@@ -533,10 +542,12 @@ namespace Lodis.Movement
         {
             MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
             Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
+            GridMovementBehaviour movement = GetComponent<GridMovementBehaviour>();
+
             Stunned = true;
 
             if (InFreeFall || InHitStun)
-               FreezeInPlaceByCondition(condition =>!Stunned);
+               FreezeInPlaceByCondition(condition =>!Stunned, false, true);
 
             if (moveset)
             {
@@ -548,6 +559,10 @@ namespace Lodis.Movement
                 inputBehaviour.enabled = false;
                 inputBehaviour.StopAllCoroutines();
             }
+            if (movement)
+                movement.DisableMovement(condition => Stunned = false, false, true);
+
+            _onKnockBackTemp += CancelStun;
 
             yield return new WaitForSeconds(time);
 
@@ -557,6 +572,13 @@ namespace Lodis.Movement
                 inputBehaviour.enabled = true;
 
             Stunned = false;
+        }
+
+        public override void CancelStun()
+        {
+            base.CancelStun();
+
+            UnfreezeObject();
         }
 
         public override void OnCollisionEnter(Collision collision)
