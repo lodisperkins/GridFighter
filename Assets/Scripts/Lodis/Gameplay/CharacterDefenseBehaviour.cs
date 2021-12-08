@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
         private bool _canParry = true;
         [Tooltip("How long it takes in seconds for the character to be able to parry again.")]
         [SerializeField]
-        private float _parryCooldown;
+        private float _airParryCooldown;
         private float _tempParryCooldown;
         [Tooltip("If the magnitude of the velocity reaches this amount, the character can't parry.")]
         [SerializeField]
@@ -47,7 +47,7 @@ namespace Lodis.Gameplay
         private float _tempParrySpeedLimit;
         [Tooltip("How long the character is left immobile after a failed parry.")]
         [SerializeField]
-        private float _parryRestTime;
+        private float _groundParryRestTime;
         [Tooltip("How far the character will travel while air dodging.")]
         [SerializeField]
         private float _airDodgeDistance;
@@ -204,7 +204,7 @@ namespace Lodis.Gameplay
             if (knockback && other != _parryCollider.ColliderOwner)
                 if (!knockback.CheckIfAtRest())
                 {
-                    knockback.FreezeInPlaceByTimer(_attackerStunTime);
+                    knockback.FreezeInPlaceByTimer(_attackerStunTime, false, true);
                 }
 
             if (other != _parryCollider.ColliderOwner)
@@ -222,7 +222,7 @@ namespace Lodis.Gameplay
             _isParrying = true;
             _movement.DisableMovement(condition => _isParrying == false, true, true);
             _canParry = false;
-            _knockBack.SetInvincibilityByCondition(condition => IsParrying == false);
+            _knockBack.SetInvincibilityByTimer(_parryLength);
 
             RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
@@ -235,12 +235,12 @@ namespace Lodis.Gameplay
             //Start timer for player immobility
             if (!_knockBack.IsInvincible)
             {
-                RoutineBehaviour.Instance.StartNewTimedAction(args => { _isParrying = false; _canParry = true; }, TimedActionCountType.SCALEDTIME, _parryRestTime);
+                RoutineBehaviour.Instance.StartNewTimedAction(args => { _isParrying = false; _canParry = true; }, TimedActionCountType.SCALEDTIME, _groundParryRestTime);
                 return;
             }
 
-            //Allow the character to parry again
             _isParrying = false;
+            //Allow the character to parry again
             _canParry = true;
         }
 
@@ -270,7 +270,7 @@ namespace Lodis.Gameplay
             }
 
             //Start cooldown
-            yield return new WaitForSeconds(_parryCooldown);
+            yield return new WaitForSeconds(_airParryCooldown);
             _canParry = true;
         }
 
@@ -418,7 +418,7 @@ namespace Lodis.Gameplay
 
             if (_knockBack.CheckIfAtRest())
             {
-                _tempParryCooldown = _parryCooldown;
+                _tempParryCooldown = _airParryCooldown;
                 _tempParrySpeedLimit = _parrySpeedLimit;
             }
         }

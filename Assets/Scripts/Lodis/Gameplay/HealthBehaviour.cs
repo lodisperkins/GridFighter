@@ -1,5 +1,6 @@
 ﻿using Lodis.Input;
 using Lodis.Movement;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -87,18 +88,6 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Starts invincibilty timer
-        /// </summary>
-        /// <param name="time">The amount of time this object is invincible for</param>
-        /// <returns></returns>
-        private IEnumerator SetInvincibility(float time)
-        {
-            _isInvincible = true;
-            yield return new WaitForSeconds(time);
-            _isInvincible = false;
-        }
-
-        /// <summary>
         /// Starts the timer for the movement and input being disabled
         /// </summary>
         /// <param name="time">The amount of time the object is stunned</param>
@@ -170,7 +159,8 @@ namespace Lodis.Gameplay
         /// <param name="time">How long in seconds the object is invincible for</param>
         public void SetInvincibilityByTimer(float time)
         {
-            StartCoroutine(SetInvincibility(time));
+            _isInvincible = true;
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _isInvincible = false, TimedActionCountType.SCALEDTIME, time);
         }
 
         /// <summary>

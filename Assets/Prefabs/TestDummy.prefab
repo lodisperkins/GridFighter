@@ -398,7 +398,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _renderer: {fileID: 5680485170780137516}
   _animationBehaviour: {fileID: 0}
   _projectileSpawnPoint: {fileID: 1321618602}
@@ -435,9 +435,9 @@ MonoBehaviour:
   _parryInvincibilityLength: 0.5
   _recoverInvincibilityLength: 0.5
   _canParry: 1
-  _parryCooldown: 1
+  _airParryCooldown: 0
   _parrySpeedLimit: 5
-  _parryRestTime: 1
+  _groundParryRestTime: 0
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
   _parryStartUpTime: 0
