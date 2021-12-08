@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.Utility;
+using Lodis.Movement;
 
 namespace Lodis.Gameplay
 {
@@ -76,6 +77,9 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds the object is invincible after catching it's fall.")]
         [SerializeField]
         private float _braceInvincibilityTime;
+        [Tooltip("How long in seconds to stun an enemy after a successful parry.")]
+        [SerializeField]
+        private float _attackerStunTime;
         private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
 
@@ -106,6 +110,7 @@ namespace Lodis.Gameplay
             _defaultColor = _material.color;
             _parryCollider.OnHit += ActivateInvinciblity;
             _parryCollider.OnHit += TryReflectProjectile;
+            _parryCollider.OnHit += TryStunAttacker;
             _parryCollider.ColliderOwner = gameObject;
             onFallBroken += normal => { BreakingFall = true; RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, BraceInvincibilityTime); };
         }
@@ -133,12 +138,13 @@ namespace Lodis.Gameplay
                 return;
 
             //Stops the character from moving to make parrying easier
-            _knockBack.FreezeInPlaceByTimer(_parryLength);
+            _knockBack.FreezeInPlaceByTimer(_parryLength, true);
 
             //Enable parry and update state
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;
             _canParry = false;
+            _knockBack.SetInvincibilityByCondition(condition => IsParrying == false);
 
             //Start timer for parry
             RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateAirParry(moveVelocity), TimedActionCountType.SCALEDTIME, _parryLength);
@@ -149,11 +155,9 @@ namespace Lodis.Gameplay
             //Disable parry
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
-            _knockBack.InFreeFall = true;
 
-            //If the parry wasn't successful, reapply the old velocity
-            if (!_knockBack.IsInvincible)
-                _knockBack.ApplyVelocityChange(moveVelocity);
+            if (!_knockBack.CheckIfAtRest())
+                _knockBack.InFreeFall = true;
 
             //Start the parry cooldown
             RoutineBehaviour.Instance.StartNewTimedAction(args => _canParry = true, TimedActionCountType.SCALEDTIME, _tempParryCooldown);
@@ -186,6 +190,27 @@ namespace Lodis.Gameplay
             }
         }
 
+        public void TryStunAttacker(params object[] args)
+        {
+            GameObject other = (GameObject)args[0];
+            HealthBehaviour healthBehaviour = other.GetComponentInParent<HealthBehaviour>();
+            KnockbackBehaviour knockback = other.GetComponentInParent<KnockbackBehaviour>();
+
+            if (!healthBehaviour)
+                return;
+            else if (healthBehaviour.Stunned)
+                return;
+
+            if (knockback && other != _parryCollider.ColliderOwner)
+                if (!knockback.CheckIfAtRest())
+                {
+                    knockback.FreezeInPlaceByTimer(_attackerStunTime);
+                }
+
+            if (other != _parryCollider.ColliderOwner)
+                healthBehaviour.Stun(_attackerStunTime);
+        }
+
         /// <summary>
         /// Enables the parry collider and freezes character actions
         /// </summary>
@@ -197,6 +222,7 @@ namespace Lodis.Gameplay
             _isParrying = true;
             _movement.DisableMovement(condition => _isParrying == false, true, true);
             _canParry = false;
+            _knockBack.SetInvincibilityByCondition(condition => IsParrying == false);
 
             RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
@@ -353,7 +379,7 @@ namespace Lodis.Gameplay
             //Return if the object collided with doesn't have a collider script attached
             if (args.Length > 0)
             {
-                ColliderBehaviour collider = ((GameObject)args[0]).GetComponent<ColliderBehaviour>();
+                ColliderBehaviour collider = ((GameObject)args[0]).GetComponentInChildren<ColliderBehaviour>();
 
                 if (!collider)
                     return;

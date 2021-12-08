@@ -1,4 +1,5 @@
-﻿using Lodis.Movement;
+﻿using Lodis.Input;
+using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace Lodis.Gameplay
         [Tooltip("Whether or not this object is in a stunned state")]
         [SerializeField]
         private bool _stunned;
+        private Coroutine _stunRoutine;
 
         public bool Stunned 
         {
@@ -39,6 +41,10 @@ namespace Lodis.Gameplay
             }
 
         }
+
+        private MovesetBehaviour _moveset;
+        private InputBehaviour _input;
+        private GridMovementBehaviour _movement;
 
         public bool IsAlive
         {
@@ -99,30 +105,34 @@ namespace Lodis.Gameplay
         protected virtual IEnumerator ActivateStun(float time)
         {
             Stunned = true;
-            MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
-            Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
+            _moveset = GetComponent<MovesetBehaviour>();
+            _input = GetComponent<Input.InputBehaviour>();
+            _movement = GetComponent<GridMovementBehaviour>();
 
             //Disable components if the object has them attached
-            if (moveset)
+            if (_moveset)
             {
-                moveset.enabled = false;
-                moveset.EndCurrentAbility();
+                _moveset.enabled = false;
+                _moveset.EndCurrentAbility();
             }
-            if (inputBehaviour)
+            if (_input)
             {
-                inputBehaviour.enabled = false;
-                inputBehaviour.StopAllCoroutines();
+                _input.enabled = false;
+                _input.StopAllCoroutines();
+            }
+            if (_movement)
+            {
+                _movement.DisableMovement(condition => Stunned == false, false, true);
             }
 
 
             yield return new WaitForSeconds(time);
 
             //Enable components if the actor has them attached
-            if (moveset)
-                moveset.enabled = true;
-            if (inputBehaviour)
-                inputBehaviour.enabled = true;
-
+            if (_moveset)
+                _moveset.enabled = true;
+            if (_input)
+                _input.enabled = true;
             Stunned = false;
         }
 
@@ -135,7 +145,23 @@ namespace Lodis.Gameplay
             if (Stunned)
                 return;
 
-            StartCoroutine(ActivateStun(time));
+            _stunRoutine = StartCoroutine(ActivateStun(time));
+        }
+
+        public virtual void CancelStun()
+        {
+            if (!Stunned)
+                return;
+
+            StopCoroutine(_stunRoutine);
+
+            //Enable components if the actor has them attached
+            if (_moveset)
+                _moveset.enabled = true;
+            if (_input)
+                _input.enabled = true;
+
+            Stunned = false;
         }
 
         /// <summary>
