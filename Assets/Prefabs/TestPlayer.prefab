@@ -272,7 +272,7 @@ MonoBehaviour:
   _bounceDampen: 4
   _isInvincible: 0
   _stunned: 0
-  _mass: 5
+  _mass: 2.8
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
