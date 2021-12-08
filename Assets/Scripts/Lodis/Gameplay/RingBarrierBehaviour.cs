@@ -33,5 +33,14 @@ namespace Lodis.Gameplay
 
             return damage;
         }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (!IsAlive && collision.gameObject.name == owner)
+            {
+                Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+                GetComponent<MeshRenderer>().enabled = false;
+            }
+        }
     }
 }
