@@ -20,12 +20,14 @@ namespace Lodis.AI
         [SerializeField]
         private float _attackStrength;
 
-        [Tooltip("The z direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
+        [Tooltip("The direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
         [SerializeField]
-        private float _zDirection;
+        private Vector2 _attackDirection;
         private Gameplay.PlayerStateManagerBehaviour _playerState;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private int _lastSlot;
+        [SerializeField]
+        private bool _enableRandomBehaviour;
 
         // Start is called before the first frame update
         void Start()
@@ -41,7 +43,14 @@ namespace Lodis.AI
             if (!_knockbackBehaviour.InHitStun && !_knockbackBehaviour.InFreeFall && Time.time - _timeOfLastAttack >= _attackDelay)
             {
                 //Clamps z direction in case its abs value becomes larger than one at runtime
-                _zDirection = Mathf.Clamp(_zDirection, -1, 1);
+                _attackDirection.Normalize();
+
+                if (_enableRandomBehaviour)
+                {
+                    _attackType = (Gameplay.AbilityType)UnityEngine.Random.Range(0, 9);
+                    _attackDirection = new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
+                    _attackStrength = UnityEngine.Random.Range(0.1f, 1.5f);
+                }
 
                 if (_attackType == Gameplay.AbilityType.NONE || _playerState.CurrentState == Gameplay.PlayerState.STUNNED)
                     return;
@@ -54,10 +63,10 @@ namespace Lodis.AI
                     else
                         _lastSlot = 0;
 
-                    _moveset.UseSpecialAbility(_lastSlot, new object[] { _attackStrength, _zDirection });
+                    _moveset.UseSpecialAbility(_lastSlot, new object[] { _attackStrength, _attackDirection });
                 }
                 else
-                    _moveset.UseBasicAbility(_attackType, new object[]{_attackStrength, _zDirection});
+                    _moveset.UseBasicAbility(_attackType, new object[]{_attackStrength, _attackDirection});
 
                 _timeOfLastAttack = Time.time;
             }

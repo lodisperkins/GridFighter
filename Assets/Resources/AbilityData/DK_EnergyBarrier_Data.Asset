@@ -18,7 +18,7 @@ MonoBehaviour:
   timeActive: 1.5
   recoverTime: 0.8
   startUpTime: 0.2
-  chargeTime: 0
+  chargeTime: 1
   maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0

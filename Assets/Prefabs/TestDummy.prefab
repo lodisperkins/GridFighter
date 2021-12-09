@@ -358,16 +358,22 @@ MonoBehaviour:
   _mass: 2.8
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
+  _inHitStun: 0
+  _inFreeFall: 0
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
   _defenseBehaviour: {fileID: 0}
   _landingTime: 0
   _gravity: 9.81
   _bounceCollider: {fileID: 1797995424193797808}
+  _isGrounded: 0
+  _idleGroundedPoint: {x: 0, y: 0, z: 0}
+  _idleGroundedPointExtents: {x: 0, y: 0, z: 0}
   _extraHeight: 0.1
-  _bounceColliderExtents: {x: 0, y: 0, z: 0}
   _bounciness: 1
   _panelBounceEnabled: 1
   _useGravity: 1
+  _freeFallGroundedPoint: {x: 0, y: 0, z: 0}
+  _freeFallGroundedPointExtents: {x: 0, y: 0, z: 0}
 --- !u!114 &5685934378965997192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,7 +470,8 @@ MonoBehaviour:
   _attackType: 8
   _attackDelay: 1
   _attackStrength: 1.08
-  _zDirection: 1
+  _attackDirection: {x: 0, y: 0, z: 0}
+  _enableRandomBehaviour: 1
 --- !u!75 &986386592
 ConstantForce:
   m_ObjectHideFlags: 0
