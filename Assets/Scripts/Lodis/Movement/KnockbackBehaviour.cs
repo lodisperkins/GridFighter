@@ -602,7 +602,7 @@ namespace Lodis.Movement
 
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
-            if (damageScript == null)
+            if (damageScript == null || !InHitStun)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
