@@ -560,7 +560,7 @@ namespace Lodis.Movement
                 inputBehaviour.StopAllCoroutines();
             }
             if (movement)
-                movement.DisableMovement(condition => Stunned = false, false, true);
+                movement.DisableMovement(condition => Stunned == false, false, true);
 
             _onKnockBackTemp += CancelStun;
 

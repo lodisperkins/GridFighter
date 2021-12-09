@@ -307,8 +307,8 @@ MonoBehaviour:
   _isInvincible: 0
   _stunned: 0
   _visibleLayers:
-  - Player
-  - StructureNoCollision
+    serializedVersion: 2
+    m_Bits: 12800
   _owner: 
   _pushScale: 10
   _damageOnCollision: 0

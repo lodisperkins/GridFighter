@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lodis.Utility;
 
 namespace Lodis.Gameplay
 {
@@ -9,7 +10,7 @@ namespace Lodis.Gameplay
         private Material _material;
         [Tooltip("All layers that will be visible if placed behind this barrier")]
         [SerializeField]
-        private string[] _visibleLayers;
+        private LayerMask _visibleLayers;
         private float _rangeToIgnoreUpAngle;
         private Movement.GridMovementBehaviour _movement;
         [Tooltip("The name of the gameobject that owns this barrier")]
@@ -100,8 +101,7 @@ namespace Lodis.Gameplay
             base.Update();
 
             //Make the material transparent if there is an object behind the barrier
-            int layerMask = LayerMask.GetMask(_visibleLayers);
-            if (Physics.Raycast(transform.position, Vector3.forward, 1, layerMask))
+            if (Physics.Raycast(transform.position, Vector3.forward, 1, _visibleLayers))
                 _material.color = new Color(1, 1, 1, 0.5f);
             else
                 _material.color = new Color(1, 1, 1, 1);
