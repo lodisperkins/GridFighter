@@ -44,14 +44,17 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.ApplyVelocityChange(AddForce(true));
             //Disable bouncing so the character doesn't bounce when landing
             _knockBackBehaviour.PanelBounceEnabled = false;
+
+            //Disable character movement so the jump isn't interrupted
+            _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
         }
 
         private Vector3 AddForce(bool yPositive)
         {
             //Find the position of the target panel
             Vector2 targetPanelPos = _ownerMoveScript.Position + ((Vector2)owner.transform.forward * abilityData.GetCustomStatValue("TravelDistance"));
-            targetPanelPos.x = Mathf.Clamp(targetPanelPos.x, 0, _grid.Dimensions.x);
-            targetPanelPos.y = Mathf.Clamp(targetPanelPos.y, 0, _grid.Dimensions.y);
+            targetPanelPos.x = Mathf.Clamp(targetPanelPos.x, 0, _grid.Dimensions.x - 1);
+            targetPanelPos.y = Mathf.Clamp(targetPanelPos.y, 0, _grid.Dimensions.y - 1);
 
             //Get a reference to the panel at the position found
             PanelBehaviour panel;
@@ -82,9 +85,6 @@ namespace Lodis.Gameplay
             //Create collider for character fists
             _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
                 abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true);
-
-            //Disable character movement so the jump isn't interrupted
-            _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
 
             //Spawn particles and hitbox
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);

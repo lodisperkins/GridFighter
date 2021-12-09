@@ -35,6 +35,9 @@ namespace Lodis.Gameplay
             //Add force to character to make them jump
             _knockBackBehaviour.ApplyVelocityChange(Vector3.up * abilityData.GetCustomStatValue("JumpForce"));
 
+            //Disable movement to prevent the ability being interrupted
+            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
+
             //Calculate what gravity should be to get the character to fall down in the given start up time
             _knockBackBehaviour.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;
 
@@ -81,9 +84,6 @@ namespace Lodis.Gameplay
             _shockWaveCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
                 abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true);
             _shockWaveCollider.IgnoreColliders = abilityData.IgnoreColliders;
-
-            //Disable movement to prevent the ability being interrupted
-            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
 
             //Instantiate the first shockwave and attach a hit box to it
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
