@@ -196,7 +196,7 @@ namespace Lodis.Gameplay
             HealthBehaviour healthBehaviour = other.GetComponentInParent<HealthBehaviour>();
             KnockbackBehaviour knockback = other.GetComponentInParent<KnockbackBehaviour>();
 
-            if (!healthBehaviour)
+            if (!healthBehaviour || other.CompareTag("Entity") || other.CompareTag("Player"))
                 return;
             else if (healthBehaviour.Stunned)
                 return;
