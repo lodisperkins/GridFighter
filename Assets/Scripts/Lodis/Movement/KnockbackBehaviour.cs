@@ -33,7 +33,9 @@ namespace Lodis.Movement
         [SerializeField]
         private float _rangeToIgnoreUpAngle = 0.2f;
         private float _freeFallMagnitudeMin = 1;
+        [SerializeField]
         private bool _inHitStun;
+        [SerializeField]
         private bool _inFreeFall;
         private Coroutine _currentCoroutine;
         private UnityAction _onKnockBack;
@@ -55,10 +57,16 @@ namespace Lodis.Movement
         [SerializeField]
         private Collider _bounceCollider;
         [SerializeField]
-        private float _extraHeight = 0.5f;
-        private Vector3 _boxPosition;
+        private bool _isGrounded;
+        [Tooltip("The position that will be used to check if this character is grounded")]
         [SerializeField]
-        private Vector3 _bounceColliderExtents;
+        private Vector3 _idleGroundedPoint;
+        [SerializeField]
+        private Vector3 _idleGroundedPointExtents;
+        [SerializeField]
+        private float _extraHeight = 0.5f;
+        private Vector3 _groundedBoxPosition;
+        private Vector3 _groundedBoxExtents;
         private UnityAction _onKnockBackTemp;
         private UnityAction _onKnockBackStartTemp;
         private UnityAction _onTakeDamageTemp;
@@ -71,6 +79,11 @@ namespace Lodis.Movement
         private bool _isSpiked = false;
         [SerializeField]
         private bool _useGravity = true;
+        private CustomYieldInstruction _wait;
+        [SerializeField]
+        private Vector3 _freeFallGroundedPoint;
+        [SerializeField]
+        private Vector3 _freeFallGroundedPointExtents;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -240,6 +253,11 @@ namespace Lodis.Movement
         public Vector3 Acceleration { get => _acceleration; }
         public float LandingTime { get => _landingTime;}
 
+        public bool IsGrounded
+        {
+            get { return _isGrounded; }
+        }
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
@@ -253,13 +271,12 @@ namespace Lodis.Movement
         // Start is called before the first frame update
         void Start()
         {
-            _objectAtRest = condition => LastVelocity.magnitude <= 0.1 && IsGrounded() && _acceleration.magnitude <= 0.1; 
+            _objectAtRest = condition => LastVelocity.magnitude <= 0.1 && CheckIsGrounded() && _acceleration.magnitude <= 0.1; 
             _movementBehaviour.AddOnMoveEnabledAction(() => { _rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
-            OnCollision += TryStartLandingLag;
+            //OnCollision += TryStartLandingLag;
             _onKnockBack += () => Landing = false;
             _onKnockBackStart += () => { Stunned = false; _movementBehaviour.CurrentPanel.Occupied = false; };
-            _bounceColliderExtents = new Vector3(_bounceCollider.bounds.extents.x, _bounceCollider.bounds.extents.y, _bounceCollider.bounds.extents.z);
         }
 
         /// <summary>
@@ -302,7 +319,7 @@ namespace Lodis.Movement
         }
 
         /// <summary>
-        /// Set velocity and angular velocity to be zero.
+        /// Set velocity and angular velocity to be zero and disables gravity.
         /// </summary>
         public void StopAllForces()
         {
@@ -345,7 +362,6 @@ namespace Lodis.Movement
             UseGravity = gravityEnabled;
         }
 
-        CustomYieldInstruction wait;
         private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
         {
             bool gravityEnabled = UseGravity;
@@ -359,8 +375,8 @@ namespace Lodis.Movement
 
             StopAllForces();
 
-            wait = new WaitUntil(() => condition.Invoke());
-            yield return wait;
+            _wait = new WaitUntil(() => condition.Invoke());
+            yield return _wait;
 
             if (makeKinematic)
                 _rigidbody.isKinematic = false;
@@ -531,8 +547,7 @@ namespace Lodis.Movement
         /// <param name="args"></param>
         private void TryStartLandingLag(params object[] args)
         {
-            GameObject plane = (GameObject)args[0];
-            if (!InFreeFall || !plane.CompareTag("Structure"))
+            if (!InFreeFall && !InHitStun)
                 return;
 
             _currentCoroutine = StartCoroutine(StartLandingLag());
@@ -748,12 +763,27 @@ namespace Lodis.Movement
         /// Whether or not this object is touching the ground
         /// </summary>
         /// <returns></returns>
-        public bool IsGrounded()
+        private bool CheckIsGrounded()
         {
-            bool collidedWithGround = false;
-            _boxPosition = _bounceCollider.bounds.center;
-            Vector3 extents = new Vector3(_bounceColliderExtents.x, _bounceColliderExtents.y + _extraHeight, _bounceColliderExtents.z + _bounceCollider.bounds.extents.z);
-            Collider[] hits = Physics.OverlapBox(_bounceCollider.bounds.center, extents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
+            _isGrounded = false;
+
+            if (InHitStun)
+            {
+                _groundedBoxPosition = _bounceCollider.bounds.center;
+                _groundedBoxExtents = _bounceCollider.bounds.extents * 2;
+            }
+            else if(InFreeFall)
+            {
+                _groundedBoxPosition = _freeFallGroundedPoint + transform.position;
+                _groundedBoxExtents = _freeFallGroundedPointExtents;
+            }
+            else
+            {
+                _groundedBoxPosition = _idleGroundedPoint + transform.position;
+                _groundedBoxExtents = _idleGroundedPointExtents;
+            }
+
+            Collider[] hits = Physics.OverlapBox(_groundedBoxPosition, _groundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
 
             foreach (Collider collider in hits)
             {
@@ -761,15 +791,23 @@ namespace Lodis.Movement
                 float normalY = (transform.position - closestPoint).normalized.y;
                 normalY = Mathf.Ceil(normalY);
                 if (normalY >= 0)
-                    collidedWithGround = true;
+                    _isGrounded = true;
             }
 
-            return collidedWithGround;
+            return _isGrounded;
         }
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawCube(_boxPosition, new Vector3(_bounceColliderExtents.x, _bounceColliderExtents.y + _extraHeight, _bounceColliderExtents.z + _bounceCollider.bounds.extents.z));
+            if (Application.isPlaying)
+                Gizmos.DrawCube(_groundedBoxPosition, _groundedBoxExtents);
+            else
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawCube(_freeFallGroundedPoint + transform.position, _freeFallGroundedPointExtents);
+                Gizmos.color = Color.green;
+                Gizmos.DrawCube(_idleGroundedPoint + transform.position, _idleGroundedPointExtents);
+            }
         }
 
         /// /// <summary>
@@ -912,8 +950,8 @@ namespace Lodis.Movement
 
         private void FixedUpdate()
         {
-            if (wait != null)
-                Debug.Log(wait.keepWaiting);
+            if (_wait != null)
+                Debug.Log(_wait.keepWaiting);
             _acceleration = (_rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
 
             if (_rigidbody.velocity.magnitude > _maxMagnitude.Value)
@@ -930,7 +968,7 @@ namespace Lodis.Movement
             if (RigidbodyInactive() || _rigidbody.isKinematic || InFreeFall)
                 _inHitStun = false;
 
-            if (IsGrounded())
+            if (CheckIsGrounded())
             {
                 float yForce = 0;
 
@@ -939,8 +977,15 @@ namespace Lodis.Movement
 
                 _normalForce = new Vector3(0, Gravity + yForce, 0);
 
-                if (LastVelocity.magnitude <= 0.1f && _acceleration.magnitude <= 0.1f)
+                if (LastVelocity.magnitude <= 0.1f && _acceleration.magnitude <= 0.1f && InHitStun)
                     StopVelocity();
+                else if (InFreeFall)
+                {
+                    StopVelocity();
+                    TryStartLandingLag();
+                    InFreeFall = false;
+                    MakeKinematic();
+                }
             }
             else
                 _normalForce = Vector3.zero;

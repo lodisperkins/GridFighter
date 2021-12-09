@@ -36,7 +36,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2765739998997917290}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -275,16 +275,22 @@ MonoBehaviour:
   _mass: 2.8
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _rangeToIgnoreUpAngle: 0.2
+  _inHitStun: 0
+  _inFreeFall: 0
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
   _defenseBehaviour: {fileID: 2612010366639249464}
-  _landingTime: 0
+  _landingTime: 0.2
   _gravity: 9.81
   _bounceCollider: {fileID: 5036224701878357983}
+  _isGrounded: 0
+  _idleGroundedPoint: {x: 0, y: -0.4, z: 0}
+  _idleGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
   _extraHeight: 0.1
-  _bounceColliderExtents: {x: 0, y: 0, z: 0}
   _bounciness: 0.8
   _panelBounceEnabled: 1
   _useGravity: 1
+  _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
+  _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,7 +414,7 @@ PrefabInstance:
     - target: {fileID: 1045777155629274974, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}
       propertyPath: m_Name
-      value: BouncePoint
+      value: BounceCollider
       objectReference: {fileID: 0}
     - target: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}
