@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         FALLBREAKING,
         LANDING,
         DOWN,
+        GROUNDRECOVERY,
         STUNNED
     }
 
@@ -56,6 +57,8 @@ namespace Lodis.Gameplay
                 _currentState = PlayerState.FALLBREAKING;
             else if (_knockBack.Landing)
                 _currentState = PlayerState.LANDING;
+            else if (_knockBack.RecoveringFromFall)
+                _currentState = PlayerState.GROUNDRECOVERY;
             else if (_characterDefense.IsParrying)
                 _currentState = PlayerState.PARRYING;
             else if (_knockBack.InHitStun)

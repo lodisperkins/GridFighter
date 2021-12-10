@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Dynamic;
+using System;
 
 namespace Lodis.Utility
 {
@@ -116,6 +117,11 @@ namespace Lodis.Utility
                         break;
                 }
             }
+        }
+
+        internal void StartNewTimedAction(Action<object[]> p, TimedActionCountType sCALEDTIME, object knockDownRecoverTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

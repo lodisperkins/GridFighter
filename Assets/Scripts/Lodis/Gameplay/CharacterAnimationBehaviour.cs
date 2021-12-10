@@ -441,10 +441,27 @@ namespace Lodis.Gameplay
 
                 case PlayerState.LANDING:
                     _animator.transform.localPosition = Vector3.zero;
-                    _animator.Play("Land");
-                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
+
+                    if (_knockbackBehaviour.InHitStun)
+                    {
+                        _animator.SetTrigger("OnKnockBackLand");
+                        _animator.speed = 1;
+                    }
+                    else
+                    {
+                        _animator.Play("Land");
+                        _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
+                    }
+
                     _animatingMotion = true;
                     break;
+
+                case PlayerState.GROUNDRECOVERY:
+                    _animator.SetTrigger("OnKnockDownGetUp");
+                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime;
+                    _animatingMotion = true;
+                    break;
+
                 case PlayerState.STUNNED:
                     _animator.Play("Stunned");
                     _animatingMotion = true;

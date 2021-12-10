@@ -12,7 +12,6 @@ namespace Lodis.Gameplay
         [SerializeField]
         private LayerMask _visibleLayers;
         private float _rangeToIgnoreUpAngle;
-        private Movement.GridMovementBehaviour _movement;
         [Tooltip("The name of the gameobject that owns this barrier")]
         [SerializeField]
         private string _owner = "";

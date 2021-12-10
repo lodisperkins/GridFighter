@@ -6,6 +6,7 @@ using Lodis.Gameplay;
 using UnityEngine.Events;
 using Lodis.ScriptableObjects;
 using GridGame.GamePlay.GridScripts;
+using Lodis.Utility;
 
 namespace Lodis.Movement
 {
@@ -84,6 +85,12 @@ namespace Lodis.Movement
         private Vector3 _freeFallGroundedPoint;
         [SerializeField]
         private Vector3 _freeFallGroundedPointExtents;
+        [SerializeField]
+        private float _knockDownTime;
+        [SerializeField]
+        private float _knockDownRecoverTime;
+        [SerializeField]
+        private float _knockDownRecoverInvincibleTime;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -257,6 +264,10 @@ namespace Lodis.Movement
         {
             get { return _isGrounded; }
         }
+
+        public bool IsDown { get; private set; }
+        public bool RecoveringFromFall { get; private set; }
+        public float KnockDownRecoverTime { get => _knockDownRecoverTime; set => _knockDownRecoverTime = value; }
 
         private void Awake()
         {
@@ -547,7 +558,7 @@ namespace Lodis.Movement
         /// <param name="args"></param>
         private void TryStartLandingLag(params object[] args)
         {
-            if (!InFreeFall && !InHitStun)
+            if (!InFreeFall && !InHitStun || Landing || IsDown)
                 return;
 
             _currentCoroutine = StartCoroutine(StartLandingLag());
@@ -700,8 +711,27 @@ namespace Lodis.Movement
         {
             Landing = true;
             _movementBehaviour.DisableMovement(condition => !Landing, false, true);
-            yield return new WaitForSeconds(_landingTime);
-            Landing = false;
+
+            if (InFreeFall)
+            {
+                InFreeFall = false;
+                yield return new WaitForSeconds(_landingTime);
+                Landing = false;
+            }
+            else if (InHitStun)
+            {
+                //Start knockdown
+                IsDown = true;
+
+                yield return new WaitForSeconds(_knockDownTime);
+
+                //Start recovery from knock down
+                Landing = false;
+                _movementBehaviour.DisableMovement(condition => !IsDown, false, true);
+                RecoveringFromFall = true;
+                RoutineBehaviour.Instance.StartNewTimedAction(args => { IsDown = false; RecoveringFromFall = false; MakeKinematic(); } , TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
+                SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
+            }
         }
 
         /// <summary>
@@ -950,8 +980,6 @@ namespace Lodis.Movement
 
         private void FixedUpdate()
         {
-            if (_wait != null)
-                Debug.Log(_wait.keepWaiting);
             _acceleration = (_rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
 
             if (_rigidbody.velocity.magnitude > _maxMagnitude.Value)
@@ -977,14 +1005,10 @@ namespace Lodis.Movement
 
                 _normalForce = new Vector3(0, Gravity + yForce, 0);
 
-                if (LastVelocity.magnitude <= 0.1f && _acceleration.magnitude <= 0.1f && InHitStun)
-                    StopVelocity();
-                else if (InFreeFall)
+                if (LastVelocity.magnitude <= 0.3f && _acceleration.magnitude <= 0.3f && InHitStun || InFreeFall)
                 {
                     StopVelocity();
                     TryStartLandingLag();
-                    InFreeFall = false;
-                    MakeKinematic();
                 }
             }
             else

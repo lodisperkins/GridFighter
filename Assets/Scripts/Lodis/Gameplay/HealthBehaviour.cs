@@ -29,6 +29,9 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _stunned;
         private Coroutine _stunRoutine;
+        private MovesetBehaviour _moveset;
+        private InputBehaviour _input;
+        protected GridMovementBehaviour _movement;
 
         public bool Stunned 
         {
@@ -42,10 +45,6 @@ namespace Lodis.Gameplay
             }
 
         }
-
-        private MovesetBehaviour _moveset;
-        private InputBehaviour _input;
-        private GridMovementBehaviour _movement;
 
         public bool IsAlive
         {
