@@ -18,9 +18,6 @@ namespace Lodis.Gameplay
         [Tooltip("Whether or not the health value for this object is above 0")]
         [SerializeField]
         private bool _isAlive = true;
-        [Tooltip("How much this object will reduce the velocity of objects that bounce off of it.")]
-        [SerializeField]
-        private float _bounceDampen = 2;
         [Tooltip("Whether or not this object can be damaged or knocked back")]
         [SerializeField]
         private bool _isInvincible;
@@ -54,7 +51,6 @@ namespace Lodis.Gameplay
             }
         }
 
-        public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
         public float Health { get => _health; protected set => _health = value; }
         public bool IsInvincible { get => _isInvincible; }
 
@@ -187,24 +183,28 @@ namespace Lodis.Gameplay
 
         public virtual void OnCollisionEnter(Collision collision)
         {
-            Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();
+            KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
             if (!knockBackScript || !knockBackScript.InHitStun)
                 return;
 
-            //Calculate the knockback and hit angle for the ricochet
-            ContactPoint contactPoint = collision.GetContact(0);
-            Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
-            float dotProduct = Vector3.Dot(Vector3.right, -direction);
-            float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = knockBackScript.LastVelocity.magnitude;
-            float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
-
-            if (knockbackScale == 0 || float.IsNaN(knockbackScale))
-                return;
+            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, knockbackScale * 2, knockbackScale / BounceDampen, hitAngle, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(name, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+        }
+
+        public virtual void OnTriggerEnter(Collider other)
+        {
+            KnockbackBehaviour knockBackScript = other.gameObject.GetComponent<KnockbackBehaviour>();
+            //Checks if the object is not grid moveable and isn't in hit stun
+            if (!knockBackScript || !knockBackScript.InHitStun)
+                return;
+
+            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude; ;
+
+            //Apply ricochet force and damage
+            knockBackScript.TakeDamage(name, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
         // Update is called once per frame

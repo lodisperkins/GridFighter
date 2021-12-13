@@ -31,18 +31,18 @@ namespace Lodis.Gameplay
         {
             base.Start();
             //Store default gravity
-            _ownerGravity = _knockBackBehaviour.Gravity;
+            _ownerGravity = _knockBackBehaviour.Physics.Gravity;
             //Add force to character to make them jump
-            _knockBackBehaviour.ApplyVelocityChange(Vector3.up * abilityData.GetCustomStatValue("JumpForce"));
+            _knockBackBehaviour.Physics.ApplyVelocityChange(Vector3.up * abilityData.GetCustomStatValue("JumpForce"));
 
             //Disable movement to prevent the ability being interrupted
             _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
 
             //Calculate what gravity should be to get the character to fall down in the given start up time
-            _knockBackBehaviour.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;
+            _knockBackBehaviour.Physics.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;
 
             //Disable bouncing to prevent bouncing on landing
-            _knockBackBehaviour.PanelBounceEnabled = false;
+            _knockBackBehaviour.Physics.PanelBounceEnabled = false;
         }
 
 
@@ -118,13 +118,13 @@ namespace Lodis.Gameplay
             DestroyBehaviour.Destroy(_visualPrefabInstances.Item2);
 
             //Reset gravity
-            _knockBackBehaviour.Gravity = _ownerGravity;
+            _knockBackBehaviour.Physics.Gravity = _ownerGravity;
         }
 
         protected override void End()
         {
             base.End();
-            _knockBackBehaviour.PanelBounceEnabled = true;
+            _knockBackBehaviour.Physics.PanelBounceEnabled = true;
         }
     }
 }

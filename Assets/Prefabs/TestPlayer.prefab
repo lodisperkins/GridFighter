@@ -22,6 +22,7 @@ GameObject:
   - component: {fileID: -1873711531255504354}
   - component: {fileID: 2612010366639249464}
   - component: {fileID: -4507364889193390204}
+  - component: {fileID: 6312638638920044315}
   m_Layer: 9
   m_Name: TestPlayer
   m_TagString: Player
@@ -268,32 +269,20 @@ MonoBehaviour:
   _health: 0
   _destroyOnDeath: 0
   _isAlive: 0
-  _bounceDampen: 4
   _isInvincible: 0
   _stunned: 0
-  _mass: 2.8
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
-  _rangeToIgnoreUpAngle: 0.2
   _inHitStun: 0
   _inFreeFall: 0
-  _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
-  _defenseBehaviour: {fileID: 2612010366639249464}
   _landingTime: 0.7
-  _gravity: 9.81
-  _bounceCollider: {fileID: 5036224701878357983}
-  _isGrounded: 0
-  _idleGroundedPoint: {x: 0, y: -0.4, z: 0}
-  _idleGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
-  _extraHeight: 0.1
-  _bounciness: 0.8
-  _panelBounceEnabled: 1
-  _useGravity: 1
-  _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
-  _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
   _knockDownTime: 0.5
   _knockDownRecoverTime: 0.7
   _knockDownRecoverInvincibleTime: 5
   _knockDownLandingTime: 0.6
+  _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
+  _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
+  _idleGroundedPoint: {x: 0, y: -0.4, z: 0}
+  _idleGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,6 +376,31 @@ ConstantForce:
   m_RelativeForce: {x: 0, y: 0, z: 0}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
+--- !u!114 &6312638638920044315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2765739998997917290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mass: 3
+  _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
+  _gravity: 9.81
+  _bounceDampen: 4
+  _bounceCollider: {fileID: 5036224701878357983}
+  _isGrounded: 0
+  _extraHeight: 0.5
+  _bounciness: 0.8
+  _panelBounceEnabled: 1
+  _useGravity: 1
+  _rangeToIgnoreUpAngle: 0.2
+  _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
+  _bounceScale: 1
 --- !u!114 &4705404459745268771
 MonoBehaviour:
   m_ObjectHideFlags: 0

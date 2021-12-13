@@ -114,17 +114,17 @@ namespace Lodis.GridScripts
                 return;
 
             //Don't add a force if the object is traveling at a low speed
-            if (knockbackScript.LastVelocity.magnitude <= 0.1f || knockbackScript.Bounciness <= 0 || !knockbackScript.PanelBounceEnabled)
+            if (knockbackScript.Physics.LastVelocity.magnitude <= 0.1f || knockbackScript.Physics.Bounciness <= 0 || !knockbackScript.Physics.PanelBounceEnabled)
                 return;
 
             float upMagnitude = 0;
-            upMagnitude = knockbackScript.LastVelocity.magnitude;
+            upMagnitude = knockbackScript.Physics.LastVelocity.magnitude;
 
-            if (_bounceDampening > knockbackScript.Bounciness )
+            if (_bounceDampening > knockbackScript.Physics.Bounciness )
                 //Calculate and apply friction force
-                upMagnitude /= _bounceDampening - knockbackScript.Bounciness;
+                upMagnitude /= _bounceDampening - knockbackScript.Physics.Bounciness;
 
-            knockbackScript.ApplyImpulseForce(Vector3.up * upMagnitude);
+            knockbackScript.Physics.ApplyImpulseForce(Vector3.up * upMagnitude);
         }
 
         private void OnTriggerStay(Collider other)
@@ -139,12 +139,12 @@ namespace Lodis.GridScripts
                 return;
 
             //Don't add a force if the object is traveling at a low speed
-            if (knockbackScript.LastVelocity.magnitude <= 0.5f)
+            if (knockbackScript.Physics.LastVelocity.magnitude <= 0.5f)
                 return;
 
             //Calculate and apply friction force
-            Vector3 frictionForce = new Vector3(knockbackScript.Mass * knockbackScript.LastVelocity.x, 0, 0).normalized * _friction;
-            knockbackScript.ApplyForce(-frictionForce);
+            Vector3 frictionForce = new Vector3(knockbackScript.Physics.Mass * knockbackScript.Physics.LastVelocity.x, 0, 0).normalized * _friction;
+            knockbackScript.Physics.ApplyForce(-frictionForce);
         }
     }
 }

@@ -41,9 +41,9 @@ namespace Lodis.Gameplay
             //Calculate the time it takes to reache the peak height
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             //Add the velocity to the character to make them jump
-            _knockBackBehaviour.ApplyVelocityChange(AddForce(true));
+            _knockBackBehaviour.Physics.ApplyVelocityChange(AddForce(true));
             //Disable bouncing so the character doesn't bounce when landing
-            _knockBackBehaviour.PanelBounceEnabled = false;
+            _knockBackBehaviour.Physics.PanelBounceEnabled = false;
 
             //Disable character movement so the jump isn't interrupted
             _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
@@ -67,9 +67,9 @@ namespace Lodis.Gameplay
             int yDirection = yPositive ? 1 : -1;
 
             //Find y velocity 
-            _ownerGravity = _knockBackBehaviour.Gravity;
+            _ownerGravity = _knockBackBehaviour.Physics.Gravity;
             Vector3 velocityY;
-            velocityY.y = abilityData.GetCustomStatValue("JumpHeight") + (0.5f * _knockBackBehaviour.Gravity * _riseTime);
+            velocityY.y = abilityData.GetCustomStatValue("JumpHeight") + (0.5f * _knockBackBehaviour.Physics.Gravity * _riseTime);
 
             //Find x velocity
             Vector3 velocityX;
@@ -93,8 +93,8 @@ namespace Lodis.Gameplay
 
             //Apply downward force
             Vector3 spikeVelocity = AddForce(false).normalized * abilityData.GetCustomStatValue("DownwardSpeed");
-            _knockBackBehaviour.ApplyVelocityChange(spikeVelocity);
-            _knockBackBehaviour.Gravity = _ownerGravity * abilityData.GetCustomStatValue("DownwardGravityMultiplier");
+            _knockBackBehaviour.Physics.ApplyVelocityChange(spikeVelocity);
+            _knockBackBehaviour.Physics.Gravity = _ownerGravity * abilityData.GetCustomStatValue("DownwardGravityMultiplier");
         }
 
         protected override void Deactivate()
@@ -105,18 +105,18 @@ namespace Lodis.Gameplay
             DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
 
             //Reset character gravity to default
-            _knockBackBehaviour.Gravity = _ownerGravity;
+            _knockBackBehaviour.Physics.Gravity = _ownerGravity;
 
             //Stop momentum if the character isn't somehow in knock back
             if (!_knockBackBehaviour.InHitStun)
-                _knockBackBehaviour.StopVelocity();
+                _knockBackBehaviour.Physics.StopVelocity();
         }
 
         protected override void End()
         {
             base.End();
             //Enable bouncing
-            _knockBackBehaviour.PanelBounceEnabled = true;
+            _knockBackBehaviour.Physics.PanelBounceEnabled = true;
         }
 
         public override void Update()
@@ -127,8 +127,8 @@ namespace Lodis.Gameplay
             if (_forceAdded && Time.time - _timeForceAdded >= _riseTime && CurrentAbilityPhase != AbilityPhase.ACTIVE)
             {
                 //...freeze it in air
-                _knockBackBehaviour.StopAllForces();
-                _knockBackBehaviour.Gravity = 0;
+                _knockBackBehaviour.Physics.StopAllForces();
+                _knockBackBehaviour.Physics.Gravity = 0;
             }
         }
     }

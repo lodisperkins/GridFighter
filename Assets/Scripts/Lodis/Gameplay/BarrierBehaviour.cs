@@ -66,14 +66,14 @@ namespace Lodis.Gameplay
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = knockBackScript.LastVelocity.magnitude;
+            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
             float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
             if (knockbackScale == 0 || float.IsNaN(knockbackScale) || !knockBackScript.InHitStun)
                 return;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale * _bounceScale / BounceDampen, hitAngle, contactPoint.normal == Vector3.down, contactPoint.normal == Vector3.down, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale * _bounceScale /*/ BounceDampen*/, hitAngle, contactPoint.normal == Vector3.down, contactPoint.normal == Vector3.down, DamageType.KNOCKBACK);
         }
 
         private void OnCollisionStay(Collision collision)
@@ -89,8 +89,8 @@ namespace Lodis.Gameplay
             //Adds a force to objects to push them off of the field barrier if they land on top
             if (contactPoint.normal == Vector3.down)
             {
-                knockBackScript.ApplyForce(Vector3.up * knockBackScript.Gravity);
-                knockBackScript.ApplyForce(transform.forward * _pushScale);
+                knockBackScript.Physics.ApplyForce(Vector3.up * knockBackScript.Physics.Gravity);
+                knockBackScript.Physics.ApplyForce(transform.forward * _pushScale);
             }
         }
 

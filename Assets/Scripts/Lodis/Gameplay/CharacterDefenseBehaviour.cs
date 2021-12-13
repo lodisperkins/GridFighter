@@ -118,12 +118,12 @@ namespace Lodis.Gameplay
         private void ActivateAirParry()
         {
             //If the velocity the character is moving at is above the speed limit break
-            Vector3 moveVelocity = _knockBack.LastVelocity;
+            Vector3 moveVelocity = _knockBack.Physics.LastVelocity;
             if (moveVelocity.magnitude >= _tempParrySpeedLimit)
                 return;
 
             //Stops the character from moving to make parrying easier
-            _knockBack.FreezeInPlaceByTimer(_parryLength, true);
+            _knockBack.Physics.FreezeInPlaceByTimer(_parryLength, true);
 
             //Enable parry and update state
             _parryCollider.gameObject.SetActive(true);
@@ -189,7 +189,7 @@ namespace Lodis.Gameplay
             if (knockback && other != _parryCollider.ColliderOwner)
                 if (!knockback.CheckIfAtRest())
                 {
-                    knockback.FreezeInPlaceByTimer(_attackerStunTime, false, true);
+                    knockback.Physics.FreezeInPlaceByTimer(_attackerStunTime, false, true);
                 }
 
             if (other != _parryCollider.ColliderOwner)
@@ -243,7 +243,7 @@ namespace Lodis.Gameplay
             Vector3 newPosition = transform.position + airDodgeOffset;
 
             //Stop all forces acting on the character
-            _knockBack.StopVelocity();
+            _knockBack.Physics.StopVelocity();
 
             //Move to location while the character isn't in range
             while (Vector3.Distance(transform.position, newPosition) > _airDodgeDistanceTolerance)
@@ -351,7 +351,7 @@ namespace Lodis.Gameplay
         public void ActivateAirDodge(Vector2 direction)
         {
             if (_canParry && _knockBack.InHitStun)
-                _knockBack.ApplyVelocityChange(direction * _airDodgeDistance);
+                _knockBack.Physics.ApplyVelocityChange(direction * _airDodgeDistance);
                 //StartCoroutine(AirDodgeRoutine(direction));
         }
 
@@ -375,7 +375,7 @@ namespace Lodis.Gameplay
             _canParry = true;
 
             //Unfreeze the object if velocity was stopped in air
-            _knockBack.UnfreezeObject();
+            _knockBack.Physics.UnfreezeObject();
 
             //Deactivate the parry
             _parryCollider.gameObject.SetActive(false);
@@ -385,7 +385,7 @@ namespace Lodis.Gameplay
             if (_knockBack.InHitStun)
             {
                 _knockBack.InFreeFall = true;
-                _knockBack.ApplyVelocityChange(Vector3.down * _parryFallSpeed);
+                _knockBack.Physics.ApplyVelocityChange(Vector3.down * _parryFallSpeed);
                 _knockBack.SetInvincibilityByCondition(context => !(_knockBack.InFreeFall));
                 return;
             }
@@ -403,7 +403,7 @@ namespace Lodis.Gameplay
                 BreakingFall = true;
                 RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
-                _knockBack.StopVelocity();
+                _knockBack.Physics.StopVelocity();
 
                 Vector3 collisionDirection = (other.ClosestPoint(transform.position) - transform.position).normalized;
                 if (collisionDirection.x != 0)
@@ -427,7 +427,7 @@ namespace Lodis.Gameplay
                 BreakingFall = true;
                 RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
-                _knockBack.StopVelocity();
+                _knockBack.Physics.StopVelocity();
 
                 Vector3 collisionDirection = collision.GetContact(0).normal;
                 if (collisionDirection.x != 0)

@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
             if (!knockBackScript)
                 return;
 
-            knockBackScript.ApplyImpulseForce(Vector3.up * _weakShotForce);
+            knockBackScript.Physics.ApplyImpulseForce(Vector3.up * _weakShotForce);
         }
 
 

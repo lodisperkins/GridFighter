@@ -340,7 +340,6 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 0
   _stunned: 0
   _visibleLayers:
@@ -791,7 +790,6 @@ MonoBehaviour:
   _health: 15
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 0
   _stunned: 0
   owner: 
@@ -2267,7 +2265,6 @@ MonoBehaviour:
   _health: 5
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 1
   _stunned: 0
   owner: 
@@ -4298,7 +4295,6 @@ MonoBehaviour:
   _health: 15
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 0
   _stunned: 0
   owner: 
@@ -5442,7 +5438,6 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 0
   _stunned: 0
   _visibleLayers:
@@ -7232,7 +7227,6 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 0
   _stunned: 0
   _visibleLayers:
@@ -7379,7 +7373,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 0
+  _mode: 1
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}
@@ -8331,7 +8325,6 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 0
   _stunned: 0
   _visibleLayers:
@@ -10267,7 +10260,6 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 1
   _stunned: 0
   _visibleLayers:
@@ -10714,7 +10706,6 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 0
   _stunned: 0
   _visibleLayers:
@@ -10990,7 +10981,6 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 1
   _stunned: 0
   _visibleLayers:
@@ -11792,7 +11782,6 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _bounceDampen: 2
   _isInvincible: 0
   _stunned: 0
   _visibleLayers:
