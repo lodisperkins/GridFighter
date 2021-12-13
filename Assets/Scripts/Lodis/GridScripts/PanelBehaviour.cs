@@ -110,20 +110,8 @@ namespace Lodis.GridScripts
 
             if (!knockbackScript)
                 return;
-            else if (knockbackScript.IsInvincible || knockbackScript.InFreeFall)
+            else if (knockbackScript.IsInvincible || knockbackScript.Landing)
                 return;
-
-            if (defenseScript)
-            {
-                if (defenseScript.IsBraced)
-                {
-                    knockbackScript.SetInvincibilityByTimer(defenseScript.RecoverInvincibilityLength);
-                    Vector3 normal = other.transform.position - transform.position;
-                    defenseScript.onFallBroken?.Invoke(normal.normalized);
-                    Debug.Log("teched floor");
-                    return;
-                }
-            }
 
             //Don't add a force if the object is traveling at a low speed
             if (knockbackScript.LastVelocity.magnitude <= 0.1f || knockbackScript.Bounciness <= 0 || !knockbackScript.PanelBounceEnabled)

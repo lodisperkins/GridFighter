@@ -29,9 +29,6 @@ namespace Lodis.Gameplay
         [Tooltip("How long the character will be invincible for after a successful ground parry.")]
         [SerializeField]
         private float _parryInvincibilityLength;
-        [Tooltip("How long the character will be invincible for after getting up from a knockdown.")]
-        [SerializeField]
-        private float _recoverInvincibilityLength;
         private Material _material;
         private Color _defaultColor; 
         [Tooltip("True if the parry cooldown timer is 0.")]
@@ -77,6 +74,9 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds the object is invincible after catching it's fall.")]
         [SerializeField]
         private float _braceInvincibilityTime;
+        [Tooltip("How long in seconds the object is going to spend breaking its fall.")]
+        [SerializeField]
+        private float _fallBreakLength;
         [Tooltip("How long in seconds to stun an enemy after a successful parry.")]
         [SerializeField]
         private float _attackerStunTime;
@@ -88,8 +88,7 @@ namespace Lodis.Gameplay
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
         public bool IsBraced { get; private set; }
-
-        public float RecoverInvincibilityLength { get => _recoverInvincibilityLength; }
+        public float FallBreakLength { get => _fallBreakLength; set => _fallBreakLength = value; }
 
         // Start is called before the first frame update
         void Start()
@@ -99,9 +98,6 @@ namespace Lodis.Gameplay
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _material = GetComponent<Renderer>().material;
-
-            //Add knock back event listeners
-            _knockBack.AddOnKnockBackAction(MakeInvincibleOnGetUp);
             _knockBack.AddOnKnockBackAction(ResetParry);
             _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
             _knockBack.AddOnKnockBackAction(EnableBrace);
@@ -112,17 +108,6 @@ namespace Lodis.Gameplay
             _parryCollider.OnHit += TryReflectProjectile;
             _parryCollider.OnHit += TryStunAttacker;
             _parryCollider.ColliderOwner = gameObject;
-            onFallBroken += normal => { BreakingFall = true; RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, BraceInvincibilityTime); };
-        }
-
-        /// <summary>
-        /// Makes the player invincible when they get up after being knocked back
-        /// </summary>
-        private void MakeInvincibleOnGetUp()
-        {
-            Movement.Condition invincibilityCondition = condition => !_movement.IsMoving;
-            _movement.AddOnMoveBeginTempAction(() => _knockBack.SetInvincibilityByCondition(invincibilityCondition));
-            _movement.AddOnMoveEndTempAction(() => RoutineBehaviour.Instance.StartNewTimedAction(args => _knockBack.SetInvincibilityByTimer(_recoverInvincibilityLength), TimedActionCountType.FRAME, 1));
         }
 
         /// <summary>
@@ -409,6 +394,55 @@ namespace Lodis.Gameplay
             _knockBack.SetInvincibilityByTimer(_parryInvincibilityLength);
         }
 
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (IsBraced && other.CompareTag("Structure"))
+            {
+                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
+                BreakingFall = true;
+                RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, FallBreakLength);
+
+                _knockBack.StopVelocity();
+
+                Vector3 collisionDirection = (other.ClosestPoint(transform.position) - transform.position).normalized;
+                if (collisionDirection.x != 0)
+                {
+                    transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
+                    _knockBack.InFreeFall = true;
+                }
+
+                onFallBroken?.Invoke(collisionDirection);
+                _knockBack.TryStartLandingLag();
+                return;
+            }
+            Debug.Log("Collided with " + other.name);
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (IsBraced && collision.gameObject.CompareTag("Structure"))
+            {
+                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
+                BreakingFall = true;
+                RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, FallBreakLength);
+
+                _knockBack.StopVelocity();
+
+                Vector3 collisionDirection = collision.GetContact(0).normal;
+                if (collisionDirection.x != 0)
+                {
+                    transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
+                    _knockBack.InFreeFall = true;
+                }
+
+                onFallBroken?.Invoke(collisionDirection);
+                _knockBack.TryStartLandingLag();
+                return;
+            }
+            Debug.Log("Collided with " + collision.gameObject.name);
+
+        }
         // Update is called once per frame
         void Update()
         {

@@ -445,7 +445,7 @@ namespace Lodis.Gameplay
                     if (_knockbackBehaviour.InHitStun)
                     {
                         _animator.SetTrigger("OnKnockBackLand");
-                        _animator.speed = 1;
+                        _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;
                     }
                     else
                     {
@@ -477,6 +477,8 @@ namespace Lodis.Gameplay
         {
             float x = Mathf.Abs(_normal.x);
             float y = Mathf.Abs(_normal.y);
+
+            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _defenseBehaviour.FallBreakLength;
 
             if (x > y)
             {

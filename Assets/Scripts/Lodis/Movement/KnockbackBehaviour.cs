@@ -91,6 +91,8 @@ namespace Lodis.Movement
         private float _knockDownRecoverTime;
         [SerializeField]
         private float _knockDownRecoverInvincibleTime;
+        [SerializeField]
+        private float _knockDownLandingTime;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -268,6 +270,7 @@ namespace Lodis.Movement
         public bool IsDown { get; private set; }
         public bool RecoveringFromFall { get; private set; }
         public float KnockDownRecoverTime { get => _knockDownRecoverTime; set => _knockDownRecoverTime = value; }
+        public float KnockDownLandingTime { get => _knockDownLandingTime; set => _knockDownLandingTime = value; }
 
         private void Awake()
         {
@@ -556,12 +559,22 @@ namespace Lodis.Movement
         /// Starts landing lag if the object just fell onto a structure
         /// </summary>
         /// <param name="args"></param>
-        private void TryStartLandingLag(params object[] args)
+        public void TryStartLandingLag(params object[] args)
         {
             if (!InFreeFall && !InHitStun || Landing || IsDown)
+            {
+                StopVelocity();
                 return;
+            }
 
             _currentCoroutine = StartCoroutine(StartLandingLag());
+
+            _onKnockBackTemp += CancelLanding;
+        }
+
+        private void CancelLanding()
+        {
+            StopCoroutine(_currentCoroutine);
         }
 
         protected override IEnumerator ActivateStun(float time)
@@ -613,7 +626,7 @@ namespace Lodis.Movement
 
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
-            if (damageScript == null || !InHitStun)
+            if (damageScript == null || !InHitStun || IsInvincible)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
@@ -621,26 +634,6 @@ namespace Lodis.Movement
             //If no knockback script is attached, use this script to add force
             if (!knockBackScript)
                 knockBackScript = this;
-
-            if (_defenseBehaviour)
-            {
-                //Prevent knockback if target is braced
-                if (_defenseBehaviour.IsBraced && collision.gameObject.CompareTag("Structure"))
-                {
-                    SetInvincibilityByTimer(knockBackScript._defenseBehaviour.BraceInvincibilityTime);
-                    StopVelocity();
-
-                    Vector3 collisionDirection = (collision.transform.position - transform.position).normalized;
-
-                    if (collisionDirection.x != 0)
-                        transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
-
-                    _defenseBehaviour.onFallBroken?.Invoke(collisionDirection);
-                    _inFreeFall = true;
-                    Debug.Log("teched wall");
-                    return;
-                }
-            }
 
             //Calculate the knockback and hit angle for the ricochet
             ContactPoint contactPoint = collision.GetContact(0);
@@ -672,26 +665,6 @@ namespace Lodis.Movement
             if (!knockBackScript)
                 knockBackScript = this;
 
-            if (_defenseBehaviour)
-            {
-                //Prevent knockback if target is braced
-                if (_defenseBehaviour.IsBraced && other.gameObject.CompareTag("Structure"))
-                {
-                    SetInvincibilityByTimer(knockBackScript._defenseBehaviour.BraceInvincibilityTime);
-                    StopVelocity();
-
-                    Vector3 collisionDirection = (other.transform.position - transform.position).normalized;
-
-                    if (collisionDirection.x != 0)
-                        transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
-
-                    _defenseBehaviour.onFallBroken?.Invoke(collisionDirection);
-                    _inFreeFall = true;
-                    Debug.Log("teched wall");
-                    return;
-                }
-            }
-
             //Calculate the knockback and hit angle for the ricochet
             Vector3 contactPoint = other.ClosestPoint(transform.position);
             Vector3 direction = (contactPoint - transform.position).normalized;
@@ -712,6 +685,19 @@ namespace Lodis.Movement
             Landing = true;
             _movementBehaviour.DisableMovement(condition => !Landing, false, true);
 
+            if (_defenseBehaviour)
+            {
+                if (_defenseBehaviour.BreakingFall)
+                {
+                    InFreeFall = false;
+                    _inHitStun = false;
+                    yield return new WaitForSeconds(_defenseBehaviour.FallBreakLength);
+                    Landing = false;
+                    MakeKinematic();
+                    yield return null;
+                }
+            }
+
             if (InFreeFall)
             {
                 InFreeFall = false;
@@ -720,8 +706,11 @@ namespace Lodis.Movement
             }
             else if (InHitStun)
             {
+                yield return new WaitForSeconds(KnockDownLandingTime);
+
                 //Start knockdown
                 IsDown = true;
+                SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
 
                 yield return new WaitForSeconds(_knockDownTime);
 
@@ -729,8 +718,8 @@ namespace Lodis.Movement
                 Landing = false;
                 _movementBehaviour.DisableMovement(condition => !IsDown, false, true);
                 RecoveringFromFall = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(args => { IsDown = false; RecoveringFromFall = false; MakeKinematic(); } , TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
-                SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
+                MakeKinematic(); 
+                RoutineBehaviour.Instance.StartNewTimedAction(args => { IsDown = false; RecoveringFromFall = false; } , TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
             }
         }
 
@@ -1006,10 +995,7 @@ namespace Lodis.Movement
                 _normalForce = new Vector3(0, Gravity + yForce, 0);
 
                 if (LastVelocity.magnitude <= 0.3f && _acceleration.magnitude <= 0.3f && InHitStun || InFreeFall)
-                {
-                    StopVelocity();
                     TryStartLandingLag();
-                }
             }
             else
                 _normalForce = Vector3.zero;
