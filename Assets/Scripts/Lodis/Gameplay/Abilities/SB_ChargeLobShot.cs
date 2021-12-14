@@ -46,22 +46,6 @@ namespace Lodis.Gameplay
             _weakProjectile = (GameObject)Resources.Load("Projectiles/LobShot");
         }
 
-        /// <summary>
-        /// Adds a force to the target it by the projectile
-        /// </summary>
-        /// <param name="args"></param>
-        private void AddUpwardForce(params object[] args)
-        {
-            GameObject target = (GameObject)args[0];
-
-            Movement.KnockbackBehaviour knockBackScript = target.GetComponent<Movement.KnockbackBehaviour>();
-            
-            if (!knockBackScript)
-                return;
-
-            knockBackScript.Physics.ApplyImpulseForce(Vector3.up * _weakShotForce);
-        }
-
 
         /// <summary>
         /// Calculates the force needed to move the projectile 
@@ -192,7 +176,6 @@ namespace Lodis.Gameplay
                 abilityData.GetCustomStatValue("WeakShotHitAngle"), true, abilityData.GetCustomStatValue("WeakShotLifeTime"), owner, true);
             _weakProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
             _weakProjectileCollider.Priority = abilityData.GetCustomStatValue("WeakColliderPriority");
-            _weakProjectileCollider.onHit += AddUpwardForce;
 
             _strongProjectileCollider = new HitColliderBehaviour(_strongShotDamage, _strongShotKnockBackScale,
                 abilityData.GetCustomStatValue("StrongShotHitAngle"), true, abilityData.GetCustomStatValue("StrongShotLifeTime"), owner, true);

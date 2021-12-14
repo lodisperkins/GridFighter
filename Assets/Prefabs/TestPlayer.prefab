@@ -277,7 +277,7 @@ MonoBehaviour:
   _landingTime: 0.7
   _knockDownTime: 0.5
   _knockDownRecoverTime: 0.7
-  _knockDownRecoverInvincibleTime: 5
+  _knockDownRecoverInvincibleTime: 3
   _knockDownLandingTime: 0.6
   _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
   _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
@@ -397,7 +397,9 @@ MonoBehaviour:
   _extraHeight: 0.5
   _bounciness: 0.8
   _panelBounceEnabled: 1
+  _force: {x: 0, y: 0, z: 0}
   _useGravity: 1
+  _ignoreForces: 0
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _bounceScale: 1

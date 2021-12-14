@@ -788,11 +788,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 15
-  _destroyOnDeath: 1
+  _destroyOnDeath: 0
   _isAlive: 1
   _isInvincible: 0
   _stunned: 0
   owner: 
+  _bounceDampen: 1.2
 --- !u!64 &151772238
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2268,6 +2269,7 @@ MonoBehaviour:
   _isInvincible: 1
   _stunned: 0
   owner: 
+  _bounceDampen: 0
 --- !u!64 &446117096
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4293,11 +4295,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 15
-  _destroyOnDeath: 1
+  _destroyOnDeath: 0
   _isAlive: 1
   _isInvincible: 0
   _stunned: 0
   owner: 
+  _bounceDampen: 1.2
 --- !u!64 &894189966
 MeshCollider:
   m_ObjectHideFlags: 0

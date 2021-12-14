@@ -52,9 +52,9 @@ MonoBehaviour:
   - name: WeakShotForce
     value: 1
   - name: WeakShotKnockBackScale
-    value: 0
+    value: 2
   - name: WeakShotHitAngle
-    value: 0
+    value: 1.5
   - name: WeakShotLifeTime
     value: 5
   - name: MaxInstances

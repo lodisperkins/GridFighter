@@ -464,7 +464,7 @@ MonoBehaviour:
   _attackDelay: 1
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
-  _enableRandomBehaviour: 1
+  _enableRandomBehaviour: 0
 --- !u!75 &986386592
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -498,7 +498,9 @@ MonoBehaviour:
   _extraHeight: 0.5
   _bounciness: 0.8
   _panelBounceEnabled: 1
+  _force: {x: 0, y: 0, z: 0}
   _useGravity: 1
+  _ignoreForces: 0
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _bounceScale: 1

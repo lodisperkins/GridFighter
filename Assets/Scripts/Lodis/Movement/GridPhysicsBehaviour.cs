@@ -59,7 +59,7 @@ namespace Lodis.Movement
         [Tooltip("How fast will objects be allowed to travel in knockback")]
         [SerializeField]
         private ScriptableObjects.FloatVariable _maxMagnitude;
-
+        private Vector3 _lastForceAdded;
         private CustomYieldInstruction _wait;
         private GridMovementBehaviour _movementBehaviour;
 
@@ -351,8 +351,19 @@ namespace Lodis.Movement
             Vector3 direction = new Vector3(contactPoint.x, contactPoint.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-            float knockbackScale = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+            float velocityMagnitude = 0;
+            float knockbackScale = 0;
+
+            if (knockBackScript)
+            {
+                velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
+                knockbackScale = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+            }
+            else
+            {
+                velocityMagnitude = LastVelocity.magnitude;
+                knockbackScale = _lastForceAdded.magnitude * (velocityMagnitude / _lastForceAdded.magnitude);
+            }
 
             if (knockbackScale == 0 || float.IsNaN(knockbackScale))
                 return;
@@ -365,7 +376,7 @@ namespace Lodis.Movement
         /// Adds an instant change in velocity to the object ignoring mass.
         /// </summary>
         /// <param name="velocity">The new velocity for the object.</param>
-        public void ApplyVelocityChange(Vector3 velocity)
+        public void ApplyVelocityChange(Vector3 force)
         {
             if (_ignoreForces)
                 return;
@@ -381,14 +392,16 @@ namespace Lodis.Movement
 
             _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
-            Rigidbody.AddForce(velocity, ForceMode.VelocityChange);
+            Rigidbody.AddForce(force, ForceMode.VelocityChange);
+            _lastVelocity = force;
+            _lastForceAdded = force;
         }
 
         /// <summary>
         /// Adds an instant change in velocity to the object ignoring mass.
         /// </summary>
         /// <param name="velocity">The new velocity for the object.</param>
-        public void ApplyForce(Vector3 velocity)
+        public void ApplyForce(Vector3 force)
         {
             if (_ignoreForces)
                 return;
@@ -404,7 +417,9 @@ namespace Lodis.Movement
 
             _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
-            Rigidbody.AddForce(velocity, ForceMode.Force);
+            Rigidbody.AddForce(force, ForceMode.Force);
+            _lastVelocity = force;
+            _lastForceAdded = force;
         }
 
         /// <summary>
@@ -426,11 +441,14 @@ namespace Lodis.Movement
 
             Rigidbody.isKinematic = false;
 
+            _objectAtRest = false;
+
             _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             Rigidbody.AddForce(force / Mass, ForceMode.Impulse);
 
             _lastVelocity = force;
+            _lastForceAdded = force;
         }
 
         /// <summary>
