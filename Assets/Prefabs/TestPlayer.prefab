@@ -354,11 +354,11 @@ MonoBehaviour:
   _groundParryRestTime: 0.67
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
-  _parryStartUpTime: 0
+  _parryStartUpTime: 0.05
   _parryCoolDownDecreaseRate: 0.05
   _parrySpeedLimitIncreaseRate: 0.05
   _parryUpgradeRate: 1
-  _braceActiveTime: 0.2
+  _braceActiveTime: 0.1
   _canBrace: 0
   _braceCooldownTime: 1
   _braceInvincibilityTime: 0.3

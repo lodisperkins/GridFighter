@@ -132,10 +132,10 @@ namespace Lodis.Gameplay
             _knockBack.SetInvincibilityByCondition(condition => IsParrying == false);
 
             //Start timer for parry
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateAirParry(moveVelocity), TimedActionCountType.SCALEDTIME, _parryLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateAirParry(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
 
-        private void DeactivateAirParry(Vector3 moveVelocity)
+        private void DeactivateAirParry()
         {
             //Disable parry
             _parryCollider.gameObject.SetActive(false);
@@ -282,7 +282,13 @@ namespace Lodis.Gameplay
             if (_canParry && !_knockBack.InHitStun)
                 RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
             else if (_canParry)
-                RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateAirParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+            {
+                Collider bounceCollider = _knockBack.Physics.BounceCollider;
+                Collider[] hits = Physics.OverlapBox(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 2, new Quaternion(), LayerMask.GetMask("Structure", "Panels"));
+
+                if (hits.Length == 0)
+                    RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateAirParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+            }
         }
 
         /// <summary>
@@ -394,10 +400,15 @@ namespace Lodis.Gameplay
             _knockBack.SetInvincibilityByTimer(_parryInvincibilityLength);
         }
 
-
+        private void OnDrawGizmos()
+        {
+            Collider bounceCollider = _knockBack.Physics.BounceCollider;
+            if (_knockBack.InHitStun)
+                Gizmos.DrawCube(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 1.5f);
+        }
         private void OnTriggerEnter(Collider other)
         {
-            if (IsBraced && other.CompareTag("Structure"))
+            if (IsBraced && (other.CompareTag("Structure") || other.CompareTag("Panel")))
             {
                 _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
                 BreakingFall = true;
@@ -413,6 +424,8 @@ namespace Lodis.Gameplay
                 }
 
                 onFallBroken?.Invoke(collisionDirection);
+                DeactivateAirParry();
+                DeactivateGroundParry();
                 _knockBack.TryStartLandingLag();
                 return;
             }
@@ -421,7 +434,7 @@ namespace Lodis.Gameplay
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (IsBraced && collision.gameObject.CompareTag("Structure"))
+            if (IsBraced && (collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("Panel")))
             {
                 _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
                 BreakingFall = true;
