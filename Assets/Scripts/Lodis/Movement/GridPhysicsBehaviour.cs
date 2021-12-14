@@ -376,7 +376,7 @@ namespace Lodis.Movement
         /// Adds an instant change in velocity to the object ignoring mass.
         /// </summary>
         /// <param name="velocity">The new velocity for the object.</param>
-        public void ApplyVelocityChange(Vector3 force)
+        public void ApplyVelocityChange(Vector3 force, bool disableMovement = false)
         {
             if (_ignoreForces)
                 return;
@@ -390,7 +390,8 @@ namespace Lodis.Movement
                 _movementBehaviour.canCancelMovement = false;
             }
 
-            _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
+            if (disableMovement)
+                _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             Rigidbody.AddForce(force, ForceMode.VelocityChange);
             _lastVelocity = force;
@@ -401,7 +402,7 @@ namespace Lodis.Movement
         /// Adds an instant change in velocity to the object ignoring mass.
         /// </summary>
         /// <param name="velocity">The new velocity for the object.</param>
-        public void ApplyForce(Vector3 force)
+        public void ApplyForce(Vector3 force, bool disableMovement = false)
         {
             if (_ignoreForces)
                 return;
@@ -415,7 +416,8 @@ namespace Lodis.Movement
                 _movementBehaviour.canCancelMovement = false;
             }
 
-            _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
+            if (disableMovement)
+                _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             Rigidbody.AddForce(force, ForceMode.Force);
             _lastVelocity = force;
@@ -427,7 +429,7 @@ namespace Lodis.Movement
         /// Disables movement if not in hitstun.
         /// </summary>
         /// <param name="force">The force to apply to the object.</param>
-        public void ApplyImpulseForce(Vector3 force)
+        public void ApplyImpulseForce(Vector3 force, bool disableMovement = false)
         {
             if (_ignoreForces)
                 return;
@@ -443,7 +445,8 @@ namespace Lodis.Movement
 
             _objectAtRest = false;
 
-            _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
+            if (disableMovement)
+                _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             Rigidbody.AddForce(force / Mass, ForceMode.Impulse);
 
@@ -511,7 +514,7 @@ namespace Lodis.Movement
 
             _force = _constantForceBehaviour.force + LastVelocity;
 
-            _objectAtRest = CheckIsGrounded() && RigidbodyInactive();
+            _objectAtRest = CheckIsGrounded() && _force.magnitude <= 0.1f;
         }
     }
 }

@@ -464,7 +464,7 @@ MonoBehaviour:
   _attackDelay: 1
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
-  _enableRandomBehaviour: 0
+  _enableRandomBehaviour: 1
 --- !u!75 &986386592
 ConstantForce:
   m_ObjectHideFlags: 0

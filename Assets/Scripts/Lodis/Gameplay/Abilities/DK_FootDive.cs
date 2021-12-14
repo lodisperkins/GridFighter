@@ -41,7 +41,7 @@ namespace Lodis.Gameplay
             //Calculate the time it takes to reache the peak height
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             //Add the velocity to the character to make them jump
-            _knockBackBehaviour.Physics.ApplyVelocityChange(AddForce(true));
+            _knockBackBehaviour.Physics.ApplyVelocityChange(AddForce(true), false);
             //Disable bouncing so the character doesn't bounce when landing
             _knockBackBehaviour.Physics.PanelBounceEnabled = false;
 
@@ -93,7 +93,7 @@ namespace Lodis.Gameplay
 
             //Apply downward force
             Vector3 spikeVelocity = AddForce(false).normalized * abilityData.GetCustomStatValue("DownwardSpeed");
-            _knockBackBehaviour.Physics.ApplyVelocityChange(spikeVelocity);
+            _knockBackBehaviour.Physics.ApplyVelocityChange(spikeVelocity, false);
             _knockBackBehaviour.Physics.Gravity = _ownerGravity * abilityData.GetCustomStatValue("DownwardGravityMultiplier");
         }
 
