@@ -13,13 +13,14 @@ namespace Lodis.Movement
 
     [RequireComponent(typeof(GridMovementBehaviour))]
     [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(ConstantForce))]
     public class GridPhysicsBehaviour : MonoBehaviour
     {
         private Rigidbody _rigidbody;
         [Tooltip("How much mass the game object has. The higher the number, the less panels it travels when knocked back.")]
         [SerializeField]
         private float _mass;
-        private Condition _objectAtRest;
+        private bool _objectAtRest;
         private Vector3 _acceleration;
         private Vector3 _lastVelocity;
         [Tooltip("The rate at which an objects move speed in air will decrease")]
@@ -46,9 +47,12 @@ namespace Lodis.Movement
         [SerializeField]
         private bool _panelBounceEnabled = true;
         private Vector3 _normalForce;
+        [SerializeField]
         private Vector3 _force;
         [SerializeField]
         private bool _useGravity = true;
+        [SerializeField]
+        private bool _ignoreForces;
         [Tooltip("Any angles for knock back force recieved in this range will send the object directly upwards")]
         [SerializeField]
         private float _rangeToIgnoreUpAngle = 0.2f;
@@ -101,6 +105,7 @@ namespace Lodis.Movement
         public Vector3 GroundedBoxPosition { get => _groundedBoxPosition; set => _groundedBoxPosition = value; }
         public Vector3 GroundedBoxExtents { get => _groundedBoxExtents; set => _groundedBoxExtents = value; }
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
+        public bool ObjectAtRest { get => _objectAtRest; }
 
         private void Awake()
         {
@@ -114,8 +119,8 @@ namespace Lodis.Movement
         // Start is called before the first frame update
         void Start()
         {
-            _objectAtRest = condition => LastVelocity.magnitude <= 0.1 && CheckIsGrounded() && _acceleration.magnitude <= 0.1;
-            _movementBehaviour.AddOnMoveEnabledAction(() => { Rigidbody.isKinematic = true; });
+            _movementBehaviour.AddOnMoveEnabledAction(() =>
+            { Rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
         }
 
@@ -297,7 +302,13 @@ namespace Lodis.Movement
             OnCollision?.Invoke(collision.gameObject, collision);
 
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
+            GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
+
+            if (!gridPhysicsBehaviour || !damageScript)
+                return;
+
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
+
 
             //If no knockback script is attached, use this script to add force
             if (!knockBackScript)
@@ -309,25 +320,27 @@ namespace Lodis.Movement
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-            float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+            float knockbackScale = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
             if (knockbackScale == 0 || float.IsNaN(knockbackScale))
                 return;
 
             //Apply ricochet force
-            ApplyImpulseForce(CalculatGridForce(knockbackScale * _bounceScale / BounceDampen, hitAngle));
+            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(knockbackScale * _bounceScale / BounceDampen, hitAngle));
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            OnCollision?.Invoke(other.gameObject);
+            OnCollision?.Invoke(other.gameObject, other);
 
             HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
+            GridPhysicsBehaviour gridPhysicsBehaviour = other.gameObject.GetComponent<GridPhysicsBehaviour>();
 
-            if (damageScript == null)
+            if (!gridPhysicsBehaviour || !damageScript)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
+
 
             //If no knockback script is attached, use this script to add force
             if (!knockBackScript)
@@ -335,17 +348,17 @@ namespace Lodis.Movement
 
             //Calculate the knockback and hit angle for the ricochet
             Vector3 contactPoint = other.ClosestPoint(transform.position);
-            Vector3 direction = (contactPoint - transform.position).normalized;
+            Vector3 direction = new Vector3(contactPoint.x, contactPoint.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-            float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+            float knockbackScale = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
             if (knockbackScale == 0 || float.IsNaN(knockbackScale))
                 return;
 
             //Apply ricochet force
-            ApplyImpulseForce(CalculatGridForce(knockbackScale * _bounceScale / BounceDampen, hitAngle));
+            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(knockbackScale * _bounceScale / BounceDampen, hitAngle));
         }
 
         /// <summary>
@@ -354,12 +367,19 @@ namespace Lodis.Movement
         /// <param name="velocity">The new velocity for the object.</param>
         public void ApplyVelocityChange(Vector3 velocity)
         {
-            Rigidbody.isKinematic = false;
-            _movementBehaviour.canCancelMovement = true;
-            _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-            _movementBehaviour.canCancelMovement = false;
+            if (_ignoreForces)
+                return;
 
-            _movementBehaviour.DisableMovement(_objectAtRest, false, true);
+            Rigidbody.isKinematic = false;
+
+            if (_movementBehaviour.IsMoving)
+            {
+                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                _movementBehaviour.canCancelMovement = false;
+            }
+
+            _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             Rigidbody.AddForce(velocity, ForceMode.VelocityChange);
         }
@@ -370,11 +390,19 @@ namespace Lodis.Movement
         /// <param name="velocity">The new velocity for the object.</param>
         public void ApplyForce(Vector3 velocity)
         {
+            if (_ignoreForces)
+                return;
+
             Rigidbody.isKinematic = false;
-            _movementBehaviour.canCancelMovement = true;
-            _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-            _movementBehaviour.canCancelMovement = false;
-            _movementBehaviour.DisableMovement(_objectAtRest, false, true);
+
+            if (_movementBehaviour.IsMoving)
+            {
+                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                _movementBehaviour.canCancelMovement = false;
+            }
+
+            _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             Rigidbody.AddForce(velocity, ForceMode.Force);
         }
@@ -386,13 +414,19 @@ namespace Lodis.Movement
         /// <param name="force">The force to apply to the object.</param>
         public void ApplyImpulseForce(Vector3 force)
         {
-            _movementBehaviour.canCancelMovement = true;
-            _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-            _movementBehaviour.canCancelMovement = false;
+            if (_ignoreForces)
+                return;
+
+            if (_movementBehaviour.IsMoving)
+            {
+                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                _movementBehaviour.canCancelMovement = false;
+            }
 
             Rigidbody.isKinematic = false;
 
-            _movementBehaviour.DisableMovement(_objectAtRest, false, true);
+            _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             Rigidbody.AddForce(force / Mass, ForceMode.Impulse);
 
@@ -407,24 +441,28 @@ namespace Lodis.Movement
         {
             _isGrounded = false;
 
-            Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
+            //Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
 
-            foreach (Collider collider in hits)
-            {
-                Vector3 closestPoint = collider.ClosestPoint(transform.position);
-                float normalY = (transform.position - closestPoint).normalized.y;
-                normalY = Mathf.Ceil(normalY);
-                if (normalY >= 0)
-                    _isGrounded = true;
-            }
+            //foreach (Collider collider in hits)
+            //{
+            //    Vector3 closestPoint = collider.ClosestPoint(transform.position);
+            //    float normalY = (transform.position - closestPoint).normalized.y;
+            //    normalY = Mathf.Ceil(normalY);
+            //    if (normalY >= 0)
+            //        _isGrounded = true;
+            //}
 
+            RaycastHit hit;
+            bool hitRecieved = Physics.Raycast(GroundedBoxPosition, Vector3.down, out hit, GroundedBoxExtents.y, LayerMask.GetMask("Panels", "Structure"));
+
+            _isGrounded = hitRecieved && (hit.collider.CompareTag("Panel") || hit.collider.CompareTag("CollisionPlane"));
             return _isGrounded;
         }
 
         private void OnDrawGizmos()
         {
             if (Application.isPlaying)
-                Gizmos.DrawCube(GroundedBoxPosition, GroundedBoxExtents);
+                Gizmos.DrawLine(transform.position, transform.position + Vector3.down * GroundedBoxExtents.y);
         }
 
         private void FixedUpdate()
@@ -448,12 +486,14 @@ namespace Lodis.Movement
             else
                 _normalForce = Vector3.zero;
 
-            if (UseGravity)
+            if (UseGravity && !_ignoreForces)
                 _constantForceBehaviour.force = new Vector3(0, -Gravity, 0) + _normalForce;
             else
                 _constantForceBehaviour.force = Vector3.zero;
 
             _force = _constantForceBehaviour.force + LastVelocity;
+
+            _objectAtRest = CheckIsGrounded() && RigidbodyInactive();
         }
     }
 }

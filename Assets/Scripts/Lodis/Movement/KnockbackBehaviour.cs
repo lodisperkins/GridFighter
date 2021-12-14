@@ -10,7 +10,6 @@ using Lodis.Utility;
 namespace Lodis.Movement
 {
 
-    [RequireComponent(typeof(ConstantForce))]
     [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class KnockbackBehaviour : HealthBehaviour
     {
@@ -334,9 +333,9 @@ namespace Lodis.Movement
         /// <summary>
         /// Gets whether or not this object is on the ground and not being effected by any forces
         /// </summary>
-        public bool CheckIfAtRest()
+        public bool CheckIfIdle()
         {
-            return !InHitStun && !InFreeFall && Physics.Rigidbody.isKinematic;
+            return !InHitStun && !InFreeFall && Physics.ObjectAtRest;
         }
 
         /// /// <summary>
@@ -366,8 +365,11 @@ namespace Lodis.Movement
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
+            float totalKnockback = (knockBackScale + (knockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+
+            _currentKnockBackScale = totalKnockback;
             //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = Physics.CalculatGridForce(knockBackScale, hitAngle);
+            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
 
             if (knockBackForce.magnitude > 0)
             {
@@ -386,7 +388,7 @@ namespace Lodis.Movement
                 }
 
                 //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(condition => CheckIfAtRest(), false, true);
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
                 //Add force to objectd
                 Physics.ApplyImpulseForce(_velocityOnLaunch);
@@ -462,7 +464,7 @@ namespace Lodis.Movement
             }
 
             //Disables object movement on the grid
-            _movementBehaviour.DisableMovement(condition => CheckIfAtRest(), false, true);
+            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
             if (knockBackIsFixed)
                 //Add force to objectd using mass
                 Physics.ApplyImpulseForce(_velocityOnLaunch);
@@ -527,7 +529,7 @@ namespace Lodis.Movement
 
             if (Physics.IsGrounded)
             {
-                if (Physics.LastVelocity.magnitude <= 0.3f && Physics.Acceleration.magnitude <= 0.3f && InHitStun || InFreeFall)
+                if (Physics.LastVelocity.magnitude <= 0.5f && Physics.Acceleration.magnitude <= 0.5f && InHitStun || InFreeFall)
                     TryStartLandingLag();
             }
         }

@@ -141,7 +141,7 @@ namespace Lodis.Gameplay
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
 
-            if (!_knockBack.CheckIfAtRest())
+            if (!_knockBack.CheckIfIdle())
                 _knockBack.InFreeFall = true;
 
             //Start the parry cooldown
@@ -187,7 +187,7 @@ namespace Lodis.Gameplay
                 return;
 
             if (knockback && other != _parryCollider.ColliderOwner)
-                if (!knockback.CheckIfAtRest())
+                if (!knockback.CheckIfIdle())
                 {
                     knockback.Physics.FreezeInPlaceByTimer(_attackerStunTime, false, true);
                 }
@@ -450,7 +450,7 @@ namespace Lodis.Gameplay
             if (_knockBack.IsInvincible)
                 _material.color = Color.green;
 
-            if (_knockBack.CheckIfAtRest())
+            if (_knockBack.CheckIfIdle())
             {
                 _tempParryCooldown = _airParryCooldown;
                 _tempParrySpeedLimit = _parrySpeedLimit;
