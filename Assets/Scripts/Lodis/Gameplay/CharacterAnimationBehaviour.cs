@@ -495,6 +495,9 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         void Update()
         {
+            if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT)
+                _animator.SetBool("FacingLeft", true);
+
             UpdateAnimationsBasedOnState();
             //Debug.Log(_animator.speed);
         }

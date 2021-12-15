@@ -40,10 +40,6 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Ability[] _specialAbilitySlots = new Ability[2];
         private Ability _lastAbilityInUse;
-        [Tooltip("The renderer attached to this object. Used to change color for debugging.")]
-        [SerializeField]
-        private Renderer _renderer;
-        private Color _defaultColor;
         [SerializeField]
         private CharacterAnimationBehaviour _animationBehaviour;
         [Tooltip("This transform is where projectile will spawn by default for this object.")]
@@ -78,7 +74,6 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
-            _defaultColor = _renderer.material.color;
             _normalDeck = Instantiate(_normalDeckRef);
             _specialDeck = Instantiate(_specialDeckRef);
             InitializeDecks();
@@ -176,7 +171,7 @@ namespace Lodis.Gameplay
                 return null;
 
             if (_animationBehaviour)
-                _animationBehaviour.AbilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
+                _animationBehaviour.AbilityAnimationRoutine = _animationBehaviour.StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
 
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
@@ -245,7 +240,7 @@ namespace Lodis.Gameplay
                 return null;
 
             if (_animationBehaviour)
-                _animationBehaviour.AbilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
+                _animationBehaviour.AbilityAnimationRoutine = _animationBehaviour.StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
 
             //Doesn't increment ability use amount before checking max
             currentAbility.UseAbility(args);

@@ -51,6 +51,7 @@ namespace Lodis.Movement
         private Vector3 _force;
         [SerializeField]
         private bool _useGravity = true;
+        [Tooltip("If true, this object will ignore all forces acting on it including gravity")]
         [SerializeField]
         private bool _ignoreForces;
         [Tooltip("Any angles for knock back force recieved in this range will send the object directly upwards")]
@@ -106,6 +107,7 @@ namespace Lodis.Movement
         public Vector3 GroundedBoxExtents { get => _groundedBoxExtents; set => _groundedBoxExtents = value; }
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
         public bool ObjectAtRest { get => _objectAtRest; }
+        public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
 
         private void Awake()
         {
@@ -378,7 +380,7 @@ namespace Lodis.Movement
         /// <param name="velocity">The new velocity for the object.</param>
         public void ApplyVelocityChange(Vector3 force, bool disableMovement = false)
         {
-            if (_ignoreForces)
+            if (IgnoreForces)
                 return;
 
             Rigidbody.isKinematic = false;
@@ -404,7 +406,7 @@ namespace Lodis.Movement
         /// <param name="velocity">The new velocity for the object.</param>
         public void ApplyForce(Vector3 force, bool disableMovement = false)
         {
-            if (_ignoreForces)
+            if (IgnoreForces)
                 return;
 
             Rigidbody.isKinematic = false;
@@ -431,7 +433,7 @@ namespace Lodis.Movement
         /// <param name="force">The force to apply to the object.</param>
         public void ApplyImpulseForce(Vector3 force, bool disableMovement = false)
         {
-            if (_ignoreForces)
+            if (IgnoreForces)
                 return;
 
             if (_movementBehaviour.IsMoving)
@@ -507,7 +509,7 @@ namespace Lodis.Movement
             else
                 _normalForce = Vector3.zero;
 
-            if (UseGravity && !_ignoreForces)
+            if (UseGravity && !IgnoreForces)
                 _constantForceBehaviour.force = new Vector3(0, -Gravity, 0) + _normalForce;
             else
                 _constantForceBehaviour.force = Vector3.zero;

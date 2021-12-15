@@ -29,6 +29,8 @@ namespace Lodis.Gameplay
         [Tooltip("How long the character will be invincible for after a successful ground parry.")]
         [SerializeField]
         private float _parryInvincibilityLength;
+        [SerializeField]
+        private SkinnedMeshRenderer _meshRenderer;
         private Material _material;
         private Color _defaultColor; 
         [Tooltip("True if the parry cooldown timer is 0.")]
@@ -97,13 +99,18 @@ namespace Lodis.Gameplay
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
-            _material = GetComponent<Renderer>().material;
+
+            if (_meshRenderer)
+            {
+                _material = _meshRenderer.material;
+                _defaultColor = _material.color;
+            }
+
             _knockBack.AddOnKnockBackAction(ResetParry);
             _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
             //Initialize default values
-            _defaultColor = _material.color;
             _parryCollider.OnHit += ActivateInvinciblity;
             _parryCollider.OnHit += TryReflectProjectile;
             _parryCollider.OnHit += TryStunAttacker;
@@ -402,19 +409,23 @@ namespace Lodis.Gameplay
 
         private void OnDrawGizmos()
         {
-            Collider bounceCollider = _knockBack.Physics.BounceCollider;
             if (_knockBack.InHitStun)
+            {
+                Collider bounceCollider = _knockBack.Physics.BounceCollider;
                 Gizmos.DrawCube(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 1.5f);
+            }
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (IsBraced && (other.CompareTag("Structure") || other.CompareTag("Panel")))
+            if (IsBraced && (other.CompareTag("Structure") || other.CompareTag("Panel")) && !BreakingFall)
             {
-                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
                 BreakingFall = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
+                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
                 _knockBack.Physics.StopVelocity();
+                _knockBack.Physics.IgnoreForces = true;
+
+                RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
                 Vector3 collisionDirection = (other.ClosestPoint(transform.position) - transform.position).normalized;
                 if (collisionDirection.x != 0)
@@ -434,13 +445,15 @@ namespace Lodis.Gameplay
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (IsBraced && (collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("Panel")))
+            if (IsBraced && (collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("Panel")) && !BreakingFall)
             {
-                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
                 BreakingFall = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(args => BreakingFall = false, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
+                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
                 _knockBack.Physics.StopVelocity();
+                _knockBack.Physics.IgnoreForces = true;
+
+                RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
                 Vector3 collisionDirection = collision.GetContact(0).normal;
                 if (collisionDirection.x != 0)
@@ -460,8 +473,10 @@ namespace Lodis.Gameplay
         void Update()
         {
             //Update color
-            if (_knockBack.IsInvincible)
+            if (_knockBack.IsInvincible && _meshRenderer)
                 _material.color = Color.green;
+            else if (_meshRenderer)
+                _material.color = _defaultColor;
 
             if (_knockBack.CheckIfIdle())
             {

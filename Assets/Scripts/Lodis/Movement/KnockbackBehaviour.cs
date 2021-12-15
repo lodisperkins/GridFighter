@@ -24,7 +24,6 @@ namespace Lodis.Movement
         private Vector2 _newPanelPosition = new Vector2(float.NaN, float.NaN );
         private float _currentKnockBackScale;
         private Vector3 _velocityOnLaunch;
-        private float _freeFallMagnitudeMin = 1;
 
         [SerializeField]
         private bool _inHitStun;
