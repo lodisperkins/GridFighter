@@ -26,7 +26,7 @@ namespace Lodis.Movement
         private Vector3 _velocityOnLaunch;
 
         [SerializeField]
-        private bool _inHitStun;
+        private bool _tumbling;
         [SerializeField]
         private bool _inFreeFall;
 
@@ -60,6 +60,9 @@ namespace Lodis.Movement
         private Vector3 _idleGroundedPoint;
         [SerializeField]
         private Vector3 _idleGroundedPointExtents;
+        [SerializeField]
+        private bool _inHitStun;
+        private RoutineBehaviour.TimedAction _hitStunTimer;
 
         /// <summary>
         /// Whether or not this object is current regaining footing after hitting the ground
@@ -69,7 +72,7 @@ namespace Lodis.Movement
         /// <summary>
         /// Returns if the object is in knockback
         /// </summary>
-        public bool InHitStun {get => _inHitStun; }
+        public bool Tumbling {get => _tumbling; }
 
         /// <summary>
         /// Returns the velocity of this object when it was first launched
@@ -90,7 +93,7 @@ namespace Lodis.Movement
             set 
             {
                 if (value)
-                    _inHitStun = !value;
+                    _tumbling = !value;
 
                 _inFreeFall = value;
             }
@@ -102,6 +105,7 @@ namespace Lodis.Movement
         public float KnockDownRecoverTime { get => _knockDownRecoverTime; set => _knockDownRecoverTime = value; }
         public float KnockDownLandingTime { get => _knockDownLandingTime; set => _knockDownLandingTime = value; }
         public GridPhysicsBehaviour Physics { get => _gridPhysicsBehaviour; set => _gridPhysicsBehaviour = value; }
+        public bool InHitStun { get => _inHitStun;}
 
         private void Awake()
         {
@@ -188,7 +192,7 @@ namespace Lodis.Movement
         /// <param name="args"></param>
         public void TryStartLandingLag(params object[] args)
         {
-            if (!InFreeFall && !InHitStun || Landing || IsDown)
+            if (!InFreeFall && !Tumbling || Landing || IsDown)
             {
                 Physics.StopVelocity();
                 return;
@@ -212,7 +216,7 @@ namespace Lodis.Movement
 
             Stunned = true;
 
-            if (InFreeFall || InHitStun)
+            if (InFreeFall || Tumbling)
                Physics.FreezeInPlaceByCondition(condition =>!Stunned, false, true);
 
             if (moveset)
@@ -251,7 +255,7 @@ namespace Lodis.Movement
         {
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
-            if (damageScript == null || !InHitStun || IsInvincible)
+            if (damageScript == null || !Tumbling || IsInvincible)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
@@ -270,7 +274,7 @@ namespace Lodis.Movement
         {
             HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
 
-            if (damageScript == null || !InHitStun || IsInvincible)
+            if (damageScript == null || !Tumbling || IsInvincible)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
@@ -295,7 +299,7 @@ namespace Lodis.Movement
                 if (_defenseBehaviour.BreakingFall)
                 {
                     InFreeFall = false;
-                    _inHitStun = false;
+                    _tumbling = false;
                     yield return new WaitForSeconds(_defenseBehaviour.FallBreakLength);
                     Landing = false;
                     Physics.MakeKinematic();
@@ -309,7 +313,7 @@ namespace Lodis.Movement
                 yield return new WaitForSeconds(_landingTime);
                 Landing = false;
             }
-            else if (InHitStun)
+            else if (Tumbling)
             {
                 yield return new WaitForSeconds(KnockDownLandingTime);
 
@@ -328,13 +332,23 @@ namespace Lodis.Movement
             }
         }
 
+        public void ActivateHitStunByTimer(float timeInHitStun)
+        {
+            _inHitStun = true;
+
+            if(_hitStunTimer.GetEnabled())
+                RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
+
+            _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => _inHitStun = false, TimedActionCountType.SCALEDTIME, timeInHitStun);
+        }
+
 
         /// <summary>
         /// Gets whether or not this object is on the ground and not being effected by any forces
         /// </summary>
         public bool CheckIfIdle()
         {
-            return !InHitStun && !InFreeFall && Physics.ObjectAtRest;
+            return !Tumbling && !InFreeFall && Physics.ObjectAtRest;
         }
 
         /// /// <summary>
@@ -395,7 +409,7 @@ namespace Lodis.Movement
                 if (_velocityOnLaunch.magnitude > 0)
                 {
                     _inFreeFall = false;
-                    _inHitStun = true;
+                    _tumbling = true;
                     _onKnockBack?.Invoke();
                     _onKnockBackTemp?.Invoke();
                     _onKnockBackTemp = null;
@@ -474,7 +488,7 @@ namespace Lodis.Movement
             if (_velocityOnLaunch.magnitude > 0)
             {
                 _inFreeFall = false;
-                _inHitStun = true;
+                _tumbling = true;
                 _onKnockBack?.Invoke();
                 _onKnockBackTemp?.Invoke();
                 _onKnockBackTemp = null;
@@ -485,7 +499,7 @@ namespace Lodis.Movement
 
         private void UpdateGroundedColliderPosition()
         {
-            if (InHitStun)
+            if (Tumbling)
             {
                 Physics.GroundedBoxPosition = Physics.BounceCollider.bounds.center;
                 Physics.GroundedBoxExtents = Physics.BounceCollider.bounds.extents * 2;
@@ -522,13 +536,13 @@ namespace Lodis.Movement
                 _inFreeFall = false;
 
             if (Physics.RigidbodyInactive() || Physics.Rigidbody.isKinematic || InFreeFall)
-                _inHitStun = false;
+                _tumbling = false;
 
             UpdateGroundedColliderPosition();
 
             if (Physics.IsGrounded)
             {
-                if (Physics.LastVelocity.magnitude <= 0.5f && Physics.Acceleration.magnitude <= 0.5f && InHitStun || InFreeFall)
+                if ((Physics.LastVelocity.magnitude <= 0.5f && Physics.Acceleration.magnitude <= 0.5f) && (Tumbling || InFreeFall) && !InHitStun)
                     TryStartLandingLag();
             }
         }

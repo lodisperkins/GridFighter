@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
         IDLE,
         MOVING,
         ATTACKING,
-        KNOCKBACK,
+        TUMBLING,
         FREEFALL,
         PARRYING,
         FALLBREAKING,
@@ -61,8 +61,8 @@ namespace Lodis.Gameplay
                 _currentState = PlayerState.GROUNDRECOVERY;
             else if (_characterDefense.IsParrying)
                 _currentState = PlayerState.PARRYING;
-            else if (_knockBack.InHitStun)
-                _currentState = PlayerState.KNOCKBACK;
+            else if (_knockBack.Tumbling)
+                _currentState = PlayerState.TUMBLING;
             else if (_moveset.AbilityInUse)
                 _currentState = PlayerState.ATTACKING;
             else if (_knockBack.InFreeFall)

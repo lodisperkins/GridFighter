@@ -25,6 +25,11 @@ namespace Lodis.Utility
             public float Duration;
             public TimedActionCountType CountType;
             public TimedEvent Event;
+            private bool _isActive;
+
+            public bool GetEnabled() { return _isActive; }
+            public void Enable() { _isActive = true; }
+            public void Disable() { _isActive = false; }
         }
 
         private List<TimedAction> _timedActions = new List<TimedAction>();
@@ -73,6 +78,7 @@ namespace Lodis.Utility
             }    
 
             _timedActions.Add(action);
+            action.Enable();
             return action;
         }
 
@@ -83,13 +89,15 @@ namespace Lodis.Utility
         /// <returns>False if the action is not in the list of actions</returns>
         public bool StopTimedAction(TimedAction action)
         {
+            action.Disable();
             return _timedActions.Remove(action);
         }
 
         private void TryInvokeTimedEvent(float time, int index)
         {
-            if (time - _timedActions[index].TimeStarted >= _timedActions[index].Duration)
+            if (time - _timedActions[index].TimeStarted >= _timedActions[index].Duration && _timedActions[index].GetEnabled())
             {
+                _timedActions[index].Disable();
                 _timedActions[index].Event.Invoke();
                 _timedActions.RemoveAt(index);
             }
@@ -117,11 +125,6 @@ namespace Lodis.Utility
                         break;
                 }
             }
-        }
-
-        internal void StartNewTimedAction(Action<object[]> p, TimedActionCountType sCALEDTIME, object knockDownRecoverTime)
-        {
-            throw new NotImplementedException();
         }
     }
 }

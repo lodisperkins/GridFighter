@@ -144,7 +144,7 @@ namespace Lodis.Input
         public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.PARRYING)
+            if (_playerState == PlayerState.TUMBLING || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.PARRYING)
                 return;
 
             AbilityType abilityType = AbilityType.NONE;
@@ -210,9 +210,9 @@ namespace Lodis.Input
         {
             if (_attackButtonDown)
                 return;
-            else if (_bufferedAction == null && (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
+            else if (_bufferedAction == null && (_playerState == PlayerState.TUMBLING || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
-            else if (!_bufferedAction.HasAction() && (_playerState == PlayerState.KNOCKBACK
+            else if (!_bufferedAction.HasAction() && (_playerState == PlayerState.TUMBLING
                 || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
         }
@@ -266,7 +266,7 @@ namespace Lodis.Input
         /// </summary>
         private void DisableMovement()
         {
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
+            if (_playerState == PlayerState.TUMBLING || _playerState == PlayerState.FREEFALL)
                 return;
 
             if (_attackDirection.normalized == _gridMovement.MoveDirection.normalized || _gridMovement.MoveDirection == Vector2.zero)
@@ -296,7 +296,7 @@ namespace Lodis.Input
         public bool EnableMovement()
         {
             //Don't enable if player is in knockback or in free fall
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
+            if (_playerState == PlayerState.TUMBLING || _playerState == PlayerState.FREEFALL)
             {
                 _moveInputEnableCondition = condition => _playerState == PlayerState.IDLE;
                 return false;

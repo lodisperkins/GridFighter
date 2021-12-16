@@ -418,7 +418,7 @@ namespace Lodis.Gameplay
                     PlayMovementAnimation();
                     break;
 
-                case PlayerState.KNOCKBACK:
+                case PlayerState.TUMBLING:
                     _animator.Play("Tumbling");
                     _animatingMotion = true;
                     break;
@@ -442,7 +442,7 @@ namespace Lodis.Gameplay
                 case PlayerState.LANDING:
                     _animator.transform.localPosition = Vector3.zero;
 
-                    if (_knockbackBehaviour.InHitStun)
+                    if (_knockbackBehaviour.Tumbling)
                     {
                         _animator.SetTrigger("OnKnockBackLand");
                         _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;

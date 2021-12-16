@@ -152,39 +152,6 @@ namespace Lodis.ScriptableObjects
 
         public override void OnInspectorGUI()
         {
-            //EditorGUILayout.PropertyField(_name,
-            //    new GUIContent("Name", "The name of the ability"));
-
-            //EditorGUILayout.PropertyField(_abilityType,
-            //    new GUIContent("Ability Type", "The type describes the strength and input value for the ability"));
-
-            //EditorGUILayout.PropertyField(_damageType,
-            //    new GUIContent("Damage Type", "The type of damage this ability deals to objects if any"));
-
-            //EditorGUILayout.PropertyField(_timeActive,
-            //    new GUIContent("Time Active", "How long the ability should be active for"));
-
-            //EditorGUILayout.PropertyField(_recoverTime,
-            //    new GUIContent("Recover Time", "How long does the object that used the ability need before being able to recover"));
-
-            //EditorGUILayout.PropertyField(_startUpTime,
-            //    new GUIContent("Start Up Time", "How long should the object that used the ability wait before the ability activates"));
-
-            //EditorGUILayout.PropertyField(_canCancelStartUp, new GUIContent("Can Cancel Start Up Phase",
-            //    "If true, this ability can be canceled into others"));
-
-            //EditorGUILayout.PropertyField(_canCancelActive, new GUIContent("Can Cancel Active Phase",
-            //    "If true, this ability can be canceled into others"));
-
-            //EditorGUILayout.PropertyField(_canCancelRecover, new GUIContent("Can Cancel Recover Phase",
-            //    "If true, this ability can be canceled into others"));
-
-            //EditorGUILayout.PropertyField(_useAbilityTiming, new GUIContent("Use Ability Timing For Animation",
-            //    "If true, uses the animation events attached to the clip to speed up or slow down the animation" +
-            //    " based on each ability phase duration."));
-
-            //EditorGUILayout.PropertyField(_animationType, new GUIContent("Animation Type",
-            //    "The type of animation that will play when the ability is used"));
 
             DrawDefaultInspector();
 

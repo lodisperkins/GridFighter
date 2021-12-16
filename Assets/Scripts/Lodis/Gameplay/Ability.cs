@@ -307,7 +307,7 @@ namespace Lodis.Gameplay
         /// </summary>
         protected virtual void End()
         {
-            if (!_ownerKnockBackScript.InHitStun)
+            if (!_ownerKnockBackScript.Tumbling)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
         }
 

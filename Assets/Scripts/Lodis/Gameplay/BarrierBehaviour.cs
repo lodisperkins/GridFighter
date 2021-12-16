@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
             float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
-            if (knockbackScale == 0 || float.IsNaN(knockbackScale) || !knockBackScript.InHitStun)
+            if (knockbackScale == 0 || float.IsNaN(knockbackScale) || !knockBackScript.Tumbling)
                 return;
 
             //Apply ricochet force and damage
