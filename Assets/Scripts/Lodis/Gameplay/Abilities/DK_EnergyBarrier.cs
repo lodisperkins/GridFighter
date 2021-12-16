@@ -33,7 +33,7 @@ namespace Lodis.Gameplay
         {
             //Create barrier collider
             _barrierCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, true, false);
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, true, false, true, abilityData.GetCustomStatValue("HitStun"));
             //Allow canceling on hit
             _barrierCollider.onHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
 

@@ -49,7 +49,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
-                abilityData.GetCustomStatValue("HitAngle"), despawnAfterTimeLimit, abilityData.GetCustomStatValue("Lifetime"), owner, DestroyOnHit ,IsMultiHit);
+                abilityData.GetCustomStatValue("HitAngle"), despawnAfterTimeLimit, abilityData.GetCustomStatValue("Lifetime"), owner, DestroyOnHit ,IsMultiHit, true, abilityData.GetCustomStatValue("HitStun"));
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)

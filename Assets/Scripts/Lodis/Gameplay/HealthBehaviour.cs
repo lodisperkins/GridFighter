@@ -1,5 +1,6 @@
 ﻿using Lodis.Input;
 using Lodis.Movement;
+using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -69,7 +70,7 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
-        public virtual float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        public virtual float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             if (!IsAlive || IsInvincible)
                 return 0;
@@ -80,6 +81,25 @@ namespace Lodis.Gameplay
                 _health = 0;
 
             return damage;
+        }
+
+        /// <summary>
+        /// Takes damage based on the damage type.
+        /// </summary>
+        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
+        /// <param name="abilityData">The data scriptable object associated with the ability</param>
+        /// <param name="damageType">The type of damage this object will take</param>
+        public virtual float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
+        {
+            if (!IsAlive || IsInvincible)
+                return 0;
+
+            _health -= abilityData.GetCustomStatValue("Damage");
+
+            if (_health < 0)
+                _health = 0;
+
+            return abilityData.GetCustomStatValue("Damage");
         }
 
         /// <summary>

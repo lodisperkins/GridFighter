@@ -40,10 +40,6 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _airParryCooldown;
         private float _tempParryCooldown;
-        [Tooltip("If the magnitude of the velocity reaches this amount, the character can't parry.")]
-        [SerializeField]
-        private float _parrySpeedLimit;
-        private float _tempParrySpeedLimit;
         [Tooltip("How long the character is left immobile after a failed parry.")]
         [SerializeField]
         private float _groundParryRestTime;
@@ -59,9 +55,6 @@ namespace Lodis.Gameplay
         [Tooltip("How fast the wait time to parry in air will decrease as an object is in knockback.")]
         [SerializeField]
         private float _parryCoolDownDecreaseRate;
-        [Tooltip("How fast the speed limit to parry in air will increase as an object is in knockback")]
-        [SerializeField]
-        private float _parrySpeedLimitIncreaseRate;
         [Tooltip("How fast the objects parry ability will upgrade as it's in air.")]
         [SerializeField]
         private float _parryUpgradeRate;
@@ -124,9 +117,8 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         private void ActivateAirParry()
         {
-            //If the velocity the character is moving at is above the speed limit break
-            Vector3 moveVelocity = _knockBack.Physics.LastVelocity;
-            if (moveVelocity.magnitude >= _tempParrySpeedLimit)
+            //If the character is in hit stun from the attack then break
+            if (_knockBack.InHitStun)
                 return;
 
             //Stops the character from moving to make parrying easier
@@ -276,7 +268,6 @@ namespace Lodis.Gameplay
             {
                 yield return new WaitForSeconds(_parryUpgradeRate);
                 _tempParryCooldown -= _parryCoolDownDecreaseRate;
-                _tempParrySpeedLimit += _parrySpeedLimitIncreaseRate;
             }
         }
 
@@ -481,7 +472,6 @@ namespace Lodis.Gameplay
             if (_knockBack.CheckIfIdle())
             {
                 _tempParryCooldown = _airParryCooldown;
-                _tempParrySpeedLimit = _parrySpeedLimit;
             }
         }
     }

@@ -49,8 +49,8 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create collider for attack
-            _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, false, false, true);
+            _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, false, false, true, abilityData.GetCustomStatValue("HitStun"));
 
             //Spawn particles
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);

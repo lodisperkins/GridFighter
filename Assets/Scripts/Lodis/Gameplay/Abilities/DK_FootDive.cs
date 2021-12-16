@@ -84,7 +84,7 @@ namespace Lodis.Gameplay
         {
             //Create collider for character fists
             _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
-                abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true);
+                abilityData.GetCustomStatValue("HitAngle"), false, abilityData.timeActive, owner, false, false, true, abilityData.GetCustomStatValue("HitStun"));
 
             //Spawn particles and hitbox
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);

@@ -23,7 +23,7 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage thid object will take</param>
-        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != owner && owner != ""))
                 return 0;

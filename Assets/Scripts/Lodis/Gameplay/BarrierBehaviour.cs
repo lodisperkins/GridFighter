@@ -43,7 +43,7 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle">The angle to launch this object. Ignore for barriers</param>
         /// <param name="damageType">The type of damage being received</param>
         /// <returns>The amount of damage taken. Returns 0 if the attacker was the owner and if the type wasn't knock back </returns>
-        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             if (attacker == Owner && damageType == DamageType.KNOCKBACK || attacker != Owner && damageType != DamageType.KNOCKBACK)
                 return base.TakeDamage(attacker, damage, knockBackScale, hitAngle, damageType);

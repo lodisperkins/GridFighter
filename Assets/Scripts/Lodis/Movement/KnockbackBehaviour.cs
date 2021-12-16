@@ -350,21 +350,10 @@ namespace Lodis.Movement
         {
             return !Tumbling && !InFreeFall && Physics.ObjectAtRest;
         }
-
-        /// /// <summary>
-        /// Damages this game object and applies a backwards force based on the angle
-        /// </summary>
-        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        /// <param name="damage">The amount of damage being applied to the object. 
-        /// Ring barriers only break if the damage amount is greater than the total health</param>
-        /// <param name="knockBackScale"></param>
-        /// <param name="hitAngle"></param>
-        /// <returns></returns>
-        /// <param name="damageType">The type of damage thid object will take</param>
-        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             //Return if there is no rigidbody or movement script attached
-            if (!_movementBehaviour  || IsInvincible)
+            if (!_movementBehaviour || IsInvincible)
                 return 0;
 
             //Update current knockback scale
@@ -378,7 +367,7 @@ namespace Lodis.Movement
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
-            float totalKnockback = (knockBackScale + (knockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+            float totalKnockback = (_currentKnockBackScale + (_currentKnockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
 
             _currentKnockBackScale = totalKnockback;
             //Calculates force and applies it to the rigidbody
@@ -415,8 +404,68 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
+            ActivateHitStunByTimer(hitStun);
 
             return damage;
+        }
+
+        public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
+        {
+            //Return if there is no rigidbody or movement script attached
+            if (!_movementBehaviour || IsInvincible)
+                return 0;
+
+            //Update current knockback scale
+            _currentKnockBackScale = abilityData.GetCustomStatValue("KnockBackScale");
+
+            //Adds damage to the total damage
+            Health += abilityData.GetCustomStatValue("Damage");
+            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
+
+            _onTakeDamage?.Invoke();
+            _onTakeDamageTemp?.Invoke();
+            _onTakeDamageTemp = null;
+
+            float totalKnockback = (_currentKnockBackScale + (_currentKnockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+
+            _currentKnockBackScale = totalKnockback;
+            //Calculates force and applies it to the rigidbody
+            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, abilityData.GetCustomStatValue("HitAngle"));
+
+            if (knockBackForce.magnitude > 0)
+            {
+                _onKnockBackStart?.Invoke();
+                _onKnockBackStartTemp?.Invoke();
+                _onKnockBackStartTemp = null;
+
+                _velocityOnLaunch = knockBackForce;
+                Physics.Rigidbody.isKinematic = false;
+
+                if (_movementBehaviour.IsMoving)
+                {
+                    _movementBehaviour.canCancelMovement = true;
+                    _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                    _movementBehaviour.canCancelMovement = false;
+                }
+
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+
+                //Add force to objectd
+                Physics.ApplyImpulseForce(_velocityOnLaunch);
+
+                if (_velocityOnLaunch.magnitude > 0)
+                {
+                    _inFreeFall = false;
+                    _tumbling = true;
+                    _onKnockBack?.Invoke();
+                    _onKnockBackTemp?.Invoke();
+                    _onKnockBackTemp = null;
+                }
+            }
+            ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
+
+            return abilityData.GetCustomStatValue("Damage");
         }
 
         /// /// <summary>
@@ -430,7 +479,7 @@ namespace Lodis.Movement
         /// <param name="knockBackIsFixed">If true, the knock back won't be scaled based on health or mass</param>
         /// <param name="ignoreMass">If true, the force applied to the object won't change based in mass</param>
         /// <param name="damageType">The type of damage this object will take</param>
-        public float TakeDamage(string attacker, float damage, float knockBackScale, float hitAngle, bool knockBackIsFixed, bool ignoreMass, DamageType damageType = DamageType.DEFAULT)
+        public float TakeDamage(string attacker, float damage, float knockBackScale, float hitAngle, float hitStun, bool knockBackIsFixed, bool ignoreMass, DamageType damageType = DamageType.DEFAULT)
         {
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)
@@ -493,6 +542,80 @@ namespace Lodis.Movement
                 _onKnockBackTemp?.Invoke();
                 _onKnockBackTemp = null;
             }
+
+            ActivateHitStunByTimer(hitStun);
+
+            return damage;
+        }
+
+
+        public float TakeDamage(string attacker, AbilityData abilityData, bool knockBackIsFixed, bool ignoreMass, DamageType damageType = DamageType.DEFAULT)
+        {
+            //Return if there is no rigidbody or movement script attached
+            if (!_movementBehaviour || IsInvincible)
+                return 0;
+
+            float knockBackScale = abilityData.GetCustomStatValue("KnockBackScale");
+            float damage = abilityData.GetCustomStatValue("Damage");
+            //Adds damage to the total damage
+            Health += damage;
+            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
+
+            //Invoke damage events
+            _onTakeDamage?.Invoke();
+            _onTakeDamageTemp?.Invoke();
+            _onTakeDamageTemp = null;
+
+            //Apply the damage and weight to find the amount of knock back to be applied
+            float totalKnockback = 0;
+            if (!knockBackIsFixed)
+                totalKnockback = (knockBackScale + (knockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+            else
+                totalKnockback = knockBackScale;
+
+            //Update current knockback scale
+            _currentKnockBackScale = totalKnockback;
+
+            //Calculates force and applies it to the rigidbody
+            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, abilityData.GetCustomStatValue("HitAngle"));
+
+            if (knockBackForce.magnitude <= 0)
+                return damage;
+
+            //Invoke knock back events
+            _onKnockBackStart?.Invoke();
+            _onKnockBackStartTemp?.Invoke();
+            _onKnockBackStartTemp = null;
+
+            _velocityOnLaunch = knockBackForce;
+            Physics.Rigidbody.isKinematic = false;
+
+            if (_movementBehaviour.IsMoving)
+            {
+                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                _movementBehaviour.canCancelMovement = false;
+            }
+
+            //Disables object movement on the grid
+            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+            if (knockBackIsFixed)
+                //Add force to objectd using mass
+                Physics.ApplyImpulseForce(_velocityOnLaunch);
+            else
+                //Add force to the object ignoring mass
+                Physics.ApplyVelocityChange(_velocityOnLaunch);
+
+            if (_velocityOnLaunch.magnitude > 0)
+            {
+                _inFreeFall = false;
+                _tumbling = true;
+                _onKnockBack?.Invoke();
+                _onKnockBackTemp?.Invoke();
+                _onKnockBackTemp = null;
+            }
+
+            ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 
             return damage;
         }
