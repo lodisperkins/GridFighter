@@ -19,7 +19,7 @@ namespace Lodis.Utility
 
         
 
-        public struct TimedAction
+        public class TimedAction
         {
             public float TimeStarted;
             public float Duration;
@@ -76,9 +76,8 @@ namespace Lodis.Utility
                     action.TimeStarted = Time.frameCount;
                     break;
             }    
-
-            _timedActions.Add(action);
             action.Enable();
+            _timedActions.Add(action);
             return action;
         }
 
@@ -89,6 +88,9 @@ namespace Lodis.Utility
         /// <returns>False if the action is not in the list of actions</returns>
         public bool StopTimedAction(TimedAction action)
         {
+            if (action == null)
+                return false;
+
             action.Disable();
             return _timedActions.Remove(action);
         }

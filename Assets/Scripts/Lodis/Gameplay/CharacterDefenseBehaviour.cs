@@ -77,6 +77,7 @@ namespace Lodis.Gameplay
         private float _attackerStunTime;
         private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
+        private RoutineBehaviour.TimedAction _parryTimer;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _braceInvincibilityTime; }
@@ -277,15 +278,15 @@ namespace Lodis.Gameplay
         /// </summary>
         public void ActivateParry()
         {
-            if (_canParry && !_knockBack.Tumbling)
-                RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+            if (_canParry && _knockBack.CheckIfIdle())
+                _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
             else if (_canParry)
             {
                 Collider bounceCollider = _knockBack.Physics.BounceCollider;
                 Collider[] hits = Physics.OverlapBox(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 2, new Quaternion(), LayerMask.GetMask("Structure", "Panels"));
 
                 if (hits.Length == 0)
-                    RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateAirParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+                    _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateAirParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
             }
         }
 
@@ -299,6 +300,13 @@ namespace Lodis.Gameplay
                 return;
 
             _knockBack.DisableInvincibility();
+
+            if (_knockBack.CheckIfIdle())
+                DeactivateGroundParry();
+            else
+                DeactivateAirParry();
+
+            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
             _canParry = true;

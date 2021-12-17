@@ -10,6 +10,9 @@ namespace Lodis.Gameplay
         public string owner;
         [SerializeField]
         private float _bounceDampen;
+        [Tooltip("The length of the hit stun to apply to objects that crash into the ring barrier.")]
+        [SerializeField]
+        private float _hitStunOnCollision;
         /// <summary>
         /// Takes damage based on the damage type.
         /// If the damage is less than the durability

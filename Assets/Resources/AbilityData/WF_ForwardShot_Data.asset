@@ -43,6 +43,8 @@ MonoBehaviour:
     value: 2
   - name: Lifetime
     value: 1.5
+  - name: HitStun
+    value: 0.3
   - name: MaxInstances
     value: 1
   animationType: 0

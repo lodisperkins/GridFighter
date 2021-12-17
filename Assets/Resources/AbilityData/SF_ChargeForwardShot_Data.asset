@@ -45,5 +45,7 @@ MonoBehaviour:
     value: 7
   - name: MaxInstances
     value: 1
+  - name: HitStun
+    value: 0.7
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 3043140f1aa56d04a918b5ea2b6bc559, type: 3}

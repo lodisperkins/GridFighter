@@ -377,7 +377,7 @@ MonoBehaviour:
   _isInvincible: 0
   _stunned: 0
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
-  _inHitStun: 0
+  _tumbling: 0
   _inFreeFall: 0
   _landingTime: 0.7
   _knockDownTime: 0.5
@@ -388,6 +388,7 @@ MonoBehaviour:
   _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
   _idleGroundedPoint: {x: 0, y: -0.4, z: 0}
   _idleGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
+  _inHitStun: 0
 --- !u!114 &5685934378965997192
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,7 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 9
+  _attackType: 4
   _attackDelay: 1
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
@@ -472,13 +473,11 @@ MonoBehaviour:
   _meshRenderer: {fileID: 3772444779946978536}
   _canParry: 1
   _airParryCooldown: 0.5
-  _parrySpeedLimit: 5
   _groundParryRestTime: 0.67
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
   _parryStartUpTime: 0.05
   _parryCoolDownDecreaseRate: 0.05
-  _parrySpeedLimitIncreaseRate: 0.05
   _parryUpgradeRate: 1
   _braceActiveTime: 0.1
   _canBrace: 0

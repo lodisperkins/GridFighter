@@ -315,6 +315,7 @@ MonoBehaviour:
   _pushScale: 10
   _damageOnCollision: 0
   _bounceScale: 2
+  _hitStunOnCollision: 7
 --- !u!54 &8665960441623888782
 Rigidbody:
   m_ObjectHideFlags: 0

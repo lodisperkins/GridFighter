@@ -173,12 +173,12 @@ namespace Lodis.Gameplay
             _strongShotDistance = (powerScale - 1) / abilityData.GetCustomStatValue("StrongShotForceIncreaseRate");
 
             _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, abilityData.GetCustomStatValue("WeakShotKnockBackScale"),
-                abilityData.GetCustomStatValue("WeakShotHitAngle"), true, abilityData.GetCustomStatValue("WeakShotLifeTime"), owner, true);
+                abilityData.GetCustomStatValue("WeakShotHitAngle"), true, abilityData.GetCustomStatValue("WeakShotLifeTime"), owner, true, false, true, abilityData.GetCustomStatValue("WeakHitStun"));
             _weakProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
             _weakProjectileCollider.Priority = abilityData.GetCustomStatValue("WeakColliderPriority");
 
             _strongProjectileCollider = new HitColliderBehaviour(_strongShotDamage, _strongShotKnockBackScale,
-                abilityData.GetCustomStatValue("StrongShotHitAngle"), true, abilityData.GetCustomStatValue("StrongShotLifeTime"), owner, true);
+                abilityData.GetCustomStatValue("StrongShotHitAngle"), true, abilityData.GetCustomStatValue("StrongShotLifeTime"), owner, true, false, true, abilityData.GetCustomStatValue("StrongHitStun"));
             _strongProjectileCollider.Priority = abilityData.ColliderPriority;
             _strongProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
 

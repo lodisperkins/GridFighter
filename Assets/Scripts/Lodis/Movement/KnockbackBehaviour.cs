@@ -62,7 +62,7 @@ namespace Lodis.Movement
         private Vector3 _idleGroundedPointExtents;
         [SerializeField]
         private bool _inHitStun;
-        private RoutineBehaviour.TimedAction _hitStunTimer;
+        private RoutineBehaviour.TimedAction _hitStunTimer = new RoutineBehaviour.TimedAction();
 
         /// <summary>
         /// Whether or not this object is current regaining footing after hitting the ground
@@ -206,6 +206,7 @@ namespace Lodis.Movement
         private void CancelLanding()
         {
             StopCoroutine(_currentCoroutine);
+            IsDown = false;
         }
 
         protected override IEnumerator ActivateStun(float time)
@@ -329,6 +330,12 @@ namespace Lodis.Movement
                 RecoveringFromFall = true;
                 Physics.MakeKinematic(); 
                 RoutineBehaviour.Instance.StartNewTimedAction(args => { IsDown = false; RecoveringFromFall = false; } , TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
+            }
+
+            if (_hitStunTimer.GetEnabled() && InHitStun)
+            {
+                RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
+                _inHitStun = false;
             }
         }
 
@@ -655,7 +662,7 @@ namespace Lodis.Movement
             if (Physics.Rigidbody.velocity.magnitude > _maxMagnitude.Value)
                 Physics.Rigidbody.velocity = Physics.Rigidbody.velocity.normalized * _maxMagnitude.Value;
 
-            if (Physics.Acceleration.magnitude <= 0 && Physics.Rigidbody.isKinematic)
+            if (Physics.Acceleration.magnitude <= 0 && Physics.Rigidbody.isKinematic && Physics.IsGrounded)
                 _inFreeFall = false;
 
             if (Physics.RigidbodyInactive() || Physics.Rigidbody.isKinematic || InFreeFall)
@@ -665,7 +672,7 @@ namespace Lodis.Movement
 
             if (Physics.IsGrounded)
             {
-                if ((Physics.LastVelocity.magnitude <= 0.5f && Physics.Acceleration.magnitude <= 0.5f) && (Tumbling || InFreeFall) && !InHitStun)
+                if ((Physics.LastVelocity.magnitude <= 0.5f && Physics.Acceleration.magnitude <= 0.5f) && (Tumbling || InFreeFall))
                     TryStartLandingLag();
             }
         }
@@ -685,6 +692,7 @@ namespace Lodis.Movement
         private float _damage;
         private float _knockbackScale;
         private float _hitAngle;
+        private float _hitStun;
 
         public override void OnInspectorGUI()
         {
@@ -694,10 +702,11 @@ namespace Lodis.Movement
             _damage = EditorGUILayout.FloatField("Damage", _damage);
             _knockbackScale = EditorGUILayout.FloatField("Knockback Scale", _knockbackScale);
             _hitAngle = EditorGUILayout.FloatField("Hit Angle", _hitAngle);
+            _hitStun = EditorGUILayout.FloatField("Hit Stun", _hitStun);
 
             if (GUILayout.Button("Test Attack"))
             {
-                _owner.TakeDamage(name, _damage, _knockbackScale, _hitAngle, DamageType.KNOCKBACK);
+                _owner.TakeDamage(name, _damage, _knockbackScale, _hitAngle, DamageType.KNOCKBACK, _hitStun);
             }
         }
     }

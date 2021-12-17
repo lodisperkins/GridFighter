@@ -49,5 +49,7 @@ MonoBehaviour:
     value: -1
   - name: Knockback
     value: 2
+  - name: HitStun
+    value: 1
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 94bc1ca367d0ca3438de0aa2f84a61cc, type: 3}

@@ -349,6 +349,7 @@ MonoBehaviour:
   _pushScale: 2
   _damageOnCollision: 0
   _bounceScale: 0
+  _hitStunOnCollision: 0
 --- !u!114 &33356479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -794,6 +795,7 @@ MonoBehaviour:
   _stunned: 0
   owner: 
   _bounceDampen: 1.2
+  _hitStunOnCollision: 0
 --- !u!64 &151772238
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2250,7 +2252,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &446117095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2270,6 +2272,7 @@ MonoBehaviour:
   _stunned: 0
   owner: 
   _bounceDampen: 0
+  _hitStunOnCollision: 0
 --- !u!64 &446117096
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -4301,6 +4304,7 @@ MonoBehaviour:
   _stunned: 0
   owner: 
   _bounceDampen: 1.2
+  _hitStunOnCollision: 0
 --- !u!64 &894189966
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -5450,6 +5454,7 @@ MonoBehaviour:
   _pushScale: 2
   _damageOnCollision: 0
   _bounceScale: 0
+  _hitStunOnCollision: 0
 --- !u!114 &1082967235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7239,6 +7244,7 @@ MonoBehaviour:
   _pushScale: 2
   _damageOnCollision: 0
   _bounceScale: 0
+  _hitStunOnCollision: 0
 --- !u!114 &1439180827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8337,6 +8343,7 @@ MonoBehaviour:
   _pushScale: 2
   _damageOnCollision: 0
   _bounceScale: 0
+  _hitStunOnCollision: 0
 --- !u!114 &1553451239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10272,6 +10279,7 @@ MonoBehaviour:
   _pushScale: 2
   _damageOnCollision: 0
   _bounceScale: 0
+  _hitStunOnCollision: 0
 --- !u!114 &1921244565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10718,6 +10726,7 @@ MonoBehaviour:
   _pushScale: 2
   _damageOnCollision: 0
   _bounceScale: 0
+  _hitStunOnCollision: 0
 --- !u!114 &1992236354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10993,6 +11002,7 @@ MonoBehaviour:
   _pushScale: 2
   _damageOnCollision: 0
   _bounceScale: 0
+  _hitStunOnCollision: 0
 --- !u!114 &2016165839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11794,6 +11804,7 @@ MonoBehaviour:
   _pushScale: 2
   _damageOnCollision: 0
   _bounceScale: 0
+  _hitStunOnCollision: 0
 --- !u!114 &2119259576
 MonoBehaviour:
   m_ObjectHideFlags: 0

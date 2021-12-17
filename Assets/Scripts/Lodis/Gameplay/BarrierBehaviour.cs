@@ -23,6 +23,9 @@ namespace Lodis.Gameplay
         private float _damageOnCollision;
         [SerializeField]
         private float _bounceScale;
+        [Tooltip("The length of the hit stun applied to the objects that are knocked into this barrier.")]
+        [SerializeField]
+        private float _hitStunOnCollision;
 
         public string Owner { get => _owner; set => _owner = value; }
 
@@ -73,7 +76,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, _damageOnCollision, 0, 0, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(name, _damageOnCollision, 0, 0, DamageType.KNOCKBACK, _hitStunOnCollision);
         }
 
         private void OnCollisionStay(Collision collision)
