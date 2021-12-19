@@ -35,13 +35,13 @@ MonoBehaviour:
   _customStats:
   - name: Damage
     value: 5
-  - name: Knockback
+  - name: KnockBackScale
     value: 1
   - name: HitAngle
     value: 1
   - name: TravelDistance
     value: 4
   - name: HitStun
-    value: 0.5
+    value: 0.2
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: bf4d3e934eacf474e8952d473ee4f8ef, type: 3}

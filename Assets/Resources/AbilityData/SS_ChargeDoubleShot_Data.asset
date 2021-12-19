@@ -48,6 +48,6 @@ MonoBehaviour:
   - name: TimeBetweenShots
     value: 0
   - name: HitStun
-    value: 0.3
+    value: 0.1
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}

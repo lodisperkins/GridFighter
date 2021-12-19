@@ -44,6 +44,6 @@ MonoBehaviour:
   - name: YOffset
     value: 0.5
   - name: HitStun
-    value: 0.3
+    value: 0.1
   animationType: 0
   _customAnimation: {fileID: 0}

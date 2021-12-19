@@ -97,11 +97,13 @@ namespace Lodis.Utility
 
         private void TryInvokeTimedEvent(float time, int index)
         {
-            if (time - _timedActions[index].TimeStarted >= _timedActions[index].Duration && _timedActions[index].GetEnabled())
+            TimedAction action = _timedActions[index];
+
+            if (time - action.TimeStarted >= action.Duration && action.GetEnabled())
             {
-                _timedActions[index].Disable();
-                _timedActions[index].Event.Invoke();
-                _timedActions.RemoveAt(index);
+                action.Disable();
+                action.Event.Invoke();
+                _timedActions.Remove(action);
             }
         }
 

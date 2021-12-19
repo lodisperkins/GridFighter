@@ -380,10 +380,10 @@ MonoBehaviour:
   _tumbling: 0
   _inFreeFall: 0
   _landingTime: 0.7
-  _knockDownTime: 0.5
-  _knockDownRecoverTime: 0.7
-  _knockDownRecoverInvincibleTime: 5
-  _knockDownLandingTime: 0.6
+  _knockDownTime: 0.2
+  _knockDownRecoverTime: 0.5
+  _knockDownRecoverInvincibleTime: 2
+  _knockDownLandingTime: 0.4
   _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
   _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
   _idleGroundedPoint: {x: 0, y: -0.4, z: 0}

@@ -138,12 +138,12 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         protected void RecoverPhase(params object[] args)
         {
-            onDeactivate?.Invoke();
             CurrentAbilityPhase = AbilityPhase.RECOVER;
-            Deactivate();
-            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments =>
-            { End(); onEnd?.Invoke(); _inUse = false; },
-                TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
+            
+            if (MaxActivationAmountReached)
+                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
+            else
+                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _inUse = false, TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
         }
 
         /// <summary>
@@ -246,7 +246,6 @@ namespace Lodis.Gameplay
         public virtual void EndAbility()
         {
             RoutineBehaviour.Instance.StopTimedAction(_currentTimer);
-            currentActivationAmount = abilityData.maxActivationAmount;
             onDeactivate?.Invoke();
             Deactivate();
             onEnd?.Invoke();

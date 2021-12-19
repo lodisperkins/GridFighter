@@ -54,6 +54,6 @@ MonoBehaviour:
   - name: HitBoxDistanceZ
     value: 0
   - name: HitStun
-    value: 0.5
+    value: 0.2
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: a1122af4932a8554db88a3464df8b93c, type: 3}

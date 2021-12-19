@@ -188,7 +188,7 @@ namespace Lodis.Input
         public void BufferSpecialAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
-            if (_playerState != PlayerState.IDLE || _playerState == PlayerState.ATTACKING)
+            if (_playerState != PlayerState.IDLE && _playerState != PlayerState.ATTACKING)
                 return;
 
             AbilityType abilityType = AbilityType.SPECIAL;

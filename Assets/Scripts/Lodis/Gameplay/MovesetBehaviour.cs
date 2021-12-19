@@ -248,7 +248,7 @@ namespace Lodis.Gameplay
 
             currentAbility.currentActivationAmount++;
 
-            if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached && !_deckReloading)
+            if (!_deckReloading)
                 currentAbility.onEnd += () => UpdateHand(abilitySlot);
 
 
