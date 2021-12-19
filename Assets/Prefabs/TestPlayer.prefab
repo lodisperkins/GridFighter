@@ -273,13 +273,11 @@ MonoBehaviour:
   _meshRenderer: {fileID: 8493895805550168426}
   _canParry: 1
   _airParryCooldown: 0.5
-  _parrySpeedLimit: 5
   _groundParryRestTime: 0.67
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
   _parryStartUpTime: 0.05
   _parryCoolDownDecreaseRate: 0.05
-  _parrySpeedLimitIncreaseRate: 0.05
   _parryUpgradeRate: 1
   _braceActiveTime: 0.1
   _canBrace: 0
@@ -305,7 +303,7 @@ MonoBehaviour:
   _isInvincible: 0
   _stunned: 0
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
-  _inHitStun: 0
+  _tumbling: 0
   _inFreeFall: 0
   _landingTime: 0.7
   _knockDownTime: 0.2
@@ -316,6 +314,7 @@ MonoBehaviour:
   _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
   _idleGroundedPoint: {x: 0, y: -0.4, z: 0}
   _idleGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
+  _inHitStun: 0
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -346,8 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
-  _renderer: {fileID: 2765739998997917301}
+  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _animationBehaviour: {fileID: 4705404459745268771}
   _projectileSpawnPoint: {fileID: 8493895805536082016}
   _meleeHitBoxSpawnPoint: {fileID: 8493895805536081938}

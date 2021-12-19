@@ -278,18 +278,23 @@ namespace Lodis.Gameplay
         /// </summary>
         public void ActivateParry()
         {
+            _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EnableParryByType(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+        }
+
+        private void EnableParryByType()
+        {
             if (_canParry && _knockBack.CheckIfIdle())
-                _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+                ActivateGroundParry();
             else if (_canParry)
             {
                 Collider bounceCollider = _knockBack.Physics.BounceCollider;
                 Collider[] hits = Physics.OverlapBox(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 2, new Quaternion(), LayerMask.GetMask("Structure", "Panels"));
 
                 if (hits.Length == 0)
-                    _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateAirParry(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+                    ActivateAirParry();
             }
-        }
 
+        }
         /// <summary>
         /// Disables the parry collider and invincibilty.
         /// Gives the object the ability to parry again.
@@ -433,9 +438,14 @@ namespace Lodis.Gameplay
                     _knockBack.InFreeFall = true;
                 }
 
-                onFallBroken?.Invoke(collisionDirection);
+                if (_parryTimer != null)
+                    if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+
+                RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
                 DeactivateAirParry();
                 DeactivateGroundParry();
+
+                onFallBroken?.Invoke(collisionDirection);
                 _knockBack.TryStartLandingLag();
                 return;
             }
@@ -460,6 +470,13 @@ namespace Lodis.Gameplay
                     transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
                     _knockBack.InFreeFall = true;
                 }
+
+                if (_parryTimer != null)
+                    if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+
+                RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+                DeactivateAirParry();
+                DeactivateGroundParry();
 
                 onFallBroken?.Invoke(collisionDirection);
                 _knockBack.TryStartLandingLag();
