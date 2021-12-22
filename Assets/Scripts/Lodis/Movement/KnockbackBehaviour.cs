@@ -317,19 +317,18 @@ namespace Lodis.Movement
             else if (Tumbling)
             {
                 yield return new WaitForSeconds(KnockDownLandingTime);
+                Landing = false;
+                RecoveringFromFall = true;
+                _movementBehaviour.DisableMovement(condition => !RecoveringFromFall, false, true);
 
                 //Start knockdown
                 IsDown = true;
                 SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
-
                 yield return new WaitForSeconds(_knockDownTime);
-
+                IsDown = false;
                 //Start recovery from knock down
-                Landing = false;
-                _movementBehaviour.DisableMovement(condition => !IsDown, false, true);
-                RecoveringFromFall = true;
                 Physics.MakeKinematic(); 
-                RoutineBehaviour.Instance.StartNewTimedAction(args => { IsDown = false; RecoveringFromFall = false; } , TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
+                RoutineBehaviour.Instance.StartNewTimedAction(args => RecoveringFromFall = false, TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
             }
 
             if (_hitStunTimer.GetEnabled() && InHitStun)
@@ -662,22 +661,21 @@ namespace Lodis.Movement
             if (Physics.Rigidbody.velocity.magnitude > _maxMagnitude.Value)
                 Physics.Rigidbody.velocity = Physics.Rigidbody.velocity.normalized * _maxMagnitude.Value;
 
-            if (Physics.Acceleration.magnitude <= 0 && Physics.Rigidbody.isKinematic && Physics.IsGrounded)
+            UpdateGroundedColliderPosition();
+
+            if (Physics.ObjectAtRest && !InHitStun)
                 _inFreeFall = false;
 
             if (Physics.RigidbodyInactive() || Physics.Rigidbody.isKinematic || InFreeFall)
                 _tumbling = false;
 
-            UpdateGroundedColliderPosition();
-
             if (Physics.IsGrounded)
             {
-                if ((Physics.LastVelocity.magnitude <= 0.5f && Physics.Acceleration.magnitude <= 0.5f) && (Tumbling || InFreeFall))
+                if ((Physics.LastVelocity.magnitude <= 0.6f && Physics.Acceleration.magnitude <= 0.6f && !InHitStun) && (Tumbling || InFreeFall))
                     TryStartLandingLag();
             }
         }
     }
-
 
 
     /// <summary>

@@ -494,8 +494,8 @@ namespace Lodis.Movement
 
             _lastVelocity = Rigidbody.velocity;
 
-            if (Rigidbody.velocity.magnitude > 0)
-                Rigidbody.velocity /= _velocityDecayRate.Value;
+            //if (Rigidbody.velocity.magnitude > 0)
+            //    Rigidbody.velocity /= _velocityDecayRate.Value;
 
             if (CheckIsGrounded())
             {

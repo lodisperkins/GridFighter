@@ -436,7 +436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 4
+  _attackType: 9
   _attackDelay: 1
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
@@ -511,7 +511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 3
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
-  _gravity: 9.81
+  _gravity: 19.62
   _bounceDampen: 4
   _bounceCollider: {fileID: 4375342665546870793}
   _isGrounded: 0

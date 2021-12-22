@@ -389,7 +389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mass: 3
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
-  _gravity: 9.81
+  _gravity: 19.62
   _bounceDampen: 4
   _bounceCollider: {fileID: 5036224701878357983}
   _isGrounded: 0

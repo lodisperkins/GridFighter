@@ -125,6 +125,7 @@ namespace Lodis.GridScripts
                 upMagnitude /= _bounceDampening - knockbackScript.Physics.Bounciness;
 
             knockbackScript.Physics.ApplyImpulseForce(Vector3.up * upMagnitude);
+            knockbackScript.ActivateHitStunByTimer(0.01f);
         }
 
         private void OnTriggerStay(Collider other)

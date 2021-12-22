@@ -112,4 +112,4 @@ MonoBehaviour:
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
   _maxBounceForce: 4
   _bounceDampening: 3
-  _friction: 8
+  _friction: 10
