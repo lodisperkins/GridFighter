@@ -119,14 +119,23 @@ namespace Lodis.Gameplay
                 return;
 
             //If the player is trying to change their attack direction...
-            if (_ownerInput.AttackDirection.magnitude > 0 && !_usedFirstStrike && CurrentAbilityPhase == AbilityPhase.RECOVER)
+            if (_ownerInput.AttackDirection.magnitude > 0 && CurrentAbilityPhase == AbilityPhase.RECOVER && !MaxActivationAmountReached)
             {
                 //...restart the ability
-                Deactivate();
-                RoutineBehaviour.Instance.StopTimedAction(CurrentTimer);
                 _attackDirection = _ownerInput.AttackDirection;
-                UseAbility();
-                _usedFirstStrike = true;
+                Deactivate();
+                StopAbility();
+
+                string[] slots = ownerMoveset.GetAbilityNamesInCurrentSlots();
+
+                abilityData.canCancelRecover = true;
+
+                if (slots[0] == abilityData.abilityName)
+                    ownerMoveset.UseSpecialAbility(0, _ownerInput.AttackDirection);
+                else
+                    ownerMoveset.UseSpecialAbility(1, _ownerInput.AttackDirection);
+
+                abilityData.canCancelRecover = false;
             }
         }
     }

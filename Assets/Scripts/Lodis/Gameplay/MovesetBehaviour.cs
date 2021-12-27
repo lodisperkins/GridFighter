@@ -238,6 +238,8 @@ namespace Lodis.Gameplay
 
             if (currentAbility == null)
                 return null;
+            else if (currentAbility.MaxActivationAmountReached)
+                return null;
 
             if (_animationBehaviour)
                 _animationBehaviour.AbilityAnimationRoutine = _animationBehaviour.StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
