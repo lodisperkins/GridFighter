@@ -73,7 +73,7 @@ namespace Lodis.Input
         [SerializeField]
         private float _attackDirectionBufferClearTime;
         private float _timeOfLastDirectionInput;
-        private InputActionAsset _actions;
+        private PlayerControls _playerControls;
         private int _playerID;
         private Movement.Condition _inputEnableCondition = null;
         [SerializeField]
@@ -112,18 +112,19 @@ namespace Lodis.Input
 
         private void Awake()
         {
+            _playerControls = new PlayerControls();
+            _playerControls.devices = GetComponent<PlayerInput>().devices;
             //Initialize action delegates
-            _actions = GetComponent<PlayerInput>().actions;
-            _actions.actionMaps[0].actions[0].started += context => UpdateInputY(1);
-            _actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
-            _actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
-            _actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
-            _actions.actionMaps[0].actions[4].started += context => { DisableMovement(); _attackButtonDown = true; };
-            _actions.actionMaps[0].actions[4].canceled += context => _attackButtonDown = false;
-            _actions.actionMaps[0].actions[4].performed += context => { BufferNormalAbility(context, new object[2]);};
-            _actions.actionMaps[0].actions[6].performed += context => { BufferParry(context); _defense.Brace(); };
-            _actions.actionMaps[0].actions[7].started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
-            _actions.actionMaps[0].actions[8].started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
+            _playerControls.Player.MoveUp.started += context => UpdateInputY(1);
+            _playerControls.Player.MoveDown.started += context => UpdateInputY(-1);
+            _playerControls.Player.MoveLeft.started += context => UpdateInputX(-1);
+            _playerControls.Player.MoveRight.started += context => UpdateInputX(1);
+            _playerControls.Player.Attack.started += context => { DisableMovement(); _attackButtonDown = true; };
+            _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
+            _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
+            _playerControls.Player.Parry.performed += context => { BufferParry(context); _defense.Brace(); };
+            _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
+            _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
         }
 
         // Start is called before the first frame update
@@ -132,6 +133,16 @@ namespace Lodis.Input
             _gridMovement = GetComponent<Movement.GridMovementBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
             _defense = GetComponent<CharacterDefenseBehaviour>();
+        }
+
+        private void OnEnable()
+        {
+            _playerControls.Enable();
+        }
+
+        private void OnDisable()
+        {
+            _playerControls.Disable();
         }
 
         /// <summary>
@@ -312,7 +323,7 @@ namespace Lodis.Input
         public void DisableInput(Movement.Condition condition)
         {
             _inputDisabled = true;
-            _actions.Disable();
+            _playerControls.Disable();
             _inputEnableCondition = condition;
         }
 
@@ -345,7 +356,7 @@ namespace Lodis.Input
             if (_inputEnableCondition != null)
                 if (_inputEnableCondition.Invoke())
                 {
-                    _actions.Enable();
+                    _playerControls.Player.Enable();
                     _inputDisabled = false;
                     _inputEnableCondition = null;
                 }
@@ -374,7 +385,7 @@ namespace Lodis.Input
             }
 
             //Stores the current attack direction input
-            Vector3 attackDirInput = _actions.actionMaps[0].actions[5].ReadValue<Vector2>();
+            Vector3 attackDirInput = _playerControls.Player.AttackDirection.ReadValue<Vector2>();
 
             //If there is a direction input, update the attack direction buffer and the time of input
             if (attackDirInput.magnitude > 0)
