@@ -31,10 +31,7 @@ namespace Lodis.Gameplay
         private Ability _currentAbilityAnimating;
         private AnimationClip _currentClip;
         [SerializeField]
-        private RuntimeAnimatorController _runtimeAnimator;
-        private PlayableGraph _playableGraph;
-        private AnimationPlayableOutput _output;
-        private AnimationClipPlayable _currentClipPlayable;
+        private RuntimeAnimatorController _runtimeController;
         private int _animationPhase;
         private bool _animatingMotion;
         [SerializeField]
@@ -48,13 +45,15 @@ namespace Lodis.Gameplay
         private Vector2 _normal;
         private Vector3 _modelRestPosition;
         public Coroutine AbilityAnimationRoutine;
+        private AnimatorOverrideController _overrideController;
 
         // Start is called before the first frame update
         void Start()
         {
-            _playableGraph = PlayableGraph.Create();
-            _playableGraph.SetTimeUpdateMode(DirectorUpdateMode.GameTime);
-            _output = AnimationPlayableOutput.Create(_playableGraph, "OutPose", _animator);
+            _overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
+            _animator.runtimeAnimatorController = _overrideController;
+            _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
+
             _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
             _modelRestPosition = _animator.transform.localPosition;
@@ -69,8 +68,6 @@ namespace Lodis.Gameplay
 
             if (_animatingMotion)
                 CalculateMovementAnimationSpeed();
-            else if (_currentAbilityAnimating.abilityData.animationType == AnimationType.CUSTOM)
-                CalculateCustomAnimationSpeed();
             else
                 CalculateAbilityAnimationSpeed();
         }
@@ -180,57 +177,10 @@ namespace Lodis.Gameplay
 
             _animator.speed = newSpeed;
         }
-
-        /// <summary>
-        /// Changes the speed of the animation based on the ability data
-        /// </summary>
-        private void CalculateCustomAnimationSpeed()
-        {
-            //Return if this ability has a fixed time for the animation
-            if (!_currentAbilityAnimating.abilityData.useAbilityTimingForAnimation)
-                return;
-
-            AnimationPhase phase = (AnimationPhase)_animationPhase;
-            double newSpeed = 1;
-
-            ///Calculates the new animation speed based on the current ability phase.
-            ///If the phases time for animating is 0, the current clip is set to the next phase of the animation.
-            ///Otherwise, the new speed is calculated by dividing the current time it takes to get to the next phase, by the
-            ///desired amount of time the current clip should take be in that phase.
-            switch (phase)
-            {
-                case AnimationPhase.STARTUP:
-                    if (_currentAbilityAnimating.abilityData.startUpTime <= 0)
-                    {
-                        _currentClipPlayable.SetTime(_currentClip.events[0].time);
-                        break;
-                    }
-                    newSpeed = (_currentClip.events[0].time / _currentAbilityAnimating.abilityData.startUpTime);
-                    break;
-                case AnimationPhase.ACTIVE:
-                    if (_currentAbilityAnimating.abilityData.timeActive <= 0)
-                    {
-                        _currentClipPlayable.SetTime(_currentClip.events[1].time);
-                        break;
-                    }
-                    newSpeed = (_currentClip.events[1].time - _currentClip.events[0].time) / _currentAbilityAnimating.abilityData.timeActive;
-                    break;
-                case AnimationPhase.INACTIVE:
-                    if (_currentAbilityAnimating.abilityData.recoverTime <= 0)
-                    {
-                        _currentClipPlayable.SetTime(_currentClipPlayable.GetDuration());
-                        break;
-                    }
-                    newSpeed = (_currentClip.length - _currentClip.events[1].time) / _currentAbilityAnimating.abilityData.recoverTime;
-                    break;
-            }
-
-            _currentClipPlayable.SetSpeed(newSpeed);
-        }
-
+        
         bool SetCurrentAnimationClip(string name)
         {
-            foreach (AnimationClip animationClip in _runtimeAnimator.animationClips)
+            foreach (AnimationClip animationClip in _runtimeController.animationClips)
                 if (animationClip.name.Contains(name))
                 {
                     _currentClip = animationClip;
@@ -246,6 +196,7 @@ namespace Lodis.Gameplay
         /// <param name="ability">The ability that the animation belongs to</param>
         public IEnumerator PlayAbilityAnimation(Ability ability)
         {
+            StopCurrentAnimation();
             _currentAbilityAnimating = ability;
             _animator.speed = 1;
 
@@ -259,10 +210,6 @@ namespace Lodis.Gameplay
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
-
-                        //Stop whatever animation is currently playing
-                        if (_playableGraph.IsPlaying())
-                            _playableGraph.Stop();
 
                         //Start the animation with the appropriate speed
                         _animator.Play("Cast", 0, 0);
@@ -282,10 +229,6 @@ namespace Lodis.Gameplay
                         ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
 
-                        //Stop whatever animation is currently playing
-                        if (_playableGraph.IsPlaying())
-                            _playableGraph.Stop();
-
                         //Start the animation with the appropriate speed
                         _animator.Play("Melee", 0, 0);
                         _animatingMotion = false;
@@ -303,10 +246,6 @@ namespace Lodis.Gameplay
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
-
-                        //Stop whatever animation is currently playing
-                        if (_playableGraph.IsPlaying())
-                            _playableGraph.Stop();
 
                         //Start the animation with the appropriate speed
                         _animator.Play("Summon", 0, 0);
@@ -329,16 +268,13 @@ namespace Lodis.Gameplay
                     ///Wait until the ability is allowed to play the animation.
                     ///This is here in case the animation is activated manually
                     yield return new WaitUntil(() => ability.CanPlayAnimation);
-
-                    //Create a new anaimation clip and set the playable graphs current clip to it
-                    _currentClipPlayable = AnimationClipPlayable.Create(_playableGraph, _currentClip);
-                    _output.SetSourcePlayable(_currentClipPlayable);
+                    _overrideController["Cast"] = _currentClip;
 
                     //Play custom clip with appropriate speed
-                    _playableGraph.Play();
+                    _animator.Play("Cast", 0, 0);
                     _animatingMotion = false;
                     _animationPhase = 0;
-                    CalculateCustomAnimationSpeed();
+                    CalculateAbilityAnimationSpeed();
                     break;
             }
         }
@@ -349,7 +285,8 @@ namespace Lodis.Gameplay
         public void StopCurrentAnimation()
         {
             _animator.StopPlayback();
-            _playableGraph.Stop();
+            _overrideController["Cast"] = _runtimeController.animationClips[0];
+            _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
         }
 
         /// <summary>
@@ -359,9 +296,6 @@ namespace Lodis.Gameplay
         {
             _animatingMotion = true;
             _animationPhase = 0;
-
-            if (_playableGraph.IsPlaying())
-                    _playableGraph.Stop();
 
             if (_moveBehaviour.MoveDirection.x > 0 && SetCurrentAnimationClip("DashForward"))
                 _animator.Play("DashForward");
@@ -381,9 +315,10 @@ namespace Lodis.Gameplay
         /// </summary>
         private void ResetAnimationGraph()
         {
-            _playableGraph.Stop();
+            _overrideController["Cast"] = _runtimeController.animationClips[0];
             _animator.Rebind();
             _animator.speed = 1;
+            _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
         }
 
         /// <summary>
