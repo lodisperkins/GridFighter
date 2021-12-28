@@ -209,7 +209,7 @@ namespace Lodis.Gameplay
         {
             _specialAbilitySlots[slot] = null;
 
-            if (_specialDeck.Count == 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null)
+            if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null)
             {
                 _deckReloading = true;
                 RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { ReloadDeck(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);

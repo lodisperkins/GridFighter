@@ -155,7 +155,7 @@ namespace Lodis.Input
         public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
-            if (_playerState == PlayerState.TUMBLING || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.PARRYING)
+            if (_playerState != PlayerState.IDLE && _playerState != PlayerState.ATTACKING)
                 return;
 
             AbilityType abilityType = AbilityType.NONE;

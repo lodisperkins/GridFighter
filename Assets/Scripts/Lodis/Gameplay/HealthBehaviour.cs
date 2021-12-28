@@ -146,7 +146,7 @@ namespace Lodis.Gameplay
         /// <param name="time">The amount of time to disable the components for</param>
         public void Stun(float time)
         {
-            if (Stunned)
+            if (Stunned || IsInvincible)
                 return;
 
             _stunRoutine = StartCoroutine(ActivateStun(time));
