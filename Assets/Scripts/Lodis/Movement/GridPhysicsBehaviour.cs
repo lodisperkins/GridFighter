@@ -464,21 +464,21 @@ namespace Lodis.Movement
         {
             _isGrounded = false;
 
-            //Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
+            Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
 
-            //foreach (Collider collider in hits)
-            //{
-            //    Vector3 closestPoint = collider.ClosestPoint(transform.position);
-            //    float normalY = (transform.position - closestPoint).normalized.y;
-            //    normalY = Mathf.Ceil(normalY);
-            //    if (normalY >= 0)
-            //        _isGrounded = true;
-            //}
+            foreach (Collider collider in hits)
+            {
+                Vector3 closestPoint = collider.ClosestPoint(transform.position);
+                float normalY = (transform.position - closestPoint).normalized.y;
+                normalY = Mathf.Ceil(normalY);
+                if (normalY == 1)
+                    _isGrounded = true;
+            }
 
-            RaycastHit hit;
-            bool hitRecieved = Physics.Raycast(GroundedBoxPosition, Vector3.down, out hit, GroundedBoxExtents.y, LayerMask.GetMask("Panels", "Structure"));
+            //RaycastHit hit;
+            //bool hitRecieved = Physics.Raycast(GroundedBoxPosition, Vector3.down, out hit, GroundedBoxExtents.y, LayerMask.GetMask("Panels", "Structure"));
 
-            _isGrounded = hitRecieved && (hit.collider.CompareTag("Panel") || hit.collider.CompareTag("CollisionPlane"));
+            //_isGrounded = hitRecieved && (hit.collider.CompareTag("Panel") || hit.collider.CompareTag("CollisionPlane"));
             return _isGrounded;
         }
 

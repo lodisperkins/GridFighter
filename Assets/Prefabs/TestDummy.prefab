@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1321618602
 Transform:
   m_ObjectHideFlags: 0
@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321618601}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5680485170780137522}
@@ -207,7 +207,7 @@ MonoBehaviour:
   _knockbackBehaviour: {fileID: 4734495943610405351}
   _defenseBehaviour: {fileID: 5515637805126966881}
   _animator: {fileID: 3772444779951280682}
-  _runtimeAnimator: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
+  _runtimeController: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
   _playerStateManager: {fileID: 958140273493484615}
   _moveAnimationStartUpTime: 0.1
   _moveAnimationRecoverTime: 0.2
@@ -421,7 +421,7 @@ MonoBehaviour:
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _animationBehaviour: {fileID: 7756890942965727391}
-  _projectileSpawnPoint: {fileID: 3772444779943771618}
+  _projectileSpawnPoint: {fileID: 1321618602}
   _meleeHitBoxSpawnPoint: {fileID: 3772444779943771542}
   _deckReloadTime: 6
 --- !u!114 &6183915638186026948
@@ -841,12 +841,6 @@ Animator:
 --- !u!137 &3772444779946978536 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 13700002, guid: 3067d36b7321e7842932d94ad2dbd80b,
-    type: 3}
-  m_PrefabInstance: {fileID: 3772444779943896906}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &3772444779943771618 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400040, guid: 3067d36b7321e7842932d94ad2dbd80b,
     type: 3}
   m_PrefabInstance: {fileID: 3772444779943896906}
   m_PrefabAsset: {fileID: 0}

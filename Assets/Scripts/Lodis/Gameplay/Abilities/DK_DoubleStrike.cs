@@ -18,7 +18,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _fistCollider;
         private GameObject _visualPrefabInstance;
         private Vector2 _attackDirection;
-        private bool _usedFirstStrike;
+        private bool _secondStrikeActivated;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -98,6 +98,13 @@ namespace Lodis.Gameplay
 
             //Despawn particles and hit box
             MonoBehaviour.Destroy(_visualPrefabInstance);
+
+            if (!_secondStrikeActivated)
+            {
+                StopAbility();
+                onEnd?.Invoke();
+                End();
+            }
         }
 
         protected override void End()
@@ -123,6 +130,8 @@ namespace Lodis.Gameplay
             {
                 //...restart the ability
                 _attackDirection = _ownerInput.AttackDirection;
+
+                _secondStrikeActivated = true;
                 Deactivate();
                 StopAbility();
 

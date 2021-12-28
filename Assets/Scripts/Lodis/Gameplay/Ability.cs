@@ -143,7 +143,7 @@ namespace Lodis.Gameplay
             if (MaxActivationAmountReached)
                 _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
             else
-                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _inUse = false, TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
+                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => { _inUse = false; Deactivate(); }, TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
         }
 
         /// <summary>
