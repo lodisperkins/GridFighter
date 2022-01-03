@@ -6,7 +6,7 @@
     using UnityEngine;
     using UnityEngine.Events;
 
-    [DefaultExecutionOrder(-1)]
+    //[DefaultExecutionOrder(-1)]
     [DisallowMultipleComponent]
     public class StateMachine : MonoBehaviour
     {

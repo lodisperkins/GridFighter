@@ -35,9 +35,9 @@ namespace Lodis.Gameplay
         {
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
-                spawnTransform = owner.transform;
+                SpawnTransform = owner.transform;
             else
-                spawnTransform = ownerMoveset.ProjectileSpawnTransform;
+                SpawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Log if a projectile couldn't be found
             if (!_projectile)
@@ -48,18 +48,10 @@ namespace Lodis.Gameplay
 
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();
-            spawnerObject.transform.parent = spawnTransform;
+            spawnerObject.transform.parent = SpawnTransform;
             spawnerObject.transform.localPosition = Vector3.zero;
             spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x + owner.transform.forward.x, spawnerObject.transform.position.y, owner.transform.position.z);
             spawnerObject.transform.forward = owner.transform.forward;
-
-            if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.ProjectileHeight)
-            {
-                spawnerObject.transform.position = new Vector3
-                    (spawnerObject.transform.position.x,
-                    BlackBoardBehaviour.Instance.ProjectileHeight,
-                    owner.transform.position.z);
-            }
 
             //Initialize and attach spawn script
             ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
@@ -68,7 +60,7 @@ namespace Lodis.Gameplay
             //Fire laser
             GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
 
-            _activeProjectiles.Add(newProjectile);
+            ActiveProjectiles.Add(newProjectile);
 
             MonoBehaviour.Destroy(spawnerObject);
         }
@@ -99,7 +91,7 @@ namespace Lodis.Gameplay
 
             CleanProjectileList();
 
-            if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+            if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
 
             Vector2 direction = (Vector2)args[1];

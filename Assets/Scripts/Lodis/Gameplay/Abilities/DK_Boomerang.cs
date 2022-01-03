@@ -21,7 +21,7 @@ namespace Lodis.Gameplay
         {
             base.Init(newOwner);
             //Load projectile asset
-            projectile = (GameObject)Resources.Load("Projectiles/CrossProjectile");
+            Projectile = (GameObject)Resources.Load("Projectiles/CrossProjectile");
             //Set default hitbox traits
             DestroyOnHit = false;
             IsMultiHit = true;
@@ -32,9 +32,9 @@ namespace Lodis.Gameplay
         {
             base.Activate(args);
             //Set the amount of frames the projectile will register a hit
-            projectileCollider.HitFrames = 1;
+            ProjectileCollider.HitFrames = 1;
             //Create a new collider that will handle reversing velocity
-            _reboundCollider = _activeProjectiles[0].AddComponent<ColliderBehaviour>();
+            _reboundCollider = ActiveProjectiles[0].AddComponent<ColliderBehaviour>();
 
             //Initialize rebound collider
             _reboundCollider.Init(false, 0, owner, false, true);
@@ -53,9 +53,9 @@ namespace Lodis.Gameplay
             //If the projectile rebounded too many times...
             if (_reboundCount == abilityData.GetCustomStatValue("MaxRebounds"))
                 //...destroy it
-                MonoBehaviour.Destroy(_activeProjectiles[0]);
+                MonoBehaviour.Destroy(ActiveProjectiles[0]);
 
-            Rigidbody projectile = _activeProjectiles[0].GetComponent<Rigidbody>();
+            Rigidbody projectile = ActiveProjectiles[0].GetComponent<Rigidbody>();
 
             //If it hit a valid object...
             if ((other.CompareTag("Player") || other.CompareTag("Entity")))

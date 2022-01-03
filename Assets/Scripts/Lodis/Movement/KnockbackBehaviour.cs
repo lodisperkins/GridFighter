@@ -316,6 +316,7 @@ namespace Lodis.Movement
             }
             else if (Tumbling)
             {
+                _tumbling = false;
                 yield return new WaitForSeconds(KnockDownLandingTime);
                 Landing = false;
                 RecoveringFromFall = true;
@@ -354,7 +355,7 @@ namespace Lodis.Movement
         /// </summary>
         public bool CheckIfIdle()
         {
-            return !Tumbling && !InFreeFall && Physics.ObjectAtRest;
+            return !Tumbling && !InFreeFall && Physics.ObjectAtRest && !Landing;
         }
         public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {

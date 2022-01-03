@@ -38,7 +38,10 @@ namespace Lodis.Gameplay
         [Tooltip("The slots that store the two loaded abilities from the special deck")]
         [SerializeField]
         private Ability[] _specialAbilitySlots = new Ability[2];
+        [SerializeField]
         private Ability _lastAbilityInUse;
+        [SerializeField]
+        private bool _abilityInUse;
         [SerializeField]
         private CharacterAnimationBehaviour _animationBehaviour;
         [Tooltip("This transform is where projectile will spawn by default for this object.")]
@@ -133,9 +136,9 @@ namespace Lodis.Gameplay
             get
             {
                 if (_lastAbilityInUse != null)
-                    return _lastAbilityInUse.InUse;
+                    return _abilityInUse = _lastAbilityInUse.InUse;
 
-                return false;
+                return _abilityInUse = false;
             }
         }
 

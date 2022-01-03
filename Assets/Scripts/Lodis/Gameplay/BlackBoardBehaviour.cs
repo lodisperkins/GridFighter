@@ -12,7 +12,6 @@ namespace Lodis.Gameplay
         public GridScripts.GridBehaviour Grid { get; private set; }
         public string Player1State = null;
         public string Player2State = null;
-        public float ProjectileHeight;
         public FloatVariable MaxKnockBackHealth;
         public GameObject Player1;
         public GameObject Player2;

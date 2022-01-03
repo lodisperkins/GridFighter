@@ -31,6 +31,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Abstract class that all abilities inherit from
     /// </summary>
+    [System.Serializable]
     public abstract class Ability
     {
         //The object that is using the ability

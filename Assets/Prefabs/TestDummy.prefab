@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321618601}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.8, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0.38, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 5680485170780137522}
@@ -227,8 +227,8 @@ GameObject:
   - component: {fileID: 2039876615219471376}
   - component: {fileID: 4734495943610405351}
   - component: {fileID: 5685934378965997192}
-  - component: {fileID: 3691015139844951449}
   - component: {fileID: 6183915638186026948}
+  - component: {fileID: 3691015139844951449}
   - component: {fileID: 5515637805126966881}
   - component: {fileID: 986386592}
   - component: {fileID: -7747077448878639964}
@@ -407,24 +407,6 @@ MonoBehaviour:
       m_Calls: []
   Event: {fileID: 0}
   IntendedSender: {fileID: 0}
---- !u!114 &3691015139844951449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5680485170780137523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b79447850bcd2ba4ea22b79bb1c220d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
-  _animationBehaviour: {fileID: 7756890942965727391}
-  _projectileSpawnPoint: {fileID: 1321618602}
-  _meleeHitBoxSpawnPoint: {fileID: 3772444779943771542}
-  _deckReloadTime: 6
 --- !u!114 &6183915638186026948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -442,6 +424,25 @@ MonoBehaviour:
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 1
+--- !u!114 &3691015139844951449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680485170780137523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b79447850bcd2ba4ea22b79bb1c220d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
+  _abilityInUse: 0
+  _animationBehaviour: {fileID: 7756890942965727391}
+  _projectileSpawnPoint: {fileID: 1321618602}
+  _meleeHitBoxSpawnPoint: {fileID: 3772444779943771542}
+  _deckReloadTime: 6
 --- !u!114 &5515637805126966881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,6 +526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _stateMachine: {fileID: -897697000267285798}
+  _currentState: 
 --- !u!114 &-897697000267285798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -812,7 +814,7 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
-    - id: AnyIdle
+    - id: Any-Idle
       label: 
       originID: AnyState 1
       targetID: Idle
@@ -858,6 +860,7 @@ MonoBehaviour:
       labelSettings:
         isEnabled: 1
     entryState: Idle
+  _setTriggersManually: 0
 --- !u!1 &6867260188007961694
 GameObject:
   m_ObjectHideFlags: 0
