@@ -342,30 +342,31 @@ namespace Lodis.Gameplay
                     PlayMovementAnimation();
                     break;
 
-                case "FallBreaking":
+                case "BreakingFall":
                     PlayFallBreakAnimation();
                     _animatingMotion = true;
                     break;
 
-                case "Landing":
+                case "SoftLanding":
                     _animator.transform.localPosition = Vector3.zero;
 
-                    if (_knockbackBehaviour.Tumbling)
-                    {
-                        _animator.SetTrigger("OnKnockBackLand");
-                        _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;
-                    }
-                    else
-                    {
-                        _animator.Play("Land");
-                        _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
-                    }
+                    _animator.Play("SoftLanding");
+                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
+
+                    _animatingMotion = true;
+                    break;
+
+                case "HardLanding":
+                    _animator.transform.localPosition = Vector3.zero;
+
+                    _animator.Play("HardLanding");
+                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;
 
                     _animatingMotion = true;
                     break;
 
                 case "GroundRecovery":
-                    _animator.SetTrigger("OnKnockDownGetUp");
+                    _animator.Play("GroundRecovery");
                     _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime;
                     _animatingMotion = true;
                     break;

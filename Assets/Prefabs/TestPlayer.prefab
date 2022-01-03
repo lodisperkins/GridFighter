@@ -349,6 +349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
+  _abilityInUse: 0
   _animationBehaviour: {fileID: 4705404459745268771}
   _projectileSpawnPoint: {fileID: 7641039657355691941}
   _meleeHitBoxSpawnPoint: {fileID: 8493895805536081938}
@@ -420,7 +421,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graph:
     states:
-    - position: {x: 262, y: 408.44446}
+    - position: {x: 260.8889, y: 480.66678}
       id: Idle
       onEnterState:
         m_PersistentCalls:
@@ -431,7 +432,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 64.999954, y: 142.00008}
+    - position: {x: 259.44446, y: 223.11127}
       id: Stunned
       onEnterState:
         m_PersistentCalls:
@@ -442,7 +443,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 72.66669, y: 498.33328}
+    - position: {x: 68.22223, y: 572.7779}
       id: BreakingFall
       onEnterState:
         m_PersistentCalls:
@@ -454,7 +455,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
     - position: {x: -76.75, y: 311.25}
-      id: Landing
+      id: HardLanding
       onEnterState:
         m_PersistentCalls:
           m_Calls: []
@@ -486,7 +487,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 72.22187, y: 407.33347}
+    - position: {x: 68.888535, y: 484.00024}
       id: Parrying
       onEnterState:
         m_PersistentCalls:
@@ -497,7 +498,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 69.11105, y: 312.7777}
+    - position: {x: 65.77771, y: 311.6666}
       id: Tumbling
       onEnterState:
         m_PersistentCalls:
@@ -508,7 +509,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 434.3333, y: 408.55536}
+    - position: {x: 433.2222, y: 480.77768}
       id: Attacking
       onEnterState:
         m_PersistentCalls:
@@ -519,7 +520,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: -76.72246, y: 411.33325}
+    - position: {x: -77.83357, y: 484.6667}
       id: FreeFall
       onEnterState:
         m_PersistentCalls:
@@ -530,7 +531,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 261, y: 327}
+    - position: {x: 261, y: 568.1116}
       id: Moving
       onEnterState:
         m_PersistentCalls:
@@ -541,30 +542,27 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
+    - position: {x: -78.430115, y: 568.6197}
+      id: SoftLanding
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
     anyStates:
-    - position: {x: 65.410995, y: 216.53336}
-      id: AnyState
-    - position: {x: 263.39697, y: 495.45245}
+    - position: {x: 260.06363, y: 315.452}
       id: AnyState 1
-    - position: {x: -77.60303, y: 497.45245}
+    - position: {x: -77.60303, y: 399.67465}
       id: AnyState 2
     transitions:
     - id: Idle-Moving
       label: 
       originID: Idle
       targetID: Moving
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
-    - id: Any-Tumbling
-      label: 
-      originID: AnyState
-      targetID: Tumbling
       onEnterTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -600,19 +598,7 @@ MonoBehaviour:
     - id: Transition 5
       label: Land
       originID: Tumbling
-      targetID: Landing
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
-    - id: Transition 6
-      label: Land
-      originID: FreeFall
-      targetID: Landing
+      targetID: HardLanding
       onEnterTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -623,20 +609,8 @@ MonoBehaviour:
       timeMode: 0
     - id: Landing-Down
       label: 
-      originID: Landing
+      originID: HardLanding
       targetID: Down
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
-    - id: Any-Stunned
-      label: 
-      originID: AnyState
-      targetID: Stunned
       onEnterTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -729,11 +703,47 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition
+      label: Land
+      originID: FreeFall
+      targetID: SoftLanding
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Tumbling
+      label: 
+      originID: AnyState 1
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Stunned
+      label: 
+      originID: AnyState 1
+      targetID: Stunned
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 230.24138, y: -22.063541}
+        dragOffset: {x: 377.34912, y: -112.93774}
       gridSettings:
         isEnabled: 1
       labelSettings:
