@@ -193,9 +193,6 @@ namespace Lodis.Movement
             bool gravityEnabled = UseGravity;
             Vector3 velocity = LastVelocity;
 
-            float timeStarted = Time.time;
-            float timeElapsed = 0;
-
             if (makeKinematic)
                 MakeKinematic();
 

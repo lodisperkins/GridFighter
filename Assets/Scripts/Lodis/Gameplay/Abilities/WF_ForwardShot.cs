@@ -11,9 +11,8 @@ namespace Lodis.Gameplay
     /// </summary>
     public class WF_ForwardShot : ProjectileAbility
     {
-        public Transform spawnTransform = null;
         //How fast the laser will travel
-        public float shotSpeed = 2;
+        public float ShotSpeed = 2;
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
@@ -53,11 +52,11 @@ namespace Lodis.Gameplay
             spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
             spawnerObject.transform.forward = owner.transform.forward;
 
-            if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.projectileHeight)
+            if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.ProjectileHeight)
             {
                 spawnerObject.transform.position = new Vector3
                     (spawnerObject.transform.position.x,
-                    BlackBoardBehaviour.Instance.projectileHeight,
+                    BlackBoardBehaviour.Instance.ProjectileHeight,
                     owner.transform.position.z);
             }
 

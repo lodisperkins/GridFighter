@@ -6641,6 +6641,370 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1310996564}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1348141129
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1348141131}
+  - component: {fileID: 1348141130}
+  m_Layer: 0
+  m_Name: State Machine
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1348141130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348141129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c95737371d97a2747845a945bae3b2de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph:
+    states:
+    - position: {x: 262, y: 408.44446}
+      id: Idle
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 64.999954, y: 142.00008}
+      id: Stunned
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 72.66669, y: 498.33328}
+      id: BreakingFall
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: -76.75, y: 311.25}
+      id: Landing
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: -217.5, y: 311.5}
+      id: Down
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: -363.6664, y: 310.66626}
+      id: GroundRecovery
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 72.22187, y: 407.33347}
+      id: Parrying
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 69.11105, y: 312.7777}
+      id: Tumbling
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 434.3333, y: 408.55536}
+      id: Attacking
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: -76.72246, y: 411.33325}
+      id: FreeFall
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 261, y: 327}
+      id: Moving
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    anyStates:
+    - position: {x: 65.410995, y: 216.53336}
+      id: AnyState
+    - position: {x: 263.39697, y: 495.45245}
+      id: AnyState 1
+    - position: {x: -77.60303, y: 497.45245}
+      id: AnyState 2
+    transitions:
+    - id: Idle-Moving
+      label: 
+      originID: Idle
+      targetID: Moving
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Tumbling
+      label: 
+      originID: AnyState
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 2
+      label: Parry
+      originID: Idle
+      targetID: Parrying
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 3
+      label: Parry
+      originID: Tumbling
+      targetID: Parrying
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 5
+      label: Land
+      originID: Tumbling
+      targetID: Landing
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 6
+      label: Land
+      originID: FreeFall
+      targetID: Landing
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Landing-Down
+      label: 
+      originID: Landing
+      targetID: Down
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Stunned
+      label: 
+      originID: AnyState
+      targetID: Stunned
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Down-GroundRecovery
+      label: 
+      originID: Down
+      targetID: GroundRecovery
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 11
+      label: Attack
+      originID: Idle
+      targetID: Attacking
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 12
+      label: Attack
+      originID: Moving
+      targetID: Attacking
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 15
+      label: Parry
+      originID: FreeFall
+      targetID: Parrying
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: AnyIdle
+      label: 
+      originID: AnyState 1
+      targetID: Idle
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Parrying-BreakingFall
+      label: 
+      originID: Parrying
+      targetID: BreakingFall
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-FreeFall
+      label: 
+      originID: AnyState 2
+      targetID: FreeFall
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    preferences:
+      zoomSettings:
+        zoomFactor: 0.9
+      dragSettings:
+        dragOffset: {x: 201.3526, y: -43.17466}
+      gridSettings:
+        isEnabled: 1
+      labelSettings:
+        isEnabled: 1
+    entryState: Idle
+--- !u!4 &1348141131
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1348141129}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 18
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1352234677
 GameObject:
   m_ObjectHideFlags: 0

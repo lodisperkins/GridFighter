@@ -20,9 +20,10 @@ GameObject:
   - component: {fileID: -6268856529084459074}
   - component: {fileID: -6459078877488197423}
   - component: {fileID: -2626200582311294016}
-  - component: {fileID: -1873711531255504354}
   - component: {fileID: -4507364889193390204}
   - component: {fileID: 6312638638920044315}
+  - component: {fileID: 995624687320838471}
+  - component: {fileID: 1146645358776778520}
   m_Layer: 9
   m_Name: TestPlayer
   m_TagString: Player
@@ -351,19 +352,6 @@ MonoBehaviour:
   _projectileSpawnPoint: {fileID: 7641039657355691941}
   _meleeHitBoxSpawnPoint: {fileID: 8493895805536081938}
   _deckReloadTime: 6
---- !u!114 &-1873711531255504354
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2765739998997917290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4e7cd0a642e6544ea7fca05fc8e354e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _currentState: 0
 --- !u!75 &-4507364889193390204
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -403,6 +391,353 @@ MonoBehaviour:
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _bounceScale: 1
+--- !u!114 &995624687320838471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2765739998997917290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1714ac92737c9d64296a70ccf50bc0c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _stateMachine: {fileID: 1146645358776778520}
+  _currentState: 
+--- !u!114 &1146645358776778520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2765739998997917290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c95737371d97a2747845a945bae3b2de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graph:
+    states:
+    - position: {x: 262, y: 408.44446}
+      id: Idle
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 64.999954, y: 142.00008}
+      id: Stunned
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 72.66669, y: 498.33328}
+      id: BreakingFall
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: -76.75, y: 311.25}
+      id: Landing
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: -217.5, y: 311.5}
+      id: Down
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: -363.6664, y: 310.66626}
+      id: GroundRecovery
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 72.22187, y: 407.33347}
+      id: Parrying
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 69.11105, y: 312.7777}
+      id: Tumbling
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 434.3333, y: 408.55536}
+      id: Attacking
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: -76.72246, y: 411.33325}
+      id: FreeFall
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 261, y: 327}
+      id: Moving
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    anyStates:
+    - position: {x: 65.410995, y: 216.53336}
+      id: AnyState
+    - position: {x: 263.39697, y: 495.45245}
+      id: AnyState 1
+    - position: {x: -77.60303, y: 497.45245}
+      id: AnyState 2
+    transitions:
+    - id: Idle-Moving
+      label: 
+      originID: Idle
+      targetID: Moving
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Tumbling
+      label: 
+      originID: AnyState
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 2
+      label: Parry
+      originID: Idle
+      targetID: Parrying
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 3
+      label: Parry
+      originID: Tumbling
+      targetID: Parrying
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 5
+      label: Land
+      originID: Tumbling
+      targetID: Landing
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 6
+      label: Land
+      originID: FreeFall
+      targetID: Landing
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Landing-Down
+      label: 
+      originID: Landing
+      targetID: Down
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Stunned
+      label: 
+      originID: AnyState
+      targetID: Stunned
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Down-GroundRecovery
+      label: 
+      originID: Down
+      targetID: GroundRecovery
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 11
+      label: Attack
+      originID: Idle
+      targetID: Attacking
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 12
+      label: Attack
+      originID: Moving
+      targetID: Attacking
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 15
+      label: Parry
+      originID: FreeFall
+      targetID: Parrying
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Idle
+      label: 
+      originID: AnyState 1
+      targetID: Idle
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Parrying-BreakingFall
+      label: 
+      originID: Parrying
+      targetID: BreakingFall
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-FreeFall
+      label: 
+      originID: AnyState 2
+      targetID: FreeFall
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    preferences:
+      zoomSettings:
+        zoomFactor: 0.9
+      dragSettings:
+        dragOffset: {x: 230.24138, y: -22.063541}
+      gridSettings:
+        isEnabled: 1
+      labelSettings:
+        isEnabled: 1
+    entryState: Idle
 --- !u!1 &7661625193114942374
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,7 +785,7 @@ MonoBehaviour:
   _defenseBehaviour: {fileID: 2612010366639249464}
   _animator: {fileID: 8493895805545904040}
   _runtimeController: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
-  _playerStateManager: {fileID: -1873711531255504354}
+  _characterStateManager: {fileID: 995624687320838471}
   _moveAnimationStartUpTime: 0.1
   _moveAnimationRecoverTime: 0.2
 --- !u!1001 &5961747996489264755

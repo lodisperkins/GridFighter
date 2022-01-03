@@ -19,9 +19,6 @@ namespace Lodis.GridScripts
         [Tooltip("The material to give this panel if it is aligned with the right side of the grid.")]
         [SerializeField]
         private Material _rightSideMat;
-        [Tooltip("The maximum amount of bounciness objects bouncing off of this panel will have")]
-        [SerializeField]
-        private float _maxBounceForce = 3.0f;
         [Tooltip("How quick objects bouncing on this panel stop boucnign")]
         [SerializeField]
         private float _bounceDampening = 3.0f;

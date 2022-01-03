@@ -28,7 +28,6 @@ namespace Lodis.Gameplay
         private float _strongForceIncreaseRate = .01f;
         private float _weakShotDistance = 1;
         private float _weakShotDamage = 5;
-        private float _weakShotForce = 1;
         private Transform _weakSpawnTransform;
         private List<GameObject> _activeProjectiles = new List<GameObject>();
 

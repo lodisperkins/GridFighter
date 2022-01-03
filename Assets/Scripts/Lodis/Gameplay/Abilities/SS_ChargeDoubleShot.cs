@@ -11,7 +11,6 @@ namespace Lodis.Gameplay
     /// </summary>
     public class SS_ChargeDoubleShot : ProjectileAbility
     {
-        public Transform spawnTransform = null;
         private float _shotDamage = 5;
         private float _shotKnockBack = 1;
         //Usd to store a reference to the laser prefab
@@ -54,11 +53,11 @@ namespace Lodis.Gameplay
             spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x + owner.transform.forward.x, spawnerObject.transform.position.y, owner.transform.position.z);
             spawnerObject.transform.forward = owner.transform.forward;
 
-            if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.projectileHeight)
+            if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.ProjectileHeight)
             {
                 spawnerObject.transform.position = new Vector3
                     (spawnerObject.transform.position.x,
-                    BlackBoardBehaviour.Instance.projectileHeight,
+                    BlackBoardBehaviour.Instance.ProjectileHeight,
                     owner.transform.position.z);
             }
 

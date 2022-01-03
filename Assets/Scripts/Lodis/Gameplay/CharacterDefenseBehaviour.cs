@@ -238,7 +238,6 @@ namespace Lodis.Gameplay
         private IEnumerator AirDodgeRoutine(Vector2 direction)
         {
             //Find the new position after air dodging
-            float lerpVal = 0;
             Vector3 airDodgeOffset = new Vector3(direction.x, 0, direction.y) * _airDodgeDistance;
             Vector3 newPosition = transform.position + airDodgeOffset;
 

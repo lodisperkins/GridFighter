@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using GridGame.VariableScripts;
 using Lodis.Gameplay;
 
 namespace Lodis.GridScripts

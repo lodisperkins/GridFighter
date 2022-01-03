@@ -30,8 +30,8 @@ namespace Lodis.Gameplay
         private GameObject _cpu;
         private Movement.GridMovementBehaviour _p1Movement;
         private Movement.GridMovementBehaviour _p2Movement;
-        private PlayerStateManagerBehaviour _p1StateManager;
-        private PlayerStateManagerBehaviour _p2StateManager;
+        private CharacterStateMachineBehaviour _p1StateManager;
+        private CharacterStateMachineBehaviour _p2StateManager;
         private Input.InputBehaviour _p1Input;
         private Input.InputBehaviour _p2Input;
         private MovesetBehaviour _player2Moveset;
@@ -83,7 +83,7 @@ namespace Lodis.Gameplay
 
             //Get reference to player 1 components
             _p1Movement = _player1.GetComponent<Movement.GridMovementBehaviour>();
-            _p1StateManager = _player1.GetComponent<PlayerStateManagerBehaviour>();
+            _p1StateManager = _player1.GetComponent<CharacterStateMachineBehaviour>();
             _p1Input = _player1.GetComponent<Input.InputBehaviour>();
             _player1Moveset = _player1.GetComponent<MovesetBehaviour>();
             BlackBoardBehaviour.Instance.Player1 = _player1.gameObject;
@@ -112,7 +112,7 @@ namespace Lodis.Gameplay
                 BlackBoardBehaviour.Instance.Player2 = _player2.gameObject;
                 //Get reference to player 2 components
                 _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
-                _p2StateManager = _player2.GetComponent<PlayerStateManagerBehaviour>();
+                _p2StateManager = _player2.GetComponent<CharacterStateMachineBehaviour>();
                 _p2Input = _player2.GetComponent<Input.InputBehaviour>();
                 _player2Moveset = _player2.GetComponent<MovesetBehaviour>();
 
@@ -139,7 +139,7 @@ namespace Lodis.Gameplay
                 BlackBoardBehaviour.Instance.Player2 = _cpu.gameObject;
                 //Get reference to player 2 components
                 _p2Movement = _cpu.GetComponent<Movement.GridMovementBehaviour>();
-                _p2StateManager = _cpu.GetComponent<PlayerStateManagerBehaviour>();
+                _p2StateManager = _cpu.GetComponent<CharacterStateMachineBehaviour>();
                 _player2Moveset = _cpu.GetComponent<MovesetBehaviour>();
 
                 //Initialize base UI stats
@@ -170,10 +170,10 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         void Update()
         {
-            BlackBoardBehaviour.Instance.player1State = _p1StateManager.CurrentState;
+            BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
 
             if (_mode == GameMode.MULTIPLAYER)
-                BlackBoardBehaviour.Instance.player2State = _p2StateManager.CurrentState;
+                BlackBoardBehaviour.Instance.Player2State = _p2StateManager.StateMachine.CurrentState;
         }
     }
 

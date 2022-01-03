@@ -1,4 +1,4 @@
-﻿using GridGame.GamePlay.GridScripts;
+﻿using Ilumisoft.VisualStateMachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace Lodis.AI
         [Tooltip("The direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
         [SerializeField]
         private Vector2 _attackDirection;
-        private Gameplay.PlayerStateManagerBehaviour _playerState;
+        private StateMachine _playerStateMachine;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private int _lastSlot;
         [SerializeField]
@@ -33,7 +33,7 @@ namespace Lodis.AI
         void Start()
         {
             _moveset = GetComponent<Gameplay.MovesetBehaviour>();
-            _playerState = GetComponent<Gameplay.PlayerStateManagerBehaviour>();
+            _playerStateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
         }
 
@@ -52,7 +52,7 @@ namespace Lodis.AI
                     _attackStrength = UnityEngine.Random.Range(0.1f, 1.5f);
                 }
 
-                if (_attackType == Gameplay.AbilityType.NONE || _playerState.CurrentState == Gameplay.PlayerState.STUNNED)
+                if (_attackType == Gameplay.AbilityType.NONE || _playerStateMachine.CurrentState == "Stunned")
                     return;
 
                 //Attack based on the ability type selected

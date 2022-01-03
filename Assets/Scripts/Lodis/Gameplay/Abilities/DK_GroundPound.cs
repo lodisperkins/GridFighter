@@ -114,8 +114,8 @@ namespace Lodis.Gameplay
                 _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
 
             //Destroy shockwaves
-            DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
-            DestroyBehaviour.Destroy(_visualPrefabInstances.Item2);
+            MonoBehaviour.Destroy(_visualPrefabInstances.Item1);
+            MonoBehaviour.Destroy(_visualPrefabInstances.Item2);
 
             //Reset gravity
             _knockBackBehaviour.Physics.Gravity = _ownerGravity;

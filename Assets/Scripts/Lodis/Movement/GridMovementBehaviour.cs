@@ -10,8 +10,6 @@ using System.Reflection;
 
 namespace Lodis.Movement
 {
-    public delegate bool Condition(object[] args = null);
-
 
     [RequireComponent(typeof(GridGame.GameEventListener))]
     public class GridMovementBehaviour : MonoBehaviour

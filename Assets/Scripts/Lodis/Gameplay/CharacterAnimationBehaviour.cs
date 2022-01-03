@@ -1,4 +1,5 @@
-﻿using Lodis.ScriptableObjects;
+﻿using Ilumisoft.VisualStateMachine;
+using Lodis.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,7 +36,8 @@ namespace Lodis.Gameplay
         private int _animationPhase;
         private bool _animatingMotion;
         [SerializeField]
-        private PlayerStateManagerBehaviour _playerStateManager;
+        private CharacterStateMachineBehaviour _characterStateManager;
+        private StateMachine _characterStateMachine;
         [Tooltip("THe amount of time it takes the character to get into the move pose")]
         [SerializeField]
         private float _moveAnimationStartUpTime;
@@ -53,7 +55,7 @@ namespace Lodis.Gameplay
             _overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
             _animator.runtimeAnimatorController = _overrideController;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
-
+            _characterStateMachine = _characterStateManager.StateMachine;
             _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
             _modelRestPosition = _animator.transform.localPosition;
@@ -316,7 +318,6 @@ namespace Lodis.Gameplay
         private void ResetAnimationGraph()
         {
             _overrideController["Cast"] = _runtimeController.animationClips[0];
-            _animator.Rebind();
             _animator.speed = 1;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
         }
@@ -326,55 +327,27 @@ namespace Lodis.Gameplay
         /// </summary>
         private void UpdateAnimationsBasedOnState()
         {
-            if (_currentAbilityAnimating != null)
-            {
-                if (!_currentAbilityAnimating.InUse && !_animatingMotion)
-                {
-                    ResetAnimationGraph();
-                }
-            }
 
-            if (_playerStateManager.CurrentState != PlayerState.ATTACKING && AbilityAnimationRoutine != null)
+            if (_characterStateManager.StateMachine.CurrentState != "Attacking" && AbilityAnimationRoutine != null)
             {
                 StopCoroutine(AbilityAnimationRoutine);
                 AbilityAnimationRoutine = null;
             }
+            else if (_characterStateManager.StateMachine.CurrentState == "Attacking")
+                return;
 
-            switch (_playerStateManager.CurrentState)
+            switch (_characterStateManager.StateMachine.CurrentState)
             {
-                case PlayerState.IDLE:
-                    _animator.Play("Idle");
-                    _animatingMotion = true;
-                    _animator.transform.localPosition = _modelRestPosition;
-                    _animator.speed = 1;
-                    break;
-
-                case PlayerState.MOVING:
+                case "Moving":
                     PlayMovementAnimation();
                     break;
 
-                case PlayerState.TUMBLING:
-                    _animator.Play("Tumbling");
-                    _animatingMotion = true;
-                    break;
-
-                case PlayerState.FREEFALL:
-                    _animator.Play("FreeFall");
-                    _animatingMotion = true;
-                    break;
-
-                case PlayerState.PARRYING:
-                    ResetAnimationGraph();
-                    _animator.Play("ParryPose");
-                    _animatingMotion = true;
-                    break;
-
-                case PlayerState.FALLBREAKING:
+                case "FallBreaking":
                     PlayFallBreakAnimation();
                     _animatingMotion = true;
                     break;
 
-                case PlayerState.LANDING:
+                case "Landing":
                     _animator.transform.localPosition = Vector3.zero;
 
                     if (_knockbackBehaviour.Tumbling)
@@ -391,15 +364,19 @@ namespace Lodis.Gameplay
                     _animatingMotion = true;
                     break;
 
-                case PlayerState.GROUNDRECOVERY:
+                case "GroundRecovery":
                     _animator.SetTrigger("OnKnockDownGetUp");
                     _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime;
                     _animatingMotion = true;
                     break;
 
-                case PlayerState.STUNNED:
-                    _animator.Play("Stunned");
-                    _animatingMotion = true;
+                default:
+
+                    if (_animator.GetCurrentAnimatorStateInfo(0).IsName(_characterStateManager.StateMachine.CurrentState))
+                        break;
+
+                    ResetAnimationGraph();
+                    _animator.Play(_characterStateManager.StateMachine.CurrentState);
                     break;
             }
         }
@@ -428,7 +405,7 @@ namespace Lodis.Gameplay
         }
 
         // Update is called once per frame
-        void Update()
+        void LateUpdate()
         {
             if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT)
                 _animator.SetBool("FacingLeft", true);

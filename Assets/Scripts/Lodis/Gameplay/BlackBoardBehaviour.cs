@@ -1,4 +1,5 @@
 ﻿using Lodis.ScriptableObjects;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,9 +10,9 @@ namespace Lodis.Gameplay
     public class BlackBoardBehaviour : MonoBehaviour
     {
         public GridScripts.GridBehaviour Grid { get; private set; }
-        public PlayerState player1State = PlayerState.IDLE;
-        public PlayerState player2State = PlayerState.IDLE;
-        public float projectileHeight;
+        public string Player1State = null;
+        public string Player2State = null;
+        public float ProjectileHeight;
         public FloatVariable MaxKnockBackHealth;
         public GameObject Player1;
         public GameObject Player2;
@@ -53,14 +54,14 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="id">The player's ID</param>
         /// <returns></returns>
-        public PlayerState GetPlayerStateFromID(int id)
+        public string GetPlayerStateFromID(int id)
         {
             if (id == 0)
-                return player1State;
+                return Player1State;
             else if(id == 1)
-                return player2State;
+                return Player2State;
 
-            return PlayerState.IDLE;
+            return null;
         }
 
         private void Awake()

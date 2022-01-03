@@ -65,11 +65,11 @@ namespace Lodis.Gameplay
             spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
             spawnerObject.transform.forward = owner.transform.forward;
 
-            if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.projectileHeight)
+            if (spawnerObject.transform.position.y > BlackBoardBehaviour.Instance.ProjectileHeight)
             {
                 spawnerObject.transform.position = new Vector3
                     (spawnerObject.transform.position.x,
-                    BlackBoardBehaviour.Instance.projectileHeight,
+                    BlackBoardBehaviour.Instance.ProjectileHeight,
                     owner.transform.position.z);
             }
 

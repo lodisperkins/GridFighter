@@ -102,7 +102,7 @@ namespace Lodis.Gameplay
             base.Deactivate();
 
             //Destroy particles and hit box
-            DestroyBehaviour.Destroy(_visualPrefabInstances.Item1);
+            MonoBehaviour.Destroy(_visualPrefabInstances.Item1);
 
             //Reset character gravity to default
             _knockBackBehaviour.Physics.Gravity = _ownerGravity;

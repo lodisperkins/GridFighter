@@ -27,7 +27,6 @@ namespace Lodis.Gameplay
 
     public class MovesetBehaviour : MonoBehaviour
     {
-        private AbilityType _attackState = AbilityType.NONE;
         [Tooltip("The basic ability deck this character will be using.")]
         [SerializeField]
         private Deck _normalDeckRef;
