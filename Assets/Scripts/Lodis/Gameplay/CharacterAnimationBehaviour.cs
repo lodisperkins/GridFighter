@@ -348,7 +348,7 @@ namespace Lodis.Gameplay
                     break;
 
                 case "SoftLanding":
-                    _animator.transform.localPosition = Vector3.zero;
+                    //_animator.transform.localPosition = Vector3.zero;
 
                     _animator.Play("SoftLanding");
                     _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
@@ -357,7 +357,7 @@ namespace Lodis.Gameplay
                     break;
 
                 case "HardLanding":
-                    _animator.transform.localPosition = Vector3.zero;
+                    //_animator.transform.localPosition = Vector3.zero;
 
                     _animator.Play("HardLanding");
                     _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;
@@ -368,6 +368,17 @@ namespace Lodis.Gameplay
                 case "GroundRecovery":
                     _animator.Play("GroundRecovery");
                     _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime;
+                    _animatingMotion = true;
+                    break;
+
+                case "Flinching":
+
+                    if (_knockbackBehaviour.Physics.IsGrounded)
+                        _animator.Play("GroundedFlinching");
+                    else
+                        _animator.Play("InAirFlinching");
+
+                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.TimeInCurrentHitStun;
                     _animatingMotion = true;
                     break;
 

@@ -445,7 +445,7 @@
                 else
                 {
 
-                    Debug.LogErrorFormat("Failed to trigger transition with name {0}, because its origin is not the current state", transition.ID, this);
+                    Debug.LogErrorFormat("Failed to trigger transition with name {0}, because its origin is not the current state: " + CurrentState, transition.ID, this);
 
                     return false;
                 }

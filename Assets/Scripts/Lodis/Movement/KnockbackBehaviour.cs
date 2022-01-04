@@ -63,7 +63,11 @@ namespace Lodis.Movement
         [SerializeField]
         private Vector3 _idleGroundedPointExtents;
         [SerializeField]
+        private Lodis.ScriptableObjects.FloatVariable _minimumLaunchMagnitude;
+        [SerializeField]
         private bool _inHitStun;
+        private bool _isFlinching;
+        private float _timeInCurrentHitStun;
         private RoutineBehaviour.TimedAction _hitStunTimer = new RoutineBehaviour.TimedAction();
 
         /// <summary>
@@ -108,6 +112,8 @@ namespace Lodis.Movement
         public float KnockDownLandingTime { get => _knockDownLandingTime; set => _knockDownLandingTime = value; }
         public GridPhysicsBehaviour Physics { get => _gridPhysicsBehaviour; set => _gridPhysicsBehaviour = value; }
         public bool InHitStun { get => _inHitStun;}
+        public bool IsFlinching { get => _isFlinching; }
+        public float TimeInCurrentHitStun { get => _timeInCurrentHitStun; }
 
         private void Awake()
         {
@@ -200,6 +206,8 @@ namespace Lodis.Movement
                 return;
             }
 
+            Physics.StopVelocity();
+
             _currentCoroutine = StartCoroutine(StartLandingLag());
 
             _onKnockBackTemp += CancelLanding;
@@ -252,6 +260,11 @@ namespace Lodis.Movement
             base.CancelStun();
 
             Physics.UnfreezeObject();
+        }
+
+        public void CancelHitStun()
+        {
+
         }
 
         public override void OnCollisionEnter(Collision collision)
@@ -344,11 +357,12 @@ namespace Lodis.Movement
         public void ActivateHitStunByTimer(float timeInHitStun)
         {
             _inHitStun = true;
+            _timeInCurrentHitStun = timeInHitStun;
 
             if(_hitStunTimer.GetEnabled())
                 RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
 
-            _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => _inHitStun = false, TimedActionCountType.SCALEDTIME, timeInHitStun);
+            _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _inHitStun = false; _isFlinching = false; }, TimedActionCountType.SCALEDTIME, timeInHitStun);
         }
 
 
@@ -357,7 +371,7 @@ namespace Lodis.Movement
         /// </summary>
         public bool CheckIfIdle()
         {
-            return !Tumbling && !InFreeFall && Physics.ObjectAtRest && !Landing;
+            return !Tumbling && !InFreeFall && Physics.ObjectAtRest && !Landing && !InHitStun;
         }
         public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
@@ -381,8 +395,12 @@ namespace Lodis.Movement
             _currentKnockBackScale = totalKnockback;
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
+            _isFlinching = true;
 
-            if (knockBackForce.magnitude > 0)
+            //Disables object movement on the grid
+            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+
+            if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -398,9 +416,6 @@ namespace Lodis.Movement
                     _movementBehaviour.canCancelMovement = false;
                 }
 
-                //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
-
                 //Add force to objectd
                 Physics.ApplyImpulseForce(_velocityOnLaunch);
 
@@ -413,6 +428,7 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
+
             ActivateHitStunByTimer(hitStun);
 
             return damage;
@@ -441,7 +457,7 @@ namespace Lodis.Movement
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, abilityData.GetCustomStatValue("HitAngle"));
 
-            if (knockBackForce.magnitude > 0)
+            if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -472,6 +488,9 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
+            else
+                _isFlinching = true;
+
             ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 
             return abilityData.GetCustomStatValue("Damage");
@@ -516,41 +535,44 @@ namespace Lodis.Movement
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
 
-            if (knockBackForce.magnitude <= 0)
-                return damage;
-
-            //Invoke knock back events
-            _onKnockBackStart?.Invoke();
-            _onKnockBackStartTemp?.Invoke();
-            _onKnockBackStartTemp = null;
-
-            _velocityOnLaunch = knockBackForce;
-            Physics.Rigidbody.isKinematic = false;
-
-            if (_movementBehaviour.IsMoving)
+            if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
             {
-                _movementBehaviour.canCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
-            }
 
-            //Disables object movement on the grid
-            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
-            if (knockBackIsFixed)
-                //Add force to objectd using mass
-                Physics.ApplyImpulseForce(_velocityOnLaunch);
+                //Invoke knock back events
+                _onKnockBackStart?.Invoke();
+                _onKnockBackStartTemp?.Invoke();
+                _onKnockBackStartTemp = null;
+
+                _velocityOnLaunch = knockBackForce;
+                Physics.Rigidbody.isKinematic = false;
+
+                if (_movementBehaviour.IsMoving)
+                {
+                    _movementBehaviour.canCancelMovement = true;
+                    _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                    _movementBehaviour.canCancelMovement = false;
+                }
+
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+                if (knockBackIsFixed)
+                    //Add force to objectd using mass
+                    Physics.ApplyImpulseForce(_velocityOnLaunch);
+                else
+                    //Add force to the object ignoring mass
+                    Physics.ApplyVelocityChange(_velocityOnLaunch);
+
+                if (_velocityOnLaunch.magnitude > 0)
+                {
+                    _inFreeFall = false;
+                    _tumbling = true;
+                    _onKnockBack?.Invoke();
+                    _onKnockBackTemp?.Invoke();
+                    _onKnockBackTemp = null;
+                }
+            }
             else
-                //Add force to the object ignoring mass
-                Physics.ApplyVelocityChange(_velocityOnLaunch);
-
-            if (_velocityOnLaunch.magnitude > 0)
-            {
-                _inFreeFall = false;
-                _tumbling = true;
-                _onKnockBack?.Invoke();
-                _onKnockBackTemp?.Invoke();
-                _onKnockBackTemp = null;
-            }
+                _isFlinching = true;
 
             ActivateHitStunByTimer(hitStun);
 
@@ -588,41 +610,44 @@ namespace Lodis.Movement
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, abilityData.GetCustomStatValue("HitAngle"));
 
-            if (knockBackForce.magnitude <= 0)
-                return damage;
-
-            //Invoke knock back events
-            _onKnockBackStart?.Invoke();
-            _onKnockBackStartTemp?.Invoke();
-            _onKnockBackStartTemp = null;
-
-            _velocityOnLaunch = knockBackForce;
-            Physics.Rigidbody.isKinematic = false;
-
-            if (_movementBehaviour.IsMoving)
+            if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
             {
-                _movementBehaviour.canCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
-            }
 
-            //Disables object movement on the grid
-            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
-            if (knockBackIsFixed)
-                //Add force to objectd using mass
-                Physics.ApplyImpulseForce(_velocityOnLaunch);
+                //Invoke knock back events
+                _onKnockBackStart?.Invoke();
+                _onKnockBackStartTemp?.Invoke();
+                _onKnockBackStartTemp = null;
+
+                _velocityOnLaunch = knockBackForce;
+                Physics.Rigidbody.isKinematic = false;
+
+                if (_movementBehaviour.IsMoving)
+                {
+                    _movementBehaviour.canCancelMovement = true;
+                    _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                    _movementBehaviour.canCancelMovement = false;
+                }
+
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+                if (knockBackIsFixed)
+                    //Add force to objectd using mass
+                    Physics.ApplyImpulseForce(_velocityOnLaunch);
+                else
+                    //Add force to the object ignoring mass
+                    Physics.ApplyVelocityChange(_velocityOnLaunch);
+
+                if (_velocityOnLaunch.magnitude > 0)
+                {
+                    _inFreeFall = false;
+                    _tumbling = true;
+                    _onKnockBack?.Invoke();
+                    _onKnockBackTemp?.Invoke();
+                    _onKnockBackTemp = null;
+                }
+            }
             else
-                //Add force to the object ignoring mass
-                Physics.ApplyVelocityChange(_velocityOnLaunch);
-
-            if (_velocityOnLaunch.magnitude > 0)
-            {
-                _inFreeFall = false;
-                _tumbling = true;
-                _onKnockBack?.Invoke();
-                _onKnockBackTemp?.Invoke();
-                _onKnockBackTemp = null;
-            }
+                _isFlinching = true;
 
             ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 

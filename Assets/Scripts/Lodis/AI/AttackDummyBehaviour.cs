@@ -48,7 +48,7 @@ namespace Lodis.AI
                 if (_enableRandomBehaviour)
                 {
                     _attackType = (Gameplay.AbilityType)UnityEngine.Random.Range(0, 9);
-                    _attackDirection = new Vector2(UnityEngine.Random.Range(-1, 1), UnityEngine.Random.Range(-1, 1));
+                    _attackDirection = new Vector2(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
                     _attackStrength = UnityEngine.Random.Range(0.1f, 1.5f);
                 }
 

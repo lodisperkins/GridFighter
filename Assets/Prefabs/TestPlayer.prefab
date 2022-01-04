@@ -305,6 +305,7 @@ MonoBehaviour:
   _isAlive: 0
   _isInvincible: 0
   _stunned: 0
+  _netForceLandingTolerance: 5
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _tumbling: 0
   _inFreeFall: 0
@@ -317,6 +318,8 @@ MonoBehaviour:
   _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
   _idleGroundedPoint: {x: 0, y: -0.4, z: 0}
   _idleGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
+  _minimumLaunchMagnitude: {fileID: 11400000, guid: 2b1b835242b798f4d9228a6fd0127a83,
+    type: 2}
   _inHitStun: 0
 --- !u!114 &-6459078877488197423
 MonoBehaviour:
@@ -348,7 +351,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 4705404459745268771}
   _projectileSpawnPoint: {fileID: 7641039657355691941}
@@ -385,9 +388,9 @@ MonoBehaviour:
   _bounceCollider: {fileID: 5036224701878357983}
   _isGrounded: 0
   _extraHeight: 0.5
-  _bounciness: 0.8
+  _bounciness: 5
   _panelBounceEnabled: 1
-  _force: {x: 0, y: 0, z: 0}
+  _netForce: {x: 0, y: 0, z: 0}
   _useGravity: 1
   _ignoreForces: 0
   _rangeToIgnoreUpAngle: 0.2
@@ -421,7 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graph:
     states:
-    - position: {x: 260.8889, y: 480.66678}
+    - position: {x: 232.00002, y: 482.88895}
       id: Idle
       onEnterState:
         m_PersistentCalls:
@@ -432,7 +435,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 259.44446, y: 223.11127}
+    - position: {x: 232.77788, y: 220.88902}
       id: Stunned
       onEnterState:
         m_PersistentCalls:
@@ -443,7 +446,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 68.22223, y: 572.7779}
+    - position: {x: 64.88887, y: 237.22247}
       id: BreakingFall
       onEnterState:
         m_PersistentCalls:
@@ -487,7 +490,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 68.888535, y: 484.00024}
+    - position: {x: 64.44408, y: 484.00024}
       id: Parrying
       onEnterState:
         m_PersistentCalls:
@@ -509,7 +512,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 433.2222, y: 480.77768}
+    - position: {x: 404.3335, y: 482.99985}
       id: Attacking
       onEnterState:
         m_PersistentCalls:
@@ -531,7 +534,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 261, y: 568.1116}
+    - position: {x: 232.11116, y: 570.3337}
       id: Moving
       onEnterState:
         m_PersistentCalls:
@@ -553,8 +556,19 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
+    - position: {x: 388.87363, y: 312.6267}
+      id: Flinching
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
     anyStates:
-    - position: {x: 260.06363, y: 315.452}
+    - position: {x: 232.28587, y: 309.8964}
       id: AnyState 1
     - position: {x: -77.60303, y: 399.67465}
       id: AnyState 2
@@ -679,18 +693,6 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
-    - id: Parrying-BreakingFall
-      label: 
-      originID: Parrying
-      targetID: BreakingFall
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
     - id: Any-FreeFall
       label: 
       originID: AnyState 2
@@ -715,18 +717,6 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
-    - id: Any-Tumbling
-      label: 
-      originID: AnyState 1
-      targetID: Tumbling
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
     - id: Any-Stunned
       label: 
       originID: AnyState 1
@@ -739,11 +729,47 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Tumbling-BreakingFall
+      label: 
+      originID: Tumbling
+      targetID: BreakingFall
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Flinching
+      label: 
+      originID: AnyState 1
+      targetID: Flinching
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Any-Tumbling
+      label: 
+      originID: AnyState 1
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 377.34912, y: -112.93774}
+        dragOffset: {x: 256.23773, y: -161.8267}
       gridSettings:
         isEnabled: 1
       labelSettings:

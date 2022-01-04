@@ -412,6 +412,9 @@ namespace Lodis.Gameplay
 
         private void OnDrawGizmos()
         {
+            if (!_knockBack)
+                return;
+
             if (_knockBack.Tumbling)
             {
                 Collider bounceCollider = _knockBack.Physics.BounceCollider;
