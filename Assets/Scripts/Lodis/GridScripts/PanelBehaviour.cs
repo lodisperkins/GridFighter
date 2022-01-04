@@ -114,12 +114,10 @@ namespace Lodis.GridScripts
             if (knockbackScript.Physics.LastVelocity.magnitude <= 0.1f || knockbackScript.Physics.Bounciness <= 0 || !knockbackScript.Physics.PanelBounceEnabled)
                 return;
 
-            float upMagnitude = 0;
-            upMagnitude = knockbackScript.Physics.LastVelocity.magnitude;
+            float upMagnitude = knockbackScript.Physics.LastVelocity.magnitude * knockbackScript.Physics.Bounciness;
 
-            if (_bounceDampening > knockbackScript.Physics.Bounciness )
-                //Calculate and apply friction force
-                upMagnitude /= _bounceDampening - knockbackScript.Physics.Bounciness;
+            //Calculate and apply friction force
+            upMagnitude /= _bounceDampening;
 
             knockbackScript.Physics.ApplyImpulseForce(Vector3.up * upMagnitude);
             knockbackScript.ActivateHitStunByTimer(0.01f);
@@ -128,21 +126,20 @@ namespace Lodis.GridScripts
         private void OnTriggerStay(Collider other)
         {
             //Get knock back script to apply force
-            Movement.KnockbackBehaviour knockbackScript = other.transform.root.GetComponent<Movement.KnockbackBehaviour>();
+            Movement.GridPhysicsBehaviour physics = other.transform.root.GetComponent<Movement.GridPhysicsBehaviour>();
 
             //Return if the object doesn't have one or is invincible
-            if (!knockbackScript)
-                return;
-            else if (knockbackScript.IsInvincible || knockbackScript.InFreeFall)
+            if (!physics)
                 return;
 
             //Don't add a force if the object is traveling at a low speed
-            if (knockbackScript.Physics.LastVelocity.magnitude <= 0.5f)
+            float dotProduct = Vector3.Dot(physics.LastVelocity, Vector3.up);
+            if (dotProduct >= 0 || dotProduct == -1)
                 return;
 
             //Calculate and apply friction force
-            Vector3 frictionForce = new Vector3(knockbackScript.Physics.Mass * knockbackScript.Physics.LastVelocity.x, 0, 0).normalized * _friction;
-            knockbackScript.Physics.ApplyForce(-frictionForce);
+            Vector3 frictionForce = new Vector3(physics.Mass * physics.LastVelocity.x, 0, 0).normalized * _friction;
+            physics.ApplyForce(-frictionForce);
         }
     }
 }

@@ -13,6 +13,8 @@ namespace Lodis.Movement
     [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class KnockbackBehaviour : HealthBehaviour
     {
+        [SerializeField]
+        private  float _netForceLandingTolerance = 0.5f;
         [Tooltip("How fast will objects be allowed to travel in knockback")]
         [SerializeField]
         private ScriptableObjects.FloatVariable _maxMagnitude;
@@ -664,16 +666,9 @@ namespace Lodis.Movement
 
             UpdateGroundedColliderPosition();
 
-            if (Physics.ObjectAtRest && !InHitStun)
-                _inFreeFall = false;
-
-            if (Physics.RigidbodyInactive() || Physics.Rigidbody.isKinematic || InFreeFall)
-                _tumbling = false;
-
-            if (Physics.IsGrounded)
+            if (Physics.IsGrounded && !InHitStun && Physics.NetForce.magnitude <= _netForceLandingTolerance && (Tumbling || InFreeFall))
             {
-                if ((Physics.LastVelocity.magnitude <= 0.6f && Physics.Acceleration.magnitude <= 0.6f && !InHitStun) && (Tumbling || InFreeFall))
-                    TryStartLandingLag();
+                TryStartLandingLag();
             }
         }
     }

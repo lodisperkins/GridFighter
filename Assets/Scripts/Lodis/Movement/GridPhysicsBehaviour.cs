@@ -48,7 +48,7 @@ namespace Lodis.Movement
         private bool _panelBounceEnabled = true;
         private Vector3 _normalForce;
         [SerializeField]
-        private Vector3 _force;
+        private Vector3 _netForce;
         [SerializeField]
         private bool _useGravity = true;
         [Tooltip("If true, this object will ignore all forces acting on it including gravity")]
@@ -108,6 +108,7 @@ namespace Lodis.Movement
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
         public bool ObjectAtRest { get => _objectAtRest; }
         public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
+        public Vector3 NetForce { get => _netForce; }
 
         private void Awake()
         {
@@ -395,6 +396,7 @@ namespace Lodis.Movement
             Rigidbody.AddForce(force, ForceMode.VelocityChange);
             _lastVelocity = force;
             _lastForceAdded = force;
+            _netForce += force;
         }
 
         /// <summary>
@@ -421,6 +423,7 @@ namespace Lodis.Movement
             Rigidbody.AddForce(force, ForceMode.Force);
             _lastVelocity = force;
             _lastForceAdded = force;
+            _netForce += force;
         }
 
         /// <summary>
@@ -451,6 +454,7 @@ namespace Lodis.Movement
 
             _lastVelocity = force;
             _lastForceAdded = force;
+            _netForce += force;
         }
 
         /// <summary>
@@ -494,26 +498,13 @@ namespace Lodis.Movement
             //if (Rigidbody.velocity.magnitude > 0)
             //    Rigidbody.velocity /= _velocityDecayRate.Value;
 
-            if (CheckIsGrounded())
-            {
-                float yForce = 0;
-
-                if (_lastVelocity.y < 0)
-                    yForce = _lastVelocity.y;
-
-                _normalForce = new Vector3(0, Gravity + yForce, 0);
-            }
-            else
-                _normalForce = Vector3.zero;
-
             if (UseGravity && !IgnoreForces)
-                _constantForceBehaviour.force = new Vector3(0, -Gravity, 0) + _normalForce;
-            else
-                _constantForceBehaviour.force = Vector3.zero;
+                _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
 
-            _force = _constantForceBehaviour.force + LastVelocity;
+            _netForce = Rigidbody.mass * Acceleration;
 
-            _objectAtRest = CheckIsGrounded() && _force.magnitude <= 0.1f;
+
+            _objectAtRest = CheckIsGrounded() && _netForce.magnitude == 0;
         }
     }
 }
