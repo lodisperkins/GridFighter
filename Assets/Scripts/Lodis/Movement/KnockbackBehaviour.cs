@@ -264,7 +264,11 @@ namespace Lodis.Movement
 
         public void CancelHitStun()
         {
+            if (_hitStunTimer.GetEnabled())
+                RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
 
+            _inHitStun = false;
+            _isFlinching = false;
         }
 
         public override void OnCollisionEnter(Collision collision)
