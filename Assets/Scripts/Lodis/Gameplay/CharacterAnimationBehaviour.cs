@@ -314,7 +314,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Plays the appropriate move clip based on the move direction
         /// </summary>
-        private void PlayMovementAnimation()
+        public void PlayMovementAnimation()
         {
             _animatingMotion = true;
             _animationPhase = 0;
@@ -345,42 +345,11 @@ namespace Lodis.Gameplay
         private void UpdateAnimationsBasedOnState()
         {
 
-            if (_characterStateManager.StateMachine.CurrentState != "Attacking" && AbilityAnimationRoutine != null)
-            {
-                StopCoroutine(AbilityAnimationRoutine);
-                AbilityAnimationRoutine = null;
-            }
-            else if (_characterStateManager.StateMachine.CurrentState == "Attacking")
-                return;
-
             switch (_characterStateManager.StateMachine.CurrentState)
             {
-                case "BreakingFall":
-                    PlayFallBreakAnimation();
-                    _animatingMotion = true;
-                    break;
-
-                case "SoftLanding":
-                    //_animator.transform.localPosition = Vector3.zero;
-
-                    _animator.SetTrigger("SoftLanding");
-                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
-
-                    _animatingMotion = true;
-                    break;
-
-                case "HardLanding":
-                    //_animator.transform.localPosition = Vector3.zero;
-
-                    _animator.SetTrigger("HardLanding");
-                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;
-
-                    _animatingMotion = true;
-                    break;
 
                 case "GroundRecovery":
-                    _animator.SetTrigger("GroundRecovery");
-                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime;
+                    PlayGroundRecoveryAnimation();
                     _animatingMotion = true;
                     break;
 
@@ -398,7 +367,25 @@ namespace Lodis.Gameplay
             }
         }
 
-        private void PlayDamageAnimation()
+        public void PlayGroundRecoveryAnimation()
+        {
+            _animator.SetTrigger("GroundRecovery");
+            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime;
+        }
+
+        public void PlayHardLandingAnimation()
+        {
+            _animator.SetTrigger("HardLanding");
+            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;
+        }
+
+        public void PlaySoftLandingAnimation()
+        {
+            _animator.SetTrigger("SoftLanding");
+            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
+        }
+
+        public void PlayDamageAnimation()
         {
 
             _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.TimeInCurrentHitStun;
@@ -413,7 +400,7 @@ namespace Lodis.Gameplay
         /// Plays the animation to break a fall based on the 
         /// direction the structure is to the character
         /// </summary>
-        private void PlayFallBreakAnimation()
+        public void PlayFallBreakAnimation()
         {
             float x = Mathf.Abs(_normal.x);
             float y = Mathf.Abs(_normal.y);
@@ -434,8 +421,11 @@ namespace Lodis.Gameplay
 
         private void Update()
         {
-            UpdateAnimationsBasedOnState();
-            _previousState = _characterStateMachine.CurrentState;
+            if (_characterStateManager.StateMachine.CurrentState != "Attacking" && AbilityAnimationRoutine != null)
+            {
+                StopCoroutine(AbilityAnimationRoutine);
+                AbilityAnimationRoutine = null;
+            }
             //GetCurrentAnimationClip();
         }
 

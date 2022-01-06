@@ -439,7 +439,18 @@ MonoBehaviour:
       id: Stunned
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 8493895805545904040}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Stunned
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -450,7 +461,18 @@ MonoBehaviour:
       id: BreakingFall
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayFallBreakAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -461,7 +483,18 @@ MonoBehaviour:
       id: HardLanding
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayHardLandingAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -483,7 +516,18 @@ MonoBehaviour:
       id: GroundRecovery
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayGroundRecoveryAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -494,7 +538,18 @@ MonoBehaviour:
       id: Parrying
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 8493895805545904040}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Parrying
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -505,7 +560,18 @@ MonoBehaviour:
       id: Tumbling
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 8493895805545904040}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Tumbling
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -527,7 +593,18 @@ MonoBehaviour:
       id: FreeFall
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 8493895805545904040}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: FreeFall
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -538,7 +615,18 @@ MonoBehaviour:
       id: Moving
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayMovementAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -549,7 +637,18 @@ MonoBehaviour:
       id: SoftLanding
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlaySoftLandingAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -560,7 +659,18 @@ MonoBehaviour:
       id: Flinching
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayDamageAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -769,7 +879,7 @@ MonoBehaviour:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 256.23773, y: -161.8267}
+        dragOffset: {x: 532.9045, y: -152.93779}
       gridSettings:
         isEnabled: 1
       labelSettings:
