@@ -48,6 +48,8 @@ namespace Lodis.Gameplay
         private Vector3 _modelRestPosition;
         public Coroutine AbilityAnimationRoutine;
         private AnimatorOverrideController _overrideController;
+        private string _previousState;
+        private int _previousNameHash;
 
         // Start is called before the first frame update
         void Start()
@@ -57,6 +59,8 @@ namespace Lodis.Gameplay
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
             _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
+            _knockbackBehaviour.AddOnTakeDamageAction(PlayDamageAnimation);
+            _moveBehaviour.AddOnMoveBeginAction(PlayMovementAnimation);
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
             _modelRestPosition = _animator.transform.localPosition;
         }
@@ -128,7 +132,9 @@ namespace Lodis.Gameplay
         /// </summary>
         private void CalculateMovementAnimationSpeed()
         {
-            if (_currentClip == null)
+            _currentClip = GetCurrentAnimationClip();
+
+            if (_currentClip == null || !_animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
                 return;
 
             AnimationPhase phase = (AnimationPhase)_animationPhase;
@@ -190,6 +196,20 @@ namespace Lodis.Gameplay
                 }
 
             return false;
+        }
+
+        AnimationClip GetCurrentAnimationClip()
+        {
+            List<AnimatorClipInfo> animatorClips = new List<AnimatorClipInfo>(_animator.GetCurrentAnimatorClipInfo(0));
+            animatorClips.Sort(SortByWeight);
+
+            return animatorClips[0].clip;
+
+        }
+
+        int SortByWeight(AnimatorClipInfo lhs, AnimatorClipInfo rhs)
+        {
+            return lhs.weight > rhs.weight? -1 : 1;
         }
 
         /// <summary>
@@ -299,16 +319,13 @@ namespace Lodis.Gameplay
             _animatingMotion = true;
             _animationPhase = 0;
 
-            if (_moveBehaviour.MoveDirection.x > 0 && SetCurrentAnimationClip("DashForward"))
-                _animator.Play("DashForward");
-            else if (_moveBehaviour.MoveDirection.x < 0 && SetCurrentAnimationClip("DashBackward"))
-                _animator.Play("DashBackward");
-            else if (_moveBehaviour.MoveDirection.y > 0 && SetCurrentAnimationClip("DashRight"))
-                _animator.Play("DashRight");
-            else if (_moveBehaviour.MoveDirection.y < 0 && SetCurrentAnimationClip("DashLeft"))
-                _animator.Play("DashLeft");
+            _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
+            _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
 
-            CalculateMovementAnimationSpeed();
+            if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
+                _animator.Play("Movement", 0, 0);
+            else
+                _animator.SetTrigger("Movement");
         }
 
         /// <summary>
@@ -338,10 +355,6 @@ namespace Lodis.Gameplay
 
             switch (_characterStateManager.StateMachine.CurrentState)
             {
-                case "Moving":
-                    PlayMovementAnimation();
-                    break;
-
                 case "BreakingFall":
                     PlayFallBreakAnimation();
                     _animatingMotion = true;
@@ -350,7 +363,7 @@ namespace Lodis.Gameplay
                 case "SoftLanding":
                     //_animator.transform.localPosition = Vector3.zero;
 
-                    _animator.Play("SoftLanding");
+                    _animator.SetTrigger("SoftLanding");
                     _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
 
                     _animatingMotion = true;
@@ -359,38 +372,41 @@ namespace Lodis.Gameplay
                 case "HardLanding":
                     //_animator.transform.localPosition = Vector3.zero;
 
-                    _animator.Play("HardLanding");
+                    _animator.SetTrigger("HardLanding");
                     _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;
 
                     _animatingMotion = true;
                     break;
 
                 case "GroundRecovery":
-                    _animator.Play("GroundRecovery");
+                    _animator.SetTrigger("GroundRecovery");
                     _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime;
-                    _animatingMotion = true;
-                    break;
-
-                case "Flinching":
-
-                    if (_knockbackBehaviour.Physics.IsGrounded)
-                        _animator.Play("GroundedFlinching");
-                    else
-                        _animator.Play("InAirFlinching");
-
-                    _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.TimeInCurrentHitStun;
                     _animatingMotion = true;
                     break;
 
                 default:
 
-                    if (_animator.GetCurrentAnimatorStateInfo(0).IsName(_characterStateManager.StateMachine.CurrentState))
+                    if (_previousState == _characterStateMachine.CurrentState)
                         break;
 
-                    ResetAnimationGraph();
-                    _animator.Play(_characterStateManager.StateMachine.CurrentState);
+                    _animator.speed = 1;
+                    if (_characterStateMachine.CurrentState == "Idle")
+                        _animator.ResetTrigger("Movement");
+
+                    _animator.SetTrigger(_characterStateManager.StateMachine.CurrentState);
                     break;
             }
+        }
+
+        private void PlayDamageAnimation()
+        {
+
+            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.TimeInCurrentHitStun;
+            if (_knockbackBehaviour.Physics.IsGrounded)
+                _animator.SetTrigger("GroundedFlinching");
+            else
+                _animator.SetTrigger("InAirFlinching");
+            _animatingMotion = true;
         }
 
         /// <summary>
@@ -416,13 +432,19 @@ namespace Lodis.Gameplay
             }
         }
 
+        private void Update()
+        {
+            UpdateAnimationsBasedOnState();
+            _previousState = _characterStateMachine.CurrentState;
+            //GetCurrentAnimationClip();
+        }
+
         // Update is called once per frame
         void LateUpdate()
         {
             if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT)
                 _animator.SetBool("FacingLeft", true);
 
-            UpdateAnimationsBasedOnState();
             //Debug.Log(_animator.speed);
         }
     }

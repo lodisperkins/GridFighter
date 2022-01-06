@@ -399,7 +399,8 @@ namespace Lodis.Movement
             _currentKnockBackScale = totalKnockback;
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
-            _isFlinching = true;
+            if (hitStun > 0)
+                _isFlinching = true;
 
             //Disables object movement on the grid
             _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
@@ -461,6 +462,9 @@ namespace Lodis.Movement
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, abilityData.GetCustomStatValue("HitAngle"));
 
+            if (abilityData.GetCustomStatValue("HitStunTimer") > 0)
+                _isFlinching = true;
+
             if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
@@ -492,8 +496,6 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
-            else
-                _isFlinching = true;
 
             ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 
@@ -539,6 +541,9 @@ namespace Lodis.Movement
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
 
+            if (hitStun > 0)
+                _isFlinching = true;
+
             if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
             {
 
@@ -575,8 +580,6 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
-            else
-                _isFlinching = true;
 
             ActivateHitStunByTimer(hitStun);
 
@@ -613,6 +616,9 @@ namespace Lodis.Movement
 
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, abilityData.GetCustomStatValue("HitAngle"));
+
+            if (abilityData.GetCustomStatValue("HitStunTimer") > 0)
+                _isFlinching = true;
 
             if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
             {

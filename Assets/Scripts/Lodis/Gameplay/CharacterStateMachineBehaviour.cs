@@ -37,10 +37,10 @@ namespace Lodis.Gameplay
             _stateMachine.SetTransitionCondition("Landing-Down", args => _knockBack.IsDown);
             _stateMachine.SetTransitionCondition("Down-GroundRecovery", args => _knockBack.RecoveringFromFall);
             _stateMachine.SetTransitionConditionByLabel("Parry", args => _characterDefense.IsParrying);
-            _stateMachine.SetTransitionCondition("Any-Tumbling", args => _knockBack.Tumbling);
+            _stateMachine.SetTransitionCondition("Any-Flinching", args => _knockBack.IsFlinching);
+            _stateMachine.SetTransitionCondition("Flinching-Tumbling", args => _knockBack.Tumbling);
             _stateMachine.SetTransitionCondition("Any-FreeFall", args => _knockBack.InFreeFall);
             _stateMachine.SetTransitionCondition("Idle-Moving", args => _movement.IsMoving);
-            _stateMachine.SetTransitionCondition("Any-Flinching", args => _knockBack.IsFlinching);
             _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall && !_characterDefense.IsParrying && !_moveset.AbilityInUse && !_knockBack.IsDown && !_knockBack.RecoveringFromFall && !_knockBack.Landing);
         }
         private void Update()

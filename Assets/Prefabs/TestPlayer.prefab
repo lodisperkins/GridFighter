@@ -424,7 +424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graph:
     states:
-    - position: {x: 232.00002, y: 482.88895}
+    - position: {x: 346.44464, y: 481.77783}
       id: Idle
       onEnterState:
         m_PersistentCalls:
@@ -435,7 +435,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 232.77788, y: 220.88902}
+    - position: {x: 343.8891, y: 216.44455}
       id: Stunned
       onEnterState:
         m_PersistentCalls:
@@ -512,7 +512,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 404.3335, y: 482.99985}
+    - position: {x: 518.7782, y: 481.88873}
       id: Attacking
       onEnterState:
         m_PersistentCalls:
@@ -534,7 +534,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 232.11116, y: 570.3337}
+    - position: {x: 346.5558, y: 569.22266}
       id: Moving
       onEnterState:
         m_PersistentCalls:
@@ -556,7 +556,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 388.87363, y: 312.6267}
+    - position: {x: 218.87357, y: 310.4044}
       id: Flinching
       onEnterState:
         m_PersistentCalls:
@@ -568,7 +568,7 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
     anyStates:
-    - position: {x: 232.28587, y: 309.8964}
+    - position: {x: 346.73047, y: 309.8964}
       id: AnyState 1
     - position: {x: -77.60303, y: 399.67465}
       id: AnyState 2
@@ -753,9 +753,9 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
-    - id: Any-Tumbling
+    - id: Flinching-Tumbling
       label: 
-      originID: AnyState 1
+      originID: Flinching
       targetID: Tumbling
       onEnterTransition:
         m_PersistentCalls:
