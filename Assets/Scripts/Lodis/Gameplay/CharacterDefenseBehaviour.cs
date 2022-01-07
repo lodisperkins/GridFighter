@@ -451,7 +451,7 @@ namespace Lodis.Gameplay
                 _knockBack.TryStartLandingLag();
                 return;
             }
-            Debug.Log("Collided with " + other.name);
+            //Debug.Log("Collided with " + other.name);
         }
 
         private void OnCollisionEnter(Collision collision)

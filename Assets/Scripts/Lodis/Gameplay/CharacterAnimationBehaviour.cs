@@ -58,7 +58,6 @@ namespace Lodis.Gameplay
             _animator.runtimeAnimatorController = _overrideController;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
-            _knockbackBehaviour.AddOnKnockBackAction(ResetAnimationGraph);
             _knockbackBehaviour.AddOnTakeDamageAction(PlayDamageAnimation);
             _moveBehaviour.AddOnMoveBeginAction(PlayMovementAnimation);
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
@@ -123,7 +122,7 @@ namespace Lodis.Gameplay
                     break;
             }
 
-            _animator.speed = newSpeed;
+            _animator.SetFloat("AnimationSpeedScale", newSpeed);
         }
 
         /// <summary>
@@ -183,7 +182,7 @@ namespace Lodis.Gameplay
                     break;
             }
 
-            _animator.speed = newSpeed;
+            _animator.SetFloat("AnimationSpeedScale", newSpeed);
         }
         
         bool SetCurrentAnimationClip(string name)
@@ -202,6 +201,9 @@ namespace Lodis.Gameplay
         {
             List<AnimatorClipInfo> animatorClips = new List<AnimatorClipInfo>(_animator.GetCurrentAnimatorClipInfo(0));
             animatorClips.Sort(SortByWeight);
+
+            if (animatorClips.Count <= 0)
+                return null;
 
             return animatorClips[0].clip;
 
@@ -232,6 +234,7 @@ namespace Lodis.Gameplay
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
+                        _overrideController["Cast"] = _runtimeController.animationClips[0];
 
                         //Start the animation with the appropriate speed
                         _animator.Play("Cast", 0, 0);
@@ -327,68 +330,29 @@ namespace Lodis.Gameplay
             else
                 _animator.SetTrigger("Movement");
         }
-
-        /// <summary>
-        /// Stop the playable graph from playing the current clip and
-        /// reset its speed to the default
-        /// </summary>
-        private void ResetAnimationGraph()
-        {
-            _overrideController["Cast"] = _runtimeController.animationClips[0];
-            _animator.speed = 1;
-            _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
-        }
-
-        /// <summary>
-        /// Updates the type of animations playing based on the characters state
-        /// </summary>
-        private void UpdateAnimationsBasedOnState()
-        {
-
-            switch (_characterStateManager.StateMachine.CurrentState)
-            {
-
-                case "GroundRecovery":
-                    PlayGroundRecoveryAnimation();
-                    _animatingMotion = true;
-                    break;
-
-                default:
-
-                    if (_previousState == _characterStateMachine.CurrentState)
-                        break;
-
-                    _animator.speed = 1;
-                    if (_characterStateMachine.CurrentState == "Idle")
-                        _animator.ResetTrigger("Movement");
-
-                    _animator.SetTrigger(_characterStateManager.StateMachine.CurrentState);
-                    break;
-            }
-        }
-
+      
         public void PlayGroundRecoveryAnimation()
         {
             _animator.SetTrigger("GroundRecovery");
-            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime;
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime);
         }
 
         public void PlayHardLandingAnimation()
         {
             _animator.SetTrigger("HardLanding");
-            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime;
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime);
         }
 
         public void PlaySoftLandingAnimation()
         {
             _animator.SetTrigger("SoftLanding");
-            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime;
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime);
         }
 
         public void PlayDamageAnimation()
         {
 
-            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.TimeInCurrentHitStun;
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.TimeInCurrentHitStun);
             if (_knockbackBehaviour.Physics.IsGrounded)
                 _animator.SetTrigger("GroundedFlinching");
             else
@@ -405,7 +369,7 @@ namespace Lodis.Gameplay
             float x = Mathf.Abs(_normal.x);
             float y = Mathf.Abs(_normal.y);
 
-            _animator.speed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _defenseBehaviour.FallBreakLength;
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _defenseBehaviour.FallBreakLength);
 
             if (x > y)
             {
@@ -433,9 +397,9 @@ namespace Lodis.Gameplay
         void LateUpdate()
         {
             if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT)
-                _animator.SetBool("FacingLeft", true);
+                _animator.SetBool("OnRightSide", true);
 
-            //Debug.Log(_animator.speed);
+            Debug.Log(_animator.speed);
         }
     }
 }
