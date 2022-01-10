@@ -945,8 +945,8 @@ MonoBehaviour:
   _animator: {fileID: 8493895805545904040}
   _runtimeController: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
   _characterStateManager: {fileID: 995624687320838471}
-  _moveAnimationStartUpTime: 0.1
-  _moveAnimationRecoverTime: 0.2
+  _moveAnimationStartUpTime: 0
+  _moveAnimationRecoverTime: 0
 --- !u!1001 &5961747996489264755
 PrefabInstance:
   m_ObjectHideFlags: 0

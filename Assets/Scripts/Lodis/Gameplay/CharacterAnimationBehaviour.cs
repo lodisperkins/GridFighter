@@ -45,11 +45,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _moveAnimationRecoverTime;
         private Vector2 _normal;
-        private Vector3 _modelRestPosition;
         public Coroutine AbilityAnimationRoutine;
         private AnimatorOverrideController _overrideController;
-        private string _previousState;
-        private int _previousNameHash;
 
         // Start is called before the first frame update
         void Start()
@@ -59,9 +56,18 @@ namespace Lodis.Gameplay
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
             _knockbackBehaviour.AddOnTakeDamageAction(PlayDamageAnimation);
-            _moveBehaviour.AddOnMoveBeginAction(PlayMovementAnimation);
+
+            _moveBehaviour.AddOnMoveBeginAction
+                (
+                    () =>
+                    {
+
+                        _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
+                        _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
+                    }
+                );
+
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
-            _modelRestPosition = _animator.transform.localPosition;
         }
 
         /// <summary>
@@ -319,16 +325,14 @@ namespace Lodis.Gameplay
         /// </summary>
         public void PlayMovementAnimation()
         {
+            _animator.SetFloat("AnimationSpeedScale", 1);
             _animatingMotion = true;
             _animationPhase = 0;
 
             _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
             _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
 
-            if (_animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
-                _animator.Play("Movement", 0, 0);
-            else
-                _animator.SetTrigger("Movement");
+            _animator.SetTrigger("Movement");
         }
       
         public void PlayGroundRecoveryAnimation()
