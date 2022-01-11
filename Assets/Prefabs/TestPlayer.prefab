@@ -670,7 +670,18 @@ MonoBehaviour:
       id: Flinching
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayDamageAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -879,7 +890,7 @@ MonoBehaviour:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 158.45999, y: -178.49344}
+        dragOffset: {x: 170.68228, y: -201.82681}
       gridSettings:
         isEnabled: 1
       labelSettings:
@@ -931,11 +942,18 @@ MonoBehaviour:
   _moveBehaviour: {fileID: 2765739998997917303}
   _knockbackBehaviour: {fileID: -6268856529084459074}
   _defenseBehaviour: {fileID: 2612010366639249464}
+  _movesetBehaviour: {fileID: -2626200582311294016}
   _animator: {fileID: 8493895805545904040}
   _runtimeController: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
   _characterStateManager: {fileID: 995624687320838471}
   _moveAnimationStartUpTime: 0
   _moveAnimationRecoverTime: 0
+  _defaultCastAnimation: {fileID: 7400000, guid: 2a309e7f9de89cc4b9a8ca00474660a7,
+    type: 3}
+  _defaultSummonAnimation: {fileID: 7400000, guid: ddf9c626b2ff100488528fffc61d472e,
+    type: 3}
+  _defaultMeleeAnimation: {fileID: 7400000, guid: 635d947060dd41649bbcfe7bc1ebb900,
+    type: 3}
 --- !u!1001 &5961747996489264755
 PrefabInstance:
   m_ObjectHideFlags: 0

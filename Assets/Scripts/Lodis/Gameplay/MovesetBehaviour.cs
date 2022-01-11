@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Lodis.Gameplay
@@ -56,6 +57,7 @@ namespace Lodis.Gameplay
         private bool _deckReloading;
         private Movement.GridMovementBehaviour _movementBehaviour;
         private Input.InputBehaviour _inputBehaviour;
+        private UnityAction _onUseAbility;
 
         public Transform ProjectileSpawnTransform
         {
@@ -142,6 +144,9 @@ namespace Lodis.Gameplay
             }
         }
 
+        public Ability LastAbilityInUse { get => _lastAbilityInUse; }
+        public UnityAction OnUseAbility { get => _onUseAbility; set => _onUseAbility = value; }
+
         /// <summary>
         /// Gets the ability from the moveset deck based on the type passed in.
         /// </summary>
@@ -172,12 +177,11 @@ namespace Lodis.Gameplay
             if (currentAbility == null)
                 return null;
 
-            if (_animationBehaviour)
-                _animationBehaviour.AbilityAnimationRoutine = _animationBehaviour.StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
-
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
-             
+
+            OnUseAbility?.Invoke();
+
             //Return new ability
             return _lastAbilityInUse;
         }
@@ -243,9 +247,6 @@ namespace Lodis.Gameplay
             else if (currentAbility.MaxActivationAmountReached)
                 return null;
 
-            if (_animationBehaviour)
-                _animationBehaviour.AbilityAnimationRoutine = _animationBehaviour.StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
-
             //Doesn't increment ability use amount before checking max
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
@@ -255,7 +256,7 @@ namespace Lodis.Gameplay
             if (!_deckReloading)
                 currentAbility.onEnd += () => UpdateHand(abilitySlot);
 
-
+            OnUseAbility?.Invoke();
             //Return new ability
             return _lastAbilityInUse;
         }

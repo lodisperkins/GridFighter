@@ -28,6 +28,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private CharacterDefenseBehaviour _defenseBehaviour;
         [SerializeField]
+        private MovesetBehaviour _movesetBehaviour;
+        [SerializeField]
         private Animator _animator;
         private Ability _currentAbilityAnimating;
         private AnimationClip _currentClip;
@@ -44,9 +46,18 @@ namespace Lodis.Gameplay
         [Tooltip("THe amount of time it takes the character to exit the move pose")]
         [SerializeField]
         private float _moveAnimationRecoverTime;
+        [SerializeField]
+        private AnimationClip _defaultCastAnimation;
+        [SerializeField]
+        private AnimationClip _defaultSummonAnimation;
+        [SerializeField]
+        private AnimationClip _defaultMeleeAnimation;
         private Vector2 _normal;
         public Coroutine AbilityAnimationRoutine;
         private AnimatorOverrideController _overrideController;
+        private float _currentClipStartUpTime;
+        private float _currentClipActiveTime;
+        private float _currentClipRecoverTime;
 
         // Start is called before the first frame update
         void Start()
@@ -67,6 +78,7 @@ namespace Lodis.Gameplay
                     }
                 );
 
+            _movesetBehaviour.OnUseAbility += PlayAbilityAnimation;
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
         }
 
@@ -77,10 +89,103 @@ namespace Lodis.Gameplay
         {
             _animationPhase++;
 
-            if (_animatingMotion)
-                CalculateMovementAnimationSpeed();
-            else
-                CalculateAbilityAnimationSpeed();
+            CalculateAnimationSpeed();
+        }
+
+        private int GetNextIncrementAnimationPhaseEvent(float currentAnimationTime = 0)
+        {
+            int eventIndex = 0;
+
+            for (int i = eventIndex; i < _currentClip.events.Length; i++)
+            {
+                if (_currentClip.events[i].functionName == "IncrementAnimationPhase" && currentAnimationTime == 0)
+                    break;
+                else if (_currentClip.events[i].functionName != "IncrementAnimationPhase" || Mathf.Abs(currentAnimationTime - _currentClip.events[i].time) > 0.05f)
+                    eventIndex++;
+                else
+                    break;
+            }
+
+            return eventIndex;
+        }
+
+        private int GetNextIncrementAnimationPhaseEvent(int eventIndex)
+        {
+            eventIndex++;
+
+            for (int i = eventIndex; i < _currentClip.events.Length; i++)
+            {
+                if (_currentClip.events[i].functionName != "IncrementAnimationPhase")
+                    eventIndex++;
+                else
+                    break;
+            }
+
+            return eventIndex;
+        }
+
+        private void CalculateAnimationSpeed()
+        {
+            _currentClip = GetCurrentAnimationClip();
+
+            //Return if this clip couldn't be found or if it doesn't have animation events
+            if (!_currentClip || _currentClip.events.Length <= 0)
+                return;
+
+            AnimationPhase phase = (AnimationPhase)_animationPhase;
+            float newSpeed = 1;
+            int eventIndex = 0;
+
+
+
+            ///Calculates the new animation speed based on the current animation phase.
+            ///If the phases time for animating is 0, the animator is set to the next phase of the animation.
+            ///Otherwise, the new speed is calculated by dividing the current time it takes to get to the next phase, by the
+            /// desired amount of time the animator should take be in that phase.
+            switch (phase)
+            {
+                case AnimationPhase.STARTUP:
+                    if (_currentClipStartUpTime <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.events[0].time;
+                        break;
+                    }
+
+                    eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
+
+                    newSpeed = (_currentClip.events[eventIndex].time / _currentClipStartUpTime);
+                    break;
+
+                case AnimationPhase.ACTIVE:
+                    if (_currentClip.events.Length < 2)
+                        break;
+                    else if (_currentClipActiveTime <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.events[1].time;
+                        break;
+                    }
+
+                    eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
+                    int nextEventIndex = GetNextIncrementAnimationPhaseEvent(eventIndex);
+
+                    newSpeed = (_currentClip.events[nextEventIndex].time - _currentClip.events[eventIndex].time) / _currentClipActiveTime;
+                    break;
+                case AnimationPhase.INACTIVE:
+                    if (_currentClip.events.Length < 3)
+                        break;
+                    else if (_currentClipRecoverTime <= 0)
+                    {
+                        _animator.playbackTime = _currentClip.length;
+                        break;
+                    }
+
+                    eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
+
+                    newSpeed = (_currentClip.length - _currentClip.events[eventIndex].time) / _currentClipRecoverTime;
+                    break;
+            }
+
+            _animator.SetFloat("AnimationSpeedScale", newSpeed);
         }
 
         /// <summary>
@@ -224,7 +329,7 @@ namespace Lodis.Gameplay
         /// Starts the animation playback for this ability. 
         /// </summary>
         /// <param name="ability">The ability that the animation belongs to</param>
-        public IEnumerator PlayAbilityAnimation(Ability ability)
+        public IEnumerator StartAbilityAnimationRoutine(Ability ability)
         {
             StopCurrentAnimation();
             _currentAbilityAnimating = ability;
@@ -235,18 +340,15 @@ namespace Lodis.Gameplay
             {
                 case AnimationType.CAST:
                     //Set the clip for the animation graph attached
-                    if (SetCurrentAnimationClip("Cast"))
+                    if (_defaultCastAnimation)
                     {
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
-                        _overrideController["Cast"] = _runtimeController.animationClips[0];
-
-                        //Start the animation with the appropriate speed
-                        _animator.Play("Cast", 0, 0);
+                        _currentClip = _defaultCastAnimation;
+                        _overrideController["Cast"] = _defaultCastAnimation;
                         _animatingMotion = false;
                         _animationPhase = 0;
-                        CalculateAbilityAnimationSpeed();
                     }
                     else
                         Debug.LogError("Couldn't play Cast animation. Couldn't find the Cast clip for " + ability.abilityData.abilityName);
@@ -254,17 +356,16 @@ namespace Lodis.Gameplay
 
                 case AnimationType.MELEE:
                     //Set the clip for the animation graph attached
-                    if (SetCurrentAnimationClip("Melee"))
+                    if (_defaultMeleeAnimation)
                     {
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
+                        _currentClip = _defaultMeleeAnimation;
 
-                        //Start the animation with the appropriate speed
-                        _animator.Play("Melee", 0, 0);
+                        _overrideController["Cast"] = _defaultMeleeAnimation;
                         _animatingMotion = false;
                         _animationPhase = 0;
-                        CalculateAbilityAnimationSpeed();
                     }
                     else
                         Debug.LogError("Couldn't play Melee animation. Couldn't find the Melee clip for " + ability.abilityData.abilityName);
@@ -272,17 +373,16 @@ namespace Lodis.Gameplay
 
                 case AnimationType.SUMMON:
                     //Set the clip for the animation graph attached
-                    if (SetCurrentAnimationClip("Summon"))
+                    if (_defaultSummonAnimation)
                     {
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
                         yield return new WaitUntil(() => ability.CanPlayAnimation);
 
-                        //Start the animation with the appropriate speed
-                        _animator.Play("Summon", 0, 0);
+                        _currentClip = _defaultSummonAnimation;
+                        _overrideController["Cast"] = _defaultSummonAnimation;
                         _animatingMotion = false;
                         _animationPhase = 0;
-                        CalculateAbilityAnimationSpeed();
                     }
                     else
                         Debug.LogError("Couldn't play Summon animation. Couldn't find the Summon clip for " + ability.abilityData.abilityName);
@@ -302,12 +402,32 @@ namespace Lodis.Gameplay
                     _overrideController["Cast"] = _currentClip;
 
                     //Play custom clip with appropriate speed
-                    _animator.Play("Cast", 0, 0);
                     _animatingMotion = false;
                     _animationPhase = 0;
-                    CalculateAbilityAnimationSpeed();
                     break;
             }
+
+            if (ability.abilityData.useAbilityTimingForAnimation)
+            {
+                _currentClipStartUpTime = ability.abilityData.startUpTime;
+                _currentClipActiveTime = ability.abilityData.timeActive;
+                _currentClipRecoverTime = ability.abilityData.recoverTime;
+            }
+            _animator.SetTrigger("Attack");
+
+            if (_currentClip.events[0] != null)
+                if (_currentClip.events[0].functionName == "CalculateAnimationSpeed")
+                    yield return null;
+
+            AnimationEvent animationEvent = new AnimationEvent();
+            animationEvent.time = 0;
+            animationEvent.functionName = "CalculateAnimationSpeed";
+            _currentClip.AddEvent(animationEvent);
+        }
+
+        public void PlayAbilityAnimation()
+        {
+            StartCoroutine(StartAbilityAnimationRoutine(_movesetBehaviour.LastAbilityInUse));
         }
 
         /// <summary>
@@ -328,6 +448,20 @@ namespace Lodis.Gameplay
             _animator.SetFloat("AnimationSpeedScale", 1);
             _animatingMotion = true;
             _animationPhase = 0;
+
+            _currentClipStartUpTime = _moveAnimationStartUpTime;
+
+            //Calculates the time it takes to get to the destination
+            Vector2 oldPosition = new Vector2();
+
+            if (_moveBehaviour.PreviousPanel)
+                oldPosition = _moveBehaviour.PreviousPanel.Position;
+
+            float travelDistance = (oldPosition - _moveBehaviour.CurrentPanel.Position).magnitude;
+            float travelTime = travelDistance / _moveBehaviour.Speed;
+
+            _currentClipActiveTime = travelTime;
+            _currentClipRecoverTime = _moveAnimationRecoverTime;
 
             _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
             _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
@@ -355,12 +489,15 @@ namespace Lodis.Gameplay
 
         public void PlayDamageAnimation()
         {
-
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.TimeInCurrentHitStun);
             if (_knockbackBehaviour.Physics.IsGrounded)
                 _animator.SetTrigger("GroundedFlinching");
             else
                 _animator.SetTrigger("InAirFlinching");
+
+            AnimatorStateInfo nextState = _animator.GetNextAnimatorStateInfo(0);
+            AnimationClip clip = GetCurrentAnimationClip();
+            _animator.SetFloat("AnimationSpeedScale", clip.length / _knockbackBehaviour.TimeInCurrentHitStun);
+
             _animatingMotion = true;
         }
 
