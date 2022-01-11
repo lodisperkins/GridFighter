@@ -390,6 +390,8 @@ namespace Lodis.Movement
             Health += damage;
             Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
 
+            ActivateHitStunByTimer(hitStun);
+
             _onTakeDamage?.Invoke();
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
@@ -434,8 +436,6 @@ namespace Lodis.Movement
                 }
             }
 
-            ActivateHitStunByTimer(hitStun);
-
             return damage;
         }
 
@@ -451,6 +451,8 @@ namespace Lodis.Movement
             //Adds damage to the total damage
             Health += abilityData.GetCustomStatValue("Damage");
             Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
+
+            ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 
             _onTakeDamage?.Invoke();
             _onTakeDamageTemp?.Invoke();
@@ -497,8 +499,6 @@ namespace Lodis.Movement
                 }
             }
 
-            ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
-
             return abilityData.GetCustomStatValue("Damage");
         }
 
@@ -522,6 +522,8 @@ namespace Lodis.Movement
             //Adds damage to the total damage
             Health += damage;
             Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
+
+            ActivateHitStunByTimer(hitStun);
 
             //Invoke damage events
             _onTakeDamage?.Invoke();
@@ -581,8 +583,6 @@ namespace Lodis.Movement
                 }
             }
 
-            ActivateHitStunByTimer(hitStun);
-
             return damage;
         }
 
@@ -598,6 +598,8 @@ namespace Lodis.Movement
             //Adds damage to the total damage
             Health += damage;
             Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
+
+            ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 
             //Invoke damage events
             _onTakeDamage?.Invoke();
@@ -656,10 +658,6 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
-            else
-                _isFlinching = true;
-
-            ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 
             return damage;
         }
