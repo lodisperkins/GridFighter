@@ -331,10 +331,10 @@ namespace Lodis.Gameplay
         /// <param name="ability">The ability that the animation belongs to</param>
         public IEnumerator StartAbilityAnimationRoutine(Ability ability)
         {
-            StopCurrentAnimation();
+            //StopCurrentAnimation();
             _currentAbilityAnimating = ability;
-            _animator.speed = 1;
-
+            _animator.SetFloat("AnimationSpeedScale", 1);
+            _animationPhase = 0;
             ///Play animation based on type
             switch (_currentAbilityAnimating.abilityData.animationType)
             {
@@ -471,24 +471,28 @@ namespace Lodis.Gameplay
       
         public void PlayGroundRecoveryAnimation()
         {
+            _animationPhase = 0;
             _animator.SetTrigger("GroundRecovery");
             _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime);
         }
 
         public void PlayHardLandingAnimation()
         {
+            _animationPhase = 0;
             _animator.SetTrigger("HardLanding");
             _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime);
         }
 
         public void PlaySoftLandingAnimation()
         {
+            _animationPhase = 0;
             _animator.SetTrigger("SoftLanding");
             _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime);
         }
 
         public void PlayDamageAnimation()
         {
+            _animationPhase = 0;
             if (_knockbackBehaviour.Physics.IsGrounded)
                 _animator.SetTrigger("GroundedFlinching");
             else
@@ -507,6 +511,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void PlayFallBreakAnimation()
         {
+            _animationPhase = 0;
             float x = Mathf.Abs(_normal.x);
             float y = Mathf.Abs(_normal.y);
 
