@@ -52,6 +52,7 @@ namespace Lodis.Gameplay
         private AnimationClip _defaultSummonAnimation;
         [SerializeField]
         private AnimationClip _defaultMeleeAnimation;
+        private AnimatorTransitionInfo _lastTransitionInfo;
         private Vector2 _normal;
         public Coroutine AbilityAnimationRoutine;
         private AnimatorOverrideController _overrideController;
@@ -123,11 +124,13 @@ namespace Lodis.Gameplay
 
             return eventIndex;
         }
-
-        private void CalculateAnimationSpeed()
+        int i = 0;
+        public void CalculateAnimationSpeed()
         {
-            _currentClip = GetCurrentAnimationClip();
+            if (_animator.GetNextAnimatorClipInfo(0).Length <= 0)
+                return;
 
+            _currentClip = _animator.GetNextAnimatorClipInfo(0)[0].clip;
             //Return if this clip couldn't be found or if it doesn't have animation events
             if (!_currentClip || _currentClip.events.Length <= 0)
                 return;
@@ -135,7 +138,7 @@ namespace Lodis.Gameplay
             AnimationPhase phase = (AnimationPhase)_animationPhase;
             float newSpeed = 1;
             int eventIndex = 0;
-
+            
 
 
             ///Calculates the new animation speed based on the current animation phase.
@@ -153,7 +156,7 @@ namespace Lodis.Gameplay
 
                     eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
 
-                    newSpeed = (_currentClip.events[eventIndex].time / _currentClipStartUpTime);
+                    newSpeed = (_currentClip.events[eventIndex].time / _currentClipStartUpTime - _lastTransitionInfo.duration);
                     break;
 
                 case AnimationPhase.ACTIVE:
@@ -164,24 +167,24 @@ namespace Lodis.Gameplay
                         _animator.playbackTime = _currentClip.events[1].time;
                         break;
                     }
-
+                    i++;
                     eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
                     int nextEventIndex = GetNextIncrementAnimationPhaseEvent(eventIndex);
 
-                    newSpeed = (_currentClip.events[nextEventIndex].time - _currentClip.events[eventIndex].time) / _currentClipActiveTime;
+                    newSpeed = (_currentClip.events[nextEventIndex].time - _currentClip.events[eventIndex].time) / _currentClipActiveTime - _lastTransitionInfo.duration;
                     break;
                 case AnimationPhase.INACTIVE:
-                    if (_currentClip.events.Length < 3)
+                    if (_currentClip.events.Length < 2)
                         break;
                     else if (_currentClipRecoverTime <= 0)
                     {
                         _animator.playbackTime = _currentClip.length;
                         break;
                     }
-
+                    i = 0;
                     eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
 
-                    newSpeed = (_currentClip.length - _currentClip.events[eventIndex].time) / _currentClipRecoverTime;
+                    newSpeed = (_currentClip.length - _currentClip.events[eventIndex].time) / _currentClipRecoverTime - _lastTransitionInfo.duration;
                     break;
             }
 
@@ -415,14 +418,14 @@ namespace Lodis.Gameplay
             }
             _animator.SetTrigger("Attack");
 
-            if (_currentClip.events[0] != null)
-                if (_currentClip.events[0].functionName == "CalculateAnimationSpeed")
-                    yield return null;
+            //if (_currentClip.events[0] != null)
+            //    if (_currentClip.events[0].functionName == "CalculateAnimationSpeed")
+            //        yield break;
 
-            AnimationEvent animationEvent = new AnimationEvent();
-            animationEvent.time = 0;
-            animationEvent.functionName = "CalculateAnimationSpeed";
-            _currentClip.AddEvent(animationEvent);
+            //AnimationEvent animationEvent = new AnimationEvent();
+            //animationEvent.time = 0;
+            //animationEvent.functionName = "CalculateAnimationSpeed";
+            //_currentClip.AddEvent(animationEvent);
         }
 
         public void PlayAbilityAnimation()
@@ -536,6 +539,9 @@ namespace Lodis.Gameplay
                 StopCoroutine(AbilityAnimationRoutine);
                 AbilityAnimationRoutine = null;
             }
+            AnimatorTransitionInfo currentInfo = _animator.GetAnimatorTransitionInfo(0);
+            if (_lastTransitionInfo.nameHash != currentInfo.nameHash && currentInfo.nameHash != 0)
+                _lastTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
             //GetCurrentAnimationClip();
         }
 
