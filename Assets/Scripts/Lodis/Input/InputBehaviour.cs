@@ -85,6 +85,9 @@ namespace Lodis.Input
         private bool _attackButtonDown;
         [SerializeField]
         private bool _abilityBuffered;
+        [SerializeField]
+        private UnityAction _onPlayerMove;
+        private UnityAction _onPlayeMoveTemp;
 
         /// <summary>
         /// The ID number of the player using this component
@@ -244,13 +247,22 @@ namespace Lodis.Input
                 else if ((int)args[0] == 1)
                     _lastAbilityUsed = _moveset.UseSpecialAbility(1, args);
 
-               if (_lastAbilityUsed?.abilityData.CanInputMovementWhileActive == false)
-                    DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
             }
             else
             {
                 _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
                 _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
+            }
+
+            if (!_lastAbilityUsed.abilityData.CanInputMovementWhileActive)
+            {
+                DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
+            }
+            else if (_lastAbilityUsed.abilityData.CanCancelOnMove)
+            {
+                UnityAction action = () => _lastAbilityUsed.TryCancel();
+                AddOnPlayerMoveAction(action);
+                _lastAbilityUsed.onEnd += () => { _onPlayerMove -= action; };
             }
         }
 
@@ -302,7 +314,16 @@ namespace Lodis.Input
             }
         }
 
-        private int _useCount;
+        public void AddOnPlayerMoveAction(UnityAction action)
+        {
+            _onPlayerMove += action;
+        }
+
+        public void AddOnPlayerMoveTempAction(UnityAction action)
+        {
+            _onPlayeMoveTemp += action;
+        }
+
         /// <summary>
         /// Enable player movement
         /// </summary>
@@ -368,6 +389,9 @@ namespace Lodis.Input
             if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
+                _onPlayerMove?.Invoke();
+                _onPlayeMoveTemp?.Invoke();
+                _onPlayeMoveTemp = null;
                 _storedMoveInput = Vector2.zero;
             }
             //Checks to see if move input can be enabled 

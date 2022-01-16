@@ -81,6 +81,7 @@ namespace Lodis.Gameplay
 
             _movesetBehaviour.OnUseAbility += PlayAbilityAnimation;
             _defenseBehaviour.onFallBroken += normal => _normal = normal;
+            //_animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         }
 
         /// <summary>
@@ -127,10 +128,8 @@ namespace Lodis.Gameplay
         int i = 0;
         public void CalculateAnimationSpeed()
         {
-            if (_animator.GetNextAnimatorClipInfo(0).Length <= 0)
-                return;
-
-            _currentClip = _animator.GetNextAnimatorClipInfo(0)[0].clip;
+            
+            AnimatorStateInfo stateInfo;
             //Return if this clip couldn't be found or if it doesn't have animation events
             if (!_currentClip || _currentClip.events.Length <= 0)
                 return;
@@ -148,18 +147,27 @@ namespace Lodis.Gameplay
             switch (phase)
             {
                 case AnimationPhase.STARTUP:
+
+                    if (_animator.GetNextAnimatorClipInfo(0).Length <= 0)
+                        return;
+
+                    _currentClip = _animator.GetNextAnimatorClipInfo(0)[0].clip;
+
                     if (_currentClipStartUpTime <= 0)
                     {
                         _animator.playbackTime = _currentClip.events[0].time;
                         break;
                     }
 
-                    eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
 
-                    newSpeed = (_currentClip.events[eventIndex].time / _currentClipStartUpTime - _lastTransitionInfo.duration);
+                    stateInfo = _animator.GetNextAnimatorStateInfo(0);
+                    eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (stateInfo.normalizedTime % 1));
+
+                    newSpeed = (_currentClip.events[eventIndex].time / _currentClipStartUpTime);
                     break;
 
                 case AnimationPhase.ACTIVE:
+
                     if (_currentClip.events.Length < 2)
                         break;
                     else if (_currentClipActiveTime <= 0)
@@ -168,12 +176,15 @@ namespace Lodis.Gameplay
                         break;
                     }
                     i++;
+
+                    stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
                     eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
                     int nextEventIndex = GetNextIncrementAnimationPhaseEvent(eventIndex);
 
-                    newSpeed = (_currentClip.events[nextEventIndex].time - _currentClip.events[eventIndex].time) / _currentClipActiveTime - _lastTransitionInfo.duration;
+                    newSpeed = (_currentClip.events[nextEventIndex].time - _currentClip.events[eventIndex].time) / _currentClipActiveTime;
                     break;
                 case AnimationPhase.INACTIVE:
+
                     if (_currentClip.events.Length < 2)
                         break;
                     else if (_currentClipRecoverTime <= 0)
@@ -182,9 +193,11 @@ namespace Lodis.Gameplay
                         break;
                     }
                     i = 0;
-                    eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
 
-                    newSpeed = (_currentClip.length - _currentClip.events[eventIndex].time) / _currentClipRecoverTime - _lastTransitionInfo.duration;
+                    stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+                    eventIndex = GetNextIncrementAnimationPhaseEvent(eventIndex);
+
+                    newSpeed = (_currentClip.length - _currentClip.events[eventIndex].time) / _currentClipRecoverTime;
                     break;
             }
 

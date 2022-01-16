@@ -886,11 +886,23 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Attack-Moving
+      label: 
+      originID: Attacking
+      targetID: Moving
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 170.68228, y: -201.82681}
+        dragOffset: {x: 97.34897, y: -207.3824}
       gridSettings:
         isEnabled: 1
       labelSettings:
