@@ -310,14 +310,15 @@ namespace Lodis.Movement
         /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
         public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
-            StackFrame stackFrame = new StackFrame(1);
+            //Used to see what object disabled movement
+            //StackFrame stackFrame = new StackFrame(1);
 
-            if (stackFrame != null)
-            {
-                MethodBase method = stackFrame.GetMethod();
-                if (method != null)
-                    UnityEngine.Debug.Log(method.DeclaringType.Name);
-            }
+            //if (stackFrame != null)
+            //{
+            //    MethodBase method = stackFrame.GetMethod();
+            //    if (method != null)
+            //        UnityEngine.Debug.Log(method.DeclaringType.Name);
+            //}
 
             if (!_canMove && !overridesMoveCondition)
                 return;

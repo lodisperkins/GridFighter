@@ -40,7 +40,7 @@ namespace Lodis.AI
         public void Update()
         {
             //Only attack if the dummy is grounded and delay timer is up
-            if (!_knockbackBehaviour.Tumbling && !_knockbackBehaviour.InFreeFall && Time.time - _timeOfLastAttack >= _attackDelay)
+            if (!_knockbackBehaviour.IsTumbling && !_knockbackBehaviour.InFreeFall && Time.time - _timeOfLastAttack >= _attackDelay)
             {
                 //Clamps z direction in case its abs value becomes larger than one at runtime
                 _attackDirection.Normalize();

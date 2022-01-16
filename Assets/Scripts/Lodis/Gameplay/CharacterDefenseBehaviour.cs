@@ -264,7 +264,7 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         private IEnumerator UpgradeParry()
         {
-            while (_knockBack.Tumbling || _knockBack.InFreeFall)
+            while (_knockBack.IsTumbling || _knockBack.InFreeFall)
             {
                 yield return new WaitForSeconds(_parryUpgradeRate);
                 _tempParryCooldown -= _parryCoolDownDecreaseRate;
@@ -332,7 +332,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void Brace()
         {
-            if (!_knockBack.Tumbling || !_canBrace)
+            if (!_knockBack.IsTumbling || !_canBrace)
                 return;
 
             ActivateBrace();
@@ -366,7 +366,7 @@ namespace Lodis.Gameplay
         /// <param name="direction">The direction to air dodge in.</param>
         public void ActivateAirDodge(Vector2 direction)
         {
-            if (_canParry && _knockBack.Tumbling)
+            if (_canParry && _knockBack.IsTumbling)
                 _knockBack.Physics.ApplyVelocityChange(direction * _airDodgeDistance);
                 //StartCoroutine(AirDodgeRoutine(direction));
         }
@@ -398,7 +398,7 @@ namespace Lodis.Gameplay
             _isParrying = false;
 
             //Apply force downward and make the character invincible if the character was in air
-            if (_knockBack.Tumbling)
+            if (_knockBack.IsTumbling)
             {
                 _knockBack.InFreeFall = true;
                 _knockBack.Physics.ApplyVelocityChange(Vector3.down * _parryFallSpeed);
@@ -415,7 +415,7 @@ namespace Lodis.Gameplay
             if (!_knockBack)
                 return;
 
-            if (_knockBack.Tumbling)
+            if (_knockBack.IsTumbling)
             {
                 Collider bounceCollider = _knockBack.Physics.BounceCollider;
                 Gizmos.DrawCube(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 1.5f);
@@ -484,7 +484,6 @@ namespace Lodis.Gameplay
                 _knockBack.TryStartLandingLag();
                 return;
             }
-            Debug.Log("Collided with " + collision.gameObject.name);
 
         }
         // Update is called once per frame

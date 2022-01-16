@@ -40,6 +40,7 @@ namespace Lodis.Movement
         private UnityAction _onKnockBackTemp;
         private UnityAction _onKnockBackStartTemp;
         private UnityAction _onTakeDamageTemp;
+        private UnityAction _onHitStun;
        
         [Tooltip("The amount of time it takes for this object to regain footing after landing")]
         [SerializeField]
@@ -78,7 +79,7 @@ namespace Lodis.Movement
         /// <summary>
         /// Returns if the object is in knockback
         /// </summary>
-        public bool Tumbling {get => _tumbling; }
+        public bool IsTumbling {get => _tumbling; }
 
         /// <summary>
         /// Returns the velocity of this object when it was first launched
@@ -194,13 +195,18 @@ namespace Lodis.Movement
             _onTakeDamageTemp += action;
         }
 
+        public void AddOnHitStunAction(UnityAction action)
+        {
+            _onHitStun += action;
+        }
+
         /// <summary>
         /// Starts landing lag if the object just fell onto a structure
         /// </summary>
         /// <param name="args"></param>
         public void TryStartLandingLag(params object[] args)
         {
-            if (!InFreeFall && !Tumbling || Landing || IsDown)
+            if (!InFreeFall && !IsTumbling || Landing || IsDown)
             {
                 Physics.StopVelocity();
                 return;
@@ -227,7 +233,7 @@ namespace Lodis.Movement
 
             Stunned = true;
 
-            if (InFreeFall || Tumbling)
+            if (InFreeFall || IsTumbling)
                Physics.FreezeInPlaceByCondition(condition =>!Stunned, false, true);
 
             if (moveset)
@@ -275,7 +281,7 @@ namespace Lodis.Movement
         {
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
-            if (damageScript == null || !Tumbling || IsInvincible)
+            if (damageScript == null || !IsTumbling || IsInvincible)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
@@ -294,7 +300,7 @@ namespace Lodis.Movement
         {
             HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
 
-            if (damageScript == null || !Tumbling || IsInvincible)
+            if (damageScript == null || !IsTumbling || IsInvincible)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
@@ -333,7 +339,7 @@ namespace Lodis.Movement
                 yield return new WaitForSeconds(_landingTime);
                 Landing = false;
             }
-            else if (Tumbling)
+            else if (IsTumbling)
             {
                 _tumbling = false;
                 yield return new WaitForSeconds(KnockDownLandingTime);
@@ -367,6 +373,7 @@ namespace Lodis.Movement
                 RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
 
             _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _inHitStun = false; _isFlinching = false; }, TimedActionCountType.SCALEDTIME, timeInHitStun);
+            _onHitStun?.Invoke();
         }
 
 
@@ -375,7 +382,7 @@ namespace Lodis.Movement
         /// </summary>
         public bool CheckIfIdle()
         {
-            return !Tumbling && !InFreeFall && Physics.ObjectAtRest && !Landing && !InHitStun;
+            return !IsTumbling && !InFreeFall && Physics.ObjectAtRest && !Landing && !InHitStun &&!IsFlinching;
         }
         public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
@@ -664,7 +671,7 @@ namespace Lodis.Movement
 
         private void UpdateGroundedColliderPosition()
         {
-            if (Tumbling)
+            if (IsTumbling)
             {
                 Physics.GroundedBoxPosition = Physics.BounceCollider.bounds.center;
                 Physics.GroundedBoxExtents = Physics.BounceCollider.bounds.extents * 2;
@@ -699,7 +706,7 @@ namespace Lodis.Movement
 
             UpdateGroundedColliderPosition();
 
-            if (Physics.IsGrounded && !InHitStun && Physics.NetForce.magnitude <= _netForceLandingTolerance && (Tumbling || InFreeFall))
+            if (Physics.IsGrounded && !InHitStun && Physics.NetForce.magnitude <= _netForceLandingTolerance && (IsTumbling || InFreeFall))
             {
                 TryStartLandingLag();
             }

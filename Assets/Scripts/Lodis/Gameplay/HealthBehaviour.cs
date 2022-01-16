@@ -205,7 +205,7 @@ namespace Lodis.Gameplay
         {
             KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript || !knockBackScript.Tumbling)
+            if (!knockBackScript || !knockBackScript.IsTumbling)
                 return;
 
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;;
@@ -218,7 +218,7 @@ namespace Lodis.Gameplay
         {
             KnockbackBehaviour knockBackScript = other.gameObject.GetComponent<KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript || !knockBackScript.Tumbling)
+            if (!knockBackScript || !knockBackScript.IsTumbling)
                 return;
 
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude; ;

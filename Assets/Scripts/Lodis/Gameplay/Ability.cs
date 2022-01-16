@@ -315,7 +315,7 @@ namespace Lodis.Gameplay
         /// </summary>
         protected virtual void End()
         {
-            if (!_ownerKnockBackScript.Tumbling)
+            if (!_ownerKnockBackScript.IsTumbling)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
         }
 
