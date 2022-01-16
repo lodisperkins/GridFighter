@@ -251,18 +251,21 @@ namespace Lodis.Input
             else
             {
                 _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
-                _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
             }
+
+            if (_lastAbilityUsed == null)
+                return;
 
             if (!_lastAbilityUsed.abilityData.CanInputMovementWhileActive)
             {
-                DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
+                DisableMovementBasedOnCondition(condition => !_moveset.AbilityInUse);
             }
             else if (_lastAbilityUsed.abilityData.CanCancelOnMove)
             {
                 UnityAction action = () => _lastAbilityUsed.TryCancel();
                 AddOnPlayerMoveAction(action);
                 _lastAbilityUsed.onEnd += () => { _onPlayerMove -= action; };
+                DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
             }
         }
 
