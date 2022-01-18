@@ -559,12 +559,12 @@ namespace Lodis.Gameplay
 
             if (x > y)
             {
-                _animator.Play("WallTech");
+                _animator.SetTrigger("WallTech");
                 _animatingMotion = true;
             }
             else if (y > x)
             {
-                _animator.Play("GroundTech");
+                _animator.SetTrigger("GroundTech");
                 _animatingMotion = true;
             }
         }

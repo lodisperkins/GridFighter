@@ -344,13 +344,13 @@ namespace Lodis.Movement
                 _tumbling = false;
                 yield return new WaitForSeconds(KnockDownLandingTime);
                 Landing = false;
-                RecoveringFromFall = true;
-                _movementBehaviour.DisableMovement(condition => !RecoveringFromFall, false, true);
-
                 //Start knockdown
                 IsDown = true;
+                _movementBehaviour.DisableMovement(condition => !RecoveringFromFall && !IsDown, false, true);
+
                 SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
                 yield return new WaitForSeconds(_knockDownTime);
+                RecoveringFromFall = true;
                 IsDown = false;
                 //Start recovery from knock down
                 Physics.MakeKinematic(); 

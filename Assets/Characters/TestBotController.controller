@@ -209,9 +209,9 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.022922039
   m_TransitionOffset: 0
-  m_ExitTime: 0.75
+  m_ExitTime: 0.75000006
   m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
@@ -237,13 +237,13 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 1
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: 2a309e7f9de89cc4b9a8ca00474660a7, type: 3}
   m_Tag: 
   m_SpeedParameter: AnimationSpeedScale
-  m_MirrorParameter: 
+  m_MirrorParameter: OnRightSide
   m_CycleOffsetParameter: 
   m_TimeParameter: AnimationSpeedScale
 --- !u!1102 &-5623920097997009593
@@ -447,13 +447,13 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 1
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: e1f3e777f7e541542aa88671b13b01bc, type: 3}
   m_Tag: 
   m_SpeedParameter: AnimationSpeedScale
-  m_MirrorParameter: 
+  m_MirrorParameter: OnRightSide
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1102 &-2591858126359510648
@@ -475,13 +475,13 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 7400000, guid: ccd91218b4af45046974214e05b31a81, type: 3}
   m_Tag: 
   m_SpeedParameter: 
-  m_MirrorParameter: 
+  m_MirrorParameter: OnRightSide
   m_CycleOffsetParameter: 
   m_TimeParameter: MoveDirectionX
 --- !u!114 &-2570583365329359432
@@ -513,7 +513,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.018637538
   m_TransitionOffset: 0
   m_ExitTime: 0.75
   m_HasExitTime: 0
@@ -530,7 +530,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: GorundRecovery
+    m_ConditionEvent: GroundRecovery
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 6688153355066385775}
@@ -538,7 +538,7 @@ AnimatorStateTransition:
   m_Mute: 0
   m_IsExit: 0
   serializedVersion: 3
-  m_TransitionDuration: 0.25
+  m_TransitionDuration: 0.06619549
   m_TransitionOffset: 0
   m_ExitTime: 0.73214287
   m_HasExitTime: 0
@@ -703,7 +703,7 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 0}
-  - m_Name: GorundRecovery
+  - m_Name: GroundRecovery
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
@@ -1002,13 +1002,13 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 1
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 576244467203968003}
   m_Tag: 
   m_SpeedParameter: AnimationSpeedScale
-  m_MirrorParameter: 
+  m_MirrorParameter: OnRightSide
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!1102 &2330535115750816926

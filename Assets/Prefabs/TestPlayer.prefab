@@ -310,8 +310,8 @@ MonoBehaviour:
   _tumbling: 0
   _inFreeFall: 0
   _landingTime: 0.7
-  _knockDownTime: 0.2
-  _knockDownRecoverTime: 0.5
+  _knockDownTime: 0.8
+  _knockDownRecoverTime: 0.7
   _knockDownRecoverInvincibleTime: 2
   _knockDownLandingTime: 0.4
   _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
