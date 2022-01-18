@@ -540,6 +540,11 @@ namespace Lodis.Gameplay
             _animatingMotion = true;
         }
 
+        public void UpdateInAirMoveDirection()
+        {
+            _animator.SetFloat("MoveDirectionInAirY", _knockbackBehaviour.Physics.LastVelocity.normalized.y);
+        }
+
         /// <summary>
         /// Plays the animation to break a fall based on the 
         /// direction the structure is to the character
@@ -574,7 +579,9 @@ namespace Lodis.Gameplay
             AnimatorTransitionInfo currentInfo = _animator.GetAnimatorTransitionInfo(0);
             if (_lastTransitionInfo.nameHash != currentInfo.nameHash && currentInfo.nameHash != 0)
                 _lastTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
-            //GetCurrentAnimationClip();
+
+            if (!_knockbackBehaviour.Physics.IsGrounded)
+                UpdateInAirMoveDirection();
         }
 
         // Update is called once per frame

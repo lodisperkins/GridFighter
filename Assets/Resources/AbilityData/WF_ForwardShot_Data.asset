@@ -21,7 +21,7 @@ MonoBehaviour:
   chargeTime: 1
   maxActivationAmount: 0
   canCancelStartUp: 0
-  canCancelActive: 1
+  canCancelActive: 0
   canCancelRecover: 1
   CanCancelOnMove: 1
   CanInputMovementWhileActive: 1
