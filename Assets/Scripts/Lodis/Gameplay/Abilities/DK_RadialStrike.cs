@@ -31,8 +31,7 @@ namespace Lodis.Gameplay
             //Play animation now that the character has reached the target panel
             EnableAnimation();
 
-            //Disable character movement so the ability isn't interrupted
-            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !ownerMoveset.AbilityInUse, false, true);
+            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
 
             //Mark that the target position has been reached
             _inPosition = true;
@@ -91,6 +90,12 @@ namespace Lodis.Gameplay
 
 
             _ownerMoveScript.StopAllCoroutines();
+        }
+
+        protected override void End()
+        {
+            base.End();
+            _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
         }
     }
 }

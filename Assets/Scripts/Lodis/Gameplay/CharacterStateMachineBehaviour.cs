@@ -43,7 +43,7 @@ namespace Lodis.Gameplay
             _stateMachine.SetTransitionCondition("Any-FreeFall", args => _knockBack.InFreeFall);
             _stateMachine.SetTransitionCondition("Idle-Moving", args => _movement.IsMoving && !_moveset.AbilityInUse);
             _stateMachine.SetTransitionCondition("Attack-Moving", args => _movement.IsMoving && _moveset.LastAbilityInUse.abilityData.CanInputMovementWhileActive && _moveset.LastAbilityInUse.CheckIfAbilityCanBeCanceled() && _moveset.LastAbilityInUse.abilityData.CanCancelOnMove);
-            _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall && !_characterDefense.IsParrying && !_moveset.AbilityInUse && !_knockBack.IsDown && !_knockBack.RecoveringFromFall);
+            _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall && !_characterDefense.IsParrying && !_moveset.AbilityInUse);
         }
         private void Update()
         {

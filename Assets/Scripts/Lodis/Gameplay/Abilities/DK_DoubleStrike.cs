@@ -43,6 +43,7 @@ namespace Lodis.Gameplay
             EnableAnimation();
             //Store initial move speed
             _ownerMoveSpeed = _ownerMoveScript.Speed;
+            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
         }
 
         //Called when ability is used
@@ -79,7 +80,6 @@ namespace Lodis.Gameplay
 
             //Change move traits to allow for free movement on the other side of the grid
             _ownerMoveScript.canCancelMovement = true;
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
             _ownerMoveScript.AlwaysLookAtOpposingSide = false;
 
             //Change rotation to the direction of movement
