@@ -23,6 +23,7 @@ MonoBehaviour:
   canCancelStartUp: 0
   canCancelActive: 1
   canCancelRecover: 1
+  CanCancelOnMove: 0
   CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1

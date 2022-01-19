@@ -305,13 +305,13 @@ MonoBehaviour:
   _isAlive: 0
   _isInvincible: 0
   _stunned: 0
-  _netForceLandingTolerance: 5
+  _netForceLandingTolerance: 4
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _tumbling: 0
   _inFreeFall: 0
-  _landingTime: 0.7
-  _knockDownTime: 0.8
-  _knockDownRecoverTime: 0.7
+  _landingTime: 0.5
+  _knockDownTime: 0.3
+  _knockDownRecoverTime: 0.3
   _knockDownRecoverInvincibleTime: 2
   _knockDownLandingTime: 0.4
   _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}

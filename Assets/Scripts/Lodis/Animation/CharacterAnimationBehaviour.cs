@@ -445,6 +445,9 @@ namespace Lodis.Gameplay
                 _currentClipActiveTime = ability.abilityData.timeActive;
                 _currentClipRecoverTime = ability.abilityData.recoverTime;
             }
+            else
+                _animationPhase = 3;
+
             _animator.SetTrigger("Attack");
 
             //if (_currentClip.events[0] != null)
@@ -495,7 +498,11 @@ namespace Lodis.Gameplay
             _currentClipActiveTime = travelTime;
             _currentClipRecoverTime = _moveAnimationRecoverTime;
 
-            _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
+            int mirror = 1;
+
+            if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT) mirror = -1;
+
+            _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x * mirror);
             _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
 
             _animator.SetTrigger("Movement");
