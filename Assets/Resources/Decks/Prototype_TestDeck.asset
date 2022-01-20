@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _abilityData:
   - {fileID: 11400000, guid: f1c8f2a01275dbe43813a2ca028dd731, type: 2}
-  - {fileID: 11400000, guid: 94c2c8358acbbab48989dbd917fb033e, type: 2}
+  - {fileID: 11400000, guid: cccc243dfbdae164e975ceb1d94d4f20, type: 2}
   _deckName: PrototypeNormals

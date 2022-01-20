@@ -214,13 +214,7 @@ namespace Lodis.Gameplay
         private void UpdateHand(int slot)
         {
             _specialAbilitySlots[slot] = null;
-
-            if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null)
-            {
-                _deckReloading = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { ReloadDeck(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
-            }
-            else if (_specialDeck.Count > 0)
+            if (_specialDeck.Count > 0)
             {
                 RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _specialAbilitySlots[slot] = _specialDeck.PopBack(), TimedActionCountType.SCALEDTIME, _specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
             }
@@ -313,6 +307,13 @@ namespace Lodis.Gameplay
                 {
                     _lastAbilityInUse.Update();
                 }
+            }
+
+            //Reload the deck if there are no cards in the hands or the deck
+            if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading)
+            {
+                _deckReloading = true;
+                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { ReloadDeck(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
             }
 
 

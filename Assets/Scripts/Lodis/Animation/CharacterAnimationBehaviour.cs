@@ -173,7 +173,7 @@ namespace Lodis.Gameplay
 
                 case AnimationPhase.ACTIVE:
 
-                    if (_currentClipActiveTime <= 0)
+                    if (_currentClipActiveTime <= 0 && _currentClip.events.Length >= 2)
                     {
                         _animator.playbackTime = _currentClip.events[1].time;
                         break;
