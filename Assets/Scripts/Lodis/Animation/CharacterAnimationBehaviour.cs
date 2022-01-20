@@ -423,6 +423,9 @@ namespace Lodis.Gameplay
 
         public void PlayDamageAnimation()
         {
+            if (_knockbackBehaviour.TimeInCurrentHitStun <= 0)
+                return;
+
             _animationPhase = 0;
 
             _currentClipStartUpTime = _flinchStartUpTime;

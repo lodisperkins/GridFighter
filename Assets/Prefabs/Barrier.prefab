@@ -315,7 +315,7 @@ MonoBehaviour:
   _pushScale: 10
   _damageOnCollision: 0
   _bounceScale: 2
-  _hitStunOnCollision: 7
+  _hitStunOnCollision: 0.5
 --- !u!54 &8665960441623888782
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -353,7 +353,7 @@ MonoBehaviour:
   _extraHeight: 0.5
   _bounciness: 0.8
   _panelBounceEnabled: 1
-  _force: {x: 0, y: 0, z: 0}
+  _netForce: {x: 0, y: 0, z: 0}
   _useGravity: 0
   _ignoreForces: 1
   _rangeToIgnoreUpAngle: 0.2

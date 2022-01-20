@@ -431,7 +431,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackType: 9
-  _attackDelay: 1
+  _attackDelay: 0.5
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 1

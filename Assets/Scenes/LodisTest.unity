@@ -793,7 +793,7 @@ MonoBehaviour:
   _stunned: 0
   owner: 
   _bounceDampen: 1.2
-  _hitStunOnCollision: 0
+  _hitStunOnCollision: 0.5
 --- !u!64 &151772238
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -2237,8 +2237,8 @@ GameObject:
   - component: {fileID: 446117099}
   - component: {fileID: 446117098}
   - component: {fileID: 446117097}
-  - component: {fileID: 446117096}
   - component: {fileID: 446117095}
+  - component: {fileID: 446117096}
   m_Layer: 0
   m_Name: RingBarrierU
   m_TagString: Untagged
@@ -2265,9 +2265,9 @@ MonoBehaviour:
   _stunned: 0
   owner: 
   _bounceDampen: 0
-  _hitStunOnCollision: 0
---- !u!64 &446117096
-MeshCollider:
+  _hitStunOnCollision: 0.5
+--- !u!65 &446117096
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2276,10 +2276,9 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  serializedVersion: 2
+  m_Size: {x: 10, y: 0.41422367, z: 10}
+  m_Center: {x: 0, y: -0.20711184, z: 0}
 --- !u!23 &446117097
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4288,7 +4287,7 @@ MonoBehaviour:
   _stunned: 0
   owner: 
   _bounceDampen: 1.2
-  _hitStunOnCollision: 0
+  _hitStunOnCollision: 0.5
 --- !u!64 &894189966
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -7719,7 +7718,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 1
+  _mode: 0
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}

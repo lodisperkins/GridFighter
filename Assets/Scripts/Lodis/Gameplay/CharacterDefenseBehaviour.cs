@@ -202,6 +202,9 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         private void ActivateGroundParry()
         {
+            if (_knockBack.InHitStun)
+                return;
+
             //Enable parry and update states
             _parryCollider.gameObject.SetActive(true);
             _isParrying = true;

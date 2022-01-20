@@ -367,6 +367,9 @@ namespace Lodis.Movement
 
         public void ActivateHitStunByTimer(float timeInHitStun)
         {
+            if (timeInHitStun <= 0)
+                return;
+
             _inHitStun = true;
             _timeInCurrentHitStun = timeInHitStun;
 
@@ -412,9 +415,6 @@ namespace Lodis.Movement
             if (hitStun > 0)
                 _isFlinching = true;
 
-            //Disables object movement on the grid
-            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
-
             if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
@@ -430,6 +430,9 @@ namespace Lodis.Movement
                     _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
                     _movementBehaviour.canCancelMovement = false;
                 }
+
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
                 //Add force to objectd
                 Physics.ApplyImpulseForce(_velocityOnLaunch);
