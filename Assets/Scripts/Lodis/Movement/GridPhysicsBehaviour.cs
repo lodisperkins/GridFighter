@@ -64,6 +64,15 @@ namespace Lodis.Movement
         private CustomYieldInstruction _wait;
         private GridMovementBehaviour _movementBehaviour;
 
+        /// <summary>
+        /// The event called when this object collides with another
+        /// </summary>
+        private CollisionEvent _onCollision;
+        /// <summary>
+        /// The event called when this object lands on top of a structure
+        /// </summary>
+        private CollisionEvent _onCollisionWithGround;
+
         private Coroutine _currentCoroutine;
         [SerializeField]
         private float _bounceScale = 1;
@@ -95,11 +104,6 @@ namespace Lodis.Movement
         public Collider BounceCollider { get => _bounceCollider; }
 
         public bool IsGrounded{ get => _isGrounded; }
-
-        /// <summary>
-        /// The event called when this object collides with another
-        /// </summary>
-        public CollisionEvent OnCollision { private get; set; }
 
         public Vector3 Acceleration { get => _acceleration; }
         public Rigidbody Rigidbody { get => _rigidbody; }
@@ -296,10 +300,31 @@ namespace Lodis.Movement
             return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * magnitude;
         }
 
+        /// <summary>
+        /// Adds an event to the event called when this object collides with another.
+        /// </summary>
+        /// <param name="collisionEvent">The delegate to invoke upon collision</param>
+        public void AddOnCollisionEvent(CollisionEvent collisionEvent)
+        {
+            _onCollision += collisionEvent;
+        }
+
+        /// <summary>
+        /// Adds an event to the event called when this object collides lands on a structure.
+        /// </summary>
+        /// <param name="collisionEvent">The delegate to invoke upon collision</param>
+        public void AddOnCollisionWithGroundEvent(CollisionEvent collisionEvent)
+        {
+            _onCollisionWithGround += collisionEvent;
+        }
 
         private void OnCollisionEnter(Collision collision)
         {
-            OnCollision?.Invoke(collision.gameObject, collision);
+            _onCollision?.Invoke(collision.gameObject, collision);
+
+            if ((collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("CollisionPlane")) && collision.GetContact(0).normal.y == 1)
+                _onCollisionWithGround?.Invoke();
+            
 
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
             GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
@@ -331,7 +356,7 @@ namespace Lodis.Movement
 
         private void OnTriggerEnter(Collider other)
         {
-            OnCollision?.Invoke(other.gameObject, other);
+            _onCollision?.Invoke(other.gameObject, other);
 
             HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
             GridPhysicsBehaviour gridPhysicsBehaviour = other.gameObject.GetComponent<GridPhysicsBehaviour>();

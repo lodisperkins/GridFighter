@@ -107,7 +107,7 @@ namespace Lodis.GridScripts
 
             if (!knockbackScript)
                 return;
-            else if (knockbackScript.IsInvincible || knockbackScript.Landing)
+            else if (knockbackScript.IsInvincible || knockbackScript.Landing || knockbackScript.InFreeFall)
                 return;
 
             //Don't add a force if the object is traveling at a low speed

@@ -219,114 +219,6 @@ namespace Lodis.Gameplay
 
             _animator.SetFloat("AnimationSpeedScale", newSpeed);
         }
-
-        /// <summary>
-        /// Changes the speed of the animation based on the ability data.
-        /// Uses the ability animation already placed on the animation graph.
-        /// </summary>
-        private void CalculateAbilityAnimationSpeed()
-        {
-            //Return if this ability has a fixed time for the animation
-            if (!_currentAbilityAnimating.abilityData.useAbilityTimingForAnimation)
-                return;
-
-            AnimationPhase phase = (AnimationPhase)_animationPhase;
-            float newSpeed = 1;
-
-            ///Calculates the new animation speed based on the current ability phase.
-            ///If the phases time for animating is 0, the animator is set to the next phase of the animation.
-            ///Otherwise, the new speed is calculated by dividing the current time it takes to get to the next phase, by the
-            /// desired amount of time the animator should take be in that phase.
-            switch (phase)
-            {
-                case AnimationPhase.STARTUP:
-                    if (_currentAbilityAnimating.abilityData.startUpTime <= 0)
-                    {
-                        _animator.playbackTime = _currentClip.events[0].time;
-                        break;
-                    }
-                    newSpeed = (_currentClip.events[0].time / _currentAbilityAnimating.abilityData.startUpTime);
-                    break;
-                case AnimationPhase.ACTIVE:
-                    if (_currentAbilityAnimating.abilityData.timeActive <= 0)
-                    {
-                        _animator.playbackTime = _currentClip.events[1].time;
-                        break;
-                    }
-                    newSpeed = (_currentClip.events[1].time - _currentClip.events[0].time) / _currentAbilityAnimating.abilityData.timeActive;
-                    break;
-                case AnimationPhase.INACTIVE:
-                    if (_currentAbilityAnimating.abilityData.recoverTime <= 0)
-                    {
-                        _animator.playbackTime = _currentClip.length;
-                        break;
-                    }
-                    newSpeed = (_currentClip.length - _currentClip.events[1].time) / _currentAbilityAnimating.abilityData.recoverTime;
-                    break;
-            }
-
-            _animator.SetFloat("AnimationSpeedScale", newSpeed);
-        }
-
-        /// <summary>
-        /// Changes the speed of the animation based on the move startup and end values
-        /// to make the movement animation a bit smoother
-        /// </summary>
-        private void CalculateMovementAnimationSpeed()
-        {
-            _currentClip = GetCurrentAnimationClip();
-
-            if (_currentClip == null || !_animator.GetCurrentAnimatorStateInfo(0).IsName("Movement"))
-                return;
-
-            AnimationPhase phase = (AnimationPhase)_animationPhase;
-            float newSpeed = 1;
-
-            switch (phase)
-            {
-                ///Changes speed of the animation by dividing the time remaining in this phase by the time the startuo should be
-                case AnimationPhase.STARTUP:
-                    if (_moveAnimationStartUpTime <= 0)
-                    {
-                        _animator.playbackTime = _currentClip.events[0].time;
-                        break;
-                    }
-                    newSpeed = (_currentClip.events[0].time / _moveAnimationStartUpTime);
-                    break;
-
-                ///Changes speed of the animation by dividing the time remaining in this phase by the time
-                ///it takes to travel to the destination
-                case AnimationPhase.ACTIVE:
-
-                    //Calculates the time it takes to get to the destination
-                    Vector2 oldPosition = new Vector2();
-
-                    if (_moveBehaviour.PreviousPanel)
-                        oldPosition = _moveBehaviour.PreviousPanel.Position;
-
-                    float travelDistance = (oldPosition - _moveBehaviour.CurrentPanel.Position).magnitude;
-                    float travelTime = travelDistance / _moveBehaviour.Speed;
-
-                    if (travelTime <= 0)
-                    {
-                        _animator.playbackTime = _currentClip.events[1].time;
-                        break;
-                    }
-                    newSpeed = (_currentClip.events[1].time - _currentClip.events[0].time) / travelTime;
-                    break;
-                ///Changes speed of the animation by dividing the time remaining in this phase by the time the recover time should be
-                case AnimationPhase.INACTIVE:
-                    if (_moveAnimationRecoverTime <= 0)
-                    {
-                        _animator.playbackTime = _currentClip.length;
-                        break;
-                    }
-                    newSpeed = (_currentClip.length - _currentClip.events[1].time) / _moveAnimationRecoverTime;
-                    break;
-            }
-
-            _animator.SetFloat("AnimationSpeedScale", newSpeed);
-        }
         
         bool SetCurrentAnimationClip(string name)
         {
@@ -512,7 +404,7 @@ namespace Lodis.Gameplay
         {
             _animationPhase = 0;
             _animator.SetTrigger("GroundRecovery");
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownRecoverTime);
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / (_knockbackBehaviour.KnockDownRecoverTime - 0.1f));
         }
 
         public void PlayHardLandingAnimation()

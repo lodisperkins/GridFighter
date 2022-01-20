@@ -121,6 +121,7 @@ namespace Lodis.Movement
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
             _defenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
             Physics = GetComponent<GridPhysicsBehaviour>();
+            Physics.AddOnCollisionWithGroundEvent(args => { if (InFreeFall) TryStartLandingLag(); });
         }
 
         // Start is called before the first frame update
@@ -706,7 +707,7 @@ namespace Lodis.Movement
 
             UpdateGroundedColliderPosition();
 
-            if (Physics.IsGrounded && !InHitStun && Physics.NetForce.magnitude <= _netForceLandingTolerance && (IsTumbling || InFreeFall))
+            if (Physics.IsGrounded && !InHitStun && Physics.Acceleration.magnitude <= _netForceLandingTolerance && Physics.LastVelocity.normalized.y <= 0 && IsTumbling)
             {
                 TryStartLandingLag();
             }
