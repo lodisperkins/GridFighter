@@ -430,7 +430,7 @@ namespace Lodis.Gameplay
 
             _currentClipStartUpTime = _flinchStartUpTime;
 
-            if (_knockbackBehaviour.Physics.IsGrounded)
+            if (_knockbackBehaviour.Physics.IsGrounded && _knockbackBehaviour.Physics.LastVelocity.magnitude == 0)
                 _animator.SetTrigger("GroundedFlinching");
             else
                 _animator.SetTrigger("InAirFlinching");

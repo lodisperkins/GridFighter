@@ -129,7 +129,6 @@ namespace Lodis.Movement
         {
             _onKnockBack += () => Landing = false;
             _onKnockBackStart += () => { Stunned = false; _movementBehaviour.CurrentPanel.Occupied = false; };
-            Physics.AddOnCollisionWithGroundEvent( args => { if (InFreeFall) TryStartLandingLag(); });
         }
 
         /// <summary>

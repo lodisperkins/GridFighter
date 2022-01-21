@@ -7718,7 +7718,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 0
+  _mode: 1
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}
@@ -10205,6 +10205,7 @@ MonoBehaviour:
   _adjustAngleBasedOnCollision: 0
   damageType: 0
   CanSpike: 0
+  _hitStunTime: 0
   debuggingEnabled: 0
   Priority: 0
 --- !u!65 &1854253617

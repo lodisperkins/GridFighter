@@ -227,7 +227,7 @@ namespace Lodis.Input
         /// <param name="context"></param>
         public void BufferParry(InputAction.CallbackContext context)
         {
-            if (_attackButtonDown || _bufferedAction == null)
+            if (_attackButtonDown)
                 return;
             else if (_bufferedAction == null && (_playerState == "Tumbling" || _playerState == "FreeFall" || _playerState == "Idle"))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
