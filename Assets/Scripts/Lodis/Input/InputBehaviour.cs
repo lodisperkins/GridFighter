@@ -9,6 +9,8 @@ using UnityEngine.Events;
 using Lodis.Movement;
 using System.Windows.Input;
 using Lodis.Utility;
+using UnityEngine.SceneManagement;
+using UnityEditor;
 
 namespace Lodis.Input
 {
@@ -88,6 +90,7 @@ namespace Lodis.Input
         [SerializeField]
         private UnityAction _onPlayerMove;
         private UnityAction _onPlayeMoveTemp;
+        private bool _isPaused;
 
         /// <summary>
         /// The ID number of the player using this component
@@ -224,7 +227,7 @@ namespace Lodis.Input
         /// <param name="context"></param>
         public void BufferParry(InputAction.CallbackContext context)
         {
-            if (_attackButtonDown)
+            if (_attackButtonDown || _bufferedAction == null)
                 return;
             else if (_bufferedAction == null && (_playerState == "Tumbling" || _playerState == "FreeFall" || _playerState == "Idle"))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
@@ -436,6 +439,9 @@ namespace Lodis.Input
             //Temp quit buttom for first prototype build
             if (Keyboard.current.escapeKey.isPressed)
                 Application.Quit();
+
+            if (Keyboard.current.enterKey.wasPressedThisFrame)
+                EditorApplication.isPaused = true;
         }
     }
 }

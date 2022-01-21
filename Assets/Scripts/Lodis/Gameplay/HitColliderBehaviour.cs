@@ -22,6 +22,7 @@ namespace Lodis.Gameplay
         private bool _adjustAngleBasedOnCollision;
         public DamageType damageType = DamageType.DEFAULT;
         public bool CanSpike;
+        [SerializeField]
         private float _hitStunTime;
 
         /// <summary>

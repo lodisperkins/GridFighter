@@ -129,6 +129,7 @@ namespace Lodis.Movement
         {
             _onKnockBack += () => Landing = false;
             _onKnockBackStart += () => { Stunned = false; _movementBehaviour.CurrentPanel.Occupied = false; };
+            Physics.AddOnCollisionWithGroundEvent( args => { if (InFreeFall) TryStartLandingLag(); });
         }
 
         /// <summary>
@@ -368,7 +369,10 @@ namespace Lodis.Movement
         public void ActivateHitStunByTimer(float timeInHitStun)
         {
             if (timeInHitStun <= 0)
+            {
+                _isFlinching = false;
                 return;
+            }
 
             _inHitStun = true;
             _timeInCurrentHitStun = timeInHitStun;
