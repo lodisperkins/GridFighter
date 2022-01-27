@@ -322,7 +322,7 @@ namespace Lodis.Movement
         {
             _onCollision?.Invoke(collision.gameObject, collision);
 
-            if ((collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("CollisionPlane")) && collision.GetContact(0).normal.y == 1)
+            if ((collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("CollisionPlane")) && collision.GetContact(0).normal.y >= 0.5f)
                 _onCollisionWithGround?.Invoke();
             
 
