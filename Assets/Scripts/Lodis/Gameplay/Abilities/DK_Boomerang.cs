@@ -55,6 +55,14 @@ namespace Lodis.Gameplay
                 //...destroy it
                 MonoBehaviour.Destroy(ActiveProjectiles[0]);
 
+            if (other == owner)
+            {
+                CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
+
+                if (stateMachine.StateMachine.CurrentState != "Idle" || stateMachine.StateMachine.CurrentState != "Moving")
+                    return;
+            }
+
             Rigidbody projectile = ActiveProjectiles[0].GetComponent<Rigidbody>();
 
             //If it hit a valid object...

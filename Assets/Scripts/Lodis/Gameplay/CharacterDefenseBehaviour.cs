@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lodis.Utility;
 using Lodis.Movement;
+using Lodis.GridScripts;
 
 namespace Lodis.Gameplay
 {
@@ -426,67 +427,79 @@ namespace Lodis.Gameplay
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (IsBraced && (other.CompareTag("Structure") || other.CompareTag("Panel")) && !BreakingFall)
-            {
-                BreakingFall = true;
-
-                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
-                _knockBack.Physics.StopVelocity();
-                _knockBack.Physics.IgnoreForces = true;
-
-                RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
-
-                Vector3 collisionDirection = (other.ClosestPoint(transform.position) - transform.position).normalized;
-                if (collisionDirection.x != 0)
-                {
-                    transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
-                    _knockBack.InFreeFall = true;
-                }
-
-                if (_parryTimer != null)
-                    if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-
-                RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-                DeactivateAirParry();
-                DeactivateGroundParry();
-
-                onFallBroken?.Invoke(collisionDirection);
-                _knockBack.TryStartLandingLag();
+            if (!IsBraced || !(other.CompareTag("Structure") && other.CompareTag("Panel")) || BreakingFall)
                 return;
+
+            BreakingFall = true;
+
+            PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
+
+            if (!panel)
+                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
+            else if (panel.Alignment != _movement.Alignment)
+                _knockBack.SetInvincibilityByCondition(condition => !_movement.IsMoving && _movement.CurrentPanel.Alignment == _movement.Alignment);
+
+            _knockBack.Physics.StopVelocity();
+            _knockBack.Physics.IgnoreForces = true;
+
+            RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
+
+            Vector3 collisionDirection = (other.ClosestPoint(transform.position) - transform.position).normalized;
+            if (collisionDirection.x != 0)
+            {
+                transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
+                _knockBack.InFreeFall = true;
             }
+
+            if (_parryTimer != null)
+                if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+
+            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+            DeactivateAirParry();
+            DeactivateGroundParry();
+
+            onFallBroken?.Invoke(collisionDirection);
+            _knockBack.TryStartLandingLag();
+            return;
             //Debug.Log("Collided with " + other.name);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (IsBraced && (collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("Panel")) && !BreakingFall)
-            {
-                BreakingFall = true;
-
-                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
-                _knockBack.Physics.StopVelocity();
-                _knockBack.Physics.IgnoreForces = true;
-
-                RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
-
-                Vector3 collisionDirection = collision.GetContact(0).normal;
-                if (collisionDirection.x != 0)
-                {
-                    transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
-                    _knockBack.InFreeFall = true;
-                }
-
-                if (_parryTimer != null)
-                    if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-
-                RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-                DeactivateAirParry();
-                DeactivateGroundParry();
-
-                onFallBroken?.Invoke(collisionDirection);
-                _knockBack.TryStartLandingLag();
+            if (!IsBraced || !(collision.gameObject.CompareTag("Structure") && collision.gameObject.CompareTag("Panel")) || BreakingFall)
                 return;
+
+            BreakingFall = true;
+
+            PanelBehaviour panel = collision.gameObject.GetComponent<PanelBehaviour>();
+
+            if (!panel)
+                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
+            else if (panel.Alignment != _movement.Alignment)
+                _knockBack.SetInvincibilityByCondition(condition => !_movement.IsMoving && _movement.CurrentPanel.Alignment == _movement.Alignment);
+
+            _knockBack.Physics.StopVelocity();
+            _knockBack.Physics.IgnoreForces = true;
+
+            RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
+
+            Vector3 collisionDirection = collision.GetContact(0).normal;
+            if (collisionDirection.x != 0)
+            {
+                transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
+                _knockBack.InFreeFall = true;
             }
+
+            if (_parryTimer != null)
+                if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+
+            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+            DeactivateAirParry();
+            DeactivateGroundParry();
+
+            onFallBroken?.Invoke(collisionDirection);
+            _knockBack.TryStartLandingLag();
+            //Debug.Log("Collided with " + other.name);
 
         }
         // Update is called once per frame
