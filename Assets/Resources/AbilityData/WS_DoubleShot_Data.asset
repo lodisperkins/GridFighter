@@ -37,7 +37,7 @@ MonoBehaviour:
   - name: Damage
     value: 2
   - name: KnockBackScale
-    value: 0.5
+    value: 0.1
   - name: HitAngle
     value: 0.1
   - name: Speed

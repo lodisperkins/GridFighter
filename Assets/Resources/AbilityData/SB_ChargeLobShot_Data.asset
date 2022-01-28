@@ -39,23 +39,23 @@ MonoBehaviour:
   - name: StrongShotDamage
     value: 10
   - name: StrongShotKnockBackScale
-    value: 1
+    value: 0.5
   - name: StrongShotForceIncreaseRate
     value: 0.01
   - name: StrongShotHitAngle
-    value: 2.5
+    value: 2.8
   - name: StrongShotLifeTime
     value: 2.5
   - name: WeakShotDistance
     value: 1
   - name: WeakShotDamage
-    value: 5
-  - name: WeakShotForce
     value: 1
+  - name: WeakShotForce
+    value: 0.2
   - name: WeakShotKnockBackScale
-    value: 2
+    value: 0.2
   - name: WeakShotHitAngle
-    value: 1.5
+    value: 2
   - name: WeakShotLifeTime
     value: 5
   - name: MaxInstances
