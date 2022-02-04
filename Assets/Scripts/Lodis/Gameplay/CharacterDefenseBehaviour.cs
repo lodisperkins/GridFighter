@@ -381,12 +381,15 @@ namespace Lodis.Gameplay
         /// <param name="args">The collision arguments</param>
         private void ActivateInvinciblity(params object[] args)
         {
+            GameObject other = (GameObject)args[0];
+            //Get collider and rigidbody to check the owner and add the force
+            ColliderBehaviour otherHitCollider = null;
             //Return if the object collided with doesn't have a collider script attached
             if (args.Length > 0)
             {
-                ColliderBehaviour collider = ((GameObject)args[0]).GetComponentInChildren<ColliderBehaviour>();
+                otherHitCollider = other.GetComponentInParent<ColliderBehaviour>();
 
-                if (!collider)
+                if (!otherHitCollider)
                     return;
             }
 
