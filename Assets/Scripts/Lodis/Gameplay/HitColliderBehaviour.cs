@@ -125,7 +125,12 @@ namespace Lodis.Gameplay
 
                     return;
                 }
-            }
+            } 
+            
+            CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
+
+            if (characterDefenseBehaviour?.IsParrying == true)
+                return;
 
             float newHitAngle = _hitAngle;
 
@@ -181,6 +186,11 @@ namespace Lodis.Gameplay
                 otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
             if (other.CompareTag("ParryBox"))
+                return;
+
+            CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
+
+            if (characterDefenseBehaviour?.IsParrying == true)
                 return;
 
             if (otherCollider && IgnoreColliders)
@@ -248,6 +258,11 @@ namespace Lodis.Gameplay
                 otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
             if (collision.gameObject.CompareTag("ParryBox"))
+                return;
+
+            CharacterDefenseBehaviour characterDefenseBehaviour = collision.gameObject.GetComponentInParent<CharacterDefenseBehaviour>();
+
+            if (characterDefenseBehaviour?.IsParrying == true)
                 return;
 
             if (otherCollider && IgnoreColliders)

@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
         [Tooltip("The collision script for the parry object.")]
         [SerializeField]
         private ColliderBehaviour _parryCollider;
+        [SerializeField]
         private bool _isParrying;
         [Tooltip("How long the character will be invincible for after a successful ground parry.")]
         [SerializeField]
@@ -171,7 +172,7 @@ namespace Lodis.Gameplay
                 //...reset the active time and reverse its velocity
                 otherHitCollider.ColliderOwner = _parryCollider.ColliderOwner;
                 otherHitCollider.ResetActiveTime();
-                otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.Impulse);
+                otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.VelocityChange);
 
             }
         }
@@ -393,10 +394,8 @@ namespace Lodis.Gameplay
                     return;
             }
 
-            if (otherHitCollider.ColliderOwner == "")
-            _parryCollider.gameObject.SetActive(false);
-            _isParrying = false;
-            _canParry = true;
+            if (otherHitCollider.ColliderOwner == _parryCollider.ColliderOwner)
+                return; 
 
             //Unfreeze the object if velocity was stopped in air
             _knockBack.Physics.UnfreezeObject();
@@ -404,6 +403,7 @@ namespace Lodis.Gameplay
             //Deactivate the parry
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
+            _canParry = true;
 
             //Apply force downward and make the character invincible if the character was in air
             if (_knockBack.IsTumbling)

@@ -272,6 +272,7 @@ MonoBehaviour:
   _parryLength: 0.23
   _parryFallSpeed: 10
   _parryCollider: {fileID: 7386840481675835583}
+  _isParrying: 0
   _parryInvincibilityLength: 0.5
   _meshRenderer: {fileID: 8493895805550168426}
   _canParry: 1
@@ -1182,7 +1183,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5927806561006395036, guid: 3750288d4cc41f440964731ec1982842, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3750288d4cc41f440964731ec1982842, type: 3}
 --- !u!4 &2114673151879252476 stripped
 Transform:

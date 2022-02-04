@@ -434,7 +434,7 @@ MonoBehaviour:
   _attackDelay: 0.5
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
-  _enableRandomBehaviour: 1
+  _enableRandomBehaviour: 0
 --- !u!114 &3691015139844951449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,6 +469,7 @@ MonoBehaviour:
   _parryLength: 0.23
   _parryFallSpeed: 10
   _parryCollider: {fileID: 8490310239496012516}
+  _isParrying: 0
   _parryInvincibilityLength: 0.5
   _meshRenderer: {fileID: 3772444779946978536}
   _canParry: 1
