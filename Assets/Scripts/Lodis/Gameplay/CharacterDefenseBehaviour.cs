@@ -393,6 +393,7 @@ namespace Lodis.Gameplay
                     return;
             }
 
+            if (otherHitCollider.ColliderOwner == "")
             _parryCollider.gameObject.SetActive(false);
             _isParrying = false;
             _canParry = true;
