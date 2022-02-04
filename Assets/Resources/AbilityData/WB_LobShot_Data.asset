@@ -39,7 +39,7 @@ MonoBehaviour:
   - name: KnockBackScale
     value: 1
   - name: HitAngle
-    value: 3
+    value: 2.5
   - name: PanelDistance
     value: 1
   - name: Lifetime
