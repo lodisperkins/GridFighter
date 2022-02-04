@@ -31,8 +31,7 @@ namespace Lodis.Gameplay
             //Play animation now that the character has reached the target panel
             EnableAnimation();
 
-            //Disable character movement so the ability isn't interrupted
-            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !ownerMoveset.AbilityInUse, false, true);
+            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
 
             //Mark that the target position has been reached
             _inPosition = true;
@@ -40,8 +39,10 @@ namespace Lodis.Gameplay
             //Instantiate particles and hit box
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform);
             Vector3 hitBoxDimensions = new Vector3(abilityData.GetCustomStatValue("HitBoxScaleX"), abilityData.GetCustomStatValue("HitBoxScaleY"), abilityData.GetCustomStatValue("HitBoxScaleZ"));
-           HitColliderBehaviour hitCollider = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, hitBoxDimensions, abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner);
+            HitColliderBehaviour hitColliderRef = new HitColliderBehaviour( abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, false,false, true, abilityData.GetCustomStatValue("HitStun"));
+
+           HitColliderBehaviour hitCollider = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, hitBoxDimensions, hitColliderRef);
 
             hitCollider.debuggingEnabled = true;
 
@@ -89,6 +90,12 @@ namespace Lodis.Gameplay
 
 
             _ownerMoveScript.StopAllCoroutines();
+        }
+
+        protected override void End()
+        {
+            base.End();
+            _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
         }
     }
 }

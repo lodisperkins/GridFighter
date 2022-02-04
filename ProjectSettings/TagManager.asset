@@ -7,6 +7,9 @@ TagManager:
   - Structure
   - BouncePoint
   - Entity
+  - ParryBox
+  - CollisionPlane
+  - Panel
   layers:
   - Default
   - TransparentFX

@@ -10,8 +10,6 @@ using System.Reflection;
 
 namespace Lodis.Movement
 {
-    public delegate bool Condition(object[] args = null);
-
 
     [RequireComponent(typeof(GridGame.GameEventListener))]
     public class GridMovementBehaviour : MonoBehaviour
@@ -312,14 +310,15 @@ namespace Lodis.Movement
         /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
         public void DisableMovement(Condition enableCondition, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
         {
-            StackFrame stackFrame = new StackFrame(1);
+            //Used to see what object disabled movement
+            //StackFrame stackFrame = new StackFrame(1);
 
-            if (stackFrame != null)
-            {
-                MethodBase method = stackFrame.GetMethod();
-                if (method != null)
-                    UnityEngine.Debug.Log(method.DeclaringType.Name);
-            }
+            //if (stackFrame != null)
+            //{
+            //    MethodBase method = stackFrame.GetMethod();
+            //    if (method != null)
+            //        UnityEngine.Debug.Log(method.DeclaringType.Name);
+            //}
 
             if (!_canMove && !overridesMoveCondition)
                 return;
@@ -456,9 +455,9 @@ namespace Lodis.Movement
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
-            SetIsMoving(true);
-
             MoveDirection = panelPosition - _position;
+
+            SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
@@ -518,9 +517,9 @@ namespace Lodis.Movement
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
-            SetIsMoving(true);
-
             MoveDirection = new Vector2(x, y) - _position;
+
+            SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
@@ -578,9 +577,9 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
 
-            SetIsMoving(true);
-
             MoveDirection = targetPanel.Position - _position;
+
+            SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
@@ -634,6 +633,8 @@ namespace Lodis.Movement
 
 
             _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
+
+            MoveDirection = _currentPanel.Position - _position;
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)

@@ -33,12 +33,12 @@ namespace Lodis.Gameplay
         {
             //Create barrier collider
             _barrierCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, true, false);
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, true, false, true, abilityData.GetCustomStatValue("HitStun"));
             //Allow canceling on hit
             _barrierCollider.onHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
 
             //Set the position of the barrier in relation to the character
-            Vector3 offset = new Vector3(abilityData.GetCustomStatValue("XOffset"), abilityData.GetCustomStatValue("YOffset"), 0) * owner.transform.forward.x;
+            Vector3 offset = new Vector3(abilityData.GetCustomStatValue("XOffset") * owner.transform.forward.x, abilityData.GetCustomStatValue("YOffset"), 0);
 
             //Create barrier
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position + offset, new Quaternion());

@@ -230,8 +230,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6740710594312166089}
   - component: {fileID: 5936926029810059218}
-  - component: {fileID: 6529642886446870133}
   - component: {fileID: 6239634632965324607}
+  - component: {fileID: 2889399129253374469}
   m_Layer: 0
   m_Name: CrossProjectile
   m_TagString: Untagged
@@ -272,21 +272,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6529642886446870133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6740710594312166088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19eba30ac128dc7499e5e5ae81893d5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  axis: {x: 0, y: 1, z: 0}
-  speed: 10
-  rotateOnSelf: 0
 --- !u!65 &6239634632965324607
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -300,6 +285,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.1, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2889399129253374469
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6740710594312166088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52846ec6a717c347ab6d490fc6b81c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _axis: {x: 0, y: 1, z: 0}
+  _speed: 15
+  _rotateOnSelf: 1
 --- !u!1001 &6740710594390925244
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -18,11 +18,12 @@ MonoBehaviour:
   timeActive: 0.5
   recoverTime: 0.3
   startUpTime: 0.1
-  chargeTime: 0
-  maxActivationAmount: 0
+  chargeTime: 5
+  maxActivationAmount: 1
   canCancelStartUp: 0
   canCancelActive: 1
   canCancelRecover: 1
+  CanCancelOnMove: 0
   CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1
@@ -53,5 +54,7 @@ MonoBehaviour:
     value: -1
   - name: HitBoxDistanceZ
     value: 0
+  - name: HitStun
+    value: 0.2
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: a1122af4932a8554db88a3464df8b93c, type: 3}

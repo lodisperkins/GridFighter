@@ -16,13 +16,14 @@ MonoBehaviour:
   AbilityType: 8
   damageType: 0
   timeActive: 0.1
-  recoverTime: 0.1
+  recoverTime: 0.05
   startUpTime: 0.1
-  chargeTime: 0
+  chargeTime: 1
   maxActivationAmount: 3
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
+  CanCancelOnMove: 0
   CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnKnockback: 1
@@ -44,7 +45,7 @@ MonoBehaviour:
   - name: Lifetime
     value: 1
   - name: StunTime
-    value: 5
+    value: 2
   - name: PanelTravelDistance
     value: 3
   animationType: 0

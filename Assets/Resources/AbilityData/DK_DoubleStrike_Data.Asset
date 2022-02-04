@@ -18,8 +18,8 @@ MonoBehaviour:
   timeActive: 0.4
   recoverTime: 0.1
   startUpTime: 0.2
-  chargeTime: 0
-  maxActivationAmount: 0
+  chargeTime: 5
+  maxActivationAmount: 2
   canCancelStartUp: 0
   canCancelActive: 1
   canCancelRecover: 0
@@ -35,11 +35,13 @@ MonoBehaviour:
   _customStats:
   - name: Damage
     value: 5
-  - name: Knockback
+  - name: KnockBackScale
     value: 1
   - name: HitAngle
     value: 1
   - name: TravelDistance
     value: 4
+  - name: HitStun
+    value: 0.2
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: bf4d3e934eacf474e8952d473ee4f8ef, type: 3}

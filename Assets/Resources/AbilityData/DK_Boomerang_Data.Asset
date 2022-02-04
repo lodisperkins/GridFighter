@@ -18,11 +18,13 @@ MonoBehaviour:
   timeActive: 0.1
   recoverTime: 1
   startUpTime: 0.1
-  chargeTime: 0
-  maxActivationAmount: 0
+  chargeTime: 1
+  maxActivationAmount: 1
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 1
+  CanCancelOnMove: 0
+  CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1
   IgnoreColliders: 1
@@ -45,5 +47,7 @@ MonoBehaviour:
     value: 1
   - name: MaxRebounds
     value: 5
+  - name: HitStun
+    value: 0.2
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: f2fdba8a6b7bbc540a4d208285dd348c, type: 3}

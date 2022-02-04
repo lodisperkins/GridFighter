@@ -36,7 +36,7 @@ namespace Lodis.Gameplay
         private void FireLink()
         {
             //Creates copy of link prefab
-            GameObject visualPrefab = MonoBehaviour.Instantiate(abilityData.visualPrefab, spawnTransform.position, abilityData.visualPrefab.transform.rotation);
+            GameObject visualPrefab = MonoBehaviour.Instantiate(abilityData.visualPrefab, SpawnTransform.position, abilityData.visualPrefab.transform.rotation);
             //Get the movement script attached and add it to a list
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
             gridMovement.Position = _ownerMoveScript.Position;
@@ -118,11 +118,11 @@ namespace Lodis.Gameplay
             //If the owner doesn't have a transform to spawn projectiles from...
             if (!ownerMoveset.ProjectileSpawnTransform)
                 //...use the owners transform
-                spawnTransform = owner.transform;
+                SpawnTransform = owner.transform;
             //Otherwise...
             else
                 //...use the projectile transform
-                spawnTransform = ownerMoveset.ProjectileSpawnTransform;
+                SpawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Switch to know which stage of the ability should be activated
             switch (currentActivationAmount)

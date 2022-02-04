@@ -23,7 +23,8 @@ MonoBehaviour:
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
-  CanInputMovementWhileActive: 1
+  CanCancelOnMove: 0
+  CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1
   IgnoreColliders: 0
@@ -36,9 +37,9 @@ MonoBehaviour:
   - name: Damage
     value: 5
   - name: KnockBackScale
-    value: 1
+    value: 1.5
   - name: HitAngle
-    value: 0.2
+    value: 0
   - name: Speed
     value: 6.5
   - name: Lifetime
@@ -47,5 +48,7 @@ MonoBehaviour:
     value: 2
   - name: TimeBetweenShots
     value: 0
+  - name: HitStun
+    value: 0.1
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}

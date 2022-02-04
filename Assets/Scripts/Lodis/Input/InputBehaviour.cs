@@ -8,6 +8,9 @@ using Lodis.Gameplay;
 using UnityEngine.Events;
 using Lodis.Movement;
 using System.Windows.Input;
+using Lodis.Utility;
+using UnityEngine.SceneManagement;
+using UnityEditor;
 
 namespace Lodis.Input
 {
@@ -15,7 +18,7 @@ namespace Lodis.Input
 
     public class BufferedInput
     {
-        public BufferedInput(InputBufferAction action, Movement.Condition useCondition, float bufferClearTime)
+        public BufferedInput(InputBufferAction action, Condition useCondition, float bufferClearTime)
         {
             _action = action;
             _useCondition = useCondition;
@@ -73,16 +76,21 @@ namespace Lodis.Input
         [SerializeField]
         private float _attackDirectionBufferClearTime;
         private float _timeOfLastDirectionInput;
-        private InputActionAsset _actions;
+        private PlayerControls _playerControls;
         private int _playerID;
-        private Movement.Condition _inputEnableCondition = null;
+        private Condition _inputEnableCondition = null;
         [SerializeField]
         private bool _inputDisabled;
         private BufferedInput _bufferedAction;
-        private PlayerState _playerState;
+        private string _playerState;
         private Ability _lastAbilityUsed = null;
         private bool _attackButtonDown;
+        [SerializeField]
         private bool _abilityBuffered;
+        [SerializeField]
+        private UnityAction _onPlayerMove;
+        private UnityAction _onPlayeMoveTemp;
+        private bool _isPaused;
 
         /// <summary>
         /// The ID number of the player using this component
@@ -112,18 +120,19 @@ namespace Lodis.Input
 
         private void Awake()
         {
+            _playerControls = new PlayerControls();
+            _playerControls.devices = GetComponent<PlayerInput>().devices;
             //Initialize action delegates
-            _actions = GetComponent<PlayerInput>().actions;
-            _actions.actionMaps[0].actions[0].started += context => UpdateInputY(1);
-            _actions.actionMaps[0].actions[1].started += context => UpdateInputY(-1);
-            _actions.actionMaps[0].actions[2].started += context => UpdateInputX(-1);
-            _actions.actionMaps[0].actions[3].started += context => UpdateInputX(1);
-            _actions.actionMaps[0].actions[4].started += context => { DisableMovement(); _attackButtonDown = true; };
-            _actions.actionMaps[0].actions[4].canceled += context => _attackButtonDown = false;
-            _actions.actionMaps[0].actions[4].performed += context => { BufferNormalAbility(context, new object[2]);};
-            _actions.actionMaps[0].actions[6].performed += context => { BufferParry(context); _defense.Brace(); };
-            _actions.actionMaps[0].actions[7].started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
-            _actions.actionMaps[0].actions[8].started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
+            _playerControls.Player.MoveUp.started += context => UpdateInputY(1);
+            _playerControls.Player.MoveDown.started += context => UpdateInputY(-1);
+            _playerControls.Player.MoveLeft.started += context => UpdateInputX(-1);
+            _playerControls.Player.MoveRight.started += context => UpdateInputX(1);
+            _playerControls.Player.Attack.started += context => { DisableMovement(); _attackButtonDown = true; };
+            _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
+            _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
+            _playerControls.Player.Parry.performed += context => { BufferParry(context); _defense.Brace(); };
+            _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
+            _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
         }
 
         // Start is called before the first frame update
@@ -132,6 +141,16 @@ namespace Lodis.Input
             _gridMovement = GetComponent<Movement.GridMovementBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
             _defense = GetComponent<CharacterDefenseBehaviour>();
+        }
+
+        private void OnEnable()
+        {
+            _playerControls.Enable();
+        }
+
+        private void OnDisable()
+        {
+            _playerControls.Disable();
         }
 
         /// <summary>
@@ -144,7 +163,7 @@ namespace Lodis.Input
         public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
         {
             //Ignore player input if they are in knockback
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.PARRYING)
+            if (_playerState != "Idle" && _playerState != "Attacking")
                 return;
 
             AbilityType abilityType = AbilityType.NONE;
@@ -187,8 +206,8 @@ namespace Lodis.Input
         /// <param name="args">Any additional arguments to give to the ability. 
         public void BufferSpecialAbility(InputAction.CallbackContext context, params object[] args)
         {
-            //Ignore player input if they are in knockback
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.PARRYING)
+            //Ignore player input if they aren't in a state that can attack
+            if (_playerState != "Idle" && _playerState != "Attacking")
                 return;
 
             AbilityType abilityType = AbilityType.SPECIAL;
@@ -210,10 +229,10 @@ namespace Lodis.Input
         {
             if (_attackButtonDown)
                 return;
-            else if (_bufferedAction == null && (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
+            else if (_bufferedAction == null && (_playerState == "Tumbling" || _playerState == "FreeFall" || _playerState == "Idle"))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
-            else if (!_bufferedAction.HasAction() && (_playerState == PlayerState.KNOCKBACK
-                || _playerState == PlayerState.FREEFALL || _playerState == PlayerState.IDLE))
+            else if (!_bufferedAction.HasAction() && (_playerState == "Tumbling"
+                || _playerState == "FreeFall" || _playerState == "Idle"))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
@@ -231,13 +250,25 @@ namespace Lodis.Input
                 else if ((int)args[0] == 1)
                     _lastAbilityUsed = _moveset.UseSpecialAbility(1, args);
 
-               if (_lastAbilityUsed?.abilityData.CanInputMovementWhileActive == false)
-                    DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
             }
             else
             {
                 _lastAbilityUsed = _moveset.UseBasicAbility(abilityType, args);
-                _moveInputEnableCondition = condition => _moveset.GetCanUseAbility() || _bufferedAction.HasAction();
+            }
+
+            if (_lastAbilityUsed == null)
+                return;
+
+            if (!_lastAbilityUsed.abilityData.CanInputMovementWhileActive)
+            {
+                DisableMovementBasedOnCondition(condition => !_moveset.AbilityInUse);
+            }
+            else if (_lastAbilityUsed.abilityData.CanCancelOnMove)
+            {
+                UnityAction action = () => _lastAbilityUsed.TryCancel();
+                AddOnPlayerMoveAction(action);
+                _lastAbilityUsed.onEnd += () => { _onPlayerMove -= action; };
+                DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
             }
         }
 
@@ -266,7 +297,7 @@ namespace Lodis.Input
         /// </summary>
         private void DisableMovement()
         {
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
+            if (_playerState == "Tumbling" || _playerState == "Tumbling")
                 return;
 
             if (_attackDirection.normalized == _gridMovement.MoveDirection.normalized || _gridMovement.MoveDirection == Vector2.zero)
@@ -279,7 +310,7 @@ namespace Lodis.Input
         /// <summary>
         /// Disable player movement on grid
         /// </summary>
-        public void DisableMovementBasedOnCondition(Movement.Condition condition)
+        public void DisableMovementBasedOnCondition(Condition condition)
         {
             if (_attackDirection.normalized == _gridMovement.MoveDirection.normalized || _gridMovement.MoveDirection == Vector2.zero)
             {
@@ -289,16 +320,25 @@ namespace Lodis.Input
             }
         }
 
-        private int _useCount;
+        public void AddOnPlayerMoveAction(UnityAction action)
+        {
+            _onPlayerMove += action;
+        }
+
+        public void AddOnPlayerMoveTempAction(UnityAction action)
+        {
+            _onPlayeMoveTemp += action;
+        }
+
         /// <summary>
         /// Enable player movement
         /// </summary>
         public bool EnableMovement()
         {
             //Don't enable if player is in knockback or in free fall
-            if (_playerState == PlayerState.KNOCKBACK || _playerState == PlayerState.FREEFALL)
+            if (_playerState == "Tumbling" || _playerState == "FreeFall")
             {
-                _moveInputEnableCondition = condition => _playerState == PlayerState.IDLE;
+                _moveInputEnableCondition = condition => _playerState == "Idle";
                 return false;
             }
             _canMove = true;
@@ -309,10 +349,10 @@ namespace Lodis.Input
         /// Disables input until the given condition is true
         /// </summary>
         /// <param name="condition">Delegate that is checked each update</param>
-        public void DisableInput(Movement.Condition condition)
+        public void DisableInput(Condition condition)
         {
             _inputDisabled = true;
-            _actions.Disable();
+            _playerControls.Disable();
             _inputEnableCondition = condition;
         }
 
@@ -345,7 +385,7 @@ namespace Lodis.Input
             if (_inputEnableCondition != null)
                 if (_inputEnableCondition.Invoke())
                 {
-                    _actions.Enable();
+                    _playerControls.Player.Enable();
                     _inputDisabled = false;
                     _inputEnableCondition = null;
                 }
@@ -355,6 +395,9 @@ namespace Lodis.Input
             if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove)
             {
                 _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
+                _onPlayerMove?.Invoke();
+                _onPlayeMoveTemp?.Invoke();
+                _onPlayeMoveTemp = null;
                 _storedMoveInput = Vector2.zero;
             }
             //Checks to see if move input can be enabled 
@@ -368,13 +411,14 @@ namespace Lodis.Input
                 }
             }
             //If player isn't doing anything, enable movement
-            else if (!_attackButtonDown && !_canMove && !_moveset.AbilityInUse && !_bufferedAction.HasAction())
+            else if (!_attackButtonDown && !_canMove && !_moveset.AbilityInUse && _bufferedAction != null)
             {
-                EnableMovement();
+                if (!_bufferedAction.HasAction())
+                    EnableMovement();
             }
 
             //Stores the current attack direction input
-            Vector3 attackDirInput = _actions.actionMaps[0].actions[5].ReadValue<Vector2>();
+            Vector3 attackDirInput = _playerControls.Player.AttackDirection.ReadValue<Vector2>();
 
             //If there is a direction input, update the attack direction buffer and the time of input
             if (attackDirInput.magnitude > 0)
@@ -395,6 +439,9 @@ namespace Lodis.Input
             //Temp quit buttom for first prototype build
             if (Keyboard.current.escapeKey.isPressed)
                 Application.Quit();
+
+            if (Keyboard.current.enterKey.wasPressedThisFrame)
+                EditorApplication.isPaused = true;
         }
     }
 }

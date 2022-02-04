@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lodis.Utility;
 
 namespace Lodis.Gameplay
 {
@@ -9,9 +10,8 @@ namespace Lodis.Gameplay
         private Material _material;
         [Tooltip("All layers that will be visible if placed behind this barrier")]
         [SerializeField]
-        private string[] _visibleLayers;
+        private LayerMask _visibleLayers;
         private float _rangeToIgnoreUpAngle;
-        private Movement.GridMovementBehaviour _movement;
         [Tooltip("The name of the gameobject that owns this barrier")]
         [SerializeField]
         private string _owner = "";
@@ -23,6 +23,9 @@ namespace Lodis.Gameplay
         private float _damageOnCollision;
         [SerializeField]
         private float _bounceScale;
+        [Tooltip("The length of the hit stun applied to the objects that are knocked into this barrier.")]
+        [SerializeField]
+        private float _hitStunOnCollision;
 
         public string Owner { get => _owner; set => _owner = value; }
 
@@ -43,7 +46,7 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle">The angle to launch this object. Ignore for barriers</param>
         /// <param name="damageType">The type of damage being received</param>
         /// <returns>The amount of damage taken. Returns 0 if the attacker was the owner and if the type wasn't knock back </returns>
-        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             if (attacker == Owner && damageType == DamageType.KNOCKBACK || attacker != Owner && damageType != DamageType.KNOCKBACK)
                 return base.TakeDamage(attacker, damage, knockBackScale, hitAngle, damageType);
@@ -66,14 +69,14 @@ namespace Lodis.Gameplay
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = knockBackScript.LastVelocity.magnitude;
+            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
             float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
-            if (knockbackScale == 0 || float.IsNaN(knockbackScale) || !knockBackScript.InHitStun)
+            if (knockbackScale == 0 || float.IsNaN(knockbackScale) || !knockBackScript.IsTumbling)
                 return;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, _damageOnCollision, knockbackScale * _bounceScale / BounceDampen, hitAngle, contactPoint.normal == Vector3.down, contactPoint.normal == Vector3.down, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(name, _damageOnCollision, 0, 0, DamageType.KNOCKBACK, _hitStunOnCollision);
         }
 
         private void OnCollisionStay(Collision collision)
@@ -89,8 +92,8 @@ namespace Lodis.Gameplay
             //Adds a force to objects to push them off of the field barrier if they land on top
             if (contactPoint.normal == Vector3.down)
             {
-                knockBackScript.ApplyForce(Vector3.up * knockBackScript.Gravity);
-                knockBackScript.ApplyForce(transform.forward * _pushScale);
+                knockBackScript.Physics.ApplyForce(Vector3.up * knockBackScript.Physics.Gravity);
+                knockBackScript.Physics.ApplyForce(transform.forward * _pushScale);
             }
         }
 
@@ -100,8 +103,7 @@ namespace Lodis.Gameplay
             base.Update();
 
             //Make the material transparent if there is an object behind the barrier
-            int layerMask = LayerMask.GetMask(_visibleLayers);
-            if (Physics.Raycast(transform.position, Vector3.forward, 1, layerMask))
+            if (Physics.Raycast(transform.position, Vector3.forward, 1, _visibleLayers))
                 _material.color = new Color(1, 1, 1, 0.5f);
             else
                 _material.color = new Color(1, 1, 1, 1);

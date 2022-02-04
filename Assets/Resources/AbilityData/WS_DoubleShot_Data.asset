@@ -22,8 +22,9 @@ MonoBehaviour:
   maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 0
-  CanInputMovementWhileActive: 1
+  canCancelRecover: 1
+  CanCancelOnMove: 0
+  CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1
   IgnoreColliders: 0
@@ -47,5 +48,7 @@ MonoBehaviour:
     value: 2
   - name: TimeBetweenShots
     value: 0
+  - name: HitStun
+    value: 0.1
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}

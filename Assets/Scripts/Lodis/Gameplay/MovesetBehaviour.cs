@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace Lodis.Gameplay
@@ -27,7 +28,6 @@ namespace Lodis.Gameplay
 
     public class MovesetBehaviour : MonoBehaviour
     {
-        private AbilityType _attackState = AbilityType.NONE;
         [Tooltip("The basic ability deck this character will be using.")]
         [SerializeField]
         private Deck _normalDeckRef;
@@ -39,11 +39,10 @@ namespace Lodis.Gameplay
         [Tooltip("The slots that store the two loaded abilities from the special deck")]
         [SerializeField]
         private Ability[] _specialAbilitySlots = new Ability[2];
-        private Ability _lastAbilityInUse;
-        [Tooltip("The renderer attached to this object. Used to change color for debugging.")]
         [SerializeField]
-        private Renderer _renderer;
-        private Color _defaultColor;
+        private Ability _lastAbilityInUse;
+        [SerializeField]
+        private bool _abilityInUse;
         [SerializeField]
         private CharacterAnimationBehaviour _animationBehaviour;
         [Tooltip("This transform is where projectile will spawn by default for this object.")]
@@ -58,6 +57,7 @@ namespace Lodis.Gameplay
         private bool _deckReloading;
         private Movement.GridMovementBehaviour _movementBehaviour;
         private Input.InputBehaviour _inputBehaviour;
+        private UnityAction _onUseAbility;
 
         public Transform ProjectileSpawnTransform
         {
@@ -78,7 +78,6 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
-            _defaultColor = _renderer.material.color;
             _normalDeck = Instantiate(_normalDeckRef);
             _specialDeck = Instantiate(_specialDeckRef);
             InitializeDecks();
@@ -139,11 +138,14 @@ namespace Lodis.Gameplay
             get
             {
                 if (_lastAbilityInUse != null)
-                    return _lastAbilityInUse.InUse;
+                    return _abilityInUse = _lastAbilityInUse.InUse;
 
-                return false;
+                return _abilityInUse = false;
             }
         }
+
+        public Ability LastAbilityInUse { get => _lastAbilityInUse; }
+        public UnityAction OnUseAbility { get => _onUseAbility; set => _onUseAbility = value; }
 
         /// <summary>
         /// Gets the ability from the moveset deck based on the type passed in.
@@ -175,12 +177,11 @@ namespace Lodis.Gameplay
             if (currentAbility == null)
                 return null;
 
-            if (_animationBehaviour)
-                _animationBehaviour.AbilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
-
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
-             
+
+            OnUseAbility?.Invoke();
+
             //Return new ability
             return _lastAbilityInUse;
         }
@@ -213,13 +214,7 @@ namespace Lodis.Gameplay
         private void UpdateHand(int slot)
         {
             _specialAbilitySlots[slot] = null;
-
-            if (_specialDeck.Count == 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null)
-            {
-                _deckReloading = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { ReloadDeck(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
-            }
-            else if (_specialDeck.Count > 0)
+            if (_specialDeck.Count > 0)
             {
                 RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _specialAbilitySlots[slot] = _specialDeck.PopBack(), TimedActionCountType.SCALEDTIME, _specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
             }
@@ -243,9 +238,8 @@ namespace Lodis.Gameplay
 
             if (currentAbility == null)
                 return null;
-
-            if (_animationBehaviour)
-                _animationBehaviour.AbilityAnimationRoutine = StartCoroutine(_animationBehaviour.PlayAbilityAnimation(currentAbility));
+            else if (currentAbility.MaxActivationAmountReached)
+                return null;
 
             //Doesn't increment ability use amount before checking max
             currentAbility.UseAbility(args);
@@ -253,10 +247,10 @@ namespace Lodis.Gameplay
 
             currentAbility.currentActivationAmount++;
 
-            if (_specialAbilitySlots[abilitySlot].MaxActivationAmountReached && !_deckReloading)
+            if (!_deckReloading)
                 currentAbility.onEnd += () => UpdateHand(abilitySlot);
 
-
+            OnUseAbility?.Invoke();
             //Return new ability
             return _lastAbilityInUse;
         }
@@ -313,6 +307,13 @@ namespace Lodis.Gameplay
                 {
                     _lastAbilityInUse.Update();
                 }
+            }
+
+            //Reload the deck if there are no cards in the hands or the deck
+            if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading)
+            {
+                _deckReloading = true;
+                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { ReloadDeck(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
             }
 
 

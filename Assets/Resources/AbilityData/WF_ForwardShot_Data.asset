@@ -21,8 +21,9 @@ MonoBehaviour:
   chargeTime: 1
   maxActivationAmount: 0
   canCancelStartUp: 0
-  canCancelActive: 1
+  canCancelActive: 0
   canCancelRecover: 1
+  CanCancelOnMove: 1
   CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnKnockback: 1
@@ -43,6 +44,8 @@ MonoBehaviour:
     value: 2
   - name: Lifetime
     value: 1.5
+  - name: HitStun
+    value: 0.3
   - name: MaxInstances
     value: 1
   animationType: 0

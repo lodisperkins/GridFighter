@@ -18,15 +18,16 @@ MonoBehaviour:
   timeActive: 0.5
   recoverTime: 0.2
   startUpTime: 0.3
-  chargeTime: 0
-  maxActivationAmount: 0
+  chargeTime: 5
+  maxActivationAmount: 1
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
-  CanInputMovementWhileActive: 1
+  CanCancelOnMove: 0
+  CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1
-  IgnoreColliders: 0
+  IgnoreColliders: 1
   ColliderPriority: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
@@ -45,5 +46,7 @@ MonoBehaviour:
     value: 16
   - name: ShockwaveTravelDistance
     value: 5
+  - name: HitStun
+    value: 0.3
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 92bfb16540334ae419cd838f2ab61620, type: 3}

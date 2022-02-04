@@ -31,6 +31,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Abstract class that all abilities inherit from
     /// </summary>
+    [System.Serializable]
     public abstract class Ability
     {
         //The object that is using the ability
@@ -138,12 +139,12 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         protected void RecoverPhase(params object[] args)
         {
-            onDeactivate?.Invoke();
             CurrentAbilityPhase = AbilityPhase.RECOVER;
-            Deactivate();
-            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments =>
-            { End(); onEnd?.Invoke(); _inUse = false; },
-                TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
+            
+            if (MaxActivationAmountReached)
+                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
+            else
+                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => { _inUse = false; Deactivate(); }, TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
         }
 
         /// <summary>
@@ -246,7 +247,6 @@ namespace Lodis.Gameplay
         public virtual void EndAbility()
         {
             RoutineBehaviour.Instance.StopTimedAction(_currentTimer);
-            currentActivationAmount = abilityData.maxActivationAmount;
             onDeactivate?.Invoke();
             Deactivate();
             onEnd?.Invoke();
@@ -260,6 +260,14 @@ namespace Lodis.Gameplay
         public void EnableAnimation()
         {
             _canPlayAnimation = true;
+        }
+
+        /// <summary>
+        /// Manually deactivates the animation
+        /// </summary>
+        public void DisableAnimation()
+        {
+            _canPlayAnimation = false;
         }
 
         /// <summary>
@@ -307,7 +315,7 @@ namespace Lodis.Gameplay
         /// </summary>
         protected virtual void End()
         {
-            if (!_ownerKnockBackScript.InHitStun)
+            if (!_ownerKnockBackScript.IsTumbling)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
         }
 

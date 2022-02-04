@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Movement;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +8,11 @@ namespace Lodis.Gameplay
     public class RingBarrierBehaviour : HealthBehaviour
     {
         public string owner;
-
+        [SerializeField]
+        private float _bounceDampen;
+        [Tooltip("The length of the hit stun to apply to objects that crash into the ring barrier.")]
+        [SerializeField]
+        private float _hitStunOnCollision;
         /// <summary>
         /// Takes damage based on the damage type.
         /// If the damage is less than the durability
@@ -21,7 +26,7 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage thid object will take</param>
-        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT)
+        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != owner && owner != ""))
                 return 0;
@@ -41,6 +46,16 @@ namespace Lodis.Gameplay
                 Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
                 GetComponent<MeshRenderer>().enabled = false;
             }
+
+            GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
+
+            if (!gridPhysicsBehaviour)
+                return;
+
+            if (_bounceDampen == 0)
+                _bounceDampen = 1;
+            
+            gridPhysicsBehaviour.ApplyImpulseForce(-(Vector3.right * gridPhysicsBehaviour.LastVelocity.x * 2)  / _bounceDampen);
         }
     }
 }

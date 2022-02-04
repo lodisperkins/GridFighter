@@ -22,6 +22,8 @@ namespace Lodis.Gameplay
         private bool _adjustAngleBasedOnCollision;
         public DamageType damageType = DamageType.DEFAULT;
         public bool CanSpike;
+        [SerializeField]
+        private float _hitStunTime;
 
         /// <summary>
         /// Collision event called when this collider hits another. 
@@ -35,10 +37,10 @@ namespace Lodis.Gameplay
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public float Priority = 0.0f;
 
-        public HitColliderBehaviour(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true)
+        public HitColliderBehaviour(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
             : base()
         {
-            Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision);
+            Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision, hitStunTimer);
         }
 
         private void Awake()
@@ -62,7 +64,7 @@ namespace Lodis.Gameplay
         /// <param name="collider2"></param>
         public static void Copy(HitColliderBehaviour collider1, HitColliderBehaviour collider2)
         {
-            collider2.Init(collider1._damage, collider1._knockBackScale, collider1._hitAngle, collider1.DespawnsAfterTimeLimit, collider1.TimeActive, collider1.Owner, collider1.DestroyOnHit, collider1.IsMultiHit);
+            collider2.Init(collider1._damage, collider1._knockBackScale, collider1._hitAngle, collider1.DespawnsAfterTimeLimit, collider1.TimeActive, collider1.Owner, collider1.DestroyOnHit, collider1.IsMultiHit, collider1._adjustAngleBasedOnCollision, collider1._hitStunTime);
             collider2.onHit = collider1.onHit;
             collider2.IgnoreColliders = collider1.IgnoreColliders;
             collider2.Priority = collider1.Priority;
@@ -76,7 +78,7 @@ namespace Lodis.Gameplay
         /// <param name="knockBackScale">How far back this attack will knock an object back</param>
         /// <param name="hitAngle">The angle (in radians) that the object in knock back will be launched at</param>
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
-        public void Init(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true)
+        public void Init(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
         {
             _damage = damage;
             _knockBackScale = knockBackScale;
@@ -87,6 +89,7 @@ namespace Lodis.Gameplay
             DestroyOnHit = destroyOnHit;
             IsMultiHit = isMultiHit;
             _adjustAngleBasedOnCollision = angleChangeOnCollision;
+            _hitStunTime = hitStunTimer;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -158,7 +161,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType);
+                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType, _hitStunTime);
 
             onHit?.Invoke(other.gameObject, otherCollider);
 
@@ -225,7 +228,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType);
+                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType, _hitStunTime);
 
             onHit?.Invoke(other.gameObject);
 
@@ -293,7 +296,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType);
+                damageScript.TakeDamage(OwnerName, _damage, _knockBackScale, newHitAngle, damageType, _hitStunTime);
 
             onHit?.Invoke(collision.gameObject);
 

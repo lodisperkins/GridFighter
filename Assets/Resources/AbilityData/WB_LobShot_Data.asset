@@ -23,6 +23,7 @@ MonoBehaviour:
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 1
+  CanCancelOnMove: 1
   CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnKnockback: 1
@@ -45,5 +46,7 @@ MonoBehaviour:
     value: 5
   - name: MaxInstances
     value: -1
+  - name: HitStun
+    value: 0.3
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}

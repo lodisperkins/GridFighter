@@ -31,6 +31,8 @@ namespace Lodis
         [SerializeField]
         private AnimationCurve _curve;
         private float _currentTimeZ;
+        [SerializeField]
+        private bool _showAveragePosition;
 
         // Start is called before the first frame update
         void Start()
@@ -105,7 +107,8 @@ namespace Lodis
 
         private void OnDrawGizmos()
         {
-            Gizmos.DrawSphere(_averagePosition, 0.5f);
+            if (_showAveragePosition)
+                Gizmos.DrawSphere(_averagePosition, 0.5f);
         }
 
         // Update is called once per frame

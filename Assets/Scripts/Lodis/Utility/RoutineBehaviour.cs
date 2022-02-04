@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Dynamic;
+using System;
 
 namespace Lodis.Utility
 {
@@ -18,12 +19,17 @@ namespace Lodis.Utility
 
         
 
-        public struct TimedAction
+        public class TimedAction
         {
             public float TimeStarted;
             public float Duration;
             public TimedActionCountType CountType;
             public TimedEvent Event;
+            private bool _isActive;
+
+            public bool GetEnabled() { return _isActive; }
+            public void Enable() { _isActive = true; }
+            public void Disable() { _isActive = false; }
         }
 
         private List<TimedAction> _timedActions = new List<TimedAction>();
@@ -70,7 +76,7 @@ namespace Lodis.Utility
                     action.TimeStarted = Time.frameCount;
                     break;
             }    
-
+            action.Enable();
             _timedActions.Add(action);
             return action;
         }
@@ -82,15 +88,22 @@ namespace Lodis.Utility
         /// <returns>False if the action is not in the list of actions</returns>
         public bool StopTimedAction(TimedAction action)
         {
+            if (action == null)
+                return false;
+
+            action.Disable();
             return _timedActions.Remove(action);
         }
 
         private void TryInvokeTimedEvent(float time, int index)
         {
-            if (time - _timedActions[index].TimeStarted >= _timedActions[index].Duration)
+            TimedAction action = _timedActions[index];
+
+            if (time - action.TimeStarted >= action.Duration && action.GetEnabled())
             {
-                _timedActions[index].Event.Invoke();
-                _timedActions.RemoveAt(index);
+                action.Disable();
+                action.Event.Invoke();
+                _timedActions.Remove(action);
             }
         }
 

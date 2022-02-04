@@ -18,7 +18,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _fistCollider;
         private GameObject _visualPrefabInstance;
         private Vector2 _attackDirection;
-        private bool _usedFirstStrike;
+        private bool _secondStrikeActivated;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -43,14 +43,15 @@ namespace Lodis.Gameplay
             EnableAnimation();
             //Store initial move speed
             _ownerMoveSpeed = _ownerMoveScript.Speed;
+            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
         }
 
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
             //Create collider for attack
-            _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("Knockback"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, false, false, true);
+            _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, false, false, true, abilityData.GetCustomStatValue("HitStun"));
 
             //Spawn particles
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
@@ -79,7 +80,6 @@ namespace Lodis.Gameplay
 
             //Change move traits to allow for free movement on the other side of the grid
             _ownerMoveScript.canCancelMovement = true;
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
             _ownerMoveScript.AlwaysLookAtOpposingSide = false;
 
             //Change rotation to the direction of movement
@@ -98,6 +98,13 @@ namespace Lodis.Gameplay
 
             //Despawn particles and hit box
             MonoBehaviour.Destroy(_visualPrefabInstance);
+
+            if (!_secondStrikeActivated)
+            {
+                StopAbility();
+                onEnd?.Invoke();
+                End();
+            }
         }
 
         protected override void End()
@@ -119,14 +126,25 @@ namespace Lodis.Gameplay
                 return;
 
             //If the player is trying to change their attack direction...
-            if (_ownerInput.AttackDirection.magnitude > 0 && !_usedFirstStrike && CurrentAbilityPhase == AbilityPhase.RECOVER)
+            if (_ownerInput.AttackDirection.magnitude > 0 && CurrentAbilityPhase == AbilityPhase.RECOVER && !MaxActivationAmountReached)
             {
                 //...restart the ability
-                Deactivate();
-                RoutineBehaviour.Instance.StopTimedAction(CurrentTimer);
                 _attackDirection = _ownerInput.AttackDirection;
-                UseAbility();
-                _usedFirstStrike = true;
+
+                _secondStrikeActivated = true;
+                Deactivate();
+                StopAbility();
+
+                string[] slots = ownerMoveset.GetAbilityNamesInCurrentSlots();
+
+                abilityData.canCancelRecover = true;
+
+                if (slots[0] == abilityData.abilityName)
+                    ownerMoveset.UseSpecialAbility(0, _ownerInput.AttackDirection);
+                else
+                    ownerMoveset.UseSpecialAbility(1, _ownerInput.AttackDirection);
+
+                abilityData.canCancelRecover = false;
             }
         }
     }

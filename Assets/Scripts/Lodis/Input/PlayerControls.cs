@@ -403,7 +403,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""319afb83-5a85-4616-a94f-2b46963bbd7c"",
-                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button2"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/trigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -425,7 +425,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6b3312ac-24b6-46c0-987f-125192abc25b"",
-                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/trigger"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

@@ -23,7 +23,8 @@ MonoBehaviour:
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 1
-  CanInputMovementWhileActive: 1
+  CanCancelOnMove: 0
+  CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnKnockback: 1
   IgnoreColliders: 1
@@ -52,14 +53,18 @@ MonoBehaviour:
   - name: WeakShotForce
     value: 1
   - name: WeakShotKnockBackScale
-    value: 0
+    value: 2
   - name: WeakShotHitAngle
-    value: 0
+    value: 1.5
   - name: WeakShotLifeTime
     value: 5
   - name: MaxInstances
     value: 1
   - name: WeakColliderPriority
     value: 0
+  - name: WeakHitStun
+    value: 0.2
+  - name: StrongHitStun
+    value: 0.5
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}
