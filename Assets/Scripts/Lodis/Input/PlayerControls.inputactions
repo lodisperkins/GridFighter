@@ -103,6 +103,17 @@
                 },
                 {
                     "name": "",
+                    "id": "97ce2ef2-53d0-4056-a902-628ba1ca0b19",
+                    "path": "<XInputController>/dpad/up",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "9581f419-8578-4a3f-8c04-a94e01a56934",
                     "path": "<Keyboard>/a",
                     "interactions": "Press",
@@ -116,6 +127,17 @@
                     "name": "",
                     "id": "ee013db9-c0cf-4bd4-81f2-a718bfd6f5f3",
                     "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/hat/left",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2abb2b83-079b-45d1-8bd7-44c665780f6a",
+                    "path": "<XInputController>/dpad/left",
                     "interactions": "Press",
                     "processors": "",
                     "groups": "",
@@ -147,6 +169,17 @@
                 },
                 {
                     "name": "",
+                    "id": "2dbc73b9-7fef-4197-bd59-cc4ad6f6b52b",
+                    "path": "<XInputController>/dpad/right",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveRight",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "b558f233-efec-4a40-acb0-feca593cf22b",
                     "path": "<Keyboard>/s",
                     "interactions": "Press",
@@ -169,6 +202,17 @@
                 },
                 {
                     "name": "",
+                    "id": "ad16adac-c9f8-43c1-9bbd-cf14843f01b9",
+                    "path": "<XInputController>/dpad/down",
+                    "interactions": "Press",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MoveDown",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "a2e7c22c-98ff-4910-93ed-65247fd241e2",
                     "path": "<Mouse>/leftButton",
                     "interactions": "Press(behavior=1)",
@@ -182,6 +226,17 @@
                     "name": "",
                     "id": "085619bd-d953-4c02-a2f2-7ee63886939b",
                     "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/button6",
+                    "interactions": "Press(pressPoint=0.1,behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0b253a8d-2e52-4f63-929b-d3840bc9fca1",
+                    "path": "<XInputController>/rightShoulder",
                     "interactions": "Press(pressPoint=0.1,behavior=1)",
                     "processors": "",
                     "groups": "",
@@ -245,7 +300,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "DPAD",
+                    "name": "DPAD(Hori)",
                     "id": "4f608611-efad-460c-9e3e-f4078cfcd330",
                     "path": "2DVector(mode=1)",
                     "interactions": "",
@@ -355,6 +410,61 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "DPAD(XBox)",
+                    "id": "4491fb93-5265-4ea0-9830-7400418cc3c4",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackDirection",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "fe9fd602-def3-45d4-994a-844874e04846",
+                    "path": "<XInputController>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "92b2e9d5-86d8-49a7-8559-e0ae13186d74",
+                    "path": "<XInputController>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "40621e33-45c2-40e7-bfc0-13a745f69196",
+                    "path": "<XInputController>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "81d40ea8-1e32-41d2-8a5e-6d95e57f0786",
+                    "path": "<XInputController>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "AttackDirection",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "30042522-a031-47cf-8a11-e35b01957120",
                     "path": "<Mouse>/rightButton",
@@ -369,6 +479,17 @@
                     "name": "",
                     "id": "93102aea-a9a6-462a-bb9b-3c81a1345c52",
                     "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/button5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Parry",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b406ea35-1dd6-453a-ac81-b66950e1b3b4",
+                    "path": "<XInputController>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -400,6 +521,17 @@
                 },
                 {
                     "name": "",
+                    "id": "bfa3ed4f-482f-4134-b267-a66db5e4a8b7",
+                    "path": "<XInputController>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special1",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "5d65c825-aafe-4501-991f-3f7769b67fa9",
                     "path": "<Keyboard>/e",
                     "interactions": "",
@@ -413,6 +545,17 @@
                     "name": "",
                     "id": "6b3312ac-24b6-46c0-987f-125192abc25b",
                     "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/button2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Special2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b4e5197f-fb9d-464f-8d14-53976962a41a",
+                    "path": "<XInputController>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

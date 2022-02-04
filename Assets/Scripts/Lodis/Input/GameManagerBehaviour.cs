@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEditor;
-
+using UnityEngine.InputSystem.Utilities;
 
 namespace Lodis.Gameplay
 {
@@ -54,6 +54,7 @@ namespace Lodis.Gameplay
         private Vector2 _dummySpawnLocation;
         [SerializeField]
         private int _targetFrameRate;
+        private int _player1DeviceIndex;
 
         public int TargetFrameRate
         {
@@ -73,10 +74,98 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
+            switch (_mode)
+            {
+                case GameMode.SINGLEPLAYER:
+                    SpawnPlayer1();
+                    _grid.AssignOwners(_player1.name);
+                    break;
 
-            InputDevice[] devices = { Keyboard.current, Mouse.current };
+                case GameMode.PRACTICE:
+                    SpawnPlayer1();
+                    SpawnCPU();
+                    _grid.AssignOwners(_player1.name, _cpu.name);
+                    break;
+
+                case GameMode.MULTIPLAYER:
+                    SpawnPlayer1();
+                    SpawnPlayer2();
+                    _grid.AssignOwners(_player1.name, _player2.name);
+                    break;
+
+            }
+        }
+
+        private void SpawnCPU()
+        {
+            _inputManager.playerPrefab = _dummy.gameObject;
+
+            _cpu = Instantiate(_inputManager.playerPrefab);
+            _cpu.name = _inputManager.playerPrefab.name + "(Dummy)";
+            _ringBarrierR.owner = _cpu.name;
+            _cpu.transform.forward = Vector3.left;
+            BlackBoardBehaviour.Instance.Player2 = _cpu.gameObject;
+            //Get reference to player 2 components
+            _p2Movement = _cpu.GetComponent<Movement.GridMovementBehaviour>();
+            _p2StateManager = _cpu.GetComponent<CharacterStateMachineBehaviour>();
+            _player2Moveset = _cpu.GetComponent<MovesetBehaviour>();
+
+            //Initialize base UI stats
+            _p2HealthBar.HealthComponent = _cpu.GetComponent<Movement.KnockbackBehaviour>();
+            _p2HealthBar.MaxValue = 200;
+            _abilityTextP2.MoveSet = _player2Moveset;
+
+            //Find spawn point for dummy
+            GridScripts.PanelBehaviour spawnPanel = null;
+            if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))
+                _p2Movement.MoveToPanel(spawnPanel, true, GridScripts.GridAlignment.ANY);
+            else
+                Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummySpawnLocation);
+
+            _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
+        }
+
+        private void SpawnPlayer2()
+        {
+            //Spawn player 2
+            _player2 = _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[_player1DeviceIndex + 1]);
+            _player2.name += "(P2)";
+            _ringBarrierR.owner = _player2.name;
+            _player2.transform.forward = Vector3.left;
+            BlackBoardBehaviour.Instance.Player2 = _player2.gameObject;
+            //Get reference to player 2 components
+            _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
+            _p2StateManager = _player2.GetComponent<CharacterStateMachineBehaviour>();
+            _p2Input = _player2.GetComponent<Input.InputBehaviour>();
+            _player2Moveset = _player2.GetComponent<MovesetBehaviour>();
+
+            //Initialize base UI stats
+            _p2HealthBar.HealthComponent = _player2.GetComponent<Movement.KnockbackBehaviour>();
+            _p2HealthBar.MaxValue = 200;
+            _abilityTextP2.MoveSet = _player2Moveset;
+
+            //Move player to spawn
+            _p2Input.PlayerID = 1;
+            _p2Movement.MoveToPanel(_grid.RhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
+            _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
+            _grid.AssignOwners(_player1.name, _player2.name);
+        }
+
+        private void SpawnPlayer1()
+        {
             //Spawn player 1
-            _inputManager.JoinPlayer(0, 0, "Player", devices);
+            if (InputSystem.devices.Count <= 2 || (InputSystem.devices.Count == 3 && _mode == GameMode.MULTIPLAYER))
+            {
+                InputDevice[] devices = { InputSystem.devices[0], InputSystem.devices[1] };
+                _inputManager.JoinPlayer(0, 0, "Player", devices);
+                _player1DeviceIndex = 1;
+            }
+            else if (InputSystem.devices.Count > 2)
+            { 
+                _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[2]);
+                _player1DeviceIndex = 2;
+            }
+
             _player1 = PlayerInput.GetPlayerByIndex(0);
             _player1.name = _player1.name + "(P1)";
             _ringBarrierL.owner = _player1.name;
@@ -99,67 +188,6 @@ namespace Lodis.Gameplay
             _p1Movement.MoveToPanel(_grid.LhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
             _player1.transform.forward = Vector3.right;
-
-            //Spawns player 2 if the game mode is set to multiplayer
-            if (_mode == GameMode.MULTIPLAYER)
-            {
-                //Spawn player 2
-                _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[3]);
-                _player2 = PlayerInput.GetPlayerByIndex(1);
-                _player2.name = _player2.name + "(P2)";
-                _ringBarrierR.owner = _player2.name;
-                _player2.transform.forward = Vector3.left;
-                BlackBoardBehaviour.Instance.Player2 = _player2.gameObject;
-                //Get reference to player 2 components
-                _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
-                _p2StateManager = _player2.GetComponent<CharacterStateMachineBehaviour>();
-                _p2Input = _player2.GetComponent<Input.InputBehaviour>();
-                _player2Moveset = _player2.GetComponent<MovesetBehaviour>();
-
-                //Initialize base UI stats
-                _p2HealthBar.HealthComponent = _player2.GetComponent<Movement.KnockbackBehaviour>();
-                _p2HealthBar.MaxValue = 200;
-                _abilityTextP2.MoveSet = _player2Moveset;
-
-                //Move player to spawn
-                _p2Input.PlayerID = 1;
-                _p2Movement.MoveToPanel(_grid.RhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
-                _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
-                _grid.AssignOwners(_player1.name, _player2.name);
-                return;
-            }
-            else if (_mode == GameMode.PRACTICE)
-            {
-                _inputManager.playerPrefab = _dummy.gameObject;
-
-                _cpu = Instantiate(_inputManager.playerPrefab);
-                _cpu.name = _inputManager.playerPrefab.name + "(Dummy)";
-                _ringBarrierR.owner = _cpu.name;
-                _cpu.transform.forward = Vector3.left;
-                BlackBoardBehaviour.Instance.Player2 = _cpu.gameObject;
-                //Get reference to player 2 components
-                _p2Movement = _cpu.GetComponent<Movement.GridMovementBehaviour>();
-                _p2StateManager = _cpu.GetComponent<CharacterStateMachineBehaviour>();
-                _player2Moveset = _cpu.GetComponent<MovesetBehaviour>();
-
-                //Initialize base UI stats
-                _p2HealthBar.HealthComponent = _cpu.GetComponent<Movement.KnockbackBehaviour>();
-                _p2HealthBar.MaxValue = 200;
-                _abilityTextP2.MoveSet = _player2Moveset;
-
-                //Find spawn point for dummy
-                GridScripts.PanelBehaviour spawnPanel = null;
-                if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))
-                    _p2Movement.MoveToPanel(spawnPanel, true, GridScripts.GridAlignment.ANY);
-                else
-                    Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummySpawnLocation);
-
-                _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
-                _grid.AssignOwners(_player1.name, _cpu.name);
-                return;
-            }
-
-            _grid.AssignOwners(_player1.name);
         }
 
         public void Restart()
