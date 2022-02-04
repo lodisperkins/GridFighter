@@ -128,8 +128,10 @@ namespace Lodis.Gameplay
             } 
             
             CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
+            //Grab whatever health script is attached to this object
+            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
 
-            if (characterDefenseBehaviour?.IsParrying == true)
+            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
                 return;
 
             float newHitAngle = _hitAngle;
@@ -158,9 +160,6 @@ namespace Lodis.Gameplay
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(other.gameObject);
 
-            //Grab whatever health script is attached to this object
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
-
             if (Owner)
                 OwnerName = Owner.name;
 
@@ -185,12 +184,16 @@ namespace Lodis.Gameplay
             if (other.attachedRigidbody)
                 otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
+
+            //Grab whatever health script is attached to this object. If none return
+            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
+
             if (other.CompareTag("ParryBox"))
                 return;
 
             CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
 
-            if (characterDefenseBehaviour?.IsParrying == true)
+            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
                 return;
 
             if (otherCollider && IgnoreColliders)
@@ -205,9 +208,6 @@ namespace Lodis.Gameplay
                 }
                 return;
             }
-
-            //Grab whatever health script is attached to this object. If none return
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
 
 
             float newHitAngle = _hitAngle;
@@ -262,7 +262,10 @@ namespace Lodis.Gameplay
 
             CharacterDefenseBehaviour characterDefenseBehaviour = collision.gameObject.GetComponentInParent<CharacterDefenseBehaviour>();
 
-            if (characterDefenseBehaviour?.IsParrying == true)
+            //Grab whatever health script is attached to this object
+            HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
+
+            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
                 return;
 
             if (otherCollider && IgnoreColliders)
@@ -279,9 +282,6 @@ namespace Lodis.Gameplay
 
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(collision.gameObject);
-
-            //Grab whatever health script is attached to this object
-            HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
             float newHitAngle = _hitAngle;
 
