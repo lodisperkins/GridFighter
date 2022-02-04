@@ -431,17 +431,21 @@ namespace Lodis.Gameplay
         }
         private void OnTriggerEnter(Collider other)
         {
-            if (!IsBraced || !(other.CompareTag("Structure") && other.CompareTag("Panel")) || BreakingFall)
+            if (!IsBraced || !(other.CompareTag("Structure") || other.CompareTag("Panel")) || BreakingFall)
                 return;
 
             BreakingFall = true;
 
             PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
 
-            if (!panel)
+            if (panel?.Alignment != _movement.Alignment)
+                _knockBack.SetInvincibilityByCondition(condition => 
+                {
+                    BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, true);
+                    return panel.Alignment == _movement.Alignment; 
+                } );
+            else
                 _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
-            else if (panel.Alignment != _movement.Alignment)
-                _knockBack.SetInvincibilityByCondition(condition => !_movement.IsMoving && _movement.CurrentPanel.Alignment == _movement.Alignment);
 
             _knockBack.Physics.StopVelocity();
             _knockBack.Physics.IgnoreForces = true;
@@ -470,17 +474,17 @@ namespace Lodis.Gameplay
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (!IsBraced || !(collision.gameObject.CompareTag("Structure") && collision.gameObject.CompareTag("Panel")) || BreakingFall)
+            if (!IsBraced || !(collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("Panel")) || BreakingFall)
                 return;
 
             BreakingFall = true;
 
             PanelBehaviour panel = collision.gameObject.GetComponent<PanelBehaviour>();
 
-            if (!panel)
-                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
-            else if (panel.Alignment != _movement.Alignment)
+            if (panel?.Alignment != _movement.Alignment)
                 _knockBack.SetInvincibilityByCondition(condition => !_movement.IsMoving && _movement.CurrentPanel.Alignment == _movement.Alignment);
+            else
+                 _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
 
             _knockBack.Physics.StopVelocity();
             _knockBack.Physics.IgnoreForces = true;
