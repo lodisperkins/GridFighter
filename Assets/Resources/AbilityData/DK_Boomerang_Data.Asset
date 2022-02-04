@@ -16,7 +16,7 @@ MonoBehaviour:
   AbilityType: 8
   damageType: 0
   timeActive: 0.1
-  recoverTime: 1
+  recoverTime: 0.4
   startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 1
