@@ -5,6 +5,7 @@ using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
@@ -30,6 +31,7 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _moveset;
         private InputBehaviour _input;
         protected GridMovementBehaviour _movement;
+        private UnityAction _onStun;
 
         public bool Stunned 
         {
@@ -150,6 +152,7 @@ namespace Lodis.Gameplay
                 return;
 
             _stunRoutine = StartCoroutine(ActivateStun(time));
+            _onStun?.Invoke();
         }
 
         public virtual void CancelStun()
@@ -166,6 +169,11 @@ namespace Lodis.Gameplay
                 _input.enabled = true;
 
             Stunned = false;
+        }
+
+        public void AddOnStunAction(UnityAction action)
+        {
+            _onStun += action;
         }
 
         /// <summary>

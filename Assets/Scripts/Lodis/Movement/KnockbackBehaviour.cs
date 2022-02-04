@@ -122,6 +122,7 @@ namespace Lodis.Movement
             _defenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
             Physics = GetComponent<GridPhysicsBehaviour>();
             Physics.AddOnCollisionWithGroundEvent(args => { if (InFreeFall) TryStartLandingLag(); });
+            AddOnStunAction(() => { if (Landing) StopCoroutine(_currentCoroutine); });
         }
 
         // Start is called before the first frame update
@@ -213,6 +214,8 @@ namespace Lodis.Movement
                 return;
             }
 
+            if (Stunned) return;
+
             Physics.StopVelocity();
 
             _currentCoroutine = StartCoroutine(StartLandingLag());
@@ -231,6 +234,7 @@ namespace Lodis.Movement
             MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
             Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
             GridMovementBehaviour movement = GetComponent<GridMovementBehaviour>();
+            
 
             Stunned = true;
 
@@ -274,6 +278,7 @@ namespace Lodis.Movement
             if (_hitStunTimer.GetEnabled())
                 RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
 
+            _timeInCurrentHitStun = 0;
             _inHitStun = false;
             _isFlinching = false;
         }
@@ -347,9 +352,9 @@ namespace Lodis.Movement
                 Landing = false;
                 //Start knockdown
                 IsDown = true;
+                SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
                 _movementBehaviour.DisableMovement(condition => !RecoveringFromFall && !IsDown, false, true);
 
-                SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
                 yield return new WaitForSeconds(_knockDownTime);
                 RecoveringFromFall = true;
                 IsDown = false;
@@ -379,7 +384,7 @@ namespace Lodis.Movement
             if(_hitStunTimer.GetEnabled())
                 RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
 
-            _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _inHitStun = false; _isFlinching = false; }, TimedActionCountType.SCALEDTIME, timeInHitStun);
+            _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _inHitStun = false; _isFlinching = false; _timeInCurrentHitStun = 0; }, TimedActionCountType.SCALEDTIME, timeInHitStun);
             _onHitStun?.Invoke();
         }
 
