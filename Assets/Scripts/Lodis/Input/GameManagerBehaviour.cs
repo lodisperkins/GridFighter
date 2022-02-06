@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEngine.InputSystem.Utilities;
+using Lodis.Utility;
 
 namespace Lodis.Gameplay
 {
@@ -55,7 +56,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private int _targetFrameRate;
         private int _player1DeviceIndex;
-
+        
         public int TargetFrameRate
         {
             get { return _targetFrameRate; }
@@ -128,7 +129,7 @@ namespace Lodis.Gameplay
         private void SpawnPlayer2()
         {
             //Spawn player 2
-            _player2 = _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[_player1DeviceIndex + 1]);
+            _player2 = _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[0]);
             _player2.name += "(P2)";
             _ringBarrierR.owner = _player2.name;
             _player2.transform.forward = Vector3.left;
@@ -154,17 +155,20 @@ namespace Lodis.Gameplay
         private void SpawnPlayer1()
         {
             //Spawn player 1
-            if (InputSystem.devices.Count <= 2 || (InputSystem.devices.Count == 3 && _mode == GameMode.MULTIPLAYER))
-            {
-                InputDevice[] devices = { InputSystem.devices[0], InputSystem.devices[1] };
-                _inputManager.JoinPlayer(0, 0, "Player", devices);
-                _player1DeviceIndex = 1;
-            }
-            else if (InputSystem.devices.Count > 2)
-            { 
-                _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[2]);
-                _player1DeviceIndex = 2;
-            }
+            //if (InputSystem.devices.Count <= 2 || (InputSystem.devices.Count == 3 && _mode == GameMode.MULTIPLAYER))
+            //{
+            //    InputDevice[] devices = { InputSystem.devices[0], InputSystem.devices[1] };
+            //    _inputManager.JoinPlayer(0, 0, "Player", devices);
+            //    _player1DeviceIndex = 1;
+            //}
+            //else if (InputSystem.devices.Count > 2)
+            //{ 
+            //    _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[2]);
+            //    _player1DeviceIndex = 2;
+            //}
+
+
+            _inputManager.JoinPlayer(0, 0, "Player");
 
             _player1 = PlayerInput.GetPlayerByIndex(0);
             _player1.name = _player1.name + "(P1)";
@@ -195,13 +199,69 @@ namespace Lodis.Gameplay
             SceneManager.LoadScene(0);
         }
 
+        private bool DeviceInputReceived(out InputDevice device)
+        {
+            device = null;
+
+            for (int i = 0; i < InputSystem.devices.Count; i++)
+            {
+                if (InputSystem.devices[i].IsActuated())
+                {
+                    device = InputSystem.devices[i];
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void AssignDevice(InputDevice device, int player)
+        {
+            Input.InputBehaviour playerInput = null;
+            if (player == 1)
+                playerInput = _p1Input;
+            else playerInput = _p2Input;
+
+            //If input was detected by a keyboard or mouse...
+            if (device.name.Contains("Mouse") || device.name.Contains("Keyboard"))
+            {
+                //...set the input device array to be the keyboard and mouse
+                playerInput.Devices = new List<InputDevice>(InputSystem.devices.GetDevices(args =>
+                {
+                    InputDevice input = (InputDevice)args[0];
+                    return input.name.Contains("Mouse") || input.name.Contains("Keyboard");
+                }
+                ));
+                return;
+            }
+
+            playerInput.Devices = new List<InputDevice>() { device };
+        }
+
         // Update is called once per frame
         void Update()
         {
             BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
+            
+            if (_p1Input.Devices.Count == 0)
+            {
+                InputDevice device;
+                if (DeviceInputReceived(out device))
+                    AssignDevice(device, 1);
+            }
 
             if (_mode == GameMode.MULTIPLAYER)
+            { 
                 BlackBoardBehaviour.Instance.Player2State = _p2StateManager.StateMachine.CurrentState;
+
+                if (_p2Input.Devices.Count != 0)
+                    return;
+
+                InputDevice device;
+                if (DeviceInputReceived(out device) && !_p1Input.Devices.Contains(device))
+                    AssignDevice(device, 2);
+            }
+
         }
     }
 

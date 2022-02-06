@@ -91,6 +91,17 @@ namespace Lodis.Input
         private UnityAction _onPlayerMove;
         private UnityAction _onPlayeMoveTemp;
         private bool _isPaused;
+        private List<InputDevice> _devices = new List<InputDevice>();
+
+        public List<InputDevice> Devices 
+        {
+            get { return _devices; }
+            set
+            {
+                _devices = value;
+                _playerControls.devices = _devices.ToArray();
+            }
+        }
 
         /// <summary>
         /// The ID number of the player using this component
@@ -121,7 +132,6 @@ namespace Lodis.Input
         private void Awake()
         {
             _playerControls = new PlayerControls();
-            _playerControls.devices = GetComponent<PlayerInput>().devices;
             //Initialize action delegates
             _playerControls.Player.MoveUp.started += context => UpdateInputY(1);
             _playerControls.Player.MoveDown.started += context => UpdateInputY(-1);
@@ -151,6 +161,12 @@ namespace Lodis.Input
         private void OnDisable()
         {
             _playerControls.Disable();
+        }
+
+        public void AddDevice(InputDevice device)
+        {
+            _devices.Add(device);
+            _playerControls.devices = _devices.ToArray();
         }
 
         /// <summary>

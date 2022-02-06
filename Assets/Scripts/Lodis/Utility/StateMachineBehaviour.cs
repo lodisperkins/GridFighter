@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace Lodis
 {
-    public delegate bool Condition(object[] args = null);
+    public delegate bool Condition(params object[] args);
 }
 
 namespace Lodis.Utility
