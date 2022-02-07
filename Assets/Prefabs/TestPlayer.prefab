@@ -277,7 +277,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 8493895805550168426}
   _canParry: 1
   _airParryCooldown: 0.5
-  _groundParryRestTime: 0.55
+  _groundParryRestTime: 0.25
   _airDodgeDistance: 0
   _airDodgeSpeed: 0
   _parryStartUpTime: 0.05
@@ -313,7 +313,7 @@ MonoBehaviour:
   _landingTime: 0.5
   _knockDownTime: 0.3
   _knockDownRecoverTime: 0.7
-  _knockDownRecoverInvincibleTime: 2
+  _knockDownRecoverInvincibleTime: 1.5
   _knockDownLandingTime: 0.4
   _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
   _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
@@ -389,7 +389,7 @@ MonoBehaviour:
   _bounceCollider: {fileID: 5036224701878357983}
   _isGrounded: 0
   _extraHeight: 0.5
-  _bounciness: 5
+  _bounciness: 3
   _panelBounceEnabled: 1
   _netForce: {x: 0, y: 0, z: 0}
   _useGravity: 1

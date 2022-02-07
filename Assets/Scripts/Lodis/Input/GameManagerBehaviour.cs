@@ -205,7 +205,7 @@ namespace Lodis.Gameplay
 
             for (int i = 0; i < InputSystem.devices.Count; i++)
             {
-                if (InputSystem.devices[i].IsActuated())
+                if (InputSystem.devices[i].IsPressed())
                 {
                     device = InputSystem.devices[i];
                     return true;

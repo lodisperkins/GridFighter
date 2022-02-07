@@ -66,5 +66,7 @@ MonoBehaviour:
     value: 0.2
   - name: StrongHitStun
     value: 0.5
+  - name: StrongHitMaxPower
+    value: 6
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}

@@ -170,6 +170,7 @@ namespace Lodis.Gameplay
             _strongShotDamage = abilityData.GetCustomStatValue("StrongShotDamage") * powerScale;
             _strongShotKnockBackScale = abilityData.GetCustomStatValue("StrongShotKnockBackScale") * powerScale;
             _strongShotDistance = (powerScale - 1) / abilityData.GetCustomStatValue("StrongShotForceIncreaseRate");
+            _strongShotDistance = Mathf.Clamp(_strongShotDistance, 0, abilityData.GetCustomStatValue("StrongHitMaxPower"));
 
             _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, abilityData.GetCustomStatValue("WeakShotKnockBackScale"),
                 abilityData.GetCustomStatValue("WeakShotHitAngle"), true, abilityData.GetCustomStatValue("WeakShotLifeTime"), owner, true, false, true, abilityData.GetCustomStatValue("WeakHitStun"));
