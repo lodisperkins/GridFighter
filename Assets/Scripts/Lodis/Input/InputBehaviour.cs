@@ -156,6 +156,7 @@ namespace Lodis.Input
         private void OnEnable()
         {
             _playerControls.Enable();
+            _playerControls.devices = _devices.ToArray();
         }
 
         private void OnDisable()

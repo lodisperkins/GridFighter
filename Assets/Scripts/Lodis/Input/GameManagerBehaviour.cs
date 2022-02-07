@@ -138,6 +138,7 @@ namespace Lodis.Gameplay
             _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
             _p2StateManager = _player2.GetComponent<CharacterStateMachineBehaviour>();
             _p2Input = _player2.GetComponent<Input.InputBehaviour>();
+            _p2Input.enabled = false;
             _player2Moveset = _player2.GetComponent<MovesetBehaviour>();
 
             //Initialize base UI stats
@@ -178,6 +179,7 @@ namespace Lodis.Gameplay
             _p1Movement = _player1.GetComponent<Movement.GridMovementBehaviour>();
             _p1StateManager = _player1.GetComponent<CharacterStateMachineBehaviour>();
             _p1Input = _player1.GetComponent<Input.InputBehaviour>();
+            _p1Input.enabled = false;
             _player1Moveset = _player1.GetComponent<MovesetBehaviour>();
             BlackBoardBehaviour.Instance.Player1 = _player1.gameObject;
             //Assign ID 
@@ -205,8 +207,12 @@ namespace Lodis.Gameplay
 
             for (int i = 0; i < InputSystem.devices.Count; i++)
             {
-                if (InputSystem.devices[i].IsPressed())
+                if (InputSystem.devices[i].IsPressed() && !InputSystem.devices[i].name.Contains("Mouse") 
+                    && !_p1Input.Devices.Contains(InputSystem.devices[i]))
                 {
+                    if (_mode == GameMode.MULTIPLAYER && _p2Input?.Devices.Contains(InputSystem.devices[i]) == false)
+                        continue;
+
                     device = InputSystem.devices[i];
                     return true;
                 }
@@ -242,26 +248,47 @@ namespace Lodis.Gameplay
         void Update()
         {
             BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
-            
+        }
+
+        private void FixedUpdate()
+        {
             if (_p1Input.Devices.Count == 0)
             {
                 InputDevice device;
-                if (DeviceInputReceived(out device))
+                if (!DeviceInputReceived(out device))
+                    return;
+                Debug.Log("Input Received P1 " + device.name);
+
+                if (_mode == GameMode.MULTIPLAYER) 
+                    if (_p2Input.Devices.Find(args => args.deviceId == device.deviceId) == null)
+                    return;
+
+                if (!device.name.Contains("Mouse"))
+                {
+                    Debug.Log("Input Assigned P1 " + device.name);
                     AssignDevice(device, 1);
+                    _p1Input.enabled = true;
+                }
             }
 
             if (_mode == GameMode.MULTIPLAYER)
-            { 
+            {
                 BlackBoardBehaviour.Instance.Player2State = _p2StateManager.StateMachine.CurrentState;
 
                 if (_p2Input.Devices.Count != 0)
                     return;
 
-                InputDevice device;
-                if (DeviceInputReceived(out device) && !_p1Input.Devices.Contains(device))
+                InputDevice device = null;
+                if (!DeviceInputReceived(out device))
+                    return;
+                Debug.Log("Input Received P2 " + device.name);
+                if (_p1Input.Devices.Find(args => args.deviceId == device.deviceId) == null && !device.name.Contains("Mouse"))
+                {
+                    Debug.Log("Input Assigned P2 " + device.name);
                     AssignDevice(device, 2);
+                    _p2Input.enabled = true;
+                }
             }
-
         }
     }
 
