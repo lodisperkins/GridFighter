@@ -210,7 +210,7 @@ namespace Lodis.Gameplay
                 if (InputSystem.devices[i].IsPressed() && !InputSystem.devices[i].name.Contains("Mouse") 
                     && !_p1Input.Devices.Contains(InputSystem.devices[i]))
                 {
-                    if (_mode == GameMode.MULTIPLAYER && _p2Input?.Devices.Contains(InputSystem.devices[i]) == false)
+                    if (_mode == GameMode.MULTIPLAYER && _p2Input?.Devices.Contains(InputSystem.devices[i]) == true)
                         continue;
 
                     device = InputSystem.devices[i];
@@ -260,7 +260,7 @@ namespace Lodis.Gameplay
                 Debug.Log("Input Received P1 " + device.name);
 
                 if (_mode == GameMode.MULTIPLAYER) 
-                    if (_p2Input.Devices.Find(args => args.deviceId == device.deviceId) == null)
+                    if (_p2Input.Devices.Find(args => args.deviceId == device.deviceId) != null)
                     return;
 
                 if (!device.name.Contains("Mouse"))
