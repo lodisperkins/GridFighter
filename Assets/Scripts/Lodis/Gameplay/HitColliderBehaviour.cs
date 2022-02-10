@@ -49,7 +49,7 @@ namespace Lodis.Gameplay
                 LayersToIgnore = new List<string>();
 
             LayersToIgnore.Add("ParryBox");
-            Collisions = new List<GameObject>();
+            Collisions = new Dictionary<GameObject, int>();
         }
 
         private void Start()
@@ -95,7 +95,7 @@ namespace Lodis.Gameplay
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.Contains(other.gameObject) || IsMultiHit)
+            if (Collisions.ContainsKey(other.gameObject) || IsMultiHit)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -158,7 +158,7 @@ namespace Lodis.Gameplay
             }
 
             //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(other.gameObject);
+            Collisions.Add(other.gameObject, Time.frameCount);
 
             if (Owner)
                 OwnerName = Owner.name;
@@ -176,8 +176,11 @@ namespace Lodis.Gameplay
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!IsMultiHit || other.gameObject == Owner || !CheckHitTime())
+            if (!IsMultiHit || other.gameObject == Owner || !CheckHitTime(gameObject))
                 return;
+
+            if (!Collisions.ContainsKey(other.gameObject))
+                Collisions.Add(other.gameObject, Time.frameCount);
 
             ColliderBehaviour otherCollider = null;
 
@@ -249,7 +252,7 @@ namespace Lodis.Gameplay
         private void OnCollisionEnter(Collision collision)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.Contains(collision.gameObject) || IsMultiHit || collision.gameObject == Owner)
+            if (Collisions.ContainsKey(collision.gameObject) || IsMultiHit || collision.gameObject == Owner)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -281,7 +284,7 @@ namespace Lodis.Gameplay
             }
 
             //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(collision.gameObject);
+            Collisions.Add(collision.gameObject, Time.frameCount);
 
             float newHitAngle = _hitAngle;
 

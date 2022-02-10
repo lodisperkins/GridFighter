@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
         protected float CurrentTimeActive;
         protected float StartTime;
         protected GameObject Owner;
-        protected List<GameObject> Collisions;
+        protected Dictionary<GameObject, int> Collisions;
         protected string OwnerName = "NoOwner";
         [SerializeField]
         private List<string> _layersToIgnore;
@@ -86,7 +86,7 @@ namespace Lodis.Gameplay
 
         private void Awake()
         {
-            Collisions = new List<GameObject>();
+            Collisions = new Dictionary<GameObject, int>();
         }
 
         private void Start()
@@ -143,7 +143,7 @@ namespace Lodis.Gameplay
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.Contains(other.gameObject) || IsMultiHit || other.gameObject == Owner)
+            if (Collisions.ContainsKey(other.gameObject) || IsMultiHit || other.gameObject == Owner)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -164,7 +164,7 @@ namespace Lodis.Gameplay
                     return;
 
             //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(other.gameObject);
+            Collisions.Add(other.gameObject, Time.frameCount);
 
             Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
 
@@ -177,7 +177,7 @@ namespace Lodis.Gameplay
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!IsMultiHit || other.gameObject == Owner || !CheckHitTime())
+            if (!IsMultiHit || other.gameObject == Owner || !CheckHitTime(other.gameObject))
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -209,11 +209,18 @@ namespace Lodis.Gameplay
         /// Useful for multihit colliders
         /// </summary>
         /// <returns>Whether or not enough time has passed since the last hit</returns>
-        protected bool CheckHitTime()
+        protected bool CheckHitTime(GameObject gameObject)
         {
-            if (Time.frameCount - _lastHitFrame >= HitFrames)
+            int lastHitFrame = 0;
+            if (!Collisions.TryGetValue(gameObject, out lastHitFrame))
             {
-                _lastHitFrame = Time.frameCount;
+                Collisions.Add(gameObject, Time.frameCount);
+                return false;
+            }
+
+            if (Time.frameCount - lastHitFrame >= HitFrames)
+            {
+                Collisions[gameObject] = Time.frameCount;
                 return true;
             }
 
@@ -223,7 +230,7 @@ namespace Lodis.Gameplay
         private void OnCollisionEnter(Collision collision)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.Contains(collision.gameObject) || IsMultiHit || collision.gameObject == Owner)
+            if (Collisions.ContainsKey(collision.gameObject) || IsMultiHit || collision.gameObject == Owner)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -243,7 +250,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(collision.gameObject);
+            Collisions.Add(collision.gameObject, Time.frameCount);
 
             Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
 
