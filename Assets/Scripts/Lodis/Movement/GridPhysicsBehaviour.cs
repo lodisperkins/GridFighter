@@ -74,8 +74,6 @@ namespace Lodis.Movement
         private CollisionEvent _onCollisionWithGround;
 
         private Coroutine _currentCoroutine;
-        [SerializeField]
-        private float _bounceScale = 1;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -284,7 +282,7 @@ namespace Lodis.Movement
             //Uses the total knockback and panel distance to find how far the object is travelling
             float displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
             //Finds the magnitude of the force vector to be applied 
-            float val1 = displacement * UnityEngine.Physics.gravity.magnitude;
+            float val1 = displacement * Gravity;
             float val2 = Mathf.Sin(2 * launchAngle);
             float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
             float magnitude = val3;
@@ -322,10 +320,6 @@ namespace Lodis.Movement
         {
             _onCollision?.Invoke(collision.gameObject, collision);
 
-            if ((collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("CollisionPlane")) && collision.GetContact(0).normal.y >= 0.5f)
-                _onCollisionWithGround?.Invoke();
-            
-
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
             GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
 
@@ -344,14 +338,25 @@ namespace Lodis.Movement
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-            float knockbackScale = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+            float velocityMagnitude = 0;
+            float knockbackScale = 0;
+
+            if (knockBackScript)
+            {
+                velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
+                knockbackScale = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+            }
+            else
+            {
+                velocityMagnitude = LastVelocity.magnitude;
+                knockbackScale = _lastForceAdded.magnitude * (velocityMagnitude / _lastForceAdded.magnitude);
+            }
 
             if (knockbackScale == 0 || float.IsNaN(knockbackScale))
                 return;
 
             //Apply ricochet force
-            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(knockbackScale * _bounceScale / BounceDampen, hitAngle));
+            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(knockbackScale * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
         }
 
         private void OnTriggerEnter(Collider other)
@@ -394,7 +399,7 @@ namespace Lodis.Movement
                 return;
 
             //Apply ricochet force
-            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(knockbackScale * _bounceScale / BounceDampen, hitAngle));
+            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(knockbackScale * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
         }
 
         /// <summary>

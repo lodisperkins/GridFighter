@@ -306,7 +306,7 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _isInvincible: 0
+  _isInvincible: 1
   _stunned: 0
   _visibleLayers:
     serializedVersion: 2
@@ -358,7 +358,6 @@ MonoBehaviour:
   _ignoreForces: 1
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
-  _bounceScale: 3
 --- !u!75 &12686090437924747
 ConstantForce:
   m_ObjectHideFlags: 0

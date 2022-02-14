@@ -4,6 +4,14 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
+    class ColliderInfo
+    {
+        public bool DespawnAfterTimeLimit;
+        public float TimeActive;
+        public GameObject Owner;
+        public bool DestroyOnHit;
+        public bool IsMultiHit;
+    }
     /// <summary>
     /// Event used when collisions occur. 
     /// Arg[0] = The game object collided with.
