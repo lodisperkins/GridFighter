@@ -7,42 +7,23 @@ using UnityEngine.Events;
 namespace Lodis.Gameplay
 {
     [System.Serializable]
-    class HitColliderInfo : ColliderInfo
+    public class HitColliderInfo : ColliderInfo
     {
-        public float _damage;
+        public float Damage;
         [Tooltip("How far back this attack will knock an object back.")]
-        [SerializeField]
-        public float _baseKnockBack;
+        public float BaseKnockBack;
         [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
-        [SerializeField]
-        public float _hitAngle;
+        public float HitAngle;
         [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
-        [SerializeField]
-        public bool _adjustAngleBasedOnCollision;
-        public DamageType damageType = DamageType.DEFAULT;
+        public bool AdjustAngleBasedOnCollision;
+        public DamageType TypeOfDamage = DamageType.DEFAULT;
         public bool CanSpike;
-        [SerializeField]
-        private float _hitStunTime;
+        public float HitStunTime;
     }
 
     public class HitColliderBehaviour : ColliderBehaviour
     {
-        [Tooltip("The amount of damage this attack will do.")]
-        [SerializeField]
-        private float _damage;
-        [Tooltip("How far back this attack will knock an object back.")]
-        [SerializeField]
-        private float _baseKnockBack;
-        [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
-        [SerializeField]
-        private float _hitAngle;
-        [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
-        [SerializeField]
-        private bool _adjustAngleBasedOnCollision;
-        public DamageType damageType = DamageType.DEFAULT;
-        public bool CanSpike;
-        [SerializeField]
-        private float _hitStunTime;
+        public HitColliderInfo ColliderInfo;
 
         /// <summary>
         /// Collision event called when this collider hits another. 
@@ -56,10 +37,11 @@ namespace Lodis.Gameplay
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public float Priority = 0.0f;
 
-        public HitColliderBehaviour(float damage, float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
+        public HitColliderBehaviour(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
             : base()
         {
-            Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision, hitStunTimer);
+            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack}
+            Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision, hitStunTimer);
         }
 
         private void Awake()
@@ -83,7 +65,7 @@ namespace Lodis.Gameplay
         /// <param name="collider2"></param>
         public static void Copy(HitColliderBehaviour collider1, HitColliderBehaviour collider2)
         {
-            collider2.Init(collider1._damage, collider1._baseKnockBack, collider1._hitAngle, collider1.DespawnsAfterTimeLimit, collider1.TimeActive, collider1.Owner, collider1.DestroyOnHit, collider1.IsMultiHit, collider1._adjustAngleBasedOnCollision, collider1._hitStunTime);
+            collider2.Init(collider1.ColliderInfo.Damage, collider1.ColliderInfo.BaseKnockBack, collider1._hitAngle, collider1.DespawnsAfterTimeLimit, collider1.TimeActive, collider1.Owner, collider1.DestroyOnHit, collider1.IsMultiHit, collider1._adjustAngleBasedOnCollision, collider1._hitStunTime);
             collider2.onHit = collider1.onHit;
             collider2.IgnoreColliders = collider1.IgnoreColliders;
             collider2.Priority = collider1.Priority;
@@ -97,18 +79,9 @@ namespace Lodis.Gameplay
         /// <param name="baseKnockBack">How far back this attack will knock an object back</param>
         /// <param name="hitAngle">The angle (in radians) that the object in knock back will be launched at</param>
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
-        public void Init(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
+        public void Init(HitColliderInfo info)
         {
-            _damage = damage;
-            _baseKnockBack = baseKnockBack;
-            _hitAngle = hitAngle;
-            DespawnsAfterTimeLimit = despawnAfterTimeLimit;
-            TimeActive = timeActive;
-            Owner = owner;
-            DestroyOnHit = destroyOnHit;
-            IsMultiHit = isMultiHit;
-            _adjustAngleBasedOnCollision = angleChangeOnCollision;
-            _hitStunTime = hitStunTimer;
+            ColliderInfo = info;
         }
 
         private void OnTriggerEnter(Collider other)

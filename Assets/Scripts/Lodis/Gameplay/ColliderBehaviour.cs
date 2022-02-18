@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
-    class ColliderInfo
+    public class ColliderInfo
     {
         public bool DespawnAfterTimeLimit;
         public float TimeActive;
