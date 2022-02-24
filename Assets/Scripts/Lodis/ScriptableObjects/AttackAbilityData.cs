@@ -9,6 +9,12 @@ namespace Lodis.ScriptableObjects
     [CreateAssetMenu(menuName = "AbilityData/AttackAbilityData")]
     class AttackAbilityData : AbilityData
     {
+
+        public HitColliderInfo[] HitColliders
+        {
+            get => (HitColliderInfo[])base.ColliderInfo;
+        }
+
         public AttackAbilityData()
         {
             _customStats = new Stat[] { new Stat("Damage", 0), new Stat("KnockBackScale", 0), new Stat("HitAngle", 0) };

@@ -34,8 +34,6 @@ namespace Lodis.ScriptableObjects
         public string abilityName = "Unassigned";
         [Tooltip("The type describes the strength and input value for the ability")]
         public AbilityType AbilityType;
-        [Tooltip("The type of damage this attack will deal to other objects")]
-        public DamageType damageType = DamageType.DEFAULT;
         [Tooltip("How long the ability should be active for")]
         public float timeActive = 0;
         [Tooltip("How long does the object that used the ability needs before returning to idle")]
@@ -70,7 +68,9 @@ namespace Lodis.ScriptableObjects
         public bool playAnimationManually = false;
         [Tooltip("The prefab that holds the visual this ability will be using.")]
         public GameObject visualPrefab;
-
+        [Tooltip("Information for all colliders this ability will use")]
+        [SerializeField]
+        protected HitColliderInfo[] ColliderInfo;
         [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
         protected Stat[] _customStats;
@@ -81,8 +81,6 @@ namespace Lodis.ScriptableObjects
         [Tooltip("A unique animation that will be used for the attack instead of one of the defaults")]
         [SerializeField]
         private AnimationClip _customAnimation;
-
-        
         /// <summary>
         /// Gets the custom animation attached this data
         /// </summary>
@@ -123,33 +121,11 @@ namespace Lodis.ScriptableObjects
     [CanEditMultipleObjects]
     public class AbilityDataEditor : Editor
     {
-        private SerializedProperty _name;
-        private SerializedProperty _customAnimation;
-        private SerializedProperty _abilityType;
-        private SerializedProperty _damageType;
-        private SerializedProperty _timeActive;
-        private SerializedProperty _recoverTime;
-        private SerializedProperty _startUpTime;
-        private SerializedProperty _canCancelStartUp;
-        private SerializedProperty _canCancelActive;
-        private SerializedProperty _canCancelRecover;
-        private SerializedProperty _animationType;
-        private SerializedProperty _useAbilityTiming;
+        private SerializedProperty _hitColliderInfo;
 
         private void OnEnable()
         {
-            _name = serializedObject.FindProperty("name");
-            _customAnimation = serializedObject.FindProperty("_customAnimation");
-            _abilityType = serializedObject.FindProperty("abilityType");
-            _damageType = serializedObject.FindProperty("damageType");
-            _timeActive = serializedObject.FindProperty("timeActive");
-            _recoverTime = serializedObject.FindProperty("recoverTime");
-            _startUpTime = serializedObject.FindProperty("startUpTime");
-            _canCancelStartUp = serializedObject.FindProperty("canCancelStartUp");
-            _canCancelActive = serializedObject.FindProperty("canCancelActive");
-            _canCancelRecover = serializedObject.FindProperty("canCancelRecover");
-            _animationType = serializedObject.FindProperty("animationType");
-            _useAbilityTiming = serializedObject.FindProperty("useAbilityTimingForAnimation");
+            _hitColliderInfo = serializedObject.FindProperty("ColliderInfo");
         }
 
         public override void OnInspectorGUI()

@@ -1,4 +1,5 @@
 ﻿using Lodis.ScriptableObjects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
-    [System.Serializable]
+    [Serializable]
     public class HitColliderInfo : ColliderInfo
     {
         public float Damage;
@@ -40,8 +41,8 @@ namespace Lodis.Gameplay
         public HitColliderBehaviour(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
             : base()
         {
-            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack}
-            Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit, angleChangeOnCollision, hitStunTimer);
+            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, Owner = owner, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            Init(info);
         }
 
         private void Awake()
@@ -65,23 +66,30 @@ namespace Lodis.Gameplay
         /// <param name="collider2"></param>
         public static void Copy(HitColliderBehaviour collider1, HitColliderBehaviour collider2)
         {
-            collider2.Init(collider1.ColliderInfo.Damage, collider1.ColliderInfo.BaseKnockBack, collider1._hitAngle, collider1.DespawnsAfterTimeLimit, collider1.TimeActive, collider1.Owner, collider1.DestroyOnHit, collider1.IsMultiHit, collider1._adjustAngleBasedOnCollision, collider1._hitStunTime);
+            collider2.ColliderInfo = collider1.ColliderInfo;
             collider2.onHit = collider1.onHit;
             collider2.IgnoreColliders = collider1.IgnoreColliders;
             collider2.Priority = collider1.Priority;
             collider2.LayersToIgnore = collider1.LayersToIgnore;
         }
 
-        /// <summary>
+        
+        public void Init(HitColliderInfo info)
+        {
+            ColliderInfo = info;
+        }
+
+///     <summary>
         /// Initializes this colliders stats
         /// </summary>
         /// <param name="damage">The amount of damage this attack will do</param>
         /// <param name="baseKnockBack">How far back this attack will knock an object back</param>
         /// <param name="hitAngle">The angle (in radians) that the object in knock back will be launched at</param>
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
-        public void Init(HitColliderInfo info)
+        public void Init(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
         {
-            ColliderInfo = info;
+            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, Owner = owner, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            Init(info);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -126,10 +134,10 @@ namespace Lodis.Gameplay
             if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
                 return;
 
-            float newHitAngle = _hitAngle;
+            float newHitAngle = ColliderInfo.HitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
-            if (_adjustAngleBasedOnCollision)
+            if (ColliderInfo.AdjustAngleBasedOnCollision)
             {
                 //Find a vector that point from the collider to the object hit
                 Vector3 directionOfImpact = other.transform.position - transform.position;
@@ -157,7 +165,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _baseKnockBack, newHitAngle, damageType, _hitStunTime);
+                damageScript.TakeDamage(OwnerName, ColliderInfo.Damage, ColliderInfo.BaseKnockBack, newHitAngle, ColliderInfo.TypeOfDamage, ColliderInfo.HitStunTime);
 
             onHit?.Invoke(other.gameObject, otherCollider);
 
@@ -205,10 +213,10 @@ namespace Lodis.Gameplay
             }
 
 
-            float newHitAngle = _hitAngle;
+            float newHitAngle = ColliderInfo.HitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
-            if (_adjustAngleBasedOnCollision)
+            if (ColliderInfo.AdjustAngleBasedOnCollision)
             {
                 //Find a vector that point from the collider to the object hit
                 Vector3 directionOfImpact = other.transform.position - transform.position;
@@ -233,7 +241,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _baseKnockBack, newHitAngle, damageType, _hitStunTime);
+                damageScript.TakeDamage(OwnerName, ColliderInfo.Damage, ColliderInfo.BaseKnockBack, newHitAngle, ColliderInfo.TypeOfDamage, ColliderInfo.HitStunTime);
 
             onHit?.Invoke(other.gameObject);
 
@@ -278,10 +286,10 @@ namespace Lodis.Gameplay
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(collision.gameObject, Time.frameCount);
 
-            float newHitAngle = _hitAngle;
+            float newHitAngle = ColliderInfo.HitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
-            if (_adjustAngleBasedOnCollision)
+            if (ColliderInfo.AdjustAngleBasedOnCollision)
             {
                 //Find a vector that point from the collider to the object hit
                 Vector3 directionOfImpact = collision.gameObject.transform.position - transform.position;
@@ -306,7 +314,7 @@ namespace Lodis.Gameplay
 
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, _damage, _baseKnockBack, newHitAngle, damageType, _hitStunTime);
+                damageScript.TakeDamage(OwnerName, ColliderInfo.HitAngle, ColliderInfo.BaseKnockBack, newHitAngle, ColliderInfo.TypeOfDamage, ColliderInfo.HitStunTime);
 
             onHit?.Invoke(collision.gameObject);
 
