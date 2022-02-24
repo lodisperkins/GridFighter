@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Boomerang
   AbilityType: 8
-  damageType: 0
   timeActive: 0.1
   recoverTime: 0.4
   startUpTime: 0.1
@@ -32,6 +31,19 @@ MonoBehaviour:
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 0}
+  ColliderInfo:
+  - DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    Owner: {fileID: 0}
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    Damage: 0
+    BaseKnockBack: 0
+    HitAngle: 0
+    AdjustAngleBasedOnCollision: 0
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0
   _customStats:
   - name: Damage
     value: 5
