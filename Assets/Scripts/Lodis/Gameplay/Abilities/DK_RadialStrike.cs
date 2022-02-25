@@ -44,7 +44,7 @@ namespace Lodis.Gameplay
 
            HitColliderBehaviour hitCollider = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, hitBoxDimensions, hitColliderRef);
 
-            hitCollider.debuggingEnabled = true;
+            hitCollider.DebuggingEnabled = true;
 
             //Set hitbox position
             _visualPrefabInstance.transform.position = owner.transform.position + (owner.transform.forward * abilityData.GetCustomStatValue("HitBoxDistanceZ") +

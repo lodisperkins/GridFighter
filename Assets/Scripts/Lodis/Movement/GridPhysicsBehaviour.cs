@@ -339,24 +339,24 @@ namespace Lodis.Movement
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
             float velocityMagnitude = 0;
-            float knockbackScale = 0;
+            float baseKnockBack = 0;
 
             if (knockBackScript)
             {
                 velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-                knockbackScale = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+                baseKnockBack = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
             }
             else
             {
                 velocityMagnitude = LastVelocity.magnitude;
-                knockbackScale = _lastForceAdded.magnitude * (velocityMagnitude / _lastForceAdded.magnitude);
+                baseKnockBack = _lastForceAdded.magnitude * (velocityMagnitude / _lastForceAdded.magnitude);
             }
 
-            if (knockbackScale == 0 || float.IsNaN(knockbackScale))
+            if (baseKnockBack == 0 || float.IsNaN(baseKnockBack))
                 return;
 
             //Apply ricochet force
-            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(knockbackScale * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
+            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(baseKnockBack * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
         }
 
         private void OnTriggerEnter(Collider other)
@@ -382,24 +382,24 @@ namespace Lodis.Movement
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
             float velocityMagnitude = 0;
-            float knockbackScale = 0;
+            float baseKnockBack = 0;
 
             if (knockBackScript)
             {
                 velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-                knockbackScale = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+                baseKnockBack = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
             }
             else
             {
                 velocityMagnitude = LastVelocity.magnitude;
-                knockbackScale = _lastForceAdded.magnitude * (velocityMagnitude / _lastForceAdded.magnitude);
+                baseKnockBack = _lastForceAdded.magnitude * (velocityMagnitude / _lastForceAdded.magnitude);
             }
 
-            if (knockbackScale == 0 || float.IsNaN(knockbackScale))
+            if (baseKnockBack == 0 || float.IsNaN(baseKnockBack))
                 return;
 
             //Apply ricochet force
-            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(knockbackScale * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
+            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(baseKnockBack * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
         }
 
         /// <summary>

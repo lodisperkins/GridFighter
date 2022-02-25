@@ -83,7 +83,7 @@ namespace Lodis.Gameplay
             //Initialize collider stats
             float powerScale = (float)args[0];
             _shotDamage = abilityData.GetCustomStatValue("Damage") * powerScale;
-            _shotKnockBack = abilityData.GetCustomStatValue("KnockBackScale") * powerScale;
+            _shotKnockBack = abilityData.GetCustomStatValue("baseKnockBack") * powerScale;
             _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack,
                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true, false, true, abilityData.GetCustomStatValue("HitStun"));
             _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;

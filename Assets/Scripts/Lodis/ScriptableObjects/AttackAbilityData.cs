@@ -17,7 +17,7 @@ namespace Lodis.ScriptableObjects
 
         public AttackAbilityData()
         {
-            _customStats = new Stat[] { new Stat("Damage", 0), new Stat("KnockBackScale", 0), new Stat("HitAngle", 0) };
+            _customStats = new Stat[] { new Stat("Damage", 0), new Stat("baseKnockBack", 0), new Stat("HitAngle", 0) };
         }
     }
 }

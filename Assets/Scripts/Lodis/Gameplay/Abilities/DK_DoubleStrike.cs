@@ -50,7 +50,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create collider for attack
-            _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+            _fistCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("baseKnockBack"),
                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, false, false, true, abilityData.GetCustomStatValue("HitStun"));
 
             //Spawn particles
@@ -58,7 +58,7 @@ namespace Lodis.Gameplay
 
             //Spawn a game object with the collider attached
             HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(owner.transform, new Vector3(1, 0.5f, 0.2f), _fistCollider);
-            hitScript.debuggingEnabled = true;
+            hitScript.DebuggingEnabled = true;
             Rigidbody rigid = hitScript.gameObject.AddComponent<Rigidbody>();
             rigid.useGravity = false;
 

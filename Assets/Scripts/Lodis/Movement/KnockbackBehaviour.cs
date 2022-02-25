@@ -24,7 +24,7 @@ namespace Lodis.Movement
         private GridPhysicsBehaviour _gridPhysicsBehaviour;
        
         private Vector2 _newPanelPosition = new Vector2(float.NaN, float.NaN );
-        private float _currentKnockBackScale;
+        private float _currentBaseKnockBack;
         private Vector3 _velocityOnLaunch;
 
         [SerializeField]
@@ -89,7 +89,7 @@ namespace Lodis.Movement
         /// <summary>
         /// The scale of the last knock back value applied to the object
         /// </summary>
-        public float CurrentKnockBackScale { get => _currentKnockBackScale; }
+        public float CurrentbaseKnockBack { get => _currentBaseKnockBack; }
 
         /// <summary>
         /// Whether or not this object is in the air without being in a tumble state
@@ -396,14 +396,14 @@ namespace Lodis.Movement
         {
             return !IsTumbling && !InFreeFall && Physics.ObjectAtRest && !Landing && !InHitStun &&!IsFlinching && !IsDown && !Stunned && !RecoveringFromFall;
         }
-        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)
                 return 0;
 
             //Update current knockback scale
-            _currentKnockBackScale = knockBackScale;
+            _currentBaseKnockBack = baseKnockBack;
 
             //Adds damage to the total damage
             Health += damage;
@@ -415,9 +415,9 @@ namespace Lodis.Movement
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
-            float totalKnockback = (_currentKnockBackScale + (_currentKnockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+            float totalKnockback = (_currentBaseKnockBack + (_currentBaseKnockBack * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
 
-            _currentKnockBackScale = totalKnockback;
+            _currentBaseKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
             if (hitStun > 0)
@@ -457,6 +457,67 @@ namespace Lodis.Movement
 
             return damage;
         }
+        public override float TakeDamage(HitColliderInfo info)
+        {
+            //Return if there is no rigidbody or movement script attached
+            if (!_movementBehaviour || IsInvincible)
+                return 0;
+
+            //Update current knockback scale
+            _currentBaseKnockBack = info.BaseKnockBack;
+
+            //Adds damage to the total damage
+            Health += info.Damage;
+            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
+
+            ActivateHitStunByTimer(info.HitStunTime);
+
+            _onTakeDamage?.Invoke();
+            _onTakeDamageTemp?.Invoke();
+            _onTakeDamageTemp = null;
+
+            float totalKnockback = (_currentBaseKnockBack + (_currentBaseKnockBack * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100) * (info.KnockBackScale /100)));
+
+            _currentBaseKnockBack = totalKnockback;
+            //Calculates force and applies it to the rigidbody
+            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, info.HitAngle);
+            if (info.HitStunTime > 0)
+                _isFlinching = true;
+
+            if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
+            {
+                _onKnockBackStart?.Invoke();
+                _onKnockBackStartTemp?.Invoke();
+                _onKnockBackStartTemp = null;
+
+                _velocityOnLaunch = knockBackForce;
+                Physics.Rigidbody.isKinematic = false;
+
+                if (_movementBehaviour.IsMoving)
+                {
+                    _movementBehaviour.canCancelMovement = true;
+                    _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                    _movementBehaviour.canCancelMovement = false;
+                }
+
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+
+                //Add force to objectd
+                Physics.ApplyImpulseForce(_velocityOnLaunch);
+
+                if (_velocityOnLaunch.magnitude > 0)
+                {
+                    _inFreeFall = false;
+                    _tumbling = true;
+                    _onKnockBack?.Invoke();
+                    _onKnockBackTemp?.Invoke();
+                    _onKnockBackTemp = null;
+                }
+            }
+
+            return info.Damage;
+        }
 
         public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
         {
@@ -465,7 +526,7 @@ namespace Lodis.Movement
                 return 0;
 
             //Update current knockback scale
-            _currentKnockBackScale = abilityData.GetCustomStatValue("KnockBackScale");
+            _currentBaseKnockBack = abilityData.GetCustomStatValue("baseKnockBack");
 
             //Adds damage to the total damage
             Health += abilityData.GetCustomStatValue("Damage");
@@ -477,9 +538,9 @@ namespace Lodis.Movement
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
-            float totalKnockback = (_currentKnockBackScale + (_currentKnockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+            float totalKnockback = (_currentBaseKnockBack + (_currentBaseKnockBack * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
 
-            _currentKnockBackScale = totalKnockback;
+            _currentBaseKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, abilityData.GetCustomStatValue("HitAngle"));
 
@@ -527,12 +588,12 @@ namespace Lodis.Movement
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
         /// <param name="damage">The amount of damage being applied to the object. 
         /// Ring barriers only break if the damage amount is greater than the total health</param>
-        /// <param name="knockBackScale">How many panels far will this attakc make the object travel</param>
+        /// <param name="baseKnockBack">How many panels far will this attakc make the object travel</param>
         /// <param name="hitAngle">The angle to launch the object</param>
         /// <param name="knockBackIsFixed">If true, the knock back won't be scaled based on health or mass</param>
         /// <param name="ignoreMass">If true, the force applied to the object won't change based in mass</param>
         /// <param name="damageType">The type of damage this object will take</param>
-        public float TakeDamage(string attacker, float damage, float knockBackScale, float hitAngle, float hitStun, bool knockBackIsFixed, bool ignoreMass, DamageType damageType = DamageType.DEFAULT)
+        public float TakeDamage(string attacker, float damage, float baseKnockBack, float hitAngle, float hitStun, bool knockBackIsFixed, bool ignoreMass, DamageType damageType = DamageType.DEFAULT)
         {
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)
@@ -552,12 +613,12 @@ namespace Lodis.Movement
             //Apply the damage and weight to find the amount of knock back to be applied
             float totalKnockback = 0;
             if (!knockBackIsFixed)
-                totalKnockback = (knockBackScale + (knockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+                totalKnockback = (baseKnockBack + (baseKnockBack * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
             else
-                totalKnockback = knockBackScale;
+                totalKnockback = baseKnockBack;
 
             //Update current knockback scale
-            _currentKnockBackScale = totalKnockback;
+            _currentBaseKnockBack = totalKnockback;
 
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
@@ -612,7 +673,7 @@ namespace Lodis.Movement
             if (!_movementBehaviour || IsInvincible)
                 return 0;
 
-            float knockBackScale = abilityData.GetCustomStatValue("KnockBackScale");
+            float baseKnockBack = abilityData.GetCustomStatValue("baseKnockBack");
             float damage = abilityData.GetCustomStatValue("Damage");
             //Adds damage to the total damage
             Health += damage;
@@ -628,12 +689,12 @@ namespace Lodis.Movement
             //Apply the damage and weight to find the amount of knock back to be applied
             float totalKnockback = 0;
             if (!knockBackIsFixed)
-                totalKnockback = (knockBackScale + (knockBackScale * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+                totalKnockback = (baseKnockBack + (baseKnockBack * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
             else
-                totalKnockback = knockBackScale;
+                totalKnockback = baseKnockBack;
 
             //Update current knockback scale
-            _currentKnockBackScale = totalKnockback;
+            _currentBaseKnockBack = totalKnockback;
 
             //Calculates force and applies it to the rigidbody
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, abilityData.GetCustomStatValue("HitAngle"));
@@ -736,7 +797,7 @@ namespace Lodis.Movement
     {
         private KnockbackBehaviour _owner;
         private float _damage;
-        private float _knockbackScale;
+        private float _baseKnockBack;
         private float _hitAngle;
         private float _hitStun;
 
@@ -746,13 +807,13 @@ namespace Lodis.Movement
             _owner = (KnockbackBehaviour)target;
 
             _damage = EditorGUILayout.FloatField("Damage", _damage);
-            _knockbackScale = EditorGUILayout.FloatField("Knockback Scale", _knockbackScale);
+            _baseKnockBack = EditorGUILayout.FloatField("Knockback Scale", _baseKnockBack);
             _hitAngle = EditorGUILayout.FloatField("Hit Angle", _hitAngle);
             _hitStun = EditorGUILayout.FloatField("Hit Stun", _hitStun);
 
             if (GUILayout.Button("Test Attack"))
             {
-                _owner.TakeDamage(name, _damage, _knockbackScale, _hitAngle, DamageType.KNOCKBACK, _hitStun);
+                _owner.TakeDamage(name, _damage, _baseKnockBack, _hitAngle, DamageType.KNOCKBACK, _hitStun);
             }
         }
     }

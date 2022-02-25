@@ -113,6 +113,14 @@ namespace Lodis.ScriptableObjects
             Debug.LogError("Couldn't find stat. Either the stat doesn't exist or the name is mispelled. Attempted stat name was " + name);
             return float.NaN;
         }
+
+        public HitColliderInfo GetColliderInfo(int index)
+        {
+            if (index < 0 || index > ColliderInfo.Length)
+                return null;
+
+            return ColliderInfo[index];
+        }
     }
 
 

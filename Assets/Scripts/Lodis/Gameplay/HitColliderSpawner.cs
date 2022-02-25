@@ -13,14 +13,14 @@ namespace Lodis.Gameplay
         /// <param name="position">The world position of this collider</param>
         /// <param name="radius">The size of the sphere colliders radius</param>
         /// <param name="damage">The amount of damage this collider will do</param>
-        /// <param name="knockBackScale">How far this object will knock others back</param>
+        /// <param name="baseKnockBack">How far this object will knock others back</param>
         /// <param name="hitAngle">THe angle that objects hit by this collider will be launched at</param>
         /// <param name="despawnAfterTimeLimit">Whether or not this collider should despawn after a given time</param>
         /// <param name="timeActive">The amount of time this actor can be active for</param>
         /// <param name="owner">The owner of this collider. Collision with owner are ignored</param>
         /// <returns>A new collider with the given parameters</returns>
         public static HitColliderBehaviour SpawnSphereCollider(Vector3 position, float radius, float damage,
-            float knockBackScale, float hitAngle, bool despawnAfterTimeLimit,
+            float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
             float timeActive = 0, GameObject owner = null)
         {
             GameObject hitObject = new GameObject();
@@ -31,7 +31,7 @@ namespace Lodis.Gameplay
             collider.radius = radius;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive,
+            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner,false, false, true);
 
             return hitScript;
@@ -43,14 +43,14 @@ namespace Lodis.Gameplay
         /// <param name="parent">The game object this collider will be attached to</param>
         /// <param name="radius">The size of the sphere colliders radius</param>
         /// <param name="damage">The amount of damage this collider will do</param>
-        /// <param name="knockBackScale">How far this object will knock others back</param>
+        /// <param name="baseKnockBack">How far this object will knock others back</param>
         /// <param name="hitAngle">THe angle that objects hit by this collider will be launched at</param>
         /// <param name="despawnAfterTimeLimit">Whether or not this collider should despawn after a given time</param>
         /// <param name="timeActive">The amount of time this actor can be active for</param>
         /// <param name="owner">The owner of this collider. Collision with owner are ignored</param>
         /// <returns></returns>
         public static HitColliderBehaviour SpawnSphereCollider(Transform parent, float radius, float damage, 
-            float knockBackScale, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0,
+            float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0,
             GameObject owner = null)
         {
             GameObject hitObject = new GameObject();
@@ -61,7 +61,7 @@ namespace Lodis.Gameplay
             collider.radius = radius;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive,
+            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner, false, false, true);
 
             return hitScript;
@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
         public static HitColliderBehaviour SpawnSphereCollider(Transform parent, float radius, HitColliderBehaviour hitCollider)
         {
             GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.ColliderOwner.name + " SphereCollider";
+            hitObject.name = hitCollider.ColliderInfo.Owner.name + " SphereCollider";
             SphereCollider collider = hitObject.AddComponent<SphereCollider>();
             hitObject.transform.parent = parent;
             hitObject.transform.localPosition = Vector3.zero;
@@ -96,14 +96,14 @@ namespace Lodis.Gameplay
         /// <param name="position"></param>
         /// <param name="size"></param>
         /// <param name="damage"></param>
-        /// <param name="knockBackScale"></param>
+        /// <param name="baseKnockBack"></param>
         /// <param name="hitAngle"></param>
         /// <param name="despawnAfterTimeLimit"></param>
         /// <param name="timeActive"></param>
         /// <param name="owner"></param>
         /// <returns></returns>
         public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, float damage,
-            float knockBackScale, float hitAngle, bool despawnAfterTimeLimit,
+            float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
             float timeActive = 0, GameObject owner = null)
         {
             GameObject hitObject = new GameObject();
@@ -114,7 +114,7 @@ namespace Lodis.Gameplay
             collider.size = size;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive,
+            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner, false, false, true);
 
             return hitScript;
@@ -130,7 +130,7 @@ namespace Lodis.Gameplay
         public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, HitColliderBehaviour hitCollider)
         {
             GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.ColliderOwner.name + "BoxCollider";
+            hitObject.name = hitCollider.ColliderInfo.Owner.name + "BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.position = position;
             collider.isTrigger = true;
@@ -148,14 +148,14 @@ namespace Lodis.Gameplay
         /// <param name="parent">The game object this collider will be attached to</param>
         /// <param name="size">The dimension of the box collider</param>
         /// <param name="damage">The amount of damage this collider will do</param>
-        /// <param name="knockBackScale">How far this object will knock others back</param>
+        /// <param name="baseKnockBack">How far this object will knock others back</param>
         /// <param name="hitAngle">THe angle that objects hit by this collider will be launched at</param>
         /// <param name="despawnAfterTimeLimit">Whether or not this collider should despawn after a given time</param>
         /// <param name="timeActive">The amount of time this actor can be active for</param>
         /// <param name="owner">The owner of this collider. Collision with owner are ignored</param>
         /// <returns></returns>
         public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, float damage,
-            float knockBackScale, float hitAngle, bool despawnAfterTimeLimit,
+            float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
             float timeActive, GameObject owner = null)
         {
             GameObject hitObject = new GameObject();
@@ -167,7 +167,7 @@ namespace Lodis.Gameplay
             collider.size = size;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive,
+            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner, false, false, true);
 
             return hitScript;
@@ -183,7 +183,7 @@ namespace Lodis.Gameplay
         public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderBehaviour hitCollider)
         {
             GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.ColliderOwner.name + "BoxCollider";
+            hitObject.name = hitCollider.ColliderInfo.Owner.name + "BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.parent = parent;
             hitObject.transform.localPosition = Vector3.zero;
@@ -204,7 +204,7 @@ namespace Lodis.Gameplay
         /// <param name="radius">The length of the radius of this collider</param>
         /// <param name="height">How tall this collider is</param>
         /// <param name="damage">The amount of damage this collider will do to objects</param>
-        /// <param name="knockBackScale">How far will objects hit by this collider will travel</param>
+        /// <param name="baseKnockBack">How far will objects hit by this collider will travel</param>
         /// <param name="hitAngle">The angle objects hit by this collider are launched</param>
         /// <param name="rotation">The orientation of this collider</param>
         /// <param name="despawnAfterTimeLimit">Whether or not this collider will despawn after a given time</param>
@@ -212,7 +212,7 @@ namespace Lodis.Gameplay
         /// <param name="owner">The game object that owns this collider. Collision with this object will be ignored</param>
         /// <returns></returns>
         public static HitColliderBehaviour SpawnCapsuleCollider(Vector3 position, float radius, float height, 
-            float damage, float knockBackScale, float hitAngle, 
+            float damage, float baseKnockBack, float hitAngle, 
             Quaternion rotation, bool despawnAfterTimeLimit, float timeActive = 0,
             GameObject owner = null)
         {
@@ -226,7 +226,7 @@ namespace Lodis.Gameplay
             hitObject.transform.rotation = rotation;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive,
+            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner, false, false, true);
 
             return hitScript;
@@ -239,7 +239,7 @@ namespace Lodis.Gameplay
         /// <param name="radius">The length of the radius of this collider</param>
         /// <param name="height">How tall this collider is</param>
         /// <param name="damage">The amount of damage this collider will do to objects</param>
-        /// <param name="knockBackScale">How far will objects hit by this collider will travel</param>
+        /// <param name="baseKnockBack">How far will objects hit by this collider will travel</param>
         /// <param name="hitAngle">The angle objects hit by this collider are launched</param>
         /// <param name="rotation">The orientation of this collider</param>
         /// <param name="despawnAfterTimeLimit">Whether or not this collider will despawn after a given time</param>
@@ -247,7 +247,7 @@ namespace Lodis.Gameplay
         /// <param name="owner">The game object that owns this collider. Collision with this object will be ignored</param>
         /// <returns></returns>
         public static HitColliderBehaviour SpawnCapsuleCollider(Transform parent, float radius, float height,
-            float damage, float knockBackScale, float hitAngle, Quaternion rotation,  bool despawnAfterTimeLimit,
+            float damage, float baseKnockBack, float hitAngle, Quaternion rotation,  bool despawnAfterTimeLimit,
             float timeActive = 0, GameObject owner = null)
         {
             GameObject hitObject = new GameObject();
@@ -260,7 +260,7 @@ namespace Lodis.Gameplay
             hitObject.transform.rotation = rotation;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, knockBackScale, hitAngle, despawnAfterTimeLimit, timeActive,
+            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner, false, false, true);
 
             return hitScript;

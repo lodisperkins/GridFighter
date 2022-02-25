@@ -91,7 +91,7 @@ namespace Lodis.Gameplay
 
             //Move first shockwave
             MoveHitBox(_visualPrefabInstances.Item1, owner.transform.forward);
-            hitScript.debuggingEnabled = true;
+            hitScript.DebuggingEnabled = true;
 
             //Instantiate the second shockwave and attack a hit box to it
             _visualPrefabInstances.Item2 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
@@ -100,7 +100,7 @@ namespace Lodis.Gameplay
             //Move second shockwave
             MoveHitBox(_visualPrefabInstances.Item2, -owner.transform.forward);
 
-            hitScript.debuggingEnabled = true;
+            hitScript.DebuggingEnabled = true;
         }
 
         protected override void Deactivate()

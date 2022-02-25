@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create barrier collider
-            _barrierCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
+            _barrierCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("baseKnockBack"),
                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.timeActive, owner, true, false, true, abilityData.GetCustomStatValue("HitStun"));
             //Allow canceling on hit
             _barrierCollider.onHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
@@ -70,7 +70,7 @@ namespace Lodis.Gameplay
             if (otherHitCollider && otherRigidbody && !otherHitCollider.CompareTag("Player") && !otherHitCollider.CompareTag("Entity"))
             {
                 //...reset the active time and reverse its velocity
-                otherHitCollider.ColliderOwner = owner;
+                otherHitCollider.ColliderInfo.Owner = owner;
                 otherHitCollider.ResetActiveTime();
                 otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.Impulse);
 

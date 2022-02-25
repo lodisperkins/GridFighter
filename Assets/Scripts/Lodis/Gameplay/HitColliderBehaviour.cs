@@ -13,6 +13,7 @@ namespace Lodis.Gameplay
         public float Damage;
         [Tooltip("How far back this attack will knock an object back.")]
         public float BaseKnockBack;
+        public float KnockBackScale;
         [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
         public float HitAngle;
         [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
@@ -24,7 +25,7 @@ namespace Lodis.Gameplay
 
     public class HitColliderBehaviour : ColliderBehaviour
     {
-        public HitColliderInfo ColliderInfo;
+        public new HitColliderInfo ColliderInfo;
 
         /// <summary>
         /// Collision event called when this collider hits another. 
@@ -34,7 +35,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// If enabled, draws the collider in the editor
         /// </summary>
-        public bool debuggingEnabled;
+        public bool DebuggingEnabled;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public float Priority = 0.0f;
 
@@ -42,6 +43,11 @@ namespace Lodis.Gameplay
             : base()
         {
             HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, Owner = owner, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            Init(info);
+        }
+
+        public HitColliderBehaviour(HitColliderInfo info)
+        {
             Init(info);
         }
 
@@ -74,10 +80,6 @@ namespace Lodis.Gameplay
         }
 
         
-        public void Init(HitColliderInfo info)
-        {
-            ColliderInfo = info;
-        }
 
 ///     <summary>
         /// Initializes this colliders stats
@@ -95,14 +97,14 @@ namespace Lodis.Gameplay
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || IsMultiHit)
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit)
                 return;
 
             ColliderBehaviour otherCollider = null;
 
             if (other.attachedRigidbody)
             {
-                if (other.attachedRigidbody.gameObject != Owner)
+                if (other.attachedRigidbody.gameObject != ColliderInfo.Owner)
                     otherCollider = other.attachedRigidbody.gameObject.GetComponentInChildren<ColliderBehaviour>();
                 else
                     return;
@@ -113,11 +115,11 @@ namespace Lodis.Gameplay
 
             if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
             {
-                if (IgnoreColliders || otherCollider.IgnoreColliders || otherCollider.ColliderOwner == Owner)
+                if (IgnoreColliders || otherCollider.IgnoreColliders || otherCollider.ColliderInfo.Owner == ColliderInfo.Owner)
                     return;
                 else if (otherCollider is HitColliderBehaviour)
                 {
-                    if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
+                    if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderInfo.Owner != ColliderInfo.Owner)
                     {
                         Destroy(gameObject);
                         return;
@@ -160,23 +162,20 @@ namespace Lodis.Gameplay
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(other.gameObject, Time.frameCount);
 
-            if (Owner)
-                OwnerName = Owner.name;
-
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, ColliderInfo.Damage, ColliderInfo.BaseKnockBack, newHitAngle, ColliderInfo.TypeOfDamage, ColliderInfo.HitStunTime);
+                damageScript.TakeDamage(ColliderInfo);
 
             onHit?.Invoke(other.gameObject, otherCollider);
 
-            if (DestroyOnHit)
+            if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
         }
 
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!IsMultiHit || other.gameObject == Owner || !CheckHitTime(gameObject))
+            if (!ColliderInfo.IsMultiHit || other.gameObject == ColliderInfo.Owner || !CheckHitTime(gameObject))
                 return;
 
             if (!Collisions.ContainsKey(other.gameObject))
@@ -201,10 +200,9 @@ namespace Lodis.Gameplay
 
             if (otherCollider && IgnoreColliders)
                 return;
-
             else if (otherCollider is HitColliderBehaviour)
             {
-                if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
+                if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderInfo.Owner != ColliderInfo.Owner)
                 {
                     Destroy(gameObject);
                     return;
@@ -236,23 +234,20 @@ namespace Lodis.Gameplay
                     newHitAngle *= -1;
             }
 
-            if (Owner)
-                OwnerName = Owner.name;
-
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, ColliderInfo.Damage, ColliderInfo.BaseKnockBack, newHitAngle, ColliderInfo.TypeOfDamage, ColliderInfo.HitStunTime);
+                damageScript.TakeDamage(ColliderInfo);
 
             onHit?.Invoke(other.gameObject);
 
-            if (DestroyOnHit)
+            if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(collision.gameObject) || IsMultiHit || collision.gameObject == Owner)
+            if (Collisions.ContainsKey(collision.gameObject) || ColliderInfo.IsMultiHit || collision.gameObject == ColliderInfo.Owner)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -275,7 +270,7 @@ namespace Lodis.Gameplay
                 return;
             else if (otherCollider is HitColliderBehaviour)
             {
-                if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderOwner != ColliderOwner)
+                if (((HitColliderBehaviour)otherCollider).Priority >= Priority && otherCollider.ColliderInfo.Owner != ColliderInfo.Owner)
                 {
                     Destroy(gameObject);
                     return;
@@ -309,22 +304,19 @@ namespace Lodis.Gameplay
                     newHitAngle *= -1;
             }
 
-            if (Owner)
-                OwnerName = Owner.name;
-
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(OwnerName, ColliderInfo.HitAngle, ColliderInfo.BaseKnockBack, newHitAngle, ColliderInfo.TypeOfDamage, ColliderInfo.HitStunTime);
+                damageScript.TakeDamage(ColliderInfo);
 
             onHit?.Invoke(collision.gameObject);
 
-            if (DestroyOnHit)
+            if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
         }
 
         private void OnDrawGizmos()
         {
-            if (!debuggingEnabled)
+            if (!DebuggingEnabled)
                 return;
 
             BoxCollider boxCollider = GetComponent<BoxCollider>();
@@ -342,7 +334,7 @@ namespace Lodis.Gameplay
             CurrentTimeActive = Time.time - StartTime;
             
             //Destroy the hit collider if it has exceeded or reach its maximum time active
-            if (CurrentTimeActive >= TimeActive && DespawnsAfterTimeLimit)
+            if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)
                 Destroy(gameObject);
         }
     }

@@ -89,7 +89,7 @@ namespace Lodis.Gameplay
             //Spawn particles and hitbox
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
             HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale / 2, _fistCollider);
-            hitScript.debuggingEnabled = true;
+            hitScript.DebuggingEnabled = true;
 
             //Apply downward force
             Vector3 spikeVelocity = AddForce(false).normalized * abilityData.GetCustomStatValue("DownwardSpeed");

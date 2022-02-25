@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
     {
         public Transform spawnTransform = null;
         public float shotDamage = 15;
-        public float knockBackScale = 1;
+        public float baseKnockBack = 1;
 
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
@@ -52,8 +52,8 @@ namespace Lodis.Gameplay
 
             //Initialize collider stats
             shotDamage = abilityData.GetCustomStatValue("Damage") * powerScale;
-            knockBackScale = abilityData.GetCustomStatValue("KnockBackScale") * powerScale;
-            _projectileCollider = new HitColliderBehaviour(shotDamage, knockBackScale, abilityData.GetCustomStatValue("HitAngle"), true,
+            baseKnockBack = abilityData.GetCustomStatValue("baseKnockBack") * powerScale;
+            _projectileCollider = new HitColliderBehaviour(shotDamage, baseKnockBack, abilityData.GetCustomStatValue("HitAngle"), true,
                 abilityData.GetCustomStatValue("Lifetime"), owner, true, false, true, abilityData.GetCustomStatValue("HitStun"));
             _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
             _projectileCollider.Priority = abilityData.ColliderPriority;

@@ -79,8 +79,7 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("KnockBackScale"),
-                 abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true, false, true, abilityData.GetCustomStatValue("HitStun"));
+            _projectileCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0));
             _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
             _projectileCollider.Priority = abilityData.ColliderPriority;
              

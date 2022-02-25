@@ -42,16 +42,16 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="attacker">The name of the object that is attacking</param>
         /// <param name="damage">The amount of damage this attack would do. Ignored if damage type isn't knock back</param>
-        /// <param name="knockBackScale">How far this object will be knocked back. Ignored for barriers</param>
+        /// <param name="baseKnockBack">How far this object will be knocked back. Ignored for barriers</param>
         /// <param name="hitAngle">The angle to launch this object. Ignore for barriers</param>
         /// <param name="damageType">The type of damage being received</param>
         /// <returns>The amount of damage taken. Returns 0 if the attacker was the owner and if the type wasn't knock back </returns>
-        public override float TakeDamage(string attacker, float damage, float knockBackScale = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             if (attacker == Owner && damageType == DamageType.KNOCKBACK || attacker != Owner && damageType != DamageType.KNOCKBACK)
-                return base.TakeDamage(attacker, damage, knockBackScale, hitAngle, damageType);
+                return base.TakeDamage(attacker, damage, baseKnockBack, hitAngle, damageType);
             else if (Owner == "")
-                return base.TakeDamage(attacker, damage, knockBackScale, hitAngle, damageType);
+                return base.TakeDamage(attacker, damage, baseKnockBack, hitAngle, damageType);
 
             return 0;
         }
@@ -70,9 +70,9 @@ namespace Lodis.Gameplay
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-            float knockbackScale = knockBackScript.CurrentKnockBackScale * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+            float baseKnockBack = knockBackScript.CurrentbaseKnockBack * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
-            if (knockbackScale == 0 || float.IsNaN(knockbackScale) || !knockBackScript.IsTumbling)
+            if (baseKnockBack == 0 || float.IsNaN(baseKnockBack) || !knockBackScript.IsTumbling)
                 return;
 
             //Apply ricochet force and damage

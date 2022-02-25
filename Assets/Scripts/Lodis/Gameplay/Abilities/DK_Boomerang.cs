@@ -71,7 +71,7 @@ namespace Lodis.Gameplay
                 //...reverse velocity
                 projectile.AddForce(-projectile.velocity * 2, ForceMode.VelocityChange);
                 _reboundCount++;
-                _reboundCollider.ColliderOwner = other;
+                _reboundCollider.ColliderInfo.Owner = other;
             }
             //Otherwise if it hit a structure like a wall...
             else if(other.CompareTag("Structure"))
