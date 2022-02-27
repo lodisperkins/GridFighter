@@ -140,16 +140,15 @@ namespace Lodis.Gameplay
             //If the object has a collider and isn't a character...
             if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
             {
-                var hitCollider = otherCollider is HitColliderBehaviour? (HitColliderBehaviour)otherCollider : otherCollider;
-                //If either of the colliders are set to ignore colliders return
-                if (ColliderInfo.IgnoreColliders || otherCollider.ColliderInfo.IgnoreColliders || otherCollider.Owner == Owner)
+                //Return if its attached to this object or this object wants to ignore collider
+                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
                     return;
 
                 //If it is a hit collider...
-                if (hitCollider is HitColliderBehaviour)
+                if (otherCollider is HitColliderBehaviour hitCollider)
                 {
                     //...destroy it if it has a lower priority
-                    if (((HitColliderBehaviour)hitCollider).ColliderInfo.Priority >= ColliderInfo.Priority)
+                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
                     {
                         Destroy(gameObject);
                         return;
@@ -157,6 +156,10 @@ namespace Lodis.Gameplay
                     //Ignore the collider otherwise
                     return;
                 }
+
+                //If the other collider is set to ignore colliders return
+                if (otherCollider.ColliderInfo.IgnoreColliders)
+                    return;
             } 
             
             CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
@@ -223,23 +226,35 @@ namespace Lodis.Gameplay
             if (other.CompareTag("ParryBox"))
                 return;
 
+            //If the object has a collider and isn't a character...
+            if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
+            {
+                //Return if its attached to this object or this object wants to ignore collider
+                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
+                    return;
+
+                //If it is a hit collider...
+                if (otherCollider is HitColliderBehaviour hitCollider)
+                {
+                    //...destroy it if it has a lower priority
+                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
+                    {
+                        Destroy(gameObject);
+                        return;
+                    }
+                    //Ignore the collider otherwise
+                    return;
+                }
+
+                //If the other collider is set to ignore colliders return
+                if (otherCollider.ColliderInfo.IgnoreColliders)
+                    return;
+            }
+
             CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
 
             if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
                 return;
-
-            if (otherCollider && ColliderInfo.IgnoreColliders)
-                return;
-            else if (otherCollider is HitColliderBehaviour)
-            {
-                if (((HitColliderBehaviour)otherCollider).ColliderInfo.Priority >= ColliderInfo.Priority && otherCollider.Owner != Owner)
-                {
-                    Destroy(gameObject);
-                    return;
-                }
-                return;
-            }
-
 
             float newHitAngle = ColliderInfo.HitAngle;
 
@@ -288,6 +303,31 @@ namespace Lodis.Gameplay
             if (collision.gameObject.CompareTag("ParryBox"))
                 return;
 
+            //If the object has a collider and isn't a character...
+            if (otherCollider && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Entity"))
+            {
+                //Return if its attached to this object or this object wants to ignore collider
+                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
+                    return;
+
+                //If it is a hit collider...
+                if (otherCollider is HitColliderBehaviour hitCollider)
+                {
+                    //...destroy it if it has a lower priority
+                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
+                    {
+                        Destroy(gameObject);
+                        return;
+                    }
+                    //Ignore the collider otherwise
+                    return;
+                }
+
+                //If the other collider is set to ignore colliders return
+                if (otherCollider.ColliderInfo.IgnoreColliders)
+                    return;
+            }
+
             CharacterDefenseBehaviour characterDefenseBehaviour = collision.gameObject.GetComponentInParent<CharacterDefenseBehaviour>();
 
             //Grab whatever health script is attached to this object
@@ -295,18 +335,6 @@ namespace Lodis.Gameplay
 
             if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
                 return;
-
-            if (otherCollider && ColliderInfo.IgnoreColliders)
-                return;
-            else if (otherCollider is HitColliderBehaviour)
-            {
-                if (((HitColliderBehaviour)otherCollider).ColliderInfo.Priority >= ColliderInfo.Priority && otherCollider.Owner != Owner)
-                {
-                    Destroy(gameObject);
-                    return;
-                }
-                return;
-            }
 
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(collision.gameObject, Time.frameCount);
