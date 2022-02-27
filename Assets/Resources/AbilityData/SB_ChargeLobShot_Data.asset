@@ -45,10 +45,39 @@ MonoBehaviour:
     - ParryBox
     - ParryBox
     - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
     HitFrames: 0
     Damage: 10
     BaseKnockBack: 0.5
-    KnockBackScale: 0.1
+    KnockBackScale: 100
     HitAngle: 2.8
     AdjustAngleBasedOnCollision: 1
     TypeOfDamage: 0
@@ -58,10 +87,130 @@ MonoBehaviour:
   - Name: WeakShot
     DespawnAfterTimeLimit: 1
     TimeActive: 5
-    DestroyOnHit: 0
+    DestroyOnHit: 1
     IsMultiHit: 0
-    IgnoreColliders: 0
+    IgnoreColliders: 1
     LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
     - ParryBox
     - ParryBox
     - ParryBox

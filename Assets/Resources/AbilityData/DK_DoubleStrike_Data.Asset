@@ -43,10 +43,31 @@ MonoBehaviour:
     - ParryBox
     - ParryBox
     - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
     HitFrames: 0
     Damage: 5
     BaseKnockBack: 1
-    KnockBackScale: 0.1
+    KnockBackScale: 100
     HitAngle: 1
     AdjustAngleBasedOnCollision: 1
     TypeOfDamage: 0

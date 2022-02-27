@@ -41,10 +41,87 @@ MonoBehaviour:
     IgnoreColliders: 1
     LayersToIgnore:
     - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
     HitFrames: 0
     Damage: 2
     BaseKnockBack: 1
-    KnockBackScale: 0
+    KnockBackScale: 50
     HitAngle: 2.5
     AdjustAngleBasedOnCollision: 1
     TypeOfDamage: 0
