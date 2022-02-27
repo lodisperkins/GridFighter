@@ -171,13 +171,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DespawnsAfterTimeLimit: 0
-  TimeActive: 0
-  IsMultiHit: 0
-  DestroyOnHit: 0
-  _layersToIgnore: []
-  HitFrames: 0
-  IgnoreColliders: 1
+  ColliderInfo:
+    Name: ParryBox
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    IgnoreColliders: 0
+    LayersToIgnore: []
+    HitFrames: 0
+  Owner: {fileID: 5680485170780137523}
 --- !u!65 &7080764703363995812
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -434,7 +437,7 @@ MonoBehaviour:
   _attackDelay: 0.5
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
-  _enableRandomBehaviour: 0
+  _enableRandomBehaviour: 1
 --- !u!114 &3691015139844951449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -524,7 +527,6 @@ MonoBehaviour:
   _ignoreForces: 0
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
-  _bounceScale: 1
 --- !u!114 &2677893116261487824
 MonoBehaviour:
   m_ObjectHideFlags: 0

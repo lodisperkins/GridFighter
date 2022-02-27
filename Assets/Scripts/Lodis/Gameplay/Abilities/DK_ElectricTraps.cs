@@ -133,7 +133,7 @@ namespace Lodis.Gameplay
                     break;
                 case 3:
                     ActivateStunPath();
-                    DestroyLinks(abilityData.GetCustomStatValue("Lifetime"));
+                    DestroyLinks(abilityData.GetColliderInfo(0).TimeActive);
                     break;
             }
         }

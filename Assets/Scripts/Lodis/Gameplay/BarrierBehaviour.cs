@@ -48,10 +48,16 @@ namespace Lodis.Gameplay
         /// <returns>The amount of damage taken. Returns 0 if the attacker was the owner and if the type wasn't knock back </returns>
         public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
-            if (attacker == Owner && damageType == DamageType.KNOCKBACK || attacker != Owner && damageType != DamageType.KNOCKBACK)
+            if (attacker == Owner && damageType == DamageType.KNOCKBACK || attacker != Owner && damageType != DamageType.KNOCKBACK || Owner == "")
                 return base.TakeDamage(attacker, damage, baseKnockBack, hitAngle, damageType);
-            else if (Owner == "")
-                return base.TakeDamage(attacker, damage, baseKnockBack, hitAngle, damageType);
+
+            return 0;
+        }
+
+        public override float TakeDamage(HitColliderInfo info, GameObject attacker)
+        {
+            if (attacker.name == Owner && info.TypeOfDamage == DamageType.KNOCKBACK || attacker.name != Owner && info.TypeOfDamage != DamageType.KNOCKBACK || Owner == "")
+                return base.TakeDamage(info, attacker);
 
             return 0;
         }

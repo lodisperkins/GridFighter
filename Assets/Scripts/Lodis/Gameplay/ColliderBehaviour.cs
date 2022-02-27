@@ -16,7 +16,7 @@ namespace Lodis.Gameplay
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
         public bool IsMultiHit;
         [Tooltip("Whether or not this collider will ignore other ability colliders.")]
-        public bool IgnoreColliders = true;
+        public bool IgnoreColliders;
         [Tooltip("The collision layers to ignore when checking for valid collisions.")]
         public List<string> LayersToIgnore = new List<string>();
         [Tooltip("If this collider can hit multiple times, this is how many frames the object will have to wait before being able to register a collision with the same object.")]
@@ -92,6 +92,9 @@ namespace Lodis.Gameplay
 
         public bool CheckIfLayerShouldBeIgnored(int layer)
         {
+            if (ColliderInfo.LayersToIgnore.Count == 0)
+                return false;
+
             int mask = LayerMask.GetMask(ColliderInfo.LayersToIgnore.ToArray());
             if (mask != (mask | 1 << layer))
                 return true;

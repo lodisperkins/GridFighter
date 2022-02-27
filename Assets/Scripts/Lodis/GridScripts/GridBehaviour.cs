@@ -502,7 +502,7 @@ namespace Lodis.GridScripts
                 return false;
 
             int x = Mathf.RoundToInt((location.x / (PanelRef.transform.localScale.x + PanelSpacingX)));
-            int y = Mathf.RoundToInt((location.z / (PanelRef.transform.localScale.z + PanelSpacingX)));
+            int y = Mathf.RoundToInt((location.z / (PanelRef.transform.localScale.z + PanelSpacingZ)));
 
             //If the given position is in range or if the panel is occupied when it shouldn't be, return false.
             if (x < 0 || x >= _dimensions.x || y < 0 || y >= _dimensions.y || float.IsNaN(x) || float.IsNaN(y))

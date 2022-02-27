@@ -194,10 +194,10 @@ namespace Lodis.Gameplay
 
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(other.gameObject, Time.frameCount);
-
+            ColliderInfo.HitAngle = newHitAngle;
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(ColliderInfo);
+                damageScript.TakeDamage(ColliderInfo, Owner);
 
             onHit?.Invoke(other.gameObject, otherCollider);
 
@@ -279,9 +279,10 @@ namespace Lodis.Gameplay
                     newHitAngle *= -1;
             }
 
+            ColliderInfo.HitAngle = newHitAngle;
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(ColliderInfo);
+                damageScript.TakeDamage(ColliderInfo, Owner);
 
             onHit?.Invoke(other.gameObject);
 
@@ -362,9 +363,10 @@ namespace Lodis.Gameplay
                     newHitAngle *= -1;
             }
 
+            ColliderInfo.HitAngle = newHitAngle;
             //If the damage script wasn't null damage the object
             if (damageScript != null)
-                damageScript.TakeDamage(ColliderInfo);
+                damageScript.TakeDamage(ColliderInfo, Owner);
 
             onHit?.Invoke(collision.gameObject);
 

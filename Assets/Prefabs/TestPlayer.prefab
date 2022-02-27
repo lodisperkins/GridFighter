@@ -352,7 +352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 4705404459745268771}
   _projectileSpawnPoint: {fileID: 7641039657355691941}
@@ -396,7 +396,6 @@ MonoBehaviour:
   _ignoreForces: 0
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
-  _bounceScale: 1
 --- !u!114 &995624687320838471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1100,6 +1099,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 391376136353551325, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
+      propertyPath: Owner
+      value: 
+      objectReference: {fileID: 2765739998997917290}
+    - target: {fileID: 391376136353551325, guid: 3750288d4cc41f440964731ec1982842,
+        type: 3}
       propertyPath: HitFrames
       value: 1
       objectReference: {fileID: 0}
@@ -1107,6 +1111,16 @@ PrefabInstance:
         type: 3}
       propertyPath: IsMultiHit
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 391376136353551325, guid: 3750288d4cc41f440964731ec1982842,
+        type: 3}
+      propertyPath: ColliderInfo.Name
+      value: ParryBox
+      objectReference: {fileID: 0}
+    - target: {fileID: 391376136353551325, guid: 3750288d4cc41f440964731ec1982842,
+        type: 3}
+      propertyPath: ColliderInfo.IgnoreColliders
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1108451635469348776, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
