@@ -52,7 +52,7 @@ namespace Lodis.Gameplay
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             Vector3 moveDir = new Vector3();
 

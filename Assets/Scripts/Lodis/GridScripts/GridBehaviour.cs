@@ -29,9 +29,14 @@ namespace Lodis.GridScripts
         [Tooltip("The dimensions to use when building the grid.")]
         [SerializeField]
         private Vector2 _dimensions;
+        [SerializeField]
+        private Vector3 _panelScale;
         [Tooltip("The amount of space that should be between each panel.")]
         [SerializeField]
-        private float _panelSpacing;
+        private float _panelSpacingX;
+        [Tooltip("The amount of space that should be between each panel.")]
+        [SerializeField]
+        private float _panelSpacingZ;
         private PanelBehaviour[,] _panels;
         [Tooltip("How many columns to give player 1 when the game starts. Use this to decide how much territory to give both players.")]
         [SerializeField]
@@ -88,11 +93,22 @@ namespace Lodis.GridScripts
         /// <summary>
         /// The space in between each panel
         /// </summary>
-        public float PanelSpacing
+        public float PanelSpacingX
         {
             get
             {
-                return _panelSpacing;
+                return _panelSpacingX;
+            }
+        }
+        
+        /// <summary>
+        /// The space in between each panel
+        /// </summary>
+        public float PanelSpacingZ
+        {
+            get
+            {
+                return _panelSpacingZ;
             }
         }
 
@@ -136,7 +152,7 @@ namespace Lodis.GridScripts
             for (int i = 0; i < (int)_dimensions.x * (int)_dimensions.y; i++)
             {
                 GameObject panel = (Instantiate(_panelRef, spawnPosition, new Quaternion(), transform));
-                
+                panel.transform.localScale = _panelScale;
                 _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
                 _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
                 //If the x position in the grid is equal to the given x dimension,
@@ -146,13 +162,13 @@ namespace Lodis.GridScripts
                     xPos = 0;
                     spawnPosition.x = transform.position.x;
                     yPos++;
-                    spawnPosition.z += _panelRef.transform.localScale.z + _panelSpacing;
+                    spawnPosition.z += _panelRef.transform.localScale.z + _panelSpacingZ;
                     continue;
                 }
 
                 //Increase x position
                 xPos++;
-                spawnPosition.x += _panelRef.transform.localScale.x + _panelSpacing;
+                spawnPosition.x += _panelRef.transform.localScale.x + _panelSpacingX;
             }
 
 
@@ -197,11 +213,11 @@ namespace Lodis.GridScripts
             //Spawn the collision plane underneath the grid
             GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
 
-            _width = (_dimensions.x * _panelRef.transform.localScale.x) + (PanelSpacing * _dimensions.x);
-            _height = (_dimensions.y * _panelRef.transform.localScale.z) + (PanelSpacing* _dimensions.y);
+            _width = (_dimensions.x * _panelRef.transform.localScale.x) + (PanelSpacingX * _dimensions.x);
+            _height = (_dimensions.y * _panelRef.transform.localScale.z) + (PanelSpacingZ * _dimensions.y);
 
-            float collisionPlaneOffsetX = ((_dimensions.x - 1) * _panelRef.transform.localScale.x) + (PanelSpacing * (_dimensions.x - 1));
-            float collisionPlaneOffsetY = ((_dimensions.y - 1) * _panelRef.transform.localScale.z) + (PanelSpacing* (_dimensions.y - 1));
+            float collisionPlaneOffsetX = ((_dimensions.x - 1) * _panelRef.transform.localScale.x) + (PanelSpacingX * (_dimensions.x - 1));
+            float collisionPlaneOffsetY = ((_dimensions.y - 1) * _panelRef.transform.localScale.z) + (PanelSpacingZ * (_dimensions.y - 1));
 
             collisionPlane.transform.localScale = new Vector3(_width / 10, collisionPlane.transform.localScale.y, _height / 10);
             collisionPlane.transform.position += new Vector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
@@ -324,7 +340,7 @@ namespace Lodis.GridScripts
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
-
+                    barrierObject.transform.localScale = new Vector3(_panelScale.z, barrierObject.transform.localScale.y, _panelScale.x);
                     //Searches for a potential player spawn position behind the barrier
                     Vector2 potentialPlayerSpawn = new Vector2(position.x - 1, position.y);
                     if (!_lhsPlayerSpawnPanel)
@@ -351,7 +367,7 @@ namespace Lodis.GridScripts
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
-
+                    barrierObject.transform.localScale = new Vector3(_panelScale.z, barrierObject.transform.localScale.y, _panelScale.x);
                     //Searches for a potential player spawn position behind the barrier
                     Vector2 potentialPlayerSpawn = new Vector2(position.x + 1, position.y);
                     if (!_rhsPlayerSpawnPanel)
@@ -485,8 +501,8 @@ namespace Lodis.GridScripts
             if (_panels == null)
                 return false;
 
-            int x = Mathf.RoundToInt((location.x / (PanelRef.transform.localScale.x + PanelSpacing)));
-            int y = Mathf.RoundToInt((location.z / (PanelRef.transform.localScale.z + PanelSpacing)));
+            int x = Mathf.RoundToInt((location.x / (PanelRef.transform.localScale.x + PanelSpacingX)));
+            int y = Mathf.RoundToInt((location.z / (PanelRef.transform.localScale.z + PanelSpacingX)));
 
             //If the given position is in range or if the panel is occupied when it shouldn't be, return false.
             if (x < 0 || x >= _dimensions.x || y < 0 || y >= _dimensions.y || float.IsNaN(x) || float.IsNaN(y))

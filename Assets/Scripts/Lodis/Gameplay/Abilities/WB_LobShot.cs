@@ -40,7 +40,7 @@ namespace Lodis.Gameplay
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             //Clamps hit angle to prevent completely horizontal movement
             float dot = Vector3.Dot(owner.transform.forward, Vector3.right);

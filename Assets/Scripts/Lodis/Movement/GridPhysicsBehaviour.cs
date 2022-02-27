@@ -266,7 +266,7 @@ namespace Lodis.Movement
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacing;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
@@ -274,7 +274,7 @@ namespace Lodis.Movement
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
-                return Vector3.up * Mathf.Sqrt(2 * Gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacing));
+                return Vector3.up * Mathf.Sqrt(2 * Gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
             launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
