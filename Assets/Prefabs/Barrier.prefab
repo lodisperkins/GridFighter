@@ -306,7 +306,7 @@ MonoBehaviour:
   _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
-  _isInvincible: 1
+  _isInvincible: 0
   _stunned: 0
   _visibleLayers:
     serializedVersion: 2
