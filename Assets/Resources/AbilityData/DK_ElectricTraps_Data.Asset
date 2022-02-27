@@ -38,7 +38,7 @@ MonoBehaviour:
     TimeActive: 1
     DestroyOnHit: 0
     IsMultiHit: 0
-    IgnoreColliders: 0
+    IgnoreColliders: 1
     LayersToIgnore: []
     HitFrames: 0
     Damage: 5

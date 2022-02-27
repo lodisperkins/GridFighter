@@ -49,7 +49,7 @@ MonoBehaviour:
     TypeOfDamage: 0
     CanSpike: 0
     HitStunTime: 0.1
-    Priority: 0
+    Priority: 3
   _customStats:
   - name: XOffset
     value: 1

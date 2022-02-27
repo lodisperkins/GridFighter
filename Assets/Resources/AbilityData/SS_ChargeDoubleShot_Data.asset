@@ -46,6 +46,8 @@ MonoBehaviour:
     - ParryBox
     - ParryBox
     - ParryBox
+    - ParryBox
+    - ParryBox
     HitFrames: 0
     Damage: 5
     BaseKnockBack: 0.5
@@ -55,7 +57,7 @@ MonoBehaviour:
     TypeOfDamage: 0
     CanSpike: 0
     HitStunTime: 0.1
-    Priority: 0
+    Priority: 1
   _customStats:
   - name: Speed
     value: 6.5

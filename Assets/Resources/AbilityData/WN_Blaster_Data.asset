@@ -38,8 +38,18 @@ MonoBehaviour:
     TimeActive: 5
     DestroyOnHit: 1
     IsMultiHit: 0
-    IgnoreColliders: 0
+    IgnoreColliders: 1
     LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
     - ParryBox
     - ParryBox
     - ParryBox
