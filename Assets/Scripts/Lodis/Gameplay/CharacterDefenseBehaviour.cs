@@ -110,7 +110,7 @@ namespace Lodis.Gameplay
             _parryCollider.OnHit += ActivateInvinciblity;
             _parryCollider.OnHit += TryReflectProjectile;
             _parryCollider.OnHit += TryStunAttacker;
-            _parryCollider.ColliderInfo.Owner = gameObject;
+            _parryCollider.Owner = gameObject;
         }
 
         /// <summary>
@@ -167,10 +167,10 @@ namespace Lodis.Gameplay
             if (otherHitCollider && otherRigidbody && !otherHitCollider.CompareTag("Player") && !otherHitCollider.CompareTag("Entity"))
             {
 
-            if (otherHitCollider.ColliderInfo.Owner == _parryCollider.ColliderInfo.Owner)
+            if (otherHitCollider.Owner == _parryCollider.Owner)
                 return;
                 //...reset the active time and reverse its velocity
-                otherHitCollider.ColliderInfo.Owner = _parryCollider.ColliderInfo.Owner;
+                otherHitCollider.Owner = _parryCollider.Owner;
                 otherHitCollider.ResetActiveTime();
                 otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.VelocityChange);
 
@@ -188,13 +188,13 @@ namespace Lodis.Gameplay
             else if (healthBehaviour.Stunned)
                 return;
 
-            if (knockback && other != _parryCollider.ColliderInfo.Owner)
+            if (knockback && other != _parryCollider.Owner)
                 if (!knockback.CheckIfIdle())
                 {
                     knockback.Physics.FreezeInPlaceByTimer(_attackerStunTime, false, true);
                 }
 
-            if (other != _parryCollider.ColliderInfo.Owner)
+            if (other != _parryCollider.Owner)
                 healthBehaviour.Stun(_attackerStunTime);
         }
 
@@ -394,7 +394,7 @@ namespace Lodis.Gameplay
                     return;
             }
 
-            if (otherHitCollider.ColliderInfo.Owner == _parryCollider.ColliderInfo.Owner)
+            if (otherHitCollider.Owner == _parryCollider.Owner)
                 return; 
 
             //Unfreeze the object if velocity was stopped in air

@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: ChargeDoubleShot
   AbilityType: 5
-  damageType: 0
   timeActive: 0.2
   recoverTime: 0.3
   startUpTime: 0.3
@@ -33,22 +32,32 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 7648438965634708056, guid: 21e48ff7c2220634887d04ebcd36387a,
     type: 3}
+  ColliderData:
+  - Name: 
+    DespawnAfterTimeLimit: 1
+    TimeActive: 2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    IgnoreColliders: 0
+    LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    HitFrames: 0
+    Damage: 5
+    BaseKnockBack: 0.5
+    KnockBackScale: 0.1
+    HitAngle: 0
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.1
+    Priority: 0
   _customStats:
-  - name: Damage
-    value: 5
-  - name: KnockBackScale
-    value: 0.5
-  - name: HitAngle
-    value: 0
   - name: Speed
     value: 6.5
-  - name: Lifetime
-    value: 2
   - name: MaxInstances
     value: 2
   - name: TimeBetweenShots
     value: 0
-  - name: HitStun
-    value: 0.1
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}

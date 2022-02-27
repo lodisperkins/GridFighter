@@ -58,8 +58,7 @@ namespace Lodis.Gameplay
         private void ActivateStunPath()
         {
             //Creates a new collider for the attackLinks in the path to use
-            _stunCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("baseKnockBack"),
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner);
+            _stunCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
 
             //When the attackLinks in the path collide with an something else, try to stun it 
             _stunCollider.onHit += StunEntity;

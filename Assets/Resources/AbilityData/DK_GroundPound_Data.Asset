@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: GroundPound
   AbilityType: 8
-  damageType: 0
   timeActive: 0.5
   recoverTime: 0.2
   startUpTime: 0.3
@@ -33,20 +32,30 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 3279573249412428936, guid: 937d652ceff8b964baec60f50c8bafc9,
     type: 3}
+  ColliderData:
+  - Name: 
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    IgnoreColliders: 1
+    LayersToIgnore: []
+    HitFrames: 0
+    Damage: 15
+    BaseKnockBack: 3
+    KnockBackScale: 0.1
+    HitAngle: 2
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.3
+    Priority: 0
   _customStats:
-  - name: Damage
-    value: 15
-  - name: HitAngle
-    value: 2
-  - name: Knockback
-    value: 3
   - name: ShockwaveProgressionDelay
     value: 0.2
   - name: JumpForce
     value: 16
   - name: ShockwaveTravelDistance
     value: 5
-  - name: HitStun
-    value: 0.3
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 92bfb16540334ae419cd838f2ab61620, type: 3}

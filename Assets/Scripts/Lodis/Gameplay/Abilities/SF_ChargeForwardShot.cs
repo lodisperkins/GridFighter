@@ -11,8 +11,6 @@ namespace Lodis.Gameplay
     public class SF_ChargeForwardShot : Ability
     {
         public Transform spawnTransform = null;
-        private float _shotDamage = 15;
-        private float _shotKnockBack = 1;
         //Used to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
@@ -82,12 +80,8 @@ namespace Lodis.Gameplay
         {
             //Initialize collider stats
             float powerScale = (float)args[0];
-            _shotDamage = abilityData.GetCustomStatValue("Damage") * powerScale;
-            _shotKnockBack = abilityData.GetCustomStatValue("baseKnockBack") * powerScale;
-            _projectileCollider = new HitColliderBehaviour(_shotDamage, _shotKnockBack,
-                abilityData.GetCustomStatValue("HitAngle"), true, abilityData.GetCustomStatValue("Lifetime"), owner, true, false, true, abilityData.GetCustomStatValue("HitStun"));
-            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
-            _projectileCollider.Priority = abilityData.ColliderPriority;
+            HitColliderInfo shotInfo = abilityData.GetColliderInfo(0).ScaleStats(powerScale);
+            _projectileCollider = new HitColliderBehaviour(shotInfo, owner);
 
             CleanProjectileList();
             

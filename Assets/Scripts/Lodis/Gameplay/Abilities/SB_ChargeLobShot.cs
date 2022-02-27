@@ -23,11 +23,7 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _weakProjectileCollider;
         private float _strongShotDistance = 1;
-        private float _strongShotDamage = 10;
-        private float _strongShotbaseKnockBack = 1;
-        private float _strongForceIncreaseRate = .01f;
         private float _weakShotDistance = 1;
-        private float _weakShotDamage = 5;
         private Transform _weakSpawnTransform;
         private List<GameObject> _activeProjectiles = new List<GameObject>();
 
@@ -166,23 +162,19 @@ namespace Lodis.Gameplay
 
             //Initialize stats of strong and weak colliders
             float powerScale = (float)args[0];
-            _weakShotDamage = abilityData.GetCustomStatValue("WeakShotDamage") * powerScale;
-            _strongShotDamage = abilityData.GetCustomStatValue("StrongShotDamage") * powerScale;
-            _strongShotbaseKnockBack = abilityData.GetCustomStatValue("StrongShotbaseKnockBack") * powerScale;
             _strongShotDistance = (powerScale - 1) / abilityData.GetCustomStatValue("StrongShotForceIncreaseRate");
             _strongShotDistance = Mathf.Clamp(_strongShotDistance, 0, abilityData.GetCustomStatValue("StrongHitMaxPower"));
 
-            _weakProjectileCollider = new HitColliderBehaviour(_weakShotDamage, abilityData.GetCustomStatValue("WeakShotbaseKnockBack"),
-                abilityData.GetCustomStatValue("WeakShotHitAngle"), true, abilityData.GetCustomStatValue("WeakShotLifeTime"), owner, true, false, true, abilityData.GetCustomStatValue("WeakHitStun"));
-            _weakProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
-            _weakProjectileCollider.Priority = abilityData.GetCustomStatValue("WeakColliderPriority");
+            //Initialize strong shot collider
+            HitColliderInfo strongInfo = abilityData.GetColliderInfo(0).ScaleStats(powerScale);
+            _strongProjectileCollider = new HitColliderBehaviour(strongInfo, owner);
 
-            _strongProjectileCollider = new HitColliderBehaviour(_strongShotDamage, _strongShotbaseKnockBack,
-                abilityData.GetCustomStatValue("StrongShotHitAngle"), true, abilityData.GetCustomStatValue("StrongShotLifeTime"), owner, true, false, true, abilityData.GetCustomStatValue("StrongHitStun"));
-            _strongProjectileCollider.Priority = abilityData.ColliderPriority;
-            _strongProjectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
+            //Initialize weak shot collider
+            HitColliderInfo weakInfo = abilityData.GetColliderInfo(1).ScaleStats(powerScale);
+            _weakProjectileCollider = new HitColliderBehaviour(weakInfo, _strongProjectileCollider.Owner);
 
-             
+
+
             CleanProjectileList();
            
             //If the maximum amount of lobshot instances has been reached for this owner, don't spawn a new one
@@ -213,11 +205,6 @@ namespace Lodis.Gameplay
             _activeProjectiles.Add(_weakSpawnTransform.gameObject);
 
             MonoBehaviour.Destroy(spawnerObject);
-
-            _weakShotDamage /= powerScale;
-            _strongShotDamage /= powerScale;
-            _strongShotbaseKnockBack /= powerScale;
-            _strongShotDistance -= (powerScale - 1) / _strongForceIncreaseRate;
         }
     }
 }

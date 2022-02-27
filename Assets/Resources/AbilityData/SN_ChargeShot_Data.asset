@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: ChargeShot
   AbilityType: 4
-  damageType: 0
   timeActive: 0.1
   recoverTime: 0.2
   startUpTime: 0.5
@@ -33,20 +32,36 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 7648438965634708056, guid: 21e48ff7c2220634887d04ebcd36387a,
     type: 3}
+  ColliderData:
+  - Name: 
+    DespawnAfterTimeLimit: 1
+    TimeActive: 2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    IgnoreColliders: 0
+    LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    HitFrames: 0
+    Damage: 12
+    BaseKnockBack: 3
+    KnockBackScale: 0.1
+    HitAngle: 0.4
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.2
+    Priority: 0
   _customStats:
-  - name: Damage
-    value: 12
-  - name: KnockBackScale
-    value: 3
-  - name: HitAngle
-    value: 0.4
   - name: Speed
     value: 15
-  - name: Lifetime
-    value: 2
   - name: MaxInstances
     value: 1
-  - name: HitStun
-    value: 0.2
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: f2fdba8a6b7bbc540a4d208285dd348c, type: 3}

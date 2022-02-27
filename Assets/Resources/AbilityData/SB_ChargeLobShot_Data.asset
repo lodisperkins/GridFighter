@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: ChargeLobShot
   AbilityType: 7
-  damageType: 0
   timeActive: 0.2
   recoverTime: 0.3
   startUpTime: 0.3
@@ -33,39 +32,77 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 151366202753034390, guid: c6f18bf7381957749a039c8b5cba9319,
     type: 3}
+  ColliderData:
+  - Name: StrongShot
+    DespawnAfterTimeLimit: 1
+    TimeActive: 2.5
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    IgnoreColliders: 1
+    LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    HitFrames: 0
+    Damage: 10
+    BaseKnockBack: 0.5
+    KnockBackScale: 0.1
+    HitAngle: 2.8
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.5
+    Priority: 0
+  - Name: WeakShot
+    DespawnAfterTimeLimit: 1
+    TimeActive: 5
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    IgnoreColliders: 0
+    LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    HitFrames: 0
+    Damage: 1
+    BaseKnockBack: 0.2
+    KnockBackScale: 0
+    HitAngle: 2
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.2
+    Priority: 0
   _customStats:
   - name: StrongShotDistance
     value: 1
-  - name: StrongShotDamage
-    value: 10
-  - name: StrongShotKnockBackScale
-    value: 0.5
   - name: StrongShotForceIncreaseRate
     value: 0.01
-  - name: StrongShotHitAngle
-    value: 2.8
-  - name: StrongShotLifeTime
-    value: 2.5
   - name: WeakShotDistance
-    value: 1
-  - name: WeakShotDamage
     value: 1
   - name: WeakShotForce
     value: 0.2
-  - name: WeakShotKnockBackScale
-    value: 0.2
-  - name: WeakShotHitAngle
-    value: 2
-  - name: WeakShotLifeTime
-    value: 5
   - name: MaxInstances
     value: 1
-  - name: WeakColliderPriority
-    value: 0
-  - name: WeakHitStun
-    value: 0.2
-  - name: StrongHitStun
-    value: 0.5
   - name: StrongHitMaxPower
     value: 6
   animationType: 3

@@ -54,8 +54,7 @@ namespace Lodis.Gameplay
 
         protected override void Activate(params object[] args)
         {
-            ProjectileCollider = new HitColliderBehaviour(abilityData.GetCustomStatValue("Damage"), abilityData.GetCustomStatValue("baseKnockBack"),
-                abilityData.GetCustomStatValue("HitAngle"), despawnAfterTimeLimit, abilityData.GetCustomStatValue("Lifetime"), owner, DestroyOnHit ,IsMultiHit, true, abilityData.GetCustomStatValue("HitStun"));
+            ProjectileCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
 
             //Log if a projectile couldn't be found
             if (!Projectile)

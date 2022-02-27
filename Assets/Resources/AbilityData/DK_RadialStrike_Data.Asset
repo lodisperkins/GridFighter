@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: RadialStrike
   AbilityType: 8
-  damageType: 0
   timeActive: 0.5
   recoverTime: 0.3
   startUpTime: 0.1
@@ -33,13 +32,27 @@ MonoBehaviour:
   playAnimationManually: 1
   visualPrefab: {fileID: 3279573249412428936, guid: 937d652ceff8b964baec60f50c8bafc9,
     type: 3}
+  ColliderData:
+  - Name: 
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    IgnoreColliders: 1
+    LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    HitFrames: 0
+    Damage: 15
+    BaseKnockBack: 2
+    KnockBackScale: 0.1
+    HitAngle: 0.4
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.2
+    Priority: 0
   _customStats:
-  - name: Damage
-    value: 15
-  - name: Knockback
-    value: 2
-  - name: HitAngle
-    value: 0.4
   - name: HitBoxScaleX
     value: 1
   - name: HitBoxScaleY
@@ -54,7 +67,5 @@ MonoBehaviour:
     value: -1
   - name: HitBoxDistanceZ
     value: 0
-  - name: HitStun
-    value: 0.2
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: a1122af4932a8554db88a3464df8b93c, type: 3}

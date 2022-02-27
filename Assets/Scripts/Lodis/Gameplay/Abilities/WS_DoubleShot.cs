@@ -24,7 +24,7 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WS_DoubleShot_Data"));
             owner = newOwner;
-
+            
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;
         }
@@ -79,9 +79,7 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0));
-            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
-            _projectileCollider.Priority = abilityData.ColliderPriority;
+            _projectileCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
              
 
             CleanProjectileList();

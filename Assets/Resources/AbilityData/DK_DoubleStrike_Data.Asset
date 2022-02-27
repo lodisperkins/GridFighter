@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: DoubleStrike
   AbilityType: 8
-  damageType: 0
   timeActive: 0.4
   recoverTime: 0.3
   startUpTime: 0.2
@@ -30,19 +29,32 @@ MonoBehaviour:
   IgnoreColliders: 0
   ColliderPriority: 0
   useAbilityTimingForAnimation: 1
-  playAnimationManually: 0
+  playAnimationManually: 1
   visualPrefab: {fileID: 3279573249412428936, guid: 937d652ceff8b964baec60f50c8bafc9,
     type: 3}
+  ColliderData:
+  - Name: BodyCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    IgnoreColliders: 0
+    LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    HitFrames: 0
+    Damage: 5
+    BaseKnockBack: 1
+    KnockBackScale: 0.1
+    HitAngle: 1
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.2
+    Priority: 0
   _customStats:
-  - name: Damage
-    value: 5
-  - name: KnockBackScale
-    value: 1
-  - name: HitAngle
-    value: 1
   - name: TravelDistance
     value: 4
-  - name: HitStun
-    value: 0.2
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: bf4d3e934eacf474e8952d473ee4f8ef, type: 3}

@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: LobShot
   AbilityType: 3
-  damageType: 0
   timeActive: 0.2
   recoverTime: 0.5
   startUpTime: 0.1
@@ -33,20 +32,29 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 679093164750957707, guid: 1ce1ba52079e3d848a3c4e62f298ecdc,
     type: 3}
+  ColliderData:
+  - Name: 
+    DespawnAfterTimeLimit: 1
+    TimeActive: 5
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    IgnoreColliders: 1
+    LayersToIgnore:
+    - ParryBox
+    HitFrames: 0
+    Damage: 2
+    BaseKnockBack: 1
+    KnockBackScale: 0
+    HitAngle: 2.5
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.3
+    Priority: 0
   _customStats:
-  - name: Damage
-    value: 2
-  - name: KnockBackScale
-    value: 1
-  - name: HitAngle
-    value: 2.5
   - name: PanelDistance
     value: 1
-  - name: Lifetime
-    value: 5
   - name: MaxInstances
     value: -1
-  - name: HitStun
-    value: 0.3
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}

@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
         {
             base.Activate(args);
             //Set the amount of frames the projectile will register a hit
-            ProjectileCollider.HitFrames = 1;
+            ProjectileCollider.ColliderInfo.HitFrames = 1;
             //Create a new collider that will handle reversing velocity
             _reboundCollider = ActiveProjectiles[0].AddComponent<ColliderBehaviour>();
 
@@ -71,7 +71,7 @@ namespace Lodis.Gameplay
                 //...reverse velocity
                 projectile.AddForce(-projectile.velocity * 2, ForceMode.VelocityChange);
                 _reboundCount++;
-                _reboundCollider.ColliderInfo.Owner = other;
+                _reboundCollider.Owner = other;
             }
             //Otherwise if it hit a structure like a wall...
             else if(other.CompareTag("Structure"))

@@ -11,10 +11,16 @@ namespace Lodis.Gameplay
         public bool DespawnAfterTimeLimit;
         [Tooltip("How long the hitbox will be active for.")]
         public float TimeActive;
-        public GameObject Owner;
+        [Tooltip("Whether or not this collider will be destroyed if it hits a valid object.")]
         public bool DestroyOnHit;
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
         public bool IsMultiHit;
+        [Tooltip("Whether or not this collider will ignore other ability colliders.")]
+        public bool IgnoreColliders = true;
+        [Tooltip("The collision layers to ignore when checking for valid collisions.")]
+        public List<string> LayersToIgnore = new List<string>();
+        [Tooltip("If this collider can hit multiple times, this is how many frames the object will have to wait before being able to register a collision with the same object.")]
+        public float HitFrames;
     }
     /// <summary>
     /// Event used when collisions occur. 
@@ -29,34 +35,17 @@ namespace Lodis.Gameplay
         protected float CurrentTimeActive;
         protected float StartTime;
         protected Dictionary<GameObject, int> Collisions;
-        [SerializeField]
-        private List<string> _layersToIgnore;
         /// <summary>
         /// Collision event called when this collider hits another. 
         /// First argument is game object it collided with.
         /// </summary>
         public CollisionEvent OnHit;
         protected float _lastHitFrame;
-        public float HitFrames;
-        public bool IgnoreColliders = true;
-        public ColliderInfo ColliderInfo;
+        public ColliderInfo ColliderInfo = new ColliderInfo();
+        [Tooltip("The game object spawned this collider.")]
+        public GameObject Owner;
 
-        public List<string> LayersToIgnore
-        {
-            get
-            {
-                return _layersToIgnore;
-            }
-            set
-            {
-                _layersToIgnore = value;
-            }
-        }
-
-        public ColliderBehaviour() 
-        {
-            _layersToIgnore = new List<string>();
-        }
+        public ColliderBehaviour() { }
 
         /// <summary>
         /// Initializes this colliders stats
@@ -88,9 +77,8 @@ namespace Lodis.Gameplay
         /// <param name="collider2">The collider that will have its values overwritten</param>
         public static void Copy(ColliderBehaviour collider1, ColliderBehaviour collider2)
         {
-            collider2.Init(collider1.ColliderInfo);
+            collider2.Init(collider1.ColliderInfo, collider1.Owner);
             collider2.OnHit = collider1.OnHit;
-            collider2.LayersToIgnore = collider1.LayersToIgnore;
         }
 
         /// <summary>
@@ -104,7 +92,7 @@ namespace Lodis.Gameplay
 
         public bool CheckIfLayerShouldBeIgnored(int layer)
         {
-            int mask = LayerMask.GetMask(_layersToIgnore.ToArray());
+            int mask = LayerMask.GetMask(ColliderInfo.LayersToIgnore.ToArray());
             if (mask != (mask | 1 << layer))
                 return true;
 
@@ -120,19 +108,20 @@ namespace Lodis.Gameplay
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
         public void Init(bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false)
         {
-            ColliderInfo = new ColliderInfo { DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, Owner = owner, DestroyOnHit = destroyOnHit, IsMultiHit = isMultiHit };
+            ColliderInfo = new ColliderInfo { DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, IsMultiHit = isMultiHit };
         }
 
-        public void Init(ColliderInfo info)
+        public virtual void Init(ColliderInfo info, GameObject owner)
         {
             ColliderInfo = info;
+            Owner = owner;
         }
 
 
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == ColliderInfo.Owner)
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -148,8 +137,7 @@ namespace Lodis.Gameplay
                 otherGameObject = other.gameObject;
             }
 
-            int mask = LayerMask.GetMask(_layersToIgnore.ToArray());
-            if (otherCollider && IgnoreColliders/* || mask != (mask | 1 << otherGameObject.layer)*/)
+            if (otherCollider && ColliderInfo.IgnoreColliders || CheckIfLayerShouldBeIgnored(otherGameObject.layer))
                     return;
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -166,7 +154,7 @@ namespace Lodis.Gameplay
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!ColliderInfo.IsMultiHit || other.gameObject == ColliderInfo.Owner || !CheckHitTime(other.gameObject))
+            if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(other.gameObject))
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -182,7 +170,7 @@ namespace Lodis.Gameplay
                 otherGameObject = other.gameObject;
             }
 
-            if (otherCollider && IgnoreColliders)
+            if (otherCollider && ColliderInfo.IgnoreColliders || CheckIfLayerShouldBeIgnored(otherGameObject.layer))
                 return;
 
             Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
@@ -207,7 +195,7 @@ namespace Lodis.Gameplay
                 return false;
             }
 
-            if (Time.frameCount - lastHitFrame >= HitFrames)
+            if (Time.frameCount - lastHitFrame >= ColliderInfo.HitFrames)
             {
                 Collisions[gameObject] = Time.frameCount;
                 return true;
@@ -219,7 +207,7 @@ namespace Lodis.Gameplay
         private void OnCollisionEnter(Collision collision)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(collision.gameObject) || ColliderInfo.IsMultiHit || collision.gameObject == ColliderInfo.Owner)
+            if (Collisions.ContainsKey(collision.gameObject) || ColliderInfo.IsMultiHit || collision.gameObject == Owner)
                 return;
 
             ColliderBehaviour otherCollider = null;
@@ -235,7 +223,8 @@ namespace Lodis.Gameplay
                 otherGameObject = collision.gameObject;
             }
 
-            if (otherCollider && IgnoreColliders)
+
+            if (otherCollider && ColliderInfo.IgnoreColliders || CheckIfLayerShouldBeIgnored(otherGameObject.layer))
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again

@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   abilityName: ForwardShot
   AbilityType: 2
-  damageType: 0
   timeActive: 0.2
   recoverTime: 0.1
   startUpTime: 0.1
@@ -33,19 +32,30 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 8897977150452739386, guid: c662ede171e2a26498c91a36fc787336,
     type: 3}
+  ColliderData:
+  - Name: 
+    DespawnAfterTimeLimit: 1
+    TimeActive: 1.5
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    IgnoreColliders: 0
+    LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    HitFrames: 0
+    Damage: 1
+    BaseKnockBack: 1
+    KnockBackScale: 0.1
+    HitAngle: 0.2
+    AdjustAngleBasedOnCollision: 1
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.3
+    Priority: 0
   _customStats:
-  - name: Damage
-    value: 1
-  - name: KnockBackScale
-    value: 1
-  - name: HitAngle
-    value: 0.2
   - name: Speed
     value: 2
-  - name: Lifetime
-    value: 1.5
-  - name: HitStun
-    value: 0.3
   - name: MaxInstances
     value: 1
   animationType: 0

@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
         public static HitColliderBehaviour SpawnSphereCollider(Transform parent, float radius, HitColliderBehaviour hitCollider)
         {
             GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.ColliderInfo.Owner.name + " SphereCollider";
+            hitObject.name = hitCollider.Owner.name + " SphereCollider";
             SphereCollider collider = hitObject.AddComponent<SphereCollider>();
             hitObject.transform.parent = parent;
             hitObject.transform.localPosition = Vector3.zero;
@@ -130,7 +130,7 @@ namespace Lodis.Gameplay
         public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, HitColliderBehaviour hitCollider)
         {
             GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.ColliderInfo.Owner.name + "BoxCollider";
+            hitObject.name = hitCollider.Owner.name + "BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.position = position;
             collider.isTrigger = true;
@@ -183,7 +183,7 @@ namespace Lodis.Gameplay
         public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderBehaviour hitCollider)
         {
             GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.ColliderInfo.Owner.name + "BoxCollider";
+            hitObject.name = hitCollider.Owner.name + "BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.parent = parent;
             hitObject.transform.localPosition = Vector3.zero;

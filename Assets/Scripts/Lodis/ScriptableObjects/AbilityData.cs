@@ -70,7 +70,7 @@ namespace Lodis.ScriptableObjects
         public GameObject visualPrefab;
         [Tooltip("Information for all colliders this ability will use")]
         [SerializeField]
-        protected HitColliderInfo[] ColliderInfo;
+        protected HitColliderInfo[] ColliderData;
         [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
         protected Stat[] _customStats;
@@ -116,10 +116,10 @@ namespace Lodis.ScriptableObjects
 
         public HitColliderInfo GetColliderInfo(int index)
         {
-            if (index < 0 || index > ColliderInfo.Length)
+            if (index < 0 || index >= ColliderData.Length)
                 return null;
 
-            return ColliderInfo[index];
+            return ColliderData[index];
         }
     }
 

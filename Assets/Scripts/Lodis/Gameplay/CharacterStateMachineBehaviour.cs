@@ -47,8 +47,8 @@ namespace Lodis.Gameplay
         }
         private void Update()
         {
-            if (_currentState != _stateMachine.CurrentState)
-                Debug.Log(_stateMachine.CurrentState);
+            //if (_currentState != _stateMachine.CurrentState)
+            //    Debug.Log(_stateMachine.CurrentState);
 
             _currentState = _stateMachine.CurrentState;
         }

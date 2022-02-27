@@ -11,8 +11,6 @@ namespace Lodis.Gameplay
     public class SN_ChargeShot : Ability
     {
         public Transform spawnTransform = null;
-        public float shotDamage = 15;
-        public float baseKnockBack = 1;
 
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
@@ -35,7 +33,6 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            float powerScale = (float)args[0];
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
@@ -51,12 +48,9 @@ namespace Lodis.Gameplay
             }
 
             //Initialize collider stats
-            shotDamage = abilityData.GetCustomStatValue("Damage") * powerScale;
-            baseKnockBack = abilityData.GetCustomStatValue("baseKnockBack") * powerScale;
-            _projectileCollider = new HitColliderBehaviour(shotDamage, baseKnockBack, abilityData.GetCustomStatValue("HitAngle"), true,
-                abilityData.GetCustomStatValue("Lifetime"), owner, true, false, true, abilityData.GetCustomStatValue("HitStun"));
-            _projectileCollider.IgnoreColliders = abilityData.IgnoreColliders;
-            _projectileCollider.Priority = abilityData.ColliderPriority;
+            float powerScale = (float)args[0];
+            HitColliderInfo shotInfo = abilityData.GetColliderInfo(0).ScaleStats(powerScale);
+            _projectileCollider = new HitColliderBehaviour(shotInfo, owner);
 
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();
