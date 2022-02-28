@@ -70,7 +70,7 @@ namespace Lodis.ScriptableObjects
         public GameObject visualPrefab;
         [Tooltip("Information for all colliders this ability will use")]
         [SerializeField]
-        protected HitColliderInfo[] ColliderData;
+        protected ColliderInfo[] ColliderData;
         [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
         protected Stat[] _customStats;
@@ -114,10 +114,13 @@ namespace Lodis.ScriptableObjects
             return float.NaN;
         }
 
-        public HitColliderInfo GetColliderInfo(int index)
+        public ColliderInfo GetColliderInfo(int index)
         {
             if (index < 0 || index >= ColliderData.Length)
-                return null;
+            {
+                Debug.LogWarning("GetColliderInfo() was called with an invalid index passed as a parameter");
+                return new ColliderInfo();
+            }
 
             return ColliderData[index];
         }
@@ -129,11 +132,11 @@ namespace Lodis.ScriptableObjects
     [CanEditMultipleObjects]
     public class AbilityDataEditor : Editor
     {
-        private SerializedProperty _hitColliderInfo;
+        private SerializedProperty _ColliderInfo;
 
         private void OnEnable()
         {
-            _hitColliderInfo = serializedObject.FindProperty("ColliderInfo");
+            _ColliderInfo = serializedObject.FindProperty("ColliderInfo");
         }
 
         public override void OnInspectorGUI()

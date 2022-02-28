@@ -15,7 +15,7 @@ namespace Lodis.Gameplay
         private GameObject _visualPrefabInstance;
         private bool _inPosition = false;
         private bool _deactivated = false;
-
+        private Vector3 _hitBoxScale;
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
@@ -36,18 +36,18 @@ namespace Lodis.Gameplay
             //Mark that the target position has been reached
             _inPosition = true;
 
+            _hitBoxScale = new Vector3(abilityData.GetCustomStatValue("HitBoxScaleX") * BlackBoardBehaviour.Instance.Grid.PanelScale.x, abilityData.GetCustomStatValue("HitBoxScaleY"), abilityData.GetCustomStatValue("HitBoxScaleZ") * BlackBoardBehaviour.Instance.Grid.PanelScale.z);
             //Instantiate particles and hit box
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform);
-            Vector3 hitBoxDimensions = new Vector3(abilityData.GetCustomStatValue("HitBoxScaleX"), abilityData.GetCustomStatValue("HitBoxScaleY"), abilityData.GetCustomStatValue("HitBoxScaleZ"));
             HitColliderBehaviour hitColliderRef = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
 
-           HitColliderBehaviour hitCollider = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, hitBoxDimensions, hitColliderRef);
+           HitColliderBehaviour hitCollider = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, _hitBoxScale, hitColliderRef);
 
             hitCollider.DebuggingEnabled = true;
 
             //Set hitbox position
-            _visualPrefabInstance.transform.position = owner.transform.position + (owner.transform.forward * abilityData.GetCustomStatValue("HitBoxDistanceZ") +
-                (owner.transform.right * abilityData.GetCustomStatValue("HitBoxDistanceX")));
+            _visualPrefabInstance.transform.position = owner.transform.position + (owner.transform.forward * (abilityData.GetCustomStatValue("HitBoxDistanceZ") + BlackBoardBehaviour.Instance.Grid.PanelSpacingZ) +
+                (owner.transform.right * (abilityData.GetCustomStatValue("HitBoxDistanceX") + BlackBoardBehaviour.Instance.Grid.PanelSpacingX)));
         }
 
 	    //Called when ability is used

@@ -166,11 +166,11 @@ namespace Lodis.Gameplay
             _strongShotDistance = Mathf.Clamp(_strongShotDistance, 0, abilityData.GetCustomStatValue("StrongHitMaxPower"));
 
             //Initialize strong shot collider
-            HitColliderInfo strongInfo = abilityData.GetColliderInfo(0).ScaleStats(powerScale);
+            ColliderInfo strongInfo = abilityData.GetColliderInfo(0).ScaleStats(powerScale);
             _strongProjectileCollider = new HitColliderBehaviour(strongInfo, owner);
 
             //Initialize weak shot collider
-            HitColliderInfo weakInfo = abilityData.GetColliderInfo(1).ScaleStats(powerScale);
+            ColliderInfo weakInfo = abilityData.GetColliderInfo(1).ScaleStats(powerScale);
             _weakProjectileCollider = new HitColliderBehaviour(weakInfo, _strongProjectileCollider.Owner);
 
 

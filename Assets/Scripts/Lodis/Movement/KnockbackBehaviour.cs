@@ -457,7 +457,7 @@ namespace Lodis.Movement
 
             return damage;
         }
-        public override float TakeDamage(HitColliderInfo info, GameObject attacker)
+        public override float TakeDamage(ColliderInfo info, GameObject attacker)
         {
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)

@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
             return 0;
         }
 
-        public override float TakeDamage(HitColliderInfo info, GameObject attacker)
+        public override float TakeDamage(ColliderInfo info, GameObject attacker)
         {
             if (attacker.name == Owner && info.TypeOfDamage == DamageType.KNOCKBACK || attacker.name != Owner && info.TypeOfDamage != DamageType.KNOCKBACK || Owner == "")
                 return base.TakeDamage(info, attacker);

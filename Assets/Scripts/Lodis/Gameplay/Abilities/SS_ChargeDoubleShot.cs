@@ -79,7 +79,7 @@ namespace Lodis.Gameplay
         {
             float powerScale = (float)args[0];
 
-            HitColliderInfo shotInfo = abilityData.GetColliderInfo(0).ScaleStats(powerScale);
+            ColliderInfo shotInfo = abilityData.GetColliderInfo(0).ScaleStats(powerScale);
             _projectileCollider = new HitColliderBehaviour(shotInfo, owner);
 
             CleanProjectileList();

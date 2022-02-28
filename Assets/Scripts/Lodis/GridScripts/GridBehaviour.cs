@@ -124,6 +124,15 @@ namespace Lodis.GridScripts
         }
 
         /// <summary>
+        /// The dimensions of each panel
+        /// </summary>
+        public Vector3 PanelScale
+        {
+            get { return _panelScale; }
+        }
+
+
+        /// <summary>
         /// The width of the grid in relation to the world space
         /// </summary>
         public float Width { get => _width; }

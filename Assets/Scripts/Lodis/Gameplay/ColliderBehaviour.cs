@@ -4,7 +4,8 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
-    public class ColliderInfo
+    [System.Serializable]
+    public struct ColliderInfo
     {
         public string Name;
         [Tooltip("If true, the hit collider will despawn after the amount of active frames have been surpassed.")]
@@ -18,9 +19,44 @@ namespace Lodis.Gameplay
         [Tooltip("Whether or not this collider will ignore other ability colliders.")]
         public bool IgnoreColliders;
         [Tooltip("The collision layers to ignore when checking for valid collisions.")]
-        public List<string> LayersToIgnore = new List<string>();
+        public List<string> LayersToIgnore;
         [Tooltip("If this collider can hit multiple times, this is how many frames the object will have to wait before being able to register a collision with the same object.")]
         public float HitFrames;
+        [Tooltip("The amount of damage this attack will deal.")]
+        public float Damage;
+        [Tooltip("How far back this attack will knock an object back.")]
+        public float BaseKnockBack;
+        [Tooltip("How much the knock back of this ability will scale based on the health of the object hit.")]
+        public float KnockBackScale;
+        [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
+        public float HitAngle;
+        [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
+        public bool AdjustAngleBasedOnCollision;
+        [Tooltip("The type of damage this collider will be read as")]
+        public DamageType TypeOfDamage;
+        public bool CanSpike;
+        [Tooltip("The amount of time a character can't perform any actions after being hit")]
+        public float HitStunTime;
+        [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
+        public float Priority;
+
+
+        /// <summary>
+        /// Get a copy of the hit collider info with the attack stats (damage, base knock back, knock back scale, hit stun time) scaled
+        /// </summary>
+        /// <param name="scale">The amount to scale the stats by</param>
+        /// <returns>A new copy of the hit collider info</returns>
+        public ColliderInfo ScaleStats(float scale)
+        {
+            ColliderInfo ColliderInfo = (ColliderInfo)MemberwiseClone();
+
+            ColliderInfo.Damage *= scale;
+            ColliderInfo.BaseKnockBack *= scale;
+            ColliderInfo.KnockBackScale *= scale;
+            ColliderInfo.HitStunTime *= scale;
+
+            return ColliderInfo;
+        }
     }
     /// <summary>
     /// Event used when collisions occur. 
@@ -92,6 +128,9 @@ namespace Lodis.Gameplay
 
         public bool CheckIfLayerShouldBeIgnored(int layer)
         {
+            if (ColliderInfo.LayersToIgnore == null)
+                return false;
+
             if (ColliderInfo.LayersToIgnore.Count == 0)
                 return false;
 

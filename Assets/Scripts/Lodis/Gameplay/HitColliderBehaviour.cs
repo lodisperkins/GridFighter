@@ -7,48 +7,9 @@ using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
-    [Serializable]
-    public class HitColliderInfo : ColliderInfo
-    {
-        [Tooltip("The amount of damage this attack will deal.")]
-        public float Damage;
-        [Tooltip("How far back this attack will knock an object back.")]
-        public float BaseKnockBack;
-        [Tooltip("How much the knock back of this ability will scale based on the health of the object hit.")]
-        public float KnockBackScale;
-        [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
-        public float HitAngle;
-        [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
-        public bool AdjustAngleBasedOnCollision;
-        [Tooltip("The type of damage this collider will be read as")]
-        public DamageType TypeOfDamage = DamageType.DEFAULT;
-        public bool CanSpike;
-        [Tooltip("The amount of time a character can't perform any actions after being hit")]
-        public float HitStunTime;
-        [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
-        public float Priority = 0.0f;
-
-        /// <summary>
-        /// Get a copy of the hit collider info with the attack stats (damage, base knock back, knock back scale, hit stun time) scaled
-        /// </summary>
-        /// <param name="scale">The amount to scale the stats by</param>
-        /// <returns>A new copy of the hit collider info</returns>
-        public HitColliderInfo ScaleStats(float scale)
-        {
-            HitColliderInfo hitColliderInfo = (HitColliderInfo)MemberwiseClone();
-
-            hitColliderInfo.Damage *= scale;
-            hitColliderInfo.BaseKnockBack *= scale;
-            hitColliderInfo.KnockBackScale *= scale;
-            hitColliderInfo.HitStunTime *= scale;
-
-            return hitColliderInfo;
-        }
-    }
 
     public class HitColliderBehaviour : ColliderBehaviour
     {
-        public new HitColliderInfo ColliderInfo;
 
         /// <summary>
         /// Collision event called when this collider hits another. 
@@ -63,16 +24,16 @@ namespace Lodis.Gameplay
         public HitColliderBehaviour(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
            : base()
         {
-            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            ColliderInfo info = new ColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
             Init(info, owner);
         }
 
-        public HitColliderBehaviour(HitColliderInfo info, GameObject owner)
+        public HitColliderBehaviour(ColliderInfo info, GameObject owner)
         {
             Init(info, owner);
         }
 
-        public  void Init(HitColliderInfo info, GameObject owner)
+        public  void Init(ColliderInfo info, GameObject owner)
         {
             ColliderInfo = info;
             base.ColliderInfo = ColliderInfo;
@@ -113,7 +74,7 @@ namespace Lodis.Gameplay
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
         public void Init(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
         {
-            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            ColliderInfo info = new ColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
             Init(info, owner);
         }
 
