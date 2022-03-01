@@ -28,6 +28,7 @@ namespace Lodis.AI
         private int _lastSlot;
         [SerializeField]
         private bool _enableRandomBehaviour;
+        private bool _chargingAttack;
 
         // Start is called before the first frame update
         void Start()
@@ -37,10 +38,22 @@ namespace Lodis.AI
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
         }
 
+        private IEnumerator ChargeRoutine(float chargeTime)
+        {
+            _chargingAttack = true;
+            yield return new WaitForSeconds(chargeTime);
+
+            if ((_stateMachine.CurrentState == "Idle" || _stateMachine.CurrentState == "Attacking"))
+            {
+                _moveset.UseBasicAbility(_attackType, new object[] { _attackStrength, _attackDirection });
+            }
+                _chargingAttack = false;
+        }
+
         public void Update()
         {
             //Only attack if the dummy is grounded and delay timer is up
-            if ((_stateMachine.CurrentState == "Idle" || _stateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.RecoveringFromFall)
+            if ((_stateMachine.CurrentState == "Idle" || _stateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.RecoveringFromFall && !_chargingAttack)
             {
                 //Clamps z direction in case its abs value becomes larger than one at runtime
                 _attackDirection.Normalize();
@@ -48,8 +61,15 @@ namespace Lodis.AI
                 if (_enableRandomBehaviour)
                 {
                     _attackType = (Gameplay.AbilityType)UnityEngine.Random.Range(0, 9);
+
                     _attackDirection = new Vector2(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
-                    _attackStrength = UnityEngine.Random.Range(0.1f, 1.5f);
+                    _attackStrength = 1.09f;
+
+                    if (((int)_attackType) > 3 && ((int)_attackType) < 8)
+                    {
+                        StartCoroutine(ChargeRoutine((_attackStrength - 1) / 0.1f));
+                        return;
+                    }
                 }
 
                 if (_attackType == Gameplay.AbilityType.NONE || _stateMachine.CurrentState == "Stunned")

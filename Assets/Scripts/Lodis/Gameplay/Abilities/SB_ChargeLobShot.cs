@@ -112,7 +112,7 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _weakProjectile;
 
             //Fire laser
-            spawnScript.FireProjectile(CalculateProjectileForce(axis, _weakShotDistance), _weakProjectileCollider);
+            spawnScript.FireProjectile(CalculateProjectileForce(axis, _weakShotDistance), _weakProjectileCollider, true);
 
             MonoBehaviour.Destroy(spawnerObject);
         }
@@ -200,7 +200,7 @@ namespace Lodis.Gameplay
 
             _strongProjectileCollider.onHit += SpawnWeakShots;
             //Fire laser
-            _weakSpawnTransform = spawnScript.FireProjectile(CalculateProjectileForce(owner.transform.forward, _strongShotDistance), _strongProjectileCollider).transform;
+            _weakSpawnTransform = spawnScript.FireProjectile(CalculateProjectileForce(owner.transform.forward, _strongShotDistance), _strongProjectileCollider, true).transform;
 
             _activeProjectiles.Add(_weakSpawnTransform.gameObject);
 

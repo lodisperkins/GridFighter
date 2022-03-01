@@ -41,7 +41,7 @@ namespace Lodis.Gameplay
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
-
+            _shotDistance = abilityData.GetCustomStatValue("PanelDistance");
             //Clamps hit angle to prevent completely horizontal movement
             float dot = Vector3.Dot(owner.transform.forward, Vector3.right);
             float shotAngle = 0;
@@ -120,7 +120,7 @@ namespace Lodis.Gameplay
 
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
             //Fire laser
-            spawnScript.FireProjectile(CalculateProjectileForce(), _projectileCollider);
+            spawnScript.FireProjectile(CalculateProjectileForce(), _projectileCollider, true);
 
             MonoBehaviour.Destroy(spawnerObject);
         }

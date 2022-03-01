@@ -56,12 +56,10 @@ namespace Lodis.ScriptableObjects
         public bool CanInputMovementWhileActive = true;
         [Tooltip("If true, this ability will be canceled when the user is hit")]
         public bool cancelOnHit = false;
+        [Tooltip("If true, this ability will be canceled when the user is flinching")]
+        public bool cancelOnFlinch = false;
         [Tooltip("If true, this ability will be canceled when the user is in knockback")]
         public bool cancelOnKnockback = true;
-        [Tooltip("If false, this ability's hit colliders can collide with others. Meaning that this ability's colliders can be destroyed if the other collider has higher priority.")]
-        public bool IgnoreColliders = true;
-        [Tooltip("The priority level of the collider. Colliders with higher levels destroys colliders with lower levels.")]
-        public float ColliderPriority = 0.0f;
         [Tooltip("If true, the animation will change speed according to the start, active, and recover times")]
         public bool useAbilityTimingForAnimation;
         [Tooltip("If true, the animation will only play when specified in the ability script")]

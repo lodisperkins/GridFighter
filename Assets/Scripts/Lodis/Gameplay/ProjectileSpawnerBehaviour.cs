@@ -13,7 +13,8 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="force">The amount of force to apply to the projectile</param>
         /// <returns></returns>
-        public GameObject FireProjectile(Vector3 force)
+        /// <param name="useGravity"></param>
+        public GameObject FireProjectile(Vector3 force, bool useGravity = false)
         {
             if (!projectile)
                 return null;
@@ -21,6 +22,7 @@ namespace Lodis.Gameplay
             GameObject temp = Instantiate(projectile, transform.position, new Quaternion(), null);
             Debug.Log(transform.position);
             Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
+            rigidbody.useGravity = useGravity;
             if (rigidbody)
                 rigidbody.AddForce(force, ForceMode.Impulse);
 
@@ -33,7 +35,8 @@ namespace Lodis.Gameplay
         /// <param name="force">The amount of force to apply to the projectile</param>
         /// <param name="hitCollider">The hit collider to attach to the projectile</param>
         /// <returns></returns>
-        public GameObject FireProjectile(Vector3 force, HitColliderBehaviour hitCollider)
+        /// <param name="useGravity"></param>
+        public GameObject FireProjectile(Vector3 force, HitColliderBehaviour hitCollider, bool useGravity = false)
         {
             if (!projectile)
                 return null;
@@ -44,6 +47,7 @@ namespace Lodis.Gameplay
             HitColliderBehaviour.Copy(hitCollider, collider);
 
             Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
+            rigidbody.useGravity = useGravity;
             if (rigidbody)
                 rigidbody.AddForce(force, ForceMode.Impulse);
 

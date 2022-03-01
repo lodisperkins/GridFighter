@@ -180,6 +180,15 @@ MonoBehaviour:
     IgnoreColliders: 0
     LayersToIgnore: []
     HitFrames: 0
+    Damage: 0
+    BaseKnockBack: 0
+    KnockBackScale: 0
+    HitAngle: 0
+    AdjustAngleBasedOnCollision: 0
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0
+    Priority: 0
   Owner: {fileID: 5680485170780137523}
 --- !u!65 &7080764703363995812
 BoxCollider:
@@ -343,7 +352,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _position: {x: 5, y: 0}
+  _position: {x: 8, y: 0}
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 10
@@ -433,8 +442,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 9
-  _attackDelay: 0.5
+  _attackType: 4
+  _attackDelay: 0
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 1
@@ -517,10 +526,11 @@ MonoBehaviour:
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
   _gravity: 19.62
   _bounceDampen: 4
-  _bounceCollider: {fileID: 4375342665546870793}
+  _bounceCollider: {fileID: 5036224701878357983, guid: de05c6ed12e6ef845b5c326a1cc157b5,
+    type: 3}
   _isGrounded: 0
   _extraHeight: 0.5
-  _bounciness: 5
+  _bounciness: 3
   _panelBounceEnabled: 1
   _netForce: {x: 0, y: 0, z: 0}
   _useGravity: 1
@@ -1252,12 +1262,6 @@ PrefabInstance:
 --- !u!4 &1880277791919659771 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
-    type: 3}
-  m_PrefabInstance: {fileID: 3161658195721212325}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &4375342665546870793 stripped
-BoxCollider:
-  m_CorrespondingSourceObject: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
     type: 3}
   m_PrefabInstance: {fileID: 3161658195721212325}
   m_PrefabAsset: {fileID: 0}

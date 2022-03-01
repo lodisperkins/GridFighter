@@ -292,9 +292,14 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         protected virtual void Start(params object[] args)
         {
-            if (abilityData.cancelOnHit && _ownerKnockBackScript)
+            if (!_ownerKnockBackScript)
+                return;
+
+            if (abilityData.cancelOnHit)
                 _ownerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
-            else if (abilityData.cancelOnKnockback && _ownerKnockBackScript)
+            else if (abilityData.cancelOnFlinch)
+                _ownerKnockBackScript.AddOnHitStunTempAction(EndAbility);
+            else if (abilityData.cancelOnKnockback)
                 _ownerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
 
         }

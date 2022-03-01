@@ -41,6 +41,7 @@ namespace Lodis.Movement
         private UnityAction _onKnockBackStartTemp;
         private UnityAction _onTakeDamageTemp;
         private UnityAction _onHitStun;
+        private UnityAction _onHitStunTemp;
        
         [Tooltip("The amount of time it takes for this object to regain footing after landing")]
         [SerializeField]
@@ -200,6 +201,10 @@ namespace Lodis.Movement
         public void AddOnHitStunAction(UnityAction action)
         {
             _onHitStun += action;
+        }
+        public void AddOnHitStunTempAction(UnityAction action)
+        {
+            _onHitStunTemp += action;
         }
 
         /// <summary>
@@ -386,6 +391,8 @@ namespace Lodis.Movement
 
             _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _inHitStun = false; _isFlinching = false; _timeInCurrentHitStun = 0; }, TimedActionCountType.SCALEDTIME, timeInHitStun);
             _onHitStun?.Invoke();
+            _onHitStunTemp?.Invoke();
+            _onHitStunTemp = null;
         }
 
 

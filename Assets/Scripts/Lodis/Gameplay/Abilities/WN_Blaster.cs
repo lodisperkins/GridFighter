@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
     /// applying pressure and applying chip damage
     /// </summary>
     [System.Serializable]
-    public class WN_Blaster : Ability
+    public class WN_Blaster : ProjectileAbility
     {
         [SerializeField]
         public Transform spawnTransform = null;
@@ -35,6 +35,8 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             _projectileCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
+
+            CleanProjectileList();
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
@@ -60,10 +62,14 @@ namespace Lodis.Gameplay
             ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
             spawnScript.projectile = _projectile;
 
-            //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+            if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
+            {
 
-            MonoBehaviour.Destroy(spawnerObject);
+                //Fire laser
+                GameObject projectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+                ActiveProjectiles.Add(projectile);
+                MonoBehaviour.Destroy(spawnerObject);
+            }
         }
     }
 }
