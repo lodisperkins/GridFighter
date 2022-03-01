@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: PanelSteal
   AbilityType: 8
-  damageType: 0
   timeActive: 0.1
   recoverTime: 1
   startUpTime: 0.1
@@ -26,15 +25,15 @@ MonoBehaviour:
   CanCancelOnMove: 1
   CanInputMovementWhileActive: 1
   cancelOnHit: 0
+  cancelOnFlinch: 0
   cancelOnKnockback: 1
-  IgnoreColliders: 1
-  ColliderPriority: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 0}
+  ColliderData: []
   _customStats:
   - name: OwnershipTime
-    value: 5
+    value: 10
   - name: AmountOfRows
     value: 1
   animationType: 0

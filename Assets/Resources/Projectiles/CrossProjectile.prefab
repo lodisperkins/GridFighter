@@ -232,6 +232,7 @@ GameObject:
   - component: {fileID: 5936926029810059218}
   - component: {fileID: 6239634632965324607}
   - component: {fileID: 2889399129253374469}
+  - component: {fileID: 3962511481750313571}
   m_Layer: 0
   m_Name: CrossProjectile
   m_TagString: Untagged
@@ -300,6 +301,21 @@ MonoBehaviour:
   _axis: {x: 0, y: 1, z: 0}
   _speed: 15
   _rotateOnSelf: 1
+--- !u!114 &3962511481750313571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6740710594312166088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MarkPosition: 0
+  MarkWarning: 0
+  MarkDanger: 1
 --- !u!1001 &6740710594390925244
 PrefabInstance:
   m_ObjectHideFlags: 0

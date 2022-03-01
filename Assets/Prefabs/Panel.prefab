@@ -110,3 +110,7 @@ MonoBehaviour:
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
+  _positionLHSColor: {r: 0.082858644, g: 0.83139145, b: 0.9245283, a: 0}
+  _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
+  _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
+  _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}

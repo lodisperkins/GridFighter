@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Gameplay;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,12 +20,29 @@ namespace Lodis.GridScripts
         [Tooltip("The material to give this panel if it is aligned with the right side of the grid.")]
         [SerializeField]
         private Material _rightSideMat;
+        [SerializeField]
+        private Color _positionLHSColor;
+        [SerializeField]
+        private Color _positionRHSColor;
+        [SerializeField]
+        private Color _warningColor;
+        [SerializeField]
+        private Color _dangerColor;
+        private Color _defaultColor;
         private MeshRenderer _mesh;
+        private GameObject _markObject;
+        private Movement.GridMovementBehaviour _markerMovement;
+        private Vector2 _lastMarkPosition;
+
         private void Awake()
         {
             _mesh = GetComponent<MeshRenderer>();
         }
 
+        private void Start()
+        {
+            _defaultColor = _mesh.material.color;
+        }
         /// <summary>
         /// The side of the grid this panel this panel belongs to
         /// </summary>
@@ -64,6 +82,43 @@ namespace Lodis.GridScripts
             }
         }
 
+        public void Mark(Lodis.GridScripts.MarkerType markerType, GameObject markObject)
+        {
+            Vector2 markObjectPosition = new Vector2(markObject.transform.position.x, markObject.transform.position.z);
+            if (markObject == _markObject && ((markObjectPosition - _lastMarkPosition).magnitude <= BlackBoardBehaviour.Instance.Grid.PanelSpacingX 
+                && (markObjectPosition - _lastMarkPosition).magnitude <= BlackBoardBehaviour.Instance.Grid.PanelSpacingZ))
+            {
+                return;
+            }
+
+            switch (markerType)
+            {
+                case MarkerType.POSITION:
+                    if (markObject != _markObject)
+                        _markerMovement = markObject.GetComponent<Movement.GridMovementBehaviour>();
+
+                    if (!_markerMovement)
+                        throw new System.Exception("Can't mark grid movement of object that doesn't have a GridMovementBehaviour attached. Object name is " + markObject.name);
+
+                    if (_markerMovement.Alignment == GridAlignment.LEFT)
+                        _mesh.material.color = _positionLHSColor;
+                    else if (_markerMovement.Alignment == GridAlignment.RIGHT)
+                        _mesh.material.color = _positionRHSColor;
+                    break;
+                case MarkerType.WARNING:
+                    _mesh.material.color = _warningColor;
+                    break;
+                case MarkerType.DANGER:
+                    _mesh.material.color = _dangerColor;
+                    break;
+            }
+        }
+
+        public void RemoveMark()
+        {
+            _mesh.material.color = _defaultColor;
+        }
+
         /// <summary>
         /// The position of this panel on the grid.
         /// </summary>
@@ -92,6 +147,12 @@ namespace Lodis.GridScripts
             {
                 _occupied = value;
             }
+        }
+
+        private void Update()
+        {
+            if (!_markObject)
+                RemoveMark();
         }
     }
 }
