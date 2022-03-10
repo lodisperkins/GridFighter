@@ -72,12 +72,15 @@ namespace Lodis.GridScripts
             {
                 case GridAlignment.LEFT:
                     _mesh.material = _leftSideMat;
+                    _defaultColor = _leftSideMat.color;
                     break;
                 case GridAlignment.RIGHT:
                     _mesh.material = _rightSideMat;
+                    _defaultColor = _rightSideMat.color;
                     break;
                 case GridAlignment.ANY:
                     _mesh.material = _neutralMat;
+                    _defaultColor = _neutralMat.color;
                     break;
             }
         }
