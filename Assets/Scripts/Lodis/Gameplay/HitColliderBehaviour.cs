@@ -20,6 +20,7 @@ namespace Lodis.Gameplay
         /// If enabled, draws the collider in the editor
         /// </summary>
         public bool DebuggingEnabled;
+        private bool _addedToActiveList;
 
         public HitColliderBehaviour(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
            : base()
@@ -35,6 +36,7 @@ namespace Lodis.Gameplay
 
         public  void Init(ColliderInfo info, GameObject owner)
         {
+
             ColliderInfo = info;
             base.ColliderInfo = ColliderInfo;
             Owner = owner;
@@ -353,6 +355,16 @@ namespace Lodis.Gameplay
         {
             //Update the amount of current frames
             CurrentTimeActive = Time.time - StartTime;
+
+            if (gameObject != null && !_addedToActiveList)
+            {
+                if (Owner.CompareTag("Player") && Owner.name.Contains("(P1)"))
+                    BlackBoardBehaviour.Instance.GetLHSActiveColliders().Add(this);
+                else if (Owner.CompareTag("Player") && Owner.name.Contains("(P2)"))
+                    BlackBoardBehaviour.Instance.GetRHSActiveColliders().Add(this);
+
+                _addedToActiveList = true;
+            }
             
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)

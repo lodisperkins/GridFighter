@@ -24,7 +24,6 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WF_ForwardShot_Data"));
             owner = newOwner;
-            _projectileCollider = new HitColliderBehaviour(1, 1, 0.2f, true, 1.5f, owner, true);
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;

@@ -1,4 +1,6 @@
 ﻿using Ilumisoft.VisualStateMachine;
+using Lodis.Gameplay;
+using Lodis.Movement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,10 +27,18 @@ namespace Lodis.AI
         private Vector2 _attackDirection;
         private StateMachine _stateMachine;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
+        private Movement.GridMovementBehaviour _movementBehaviour;
         private int _lastSlot;
         [SerializeField]
         private bool _enableRandomBehaviour;
         private bool _chargingAttack;
+        private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
+        private float _senseRadius = 6;
+
+        public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
+        public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
+        public StateMachine StateMachine { get => _stateMachine; }
+
 
         // Start is called before the first frame update
         void Start()
@@ -36,6 +46,21 @@ namespace Lodis.AI
             _moveset = GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
+            _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
+        }
+
+        public List<HitColliderBehaviour> GetAttacksInRange()
+        {
+            if (_attacksInRange.Count > 0)
+                _attacksInRange.RemoveAll(hitCollider =>
+                { 
+                    if ((object)hitCollider != null)
+                        return hitCollider == null;
+
+                    return true;
+                });
+
+            return _attacksInRange;
         }
 
         private IEnumerator ChargeRoutine(float chargeTime)
@@ -43,17 +68,25 @@ namespace Lodis.AI
             _chargingAttack = true;
             yield return new WaitForSeconds(chargeTime);
 
-            if ((_stateMachine.CurrentState == "Idle" || _stateMachine.CurrentState == "Attacking"))
+            if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking"))
             {
                 _moveset.UseBasicAbility(_attackType, new object[] { _attackStrength, _attackDirection });
             }
                 _chargingAttack = false;
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            HitColliderBehaviour collider = other.GetComponent<HitColliderBehaviour>();
+            if (collider)
+                GetAttacksInRange().Add(collider);
+
+        }
+
         public void Update()
         {
             //Only attack if the dummy is grounded and delay timer is up
-            if ((_stateMachine.CurrentState == "Idle" || _stateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.RecoveringFromFall && !_chargingAttack)
+            if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.RecoveringFromFall && !_chargingAttack)
             {
                 //Clamps z direction in case its abs value becomes larger than one at runtime
                 _attackDirection.Normalize();
@@ -72,7 +105,7 @@ namespace Lodis.AI
                     }
                 }
 
-                if (_attackType == Gameplay.AbilityType.NONE || _stateMachine.CurrentState == "Stunned")
+                if (_attackType == Gameplay.AbilityType.NONE || StateMachine.CurrentState == "Stunned")
                     return;
 
                 //Attack based on the ability type selected

@@ -1,6 +1,4 @@
 ﻿using Lodis.ScriptableObjects;
-using Lodis.Utility;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +14,8 @@ namespace Lodis.Gameplay
         public GameObject Player1;
         public GameObject Player2;
         private List<GameObject> _entitiesInGame = new List<GameObject>();
+        private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
+        private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();
         private static BlackBoardBehaviour _instance;
 
         /// <summary>
@@ -46,6 +46,33 @@ namespace Lodis.Gameplay
         {
             _entitiesInGame.RemoveAll(entity => entity == null);
             return _entitiesInGame;
+        }
+
+        public List<HitColliderBehaviour> GetLHSActiveColliders()
+        {
+            if (_lhsActiveColliders.Count > 0)
+                _lhsActiveColliders.RemoveAll(hitCollider =>
+                {
+                    if ((object)hitCollider != null)
+                        return hitCollider == null;
+
+                    return true;
+                });
+
+            return _lhsActiveColliders;
+        }
+        public List<HitColliderBehaviour> GetRHSActiveColliders()
+        {
+            if (_rhsActiveColliders.Count > 0)
+                _rhsActiveColliders.RemoveAll(hitCollider =>
+                {
+                    if ((object)hitCollider != null)
+                        return hitCollider == null;
+
+                    return true;
+                });
+
+            return _rhsActiveColliders;
         }
 
         /// <summary>
