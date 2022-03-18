@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BBUnity;
 
 namespace Lodis.AI
 {
@@ -34,6 +35,7 @@ namespace Lodis.AI
         private bool _chargingAttack;
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
         private float _senseRadius = 6;
+        private BehaviorExecutor _executor;
 
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
         public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
@@ -47,6 +49,7 @@ namespace Lodis.AI
             _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
+            _executor = GetComponent<BehaviorExecutor>();
         }
 
         public List<HitColliderBehaviour> GetAttacksInRange()

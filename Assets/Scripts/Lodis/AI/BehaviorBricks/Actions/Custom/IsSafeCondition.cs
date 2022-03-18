@@ -12,6 +12,8 @@ using Lodis.Gameplay;
 public class IsSafeCondition : GOCondition
 {
     private GameObject _opponent = null;
+    [InParam("Owner")]
+    private AttackDummyBehaviour _dummy;
 
     private List<HitColliderBehaviour> FindAttacksInRange(AttackDummyBehaviour dummy)
     {
@@ -35,18 +37,16 @@ public class IsSafeCondition : GOCondition
     /// <returns></returns>
     public override bool Check()
     {
-        AttackDummyBehaviour dummy = gameObject.GetComponent<AttackDummyBehaviour>();
+        _dummy.GetAttacksInRange().AddRange(FindAttacksInRange(_dummy));
 
-        dummy.GetAttacksInRange().AddRange(FindAttacksInRange(dummy));
-
-        if (dummy.GetAttacksInRange().Count > 0)
+        if (_dummy.GetAttacksInRange().Count > 0)
             return false;
 
-        if (dummy.StateMachine.CurrentState == "Tumbling" || dummy.StateMachine.CurrentState == "Flinching")
+        if (_dummy.StateMachine.CurrentState == "Tumbling" || _dummy.StateMachine.CurrentState == "Flinching")
             return false;
 
 
-        if (_opponent.GetComponent<GridMovementBehaviour>().Position.y == dummy.MovementBehaviour.Position.y && _opponent.GetComponent<CharacterStateMachineBehaviour>().StateMachine.CurrentState == "Attack")
+        if (_opponent.GetComponent<GridMovementBehaviour>().Position.y == _dummy.MovementBehaviour.Position.y && _opponent.GetComponent<CharacterStateMachineBehaviour>().StateMachine.CurrentState == "Attack")
             return false;
 
         return true;

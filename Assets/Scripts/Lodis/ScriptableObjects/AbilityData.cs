@@ -26,6 +26,10 @@ namespace Lodis.ScriptableObjects
         public float value;
     }
     
+    public struct AIInformation
+    {
+        public Vector3 LastHitDisplacement;
+    }
 
     [CreateAssetMenu(menuName = "AbilityData/Default")]
     public class AbilityData : ScriptableObject
