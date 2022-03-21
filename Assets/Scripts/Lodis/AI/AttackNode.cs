@@ -39,16 +39,22 @@ namespace Lodis.AI
 
             _moveset = (MovesetBehaviour)args[0];
             bool behindBarrier = (bool)args[1];
+            float opponentHealth = (float)args[2];
 
             if (behindBarrier) weight += BarrierEffectiveness;
+            if (opponentHealth > 150) weight += KnockBackDealt;
 
             return weight;
         }
 
         public override float Compare(TreeNode node)
         {
+            AttackNode attackNode = (AttackNode)node;
+
+            float directionAccuracy = Vector3.Dot(attackNode.TargetDisplacement.normalized, TargetDisplacement.normalized);
+
             //continue here
-            hrow new System.NotImplementedException();
+            return directionAccuracy;
         }
     }
 }

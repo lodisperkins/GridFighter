@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Newtonsoft.Json.Serialization;
 using System.IO;
-using Newtonsoft.Json;
 
 namespace Lodis.AI
 {
@@ -21,7 +19,7 @@ namespace Lodis.AI
         public DecisionTree(float compareThreshold = 0.75f)
         {
             _compareThreshold = compareThreshold;
-            if (!Load()) _nodeCache = new List<TreeNode>();
+            _nodeCache = new List<TreeNode>();
         }
 
         /// <summary>
@@ -33,7 +31,6 @@ namespace Lodis.AI
         public TreeNode GetDecision(TreeNode similarNode, params object[] args)
         {
             TreeNode decision = _root;
-
             //Loop until the decision is assigned or a dead end is reached
             while (decision != null)
             {
@@ -101,7 +98,7 @@ namespace Lodis.AI
         public virtual void Save()
         {
             StreamWriter writer = new StreamWriter("Decisions/DecisionData.txt");
-            string json = JsonConvert.SerializeObject(_nodeCache);
+            string json = JsonUtility.ToJson(_nodeCache);
             writer.Write(json);
             writer.Close();
 
@@ -114,8 +111,11 @@ namespace Lodis.AI
                 return false;
 
             StreamReader reader = new StreamReader("Decisions/DecisionData.txt");
-            _nodeCache = JsonConvert.DeserializeObject<List<TreeNode>>(reader.ReadToEnd());
+            _nodeCache = JsonUtility.FromJson<List<TreeNode>>(reader.ReadToEnd());
             reader.Close();
+
+            for (int i = 0; i < _nodeCache.Count; i++)
+                AddDecision(_nodeCache[i]);
 
             OnLoad?.Invoke();
 

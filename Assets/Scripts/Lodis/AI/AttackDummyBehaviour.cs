@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using BBUnity;
+using Lodis.GridScripts;
 
 namespace Lodis.AI
 {
@@ -36,10 +37,16 @@ namespace Lodis.AI
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
         private float _senseRadius = 6;
         private BehaviorExecutor _executor;
-
+        private Coroutine _moveRoutine;
+        private PanelBehaviour _moveTarget;
+        private bool _needPath;
+        private List<PanelBehaviour> _currentPath;
+        private int _currentPathIndex;
+        private GameObject _opponent;
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
         public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
         public StateMachine StateMachine { get => _stateMachine; }
+        public GameObject Opponent { get => _opponent; }
 
 
         // Start is called before the first frame update
@@ -49,7 +56,14 @@ namespace Lodis.AI
             _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
+            _movementBehaviour.AddOnMoveEndAction(MoveToNextPanel);
             _executor = GetComponent<BehaviorExecutor>();
+
+            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+                _opponent = BlackBoardBehaviour.Instance.Player2;
+            else
+                _opponent = BlackBoardBehaviour.Instance.Player1;
+
         }
 
         public List<HitColliderBehaviour> GetAttacksInRange()
@@ -78,12 +92,37 @@ namespace Lodis.AI
                 _chargingAttack = false;
         }
 
+        private IEnumerator MoveRoutine(List<PanelBehaviour> path)
+        {
+            for (int i = 0; i < path.Count; i++)
+            {
+                _movementBehaviour.MoveToPanel(path[i], false, _movementBehaviour.Alignment);
+                yield return new WaitUntil(() => !_movementBehaviour.IsMoving);
+            }
+        }
+
+        public void MoveToLocation(PanelBehaviour panel)
+        {
+            if (_moveTarget == panel) return;
+
+            _moveTarget = panel;
+            _needPath = true;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             HitColliderBehaviour collider = other.GetComponent<HitColliderBehaviour>();
             if (collider)
                 GetAttacksInRange().Add(collider);
 
+        }
+
+        public void MoveToNextPanel()
+        {
+            _currentPathIndex++;
+
+            if (_currentPathIndex < _currentPath.Count)
+                _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
         }
 
         public void Update()
@@ -126,6 +165,19 @@ namespace Lodis.AI
 
                 _timeOfLastAttack = Time.time;
             }
+
+            PanelBehaviour start = _movementBehaviour.CurrentPanel;
+
+            if (_needPath && StateMachine.CurrentState == "Idle")
+            { 
+                _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment);
+                _needPath = false;
+                _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
+            }
+
+            if (StateMachine.CurrentState != "Idle" && StateMachine.CurrentState != "Moving")
+                _needPath = true;
+
         }
     }
 }
