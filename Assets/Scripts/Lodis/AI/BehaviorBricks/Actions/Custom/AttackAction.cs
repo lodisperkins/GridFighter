@@ -22,6 +22,10 @@ public class AttackAction : GOAction
     public override void OnStart()
     {
         base.OnStart();
+
+        if (_dummy.StateMachine.CurrentState != "Idle" && _dummy.StateMachine.CurrentState != "Attack")
+            return;
+
         _opponentMoveBehaviour = _dummy.Opponent.GetComponent<GridMovementBehaviour>();
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.transform.position;
         float targetHealth = _dummy.Opponent.GetComponent<HealthBehaviour>().Health;
@@ -45,7 +49,7 @@ public class AttackAction : GOAction
             _dummy.Moveset.UseSpecialAbility(0, _decision.AttackStrength, _decision.AttackDirection);
         else if (_dummy.Moveset.GetAbilityNamesInCurrentSlots()[1] == ability.abilityData.name)
             _dummy.Moveset.UseSpecialAbility(1, _decision.AttackStrength, _decision.AttackDirection);
-        else
+        else if (ability.abilityData.AbilityType != AbilityType.SPECIAL)
             _dummy.Moveset.UseBasicAbility(_decision.AbilityName, _decision.AttackStrength, _decision.AttackDirection);
 
         ability.OnHit += IncreaseDecisionScore;
@@ -64,22 +68,26 @@ public class AttackAction : GOAction
         if (((int)attackType) > 3 && ((int)attackType) < 8)
         {
             ability = _dummy.Moveset.GetAbilityByType(attackType);
-            ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.name, attackStrength, args);
-            _dummy.StartCoroutine(_dummy.ChargeRoutine((attackStrength - 1) / 0.1f));
+            ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.abilityName, attackStrength, args);
+            _dummy.StartCoroutine(_dummy.ChargeRoutine((attackStrength - 1) / 0.1f, attackType));
             return;
         }
 
         if (attackType == AbilityType.SPECIAL)
         {
             int slot = Random.Range(0, 2);
-            ability = _dummy.Moveset.GetAbilityByName(_dummy.Moveset.GetAbilityNamesInCurrentSlots()[slot]);
-            ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.name, attackStrength, args);
+            ability = _dummy.Moveset.SpecialAbilitySlots[slot];
+
+            if (ability == null)
+                return;
+
+            ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.abilityName, attackStrength, args);
             _dummy.Moveset.UseSpecialAbility(slot, attackStrength, attackDirection);
         }
         else
         {
             ability = _dummy.Moveset.GetAbilityByType(attackType);
-            ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.name, attackStrength, args);
+            ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.abilityName, attackStrength, args);
             ability = _dummy.Moveset.UseBasicAbility(attackType, new object[] { attackStrength, attackDirection });
         }
     }

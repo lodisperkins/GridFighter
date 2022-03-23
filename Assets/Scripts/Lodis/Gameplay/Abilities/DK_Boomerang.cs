@@ -36,8 +36,6 @@ namespace Lodis.Gameplay
             //Create a new collider that will handle reversing velocity
             _reboundCollider = GetColliderBehaviour(0);
 
-            //Initialize rebound collider
-            _reboundCollider.Init(false, 0, owner, false, true);
             //Redirect projectile on hit
             _reboundCollider.OnHit += TryRedirectProjectile;
         }
@@ -51,7 +49,7 @@ namespace Lodis.Gameplay
             GameObject other = (GameObject)args[0];
 
             //If the projectile rebounded too many times...
-            if (_reboundCount == abilityData.GetCustomStatValue("MaxRebounds"))
+            if (_reboundCount >= abilityData.GetCustomStatValue("MaxRebounds"))
                 //...destroy it
                 MonoBehaviour.Destroy(ActiveProjectiles[0]);
 

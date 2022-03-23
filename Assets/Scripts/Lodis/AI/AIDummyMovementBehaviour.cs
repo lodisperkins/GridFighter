@@ -1,4 +1,5 @@
 ﻿using Ilumisoft.VisualStateMachine;
+using Lodis.Gameplay;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using System.Collections;
@@ -15,6 +16,7 @@ namespace Lodis.AI
         private List<PanelBehaviour> _currentPath;
         private int _currentPathIndex;
         private Movement.GridMovementBehaviour _movementBehaviour;
+        private MovesetBehaviour _moveset;
         private StateMachine _stateMachine;
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
         public StateMachine StateMachine { get => _stateMachine; }
@@ -26,6 +28,7 @@ namespace Lodis.AI
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _movementBehaviour.AddOnMoveEndAction(MoveToNextPanel);
             _currentPath = new List<PanelBehaviour>();
+            _moveset = GetComponent<MovesetBehaviour>();
         }
 
         private IEnumerator MoveRoutine(List<PanelBehaviour> path)
@@ -45,15 +48,23 @@ namespace Lodis.AI
             _needPath = true;
         }
 
+        public void MoveToLocation(Vector2 panelPosition)
+        {
+            if (_moveTarget.Position == panelPosition) return;
+
+            BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _moveTarget, false, _movementBehaviour.Alignment);
+            _needPath = true;
+        }
+
         public void MoveToNextPanel()
         {
             _currentPathIndex++;
 
-            if (_currentPathIndex < _currentPath.Count)
-            {
-                _currentPath.RemoveAt(0);
-                _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
-            }
+            if (_currentPathIndex >= _currentPath.Count || _currentPath.Count < 0)
+                return;
+
+            _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
+            _currentPath.RemoveAt(0);
         }
 
         // Update is called once per frame
@@ -61,10 +72,11 @@ namespace Lodis.AI
         {
             PanelBehaviour start = _movementBehaviour.CurrentPanel;
 
-            if (_needPath && StateMachine.CurrentState == "Idle")
+            if (_needPath && (StateMachine.CurrentState == "Idle" || (StateMachine.CurrentState == "Attack" && _moveset.LastAbilityInUse.abilityData.CanCancelOnMove)))
             {
                 _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment);
                 _needPath = false;
+                _currentPathIndex = 0;
 
                 if (_currentPath.Count > 0)
                     _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);

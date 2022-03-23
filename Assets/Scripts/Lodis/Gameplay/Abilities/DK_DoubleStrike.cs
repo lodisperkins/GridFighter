@@ -56,7 +56,7 @@ namespace Lodis.Gameplay
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
 
             //Spawn a game object with the collider attached
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(owner.transform, new Vector3(1, 0.5f, 0.2f), _fistCollider);
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, new Vector3(1, 0.5f, 0.2f), _fistCollider);
             hitScript.DebuggingEnabled = true;
             Rigidbody rigid = hitScript.gameObject.AddComponent<Rigidbody>();
             rigid.useGravity = false;
@@ -97,6 +97,9 @@ namespace Lodis.Gameplay
 
             //Despawn particles and hit box
             MonoBehaviour.Destroy(_visualPrefabInstance);
+
+            if (_fistCollider != null)
+                MonoBehaviour.Destroy(_fistCollider.gameObject);
 
             if (!_secondStrikeActivated)
             {

@@ -90,14 +90,14 @@ namespace Lodis.AI
             return _attacksInRange;
         }
 
-        public IEnumerator ChargeRoutine(float chargeTime)
+        public IEnumerator ChargeRoutine(float chargeTime, AbilityType type)
         {
             _chargingAttack = true;
             yield return new WaitForSeconds(chargeTime);
 
             if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking"))
             {
-                Moveset.UseBasicAbility(_attackType, new object[] { _attackStrength, _attackDirection });
+                Moveset.UseBasicAbility(type, new object[] { _attackStrength, _attackDirection });
             }
                 _chargingAttack = false;
         }
@@ -132,7 +132,7 @@ namespace Lodis.AI
 
                     if (((int)_attackType) > 3 && ((int)_attackType) < 8)
                     {
-                        StartCoroutine(ChargeRoutine((_attackStrength - 1) / 0.1f));
+                        StartCoroutine(ChargeRoutine((_attackStrength - 1) / 0.1f, _attackType));
                         return;
                     }
                 }

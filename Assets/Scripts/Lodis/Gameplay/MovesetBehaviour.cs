@@ -145,6 +145,7 @@ namespace Lodis.Gameplay
 
         public Ability LastAbilityInUse { get => _lastAbilityInUse; }
         public UnityAction OnUseAbility { get => _onUseAbility; set => _onUseAbility = value; }
+        public Ability[] SpecialAbilitySlots { get => _specialAbilitySlots; }
 
         /// <summary>
         /// Gets the ability from the moveset deck based on the type passed in.

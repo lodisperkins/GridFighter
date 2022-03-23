@@ -63,7 +63,7 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("If true, the object will instantly move to its current position when the start function is called.")]
         private bool _moveOnStart = true;
-        private Coroutine _MoveRoutine;
+        private Coroutine _moveRoutine;
         [SerializeField]
         [Tooltip("If true, the object will cast a ray to check if it is currently behind a barrier.")]
         private bool _checkIfBehindBarrier;
@@ -475,7 +475,7 @@ namespace Lodis.Movement
             }
             else
             {
-                _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
+                _moveRoutine = StartCoroutine(LerpPosition(newPosition));
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -537,7 +537,7 @@ namespace Lodis.Movement
             }
             else
             {
-                _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
+                _moveRoutine = StartCoroutine(LerpPosition(newPosition));
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -598,7 +598,7 @@ namespace Lodis.Movement
             }
             else
             {
-                _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
+                _moveRoutine = StartCoroutine(LerpPosition(newPosition));
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -640,7 +640,7 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
 
-            _MoveRoutine = StartCoroutine(LerpPosition(newPosition));
+            _moveRoutine = StartCoroutine(LerpPosition(newPosition));
 
             MoveDirection = _currentPanel.Position - _position;
 
@@ -702,7 +702,7 @@ namespace Lodis.Movement
         /// </summary>
         public void CancelMovement()
         {
-            StopCoroutine(_MoveRoutine);
+            StopCoroutine(_moveRoutine);
             _currentPanel.Occupied = false;
             _currentPanel = PreviousPanel;
             _currentPanel.Occupied = !_canBeWalkedThrough;

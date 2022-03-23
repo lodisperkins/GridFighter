@@ -20,7 +20,11 @@ namespace Lodis.AI
                 File.Create("Decisions/AttackDecisionData.txt");
 
             StreamWriter writer = new StreamWriter("Decisions/AttackDecisionData.txt");
-            string json = JsonConvert.SerializeObject(_nodeCache);
+            string json = _nodeCache.Count.ToString() + "\n";
+
+            for (int i = 0; i < _nodeCache.Count; i++)
+                json += JsonConvert.SerializeObject((AttackNode)_nodeCache[i]) + "\n";
+
             writer.Write(json);
             writer.Close();
 
@@ -33,8 +37,15 @@ namespace Lodis.AI
                 return false;
 
             StreamReader reader = new StreamReader("Decisions/AttackDecisionData.txt");
-            _nodeCache = JsonConvert.DeserializeObject<List<TreeNode>>(reader.ReadToEnd());
+            int count = JsonConvert.DeserializeObject<int>(reader.ReadLine());
+
+            for (int i = 0; i < count; i++)
+            {
+                _nodeCache.Add(JsonConvert.DeserializeObject<AttackNode>(reader.ReadLine()));
+            }
+
             reader.Close();
+            int loadCount = _nodeCache.Count;
 
             if (_nodeCache == null)
             {
@@ -42,7 +53,7 @@ namespace Lodis.AI
                 return false;
             }
 
-            for (int i = 0; i < _nodeCache.Count; i++)
+            for (int i = 0; i < loadCount; i++)
                 AddDecision(_nodeCache[i]);
 
             OnLoad?.Invoke();

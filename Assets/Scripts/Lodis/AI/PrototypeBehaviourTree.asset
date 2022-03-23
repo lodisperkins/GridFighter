@@ -95,58 +95,58 @@ MonoBehaviour:
     <DecoratorGuard id=\"49\" />\r\n          <ConditionEvalNode id=\"50\" />\r\n         
     <ActionNode id=\"51\" />\r\n        </nodes>\r\n      </_nodes>\r\n    </BehaviorTree>\r\n   
     <SelectorNode id=\"35\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"565.6111 134.9444\" name=\"Selector\" description=\"Executes all its
-    children until one of them is successful\" cardinality=\"-1\" hasParent=\"False\">\r\n         
+    position=\"425.1895 -38.72194\" name=\"Selector\" description=\"Executes all
+    its children until one of them is successful\" cardinality=\"-1\" hasParent=\"False\">\r\n         
     <BehaviorTree id=\"35\" />\r\n        </data>\r\n      </_data>\r\n    </SelectorNode>\r\n   
     <DecoratorGuard id=\"49\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"155.5554 276.6665\" name=\"Guard\" description=\"Guard\"
+    selected=\"False\" position=\"15.134 103\" name=\"Guard\" description=\"Guard\"
     cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree id=\"35\" />\r\n         
     <DecoratorGuard id=\"49\" />\r\n          <SelectorNode id=\"35\" />\r\n       
     </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n    <DecoratorGuard id=\"36\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"392.2779
-    279.7223\" name=\"Guard\" description=\"Guard\" cardinality=\"1\" hasParent=\"True\">\r\n         
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"251.8562
+    106.0558\" name=\"Guard\" description=\"Guard\" cardinality=\"1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"35\" />\r\n          <DecoratorGuard id=\"36\" />\r\n         
     <SelectorNode id=\"35\" />\r\n        </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n   
     <DecoratorGuard id=\"42\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"538.1111 285.4445\" name=\"Guard\" description=\"Guard\"
+    selected=\"False\" position=\"397.6895 111.778\" name=\"Guard\" description=\"Guard\"
     cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree id=\"35\" />\r\n         
     <DecoratorGuard id=\"42\" />\r\n          <SelectorNode id=\"35\" />\r\n       
     </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n    <DecoratorGuard id=\"45\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"744.1111
-    284.4445\" name=\"Guard\" description=\"Guard\" cardinality=\"1\" hasParent=\"True\">\r\n         
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"603.6909
+    110.778\" name=\"Guard\" description=\"Guard\" cardinality=\"1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"35\" />\r\n          <DecoratorGuard id=\"45\" />\r\n         
     <SelectorNode id=\"35\" />\r\n        </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n   
     <ConditionEvalNode id=\"50\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"155.5554 276.6665\" name=\"CustomConditions/OutOfRange\"
+    selected=\"True\" position=\"15.134 103\" name=\"CustomConditions/OutOfRange\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"50\" />\r\n        </data>\r\n     
     </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"51\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"True\" position=\"155.5554 276.6665\" name=\"CustomAction/MoveTowardsEnemy\"
+    <data breakpoint=\"2\" selected=\"False\" position=\"15.134 103\" name=\"CustomAction/MoveTowardsEnemy\"
     description=\"\" cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ActionNode id=\"51\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"37\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"392.2779 279.7223\" name=\"CustomConditions/IsSafe\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"251.8562 106.0558\" name=\"CustomConditions/IsSafe\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"37\" />\r\n        </data>\r\n     
     </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"38\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"392.2779 279.7223\" name=\"CustomAction/Attack\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"251.8562 106.0558\" name=\"CustomAction/Attack\"
     description=\"\" cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ActionNode id=\"38\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"43\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"538.1111 285.4445\" name=\"Basic/CheckBool\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"397.6895 111.778\" name=\"Basic/CheckBool\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"43\" />\r\n        </data>\r\n     
     </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"44\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"538.1111 285.4445\" name=\"SuccessAction\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"397.6895 111.778\" name=\"SuccessAction\"
     description=\"Action that always successes. It executes in one cycle.\" cardinality=\"0\"
     hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n          <ActionNode
     id=\"44\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n   
     <ConditionEvalNode id=\"46\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"744.1111 284.4445\" name=\"Basic/CheckBool\" description=\"Eval\"
+    selected=\"False\" position=\"603.6909 110.778\" name=\"Basic/CheckBool\" description=\"Eval\"
     cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n         
     <ConditionEvalNode id=\"46\" />\r\n        </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n   
     <ActionNode id=\"47\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"744.1111 284.4445\" name=\"SuccessAction\" description=\"Action that
+    position=\"603.6909 110.778\" name=\"SuccessAction\" description=\"Action that
     always successes. It executes in one cycle.\" cardinality=\"0\" hasParent=\"False\">\r\n         
     <BehaviorTree id=\"0\" />\r\n          <ActionNode id=\"47\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n  </editorInfo>\r\n  <runtimeInfo>\r\n    <BehaviorTree
@@ -155,6 +155,6 @@ MonoBehaviour:
     <BehaviorTree id=\"35\" _removeIfClosed=\"False\">\r\n      <_rootList />\r\n     
     <_nodes>\r\n        <nodes />\r\n      </_nodes>\r\n    </BehaviorTree>\r\n 
     </editorInfo>\r\n</BehaviorBricks>"
-  zoom: 0.9
+  zoom: 1
   subslist: []
   _guid: 9aaa7bb72180ef0479a7bb47efa52cb6

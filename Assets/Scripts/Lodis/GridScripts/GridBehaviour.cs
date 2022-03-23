@@ -141,6 +141,7 @@ namespace Lodis.GridScripts
         /// The height of the grid in relation to the world space
         /// </summary>
         public float Height { get => _height; }
+        public int P1MaxColumns { get => _p1MaxColumns; }
 
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.

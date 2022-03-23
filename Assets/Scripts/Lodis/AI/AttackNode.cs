@@ -43,7 +43,7 @@ namespace Lodis.AI
             float opponentHealth = (float)args[2];
 
             if (behindBarrier) weight += BarrierEffectiveness;
-            if (opponentHealth > 150) weight += KnockBackDealt;
+            weight += KnockBackDealt;
 
             return weight;
         }

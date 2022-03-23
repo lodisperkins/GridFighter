@@ -71,7 +71,7 @@ namespace Lodis.AI
         /// <param name="decision">The new decision node to add</param>
         public TreeNode AddDecision(TreeNode decision)
         {
-            if (_nodeCache.Count >= 1000) return null;
+            if (_nodeCache.Count >= 500) return null;
 
             if (_root == null)
             {
@@ -86,18 +86,24 @@ namespace Lodis.AI
             //Loop until the appropriate empty spot is found
             while (current != null)
             {
-                if (decision.Compare(current) >= 0.9f)
+                if (decision.Compare(current) >= 0.6f)
+                {
+                    decision.Left = current.Left;
+                    decision.Right = current.Right;
+                    current = decision;
+                    return current;
+                }
+
+                if (decision.Compare(current) >= 0.8f)
                 {
                     parent = current;
                     current = current.Right;
                 }
-                else if (decision.Compare(current) < 0.9f)
+                else if (decision.Compare(current) < 0.8f)
                 {
                     parent = current;
                     current = current.Left;
                 }
-                else if (decision.Compare(current) >= _compareThreshold)
-                    return current;
             }
 
             //Make the decision a child of the parent based on how similar they are

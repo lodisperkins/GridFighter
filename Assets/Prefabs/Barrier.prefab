@@ -291,6 +291,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &1519654295394309742
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91a20db3ff22c8e448c54512fbe34232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 10
+  _health: 50
   _destroyOnDeath: 1
   _isAlive: 1
   _isInvincible: 0
