@@ -10,12 +10,6 @@ namespace Lodis.Gameplay
 
     public class HitColliderBehaviour : ColliderBehaviour
     {
-
-        /// <summary>
-        /// Collision event called when this collider hits another. 
-        /// First argument is game object it collided with.
-        /// </summary>
-        public CollisionEvent onHit;
         /// <summary>
         /// If enabled, draws the collider in the editor
         /// </summary>
@@ -38,7 +32,6 @@ namespace Lodis.Gameplay
         {
 
             ColliderInfo = info;
-            base.ColliderInfo = ColliderInfo;
             Owner = owner;
         }
 
@@ -61,7 +54,7 @@ namespace Lodis.Gameplay
         public static void Copy(HitColliderBehaviour collider1, HitColliderBehaviour collider2)
         {
             collider2.ColliderInfo = collider1.ColliderInfo;
-            collider2.onHit = collider1.onHit;
+            collider2.OnHit = collider1.OnHit;
             collider2.Owner = collider1.Owner;
         }
 
@@ -162,7 +155,7 @@ namespace Lodis.Gameplay
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
 
-            onHit?.Invoke(other.gameObject, otherCollider);
+            OnHit?.Invoke(other.gameObject, otherCollider);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
@@ -247,7 +240,7 @@ namespace Lodis.Gameplay
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
 
-            onHit?.Invoke(other.gameObject);
+            OnHit?.Invoke(other.gameObject);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
@@ -331,7 +324,7 @@ namespace Lodis.Gameplay
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
 
-            onHit?.Invoke(collision.gameObject);
+            OnHit?.Invoke(collision.gameObject);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);

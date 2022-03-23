@@ -29,7 +29,6 @@ namespace Lodis.AI
         private Vector2 _attackDirection;
         private StateMachine _stateMachine;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
-        private Movement.GridMovementBehaviour _movementBehaviour;
         private int _lastSlot;
         [SerializeField]
         private bool _enableRandomBehaviour;
@@ -43,23 +42,34 @@ namespace Lodis.AI
         private List<PanelBehaviour> _currentPath;
         private int _currentPathIndex;
         private GameObject _opponent;
-        public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
+        private AIDummyMovementBehaviour _movementBehaviour;
+        private AttackDecisionTree _attackDecisions;
         public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
+        public MovesetBehaviour Moveset { get => _moveset; set => _moveset = value; }
+        public AIDummyMovementBehaviour AIMovement { get => _movementBehaviour; set => _movementBehaviour = value; }
+        public AttackDecisionTree AttackDecisions { get => _attackDecisions; }
 
+        public Vector2 MovePosition;
+        public bool EnableBehaviourTree;
+
+        private void Awake()
+        {
+            _attackDecisions = new AttackDecisionTree();
+            _attackDecisions.Load();
+        }
 
         // Start is called before the first frame update
         void Start()
         {
-            _moveset = GetComponent<Gameplay.MovesetBehaviour>();
+            Moveset = GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
-            _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
-            _movementBehaviour.AddOnMoveEndAction(MoveToNextPanel);
             _executor = GetComponent<BehaviorExecutor>();
+            AIMovement = GetComponent<AIDummyMovementBehaviour>();
 
-            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+            if (GetComponent<GridMovementBehaviour>().Alignment == GridAlignment.LEFT)
                 _opponent = BlackBoardBehaviour.Instance.Player2;
             else
                 _opponent = BlackBoardBehaviour.Instance.Player1;
@@ -80,33 +90,16 @@ namespace Lodis.AI
             return _attacksInRange;
         }
 
-        private IEnumerator ChargeRoutine(float chargeTime)
+        public IEnumerator ChargeRoutine(float chargeTime)
         {
             _chargingAttack = true;
             yield return new WaitForSeconds(chargeTime);
 
             if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking"))
             {
-                _moveset.UseBasicAbility(_attackType, new object[] { _attackStrength, _attackDirection });
+                Moveset.UseBasicAbility(_attackType, new object[] { _attackStrength, _attackDirection });
             }
                 _chargingAttack = false;
-        }
-
-        private IEnumerator MoveRoutine(List<PanelBehaviour> path)
-        {
-            for (int i = 0; i < path.Count; i++)
-            {
-                _movementBehaviour.MoveToPanel(path[i], false, _movementBehaviour.Alignment);
-                yield return new WaitUntil(() => !_movementBehaviour.IsMoving);
-            }
-        }
-
-        public void MoveToLocation(PanelBehaviour panel)
-        {
-            if (_moveTarget == panel) return;
-
-            _moveTarget = panel;
-            _needPath = true;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -117,16 +110,13 @@ namespace Lodis.AI
 
         }
 
-        public void MoveToNextPanel()
-        {
-            _currentPathIndex++;
-
-            if (_currentPathIndex < _currentPath.Count)
-                _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
-        }
 
         public void Update()
         {
+            _executor.enabled = EnableBehaviourTree;
+
+            if (_executor.enabled) return;
+
             //Only attack if the dummy is grounded and delay timer is up
             if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.RecoveringFromFall && !_chargingAttack)
             {
@@ -147,7 +137,7 @@ namespace Lodis.AI
                     }
                 }
 
-                if (_attackType == Gameplay.AbilityType.NONE || StateMachine.CurrentState == "Stunned")
+                if (StateMachine.CurrentState == "Stunned")
                     return;
 
                 //Attack based on the ability type selected
@@ -158,26 +148,20 @@ namespace Lodis.AI
                     else
                         _lastSlot = 0;
 
-                    _moveset.UseSpecialAbility(_lastSlot, new object[] { _attackStrength, _attackDirection });
+                    Moveset.UseSpecialAbility(_lastSlot, new object[] { _attackStrength, _attackDirection });
                 }
                 else
-                    _moveset.UseBasicAbility(_attackType, new object[]{_attackStrength, _attackDirection});
+                    Moveset.UseBasicAbility(_attackType, new object[]{_attackStrength, _attackDirection});
 
                 _timeOfLastAttack = Time.time;
             }
 
-            PanelBehaviour start = _movementBehaviour.CurrentPanel;
+            
+        }
 
-            if (_needPath && StateMachine.CurrentState == "Idle")
-            { 
-                _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment);
-                _needPath = false;
-                _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
-            }
-
-            if (StateMachine.CurrentState != "Idle" && StateMachine.CurrentState != "Moving")
-                _needPath = true;
-
+        private void OnApplicationQuit()
+        {
+            _attackDecisions.Save();
         }
     }
 }

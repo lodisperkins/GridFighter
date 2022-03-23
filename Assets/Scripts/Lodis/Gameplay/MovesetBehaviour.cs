@@ -22,8 +22,7 @@ namespace Lodis.Gameplay
         STRONGSIDE,
         STRONGFORWARD,
         STRONGBACKWARD,
-        SPECIAL,
-        NONE
+        SPECIAL
     }
 
     public class MovesetBehaviour : MonoBehaviour
@@ -154,7 +153,20 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public Ability GetAbilityByType(AbilityType abilityType)
         {
-            return _normalDeck[(int)abilityType];
+            return _normalDeck.GetAbilityByType(abilityType);
+        }
+        
+        /// <summary>
+        /// Gets the ability from the moveset deck based on the type passed in.
+        /// </summary>
+        /// <param name="abilityType">The ability type to search for.</param>
+        /// <returns></returns>
+        public Ability GetAbilityByName(string name)
+        {
+            if (_normalDeck.GetAbilityByName(name) == null)
+                return _specialDeck.GetAbilityByName(name);
+
+            return _normalDeck.GetAbilityByName(name);
         }
 
         /// <summary>
@@ -173,6 +185,35 @@ namespace Lodis.Gameplay
 
             //Find the ability in the deck abd use it
             Ability currentAbility = _normalDeck.GetAbilityByType(abilityType);
+
+            if (currentAbility == null)
+                return null;
+
+            currentAbility.UseAbility(args);
+            _lastAbilityInUse = currentAbility;
+
+            OnUseAbility?.Invoke();
+
+            //Return new ability
+            return _lastAbilityInUse;
+        }
+        
+        /// <summary>
+        /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
+        /// the ability to use will be activated if the current ability in use can be canceled.
+        /// </summary>
+        /// <param name="abilityType">The type of basic ability to use</param>
+        /// <param name="args">Additional arguments to be given to the basic ability</param>
+        /// <returns>The ability used.</returns>
+        public Ability UseBasicAbility(string abilityName, params object[] args)
+        {
+            //Return if there is an ability in use that can't be canceled
+            if (_lastAbilityInUse != null)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel())
+                    return _lastAbilityInUse;
+
+            //Find the ability in the deck abd use it
+            Ability currentAbility = _normalDeck.GetAbilityByName(abilityName);
 
             if (currentAbility == null)
                 return null;

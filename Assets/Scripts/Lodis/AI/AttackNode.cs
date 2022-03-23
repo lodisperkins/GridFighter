@@ -5,6 +5,7 @@ using Lodis.Gameplay;
 
 namespace Lodis.AI
 {
+    [System.Serializable]
     public class AttackNode : TreeNode
     {
         private MovesetBehaviour _moveset;
@@ -15,6 +16,7 @@ namespace Lodis.AI
         public string AbilityName;
         public float AttackStrength;
         public float KnockBackDealt;
+        public Vector2 AttackDirection;
 
         public AttackNode(Vector3 targetDisplacement,
                           float targetHealth,
@@ -37,7 +39,6 @@ namespace Lodis.AI
         {
             float weight = base.GetTotalWeight(root, args);
 
-            _moveset = (MovesetBehaviour)args[0];
             bool behindBarrier = (bool)args[1];
             float opponentHealth = (float)args[2];
 
@@ -52,9 +53,13 @@ namespace Lodis.AI
             AttackNode attackNode = (AttackNode)node;
 
             float directionAccuracy = Vector3.Dot(attackNode.TargetDisplacement.normalized, TargetDisplacement.normalized);
+            float distanceAccuracy = TargetDisplacement.magnitude / attackNode.TargetDisplacement.magnitude;
+            if (distanceAccuracy > 1)
+                distanceAccuracy -= distanceAccuracy - 1;
 
+            float totalAccuracy = (directionAccuracy + distanceAccuracy) / 2;
             //continue here
-            return directionAccuracy;
+            return totalAccuracy;
         }
     }
 }

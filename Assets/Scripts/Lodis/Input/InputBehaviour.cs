@@ -183,7 +183,7 @@ namespace Lodis.Input
             if (_playerState != "Idle" && _playerState != "Attacking")
                 return;
 
-            AbilityType abilityType = AbilityType.NONE;
+            AbilityType abilityType;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 
             //Decide which ability type to use based on the input

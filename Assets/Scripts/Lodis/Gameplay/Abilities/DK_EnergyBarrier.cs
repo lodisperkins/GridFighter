@@ -32,9 +32,9 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create barrier collider
-            _barrierCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
+            _barrierCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
             //Allow canceling on hit
-            _barrierCollider.onHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
+            _barrierCollider.OnHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
 
             //Set the position of the barrier in relation to the character
             Vector3 offset = new Vector3(abilityData.GetCustomStatValue("XOffset") * owner.transform.forward.x, abilityData.GetCustomStatValue("YOffset"), 0);

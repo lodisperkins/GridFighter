@@ -549,6 +549,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &150119703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1736,6 +1738,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &337169151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1956,6 +1960,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &349728513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2772,6 +2778,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &437534589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8492,6 +8500,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &1563727224
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11350,6 +11360,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &1949821443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12038,6 +12050,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &1991164848
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12519,6 +12533,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 0
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!114 &2105090708
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -34,10 +34,16 @@ namespace Lodis.Gameplay
     [System.Serializable]
     public abstract class Ability
     {
+        private bool _inUse;
+        private bool _canPlayAnimation;
+        private List<ColliderBehaviour> _colliders;
+        private RoutineBehaviour.TimedAction _currentTimer;
+        protected KnockbackBehaviour _ownerKnockBackScript;
+        protected Movement.GridMovementBehaviour _ownerMoveScript;
+        protected CharacterAnimationBehaviour _ownerAnimationScript;
         //The object that is using the ability
         public GameObject owner = null;
         public MovesetBehaviour ownerMoveset = null;
-        protected KnockbackBehaviour _ownerKnockBackScript;
         public ScriptableObjects.AbilityData abilityData;
         /// <summary>
         /// Called when the character begins to use the ability and before the action actually happens
@@ -55,12 +61,11 @@ namespace Lodis.Gameplay
         /// Called when the ability is used and before the character has recovered
         /// </summary>
         public UnityAction onDeactivate = null;
-        private bool _inUse;
-        protected Movement.GridMovementBehaviour _ownerMoveScript;
-        protected CharacterAnimationBehaviour _ownerAnimationScript;
         public int currentActivationAmount;
-        private bool _canPlayAnimation;
-        private RoutineBehaviour.TimedAction _currentTimer;
+        /// <summary>
+        /// Called when the ability's collider hits an object
+        /// </summary>
+        public CollisionEvent OnHit = null;
 
         public AbilityPhase CurrentAbilityPhase { get; private set; }
 
@@ -284,6 +289,15 @@ namespace Lodis.Gameplay
             _ownerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
 
             _canPlayAnimation = !abilityData.playAnimationManually;
+
+            _colliders = new List<ColliderBehaviour>();
+
+            for (int i = 0; i < abilityData.ColliderInfoCount; i++)
+            {
+                ColliderBehaviour colliderComponent = new HitColliderBehaviour(abilityData.GetColliderInfo(i), owner);
+                colliderComponent.OnHit = OnHit;
+                _colliders.Add(colliderComponent);
+            }
         }
 
         /// <summary>
@@ -294,6 +308,11 @@ namespace Lodis.Gameplay
         {
             if (!_ownerKnockBackScript)
                 return;
+
+            for (int i = 0; i < _colliders.Count; i++)
+            {
+                _colliders[i].OnHit += arguments => OnHit?.Invoke(arguments);
+            }
 
             if (abilityData.cancelOnHit)
                 _ownerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
@@ -333,6 +352,22 @@ namespace Lodis.Gameplay
         /// Called in every fixed update for the ability owner
         /// </summary>
         public virtual void FixedUpdate() { }
+
+        public ColliderBehaviour GetColliderBehaviour(int index)
+        {
+            return _colliders[index];
+        }
+
+        public ColliderBehaviour GetColliderBehaviour(string name)
+        {
+            for (int i = 0; i < _colliders.Count; i++)
+            {
+                if (_colliders[i].ColliderInfo.Name == name)
+                    return _colliders[i];
+            }
+
+            return null;
+        }
     }
 
 #if UNITY_EDITOR

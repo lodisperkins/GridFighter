@@ -127,7 +127,7 @@ namespace Lodis.Gameplay
             SpawnWeakShot(new Vector3(-1, 0, 0));
             SpawnWeakShot(new Vector3(0, 0, 1));
             SpawnWeakShot(new Vector3(0, 0, -1));
-            _strongProjectileCollider.onHit = null;
+            _strongProjectileCollider.OnHit = null;
         }
 
         /// <summary>
@@ -166,12 +166,12 @@ namespace Lodis.Gameplay
             _strongShotDistance = Mathf.Clamp(_strongShotDistance, 0, abilityData.GetCustomStatValue("StrongHitMaxPower"));
 
             //Initialize strong shot collider
-            ColliderInfo strongInfo = abilityData.GetColliderInfo(0).ScaleStats(powerScale);
-            _strongProjectileCollider = new HitColliderBehaviour(strongInfo, owner);
+            _strongProjectileCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
+            _strongProjectileCollider.ColliderInfo = _strongProjectileCollider.ColliderInfo.ScaleStats(powerScale);
 
             //Initialize weak shot collider
-            ColliderInfo weakInfo = abilityData.GetColliderInfo(1).ScaleStats(powerScale);
-            _weakProjectileCollider = new HitColliderBehaviour(weakInfo, _strongProjectileCollider.Owner);
+            _weakProjectileCollider = (HitColliderBehaviour)GetColliderBehaviour(1);
+            _weakProjectileCollider.ColliderInfo = _weakProjectileCollider.ColliderInfo.ScaleStats(powerScale);
 
 
 
@@ -198,7 +198,7 @@ namespace Lodis.Gameplay
 
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
 
-            _strongProjectileCollider.onHit += SpawnWeakShots;
+            _strongProjectileCollider.OnHit += SpawnWeakShots;
             //Fire laser
             _weakSpawnTransform = spawnScript.FireProjectile(CalculateProjectileForce(owner.transform.forward, _strongShotDistance), _strongProjectileCollider, true).transform;
 

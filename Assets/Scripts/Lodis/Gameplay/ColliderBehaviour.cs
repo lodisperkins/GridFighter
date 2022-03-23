@@ -95,6 +95,16 @@ namespace Lodis.Gameplay
         {
             Init(despawnAfterTimeLimit, timeActive, owner, destroyOnHit, isMultiHit);
         }
+        
+        /// <summary>
+        /// Initializes this colliders stats
+        /// </summary>
+        /// <param name="info">The data for this collider behaviour</param>
+        /// <param name="owner">The game object that spawned the collider</param>
+        public ColliderBehaviour(ColliderInfo info, GameObject owner)
+        {
+            Init(info, owner);
+        }
 
         private void Awake()
         {

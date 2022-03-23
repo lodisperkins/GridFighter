@@ -2,21 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace Lodis.AI
 {
     public delegate void SaveLoadEvent();
+
+
+    [System.Serializable]
     public class DecisionTree
     {
-        private List<TreeNode> _nodeCache;
+        [SerializeField]
+        protected List<TreeNode> _nodeCache;
+        [SerializeField]
         private TreeNode _root;
+        [SerializeField]
         private float _compareThreshold;
         public SaveLoadEvent OnSave;
         public SaveLoadEvent OnLoad;
 
         /// <param name="root">The root decision of the tree</param>
         /// <param name="compareThreshold">How similar nodes have to be to a sitation to be choosen as the right answer</param>
-        public DecisionTree(float compareThreshold = 0.75f)
+        public DecisionTree(float compareThreshold = 0.95f)
         {
             _compareThreshold = compareThreshold;
             _nodeCache = new List<TreeNode>();
@@ -62,10 +69,16 @@ namespace Lodis.AI
         /// Adds a new decision to the tree
         /// </summary>
         /// <param name="decision">The new decision node to add</param>
-        public void AddDecision(TreeNode decision)
+        public TreeNode AddDecision(TreeNode decision)
         {
+            if (_nodeCache.Count >= 1000) return null;
+
             if (_root == null)
+            {
                 _root = decision;
+                _nodeCache.Add(_root);
+                return _root;
+            }
 
             TreeNode current = _root;
             TreeNode parent = _root;
@@ -73,32 +86,35 @@ namespace Lodis.AI
             //Loop until the appropriate empty spot is found
             while (current != null)
             {
-                if (decision.Compare(current) >= 0.5f)
+                if (decision.Compare(current) >= 0.9f)
                 {
                     parent = current;
                     current = current.Right;
                 }
-                else if (decision.Compare(current) < 0.5f)
+                else if (decision.Compare(current) < 0.9f)
                 {
                     parent = current;
                     current = current.Left;
                 }
+                else if (decision.Compare(current) >= _compareThreshold)
+                    return current;
             }
 
             //Make the decision a child of the parent based on how similar they are
-            if (decision.Compare(parent) >= 0.5f)
+            if (decision.Compare(parent) >= 0.9f)
                 parent.Right = decision;
             else
                 parent.Left = decision;
 
             _nodeCache.Add(decision);
-            Save();
+
+            return decision;
         }
 
         public virtual void Save()
         {
             StreamWriter writer = new StreamWriter("Decisions/DecisionData.txt");
-            string json = JsonUtility.ToJson(_nodeCache);
+            string json = JsonConvert.SerializeObject(_nodeCache);
             writer.Write(json);
             writer.Close();
 
@@ -111,7 +127,7 @@ namespace Lodis.AI
                 return false;
 
             StreamReader reader = new StreamReader("Decisions/DecisionData.txt");
-            _nodeCache = JsonUtility.FromJson<List<TreeNode>>(reader.ReadToEnd());
+            _nodeCache = JsonConvert.DeserializeObject<List<TreeNode>>(reader.ReadToEnd());
             reader.Close();
 
             for (int i = 0; i < _nodeCache.Count; i++)

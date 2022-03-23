@@ -126,6 +126,14 @@ namespace Lodis.ScriptableObjects
 
             return ColliderData[index];
         }
+
+        public int ColliderInfoCount
+        {
+            get
+            {
+                return ColliderData.Length;
+            }
+        }
     }
 
 

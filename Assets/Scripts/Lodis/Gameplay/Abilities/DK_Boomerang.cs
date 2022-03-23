@@ -34,7 +34,7 @@ namespace Lodis.Gameplay
             //Set the amount of frames the projectile will register a hit
             ProjectileCollider.ColliderInfo.HitFrames = 1;
             //Create a new collider that will handle reversing velocity
-            _reboundCollider = ActiveProjectiles[0].AddComponent<ColliderBehaviour>();
+            _reboundCollider = GetColliderBehaviour(0);
 
             //Initialize rebound collider
             _reboundCollider.Init(false, 0, owner, false, true);

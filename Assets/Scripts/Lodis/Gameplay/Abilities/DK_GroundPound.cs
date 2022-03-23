@@ -81,7 +81,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create collider for shockwaves
-            _shockWaveCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
+            _shockWaveCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
 
             //Instantiate the first shockwave and attach a hit box to it
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);

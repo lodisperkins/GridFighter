@@ -76,7 +76,7 @@ namespace Lodis.Gameplay
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-            float baseKnockBack = knockBackScript.CurrentbaseKnockBack * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+            float baseKnockBack = knockBackScript.LastTotalKnockBack * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
 
             if (baseKnockBack == 0 || float.IsNaN(baseKnockBack) || !knockBackScript.IsTumbling)
                 return;

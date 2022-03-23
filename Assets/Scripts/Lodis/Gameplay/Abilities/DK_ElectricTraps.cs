@@ -58,10 +58,10 @@ namespace Lodis.Gameplay
         private void ActivateStunPath()
         {
             //Creates a new collider for the attackLinks in the path to use
-            _stunCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
+            _stunCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
 
             //When the attackLinks in the path collide with an something else, try to stun it 
-            _stunCollider.onHit += StunEntity;
+            _stunCollider.OnHit += StunEntity;
 
             //Gets a path from the first link to the second link
             List<PanelBehaviour> panels = AI.AIUtilities.Instance.GetPath(_linkMoveScripts[0].CurrentPanel, _linkMoveScripts[1].CurrentPanel, true);

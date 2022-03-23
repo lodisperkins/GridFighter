@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
             _hitBoxScale = new Vector3(abilityData.GetCustomStatValue("HitBoxScaleX") * BlackBoardBehaviour.Instance.Grid.PanelScale.x, abilityData.GetCustomStatValue("HitBoxScaleY"), abilityData.GetCustomStatValue("HitBoxScaleZ") * BlackBoardBehaviour.Instance.Grid.PanelScale.z);
             //Instantiate particles and hit box
             _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform);
-            HitColliderBehaviour hitColliderRef = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
+            HitColliderBehaviour hitColliderRef = (HitColliderBehaviour)GetColliderBehaviour(0);
 
            HitColliderBehaviour hitCollider = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, _hitBoxScale, hitColliderRef);
 

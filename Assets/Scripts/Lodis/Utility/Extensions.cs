@@ -29,8 +29,15 @@ namespace Lodis.Utility
                     devices.Add(deviceArray[i]);
                 }
             }
-
             return devices.ToArray();
+        }
+        
+        public static bool Contains(this System.Array array, object item)
+        {
+            for (int i = 0; i < array.Length; i++)
+                if (array.GetValue(i) == item) return true;
+
+            return false;
         }
     }
 }

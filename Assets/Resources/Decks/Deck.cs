@@ -171,6 +171,24 @@ namespace Lodis.Gameplay
             return null;
         }
 
+        /// <summary>
+        /// Gets the first ability in the deck that matches the name
+        /// </summary>
+        /// <param name="name">The name of ability to search for</param>
+        /// <returns></returns>
+        public Ability GetAbilityByName(string name)
+        {
+            foreach (Ability ability in _abilities)
+            {
+                if (ability.abilityData.name == name)
+                    return ability;
+            }
+
+            Debug.LogError("Couldn't find ability of that matches the name " + name + " in deck " + DeckName);
+
+            return null;
+        }
+
         public IEnumerator GetEnumerator()
         {
             return _abilities.GetEnumerator();

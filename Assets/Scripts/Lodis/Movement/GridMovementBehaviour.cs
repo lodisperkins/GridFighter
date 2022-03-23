@@ -64,6 +64,12 @@ namespace Lodis.Movement
         [Tooltip("If true, the object will instantly move to its current position when the start function is called.")]
         private bool _moveOnStart = true;
         private Coroutine _MoveRoutine;
+        [SerializeField]
+        [Tooltip("If true, the object will cast a ray to check if it is currently behind a barrier.")]
+        private bool _checkIfBehindBarrier;
+        [SerializeField]
+        [Tooltip("If true, the object is behind a barrier. Only updated if check if behind barrier is true")]
+        private bool _isBehindBarrier;
 
         /// <summary>
         /// Whether or not this object should move to its current panel when spawned
@@ -200,6 +206,8 @@ namespace Lodis.Movement
                 return _targetPanel;
             }
         }
+
+        public bool IsBehindBarrier { get => _isBehindBarrier; private set => _isBehindBarrier = value; }
 
         private void Awake()
         {
@@ -705,6 +713,13 @@ namespace Lodis.Movement
         {
             if (_currentPanel)
                 _currentPanel.Occupied = false;
+        }
+
+        private void FixedUpdate()
+        {
+            if (!_checkIfBehindBarrier) return;
+
+            IsBehindBarrier = Physics.Raycast(transform.position, transform.forward, BlackBoardBehaviour.Instance.Grid.PanelSpacingX, LayerMask.GetMask("Structure"));
         }
 
         private void Update()

@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Lodis.AI
 {
     [System.Serializable]
-    public abstract class TreeNode
+    public  class TreeNode
     {
         public int VisitCount;
         public int Wins;
@@ -28,6 +28,6 @@ namespace Lodis.AI
             return averageWeight + RandomDecisionConstant * (Mathf.Sqrt(Mathf.Log(root.VisitCount) / VisitCount));
         }
 
-        public abstract float Compare(TreeNode node);
+        public virtual float Compare(TreeNode node) { return 0; }
     }
 }

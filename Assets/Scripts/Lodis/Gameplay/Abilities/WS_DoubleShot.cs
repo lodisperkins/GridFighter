@@ -79,7 +79,7 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = new HitColliderBehaviour(abilityData.GetColliderInfo(0), owner);
+            _projectileCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
              
 
             CleanProjectileList();

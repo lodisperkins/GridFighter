@@ -17,12 +17,12 @@ public class IsSafeCondition : GOCondition
 
     private List<HitColliderBehaviour> FindAttacksInRange(AttackDummyBehaviour dummy)
     {
-        if (dummy.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.LEFT)
+        if (dummy.AIMovement.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.LEFT)
         {
             _opponent = BlackBoardBehaviour.Instance.Player2;
             return BlackBoardBehaviour.Instance.GetRHSActiveColliders().FindAll(collider => Vector3.Distance(collider.gameObject.transform.position, gameObject.transform.position) <= dummy.SenseRadius);
         }
-        else if (dummy.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.RIGHT)
+        else if (dummy.AIMovement.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.RIGHT)
         {
             _opponent = BlackBoardBehaviour.Instance.Player1;
             return BlackBoardBehaviour.Instance.GetLHSActiveColliders().FindAll(collider => Vector3.Distance(collider.gameObject.transform.position, gameObject.transform.position) <= dummy.SenseRadius);
@@ -46,7 +46,7 @@ public class IsSafeCondition : GOCondition
             return false;
 
 
-        if (_opponent.GetComponent<GridMovementBehaviour>().Position.y == _dummy.MovementBehaviour.Position.y && _opponent.GetComponent<CharacterStateMachineBehaviour>().StateMachine.CurrentState == "Attack")
+        if (_opponent.GetComponent<GridMovementBehaviour>().Position.y == _dummy.AIMovement.MovementBehaviour.Position.y && _opponent.GetComponent<CharacterStateMachineBehaviour>().StateMachine.CurrentState == "Attack")
             return false;
 
         return true;
