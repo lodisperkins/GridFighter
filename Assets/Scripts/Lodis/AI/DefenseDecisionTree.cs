@@ -16,10 +16,15 @@ namespace Lodis.AI
 
         public override void Save()
         {
-            if (!File.Exists("Decisions/AttackDecisionData.txt"))
-                File.Create("Decisions/AttackDecisionData.txt");
+            if (_nodeCache.Count == 0) return;
 
-            StreamWriter writer = new StreamWriter("Decisions/AttackDecisionData.txt");
+            if (!File.Exists("Decisions/DefenseDecisionData.txt"))
+            {
+                FileStream stream = File.Create("Decisions/DefenseDecisionData.txt");
+                stream.Close();
+            }
+
+            StreamWriter writer = new StreamWriter("Decisions/DefenseDecisionData.txt");
             string json = _nodeCache.Count.ToString() + "\n";
 
             for (int i = 0; i < _nodeCache.Count; i++)
@@ -33,10 +38,10 @@ namespace Lodis.AI
 
         public override bool Load()
         {
-            if (!File.Exists("Decisions/AttackDecisionData.txt"))
+            if (!File.Exists("Decisions/DefenseDecisionData.txt"))
                 return false;
 
-            StreamReader reader = new StreamReader("Decisions/AttackDecisionData.txt");
+            StreamReader reader = new StreamReader("Decisions/DefenseDecisionData.txt");
             int count = JsonConvert.DeserializeObject<int>(reader.ReadLine());
 
             for (int i = 0; i < count; i++)

@@ -9,8 +9,9 @@ using Pada1.BBCore.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Lodis.GridScripts;
 
-[Action("CustomAction/Attack")]
+[Action("CustomAction/ChooseBestDefense")]
 public class DefendAction : GOAction
 {
     [InParam("Owner")]
@@ -18,128 +19,111 @@ public class DefendAction : GOAction
     private DefenseNode _decision;
     private DefenseNode _situation;
     private GridMovementBehaviour _opponentMoveBehaviour;
+    private GridBehaviour _grid;
+    private KnockbackBehaviour _dummyHealth;
+    [InParam("RandomDecisionChosen")]
+    private bool _randomDecisionChosen;
 
-    //public override void OnStart()
-    //{
-    //    base.OnStart();
+    public override void OnStart()
+    {
+        base.OnStart();
+        _grid = BlackBoardBehaviour.Instance.Grid;
+        //Return if the dummy can't currently defend itself
+        if (_dummy.StateMachine.CurrentState != "Idle" && _dummy.StateMachine.CurrentState != "Attacking" && _dummy.StateMachine.CurrentState != "Moving")
+            return;
 
-    //    if (_dummy.StateMachine.CurrentState != "Idle" && _dummy.StateMachine.CurrentState != "Attack")
-    //        return;
+        //Grab the health component attached to know when it takes damage
+        _dummyHealth = _dummy.GetComponent<KnockbackBehaviour>();
 
-    //    _opponentMoveBehaviour = _dummy.Opponent.GetComponent<GridMovementBehaviour>();
-    //    Vector3 displacement = _dummy.Opponent.transform.position - _dummy.transform.position;
-    //    float targetHealth = _dummy.Opponent.GetComponent<HealthBehaviour>().Health;
-    //    _situation = new DefenseNode(displacement, targetHealth, 0, 0, "", 0, null, null);
-    //    _decision = (DefenseNode)_dummy.AttackDecisions.GetDecision(_situation, _opponentMoveBehaviour, _opponentMoveBehaviour.IsBehindBarrier, targetHealth, _dummy);
+        //Store the current environment data
+        _situation = new DefenseNode(GetPhysicsComponents(), null, null);
 
-    //    if (_decision != null)
-    //    {
-    //        UseDecisionAbility(_dummy.Moveset.GetAbilityByName(_decision.AbilityName));
-    //        _decision.VisitCount++;
-    //    }
-    //    else
-    //    {
-    //        UseRandomDecisionAbility();
-    //    }
-    //}
+        //if the decision isn't null then it must be set to the last decision made
+        if (_dummy.LastDefenseDecision != null)
+        {
+            //Increment the win count for the decision
+            _dummy.LastDefenseDecision.Wins++;
 
-    //private List<Vector3> GetVelocityValues()
-    //{
-    //    for (int i = 0; i < _dummy.GetAttacksInRange().Count; i++)
-    //    {
+            //If the decision was random and didn't recieve negative points...
+            if (_randomDecisionChosen && _dummy.LastDefenseDecision.Wins > 0)
+                //...add the decision to the tree
+                _dummy.DefenseDecisions.AddDecision(_dummy.LastDefenseDecision);
+        }
 
-    //    }
-    //}
+        _dummy.Executor.blackboard.boolParams[4] = false;
 
-    //void UseDecisionAbility(Ability ability)
-    //{
-    //    if (_dummy.Moveset.GetAbilityNamesInCurrentSlots()[0] == ability.abilityData.name)
-    //        _dummy.Moveset.UseSpecialAbility(0, _decision.AttackStrength, _decision.AttackDirection);
-    //    else if (_dummy.Moveset.GetAbilityNamesInCurrentSlots()[1] == ability.abilityData.name)
-    //        _dummy.Moveset.UseSpecialAbility(1, _decision.AttackStrength, _decision.AttackDirection);
-    //    else if (ability.abilityData.AbilityType != AbilityType.SPECIAL)
-    //        _dummy.Moveset.UseBasicAbility(_decision.AbilityName, _decision.AttackStrength, _decision.AttackDirection);
+        //Grab a decision that closely matches the current environment 
+        _decision = (DefenseNode)_dummy.DefenseDecisions.GetDecision(_situation);
+        DefenseDecisionType choice = DefenseDecisionType.EVADE;
 
-    //    ability.OnHit += IncreaseDecisionScore;
-    //}
+        //If a decision was found...
+        if (_decision != null)
+        {
+            //Mark it as visited an store its defense choice
+            choice = _decision.DefenseDecision;
+            _decision.VisitCount++;
+        }
+        //Otherwise...
+        else
+        {
+            //Create a new random decision
 
-    //void UseRandomDecisionAbility()
-    //{
-    //    AbilityType attackType = (AbilityType)UnityEngine.Random.Range(0, 9);
+            choice = (DefenseDecisionType)Random.Range(0, 3);
+            _decision = new DefenseNode(GetPhysicsComponents(), null, null);
+            _dummy.Executor.blackboard.boolParams[4] = true;
+        }
 
-    //    Vector2 attackDirection = new Vector2(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
-    //    float attackStrength = UnityEngine.Random.Range(0, 1.1f);
-    //    Vector3 displacement = _dummy.Opponent.transform.position - _dummy.transform.position;
-    //    float targetHealth = _dummy.Opponent.GetComponent<HealthBehaviour>().Health;
-    //    Ability ability = null;
+        //Punish the decision if the dummy was damaged
+        _dummyHealth.AddOnTakeDamageTempAction(() => _decision.Wins -= 2);
 
-    //    if (((int)attackType) > 3 && ((int)attackType) < 8)
-    //    {
-    //        ability = _dummy.Moveset.GetAbilityByType(attackType);
-    //        ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.abilityName, attackStrength, args);
-    //        _dummy.StartCoroutine(_dummy.ChargeRoutine((attackStrength - 1) / 0.1f, attackType));
-    //        return;
-    //    }
+        //Perform an action based on choice
+        switch (choice)
+        {
+            case DefenseDecisionType.EVADE:
+                //Gets a direction for the dummy to run to
+                Vector3 fleeDirection = _dummy.transform.position - (_decision.AveragePosition + _decision.AverageVelocity);
+                fleeDirection.Normalize();
+                fleeDirection.Scale(new Vector3(_grid.PanelScale.x + _grid.PanelSpacingX, 0, _grid.PanelScale.z + _grid.PanelSpacingZ));
+                PanelBehaviour panel = null;
 
-    //    if (attackType == AbilityType.SPECIAL)
-    //    {
-    //        int slot = Random.Range(0, 2);
-    //        ability = _dummy.Moveset.SpecialAbilitySlots[slot];
+                //If a panel is found at the new destination...
+                if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_dummy.transform.position + fleeDirection, out panel, false, _dummy.AIMovement.MovementBehaviour.Alignment))
+                    //...move the dummy
+                    _dummy.AIMovement.MoveToLocation(panel);
+                break;
+            case DefenseDecisionType.COUNTER:
+                //Set the counter attacking parameter to be true so that the dummy attacks during the next iteration
+                _dummy.Executor.blackboard.boolParams[3] = true;
+                break;
+            case DefenseDecisionType.PARRY:
+                _dummy.GetComponent<CharacterDefenseBehaviour>().ActivateParry();
+                break;
+        }
 
-    //        if (ability == null)
-    //            return;
+        _decision.DefenseDecision = choice;
+        _dummy.LastDefenseDecision = _decision;
+    }
 
-    //        ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.abilityName, attackStrength, args);
-    //        _dummy.Moveset.UseSpecialAbility(slot, attackStrength, attackDirection);
-    //    }
-    //    else
-    //    {
-    //        ability = _dummy.Moveset.GetAbilityByType(attackType);
-    //        ability.OnHit += args => CreateNewDecision(targetHealth, 0, ability.abilityData.startUpTime, ability.abilityData.abilityName, attackStrength, args);
-    //        ability = _dummy.Moveset.UseBasicAbility(attackType, new object[] { attackStrength, attackDirection });
-    //    }
-    //}
+    /// <summary>
+    /// Gets a list of physics components from all attacks in range
+    /// </summary>
+    /// <returns></returns>
+    private List<GridPhysicsBehaviour> GetPhysicsComponents()
+    {
+        List<GridPhysicsBehaviour> physics = new List<GridPhysicsBehaviour>();
 
-    //void CreateNewDecision(float targetHealth, int barrierEffectiveness, float startUpTime, string name, float attackStrength, params object[] args)
-    //{
-    //    GameObject collisionObject = (GameObject)args[0];
+        for (int i = 0; i < _dummy.GetAttacksInRange().Count; i++)
+        {
+            physics.Add(_dummy.GetAttacksInRange()[i].GetComponent<GridPhysicsBehaviour>());
+        }
 
-    //    if (!collisionObject.CompareTag("Player"))
-    //        return;
+        return physics;
+    }
 
-    //    Vector3 displacement = collisionObject.transform.position - _dummy.transform.position;
-    //    _decision = (DefenseNode)_dummy.AttackDecisions.AddDecision(new DefenseNode(displacement, targetHealth, 0, startUpTime, name, attackStrength, null, null));
+    
 
-    //    if (_decision == null)
-    //        return;
-
-    //    _decision.VisitCount++;
-    //    IncreaseDecisionScore(args);
-    //}
-
-    //void IncreaseDecisionScore(params object[] args)
-    //{
-    //    GameObject collisionObject = (GameObject)args[0];
-
-    //    if (!collisionObject.CompareTag("Player") || !collisionObject.CompareTag("Structure"))
-    //        return;
-
-    //    if (_opponentMoveBehaviour.IsBehindBarrier && collisionObject.CompareTag("Player"))
-    //        _decision.BarrierEffectiveness = 2;
-    //    else if (collisionObject.CompareTag("Structure"))
-    //    {
-    //        _decision.BarrierEffectiveness = 1;
-    //        return;
-    //    }
-
-    //    _decision.Wins++;
-
-    //    KnockbackBehaviour knockback = collisionObject.GetComponent<KnockbackBehaviour>();
-    //    _decision.KnockBackDealt = knockback.LastTotalKnockBack;
-    //}
-
-    //public override TaskStatus OnUpdate()
-    //{
-    //    return TaskStatus.COMPLETED;
-    //}
+    public override TaskStatus OnUpdate()
+    {
+        return TaskStatus.COMPLETED;
+    }
 }

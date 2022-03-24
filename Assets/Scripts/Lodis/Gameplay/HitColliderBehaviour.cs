@@ -344,11 +344,8 @@ namespace Lodis.Gameplay
                 Gizmos.DrawSphere(transform.position, sphereCollider.radius);
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
-            //Update the amount of current frames
-            CurrentTimeActive = Time.time - StartTime;
-
             if (gameObject != null && !_addedToActiveList)
             {
                 if (Owner.CompareTag("Player") && Owner.name.Contains("(P1)"))
@@ -358,6 +355,12 @@ namespace Lodis.Gameplay
 
                 _addedToActiveList = true;
             }
+        }
+
+        private void FixedUpdate()
+        {
+            //Update the amount of current frames
+            CurrentTimeActive = Time.time - StartTime;
             
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)

@@ -16,8 +16,13 @@ namespace Lodis.AI
 
         public override void Save()
         {
+            if (_nodeCache.Count == 0) return;
+
             if (!File.Exists("Decisions/AttackDecisionData.txt"))
-                File.Create("Decisions/AttackDecisionData.txt");
+            {
+                FileStream stream = File.Create("Decisions/AttackDecisionData.txt");
+                stream.Close();
+            }
 
             StreamWriter writer = new StreamWriter("Decisions/AttackDecisionData.txt");
             string json = _nodeCache.Count.ToString() + "\n";

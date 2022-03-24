@@ -1,4 +1,5 @@
 ﻿using Lodis.Gameplay;
+using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,33 +16,63 @@ namespace Lodis.AI
     [System.Serializable]
     public class DefenseNode : TreeNode
     {
-        public List<Vector3> VelocityOfAttacks;
-        public List<HitColliderBehaviour> AttacksInRange;
+        private List<GridPhysicsBehaviour> _attacksInRange = new List<GridPhysicsBehaviour>();
         public DefenseDecisionType DefenseDecision;
+        public string CounterAbilityName;
+        public Vector3 AveragePosition;
+        public Vector3 AverageVelocity;
 
-        public DefenseNode(List<Vector3> velocityOfAttacks, List<HitColliderBehaviour> attacksInRange, TreeNode left, TreeNode right) : base(left, right)
+        public DefenseNode(List<GridPhysicsBehaviour> attacksInRange, TreeNode left, TreeNode right) : base(left, right)
         {
-            VelocityOfAttacks = velocityOfAttacks;
+            _attacksInRange = attacksInRange;
+            AveragePosition = GetAveragePosition();
+            AverageVelocity = GetAverageVelocity();
         }
 
-        public Vector3 GetAverageVelocity()
+        private Vector3 GetAverageVelocity()
         {
             Vector3 averageVelocity = Vector3.zero;
 
-            for (int i = 0; i < VelocityOfAttacks.Count; i++)
-                averageVelocity += VelocityOfAttacks[i];
+            if (_attacksInRange == null) return Vector3.zero;
 
-            return averageVelocity /= VelocityOfAttacks.Count;
+            if (_attacksInRange.Count == 0)
+                return Vector3.zero;
+
+            _attacksInRange.RemoveAll(physics =>
+            {
+                if ((object)physics != null)
+                    return physics == null;
+
+                return true;
+            });
+
+            for (int i = 0; i < _attacksInRange.Count; i++)
+                averageVelocity += _attacksInRange[i].LastVelocity;
+
+            return averageVelocity /= _attacksInRange.Count;
         }
 
-        public Vector3 GetAveragePosition()
+        private Vector3 GetAveragePosition()
         {
             Vector3 averagePosition = Vector3.zero;
 
-            for (int i = 0; i < AttacksInRange.Count; i++)
-                averagePosition += AttacksInRange[i].gameObject.transform.position;
+            if (_attacksInRange == null) return Vector3.zero;
 
-            return averagePosition /= AttacksInRange.Count;
+            if (_attacksInRange.Count == 0)
+                return Vector3.zero;
+
+            _attacksInRange.RemoveAll(physics =>
+            {
+                if ((object)physics != null)
+                    return physics == null;
+
+                return true;
+            });
+
+            for (int i = 0; i < _attacksInRange.Count; i++)
+                averagePosition += _attacksInRange[i].gameObject.transform.position;
+
+            return averagePosition /= _attacksInRange.Count;
         }
 
         public override float Compare(TreeNode node)
@@ -50,10 +81,13 @@ namespace Lodis.AI
 
             if (defenseNode == null) return 0;
 
-            Vector3 averageVelocity = GetAverageVelocity();
+            float velocityAccuracy = Vector3.Dot(defenseNode.AverageVelocity.normalized, AverageVelocity.normalized);
+            if (float.IsNaN(velocityAccuracy))
+                velocityAccuracy = 0;
 
-            float velocityAccuracy = Vector3.Dot(defenseNode.GetAverageVelocity().normalized, GetAverageVelocity().normalized);
-            float positionAccuracy = Vector3.Dot(defenseNode.GetAveragePosition().normalized, GetAveragePosition().normalized);
+            float positionAccuracy = Vector3.Dot(defenseNode.AveragePosition.normalized, AveragePosition.normalized);
+            if (float.IsNaN(positionAccuracy))
+                positionAccuracy = 0;
 
             if (positionAccuracy > 1)
                 positionAccuracy -= positionAccuracy - 1;

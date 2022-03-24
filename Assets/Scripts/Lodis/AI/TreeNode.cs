@@ -26,7 +26,9 @@ namespace Lodis.AI
         {
             float averageWeight = BaseWeight / VisitCount;
 
-            return averageWeight + RandomDecisionConstant * (Mathf.Sqrt(Mathf.Log(root.VisitCount) / VisitCount));
+            BaseWeight = averageWeight + RandomDecisionConstant * (Mathf.Sqrt(Mathf.Log(root.VisitCount) / VisitCount));
+
+            return BaseWeight;
         }
 
         public virtual float Compare(TreeNode node) { return 0; }

@@ -10,7 +10,7 @@ using Lodis.Movement;
 using Lodis.Utility;
 using Pada1.BBCore.Tasks;
 
-[Action("CustomAction/Attack")]
+[Action("CustomAction/ChooseBestAttack")]
 public class AttackAction : GOAction
 {
     [InParam("Owner")]
@@ -22,6 +22,8 @@ public class AttackAction : GOAction
     public override void OnStart()
     {
         base.OnStart();
+
+        _dummy.Executor.blackboard.boolParams[3] = false;
 
         if (_dummy.StateMachine.CurrentState != "Idle" && _dummy.StateMachine.CurrentState != "Attack")
             return;
@@ -96,7 +98,7 @@ public class AttackAction : GOAction
     {
         GameObject collisionObject = (GameObject)args[0];
 
-        if (!collisionObject.CompareTag("Player"))
+        if (!collisionObject.CompareTag("Player") || collisionObject == _dummy.gameObject)
             return;
 
         Vector3 displacement = collisionObject.transform.position - _dummy.transform.position;
@@ -113,7 +115,7 @@ public class AttackAction : GOAction
     {
         GameObject collisionObject = (GameObject)args[0];
 
-        if (!collisionObject.CompareTag("Player") || !collisionObject.CompareTag("Structure"))
+        if (!collisionObject.CompareTag("Player") && !collisionObject.CompareTag("Structure"))
             return;
 
         if (_opponentMoveBehaviour.IsBehindBarrier && collisionObject.CompareTag("Player"))

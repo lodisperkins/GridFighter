@@ -32,19 +32,46 @@ public class IsSafeCondition : GOCondition
     }
 
     /// <summary>
-    /// Considered unsafe if hit boxes are in range, in the tumbling state, or an attack has been started on the same row
+    /// Gets a list of physics components from all attacks in range
+    /// </summary>
+    /// <returns></returns>
+    private bool CheckIfProjectilesWillHit()
+    {
+
+        for (int i = 0; i < _dummy.GetAttacksInRange().Count; i++)
+        {
+            GridPhysicsBehaviour physics = _dummy.GetAttacksInRange()[i].GetComponentInParent<GridPhysicsBehaviour>();
+
+            if (physics == null) continue;
+
+            Vector3 direction = (physics.transform.position - _dummy.transform.position).normalized;
+            float dotProduct = Vector3.Dot(direction, physics.LastVelocity.normalized);
+
+            if (Mathf.Abs(dotProduct) >= 0.95f)
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Considered unsafe if hit boxes are in range, in the tumbling state,  or an attack has been started on the same row
     /// </summary>
     /// <returns></returns>
     public override bool Check()
     {
+        List<HitColliderBehaviour> attacks = _dummy.GetAttacksInRange();
+
         _dummy.GetAttacksInRange().AddRange(FindAttacksInRange(_dummy));
 
-        if (_dummy.GetAttacksInRange().Count > 0)
+        if (_dummy.Executor.blackboard.boolParams[3] == true)
+            return true;
+
+        if (CheckIfProjectilesWillHit())
             return false;
 
         if (_dummy.StateMachine.CurrentState == "Tumbling" || _dummy.StateMachine.CurrentState == "Flinching")
             return false;
-
 
         if (_opponent.GetComponent<GridMovementBehaviour>().Position.y == _dummy.AIMovement.MovementBehaviour.Position.y && _opponent.GetComponent<CharacterStateMachineBehaviour>().StateMachine.CurrentState == "Attack")
             return false;

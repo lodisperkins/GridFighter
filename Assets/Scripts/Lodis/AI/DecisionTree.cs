@@ -56,7 +56,7 @@ namespace Lodis.AI
                     rightWeight = decision.Right.GetTotalWeight(_root, args) + decision.Right.Compare(similarNode);
 
                 //Go to the child with the larger weight.
-                if (rightWeight > leftWeight)
+                if (rightWeight > leftWeight || float.IsNaN(rightWeight))
                     decision = decision.Right;
                 else
                     decision = decision.Left;

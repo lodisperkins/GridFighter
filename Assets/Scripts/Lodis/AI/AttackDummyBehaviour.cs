@@ -44,6 +44,7 @@ namespace Lodis.AI
         private GameObject _opponent;
         private AIDummyMovementBehaviour _movementBehaviour;
         private AttackDecisionTree _attackDecisions;
+        private DefenseDecisionTree _defenseDecisions;
         private GridPhysicsBehaviour _gridPhysics;
         public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
         public StateMachine StateMachine { get => _stateMachine; }
@@ -52,6 +53,9 @@ namespace Lodis.AI
         public AIDummyMovementBehaviour AIMovement { get => _movementBehaviour; }
         public AttackDecisionTree AttackDecisions { get => _attackDecisions; }
         public GridPhysicsBehaviour GridPhysics { get => _gridPhysics; }
+        public BehaviorExecutor Executor { get => _executor; }
+        public DefenseDecisionTree DefenseDecisions { get => _defenseDecisions; }
+        public DefenseNode LastDefenseDecision;
 
         public Vector2 MovePosition;
         public bool EnableBehaviourTree;
@@ -60,6 +64,8 @@ namespace Lodis.AI
         {
             _attackDecisions = new AttackDecisionTree();
             _attackDecisions.Load();
+            _defenseDecisions = new DefenseDecisionTree();
+            _defenseDecisions.Load();
         }
 
         // Start is called before the first frame update
@@ -118,9 +124,9 @@ namespace Lodis.AI
         {
             _executor.enabled = EnableBehaviourTree;
 
-            if (_executor.enabled) return;
-
             _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
+
+            if (_executor.enabled) return;
 
             //Only attack if the dummy is grounded and delay timer is up
             if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.RecoveringFromFall && !_chargingAttack)
@@ -167,6 +173,7 @@ namespace Lodis.AI
         private void OnApplicationQuit()
         {
             _attackDecisions.Save();
+            _defenseDecisions.Save();
         }
     }
 }

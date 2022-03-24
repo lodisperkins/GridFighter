@@ -21,7 +21,10 @@ MonoBehaviour:
     value=\"False\" />\r\n          <entry name=\"IsGrounded\" type=\"System.Boolean\"
     isBlackboard=\"False\" />\r\n          <entry name=\"CanParry\" type=\"System.Boolean\"
     isBlackboard=\"False\" value=\"False\" />\r\n          <entry name=\"Owner\"
-    type=\"Lodis.AI.AttackDummyBehaviour\" isBlackboard=\"False\" />\r\n        </inputValues>\r\n     
+    type=\"Lodis.AI.AttackDummyBehaviour\" isBlackboard=\"False\" />\r\n         
+    <entry name=\"CounterAttacking\" type=\"System.Boolean\" isBlackboard=\"False\"
+    value=\"False\" />\r\n          <entry name=\"RandomDecisionChosen\" type=\"System.Boolean\"
+    isBlackboard=\"False\" value=\"False\" />\r\n        </inputValues>\r\n     
     </inputParams>\r\n      <outputParams />\r\n      <localParams />\r\n    </BehaviorTree>\r\n   
     <SelectorNode id=\"35\">\r\n      <children>\r\n        <elem>\r\n          <DecoratorGuard
     id=\"49\" />\r\n        </elem>\r\n        <elem>\r\n          <DecoratorGuard
@@ -54,7 +57,7 @@ MonoBehaviour:
     <inputParams>\r\n        <inputValues>\r\n          <entry name=\"Owner\" type=\"Lodis.AI.AttackDummyBehaviour\"
     isBlackboard=\"True\" blackboard=\"Owner\" />\r\n        </inputValues>\r\n     
     </inputParams>\r\n      <outputParams />\r\n      <localParams />\r\n    </ConditionEvalNode>\r\n   
-    <ActionNode id=\"38\" action=\"CustomAction/Attack\">\r\n      <inputParams>\r\n       
+    <ActionNode id=\"38\" action=\"CustomAction/ChooseBestAttack\">\r\n      <inputParams>\r\n       
     <inputValues>\r\n          <entry name=\"Owner\" type=\"Lodis.AI.AttackDummyBehaviour\"
     isBlackboard=\"True\" blackboard=\"Owner\" />\r\n        </inputValues>\r\n     
     </inputParams>\r\n      <outputParams />\r\n      <localParams />\r\n    </ActionNode>\r\n   
@@ -63,37 +66,47 @@ MonoBehaviour:
     isBlackboard=\"True\" blackboard=\"IsGrounded\" />\r\n          <entry name=\"valueB\"
     type=\"System.Boolean\" isBlackboard=\"False\" value=\"True\" />\r\n        </inputValues>\r\n     
     </inputParams>\r\n      <outputParams />\r\n      <localParams />\r\n    </ConditionEvalNode>\r\n   
-    <ActionNode id=\"44\" action=\"SuccessAction\">\r\n      <inputParams />\r\n     
-    <outputParams />\r\n      <localParams />\r\n    </ActionNode>\r\n    <ConditionEvalNode
-    id=\"46\" policy=\"WAIT_UNTIL_FALSE_AND_FAIL\" name=\"Basic/CheckBool\">\r\n     
-    <inputParams>\r\n        <inputValues>\r\n          <entry name=\"valueA\" type=\"System.Boolean\"
-    isBlackboard=\"True\" blackboard=\"CanParry\" />\r\n          <entry name=\"valueB\"
-    type=\"System.Boolean\" isBlackboard=\"True\" blackboard=\"valueB\" />\r\n       
-    </inputValues>\r\n      </inputParams>\r\n      <outputParams />\r\n      <localParams
-    />\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"47\" action=\"SuccessAction\">\r\n     
-    <inputParams />\r\n      <outputParams />\r\n      <localParams />\r\n    </ActionNode>\r\n 
-    </runtimeInfo>\r\n  <editorInfo>\r\n    <BehaviorTree id=\"0\" _name=\"PrototypeBehaviourTree\"
-    _description=\"\" _removeIfClosed=\"False\">\r\n      <_rootList>\r\n       
-    <elem>\r\n          <SelectorNode id=\"35\" />\r\n        </elem>\r\n       
-    <elem>\r\n          <DecoratorGuard id=\"36\" />\r\n        </elem>\r\n       
-    <elem>\r\n          <ConditionEvalNode id=\"37\" />\r\n        </elem>\r\n       
-    <elem>\r\n          <ActionNode id=\"38\" />\r\n        </elem>\r\n        <elem>\r\n         
-    <DecoratorGuard id=\"42\" />\r\n        </elem>\r\n        <elem>\r\n         
-    <ConditionEvalNode id=\"43\" />\r\n        </elem>\r\n        <elem>\r\n         
-    <ActionNode id=\"44\" />\r\n        </elem>\r\n        <elem>\r\n          <DecoratorGuard
-    id=\"45\" />\r\n        </elem>\r\n        <elem>\r\n          <ConditionEvalNode
-    id=\"46\" />\r\n        </elem>\r\n        <elem>\r\n          <ActionNode id=\"47\"
-    />\r\n        </elem>\r\n        <elem>\r\n          <DecoratorGuard id=\"49\"
-    />\r\n        </elem>\r\n        <elem>\r\n          <ConditionEvalNode id=\"50\"
-    />\r\n        </elem>\r\n        <elem>\r\n          <ActionNode id=\"51\" />\r\n       
-    </elem>\r\n      </_rootList>\r\n      <_nodes>\r\n        <nodes>\r\n         
-    <ConditionEvalNode id=\"37\" />\r\n          <SelectorNode id=\"35\" />\r\n         
-    <DecoratorGuard id=\"36\" />\r\n          <ActionNode id=\"38\" />\r\n         
-    <ActionNode id=\"44\" />\r\n          <ConditionEvalNode id=\"43\" />\r\n         
-    <DecoratorGuard id=\"42\" />\r\n          <DecoratorGuard id=\"45\" />\r\n         
-    <ConditionEvalNode id=\"46\" />\r\n          <ActionNode id=\"47\" />\r\n         
-    <DecoratorGuard id=\"49\" />\r\n          <ConditionEvalNode id=\"50\" />\r\n         
-    <ActionNode id=\"51\" />\r\n        </nodes>\r\n      </_nodes>\r\n    </BehaviorTree>\r\n   
+    <ActionNode id=\"44\" action=\"CustomAction/ChooseBestDefense\">\r\n      <inputParams>\r\n       
+    <inputValues>\r\n          <entry name=\"Owner\" type=\"Lodis.AI.AttackDummyBehaviour\"
+    isBlackboard=\"True\" blackboard=\"Owner\" />\r\n          <entry name=\"LastDefenseDecision\"
+    type=\"Lodis.AI.DefenseNode\" isBlackboard=\"True\" blackboard=\"LastDefenseDecision\"
+    />\r\n          <entry name=\"RandomDecisionChosen\" type=\"System.Boolean\"
+    isBlackboard=\"True\" blackboard=\"RandomDecisionChosen\" />\r\n        </inputValues>\r\n     
+    </inputParams>\r\n      <outputParams>\r\n        <outputValues>\r\n         
+    <entry name=\"LastDefenseDecision\" type=\"Lodis.AI.DefenseNode\" isBlackboard=\"True\"
+    blackboard=\"LastDefenseDecision\" />\r\n          <entry name=\"RandomDecisionChosen\"
+    type=\"System.Boolean\" isBlackboard=\"True\" blackboard=\"RandomDecisionChosen\"
+    />\r\n        </outputValues>\r\n      </outputParams>\r\n      <localParams
+    />\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"46\" policy=\"WAIT_UNTIL_FALSE_AND_FAIL\"
+    name=\"Basic/CheckBool\">\r\n      <inputParams>\r\n        <inputValues>\r\n         
+    <entry name=\"valueA\" type=\"System.Boolean\" isBlackboard=\"True\" blackboard=\"CanParry\"
+    />\r\n          <entry name=\"valueB\" type=\"System.Boolean\" isBlackboard=\"True\"
+    blackboard=\"valueB\" />\r\n        </inputValues>\r\n      </inputParams>\r\n     
+    <outputParams />\r\n      <localParams />\r\n    </ConditionEvalNode>\r\n   
+    <ActionNode id=\"47\" action=\"SuccessAction\">\r\n      <inputParams />\r\n     
+    <outputParams />\r\n      <localParams />\r\n    </ActionNode>\r\n  </runtimeInfo>\r\n 
+    <editorInfo>\r\n    <BehaviorTree id=\"0\" _name=\"PrototypeBehaviourTree\" _description=\"\"
+    _removeIfClosed=\"False\">\r\n      <_rootList>\r\n        <elem>\r\n         
+    <SelectorNode id=\"35\" />\r\n        </elem>\r\n        <elem>\r\n         
+    <DecoratorGuard id=\"36\" />\r\n        </elem>\r\n        <elem>\r\n         
+    <ConditionEvalNode id=\"37\" />\r\n        </elem>\r\n        <elem>\r\n         
+    <ActionNode id=\"38\" />\r\n        </elem>\r\n        <elem>\r\n          <DecoratorGuard
+    id=\"42\" />\r\n        </elem>\r\n        <elem>\r\n          <ConditionEvalNode
+    id=\"43\" />\r\n        </elem>\r\n        <elem>\r\n          <ActionNode id=\"44\"
+    />\r\n        </elem>\r\n        <elem>\r\n          <DecoratorGuard id=\"45\"
+    />\r\n        </elem>\r\n        <elem>\r\n          <ConditionEvalNode id=\"46\"
+    />\r\n        </elem>\r\n        <elem>\r\n          <ActionNode id=\"47\" />\r\n       
+    </elem>\r\n        <elem>\r\n          <DecoratorGuard id=\"49\" />\r\n       
+    </elem>\r\n        <elem>\r\n          <ConditionEvalNode id=\"50\" />\r\n       
+    </elem>\r\n        <elem>\r\n          <ActionNode id=\"51\" />\r\n        </elem>\r\n     
+    </_rootList>\r\n      <_nodes>\r\n        <nodes>\r\n          <ConditionEvalNode
+    id=\"37\" />\r\n          <SelectorNode id=\"35\" />\r\n          <DecoratorGuard
+    id=\"36\" />\r\n          <ActionNode id=\"38\" />\r\n          <ActionNode id=\"44\"
+    />\r\n          <ConditionEvalNode id=\"43\" />\r\n          <DecoratorGuard
+    id=\"42\" />\r\n          <DecoratorGuard id=\"45\" />\r\n          <ConditionEvalNode
+    id=\"46\" />\r\n          <ActionNode id=\"47\" />\r\n          <DecoratorGuard
+    id=\"49\" />\r\n          <ConditionEvalNode id=\"50\" />\r\n          <ActionNode
+    id=\"51\" />\r\n        </nodes>\r\n      </_nodes>\r\n    </BehaviorTree>\r\n   
     <SelectorNode id=\"35\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
     position=\"425.1895 -38.72194\" name=\"Selector\" description=\"Executes all
     its children until one of them is successful\" cardinality=\"-1\" hasParent=\"False\">\r\n         
@@ -103,16 +116,16 @@ MonoBehaviour:
     cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree id=\"35\" />\r\n         
     <DecoratorGuard id=\"49\" />\r\n          <SelectorNode id=\"35\" />\r\n       
     </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n    <DecoratorGuard id=\"36\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"251.8562
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"250.8562
     106.0558\" name=\"Guard\" description=\"Guard\" cardinality=\"1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"35\" />\r\n          <DecoratorGuard id=\"36\" />\r\n         
     <SelectorNode id=\"35\" />\r\n        </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n   
     <DecoratorGuard id=\"42\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"397.6895 111.778\" name=\"Guard\" description=\"Guard\"
+    selected=\"False\" position=\"479.6895 107.778\" name=\"Guard\" description=\"Guard\"
     cardinality=\"1\" hasParent=\"True\">\r\n          <BehaviorTree id=\"35\" />\r\n         
     <DecoratorGuard id=\"42\" />\r\n          <SelectorNode id=\"35\" />\r\n       
     </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n    <DecoratorGuard id=\"45\">\r\n     
-    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"603.6909
+    <_data>\r\n        <data breakpoint=\"0\" selected=\"False\" position=\"717.6909
     110.778\" name=\"Guard\" description=\"Guard\" cardinality=\"1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"35\" />\r\n          <DecoratorGuard id=\"45\" />\r\n         
     <SelectorNode id=\"35\" />\r\n        </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n   
@@ -121,40 +134,39 @@ MonoBehaviour:
     description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"50\" />\r\n        </data>\r\n     
     </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"51\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"True\" position=\"15.134 103\" name=\"CustomAction/MoveTowardsEnemy\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"15.134 103\" name=\"CustomAction/MoveTowardsEnemy\"
     description=\"\" cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ActionNode id=\"51\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"37\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"251.8562 106.0558\" name=\"CustomConditions/IsSafe\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"250.8562 106.0558\" name=\"CustomConditions/IsSafe\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"37\" />\r\n        </data>\r\n     
     </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"38\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"251.8562 106.0558\" name=\"CustomAction/Attack\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"250.8562 106.0558\" name=\"CustomAction/ChooseBestAttack\"
     description=\"\" cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ActionNode id=\"38\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"43\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"397.6895 111.778\" name=\"Basic/CheckBool\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"479.6895 107.778\" name=\"Basic/CheckBool\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"43\" />\r\n        </data>\r\n     
     </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"44\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"397.6895 111.778\" name=\"SuccessAction\"
+    <data breakpoint=\"0\" selected=\"True\" position=\"479.6895 107.778\" name=\"CustomAction/ChooseBestDefense\"
+    description=\"\" cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree
+    id=\"0\" />\r\n          <ActionNode id=\"44\" />\r\n        </data>\r\n     
+    </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"46\">\r\n      <_data>\r\n       
+    <data breakpoint=\"0\" selected=\"False\" position=\"717.6909 110.778\" name=\"Basic/CheckBool\"
+    description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
+    id=\"0\" />\r\n          <ConditionEvalNode id=\"46\" />\r\n        </data>\r\n     
+    </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"47\">\r\n      <_data>\r\n       
+    <data breakpoint=\"0\" selected=\"False\" position=\"717.6909 110.778\" name=\"SuccessAction\"
     description=\"Action that always successes. It executes in one cycle.\" cardinality=\"0\"
     hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n          <ActionNode
-    id=\"44\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n   
-    <ConditionEvalNode id=\"46\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"603.6909 110.778\" name=\"Basic/CheckBool\" description=\"Eval\"
-    cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n         
-    <ConditionEvalNode id=\"46\" />\r\n        </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n   
-    <ActionNode id=\"47\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"603.6909 110.778\" name=\"SuccessAction\" description=\"Action that
-    always successes. It executes in one cycle.\" cardinality=\"0\" hasParent=\"False\">\r\n         
-    <BehaviorTree id=\"0\" />\r\n          <ActionNode id=\"47\" />\r\n        </data>\r\n     
-    </_data>\r\n    </ActionNode>\r\n  </editorInfo>\r\n  <runtimeInfo>\r\n    <BehaviorTree
-    id=\"35\" nextId=\"1\">\r\n      <inputParams />\r\n      <outputParams />\r\n     
-    <localParams />\r\n    </BehaviorTree>\r\n  </runtimeInfo>\r\n  <editorInfo>\r\n   
-    <BehaviorTree id=\"35\" _removeIfClosed=\"False\">\r\n      <_rootList />\r\n     
-    <_nodes>\r\n        <nodes />\r\n      </_nodes>\r\n    </BehaviorTree>\r\n 
-    </editorInfo>\r\n</BehaviorBricks>"
+    id=\"47\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n  </editorInfo>\r\n 
+    <runtimeInfo>\r\n    <BehaviorTree id=\"35\" nextId=\"1\">\r\n      <inputParams
+    />\r\n      <outputParams />\r\n      <localParams />\r\n    </BehaviorTree>\r\n 
+    </runtimeInfo>\r\n  <editorInfo>\r\n    <BehaviorTree id=\"35\" _removeIfClosed=\"False\">\r\n     
+    <_rootList />\r\n      <_nodes>\r\n        <nodes />\r\n      </_nodes>\r\n   
+    </BehaviorTree>\r\n  </editorInfo>\r\n</BehaviorBricks>"
   zoom: 1
   subslist: []
   _guid: 9aaa7bb72180ef0479a7bb47efa52cb6
