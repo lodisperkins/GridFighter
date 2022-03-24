@@ -117,11 +117,11 @@ MonoBehaviour:
     <BehaviorTree id=\"35\" />\r\n          <DecoratorGuard id=\"45\" />\r\n         
     <SelectorNode id=\"35\" />\r\n        </data>\r\n      </_data>\r\n    </DecoratorGuard>\r\n   
     <ConditionEvalNode id=\"50\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"True\" position=\"15.134 103\" name=\"CustomConditions/OutOfRange\"
+    selected=\"False\" position=\"15.134 103\" name=\"CustomConditions/OutOfRange\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"50\" />\r\n        </data>\r\n     
     </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"51\">\r\n      <_data>\r\n       
-    <data breakpoint=\"2\" selected=\"False\" position=\"15.134 103\" name=\"CustomAction/MoveTowardsEnemy\"
+    <data breakpoint=\"0\" selected=\"True\" position=\"15.134 103\" name=\"CustomAction/MoveTowardsEnemy\"
     description=\"\" cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ActionNode id=\"51\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ConditionEvalNode id=\"37\">\r\n      <_data>\r\n       

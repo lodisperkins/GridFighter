@@ -21,7 +21,7 @@ namespace Lodis.Gameplay
         {
             base.Init(newOwner);
             //Load projectile asset
-            Projectile = (GameObject)Resources.Load("Projectiles/CrossProjectile");
+            ProjectileRef = (GameObject)Resources.Load("Projectiles/CrossProjectile");
             //Set default hitbox traits
             DestroyOnHit = false;
             IsMultiHit = true;
@@ -30,13 +30,11 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            base.Activate(args);
-            //Set the amount of frames the projectile will register a hit
-            ProjectileCollider.ColliderInfo.HitFrames = 1;
-            //Create a new collider that will handle reversing velocity
-            _reboundCollider = GetColliderBehaviour(0);
-
             //Redirect projectile on hit
+            base.Activate(args);
+            _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
+            _reboundCollider.ColliderInfo.IsMultiHit = true;
+            _reboundCollider.ColliderInfo.HitFrames = 3;
             _reboundCollider.OnHit += TryRedirectProjectile;
         }
 
@@ -75,7 +73,7 @@ namespace Lodis.Gameplay
             else if(other.CompareTag("Structure"))
             {
                 //...destroy it
-                MonoBehaviour.Destroy(_reboundCollider.gameObject);
+                MonoBehaviour.Destroy(ProjectileCollider.gameObject);
             }
         }
     }

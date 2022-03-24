@@ -50,7 +50,9 @@ namespace Lodis.AI
 
         public override float Compare(TreeNode node)
         {
-            AttackNode attackNode = (AttackNode)node;
+            AttackNode attackNode = node as AttackNode;
+
+            if (attackNode == null) return 0;
 
             float directionAccuracy = Vector3.Dot(attackNode.TargetDisplacement.normalized, TargetDisplacement.normalized);
             float distanceAccuracy = TargetDisplacement.magnitude / attackNode.TargetDisplacement.magnitude;
