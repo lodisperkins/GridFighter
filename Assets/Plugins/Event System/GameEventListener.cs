@@ -9,7 +9,7 @@ namespace GridGame
     {
         //Delegate containing all functions to used when the event is invoked
         [SerializeField]
-        UnityEvent actions;
+        UnityEvent actions = new UnityEvent();
         //the event the gameobject should be listening for
 
         public GridGame.Event Event;
@@ -35,6 +35,9 @@ namespace GridGame
 
         public void AddAction(UnityAction action)
         {
+            if (actions == null)
+                actions = new UnityEvent();
+
             actions.AddListener(action);
         }
 

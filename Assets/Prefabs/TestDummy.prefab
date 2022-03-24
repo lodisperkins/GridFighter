@@ -454,7 +454,7 @@ MonoBehaviour:
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
   MovePosition: {x: 0, y: 0}
-  EnableBehaviourTree: 1
+  EnableBehaviourTree: 0
 --- !u!114 &3691015139844951449
 MonoBehaviour:
   m_ObjectHideFlags: 0

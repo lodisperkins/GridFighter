@@ -19,7 +19,7 @@ namespace Lodis.Movement
         private Rigidbody _rigidbody;
         [Tooltip("How much mass the game object has. The higher the number, the less panels it travels when knocked back.")]
         [SerializeField]
-        private float _mass;
+        private float _mass = 1;
         private bool _objectAtRest;
         private Vector3 _acceleration;
         private Vector3 _lastVelocity;
@@ -111,6 +111,7 @@ namespace Lodis.Movement
         public bool ObjectAtRest { get => _objectAtRest; }
         public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
         public Vector3 NetForce { get => _netForce; }
+        public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
 
         private void Awake()
         {

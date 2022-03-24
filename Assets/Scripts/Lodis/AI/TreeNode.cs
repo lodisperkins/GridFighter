@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Lodis.AI
@@ -29,5 +30,9 @@ namespace Lodis.AI
         }
 
         public virtual float Compare(TreeNode node) { return 0; }
+
+        public virtual void Save(StreamWriter writer) { }
+        public virtual void Load(StreamReader reader) { }
+
     }
 }

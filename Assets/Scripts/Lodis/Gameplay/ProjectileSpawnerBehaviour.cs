@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Movement;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -46,10 +47,17 @@ namespace Lodis.Gameplay
             HitColliderBehaviour collider = (temp.AddComponent<HitColliderBehaviour>());
             HitColliderBehaviour.Copy(hitCollider, collider);
 
-            Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
-            rigidbody.useGravity = useGravity;
-            if (rigidbody)
-                rigidbody.AddForce(force, ForceMode.Impulse);
+            GridPhysicsBehaviour physics = temp.GetComponent<GridPhysicsBehaviour>();
+
+            if (physics == null)
+            {
+                physics = temp.AddComponent<GridPhysicsBehaviour>();
+                physics.MovementBehaviour.enabled = false;
+            }
+
+            physics.UseGravity = useGravity;
+
+            physics.ApplyImpulseForce(force);
 
             return temp;
         }
