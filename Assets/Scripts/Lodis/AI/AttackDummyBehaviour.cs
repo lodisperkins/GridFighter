@@ -44,12 +44,14 @@ namespace Lodis.AI
         private GameObject _opponent;
         private AIDummyMovementBehaviour _movementBehaviour;
         private AttackDecisionTree _attackDecisions;
+        private GridPhysicsBehaviour _gridPhysics;
         public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
         public MovesetBehaviour Moveset { get => _moveset; set => _moveset = value; }
-        public AIDummyMovementBehaviour AIMovement { get => _movementBehaviour; set => _movementBehaviour = value; }
+        public AIDummyMovementBehaviour AIMovement { get => _movementBehaviour; }
         public AttackDecisionTree AttackDecisions { get => _attackDecisions; }
+        public GridPhysicsBehaviour GridPhysics { get => _gridPhysics; }
 
         public Vector2 MovePosition;
         public bool EnableBehaviourTree;
@@ -67,7 +69,8 @@ namespace Lodis.AI
             _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
             _executor = GetComponent<BehaviorExecutor>();
-            AIMovement = GetComponent<AIDummyMovementBehaviour>();
+            _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
+            _gridPhysics = GetComponent<GridPhysicsBehaviour>();
 
             if (GetComponent<GridMovementBehaviour>().Alignment == GridAlignment.LEFT)
                 _opponent = BlackBoardBehaviour.Instance.Player2;
@@ -116,6 +119,8 @@ namespace Lodis.AI
             _executor.enabled = EnableBehaviourTree;
 
             if (_executor.enabled) return;
+
+            _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
 
             //Only attack if the dummy is grounded and delay timer is up
             if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.RecoveringFromFall && !_chargingAttack)
