@@ -47,7 +47,7 @@ public class IsSafeCondition : GOCondition
             Vector3 direction = (physics.transform.position - _dummy.transform.position).normalized;
             float dotProduct = Vector3.Dot(direction, physics.LastVelocity.normalized);
 
-            if (Mathf.Abs(dotProduct) >= 0.95f)
+            if (Mathf.Abs(dotProduct) >= 0.8f)
                 return true;
         }
 

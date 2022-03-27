@@ -248,6 +248,8 @@ namespace Lodis.Input
                 return;
             else if (_bufferedAction == null && (_playerState == "Tumbling" || _playerState == "FreeFall" || _playerState == "Idle" || _playerState == "Moving"))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
+            else if (_bufferedAction == null)
+                return;
             else if (!_bufferedAction.HasAction() && (_playerState == "Tumbling"
                 || _playerState == "FreeFall" || _playerState == "Idle" || _playerState == "Moving"))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);

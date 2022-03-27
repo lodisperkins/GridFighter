@@ -109,6 +109,24 @@ namespace Lodis.Gameplay
         }
         
         /// <summary>
+        /// Checks if the normal deck has an ability that matches the name
+        /// </summary>
+        /// <param name="name">The name of the ability to search for. Do not use the file name.</param>
+        public bool NormalDeckContains(string name)
+        {
+            return _normalDeck.Contains(name);
+        }
+
+        /// <summary>
+        /// Checks if the special deck has an ability that matches the name
+        /// </summary>
+        /// <param name="name">The name of the ability to search for. Do not use the file name.</param>
+        public bool SpecialDeckContains(string name)
+        {
+            return _specialDeck.Contains(name);
+        }
+
+        /// <summary>
         /// Gets the names of the special abilities currently placed
         /// into the characters hand
         /// </summary>

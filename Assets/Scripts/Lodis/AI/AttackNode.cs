@@ -41,9 +41,13 @@ namespace Lodis.AI
 
             bool behindBarrier = (bool)args[1];
             float opponentHealth = (float)args[2];
+            AttackDummyBehaviour owner = (AttackDummyBehaviour)args[3];
 
             if (behindBarrier) weight += BarrierEffectiveness;
             weight += KnockBackDealt;
+
+            if (!owner.Moveset.NormalDeckContains(AbilityName) && !owner.Moveset.SpecialDeckContains(AbilityName))
+                weight = 0;
 
             return weight;
         }

@@ -47,7 +47,7 @@ GameObject:
   - component: {fileID: 7080764703363995812}
   m_Layer: 9
   m_Name: ParryBox
-  m_TagString: Untagged
+  m_TagString: ParryBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -60,7 +60,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 59615424948160073}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.47, z: 0}
   m_LocalScale: {x: 1.6, y: 1.8, z: 1.6}
   m_Children: []
   m_Father: {fileID: 5680485170780137522}
@@ -453,6 +453,14 @@ MonoBehaviour:
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
+  LastDefenseDecision:
+    VisitCount: 0
+    Wins: 0
+    BaseWeight: 0
+    DefenseDecision: 0
+    CounterAbilityName: 
+    AveragePosition: {x: 0, y: 0, z: 0}
+    AverageVelocity: {x: 0, y: 0, z: 0}
   MovePosition: {x: 0, y: 0}
   EnableBehaviourTree: 1
 --- !u!114 &3691015139844951449
@@ -1093,12 +1101,13 @@ MonoBehaviour:
     intParams: 
     intParamsNames: []
     intParamsLostDefaultValue: 
-    boolParams: 00000000
+    boolParams: 0000000000
     boolParamsNames:
     - InDanger
     - IsGrounded
     - CanParry
     - CounterAttacking
+    - RandomDecisionChosen
     boolParamsLostDefaultValue: 
     floatParams: []
     floatParamsNames: []

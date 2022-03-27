@@ -189,6 +189,16 @@ namespace Lodis.Gameplay
             return null;
         }
 
+        public bool Contains(string name)
+        {
+            for(int i = 0; i < _abilities.Count; i++)
+            {
+                if (_abilities[i].abilityData.abilityName == name)
+                    return true;
+            }
+            return false;
+        }
+
         public IEnumerator GetEnumerator()
         {
             return _abilities.GetEnumerator();

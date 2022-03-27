@@ -36,6 +36,9 @@ public class AttackAction : GOAction
 
         if (_decision != null)
         {
+            if (!_dummy.Moveset.SpecialDeckContains(_decision.AbilityName) && !_dummy.Moveset.NormalDeckContains(_decision.AbilityName))
+                return;
+
             UseDecisionAbility(_dummy.Moveset.GetAbilityByName(_decision.AbilityName));
             _decision.VisitCount++;
         }

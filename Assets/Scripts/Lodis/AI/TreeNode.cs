@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Newtonsoft.Json;
 
 namespace Lodis.AI
 {
@@ -11,7 +12,9 @@ namespace Lodis.AI
         public int VisitCount;
         public int Wins;
         public float BaseWeight;
+        [JsonIgnore]
         public TreeNode Left;
+        [JsonIgnore]
         public TreeNode Right;
         public TreeNode Parent;
         public static int RandomDecisionConstant;
@@ -24,7 +27,10 @@ namespace Lodis.AI
 
         public virtual float GetTotalWeight(TreeNode root, params object[] args)
         {
-            float averageWeight = BaseWeight / VisitCount;
+            if (VisitCount == 0)
+                return Mathf.Infinity;
+
+            float averageWeight = Wins / VisitCount;
 
             BaseWeight = averageWeight + RandomDecisionConstant * (Mathf.Sqrt(Mathf.Log(root.VisitCount) / VisitCount));
 

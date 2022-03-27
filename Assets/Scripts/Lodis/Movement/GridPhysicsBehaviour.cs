@@ -292,6 +292,9 @@ namespace Lodis.Movement
             if (float.IsNaN(magnitude))
                 return new Vector3();
 
+            if (_maxMagnitude == null)
+                return new Vector3();
+
             //Clamps magnitude to be within the limit
             magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Value);
 

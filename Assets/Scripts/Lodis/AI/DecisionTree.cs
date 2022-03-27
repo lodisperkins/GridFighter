@@ -71,7 +71,7 @@ namespace Lodis.AI
         /// <param name="decision">The new decision node to add</param>
         public TreeNode AddDecision(TreeNode decision)
         {
-            if (_nodeCache.Count >= 500) return null;
+            if (_nodeCache.Count >= 100) return null;
 
             if (_root == null)
             {
