@@ -1,0 +1,3 @@
+2
+{"DefenseDecision":2,"CounterAbilityName":null,"AveragePosition":{"x":5.86666632,"y":0.879999936,"z":-3.9339065E-07},"AverageVelocity":{"x":5.00000048,"y":0.0,"z":-2.98023224E-06},"VisitCount":3,"Wins":3,"BaseWeight":0.0,"Parent":null}
+{"DefenseDecision":0,"CounterAbilityName":null,"AveragePosition":{"x":5.83333254,"y":0.879999936,"z":-5.483627E-07},"AverageVelocity":{"x":-8.333335,"y":0.0,"z":1.78813934E-06},"VisitCount":2,"Wins":3,"BaseWeight":"NaN","Parent":null}

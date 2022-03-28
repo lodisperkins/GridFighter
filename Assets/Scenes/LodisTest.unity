@@ -642,7 +642,7 @@ GameObject:
   - component: {fileID: 151772238}
   - component: {fileID: 151772237}
   - component: {fileID: 151772242}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RingBarrierR
   m_TagString: Structure
   m_Icon: {fileID: 0}
@@ -753,7 +753,7 @@ BoxCollider:
   m_GameObject: {fileID: 151772236}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 10.000002, y: 0.4, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
@@ -4912,7 +4912,7 @@ GameObject:
   - component: {fileID: 894189966}
   - component: {fileID: 894189965}
   - component: {fileID: 894189970}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RingBarrierL
   m_TagString: Structure
   m_Icon: {fileID: 0}
@@ -5023,7 +5023,7 @@ BoxCollider:
   m_GameObject: {fileID: 894189964}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 10.000002, y: 0.77, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
@@ -7466,7 +7466,8 @@ MonoBehaviour:
   _ringBarrierL: {fileID: 894189965}
   _ringBarrierR: {fileID: 151772237}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
-  _dummySpawnLocation: {x: 5, y: 2}
+  _dummyRHSSpawnLocation: {x: 5, y: 1}
+  _dummyLHSSpawnLocation: {x: 4, y: 0}
   _targetFrameRate: 60
 --- !u!114 &1441118449
 MonoBehaviour:

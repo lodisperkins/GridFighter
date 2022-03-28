@@ -117,9 +117,9 @@ namespace Lodis.AI
             return decision;
         }
 
-        public virtual void Save()
+        public virtual void Save(string ownerName)
         {
-            StreamWriter writer = new StreamWriter("Decisions/DecisionData.txt");
+            StreamWriter writer = new StreamWriter("Decisions/DecisionData" + ownerName + ".txt");
             string json = JsonConvert.SerializeObject(_nodeCache);
             writer.Write(json);
             writer.Close();
@@ -127,12 +127,12 @@ namespace Lodis.AI
             OnSave?.Invoke();
         }
 
-        public virtual bool Load()
+        public virtual bool Load(string ownerName)
         {
-            if (!File.Exists("Decisions/DecisionData.txt"))
+            if (!File.Exists("Decisions/DecisionData" + ownerName + ".txt"))
                 return false;
 
-            StreamReader reader = new StreamReader("Decisions/DecisionData.txt");
+            StreamReader reader = new StreamReader("Decisions/DecisionData" + ownerName + ".txt");
             _nodeCache = JsonConvert.DeserializeObject<List<TreeNode>>(reader.ReadToEnd());
             reader.Close();
 

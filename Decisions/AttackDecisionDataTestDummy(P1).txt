@@ -1,0 +1,2 @@
+1
+{"TargetDisplacement":{"x":1.22992992,"y":0.0,"z":0.0},"TargetHealth":0.0,"BarrierEffectiveness":0,"AttackStartTime":0.3,"AbilityName":"ChargeForwardShot","AttackStrength":0.5556754,"KnockBackDealt":24.43958,"AttackDirection":{"x":0.0,"y":0.0},"VisitCount":3,"Wins":21,"BaseWeight":0.0,"Parent":null}

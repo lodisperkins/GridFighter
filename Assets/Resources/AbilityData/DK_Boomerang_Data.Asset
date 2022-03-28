@@ -32,12 +32,30 @@ MonoBehaviour:
   visualPrefab: {fileID: 0}
   ColliderData:
   - Name: BoomerangCollider
-    DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    DespawnAfterTimeLimit: 1
+    TimeActive: 10
     DestroyOnHit: 0
-    IsMultiHit: 0
+    IsMultiHit: 1
     IgnoreColliders: 1
     LayersToIgnore:
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
+    - ParryBox
     - ParryBox
     - ParryBox
     - ParryBox

@@ -13,7 +13,8 @@ namespace Lodis.Gameplay
     {
         SINGLEPLAYER,
         PRACTICE,
-        MULTIPLAYER
+        MULTIPLAYER,
+        SIMULATE
     }
 
     public class GameManagerBehaviour : MonoBehaviour
@@ -28,7 +29,7 @@ namespace Lodis.Gameplay
         private GameMode _mode;
         private PlayerInput _player1;
         private PlayerInput _player2;
-        private GameObject _cpu;
+        private GameObject _cpu2;
         private Movement.GridMovementBehaviour _p1Movement;
         private Movement.GridMovementBehaviour _p2Movement;
         private CharacterStateMachineBehaviour _p1StateManager;
@@ -52,11 +53,14 @@ namespace Lodis.Gameplay
         [SerializeField]
         private AI.AttackDummyBehaviour _dummy;
         [SerializeField]
-        private Vector2 _dummySpawnLocation;
+        private Vector2 _dummyRHSSpawnLocation;
+        [SerializeField]
+        private Vector2 _dummyLHSSpawnLocation;
         [SerializeField]
         private int _targetFrameRate;
         private int _player1DeviceIndex;
-        
+        private GameObject _cpu1;
+
         public int TargetFrameRate
         {
             get { return _targetFrameRate; }
@@ -84,8 +88,8 @@ namespace Lodis.Gameplay
 
                 case GameMode.PRACTICE:
                     SpawnPlayer1();
-                    SpawnCPU();
-                    _grid.AssignOwners(_player1.name, _cpu.name);
+                    SpawnCPU2();
+                    _grid.AssignOwners(_player1.name, _cpu2.name);
                     break;
 
                 case GameMode.MULTIPLAYER:
@@ -94,36 +98,71 @@ namespace Lodis.Gameplay
                     _grid.AssignOwners(_player1.name, _player2.name);
                     break;
 
+                case GameMode.SIMULATE:
+                    SpawnCPU1();
+                    SpawnCPU2();
+                    _grid.AssignOwners(_cpu1.name, _cpu2.name);
+                    break;
+
             }
         }
 
-        private void SpawnCPU()
+        private void SpawnCPU2()
         {
             _inputManager.playerPrefab = _dummy.gameObject;
 
-            _cpu = Instantiate(_inputManager.playerPrefab);
-            _cpu.name = _inputManager.playerPrefab.name + "(Dummy)";
-            _ringBarrierR.owner = _cpu.name;
-            _cpu.transform.forward = Vector3.left;
-            BlackBoardBehaviour.Instance.Player2 = _cpu.gameObject;
+            _cpu2 = Instantiate(_inputManager.playerPrefab);
+            _cpu2.name = _inputManager.playerPrefab.name + "(P2)";
+            _ringBarrierR.owner = _cpu2.name;
+            _cpu2.transform.forward = Vector3.left;
+            BlackBoardBehaviour.Instance.Player2 = _cpu2.gameObject;
             //Get reference to player 2 components
-            _p2Movement = _cpu.GetComponent<Movement.GridMovementBehaviour>();
-            _p2StateManager = _cpu.GetComponent<CharacterStateMachineBehaviour>();
-            _player2Moveset = _cpu.GetComponent<MovesetBehaviour>();
+            _p2Movement = _cpu2.GetComponent<Movement.GridMovementBehaviour>();
+            _p2StateManager = _cpu2.GetComponent<CharacterStateMachineBehaviour>();
+            _player2Moveset = _cpu2.GetComponent<MovesetBehaviour>();
 
             //Initialize base UI stats
-            _p2HealthBar.HealthComponent = _cpu.GetComponent<Movement.KnockbackBehaviour>();
+            _p2HealthBar.HealthComponent = _cpu2.GetComponent<Movement.KnockbackBehaviour>();
             _p2HealthBar.MaxValue = 200;
             _abilityTextP2.MoveSet = _player2Moveset;
 
             //Find spawn point for dummy
             GridScripts.PanelBehaviour spawnPanel = null;
-            if (_grid.GetPanel(_dummySpawnLocation, out spawnPanel, false))
+            if (_grid.GetPanel(_dummyRHSSpawnLocation, out spawnPanel, false))
                 _p2Movement.MoveToPanel(spawnPanel, true, GridScripts.GridAlignment.ANY);
             else
-                Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummySpawnLocation);
+                Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummyRHSSpawnLocation);
 
             _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
+        }
+        
+        private void SpawnCPU1()
+        {
+            _inputManager.playerPrefab = _dummy.gameObject;
+
+            _cpu1 = Instantiate(_inputManager.playerPrefab);
+            _cpu1.name = _inputManager.playerPrefab.name + "(P1)";
+            _ringBarrierL.owner = _cpu1.name;
+            _cpu1.transform.forward = Vector3.right;
+            BlackBoardBehaviour.Instance.Player1 = _cpu1.gameObject;
+            //Get reference to player 2 components
+            _p1Movement = _cpu1.GetComponent<Movement.GridMovementBehaviour>();
+            _p1StateManager = _cpu1.GetComponent<CharacterStateMachineBehaviour>();
+            _player2Moveset = _cpu1.GetComponent<MovesetBehaviour>();
+
+            //Initialize base UI stats
+            _p1HealthBar.HealthComponent = _cpu1.GetComponent<Movement.KnockbackBehaviour>();
+            _p1HealthBar.MaxValue = 200;
+            _abilityTextP1.MoveSet = _player1Moveset;
+
+            //Find spawn point for dummy
+            GridScripts.PanelBehaviour spawnPanel = null;
+            if (_grid.GetPanel(_dummyLHSSpawnLocation, out spawnPanel, false))
+                _p1Movement.MoveToPanel(spawnPanel, true, GridScripts.GridAlignment.ANY);
+            else
+                Debug.LogError("Invalid spawn point for dummy. Spawn was " + _dummyLHSSpawnLocation);
+
+            _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
         }
 
         private void SpawnPlayer2()
@@ -252,6 +291,9 @@ namespace Lodis.Gameplay
 
         private void FixedUpdate()
         {
+            if (_mode == GameMode.SIMULATE)
+                return;
+
             if (_p1Input.Devices.Count == 0)
             {
                 InputDevice device;

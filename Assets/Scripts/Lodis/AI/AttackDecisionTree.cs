@@ -14,17 +14,17 @@ namespace Lodis.AI
             _nodeCache = new List<TreeNode>();
         }
 
-        public override void Save()
+        public override void Save(string ownerName)
         {
             if (_nodeCache.Count == 0) return;
 
-            if (!File.Exists("Decisions/AttackDecisionData.txt"))
+            if (!File.Exists("Decisions/AttackDecisionData" + ownerName + ".txt"))
             {
-                FileStream stream = File.Create("Decisions/AttackDecisionData.txt");
+                FileStream stream = File.Create("Decisions/AttackDecisionData" + ownerName + ".txt");
                 stream.Close();
             }
 
-            StreamWriter writer = new StreamWriter("Decisions/AttackDecisionData.txt");
+            StreamWriter writer = new StreamWriter("Decisions/AttackDecisionData" + ownerName + ".txt");
             string json = _nodeCache.Count.ToString() + "\n";
 
             for (int i = 0; i < _nodeCache.Count; i++)
@@ -36,12 +36,12 @@ namespace Lodis.AI
             OnSave?.Invoke();
         }
 
-        public override bool Load()
+        public override bool Load(string ownerName)
         {
-            if (!File.Exists("Decisions/AttackDecisionData.txt"))
+            if (!File.Exists("Decisions/AttackDecisionData" + ownerName + ".txt"))
                 return false;
 
-            StreamReader reader = new StreamReader("Decisions/AttackDecisionData.txt");
+            StreamReader reader = new StreamReader("Decisions/AttackDecisionData" + ownerName + ".txt");
             int count = JsonConvert.DeserializeObject<int>(reader.ReadLine());
 
             for (int i = 0; i < count; i++)

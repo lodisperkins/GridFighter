@@ -1,0 +1,4 @@
+3
+{"TargetDisplacement":{"x":-1.19999981,"y":0.0,"z":0.0},"TargetHealth":0.0,"BarrierEffectiveness":1,"AttackStartTime":0.1,"AbilityName":"DoubleShot","AttackStrength":0.436887145,"KnockBackDealt":6.65902424,"AttackDirection":{"x":0.0,"y":0.0},"VisitCount":2,"Wins":11,"BaseWeight":0.0,"Parent":null}
+{"TargetDisplacement":{"x":0.169463158,"y":-0.0571378171,"z":-1.64022936E-07},"TargetHealth":42.696003,"BarrierEffectiveness":0,"AttackStartTime":0.4,"AbilityName":"FootDive","AttackStrength":0.00118056533,"KnockBackDealt":3.42320013,"AttackDirection":{"x":0.0,"y":0.0},"VisitCount":1,"Wins":1,"BaseWeight":1.0,"Parent":null}
+{"TargetDisplacement":{"x":-0.145783424,"y":-0.02968049,"z":-1.23129776E-05},"TargetHealth":0.0,"BarrierEffectiveness":0,"AttackStartTime":0.1,"AbilityName":"DoubleShot","AttackStrength":0.436887145,"KnockBackDealt":6.592357,"AttackDirection":{"x":0.0,"y":0.0},"VisitCount":1,"Wins":1,"BaseWeight":1.0,"Parent":null}

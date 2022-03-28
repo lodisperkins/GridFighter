@@ -63,9 +63,9 @@ namespace Lodis.AI
         private void Awake()
         {
             _attackDecisions = new AttackDecisionTree();
-            _attackDecisions.Load();
+            _attackDecisions.Load(name);
             _defenseDecisions = new DefenseDecisionTree();
-            _defenseDecisions.Load();
+            _defenseDecisions.Load(name);
         }
 
         // Start is called before the first frame update
@@ -172,8 +172,8 @@ namespace Lodis.AI
 
         private void OnApplicationQuit()
         {
-            _attackDecisions.Save();
-            _defenseDecisions.Save();
+            _attackDecisions.Save(name);
+            _defenseDecisions.Save(name);
         }
     }
 }
