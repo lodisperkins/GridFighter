@@ -38,8 +38,7 @@ MonoBehaviour:
     DestroyOnHit: 1
     IsMultiHit: 0
     IgnoreColliders: 0
-    LayersToIgnore:
-    - ParryBox
+    LayersToIgnore: []
     HitFrames: 0
     Damage: 15
     BaseKnockBack: 2
@@ -52,7 +51,7 @@ MonoBehaviour:
     Priority: 1
   _customStats:
   - name: Speed
-    value: 0.5
+    value: 1.5
   - name: MaxInstances
     value: 2
   animationType: 3

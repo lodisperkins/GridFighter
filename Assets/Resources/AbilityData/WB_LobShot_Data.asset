@@ -38,8 +38,7 @@ MonoBehaviour:
     DestroyOnHit: 1
     IsMultiHit: 0
     IgnoreColliders: 1
-    LayersToIgnore:
-    - ParryBox
+    LayersToIgnore: []
     HitFrames: 0
     Damage: 2
     BaseKnockBack: 1
