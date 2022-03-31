@@ -16,8 +16,6 @@ namespace Lodis.Gameplay
         public bool DestroyOnHit;
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
         public bool IsMultiHit;
-        [Tooltip("Whether or not this collider will ignore other ability colliders.")]
-        public bool IgnoreColliders;
         [Tooltip("The collision layers to ignore when checking for valid collisions.")]
         public List<string> LayersToIgnore;
         [Tooltip("If this collider can hit multiple times, this is how many frames the object will have to wait before being able to register a collision with the same object.")]
@@ -189,7 +187,7 @@ namespace Lodis.Gameplay
                 otherGameObject = other.gameObject;
             }
 
-            if (otherCollider && ColliderInfo.IgnoreColliders || CheckIfLayerShouldBeIgnored(otherGameObject.layer))
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer))
                     return;
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -222,7 +220,7 @@ namespace Lodis.Gameplay
                 otherGameObject = other.gameObject;
             }
 
-            if (otherCollider && ColliderInfo.IgnoreColliders || CheckIfLayerShouldBeIgnored(otherGameObject.layer))
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer))
                 return;
 
             Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
@@ -276,7 +274,7 @@ namespace Lodis.Gameplay
             }
 
 
-            if (otherCollider && ColliderInfo.IgnoreColliders || CheckIfLayerShouldBeIgnored(otherGameObject.layer))
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer))
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again

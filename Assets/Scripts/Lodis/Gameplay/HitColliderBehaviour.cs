@@ -42,9 +42,6 @@ namespace Lodis.Gameplay
 
         private void Start()
         {
-            if (!ColliderInfo.LayersToIgnore.Contains("ParryBox"))
-                ColliderInfo.LayersToIgnore.Add("ParryBox");
-
             StartTime = Time.time;
         }
 
@@ -90,35 +87,19 @@ namespace Lodis.Gameplay
                 else
                     return;
             }
-            
-            //All colliders should ignore parry boxes
-            if (other.CompareTag("ParryBox"))
-                return;
 
-            //If the object has a collider and isn't a character...
-            if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
+            //If it is a hit collider...
+            if (otherCollider is HitColliderBehaviour hitCollider)
             {
-                //Return if its attached to this object or this object wants to ignore collider
-                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
-                    return;
-
-                //If it is a hit collider...
-                if (otherCollider is HitColliderBehaviour hitCollider)
+                //...destroy it if it has a lower priority
+                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
                 {
-                    //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
-                    {
-                        Destroy(gameObject);
-                        return;
-                    }
-                    //Ignore the collider otherwise
+                    Destroy(gameObject);
                     return;
                 }
-
-                //If the other collider is set to ignore colliders return
-                if (otherCollider.ColliderInfo.IgnoreColliders)
-                    return;
-            } 
+                //Ignore the collider otherwise
+                return;
+            }
             
             CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
             //Grab whatever health script is attached to this object
@@ -180,9 +161,6 @@ namespace Lodis.Gameplay
 
             //Grab whatever health script is attached to this object. If none return
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
-
-            if (other.CompareTag("ParryBox"))
-                return;
 
             //If the object has a collider and isn't a character...
             if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
@@ -258,9 +236,6 @@ namespace Lodis.Gameplay
 
             if (collision.collider.attachedRigidbody)
                 otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
-
-            if (collision.gameObject.CompareTag("ParryBox"))
-                return;
 
             //If the object has a collider and isn't a character...
             if (otherCollider && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Entity"))

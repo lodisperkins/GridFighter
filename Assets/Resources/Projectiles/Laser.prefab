@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 578979680154982098}
   - component: {fileID: 745941853881555547}
   - component: {fileID: 4099455663904606460}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: LaserCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 6730556455862515627}
   - component: {fileID: -2440945249955403580}
   - component: {fileID: 5492325235108541249}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Laser
   m_TagString: Untagged
   m_Icon: {fileID: 0}

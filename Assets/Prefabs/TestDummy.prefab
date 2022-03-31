@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 7525997868280381973}
   - component: {fileID: 8490310239496012516}
   - component: {fileID: 7080764703363995812}
+  - component: {fileID: 2242850895129184734}
   m_Layer: 9
   m_Name: ParryBox
   m_TagString: ParryBox
@@ -198,11 +199,30 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 59615424948160073}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2242850895129184734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 59615424948160073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53beaecddc8bdc34ba7596f9e7536010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 0
+  _startingHealth: -1
+  _maxHealth: {fileID: 11400000, guid: b313a20a8cbcc9440850e29d4a6fac48, type: 2}
+  _destroyOnDeath: 0
+  _isAlive: 1
+  _isInvincible: 0
+  _stunned: 0
 --- !u!114 &7756890942965727391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,7 +470,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 4
+  _attackType: 0
   _attackDelay: 0
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
@@ -464,7 +484,7 @@ MonoBehaviour:
     AveragePosition: {x: 0, y: 0, z: 0}
     AverageVelocity: {x: 0, y: 0, z: 0}
   MovePosition: {x: 0, y: 0}
-  EnableBehaviourTree: 1
+  EnableBehaviourTree: 0
 --- !u!114 &3691015139844951449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,6 +536,9 @@ MonoBehaviour:
   _braceInvincibilityTime: 0.3
   _fallBreakLength: 0.3
   _attackerStunTime: 5
+  _isBlocking: 0
+  _shieldHealth: {fileID: 2242850895129184734}
+  _shieldBreakStunTime: 10
 --- !u!75 &986386592
 ConstantForce:
   m_ObjectHideFlags: 0

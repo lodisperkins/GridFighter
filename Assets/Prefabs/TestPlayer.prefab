@@ -292,6 +292,9 @@ MonoBehaviour:
   _braceInvincibilityTime: 0.3
   _fallBreakLength: 0.3
   _attackerStunTime: 5
+  _isBlocking: 0
+  _shieldHealth: {fileID: 1097361387282335789}
+  _shieldBreakStunTime: 10
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -981,6 +984,25 @@ Transform:
   m_Father: {fileID: 2765739998997917291}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1097361387282335789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7822510805826503882}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53beaecddc8bdc34ba7596f9e7536010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 0
+  _startingHealth: -1
+  _maxHealth: {fileID: 11400000, guid: b313a20a8cbcc9440850e29d4a6fac48, type: 2}
+  _destroyOnDeath: 0
+  _isAlive: 1
+  _isInvincible: 0
+  _stunned: 0
 --- !u!114 &4705404459745268771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1165,7 +1187,7 @@ PrefabInstance:
     - target: {fileID: 1108451635469348776, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
       propertyPath: m_TagString
-      value: ParryBox
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 9130470748693586590, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
@@ -1225,6 +1247,12 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 5927806561006395036, guid: 3750288d4cc41f440964731ec1982842, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3750288d4cc41f440964731ec1982842, type: 3}
+--- !u!1 &7822510805826503882 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1108451635469348776, guid: 3750288d4cc41f440964731ec1982842,
+    type: 3}
+  m_PrefabInstance: {fileID: 7200453995346291554}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &2114673151879252476 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9130470748693586590, guid: 3750288d4cc41f440964731ec1982842,
@@ -1237,7 +1265,7 @@ MonoBehaviour:
     type: 3}
   m_PrefabInstance: {fileID: 7200453995346291554}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 7822510805826503882}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}

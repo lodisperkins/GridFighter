@@ -141,6 +141,7 @@ namespace Lodis.Input
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
             _playerControls.Player.Parry.performed += context => { BufferParry(context); _defense.Brace(); };
+            _playerControls.Player.Parry.canceled += context => _defense.DisableShield();
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
         }
@@ -299,7 +300,8 @@ namespace Lodis.Input
             //    return;
             //}
 
-            _defense.ActivateParry();
+            _defense.EnableShield();
+            DisableMovementBasedOnCondition(args => !_defense.IsBlocking);
         }
 
         /// <summary>
@@ -316,7 +318,7 @@ namespace Lodis.Input
         /// </summary>
         private void DisableMovement()
         {
-            if (_playerState == "Tumbling" || _playerState == "Tumbling")
+            if (_playerState == "Tumbling")
                 return;
 
             if (_attackDirection.normalized == _gridMovement.MoveDirection.normalized || _gridMovement.MoveDirection == Vector2.zero)

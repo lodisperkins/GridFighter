@@ -17,6 +17,7 @@ namespace Lodis.Gameplay
         private Movement.KnockbackBehaviour _knockBack;
         private Input.InputBehaviour _input;
         private Movement.GridMovementBehaviour _movement;
+        private HealthBehaviour _health;
         [Tooltip("How long the object will be parrying for.")]
         [SerializeField]
         private float _parryLength;
@@ -80,6 +81,11 @@ namespace Lodis.Gameplay
         private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
         private RoutineBehaviour.TimedAction _parryTimer;
+        private bool _isBlocking;
+        [SerializeField]
+        private HealthBehaviour _shieldHealth;
+        [SerializeField]
+        private float _shieldBreakStunTime;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _braceInvincibilityTime; }
@@ -87,6 +93,7 @@ namespace Lodis.Gameplay
         public bool IsParrying { get => _isParrying; }
         public bool IsBraced { get; private set; }
         public float FallBreakLength { get => _fallBreakLength; set => _fallBreakLength = value; }
+        public bool IsBlocking { get => _isBlocking; }
 
         // Start is called before the first frame update
         void Start()
@@ -95,6 +102,7 @@ namespace Lodis.Gameplay
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
+            _shieldHealth = _parryCollider.GetComponent<HealthBehaviour>();
 
             if (_meshRenderer)
             {
@@ -110,6 +118,8 @@ namespace Lodis.Gameplay
             _parryCollider.OnHit += ActivateInvinciblity;
             _parryCollider.OnHit += TryReflectProjectile;
             _parryCollider.OnHit += TryStunAttacker;
+            _shieldHealth.AddOnDeathAction(BreakShield);
+
             _parryCollider.Owner = gameObject;
         }
 
@@ -416,6 +426,29 @@ namespace Lodis.Gameplay
 
             //Make the character invincible for a short amount of time if they're on the ground
             _knockBack.SetInvincibilityByTimer(_parryInvincibilityLength);
+        }
+
+        public void EnableShield()
+        {
+            _isBlocking = true;
+            _movement.DisableMovement(condition => !_isBlocking, true, true);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _parryCollider.gameObject.SetActive(true), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+        }
+
+        public void DisableShield()
+        {
+            if (!IsBlocking)
+                return;
+
+            _parryCollider.gameObject.SetActive(false);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _isBlocking = false, TimedActionCountType.SCALEDTIME, _groundParryRestTime);
+        }
+
+        public void BreakShield()
+        {
+            _health.Stun(_shieldBreakStunTime);
+            _shieldHealth.Heal(_shieldHealth.MaxHealth.Value);
+            _parryCollider.gameObject.SetActive(false);
         }
 
         private void OnDrawGizmos()

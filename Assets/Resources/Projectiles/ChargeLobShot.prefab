@@ -27,6 +27,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: ChargeLobShot
       objectReference: {fileID: 0}
+    - target: {fileID: 679093164750957707, guid: 1ce1ba52079e3d848a3c4e62f298ecdc,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1339095119119945021, guid: 1ce1ba52079e3d848a3c4e62f298ecdc,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3418467267879564826, guid: 1ce1ba52079e3d848a3c4e62f298ecdc,
         type: 3}
       propertyPath: m_RootOrder

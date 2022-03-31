@@ -92,10 +92,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6954124468046122124, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 8897977150452739386, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: m_Name
       value: ChargeShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 8897977150452739386, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c662ede171e2a26498c91a36fc787336, type: 3}

@@ -38,6 +38,7 @@ namespace Lodis.Gameplay
         private InputBehaviour _input;
         protected GridMovementBehaviour _movement;
         private UnityAction _onStun;
+        private UnityAction _onDeath;
 
         public bool Stunned 
         {
@@ -138,6 +139,12 @@ namespace Lodis.Gameplay
             return abilityData.GetCustomStatValue("Damage");
         }
 
+        public virtual float Heal(float healthAmount)
+        {
+            _health = healthAmount;
+            return healthAmount;
+        }
+
         /// <summary>
         /// Starts the timer for the movement and input being disabled
         /// </summary>
@@ -210,6 +217,11 @@ namespace Lodis.Gameplay
             _onStun += action;
         }
 
+        public void AddOnDeathAction(UnityAction action)
+        {
+            _onDeath += action;
+        }
+
         /// <summary>
         /// Makes the object invincible. No damage can be taken by the object
         /// </summary>
@@ -273,6 +285,9 @@ namespace Lodis.Gameplay
         public virtual void Update()
         {
             //Death check
+            if (IsAlive && Health <= 0)
+                _onDeath?.Invoke();
+
             _isAlive = _health > 0;
 
             if (!IsAlive && _destroyOnDeath)
