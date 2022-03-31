@@ -42,7 +42,9 @@ namespace Lodis.Gameplay
 
         private void Start()
         {
-            ColliderInfo.LayersToIgnore.Add("ParryBox");
+            if (!ColliderInfo.LayersToIgnore.Contains("ParryBox"))
+                ColliderInfo.LayersToIgnore.Add("ParryBox");
+
             StartTime = Time.time;
         }
 

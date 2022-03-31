@@ -105,12 +105,10 @@ namespace Lodis.Gameplay
         }
 
         // Update is called once per frame
-        public override void Update()
+        public void FixedUpdate()
         {
-            base.Update();
-
             //Make the material transparent if there is an object behind the barrier
-            if (Physics.Raycast(transform.position, Vector3.forward, 1, _visibleLayers))
+            if (Physics.Raycast(transform.position, Vector3.forward, BlackBoardBehaviour.Instance.Grid.PanelScale.z + 1, _visibleLayers))
                 _material.color = new Color(1, 1, 1, 0.5f);
             else
                 _material.color = new Color(1, 1, 1, 1);

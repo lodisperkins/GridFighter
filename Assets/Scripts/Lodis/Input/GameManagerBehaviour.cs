@@ -113,7 +113,7 @@ namespace Lodis.Gameplay
 
             _cpu2 = Instantiate(_inputManager.playerPrefab);
             _cpu2.name = _inputManager.playerPrefab.name + "(P2)";
-            _ringBarrierR.owner = _cpu2.name;
+            _ringBarrierR.Owner = _cpu2.name;
             _cpu2.transform.forward = Vector3.left;
             BlackBoardBehaviour.Instance.Player2 = _cpu2.gameObject;
             //Get reference to player 2 components
@@ -142,7 +142,7 @@ namespace Lodis.Gameplay
 
             _cpu1 = Instantiate(_inputManager.playerPrefab);
             _cpu1.name = _inputManager.playerPrefab.name + "(P1)";
-            _ringBarrierL.owner = _cpu1.name;
+            _ringBarrierL.Owner = _cpu1.name;
             _cpu1.transform.forward = Vector3.right;
             BlackBoardBehaviour.Instance.Player1 = _cpu1.gameObject;
             //Get reference to player 2 components
@@ -170,7 +170,7 @@ namespace Lodis.Gameplay
             //Spawn player 2
             _player2 = _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[0]);
             _player2.name += "(P2)";
-            _ringBarrierR.owner = _player2.name;
+            _ringBarrierR.Owner = _player2.name;
             _player2.transform.forward = Vector3.left;
             BlackBoardBehaviour.Instance.Player2 = _player2.gameObject;
             //Get reference to player 2 components
@@ -212,7 +212,7 @@ namespace Lodis.Gameplay
 
             _player1 = PlayerInput.GetPlayerByIndex(0);
             _player1.name = _player1.name + "(P1)";
-            _ringBarrierL.owner = _player1.name;
+            _ringBarrierL.Owner = _player1.name;
 
             //Get reference to player 1 components
             _p1Movement = _player1.GetComponent<Movement.GridMovementBehaviour>();

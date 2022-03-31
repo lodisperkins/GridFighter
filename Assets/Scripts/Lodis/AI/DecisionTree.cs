@@ -200,6 +200,7 @@ namespace Lodis.AI
                 node.Parent = null;
                 node.Right = null;
                 node.Left = null;
+                _nodeCache.Remove(node);
             }
         }
 

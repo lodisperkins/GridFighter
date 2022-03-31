@@ -314,7 +314,7 @@ MonoBehaviour:
   _stunned: 0
   _visibleLayers:
     serializedVersion: 2
-    m_Bits: 12800
+    m_Bits: 31232
   _owner: 
   _pushScale: 10
   _damageOnCollision: 0

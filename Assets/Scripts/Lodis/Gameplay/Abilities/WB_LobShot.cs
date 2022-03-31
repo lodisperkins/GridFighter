@@ -120,7 +120,7 @@ namespace Lodis.Gameplay
 
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
             //Fire laser
-            spawnScript.FireProjectile(CalculateProjectileForce(), _projectileCollider, true);
+            _activeProjectiles.Add(spawnScript.FireProjectile(CalculateProjectileForce(), _projectileCollider, true));
 
             MonoBehaviour.Destroy(spawnerObject);
         }

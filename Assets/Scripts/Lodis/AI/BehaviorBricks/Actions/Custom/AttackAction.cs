@@ -124,6 +124,8 @@ public class AttackAction : GOAction
         }
 
         attackDirection.x *= Mathf.Round(_dummy.transform.forward.x);
+        attackDirection.x = Mathf.Round(attackDirection.x);
+        attackDirection.y = Mathf.Round(attackDirection.y);
 
         //Decide which ability type to use based on the input
         if (attackDirection.y != 0)
