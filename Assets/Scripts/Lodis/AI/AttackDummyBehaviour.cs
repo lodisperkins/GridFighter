@@ -60,17 +60,14 @@ namespace Lodis.AI
         public Vector2 MovePosition;
         public bool EnableBehaviourTree;
 
-        private void Awake()
+        // Start is called before the first frame update
+        void Start()
         {
             _attackDecisions = new AttackDecisionTree();
             _attackDecisions.Load(name);
             _defenseDecisions = new DefenseDecisionTree();
             _defenseDecisions.Load(name);
-        }
 
-        // Start is called before the first frame update
-        void Start()
-        {
             Moveset = GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();

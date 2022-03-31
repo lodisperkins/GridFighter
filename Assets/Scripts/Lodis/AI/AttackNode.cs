@@ -44,12 +44,26 @@ namespace Lodis.AI
             AttackDummyBehaviour owner = (AttackDummyBehaviour)args[3];
 
             if (behindBarrier) weight += BarrierEffectiveness;
-            weight += KnockBackDealt;
 
             if (!owner.Moveset.NormalDeckContains(AbilityName) && !owner.Moveset.SpecialDeckContains(AbilityName))
                 weight = 0;
 
+            if (opponentHealth > 150)
+                weight += KnockBackDealt;
+
             return weight;
+        }
+
+        public override TreeNode CopyData(TreeNode other)
+        {
+            AttackNode otherNode = (AttackNode)other;
+            AttackNode node = (AttackNode)otherNode.MemberwiseClone();
+
+            node.Left = Left;
+            node.Right = Right;
+            node.Parent = Parent;
+
+            return node;
         }
 
         public override float Compare(TreeNode node)
@@ -59,12 +73,18 @@ namespace Lodis.AI
             if (attackNode == null) return 0;
 
             float directionAccuracy = Vector3.Dot(attackNode.TargetDisplacement.normalized, TargetDisplacement.normalized);
+            float attackDirectionAccuracy = Vector3.Dot(attackNode.AttackDirection.normalized, AttackDirection.normalized);
             float distanceAccuracy = TargetDisplacement.magnitude / attackNode.TargetDisplacement.magnitude;
+            float attackStrengthAccuracy = 0;
+
+            if (attackNode.AttackStrength > 0) 
+                attackStrengthAccuracy = AttackStrength / attackNode.AttackStrength;
+
             if (distanceAccuracy > 1)
                 distanceAccuracy -= distanceAccuracy - 1;
 
-            float totalAccuracy = (directionAccuracy + distanceAccuracy) / 2;
-            //continue here
+            float totalAccuracy = (directionAccuracy + distanceAccuracy + attackDirectionAccuracy + attackStrengthAccuracy) / 4;
+
             return totalAccuracy;
         }
     }

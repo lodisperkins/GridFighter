@@ -75,6 +75,18 @@ namespace Lodis.AI
             return averagePosition /= _attacksInRange.Count;
         }
 
+        public override TreeNode CopyData(TreeNode other)
+        {
+            DefenseNode otherNode = (DefenseNode)other;
+            DefenseNode node = (DefenseNode)otherNode.MemberwiseClone();
+
+            node.Left = Left;
+            node.Right = Right;
+            node.Parent = Parent;
+
+            return node;
+        }
+
         public override float Compare(TreeNode node)
         {
             DefenseNode defenseNode = node as DefenseNode;

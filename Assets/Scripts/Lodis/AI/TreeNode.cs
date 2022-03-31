@@ -17,12 +17,34 @@ namespace Lodis.AI
         [JsonIgnore]
         public TreeNode Right;
         public TreeNode Parent;
-        public static int RandomDecisionConstant;
+        public static int RandomDecisionConstant = 2;
 
         public TreeNode(TreeNode left, TreeNode right)
         {
             Left = left;
             Right = right;
+        }
+
+        public virtual TreeNode GetCopy()
+        {
+            return (TreeNode)this.MemberwiseClone();
+        }
+
+        /// <summary>
+        /// Returns a new node that has node stats of the node passed in. Does not include parent or child nodes.
+        /// </summary>
+        /// <param name="other">The node to copy</param>
+        /// <returns></returns>
+        public virtual TreeNode CopyData(TreeNode other)
+        {
+            TreeNode newNode = null;
+            newNode = (TreeNode)other.MemberwiseClone();
+
+            newNode.Left = Left;
+            newNode.Right = Right;
+            newNode.Parent = Parent;
+
+            return newNode;
         }
 
         public virtual float GetTotalWeight(TreeNode root, params object[] args)

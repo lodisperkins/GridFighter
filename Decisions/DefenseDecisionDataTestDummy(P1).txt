@@ -1,5 +1,0 @@
-4
-{"DefenseDecision":2,"CounterAbilityName":null,"AveragePosition":{"x":3.55572271,"y":1.71217418,"z":2.10000014},"AverageVelocity":{"x":-1.62968087,"y":-0.867657363,"z":0.0},"VisitCount":0,"Wins":1,"BaseWeight":0.0,"Parent":null}
-{"DefenseDecision":0,"CounterAbilityName":null,"AveragePosition":{"x":-0.7979308,"y":0.160347655,"z":2.10000014},"AverageVelocity":{"x":-2.37685776,"y":-3.87577534,"z":-3.57627869E-07},"VisitCount":0,"Wins":1,"BaseWeight":0.0,"Parent":null}
-{"DefenseDecision":0,"CounterAbilityName":null,"AveragePosition":{"x":-3.55169415,"y":-8.225603,"z":2.10000014},"AverageVelocity":{"x":-1.6828264,"y":-13.3698683,"z":0.0},"VisitCount":21,"Wins":22,"BaseWeight":"NaN","Parent":null}
-{"DefenseDecision":0,"CounterAbilityName":null,"AveragePosition":{"x":-7.300003,"y":0.88,"z":2.09999156},"AverageVelocity":{"x":-20.0000019,"y":0.0,"z":-7.15255737E-06},"VisitCount":16,"Wins":17,"BaseWeight":"NaN","Parent":null}

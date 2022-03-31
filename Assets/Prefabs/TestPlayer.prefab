@@ -305,6 +305,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 0
+  _startingHealth: 0
+  _maxHealth: {fileID: 11400000, guid: a850879eb5579a94c8611fe9609619f4, type: 2}
   _destroyOnDeath: 0
   _isAlive: 0
   _isInvincible: 0

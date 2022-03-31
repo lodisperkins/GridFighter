@@ -71,11 +71,12 @@ namespace Lodis.AI
         /// <param name="decision">The new decision node to add</param>
         public TreeNode AddDecision(TreeNode decision)
         {
-            if (_nodeCache.Count >= 100) return null;
+            if (_nodeCache.Count >= 400) return null;
 
             if (_root == null)
             {
                 _root = decision;
+                Debug.Log("Added decision to cache" + _nodeCache.Count);
                 _nodeCache.Add(_root);
                 return _root;
             }
@@ -86,7 +87,7 @@ namespace Lodis.AI
             //Loop until the appropriate empty spot is found
             while (current != null)
             {
-                if (decision.Compare(current) >= 0.6f)
+                if (decision.Compare(current) >= 0.7f)
                 {
                     decision.Left = current.Left;
                     decision.Right = current.Right;
@@ -94,12 +95,12 @@ namespace Lodis.AI
                     return current;
                 }
 
-                if (decision.Compare(current) >= 0.8f)
+                if (decision.Compare(current) >= 0.4f)
                 {
                     parent = current;
                     current = current.Right;
                 }
-                else if (decision.Compare(current) < 0.8f)
+                else if (decision.Compare(current) < 0.4f)
                 {
                     parent = current;
                     current = current.Left;
@@ -107,14 +108,99 @@ namespace Lodis.AI
             }
 
             //Make the decision a child of the parent based on how similar they are
-            if (decision.Compare(parent) >= 0.9f)
+            if (decision.Compare(parent) >= 0.7f)
+            {
                 parent.Right = decision;
+                decision.Parent = parent;
+            }
             else
+            {
                 parent.Left = decision;
+                decision.Parent = parent;
+            }
 
             _nodeCache.Add(decision);
+            Debug.Log("Added decision to cache" + _nodeCache.Count);
 
             return decision;
+        }
+
+        public void RemoveDecision(TreeNode node)
+        {
+            if (node == null) return;
+            //Initialize two iterators to find the data that will be copied and the node's parent
+            TreeNode iter1 = node;
+            TreeNode iter2 = node;
+
+            ///If the node has a right child, find the node with the smallest value to the right of the node we want to remove
+            if (node.Right != null)
+            {
+                //Sets the first iterator to the right of the node
+                iter1 = node.Right;
+
+                //Moves the first iterator to the left until it finds the smallest value
+                while (iter1.Left != null)
+                {
+                    iter2 = iter1;
+                    iter1 = iter1.Left;
+                }
+
+                //Once the smallest value has been found, copy the value to the node we want to remove
+                node = node.CopyData(iter1);
+
+                //Connect any children the smallest node may have to the parent of the smallest node.
+                if (iter2.Left != null)
+                {
+                    if (iter2.Left.Compare(node) == 1)
+                    {
+                        iter2.Left = iter1.Right;
+                    }
+                }
+                if (iter2.Right != null)
+                {
+                    if (iter2.Right.Compare(node) == 1)
+                    {
+                        iter2.Right = iter1.Right;
+                    }
+                }
+
+                //Remove all connections to this node
+                iter1.Parent = null;
+                iter1.Right = null;
+                iter1.Left = null;
+            }
+            else
+            {
+                TreeNode parent = node;
+
+                if (node.Parent != null)
+                    parent = node.Parent;
+
+                //Connect any children the node that needs to be removed may have to its parent.
+                if (parent.Left != null)
+                {
+                    if (parent.Compare(node) == 1)
+                    {
+                        parent.Left = node.Left;
+                    }
+                }
+                if (parent.Right != null)
+                {
+                    if (parent.Compare(node) == 1)
+                    {
+                        parent.Right = node.Left;
+                    }
+                }
+                //If the node we want to remove is the root, set the root to be its left child.
+                if (_root.Compare(node) == 1)
+                {
+                    _root = node.Left;
+                }
+                //Delete the node we want to remove
+                node.Parent = null;
+                node.Right = null;
+                node.Left = null;
+            }
         }
 
         public virtual void Save(string ownerName)

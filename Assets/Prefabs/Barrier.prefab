@@ -305,7 +305,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91a20db3ff22c8e448c54512fbe34232, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 50
+  _health: 0
+  _startingHealth: -1
+  _maxHealth: {fileID: 11400000, guid: 249fab45b0f1df644b7215bfab05eea4, type: 2}
   _destroyOnDeath: 1
   _isAlive: 1
   _isInvincible: 0

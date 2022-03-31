@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
             //Uses the total knockback and panel distance to find how far the object is travelling
             float displacement = (panelSize * _shotDistance) + (panelSpacing * (_shotDistance - 1));
             //Finds the magnitude of the force vector to be applied 
-            float val1 = displacement * Physics.gravity.magnitude;
+            float val1 = displacement * Physics.gravity.magnitude * abilityData.GetCustomStatValue("GravityScale"); ;
             float val2 = Mathf.Sin(2 * shotAngle);
             float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
             float magnitude = val3;

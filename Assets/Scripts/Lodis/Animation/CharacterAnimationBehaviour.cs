@@ -404,6 +404,10 @@ namespace Lodis.Gameplay
         {
             _animationPhase = 0;
             _animator.SetTrigger("GroundRecovery");
+            AnimatorClipInfo[] info = _animator.GetCurrentAnimatorClipInfo(0);
+
+            if (info.Length == 0)
+                return;
             _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / (_knockbackBehaviour.KnockDownRecoverTime - 0.1f));
         }
 
@@ -411,6 +415,11 @@ namespace Lodis.Gameplay
         {
             _animationPhase = 0;
             _animator.SetTrigger("HardLanding");
+            AnimatorClipInfo[] info = _animator.GetCurrentAnimatorClipInfo(0);
+
+            if (info.Length == 0)
+                return;
+
             _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime);
         }
 
@@ -418,6 +427,10 @@ namespace Lodis.Gameplay
         {
             _animationPhase = 0;
             _animator.SetTrigger("SoftLanding");
+            AnimatorClipInfo[] info = _animator.GetCurrentAnimatorClipInfo(0);
+
+            if (info.Length == 0)
+                return;
             _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime);
         }
 

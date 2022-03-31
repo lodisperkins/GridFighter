@@ -29,7 +29,7 @@ public class DefendAction : GOAction
         base.OnStart();
         _grid = BlackBoardBehaviour.Instance.Grid;
         //Return if the dummy can't currently defend itself
-        if (_dummy.StateMachine.CurrentState != "Idle" && _dummy.StateMachine.CurrentState != "Attacking" && _dummy.StateMachine.CurrentState != "Moving")
+        if (_dummy.StateMachine.CurrentState != "Idle")
             return;
 
         //Grab the health component attached to know when it takes damage
@@ -42,12 +42,17 @@ public class DefendAction : GOAction
         if (_dummy.LastDefenseDecision != null)
         {
             //Increment the win count for the decision
-            _dummy.LastDefenseDecision.Wins++;
+            _dummy.LastDefenseDecision.Wins += 2;
+
+            if (_dummy.LastDefenseDecision.DefenseDecision == DefenseDecisionType.COUNTER)
+                _dummy.LastDefenseDecision.CounterAbilityName = _dummy.Moveset.LastAbilityInUse.abilityData.abilityName;
 
             //If the decision was random and didn't recieve negative points...
             if (_randomDecisionChosen && _dummy.LastDefenseDecision.Wins > 0)
+            {
                 //...add the decision to the tree
                 _dummy.DefenseDecisions.AddDecision(_dummy.LastDefenseDecision);
+            }
         }
 
         _dummy.Executor.blackboard.boolParams[4] = false;
@@ -62,19 +67,26 @@ public class DefendAction : GOAction
             //Mark it as visited an store its defense choice
             choice = _decision.DefenseDecision;
             _decision.VisitCount++;
+
+            //If the decision has failed too many times remove it
+            if (_decision.Wins <= -1)
+            {
+                _dummy.DefenseDecisions.RemoveDecision(_decision);
+                _decision = null;
+            }
         }
-        //Otherwise...
-        else
+
+        //If a valid decision couldn't be found...
+        if (_decision == null)
         {
             //Create a new random decision
-
             choice = (DefenseDecisionType)Random.Range(0, 3);
             _decision = new DefenseNode(GetPhysicsComponents(), null, null);
             _dummy.Executor.blackboard.boolParams[4] = true;
         }
 
         //Punish the decision if the dummy was damaged
-        _dummyHealth.AddOnTakeDamageTempAction(() => _decision.Wins -= 2);
+        _dummyHealth.AddOnTakeDamageTempAction(() => _decision.Wins--);
 
         //Perform an action based on choice
         switch (choice)

@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
             if (_target)
             {
                 HealthComponent = _target.GetComponent<HealthBehaviour>();
-                MaxValue = HealthComponent.Health;
+                MaxValue = HealthComponent.MaxHealth.Value;
             }
 
             _slider = GetComponent<Slider>();

@@ -66,6 +66,7 @@ namespace Lodis.Gameplay
         /// Called when the ability's collider hits an object
         /// </summary>
         public CollisionEvent OnHit = null;
+        public CollisionEvent OnHitTemp = null;
 
         public AbilityPhase CurrentAbilityPhase { get; private set; }
 
@@ -312,6 +313,7 @@ namespace Lodis.Gameplay
             for (int i = 0; i < _colliders.Count; i++)
             {
                 _colliders[i].OnHit += arguments => OnHit?.Invoke(arguments);
+                _colliders[i].OnHit += arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; };
             }
 
             if (abilityData.cancelOnHit)

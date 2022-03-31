@@ -133,8 +133,9 @@ namespace Lodis.Movement
         }
 
         // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             _onKnockBack += () => Landing = false;
             _onKnockBackStart += () => { Stunned = false; _movementBehaviour.CurrentPanel.Occupied = false; };
         }
@@ -420,7 +421,6 @@ namespace Lodis.Movement
 
             //Adds damage to the total damage
             Health += damage;
-            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
 
             ActivateHitStunByTimer(hitStun);
 
@@ -481,7 +481,6 @@ namespace Lodis.Movement
 
             //Adds damage to the total damage
             Health += info.Damage;
-            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
 
             ActivateHitStunByTimer(info.HitStunTime);
 
@@ -543,7 +542,6 @@ namespace Lodis.Movement
 
             //Adds damage to the total damage
             Health += abilityData.GetCustomStatValue("Damage");
-            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
 
             ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 
@@ -614,7 +612,6 @@ namespace Lodis.Movement
 
             //Adds damage to the total damage
             Health += damage;
-            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
 
             ActivateHitStunByTimer(hitStun);
             _lastBaseKnockBack = baseKnockBack;
@@ -690,7 +687,6 @@ namespace Lodis.Movement
             float damage = abilityData.GetCustomStatValue("Damage");
             //Adds damage to the total damage
             Health += damage;
-            Health = Mathf.Clamp(Health, 0, BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value);
 
             ActivateHitStunByTimer(abilityData.GetCustomStatValue("HitStunTimer"));
 

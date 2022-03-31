@@ -14,6 +14,12 @@ namespace Lodis.Gameplay
         [Tooltip("The measurement of the amount of damage this object can take or has taken")]
         [SerializeField]
         private float _health;
+        [Tooltip("The starting amount of damage this object can take or has taken. Set to -1 to start with max health.")]
+        [SerializeField]
+        private float _startingHealth = -1;
+        [Tooltip("The maximum amount of damage this object can take or has taken")]
+        [SerializeField]
+        private FloatVariable _maxHealth;
         [Tooltip("Whether or not this object should be deleted if the health is 0")]
         [SerializeField]
         private bool _destroyOnDeath;
@@ -56,10 +62,15 @@ namespace Lodis.Gameplay
 
         public float Health { get => _health; protected set => _health = value; }
         public bool IsInvincible { get => _isInvincible; }
+        public FloatVariable MaxHealth { get => _maxHealth; }
 
-        private void Start()
+        protected virtual void Start()
         {
             _isAlive = true;
+            if (_startingHealth < 0)
+                _health = _maxHealth.Value;
+            else
+                _health = _startingHealth;
         }
 
         /// <summary>
@@ -276,6 +287,10 @@ namespace Lodis.Gameplay
                     _invincibilityCondition = null;
                 }    
             }
+
+            //Clamp health
+            if (Health > _maxHealth.Value)
+                Health = _maxHealth.Value;
         }
     }
 }

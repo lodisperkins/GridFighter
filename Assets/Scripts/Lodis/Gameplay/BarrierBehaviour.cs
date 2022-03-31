@@ -30,8 +30,9 @@ namespace Lodis.Gameplay
         public string Owner { get => _owner; set => _owner = value; }
 
         // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
+            base.Start();
             _material = GetComponent<Renderer>().material;
             _movement = GetComponent<Movement.GridMovementBehaviour>();
         }

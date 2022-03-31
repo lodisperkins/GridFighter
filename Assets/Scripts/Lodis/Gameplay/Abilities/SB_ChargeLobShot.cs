@@ -201,6 +201,7 @@ namespace Lodis.Gameplay
             _strongProjectileCollider.OnHit += SpawnWeakShots;
             //Fire laser
             _weakSpawnTransform = spawnScript.FireProjectile(CalculateProjectileForce(owner.transform.forward, _strongShotDistance), _strongProjectileCollider, true).transform;
+            _weakSpawnTransform.GetComponent<Lodis.Movement.GridPhysicsBehaviour>().Gravity = 9.81f * abilityData.GetCustomStatValue("GravityScale");
 
             _activeProjectiles.Add(_weakSpawnTransform.gameObject);
 
