@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Blaster
   AbilityType: 0
-  timeActive: 0.4
+  timeActive: 0.2
   recoverTime: 1
   startUpTime: 0.1
   chargeTime: 1
@@ -42,13 +42,13 @@ MonoBehaviour:
     - ParryBox
     HitFrames: 0
     Damage: 1
-    BaseKnockBack: 0
-    KnockBackScale: 0
-    HitAngle: 0
+    BaseKnockBack: 1
+    KnockBackScale: 1.2
+    HitAngle: 0.8
     AdjustAngleBasedOnCollision: 0
     TypeOfDamage: 0
     CanSpike: 0
-    HitStunTime: 0.05
+    HitStunTime: 0.1
     Priority: 0
   _customStats:
   - name: Speed
