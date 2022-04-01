@@ -75,7 +75,7 @@ namespace Lodis.Gameplay
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit)
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || CheckIfLayerShouldBeIgnored(other.gameObject.layer))
                 return;
 
             //Get the collider behaviour attached to the rigidbody
@@ -88,11 +88,13 @@ namespace Lodis.Gameplay
                     return;
             }
 
-            //If it is a hit collider...
-            if (otherCollider is HitColliderBehaviour hitCollider)
+            bool otherIgnoresThisLayer = otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true;
+
+            //If it has a collider behaviour and doesn't want to ignore this object's layer...
+            if (otherCollider && !otherIgnoresThisLayer)
             {
                 //...destroy it if it has a lower priority
-                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
+                if (otherCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
                 {
                     Destroy(gameObject);
                     return;
@@ -100,12 +102,12 @@ namespace Lodis.Gameplay
                 //Ignore the collider otherwise
                 return;
             }
+            else if (otherIgnoresThisLayer) return;
             
-            CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
             //Grab whatever health script is attached to this object
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
+            HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
 
-            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
+            if (damageScript?.IsInvincible == true)
                 return;
 
             float newHitAngle = ColliderInfo.HitAngle;
@@ -113,14 +115,9 @@ namespace Lodis.Gameplay
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnCollision)
             {
-                //Find a vector that point from the collider to the object hit
-                Vector3 directionOfImpact = other.transform.position - transform.position;
-                directionOfImpact.Normalize();
-                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
-
                 //Find the direction this collider was going to apply force originally
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-                currentForceDirection.x *= directionOfImpact.x;
+                currentForceDirection.x *= Owner.transform.forward.x;
 
                 //Find the new angle based on the direction of the attack on the x axis
                 float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
@@ -153,43 +150,37 @@ namespace Lodis.Gameplay
             if (!Collisions.ContainsKey(other.gameObject))
                 Collisions.Add(other.gameObject, Time.frameCount);
 
+            //Get the collider behaviour attached to the rigidbody
             ColliderBehaviour otherCollider = null;
-
             if (other.attachedRigidbody)
-                otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
-
-
-            //Grab whatever health script is attached to this object. If none return
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
-
-            //If the object has a collider and isn't a character...
-            if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
             {
-                //Return if its attached to this object or this object wants to ignore collider
-                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
-                    return;
-
-                //If it is a hit collider...
-                if (otherCollider is HitColliderBehaviour hitCollider)
-                {
-                    //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
-                    {
-                        Destroy(gameObject);
-                        return;
-                    }
-                    //Ignore the collider otherwise
-                    return;
-                }
-
-                //If the other collider is set to ignore colliders return
-                if (otherCollider.ColliderInfo.IgnoreColliders)
+                if (other.attachedRigidbody.gameObject != Owner)
+                    otherCollider = other.attachedRigidbody.gameObject.GetComponentInChildren<ColliderBehaviour>();
+                else
                     return;
             }
 
-            CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
+            bool otherIgnoresThisLayer = otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true;
 
-            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
+            //If it has a collider behaviour and doesn't want to ignore this object's layer...
+            if (otherCollider && !otherIgnoresThisLayer)
+            {
+                //...destroy it if it has a lower priority
+                if (otherCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
+                {
+                    Destroy(gameObject);
+                    return;
+                }
+                //Ignore the collider otherwise
+                return;
+            }
+            else if (otherIgnoresThisLayer) return;
+
+
+            //Grab whatever health script is attached to this object
+            HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
+
+            if ( damageScript?.IsInvincible == true)
                 return;
 
             float newHitAngle = ColliderInfo.HitAngle;
@@ -197,14 +188,9 @@ namespace Lodis.Gameplay
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnCollision)
             {
-                //Find a vector that point from the collider to the object hit
-                Vector3 directionOfImpact = other.transform.position - transform.position;
-                directionOfImpact.Normalize();
-                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
-
                 //Find the direction this collider was going to apply force originally
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-                currentForceDirection.x *= directionOfImpact.x;
+                currentForceDirection.x *= Owner.transform.forward.x;
 
                 //Find the new angle based on the direction of the attack on the x axis
                 float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
@@ -238,36 +224,26 @@ namespace Lodis.Gameplay
                 otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
 
             //If the object has a collider and isn't a character...
-            if (otherCollider && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Entity"))
-            {
-                //Return if its attached to this object or this object wants to ignore collider
-                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
-                    return;
+            bool otherIgnoresThisLayer = otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true;
 
-                //If it is a hit collider...
-                if (otherCollider is HitColliderBehaviour hitCollider)
+            //If it has a collider behaviour and doesn't want to ignore this object's layer...
+            if (otherCollider && !otherIgnoresThisLayer)
+            {
+                //...destroy it if it has a lower priority
+                if (otherCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
                 {
-                    //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
-                    {
-                        Destroy(gameObject);
-                        return;
-                    }
-                    //Ignore the collider otherwise
+                    Destroy(gameObject);
                     return;
                 }
-
-                //If the other collider is set to ignore colliders return
-                if (otherCollider.ColliderInfo.IgnoreColliders)
-                    return;
+                //Ignore the collider otherwise
+                return;
             }
-
-            CharacterDefenseBehaviour characterDefenseBehaviour = collision.gameObject.GetComponentInParent<CharacterDefenseBehaviour>();
+            else if (otherIgnoresThisLayer) return;
 
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
-            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
+            if (damageScript?.IsInvincible == true)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -278,14 +254,9 @@ namespace Lodis.Gameplay
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnCollision)
             {
-                //Find a vector that point from the collider to the object hit
-                Vector3 directionOfImpact = collision.gameObject.transform.position - transform.position;
-                directionOfImpact.Normalize();
-                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
-
                 //Find the direction this collider was going to apply force originally
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-                currentForceDirection.x *= directionOfImpact.x;
+                currentForceDirection.x *= Owner.transform.forward.x;
 
                 //Find the new angle based on the direction of the attack on the x axis
                 float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);

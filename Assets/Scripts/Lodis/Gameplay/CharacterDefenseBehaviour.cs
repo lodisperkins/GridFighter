@@ -114,10 +114,10 @@ namespace Lodis.Gameplay
             _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
-            //Initialize default values
-            _parryCollider.OnHit += ActivateInvinciblity;
-            _parryCollider.OnHit += TryReflectProjectile;
-            _parryCollider.OnHit += TryStunAttacker;
+            ////Initialize default values
+            //_parryCollider.OnHit += ActivateInvinciblity;
+            //_parryCollider.OnHit += TryReflectProjectile;
+            //_parryCollider.OnHit += TryStunAttacker;
             _shieldHealth.AddOnDeathAction(BreakShield);
 
             _parryCollider.Owner = gameObject;

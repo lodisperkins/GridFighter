@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 6347599831565965600}
   - component: {fileID: 1253308864200353702}
   - component: {fileID: 5927806561006395036}
-  - component: {fileID: 391376136353551325}
   - component: {fileID: 5698475181075874488}
+  - component: {fileID: 4617227517804912682}
   m_Layer: 9
   m_Name: ParryBox
   m_TagString: Untagged
@@ -129,23 +129,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &391376136353551325
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1108451635469348776}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DespawnsAfterTimeLimit: 0
-  TimeActive: 0
-  IsMultiHit: 0
-  DestroyOnHit: 0
-  IgnoreColliders: 0
 --- !u!65 &5698475181075874488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -159,3 +142,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4617227517804912682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108451635469348776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53beaecddc8bdc34ba7596f9e7536010, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _health: 0
+  _startingHealth: -1
+  _maxHealth: {fileID: 11400000, guid: b313a20a8cbcc9440850e29d4a6fac48, type: 2}
+  _destroyOnDeath: 0
+  _isAlive: 1
+  _isInvincible: 0
+  _stunned: 0
