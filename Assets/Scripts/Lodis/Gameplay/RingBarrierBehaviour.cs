@@ -51,7 +51,7 @@ namespace Lodis.Gameplay
         /// Takes damage based on the damage type.
         /// </summary>
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        public override float TakeDamage(ColliderInfo info, GameObject attacker)
+        public override float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
             if (!IsAlive || IsInvincible || info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.name != Owner && Owner != ""))
                 return 0;

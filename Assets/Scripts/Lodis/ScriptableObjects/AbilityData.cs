@@ -72,7 +72,7 @@ namespace Lodis.ScriptableObjects
         public GameObject visualPrefab;
         [Tooltip("Information for all colliders this ability will use")]
         [SerializeField]
-        protected ColliderInfo[] ColliderData;
+        protected HitColliderInfo[] ColliderData;
         [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
         protected Stat[] _customStats;
@@ -116,12 +116,12 @@ namespace Lodis.ScriptableObjects
             return float.NaN;
         }
 
-        public ColliderInfo GetColliderInfo(int index)
+        public HitColliderInfo GetColliderInfo(int index)
         {
             if (index < 0 || index >= ColliderData.Length)
             {
                 Debug.LogWarning("GetColliderInfo() was called with an invalid index passed as a parameter");
-                return new ColliderInfo();
+                return new HitColliderInfo();
             }
 
             return ColliderData[index];

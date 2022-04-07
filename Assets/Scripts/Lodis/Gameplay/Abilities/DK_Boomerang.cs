@@ -33,8 +33,6 @@ namespace Lodis.Gameplay
             //Redirect projectile on hit
             base.Activate(args);
             _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
-            _reboundCollider.ColliderInfo.IsMultiHit = true;
-            _reboundCollider.ColliderInfo.HitFrames = 3;
             _reboundCollider.OnHit += TryRedirectProjectile;
         }
 
