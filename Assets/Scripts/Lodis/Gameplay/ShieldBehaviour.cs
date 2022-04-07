@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
         {
             if (!Owner) return 0;
 
-            if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker == Owner.name))
+            if (IsInvincible || (attacker == Owner.name))
                 return 0;
 
             Health -= damage;
@@ -43,7 +43,7 @@ namespace Lodis.Gameplay
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
         public override float TakeDamage(ColliderInfo info, GameObject attacker)
         {
-            if (!IsAlive || IsInvincible || info.TypeOfDamage != DamageType.KNOCKBACK || (attacker == Owner))
+            if (!IsAlive || IsInvincible  || (attacker == Owner))
                 return 0;
 
             Health -= info.Damage;
@@ -61,7 +61,7 @@ namespace Lodis.Gameplay
         {
             if (!Owner) return 0;
 
-            if (!IsAlive || IsInvincible || damageType != DamageType.KNOCKBACK || (attacker == Owner.name))
+            if (!IsAlive || IsInvincible || (attacker == Owner.name))
                 return 0;
 
             float damage = abilityData.GetCustomStatValue("Damage");

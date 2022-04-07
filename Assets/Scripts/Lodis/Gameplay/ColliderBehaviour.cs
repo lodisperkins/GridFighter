@@ -35,6 +35,8 @@ namespace Lodis.Gameplay
         public bool CanSpike;
         [Tooltip("The amount of time a character can't perform any actions after being hit")]
         public float HitStunTime;
+        [Tooltip("If true, this collider cannot be destroyed by, and will not destroy other colliders based on priority level.")]
+        public bool IgnoresPriority;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public float Priority;
 
@@ -56,6 +58,7 @@ namespace Lodis.Gameplay
             return ColliderInfo;
         }
     }
+
     /// <summary>
     /// Event used when collisions occur. 
     /// Arg[0] = The game object collided with.

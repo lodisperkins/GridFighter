@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 7459983024385515834}
   - component: {fileID: 6347599831565965600}
   - component: {fileID: 1253308864200353702}
-  - component: {fileID: 5927806561006395036}
   - component: {fileID: 5698475181075874488}
-  - component: {fileID: 4617227517804912682}
+  - component: {fileID: -2279804549857119416}
   m_Layer: 9
   m_Name: ParryBox
   m_TagString: Untagged
@@ -99,36 +98,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &5927806561006395036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1108451635469348776}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _minScale: {x: 1, y: 1, z: 1}
-  _maxScale: {x: 2, y: 2, z: 2}
-  _loopOnEnabled: 0
-  _scaleSpeed: 1
-  _onEnable:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 5927806561006395036}
-        m_MethodName: GrowAndShrink
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!65 &5698475181075874488
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -142,7 +111,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4617227517804912682
+--- !u!114 &-2279804549857119416
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -151,7 +120,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1108451635469348776}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53beaecddc8bdc34ba7596f9e7536010, type: 3}
+  m_Script: {fileID: 11500000, guid: aa8feb18e4b85db48bd983c77eb9e4ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _health: 0
@@ -161,3 +130,4 @@ MonoBehaviour:
   _isAlive: 1
   _isInvincible: 0
   _stunned: 0
+  _owner: {fileID: 0}

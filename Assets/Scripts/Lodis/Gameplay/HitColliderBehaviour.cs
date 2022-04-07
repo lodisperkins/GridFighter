@@ -78,6 +78,7 @@ namespace Lodis.Gameplay
             if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || CheckIfLayerShouldBeIgnored(other.gameObject.layer))
                 return;
 
+
             //Get the collider behaviour attached to the rigidbody
             ColliderBehaviour otherCollider = null;
             if (other.attachedRigidbody)
@@ -107,6 +108,8 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
 
+            if (ColliderInfo.DestroyOnHit && Collisions.Count >= 1)
+                return;
             if (damageScript?.IsInvincible == true)
                 return;
 
