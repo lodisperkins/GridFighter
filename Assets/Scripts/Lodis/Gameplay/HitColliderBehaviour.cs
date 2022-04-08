@@ -19,8 +19,6 @@ namespace Lodis.Gameplay
         public bool DestroyOnHit;
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
         public bool IsMultiHit;
-        [Tooltip("Whether or not this collider will ignore other ability colliders.")]
-        public bool IgnoreColliders;
         [Tooltip("The collision layers to ignore when checking for valid collisions.")]
         public List<string> LayersToIgnore;
         [Tooltip("If this collider can hit multiple times, this is how many frames the object will have to wait before being able to register a collision with the same object.")]
@@ -156,6 +154,11 @@ namespace Lodis.Gameplay
             return false;
         }
 
+        public void ResetActiveTime()
+        {
+            StartTime = Time.time;
+        }    
+
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
@@ -171,35 +174,24 @@ namespace Lodis.Gameplay
                 else
                     return;
             }
-            
-            //All colliders should ignore parry boxes
-            if (other.CompareTag("ParryBox"))
+
+            //Return if its attached to this object or this object wants to ignore collider
+            if (otherCollider?.Owner == Owner)
                 return;
 
-            //If the object has a collider and isn't a character...
-            if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
+            if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
+            //If it is a hit collider...
+            if (otherCollider is HitColliderBehaviour hitCollider)
             {
-                //Return if its attached to this object or this object wants to ignore collider
-                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
-                    return;
-
-                //If it is a hit collider...
-                if (otherCollider is HitColliderBehaviour hitCollider)
+                //...destroy it if it has a lower priority
+                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer))
                 {
-                    //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
-                    {
-                        Destroy(gameObject);
-                        return;
-                    }
-                    //Ignore the collider otherwise
+                    Destroy(gameObject);
                     return;
                 }
-
-                //If the other collider is set to ignore colliders return
-                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
-                    return;
-            } 
+                //Ignore the collider otherwise
+                return;
+            }
             
             CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
             //Grab whatever health script is attached to this object
@@ -262,21 +254,18 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object. If none return
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
 
-            if (other.CompareTag("ParryBox"))
-                return;
-
             //If the object has a collider and isn't a character...
             if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
             {
                 //Return if its attached to this object or this object wants to ignore collider
-                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
+                if (otherCollider.Owner == Owner || CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer))
                     return;
 
                 //If it is a hit collider...
                 if (otherCollider is HitColliderBehaviour hitCollider)
                 {
                     //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
+                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer))
                     {
                         Destroy(gameObject);
                         return;
@@ -339,9 +328,6 @@ namespace Lodis.Gameplay
 
             if (collision.collider.attachedRigidbody)
                 otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
-
-            if (collision.gameObject.CompareTag("ParryBox"))
-                return;
 
             //If the object has a collider and isn't a character...
             if (otherCollider && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Entity"))

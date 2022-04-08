@@ -25,9 +25,9 @@ namespace Lodis.Gameplay
         [Tooltip("The game object spawned this collider.")]
         public GameObject Owner;
         [SerializeField]
-        private List<string> _layersToIgnore;
+        private LayerMask _layersToIgnore;
 
-        public List<string> LayersToIgnore { get => _layersToIgnore; set => _layersToIgnore = value; }
+        public LayerMask LayersToIgnore { get => _layersToIgnore; set => _layersToIgnore = value; }
 
         private void Awake()
         {
@@ -50,13 +50,10 @@ namespace Lodis.Gameplay
 
         public bool CheckIfLayerShouldBeIgnored(int layer)
         {
-            if (LayersToIgnore == null)
+            if (LayersToIgnore == 0)
                 return false;
 
-            if (LayersToIgnore.Count == 0)
-                return false;
-
-            int mask = LayerMask.GetMask(LayersToIgnore.ToArray());
+            int mask = LayersToIgnore;
             if (mask != (mask | 1 << layer))
                 return true;
 

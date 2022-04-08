@@ -159,7 +159,7 @@ namespace Lodis.Gameplay
         {
             GameObject other = (GameObject)args[0];
             //Get collider and rigidbody to check the owner and add the force
-            ColliderBehaviour otherHitCollider = other.GetComponentInParent<ColliderBehaviour>();
+            HitColliderBehaviour otherHitCollider = other.GetComponentInParent<HitColliderBehaviour>();
 
             GridPhysicsBehaviour gridPhysics = other.GetComponentInParent<GridPhysicsBehaviour>();
 
@@ -167,8 +167,8 @@ namespace Lodis.Gameplay
             if (otherHitCollider && gridPhysics && !otherHitCollider.CompareTag("Player") && !otherHitCollider.CompareTag("Entity"))
             {
 
-            if (otherHitCollider.Owner == _parryCollider.Owner)
-                return;
+                if (otherHitCollider.Owner == _parryCollider.Owner)
+                    return;
                 //...reset the active time and reverse its velocity
                 otherHitCollider.Owner = _parryCollider.Owner;
                 otherHitCollider.ResetActiveTime();
