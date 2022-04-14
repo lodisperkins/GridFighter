@@ -180,25 +180,19 @@ namespace Lodis.Gameplay
                 return;
 
             if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
+                return;
+
             //If it is a hit collider...
             if (otherCollider is HitColliderBehaviour hitCollider)
             {
                 //...destroy it if it has a lower priority
-                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer))
-                {
+                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
                     Destroy(gameObject);
-                    return;
-                }
+
                 //Ignore the collider otherwise
                 return;
             }
             
-            CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
-            //Grab whatever health script is attached to this object
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
-
-            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
-                return;
 
             float newHitAngle = ColliderInfo.HitAngle;
 
@@ -226,6 +220,9 @@ namespace Lodis.Gameplay
             //Add the game object to the list of collisions so it is not collided with again
             Collisions.Add(other.gameObject, Time.frameCount);
             ColliderInfo.HitAngle = newHitAngle;
+
+            //Grab whatever health script is attached to this object
+            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
@@ -333,14 +330,14 @@ namespace Lodis.Gameplay
             if (otherCollider && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Entity"))
             {
                 //Return if its attached to this object or this object wants to ignore collider
-                if (otherCollider.Owner == Owner || ColliderInfo.IgnoreColliders)
+                if (otherCollider.Owner == Owner || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
                     return;
 
                 //If it is a hit collider...
                 if (otherCollider is HitColliderBehaviour hitCollider)
                 {
                     //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.ColliderInfo.IgnoreColliders)
+                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
                     {
                         Destroy(gameObject);
                         return;

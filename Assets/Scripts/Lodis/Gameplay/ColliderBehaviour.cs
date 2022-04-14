@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
             }
             else otherGameObject = other.gameObject;
 
-            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer))
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer) || otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -106,7 +106,7 @@ namespace Lodis.Gameplay
                 otherGameObject = collision.gameObject;
 
 
-            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer))
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer) || otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again

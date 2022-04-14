@@ -60,7 +60,18 @@ namespace Lodis.Gameplay
             }
         }
 
-        public float Health { get => _health; protected set => _health = value; }
+        public float Health 
+        { 
+            get => _health;
+            protected set
+            {
+                //Prevent damage if the object is invincible or dead
+                if (value < _health && _isInvincible || !IsAlive)
+                    return;
+
+                _health = value;
+            }
+        }
         public bool IsInvincible { get => _isInvincible; }
         public FloatVariable MaxHealth { get => _maxHealth; }
 
@@ -85,15 +96,16 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public virtual float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
-            if (!IsAlive || IsInvincible)
-                return 0;
+            float damageTaken = _health;
 
-            _health -= damage;
+            Health -= damage;
 
-            if (_health < 0)
+            damageTaken -= Health;
+
+            if (Health < 0)
                 _health = 0;
 
-            return damage;
+            return damageTaken;
         }
 
         /// <summary>
@@ -108,15 +120,16 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public virtual float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
-            if (!IsAlive || IsInvincible)
-                return 0;
+            float damageTaken = _health;
 
-            _health -= info.Damage;
+            Health -= info.Damage;
+
+            damageTaken -= Health;
 
             if (_health < 0)
                 _health = 0;
 
-            return info.Damage;
+            return damageTaken;
         }
 
         /// <summary>
@@ -127,15 +140,16 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public virtual float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
         {
-            if (!IsAlive || IsInvincible)
-                return 0;
+            float damageTaken = _health;
 
-            _health -= abilityData.GetCustomStatValue("Damage");
+            Health -= abilityData.GetColliderInfo(0).Damage;
+
+            damageTaken -= Health;
 
             if (_health < 0)
                 _health = 0;
 
-            return abilityData.GetCustomStatValue("Damage");
+            return damageTaken;
         }
 
         /// <summary>
