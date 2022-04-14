@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using Lodis.GridScripts;
+using Lodis.Movement;
 
 namespace Lodis.Gameplay
 {
@@ -40,6 +42,7 @@ namespace Lodis.Gameplay
         public float HitStunTime;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public float Priority;
+        public GridAlignment OwnerAlignement;
 
 
         /// <summary>
@@ -88,6 +91,7 @@ namespace Lodis.Gameplay
         {
 
             ColliderInfo = info;
+            ColliderInfo.OwnerAlignement = owner.GetComponent<GridMovementBehaviour>().Alignment;
             Owner = owner;
         }
 
@@ -154,6 +158,11 @@ namespace Lodis.Gameplay
             return false;
         }
 
+        /// <summary>
+        /// Resets the timer keeping track of how long this hit box will be active.
+        /// Can be used to prevent an object from being destroyed after it exceeds
+        /// its lifetime.
+        /// </summary>
         public void ResetActiveTime()
         {
             StartTime = Time.time;
@@ -179,6 +188,7 @@ namespace Lodis.Gameplay
             if (otherCollider?.Owner == Owner)
                 return;
 
+            //Return if either objects want to ignore the other.
             if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
                 return;
 
@@ -242,44 +252,35 @@ namespace Lodis.Gameplay
             if (!Collisions.ContainsKey(other.gameObject))
                 Collisions.Add(other.gameObject, Time.frameCount);
 
+            //Get the collider behaviour attached to the rigidbody
             ColliderBehaviour otherCollider = null;
-
             if (other.attachedRigidbody)
-                otherCollider = other.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
-
-
-            //Grab whatever health script is attached to this object. If none return
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
-
-            //If the object has a collider and isn't a character...
-            if (otherCollider && !other.CompareTag("Player") && !other.CompareTag("Entity"))
             {
-                //Return if its attached to this object or this object wants to ignore collider
-                if (otherCollider.Owner == Owner || CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer))
-                    return;
-
-                //If it is a hit collider...
-                if (otherCollider is HitColliderBehaviour hitCollider)
-                {
-                    //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority && !hitCollider.CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer))
-                    {
-                        Destroy(gameObject);
-                        return;
-                    }
-                    //Ignore the collider otherwise
-                    return;
-                }
-
-                //If the other collider is set to ignore colliders return
-                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
+                if (other.attachedRigidbody.gameObject != Owner)
+                    otherCollider = other.attachedRigidbody.gameObject.GetComponentInChildren<ColliderBehaviour>();
+                else
                     return;
             }
 
-            CharacterDefenseBehaviour characterDefenseBehaviour = other.GetComponentInParent<CharacterDefenseBehaviour>();
-
-            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
+            //Return if its attached to this object or this object wants to ignore collider
+            if (otherCollider?.Owner == Owner)
                 return;
+
+            //Return if either object wants to ignore the other.
+            if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
+                return;
+
+            //If it is a hit collider...
+            if (otherCollider is HitColliderBehaviour hitCollider)
+            {
+                //...destroy it if it has a lower priority
+                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
+                    Destroy(gameObject);
+
+                //Ignore the collider otherwise
+                return;
+            }
+
 
             float newHitAngle = ColliderInfo.HitAngle;
 
@@ -304,12 +305,17 @@ namespace Lodis.Gameplay
                     newHitAngle *= -1;
             }
 
+            //Add the game object to the list of collisions so it is not collided with again
+            Collisions.Add(other.gameObject, Time.frameCount);
             ColliderInfo.HitAngle = newHitAngle;
+
+            //Grab whatever health script is attached to this object
+            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
 
-            OnHit?.Invoke(other.gameObject);
+            OnHit?.Invoke(other.gameObject, otherCollider);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
@@ -317,50 +323,41 @@ namespace Lodis.Gameplay
 
         private void OnCollisionEnter(Collision collision)
         {
+            GameObject other = collision.gameObject;
+
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(collision.gameObject) || ColliderInfo.IsMultiHit || collision.gameObject == Owner)
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit)
                 return;
 
+            //Get the collider behaviour attached to the rigidbody
             ColliderBehaviour otherCollider = null;
-
             if (collision.collider.attachedRigidbody)
-                otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponent<ColliderBehaviour>();
-
-            //If the object has a collider and isn't a character...
-            if (otherCollider && !collision.gameObject.CompareTag("Player") && !collision.gameObject.CompareTag("Entity"))
             {
-                //Return if its attached to this object or this object wants to ignore collider
-                if (otherCollider.Owner == Owner || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
-                    return;
-
-                //If it is a hit collider...
-                if (otherCollider is HitColliderBehaviour hitCollider)
-                {
-                    //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                    {
-                        Destroy(gameObject);
-                        return;
-                    }
-                    //Ignore the collider otherwise
-                    return;
-                }
-
-                //If the other collider is set to ignore colliders return
-                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
+                if (collision.collider.attachedRigidbody.gameObject != Owner)
+                    otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponentInChildren<ColliderBehaviour>();
+                else
                     return;
             }
 
-            CharacterDefenseBehaviour characterDefenseBehaviour = collision.gameObject.GetComponentInParent<CharacterDefenseBehaviour>();
-
-            //Grab whatever health script is attached to this object
-            HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
-
-            if (characterDefenseBehaviour?.IsParrying == true && damageScript?.IsInvincible == true)
+            //Return if the other collider's owner is this collider's owner to prevent the object from hitting itself.
+            if (otherCollider?.Owner == Owner)
                 return;
 
-            //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(collision.gameObject, Time.frameCount);
+            //Return if either collider wants to ignore the other.
+            if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
+                return;
+
+            //If it is a hit collider...
+            if (otherCollider is HitColliderBehaviour hitCollider)
+            {
+                //...destroy it if it has a lower priority
+                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
+                    Destroy(gameObject);
+
+                //Ignore the collider otherwise
+                return;
+            }
+
 
             float newHitAngle = ColliderInfo.HitAngle;
 
@@ -368,7 +365,7 @@ namespace Lodis.Gameplay
             if (ColliderInfo.AdjustAngleBasedOnCollision)
             {
                 //Find a vector that point from the collider to the object hit
-                Vector3 directionOfImpact = collision.gameObject.transform.position - transform.position;
+                Vector3 directionOfImpact = other.transform.position - transform.position;
                 directionOfImpact.Normalize();
                 directionOfImpact.x = Mathf.Round(directionOfImpact.x);
 
@@ -385,12 +382,17 @@ namespace Lodis.Gameplay
                     newHitAngle *= -1;
             }
 
+            //Add the game object to the list of collisions so it is not collided with again
+            Collisions.Add(other.gameObject, Time.frameCount);
             ColliderInfo.HitAngle = newHitAngle;
+
+            //Grab whatever health script is attached to this object
+            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
 
-            OnHit?.Invoke(collision.gameObject);
+            OnHit?.Invoke(other.gameObject, otherCollider);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
@@ -412,15 +414,15 @@ namespace Lodis.Gameplay
 
         private void Update()
         {
-            if (gameObject != null && !_addedToActiveList)
-            {
-                if (Owner.CompareTag("Player") && Owner.name.Contains("(P1)"))
-                    BlackBoardBehaviour.Instance.GetLHSActiveColliders().Add(this);
-                else if (Owner.CompareTag("Player") && Owner.name.Contains("(P2)"))
-                    BlackBoardBehaviour.Instance.GetRHSActiveColliders().Add(this);
+            if (gameObject == null || _addedToActiveList)
+                return;
 
-                _addedToActiveList = true;
-            }
+            if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
+                BlackBoardBehaviour.Instance.GetLHSActiveColliders().Add(this);
+            else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+                BlackBoardBehaviour.Instance.GetRHSActiveColliders().Add(this);
+
+            _addedToActiveList = true;
         }
 
         private void FixedUpdate()
