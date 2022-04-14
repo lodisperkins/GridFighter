@@ -184,23 +184,24 @@ namespace Lodis.Gameplay
                     return;
             }
 
+
             //Return if its attached to this object or this object wants to ignore collider
-            if (otherCollider?.Owner == Owner)
-                return;
-
-            //Return if either objects want to ignore the other.
-            if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
-                return;
-
-            //If it is a hit collider...
-            if (otherCollider is HitColliderBehaviour hitCollider)
+            if (otherCollider)
             {
-                //...destroy it if it has a lower priority
-                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                    Destroy(gameObject);
+                //Return if either objects want to ignore the other.
+                if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
+                    return;
 
-                //Ignore the collider otherwise
-                return;
+                //If it is a hit collider...
+                if (otherCollider is HitColliderBehaviour hitCollider)
+                {
+                    //...destroy it if it has a lower priority
+                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
+                        Destroy(gameObject);
+
+                    //Ignore the collider otherwise
+                    return;
+                }
             }
             
 
@@ -263,22 +264,22 @@ namespace Lodis.Gameplay
             }
 
             //Return if its attached to this object or this object wants to ignore collider
-            if (otherCollider?.Owner == Owner)
-                return;
-
-            //Return if either object wants to ignore the other.
-            if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
-                return;
-
-            //If it is a hit collider...
-            if (otherCollider is HitColliderBehaviour hitCollider)
+            if (otherCollider)
             {
-                //...destroy it if it has a lower priority
-                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                    Destroy(gameObject);
+                //Return if either objects want to ignore the other.
+                if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
+                    return;
 
-                //Ignore the collider otherwise
-                return;
+                //If it is a hit collider...
+                if (otherCollider is HitColliderBehaviour hitCollider)
+                {
+                    //...destroy it if it has a lower priority
+                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
+                        Destroy(gameObject);
+
+                    //Ignore the collider otherwise
+                    return;
+                }
             }
 
 
@@ -306,7 +307,6 @@ namespace Lodis.Gameplay
             }
 
             //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(other.gameObject, Time.frameCount);
             ColliderInfo.HitAngle = newHitAngle;
 
             //Grab whatever health script is attached to this object
@@ -339,23 +339,23 @@ namespace Lodis.Gameplay
                     return;
             }
 
-            //Return if the other collider's owner is this collider's owner to prevent the object from hitting itself.
-            if (otherCollider?.Owner == Owner)
-                return;
-
-            //Return if either collider wants to ignore the other.
-            if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer))
-                return;
-
-            //If it is a hit collider...
-            if (otherCollider is HitColliderBehaviour hitCollider)
+            //Return if its attached to this object or this object wants to ignore collider
+            if (otherCollider)
             {
-                //...destroy it if it has a lower priority
-                if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                    Destroy(gameObject);
+                //Return if either objects want to ignore the other.
+                if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
+                    return;
 
-                //Ignore the collider otherwise
-                return;
+                //If it is a hit collider...
+                if (otherCollider is HitColliderBehaviour hitCollider)
+                {
+                    //...destroy it if it has a lower priority
+                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
+                        Destroy(gameObject);
+
+                    //Ignore the collider otherwise
+                    return;
+                }
             }
 
 
