@@ -12,6 +12,11 @@ namespace Lodis.Gameplay
 
         public GameObject Owner { get => _owner; }
 
+        private void Awake()
+        {
+            _owner = transform.root.gameObject;
+        }
+
         /// <summary>
         /// Takes damage based on the damage type.
         /// If the damage is less than the durability
@@ -41,7 +46,7 @@ namespace Lodis.Gameplay
         /// Takes damage based on the damage type.
         /// </summary>
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        public override float TakeDamage(ColliderInfo info, GameObject attacker)
+        public override float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
             if (!IsAlive || IsInvincible  || (attacker == Owner))
                 return 0;
@@ -65,7 +70,7 @@ namespace Lodis.Gameplay
                 return 0;
 
             float damage = abilityData.GetCustomStatValue("Damage");
-
+            
             Health -= damage;
 
             return damage;

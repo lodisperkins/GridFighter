@@ -292,7 +292,7 @@ MonoBehaviour:
   _braceInvincibilityTime: 0.3
   _fallBreakLength: 0.3
   _attackerStunTime: 5
-  _shieldHealth: {fileID: 8502217720210254897}
+  _shieldHealth: {fileID: 7360196754085539991}
   _shieldBreakStunTime: 10
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
@@ -1031,13 +1031,18 @@ PrefabInstance:
     - target: {fileID: 1108451635469348776, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
       propertyPath: m_Layer
-      value: 14
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 1108451635469348776, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8324301226956812270, guid: 3750288d4cc41f440964731ec1982842,
+        type: 3}
+      propertyPath: _owner
+      value: 
+      objectReference: {fileID: 2765739998997917290}
     - target: {fileID: 9130470748693586590, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
       propertyPath: m_RootOrder
@@ -1101,9 +1106,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1558650293352898425}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8502217720210254897 stripped
+--- !u!114 &7360196754085539991 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: -2279804549857119416, guid: 3750288d4cc41f440964731ec1982842,
+  m_CorrespondingSourceObject: {fileID: 8324301226956812270, guid: 3750288d4cc41f440964731ec1982842,
     type: 3}
   m_PrefabInstance: {fileID: 1558650293352898425}
   m_PrefabAsset: {fileID: 0}
