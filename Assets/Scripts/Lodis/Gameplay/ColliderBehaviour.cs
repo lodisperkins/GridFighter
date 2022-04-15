@@ -60,7 +60,7 @@ namespace Lodis.Gameplay
                 return false;
 
             int mask = LayersToIgnore;
-            if (mask != (mask | 1 << layer))
+            if (mask == (mask | 1 << layer))
                 return true;
 
             return false;
@@ -73,21 +73,13 @@ namespace Lodis.Gameplay
             if (other.gameObject == Owner || Collisions.ContainsKey(other.gameObject))
                 return;
 
-            ColliderBehaviour otherCollider = null;
-            GameObject otherGameObject = null;
+            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
+            GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
 
-            //If the other object has a rigid body attached...
-            if (other.attachedRigidbody)
-            {
-                //...grab the game object attached to the rigid body and collider script.
-                //Hit events will now only be called using the parent object instead of the child collider.
-                otherGameObject = other.attachedRigidbody.gameObject;
-                otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
-            }
-            else otherGameObject = other.gameObject;
+            ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
 
-            //If either colliders want to ignore the other's layer return.
-            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer) || otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true)
+            //If either colliders want to ignore the other's layer or if they have the same owner return.
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer) || otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true || otherCollider?.Owner == Owner)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again
@@ -106,20 +98,13 @@ namespace Lodis.Gameplay
             if (other.gameObject == Owner || Collisions.ContainsKey(other))
                 return;
 
-            ColliderBehaviour otherCollider = null;
+            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
+            GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : other.gameObject;
 
-            //If the other object has a rigid body attached...
-            if (collision.collider.attachedRigidbody)
-            {
-                //...grab the game object attached to the rigid body and collider script.
-                //Hit events will now only be called using the parent object instead of the child collider.
-                other = collision.collider.attachedRigidbody.gameObject;
-                otherCollider = other.GetComponent<ColliderBehaviour>();
-            }
-            else other = other.gameObject;
+            ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
 
             //If either colliders want to ignore the other's layer return.
-            if (CheckIfLayerShouldBeIgnored(other.layer) || otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true)
+            if (CheckIfLayerShouldBeIgnored(other.layer) || otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true || otherCollider?.Owner == Owner)
                 return;
 
             //Add the game object to the list of collisions so it is not collided with again

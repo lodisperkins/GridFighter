@@ -22,7 +22,7 @@ namespace Lodis.Gameplay
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
         public bool IsMultiHit;
         [Tooltip("The collision layers to ignore when checking for valid collisions.")]
-        public List<string> LayersToIgnore;
+        public LayerMask LayersToIgnore;
         [Tooltip("If this collider can hit multiple times, this is how many frames the object will have to wait before being able to register a collision with the same object.")]
         public float HitFrames;
         [Tooltip("The amount of damage this attack will deal.")]
@@ -102,9 +102,8 @@ namespace Lodis.Gameplay
 
         private void Start()
         {
-            if (!ColliderInfo.LayersToIgnore.Contains("ParryBox"))
-                ColliderInfo.LayersToIgnore.Add("ParryBox");
-
+            ColliderInfo.LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
+            LayersToIgnore = ColliderInfo.LayersToIgnore;
             StartTime = Time.time;
         }
 
@@ -171,18 +170,13 @@ namespace Lodis.Gameplay
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit)
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner)
                 return;
 
-            //Get the collider behaviour attached to the rigidbody
-            ColliderBehaviour otherCollider = null;
-            if (other.attachedRigidbody)
-            {
-                if (other.attachedRigidbody.gameObject != Owner)
-                    otherCollider = other.attachedRigidbody.gameObject.GetComponentInChildren<ColliderBehaviour>();
-                else
-                    return;
-            }
+            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
+            GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
+
+            ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
 
 
             //Return if its attached to this object or this object wants to ignore collider
@@ -253,15 +247,10 @@ namespace Lodis.Gameplay
             if (!Collisions.ContainsKey(other.gameObject))
                 Collisions.Add(other.gameObject, Time.frameCount);
 
-            //Get the collider behaviour attached to the rigidbody
-            ColliderBehaviour otherCollider = null;
-            if (other.attachedRigidbody)
-            {
-                if (other.attachedRigidbody.gameObject != Owner)
-                    otherCollider = other.attachedRigidbody.gameObject.GetComponentInChildren<ColliderBehaviour>();
-                else
-                    return;
-            }
+            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
+            GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
+
+            ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
@@ -326,18 +315,13 @@ namespace Lodis.Gameplay
             GameObject other = collision.gameObject;
 
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit)
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner)
                 return;
 
-            //Get the collider behaviour attached to the rigidbody
-            ColliderBehaviour otherCollider = null;
-            if (collision.collider.attachedRigidbody)
-            {
-                if (collision.collider.attachedRigidbody.gameObject != Owner)
-                    otherCollider = collision.collider.attachedRigidbody.gameObject.GetComponentInChildren<ColliderBehaviour>();
-                else
-                    return;
-            }
+            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
+            GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : other.gameObject;
+
+            ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
