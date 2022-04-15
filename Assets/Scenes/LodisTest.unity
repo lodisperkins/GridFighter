@@ -11272,14 +11272,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
+  _layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 0
+  DebuggingEnabled: 0
   ColliderInfo:
     Name: 
     DespawnAfterTimeLimit: 0
     TimeActive: 0
     DestroyOnHit: 0
     IsMultiHit: 0
-    IgnoreColliders: 1
-    LayersToIgnore: []
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
     HitFrames: 0
     Damage: 0
     BaseKnockBack: 0
@@ -11290,8 +11296,7 @@ MonoBehaviour:
     CanSpike: 0
     HitStunTime: 0
     Priority: 0
-  Owner: {fileID: 0}
-  DebuggingEnabled: 0
+    OwnerAlignement: 0
 --- !u!65 &1854253617
 BoxCollider:
   m_ObjectHideFlags: 0

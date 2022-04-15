@@ -36,7 +36,7 @@ namespace Lodis.Gameplay
     {
         private bool _inUse;
         private bool _canPlayAnimation;
-        private List<ColliderBehaviour> _colliders;
+        private List<HitColliderBehaviour> _colliders;
         private RoutineBehaviour.TimedAction _currentTimer;
         protected KnockbackBehaviour _ownerKnockBackScript;
         protected Movement.GridMovementBehaviour _ownerMoveScript;
@@ -291,11 +291,11 @@ namespace Lodis.Gameplay
 
             _canPlayAnimation = !abilityData.playAnimationManually;
 
-            _colliders = new List<ColliderBehaviour>();
+            _colliders = new List<HitColliderBehaviour>();
 
             for (int i = 0; i < abilityData.ColliderInfoCount; i++)
             {
-                ColliderBehaviour colliderComponent = new HitColliderBehaviour(abilityData.GetColliderInfo(i), owner);
+                HitColliderBehaviour colliderComponent = new HitColliderBehaviour(abilityData.GetColliderInfo(i), owner);
                 colliderComponent.OnHit = OnHit;
                 _colliders.Add(colliderComponent);
             }
@@ -355,12 +355,12 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void FixedUpdate() { }
 
-        public ColliderBehaviour GetColliderBehaviour(int index)
+        public HitColliderBehaviour GetColliderBehaviour(int index)
         {
             return _colliders[index];
         }
 
-        public ColliderBehaviour GetColliderBehaviour(string name)
+        public HitColliderBehaviour GetColliderBehaviour(string name)
         {
             for (int i = 0; i < _colliders.Count; i++)
             {

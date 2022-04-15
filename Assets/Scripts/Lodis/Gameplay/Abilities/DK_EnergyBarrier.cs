@@ -62,7 +62,7 @@ namespace Lodis.Gameplay
         public void TryReflectProjectile(GameObject gameObject)
         {
             //Get collider and rigidbody to check the owner and add the force
-            ColliderBehaviour otherHitCollider = gameObject.GetComponentInParent<ColliderBehaviour>();
+            HitColliderBehaviour otherHitCollider = gameObject.GetComponentInParent<HitColliderBehaviour>();
             Rigidbody otherRigidbody = gameObject.GetComponentInParent<Rigidbody>();
 
             //If the object collided with is an enemy projectile...

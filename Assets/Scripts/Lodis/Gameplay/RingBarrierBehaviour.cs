@@ -51,9 +51,9 @@ namespace Lodis.Gameplay
         /// Takes damage based on the damage type.
         /// </summary>
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        public override float TakeDamage(ColliderInfo info, GameObject attacker)
+        public override float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
-            if (!IsAlive || IsInvincible || info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.name != Owner && Owner != ""))
+            if (info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.name != Owner && Owner != ""))
                 return 0;
 
             if (info.Damage < Health)
@@ -72,10 +72,10 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
         {
-            if (!IsAlive || IsInvincible || damageType != DamageType.KNOCKBACK || (attacker != Owner && Owner != ""))
+            if (damageType != DamageType.KNOCKBACK || (attacker != Owner && Owner != ""))
                 return 0;
 
-            float damage = abilityData.GetCustomStatValue("Damage");
+            float damage = abilityData.GetColliderInfo(0).Damage;
 
             if (damage < Health)
                 return 0;
