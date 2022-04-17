@@ -16,8 +16,9 @@ namespace Lodis.Gameplay
         private float _hitStunOnCollision;
         private MeshRenderer _renderer;
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             _renderer = GetComponent<MeshRenderer>();
         }
 

@@ -278,7 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackType: 0
-  _attackDelay: 0
+  _attackDelay: 1
   _attackStrength: 1.08
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0

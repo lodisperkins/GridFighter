@@ -37,8 +37,9 @@ MonoBehaviour:
     TimeActive: 5
     DestroyOnHit: 1
     IsMultiHit: 0
-    IgnoreColliders: 1
-    LayersToIgnore: []
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 67584
     HitFrames: 0
     Damage: 1
     BaseKnockBack: 1
@@ -49,6 +50,7 @@ MonoBehaviour:
     CanSpike: 0
     HitStunTime: 0.1
     Priority: 0
+    OwnerAlignement: 0
   _customStats:
   - name: Speed
     value: 20

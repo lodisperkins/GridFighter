@@ -34,7 +34,7 @@ namespace Lodis.Gameplay
         {
             base.Start();
             _material = GetComponent<Renderer>().material;
-            _movement = GetComponent<Movement.GridMovementBehaviour>();
+            Movement = GetComponent<Movement.GridMovementBehaviour>();
         }
 
         /// <summary>

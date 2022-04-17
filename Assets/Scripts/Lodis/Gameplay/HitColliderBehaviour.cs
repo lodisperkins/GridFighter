@@ -98,6 +98,7 @@ namespace Lodis.Gameplay
         private void Awake()
         {
             Collisions = new Dictionary<GameObject, int>();
+            gameObject.layer = LayerMask.NameToLayer("Ability");
         }
 
         private void Start()

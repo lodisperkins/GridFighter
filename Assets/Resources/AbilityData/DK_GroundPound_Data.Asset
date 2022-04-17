@@ -37,8 +37,9 @@ MonoBehaviour:
     TimeActive: 0
     DestroyOnHit: 0
     IsMultiHit: 0
-    IgnoreColliders: 1
-    LayersToIgnore: []
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 65536
     HitFrames: 0
     Damage: 15
     BaseKnockBack: 3
@@ -49,6 +50,7 @@ MonoBehaviour:
     CanSpike: 0
     HitStunTime: 0.3
     Priority: 0
+    OwnerAlignement: 0
   _customStats:
   - name: ShockwaveProgressionDelay
     value: 0.2
