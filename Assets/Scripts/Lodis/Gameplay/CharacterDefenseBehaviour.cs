@@ -32,10 +32,6 @@ namespace Lodis.Gameplay
         [Tooltip("How long the character will be invincible for after a successful ground parry.")]
         [SerializeField]
         private float _parryInvincibilityLength;
-        [SerializeField]
-        private SkinnedMeshRenderer _meshRenderer;
-        private Material _material;
-        private Color _defaultColor; 
         [Tooltip("True if the parry cooldown timer is 0.")]
         [SerializeField]
         private bool _canParry = true;
@@ -86,6 +82,11 @@ namespace Lodis.Gameplay
         private ShieldBehaviour _shieldHealth;
         [SerializeField]
         private float _shieldBreakStunTime;
+        [SerializeField]
+        private bool _phaseDashEnabled;
+        private RoutineBehaviour.TimedAction _phaseEnableAction;
+        [SerializeField]
+        private float _phaseActiveTime;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _braceInvincibilityTime; }
@@ -104,16 +105,27 @@ namespace Lodis.Gameplay
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _health = GetComponent<HealthBehaviour>();
 
-            if (_meshRenderer)
-            {
-                _material = _meshRenderer.material;
-                _defaultColor = _material.color;
-            }
-
             _knockBack.AddOnKnockBackAction(ResetParry);
             _knockBack.AddOnKnockBackAction(() => StartCoroutine(UpgradeParry()));
             _knockBack.AddOnKnockBackAction(EnableBrace);
+            _knockBack.AddOnTakeDamageStartTempAction(() => { if (_phaseDashEnabled) ActivatePhaseDash(); });
             _shieldHealth.AddOnDeathAction(BreakShield);
+            _movement.AddOnMoveBeginAction(EnablePhaseDash);
+        }
+
+        private void EnablePhaseDash()
+        {
+            if (_phaseEnableAction != null)
+                RoutineBehaviour.Instance.StopTimedAction(_phaseEnableAction);
+
+            _phaseDashEnabled = true;
+
+            _phaseEnableAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _phaseDashEnabled = false, TimedActionCountType.SCALEDTIME, _phaseActiveTime);
+        }
+
+        private void ActivatePhaseDash()
+        {
+            _health.SetIntagibilityByCondition(condition => !_movement.IsMoving);
         }
 
         /// <summary>
@@ -539,11 +551,6 @@ namespace Lodis.Gameplay
         // Update is called once per frame
         void Update()
         {
-            //Update color
-            if (_knockBack.IsInvincible && _meshRenderer)
-                _material.color = Color.green;
-            else if (_meshRenderer)
-                _material.color = _defaultColor;
 
             if (_knockBack.CheckIfIdle())
             {

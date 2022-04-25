@@ -30,15 +30,28 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _isInvincible;
         private Condition _invincibilityCondition;
+        private Condition _intagibilityCondition;
         [Tooltip("Whether or not this object is in a stunned state")]
         [SerializeField]
         private bool _stunned;
+        [SerializeField]
+        private bool _isIntangible;
+        [SerializeField]
+        private Renderer _meshRenderer;
+        protected Material _material;
+        private Color _defaultColor;
         private Coroutine _stunRoutine;
         private MovesetBehaviour _moveset;
         private InputBehaviour _input;
-        protected GridMovementBehaviour _movement;
         private UnityAction _onStun;
         private UnityAction _onDeath;
+        private string _defaultLayer;
+        [SerializeField]
+        private Color _invincibilityColor;
+        [SerializeField]
+        private Color _intangibilityColor;
+        protected GridMovementBehaviour Movement;
+        protected Condition AliveCondition;
 
         public bool Stunned 
         {
@@ -53,7 +66,7 @@ namespace Lodis.Gameplay
 
         }
 
-        public bool IsAlive
+        public virtual bool IsAlive
         {
             get
             {
@@ -68,7 +81,10 @@ namespace Lodis.Gameplay
             {
                 //Prevent damage if the object is invincible or dead
                 if (value < _health && _isInvincible || !IsAlive)
+                {
+                    _health = 0;
                     return;
+                }
 
                 _health = value;
             }
@@ -79,6 +95,15 @@ namespace Lodis.Gameplay
         protected virtual void Start()
         {
             _isAlive = true;
+            AliveCondition = condition => _health > 0;
+            _defaultLayer = LayerMask.LayerToName(gameObject.layer);
+
+            if (_meshRenderer)
+            {
+                _material = _meshRenderer.material;
+                _defaultColor = _material.color;
+            }
+
             if (_startingHealth < 0)
                 _health = _maxHealth.Value;
             else
@@ -168,7 +193,7 @@ namespace Lodis.Gameplay
             Stunned = true;
             _moveset = GetComponent<MovesetBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
-            _movement = GetComponent<GridMovementBehaviour>();
+            Movement = GetComponent<GridMovementBehaviour>();
 
             //Disable components if the object has them attached
             if (_moveset)
@@ -181,9 +206,9 @@ namespace Lodis.Gameplay
                 _input.enabled = false;
                 _input.StopAllCoroutines();
             }
-            if (_movement)
+            if (Movement)
             {
-                _movement.DisableMovement(condition => Stunned == false, false, true);
+                Movement.DisableMovement(condition => Stunned == false, false, true);
             }
 
 
@@ -255,6 +280,28 @@ namespace Lodis.Gameplay
             _invincibilityCondition = condition;
             _isInvincible = true;
         }
+        
+        /// <summary>
+        /// Makes the object invincible. No damage can be taken by the object
+        /// </summary>
+        /// <param name="time">How long in seconds the object is invincible for</param>
+        public void SetIntagibilityByTimer(float time)
+        {
+            _isIntangible = true;
+            gameObject.layer = LayerMask.NameToLayer("IgnoreHitColliders");
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _isIntangible = false, TimedActionCountType.SCALEDTIME, time);
+        }
+
+        /// <summary>
+        /// Makes the object invincible. No damage can be taken by the object
+        /// </summary>
+        /// <param name="condition">Will turn off invincibility when this condition is true</param>
+        public void SetIntagibilityByCondition(Condition condition)
+        {
+            _intagibilityCondition = condition;
+            gameObject.layer = LayerMask.NameToLayer("IgnoreHitColliders");
+            _isIntangible = true;
+        }
 
         /// <summary>
         /// Deactivates the invincibility and clears the condition event for disabling automatically
@@ -302,20 +349,34 @@ namespace Lodis.Gameplay
             if (IsAlive && Health <= 0)
                 _onDeath?.Invoke();
 
-            _isAlive = _health > 0;
+            _isAlive = AliveCondition.Invoke();
 
             if (!IsAlive && _destroyOnDeath)
                 Destroy(gameObject);
 
             //Invincibilty check
-            if (_invincibilityCondition != null)
+            if (_invincibilityCondition?.Invoke() == true)
             {
-                if (_invincibilityCondition.Invoke())
-                {
-                    _isInvincible = false;
-                    _invincibilityCondition = null;
-                }    
+                _isInvincible = false;
+                _invincibilityCondition = null;
+            }  
+
+            //Intangibilty check
+            if (_intagibilityCondition?.Invoke() == true)
+            {
+                _isIntangible = false;
+                _intagibilityCondition = null;
             }
+
+            //Update color
+            if (IsInvincible && _meshRenderer)
+                _material.color = _invincibilityColor;
+            else if (_isIntangible && _meshRenderer)
+                _material.color = _intangibilityColor;
+            else if (_meshRenderer)
+                _material.color = _defaultColor;
+
+            gameObject.layer = _isIntangible? LayerMask.NameToLayer("IgnoreHitColliders") : gameObject.layer = LayerMask.NameToLayer(_defaultLayer);
 
             //Clamp health
             if (Health > _maxHealth.Value)

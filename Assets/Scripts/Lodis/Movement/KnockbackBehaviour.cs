@@ -36,9 +36,11 @@ namespace Lodis.Movement
 
         private UnityAction _onKnockBack;
         private UnityAction _onKnockBackStart;
-        private UnityAction _onTakeDamage;
         private UnityAction _onKnockBackTemp;
         private UnityAction _onKnockBackStartTemp;
+        private UnityAction _onTakeDamage;
+        private UnityAction _onTakeDamageStart;
+        private UnityAction _onTakeDamageStartTemp;
         private UnityAction _onTakeDamageTemp;
         private UnityAction _onHitStun;
         private UnityAction _onHitStunTemp;
@@ -136,6 +138,7 @@ namespace Lodis.Movement
         protected override void Start()
         {
             base.Start();
+            AliveCondition = condition => gameObject.activeInHierarchy;
             _onKnockBack += () => Landing = false;
             _onKnockBackStart += () => { Stunned = false; _movementBehaviour.CurrentPanel.Occupied = false; };
         }
@@ -203,6 +206,23 @@ namespace Lodis.Movement
         public void AddOnTakeDamageTempAction(UnityAction action)
         {
             _onTakeDamageTemp += action;
+        }/// <summary>
+        /// Adds an action to the event called right before damage is applied
+        /// </summary>
+        /// <param name="action">The new listener to to the event</param>
+        public void AddOnTakeDamageStartAction(UnityAction action)
+        {
+            _onTakeDamageStart += action;
+        }
+
+        /// <summary>
+        /// Adds an action to the event called right before damage is applied.
+        /// Listeners cleared after event is called
+        /// </summary>
+        /// <param name="action">The new listener to to the event</param>
+        public void AddOnTakeDamageStartTempAction(UnityAction action)
+        {
+            _onTakeDamageStartTemp += action;
         }
 
         public void AddOnHitStunAction(UnityAction action)
@@ -412,6 +432,9 @@ namespace Lodis.Movement
         }
         public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
+            _onTakeDamageStart?.Invoke();
+            _onTakeDamageStartTemp?.Invoke();
+
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)
                 return 0;
@@ -472,6 +495,9 @@ namespace Lodis.Movement
         }
         public override float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
+            _onTakeDamageStart?.Invoke();
+            _onTakeDamageStartTemp?.Invoke();
+
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)
                 return 0;
@@ -533,6 +559,9 @@ namespace Lodis.Movement
 
         public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
         {
+            _onTakeDamageStart?.Invoke();
+            _onTakeDamageStartTemp?.Invoke();
+
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)
                 return 0;
@@ -606,6 +635,9 @@ namespace Lodis.Movement
         /// <param name="damageType">The type of damage this object will take</param>
         public float TakeDamage(string attacker, float damage, float baseKnockBack, float hitAngle, float hitStun, bool knockBackIsFixed, bool ignoreMass, DamageType damageType = DamageType.DEFAULT)
         {
+            _onTakeDamageStart?.Invoke();
+            _onTakeDamageStartTemp?.Invoke();
+
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)
                 return 0;
@@ -679,6 +711,9 @@ namespace Lodis.Movement
 
         public float TakeDamage(string attacker, AbilityData abilityData, bool knockBackIsFixed, bool ignoreMass, DamageType damageType = DamageType.DEFAULT)
         {
+            _onTakeDamageStart?.Invoke();
+            _onTakeDamageStartTemp?.Invoke();
+
             //Return if there is no rigidbody or movement script attached
             if (!_movementBehaviour || IsInvincible)
                 return 0;

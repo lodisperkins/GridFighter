@@ -120,9 +120,7 @@ namespace Lodis.Gameplay
             collider2.Owner = collider1.Owner;
         }
 
-        
-
-///     <summary>
+        ///     <summary>
         /// Initializes this colliders stats
         /// </summary>
         /// <param name="damage">The amount of damage this attack will do</param>
@@ -181,12 +179,13 @@ namespace Lodis.Gameplay
 
             ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
 
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
             {
                 //Return if either objects want to ignore the other.
-                if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
+                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
                     return;
 
                 //If it is a hit collider...
@@ -200,7 +199,6 @@ namespace Lodis.Gameplay
                     return;
                 }
             }
-            
 
             float newHitAngle = ColliderInfo.HitAngle;
 
@@ -254,12 +252,13 @@ namespace Lodis.Gameplay
             GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
 
             ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
             {
                 //Return if either objects want to ignore the other.
-                if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
+                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
                     return;
 
                 //If it is a hit collider...
@@ -327,12 +326,13 @@ namespace Lodis.Gameplay
             GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : other.gameObject;
 
             ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
+            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
             {
                 //Return if either objects want to ignore the other.
-                if (CheckIfLayerShouldBeIgnored(otherCollider.gameObject.layer) || otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
+                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
                     return;
 
                 //If it is a hit collider...

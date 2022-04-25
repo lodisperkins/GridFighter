@@ -277,7 +277,6 @@ MonoBehaviour:
   _parryCollider: {fileID: 0}
   _isParrying: 0
   _parryInvincibilityLength: 0.5
-  _meshRenderer: {fileID: 8493895805550168426}
   _canParry: 1
   _airParryCooldown: 0.5
   _groundParryRestTime: 0.25
@@ -294,6 +293,8 @@ MonoBehaviour:
   _attackerStunTime: 5
   _shieldHealth: {fileID: 7360196754085539991}
   _shieldBreakStunTime: 10
+  _phaseDashEnabled: 0
+  _phaseActiveTime: 0.01
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,9 +311,13 @@ MonoBehaviour:
   _startingHealth: 0
   _maxHealth: {fileID: 11400000, guid: a850879eb5579a94c8611fe9609619f4, type: 2}
   _destroyOnDeath: 0
-  _isAlive: 0
+  _isAlive: 1
   _isInvincible: 0
   _stunned: 0
+  _isIntangible: 0
+  _meshRenderer: {fileID: 8493895805550168426}
+  _invincibilityColor: {r: 0, g: 1, b: 0.013520718, a: 0}
+  _intangibilityColor: {r: 0.8113208, g: 0.5216221, b: 0.003826994, a: 1}
   _netForceLandingTolerance: 3
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _tumbling: 0

@@ -7,7 +7,6 @@ namespace Lodis.Gameplay
 {
     public class BarrierBehaviour : HealthBehaviour
     {
-        private Material _material;
         [Tooltip("All layers that will be visible if placed behind this barrier")]
         [SerializeField]
         private LayerMask _visibleLayers;
