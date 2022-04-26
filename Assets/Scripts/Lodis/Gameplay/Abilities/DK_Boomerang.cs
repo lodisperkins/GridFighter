@@ -14,7 +14,7 @@ namespace Lodis.Gameplay
     {
         private Vector3 _originalTravelDirection;
         private int _reboundCount;
-        private ColliderBehaviour _reboundCollider;
+        private HitColliderBehaviour _reboundCollider;
 
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -32,8 +32,10 @@ namespace Lodis.Gameplay
         {
             //Redirect projectile on hit
             base.Activate(args);
-            _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
+            _reboundCollider = Projectile.AddComponent<HitColliderBehaviour>();
             _reboundCollider.OnHit += TryRedirectProjectile;
+            _reboundCollider.ColliderInfo.IsMultiHit = true;
+            _reboundCollider.Owner = owner;
         }
 
         /// <summary>
