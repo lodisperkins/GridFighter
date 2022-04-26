@@ -70,7 +70,7 @@ namespace Lodis.Gameplay
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (other.gameObject == Owner || Collisions.ContainsKey(other.gameObject))
+            if (other.gameObject == Owner)
                 return;
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
@@ -81,9 +81,6 @@ namespace Lodis.Gameplay
             //If either colliders want to ignore the other's layer or if they have the same owner return.
             if (CheckIfLayerShouldBeIgnored(otherGameObject.layer) || otherCollider?.CheckIfLayerShouldBeIgnored(gameObject.layer) == true || otherCollider?.Owner == Owner)
                 return;
-
-            //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(other.gameObject, Time.frameCount);
 
             //Calculate the normal and invoke hit event
             Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;

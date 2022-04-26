@@ -55,6 +55,7 @@ namespace Lodis.Gameplay
         {
             //Give the shockwave the ability to move
             GridMovementBehaviour movementBehaviour = visualPrefabInstance.AddComponent<GridMovementBehaviour>();
+            movementBehaviour.CanBeWalkedThrough = true;
 
             //Set default traits for shockwave
             movementBehaviour.Position = _ownerMoveScript.Position;
@@ -72,7 +73,6 @@ namespace Lodis.Gameplay
             movePosition.x = Mathf.Round(movePosition.x);
             movePosition.y = Mathf.Clamp(movePosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
             movePosition.y = Mathf.Round(movePosition.y);
-
             //Move shockwave
             movementBehaviour.MoveToPanel(movePosition, false, GridScripts.GridAlignment.ANY, true);
         }
@@ -81,7 +81,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create collider for shockwaves
-            _shockWaveCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
+            _shockWaveCollider = GetColliderBehaviour(0);
 
             //Instantiate the first shockwave and attach a hit box to it
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);

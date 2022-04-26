@@ -172,7 +172,7 @@ namespace Lodis.Gameplay
             if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner)
                 return;
 
-            if (Collisions.Count > 0) return;
+            if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
@@ -320,7 +320,7 @@ namespace Lodis.Gameplay
             if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner)
                 return;
 
-            if (Collisions.Count > 0) return;
+            if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : other.gameObject;

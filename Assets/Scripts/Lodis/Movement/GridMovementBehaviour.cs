@@ -208,6 +208,7 @@ namespace Lodis.Movement
         }
 
         public bool IsBehindBarrier { get => _isBehindBarrier; private set => _isBehindBarrier = value; }
+        public bool CanBeWalkedThrough { get => _canBeWalkedThrough; set => _canBeWalkedThrough = value; }
 
         private void Awake()
         {
@@ -422,7 +423,7 @@ namespace Lodis.Movement
             }
 
             if (CurrentPanel)
-                CurrentPanel.Occupied = !_canBeWalkedThrough;
+                CurrentPanel.Occupied = !CanBeWalkedThrough;
 
             MoveDirection = Vector2.zero;
             _tempAlignment = Alignment;
@@ -485,7 +486,7 @@ namespace Lodis.Movement
             //Updates the current panel
             _currentPanel = _targetPanel;
             if (reservePanel)
-                _currentPanel.Occupied = !_canBeWalkedThrough;
+                _currentPanel.Occupied = !CanBeWalkedThrough;
             _position = _currentPanel.Position;
 
             return true;
@@ -546,7 +547,7 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = !_canBeWalkedThrough;
+            _currentPanel.Occupied = !CanBeWalkedThrough;
             _position = _currentPanel.Position;
             return true;
         }
@@ -607,7 +608,7 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = !_canBeWalkedThrough;
+            _currentPanel.Occupied = !CanBeWalkedThrough;
             _position = _currentPanel.Position;
 
             return true;
@@ -650,7 +651,7 @@ namespace Lodis.Movement
 
             //Updates the current panel
             _currentPanel = _targetPanel;
-            _currentPanel.Occupied = !_canBeWalkedThrough;
+            _currentPanel.Occupied = !CanBeWalkedThrough;
             _position = _currentPanel.Position;
         }
 
@@ -705,7 +706,7 @@ namespace Lodis.Movement
             StopCoroutine(_moveRoutine);
             _currentPanel.Occupied = false;
             _currentPanel = PreviousPanel;
-            _currentPanel.Occupied = !_canBeWalkedThrough;
+            _currentPanel.Occupied = !CanBeWalkedThrough;
             _isMoving = false;
         }
 
