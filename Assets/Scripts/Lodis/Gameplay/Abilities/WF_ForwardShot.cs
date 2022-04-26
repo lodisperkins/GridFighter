@@ -65,7 +65,7 @@ namespace Lodis.Gameplay
 
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = GetColliderBehaviour(0) as HitColliderBehaviour;
+            _projectileCollider = GetColliderBehaviourCopy(0) as HitColliderBehaviour;
 
             CleanProjectileList();
             

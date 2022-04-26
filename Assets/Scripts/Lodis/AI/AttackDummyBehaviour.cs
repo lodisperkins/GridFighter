@@ -45,6 +45,8 @@ namespace Lodis.AI
         private AIDummyMovementBehaviour _movementBehaviour;
         private AttackDecisionTree _attackDecisions;
         private DefenseDecisionTree _defenseDecisions;
+        [SerializeField]
+        private int _maxDecisionCount;
         private GridPhysicsBehaviour _gridPhysics;
         public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
         public StateMachine StateMachine { get => _stateMachine; }
@@ -64,8 +66,10 @@ namespace Lodis.AI
         void Start()
         {
             _attackDecisions = new AttackDecisionTree();
+            _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
             _attackDecisions.Load(name);
             _defenseDecisions = new DefenseDecisionTree();
+            _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
             _defenseDecisions.Load(name);
 
             Moveset = GetComponent<Gameplay.MovesetBehaviour>();

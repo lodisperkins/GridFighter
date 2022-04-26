@@ -300,6 +300,8 @@ MonoBehaviour:
   _braceCooldownTime: 1
   _braceInvincibilityTime: 0.3
   _fallBreakLength: 0.3
+  _wallTechJumpDistance: 2
+  _wallTechJumpAngle: 1
   _attackerStunTime: 5
 --- !u!114 &-6268856529084459074
 MonoBehaviour:

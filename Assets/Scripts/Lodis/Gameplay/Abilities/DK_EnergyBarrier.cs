@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create barrier collider
-            _barrierCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
+            _barrierCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
             //Allow canceling on hit
             _barrierCollider.OnHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
 

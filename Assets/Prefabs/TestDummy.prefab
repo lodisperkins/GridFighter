@@ -297,11 +297,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 0
-  _attackDelay: 1
-  _attackStrength: 1.08
+  _attackType: 4
+  _attackDelay: 3
+  _attackStrength: 1.06
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
+  _maxDecisionCount: 1000
   LastDefenseDecision:
     VisitCount: 0
     Wins: 0
@@ -311,7 +312,7 @@ MonoBehaviour:
     AveragePosition: {x: 0, y: 0, z: 0}
     AverageVelocity: {x: 0, y: 0, z: 0}
   MovePosition: {x: 0, y: 0}
-  EnableBehaviourTree: 1
+  EnableBehaviourTree: 0
 --- !u!114 &3691015139844951449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +356,8 @@ MonoBehaviour:
   _braceCooldownTime: 1
   _braceInvincibilityTime: 0.3
   _fallBreakLength: 0.3
+  _wallTechJumpDistance: 0
+  _wallTechJumpAngle: 0
   _attackerStunTime: 5
 --- !u!75 &986386592
 ConstantForce:

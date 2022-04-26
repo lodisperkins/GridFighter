@@ -50,6 +50,10 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds the object is going to spend breaking its fall.")]
         [SerializeField]
         private float _fallBreakLength;
+        [SerializeField]
+        private float _wallTechJumpDistance;
+        [SerializeField]
+        private float _wallTechJumpAngle;
         [Tooltip("How long in seconds to stun an enemy after a successful parry.")]
         [SerializeField]
         private float _attackerStunTime;
@@ -309,6 +313,8 @@ namespace Lodis.Gameplay
             {
                 transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
                 _knockBack.InFreeFall = true;
+                Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
+                _knockBack.Physics.ApplyVelocityChange(jumpForce); 
             }
 
             if (_parryTimer != null)
@@ -338,7 +344,6 @@ namespace Lodis.Gameplay
                  _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
 
             _knockBack.Physics.StopVelocity();
-            _knockBack.Physics.IgnoreForces = true;
 
             RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
@@ -347,6 +352,8 @@ namespace Lodis.Gameplay
             {
                 transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
                 _knockBack.InFreeFall = true;
+                Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
+                _knockBack.Physics.ApplyVelocityChange(jumpForce);
             }
 
             if (_parryTimer != null)

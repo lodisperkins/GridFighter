@@ -87,6 +87,10 @@ namespace Lodis.Gameplay
             Init(info, owner);
         }
 
+        public HitColliderBehaviour()
+        {
+        }
+
         public  void Init(HitColliderInfo info, GameObject owner)
         {
 

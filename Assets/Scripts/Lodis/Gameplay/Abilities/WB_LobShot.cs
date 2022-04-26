@@ -83,7 +83,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
+            _projectileCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)

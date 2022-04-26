@@ -56,7 +56,7 @@ namespace Lodis.Gameplay
         protected override void Start(params object[] args)
         {
             base.Start(args);
-            ProjectileCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
+            ProjectileCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
         }
 
         protected override void Activate(params object[] args)

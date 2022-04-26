@@ -81,9 +81,8 @@ namespace Lodis.Gameplay
             protected set
             {
                 //Prevent damage if the object is invincible or dead
-                if (value < _health && _isInvincible || !IsAlive)
+                if (value < _health && (_isInvincible || !IsAlive))
                 {
-                    _health = 0;
                     return;
                 }
 

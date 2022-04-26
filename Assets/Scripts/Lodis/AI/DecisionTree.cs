@@ -20,6 +20,7 @@ namespace Lodis.AI
         private float _compareThreshold;
         public SaveLoadEvent OnSave;
         public SaveLoadEvent OnLoad;
+        public int MaxDecisionsCount = 400;
 
         /// <param name="root">The root decision of the tree</param>
         /// <param name="compareThreshold">How similar nodes have to be to a sitation to be choosen as the right answer</param>
@@ -71,7 +72,7 @@ namespace Lodis.AI
         /// <param name="decision">The new decision node to add</param>
         public TreeNode AddDecision(TreeNode decision)
         {
-            if (_nodeCache.Count >= 400) return null;
+            if (_nodeCache.Count >= MaxDecisionsCount) return null;
 
             if (_root == null)
             {

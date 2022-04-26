@@ -355,17 +355,24 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void FixedUpdate() { }
 
-        public HitColliderBehaviour GetColliderBehaviour(int index)
+        public HitColliderBehaviour GetColliderBehaviourCopy(int index)
         {
-            return _colliders[index];
+            HitColliderBehaviour hitColliderBehaviour = new HitColliderBehaviour();
+            HitColliderBehaviour.Copy(_colliders[index], hitColliderBehaviour);
+            return hitColliderBehaviour;
         }
 
-        public HitColliderBehaviour GetColliderBehaviour(string name)
+        public HitColliderBehaviour GetColliderBehaviourCopy(string name)
         {
+            HitColliderBehaviour hitColliderBehaviour = new HitColliderBehaviour();
+
             for (int i = 0; i < _colliders.Count; i++)
             {
                 if (_colliders[i].ColliderInfo.Name == name)
-                    return _colliders[i];
+                {
+                    HitColliderBehaviour.Copy(_colliders[i], hitColliderBehaviour);
+                    return hitColliderBehaviour;
+                }
             }
 
             return null;

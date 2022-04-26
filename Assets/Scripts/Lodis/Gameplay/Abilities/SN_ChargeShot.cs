@@ -49,7 +49,7 @@ namespace Lodis.Gameplay
 
             //Initialize collider stats
             float powerScale = (float)args[0];
-            _projectileCollider = (HitColliderBehaviour)GetColliderBehaviour(0);
+            _projectileCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
             _projectileCollider.ColliderInfo = _projectileCollider.ColliderInfo.ScaleStats(powerScale);
 
             //Create object to spawn laser from
