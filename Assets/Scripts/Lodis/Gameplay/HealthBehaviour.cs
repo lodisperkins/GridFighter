@@ -29,6 +29,7 @@ namespace Lodis.Gameplay
         [Tooltip("Whether or not this object can be damaged or knocked back")]
         [SerializeField]
         private bool _isInvincible;
+        private RoutineBehaviour.TimedAction _invincibilityTimer;
         private Condition _invincibilityCondition;
         private Condition _intagibilityCondition;
         [Tooltip("Whether or not this object is in a stunned state")]
@@ -268,7 +269,12 @@ namespace Lodis.Gameplay
         public void SetInvincibilityByTimer(float time)
         {
             _isInvincible = true;
-            RoutineBehaviour.Instance.StartNewTimedAction(args => _isInvincible = false, TimedActionCountType.SCALEDTIME, time);
+
+            if (_invincibilityTimer != null)
+                RoutineBehaviour.Instance.StopTimedAction(_invincibilityTimer);
+
+            _invincibilityTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => _isInvincible = false, TimedActionCountType.SCALEDTIME, time);
+
         }
 
         /// <summary>

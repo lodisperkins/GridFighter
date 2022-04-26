@@ -140,8 +140,7 @@ namespace Lodis.Input
             _playerControls.Player.Attack.started += context => { DisableMovement(); _attackButtonDown = true; };
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
-            _playerControls.Player.Parry.performed += context => { BufferParry(context); _defense.Brace(); };
-            _playerControls.Player.Parry.canceled += context => _defense.DisableShield();
+            _playerControls.Player.Parry.started += context => { BufferParry(context); _defense.Brace(); };
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
         }
@@ -294,22 +293,8 @@ namespace Lodis.Input
 
         private void UseDefensiveAction()
         {
-            //if (_attackDirection.magnitude > 0)
-            //{
-            //    AirDodge();
-            //    return;
-            //}
-
-            _defense.EnableShield();
-            DisableMovementBasedOnCondition(args => !_defense.IsBlocking);
-        }
-
-        /// <summary>
-        /// Doesn't work because button is pressed before attack direction is updated in update func
-        /// </summary>
-        private void AirDodge()
-        {
-            _defense.ActivateAirDodge(_attackDirection);
+            _defense.ActivateParry();
+            DisableMovementBasedOnCondition(args => !_defense.IsParrying);
         }
 
         /// <summary>
