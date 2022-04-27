@@ -8461,6 +8461,7 @@ MonoBehaviour:
   _dummyRHSSpawnLocation: {x: 5, y: 0}
   _dummyLHSSpawnLocation: {x: 4, y: 0}
   _targetFrameRate: 60
+  _invincibleBarriers: 1
 --- !u!114 &1441118449
 MonoBehaviour:
   m_ObjectHideFlags: 0

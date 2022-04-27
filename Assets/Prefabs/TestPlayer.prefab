@@ -303,6 +303,8 @@ MonoBehaviour:
   _wallTechJumpDistance: 2
   _wallTechJumpAngle: 1
   _attackerStunTime: 5
+  _wallFallBreakAngle: 1
+  _floorFallBreakAngle: 0.5
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
   m_ObjectHideFlags: 0

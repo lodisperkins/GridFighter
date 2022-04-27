@@ -8,7 +8,7 @@ using Lodis.GridScripts;
 namespace Lodis.Gameplay
 {
 
-    public delegate void FallBreakEvent(Vector3 collisionNormal);
+    public delegate void FallBreakEvent(bool onFloor);
     /// <summary>
     /// Handles all defensive options for any character on the grid.
     /// </summary>
@@ -60,6 +60,13 @@ namespace Lodis.Gameplay
         private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
         private RoutineBehaviour.TimedAction _parryTimer;
+        [Tooltip("The maximum angle allowed between the collision normal and the back of the character in order to count as a wall fall break.")]
+        [SerializeField]
+        private float _wallFallBreakAngle;
+
+        [Tooltip("The maximum angle allowed between the collision normal and the bottom of the character in order to count as a floor fall break.")]
+        [SerializeField]
+        private float _floorFallBreakAngle;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _braceInvincibilityTime; }
@@ -285,6 +292,7 @@ namespace Lodis.Gameplay
                 Gizmos.DrawCube(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 1.5f);
             }
         }
+
         private void OnTriggerEnter(Collider other)
         {
             if (!IsBraced || !(other.CompareTag("Structure") || other.CompareTag("Panel")) || BreakingFall)
@@ -305,15 +313,13 @@ namespace Lodis.Gameplay
 
             _knockBack.Physics.StopVelocity();
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
-            Vector3 collisionDirection = (other.ClosestPoint(transform.position) - transform.position).normalized;
-            if (collisionDirection.x != 0)
+            if (other.gameObject.CompareTag("Structure"))
             {
-                transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
-                _knockBack.InFreeFall = true;
                 Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
-                _knockBack.Physics.ApplyVelocityChange(jumpForce);
+                _knockBack.Physics.ApplyImpulseForce(jumpForce);
+                onFallBroken?.Invoke(false);
                 return;
             }
 
@@ -323,7 +329,7 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
             DeactivateGroundParry();
 
-            onFallBroken?.Invoke(collisionDirection);
+            onFallBroken?.Invoke(true);
             _knockBack.TryStartLandingLag();
             return;
             //Debug.Log("Collided with " + other.name);
@@ -350,15 +356,15 @@ namespace Lodis.Gameplay
             else
                  _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
 
-            _knockBack.Physics.StopVelocity();
-
             RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
-            Vector3 collisionDirection = collision.GetContact(0).normal;
-            if (collisionDirection.x != 0)
+            _knockBack.Physics.StopVelocity();
+
+            if (collision.gameObject.CompareTag("Structure"))
             {
                 Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
                 _knockBack.Physics.ApplyImpulseForce(jumpForce);
+                onFallBroken?.Invoke(false);
                 return;
             }
 
@@ -368,7 +374,7 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
             DeactivateGroundParry();
 
-            onFallBroken?.Invoke(collisionDirection);
+            onFallBroken?.Invoke(true);
             _knockBack.TryStartLandingLag();
             //Debug.Log("Collided with " + other.name);
 

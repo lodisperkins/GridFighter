@@ -55,13 +55,12 @@ namespace Lodis.Gameplay
         [SerializeField]
         private AnimationClip _defaultMeleeAnimation;
         private AnimatorTransitionInfo _lastTransitionInfo;
-        private Vector2 _normal;
         public Coroutine AbilityAnimationRoutine;
         private AnimatorOverrideController _overrideController;
         private float _currentClipStartUpTime;
         private float _currentClipActiveTime;
         private float _currentClipRecoverTime;
-
+        private bool _bracedAgainstFloor;
         // Start is called before the first frame update
         void Start()
         {
@@ -82,7 +81,7 @@ namespace Lodis.Gameplay
                 );
 
             _movesetBehaviour.OnUseAbility += PlayAbilityAnimation;
-            _defenseBehaviour.onFallBroken += normal => _normal = normal;
+            _defenseBehaviour.onFallBroken += onFloor => _bracedAgainstFloor = onFloor;
             //_animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         }
 
@@ -467,21 +466,12 @@ namespace Lodis.Gameplay
         public void PlayFallBreakAnimation()
         {
             _animationPhase = 0;
-            float x = Mathf.Abs(_normal.x);
-            float y = Mathf.Abs(_normal.y);
 
             _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _defenseBehaviour.FallBreakLength);
+            string animationName = _bracedAgainstFloor ? "GroundTech" : "WallTech";
 
-            if (x > y)
-            {
-                _animator.SetTrigger("WallTech");
-                _animatingMotion = true;
-            }
-            else if (y > x)
-            {
-                _animator.SetTrigger("GroundTech");
-                _animatingMotion = true;
-            }
+            _animator.SetTrigger(animationName);
+            _animatingMotion = true;
         }
 
         private void Update()
