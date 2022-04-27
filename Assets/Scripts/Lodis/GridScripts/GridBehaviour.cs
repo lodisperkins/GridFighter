@@ -56,6 +56,7 @@ namespace Lodis.GridScripts
         private int _tempMaxColumns;
         private float _width;
         private float _height;
+        private bool _invincibleBarriers;
 
         /// <summary>
         /// The spawn point for the character on the left side of the grid
@@ -142,6 +143,7 @@ namespace Lodis.GridScripts
         /// </summary>
         public float Height { get => _height; }
         public int P1MaxColumns { get => _p1MaxColumns; }
+        public bool InvincibleBarriers { get => _invincibleBarriers; set => _invincibleBarriers = value; }
 
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.
@@ -361,7 +363,11 @@ namespace Lodis.GridScripts
                 {
                     _barriers = new List<BarrierBehaviour>();
                 }
-                _barriers.Add(barrierObject.GetComponent<BarrierBehaviour>());
+                BarrierBehaviour barrier = barrierObject.GetComponent<BarrierBehaviour>();
+
+                if (InvincibleBarriers) barrier.SetInvincibilityByCondition(condition => !InvincibleBarriers);
+
+                _barriers.Add(barrier);
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
                 movement.MoveToPanel(spawnPanel.Position);
                 movement.Alignment = GridAlignment.LEFT;
@@ -391,7 +397,11 @@ namespace Lodis.GridScripts
                 if (barrierObject == null)
                     return;
 
-                _barriers.Add(barrierObject.GetComponent<BarrierBehaviour>());
+                BarrierBehaviour barrier = barrierObject.GetComponent<BarrierBehaviour>();
+
+                if (InvincibleBarriers) barrier.SetInvincibilityByCondition(condition => !InvincibleBarriers);
+
+                _barriers.Add(barrier);
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
                 movement.MoveToPanel(spawnPanel.Position);
                 movement.Alignment = GridAlignment.RIGHT;

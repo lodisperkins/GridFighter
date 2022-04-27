@@ -58,6 +58,8 @@ namespace Lodis.Gameplay
         private Vector2 _dummyLHSSpawnLocation;
         [SerializeField]
         private int _targetFrameRate;
+        [SerializeField]
+        private bool _invincibleBarriers;
         private int _player1DeviceIndex;
         private GameObject _cpu1;
 
@@ -71,6 +73,7 @@ namespace Lodis.Gameplay
         {
             _inputManager.playerPrefab = _playerRef;
             _grid.DestroyTempPanels();
+            _grid.InvincibleBarriers = _invincibleBarriers;
             //Initialize grid
             _grid.CreateGrid();
             Application.targetFrameRate = _targetFrameRate;

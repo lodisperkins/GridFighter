@@ -304,7 +304,6 @@ namespace Lodis.Gameplay
                 _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
 
             _knockBack.Physics.StopVelocity();
-            _knockBack.Physics.IgnoreForces = true;
 
             RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
@@ -314,7 +313,8 @@ namespace Lodis.Gameplay
                 transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
                 _knockBack.InFreeFall = true;
                 Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
-                _knockBack.Physics.ApplyVelocityChange(jumpForce); 
+                _knockBack.Physics.ApplyVelocityChange(jumpForce);
+                return;
             }
 
             if (_parryTimer != null)
@@ -354,6 +354,7 @@ namespace Lodis.Gameplay
                 _knockBack.InFreeFall = true;
                 Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
                 _knockBack.Physics.ApplyVelocityChange(jumpForce);
+                return;
             }
 
             if (_parryTimer != null)
