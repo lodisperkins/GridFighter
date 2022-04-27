@@ -329,6 +329,13 @@ namespace Lodis.Gameplay
             //Debug.Log("Collided with " + other.name);
         }
 
+        private void DisableFallBreaking(params object[] args)
+        {
+            BreakingFall = false;
+            _knockBack.Physics.IgnoreForces = false;
+            if (!_knockBack.Physics.IsGrounded) _knockBack.InFreeFall = true;
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
             if (!IsBraced || !(collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("Panel")) || BreakingFall)
@@ -345,15 +352,13 @@ namespace Lodis.Gameplay
 
             _knockBack.Physics.StopVelocity();
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args => { BreakingFall = false; _knockBack.Physics.IgnoreForces = false; }, TimedActionCountType.SCALEDTIME, FallBreakLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
             Vector3 collisionDirection = collision.GetContact(0).normal;
             if (collisionDirection.x != 0)
             {
-                transform.LookAt(new Vector2(collisionDirection.x, transform.position.y));
-                _knockBack.InFreeFall = true;
                 Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
-                _knockBack.Physics.ApplyVelocityChange(jumpForce);
+                _knockBack.Physics.ApplyImpulseForce(jumpForce);
                 return;
             }
 
