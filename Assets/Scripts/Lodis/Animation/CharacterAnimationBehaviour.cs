@@ -467,9 +467,20 @@ namespace Lodis.Gameplay
         {
             _animationPhase = 0;
 
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _defenseBehaviour.FallBreakLength);
-            string animationName = _bracedAgainstFloor ? "GroundTech" : "WallTech";
+            string animationName = "";
+            float techLength = 0;
+            if (_bracedAgainstFloor)
+            {
+                animationName = "GroundTech";
+                techLength = _defenseBehaviour.GroundTechLength;
+            }
+            else
+            {
+                animationName = "WallTech";
+                techLength = _defenseBehaviour.WallTechJumpDuration;
+            }
 
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / techLength);
             _animator.SetTrigger(animationName);
             _animatingMotion = true;
         }

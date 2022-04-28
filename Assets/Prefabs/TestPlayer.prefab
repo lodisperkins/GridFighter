@@ -298,13 +298,13 @@ MonoBehaviour:
   _braceActiveTime: 0.1
   _canBrace: 0
   _braceCooldownTime: 1
-  _braceInvincibilityTime: 0.3
+  _groundTechInvincibilityTime: 0.3
+  _wallTechInvincibilityTime: 0.5
   _fallBreakLength: 0.3
-  _wallTechJumpDistance: 2
-  _wallTechJumpAngle: 1
+  _wallTechJumpDistance: 3
+  _wallTechJumpHeight: 1
+  _wallTechJumpDuration: 0.7
   _attackerStunTime: 5
-  _wallFallBreakAngle: 1
-  _floorFallBreakAngle: 0.5
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
   m_ObjectHideFlags: 0

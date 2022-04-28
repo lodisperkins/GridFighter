@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Lodis.Gameplay;
-using UnityEngine.Events;
 using Lodis.ScriptableObjects;
-using Lodis.Utility;
-using Lodis.Movement;
+using DG.Tweening;
+using Lodis.GridScripts;
+using System;
 
 namespace Lodis.Movement
 {
+    public delegate void ForceAddedEvent(params object[] args);
 
     [RequireComponent(typeof(GridMovementBehaviour))]
     [RequireComponent(typeof(Rigidbody))]
@@ -73,7 +74,11 @@ namespace Lodis.Movement
         /// </summary>
         private CollisionEvent _onCollisionWithGround;
 
+        private ForceAddedEvent _onForceAdded;
+
+
         private Coroutine _currentCoroutine;
+        private Sequence _sequence;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -312,6 +317,15 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Adds a method to the event called when a force is applied to this object.
+        /// </summary>
+        /// <param name="forceEvent">The delegate to invoke upon collision</param>
+        public void AddOnForceAddedEvent(ForceAddedEvent forceEvent)
+        {
+            _onForceAdded += forceEvent;
+        }
+
+        /// <summary>
         /// Adds an event to the event called when this object collides lands on a structure.
         /// </summary>
         /// <param name="collisionEvent">The delegate to invoke upon collision</param>
@@ -431,6 +445,7 @@ namespace Lodis.Movement
             _lastVelocity = force;
             _lastForceAdded = force;
             _netForce += force;
+            _onForceAdded?.Invoke(force);
         }
 
         /// <summary>
@@ -458,6 +473,7 @@ namespace Lodis.Movement
             _lastVelocity = force;
             _lastForceAdded = force;
             _netForce += force;
+            _onForceAdded?.Invoke(force);
         }
 
         /// <summary>
@@ -489,6 +505,50 @@ namespace Lodis.Movement
             _lastVelocity = force;
             _lastForceAdded = force;
             _netForce += force;
+            _onForceAdded?.Invoke(force);
+        }
+
+        /// <summary>
+        /// Interpolates from the objects current position to a panel at the given distance while adding a jump effect on the y.
+        /// </summary>
+        /// <param name="panelDistance">How many panels far the object will jump</param>
+        /// <param name="height">The maximum height of the jump</param>
+        /// <param name="duration">The amount of time the jump will last</param>
+        /// <param name="jumpToClosestAvailablePanel">If true, the object will try to jump to a closer panel if the destination isn't available</param>
+        /// <param name="canBeOccupied">If true, the destination panel can be occupied by another object</param>
+        /// <param name="alignment">The alignment of the panels this object is allowed to jump on</param>
+        public void Jump(int panelDistance, float height, float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, Vector3 panelOffset = default(Vector3), Ease ease = Ease.InOutSine)
+        {
+            //Find the space between each panel and the panels size to use to find the total displacement
+            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
+            float displacement = (panelSize * panelDistance) + (panelSpacing * (panelDistance - 1));
+
+            //Try to find a panel at the location
+            PanelBehaviour panel;
+            Vector3 panelPosition = transform.position + transform.forward * panelDistance;
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
+
+            //Returns if a panel couldn't be found and we don't want to keep looking
+            if (!panel && !jumpToClosestAvailablePanel) return;
+
+
+            //Looks for a panel to land on
+            for (int i = panelDistance - 1; i > 0; i++)
+            {
+                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
+
+                if (panel) break;
+            }
+
+            //Perform the jump
+            _sequence = _rigidbody.DOJump(panelPosition + panelOffset, height, 1, duration).SetEase(ease);
+
+            //Cancel the jump if a force is added
+            _onForceAdded += args =>
+            {
+                _sequence?.Kill();
+            };
         }
 
         /// <summary>

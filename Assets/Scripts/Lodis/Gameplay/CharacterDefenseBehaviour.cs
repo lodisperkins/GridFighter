@@ -46,34 +46,33 @@ namespace Lodis.Gameplay
         private float _braceCooldownTime;
         [Tooltip("How long in seconds the object is invincible after catching it's fall.")]
         [SerializeField]
-        private float _braceInvincibilityTime;
+        private float _groundTechInvincibilityTime;
+        [Tooltip("How long in seconds the object is invincible after breaking its fall on a wall.")]
+        [SerializeField]
+        private float _wallTechInvincibilityTime;
         [Tooltip("How long in seconds the object is going to spend breaking its fall.")]
         [SerializeField]
         private float _fallBreakLength;
         [SerializeField]
-        private float _wallTechJumpDistance;
+        private int _wallTechJumpDistance;
         [SerializeField]
-        private float _wallTechJumpAngle;
+        private float _wallTechJumpHeight;
+        [SerializeField]
+        private float _wallTechJumpDuration;
         [Tooltip("How long in seconds to stun an enemy after a successful parry.")]
         [SerializeField]
         private float _attackerStunTime;
         private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
         private RoutineBehaviour.TimedAction _parryTimer;
-        [Tooltip("The maximum angle allowed between the collision normal and the back of the character in order to count as a wall fall break.")]
-        [SerializeField]
-        private float _wallFallBreakAngle;
-
-        [Tooltip("The maximum angle allowed between the collision normal and the bottom of the character in order to count as a floor fall break.")]
-        [SerializeField]
-        private float _floorFallBreakAngle;
 
         public bool BreakingFall { get; private set; }
-        public float BraceInvincibilityTime { get => _braceInvincibilityTime; }
+        public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
         public bool IsBraced { get; private set; }
-        public float FallBreakLength { get => _fallBreakLength; set => _fallBreakLength = value; }
+        public float GroundTechLength { get => _fallBreakLength; set => _fallBreakLength = value; }
+        public float WallTechJumpDuration { get => _wallTechJumpDuration; }
 
         // Start is called before the first frame update
         void Start()
@@ -308,18 +307,19 @@ namespace Lodis.Gameplay
                     BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, true);
                     return panel.Alignment == _movement.Alignment; 
                 } );
-            else
+            else if (other.gameObject.CompareTag("Panel"))
                 _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
+            else
+                _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
 
             _knockBack.Physics.StopVelocity();
+            _knockBack.Physics.IgnoreForces = true;
 
-            RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, FallBreakLength);
 
             if (other.gameObject.CompareTag("Structure"))
             {
-                Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
-                _knockBack.Physics.ApplyImpulseForce(jumpForce);
-                _knockBack.IsTumbling = false;
+                RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, WallTechJumpDuration);
+                _knockBack.Physics.Jump(_wallTechJumpDistance, _wallTechJumpHeight, _wallTechJumpDuration, true, false, _movement.Alignment);
                 onFallBroken?.Invoke(false);
                 return;
             }
@@ -327,6 +327,7 @@ namespace Lodis.Gameplay
             if (_parryTimer != null)
                 if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
 
+            RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
             DeactivateGroundParry();
 
@@ -354,17 +355,18 @@ namespace Lodis.Gameplay
 
             if (panel?.Alignment != _movement.Alignment && collision.gameObject.CompareTag("Panel"))
                 _knockBack.SetInvincibilityByCondition(condition => !_movement.IsMoving && _movement.CurrentPanel.Alignment == _movement.Alignment);
+            else if (collision.gameObject.CompareTag("Panel"))
+                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
             else
-                 _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
-
-            RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, FallBreakLength);
+                _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
 
             _knockBack.Physics.StopVelocity();
+            _knockBack.Physics.IgnoreForces = true;
 
             if (collision.gameObject.CompareTag("Structure"))
             {
-                Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
-                _knockBack.Physics.ApplyVelocityChange(jumpForce / _knockBack.Physics.Mass);
+                RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration);
+                _knockBack.Physics.Jump(_wallTechJumpDistance, 0, _wallTechJumpDuration, true, false, _movement.Alignment, Vector3.up * _wallTechJumpHeight, DG.Tweening.Ease.OutQuart);
                 onFallBroken?.Invoke(false);
                 return;
             }
@@ -372,6 +374,7 @@ namespace Lodis.Gameplay
             if (_parryTimer != null)
                 if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
 
+            RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
             DeactivateGroundParry();
 

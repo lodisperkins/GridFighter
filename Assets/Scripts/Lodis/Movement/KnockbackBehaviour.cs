@@ -364,7 +364,7 @@ namespace Lodis.Movement
                 {
                     InFreeFall = false;
                     _tumbling = false;
-                    yield return new WaitForSeconds(_defenseBehaviour.FallBreakLength);
+                    yield return new WaitForSeconds(_defenseBehaviour.GroundTechLength);
                     Landing = false;
                     Physics.MakeKinematic();
                     yield return null;
