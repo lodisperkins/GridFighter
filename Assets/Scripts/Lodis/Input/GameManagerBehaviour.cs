@@ -62,6 +62,8 @@ namespace Lodis.Gameplay
         private bool _invincibleBarriers;
         private int _player1DeviceIndex;
         private GameObject _cpu1;
+        [SerializeField]
+        private float _timeScale = 1;
 
         public int TargetFrameRate
         {
@@ -290,10 +292,7 @@ namespace Lodis.Gameplay
         void Update()
         {
             BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
-        }
-
-        private void FixedUpdate()
-        {
+            
             if (_mode == GameMode.SIMULATE)
                 return;
 
@@ -334,6 +333,8 @@ namespace Lodis.Gameplay
                     _p2Input.enabled = true;
                 }
             }
+
+            Time.timeScale = _timeScale;
         }
     }
 

@@ -302,7 +302,7 @@ namespace Lodis.Gameplay
 
             PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
 
-            if (panel?.Alignment != _movement.Alignment)
+            if (panel?.Alignment != _movement.Alignment && other.gameObject.CompareTag("Panel"))
                 _knockBack.SetInvincibilityByCondition(condition => 
                 {
                     BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, true);
@@ -319,6 +319,7 @@ namespace Lodis.Gameplay
             {
                 Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
                 _knockBack.Physics.ApplyImpulseForce(jumpForce);
+                _knockBack.IsTumbling = false;
                 onFallBroken?.Invoke(false);
                 return;
             }
@@ -351,7 +352,7 @@ namespace Lodis.Gameplay
 
             PanelBehaviour panel = collision.gameObject.GetComponent<PanelBehaviour>();
 
-            if (panel?.Alignment != _movement.Alignment)
+            if (panel?.Alignment != _movement.Alignment && collision.gameObject.CompareTag("Panel"))
                 _knockBack.SetInvincibilityByCondition(condition => !_movement.IsMoving && _movement.CurrentPanel.Alignment == _movement.Alignment);
             else
                  _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
@@ -363,7 +364,7 @@ namespace Lodis.Gameplay
             if (collision.gameObject.CompareTag("Structure"))
             {
                 Vector3 jumpForce = _knockBack.Physics.CalculatGridForce(_wallTechJumpDistance, _wallTechJumpAngle);
-                _knockBack.Physics.ApplyImpulseForce(jumpForce);
+                _knockBack.Physics.ApplyVelocityChange(jumpForce / _knockBack.Physics.Mass);
                 onFallBroken?.Invoke(false);
                 return;
             }

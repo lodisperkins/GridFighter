@@ -83,7 +83,7 @@ namespace Lodis.Movement
         /// <summary>
         /// Returns if the object is in knockback
         /// </summary>
-        public bool IsTumbling {get => _tumbling; }
+        public bool IsTumbling { get => _tumbling; set => _tumbling = value; }
 
         /// <summary>
         /// Returns the velocity of this object when it was first launched
