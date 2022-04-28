@@ -292,7 +292,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
@@ -345,19 +345,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parryLength: 0.23
-  _parryCollider: {fileID: 4397158569536455242}
+  _parryCollider: {fileID: 3860114405734811056, guid: de05c6ed12e6ef845b5c326a1cc157b5,
+    type: 3}
   _isParrying: 0
   _parryInvincibilityLength: 0.5
   _canParry: 1
-  _groundParryRestTime: 0.67
+  _groundParryRestTime: 0.25
   _parryStartUpTime: 0.05
   _braceActiveTime: 0.1
   _canBrace: 0
   _braceCooldownTime: 1
-  _braceInvincibilityTime: 0.3
+  _groundTechInvincibilityTime: 0.3
+  _wallTechInvincibilityTime: 0.5
   _fallBreakLength: 0.3
-  _wallTechJumpDistance: 0
-  _wallTechJumpAngle: 0
+  _wallTechJumpDistance: 3
+  _wallTechJumpHeight: 1
+  _wallTechJumpDuration: 0.7
   _attackerStunTime: 5
 --- !u!75 &986386592
 ConstantForce:
@@ -933,7 +936,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 422fb6956201c7944ae2113a1a53b0b8, type: 3}
   m_Name: 
@@ -1004,7 +1007,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e867bf7b20b1ca4dbd0e6c6ca45a4f6, type: 3}
   m_Name: 

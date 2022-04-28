@@ -502,9 +502,6 @@ namespace Lodis.Movement
             if (!_movementBehaviour || IsInvincible)
                 return 0;
 
-            //Update current knockback scale
-            _lastBaseKnockBack = info.BaseKnockBack;
-
             //Adds damage to the total damage
             Health += info.Damage;
 
@@ -514,7 +511,7 @@ namespace Lodis.Movement
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
-            float totalKnockback = (_lastBaseKnockBack + (_lastBaseKnockBack * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100) * (info.KnockBackScale /100)));
+            float totalKnockback = info.BaseKnockBack + Mathf.Round((Health / 100 * info.KnockBackScale));
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
@@ -578,7 +575,7 @@ namespace Lodis.Movement
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
-            float totalKnockback = (_lastBaseKnockBack + (_lastBaseKnockBack * (Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value * 100)));
+            float totalKnockback = (_lastBaseKnockBack + (_lastBaseKnockBack * Health / BlackBoardBehaviour.Instance.MaxKnockBackHealth.Value)) * (abilityData.GetColliderInfo(0).KnockBackScale / 100);
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody

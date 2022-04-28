@@ -42,13 +42,13 @@ MonoBehaviour:
       m_Bits: 67584
     HitFrames: 0
     Damage: 1
-    BaseKnockBack: 1
-    KnockBackScale: 1.2
-    HitAngle: 0.8
+    BaseKnockBack: 0
+    KnockBackScale: 0.5
+    HitAngle: 0.5
     AdjustAngleBasedOnCollision: 0
     TypeOfDamage: 0
     CanSpike: 0
-    HitStunTime: 0.1
+    HitStunTime: 0.2
     Priority: 0
     OwnerAlignement: 0
   _customStats:
