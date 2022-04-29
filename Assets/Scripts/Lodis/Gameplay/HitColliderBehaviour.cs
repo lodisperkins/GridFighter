@@ -34,7 +34,7 @@ namespace Lodis.Gameplay
         [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
         public float HitAngle;
         [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
-        public bool AdjustAngleBasedOnCollision;
+        public bool AdjustAngleBasedOnAlignment;
         [Tooltip("The type of damage this collider will be read as")]
         public DamageType TypeOfDamage;
         public bool CanSpike;
@@ -78,7 +78,7 @@ namespace Lodis.Gameplay
         public HitColliderBehaviour(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
            : base()
         {
-            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnAlignment = angleChangeOnCollision, HitStunTime = hitStunTimer };
             Init(info, owner);
         }
 
@@ -133,7 +133,7 @@ namespace Lodis.Gameplay
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
         public void Init(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
         {
-            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnCollision = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnAlignment = angleChangeOnCollision, HitStunTime = hitStunTimer };
             Init(info, owner);
         }
 
@@ -207,16 +207,14 @@ namespace Lodis.Gameplay
             float newHitAngle = ColliderInfo.HitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
-            if (ColliderInfo.AdjustAngleBasedOnCollision)
+            if (ColliderInfo.AdjustAngleBasedOnAlignment)
             {
-                //Find a vector that point from the collider to the object hit
-                Vector3 directionOfImpact = other.transform.position - transform.position;
-                directionOfImpact.Normalize();
-                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
-
                 //Find the direction this collider was going to apply force originally
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-                currentForceDirection.x *= directionOfImpact.x;
+
+                //Find a new direction based the alignment
+                int direction = ColliderInfo.OwnerAlignement == GridAlignment.LEFT ? 1 : -1;
+                currentForceDirection.x *= direction;
 
                 //Find the new angle based on the direction of the attack on the x axis
                 float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
@@ -281,16 +279,14 @@ namespace Lodis.Gameplay
             float newHitAngle = ColliderInfo.HitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
-            if (ColliderInfo.AdjustAngleBasedOnCollision)
+            if (ColliderInfo.AdjustAngleBasedOnAlignment)
             {
-                //Find a vector that point from the collider to the object hit
-                Vector3 directionOfImpact = other.transform.position - transform.position;
-                directionOfImpact.Normalize();
-                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
-
                 //Find the direction this collider was going to apply force originally
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-                currentForceDirection.x *= directionOfImpact.x;
+
+                //Find a new direction based the alignment
+                int direction = ColliderInfo.OwnerAlignement == GridAlignment.LEFT ? 1 : -1;
+                currentForceDirection.x *= direction;
 
                 //Find the new angle based on the direction of the attack on the x axis
                 float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
@@ -355,16 +351,14 @@ namespace Lodis.Gameplay
             float newHitAngle = ColliderInfo.HitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
-            if (ColliderInfo.AdjustAngleBasedOnCollision)
+            if (ColliderInfo.AdjustAngleBasedOnAlignment)
             {
-                //Find a vector that point from the collider to the object hit
-                Vector3 directionOfImpact = other.transform.position - transform.position;
-                directionOfImpact.Normalize();
-                directionOfImpact.x = Mathf.Round(directionOfImpact.x);
-
                 //Find the direction this collider was going to apply force originally
                 Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-                currentForceDirection.x *= directionOfImpact.x;
+
+                //Find a new direction based the alignment
+                int direction = ColliderInfo.OwnerAlignement == GridAlignment.LEFT ? 1 : -1;
+                currentForceDirection.x *= direction;
 
                 //Find the new angle based on the direction of the attack on the x axis
                 float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
