@@ -168,12 +168,14 @@ namespace Lodis.Gameplay
         public void ResetActiveTime()
         {
             StartTime = Time.time;
-        }    
+        }
+
+
 
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner)
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || other.CompareTag("Reflector"))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
@@ -244,7 +246,7 @@ namespace Lodis.Gameplay
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(gameObject))
+            if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(gameObject) || other.CompareTag("Reflector"))
                 return;
 
             if (!Collisions.ContainsKey(other.gameObject))
@@ -317,7 +319,7 @@ namespace Lodis.Gameplay
             GameObject other = collision.gameObject;
 
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner)
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || other.CompareTag("Reflector"))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
@@ -384,6 +386,7 @@ namespace Lodis.Gameplay
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
         }
+
 
         private void OnDrawGizmos()
         {

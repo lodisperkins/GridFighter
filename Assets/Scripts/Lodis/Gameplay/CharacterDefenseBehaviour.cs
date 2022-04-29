@@ -89,54 +89,6 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Checks if the object it collided with is an enemy projectile.
-        /// If so, reverses velocity
-        /// </summary>
-        /// <param name="gameObject"></param>
-        public void TryReflectProjectile(params object[] args)
-        {
-            GameObject other = (GameObject)args[0];
-            //Get collider and rigidbody to check the owner and add the force
-            HitColliderBehaviour otherHitCollider = other.GetComponentInParent<HitColliderBehaviour>();
-
-            GridPhysicsBehaviour gridPhysics = other.GetComponentInParent<GridPhysicsBehaviour>();
-
-            //If the object collided with is an enemy projectile...
-            if (otherHitCollider && gridPhysics && !otherHitCollider.CompareTag("Player") && !otherHitCollider.CompareTag("Entity"))
-            {
-
-                if (otherHitCollider.Owner == _parryCollider.Owner)
-                    return;
-                //...reset the active time and reverse its velocity
-                otherHitCollider.Owner = _parryCollider.Owner;
-                otherHitCollider.ResetActiveTime();
-                gridPhysics.ApplyVelocityChange(-gridPhysics.LastVelocity * 2);
-
-            }
-        }
-
-        public void TryStunAttacker(params object[] args)
-        {
-            GameObject other = (GameObject)args[0];
-            HealthBehaviour healthBehaviour = other.GetComponentInParent<HealthBehaviour>();
-            KnockbackBehaviour knockback = other.GetComponentInParent<KnockbackBehaviour>();
-
-            if (!healthBehaviour || other.CompareTag("Entity") || other.CompareTag("Player"))
-                return;
-            else if (healthBehaviour.Stunned)
-                return;
-
-            if (knockback && other != _parryCollider.Owner)
-                if (!knockback.CheckIfIdle())
-                {
-                    knockback.Physics.FreezeInPlaceByTimer(_attackerStunTime, false, true);
-                }
-
-            if (other != _parryCollider.Owner)
-                healthBehaviour.Stun(_attackerStunTime);
-        }
-
-        /// <summary>
         /// Enables the parry collider and freezes character actions
         /// </summary>
         /// <returns></returns>

@@ -15,9 +15,11 @@ GameObject:
   - component: {fileID: 5927806561006395036}
   - component: {fileID: 5698475181075874488}
   - component: {fileID: 8324301226956812270}
+  - component: {fileID: -1931212140720550919}
+  - component: {fileID: 5254046412119068983}
   m_Layer: 9
   m_Name: ParryBox
-  m_TagString: Untagged
+  m_TagString: Reflector
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -161,4 +163,38 @@ MonoBehaviour:
   _isAlive: 1
   _isInvincible: 0
   _stunned: 0
+  _isIntangible: 0
+  _meshRenderer: {fileID: 0}
+  _invincibilityColor: {r: 0, g: 0, b: 0, a: 0}
+  _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
   _owner: {fileID: 0}
+--- !u!114 &-1931212140720550919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108451635469348776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Owner: {fileID: 0}
+  _layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 0
+--- !u!114 &5254046412119068983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1108451635469348776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c63a7dc57a8b56142bff2c2d1d46c705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _attackerStunTime: 3
+  _resetProjectileTimer: 0
