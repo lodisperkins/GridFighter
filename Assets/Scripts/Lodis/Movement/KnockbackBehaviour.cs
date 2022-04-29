@@ -413,7 +413,9 @@ namespace Lodis.Movement
             _inHitStun = true;
             _timeInCurrentHitStun = timeInHitStun;
 
-            if(_hitStunTimer.GetEnabled())
+            _movementBehaviour.DisableMovement(condition => !_inHitStun, false, true);
+
+            if (_hitStunTimer.GetEnabled())
                 RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
 
             _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _inHitStun = false; _isFlinching = false; _timeInCurrentHitStun = 0; }, TimedActionCountType.SCALEDTIME, timeInHitStun);
