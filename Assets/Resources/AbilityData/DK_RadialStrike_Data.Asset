@@ -23,6 +23,7 @@ MonoBehaviour:
   canCancelActive: 1
   canCancelRecover: 1
   CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
   CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnFlinch: 0
@@ -42,13 +43,13 @@ MonoBehaviour:
       m_Bits: 65536
     HitFrames: 0
     Damage: 15
-    BaseKnockBack: 2
-    KnockBackScale: 100
-    HitAngle: 1.5707964
-    AdjustAngleBasedOnCollision: 1
+    BaseKnockBack: 3
+    KnockBackScale: 0.6
+    HitAngle: 0.3
+    AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     CanSpike: 0
-    HitStunTime: 0.2
+    HitStunTime: 0.4
     Priority: 0
     OwnerAlignement: 0
   _customStats:
