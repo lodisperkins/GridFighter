@@ -43,9 +43,9 @@ MonoBehaviour:
     HitFrames: 0
     Damage: 1
     BaseKnockBack: 7
-    KnockBackScale: 0
+    KnockBackScale: 5
     HitAngle: 1.5
-    AdjustAngleBasedOnCollision: 1
+    AdjustAngleBasedOnCollision: 0
     TypeOfDamage: 0
     CanSpike: 0
     HitStunTime: 0.3

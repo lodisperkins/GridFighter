@@ -173,8 +173,8 @@ namespace Lodis.AI
 
         private void OnApplicationQuit()
         {
-            _attackDecisions.Save(name);
-            _defenseDecisions.Save(name);
+            _attackDecisions?.Save(name);
+            _defenseDecisions?.Save(name);
         }
     }
 }

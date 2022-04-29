@@ -43,12 +43,12 @@ MonoBehaviour:
     HitFrames: 0
     Damage: 1
     BaseKnockBack: 0
-    KnockBackScale: 0.5
+    KnockBackScale: 0
     HitAngle: 0.5
     AdjustAngleBasedOnCollision: 0
     TypeOfDamage: 0
     CanSpike: 0
-    HitStunTime: 0.2
+    HitStunTime: 0.3
     Priority: 0
     OwnerAlignement: 0
   _customStats:
