@@ -413,7 +413,7 @@ namespace Lodis.Movement
             _inHitStun = true;
             _timeInCurrentHitStun = timeInHitStun;
 
-            _movementBehaviour.DisableMovement(condition => !_inHitStun, false, true);
+            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
             if (_hitStunTimer.GetEnabled())
                 RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);

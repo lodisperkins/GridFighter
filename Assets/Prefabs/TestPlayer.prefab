@@ -299,7 +299,7 @@ MonoBehaviour:
   _canBrace: 0
   _braceCooldownTime: 1
   _groundTechInvincibilityTime: 0.3
-  _wallTechInvincibilityTime: 0.5
+  _wallTechInvincibilityTime: 0.35
   _fallBreakLength: 0.3
   _wallTechJumpDistance: 3
   _wallTechJumpHeight: 1

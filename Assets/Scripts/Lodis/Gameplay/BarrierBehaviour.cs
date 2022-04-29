@@ -62,29 +62,6 @@ namespace Lodis.Gameplay
             return 0;
         }
 
-        public override void OnCollisionEnter(Collision collision)
-        {
-            Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
-            //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript)
-                return;
-
-            //Calculate the knockback and hit angle for the ricochet
-            ContactPoint contactPoint = collision.GetContact(0);
-
-            Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
-            float dotProduct = Vector3.Dot(Vector3.right, -direction);
-            float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-            float baseKnockBack = knockBackScript.LastTotalKnockBack * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
-
-            if (baseKnockBack == 0 || float.IsNaN(baseKnockBack) || !knockBackScript.IsTumbling)
-                return;
-
-            //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, _damageOnCollision, 0, 0, DamageType.KNOCKBACK, _hitStunOnCollision);
-        }
-
         private void OnCollisionStay(Collision collision)
         {
             Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();

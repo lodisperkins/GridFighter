@@ -312,6 +312,10 @@ MonoBehaviour:
   _isAlive: 1
   _isInvincible: 0
   _stunned: 0
+  _isIntangible: 0
+  _meshRenderer: {fileID: 0}
+  _invincibilityColor: {r: 0, g: 0, b: 0, a: 0}
+  _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
   _visibleLayers:
     serializedVersion: 2
     m_Bits: 31232
@@ -348,10 +352,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 0
+  _mass: 1
   _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
   _gravity: 9.81
-  _bounceDampen: 1.7
+  _bounceDampen: 1.3
   _bounceCollider: {fileID: 0}
   _isGrounded: 0
   _extraHeight: 0.5
