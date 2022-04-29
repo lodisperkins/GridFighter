@@ -197,13 +197,13 @@ namespace Lodis.Gameplay
         /// <returns>The ability used.</returns>
         public Ability UseBasicAbility(AbilityType abilityType, params object[] args)
         {
-            //Return if there is an ability in use that can't be canceled
-            if (_lastAbilityInUse != null)
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel())
-                    return _lastAbilityInUse;
 
             //Find the ability in the deck abd use it
             Ability currentAbility = _normalDeck.GetAbilityByType(abilityType);
+            //Return if there is an ability in use that can't be canceled
+            if (_lastAbilityInUse != null)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
+                    return _lastAbilityInUse;
 
             if (currentAbility == null)
                 return null;
@@ -226,13 +226,14 @@ namespace Lodis.Gameplay
         /// <returns>The ability used.</returns>
         public Ability UseBasicAbility(string abilityName, params object[] args)
         {
-            //Return if there is an ability in use that can't be canceled
-            if (_lastAbilityInUse != null)
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel())
-                    return _lastAbilityInUse;
 
             //Find the ability in the deck abd use it
             Ability currentAbility = _normalDeck.GetAbilityByName(abilityName);
+
+            //Return if there is an ability in use that can't be canceled
+            if (_lastAbilityInUse != null)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
+                    return _lastAbilityInUse;
 
             if (currentAbility == null)
                 return null;
@@ -288,13 +289,12 @@ namespace Lodis.Gameplay
         /// <returns>The ability that was used</returns>
         public Ability UseSpecialAbility(int abilitySlot, params object[] args)
         {
+            //Find the ability in the deck and use it
+            Ability currentAbility = _specialAbilitySlots[abilitySlot];
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel())
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
                     return _lastAbilityInUse;
-
-            //Find the ability in the deck abd use it
-            Ability currentAbility = _specialAbilitySlots[abilitySlot];
 
             if (currentAbility == null)
                 return null;
