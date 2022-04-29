@@ -82,7 +82,7 @@ namespace Lodis.Gameplay
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _health = GetComponent<HealthBehaviour>();
 
-            _knockBack.AddOnKnockBackAction(ResetParry);
+            _knockBack.AddOnTakeDamageAction(ResetParry);
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
             _parryCollider.OnHit += ActivateInvinciblity;
