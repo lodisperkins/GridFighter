@@ -374,7 +374,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 4705404459745268771}
   _projectileSpawnPoint: {fileID: 7641039657355691941}
@@ -1144,7 +1144,7 @@ PrefabInstance:
     - target: {fileID: 1045777155629274974, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}
       propertyPath: m_Layer
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}

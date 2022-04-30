@@ -10,6 +10,7 @@ TagManager:
   - ParryBox
   - CollisionPlane
   - Panel
+  - Reflector
   layers:
   - Default
   - TransparentFX
@@ -28,7 +29,7 @@ TagManager:
   - IgnoreHitColliders
   - RingBarrier
   - Ability
-  - 
+  - Reflector
   - 
   - 
   - 
