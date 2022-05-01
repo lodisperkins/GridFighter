@@ -25,6 +25,10 @@ namespace Lodis.Gameplay
         [Tooltip("The length of the hit stun applied to the objects that are knocked into this barrier.")]
         [SerializeField]
         private float _hitStunOnCollision;
+        [SerializeField]
+        private MeshRenderer _healthRenderer;
+        [SerializeField]
+        private Gradient _healthGradient;
 
         public string Owner { get => _owner; set => _owner = value; }
 
@@ -32,7 +36,7 @@ namespace Lodis.Gameplay
         protected override void Start()
         {
             base.Start();
-            _material = GetComponent<Renderer>().material;
+            _material = _healthRenderer.material;
             Movement = GetComponent<Movement.GridMovementBehaviour>();
         }
 
@@ -88,6 +92,8 @@ namespace Lodis.Gameplay
                 _material.color = new Color(1, 1, 1, 0.5f);
             else
                 _material.color = new Color(1, 1, 1, 1);
+
+            _material.SetColor("_EmissionColor", _healthGradient.Evaluate(Health / MaxHealth.Value) * 1.2f);
         }
     }
 }
