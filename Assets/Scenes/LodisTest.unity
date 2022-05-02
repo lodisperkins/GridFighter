@@ -930,10 +930,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12800
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
 --- !u!114 &153491746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2331,10 +2327,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12800
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
 --- !u!114 &378724503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2779,10 +2771,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12800
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
 --- !u!114 &414256283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4815,10 +4803,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12800
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
 --- !u!114 &870172107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5414,10 +5398,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12800
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
 --- !u!114 &963736377
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6874,10 +6854,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12800
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
 --- !u!114 &1159945844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8450,7 +8426,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 2
+  _mode: 1
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}
@@ -8961,10 +8937,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12800
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
 --- !u!114 &1444806578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10906,10 +10878,6 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 12800
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
 --- !u!114 &1784880262
 MonoBehaviour:
   m_ObjectHideFlags: 0
