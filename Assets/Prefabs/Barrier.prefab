@@ -166,8 +166,8 @@ GameObject:
   - component: {fileID: -4499121288340441238}
   - component: {fileID: 1519654295394309742}
   - component: {fileID: 8665960441623888782}
-  - component: {fileID: -7691871575479347774}
   - component: {fileID: 12686090437924747}
+  - component: {fileID: 5162081322942168549}
   m_Layer: 10
   m_Name: Barrier
   m_TagString: Structure
@@ -371,32 +371,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-7691871575479347774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3170123629028843225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _mass: 1
-  _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
-  _gravity: 9.81
-  _bounceDampen: 1.3
-  _bounceCollider: {fileID: 0}
-  _isGrounded: 0
-  _extraHeight: 0.5
-  _bounciness: 0.8
-  _panelBounceEnabled: 1
-  _netForce: {x: 0, y: 0, z: 0}
-  _useGravity: 0
-  _ignoreForces: 1
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
 --- !u!75 &12686090437924747
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -409,6 +383,33 @@ ConstantForce:
   m_RelativeForce: {x: 0, y: 0, z: 0}
   m_Torque: {x: 0, y: 0, z: 0}
   m_RelativeTorque: {x: 0, y: 0, z: 0}
+--- !u!114 &5162081322942168549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3170123629028843225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78b1f9b47a836ee4a8af571178f956e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mass: 1
+  _velocityDecayRate: {fileID: 11400000, guid: 6126e34826da78042a4eebdfeadd5cdc, type: 2}
+  _gravity: 9.81
+  _bounceDampen: 1.3
+  _bounceCollider: {fileID: 0}
+  _isGrounded: 0
+  _extraHeight: 0.5
+  _bounciness: 0.8
+  _panelBounceEnabled: 1
+  _netForce: {x: 0, y: 0, z: 0}
+  _useGravity: 1
+  _ignoreForces: 1
+  _rangeToIgnoreUpAngle: 0.2
+  _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
+  _pushScale: 15
 --- !u!1 &4444937584539456812
 GameObject:
   m_ObjectHideFlags: 0

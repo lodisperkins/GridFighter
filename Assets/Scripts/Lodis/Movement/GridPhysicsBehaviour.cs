@@ -334,7 +334,7 @@ namespace Lodis.Movement
             _onCollisionWithGround += collisionEvent;
         }
 
-        private void OnCollisionEnter(Collision collision)
+        protected virtual void OnCollisionEnter(Collision collision)
         {
             _onCollision?.Invoke(collision.gameObject, collision);
 
@@ -377,7 +377,7 @@ namespace Lodis.Movement
             gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(baseKnockBack * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
             _onCollision?.Invoke(other.gameObject, other);
 

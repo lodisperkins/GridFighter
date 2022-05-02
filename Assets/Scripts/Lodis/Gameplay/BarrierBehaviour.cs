@@ -14,21 +14,6 @@ namespace Lodis.Gameplay
         [Tooltip("The name of the gameobject that owns this barrier")]
         [SerializeField]
         private string _owner = "";
-        [Tooltip("How much force will be applied to object standing on top of the barrier to push them off.")]
-        [SerializeField]
-        private float _pushScale;
-        [Tooltip("The amount of damage to deal to objects that collide with the barrier.")]
-        [SerializeField]
-        private float _damageOnCollision;
-        [SerializeField]
-        private float _bounceScale;
-        [Tooltip("The length of the hit stun applied to the objects that are knocked into this barrier.")]
-        [SerializeField]
-        private float _hitStunOnCollision;
-        [SerializeField]
-        private MeshRenderer _healthRenderer;
-        [SerializeField]
-        private Gradient _healthGradient;
 
         public string Owner { get => _owner; set => _owner = value; }
 
@@ -66,23 +51,7 @@ namespace Lodis.Gameplay
             return 0;
         }
 
-        private void OnCollisionStay(Collision collision)
-        {
-            Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
-            //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript)
-                return;
-
-            //Calculate the knockback and hit angle for the ricochet
-            ContactPoint contactPoint = collision.GetContact(0);
-
-            //Adds a force to objects to push them off of the field barrier if they land on top
-            if (contactPoint.normal == Vector3.down)
-            {
-                knockBackScript.Physics.ApplyForce(Vector3.up * knockBackScript.Physics.Gravity);
-                knockBackScript.Physics.ApplyForce(transform.forward * _pushScale);
-            }
-        }
+       
 
         // Update is called once per frame
         public void FixedUpdate()
