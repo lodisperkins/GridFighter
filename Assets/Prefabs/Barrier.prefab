@@ -329,7 +329,7 @@ MonoBehaviour:
   _healthGradient:
     serializedVersion: 2
     key0: {r: 1, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0.73987746, b: 0, a: 1}
+    key1: {r: 1, g: 0.9214484, b: 0, a: 1}
     key2: {r: 0, g: 1, b: 0.09729433, a: 0}
     key3: {r: 0, g: 1, b: 0.0022239685, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
