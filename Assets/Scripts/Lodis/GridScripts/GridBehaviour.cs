@@ -31,6 +31,8 @@ namespace Lodis.GridScripts
         private Vector2 _dimensions;
         [SerializeField]
         private Vector3 _panelScale;
+        [SerializeField]
+        private Vector3 _barrierScale;
         [Tooltip("The amount of space that should be between each panel.")]
         [SerializeField]
         private float _panelSpacingX;
@@ -352,7 +354,7 @@ namespace Lodis.GridScripts
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
-                    barrierObject.transform.localScale = new Vector3(_panelScale.z, barrierObject.transform.localScale.y, _panelScale.x);
+                    barrierObject.transform.localScale = _barrierScale;
                     //Searches for a potential player spawn position behind the barrier
                     Vector2 potentialPlayerSpawn = new Vector2(position.x - 1, position.y);
                     if (!_lhsPlayerSpawnPanel)
@@ -383,7 +385,7 @@ namespace Lodis.GridScripts
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
-                    barrierObject.transform.localScale = new Vector3(_panelScale.z, barrierObject.transform.localScale.y, _panelScale.x);
+                    barrierObject.transform.localScale = _barrierScale;
                     //Searches for a potential player spawn position behind the barrier
                     Vector2 potentialPlayerSpawn = new Vector2(position.x + 1, position.y);
                     if (!_rhsPlayerSpawnPanel)
