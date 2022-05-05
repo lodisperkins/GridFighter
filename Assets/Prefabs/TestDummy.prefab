@@ -345,8 +345,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parryLength: 0.23
-  _parryCollider: {fileID: 3860114405734811056, guid: de05c6ed12e6ef845b5c326a1cc157b5,
-    type: 3}
+  _parryCollider: {fileID: 4397158569536455242}
   _isParrying: 0
   _parryInvincibilityLength: 0.5
   _canParry: 1
@@ -356,7 +355,7 @@ MonoBehaviour:
   _canBrace: 0
   _braceCooldownTime: 1
   _groundTechInvincibilityTime: 0.3
-  _wallTechInvincibilityTime: 0.5
+  _wallTechInvincibilityTime: 0.35
   _fallBreakLength: 0.3
   _wallTechJumpDistance: 3
   _wallTechJumpHeight: 1

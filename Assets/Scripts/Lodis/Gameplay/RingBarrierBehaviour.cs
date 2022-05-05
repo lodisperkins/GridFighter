@@ -15,6 +15,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _hitStunOnCollision;
         private MeshRenderer _renderer;
+        [SerializeField]
+        private float _shatterVelocityMagnitude;
 
         protected override void Start()
         {
@@ -40,9 +42,6 @@ namespace Lodis.Gameplay
             if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != Owner && Owner != ""))
                 return 0;
 
-            if (damage < Health)
-                return 0;
-
             Health -= damage;
 
             return damage;
@@ -55,9 +54,6 @@ namespace Lodis.Gameplay
         public override float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
             if (info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.name != Owner && Owner != ""))
-                return 0;
-
-            if (info.Damage < Health)
                 return 0;
 
             Health -= info.Damage;
@@ -78,22 +74,23 @@ namespace Lodis.Gameplay
 
             float damage = abilityData.GetColliderInfo(0).Damage;
 
-            if (damage < Health)
-                return 0;
-
             Health -= damage;
 
             return damage;
         }
 
+        private void OnTriggerEnter(Collider collision)
+        {
+            GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
+
+            if (collision.gameObject.name == Owner && gridPhysicsBehaviour.LastVelocity.magnitude >= _shatterVelocityMagnitude)
+            {
+                gameObject.SetActive(false);
+            }
+        }
+
         private void OnCollisionEnter(Collision collision)
         {
-            if (!IsAlive && collision.gameObject.name == Owner)
-            {
-                Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
-                GetComponent<MeshRenderer>().enabled = false;
-            }
-
             GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
 
             if (!gridPhysicsBehaviour)
@@ -101,8 +98,8 @@ namespace Lodis.Gameplay
 
             if (_bounceDampen == 0)
                 _bounceDampen = 1;
-            
-            gridPhysicsBehaviour.ApplyImpulseForce(-(Vector3.right * gridPhysicsBehaviour.LastVelocity.x * 2)  / _bounceDampen);
+
+            gridPhysicsBehaviour.ApplyImpulseForce(-(Vector3.right * gridPhysicsBehaviour.LastVelocity.x * 2) / _bounceDampen);
         }
     }
 }
