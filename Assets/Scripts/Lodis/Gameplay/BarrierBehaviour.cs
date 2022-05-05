@@ -14,7 +14,10 @@ namespace Lodis.Gameplay
         [Tooltip("The name of the gameobject that owns this barrier")]
         [SerializeField]
         private string _owner = "";
-
+        [SerializeField]
+        private MeshRenderer _healthRenderer;
+        [SerializeField]
+        private Gradient _healthGradient;
         public string Owner { get => _owner; set => _owner = value; }
 
         // Start is called before the first frame update

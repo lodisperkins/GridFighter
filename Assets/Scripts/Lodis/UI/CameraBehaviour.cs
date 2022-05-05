@@ -33,10 +33,14 @@ namespace Lodis
         private float _currentTimeZ;
         [SerializeField]
         private bool _showAveragePosition;
+        private Vector3 _startPosition;
 
         // Start is called before the first frame update
         void Start()
         {
+            _startPosition = new Vector3(BlackBoardBehaviour.Instance.Grid.Width / 2 + BlackBoardBehaviour.Instance.Grid.transform.position.x,
+                transform.position.y, transform.position.z);
+            transform.position = _startPosition;
             _lastCameraPosition = transform.position;
             _cameraPosition = transform.position;
         }
@@ -96,10 +100,10 @@ namespace Lodis
         {
             if (averagePositionOnAxis - mid >= moveSensitivity)
             {
-                return max;
+                return _startPosition.x + max;
             }
             else if (averagePositionOnAxis - mid <= -moveSensitivity)
-                return min;
+                return _startPosition.x - min;
             else
                 return mid;
         }

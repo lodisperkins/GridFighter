@@ -197,30 +197,26 @@ namespace Lodis.GridScripts
             {
                 for (int x = 0; x < _p1MaxColumns; x++)
                 {
-                    for (int y = 0; y < 4; y++)
+                    for (int y = 0; y < _dimensions.y; y++)
                     {
-                        GetPanel(x, y, out _lhsPlayerSpawnPanel, false, GridAlignment.LEFT);
+                        if (GetPanel(x, y, out _lhsPlayerSpawnPanel, false, GridAlignment.LEFT)) break;
                     }
                     if (_lhsPlayerSpawnPanel)
-                    {
                         break;
-                    }
                 }
             }
 
             //If the rhs spawn still hasn't been assigned, set it to be the first open panel in the list
             if (!_rhsPlayerSpawnPanel)
             {
-                for (int x = (int)_dimensions.x; x > _dimensions.x - _p1MaxColumns; x--)
+                for (int x = (int)_dimensions.x - 1; x > _dimensions.x - _p1MaxColumns; x--)
                 {
-                    for (int y = 0; y < 4; y++)
+                    for (int y = 0; y < _dimensions.y; y++)
                     {
-                        GetPanel(x, y, out _rhsPlayerSpawnPanel, false, GridAlignment.RIGHT);
+                        if (GetPanel(x, y, out _rhsPlayerSpawnPanel, false, GridAlignment.RIGHT)) break;
+                        
                     }
-                    if (_rhsPlayerSpawnPanel)
-                    {
-                        break;
-                    }
+                    if (_rhsPlayerSpawnPanel) break;
                 }
             }
 
@@ -418,6 +414,8 @@ namespace Lodis.GridScripts
         /// <param name="rhsOwnerName">The name of the character on the right side.</param>
         public void AssignOwners(string lhsOwnerName, string rhsOwnerName = "")
         {
+            if (_barriers == null) return;
+
             foreach (BarrierBehaviour barrier in _barriers)
             {
                 if (barrier.GetComponent<Movement.GridMovementBehaviour>().Alignment == GridAlignment.LEFT)
