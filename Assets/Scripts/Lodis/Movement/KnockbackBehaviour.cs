@@ -334,25 +334,6 @@ namespace Lodis.Movement
             damageScript.TakeDamage(name, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
-        public override void OnTriggerEnter(Collider other)
-        {
-            HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
-
-            if (damageScript == null || !IsTumbling || IsInvincible)
-                return;
-
-            KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
-
-            //If no knockback script is attached, use this script to deal damage
-            if (!knockBackScript)
-                knockBackScript = this;
-
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-
-            //Apply ricochet force and damage
-            damageScript.TakeDamage(name, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
-        }
-
         private IEnumerator StartLandingLag()
         {
             Landing = true;

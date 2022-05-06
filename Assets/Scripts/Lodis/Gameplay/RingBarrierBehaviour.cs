@@ -17,6 +17,14 @@ namespace Lodis.Gameplay
         private MeshRenderer _renderer;
         [SerializeField]
         private float _shatterVelocityMagnitude;
+        [SerializeField]
+        private float _minimumDamageSpeed;
+        [SerializeField]
+        private float _upwardForce;
+        [SerializeField]
+        private float _launchAngle;
+        [SerializeField]
+        private int _direction;
 
         protected override void Start()
         {
@@ -39,7 +47,7 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
-            if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != Owner && Owner != ""))
+            if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != Owner && Owner != "") || damage < _minimumDamageSpeed)
                 return 0;
 
             Health -= damage;
@@ -53,7 +61,7 @@ namespace Lodis.Gameplay
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
         public override float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
-            if (info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.name != Owner && Owner != ""))
+            if (info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.name != Owner && Owner != "") || info.Damage < _minimumDamageSpeed)
                 return 0;
 
             Health -= info.Damage;
@@ -69,10 +77,11 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
         {
-            if (damageType != DamageType.KNOCKBACK || (attacker != Owner && Owner != ""))
+            float damage = abilityData.GetColliderInfo(0).Damage;
+
+            if (damageType != DamageType.KNOCKBACK || (attacker != Owner && Owner != "") || damage < _minimumDamageSpeed)
                 return 0;
 
-            float damage = abilityData.GetColliderInfo(0).Damage;
 
             Health -= damage;
 
@@ -99,7 +108,16 @@ namespace Lodis.Gameplay
             if (_bounceDampen == 0)
                 _bounceDampen = 1;
 
-            gridPhysicsBehaviour.ApplyImpulseForce(-(Vector3.right * gridPhysicsBehaviour.LastVelocity.x * 2) / _bounceDampen);
+            //Find the direction this collider was going to apply force originally
+            Vector3 currentForceDirection = new Vector3(Mathf.Cos(_launchAngle) * _direction, Mathf.Sin(_launchAngle), 0);
+
+            //Find the new angle based on the direction of the attack on the x axis
+            float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
+            float newAngle = Mathf.Acos(dotProduct);
+
+            Vector3 force = gridPhysicsBehaviour.CalculatGridForce(_upwardForce, newAngle);
+            gridPhysicsBehaviour.ApplyImpulseForce( force / _bounceDampen);
+            Debug.Log(force);
         }
     }
 }

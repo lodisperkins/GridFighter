@@ -21,6 +21,8 @@ namespace Lodis.Gameplay
         /// First argument is game object it collided with.
         /// </summary>
         public CollisionEvent OnHit;
+        [SerializeField]
+        private GridGame.Event _onHitObject;
         protected float _lastHitFrame;
         [Tooltip("The game object spawned this collider.")]
         public GameObject Owner;
@@ -85,6 +87,7 @@ namespace Lodis.Gameplay
             //Calculate the normal and invoke hit event
             Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
             OnHit?.Invoke(otherGameObject, otherCollider, collisionDirection);
+            _onHitObject?.Raise(gameObject);
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -110,6 +113,7 @@ namespace Lodis.Gameplay
             //Calculate the normal and invoke hit event
             Vector3 collisionDirection = (other.transform.position - transform.position).normalized;
             OnHit?.Invoke(other, otherCollider, collisionDirection);
+            _onHitObject?.Raise(gameObject);
         }
     }
 }

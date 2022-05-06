@@ -377,49 +377,6 @@ namespace Lodis.Movement
             gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(baseKnockBack * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
         }
 
-        protected virtual void OnTriggerEnter(Collider other)
-        {
-            _onCollision?.Invoke(other.gameObject, other);
-
-            HealthBehaviour damageScript = other.gameObject.GetComponent<HealthBehaviour>();
-            GridPhysicsBehaviour gridPhysicsBehaviour = other.gameObject.GetComponent<GridPhysicsBehaviour>();
-
-            if (!gridPhysicsBehaviour || !damageScript)
-                return;
-
-            KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
-
-
-            //If no knockback script is attached, use this script to add force
-            if (!knockBackScript)
-                knockBackScript = GetComponent<KnockbackBehaviour>();
-
-            //Calculate the knockback and hit angle for the ricochet
-            Vector3 contactPoint = other.ClosestPoint(transform.position);
-            Vector3 direction = new Vector3(contactPoint.x, contactPoint.y, 0);
-            float dotProduct = Vector3.Dot(Vector3.right, -direction);
-            float hitAngle = Mathf.Acos(dotProduct);
-            float velocityMagnitude = 0;
-            float baseKnockBack = 0;
-
-            if (knockBackScript)
-            {
-                velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-                baseKnockBack = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
-            }
-            else
-            {
-                velocityMagnitude = LastVelocity.magnitude;
-                baseKnockBack = _lastForceAdded.magnitude * (velocityMagnitude / _lastForceAdded.magnitude);
-            }
-
-            if (baseKnockBack == 0 || float.IsNaN(baseKnockBack))
-                return;
-
-            //Apply ricochet force
-            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(baseKnockBack * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
-        }
-
         /// <summary>
         /// Adds an instant change in velocity to the object ignoring mass.
         /// </summary>
