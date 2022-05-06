@@ -23,6 +23,7 @@ MonoBehaviour:
   canCancelActive: 0
   canCancelRecover: 1
   CanCancelOnMove: 1
+  CanCancelIntoSelf: 0
   CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
@@ -45,7 +46,7 @@ MonoBehaviour:
     BaseKnockBack: 7
     KnockBackScale: 5
     HitAngle: 1.5
-    AdjustAngleBasedOnCollision: 0
+    AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
     CanSpike: 0
     HitStunTime: 0.3
@@ -53,7 +54,7 @@ MonoBehaviour:
     OwnerAlignement: 0
   _customStats:
   - name: Speed
-    value: 3
+    value: 6
   - name: MaxInstances
     value: 1
   animationType: 0

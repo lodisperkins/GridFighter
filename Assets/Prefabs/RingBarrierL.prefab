@@ -122,7 +122,7 @@ MonoBehaviour:
   Owner: 
   _bounceDampen: 0.5
   _hitStunOnCollision: 0.5
-  _shatterVelocityMagnitude: 15
+  _shatterVelocityMagnitude: 30
 --- !u!65 &8744172618015234541
 BoxCollider:
   m_ObjectHideFlags: 0

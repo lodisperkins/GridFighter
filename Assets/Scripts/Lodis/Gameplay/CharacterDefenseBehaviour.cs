@@ -65,6 +65,7 @@ namespace Lodis.Gameplay
         private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
         private RoutineBehaviour.TimedAction _parryTimer;
+        private RoutineBehaviour.TimedAction _DisableFallBreakAction;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
@@ -268,9 +269,9 @@ namespace Lodis.Gameplay
             _knockBack.Physics.IgnoreForces = true;
 
 
-            if (other.gameObject.CompareTag("Structure"))
+            if (other.gameObject.CompareTag("Structure") && _DisableFallBreakAction == null)
             {
-                RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, WallTechJumpDuration);
+                _DisableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, WallTechJumpDuration);
                 _knockBack.Physics.Jump(_wallTechJumpDistance, _wallTechJumpHeight, _wallTechJumpDuration, true, false, _movement.Alignment);
                 onFallBroken?.Invoke(false);
                 return;
@@ -293,6 +294,7 @@ namespace Lodis.Gameplay
         {
             BreakingFall = false;
             _knockBack.Physics.IgnoreForces = false;
+            _DisableFallBreakAction = null;
             if (!_knockBack.Physics.IsGrounded) _knockBack.InFreeFall = true;
         }
 
@@ -315,9 +317,9 @@ namespace Lodis.Gameplay
             _knockBack.Physics.StopVelocity();
             _knockBack.Physics.IgnoreForces = true;
 
-            if (collision.gameObject.CompareTag("Structure"))
+            if (collision.gameObject.CompareTag("Structure") && _DisableFallBreakAction == null)
             {
-                RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration);
+                _DisableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration);
                 _knockBack.Physics.Jump(_wallTechJumpDistance, 0, _wallTechJumpDuration, true, false, _movement.Alignment, Vector3.up * _wallTechJumpHeight, DG.Tweening.Ease.OutQuart);
                 onFallBroken?.Invoke(false);
                 return;
