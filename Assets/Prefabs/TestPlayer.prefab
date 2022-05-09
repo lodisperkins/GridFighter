@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 0}
   Owner: {fileID: 2765739998997917290}
   _layersToIgnore:
     serializedVersion: 2
@@ -297,13 +298,14 @@ MonoBehaviour:
   _parryStartUpTime: 0.05
   _braceActiveTime: 0.1
   _canBrace: 0
+  _isBraced: 0
   _braceCooldownTime: 1
-  _groundTechInvincibilityTime: 0.3
+  _groundTechInvincibilityTime: 0.4
   _wallTechInvincibilityTime: 0.35
-  _fallBreakLength: 0.3
-  _wallTechJumpDistance: 3
+  _fallBreakLength: 0.1
+  _wallTechJumpDistance: 1
   _wallTechJumpHeight: 1
-  _wallTechJumpDuration: 0.7
+  _wallTechJumpDuration: 0.4
   _attackerStunTime: 5
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
@@ -332,7 +334,7 @@ MonoBehaviour:
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _tumbling: 0
   _inFreeFall: 0
-  _landingTime: 0.5
+  _landingTime: 0
   _knockDownTime: 0.3
   _knockDownRecoverTime: 0.7
   _knockDownRecoverInvincibleTime: 1.5

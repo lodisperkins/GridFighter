@@ -41,6 +41,8 @@ namespace Lodis.Gameplay
         private float _braceActiveTime;
         [SerializeField]
         private bool _canBrace;
+        [SerializeField]
+        private bool _isBraced;
         [Tooltip("How long in seconds the object has to wait before it can brace itself again.")]
         [SerializeField]
         private float _braceCooldownTime;
@@ -71,7 +73,7 @@ namespace Lodis.Gameplay
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
-        public bool IsBraced { get; private set; }
+        public bool IsBraced { get => _isBraced; private set => _isBraced = value; }
         public float GroundTechLength { get => _fallBreakLength; set => _fallBreakLength = value; }
         public float WallTechJumpDuration { get => _wallTechJumpDuration; }
 

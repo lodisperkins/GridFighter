@@ -65,12 +65,15 @@ namespace Lodis.AI
         // Start is called before the first frame update
         void Start()
         {
-            _attackDecisions = new AttackDecisionTree();
-            _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
-            _attackDecisions.Load(name);
-            _defenseDecisions = new DefenseDecisionTree();
-            _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
-            _defenseDecisions.Load(name);
+            if (EnableBehaviourTree)
+            {
+                _attackDecisions = new AttackDecisionTree();
+                _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
+                _attackDecisions.Load(name);
+                _defenseDecisions = new DefenseDecisionTree();
+                _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
+                _defenseDecisions.Load(name);
+            }
 
             Moveset = GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;

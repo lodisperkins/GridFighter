@@ -899,11 +899,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8744172618015234546, guid: e447331d04560874e8eb89a06a5e656c,
-        type: 3}
-      propertyPath: _direction
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 8744172618015234547, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_Name
@@ -1261,9 +1256,8 @@ MonoBehaviour:
   _hitStunOnCollision: 0.5
   _shatterVelocityMagnitude: 0
   _minimumDamageSpeed: 0
-  _upwardForce: 0
+  _knockBackDistance: 0
   _launchAngle: 0
-  _direction: 0
 --- !u!65 &446117096
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3806,7 +3800,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 2
+  _mode: 1
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}

@@ -168,9 +168,8 @@ MonoBehaviour:
   _hitStunOnCollision: 0.5
   _shatterVelocityMagnitude: 25
   _minimumDamageSpeed: 5
-  _upwardForce: 3
+  _knockBackDistance: 1
   _launchAngle: 1
-  _direction: 0
 --- !u!54 &3135977292930765005
 Rigidbody:
   m_ObjectHideFlags: 0

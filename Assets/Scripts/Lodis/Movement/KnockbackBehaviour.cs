@@ -315,6 +315,10 @@ namespace Lodis.Movement
             _isFlinching = false;
         }
 
+        public override void OnTriggerEnter(Collider other)
+        {
+            Debug.Log("test");
+        }
         public override void OnCollisionEnter(Collision collision)
         {
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
@@ -804,7 +808,7 @@ namespace Lodis.Movement
 
             UpdateGroundedColliderPosition();
 
-            if (Physics.IsGrounded && !InHitStun && Physics.Acceleration.magnitude <= _netForceLandingTolerance && Physics.LastVelocity.normalized.y <= 0 && (IsTumbling || InFreeFall))
+            if (Physics.IsGrounded && Physics.Acceleration.magnitude <= _netForceLandingTolerance && Physics.Acceleration.y <= 0 && (IsTumbling || InFreeFall))
             {
                 TryStartLandingLag();
             }

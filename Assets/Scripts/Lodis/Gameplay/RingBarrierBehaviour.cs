@@ -20,11 +20,9 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _minimumDamageSpeed;
         [SerializeField]
-        private float _upwardForce;
+        private float _knockBackDistance;
         [SerializeField]
         private float _launchAngle;
-        [SerializeField]
-        private int _direction;
 
         protected override void Start()
         {
@@ -102,21 +100,22 @@ namespace Lodis.Gameplay
         {
             GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
 
-            if (!gridPhysicsBehaviour)
+            if (!gridPhysicsBehaviour || gridPhysicsBehaviour.LastVelocity.magnitude < _minimumDamageSpeed)
                 return;
 
             if (_bounceDampen == 0)
                 _bounceDampen = 1;
 
             //Find the direction this collider was going to apply force originally
-            Vector3 currentForceDirection = new Vector3(Mathf.Cos(_launchAngle) * _direction, Mathf.Sin(_launchAngle), 0);
+            Vector3 currentForceDirection = new Vector3(Mathf.Cos(_launchAngle) * transform.forward.x, Mathf.Sin(_launchAngle), 0);
 
             //Find the new angle based on the direction of the attack on the x axis
             float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
             float newAngle = Mathf.Acos(dotProduct);
 
-            Vector3 force = gridPhysicsBehaviour.CalculatGridForce(_upwardForce, newAngle);
-            gridPhysicsBehaviour.ApplyImpulseForce( force / _bounceDampen);
+            Vector3 force = gridPhysicsBehaviour.CalculatGridForce(_knockBackDistance, newAngle);
+            gridPhysicsBehaviour.StopVelocity();
+            gridPhysicsBehaviour.ApplyImpulseForce(force);
             Debug.Log(force);
         }
     }
