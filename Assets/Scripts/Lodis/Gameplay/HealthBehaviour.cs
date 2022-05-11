@@ -53,6 +53,8 @@ namespace Lodis.Gameplay
         private Color _intangibilityColor;
         protected GridMovementBehaviour Movement;
         protected Condition AliveCondition;
+        [SerializeField]
+        protected GridGame.Event OnTakeDamage;
 
         public bool Stunned 
         {
@@ -131,6 +133,7 @@ namespace Lodis.Gameplay
             if (Health < 0)
                 _health = 0;
 
+            OnTakeDamage.Raise(gameObject);
             return damageTaken;
         }
 
@@ -155,6 +158,7 @@ namespace Lodis.Gameplay
             if (_health < 0)
                 _health = 0;
 
+            OnTakeDamage.Raise(gameObject);
             return damageTaken;
         }
 
@@ -175,6 +179,7 @@ namespace Lodis.Gameplay
             if (_health < 0)
                 _health = 0;
 
+            OnTakeDamage.Raise(gameObject);
             return damageTaken;
         }
 

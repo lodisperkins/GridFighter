@@ -305,7 +305,7 @@ MonoBehaviour:
   _fallBreakLength: 0.1
   _wallTechJumpDistance: 1
   _wallTechJumpHeight: 1
-  _wallTechJumpDuration: 0.4
+  _wallTechJumpDuration: 0.6
   _attackerStunTime: 5
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
@@ -330,6 +330,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 8493895805550168426}
   _invincibilityColor: {r: 0, g: 1, b: 0.013520718, a: 0}
   _intangibilityColor: {r: 0.8113208, g: 0.5216221, b: 0.003826994, a: 1}
+  OnTakeDamage: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   _netForceLandingTolerance: 3
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _tumbling: 0

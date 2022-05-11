@@ -317,14 +317,11 @@ MonoBehaviour:
   _meshRenderer: {fileID: 0}
   _invincibilityColor: {r: 0, g: 0, b: 0, a: 0}
   _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
+  OnTakeDamage: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   _visibleLayers:
     serializedVersion: 2
     m_Bits: 31232
   _owner: 
-  _pushScale: 10
-  _damageOnCollision: 0
-  _bounceScale: 2
-  _hitStunOnCollision: 0.5
   _healthRenderer: {fileID: 2824565509556104321}
   _healthGradient:
     serializedVersion: 2

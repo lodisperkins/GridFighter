@@ -3,7 +3,10 @@ guid: 53beaecddc8bdc34ba7596f9e7536010
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _maxHealth: {instanceID: 0}
+  - _meshRenderer: {instanceID: 0}
+  - OnTakeDamage: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

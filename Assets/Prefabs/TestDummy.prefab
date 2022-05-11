@@ -253,6 +253,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 3772444779946978536}
   _invincibilityColor: {r: 0, g: 1, b: 0.04225135, a: 0}
   _intangibilityColor: {r: 0.7264151, g: 0.5373527, b: 0, a: 0.5176471}
+  OnTakeDamage: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   _netForceLandingTolerance: 4
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _tumbling: 0
@@ -313,7 +314,7 @@ MonoBehaviour:
     AveragePosition: {x: 0, y: 0, z: 0}
     AverageVelocity: {x: 0, y: 0, z: 0}
   MovePosition: {x: 0, y: 0}
-  EnableBehaviourTree: 1
+  EnableBehaviourTree: 0
 --- !u!114 &3691015139844951449
 MonoBehaviour:
   m_ObjectHideFlags: 0

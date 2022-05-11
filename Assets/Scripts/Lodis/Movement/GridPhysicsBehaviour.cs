@@ -491,7 +491,7 @@ namespace Lodis.Movement
 
 
             //Looks for a panel to land on
-            for (int i = panelDistance - 1; i > 0; i++)
+            for (int i = panelDistance - 1; i > 0; i--)
             {
                 BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
 

@@ -321,6 +321,9 @@ namespace Lodis.Movement
         }
         public override void OnCollisionEnter(Collision collision)
         {
+            if (Physics.IsGrounded && Physics.Acceleration.x <= _netForceLandingTolerance && Physics.LastVelocity.y <= 0)
+                TryStartLandingLag();
+
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
             if (damageScript == null || !IsTumbling || IsInvincible)
@@ -807,11 +810,15 @@ namespace Lodis.Movement
                 Physics.Rigidbody.velocity = Physics.Rigidbody.velocity.normalized * _maxMagnitude.Value;
 
             UpdateGroundedColliderPosition();
+        }
 
-            if (Physics.IsGrounded && Physics.Acceleration.magnitude <= _netForceLandingTolerance && Physics.Acceleration.y <= 0 && (IsTumbling || InFreeFall))
-            {
-                TryStartLandingLag();
-            }
+        public override void Update()
+        {
+            base.Update();
+            //if (Physics.IsGrounded && Physics.Acceleration.magnitude <= _netForceLandingTolerance && Physics.LastVelocity.y <= 0 && (IsTumbling || InFreeFall))
+            //{
+            //    TryStartLandingLag();
+            //}
         }
     }
 
