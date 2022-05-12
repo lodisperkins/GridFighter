@@ -15,14 +15,14 @@ MonoBehaviour:
   abilityName: ForwardShot
   AbilityType: 2
   timeActive: 0.2
-  recoverTime: 0.1
+  recoverTime: 0.25
   startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 1
-  CanCancelOnMove: 1
+  CanCancelOnMove: 0
   CanCancelIntoSelf: 0
   CanInputMovementWhileActive: 1
   cancelOnHit: 0
@@ -54,7 +54,7 @@ MonoBehaviour:
     OwnerAlignement: 0
   _customStats:
   - name: Speed
-    value: 6
+    value: 10
   - name: MaxInstances
     value: 1
   animationType: 0
