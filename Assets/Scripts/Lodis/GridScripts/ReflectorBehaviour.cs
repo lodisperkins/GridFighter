@@ -72,7 +72,7 @@ namespace Lodis.Gameplay
             GameObject other = (GameObject)args[0];
             HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[1];
 
-            if (!hitCollider) return;
+            if (!hitCollider || !CompareTag("Reflector")) return;
 
             //If the hitbox is attached to a character stun them
             if (other.transform.root.CompareTag("Player") || other.transform.root.CompareTag("Entity"))

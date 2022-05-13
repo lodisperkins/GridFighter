@@ -141,6 +141,7 @@ namespace Lodis.Input
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
             _playerControls.Player.Parry.started += context => { BufferParry(context); _defense.Brace(); };
+            _playerControls.Player.Parry.canceled += context => _defense.DeactivateShield();
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
         }

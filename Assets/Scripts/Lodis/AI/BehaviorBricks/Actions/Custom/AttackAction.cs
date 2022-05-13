@@ -25,6 +25,12 @@ public class AttackAction : GOAction
 
         _dummy.Executor.blackboard.boolParams[3] = false;
 
+        if (_dummy.StateMachine.CurrentState == "Parrying")
+        {
+            _dummy.GetComponent<CharacterDefenseBehaviour>().DeactivateShield();
+            return;
+        }
+
         //The dummy is only allowed to attack if its in the idle or the attack state
         if (_dummy.StateMachine.CurrentState != "Idle" && _dummy.StateMachine.CurrentState != "Attack")
             return;

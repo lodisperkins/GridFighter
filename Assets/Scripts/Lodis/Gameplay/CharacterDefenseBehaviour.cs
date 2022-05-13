@@ -22,12 +22,13 @@ namespace Lodis.Gameplay
         private float _parryLength;
         [Tooltip("The collision script for the parry object.")]
         [SerializeField]
-        private ColliderBehaviour _parryCollider;
+        private ColliderBehaviour _shieldCollider;
         [SerializeField]
         private bool _isParrying;
         [Tooltip("How long the character will be invincible for after a successful ground parry.")]
         [SerializeField]
         private float _parryInvincibilityLength;
+        private bool _isShielding;
         [Tooltip("True if the parry cooldown timer is 0.")]
         [SerializeField]
         private bool _canParry = true;
@@ -67,7 +68,7 @@ namespace Lodis.Gameplay
         private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
         private RoutineBehaviour.TimedAction _parryTimer;
-        private RoutineBehaviour.TimedAction _DisableFallBreakAction;
+        private RoutineBehaviour.TimedAction _disableFallBreakAction;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
@@ -76,6 +77,8 @@ namespace Lodis.Gameplay
         public bool IsBraced { get => _isBraced; private set => _isBraced = value; }
         public float GroundTechLength { get => _fallBreakLength; set => _fallBreakLength = value; }
         public float WallTechJumpDuration { get => _wallTechJumpDuration; }
+        public ColliderBehaviour ParryCollider { get => _shieldCollider; }
+        public bool IsShielding { get => _isShielding; }
 
         // Start is called before the first frame update
         void Start()
@@ -88,7 +91,7 @@ namespace Lodis.Gameplay
             _knockBack.AddOnTakeDamageAction(ResetParry);
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
-            _parryCollider.OnHit += ActivateInvinciblity;
+            _shieldCollider.OnHit += args => { if (IsParrying) ActivateInvinciblity(args); };
         }
 
         /// <summary>
@@ -97,13 +100,15 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         private void ActivateGroundParry()
         {
+            _shieldCollider.tag = "Reflector";
             if (_knockBack.InHitStun)
                 return;
 
             //Enable parry and update states
-            _parryCollider.gameObject.SetActive(true);
+            _shieldCollider.gameObject.SetActive(true);
             _isParrying = true;
-            _movement.DisableMovement(condition => _isParrying == false, true, true);
+            _isShielding = true;
+            _movement.DisableMovement(condition => !_shieldCollider.gameObject.activeSelf && _isShielding == false, true, true);
             _canParry = false;
             _knockBack.SetInvincibilityByTimer(_parryLength);
 
@@ -112,19 +117,24 @@ namespace Lodis.Gameplay
 
         private void DeactivateGroundParry()
         {
-            //Disable parry
-            _parryCollider.gameObject.SetActive(false);
+            _shieldCollider.tag = "Untagged";
+            _isParrying = false;
+            //Allow the character to parry again
+            _canParry = true;
+        }
 
-            //Start timer for player immobility
-            if (!_knockBack.IsInvincible)
-            {
-                RoutineBehaviour.Instance.StartNewTimedAction(args => { _isParrying = false; _canParry = true; }, TimedActionCountType.SCALEDTIME, _groundParryRestTime);
+        public void DeactivateShield()
+        {
+            if (!_shieldCollider.gameObject.activeSelf)
                 return;
-            }
 
             _isParrying = false;
             //Allow the character to parry again
             _canParry = true;
+
+            _shieldCollider.gameObject.SetActive(false);
+            //Start timer for player immobility
+            RoutineBehaviour.Instance.StartNewTimedAction(args => { _isShielding = false; }, TimedActionCountType.SCALEDTIME, _groundParryRestTime);
         }
 
         /// <summary>
@@ -157,7 +167,7 @@ namespace Lodis.Gameplay
                 DeactivateGroundParry();
 
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-            _parryCollider.gameObject.SetActive(false);
+            _shieldCollider.gameObject.SetActive(false);
             _isParrying = false;
             _canParry = true;
         }
@@ -223,12 +233,13 @@ namespace Lodis.Gameplay
                     return;
             }
 
-            if (otherHitCollider.Owner == _parryCollider.Owner)
+            if (otherHitCollider.Owner == _shieldCollider.Owner)
                 return;
 
             //Deactivate the parry
-            _parryCollider.gameObject.SetActive(false);
+            _shieldCollider.gameObject.SetActive(false);
             _isParrying = false;
+            _isShielding = false;
             _canParry = true;
 
             //Make the character invincible for a short amount of time if they're on the ground
@@ -269,11 +280,11 @@ namespace Lodis.Gameplay
 
             _knockBack.Physics.StopVelocity();
             _knockBack.Physics.IgnoreForces = true;
+            _knockBack.CancelHitStun();
 
-
-            if (other.gameObject.CompareTag("Structure") && _DisableFallBreakAction == null)
+            if (other.gameObject.CompareTag("Structure") && _disableFallBreakAction == null)
             {
-                _DisableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, WallTechJumpDuration);
+                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, WallTechJumpDuration);
                 _knockBack.Physics.Jump(_wallTechJumpDistance, _wallTechJumpHeight, _wallTechJumpDuration, true, false, _movement.Alignment);
                 onFallBroken?.Invoke(false);
                 return;
@@ -296,7 +307,7 @@ namespace Lodis.Gameplay
         {
             BreakingFall = false;
             _knockBack.Physics.IgnoreForces = false;
-            _DisableFallBreakAction = null;
+            _disableFallBreakAction = null;
             if (!_knockBack.Physics.IsGrounded) _knockBack.InFreeFall = true;
         }
 
@@ -318,10 +329,11 @@ namespace Lodis.Gameplay
 
             _knockBack.Physics.StopVelocity();
             _knockBack.Physics.IgnoreForces = true;
+            _knockBack.CancelHitStun();
 
-            if (collision.gameObject.CompareTag("Structure") && _DisableFallBreakAction == null)
+            if (collision.gameObject.CompareTag("Structure") && _disableFallBreakAction == null)
             {
-                _DisableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration);
+                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration);
                 _knockBack.Physics.Jump(_wallTechJumpDistance, 0, _wallTechJumpDuration, true, false, _movement.Alignment, Vector3.up * _wallTechJumpHeight, DG.Tweening.Ease.OutQuart);
                 onFallBroken?.Invoke(false);
                 return;

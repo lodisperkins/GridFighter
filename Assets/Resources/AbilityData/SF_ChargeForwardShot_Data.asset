@@ -50,7 +50,7 @@ MonoBehaviour:
     TypeOfDamage: 0
     CanSpike: 0
     HitStunTime: 0.3
-    Priority: 1
+    Priority: 2
     OwnerAlignement: 0
   _customStats:
   - name: Speed

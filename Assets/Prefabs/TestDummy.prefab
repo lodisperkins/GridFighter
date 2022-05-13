@@ -347,7 +347,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _parryLength: 0.23
-  _parryCollider: {fileID: 4397158569536455242}
+  _shieldCollider: {fileID: 4397158569536455242}
   _isParrying: 0
   _parryInvincibilityLength: 0.5
   _canParry: 1
