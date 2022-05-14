@@ -30,6 +30,12 @@ namespace Lodis.Movement
         [SerializeField]
         private bool _tumbling;
         [SerializeField]
+        private FloatVariable _gravityIncreaseRate;
+        [SerializeField]
+        private FloatVariable _gravityIncreaseValue;
+        private RoutineBehaviour.TimedAction _gravityIncreaseTimer = new RoutineBehaviour.TimedAction();
+        private float _startGravity;
+        [SerializeField]
         private bool _inFreeFall;
 
         private Coroutine _currentCoroutine;
@@ -132,6 +138,8 @@ namespace Lodis.Movement
             Physics = GetComponent<GridPhysicsBehaviour>();
             Physics.AddOnCollisionWithGroundEvent(args => { if (InFreeFall) TryStartLandingLag(); });
             AddOnStunAction(() => { if (Landing) StopCoroutine(_currentCoroutine); });
+            _startGravity = Physics.Gravity;
+            AddOnTakeDamageAction(IncreaseKnockbackGravity);
         }
 
         // Start is called before the first frame update
@@ -234,6 +242,12 @@ namespace Lodis.Movement
             _onHitStunTemp += action;
         }
 
+        private void IncreaseKnockbackGravity()
+        {
+            if (!IsTumbling) return;
+            Physics.Gravity += _gravityIncreaseValue.Value;
+        }
+
         /// <summary>
         /// Starts landing lag if the object just fell onto a structure
         /// </summary>
@@ -247,6 +261,7 @@ namespace Lodis.Movement
             }
 
             if (Stunned) return;
+
 
             Physics.StopVelocity();
 
@@ -367,6 +382,8 @@ namespace Lodis.Movement
             {
                 _tumbling = false;
                 yield return new WaitForSeconds(KnockDownLandingTime);
+                RoutineBehaviour.Instance.StopTimedAction(_gravityIncreaseTimer);
+                Physics.Gravity = _startGravity;
                 Landing = false;
                 //Start knockdown
                 IsDown = true;

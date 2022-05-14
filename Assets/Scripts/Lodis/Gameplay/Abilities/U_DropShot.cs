@@ -19,17 +19,19 @@ namespace Lodis.Gameplay
             ProjectileRef = abilityData.visualPrefab;
         }
 
-        private GridMovementBehaviour GetTarget()
+        private Transform GetTarget()
         {
             Ray ray = new Ray(owner.transform.position, owner.transform.forward);
             RaycastHit info;
-            GridMovementBehaviour movement = null;
+
+            Transform transform = null;
+
             int layerMask = LayerMask.GetMask("Entity", "Player");
 
             if (Physics.Raycast(ray, out info, BlackBoardBehaviour.Instance.Grid.Width, layerMask))
-                movement = info.transform.GetComponent<GridMovementBehaviour>();
+                transform = info.transform;
 
-            return movement;
+            return transform;
         }
 
 	    //Called when ability is used
@@ -44,13 +46,17 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            GridMovementBehaviour target = GetTarget();
+            Transform target = GetTarget();
 
             if (!target || ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances")) return;
 
+            PanelBehaviour panel;
+
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(target.position, out panel);
+
             //Create object to spawn projectile from
             GameObject spawnerObject = new GameObject();
-            spawnerObject.transform.position = target.CurrentPanel.transform.position + Vector3.up * abilityData.GetCustomStatValue("SpawnHeight");
+            spawnerObject.transform.position = panel.transform.position + Vector3.up * abilityData.GetCustomStatValue("SpawnHeight");
             spawnerObject.transform.forward = Vector3.down;
 
             //Initialize and attach spawn script

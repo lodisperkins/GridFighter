@@ -43,8 +43,8 @@ MonoBehaviour:
       m_Bits: 0
     HitFrames: 0
     Damage: 5
-    BaseKnockBack: 1
-    KnockBackScale: 0.1
+    BaseKnockBack: 2
+    KnockBackScale: 0.5
     HitAngle: 1.2
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0

@@ -234,10 +234,6 @@ namespace Lodis.Input
         /// <param name="args">Any additional arguments to give to the ability. 
         public void BufferSpecialAbility(InputAction.CallbackContext context, params object[] args)
         {
-            //Ignore player input if they aren't in a state that can attack
-            if (_playerState != "Idle" && _playerState != "Attacking")
-                return;
-
             AbilityType abilityType = AbilityType.SPECIAL;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 

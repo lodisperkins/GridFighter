@@ -27,6 +27,8 @@ namespace Lodis.Utility
             public TimedEvent Event;
             private bool _isActive;
 
+            public TimedAction() { }
+
             public bool GetEnabled() { return _isActive; }
             public void Enable() { _isActive = true; }
             public void Disable() { _isActive = false; }

@@ -257,6 +257,10 @@ MonoBehaviour:
   _netForceLandingTolerance: 4
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _tumbling: 0
+  _gravityIncreaseRate: {fileID: 11400000, guid: 6d175ac0f54b56643b6a85c2806f5ab3,
+    type: 2}
+  _gravityIncreaseValue: {fileID: 11400000, guid: adec572f6a67e3546bf67037bfd2959f,
+    type: 2}
   _inFreeFall: 0
   _landingTime: 0.5
   _knockDownTime: 0.3
