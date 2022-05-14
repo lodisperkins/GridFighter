@@ -54,6 +54,7 @@ namespace Lodis.Gameplay
         [Tooltip("The amount of time it will take for the special deck to reload once all abilities are used")]
         [SerializeField]
         private float _deckReloadTime;
+        private CharacterStateMachineBehaviour _stateMachineScript;
         private bool _deckReloading;
         private Movement.GridMovementBehaviour _movementBehaviour;
         private Input.InputBehaviour _inputBehaviour;
@@ -83,6 +84,7 @@ namespace Lodis.Gameplay
             InitializeDecks();
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _inputBehaviour = GetComponent<Input.InputBehaviour>();
+            _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
         }
 
         /// <summary>
@@ -199,6 +201,9 @@ namespace Lodis.Gameplay
         public Ability UseBasicAbility(AbilityType abilityType, params object[] args)
         {
 
+            //Ignore player input if they aren't in a state that can attack
+            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking")
+                return null;
             //Find the ability in the deck abd use it
             Ability currentAbility = _normalDeck.GetAbilityByType(abilityType);
             //Return if there is an ability in use that can't be canceled
@@ -228,6 +233,9 @@ namespace Lodis.Gameplay
         public Ability UseBasicAbility(string abilityName, params object[] args)
         {
 
+            //Ignore player input if they aren't in a state that can attack
+            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking")
+                return null;
             //Find the ability in the deck abd use it
             Ability currentAbility = _normalDeck.GetAbilityByName(abilityName);
 
@@ -290,6 +298,11 @@ namespace Lodis.Gameplay
         /// <returns>The ability that was used</returns>
         public Ability UseSpecialAbility(int abilitySlot, params object[] args)
         {
+
+            //Ignore player input if they aren't in a state that can attack
+            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking")
+                return null;
+
             //Find the ability in the deck and use it
             Ability currentAbility = _specialAbilitySlots[abilitySlot];
             //Return if there is an ability in use that can't be canceled

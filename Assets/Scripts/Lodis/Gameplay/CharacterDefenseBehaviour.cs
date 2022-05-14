@@ -111,7 +111,6 @@ namespace Lodis.Gameplay
             _isShielding = true;
             _movement.DisableMovement(condition => !_shieldCollider.gameObject.activeSelf && _isShielding == false, true, true);
             _canParry = false;
-            _knockBack.SetInvincibilityByTimer(_parryLength);
 
             RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
@@ -159,11 +158,6 @@ namespace Lodis.Gameplay
         /// </summary>
         public void StopShield()
         {
-            if (!_isParrying && !_isShielding)
-                return;
-
-            //_knockBack.DisableInvincibility();
-
             if (_knockBack.CheckIfIdle())
                 DeactivateGroundParry();
 

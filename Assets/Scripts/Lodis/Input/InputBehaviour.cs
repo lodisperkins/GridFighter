@@ -141,7 +141,7 @@ namespace Lodis.Input
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
             _playerControls.Player.Parry.started += context => { BufferParry(context); _defense.Brace(); };
-            _playerControls.Player.Parry.canceled += context => _defense.DeactivateShield();
+            _playerControls.Player.Parry.canceled += RemoveShieldFromBuffer;
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
             _playerControls.Player.UnblockableAttack.started += context => BufferUnblockableAbility(context);
@@ -247,6 +247,12 @@ namespace Lodis.Input
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
             _abilityBuffered = true;
+        }
+
+        private void RemoveShieldFromBuffer(InputAction.CallbackContext context)
+        {
+            _defense.StopShield();
+            _bufferedAction = null;
         }
 
         /// <summary>

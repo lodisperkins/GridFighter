@@ -42,10 +42,10 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     HitFrames: 0
-    Damage: 1
-    BaseKnockBack: 7
-    KnockBackScale: 5
-    HitAngle: 1.5
+    Damage: 5
+    BaseKnockBack: 1
+    KnockBackScale: 0.1
+    HitAngle: 1.2
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
     CanSpike: 0
