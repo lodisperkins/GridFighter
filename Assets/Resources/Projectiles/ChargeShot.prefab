@@ -12,9 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MarkPosition: 0
-  MarkWarning: 0
-  MarkDanger: 1
+  Marker: 2
 --- !u!1001 &1251791396087439202
 PrefabInstance:
   m_ObjectHideFlags: 0

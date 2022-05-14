@@ -22,7 +22,8 @@ namespace Lodis.Gameplay
         STRONGSIDE,
         STRONGFORWARD,
         STRONGBACKWARD,
-        SPECIAL
+        SPECIAL,
+        UNBLOCKABLE
     }
 
     public class MovesetBehaviour : MonoBehaviour

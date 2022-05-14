@@ -89,6 +89,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""UnblockableAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""99c04eff-a462-4dac-90a6-a4ddd5d66a8c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -575,6 +583,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Special2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""63fd0488-1a11-4b87-b21c-63feab526109"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UnblockableAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -592,6 +611,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_Parry = m_Player.FindAction("Parry", throwIfNotFound: true);
         m_Player_Special1 = m_Player.FindAction("Special1", throwIfNotFound: true);
         m_Player_Special2 = m_Player.FindAction("Special2", throwIfNotFound: true);
+        m_Player_UnblockableAttack = m_Player.FindAction("UnblockableAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -650,6 +670,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Parry;
     private readonly InputAction m_Player_Special1;
     private readonly InputAction m_Player_Special2;
+    private readonly InputAction m_Player_UnblockableAttack;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -663,6 +684,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Parry => m_Wrapper.m_Player_Parry;
         public InputAction @Special1 => m_Wrapper.m_Player_Special1;
         public InputAction @Special2 => m_Wrapper.m_Player_Special2;
+        public InputAction @UnblockableAttack => m_Wrapper.m_Player_UnblockableAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -699,6 +721,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Special2.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial2;
                 @Special2.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial2;
                 @Special2.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSpecial2;
+                @UnblockableAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnblockableAttack;
+                @UnblockableAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnblockableAttack;
+                @UnblockableAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnblockableAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -730,6 +755,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Special2.started += instance.OnSpecial2;
                 @Special2.performed += instance.OnSpecial2;
                 @Special2.canceled += instance.OnSpecial2;
+                @UnblockableAttack.started += instance.OnUnblockableAttack;
+                @UnblockableAttack.performed += instance.OnUnblockableAttack;
+                @UnblockableAttack.canceled += instance.OnUnblockableAttack;
             }
         }
     }
@@ -745,5 +773,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnParry(InputAction.CallbackContext context);
         void OnSpecial1(InputAction.CallbackContext context);
         void OnSpecial2(InputAction.CallbackContext context);
+        void OnUnblockableAttack(InputAction.CallbackContext context);
     }
 }

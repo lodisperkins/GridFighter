@@ -176,6 +176,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1282895
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -382,6 +383,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &21762019
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -574,6 +576,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &126506564
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -960,6 +963,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &343996404
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1148,6 +1152,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &414917395
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1387,6 +1392,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &486075234
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1594,6 +1600,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &610444168
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1708,6 +1715,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &651660661
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1915,6 +1923,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &728535205
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2135,6 +2144,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &856231373
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2686,6 +2696,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1046042777
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2800,6 +2811,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1067123833
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2914,6 +2926,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1074150007
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3102,6 +3115,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1244630611
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3216,6 +3230,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1305153386
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3695,6 +3710,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1376502237
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3881,7 +3897,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 1
+  _mode: 2
   _p1HealthBar: {fileID: 1952347182}
   _p2HealthBar: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}
@@ -4486,6 +4502,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1512007325
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4680,6 +4697,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1650508832
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4794,6 +4812,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1650634134
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5356,6 +5375,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1763299831
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5470,6 +5490,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1767337369
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6070,6 +6091,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &1934581462
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6413,6 +6435,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &2038431542
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6631,6 +6654,7 @@ MonoBehaviour:
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
+  _unblockableColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!65 &2143668596
 BoxCollider:
   m_ObjectHideFlags: 0

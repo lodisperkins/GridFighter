@@ -69,6 +69,7 @@ namespace Lodis.Gameplay
         public FallBreakEvent onFallBroken;
         private RoutineBehaviour.TimedAction _parryTimer;
         private RoutineBehaviour.TimedAction _disableFallBreakAction;
+        private RoutineBehaviour.TimedAction _shieldTimer;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
@@ -88,7 +89,7 @@ namespace Lodis.Gameplay
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _health = GetComponent<HealthBehaviour>();
 
-            _knockBack.AddOnTakeDamageAction(ResetParry);
+            _knockBack.AddOnTakeDamageAction(StopShield);
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
             _shieldCollider.OnHit += args => { if (IsParrying) ActivateInvinciblity(args); };
@@ -134,7 +135,7 @@ namespace Lodis.Gameplay
 
             _shieldCollider.gameObject.SetActive(false);
             //Start timer for player immobility
-            RoutineBehaviour.Instance.StartNewTimedAction(args => { _isShielding = false; }, TimedActionCountType.SCALEDTIME, _groundParryRestTime);
+            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isShielding = false; }, TimedActionCountType.SCALEDTIME, _groundParryRestTime);
         }
 
         /// <summary>
@@ -156,9 +157,9 @@ namespace Lodis.Gameplay
         /// Disables the parry collider and invincibilty.
         /// Gives the object the ability to parry again.
         /// </summary>
-        public void ResetParry()
+        public void StopShield()
         {
-            if (!_isParrying)
+            if (!_isParrying && !_isShielding)
                 return;
 
             //_knockBack.DisableInvincibility();
@@ -167,7 +168,9 @@ namespace Lodis.Gameplay
                 DeactivateGroundParry();
 
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+            RoutineBehaviour.Instance.StopTimedAction(_shieldTimer);
             _shieldCollider.gameObject.SetActive(false);
+            _isShielding = false;
             _isParrying = false;
             _canParry = true;
         }

@@ -144,6 +144,7 @@ namespace Lodis.Input
             _playerControls.Player.Parry.canceled += context => _defense.DeactivateShield();
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
+            _playerControls.Player.UnblockableAttack.started += context => BufferUnblockableAbility(context);
         }
 
         // Start is called before the first frame update
@@ -214,6 +215,13 @@ namespace Lodis.Input
 
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _abilityBuffered = true;
+        }
+
+        public void BufferUnblockableAbility(InputAction.CallbackContext context, params object[] args)
+        {
+            //Use a normal ability if it was not held long enough
+            _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.UNBLOCKABLE, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
             _abilityBuffered = true;
         }
 

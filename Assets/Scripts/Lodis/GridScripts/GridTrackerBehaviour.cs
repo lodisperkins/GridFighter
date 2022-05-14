@@ -9,20 +9,14 @@ namespace Lodis.GridScripts
     {
         POSITION,
         WARNING,
-        DANGER
+        DANGER,
+        UNBLOCKABLE
     }
 
     public class GridTrackerBehaviour : MonoBehaviour
     {
-        public bool MarkPosition;
-        public bool MarkWarning;
-        public bool MarkDanger;
+        public MarkerType Marker;
         private PanelBehaviour _lastPanelMarked;
-        // Start is called before the first frame update
-        void Start()
-        {
-
-        }
 
         public bool MarkPanelAtLocation(Vector3 position, MarkerType markerType)
         {
@@ -64,14 +58,7 @@ namespace Lodis.GridScripts
         // Update is called once per frame
         void Update()
         {
-            if (MarkPosition)
-                MarkPanelAtLocation(transform.position, MarkerType.POSITION);
-
-            if (MarkWarning)
-                MarkPanelAtLocation(transform.position, MarkerType.WARNING);
-
-            if (MarkDanger)
-                MarkPanelAtLocation(transform.position, MarkerType.DANGER);
+            MarkPanelAtLocation(transform.position, Marker);
         }
     }
 }

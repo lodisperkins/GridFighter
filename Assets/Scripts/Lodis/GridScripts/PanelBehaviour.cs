@@ -28,6 +28,8 @@ namespace Lodis.GridScripts
         private Color _warningColor;
         [SerializeField]
         private Color _dangerColor;
+        [SerializeField]
+        private Color _unblockableColor;
         private Color _defaultColor;
         private MeshRenderer _mesh;
         private GameObject _markObject;
@@ -113,6 +115,9 @@ namespace Lodis.GridScripts
                     break;
                 case MarkerType.DANGER:
                     _mesh.material.color = _dangerColor;
+                    break;
+                case MarkerType.UNBLOCKABLE:
+                    _mesh.material.color = _unblockableColor;
                     break;
             }
         }

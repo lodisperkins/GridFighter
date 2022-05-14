@@ -76,6 +76,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "UnblockableAttack",
+                    "type": "Button",
+                    "id": "99c04eff-a462-4dac-90a6-a4ddd5d66a8c",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -560,6 +568,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Special2",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "63fd0488-1a11-4b87-b21c-63feab526109",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UnblockableAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

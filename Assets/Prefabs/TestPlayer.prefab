@@ -294,7 +294,7 @@ MonoBehaviour:
   _isParrying: 0
   _parryInvincibilityLength: 0.1
   _canParry: 1
-  _groundParryRestTime: 0.1
+  _groundParryRestTime: 0.3
   _parryStartUpTime: 0.05
   _braceActiveTime: 0.1
   _canBrace: 0
