@@ -103,7 +103,7 @@ public class AttackAction : GOAction
     void UseRandomDecisionAbility()
     {
         //Pick a random range and attack
-        AbilityType attackType = (AbilityType)UnityEngine.Random.Range(0, 9);
+        AbilityType attackType = (AbilityType)UnityEngine.Random.Range(0, 10);
         Vector2 attackDirection = new Vector2(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
         float attackStrength = UnityEngine.Random.Range(0, 1.1f);
 

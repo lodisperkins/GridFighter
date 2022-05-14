@@ -246,7 +246,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""085619bd-d953-4c02-a2f2-7ee63886939b"",
-                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button6"",
+                    ""path"": ""<Joystick>/trigger"",
                     ""interactions"": ""Press(pressPoint=0.1,behavior=1)"",
                     ""processors"": """",
                     ""groups"": """",
@@ -499,7 +499,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""93102aea-a9a6-462a-bb9b-3c81a1345c52"",
-                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button5"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button6"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -532,7 +532,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""319afb83-5a85-4616-a94f-2b46963bbd7c"",
-                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/trigger"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button4"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -565,7 +565,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""6b3312ac-24b6-46c0-987f-125192abc25b"",
-                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button2"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button3"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -588,6 +588,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""name"": """",
                     ""id"": ""63fd0488-1a11-4b87-b21c-63feab526109"",
                     ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UnblockableAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4252d983-f41f-4ebe-b549-0e6d4c38914c"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button5"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

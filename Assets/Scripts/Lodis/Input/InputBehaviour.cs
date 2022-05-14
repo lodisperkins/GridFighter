@@ -220,6 +220,8 @@ namespace Lodis.Input
 
         public void BufferUnblockableAbility(InputAction.CallbackContext context, params object[] args)
         {
+            if (_playerState != "Idle" && _playerState != "Attacking")
+                return;
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.UNBLOCKABLE, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
             _abilityBuffered = true;
