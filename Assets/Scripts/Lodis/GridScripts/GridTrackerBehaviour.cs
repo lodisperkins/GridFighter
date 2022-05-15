@@ -10,13 +10,30 @@ namespace Lodis.GridScripts
         POSITION,
         WARNING,
         DANGER,
-        UNBLOCKABLE
+        UNBLOCKABLE,
+        NONE
     }
 
     public class GridTrackerBehaviour : MonoBehaviour
     {
         public MarkerType Marker;
         private PanelBehaviour _lastPanelMarked;
+        [Tooltip("If true, will mark all panels this object collides with.")]
+        [SerializeField]
+        private bool _markPanelsBasedOnCollision;
+        private List<PanelBehaviour> _panelsInRange;
+
+        public List<PanelBehaviour> PanelsInRange 
+        {
+            get
+            {
+                if (_panelsInRange == null)
+                    return _panelsInRange = new List<PanelBehaviour>();
+
+                return _panelsInRange;
+            }
+            set => _panelsInRange = value;
+        }
 
         public bool MarkPanelAtLocation(Vector3 position, MarkerType markerType)
         {
@@ -36,6 +53,7 @@ namespace Lodis.GridScripts
 
             return true;
         }
+
         public bool MarkPanelAtGridPosition(int x, int y, MarkerType markerType)
         {
             PanelBehaviour panel = null;
@@ -55,10 +73,56 @@ namespace Lodis.GridScripts
             return true;
         }
 
+        public bool MarkPanel(PanelBehaviour panel, MarkerType markerType)
+        {
+            if (!panel)
+                return false;
+
+            if (_lastPanelMarked == null)
+                _lastPanelMarked = panel;
+            else if (panel != _lastPanelMarked)
+            {
+                _lastPanelMarked.RemoveMark();
+                _lastPanelMarked = panel;
+            }
+
+            panel.Mark(markerType, gameObject);
+
+            return true;
+        }
+
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("Panel") || !_markPanelsBasedOnCollision) return;
+
+            PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
+            
+            if (!PanelsInRange.Contains(panel))
+            {
+                PanelsInRange.Add(panel);
+                panel.Mark(Marker, gameObject);
+                _lastPanelMarked = panel;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag("Panel") || !_markPanelsBasedOnCollision) return;
+            PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
+
+            if (PanelsInRange.Contains(panel))
+            {
+                PanelsInRange.Remove(panel);
+                panel.RemoveMark();
+            }
+        }
+
         // Update is called once per frame
         void Update()
         {
-            MarkPanelAtLocation(transform.position, Marker);
+            if (!_markPanelsBasedOnCollision)
+                MarkPanelAtLocation(transform.position, Marker);
         }
     }
 }

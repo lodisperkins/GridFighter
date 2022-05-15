@@ -35,6 +35,7 @@ namespace Lodis.GridScripts
         private GameObject _markObject;
         private Movement.GridMovementBehaviour _markerMovement;
         private Vector2 _lastMarkPosition;
+        private MarkerType _currentMarker;
 
         private void Awake()
         {
@@ -99,6 +100,8 @@ namespace Lodis.GridScripts
             switch (markerType)
             {
                 case MarkerType.POSITION:
+                    if (_currentMarker != MarkerType.NONE) break;
+
                     if (markObject != _markObject)
                         _markerMovement = markObject.GetComponent<Movement.GridMovementBehaviour>();
 
@@ -120,11 +123,14 @@ namespace Lodis.GridScripts
                     _mesh.material.color = _unblockableColor;
                     break;
             }
+
+            _markObject = markObject;
         }
 
         public void RemoveMark()
         {
             _mesh.material.color = _defaultColor;
+            _currentMarker = MarkerType.NONE;
         }
 
         /// <summary>

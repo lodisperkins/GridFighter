@@ -97,6 +97,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Burst"",
+                    ""type"": ""Button"",
+                    ""id"": ""58a4ab25-5095-492a-9218-9d97b1719aff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -605,6 +613,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""UnblockableAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""466ada18-b06e-4bc3-a1ac-2b9ab570e586"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Burst"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""35c4f1bb-b8b7-4717-8199-178d895db277"",
+                    ""path"": ""<HID::HORI CO.,LTD. HORIPAD mini4>/button8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Burst"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -623,6 +653,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_Special1 = m_Player.FindAction("Special1", throwIfNotFound: true);
         m_Player_Special2 = m_Player.FindAction("Special2", throwIfNotFound: true);
         m_Player_UnblockableAttack = m_Player.FindAction("UnblockableAttack", throwIfNotFound: true);
+        m_Player_Burst = m_Player.FindAction("Burst", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -682,6 +713,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Special1;
     private readonly InputAction m_Player_Special2;
     private readonly InputAction m_Player_UnblockableAttack;
+    private readonly InputAction m_Player_Burst;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -696,6 +728,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Special1 => m_Wrapper.m_Player_Special1;
         public InputAction @Special2 => m_Wrapper.m_Player_Special2;
         public InputAction @UnblockableAttack => m_Wrapper.m_Player_UnblockableAttack;
+        public InputAction @Burst => m_Wrapper.m_Player_Burst;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -735,6 +768,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @UnblockableAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnblockableAttack;
                 @UnblockableAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnblockableAttack;
                 @UnblockableAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnUnblockableAttack;
+                @Burst.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBurst;
+                @Burst.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBurst;
+                @Burst.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBurst;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -769,6 +805,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @UnblockableAttack.started += instance.OnUnblockableAttack;
                 @UnblockableAttack.performed += instance.OnUnblockableAttack;
                 @UnblockableAttack.canceled += instance.OnUnblockableAttack;
+                @Burst.started += instance.OnBurst;
+                @Burst.performed += instance.OnBurst;
+                @Burst.canceled += instance.OnBurst;
             }
         }
     }
@@ -785,5 +824,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnSpecial1(InputAction.CallbackContext context);
         void OnSpecial2(InputAction.CallbackContext context);
         void OnUnblockableAttack(InputAction.CallbackContext context);
+        void OnBurst(InputAction.CallbackContext context);
     }
 }

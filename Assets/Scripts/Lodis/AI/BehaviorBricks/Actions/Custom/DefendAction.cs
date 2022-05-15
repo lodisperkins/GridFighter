@@ -80,7 +80,7 @@ public class DefendAction : GOAction
         if (_decision == null)
         {
             //Create a new random decision
-            choice = (DefenseDecisionType)Random.Range(0, 3);
+            choice = (DefenseDecisionType)Random.Range(0, 4);
             _decision = new DefenseNode(GetPhysicsComponents(), null, null);
             _dummy.Executor.blackboard.boolParams[4] = true;
         }
@@ -109,6 +109,9 @@ public class DefendAction : GOAction
                 break;
             case DefenseDecisionType.PARRY:
                 _dummy.GetComponent<CharacterDefenseBehaviour>().ActivateParry();
+                break;
+            case DefenseDecisionType.BURST:
+                _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
                 break;
         }
 

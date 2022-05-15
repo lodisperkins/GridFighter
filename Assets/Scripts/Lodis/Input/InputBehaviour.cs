@@ -145,6 +145,7 @@ namespace Lodis.Input
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
             _playerControls.Player.UnblockableAttack.started += context => BufferUnblockableAbility(context);
+            _playerControls.Player.Burst.started += context => BufferBurst(context);
         }
 
         // Start is called before the first frame update
@@ -181,10 +182,6 @@ namespace Lodis.Input
         /// index 1 is always the direction of input.</param>
         public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
         {
-            //Ignore player input if they are in knockback
-            if (_playerState != "Idle" && _playerState != "Attacking")
-                return;
-
             AbilityType abilityType;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 
@@ -220,10 +217,15 @@ namespace Lodis.Input
 
         public void BufferUnblockableAbility(InputAction.CallbackContext context, params object[] args)
         {
-            if (_playerState != "Idle" && _playerState != "Attacking")
-                return;
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.UNBLOCKABLE, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _abilityBuffered = true;
+        }
+
+        public void BufferBurst(InputAction.CallbackContext context, params object[] args)
+        {
+            //Use a normal ability if it was not held long enough
+            _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.BURST, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
             _abilityBuffered = true;
         }
 

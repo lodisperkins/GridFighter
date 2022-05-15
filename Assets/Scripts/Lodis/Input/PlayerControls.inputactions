@@ -84,6 +84,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "Press"
+                },
+                {
+                    "name": "Burst",
+                    "type": "Button",
+                    "id": "58a4ab25-5095-492a-9218-9d97b1719aff",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press"
                 }
             ],
             "bindings": [
@@ -590,6 +598,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "UnblockableAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "466ada18-b06e-4bc3-a1ac-2b9ab570e586",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Burst",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "35c4f1bb-b8b7-4717-8199-178d895db277",
+                    "path": "<HID::HORI CO.,LTD. HORIPAD mini4>/button8",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Burst",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

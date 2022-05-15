@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using Lodis.ScriptableObjects;
+using Lodis.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,7 +24,8 @@ namespace Lodis.Gameplay
         STRONGFORWARD,
         STRONGBACKWARD,
         SPECIAL,
-        UNBLOCKABLE
+        UNBLOCKABLE,
+        BURST  
     }
 
     public class MovesetBehaviour : MonoBehaviour
@@ -80,6 +82,7 @@ namespace Lodis.Gameplay
         void Start()
         {
             _normalDeck = Instantiate(_normalDeckRef);
+            _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_EnergyBurst_Data"));
             _specialDeck = Instantiate(_specialDeckRef);
             InitializeDecks();
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
@@ -202,8 +205,11 @@ namespace Lodis.Gameplay
         {
 
             //Ignore player input if they aren't in a state that can attack
-            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking")
+            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && abilityType != AbilityType.BURST)
                 return null;
+            else if (abilityType == AbilityType.BURST && _deckReloading)
+                return null;
+
             //Find the ability in the deck abd use it
             Ability currentAbility = _normalDeck.GetAbilityByType(abilityType);
             //Return if there is an ability in use that can't be canceled
@@ -218,6 +224,13 @@ namespace Lodis.Gameplay
             _lastAbilityInUse = currentAbility;
 
             OnUseAbility?.Invoke();
+
+            if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
+            {
+                _specialDeck.ClearDeck();
+                RemoveAbilityFromSlot(0);
+                RemoveAbilityFromSlot(1);
+            }
 
             //Return new ability
             return _lastAbilityInUse;
@@ -234,8 +247,11 @@ namespace Lodis.Gameplay
         {
 
             //Ignore player input if they aren't in a state that can attack
-            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking")
+            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && abilityName != "EnergyBurst")
                 return null;
+            else if (abilityName == "EnergyBurst" && _deckReloading)
+                return null;
+
             //Find the ability in the deck abd use it
             Ability currentAbility = _normalDeck.GetAbilityByName(abilityName);
 
@@ -252,6 +268,12 @@ namespace Lodis.Gameplay
 
             OnUseAbility?.Invoke();
 
+            if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
+            {
+                _specialDeck.ClearDeck();
+                RemoveAbilityFromSlot(0);
+                RemoveAbilityFromSlot(1);
+            }
             //Return new ability
             return _lastAbilityInUse;
         }

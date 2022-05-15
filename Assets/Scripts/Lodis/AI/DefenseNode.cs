@@ -10,7 +10,8 @@ namespace Lodis.AI
     {
         EVADE,
         COUNTER,
-        PARRY
+        PARRY,
+        BURST
     }
 
     [System.Serializable]
