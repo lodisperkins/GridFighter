@@ -309,6 +309,7 @@ MonoBehaviour:
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
   _maxDecisionCount: 1000
+  _timeNeededToBurst: 0.3
   LastDefenseDecision:
     VisitCount: 0
     Wins: 0
@@ -956,6 +957,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Marker: 0
+  _markPanelsBasedOnCollision: 0
 --- !u!114 &7025333189879560728
 MonoBehaviour:
   m_ObjectHideFlags: 0

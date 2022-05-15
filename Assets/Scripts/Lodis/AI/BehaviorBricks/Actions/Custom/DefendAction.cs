@@ -111,7 +111,8 @@ public class DefendAction : GOAction
                 _dummy.GetComponent<CharacterDefenseBehaviour>().ActivateParry();
                 break;
             case DefenseDecisionType.BURST:
-                _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
+                if (_dummy.GetComponent<KnockbackBehaviour>().LastTimeInKnockBack >= _dummy.TimeNeededToBurst)
+                    _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
                 break;
         }
 

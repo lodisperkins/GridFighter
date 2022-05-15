@@ -47,6 +47,9 @@ namespace Lodis.AI
         private DefenseDecisionTree _defenseDecisions;
         [SerializeField]
         private int _maxDecisionCount;
+        [Tooltip("The amount of time the dummy has to be in knock back to consider using a burst.")]
+        [SerializeField]
+        private float _timeNeededToBurst;
         private GridPhysicsBehaviour _gridPhysics;
         public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
         public StateMachine StateMachine { get => _stateMachine; }
@@ -57,6 +60,8 @@ namespace Lodis.AI
         public GridPhysicsBehaviour GridPhysics { get => _gridPhysics; }
         public BehaviorExecutor Executor { get => _executor; }
         public DefenseDecisionTree DefenseDecisions { get => _defenseDecisions; }
+        public float TimeNeededToBurst { get => _timeNeededToBurst; }
+
         public DefenseNode LastDefenseDecision;
 
         public Vector2 MovePosition;

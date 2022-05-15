@@ -119,7 +119,6 @@ namespace Lodis.Gameplay
             Vector3 force = gridPhysicsBehaviour.CalculatGridForce(_knockBackDistance, newAngle);
             gridPhysicsBehaviour.StopVelocity();
             gridPhysicsBehaviour.ApplyImpulseForce(force);
-            Debug.Log(force);
         }
     }
 }

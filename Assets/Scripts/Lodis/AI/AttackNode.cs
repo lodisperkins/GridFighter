@@ -11,7 +11,7 @@ namespace Lodis.AI
         private MovesetBehaviour _moveset;
         public Vector3 TargetDisplacement;
         public float TargetHealth;
-        public int BarrierEffectiveness;
+        public int ShieldEffectiveness;
         public float AttackStartTime;
         public string AbilityName;
         public float AttackStrength;
@@ -29,7 +29,7 @@ namespace Lodis.AI
         {
             TargetDisplacement = targetDisplacement;
             TargetHealth = targetHealth;
-            BarrierEffectiveness = barrierEffectiveness;
+            ShieldEffectiveness = barrierEffectiveness;
             AttackStartTime = attackStartTime;
             AbilityName = abilityName;
             AttackStrength = attackStrength;
@@ -43,7 +43,7 @@ namespace Lodis.AI
             float opponentHealth = (float)args[2];
             AttackDummyBehaviour owner = (AttackDummyBehaviour)args[3];
 
-            if (behindBarrier) weight += BarrierEffectiveness;
+            if (behindBarrier) weight += ShieldEffectiveness;
 
             if (!owner.Moveset.NormalDeckContains(AbilityName) && !owner.Moveset.SpecialDeckContains(AbilityName))
                 weight = 0;

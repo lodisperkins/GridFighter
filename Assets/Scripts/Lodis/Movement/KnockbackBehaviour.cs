@@ -80,6 +80,12 @@ namespace Lodis.Movement
         private float _timeInCurrentHitStun;
         private RoutineBehaviour.TimedAction _hitStunTimer = new RoutineBehaviour.TimedAction();
         private float _lastTotalKnockBack;
+        private float _lastTimeInKnockBack;
+
+        public float LastTimeInKnockBack
+        {
+            get { return _lastTimeInKnockBack; }
+        }
 
         /// <summary>
         /// Whether or not this object is current regaining footing after hitting the ground
@@ -358,7 +364,7 @@ namespace Lodis.Movement
         {
             Landing = true;
             _movementBehaviour.DisableMovement(condition => !Landing, false, true);
-
+            _lastTimeInKnockBack = 0;
             if (_defenseBehaviour)
             {
                 if (_defenseBehaviour.BreakingFall)
@@ -834,6 +840,8 @@ namespace Lodis.Movement
             {
                 TryStartLandingLag();
             }
+
+            if (IsTumbling) _lastTimeInKnockBack += Time.deltaTime;
         }
     }
 

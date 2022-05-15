@@ -103,7 +103,7 @@ public class AttackAction : GOAction
     void UseRandomDecisionAbility()
     {
         //Pick a random range and attack
-        AbilityType attackType = (AbilityType)UnityEngine.Random.Range(0, 10);
+        AbilityType attackType = (AbilityType)UnityEngine.Random.Range(0, 11);
         Vector2 attackDirection = new Vector2(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
         float attackStrength = UnityEngine.Random.Range(0, 1.1f);
 
@@ -134,24 +134,27 @@ public class AttackAction : GOAction
         attackDirection.y = Mathf.Round(attackDirection.y);
 
         //Decide which ability type to use based on the input
-        if (attackDirection.y != 0)
+        if (attackDirection == Vector2.up || attackDirection == Vector2.down)
             attackType = AbilityType.WEAKSIDE;
-        else if (attackDirection.x < 0)
+        else if (attackDirection == Vector2.left)
             attackType = AbilityType.WEAKBACKWARD;
-        else if (attackDirection.x > 0)
+        else if (attackDirection == Vector2.right)
             attackType = AbilityType.WEAKFORWARD;
-        else
+        else if (attackDirection == Vector2.zero)
             attackType = AbilityType.WEAKNEUTRAL;
 
         float timeHeld = (attackStrength - 1) / 0.1f;
 
-        if (timeHeld > 0.5f)
+        if (timeHeld > 0.5f && (int)attackType < 4)
         {
             attackType += 4;
             _dummy.StartCoroutine(_dummy.ChargeRoutine(timeHeld, attackType));
         }
 
         ability = _dummy.Moveset.GetAbilityByType(attackType);
+
+        if (ability == null) return;
+
         //Store the decision in the tree if the hit was successful
         ability.OnHitTemp += args => CreateNewDecision(targetHealth, ability.abilityData.startUpTime, ability.abilityData.abilityName, attackStrength, args);
         _dummy.Moveset.UseBasicAbility(attackType, attackStrength, attackDirection);
@@ -191,14 +194,8 @@ public class AttackAction : GOAction
         if (!collisionObject.CompareTag("Player") && !collisionObject.CompareTag("Structure"))
             return;
 
-        if (_opponentMoveBehaviour.IsBehindBarrier && collisionObject.CompareTag("Player"))
-            _decision.BarrierEffectiveness += 2;
-        else if (collisionObject.CompareTag("Structure"))
-        {
-            _decision.BarrierEffectiveness++;
-            return;
-        }
-
+        if (_dummy.Opponent.GetComponent<CharacterDefenseBehaviour>().IsShielding && collisionObject.CompareTag("Player"))
+            _decision.ShieldEffectiveness ++;
 
         KnockbackBehaviour knockback = collisionObject.GetComponent<KnockbackBehaviour>();
 
