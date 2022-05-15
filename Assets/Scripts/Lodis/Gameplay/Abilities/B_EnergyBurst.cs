@@ -36,7 +36,9 @@ namespace Lodis.Gameplay
         protected override void Deactivate()
         {
             base.Deactivate();
-            _ownerKnockBackScript.InFreeFall = true;
+
+            if (!_ownerKnockBackScript.Physics.IsGrounded || _ownerKnockBackScript.IsTumbling)
+                _ownerKnockBackScript.InFreeFall = true;
         }
 
         protected override void End()

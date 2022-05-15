@@ -17,7 +17,6 @@ namespace Lodis.GridScripts
         private void OnCollisionEnter(Collision other)
         {
             Movement.KnockbackBehaviour knockbackScript = other.transform.root.GetComponent<Movement.KnockbackBehaviour>();
-            Gameplay.CharacterDefenseBehaviour defenseScript = other.transform.root.GetComponent<Gameplay.CharacterDefenseBehaviour>();
 
             if (!knockbackScript)
                 return;
@@ -25,7 +24,7 @@ namespace Lodis.GridScripts
                 return;
 
             //Don't add a force if the object is traveling at a low speed
-            if (knockbackScript.Physics.LastVelocity.magnitude <= 0.1f || knockbackScript.Physics.Bounciness <= 0 || !knockbackScript.Physics.PanelBounceEnabled)
+            if (knockbackScript.Physics.LastVelocity.y > 3 || knockbackScript.Physics.Bounciness <= 0 || !knockbackScript.Physics.PanelBounceEnabled)
                 return;
 
             float upMagnitude = knockbackScript.Physics.LastVelocity.magnitude * knockbackScript.Physics.Bounciness;

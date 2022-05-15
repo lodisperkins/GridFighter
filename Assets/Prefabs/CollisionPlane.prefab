@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5894801440243622393}
   - component: {fileID: 3302727793092609642}
   - component: {fileID: 7212125777042658491}
+  - component: {fileID: -454446108473360892}
   m_Layer: 10
   m_Name: CollisionPlane
   m_TagString: CollisionPlane
@@ -93,3 +94,17 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 9.999999, y: 0.35, z: 10}
   m_Center: {x: 0, y: -0.18, z: 0}
+--- !u!114 &-454446108473360892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6261796229167299558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70740eb1a83ad834e8dbb5a3211c97f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bounceDampening: 3
+  _friction: 3

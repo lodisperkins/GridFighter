@@ -344,7 +344,7 @@ namespace Lodis.Gameplay
             currentAbility.currentActivationAmount++;
 
             if (!_deckReloading)
-                currentAbility.onEnd += () => UpdateHand(abilitySlot);
+                currentAbility.onEnd += () => { if (_specialAbilitySlots[abilitySlot] == currentAbility) UpdateHand(abilitySlot); };
 
             OnUseAbility?.Invoke();
             //Return new ability

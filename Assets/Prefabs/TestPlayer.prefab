@@ -420,7 +420,6 @@ MonoBehaviour:
   _extraHeight: 0.5
   _bounciness: 3
   _panelBounceEnabled: 1
-  _netForce: {x: 0, y: 0, z: 0}
   _useGravity: 1
   _ignoreForces: 0
   _rangeToIgnoreUpAngle: 0.2
@@ -996,6 +995,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Marker: 0
+  _markPanelsBasedOnCollision: 0
 --- !u!1 &7661625193114942374
 GameObject:
   m_ObjectHideFlags: 0

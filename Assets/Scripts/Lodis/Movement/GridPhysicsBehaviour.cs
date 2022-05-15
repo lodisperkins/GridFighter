@@ -49,8 +49,6 @@ namespace Lodis.Movement
         private bool _panelBounceEnabled = true;
         private Vector3 _normalForce;
         [SerializeField]
-        private Vector3 _netForce;
-        [SerializeField]
         private bool _useGravity = true;
         [Tooltip("If true, this object will ignore all forces acting on it including gravity")]
         [SerializeField]
@@ -115,7 +113,6 @@ namespace Lodis.Movement
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
         public bool ObjectAtRest { get => _objectAtRest; }
         public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
-        public Vector3 NetForce { get => _netForce; }
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
 
         private void Awake()
@@ -283,7 +280,7 @@ namespace Lodis.Movement
                 return Vector3.up * Mathf.Sqrt(2 * Gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
-            launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
+            //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
 
             //Uses the total knockback and panel distance to find how far the object is travelling
             float displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
@@ -401,7 +398,6 @@ namespace Lodis.Movement
             Rigidbody.AddForce(force, ForceMode.VelocityChange);
             _lastVelocity = force;
             _lastForceAdded = force;
-            _netForce += force;
             _onForceAdded?.Invoke(force);
         }
 
@@ -426,11 +422,9 @@ namespace Lodis.Movement
             if (disableMovement)
                 _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
-            Rigidbody.AddForce(force, ForceMode.Force);
-            _lastVelocity = force;
-            _lastForceAdded = force;
-            _netForce += force;
-            _onForceAdded?.Invoke(force);
+            Rigidbody.AddForce(force / Mass, ForceMode.Force);
+            _lastForceAdded = force / Mass;
+            _onForceAdded?.Invoke(force / Mass);
         }
 
         /// <summary>
@@ -458,11 +452,10 @@ namespace Lodis.Movement
                 _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             Rigidbody.AddForce(force / Mass, ForceMode.Impulse);
+            
 
-            _lastVelocity = force;
-            _lastForceAdded = force;
-            _netForce += force;
-            _onForceAdded?.Invoke(force);
+            _lastForceAdded = force / Mass;
+            _onForceAdded?.Invoke(force / Mass);
         }
 
         /// <summary>
@@ -516,7 +509,7 @@ namespace Lodis.Movement
         {
             _isGrounded = false;
 
-            Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure", "Panels" }));
+            Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure"}));
 
             foreach (Collider collider in hits)
             {
@@ -546,16 +539,10 @@ namespace Lodis.Movement
 
             _lastVelocity = Rigidbody.velocity;
 
-            //if (Rigidbody.velocity.magnitude > 0)
-            //    Rigidbody.velocity /= _velocityDecayRate.Value;
-
             if (UseGravity && !IgnoreForces)
                 _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
 
-            _netForce = Rigidbody.mass * Acceleration;
-
-
-            _objectAtRest = CheckIsGrounded() && _netForce.magnitude == 0;
+            _objectAtRest = CheckIsGrounded() && _rigidbody.velocity.magnitude == 0;
         }
     }
 }

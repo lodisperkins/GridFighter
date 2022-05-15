@@ -82,7 +82,6 @@ namespace Lodis.Gameplay
             if (damageType != DamageType.KNOCKBACK || (attacker != Owner && Owner != "") || damage < _minimumDamageSpeed)
                 return 0;
 
-
             Health -= damage;
 
             OnTakeDamage.Raise(gameObject);
@@ -101,9 +100,9 @@ namespace Lodis.Gameplay
 
         private void OnCollisionEnter(Collision collision)
         {
-            GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
+            KnockbackBehaviour knockbackBehaviour = collision.gameObject.GetComponent<KnockbackBehaviour>();
 
-            if (!gridPhysicsBehaviour || gridPhysicsBehaviour.LastVelocity.magnitude < _minimumDamageSpeed)
+            if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed)
                 return;
 
             if (_bounceDampen == 0)
@@ -116,9 +115,8 @@ namespace Lodis.Gameplay
             float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
             float newAngle = Mathf.Acos(dotProduct);
 
-            Vector3 force = gridPhysicsBehaviour.CalculatGridForce(_knockBackDistance, newAngle);
-            gridPhysicsBehaviour.StopVelocity();
-            gridPhysicsBehaviour.ApplyImpulseForce(force);
+            knockbackBehaviour.Physics.StopVelocity();
+            knockbackBehaviour.TakeDamage(name, 0, _knockBackDistance, newAngle, 0, 0.7f);
         }
     }
 }
