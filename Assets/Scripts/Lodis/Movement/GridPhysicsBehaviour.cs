@@ -541,6 +541,9 @@ namespace Lodis.Movement
 
             if (UseGravity && !IgnoreForces)
                 _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
+            else
+                _constantForceBehaviour.force = Vector3.zero;
+
 
             _objectAtRest = CheckIsGrounded() && _rigidbody.velocity.magnitude == 0;
         }

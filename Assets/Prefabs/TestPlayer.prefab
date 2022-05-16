@@ -606,7 +606,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 518.7782, y: 481.88873}
+    - position: {x: 566.55566, y: 564.1109}
       id: Attacking
       onEnterState:
         m_PersistentCalls:
@@ -805,30 +805,6 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
-    - id: Transition 11
-      label: Attack
-      originID: Idle
-      targetID: Attacking
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
-    - id: Transition 12
-      label: Attack
-      originID: Moving
-      targetID: Attacking
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
     - id: Transition 15
       label: Parry
       originID: FreeFall
@@ -971,11 +947,23 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition 4
+      label: Attack
+      originID: AnyState 1
+      targetID: Attacking
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 126.23767, y: -218.494}
+        dragOffset: {x: 200.68217, y: -199.60513}
       gridSettings:
         isEnabled: 1
       labelSettings:
