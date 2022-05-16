@@ -15,15 +15,17 @@ MonoBehaviour:
   abilityName: DoubleShot
   AbilityType: 1
   timeActive: 0.2
-  recoverTime: 0.1
+  recoverTime: 0.4
   startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 0
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 1
+  canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnFlinch: 1

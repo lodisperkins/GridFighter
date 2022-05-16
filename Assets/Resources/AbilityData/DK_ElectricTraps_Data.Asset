@@ -14,15 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   abilityName: ElectricTraps
   AbilityType: 8
-  timeActive: 0.1
-  recoverTime: 0.05
-  startUpTime: 0.1
+  timeActive: 0.05
+  recoverTime: 0.1
+  startUpTime: 0.05
   chargeTime: 1
   maxActivationAmount: 3
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
@@ -45,7 +48,7 @@ MonoBehaviour:
     BaseKnockBack: 0
     KnockBackScale: 0
     HitAngle: 0
-    AdjustAngleBasedOnCollision: 0
+    AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
     CanSpike: 0
     HitStunTime: 0

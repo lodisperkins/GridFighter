@@ -212,6 +212,10 @@ namespace Lodis.Gameplay
         {
             if (nextAbility == this && !abilityData.CanCancelIntoSelf)
                 return false;
+            else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && abilityData.CanCancelIntoSpecial)
+                return true;
+            else if ((int)nextAbility.abilityData.AbilityType < 8 && abilityData.CanCancelIntoNormal)
+                return true;
 
             switch (CurrentAbilityPhase)
             {

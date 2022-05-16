@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: DoubleStrike
   AbilityType: 8
   timeActive: 0.4
-  recoverTime: 0.3
+  recoverTime: 0.8
   startUpTime: 0.2
   chargeTime: 5
   maxActivationAmount: 2
@@ -24,6 +24,8 @@ MonoBehaviour:
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnFlinch: 1

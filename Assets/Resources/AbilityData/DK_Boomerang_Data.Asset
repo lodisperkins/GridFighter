@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Boomerang
   AbilityType: 8
   timeActive: 0.1
-  recoverTime: 0.4
+  recoverTime: 0.5
   startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 1
@@ -24,6 +24,8 @@ MonoBehaviour:
   canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnFlinch: 0
