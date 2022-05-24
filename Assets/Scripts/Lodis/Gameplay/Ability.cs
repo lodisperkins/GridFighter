@@ -204,12 +204,10 @@ namespace Lodis.Gameplay
             return false;
         }
 
-        /// <summary>
-        /// Trys to cancel the ability
-        /// </summary>
-        /// <returns>Returns true if the current ability phase can be canceled</returns>
-        public bool TryCancel(Ability nextAbility = null)
+        private bool CheckCancelIntoAbility(Ability nextAbility)
         {
+            if (nextAbility == null) return true;
+
             if (nextAbility == this && !abilityData.CanCancelIntoSelf)
                 return false;
             else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && abilityData.CanCancelIntoSpecial)
@@ -217,24 +215,33 @@ namespace Lodis.Gameplay
             else if ((int)nextAbility.abilityData.AbilityType < 8 && abilityData.CanCancelIntoNormal)
                 return true;
 
+            return false;
+        }
+
+        /// <summary>
+        /// Trys to cancel the ability
+        /// </summary>
+        /// <returns>Returns true if the current ability phase can be canceled</returns>
+        public bool TryCancel(Ability nextAbility = null)
+        {
             switch (CurrentAbilityPhase)
             {
                 case AbilityPhase.STARTUP:
-                    if (abilityData.canCancelStartUp)
+                    if (abilityData.canCancelStartUp && CheckCancelIntoAbility(nextAbility))
                     {
                         EndAbility();
                         return true;
                     }
                     break;
                 case AbilityPhase.ACTIVE:
-                    if (abilityData.canCancelActive)
+                    if (abilityData.canCancelActive && CheckCancelIntoAbility(nextAbility))
                     {
                         EndAbility();
                         return true;
                     }
                     break;
                 case AbilityPhase.RECOVER:
-                    if (abilityData.canCancelRecover)
+                    if (abilityData.canCancelRecover && CheckCancelIntoAbility(nextAbility))
                     {
                         EndAbility();
                         return true;
