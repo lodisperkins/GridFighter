@@ -43,7 +43,8 @@ namespace Lodis.Gameplay
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public float Priority;
         public GridAlignment OwnerAlignement;
-
+        [HideInInspector]
+        public AbilityType AbilityType;
 
         /// <summary>
         /// Get a copy of the hit collider info with the attack stats (damage, base knock back, knock back scale, hit stun time) scaled
@@ -180,6 +181,12 @@ namespace Lodis.Gameplay
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
 
+            if (other.CompareTag("Player"))
+            {
+                if (other.GetComponent<CharacterDefenseBehaviour>()?.IsShielding == true && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE)
+                    return;
+            }
+
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
 
@@ -252,6 +259,12 @@ namespace Lodis.Gameplay
             if (!Collisions.ContainsKey(other.gameObject))
                 Collisions.Add(other.gameObject, Time.frameCount);
 
+            if (other.CompareTag("Player"))
+            {
+                if (other.GetComponent<CharacterDefenseBehaviour>()?.IsShielding == true && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE)
+                    return;
+            }
+
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
 
@@ -323,6 +336,12 @@ namespace Lodis.Gameplay
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
+
+            if (other.CompareTag("Player"))
+            {
+                if (other.GetComponent<CharacterDefenseBehaviour>()?.IsShielding == true && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE)
+                    return;
+            }
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : other.gameObject;

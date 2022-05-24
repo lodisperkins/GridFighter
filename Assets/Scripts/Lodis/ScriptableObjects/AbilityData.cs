@@ -124,7 +124,7 @@ namespace Lodis.ScriptableObjects
                 Debug.LogWarning("GetColliderInfo() was called with an invalid index passed as a parameter");
                 return new HitColliderInfo();
             }
-
+            ColliderData[index].AbilityType = AbilityType;
             return ColliderData[index];
         }
 
