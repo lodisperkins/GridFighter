@@ -34,7 +34,7 @@ public class HealthTextBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _text.text = _healthComponent.Health.ToString();
+        _text.text = Mathf.Round(_healthComponent.Health).ToString();
         _text.color = _healthGradient.Evaluate(_healthComponent.Health / _healthComponent.MaxHealth.Value);
     }
 }

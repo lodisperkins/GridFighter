@@ -16,10 +16,6 @@ namespace Lodis.Gameplay
     public class ColliderBehaviour : MonoBehaviour
     {
         protected Dictionary<GameObject, int> Collisions;
-        /// <summary>
-        /// Collision event called when this collider hits another. 
-        /// First argument is game object it collided with.
-        /// </summary>
         public CollisionEvent OnHit;
         [SerializeField]
         private GridGame.Event _onHitObject;

@@ -56,11 +56,28 @@ namespace Lodis.Gameplay
         [Tooltip("The amount of time it will take for the special deck to reload once all abilities are used")]
         [SerializeField]
         private float _deckReloadTime;
+        [Tooltip("The amount of energy this character has")]
+        [SerializeField]
+        private float _energy;
+        [Tooltip("The maximum amount of energy characters can have")]
+        [SerializeField]
+        private FloatVariable _maxEnergyRef;
+        [Tooltip("The amount of energy regained passively")]
+        [SerializeField]
+        private FloatVariable _energyRechargeValue;
+        [Tooltip("The rate at which energy is regained")]
+        [SerializeField]
+        private FloatVariable _energyRechargeRate;
+        [Tooltip("If true the character can charge energy passively")]
+        [SerializeField]
+        private bool _energyChargeEnabled = true;
+
         private CharacterStateMachineBehaviour _stateMachineScript;
         private bool _deckReloading;
         private Movement.GridMovementBehaviour _movementBehaviour;
-        private Input.InputBehaviour _inputBehaviour;
+        private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
+        private RoutineBehaviour.TimedAction _rechargeAction;
 
         public Transform ProjectileSpawnTransform
         {
@@ -78,6 +95,12 @@ namespace Lodis.Gameplay
             }
         }
 
+        private void Awake()
+        {
+            _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
+            _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
+        }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -85,9 +108,7 @@ namespace Lodis.Gameplay
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_EnergyBurst_Data"));
             _specialDeck = Instantiate(_specialDeckRef);
             InitializeDecks();
-            _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
-            _inputBehaviour = GetComponent<Input.InputBehaviour>();
-            _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
+            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject).GetComponent<MovesetBehaviour>();
         }
 
         /// <summary>
@@ -152,7 +173,6 @@ namespace Lodis.Gameplay
             return names;
         }
 
-
         /// <summary>
         /// True if there is some ability that is currently active.
         /// </summary>
@@ -170,6 +190,17 @@ namespace Lodis.Gameplay
         public Ability LastAbilityInUse { get => _lastAbilityInUse; }
         public UnityAction OnUseAbility { get => _onUseAbility; set => _onUseAbility = value; }
         public Ability[] SpecialAbilitySlots { get => _specialAbilitySlots; }
+        public bool EnergyChargeEnabled 
+        { 
+            get => _energyChargeEnabled;
+            set
+            {
+                _energyChargeEnabled = value;
+
+                if (!_energyChargeEnabled)
+                    RoutineBehaviour.Instance.StopTimedAction(_rechargeAction);
+            }
+        }
 
         /// <summary>
         /// Gets the ability from the moveset deck based on the type passed in.
@@ -334,10 +365,11 @@ namespace Lodis.Gameplay
 
             if (currentAbility == null)
                 return null;
-            else if (currentAbility.MaxActivationAmountReached)
+            else if (currentAbility.MaxActivationAmountReached || currentAbility.abilityData.EnergyCost < _energy)
                 return null;
 
-            //Doesn't increment ability use amount before checking max
+            _energy -= currentAbility.abilityData.EnergyCost;
+
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
 
@@ -381,6 +413,32 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// Adds energy to the characters energy meter and clamps it to fit within the 
+        /// maximum amount.
+        /// </summary>
+        /// <param name="amount">The amount of energy to add to the current.</param>
+        public void AddEnergy(float amount)
+        {
+            _energy += amount;
+
+            _energy = Mathf.Clamp(amount, 0, _maxEnergyRef.Value);
+        }
+
+        /// <summary>
+        /// Increases the current energy by the damage of the attack received by an ability.
+        /// Only works if the collider is owned by the opponent.
+        /// </summary>
+        private void IncreaseEnergyFromDamage(params object[] args)
+        {
+            HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[1];
+
+            if (hitCollider.Owner == gameObject) return;
+
+            AddEnergy(hitCollider.ColliderInfo.Damage);
+            _opponentMoveset.AddEnergy(hitCollider.ColliderInfo.Damage / 2);
+        }
+
         private void FixedUpdate()
         {
             //Call fixed update for abilities
@@ -404,6 +462,9 @@ namespace Lodis.Gameplay
                     _lastAbilityInUse.Update();
                 }
             }
+
+            if (_rechargeAction?.GetEnabled() == false && EnergyChargeEnabled)
+                _rechargeAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _energy += _energyRechargeRate.Value, TimedActionCountType.SCALEDTIME, _energyRechargeRate.Value);
 
             //Reload the deck if there are no cards in the hands or the deck
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading)
