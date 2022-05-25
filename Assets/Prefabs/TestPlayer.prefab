@@ -551,6 +551,7 @@ MonoBehaviour:
   _groundParryRestTime: 0.3
   _parryStartUpTime: 0.05
   _braceActiveTime: 0.1
+  _shieldDrainValue: {fileID: 11400000, guid: 85dc43ae146cbf3429b43a067bad9d02, type: 2}
   _canBrace: 0
   _isBraced: 0
   _braceCooldownTime: 1

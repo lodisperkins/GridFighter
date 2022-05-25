@@ -108,7 +108,7 @@ public class DefendAction : GOAction
                 _dummy.Executor.blackboard.boolParams[3] = true;
                 break;
             case DefenseDecisionType.PARRY:
-                _dummy.GetComponent<CharacterDefenseBehaviour>().ActivateParry();
+                _dummy.GetComponent<CharacterDefenseBehaviour>().BeginParry();
                 break;
             case DefenseDecisionType.BURST:
                 if (_dummy.GetComponent<KnockbackBehaviour>().LastTimeInKnockBack >= _dummy.TimeNeededToBurst)

@@ -202,7 +202,15 @@ namespace Lodis.Gameplay
             }
         }
 
-        public float Energy { get => _energy; }
+        public float Energy
+        { 
+            get => _energy;
+            set 
+            {
+                _energy = value;
+                _energy = Mathf.Clamp(_energy, 0, _maxEnergyRef.Value);
+            }
+        }
 
         /// <summary>
         /// Gets the ability from the moveset deck based on the type passed in.
@@ -415,16 +423,14 @@ namespace Lodis.Gameplay
             }
         }
 
-        /// <summary>
-        /// Adds energy to the characters energy meter and clamps it to fit within the 
-        /// maximum amount.
-        /// </summary>
-        /// <param name="amount">The amount of energy to add to the current.</param>
-        public void AddEnergy(float amount)
+        public bool UseEnergyForAction(UnityAction action, float actionCost)
         {
-            _energy += amount;
+            if (Energy < actionCost) return false;
 
-            _energy = Mathf.Clamp(_energy, 0, _maxEnergyRef.Value);
+            Energy -= actionCost;
+            action?.Invoke();
+
+            return true;
         }
 
         /// <summary>
@@ -437,8 +443,8 @@ namespace Lodis.Gameplay
 
             if (hitCollider.Owner != gameObject) return;
 
-            AddEnergy(hitCollider.ColliderInfo.Damage / 10);
-            _opponentMoveset.AddEnergy(hitCollider.ColliderInfo.Damage / 20);
+            Energy += hitCollider.ColliderInfo.Damage / 100;
+            _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
         }
 
         private void FixedUpdate()
