@@ -19,6 +19,7 @@ MonoBehaviour:
   startUpTime: 0.05
   chargeTime: 1
   maxActivationAmount: 3
+  EnergyCost: 2
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
@@ -54,6 +55,7 @@ MonoBehaviour:
     HitStunTime: 0
     Priority: 0
     OwnerAlignement: 0
+    AbilityType: 8
   _customStats:
   - name: Speed
     value: 20

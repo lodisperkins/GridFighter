@@ -19,11 +19,14 @@ MonoBehaviour:
   startUpTime: 0.1
   chargeTime: 5
   maxActivationAmount: 1
+  EnergyCost: 3
   canCancelStartUp: 0
   canCancelActive: 1
   canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
   cancelOnHit: 1
   cancelOnFlinch: 1
@@ -52,6 +55,7 @@ MonoBehaviour:
     HitStunTime: 0.4
     Priority: 0
     OwnerAlignement: 0
+    AbilityType: 8
   _customStats:
   - name: HitBoxScaleX
     value: 1

@@ -641,6 +641,13 @@ MonoBehaviour:
   _projectileSpawnPoint: {fileID: 7641039657355691941}
   _meleeHitBoxSpawnPoint: {fileID: 8493895805536081938}
   _deckReloadTime: 6
+  _energy: 0
+  _maxEnergyRef: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
+  _energyRechargeValue: {fileID: 11400000, guid: 490d301c94c4e8a4ca55468f4f2ab3ed,
+    type: 2}
+  _energyRechargeRate: {fileID: 11400000, guid: bcb306df5e8c18f499e8892c8bc5a618,
+    type: 2}
+  _energyChargeEnabled: 1
 --- !u!75 &-4507364889193390204
 ConstantForce:
   m_ObjectHideFlags: 0

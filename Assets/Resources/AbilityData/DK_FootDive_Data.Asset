@@ -19,11 +19,14 @@ MonoBehaviour:
   startUpTime: 0.4
   chargeTime: 5
   maxActivationAmount: 1
+  EnergyCost: 2
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
   cancelOnHit: 0
   cancelOnFlinch: 0
@@ -52,6 +55,7 @@ MonoBehaviour:
     HitStunTime: 0.3
     Priority: 0
     OwnerAlignement: 0
+    AbilityType: 8
   _customStats:
   - name: TravelDistance
     value: 3

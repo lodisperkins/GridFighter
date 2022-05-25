@@ -202,6 +202,8 @@ namespace Lodis.Gameplay
             }
         }
 
+        public float Energy { get => _energy; }
+
         /// <summary>
         /// Gets the ability from the moveset deck based on the type passed in.
         /// </summary>
@@ -365,7 +367,7 @@ namespace Lodis.Gameplay
 
             if (currentAbility == null)
                 return null;
-            else if (currentAbility.MaxActivationAmountReached || currentAbility.abilityData.EnergyCost < _energy)
+            else if (currentAbility.MaxActivationAmountReached || currentAbility.abilityData.EnergyCost > _energy)
                 return null;
 
             _energy -= currentAbility.abilityData.EnergyCost;
@@ -422,21 +424,21 @@ namespace Lodis.Gameplay
         {
             _energy += amount;
 
-            _energy = Mathf.Clamp(amount, 0, _maxEnergyRef.Value);
+            _energy = Mathf.Clamp(_energy, 0, _maxEnergyRef.Value);
         }
 
         /// <summary>
         /// Increases the current energy by the damage of the attack received by an ability.
         /// Only works if the collider is owned by the opponent.
         /// </summary>
-        private void IncreaseEnergyFromDamage(params object[] args)
+        public void IncreaseEnergyFromDamage(params object[] args)
         {
-            HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[1];
+            HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[3];
 
-            if (hitCollider.Owner == gameObject) return;
+            if (hitCollider.Owner != gameObject) return;
 
-            AddEnergy(hitCollider.ColliderInfo.Damage);
-            _opponentMoveset.AddEnergy(hitCollider.ColliderInfo.Damage / 2);
+            AddEnergy(hitCollider.ColliderInfo.Damage / 10);
+            _opponentMoveset.AddEnergy(hitCollider.ColliderInfo.Damage / 20);
         }
 
         private void FixedUpdate()
@@ -463,8 +465,10 @@ namespace Lodis.Gameplay
                 }
             }
 
-            if (_rechargeAction?.GetEnabled() == false && EnergyChargeEnabled)
-                _rechargeAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _energy += _energyRechargeRate.Value, TimedActionCountType.SCALEDTIME, _energyRechargeRate.Value);
+            bool timerActive = (_rechargeAction?.GetEnabled()).GetValueOrDefault();
+
+            if (!timerActive && EnergyChargeEnabled)
+                _rechargeAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _energy += _energyRechargeValue.Value, TimedActionCountType.SCALEDTIME, _energyRechargeRate.Value);
 
             //Reload the deck if there are no cards in the hands or the deck
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading)

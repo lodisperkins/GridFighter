@@ -307,6 +307,8 @@ namespace Lodis.Gameplay
 
             _colliders = new List<HitColliderBehaviour>();
 
+            OnHit += ownerMoveset.IncreaseEnergyFromDamage;
+
             for (int i = 0; i < abilityData.ColliderInfoCount; i++)
             {
                 HitColliderBehaviour colliderComponent = new HitColliderBehaviour(abilityData.GetColliderInfo(i), owner);
