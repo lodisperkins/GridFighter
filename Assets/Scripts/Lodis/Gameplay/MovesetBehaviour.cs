@@ -361,7 +361,6 @@ namespace Lodis.Gameplay
         /// <returns>The ability that was used</returns>
         public Ability UseSpecialAbility(int abilitySlot, params object[] args)
         {
-
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking")
                 return null;
@@ -375,10 +374,13 @@ namespace Lodis.Gameplay
 
             if (currentAbility == null)
                 return null;
-            else if (currentAbility.MaxActivationAmountReached || currentAbility.abilityData.EnergyCost > _energy)
+            else if (currentAbility.MaxActivationAmountReached)
+                return null;
+            else if (currentAbility.abilityData.EnergyCost > _energy && currentAbility.currentActivationAmount == 0)
                 return null;
 
-            _energy -= currentAbility.abilityData.EnergyCost;
+            if (currentAbility.currentActivationAmount == 0)
+                _energy -= currentAbility.abilityData.EnergyCost;
 
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
@@ -440,8 +442,10 @@ namespace Lodis.Gameplay
         public void IncreaseEnergyFromDamage(params object[] args)
         {
             HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[3];
+            HealthBehaviour health = (HealthBehaviour)args[4];
+            bool? invincible = health?.IsInvincible == true;
 
-            if (hitCollider.Owner != gameObject) return;
+            if (hitCollider.Owner != gameObject || invincible.GetValueOrDefault()) return;
 
             Energy += hitCollider.ColliderInfo.Damage / 100;
             _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
