@@ -320,40 +320,6 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Immediately cancels and ends the current ability in use
-        /// </summary>
-        public void EndCurrentAbility()
-        {
-            _lastAbilityInUse?.EndAbility();
-        }
-
-        /// <summary>
-        /// Creates a new instance of the special deck and shuffles its abilities
-        /// </summary>
-        private void ReloadDeck()
-        {
-            _specialDeck = Instantiate(_specialDeckRef);
-            _specialDeck.InitAbilities(gameObject);
-            _specialDeck.Shuffle();
-            _specialAbilitySlots[0] = _specialDeck.PopBack();
-            _specialAbilitySlots[1] = _specialDeck.PopBack();
-        }
-
-        /// <summary>
-        /// Trys to charge the next ability and place it in the characters hand.
-        /// If there are no abilties left in the deck, it is reloaded 
-        /// </summary>
-        /// <param name="slot"></param>
-        private void UpdateHand(int slot)
-        {
-            _specialAbilitySlots[slot] = null;
-            if (_specialDeck.Count > 0)
-            {
-                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _specialAbilitySlots[slot] = _specialDeck.PopBack(), TimedActionCountType.SCALEDTIME, _specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
-            }
-        }
-
-        /// <summary>
         /// Uses a special ability
         /// </summary>
         /// <param name="abilitySlot">The index of the ability in the characters hand</param>
@@ -394,6 +360,47 @@ namespace Lodis.Gameplay
             //Return new ability
             return _lastAbilityInUse;
         }
+
+        public bool TryBurstAbility(params object[] args)
+        {
+
+            return false;
+        }
+
+        /// <summary>
+        /// Immediately cancels and ends the current ability in use
+        /// </summary>
+        public void EndCurrentAbility()
+        {
+            _lastAbilityInUse?.EndAbility();
+        }
+
+        /// <summary>
+        /// Creates a new instance of the special deck and shuffles its abilities
+        /// </summary>
+        private void ReloadDeck()
+        {
+            _specialDeck = Instantiate(_specialDeckRef);
+            _specialDeck.InitAbilities(gameObject);
+            _specialDeck.Shuffle();
+            _specialAbilitySlots[0] = _specialDeck.PopBack();
+            _specialAbilitySlots[1] = _specialDeck.PopBack();
+        }
+
+        /// <summary>
+        /// Trys to charge the next ability and place it in the characters hand.
+        /// If there are no abilties left in the deck, it is reloaded 
+        /// </summary>
+        /// <param name="slot"></param>
+        private void UpdateHand(int slot)
+        {
+            _specialAbilitySlots[slot] = null;
+            if (_specialDeck.Count > 0)
+            {
+                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _specialAbilitySlots[slot] = _specialDeck.PopBack(), TimedActionCountType.SCALEDTIME, _specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
+            }
+        }
+
 
         /// <summary>
         /// Removes the ability from the characters hand.
