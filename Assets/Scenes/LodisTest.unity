@@ -266,7 +266,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.6
+  m_Intensity: 1.07
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -714,6 +714,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RingBarrierL
       objectReference: {fileID: 0}
+    - target: {fileID: 8744172618015234547, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
 --- !u!1 &184880001
@@ -906,6 +911,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RingBarrierR
+      objectReference: {fileID: 0}
+    - target: {fileID: 8744172618015234547, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
@@ -1226,13 +1236,13 @@ GameObject:
   - component: {fileID: 446117097}
   - component: {fileID: 446117095}
   - component: {fileID: 446117096}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: RingBarrierU
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &446117095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4976,7 +4986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1714426605
 MonoBehaviour:
   m_ObjectHideFlags: 0
