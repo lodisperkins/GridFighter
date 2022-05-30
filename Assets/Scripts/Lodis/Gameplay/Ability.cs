@@ -210,13 +210,15 @@ namespace Lodis.Gameplay
         /// <returns>Returns true if the current ability phase can be canceled</returns>
         public bool TryCancel(Ability nextAbility = null)
         {
-            if (nextAbility == this && !abilityData.CanCancelIntoSelf)
-                return false;
-            else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && abilityData.CanCancelIntoSpecial)
-                return true;
-            else if ((int)nextAbility.abilityData.AbilityType < 8 && abilityData.CanCancelIntoNormal)
-                return true;
-
+            if (nextAbility != null)
+            {
+                if (nextAbility == this && !abilityData.CanCancelIntoSelf)
+                    return false;
+                else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && abilityData.CanCancelIntoSpecial)
+                    return true;
+                else if ((int)nextAbility.abilityData.AbilityType < 8 && abilityData.CanCancelIntoNormal)
+                    return true;
+            }
             switch (CurrentAbilityPhase)
             {
                 case AbilityPhase.STARTUP:
