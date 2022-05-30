@@ -204,44 +204,39 @@ namespace Lodis.Gameplay
             return false;
         }
 
-        private bool CheckCancelIntoAbility(Ability nextAbility)
-        {
-            if (nextAbility == null) return true;
-
-            if (nextAbility == this && !abilityData.CanCancelIntoSelf)
-                return false;
-            else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && abilityData.CanCancelIntoSpecial)
-                return true;
-            else if ((int)nextAbility.abilityData.AbilityType < 8 && abilityData.CanCancelIntoNormal)
-                return true;
-
-            return false;
-        }
-
         /// <summary>
         /// Trys to cancel the ability
         /// </summary>
         /// <returns>Returns true if the current ability phase can be canceled</returns>
         public bool TryCancel(Ability nextAbility = null)
         {
+            if (nextAbility != null)
+            {
+                if (nextAbility == this && !abilityData.CanCancelIntoSelf)
+                    return false;
+                else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && abilityData.CanCancelIntoSpecial)
+                    return true;
+                else if ((int)nextAbility.abilityData.AbilityType < 8 && abilityData.CanCancelIntoNormal)
+                    return true;
+            }
             switch (CurrentAbilityPhase)
             {
                 case AbilityPhase.STARTUP:
-                    if (abilityData.canCancelStartUp && CheckCancelIntoAbility(nextAbility))
+                    if (abilityData.canCancelStartUp)
                     {
                         EndAbility();
                         return true;
                     }
                     break;
                 case AbilityPhase.ACTIVE:
-                    if (abilityData.canCancelActive && CheckCancelIntoAbility(nextAbility))
+                    if (abilityData.canCancelActive)
                     {
                         EndAbility();
                         return true;
                     }
                     break;
                 case AbilityPhase.RECOVER:
-                    if (abilityData.canCancelRecover && CheckCancelIntoAbility(nextAbility))
+                    if (abilityData.canCancelRecover)
                     {
                         EndAbility();
                         return true;
@@ -306,8 +301,6 @@ namespace Lodis.Gameplay
             _canPlayAnimation = !abilityData.playAnimationManually;
 
             _colliders = new List<HitColliderBehaviour>();
-
-            OnHit += ownerMoveset.IncreaseEnergyFromDamage;
 
             for (int i = 0; i < abilityData.ColliderInfoCount; i++)
             {

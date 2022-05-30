@@ -68,18 +68,8 @@ namespace Lodis.AI
         public bool EnableBehaviourTree;
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
-            if (EnableBehaviourTree)
-            {
-                _attackDecisions = new AttackDecisionTree();
-                _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
-                _attackDecisions.Load(name);
-                _defenseDecisions = new DefenseDecisionTree();
-                _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
-                _defenseDecisions.Load(name);
-            }
-
             Moveset = GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
@@ -92,6 +82,19 @@ namespace Lodis.AI
             else
                 _opponent = BlackBoardBehaviour.Instance.Player1;
 
+        }
+
+        private void Start()
+        {
+            if (EnableBehaviourTree)
+            {
+                _attackDecisions = new AttackDecisionTree();
+                _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
+                _attackDecisions.Load(name);
+                _defenseDecisions = new DefenseDecisionTree();
+                _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
+                _defenseDecisions.Load(name);
+            }
         }
 
         public List<HitColliderBehaviour> GetAttacksInRange()
@@ -179,7 +182,7 @@ namespace Lodis.AI
             
         }
 
-        private void OnApplicationQuit()
+        private void OnDestroy()
         {
             _attackDecisions?.Save(name);
             _defenseDecisions?.Save(name);
