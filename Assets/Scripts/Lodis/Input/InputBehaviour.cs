@@ -62,6 +62,7 @@ namespace Lodis.Input
         private CharacterDefenseBehaviour _defense;
         private MovesetBehaviour _moveset;
         private Condition _moveInputEnableCondition;
+        public static UnityAction OnApplicationQuit;
         [SerializeField]
         private bool _canMove = true;
         private Vector2 _storedMoveInput;
@@ -459,7 +460,10 @@ namespace Lodis.Input
 
             //Temp quit button for first prototype build
             if (Keyboard.current.escapeKey.isPressed)
+            {
+                OnApplicationQuit?.Invoke();
                 Application.Quit();
+            }
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
 #if UNITY_EDITOR

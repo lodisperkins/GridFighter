@@ -94,6 +94,10 @@ namespace Lodis.AI
                 _defenseDecisions = new DefenseDecisionTree();
                 _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
                 _defenseDecisions.Load(name);
+
+
+                Input.InputBehaviour.OnApplicationQuit += () => _attackDecisions?.Save(name);
+                Input.InputBehaviour.OnApplicationQuit += () => _defenseDecisions?.Save(name);
             }
         }
 
@@ -130,7 +134,6 @@ namespace Lodis.AI
                 GetAttacksInRange().Add(collider);
 
         }
-
 
         public void Update()
         {
@@ -180,12 +183,6 @@ namespace Lodis.AI
             }
 
             
-        }
-
-        private void OnDestroy()
-        {
-            _attackDecisions?.Save(name);
-            _defenseDecisions?.Save(name);
         }
     }
 }
