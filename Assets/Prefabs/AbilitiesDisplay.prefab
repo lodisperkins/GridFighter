@@ -50,9 +50,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9a3e2b03a8dba54d904bc64bd4657d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MoveSet: {fileID: 0}
-  AbilitySlot1Image: {fileID: 135320570004013533}
-  AbilitySlot2Image: {fileID: 6416842809219940614}
+  _moveSet: {fileID: 0}
+  _playerID: {fileID: 0}
+  _abilitySlot1Image: {fileID: 135320570004013533}
+  _abilitySlot2Image: {fileID: 6416842809219940614}
+  _updateAbilityColors: 1
 --- !u!1 &7641144697382121311
 GameObject:
   m_ObjectHideFlags: 0

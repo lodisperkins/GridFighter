@@ -8,9 +8,9 @@ using UnityEngine.UI;
 public class EnergyBarBehaviour : MonoBehaviour
 {
     [SerializeField]
-    private GameObject _target;
+    private IntVariable _playerID;
 
-    private MovesetBehaviour _movesetComponent;
+    private MovesetBehaviour _target;
     [SerializeField]
     private Gradient _energyGradient;
     [SerializeField]
@@ -31,17 +31,14 @@ public class EnergyBarBehaviour : MonoBehaviour
     [SerializeField]
     private float _meterTickHeight;
 
-    public MovesetBehaviour MovesetComponent { get => _movesetComponent; set => _movesetComponent = value; }
+    public MovesetBehaviour Target { get => _target; set => _target = value; }
     public FloatVariable MaxValue { get => _maxValue; }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        if (_target)
-        {
-            MovesetComponent = _target.GetComponent<MovesetBehaviour>();
-        }
+        Target = BlackBoardBehaviour.Instance.GetPlayerFromID(_playerID).GetComponent<MovesetBehaviour>();
         _rectTransform = GetComponent<RectTransform>();
         _slider = GetComponent<Slider>();
         _slider.maxValue = MaxValue.Value;
@@ -84,11 +81,11 @@ public class EnergyBarBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_movesetComponent != null)
-            _slider.value = _movesetComponent.Energy;
+        if (_target != null)
+            _slider.value = _target.Energy;
 
-        _energyTextCounter.text = ((int)_movesetComponent.Energy).ToString();
-        _fill.color = _energyGradient.Evaluate(_slider.value / _slider.maxValue);
+        _energyTextCounter.text = ((int)_target.Energy).ToString();
+        _fill.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_target.Energy];
         _energyTextCounterImage.color = _fill.color;
     }
 }

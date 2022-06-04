@@ -36,16 +36,6 @@ namespace Lodis.Gameplay
         private CharacterStateMachineBehaviour _p2StateManager;
         private Input.InputBehaviour _p1Input;
         private Input.InputBehaviour _p2Input;
-        private MovesetBehaviour _player2Moveset;
-        private MovesetBehaviour _player1Moveset;
-        [SerializeField]
-        private EnergyBarBehaviour _p1EnergyMeter;
-        [SerializeField]
-        private EnergyBarBehaviour _p2EnergyMeter;
-        [SerializeField]
-        private AbilityImageDisplayBehaviour _abilityTextP1;
-        [SerializeField]
-        private AbilityImageDisplayBehaviour _abilityTextP2;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierL;
         [SerializeField]
@@ -60,7 +50,6 @@ namespace Lodis.Gameplay
         private int _targetFrameRate;
         [SerializeField]
         private bool _invincibleBarriers;
-        private int _player1DeviceIndex;
         private GameObject _cpu1;
         [SerializeField]
         private float _timeScale = 1;
@@ -79,10 +68,11 @@ namespace Lodis.Gameplay
             //Initialize grid
             _grid.CreateGrid();
             Application.targetFrameRate = _targetFrameRate;
+
+            SpawnEntitiesByMode();
         }
 
-        // Start is called before the first frame update
-        void Start()
+        private void SpawnEntitiesByMode()
         {
             switch (_mode)
             {
@@ -124,12 +114,7 @@ namespace Lodis.Gameplay
             //Get reference to player 2 components
             _p2Movement = _cpu2.GetComponent<Movement.GridMovementBehaviour>();
             _p2StateManager = _cpu2.GetComponent<CharacterStateMachineBehaviour>();
-            _player2Moveset = _cpu2.GetComponent<MovesetBehaviour>();
 
-            //Initialize base UI stats
-            _p2EnergyMeter.MovesetComponent = _cpu2.GetComponent<MovesetBehaviour>();
-            _abilityTextP2.MoveSet = _player2Moveset;
-            _abilityTextP2.MoveSet.AddOnUpdateHandAction(_abilityTextP2.UpdateImages);
 
             //Find spawn point for dummy
             GridScripts.PanelBehaviour spawnPanel = null;
@@ -153,13 +138,6 @@ namespace Lodis.Gameplay
             //Get reference to player 2 components
             _p1Movement = _cpu1.GetComponent<Movement.GridMovementBehaviour>();
             _p1StateManager = _cpu1.GetComponent<CharacterStateMachineBehaviour>();
-            _player2Moveset = _cpu1.GetComponent<MovesetBehaviour>();
-
-            //Initialize base UI stats
-            _p1EnergyMeter.MovesetComponent = _cpu1.GetComponent<MovesetBehaviour>();
-            _abilityTextP1.MoveSet = _player1Moveset;
-
-            _abilityTextP1.MoveSet.AddOnUpdateHandAction(_abilityTextP1.UpdateImages);
             //Find spawn point for dummy
             GridScripts.PanelBehaviour spawnPanel = null;
             if (_grid.GetPanel(_dummyLHSSpawnLocation, out spawnPanel, false))
@@ -183,15 +161,9 @@ namespace Lodis.Gameplay
             _p2StateManager = _player2.GetComponent<CharacterStateMachineBehaviour>();
             _p2Input = _player2.GetComponent<Input.InputBehaviour>();
             _p2Input.enabled = false;
-            _player2Moveset = _player2.GetComponent<MovesetBehaviour>();
+            _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
 
-            //Initialize base UI stats
-            _p2EnergyMeter.MovesetComponent = _player2.GetComponent<MovesetBehaviour>();
-            _abilityTextP2.MoveSet = _player2Moveset;
-
-            _abilityTextP2.MoveSet.AddOnUpdateHandAction(_abilityTextP2.UpdateImages);
             //Move player to spawn
-            _p2Input.PlayerID = 1;
             _p2Movement.MoveToPanel(_grid.RhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
             _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
             _grid.AssignOwners(_player1.name, _player2.name);
@@ -199,20 +171,6 @@ namespace Lodis.Gameplay
 
         private void SpawnPlayer1()
         {
-            //Spawn player 1
-            //if (InputSystem.devices.Count <= 2 || (InputSystem.devices.Count == 3 && _mode == GameMode.MULTIPLAYER))
-            //{
-            //    InputDevice[] devices = { InputSystem.devices[0], InputSystem.devices[1] };
-            //    _inputManager.JoinPlayer(0, 0, "Player", devices);
-            //    _player1DeviceIndex = 1;
-            //}
-            //else if (InputSystem.devices.Count > 2)
-            //{ 
-            //    _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[2]);
-            //    _player1DeviceIndex = 2;
-            //}
-
-
             _inputManager.JoinPlayer(0, 0, "Player");
 
             _player1 = PlayerInput.GetPlayerByIndex(0);
@@ -224,16 +182,8 @@ namespace Lodis.Gameplay
             _p1StateManager = _player1.GetComponent<CharacterStateMachineBehaviour>();
             _p1Input = _player1.GetComponent<Input.InputBehaviour>();
             _p1Input.enabled = false;
-            _player1Moveset = _player1.GetComponent<MovesetBehaviour>();
+            _p1Input.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
             BlackBoardBehaviour.Instance.Player1 = _player1.gameObject;
-            //Assign ID 
-            _p1Input.PlayerID = 0;
-
-            //Initialize base UI stats
-            _p1EnergyMeter.MovesetComponent = _player1.GetComponent<MovesetBehaviour>();
-            _abilityTextP1.MoveSet = _player1Moveset;
-
-            _abilityTextP1.MoveSet.AddOnUpdateHandAction(_abilityTextP1.UpdateImages);
             //Move player to spawn
             _p1Movement.MoveToPanel(_grid.LhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Lodis.Utility;
 using UnityEngine.SceneManagement;
 using UnityEditor;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.Input
 {
@@ -78,7 +79,8 @@ namespace Lodis.Input
         private float _attackDirectionBufferClearTime;
         private float _timeOfLastDirectionInput;
         private PlayerControls _playerControls;
-        private int _playerID;
+        [SerializeField]
+        private IntVariable _playerID;
         private Condition _inputEnableCondition = null;
         [SerializeField]
         private bool _inputDisabled;
@@ -107,7 +109,7 @@ namespace Lodis.Input
         /// <summary>
         /// The ID number of the player using this component
         /// </summary>
-        public int PlayerID
+        public IntVariable PlayerID
         {
             get
             {

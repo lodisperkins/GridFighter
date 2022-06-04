@@ -409,6 +409,7 @@ namespace Lodis.Gameplay
             _specialDeck.Shuffle();
             _specialAbilitySlots[0] = _specialDeck.PopBack();
             _specialAbilitySlots[1] = _specialDeck.PopBack();
+            OnUpdateHand?.Invoke();
         }
 
         /// <summary>
@@ -421,8 +422,9 @@ namespace Lodis.Gameplay
             _specialAbilitySlots[slot] = null;
             if (_specialDeck.Count > 0)
             {
-                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { _specialAbilitySlots[slot] = _specialDeck.PopBack(); OnUpdateHand?.Invoke(); }, TimedActionCountType.SCALEDTIME, _specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
+                _specialAbilitySlots[slot] = _specialDeck.PopBack();
             }
+            OnUpdateHand?.Invoke();
         }
 
 
@@ -509,7 +511,7 @@ namespace Lodis.Gameplay
             bool timerActive = (_rechargeAction?.GetEnabled()).GetValueOrDefault();
 
             if (!timerActive && EnergyChargeEnabled)
-                _rechargeAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _energy += _energyRechargeValue.Value, TimedActionCountType.SCALEDTIME, _energyRechargeRate.Value);
+                _rechargeAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => Energy += _energyRechargeValue.Value, TimedActionCountType.SCALEDTIME, _energyRechargeRate.Value);
 
             //Reload the deck if there are no cards in the hands or the deck
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading)

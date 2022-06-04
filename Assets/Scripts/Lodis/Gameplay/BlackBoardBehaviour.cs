@@ -7,12 +7,15 @@ namespace Lodis.Gameplay
 
     public class BlackBoardBehaviour : MonoBehaviour
     {
+        public List<Color> AbilityCostColors;
         public GridScripts.GridBehaviour Grid { get; private set; }
         public string Player1State = null;
         public string Player2State = null;
         public FloatVariable MaxKnockBackHealth;
         public GameObject Player1;
         public GameObject Player2;
+        public IntVariable Player1ID;
+        public IntVariable Player2ID;
         private List<GameObject> _entitiesInGame = new List<GameObject>();
         private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
         private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();
@@ -80,12 +83,26 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="id">The player's ID</param>
         /// <returns></returns>
-        public string GetPlayerStateFromID(int id)
+        public string GetPlayerStateFromID(IntVariable id)
         {
-            if (id == 0)
+            if (id.Value == 1)
                 return Player1State;
-            else if(id == 1)
+            else if(id.Value == 2)
                 return Player2State;
+
+            return null;
+        }
+        /// <summary>
+        /// Gets the state of the player that matches the ID
+        /// </summary>
+        /// <param name="id">The player's ID</param>
+        /// <returns></returns>
+        public GameObject GetPlayerFromID(IntVariable id)
+        {
+            if (id.Value == 1)
+                return Player1;
+            else if(id.Value == 2)
+                return Player2;
 
             return null;
         }
@@ -117,9 +134,9 @@ namespace Lodis.Gameplay
         /// </summary>
         public GameObject GetOpponentForPlayer(GameObject player)
         {
-            int id = player.GetComponent<Input.InputBehaviour>().PlayerID;
+            IntVariable id = player.GetComponent<Input.InputBehaviour>().PlayerID;
 
-            if (id == 1)
+            if (id.Value == 1)
                 return Player2;
 
             return Player1;

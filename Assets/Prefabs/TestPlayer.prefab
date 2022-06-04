@@ -1437,6 +1437,16 @@ PrefabInstance:
       propertyPath: MoveSet
       value: 
       objectReference: {fileID: -2626200582311294016}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _moveSet
+      value: 
+      objectReference: {fileID: -2626200582311294016}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _playerID
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 7641144697237450340, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_Name
@@ -1560,7 +1570,7 @@ PrefabInstance:
     - target: {fileID: 7641144697382121308, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 21
+      value: -21
       objectReference: {fileID: 0}
     - target: {fileID: 7641144697382121308, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
@@ -1580,7 +1590,7 @@ PrefabInstance:
     - target: {fileID: 7641144697459592408, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -21
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 7641144697459592408, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
