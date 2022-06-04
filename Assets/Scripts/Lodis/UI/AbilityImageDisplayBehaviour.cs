@@ -21,6 +21,8 @@ namespace Lodis
         private float _ability2Cost;
         [SerializeField]
         private bool _updateAbilityColors;
+        [SerializeField]
+        private bool _displayNext;
 
         private void Start()
         {
@@ -36,8 +38,16 @@ namespace Lodis
             if (!_moveSet || _moveSet.SpecialAbilitySlots.Length <= 0)
                 return;
 
-            Ability ability1 = _moveSet.GetAbilityInCurrentSlot(0);
-            Ability ability2 = _moveSet.GetAbilityInCurrentSlot(1);
+            Ability ability1 = null;
+            Ability ability2 = null;
+
+            if (!_displayNext)
+            {
+                ability1 = _moveSet.GetAbilityInCurrentSlot(0);
+                ability2 = _moveSet.GetAbilityInCurrentSlot(1);
+            }
+            else
+                ability1 = _moveSet.NextAbilitySlot;
 
 
             if (ability1 != null)

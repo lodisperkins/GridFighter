@@ -42,6 +42,9 @@ namespace Lodis.Gameplay
         [Tooltip("The slots that store the two loaded abilities from the special deck")]
         [SerializeField]
         private Ability[] _specialAbilitySlots = new Ability[2];
+        [Tooltip("The slots that store the next two abilities that will be loaded from the special deck")]
+        [SerializeField]
+        private Ability _nextAbilitySlot;
         [SerializeField]
         private Ability _lastAbilityInUse;
         [SerializeField]
@@ -97,6 +100,47 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// True if there is some ability that is currently active.
+        /// </summary>
+        public bool AbilityInUse
+        {
+            get
+            {
+                if (_lastAbilityInUse != null)
+                    return _abilityInUse = _lastAbilityInUse.InUse;
+
+                return _abilityInUse = false;
+            }
+        }
+
+        public Ability LastAbilityInUse { get => _lastAbilityInUse; }
+        public UnityAction OnUseAbility { get => _onUseAbility; set => _onUseAbility = value; }
+        public Ability[] SpecialAbilitySlots { get => _specialAbilitySlots; }
+        public bool EnergyChargeEnabled 
+        { 
+            get => _energyChargeEnabled;
+            set
+            {
+                _energyChargeEnabled = value;
+
+                if (!_energyChargeEnabled)
+                    RoutineBehaviour.Instance.StopTimedAction(_rechargeAction);
+            }
+        }
+
+        public float Energy
+        { 
+            get => _energy;
+            private set 
+            {
+                _energy = value;
+                _energy = Mathf.Clamp(_energy, 0, _maxEnergyRef.Value);
+            }
+        }
+
+        public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
+
         private void Awake()
         {
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
@@ -109,6 +153,7 @@ namespace Lodis.Gameplay
             _normalDeck = Instantiate(_normalDeckRef);
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_EnergyBurst_Data"));
             _specialDeck = Instantiate(_specialDeckRef);
+            _normalDeck.InitAbilities(gameObject);
             InitializeDecks();
             _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject).GetComponent<MovesetBehaviour>();
         }
@@ -118,11 +163,11 @@ namespace Lodis.Gameplay
         /// </summary>
         private void InitializeDecks()
         {
-            _normalDeck.InitAbilities(gameObject);
             _specialDeck.InitAbilities(gameObject);
             _specialDeck.Shuffle();
             _specialAbilitySlots[0] = _specialDeck.PopBack();
             _specialAbilitySlots[1] = _specialDeck.PopBack();
+            NextAbilitySlot = _specialDeck.PopBack();
             OnUpdateHand?.Invoke();
         }
 
@@ -187,44 +232,6 @@ namespace Lodis.Gameplay
             return _specialAbilitySlots[index];
         }
 
-        /// <summary>
-        /// True if there is some ability that is currently active.
-        /// </summary>
-        public bool AbilityInUse
-        {
-            get
-            {
-                if (_lastAbilityInUse != null)
-                    return _abilityInUse = _lastAbilityInUse.InUse;
-
-                return _abilityInUse = false;
-            }
-        }
-
-        public Ability LastAbilityInUse { get => _lastAbilityInUse; }
-        public UnityAction OnUseAbility { get => _onUseAbility; set => _onUseAbility = value; }
-        public Ability[] SpecialAbilitySlots { get => _specialAbilitySlots; }
-        public bool EnergyChargeEnabled 
-        { 
-            get => _energyChargeEnabled;
-            set
-            {
-                _energyChargeEnabled = value;
-
-                if (!_energyChargeEnabled)
-                    RoutineBehaviour.Instance.StopTimedAction(_rechargeAction);
-            }
-        }
-
-        public float Energy
-        { 
-            get => _energy;
-            private set 
-            {
-                _energy = value;
-                _energy = Mathf.Clamp(_energy, 0, _maxEnergyRef.Value);
-            }
-        }
 
         public void AddOnUpdateHandAction(UnityAction action)
         {
@@ -400,19 +407,6 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Creates a new instance of the special deck and shuffles its abilities
-        /// </summary>
-        private void ReloadDeck()
-        {
-            _specialDeck = Instantiate(_specialDeckRef);
-            _specialDeck.InitAbilities(gameObject);
-            _specialDeck.Shuffle();
-            _specialAbilitySlots[0] = _specialDeck.PopBack();
-            _specialAbilitySlots[1] = _specialDeck.PopBack();
-            OnUpdateHand?.Invoke();
-        }
-
-        /// <summary>
         /// Trys to charge the next ability and place it in the characters hand.
         /// If there are no abilties left in the deck, it is reloaded 
         /// </summary>
@@ -422,7 +416,8 @@ namespace Lodis.Gameplay
             _specialAbilitySlots[slot] = null;
             if (_specialDeck.Count > 0)
             {
-                _specialAbilitySlots[slot] = _specialDeck.PopBack();
+                _specialAbilitySlots[slot] = NextAbilitySlot;
+                NextAbilitySlot = _specialDeck.PopBack();
             }
             OnUpdateHand?.Invoke();
         }
@@ -517,7 +512,7 @@ namespace Lodis.Gameplay
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading)
             {
                 _deckReloading = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { ReloadDeck(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
+                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { InitializeDecks(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
             }
 
 
