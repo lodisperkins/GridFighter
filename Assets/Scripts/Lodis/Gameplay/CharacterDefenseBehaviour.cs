@@ -98,7 +98,7 @@ namespace Lodis.Gameplay
             _knockBack.AddOnTakeDamageAction(StopShield);
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
-            _shieldCollider.OnHit += args => { if (IsParrying) ActivateInvinciblity(args); };
+            _shieldCollider.OnHit += args => { if (IsParrying) ActivateParryInvinciblity(args); };
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace Lodis.Gameplay
         /// Makes the character invincible after a collision occurs
         /// </summary>
         /// <param name="args">The collision arguments</param>
-        private void ActivateInvinciblity(params object[] args)
+        private void ActivateParryInvinciblity(params object[] args)
         {
             GameObject other = (GameObject)args[0];
             //Get collider and rigidbody to check the owner and add the force
@@ -238,7 +238,6 @@ namespace Lodis.Gameplay
             _isParrying = false;
             _isShielding = false;
             _canParry = true;
-
             //Make the character invincible for a short amount of time if they're on the ground
             _knockBack.SetInvincibilityByTimer(_parryInvincibilityLength);
         }
@@ -347,20 +346,6 @@ namespace Lodis.Gameplay
             _knockBack.TryStartLandingLag();
             //Debug.Log("Collided with " + other.name);
 
-        }
-
-        private void Update()
-        {
-            if (_isShielding && !_isParrying)
-            {
-                _moveset.EnergyChargeEnabled = false;
-                _moveset.Energy -= _shieldDrainValue.Value * Time.deltaTime;
-
-                if (_moveset.Energy <= 0)
-                    DeactivateShield();
-            }
-            else
-                _moveset.EnergyChargeEnabled = true;
         }
     }
 }

@@ -3,6 +3,7 @@ using Lodis.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -205,7 +206,7 @@ namespace Lodis.Gameplay
         public float Energy
         { 
             get => _energy;
-            set 
+            private set 
             {
                 _energy = value;
                 _energy = Mathf.Clamp(_energy, 0, _maxEnergyRef.Value);
@@ -261,6 +262,8 @@ namespace Lodis.Gameplay
             if (currentAbility == null)
                 return null;
 
+            currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
+
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
 
@@ -295,6 +298,8 @@ namespace Lodis.Gameplay
 
             //Find the ability in the deck abd use it
             Ability currentAbility = _normalDeck.GetAbilityByName(abilityName);
+            currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
+
 
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
@@ -348,6 +353,7 @@ namespace Lodis.Gameplay
             if (currentAbility.currentActivationAmount == 0)
                 _energy -= currentAbility.abilityData.EnergyCost;
 
+            currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
 
@@ -432,7 +438,7 @@ namespace Lodis.Gameplay
             }
         }
 
-        public bool UseEnergyForAction(UnityAction action, float actionCost)
+        public bool TryUseEnergyForAction(UnityAction action, float actionCost)
         {
             if (Energy < actionCost) return false;
 
