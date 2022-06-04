@@ -309,7 +309,7 @@ namespace Lodis.Input
 
         private void UseDefensiveAction()
         {
-            _defense.ActivateParry();
+            _defense.BeginParry();
             DisableMovementBasedOnCondition(args => !_defense.IsParrying);
         }
 

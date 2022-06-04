@@ -244,7 +244,7 @@ namespace Lodis.Gameplay
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
 
-            OnHit?.Invoke(other.gameObject, otherCollider);
+            OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
@@ -321,7 +321,7 @@ namespace Lodis.Gameplay
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
 
-            OnHit?.Invoke(other.gameObject, otherCollider);
+            OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
@@ -400,7 +400,7 @@ namespace Lodis.Gameplay
             if (damageScript != null)
                 damageScript.TakeDamage(ColliderInfo, Owner);
 
-            OnHit?.Invoke(other.gameObject, otherCollider);
+            OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);

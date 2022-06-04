@@ -7,19 +7,17 @@ namespace Lodis.Gameplay
     
     /// <summary>
     /// Event used when collisions occur. 
-    /// Arg[0] = The game object collided with.
-    /// Arg[1] = The collision data. Is a collider type when on trigger enter/stay is called,
-    /// and is a collision type when on collision enter is called
+    /// arg[0] = The game object collided with.
+    /// arg[1] = The collision script for the object that was collided with
+    /// arg[2] = The collider object that was collided with. Is type Collider if trigger and type Collision if not.
+    /// arg[3] = The collider behaviour of the object that raised this event. 
+    /// arg[4] = The health script of the object that was collided with.
     /// </summary>
     /// <param name="args"></param>
     public delegate void CollisionEvent(params object[] args);
     public class ColliderBehaviour : MonoBehaviour
     {
         protected Dictionary<GameObject, int> Collisions;
-        /// <summary>
-        /// Collision event called when this collider hits another. 
-        /// First argument is game object it collided with.
-        /// </summary>
         public CollisionEvent OnHit;
         [SerializeField]
         private GridGame.Event _onHitObject;

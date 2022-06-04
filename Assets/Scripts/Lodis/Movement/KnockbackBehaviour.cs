@@ -810,7 +810,7 @@ namespace Lodis.Movement
 
             if (GUILayout.Button("Test Attack"))
             {
-                _owner.TakeDamage(name, _damage, _baseKnockBack, _hitAngle, DamageType.KNOCKBACK, _hitStun);
+                _owner.TakeDamage("test button", _damage, _baseKnockBack, _hitAngle, DamageType.KNOCKBACK, _hitStun);
             }
         }
     }

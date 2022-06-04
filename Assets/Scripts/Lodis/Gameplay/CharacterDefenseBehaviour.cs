@@ -4,6 +4,7 @@ using UnityEngine;
 using Lodis.Utility;
 using Lodis.Movement;
 using Lodis.GridScripts;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.Gameplay
 {
@@ -16,6 +17,7 @@ namespace Lodis.Gameplay
     {
         private Movement.KnockbackBehaviour _knockBack;
         private Movement.GridMovementBehaviour _movement;
+        private MovesetBehaviour _moveset;
         private HealthBehaviour _health;
         [Tooltip("How long the object will be parrying for.")]
         [SerializeField]
@@ -40,6 +42,9 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds is the object braced for it's fall.")]
         [SerializeField]
         private float _braceActiveTime;
+        [Tooltip("How fast will the shield drain energy when activated.")]
+        [SerializeField]
+        private FloatVariable _shieldDrainValue;
         [SerializeField]
         private bool _canBrace;
         [SerializeField]
@@ -88,6 +93,7 @@ namespace Lodis.Gameplay
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _health = GetComponent<HealthBehaviour>();
+            _moveset = GetComponent<MovesetBehaviour>();
 
             _knockBack.AddOnTakeDamageAction(StopShield);
             _knockBack.AddOnKnockBackAction(EnableBrace);
@@ -99,7 +105,7 @@ namespace Lodis.Gameplay
         /// Enables the parry collider and freezes character actions
         /// </summary>
         /// <returns></returns>
-        private void ActivateGroundParry()
+        private void ActivateParry()
         {
             _shieldCollider.tag = "Reflector";
             if (_knockBack.InHitStun)
@@ -112,10 +118,10 @@ namespace Lodis.Gameplay
             _movement.DisableMovement(condition => !_shieldCollider.gameObject.activeSelf && _isShielding == false, true, true);
             _canParry = false;
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateGroundParry(), TimedActionCountType.SCALEDTIME, _parryLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateParry(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
 
-        private void DeactivateGroundParry()
+        private void DeactivateParry()
         {
             _shieldCollider.tag = "Untagged";
             _isParrying = false;
@@ -141,15 +147,9 @@ namespace Lodis.Gameplay
         /// Starts a parry cororoutine. The effects of the parry changes
         /// based on whether or not the character is in hit stun.
         /// </summary>
-        public void ActivateParry()
+        public void BeginParry()
         {
-            _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EnableParryByType(), TimedActionCountType.SCALEDTIME, _parryStartUpTime);
-        }
-
-        private void EnableParryByType()
-        {
-            if (_canParry && _knockBack.CheckIfIdle())
-                ActivateGroundParry();
+            _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { if (_canParry && _knockBack.CheckIfIdle()) ActivateParry(); }, TimedActionCountType.SCALEDTIME, _parryStartUpTime);
         }
 
         /// <summary>
@@ -159,7 +159,7 @@ namespace Lodis.Gameplay
         public void StopShield()
         {
             if (_knockBack.CheckIfIdle())
-                DeactivateGroundParry();
+                DeactivateParry();
 
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
             RoutineBehaviour.Instance.StopTimedAction(_shieldTimer);
@@ -292,7 +292,7 @@ namespace Lodis.Gameplay
 
             RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-            DeactivateGroundParry();
+            DeactivateParry();
 
             onFallBroken?.Invoke(true);
             _knockBack.TryStartLandingLag();
@@ -341,12 +341,26 @@ namespace Lodis.Gameplay
 
             RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-            DeactivateGroundParry();
+            DeactivateParry();
 
             onFallBroken?.Invoke(true);
             _knockBack.TryStartLandingLag();
             //Debug.Log("Collided with " + other.name);
 
+        }
+
+        private void Update()
+        {
+            if (_isShielding && !_isParrying)
+            {
+                _moveset.EnergyChargeEnabled = false;
+                _moveset.Energy -= _shieldDrainValue.Value * Time.deltaTime;
+
+                if (_moveset.Energy <= 0)
+                    DeactivateShield();
+            }
+            else
+                _moveset.EnergyChargeEnabled = true;
         }
     }
 }

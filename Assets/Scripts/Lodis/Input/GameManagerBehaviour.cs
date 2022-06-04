@@ -39,9 +39,9 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _player2Moveset;
         private MovesetBehaviour _player1Moveset;
         [SerializeField]
-        private HealthBarBehaviour _p1HealthBar;
+        private EnergyBarBehaviour _p1EnergyMeter;
         [SerializeField]
-        private HealthBarBehaviour _p2HealthBar;
+        private EnergyBarBehaviour _p2EnergyMeter;
         [SerializeField]
         private AbilityDebugTextBehaviour _abilityTextP1;
         [SerializeField]
@@ -127,8 +127,7 @@ namespace Lodis.Gameplay
             _player2Moveset = _cpu2.GetComponent<MovesetBehaviour>();
 
             //Initialize base UI stats
-            _p2HealthBar.HealthComponent = _cpu2.GetComponent<Movement.KnockbackBehaviour>();
-            _p2HealthBar.MaxValue = 200;
+            _p2EnergyMeter.MovesetComponent = _cpu2.GetComponent<MovesetBehaviour>();
             _abilityTextP2.MoveSet = _player2Moveset;
 
             //Find spawn point for dummy
@@ -156,8 +155,7 @@ namespace Lodis.Gameplay
             _player2Moveset = _cpu1.GetComponent<MovesetBehaviour>();
 
             //Initialize base UI stats
-            _p1HealthBar.HealthComponent = _cpu1.GetComponent<Movement.KnockbackBehaviour>();
-            _p1HealthBar.MaxValue = 200;
+            _p1EnergyMeter.MovesetComponent = _cpu1.GetComponent<MovesetBehaviour>();
             _abilityTextP1.MoveSet = _player1Moveset;
 
             //Find spawn point for dummy
@@ -186,8 +184,7 @@ namespace Lodis.Gameplay
             _player2Moveset = _player2.GetComponent<MovesetBehaviour>();
 
             //Initialize base UI stats
-            _p2HealthBar.HealthComponent = _player2.GetComponent<Movement.KnockbackBehaviour>();
-            _p2HealthBar.MaxValue = 200;
+            _p2EnergyMeter.MovesetComponent = _player2.GetComponent<MovesetBehaviour>();
             _abilityTextP2.MoveSet = _player2Moveset;
 
             //Move player to spawn
@@ -230,8 +227,7 @@ namespace Lodis.Gameplay
             _p1Input.PlayerID = 0;
 
             //Initialize base UI stats
-            _p1HealthBar.HealthComponent = _player1.GetComponent<Movement.KnockbackBehaviour>();
-            _p1HealthBar.MaxValue = 200;
+            _p1EnergyMeter.MovesetComponent = _player1.GetComponent<MovesetBehaviour>();
             _abilityTextP1.MoveSet = _player1Moveset;
 
             //Move player to spawn

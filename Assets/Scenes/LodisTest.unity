@@ -322,13 +322,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7490829}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0.42261827, y: 0, z: 0, w: 0.9063079}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+  m_LocalEulerAnglesHint: {x: 50.000004, y: 0, z: 0}
 --- !u!1 &21762016
 GameObject:
   m_ObjectHideFlags: 0
@@ -714,6 +714,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RingBarrierL
       objectReference: {fileID: 0}
+    - target: {fileID: 8744172618015234547, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
 --- !u!1 &184880001
@@ -916,6 +921,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RingBarrierR
+      objectReference: {fileID: 0}
+    - target: {fileID: 8744172618015234547, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
@@ -3747,9 +3757,9 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 1
-  _p1HealthBar: {fileID: 1952347182}
-  _p2HealthBar: {fileID: 1465255078}
+  _mode: 2
+  _p1EnergyMeter: {fileID: 1952347182}
+  _p2EnergyMeter: {fileID: 1465255078}
   _abilityTextP1: {fileID: 1044900160}
   _abilityTextP2: {fileID: 881170262}
   _ringBarrierL: {fileID: 1478321312}
@@ -4201,14 +4211,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1465255076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f45d12dc34239e42b71841c0f09b5e9, type: 3}
+  m_Script: {fileID: 11500000, guid: 78f29200986e0c1469c16f2103b1764b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
-  _healthGradient:
+  _energyGradient:
     serializedVersion: 2
-    key0: {r: 0, g: 0.9433962, b: 0.2455356, a: 1}
-    key1: {r: 0.9716981, g: 0, b: 0, a: 1}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -4236,6 +4246,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _fill: {fileID: 1609223290}
   _slider: {fileID: 1465255079}
+  _maxValue: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
 --- !u!114 &1465255079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4970,7 +4981,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1714426605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5957,14 +5968,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1952347180}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f45d12dc34239e42b71841c0f09b5e9, type: 3}
+  m_Script: {fileID: 11500000, guid: 78f29200986e0c1469c16f2103b1764b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
-  _healthGradient:
+  _energyGradient:
     serializedVersion: 2
-    key0: {r: 0, g: 1, b: 0.1881628, a: 1}
-    key1: {r: 0.9528302, g: 0.0764062, b: 0.0764062, a: 1}
+    key0: {r: 0, g: 0.94952226, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
     key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
@@ -5992,6 +6003,7 @@ MonoBehaviour:
     m_NumAlphaKeys: 2
   _fill: {fileID: 1725479051}
   _slider: {fileID: 1952347183}
+  _maxValue: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
 --- !u!114 &1952347183
 MonoBehaviour:
   m_ObjectHideFlags: 0

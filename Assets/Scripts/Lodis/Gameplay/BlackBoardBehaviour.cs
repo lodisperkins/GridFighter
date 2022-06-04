@@ -111,6 +111,19 @@ namespace Lodis.Gameplay
         {
             _entitiesInGame.Add(entity);
         }
+
+        /// <summary>
+        /// Gets the opponent of the given player.
+        /// </summary>
+        public GameObject GetOpponentForPlayer(GameObject player)
+        {
+            int id = player.GetComponent<Input.InputBehaviour>().PlayerID;
+
+            if (id == 1)
+                return Player2;
+
+            return Player1;
+        }
     }
 }
 

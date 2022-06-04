@@ -19,15 +19,18 @@ MonoBehaviour:
   startUpTime: 0.2
   chargeTime: 1
   maxActivationAmount: 1
+  EnergyCost: 1
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
   cancelOnHit: 0
+  cancelOnFlinch: 0
   cancelOnKnockback: 1
-  IgnoreColliders: 0
-  ColliderPriority: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 8412238000456877338, guid: ad66597b9b3774445a25644aaaaf61d7,
@@ -38,18 +41,21 @@ MonoBehaviour:
     TimeActive: 0
     DestroyOnHit: 0
     IsMultiHit: 0
-    IgnoreColliders: 0
-    LayersToIgnore: []
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
     HitFrames: 0
     Damage: 2
     BaseKnockBack: 1
     KnockBackScale: 0
     HitAngle: 0.5
-    AdjustAngleBasedOnCollision: 1
+    AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
     CanSpike: 0
     HitStunTime: 0.1
     Priority: 3
+    OwnerAlignement: 0
+    AbilityType: 0
   _customStats:
   - name: XOffset
     value: 1

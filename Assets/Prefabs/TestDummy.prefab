@@ -338,6 +338,13 @@ MonoBehaviour:
   _projectileSpawnPoint: {fileID: 1321618602}
   _meleeHitBoxSpawnPoint: {fileID: 3772444779943771542}
   _deckReloadTime: 6
+  _energy: 0
+  _maxEnergyRef: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
+  _energyRechargeValue: {fileID: 11400000, guid: 490d301c94c4e8a4ca55468f4f2ab3ed,
+    type: 2}
+  _energyRechargeRate: {fileID: 11400000, guid: bcb306df5e8c18f499e8892c8bc5a618,
+    type: 2}
+  _energyChargeEnabled: 1
 --- !u!114 &5515637805126966881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -358,6 +365,7 @@ MonoBehaviour:
   _groundParryRestTime: 0.3
   _parryStartUpTime: 0.05
   _braceActiveTime: 0.1
+  _shieldDrainValue: {fileID: 0}
   _canBrace: 0
   _isBraced: 0
   _braceCooldownTime: 1
