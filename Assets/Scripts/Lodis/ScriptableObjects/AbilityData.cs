@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UI;
 
 namespace Lodis.ScriptableObjects
 {
@@ -73,6 +74,8 @@ namespace Lodis.ScriptableObjects
         public bool playAnimationManually = false;
         [Tooltip("The prefab that holds the visual this ability will be using.")]
         public GameObject visualPrefab;
+        [Tooltip("The icon thatv will display when this ability is on screen")]
+        public Sprite DisplayIcon;
         [Tooltip("Information for all colliders this ability will use")]
         [SerializeField]
         protected HitColliderInfo[] ColliderData;

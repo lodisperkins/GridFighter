@@ -43,9 +43,9 @@ namespace Lodis.Gameplay
         [SerializeField]
         private EnergyBarBehaviour _p2EnergyMeter;
         [SerializeField]
-        private AbilityDebugTextBehaviour _abilityTextP1;
+        private AbilityImageDisplayBehaviour _abilityTextP1;
         [SerializeField]
-        private AbilityDebugTextBehaviour _abilityTextP2;
+        private AbilityImageDisplayBehaviour _abilityTextP2;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierL;
         [SerializeField]
@@ -129,6 +129,7 @@ namespace Lodis.Gameplay
             //Initialize base UI stats
             _p2EnergyMeter.MovesetComponent = _cpu2.GetComponent<MovesetBehaviour>();
             _abilityTextP2.MoveSet = _player2Moveset;
+            _abilityTextP2.MoveSet.AddOnUpdateHandAction(_abilityTextP2.UpdateImages);
 
             //Find spawn point for dummy
             GridScripts.PanelBehaviour spawnPanel = null;
@@ -158,6 +159,7 @@ namespace Lodis.Gameplay
             _p1EnergyMeter.MovesetComponent = _cpu1.GetComponent<MovesetBehaviour>();
             _abilityTextP1.MoveSet = _player1Moveset;
 
+            _abilityTextP1.MoveSet.AddOnUpdateHandAction(_abilityTextP1.UpdateImages);
             //Find spawn point for dummy
             GridScripts.PanelBehaviour spawnPanel = null;
             if (_grid.GetPanel(_dummyLHSSpawnLocation, out spawnPanel, false))
@@ -187,6 +189,7 @@ namespace Lodis.Gameplay
             _p2EnergyMeter.MovesetComponent = _player2.GetComponent<MovesetBehaviour>();
             _abilityTextP2.MoveSet = _player2Moveset;
 
+            _abilityTextP2.MoveSet.AddOnUpdateHandAction(_abilityTextP2.UpdateImages);
             //Move player to spawn
             _p2Input.PlayerID = 1;
             _p2Movement.MoveToPanel(_grid.RhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
@@ -230,6 +233,7 @@ namespace Lodis.Gameplay
             _p1EnergyMeter.MovesetComponent = _player1.GetComponent<MovesetBehaviour>();
             _abilityTextP1.MoveSet = _player1Moveset;
 
+            _abilityTextP1.MoveSet.AddOnUpdateHandAction(_abilityTextP1.UpdateImages);
             //Move player to spawn
             _p1Movement.MoveToPanel(_grid.LhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;

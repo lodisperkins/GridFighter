@@ -48,3 +48,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BattleHUD
+    uniqueID: 1489586247
+    locked: 0

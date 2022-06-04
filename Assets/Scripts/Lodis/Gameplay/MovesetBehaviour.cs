@@ -72,6 +72,7 @@ namespace Lodis.Gameplay
         [Tooltip("If true the character can charge energy passively")]
         [SerializeField]
         private bool _energyChargeEnabled = true;
+        private UnityAction OnUpdateHand;
 
         private CharacterStateMachineBehaviour _stateMachineScript;
         private bool _deckReloading;
@@ -122,6 +123,7 @@ namespace Lodis.Gameplay
             _specialDeck.Shuffle();
             _specialAbilitySlots[0] = _specialDeck.PopBack();
             _specialAbilitySlots[1] = _specialDeck.PopBack();
+            OnUpdateHand?.Invoke();
         }
 
         /// <summary>
@@ -175,6 +177,17 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Gets the special ability at the given index in the active ability slots.
+        /// </summary>
+        public Ability GetAbilityInCurrentSlot(int index)
+        {
+            if (index < 0 || index >= _specialAbilitySlots.Length)
+                return null;
+
+            return _specialAbilitySlots[index];
+        }
+
+        /// <summary>
         /// True if there is some ability that is currently active.
         /// </summary>
         public bool AbilityInUse
@@ -211,6 +224,11 @@ namespace Lodis.Gameplay
                 _energy = value;
                 _energy = Mathf.Clamp(_energy, 0, _maxEnergyRef.Value);
             }
+        }
+
+        public void AddOnUpdateHandAction(UnityAction action)
+        {
+            OnUpdateHand += action;
         }
 
         /// <summary>
@@ -403,7 +421,7 @@ namespace Lodis.Gameplay
             _specialAbilitySlots[slot] = null;
             if (_specialDeck.Count > 0)
             {
-                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => _specialAbilitySlots[slot] = _specialDeck.PopBack(), TimedActionCountType.SCALEDTIME, _specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
+                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { _specialAbilitySlots[slot] = _specialDeck.PopBack(); OnUpdateHand?.Invoke(); }, TimedActionCountType.SCALEDTIME, _specialDeck[_specialDeck.Count - 1].abilityData.chargeTime);
             }
         }
 
