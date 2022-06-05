@@ -155,7 +155,7 @@ MonoBehaviour:
   _health: 100
   _startingHealth: -1
   _maxHealth: {fileID: 11400000, guid: 83e5ea0a3fbbb4940bd7e83fa9ac4062, type: 2}
-  _destroyOnDeath: 1
+  _destroyOnDeath: 0
   _isAlive: 1
   _isInvincible: 0
   _stunned: 0

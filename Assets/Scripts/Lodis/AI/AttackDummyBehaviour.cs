@@ -7,10 +7,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using BBUnity;
 using Lodis.GridScripts;
+using Lodis.Input;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.AI
 {
-    public class AttackDummyBehaviour : MonoBehaviour
+    public class AttackDummyBehaviour : MonoBehaviour, IControllable
     {
         private Gameplay.MovesetBehaviour _moveset;
         [Tooltip("Pick the attack this test dummy should perform")]
@@ -51,6 +53,9 @@ namespace Lodis.AI
         [SerializeField]
         private float _timeNeededToBurst;
         private GridPhysicsBehaviour _gridPhysics;
+        private IntVariable _playerID;
+
+
         public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -61,6 +66,7 @@ namespace Lodis.AI
         public BehaviorExecutor Executor { get => _executor; }
         public DefenseDecisionTree DefenseDecisions { get => _defenseDecisions; }
         public float TimeNeededToBurst { get => _timeNeededToBurst; }
+        public IntVariable PlayerID { get => _playerID; set => _playerID = value; }
 
         public DefenseNode LastDefenseDecision;
 
@@ -76,16 +82,12 @@ namespace Lodis.AI
             _executor = GetComponent<BehaviorExecutor>();
             _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
             _gridPhysics = GetComponent<GridPhysicsBehaviour>();
-
-            if (GetComponent<GridMovementBehaviour>().Alignment == GridAlignment.LEFT)
-                _opponent = BlackBoardBehaviour.Instance.Player2;
-            else
-                _opponent = BlackBoardBehaviour.Instance.Player1;
-
         }
 
         private void Start()
         {
+            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
+
             if (EnableBehaviourTree)
             {
                 _attackDecisions = new AttackDecisionTree();
@@ -95,10 +97,19 @@ namespace Lodis.AI
                 _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
                 _defenseDecisions.Load(name);
 
+                if (Application.isEditor) return;
 
                 Input.InputBehaviour.OnApplicationQuit += () => _attackDecisions?.Save(name);
                 Input.InputBehaviour.OnApplicationQuit += () => _defenseDecisions?.Save(name);
             }
+        }
+
+        private void OnDestroy()
+        {
+            if (!Application.isEditor) return;
+
+            _attackDecisions?.Save(name);
+            _defenseDecisions?.Save(name);
         }
 
         public List<HitColliderBehaviour> GetAttacksInRange()

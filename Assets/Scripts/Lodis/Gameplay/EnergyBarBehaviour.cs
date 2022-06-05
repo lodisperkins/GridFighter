@@ -38,7 +38,11 @@ public class EnergyBarBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Target = BlackBoardBehaviour.Instance.GetPlayerFromID(_playerID).GetComponent<MovesetBehaviour>();
+        GameObject player = BlackBoardBehaviour.Instance.GetPlayerFromID(_playerID);
+
+        if (!player) return;
+
+        Target = player.GetComponent<MovesetBehaviour>();
         _rectTransform = GetComponent<RectTransform>();
         _slider = GetComponent<Slider>();
         _slider.maxValue = MaxValue.Value;
@@ -83,6 +87,7 @@ public class EnergyBarBehaviour : MonoBehaviour
     {
         if (_target != null)
             _slider.value = _target.Energy;
+        else return;
 
         _energyTextCounter.text = ((int)_target.Energy).ToString();
         _fill.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_target.Energy];

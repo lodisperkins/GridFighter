@@ -27,7 +27,12 @@ namespace Lodis
         private void Start()
         {
             if (!_moveSet)
-                _moveSet = BlackBoardBehaviour.Instance.GetPlayerFromID(_playerID).GetComponent<MovesetBehaviour>();
+            {
+                GameObject target = BlackBoardBehaviour.Instance.GetPlayerFromID(_playerID);
+
+                if (!target) return;
+                _moveSet = target.GetComponent<MovesetBehaviour>();
+            }
 
             _moveSet.AddOnUpdateHandAction(UpdateImages);
             UpdateImages();
@@ -71,7 +76,7 @@ namespace Lodis
 
         private void Update()
         {
-            if (!_updateAbilityColors)
+            if (!_updateAbilityColors || !_moveSet)
                 return;
 
             if (_moveSet.Energy >= _ability1Cost)

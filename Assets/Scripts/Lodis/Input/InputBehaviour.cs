@@ -57,7 +57,7 @@ namespace Lodis.Input
 
 
     [RequireComponent(typeof(Movement.GridMovementBehaviour))]
-    public class InputBehaviour : MonoBehaviour
+    public class InputBehaviour : MonoBehaviour, IControllable
     {
         private Movement.GridMovementBehaviour _gridMovement;
         private CharacterDefenseBehaviour _defense;

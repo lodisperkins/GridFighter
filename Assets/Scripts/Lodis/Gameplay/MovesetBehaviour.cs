@@ -155,7 +155,11 @@ namespace Lodis.Gameplay
             _specialDeck = Instantiate(_specialDeckRef);
             _normalDeck.InitAbilities(gameObject);
             InitializeDecks();
-            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject).GetComponent<MovesetBehaviour>();
+
+            GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
+            if (!target) return;
+
+            _opponentMoveset = target.GetComponent<MovesetBehaviour>();
         }
 
         /// <summary>
@@ -476,7 +480,9 @@ namespace Lodis.Gameplay
             if (hitCollider.Owner != gameObject || invincible.GetValueOrDefault()) return;
 
             Energy += hitCollider.ColliderInfo.Damage / 100;
-            _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
+
+            if (_opponentMoveset)
+                _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
         }
 
         private void FixedUpdate()

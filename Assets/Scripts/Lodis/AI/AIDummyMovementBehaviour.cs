@@ -1,7 +1,9 @@
 ﻿using Ilumisoft.VisualStateMachine;
 using Lodis.Gameplay;
 using Lodis.GridScripts;
+using Lodis.Input;
 using Lodis.Movement;
+using Lodis.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

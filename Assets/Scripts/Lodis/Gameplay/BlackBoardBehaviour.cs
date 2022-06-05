@@ -1,4 +1,5 @@
-﻿using Lodis.ScriptableObjects;
+﻿using Lodis.Input;
+using Lodis.ScriptableObjects;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -99,6 +100,8 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public GameObject GetPlayerFromID(IntVariable id)
         {
+            if (!id) return null;
+
             if (id.Value == 1)
                 return Player1;
             else if(id.Value == 2)
@@ -134,7 +137,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public GameObject GetOpponentForPlayer(GameObject player)
         {
-            IntVariable id = player.GetComponent<Input.InputBehaviour>().PlayerID;
+            IntVariable id = player.GetComponent<IControllable>().PlayerID;
 
             if (id.Value == 1)
                 return Player2;
