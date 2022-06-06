@@ -41,7 +41,7 @@ public class AttackAction : GOAction
         _opponentMoveBehaviour = _dummy.Opponent.GetComponent<GridMovementBehaviour>();
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.transform.position;
         float targetHealth = _dummy.Opponent.GetComponent<HealthBehaviour>().Health;
-        _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, null, null);
+        _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.Opponent.GetComponent<GridPhysicsBehaviour>().LastVelocity, null, null);
 
         //Get a decision based on the current situation
         _decision = (AttackNode)_dummy.AttackDecisions.GetDecision(_situation, _opponentMoveBehaviour, _opponentMoveBehaviour.IsBehindBarrier, targetHealth, _dummy);
@@ -177,7 +177,7 @@ public class AttackAction : GOAction
             return;
 
         Vector3 displacement = collisionObject.transform.position - _dummy.transform.position;
-        _decision = (AttackNode)_dummy.AttackDecisions.AddDecision(new AttackNode(displacement, targetHealth, 0, startUpTime, name, attackStrength, null, null));
+        _decision = (AttackNode)_dummy.AttackDecisions.AddDecision(new AttackNode(displacement, targetHealth, 0, startUpTime, name, attackStrength, collisionObject.GetComponent<GridPhysicsBehaviour>().LastVelocity, null, null));
 
         if (_decision == null)
             return;

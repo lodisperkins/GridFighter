@@ -1137,10 +1137,12 @@ MonoBehaviour:
   _invincibilityColor: {r: 0, g: 0, b: 0, a: 0}
   _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
   OnTakeDamage: {fileID: 0}
-  Owner: 
+  Owner: {fileID: 0}
   _bounceDampen: 0
   _hitStunOnCollision: 0.5
-  _shatterVelocityMagnitude: 0
+  _collider: {fileID: 0}
+  _visual: {fileID: 0}
+  _shatterVelocityMagnitude: {fileID: 0}
   _minimumDamageSpeed: 0
   _knockBackDistance: 0
   _launchAngle: 0
@@ -3451,7 +3453,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 3
+  _mode: 1
   _ringBarrierL: {fileID: 1478321312}
   _ringBarrierR: {fileID: 2063412668}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2828022408800965798
+--- !u!1 &2304864534415457881
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,47 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4750451267636308944}
-  - component: {fileID: 1819378542261900222}
-  - component: {fileID: 722520345619480305}
-  - component: {fileID: 9095670520320461415}
-  - component: {fileID: 3504853025319885305}
+  - component: {fileID: 95202119583016932}
+  - component: {fileID: 4341703289608266138}
+  - component: {fileID: 6798697301447755249}
   m_Layer: 15
-  m_Name: Collider
+  m_Name: Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4750451267636308944
+--- !u!4 &95202119583016932
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2828022408800965798}
+  m_GameObject: {fileID: 2304864534415457881}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8744172618015234542}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
---- !u!33 &1819378542261900222
+--- !u!33 &4341703289608266138
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2828022408800965798}
+  m_GameObject: {fileID: 2304864534415457881}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &722520345619480305
+--- !u!23 &6798697301447755249
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2828022408800965798}
+  m_GameObject: {fileID: 2304864534415457881}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -81,6 +79,38 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &2828022408800965798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4750451267636308944}
+  - component: {fileID: 9095670520320461415}
+  - component: {fileID: 3504853025319885305}
+  m_Layer: 15
+  m_Name: Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4750451267636308944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2828022408800965798}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8744172618015234542}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
 --- !u!65 &9095670520320461415
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -90,7 +120,7 @@ BoxCollider:
   m_GameObject: {fileID: 2828022408800965798}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 10.000002, y: 0.77, z: 10}
   m_Center: {x: 0, y: 0, z: 0}
@@ -137,6 +167,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4750451267636308944}
+  - {fileID: 95202119583016932}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -164,10 +195,13 @@ MonoBehaviour:
   _invincibilityColor: {r: 0, g: 0, b: 0, a: 0}
   _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
   OnTakeDamage: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
-  Owner: 
+  Owner: {fileID: 0}
   _bounceDampen: 0.8
   _hitStunOnCollision: 0.5
-  _shatterVelocityMagnitude: 25
+  _collider: {fileID: 3504853025319885305}
+  _visual: {fileID: 2304864534415457881}
+  _shatterVelocityMagnitude: {fileID: 11400000, guid: c9b54bbac29f6dc49ba93a55dc3a53e5,
+    type: 2}
   _minimumDamageSpeed: 5
   _knockBackDistance: 1
   _launchAngle: 1

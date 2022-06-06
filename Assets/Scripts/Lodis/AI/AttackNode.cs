@@ -10,6 +10,7 @@ namespace Lodis.AI
     {
         private MovesetBehaviour _moveset;
         public Vector3 TargetDisplacement;
+        public Vector3 TargetVelocity;
         public float TargetHealth;
         public int ShieldEffectiveness;
         public float AttackStartTime;
@@ -24,6 +25,7 @@ namespace Lodis.AI
                           float attackStartTime,
                           string abilityName,
                           float attackStrength,
+                          Vector3 targetVelocity,
                           TreeNode left,
                           TreeNode right) : base(left, right)
         {
@@ -33,6 +35,7 @@ namespace Lodis.AI
             AttackStartTime = attackStartTime;
             AbilityName = abilityName;
             AttackStrength = attackStrength;
+            TargetVelocity = targetVelocity;
         }
 
         public override float GetTotalWeight(TreeNode root, params object[] args)
@@ -46,7 +49,10 @@ namespace Lodis.AI
             if (behindBarrier) weight += ShieldEffectiveness;
 
             if (!owner.Moveset.NormalDeckContains(AbilityName) && !owner.Moveset.SpecialDeckContains(AbilityName))
-                weight = 0;
+                return 0;
+
+            if (owner.Moveset.Energy < owner.Moveset.GetAbilityByName(AbilityName).abilityData.EnergyCost)
+                return 0;
 
             if (opponentHealth > 150)
                 weight += KnockBackDealt;
@@ -73,6 +79,7 @@ namespace Lodis.AI
             if (attackNode == null) return 0;
 
             float directionAccuracy = Vector3.Dot(attackNode.TargetDisplacement.normalized, TargetDisplacement.normalized);
+            float velocityAccuracy = Vector3.Dot(attackNode.TargetVelocity.normalized, TargetVelocity.normalized);
             float attackDirectionAccuracy = Vector3.Dot(attackNode.AttackDirection.normalized, AttackDirection.normalized);
             float distanceAccuracy = TargetDisplacement.magnitude / attackNode.TargetDisplacement.magnitude;
             float attackStrengthAccuracy = 0;
@@ -83,7 +90,7 @@ namespace Lodis.AI
             if (distanceAccuracy > 1)
                 distanceAccuracy -= distanceAccuracy - 1;
 
-            float totalAccuracy = (directionAccuracy + distanceAccuracy + attackDirectionAccuracy + attackStrengthAccuracy) / 4;
+            float totalAccuracy = (directionAccuracy + distanceAccuracy + attackDirectionAccuracy + attackStrengthAccuracy + velocityAccuracy) / 5;
 
             return totalAccuracy;
         }

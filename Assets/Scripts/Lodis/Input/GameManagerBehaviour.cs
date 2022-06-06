@@ -95,7 +95,7 @@ namespace Lodis.Gameplay
                 _player2 = _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[0]).gameObject;
 
             _player2.name += "(P2)";
-            _ringBarrierR.Owner = _player2.name;
+            _ringBarrierR.Owner = _player2;
             _player2.transform.forward = Vector3.left;
             BlackBoardBehaviour.Instance.Player2 = _player2.gameObject;
             //Get reference to player 2 components
@@ -123,7 +123,7 @@ namespace Lodis.Gameplay
                 _player1 = _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[0]).gameObject;
 
             _player1.name += "(P1)";
-            _ringBarrierL.Owner = _player1.name;
+            _ringBarrierL.Owner = _player1;
             _player1.transform.forward = Vector3.right;
             BlackBoardBehaviour.Instance.Player1 = _player1.gameObject;
             //Get reference to player 2 components

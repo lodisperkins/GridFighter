@@ -8,15 +8,19 @@ namespace Lodis.Gameplay
 {
     public class RingBarrierBehaviour : HealthBehaviour
     {
-        public string Owner;
+        public GameObject Owner;
         [SerializeField]
         private float _bounceDampen;
         [Tooltip("The length of the hit stun to apply to objects that crash into the ring barrier.")]
         [SerializeField]
         private float _hitStunOnCollision;
-        private MeshRenderer _renderer;
         [SerializeField]
-        private float _shatterVelocityMagnitude;
+        private Collider _collider;
+        private Collider _ownerCollider;
+        [SerializeField]
+        private GameObject _visual;
+        [SerializeField]
+        private FloatVariable _shatterVelocityMagnitude;
         [SerializeField]
         private float _minimumDamageSpeed;
         [SerializeField]
@@ -27,7 +31,7 @@ namespace Lodis.Gameplay
         protected override void Start()
         {
             base.Start();
-            _renderer = GetComponent<MeshRenderer>();
+            AddOnDeathAction(DeactivateBarrier);
         }
 
         /// <summary>
@@ -45,7 +49,9 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
-            if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != Owner && Owner != "") || damage < _minimumDamageSpeed)
+            if (!Owner) return 0;
+
+            if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != Owner.name) || damage < _minimumDamageSpeed)
                 return 0;
 
             Health -= damage;
@@ -60,7 +66,8 @@ namespace Lodis.Gameplay
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
         public override float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
-            if (info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.name != Owner && Owner != "") || info.Damage < _minimumDamageSpeed)
+            if (!Owner) return 0;
+            if (info.TypeOfDamage != DamageType.KNOCKBACK || (attacker != Owner) || info.Damage < _minimumDamageSpeed)
                 return 0;
 
             Health -= info.Damage;
@@ -78,8 +85,8 @@ namespace Lodis.Gameplay
         public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
         {
             float damage = abilityData.GetColliderInfo(0).Damage;
-
-            if (damageType != DamageType.KNOCKBACK || (attacker != Owner && Owner != "") || damage < _minimumDamageSpeed)
+            if (!Owner) return 0;
+            if (damageType != DamageType.KNOCKBACK || (attacker != Owner.name) || damage < _minimumDamageSpeed)
                 return 0;
 
             Health -= damage;
@@ -88,13 +95,19 @@ namespace Lodis.Gameplay
             return damage;
         }
 
+        public void DeactivateBarrier()
+        {
+            Physics.IgnoreCollision(_collider, _ownerCollider);
+            _visual.SetActive(false);
+        }
+
         private void OnTriggerEnter(Collider collision)
         {
             GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
 
-            if (collision.gameObject.name == Owner && gridPhysicsBehaviour.LastVelocity.magnitude >= _shatterVelocityMagnitude)
+            if (collision.gameObject == Owner && gridPhysicsBehaviour.LastVelocity.magnitude >= _shatterVelocityMagnitude.Value)
             {
-                gameObject.SetActive(false);
+                DeactivateBarrier();
             }
         }
 
@@ -104,6 +117,9 @@ namespace Lodis.Gameplay
 
             if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed)
                 return;
+
+            if (collision.gameObject == Owner && !_ownerCollider)
+                _ownerCollider = collision.collider;
 
             if (_bounceDampen == 0)
                 _bounceDampen = 1;

@@ -89,7 +89,7 @@ namespace Lodis.AI
             //Loop until the appropriate empty spot is found
             while (current != null)
             {
-                if (decision.Compare(current) >= 0.7f)
+                if (decision.Compare(current) >= 0.75f)
                 {
                     decision.Left = current.Left;
                     decision.Right = current.Right;
