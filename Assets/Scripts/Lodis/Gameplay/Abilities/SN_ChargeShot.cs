@@ -8,7 +8,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Shoots a single powerful charge shot down the row the character is facing.
     /// </summary>
-    public class SN_ChargeShot : Ability
+    public class SN_ChargeShot : ProjectileAbility
     {
         public Transform spawnTransform = null;
 
@@ -58,13 +58,13 @@ namespace Lodis.Gameplay
             spawnerObject.transform.localPosition = Vector3.zero;
             spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
             spawnerObject.transform.forward = owner.transform.forward;
-
+            
             //Initialize and attach spawn script
             ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
             spawnScript.projectile = _projectile;
 
             //Fire laser
-            spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+            ActiveProjectiles.Add(spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider));
         }
     }
 }

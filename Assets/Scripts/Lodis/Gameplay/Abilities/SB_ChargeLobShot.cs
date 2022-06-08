@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
     /// On impact, four smaller lob shots spawn and travel to the nearest
     /// panel in all cardinal directions.
     /// </summary>
-    public class SB_ChargeLobShot : Ability
+    public class SB_ChargeLobShot : ProjectileAbility
     {
         public Transform spawnTransform = null;
         //How fast the laser will travel
@@ -24,8 +24,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _weakProjectileCollider;
         private float _strongShotDistance = 1;
         private float _weakShotDistance = 1;
-        private Transform _weakSpawnTransform;
-        private List<GameObject> _activeProjectiles = new List<GameObject>();
+        private Transform _strongSpawm;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -103,7 +102,7 @@ namespace Lodis.Gameplay
         {
             //Create object to spawn laser from
             GameObject spawnerObject = new GameObject();
-            spawnerObject.transform.parent = _weakSpawnTransform;
+            spawnerObject.transform.parent = _strongSpawm;
             spawnerObject.transform.localPosition = Vector3.up / 2;
             spawnerObject.transform.forward = owner.transform.forward;
 
@@ -112,7 +111,7 @@ namespace Lodis.Gameplay
             spawnScript.projectile = _weakProjectile;
 
             //Fire laser
-            spawnScript.FireProjectile(CalculateProjectileForce(axis, _weakShotDistance), _weakProjectileCollider, true);
+            ActiveProjectiles.Add(spawnScript.FireProjectile(CalculateProjectileForce(axis, _weakShotDistance), _weakProjectileCollider, true));
 
             MonoBehaviour.Destroy(spawnerObject);
         }
@@ -128,20 +127,6 @@ namespace Lodis.Gameplay
             SpawnWeakShot(new Vector3(0, 0, 1));
             SpawnWeakShot(new Vector3(0, 0, -1));
             _strongProjectileCollider.OnHit = null;
-        }
-
-        /// <summary>
-        /// Removes the projectiles that have despawn fromt the active list
-        /// </summary>
-        private void CleanProjectileList()
-        {
-            for (int i = 0; i < _activeProjectiles.Count; i++)
-            {
-                if (_activeProjectiles[i] == null)
-                {
-                    _activeProjectiles.RemoveAt(i);
-                }
-            }
         }
 
         //Called when ability is used
@@ -178,7 +163,7 @@ namespace Lodis.Gameplay
             CleanProjectileList();
            
             //If the maximum amount of lobshot instances has been reached for this owner, don't spawn a new one
-            if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+            if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
 
             //Create object to spawn laser from
@@ -200,10 +185,10 @@ namespace Lodis.Gameplay
 
             _strongProjectileCollider.OnHit += SpawnWeakShots;
             //Fire laser
-            _weakSpawnTransform = spawnScript.FireProjectile(CalculateProjectileForce(owner.transform.forward, _strongShotDistance), _strongProjectileCollider, true).transform;
-            _weakSpawnTransform.GetComponent<Lodis.Movement.GridPhysicsBehaviour>().Gravity = 9.81f * abilityData.GetCustomStatValue("GravityScale");
+            _strongSpawm = spawnScript.FireProjectile(CalculateProjectileForce(owner.transform.forward, _strongShotDistance), _strongProjectileCollider, true).transform;
+            _strongSpawm.GetComponent<Lodis.Movement.GridPhysicsBehaviour>().Gravity = 9.81f * abilityData.GetCustomStatValue("GravityScale");
 
-            _activeProjectiles.Add(_weakSpawnTransform.gameObject);
+            ActiveProjectiles.Add(_strongSpawm.gameObject);
 
             MonoBehaviour.Destroy(spawnerObject);
         }

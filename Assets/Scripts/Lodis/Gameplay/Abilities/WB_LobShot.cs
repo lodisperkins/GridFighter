@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// Shoots an arcing shot upwards that travels two panels.
     /// Can move over obstacles on the panel in front of it.
     /// </summary>
-    public class WB_LobShot : Ability
+    public class WB_LobShot : ProjectileAbility
     {
         public Transform spawnTransform = null;
         //How fast the laser will travel
@@ -19,7 +19,6 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private float _shotDistance = 1;
-        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -69,17 +68,6 @@ namespace Lodis.Gameplay
             return new Vector3(Mathf.Cos(shotAngle), Mathf.Sin(shotAngle)) * magnitude;
         }
 
-        private void CleanProjectileList()
-        {
-            for (int i = 0; i < _activeProjectiles.Count; i++)
-            {
-                if (_activeProjectiles[i] == null)
-                {
-                    _activeProjectiles.RemoveAt(i);
-                }
-            }
-        }
-
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
@@ -100,7 +88,7 @@ namespace Lodis.Gameplay
 
             CleanProjectileList();
 
-            if (_activeProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+            if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
 
             //Create object to spawn laser from
@@ -120,7 +108,7 @@ namespace Lodis.Gameplay
 
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
             //Fire laser
-            _activeProjectiles.Add(spawnScript.FireProjectile(CalculateProjectileForce(), _projectileCollider, true));
+            ActiveProjectiles.Add(spawnScript.FireProjectile(CalculateProjectileForce(), _projectileCollider, true));
 
             MonoBehaviour.Destroy(spawnerObject);
         }

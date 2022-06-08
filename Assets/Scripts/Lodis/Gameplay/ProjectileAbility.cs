@@ -89,6 +89,21 @@ namespace Lodis.Gameplay
 
             MonoBehaviour.Destroy(spawnerObject);
         }
+
+        public void DestroyActiveProjectiles()
+        {
+            CleanProjectileList();
+            for (int i = 0; i < ActiveProjectiles.Count; i++)
+            {
+                MonoBehaviour.Destroy(ActiveProjectiles[i]);
+            }
+        }
+
+        public override void StopAbility()
+        {
+            base.StopAbility();
+            DestroyActiveProjectiles();
+        }
     }
 }
 

@@ -8,14 +8,13 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class SF_ChargeForwardShot : Ability
+    public class SF_ChargeForwardShot : ProjectileAbility
     {
         public Transform spawnTransform = null;
         //Used to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
-        private List<GameObject> _activeProjectiles = new List<GameObject>();
 
         public override void Init(GameObject newOwner)
         {
@@ -57,23 +56,9 @@ namespace Lodis.Gameplay
             //Fire laser
             GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
 
-            _activeProjectiles.Add(newProjectile);
+            ActiveProjectiles.Add(newProjectile);
 
             MonoBehaviour.Destroy(spawnerObject);
-        }
-
-        /// <summary>
-        /// Removes the projectiles that have despawn fromt the active list
-        /// </summary>
-        public void CleanProjectileList()
-        {
-            for (int i = 0; i < _activeProjectiles.Count; i++)
-            {
-                if (_activeProjectiles[i] == null)
-                {
-                    _activeProjectiles.RemoveAt(i);
-                }
-            }
         }
 
         protected override void Activate(params object[] args)
@@ -88,7 +73,7 @@ namespace Lodis.Gameplay
             Vector2 moveDir = owner.transform.forward;
 
             //If the maximum amount of instances has been reached for this owner, don't spawn a new one
-            if (_activeProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
+            if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             { 
                 if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir))
                     _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);

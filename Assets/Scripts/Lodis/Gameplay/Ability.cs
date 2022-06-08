@@ -331,11 +331,11 @@ namespace Lodis.Gameplay
             }
 
             if (abilityData.cancelOnHit)
-                _ownerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
+                _ownerKnockBackScript.AddOnTakeDamageTempAction(() => { EndAbility(); StopAbility(); });
             else if (abilityData.cancelOnFlinch)
-                _ownerKnockBackScript.AddOnHitStunTempAction(EndAbility);
+                _ownerKnockBackScript.AddOnHitStunTempAction(() => { EndAbility(); StopAbility(); });
             else if (abilityData.cancelOnKnockback)
-                _ownerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
+                _ownerKnockBackScript.AddOnKnockBackStartTempAction(() => { EndAbility(); StopAbility(); });
 
         }
 
