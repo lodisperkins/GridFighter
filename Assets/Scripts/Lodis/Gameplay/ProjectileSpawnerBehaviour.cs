@@ -31,7 +31,7 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Fires a projectile
+        /// Adds a physics component, and applies an impulse force to the object
         /// </summary>
         /// <param name="force">The amount of force to apply to the projectile</param>
         /// <param name="hitCollider">The hit collider to attach to the projectile</param>

@@ -19,12 +19,16 @@ MonoBehaviour:
   startUpTime: 0.3
   chargeTime: 0
   maxActivationAmount: 0
+  EnergyCost: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
+  CanCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -32,6 +36,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 151366202753034390, guid: c6f18bf7381957749a039c8b5cba9319,
     type: 3}
+  DisplayIcon: {fileID: 0}
   ColliderData:
   - Name: StrongShot
     DespawnAfterTimeLimit: 1
@@ -52,6 +57,7 @@ MonoBehaviour:
     HitStunTime: 0.5
     Priority: 0
     OwnerAlignement: 0
+    AbilityType: 7
   - Name: WeakShot
     DespawnAfterTimeLimit: 1
     TimeActive: 5
@@ -71,20 +77,25 @@ MonoBehaviour:
     HitStunTime: 0.2
     Priority: 0
     OwnerAlignement: 0
+    AbilityType: 7
   _customStats:
   - name: StrongShotDistance
     value: 1
   - name: StrongShotForceIncreaseRate
     value: 0.005
   - name: WeakShotDistance
-    value: 1
-  - name: WeakShotForce
-    value: 0.2
+    value: 0.5
+  - name: WeakShotGravity
+    value: 9.81
   - name: MaxInstances
     value: 1
   - name: StrongHitMaxPower
     value: 15
-  - name: GravityScale
-    value: 3
+  - name: StrongShotGravity
+    value: 29.43
+  - name: StrongShotAngle
+    value: 1
+  - name: WeakShotAngle
+    value: 0.7
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}

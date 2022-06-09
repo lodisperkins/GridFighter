@@ -305,6 +305,45 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Finds the force needed to move the game object the given number of panels
+        /// </summary>
+        /// <param name="forceMagnitude">How many panels will the object move assuming its mass is 1</param>
+        /// <param name="launchAngle">The angle to launch the object</param>
+        /// <returns>The force needed to move the object to the panel destination</returns>
+        public static Vector3 CalculatGridForce(float forceMagnitude, float launchAngle, float gravity = 9.81f, float mass = 1)
+        {
+            //Find the space between each panel and the panels size to use to find the total displacement
+            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
+
+            //If the knockback was too weak return an empty vector
+            if (forceMagnitude <= 0)
+                return new Vector3();
+
+            //If the angle is within a certain range, ignore the angle and apply an upward force
+            if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= 0.2f)
+                return Vector3.up * Mathf.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
+
+            //Clamps hit angle to prevent completely horizontal movement
+            //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
+
+            //Uses the total knockback and panel distance to find how far the object is travelling
+            float displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
+            //Finds the magnitude of the force vector to be applied 
+            float val1 = displacement * gravity;
+            float val2 = Mathf.Sin(2 * launchAngle);
+            float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
+            float magnitude = val3;
+
+            //If the magnitude is not a number the attack must be too weak. Return an empty vector
+            if (float.IsNaN(magnitude))
+                return new Vector3();
+
+            //Return the knockback force
+            return (new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * magnitude) * mass;
+        }
+
+        /// <summary>
         /// Adds an event to the event called when this object collides with another.
         /// </summary>
         /// <param name="collisionEvent">The delegate to invoke upon collision</param>
