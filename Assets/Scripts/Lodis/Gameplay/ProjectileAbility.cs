@@ -102,7 +102,7 @@ namespace Lodis.Gameplay
         public override void StopAbility()
         {
             base.StopAbility();
-            DestroyActiveProjectiles();
+            //DestroyActiveProjectiles();
         }
     }
 }
