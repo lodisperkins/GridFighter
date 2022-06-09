@@ -308,9 +308,10 @@ namespace Lodis.Gameplay
                 colliderComponent.OnHit = OnHit;
 
                 if (abilityData.AbilityType == AbilityType.UNBLOCKABLE)
-                {
                     colliderComponent.ColliderInfo.LayersToIgnore |= (1 << LayerMask.NameToLayer("Reflector"));
-                }
+                else
+                    colliderComponent.ColliderInfo.LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
+
                 _colliders.Add(colliderComponent);
             }
         }

@@ -310,6 +310,9 @@ MonoBehaviour:
   _wallTechJumpHeight: 1
   _wallTechJumpDuration: 0.6
   _attackerStunTime: 5
+  _phaseShiftDuration: 0.15
+  _defaultPhaseShiftRestTime: 0.3
+  _successPhaseShiftRestTime: 0
 --- !u!114 &-6268856529084459074
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -722,12 +725,23 @@ MonoBehaviour:
       id: AnyState 2
     transitions:
     - id: Idle-Moving
-      label: 
+      label: Moving
       originID: Idle
       targetID: Moving
       onEnterTransition:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayMovementAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -923,12 +937,23 @@ MonoBehaviour:
       duration: 0
       timeMode: 0
     - id: Attack-Moving
-      label: 
+      label: Moving
       originID: Attacking
       targetID: Moving
       onEnterTransition:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayMovementAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -969,11 +994,34 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition 6
+      label: Moving
+      originID: Parrying
+      targetID: Moving
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 4705404459745268771}
+            m_MethodName: PlayMovementAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 200.68217, y: -199.60513}
+        dragOffset: {x: 128.45981, y: -277.38315}
       gridSettings:
         isEnabled: 1
       labelSettings:

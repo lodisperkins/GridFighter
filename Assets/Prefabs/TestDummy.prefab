@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _attackType: 6
+  _attackType: 0
   _attackDelay: 0
   _attackStrength: 1.06
   _attackDirection: {x: 0, y: 0}
@@ -319,7 +319,7 @@ MonoBehaviour:
     AveragePosition: {x: 0, y: 0, z: 0}
     AverageVelocity: {x: 0, y: 0, z: 0}
   MovePosition: {x: 0, y: 0}
-  EnableBehaviourTree: 1
+  EnableBehaviourTree: 0
 --- !u!114 &3691015139844951449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +377,7 @@ MonoBehaviour:
   _wallTechJumpHeight: 1
   _wallTechJumpDuration: 0.4
   _attackerStunTime: 5
+  _phaseShiftDuration: 0
 --- !u!75 &986386592
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -447,7 +448,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 3772444779951280682}
+          - m_Target: {fileID: 0}
             m_MethodName: SetTrigger
             m_Mode: 5
             m_Arguments:
@@ -469,7 +470,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 3772444779951280682}
+          - m_Target: {fileID: 0}
             m_MethodName: SetTrigger
             m_Mode: 5
             m_Arguments:
@@ -491,7 +492,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 7756890942965727391}
+          - m_Target: {fileID: 0}
             m_MethodName: PlayFallBreakAnimation
             m_Mode: 1
             m_Arguments:
@@ -513,7 +514,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 7756890942965727391}
+          - m_Target: {fileID: 0}
             m_MethodName: PlayHardLandingAnimation
             m_Mode: 1
             m_Arguments:
@@ -546,7 +547,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 7756890942965727391}
+          - m_Target: {fileID: 0}
             m_MethodName: PlayGroundRecoveryAnimation
             m_Mode: 1
             m_Arguments:
@@ -567,18 +568,7 @@ MonoBehaviour:
       id: Parrying
       onEnterState:
         m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 3772444779951280682}
-            m_MethodName: SetTrigger
-            m_Mode: 5
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: Parrying
-              m_BoolArgument: 0
-            m_CallState: 2
+          m_Calls: []
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -590,7 +580,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 3772444779951280682}
+          - m_Target: {fileID: 0}
             m_MethodName: SetTrigger
             m_Mode: 5
             m_Arguments:
@@ -607,7 +597,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 518.7782, y: 481.88873}
+    - position: {x: 566.55566, y: 564.1109}
       id: Attacking
       onEnterState:
         m_PersistentCalls:
@@ -623,7 +613,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 3772444779951280682}
+          - m_Target: {fileID: 0}
             m_MethodName: SetTrigger
             m_Mode: 5
             m_Arguments:
@@ -645,7 +635,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 7756890942965727391}
+          - m_Target: {fileID: 0}
             m_MethodName: PlayMovementAnimation
             m_Mode: 1
             m_Arguments:
@@ -662,12 +652,12 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: -78.430115, y: 566.3975}
+    - position: {x: -78.430115, y: 568.6197}
       id: SoftLanding
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 7756890942965727391}
+          - m_Target: {fileID: 0}
             m_MethodName: PlaySoftLandingAnimation
             m_Mode: 1
             m_Arguments:
@@ -689,7 +679,7 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 7756890942965727391}
+          - m_Target: {fileID: 0}
             m_MethodName: PlayDamageAnimation
             m_Mode: 1
             m_Arguments:
@@ -713,12 +703,23 @@ MonoBehaviour:
       id: AnyState 2
     transitions:
     - id: Idle-Moving
-      label: 
+      label: Moving
       originID: Idle
       targetID: Moving
       onEnterTransition:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 7756890942965727391}
+            m_MethodName: PlayMovementAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -730,7 +731,18 @@ MonoBehaviour:
       targetID: Parrying
       onEnterTransition:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: GroundParrying
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -742,7 +754,18 @@ MonoBehaviour:
       targetID: Parrying
       onEnterTransition:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: AirParrying
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -784,37 +807,24 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
-    - id: Transition 11
-      label: Attack
-      originID: Idle
-      targetID: Attacking
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
-    - id: Transition 12
-      label: Attack
-      originID: Moving
-      targetID: Attacking
-      onEnterTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      onExitTransition:
-        m_PersistentCalls:
-          m_Calls: []
-      duration: 0
-      timeMode: 0
     - id: Transition 15
       label: Parry
       originID: FreeFall
       targetID: Parrying
       onEnterTransition:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 0}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: AirParrying
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -905,12 +915,23 @@ MonoBehaviour:
       duration: 0
       timeMode: 0
     - id: Attack-Moving
-      label: 
+      label: Moving
       originID: Attacking
       targetID: Moving
       onEnterTransition:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 7756890942965727391}
+            m_MethodName: PlayMovementAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -923,7 +944,7 @@ MonoBehaviour:
       onEnterTransition:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 3772444779951280682}
+          - m_Target: {fileID: 0}
             m_MethodName: SetTrigger
             m_Mode: 5
             m_Arguments:
@@ -939,11 +960,46 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition 4
+      label: Attack
+      originID: AnyState 1
+      targetID: Attacking
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 6
+      label: Moving
+      originID: Parrying
+      targetID: Moving
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 7756890942965727391}
+            m_MethodName: PlayMovementAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 121.79353, y: -208.49324}
+        dragOffset: {x: 128.45981, y: -277.38315}
       gridSettings:
         isEnabled: 1
       labelSettings:

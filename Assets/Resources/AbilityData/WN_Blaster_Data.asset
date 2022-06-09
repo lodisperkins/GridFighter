@@ -40,7 +40,7 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.1
+    TimeActive: 0.3
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
@@ -54,7 +54,7 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
     CanSpike: 0
-    HitStunTime: 0.5
+    HitStunTime: 0.2
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 0

@@ -72,7 +72,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""c9d9664a-c346-4620-ada4-088ae01453e4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press""
+                    ""interactions"": ""Press(pressPoint=0.1,behavior=1)""
                 },
                 {
                     ""name"": ""Special1"",

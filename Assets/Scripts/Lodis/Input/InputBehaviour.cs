@@ -95,6 +95,7 @@ namespace Lodis.Input
         private UnityAction _onPlayeMoveTemp;
         private bool _isPaused;
         private List<InputDevice> _devices = new List<InputDevice>();
+        private bool _canBufferShield;
 
         public List<InputDevice> Devices 
         {
@@ -143,8 +144,8 @@ namespace Lodis.Input
             _playerControls.Player.Attack.started += context => { DisableMovement(); _attackButtonDown = true; };
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
-            _playerControls.Player.Parry.started += context => { BufferParry(context); _defense.Brace(); };
-            _playerControls.Player.Parry.canceled += RemoveShieldFromBuffer;
+            _playerControls.Player.Parry.started += context => { _canBufferShield = true; _defense.Brace(); };
+            _playerControls.Player.Parry.performed += context => { _canBufferShield = false; RemoveShieldFromBuffer(); };
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
             _playerControls.Player.UnblockableAttack.started += context => BufferUnblockableAbility(context);
@@ -250,9 +251,9 @@ namespace Lodis.Input
             _abilityBuffered = true;
         }
 
-        private void RemoveShieldFromBuffer(InputAction.CallbackContext context)
+        private void RemoveShieldFromBuffer()
         {
-            _defense.StopShield();
+            _defense.DeactivateShield();
             _bufferedAction = null;
         }
 
@@ -260,16 +261,15 @@ namespace Lodis.Input
         /// Buffers a parry only if the attack button is not being pressed
         /// </summary>
         /// <param name="context"></param>
-        public void BufferParry(InputAction.CallbackContext context)
+        public void BufferShield()
         {
             if (_attackButtonDown)
                 return;
-            else if (_bufferedAction == null && (_playerState == "Tumbling" || _playerState == "FreeFall" || _playerState == "Idle" || _playerState == "Moving"))
+            else if (_bufferedAction == null && (_playerState == "Idle" || _playerState == "Moving"))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
             else if (_bufferedAction == null)
                 return;
-            else if (!_bufferedAction.HasAction() && (_playerState == "Tumbling"
-                || _playerState == "FreeFall" || _playerState == "Idle" || _playerState == "Moving"))
+            else if (!_bufferedAction.HasAction() && (_playerState == "Idle" || _playerState == "Moving"))
                 _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
@@ -312,7 +312,6 @@ namespace Lodis.Input
         private void UseDefensiveAction()
         {
             _defense.BeginParry();
-            DisableMovementBasedOnCondition(args => !_defense.IsParrying);
         }
 
         /// <summary>
@@ -450,6 +449,9 @@ namespace Lodis.Input
                 _attackDirection = attackDirInput;
                 _timeOfLastDirectionInput = Time.time;
             }
+
+            if (_canBufferShield && !_defense.IsDefending)
+                BufferShield();
 
             //Clear the buffer if its exceeded the alotted time
             if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
