@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
         {
 			base.Init(newOwner);
             //Get owner input
-            _ownerInput = owner.GetComponent<Input.InputBehaviour>();
+            _ownerInput = owner.GetComponentInParent<Input.InputBehaviour>();
         }
 
         protected override void Start(params object[] args)

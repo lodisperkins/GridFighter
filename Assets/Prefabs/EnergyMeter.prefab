@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78f29200986e0c1469c16f2103b1764b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _target: {fileID: 0}
+  _playerID: {fileID: 0}
   _energyGradient:
     serializedVersion: 2
     key0: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
@@ -337,15 +337,15 @@ MonoBehaviour:
     key2: {r: 0, g: 0.0065788683, b: 0.7735849, a: 0}
     key3: {r: 0.5881595, g: 0.0034264945, b: 0.7264151, a: 0}
     key4: {r: 0.8584906, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0.990566, g: 0.8949411, b: 0.042052314, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 16318
-    ctime1: 32702
-    ctime2: 49086
-    ctime3: 65469
-    ctime4: 65535
-    ctime5: 0
+    ctime0: 10879
+    ctime1: 21758
+    ctime2: 32636
+    ctime3: 43515
+    ctime4: 62451
+    ctime5: 64957
     ctime6: 0
     ctime7: 0
     atime0: 0
@@ -357,7 +357,7 @@ MonoBehaviour:
     atime6: 0
     atime7: 0
     m_Mode: 1
-    m_NumColorKeys: 5
+    m_NumColorKeys: 6
     m_NumAlphaKeys: 2
   _fill: {fileID: 5558502322761405350}
   _slider: {fileID: 5558502323005054722}

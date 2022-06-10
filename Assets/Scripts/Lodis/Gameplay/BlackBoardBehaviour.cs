@@ -15,6 +15,8 @@ namespace Lodis.Gameplay
         public FloatVariable MaxKnockBackHealth;
         public GameObject Player1;
         public GameObject Player2;
+        public IControllable Player1Controller;
+        public IControllable Player2Controller;
         public IntVariable Player1ID;
         public IntVariable Player2ID;
         private List<GameObject> _entitiesInGame = new List<GameObject>();
@@ -150,14 +152,29 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Gets the opponent of the given player.
         /// </summary>
-        public GameObject GetOpponentForPlayer(GameObject player)
+        public GameObject GetOpponentForPlayer(IntVariable id)
         {
-            IntVariable id = player.GetComponent<IControllable>().PlayerID;
+            if (!id) return null;
 
             if (id.Value == 1)
                 return Player2;
+            else if (id.Value == 2)
+                return Player1;
 
-            return Player1;
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the opponent of the given player.
+        /// </summary>
+        public GameObject GetOpponentForPlayer(GameObject player)
+        {
+            if (player == Player1)
+                return Player2;
+            else if (player == Player2)
+                return Player1;
+
+            return null;
         }
     }
 }

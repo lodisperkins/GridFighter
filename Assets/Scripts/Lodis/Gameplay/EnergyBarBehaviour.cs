@@ -12,8 +12,6 @@ public class EnergyBarBehaviour : MonoBehaviour
 
     private MovesetBehaviour _target;
     [SerializeField]
-    private Gradient _energyGradient;
-    [SerializeField]
     private Image _fill;
     [SerializeField]
     private Slider _slider;
@@ -47,7 +45,6 @@ public class EnergyBarBehaviour : MonoBehaviour
         _slider = GetComponent<Slider>();
         _slider.maxValue = MaxValue.Value;
         CreateMeterTicks();
-        _fill.color = _energyGradient.Evaluate(1f);
     }
 
     /// <summary>

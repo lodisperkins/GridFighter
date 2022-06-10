@@ -14,5 +14,10 @@ namespace Lodis.Input
         {
             get;set;
         }
+
+        GameObject Character
+        {
+            get;
+        }
     }
 }

@@ -33,7 +33,7 @@ public class DefendAction : GOAction
             return;
 
         //Grab the health component attached to know when it takes damage
-        _dummyHealth = _dummy.GetComponent<KnockbackBehaviour>();
+        _dummyHealth = _dummy.Character.GetComponent<KnockbackBehaviour>();
 
         //Store the current environment data
         _situation = new DefenseNode(GetPhysicsComponents(), null, null);
@@ -108,10 +108,10 @@ public class DefendAction : GOAction
                 _dummy.Executor.blackboard.boolParams[3] = true;
                 break;
             case DefenseDecisionType.PARRY:
-                _dummy.GetComponent<CharacterDefenseBehaviour>().BeginParry();
+                _dummy.Character.GetComponent<CharacterDefenseBehaviour>().BeginParry();
                 break;
             case DefenseDecisionType.BURST:
-                if (_dummy.GetComponent<KnockbackBehaviour>().LastTimeInKnockBack >= _dummy.TimeNeededToBurst)
+                if (_dummy.Character.GetComponent<KnockbackBehaviour>().LastTimeInKnockBack >= _dummy.TimeNeededToBurst)
                     _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
                 break;
         }

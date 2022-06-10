@@ -94,16 +94,18 @@ namespace Lodis.Gameplay
             else
                 _player2 = _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[0]).gameObject;
 
-            _player2.name += "(P2)";
-            _ringBarrierR.Owner = _player2;
-            _player2.transform.forward = Vector3.left;
-            BlackBoardBehaviour.Instance.Player2 = _player2.gameObject;
-            //Get reference to player 2 components
-            _p2Movement = _player2.GetComponent<Movement.GridMovementBehaviour>();
-            _p2StateManager = _player2.GetComponent<CharacterStateMachineBehaviour>();
             _p2Input = _player2.GetComponent<IControllable>();
+
+            _p2Input.Character.name += "(P2)";
+            _ringBarrierR.Owner = _p2Input.Character;
+            _player2.transform.forward = Vector3.left;
+            BlackBoardBehaviour.Instance.Player2 = _p2Input.Character;
+            //Get reference to player 2 components
+            _p2Movement = _p2Input.Character.GetComponent<Movement.GridMovementBehaviour>();
+            _p2StateManager = _p2Input.Character.GetComponent<CharacterStateMachineBehaviour>();
             _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
 
+            BlackBoardBehaviour.Instance.Player2Controller = _p2Input;
 
             GridScripts.PanelBehaviour spawnPanel = null;
             if (_grid.GetPanel(_dummyRHSSpawnLocation, out spawnPanel, false))
@@ -122,16 +124,17 @@ namespace Lodis.Gameplay
             else
                 _player1 = _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[0]).gameObject;
 
-            _player1.name += "(P1)";
-            _ringBarrierL.Owner = _player1;
-            _player1.transform.forward = Vector3.right;
-            BlackBoardBehaviour.Instance.Player1 = _player1.gameObject;
-            //Get reference to player 2 components
-            _p1Movement = _player1.GetComponent<Movement.GridMovementBehaviour>();
-            _p1StateManager = _player1.GetComponent<CharacterStateMachineBehaviour>();
             _p1Input = _player1.GetComponent<IControllable>();
+            _p1Input.Character.name += "(P1)";
+            _ringBarrierL.Owner = _p1Input.Character;
+            _player1.transform.forward = Vector3.right;
+            BlackBoardBehaviour.Instance.Player1 = _p1Input.Character;
+            //Get reference to player 2 components
+            _p1Movement = _p1Input.Character.GetComponent<Movement.GridMovementBehaviour>();
+            _p1StateManager = _p1Input.Character.GetComponent<CharacterStateMachineBehaviour>();
             _p1Input.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
 
+            BlackBoardBehaviour.Instance.Player1Controller = _p1Input;
 
             GridScripts.PanelBehaviour spawnPanel = null;
             if (_grid.GetPanel(_dummyLHSSpawnLocation, out spawnPanel, false))

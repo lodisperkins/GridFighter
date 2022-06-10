@@ -14,6 +14,8 @@ namespace Lodis.AI
 {
     public class AttackDummyBehaviour : MonoBehaviour, IControllable
     {
+        [SerializeField]
+        private GameObject _character;
         private Gameplay.MovesetBehaviour _moveset;
         [Tooltip("Pick the attack this test dummy should perform")]
         [SerializeField]
@@ -67,6 +69,7 @@ namespace Lodis.AI
         public DefenseDecisionTree DefenseDecisions { get => _defenseDecisions; }
         public float TimeNeededToBurst { get => _timeNeededToBurst; }
         public IntVariable PlayerID { get => _playerID; set => _playerID = value; }
+        public GameObject Character { get => _character; private set => _character = value; }
 
         public DefenseNode LastDefenseDecision;
 
@@ -76,17 +79,17 @@ namespace Lodis.AI
         // Start is called before the first frame update
         void Awake()
         {
-            Moveset = GetComponent<Gameplay.MovesetBehaviour>();
-            _stateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
-            _knockbackBehaviour = GetComponent<Movement.KnockbackBehaviour>();
+            Moveset = Character.GetComponent<Gameplay.MovesetBehaviour>();
+            _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
+            _knockbackBehaviour = Character.GetComponent<Movement.KnockbackBehaviour>();
             _executor = GetComponent<BehaviorExecutor>();
             _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
-            _gridPhysics = GetComponent<GridPhysicsBehaviour>();
+            _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
         }
 
         private void Start()
         {
-            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
+            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(PlayerID);
 
             if (EnableBehaviourTree)
             {
