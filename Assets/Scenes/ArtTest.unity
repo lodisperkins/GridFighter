@@ -1908,27 +1908,27 @@ PrefabInstance:
     - target: {fileID: 6201223080429706078, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.1948
+      value: 1.3568149
       objectReference: {fileID: 0}
     - target: {fileID: 6201223080429706078, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.322
+      value: 1.4382039
       objectReference: {fileID: 0}
     - target: {fileID: 6201223080429706078, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -16.1
+      value: -16.7
       objectReference: {fileID: 0}
     - target: {fileID: 6201223080429706078, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.1
+      value: -17.7
       objectReference: {fileID: 0}
     - target: {fileID: 6201223080429706078, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 5.6
+      value: 17.2
       objectReference: {fileID: 0}
     - target: {fileID: 6201223080429706078, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
@@ -6946,7 +6946,7 @@ MonoBehaviour:
   _dummyRHSSpawnLocation: {x: 7, y: 0}
   _dummyLHSSpawnLocation: {x: 0, y: 0}
   _targetFrameRate: 60
-  _invincibleBarriers: 1
+  _invincibleBarriers: 0
   _timeScale: 1
 --- !u!114 &1441118449
 MonoBehaviour:
@@ -8719,114 +8719,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: Player1ID
-      value: 
-      objectReference: {fileID: 11400000, guid: 3cc64ad6d1cac594bbf636a0233d9ac0,
-        type: 2}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: Player2ID
-      value: 
-      objectReference: {fileID: 11400000, guid: 80aa92efa7a08ce4c8c7d05e98fb1965,
-        type: 2}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: MaxKnockBackHealth
-      value: 
-      objectReference: {fileID: 11400000, guid: a850879eb5579a94c8611fe9609619f4,
-        type: 2}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[0].a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[0].b
-      value: 0.5471698
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[0].g
-      value: 0.5471698
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[0].r
-      value: 0.5471698
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[1].a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[1].b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[1].g
-      value: 0.9137255
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[1].r
-      value: 0.12941177
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[2].a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[2].b
-      value: 0.27236402
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[2].g
-      value: 0.77254903
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[3].a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[3].b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[3].g
-      value: 0.8012463
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[3].r
-      value: 0.8773585
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[4].a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: AbilityCostColors.Array.data[4].r
-      value: 0.85882354
-      objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718757, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: m_Name
