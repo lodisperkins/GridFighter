@@ -55,8 +55,6 @@ namespace Lodis.Input
         private Condition _useCondition;
     }
 
-
-    [RequireComponent(typeof(Movement.GridMovementBehaviour))]
     public class InputBehaviour : MonoBehaviour, IControllable
     {
         private Movement.GridMovementBehaviour _gridMovement;
@@ -64,6 +62,8 @@ namespace Lodis.Input
         private MovesetBehaviour _moveset;
         private Condition _moveInputEnableCondition;
         public static UnityAction OnApplicationQuit;
+        [SerializeField]
+        private GameObject _character;
         [SerializeField]
         private bool _canMove = true;
         private Vector2 _storedMoveInput;
@@ -133,6 +133,8 @@ namespace Lodis.Input
             }
         }
 
+        public GameObject Character { get => _character; private set => _character = value; }
+
         private void Awake()
         {
             _playerControls = new PlayerControls();
@@ -155,9 +157,9 @@ namespace Lodis.Input
         // Start is called before the first frame update
         void Start()
         {
-            _gridMovement = GetComponent<Movement.GridMovementBehaviour>();
-            _moveset = GetComponent<MovesetBehaviour>();
-            _defense = GetComponent<CharacterDefenseBehaviour>();
+            _gridMovement = Character.GetComponent<Movement.GridMovementBehaviour>();
+            _moveset = Character.GetComponent<MovesetBehaviour>();
+            _defense = Character.GetComponent<CharacterDefenseBehaviour>();
         }
 
         private void OnEnable()

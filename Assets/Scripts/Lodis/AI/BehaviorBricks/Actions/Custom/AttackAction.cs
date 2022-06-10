@@ -27,7 +27,7 @@ public class AttackAction : GOAction
 
         if (_dummy.StateMachine.CurrentState == "Parrying")
         {
-            _dummy.GetComponent<CharacterDefenseBehaviour>().DeactivateShield();
+            _dummy.Character.GetComponent<CharacterDefenseBehaviour>().DeactivateShield();
             return;
         }
 

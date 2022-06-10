@@ -480,7 +480,10 @@ namespace Lodis.Gameplay
                 techLength = _defenseBehaviour.WallTechJumpDuration;
             }
 
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / techLength);
+            AnimatorClipInfo[] clipInfo = _animator.GetCurrentAnimatorClipInfo(0);
+            if (clipInfo.Length <= 0) return;
+
+            _animator.SetFloat("AnimationSpeedScale", clipInfo[0].clip.length / techLength);
             _animator.SetTrigger(animationName);
             _animatingMotion = true;
         }
