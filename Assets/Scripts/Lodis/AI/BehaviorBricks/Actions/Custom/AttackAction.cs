@@ -194,7 +194,7 @@ public class AttackAction : GOAction
         if (!collisionObject.CompareTag("Player") && !collisionObject.CompareTag("Structure"))
             return;
 
-        if (_dummy.Opponent.GetComponent<CharacterDefenseBehaviour>().IsShielding && collisionObject.CompareTag("Player"))
+        if (_dummy.Opponent.GetComponent<CharacterDefenseBehaviour>().IsDefending && collisionObject.CompareTag("Player"))
             _decision.ShieldEffectiveness ++;
 
         KnockbackBehaviour knockback = collisionObject.GetComponent<KnockbackBehaviour>();

@@ -80,6 +80,21 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Gets the state of the player passed in
+        /// </summary>
+        /// <param name="id">The player's ID</param>
+        /// <returns></returns>
+        public string GetPlayerState(GameObject player)
+        {
+            if (player == Player1)
+                return Player1State;
+            else if (player == Player2)
+                return Player2State;
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the state of the player that matches the ID
         /// </summary>
         /// <param name="id">The player's ID</param>

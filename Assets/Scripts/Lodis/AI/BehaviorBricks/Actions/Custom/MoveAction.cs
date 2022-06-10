@@ -28,6 +28,9 @@ public class MoveAction : GOAction
     {
         PanelBehaviour panel = null;
         int xPos = (int)_movementBehaviour.MovementBehaviour.CurrentPanel.Position.x;
+
+        if (_dummy.StateMachine.CurrentState != "Idle") return TaskStatus.ABORTED;
+
         for (int i = 0; i < BlackBoardBehaviour.Instance.Grid.Width; i++)
         {
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(xPos, (int)_opponentMovement.CurrentPanel.Position.y, out panel, false))

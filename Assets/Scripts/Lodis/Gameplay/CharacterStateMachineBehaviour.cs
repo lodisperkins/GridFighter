@@ -36,14 +36,13 @@ namespace Lodis.Gameplay
             { return _knockBack.Landing && !_characterDefense.BreakingFall; });
             _stateMachine.SetTransitionCondition("Landing-Down", args => _knockBack.IsDown);
             _stateMachine.SetTransitionCondition("Down-GroundRecovery", args => _knockBack.RecoveringFromFall);
-            _stateMachine.SetTransitionConditionByLabel("Parry", args => _characterDefense.IsShielding);
+            _stateMachine.SetTransitionConditionByLabel("Parry", args => _characterDefense.IsDefending);
             _stateMachine.SetTransitionCondition("Flinching-Tumbling", args => _knockBack.IsTumbling);
             _stateMachine.SetTransitionCondition("Any-Flinching", condition => false);
             _knockBack.AddOnHitStunAction(() => _stateMachine.Trigger("Any-Flinching"));
             _stateMachine.SetTransitionCondition("Any-FreeFall", args => _knockBack.InFreeFall);
-            _stateMachine.SetTransitionCondition("Idle-Moving", args => _movement.IsMoving && !_moveset.AbilityInUse);
-            _stateMachine.SetTransitionCondition("Attack-Moving", args => _movement.IsMoving && _moveset.LastAbilityInUse.abilityData.CanInputMovementWhileActive && _moveset.LastAbilityInUse.CheckIfAbilityCanBeCanceled() && _moveset.LastAbilityInUse.abilityData.CanCancelOnMove);
-            _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall && !_characterDefense.IsShielding && !_moveset.AbilityInUse);
+            _stateMachine.SetTransitionConditionByLabel("Moving", args => _movement.IsMoving && !_moveset.AbilityInUse);
+            _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall && !_characterDefense.IsDefending && !_moveset.AbilityInUse);
         }
         private void Update()
         {

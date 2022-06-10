@@ -46,9 +46,10 @@ namespace Lodis.Gameplay
         {
             for (int i = 0; i < ActiveProjectiles.Count; i++)
             {
-                if (ActiveProjectiles[i] == null)
+                if (!ActiveProjectiles[i])
                 {
                     ActiveProjectiles.RemoveAt(i);
+                    i--;
                 }
             }
         }

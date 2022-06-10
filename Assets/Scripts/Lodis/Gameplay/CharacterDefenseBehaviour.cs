@@ -30,7 +30,8 @@ namespace Lodis.Gameplay
         [Tooltip("How long the character will be invincible for after a successful ground parry.")]
         [SerializeField]
         private float _parryInvincibilityLength;
-        private bool _isShielding;
+        private bool _isDefending;
+        private bool _isPhaseShifting;
         [Tooltip("True if the parry cooldown timer is 0.")]
         [SerializeField]
         private bool _canParry = true;
@@ -70,6 +71,13 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds to stun an enemy after a successful parry.")]
         [SerializeField]
         private float _attackerStunTime;
+        [SerializeField]
+        private float _phaseShiftDuration;
+        [SerializeField]
+        private float _defaultPhaseShiftRestTime;
+        [SerializeField]
+        private float _successPhaseShiftRestTime;
+        private float _currentPhaseShiftRestTime;
         private RoutineBehaviour.TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
         private RoutineBehaviour.TimedAction _parryTimer;
@@ -84,7 +92,7 @@ namespace Lodis.Gameplay
         public float GroundTechLength { get => _fallBreakLength; set => _fallBreakLength = value; }
         public float WallTechJumpDuration { get => _wallTechJumpDuration; }
         public ColliderBehaviour ParryCollider { get => _shieldCollider; }
-        public bool IsShielding { get => _isShielding; }
+        public bool IsDefending { get => _isDefending; }
 
         // Start is called before the first frame update
         void Start()
@@ -98,7 +106,31 @@ namespace Lodis.Gameplay
             _knockBack.AddOnTakeDamageAction(StopShield);
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
+            _movement.AddOnMoveBeginAction(ActivatePhaseShift);
             _shieldCollider.OnHit += args => { if (IsParrying) ActivateParryInvinciblity(args); };
+        }
+
+        private void ActivatePhaseShift()
+        {
+            if (!_isDefending) return;
+            _isParrying = false;
+            //Allow the character to parry again
+            _canParry = true;
+            _isDefending = false;
+            _isPhaseShifting = true;
+            _shieldCollider.gameObject.SetActive(false);
+            _currentPhaseShiftRestTime = _defaultPhaseShiftRestTime;
+            _health.SetIntagibilityByTimer(_phaseShiftDuration);
+            _movement.AddOnMoveEndTempAction(() => { StartDefenseLag(_currentPhaseShiftRestTime); _isPhaseShifting = false; });
+        }
+
+        private void StartDefenseLag(float time)
+        {
+            _isDefending = true;
+            _movement.DisableMovement(condition => _isDefending == false, false);
+            //Start timer for player immobility
+            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isDefending = false; }, TimedActionCountType.SCALEDTIME, time);
+
         }
 
         /// <summary>
@@ -108,14 +140,13 @@ namespace Lodis.Gameplay
         private void ActivateParry()
         {
             _shieldCollider.tag = "Reflector";
-            if (_knockBack.InHitStun)
+            if (BlackBoardBehaviour.Instance.GetPlayerState(gameObject) != "Idle")
                 return;
 
             //Enable parry and update states
             _shieldCollider.gameObject.SetActive(true);
             _isParrying = true;
-            _isShielding = true;
-            _movement.DisableMovement(condition => !_shieldCollider.gameObject.activeSelf && _isShielding == false, true, true);
+            _isDefending = true;
             _canParry = false;
 
             RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateParry(), TimedActionCountType.SCALEDTIME, _parryLength);
@@ -127,10 +158,12 @@ namespace Lodis.Gameplay
             _isParrying = false;
             //Allow the character to parry again
             _canParry = true;
+            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
         }
 
         public void DeactivateShield()
         {
+            DeactivateParry();
             if (!_shieldCollider.gameObject.activeSelf)
                 return;
 
@@ -139,8 +172,8 @@ namespace Lodis.Gameplay
             _canParry = true;
 
             _shieldCollider.gameObject.SetActive(false);
-            //Start timer for player immobility
-            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isShielding = false; }, TimedActionCountType.SCALEDTIME, _groundParryRestTime);
+
+            StartDefenseLag(_groundParryRestTime);
         }
 
         /// <summary>
@@ -149,6 +182,9 @@ namespace Lodis.Gameplay
         /// </summary>
         public void BeginParry()
         {
+            if (_parryTimer?.GetEnabled() == true)
+                return;
+
             _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { if (_canParry && _knockBack.CheckIfIdle()) ActivateParry(); }, TimedActionCountType.SCALEDTIME, _parryStartUpTime);
         }
 
@@ -164,7 +200,7 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
             RoutineBehaviour.Instance.StopTimedAction(_shieldTimer);
             _shieldCollider.gameObject.SetActive(false);
-            _isShielding = false;
+            _isDefending = false;
             _isParrying = false;
             _canParry = true;
         }
@@ -188,16 +224,6 @@ namespace Lodis.Gameplay
             if (!_knockBack.IsTumbling || !_canBrace)
                 return;
 
-            ActivateBrace();
-        }
-
-        /// <summary>
-        /// Braces the object based on the brace active time.
-        /// Starts the cooldown when done.
-        /// </summary>
-        /// <returns></returns>
-        private void ActivateBrace()
-        {
             IsBraced = true;
             _canBrace = false;
             RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateBrace(), TimedActionCountType.SCALEDTIME, _braceActiveTime);
@@ -236,10 +262,61 @@ namespace Lodis.Gameplay
             //Deactivate the parry
             _shieldCollider.gameObject.SetActive(false);
             _isParrying = false;
-            _isShielding = false;
+            _isDefending = false;
             _canParry = true;
             //Make the character invincible for a short amount of time if they're on the ground
             _knockBack.SetInvincibilityByTimer(_parryInvincibilityLength);
+        }
+
+        private void BreakFall(GameObject other)
+        {
+
+            BreakingFall = true;
+
+            //Breaks fall on the ground
+
+            PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
+
+            //If the player broke their fall on the other side...
+            if (panel?.Alignment != _movement.Alignment && other.gameObject.CompareTag("Panel"))
+                //...make them invincible until they're back on their side
+                _knockBack.SetInvincibilityByCondition(condition =>
+                {
+                    BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, true);
+                    return panel.Alignment == _movement.Alignment;
+                });
+            //Otherwise set invincibility based on the object collided with
+            else if (other.gameObject.CompareTag("Panel"))
+                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
+            else
+                _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
+
+            //Stop the effects of the attack
+            _knockBack.Physics.StopVelocity();
+            _knockBack.Physics.IgnoreForces = true;
+            _knockBack.CancelHitStun();
+
+            //Breaks fall on structures
+
+            //Makes the character jump if they broke their fall on structure
+            if (other.gameObject.CompareTag("Structure") && _disableFallBreakAction == null)
+            {
+                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, WallTechJumpDuration);
+                _knockBack.Physics.Jump(_wallTechJumpDistance, _wallTechJumpHeight, _wallTechJumpDuration, true, false, _movement.Alignment);
+                onFallBroken?.Invoke(false);
+                return;
+            }
+
+            //Prevents the player from buffering a parry while breaking a fall
+            if (_parryTimer != null)
+                if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+
+            RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
+            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+            DeactivateParry();
+
+            onFallBroken?.Invoke(true);
+            _knockBack.TryStartLandingLag();
         }
 
         private void OnDrawGizmos()
@@ -256,47 +333,20 @@ namespace Lodis.Gameplay
 
         private void OnTriggerEnter(Collider other)
         {
+            if (_isPhaseShifting)
+            {
+                HitColliderBehaviour collider = other.attachedRigidbody?.GetComponent<HitColliderBehaviour>();
+
+                if (!collider) return;
+                if (collider.Owner == gameObject) return;
+                
+                _currentPhaseShiftRestTime = _successPhaseShiftRestTime;
+            }
+
             if (!IsBraced || !(other.CompareTag("Structure") || other.CompareTag("Panel")) || BreakingFall)
                 return;
 
-            BreakingFall = true;
-
-            PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
-
-            if (panel?.Alignment != _movement.Alignment && other.gameObject.CompareTag("Panel"))
-                _knockBack.SetInvincibilityByCondition(condition => 
-                {
-                    BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, true);
-                    return panel.Alignment == _movement.Alignment; 
-                } );
-            else if (other.gameObject.CompareTag("Panel"))
-                _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
-            else
-                _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
-
-            _knockBack.Physics.StopVelocity();
-            _knockBack.Physics.IgnoreForces = true;
-            _knockBack.CancelHitStun();
-
-            if (other.gameObject.CompareTag("Structure") && _disableFallBreakAction == null)
-            {
-                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, WallTechJumpDuration);
-                _knockBack.Physics.Jump(_wallTechJumpDistance, _wallTechJumpHeight, _wallTechJumpDuration, true, false, _movement.Alignment);
-                onFallBroken?.Invoke(false);
-                return;
-            }
-
-            if (_parryTimer != null)
-                if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-
-            RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
-            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-            DeactivateParry();
-
-            onFallBroken?.Invoke(true);
-            _knockBack.TryStartLandingLag();
-            return;
-            //Debug.Log("Collided with " + other.name);
+            BreakFall(other.gameObject);
         }
 
         private void DisableFallBreaking(params object[] args)

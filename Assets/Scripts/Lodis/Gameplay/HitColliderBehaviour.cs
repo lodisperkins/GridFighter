@@ -108,7 +108,6 @@ namespace Lodis.Gameplay
 
         private void Start()
         {
-            ColliderInfo.LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
             LayersToIgnore = ColliderInfo.LayersToIgnore;
             StartTime = Time.time;
         }
@@ -180,12 +179,6 @@ namespace Lodis.Gameplay
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
-
-            if (other.CompareTag("Player"))
-            {
-                if (other.GetComponent<CharacterDefenseBehaviour>()?.IsShielding == true && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE)
-                    return;
-            }
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
@@ -259,12 +252,6 @@ namespace Lodis.Gameplay
             if (!Collisions.ContainsKey(other.gameObject))
                 Collisions.Add(other.gameObject, Time.frameCount);
 
-            if (other.CompareTag("Player"))
-            {
-                if (other.GetComponent<CharacterDefenseBehaviour>()?.IsShielding == true && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE)
-                    return;
-            }
-
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
 
@@ -336,12 +323,6 @@ namespace Lodis.Gameplay
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
-
-            if (other.CompareTag("Player"))
-            {
-                if (other.GetComponent<CharacterDefenseBehaviour>()?.IsShielding == true && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE)
-                    return;
-            }
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : other.gameObject;
