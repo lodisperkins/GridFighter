@@ -31,15 +31,16 @@ namespace Lodis.GridScripts
         [SerializeField]
         private Color _unblockableColor;
         private Color _defaultColor;
+        [SerializeField]
         private MeshRenderer _mesh;
         private GameObject _markObject;
         private Movement.GridMovementBehaviour _markerMovement;
         private Vector2 _lastMarkPosition;
         private MarkerType _currentMarker;
-
+        
         private void Awake()
         {
-            _mesh = GetComponent<MeshRenderer>();
+            //_mesh = GetComponent<MeshRenderer>();
         }
 
         private void Start()

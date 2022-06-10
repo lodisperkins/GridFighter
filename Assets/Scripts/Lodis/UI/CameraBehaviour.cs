@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.Gameplay;
+using Lodis.GridScripts;
 
 namespace Lodis
 {
@@ -16,7 +17,6 @@ namespace Lodis
         private Vector3 _moveSensitivity;
         [SerializeField]
         private float _minX;
-        [SerializeField]
         private float _midX;
         [SerializeField]
         private float _maxX;
@@ -38,8 +38,12 @@ namespace Lodis
         // Start is called before the first frame update
         void Start()
         {
-            _startPosition = new Vector3(BlackBoardBehaviour.Instance.Grid.Width / 2 + BlackBoardBehaviour.Instance.Grid.transform.position.x,
-                transform.position.y, transform.position.z);
+            Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
+            int panelXpos = (int)(dimensions.x - 1);
+            PanelBehaviour panel = null;
+            BlackBoardBehaviour.Instance.Grid.GetPanel(panelXpos, 0, out panel);
+            _midX = panel.transform.position.x / 2 + BlackBoardBehaviour.Instance.Grid.transform.position.x;
+            _startPosition = new Vector3(_midX, transform.position.y, transform.position.z);
             transform.position = _startPosition;
             _lastCameraPosition = transform.position;
             _cameraPosition = transform.position;
