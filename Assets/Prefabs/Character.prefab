@@ -271,6 +271,8 @@ MonoBehaviour:
   _energyRechargeRate: {fileID: 11400000, guid: bcb306df5e8c18f499e8892c8bc5a618,
     type: 2}
   _energyChargeEnabled: 1
+  _canBurst: 0
+  _burstChargeTime: 20
 --- !u!75 &8944881979825174333
 ConstantForce:
   m_ObjectHideFlags: 0

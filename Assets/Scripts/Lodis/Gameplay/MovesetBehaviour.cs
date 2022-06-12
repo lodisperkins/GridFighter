@@ -75,6 +75,10 @@ namespace Lodis.Gameplay
         [Tooltip("If true the character can charge energy passively")]
         [SerializeField]
         private bool _energyChargeEnabled = true;
+        [SerializeField]
+        private bool _canBurst;
+        [SerializeField]
+        private float _burstChargeTime;
         private UnityAction OnUpdateHand;
 
         private CharacterStateMachineBehaviour _stateMachineScript;
@@ -82,6 +86,7 @@ namespace Lodis.Gameplay
         private Movement.GridMovementBehaviour _movementBehaviour;
         private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
+        private UnityAction _onBurst;
         private RoutineBehaviour.TimedAction _rechargeAction;
 
         public Transform ProjectileSpawnTransform
@@ -140,6 +145,9 @@ namespace Lodis.Gameplay
         }
 
         public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
+        public float BurstChargeTime { get => _burstChargeTime; private set => _burstChargeTime = value; }
+        public bool CanBurst { get => _canBurst; private set => _canBurst = value; }
+        public UnityAction OnBurst { get => _onBurst; set => _onBurst = value; }
 
         private void Awake()
         {
@@ -155,6 +163,7 @@ namespace Lodis.Gameplay
             _specialDeck = Instantiate(_specialDeckRef);
             _normalDeck.InitAbilities(gameObject);
             InitializeDecks();
+            RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
 
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
@@ -278,7 +287,7 @@ namespace Lodis.Gameplay
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && abilityType != AbilityType.BURST)
                 return null;
-            else if (abilityType == AbilityType.BURST && _deckReloading)
+            else if (abilityType == AbilityType.BURST && !_canBurst)
                 return null;
 
             //Find the ability in the deck abd use it
@@ -300,9 +309,9 @@ namespace Lodis.Gameplay
 
             if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
             {
-                _specialDeck.ClearDeck();
-                RemoveAbilityFromSlot(0);
-                RemoveAbilityFromSlot(1);
+                OnBurst?.Invoke();
+                _canBurst = false;
+                RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
             }
 
             //Return new ability
@@ -394,12 +403,6 @@ namespace Lodis.Gameplay
             OnUseAbility?.Invoke();
             //Return new ability
             return _lastAbilityInUse;
-        }
-
-        public bool TryBurstAbility(params object[] args)
-        {
-
-            return false;
         }
 
         /// <summary>

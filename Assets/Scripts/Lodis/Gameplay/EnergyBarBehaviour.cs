@@ -28,6 +28,8 @@ public class EnergyBarBehaviour : MonoBehaviour
     private FloatVariable _maxValue;
     [SerializeField]
     private float _meterTickHeight;
+    [SerializeField]
+    private BurstMeterBehaviour _burstMeter;
 
     public MovesetBehaviour Target { get => _target; set => _target = value; }
     public FloatVariable MaxValue { get => _maxValue; }
@@ -41,6 +43,7 @@ public class EnergyBarBehaviour : MonoBehaviour
         if (!player) return;
 
         Target = player.GetComponent<MovesetBehaviour>();
+        _burstMeter.Init(Target);
         _rectTransform = GetComponent<RectTransform>();
         _slider = GetComponent<Slider>();
         _slider.maxValue = MaxValue.Value;

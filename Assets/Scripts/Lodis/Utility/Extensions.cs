@@ -39,5 +39,10 @@ namespace Lodis.Utility
 
             return false;
         }
+
+        public static bool IsFilled(this UnityEngine.UI.Slider slider)
+        {
+            return slider.value == slider.maxValue;
+        }
     }
 }
