@@ -301,7 +301,7 @@ namespace Lodis.Movement
             magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Value);
 
             //Return the knockback force
-            return (new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * magnitude) * Mass;
+            return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * (magnitude * Mass);
         }
 
         /// <summary>
@@ -340,7 +340,7 @@ namespace Lodis.Movement
                 return new Vector3();
 
             //Return the knockback force
-            return (new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * magnitude) * mass;
+            return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * (magnitude * mass);
         }
 
         /// <summary>

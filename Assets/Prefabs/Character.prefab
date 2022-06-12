@@ -130,7 +130,7 @@ MonoBehaviour:
   _defaultAlignment: 3
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 1
-  _canBeWalkedThrough: 0
+  _canBeWalkedThrough: 1
   _moveOnStart: 1
   _checkIfBehindBarrier: 0
   _isBehindBarrier: 0

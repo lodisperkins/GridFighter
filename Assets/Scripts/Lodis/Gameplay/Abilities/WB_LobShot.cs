@@ -1,6 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
+using Lodis.Movement;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Lodis.Gameplay
 {
@@ -19,6 +20,9 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderBehaviour _projectileCollider;
         private float _shotDistance = 1;
+        private float _distance;
+        private float _angle;
+        private float _gravity;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -30,42 +34,12 @@ namespace Lodis.Gameplay
             owner = newOwner;
             
             _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
-
+            _distance = abilityData.GetCustomStatValue("PanelDistance");
+            _angle = abilityData.GetCustomStatValue("Angle");
+            _gravity = abilityData.GetCustomStatValue("Gravity");
+            
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;
-        }
-
-        private Vector3 CalculateProjectileForce()
-        {
-            //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
-            _shotDistance = abilityData.GetCustomStatValue("PanelDistance");
-            //Clamps hit angle to prevent completely horizontal movement
-            float dot = Vector3.Dot(owner.transform.forward, Vector3.right);
-            float shotAngle = 0;
-
-            if (dot < 0)
-                shotAngle = 2;
-            else
-                shotAngle = 1;
-
-            //Uses the total knockback and panel distance to find how far the object is travelling
-            float displacement = (panelSize * _shotDistance) + (panelSpacing * (_shotDistance - 1));
-            //Finds the magnitude of the force vector to be applied 
-            float val1 = displacement * Physics.gravity.magnitude * abilityData.GetCustomStatValue("GravityScale"); ;
-            float val2 = Mathf.Sin(2 * shotAngle);
-            float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
-            float magnitude = val3;
-
-            //If the magnitude is not a number the attack must be too weak. Return an empty vector
-            if (float.IsNaN(magnitude))
-            {
-                return new Vector3();
-            }
-
-            //Return the knockback force
-            return new Vector3(Mathf.Cos(shotAngle), Mathf.Sin(shotAngle)) * magnitude;
         }
 
         //Called when ability is used
@@ -81,36 +55,42 @@ namespace Lodis.Gameplay
 
             //Log if a projectile couldn't be found
             if (!_projectile)
-            {
-                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
-                return;
-            }
+                throw new Exception("Projectile for " + abilityData.abilityName + " could not be found.");
 
             CleanProjectileList();
 
             if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
 
-            //Create object to spawn laser from
-            GameObject spawnerObject = new GameObject();
-            spawnerObject.transform.parent = spawnTransform;
-            spawnerObject.transform.localPosition = Vector3.zero;
-            spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
-            spawnerObject.transform.forward = owner.transform.forward;
-
-            //Initialize and attach spawn script
-            ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
-            spawnScript.projectile = _projectile;
-
             Vector2 offSet = new Vector2(1, 0) * -owner.transform.forward;
             offSet.x = Mathf.RoundToInt(offSet.x);
             offSet.y = Mathf.RoundToInt(offSet.y);
 
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
-            //Fire laser
-            ActiveProjectiles.Add(spawnScript.FireProjectile(CalculateProjectileForce(), _projectileCollider, true));
+            
+            //Create object to spawn laser from
+            GameObject spawnerObject = new GameObject();
+            spawnerObject.transform.parent = spawnTransform;
+            spawnerObject.transform.localPosition = Vector3.up / 2;
+            var ownerForward = owner.transform.forward;
+            spawnerObject.transform.forward = ownerForward;
 
-            MonoBehaviour.Destroy(spawnerObject);
+            //Initialize and attach spawn script
+            ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
+            spawnScript.projectile = _projectile;
+
+            Vector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle);
+            launchForce.x *= ownerForward.x;
+
+            GameObject activeProjectile = spawnScript.FireProjectile(launchForce, _projectileCollider, true);
+
+            GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
+            gridPhysics.Gravity = _gravity;
+            
+            //Fire laser
+            ActiveProjectiles.Add(activeProjectile);
+
+            Object.Destroy(spawnerObject);
         }
     }
 }

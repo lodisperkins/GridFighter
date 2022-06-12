@@ -71,7 +71,6 @@ namespace Lodis.Gameplay
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = gravity;
             //Fire laser
-            ActiveProjectiles.Add(activeProjectile);
 
             MonoBehaviour.Destroy(spawnerObject);
 
@@ -136,6 +135,7 @@ namespace Lodis.Gameplay
             //Fire laser
             GameObject activeStrongShot = SpawnShot(owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileCollider, SpawnTransform, _strongShotGravity);
             _weakSpawn = activeStrongShot.transform;
+            ActiveProjectiles.Add(activeStrongShot);
         }
     }
 }
