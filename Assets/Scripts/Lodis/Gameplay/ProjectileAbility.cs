@@ -99,12 +99,6 @@ namespace Lodis.Gameplay
                 MonoBehaviour.Destroy(ActiveProjectiles[i]);
             }
         }
-
-        public override void StopAbility()
-        {
-            base.StopAbility();
-            //DestroyActiveProjectiles();
-        }
     }
 }
 

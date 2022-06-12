@@ -162,12 +162,12 @@ namespace Lodis.Gameplay
             //Return if this bullet has no owner
             if (!ownerMoveset)
             {
-                Debug.LogError("Owner moveset component not found. Did you forget to call the base Init function?");
+                throw new Exception("Owner moveset component not found. Did you forget to call the base Init function?");
                 return;
             }
             else if (!abilityData)
             {
-                Debug.LogError("Ability data couldn't be found. Did you forget to load the resource?");
+                throw new Exception("Ability data couldn't be found. Did you forget to load the resource?");
                 return;
             }
 

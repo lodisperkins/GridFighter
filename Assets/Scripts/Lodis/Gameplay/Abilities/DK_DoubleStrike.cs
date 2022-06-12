@@ -98,7 +98,7 @@ namespace Lodis.Gameplay
             //Despawn particles and hit box
             MonoBehaviour.Destroy(_visualPrefabInstance);
 
-            if (_fistCollider != null)
+            if (_fistCollider)
                 MonoBehaviour.Destroy(_fistCollider.gameObject);
 
             if (!_secondStrikeActivated)

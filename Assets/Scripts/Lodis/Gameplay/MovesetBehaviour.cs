@@ -86,24 +86,11 @@ namespace Lodis.Gameplay
         private Movement.GridMovementBehaviour _movementBehaviour;
         private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
-        private UnityAction _onBurst;
         private RoutineBehaviour.TimedAction _rechargeAction;
 
-        public Transform ProjectileSpawnTransform
-        {
-            get
-            {
-                return _projectileSpawnPoint;
-            }
-        }
+        public Transform ProjectileSpawnTransform => _projectileSpawnPoint;
 
-        public Transform MeleeHitBoxSpawnTransform
-        {
-            get
-            {
-                return _meleeHitBoxSpawnPoint;
-            }
-        }
+        public Transform MeleeHitBoxSpawnTransform => _meleeHitBoxSpawnPoint;
 
         /// <summary>
         /// True if there is some ability that is currently active.
@@ -147,7 +134,7 @@ namespace Lodis.Gameplay
         public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
         public float BurstChargeTime { get => _burstChargeTime; private set => _burstChargeTime = value; }
         public bool CanBurst { get => _canBurst; private set => _canBurst = value; }
-        public UnityAction OnBurst { get => _onBurst; set => _onBurst = value; }
+        public UnityAction OnBurst { get; set; }
 
         private void Awake()
         {
@@ -156,7 +143,7 @@ namespace Lodis.Gameplay
         }
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             _normalDeck = Instantiate(_normalDeckRef);
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_EnergyBurst_Data"));
@@ -199,19 +186,19 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Checks if the normal deck has an ability that matches the name
         /// </summary>
-        /// <param name="name">The name of the ability to search for. Do not use the file name.</param>
-        public bool NormalDeckContains(string name)
+        /// <param name="abilityName">The name of the ability to search for. Do not use the file name.</param>
+        public bool NormalDeckContains(string abilityName)
         {
-            return _normalDeck.Contains(name);
+            return _normalDeck.Contains(abilityName);
         }
 
         /// <summary>
         /// Checks if the special deck has an ability that matches the name
         /// </summary>
-        /// <param name="name">The name of the ability to search for. Do not use the file name.</param>
-        public bool SpecialDeckContains(string name)
+        /// <param name="abilityName">The name of the ability to search for. Do not use the file name.</param>
+        public bool SpecialDeckContains(string abilityName)
         {
-            return _specialDeck.Contains(name);
+            return _specialDeck.Contains(abilityName);
         }
 
         /// <summary>
@@ -260,18 +247,17 @@ namespace Lodis.Gameplay
         {
             return _normalDeck.GetAbilityByType(abilityType);
         }
-        
+
         /// <summary>
         /// Gets the ability from the moveset deck based on the type passed in.
         /// </summary>
-        /// <param name="abilityType">The ability type to search for.</param>
         /// <returns></returns>
-        public Ability GetAbilityByName(string name)
+        public Ability GetAbilityByName(string abilityName)
         {
-            if (_normalDeck.GetAbilityByName(name) == null)
-                return _specialDeck.GetAbilityByName(name);
+            if (_normalDeck.GetAbilityByName(abilityName) == null)
+                return _specialDeck.GetAbilityByName(abilityName);
 
-            return _normalDeck.GetAbilityByName(name);
+            return _normalDeck.GetAbilityByName(abilityName);
         }
 
         /// <summary>
@@ -322,7 +308,7 @@ namespace Lodis.Gameplay
         /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
         /// the ability to use will be activated if the current ability in use can be canceled.
         /// </summary>
-        /// <param name="abilityType">The type of basic ability to use</param>
+        /// <param name="abilityName">The name of the basic ability to use</param>
         /// <param name="args">Additional arguments to be given to the basic ability</param>
         /// <returns>The ability used.</returns>
         public Ability UseBasicAbility(string abilityName, params object[] args)
@@ -334,18 +320,16 @@ namespace Lodis.Gameplay
             else if (abilityName == "EnergyBurst" && _deckReloading)
                 return null;
 
-            //Find the ability in the deck abd use it
+            //Find the ability in the deck and use it
             Ability currentAbility = _normalDeck.GetAbilityByName(abilityName);
+            if (currentAbility == null)
+                return null;
             currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
-
-
+            
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
                     return _lastAbilityInUse;
-
-            if (currentAbility == null)
-                return null;
 
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
@@ -405,6 +389,7 @@ namespace Lodis.Gameplay
             return _lastAbilityInUse;
         }
 
+        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// Immediately cancels and ends the current ability in use
         /// </summary>

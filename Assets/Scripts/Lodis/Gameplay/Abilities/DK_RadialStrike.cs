@@ -76,7 +76,7 @@ namespace Lodis.Gameplay
         protected override void Deactivate()
         {
             base.Deactivate();
-            MonoBehaviour.Destroy(_visualPrefabInstance);
+            Object.Destroy(_visualPrefabInstance);
             _deactivated = true;
         }
 

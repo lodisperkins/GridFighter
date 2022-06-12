@@ -104,7 +104,7 @@ namespace Lodis.Utility
             if (time - action.TimeStarted >= action.Duration && action.GetEnabled())
             {
                 action.Disable();
-                action.Event.Invoke();
+                action.Event();
                 _timedActions.Remove(action);
             }
         }

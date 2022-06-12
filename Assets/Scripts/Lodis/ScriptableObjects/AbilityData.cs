@@ -1,8 +1,12 @@
-﻿using Lodis.Gameplay;
+﻿using System;
+using Lodis.Gameplay;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 using UnityEditor;
+using UnityEditor.PackageManager;
+using UnityEngine.Assertions;
 using UnityEngine.UI;
 
 namespace Lodis.ScriptableObjects
@@ -110,17 +114,19 @@ namespace Lodis.ScriptableObjects
         /// <summary>
         /// Searches for a stat value that matches the name and returns it if found
         /// </summary>
-        /// <param name="name">The name of the stat value</param>
+        /// <param name="statName">The name of the stat value</param>
         /// <returns>The value of the stat. Return NaN if the stat couldn't be found</returns>
-        public float GetCustomStatValue(string name)
+        public float GetCustomStatValue(string statName)
         {
             foreach (Stat stat in _customStats)
             {
-                if (stat.name == name)
+                if (stat.name == statName)
                     return stat.value;
             }
 
-            Debug.LogError("Couldn't find stat. Either the stat doesn't exist or the name is mispelled. Attempted stat name was " + name);
+            throw new Exception(
+                "Couldn't find stat. Either the stat doesn't exist or the name is misspelled. Attempted stat name was " +
+                statName);
             return float.NaN;
         }
 
@@ -128,7 +134,7 @@ namespace Lodis.ScriptableObjects
         {
             if (index < 0 || index >= ColliderData.Length)
             {
-                Debug.LogWarning("GetColliderInfo() was called with an invalid index passed as a parameter");
+                throw  new WarningException("GetColliderInfo() was called with an invalid index passed as a parameter");
                 return new HitColliderInfo();
             }
             ColliderData[index].AbilityType = AbilityType;

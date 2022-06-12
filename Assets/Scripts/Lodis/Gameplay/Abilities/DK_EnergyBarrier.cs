@@ -100,7 +100,7 @@ namespace Lodis.Gameplay
         {
             base.Deactivate();
             //Destroy the barrier
-            MonoBehaviour.Destroy(_visualPrefabInstance);
+            Object.Destroy(_visualPrefabInstance);
         }
     }
 }
