@@ -44,27 +44,23 @@ namespace Lodis.AI
             if (!File.Exists(SaveLoadPath + ownerName + ".txt"))
                 return false;
 
+            _nodeCache = new List<TreeNode>();
+            
             StreamReader reader = new StreamReader(SaveLoadPath + ownerName + ".txt");
 
             int count = JsonConvert.DeserializeObject<int>(reader.ReadLine());
 
             for (int i = 0; i < count; i++)
             {
-                _nodeCache.Add(JsonConvert.DeserializeObject<DefenseNode>(reader.ReadLine()));
+                AddDecision(JsonConvert.DeserializeObject<DefenseNode>(reader.ReadLine()));
             }
 
             reader.Close();
-            int loadCount = _nodeCache.Count;
 
-            if (_nodeCache == null)
+            if (_nodeCache.Count == 0)
             {
-                _nodeCache = new List<TreeNode>();
                 return false;
             }
-
-            for (int i = 0; i < loadCount; i++)
-                AddDecision(_nodeCache[i]);
-
             OnLoad?.Invoke();
 
             return true;
