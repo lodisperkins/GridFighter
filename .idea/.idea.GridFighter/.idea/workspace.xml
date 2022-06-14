@@ -4,14 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4749c500-6daf-4bc9-bc61-1b8ac949ca0a" name="Changes" comment="" />
+    <list default="true" id="4749c500-6daf-4bc9-bc61-1b8ac949ca0a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.GridFighter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GridFighter/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Resources/Decks/Deck.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Resources/Decks/Deck.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/AI/AttackNode.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/AI/AttackNode.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/MovesetBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/MovesetBehaviour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Packages/packages-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Packages/packages-lock.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577ac7a62ef43179789031239ba87983e2400/f7/079f3f13/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ed6c4020915a41e1b5eb5e4c6a560e952d400/11/1f3ba6cf/Scheduler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ed6c4020915a41e1b5eb5e4c6a560e952d400/33/f4a79824/ConditionBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ed6c4020915a41e1b5eb5e4c6a560e952d400/63/bdc1a2f0/PrimitiveActionTask.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@7.5.3/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -47,7 +56,7 @@
       <method v="2" />
     </configuration>
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
-      <option name="EXE_PATH" value="C:\Program Files\2019.4.18f1\Editor\Unity.exe" />
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2019.4.18f1\Editor\Unity.exe" />
       <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath C:\Users\lodis.perkins\Documents\GitHub\GridFighter -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
       <option name="WORKING_DIRECTORY" value="C:\Users\lodis.perkins\Documents\GitHub\GridFighter" />
       <option name="PASS_PARENT_ENVS" value="1" />
@@ -64,10 +73,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="29820">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="10384">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="29820" />
+      <option name="pid" value="10384" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -84,6 +93,7 @@
       <option name="presentableId" value="Default" />
       <updated>1655050521787</updated>
       <workItem from="1655050526689" duration="8099000" />
+      <workItem from="1655242702867" duration="1232000" />
     </task>
     <servers />
   </component>
@@ -102,15 +112,60 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/DecisionTree.cs</url>
           <line>48</line>
-          <properties documentPath="C:\Users\lodis.perkins\Documents\GitHub\GridFighter\Assets\Scripts\Lodis\AI\DecisionTree.cs" initialLine="48" containingFunctionPresentation="method 'GetDecision'">
+          <properties documentPath="C:\Users\lodis.perkins\Documents\GitHub\GridFighter\Assets\Scripts\Lodis\AI\DecisionTree.cs" initialLine="48" containingFunctionPresentation="method 'GetDecision'" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/BehaviorBricks/Actions/Custom/AttackAction.cs</url>
+          <line>23</line>
+          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\Custom\AttackAction.cs" initialLine="23" containingFunctionPresentation="method 'OnStart'">
             <startOffsets>
-              <option value="1984" />
+              <option value="574" />
             </startOffsets>
             <endOffsets>
-              <option value="2000" />
+              <option value="589" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="2" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/BehaviorBricks/Actions/Custom/MoveAction.cs</url>
+          <line>28</line>
+          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\Custom\MoveAction.cs" initialLine="28" containingFunctionPresentation="method 'OnUpdate'">
+            <startOffsets>
+              <option value="777" />
+            </startOffsets>
+            <endOffsets>
+              <option value="805" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/BehaviorBricks/Conditions/Custom/IsSafeCondition.cs</url>
+          <line>62</line>
+          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\Custom\IsSafeCondition.cs" initialLine="62" containingFunctionPresentation="method 'Check'">
+            <startOffsets>
+              <option value="2340" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2404" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/BehaviorBricks/Conditions/Custom/InRangeCondition.cs</url>
+          <line>21</line>
+          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\Custom\InRangeCondition.cs" initialLine="21" containingFunctionPresentation="method 'Check'">
+            <startOffsets>
+              <option value="605" />
+            </startOffsets>
+            <endOffsets>
+              <option value="679" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
