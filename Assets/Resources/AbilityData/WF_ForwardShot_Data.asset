@@ -16,16 +16,16 @@ MonoBehaviour:
   AbilityType: 2
   timeActive: 0.2
   recoverTime: 0.25
-  startUpTime: 0.1
+  startUpTime: 0.05
   chargeTime: 1
   maxActivationAmount: 0
   EnergyCost: 0
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 1
+  canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
+  CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 1
   CanCancelOnOpponentHit: 1
@@ -40,7 +40,7 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
+    TimeActive: 0.3
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
@@ -48,9 +48,9 @@ MonoBehaviour:
       m_Bits: 0
     HitFrames: 0
     Damage: 5
-    BaseKnockBack: 2
-    KnockBackScale: 0.5
-    HitAngle: 1.2
+    BaseKnockBack: 4
+    KnockBackScale: 0.3
+    HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     CanSpike: 0

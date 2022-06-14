@@ -145,7 +145,7 @@ namespace Lodis.Gameplay
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
         }
 
-        public void Restart()
+        public static void Restart()
         {
             SceneManager.LoadScene(0);
         }
@@ -272,7 +272,7 @@ namespace Lodis.Gameplay
             DrawDefaultInspector();
             if (GUILayout.Button("Reset Game"))
             {
-                _manager.Restart();
+                GameManagerBehaviour.Restart();
             }
         }
     }

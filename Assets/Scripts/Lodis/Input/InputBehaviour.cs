@@ -472,6 +472,9 @@ namespace Lodis.Input
             }
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
+            if (Keyboard.current.backspaceKey.wasPressedThisFrame)
+                GameManagerBehaviour.Restart();
+            
 #if UNITY_EDITOR
             if (Keyboard.current.enterKey.wasPressedThisFrame)
                 EditorApplication.isPaused = true;

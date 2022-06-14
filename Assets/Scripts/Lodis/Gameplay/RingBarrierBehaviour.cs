@@ -118,6 +118,9 @@ namespace Lodis.Gameplay
             if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed)
                 return;
 
+            if (!knockbackBehaviour.IsTumbling)
+                return;
+            
             if (collision.gameObject == Owner && !_ownerCollider)
                 _ownerCollider = collision.collider;
 
@@ -132,7 +135,7 @@ namespace Lodis.Gameplay
             float newAngle = Mathf.Acos(dotProduct);
 
             knockbackBehaviour.Physics.StopVelocity();
-            knockbackBehaviour.TakeDamage(name, 0, _knockBackDistance, newAngle, 0, 0.7f);
+            knockbackBehaviour.TakeDamage(name, 0, _knockBackDistance, newAngle, 0, 1.2f);
         }
     }
 }

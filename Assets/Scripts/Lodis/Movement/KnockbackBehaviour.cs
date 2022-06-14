@@ -82,6 +82,7 @@ namespace Lodis.Movement
         private RoutineBehaviour.TimedAction _hitStunTimer = new RoutineBehaviour.TimedAction();
         private float _lastTotalKnockBack;
         private float _lastTimeInKnockBack;
+        private RoutineBehaviour.TimedAction _recoveryAction;
 
         public float LastTimeInKnockBack
         {
@@ -273,6 +274,8 @@ namespace Lodis.Movement
             if (!Landing) return;
 
             StopCoroutine(_currentCoroutine);
+            DisableInvincibility();
+            Physics.Rigidbody.isKinematic = false;
             IsDown = false;
             Landing = false;
             RecoveringFromFall = false;
@@ -408,7 +411,7 @@ namespace Lodis.Movement
                 IsDown = false;
                 //Start recovery from knock down
                 Physics.MakeKinematic(); 
-                RoutineBehaviour.Instance.StartNewTimedAction(args => RecoveringFromFall = false, TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
+                _recoveryAction = RoutineBehaviour.Instance.StartNewTimedAction(args => RecoveringFromFall = false, TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
             }
 
             CancelHitStun();
