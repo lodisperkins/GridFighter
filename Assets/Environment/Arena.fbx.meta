@@ -12,6 +12,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Automotive led lights.001
+    second: {fileID: 2100000, guid: 518ad25a636053445902a677ad7f49a3, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Black plastic PL
     second: {fileID: 2100000, guid: 974b52f5dfb1d384d9bdb5c7c4ea12dd, type: 2}
   - first:
@@ -82,13 +87,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Red Velvet
-    second: {fileID: 2100000, guid: 98ac86cf7401e6e4db55992d437cbddb, type: 2}
+      name: Procedural Sci-fi Panel
+    second: {fileID: 2100000, guid: dfdeada6b6bd7784f867e04560348074, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Scifi Panels 11
-    second: {fileID: 2100000, guid: a216b880677f696469e1b0d3605bd8f4, type: 2}
+      name: Red Velvet
+    second: {fileID: 2100000, guid: 98ac86cf7401e6e4db55992d437cbddb, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -112,10 +117,15 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: electricitymonkey.001
+    second: {fileID: 2100000, guid: 3b6e5fcdc18260a419bf952aabcf3796, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: steel dark used
     second: {fileID: 2100000, guid: a81bacf2396e04b4695f1769b7471f62, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -144,7 +154,7 @@ ModelImporter:
     isReadable: 0
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 0.1
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -191,7 +201,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 0.001
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
