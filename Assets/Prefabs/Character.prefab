@@ -299,7 +299,7 @@ MonoBehaviour:
   _bounceCollider: {fileID: 8697654749103335270}
   _isGrounded: 0
   _extraHeight: 0.5
-  _bounciness: 3
+  _bounciness: 4
   _panelBounceEnabled: 1
   _useGravity: 1
   _ignoreForces: 0

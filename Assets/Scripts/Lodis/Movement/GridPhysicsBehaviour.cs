@@ -546,24 +546,24 @@ namespace Lodis.Movement
         /// <returns></returns>
         private bool CheckIsGrounded()
         {
-            _isGrounded = false;
+            bool grounded = false;
 
             Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure"}));
 
             foreach (Collider collider in hits)
             {
-                Vector3 closestPoint = collider.ClosestPoint(transform.position);
-                float normalY = (transform.position - closestPoint).normalized.y;
+                var position = transform.position;
+                Vector3 closestPoint = collider.ClosestPoint(position);
+                float normalY = (position - closestPoint).normalized.y;
                 normalY = Mathf.Ceil(normalY);
                 if (normalY == 1)
-                    _isGrounded = true;
+                {
+                    if (!_isGrounded) _onCollisionWithGround?.Invoke();
+                    grounded = true;
+                }
             }
-
-            //RaycastHit hit;
-            //bool hitRecieved = Physics.Raycast(GroundedBoxPosition, Vector3.down, out hit, GroundedBoxExtents.y, LayerMask.GetMask("Panels", "Structure"));
-
-            //_isGrounded = hitRecieved && (hit.collider.CompareTag("Panel") || hit.collider.CompareTag("CollisionPlane"));
-            return _isGrounded;
+            
+            return grounded;
         }
 
         private void OnDrawGizmos()
@@ -583,8 +583,8 @@ namespace Lodis.Movement
             else
                 _constantForceBehaviour.force = Vector3.zero;
 
-
-            _objectAtRest = CheckIsGrounded() && _rigidbody.velocity.magnitude == 0;
+            _isGrounded = CheckIsGrounded();
+            _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude == 0;
         }
     }
 }

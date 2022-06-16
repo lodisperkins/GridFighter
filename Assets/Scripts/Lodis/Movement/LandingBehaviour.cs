@@ -31,37 +31,21 @@ namespace Lodis.Movement
         private void Awake()
         {
             _knockback = GetComponent<KnockbackBehaviour>();
-            _knockback.Physics.AddOnCollisionWithGroundEvent(args =>
+            _knockback.AddOnStunAction(CancelLanding);
+            _knockback.AddOnKnockBackAction(() =>
             {
-                if (_knockback.CurrentAirState == AirState.FREEFALL) TryStartLandingLag();
+                CancelLanding();
+                if (_knockback.LaunchVelocity.magnitude > _knockback.MinimumLaunchMagnitude.Value)
+                    CanCheckLanding = false;
             });
-            _knockback.AddOnStunAction(() => { if (Landing) RoutineBehaviour.Instance.StopTimedAction(_landingAction); });
-            _knockback.AddOnKnockBackStartAction(CancelLanding);
         }
 
-        // Start is called before the first frame update
-        void Start()
+        private void OnTriggerEnter(Collider other)
         {
-            _knockback.AddOnKnockBackAction(() => Landing = false);
-        }
-
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (_knockback.CheckIfIdle()) return;
-
-            if (collision.gameObject.CompareTag("CollisionPlane") && (_knockback.CurrentAirState == AirState.TUMBLING || _knockback.CurrentAirState == AirState.FREEFALL))
+            if (_knockback.CurrentAirState != AirState.NONE &&
+                other.CompareTag("Panel") && !_knockback.Stunned && CheckFalling())
             {
                 CanCheckLanding = true;
-            }
-        }
-
-        private void OnCollisionExit(Collision other)
-        {
-            if (_knockback.CheckIfIdle()) return;
-
-            if (other.gameObject.CompareTag("CollisionPlane") && (_knockback.CurrentAirState == AirState.TUMBLING || _knockback.CurrentAirState == AirState.FREEFALL))
-            {
-                CanCheckLanding = false;
             }
         }
 
@@ -76,24 +60,11 @@ namespace Lodis.Movement
             Landing = false;
             RecoveringFromFall = false;
         }
-    
-        /// <summary>
-        /// Starts landing lag if the object just fell onto a structure
-        /// </summary>
-        /// <param name="args"></param>
-        public void TryStartLandingLag(params object[] args)
-        {
-            if (_knockback.Stunned || _knockback.Physics.Rigidbody.velocity.magnitude > _knockback.NetForceLandingTolerance) return;
-
-            StartLandingLag();
-        }
-
+        
         private void TumblingLanding(object[] arguments)
         {
-            if (!Landing) return;
             RoutineBehaviour.Instance.StopTimedAction(_knockback.GravityIncreaseTimer);
             _knockback.Physics.Gravity = _knockback.StartGravity;
-            Landing = false;
             //Start knockdown
             IsDown = true;
             _knockback.SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
@@ -108,22 +79,24 @@ namespace Lodis.Movement
             RecoveringFromFall = true;
             IsDown = false;
             //Start recovery from knock down
-            _knockback.Physics.MakeKinematic();
             _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(values =>
                 {
                     RecoveringFromFall = false;
                     CanCheckLanding = false;
+                    Landing = false;
                 },
                 TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
         }
-        
-        private void StartLandingLag()
+
+        public void StartLandingLag()
         {
             Landing = true;
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
             _knockback.LastTimeInKnockBack = 0;
             _knockback.Physics.StopVelocity();
 
+            RoutineBehaviour.Instance.StopTimedAction(_landingAction);
+            
             switch (_knockback.CurrentAirState)
             {
                 case AirState.TUMBLING:
@@ -154,10 +127,21 @@ namespace Lodis.Movement
             _knockback.CancelHitStun();
         }
 
-        private void Update()
+        private bool CheckFalling()
         {
-            if (CanCheckLanding && !Landing)
-                TryStartLandingLag();
+            Vector3 velocity = _knockback.Physics.LastVelocity;
+            float dot = Vector3.Dot(Vector3.down, velocity.normalized);
+
+            return dot >= 0;
+        }
+        
+        private void FixedUpdate()
+        {
+            if (_knockback.Physics.Rigidbody.velocity.magnitude <= _knockback.NetForceLandingTolerance &&
+                !Landing && CanCheckLanding)
+            {
+                StartLandingLag();
+            }
         }
     }
 }

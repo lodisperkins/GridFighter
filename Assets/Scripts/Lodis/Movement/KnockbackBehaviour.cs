@@ -110,6 +110,8 @@ namespace Lodis.Movement
 
         public float NetForceLandingTolerance => _netForceLandingTolerance;
 
+        public FloatVariable MinimumLaunchMagnitude => _minimumLaunchMagnitude;
+
         private void Awake()
         {
             _landingBehaviour = GetComponent<LandingBehaviour>();
@@ -361,7 +363,7 @@ namespace Lodis.Movement
             if (hitStun > 0)
                 _isFlinching = true;
 
-            if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
+            if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -420,7 +422,7 @@ namespace Lodis.Movement
             if (info.HitStunTime > 0)
                 _isFlinching = true;
 
-            if ((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)
+            if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -452,7 +454,7 @@ namespace Lodis.Movement
             }
             else if (_landingBehaviour.Landing)
             {
-                knockBackForce = Vector3.up * _minimumLaunchMagnitude.Value;
+                knockBackForce = Vector3.up * MinimumLaunchMagnitude.Value;
 
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -512,7 +514,7 @@ namespace Lodis.Movement
                 _isFlinching = true;
 
             //Return if this attack doesn't generate enough force
-            if (!((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)) return info.Damage;
+            if (!((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)) return info.Damage;
             
             //Call events to let others know this character has began knockback
             _onKnockBackStart?.Invoke();
@@ -589,7 +591,7 @@ namespace Lodis.Movement
                 _isFlinching = true;
 
             //Return if this attack doesn't generate enough force
-            if (!((knockBackForce / Physics.Mass).magnitude > _minimumLaunchMagnitude.Value)) return damage;
+            if (!((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)) return damage;
             
             //Call events to let others know this character has began knockback
             _onKnockBackStart?.Invoke();

@@ -316,7 +316,7 @@ namespace Lodis.Gameplay
             DeactivateParry();
 
             onFallBroken?.Invoke(true);
-            _knockBack.LandingScript.TryStartLandingLag();
+            _knockBack.LandingScript.StartLandingLag();
         }
 
         private void OnDrawGizmos()
@@ -391,7 +391,7 @@ namespace Lodis.Gameplay
             DeactivateParry();
 
             onFallBroken?.Invoke(true);
-            _knockBack.LandingScript.TryStartLandingLag();
+            _knockBack.LandingScript.StartLandingLag();
             //Debug.Log("Collided with " + other.name);
 
         }
