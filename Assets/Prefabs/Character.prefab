@@ -923,10 +923,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _landingTime: 0
-  _knockDownTime: 0
-  _knockDownRecoverTime: 0
-  _knockDownRecoverInvincibleTime: 0
-  _knockDownLandingTime: 0
+  _knockDownTime: 0.3
+  _knockDownRecoverTime: 0.7
+  _knockDownRecoverInvincibleTime: 1.5
+  _knockDownLandingTime: 0.4
 --- !u!114 &631037068264074505
 MonoBehaviour:
   m_ObjectHideFlags: 0
