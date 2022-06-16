@@ -294,6 +294,7 @@ namespace Lodis.Gameplay
             //Stop the effects of the attack
             _knockBack.Physics.StopVelocity();
             _knockBack.Physics.IgnoreForces = true;
+            _knockBack.LandingScript.CanCheckLanding = false;
             _knockBack.CancelHitStun();
 
             //Breaks fall on structures
@@ -316,6 +317,7 @@ namespace Lodis.Gameplay
             DeactivateParry();
 
             onFallBroken?.Invoke(true);
+            _knockBack.CurrentAirState = AirState.BREAKINGFALL;
             _knockBack.LandingScript.StartLandingLag();
         }
 
@@ -374,7 +376,8 @@ namespace Lodis.Gameplay
             _knockBack.Physics.StopVelocity();
             _knockBack.Physics.IgnoreForces = true;
             _knockBack.CancelHitStun();
-
+            _knockBack.LandingScript.CanCheckLanding = false;
+            
             if (collision.gameObject.CompareTag("Structure") && _disableFallBreakAction == null)
             {
                 _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration);
@@ -391,6 +394,7 @@ namespace Lodis.Gameplay
             DeactivateParry();
 
             onFallBroken?.Invoke(true);
+            _knockBack.CurrentAirState = AirState.BREAKINGFALL;
             _knockBack.LandingScript.StartLandingLag();
             //Debug.Log("Collided with " + other.name);
 

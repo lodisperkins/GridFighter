@@ -69,8 +69,8 @@ namespace Lodis.Gameplay
             
             if (_invincibleBarriers)
             {
-                _ringBarrierL.SetIntagibilityByCondition(condition => !_invincibleBarriers);
-                _ringBarrierR.SetIntagibilityByCondition(condition => !_invincibleBarriers);
+                _ringBarrierL.SetInvincibilityByCondition(condition => !_invincibleBarriers);
+                _ringBarrierR.SetInvincibilityByCondition(condition => !_invincibleBarriers);
             }
             
             //Initialize grid

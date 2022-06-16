@@ -16,7 +16,7 @@ namespace Lodis.Movement
         [SerializeField] private float _knockDownRecoverInvincibleTime;
         [SerializeField] private float _knockDownLandingTime;
         private KnockbackBehaviour _knockback;
-        private bool CanCheckLanding;
+        private bool _canCheckLanding;
 
         public float LandingTime { get => _landingTime;}
         public bool IsDown { get; private set; }
@@ -27,6 +27,12 @@ namespace Lodis.Movement
         /// Whether or not this object is current regaining footing after hitting the ground
         /// </summary>
         public bool Landing { get; private set; }
+
+        public bool CanCheckLanding
+        {
+            get => _canCheckLanding;
+            set => _canCheckLanding = value;
+        }
 
         private void Awake()
         {
@@ -106,20 +112,19 @@ namespace Lodis.Movement
                     break;
                 case AirState.FREEFALL:
                     _knockback.CurrentAirState = AirState.NONE;
+                    CanCheckLanding = false;
                     _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
                         {
                             Landing = false;
-                            CanCheckLanding = false;
                         },
                         TimedActionCountType.SCALEDTIME, _landingTime);
                     break;
                 case AirState.BREAKINGFALL:
                     _knockback.CurrentAirState = AirState.NONE;
+                    CanCheckLanding = false;
                     _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
                     {
                         Landing = false;
-                        _knockback.Physics.MakeKinematic();
-                        CanCheckLanding = false;
                     }, TimedActionCountType.SCALEDTIME, _knockback.DefenseBehaviour.GroundTechLength);
                     break;
             }

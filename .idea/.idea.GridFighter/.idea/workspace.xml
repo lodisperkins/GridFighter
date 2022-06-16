@@ -6,36 +6,11 @@
   <component name="ChangeListManager">
     <list default="true" id="4749c500-6daf-4bc9-bc61-1b8ac949ca0a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.GridFighter/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.GridFighter/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/AOT.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.XML" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.XML.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/AOT/Newtonsoft.Json.dll.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Standalone.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.XML" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.XML.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Standalone/Newtonsoft.Json.dll.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Windows.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Windows/Newtonsoft.Json.XML" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Windows/Newtonsoft.Json.XML.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Windows/Newtonsoft.Json.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Assemblies/Windows/Newtonsoft.Json.dll.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Documentation.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Documentation/Json Net for Unity 2.0.1.pdf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/Documentation/Json Net for Unity 2.0.1.pdf.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/JsonDotNet201Source.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/JsonDotNet201Source.zip.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/link.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/JsonDotNet/link.xml.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/DOTween.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/DOTween.dll.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Editor/DOTweenEditor.dll.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/Demigiant/DOTween/Editor/DOTweenEditor.dll.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Character.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Character.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/GridScripts/CollisionPlaneBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/GridScripts/CollisionPlaneBehaviour.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/GridPhysicsBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/GridPhysicsBehaviour.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/KnockbackBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/KnockbackBehaviour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Plugins/JsonDotNet.meta" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Plugins/JsonDotNet.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/TestDummy.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/TestDummy.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/CharacterDefenseBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/CharacterDefenseBehaviour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/HealthBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/HealthBehaviour.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/Input/GameManagerBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/Input/GameManagerBehaviour.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/LandingBehaviour.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/LandingBehaviour.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -47,6 +22,9 @@
     <setting file="file://$PROJECT_DIR$/../../../../../Program Files/Unity/Hub/Editor/2019.4.18f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.ugui/Runtime/EventSystem/EventSystem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/53fa4d04ff9e437dac8e1ba5c15e99ce3200/10/be00ead5/NativeInputSystem.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/76db40a938694c62906f9bbb72db1a18c000/41/57aceacb/NavMesh.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ed6c4020915a41e1b5eb5e4c6a560e952d400/11/1f3ba6cf/Scheduler.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ed6c4020915a41e1b5eb5e4c6a560e952d400/33/f4a79824/ConditionBase.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/ed6c4020915a41e1b5eb5e4c6a560e952d400/63/bdc1a2f0/PrimitiveActionTask.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/LandingBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@7.5.3/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -91,20 +69,20 @@
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="14324">
+    <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="14324" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="14324">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="14324" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -135,106 +113,5 @@
   <component name="UnityUnitTestConfiguration" currentTestLauncher="EditMode" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/DecisionTree.cs</url>
-          <line>48</line>
-          <properties documentPath="C:\Users\lodis.perkins\Documents\GitHub\GridFighter\Assets\Scripts\Lodis\AI\DecisionTree.cs" initialLine="48" containingFunctionPresentation="method 'GetDecision'" />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/BehaviorBricks/Actions/Custom/AttackAction.cs</url>
-          <line>23</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\Custom\AttackAction.cs" initialLine="23" containingFunctionPresentation="method 'OnStart'" />
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/BehaviorBricks/Actions/Custom/MoveAction.cs</url>
-          <line>28</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\Custom\MoveAction.cs" initialLine="28" containingFunctionPresentation="method 'OnUpdate'" />
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/BehaviorBricks/Conditions/Custom/IsSafeCondition.cs</url>
-          <line>62</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\Custom\IsSafeCondition.cs" initialLine="62" containingFunctionPresentation="method 'Check'" />
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/AI/BehaviorBricks/Conditions/Custom/InRangeCondition.cs</url>
-          <line>21</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\Custom\InRangeCondition.cs" initialLine="21" containingFunctionPresentation="method 'Check'" />
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/HealthBehaviour.cs</url>
-          <line>289</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\Gameplay\HealthBehaviour.cs" initialLine="289" containingFunctionPresentation="method 'SetInvincibilityByCondition'">
-            <startOffsets>
-              <option value="9729" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9765" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="17" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/GridPhysicsBehaviour.cs</url>
-          <line>156</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\Movement\GridPhysicsBehaviour.cs" initialLine="156" containingFunctionPresentation="method 'MakeKinematic'">
-            <startOffsets>
-              <option value="6095" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6096" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="39" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/GridScripts/CollisionPlaneBehaviour.cs</url>
-          <line>31</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\GridScripts\CollisionPlaneBehaviour.cs" initialLine="31" containingFunctionPresentation="method 'OnCollisionEnter'">
-            <startOffsets>
-              <option value="1205" />
-            </startOffsets>
-            <endOffsets>
-              <option value="1309" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="42" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/LandingBehaviour.cs</url>
-          <line>154</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\Movement\LandingBehaviour.cs" initialLine="160" containingFunctionPresentation="method 'FixedUpdate'">
-            <startOffsets>
-              <option value="6243" />
-            </startOffsets>
-            <endOffsets>
-              <option value="6261" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="45" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/LandingBehaviour.cs</url>
-          <line>54</line>
-          <properties documentPath="C:\Users\lodis.perkins\source\repos\GridFighter\Assets\Scripts\Lodis\Movement\LandingBehaviour.cs" initialLine="54" containingFunctionPresentation="method 'CancelLanding'">
-            <startOffsets>
-              <option value="2134" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2147" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="46" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
