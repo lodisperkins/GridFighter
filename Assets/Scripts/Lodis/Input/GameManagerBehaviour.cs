@@ -66,6 +66,13 @@ namespace Lodis.Gameplay
             _inputManager.playerPrefab = _playerRef;
             _grid.DestroyTempPanels();
             _grid.InvincibleBarriers = _invincibleBarriers;
+            
+            if (_invincibleBarriers)
+            {
+                _ringBarrierL.SetIntagibilityByCondition(condition => !_invincibleBarriers);
+                _ringBarrierR.SetIntagibilityByCondition(condition => !_invincibleBarriers);
+            }
+            
             //Initialize grid
             _grid.CreateGrid();
             Application.targetFrameRate = _targetFrameRate;

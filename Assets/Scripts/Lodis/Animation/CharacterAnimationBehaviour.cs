@@ -407,7 +407,7 @@ namespace Lodis.Gameplay
 
             if (info.Length == 0)
                 return;
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / (_knockbackBehaviour.KnockDownRecoverTime - 0.1f));
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / (_knockbackBehaviour.LandingScript.KnockDownRecoverTime - 0.1f));
         }
 
         public void PlayHardLandingAnimation()
@@ -419,7 +419,7 @@ namespace Lodis.Gameplay
             if (info.Length == 0)
                 return;
 
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.KnockDownLandingTime);
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingScript.KnockDownLandingTime);
         }
 
         public void PlaySoftLandingAnimation()
@@ -430,7 +430,7 @@ namespace Lodis.Gameplay
 
             if (info.Length == 0)
                 return;
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingTime);
+            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingScript.LandingTime);
         }
 
         public void PlayDamageAnimation()

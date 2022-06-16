@@ -107,7 +107,7 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.Physics.Gravity = _ownerGravity;
 
             //Stop momentum if the character isn't somehow in knock back
-            if (!_knockBackBehaviour.IsTumbling)
+            if (_knockBackBehaviour.CurrentAirState != AirState.FREEFALL)
                 _knockBackBehaviour.Physics.StopVelocity();
         }
 

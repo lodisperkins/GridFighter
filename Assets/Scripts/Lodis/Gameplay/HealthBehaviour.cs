@@ -329,8 +329,10 @@ namespace Lodis.Gameplay
         public virtual void OnCollisionEnter(Collision collision)
         {
             KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();
+            if (!knockBackScript) return;
+            
             //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript || !knockBackScript.IsTumbling)
+            if (knockBackScript.CurrentAirState != AirState.TUMBLING)
                 return;
 
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;;
@@ -342,8 +344,10 @@ namespace Lodis.Gameplay
         public virtual void OnTriggerEnter(Collider other)
         {
             KnockbackBehaviour knockBackScript = other.gameObject.GetComponent<KnockbackBehaviour>();
+            if (!knockBackScript) return;
+            
             //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript || !knockBackScript.IsTumbling)
+            if (knockBackScript.CurrentAirState != AirState.TUMBLING)
                 return;
 
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude; ;

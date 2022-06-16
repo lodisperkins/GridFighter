@@ -23,6 +23,7 @@ GameObject:
   - component: {fileID: 3495125533649590782}
   - component: {fileID: 3655153403160926113}
   - component: {fileID: 4903198840123130925}
+  - component: {fileID: 4881113000503964976}
   m_Layer: 9
   m_Name: Character
   m_TagString: Player
@@ -208,19 +209,13 @@ MonoBehaviour:
   _invincibilityColor: {r: 0, g: 1, b: 0.013520718, a: 0}
   _intangibilityColor: {r: 0.8113208, g: 0.5216221, b: 0.003826994, a: 1}
   OnTakeDamage: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
+  _currentAirState: 0
   _netForceLandingTolerance: 3
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
-  _tumbling: 0
   _gravityIncreaseRate: {fileID: 11400000, guid: 6d175ac0f54b56643b6a85c2806f5ab3,
     type: 2}
   _gravityIncreaseValue: {fileID: 11400000, guid: adec572f6a67e3546bf67037bfd2959f,
     type: 2}
-  _inFreeFall: 0
-  _landingTime: 0
-  _knockDownTime: 0.3
-  _knockDownRecoverTime: 0.7
-  _knockDownRecoverInvincibleTime: 1.5
-  _knockDownLandingTime: 0.4
   _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
   _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
   _idleGroundedPoint: {x: 0, y: -0.4, z: 0}
@@ -915,6 +910,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Marker: 0
   _markPanelsBasedOnCollision: 0
+--- !u!114 &4881113000503964976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1959598720044943059}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04c0f4c052ab27349b5a94def1a5a3b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _landingTime: 0
+  _knockDownTime: 0
+  _knockDownRecoverTime: 0
+  _knockDownRecoverInvincibleTime: 0
+  _knockDownLandingTime: 0
 --- !u!114 &631037068264074505
 MonoBehaviour:
   m_ObjectHideFlags: 0

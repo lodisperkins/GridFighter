@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Lodis.Movement;
 using UnityEngine;
 
 namespace Lodis.GridScripts
@@ -20,7 +21,7 @@ namespace Lodis.GridScripts
 
             if (!knockbackScript)
                 return;
-            else if (knockbackScript.IsInvincible || knockbackScript.Landing || knockbackScript.InFreeFall)
+            else if (knockbackScript.IsInvincible || knockbackScript.LandingScript.Landing || knockbackScript.CurrentAirState == AirState.FREEFALL)
                 return;
 
             //Don't add a force if the object is traveling at a low speed

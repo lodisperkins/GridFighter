@@ -221,7 +221,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void Brace()
         {
-            if (!_knockBack.IsTumbling || !_canBrace)
+            if (_knockBack.CurrentAirState != AirState.TUMBLING || !_canBrace)
                 return;
 
             IsBraced = true;
@@ -316,19 +316,16 @@ namespace Lodis.Gameplay
             DeactivateParry();
 
             onFallBroken?.Invoke(true);
-            _knockBack.TryStartLandingLag();
+            _knockBack.LandingScript.TryStartLandingLag();
         }
 
         private void OnDrawGizmos()
         {
-            if (!_knockBack)
+            if (!_knockBack || _knockBack.CurrentAirState != AirState.TUMBLING)
                 return;
-
-            if (_knockBack.IsTumbling)
-            {
-                Collider bounceCollider = _knockBack.Physics.BounceCollider;
-                Gizmos.DrawCube(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 1.5f);
-            }
+            
+            Collider bounceCollider = _knockBack.Physics.BounceCollider;
+            Gizmos.DrawCube(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 1.5f);
         }
 
         private void OnTriggerEnter(Collider other)
@@ -354,7 +351,8 @@ namespace Lodis.Gameplay
             BreakingFall = false;
             _knockBack.Physics.IgnoreForces = false;
             _disableFallBreakAction = null;
-            if (!_knockBack.Physics.IsGrounded) _knockBack.InFreeFall = true;
+            if (!_knockBack.Physics.IsGrounded)
+                _knockBack.CurrentAirState = AirState.FREEFALL;
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -393,7 +391,7 @@ namespace Lodis.Gameplay
             DeactivateParry();
 
             onFallBroken?.Invoke(true);
-            _knockBack.TryStartLandingLag();
+            _knockBack.LandingScript.TryStartLandingLag();
             //Debug.Log("Collided with " + other.name);
 
         }

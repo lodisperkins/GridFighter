@@ -47,6 +47,7 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
+        /// <param name="hitStun">The amount of time the object will be in hit stun</param>
         public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             if (!Owner) return 0;
@@ -63,6 +64,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Takes damage based on the damage type.
         /// </summary>
+        /// <param name="info">The hit collider data of the attack</param>
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
         public override float TakeDamage(HitColliderInfo info, GameObject attacker)
         {
@@ -95,13 +97,13 @@ namespace Lodis.Gameplay
             return damage;
         }
 
-        public void DeactivateBarrier()
+        private void DeactivateBarrier()
         {
             Physics.IgnoreCollision(_collider, _ownerCollider);
             _visual.SetActive(false);
         }
 
-        private void OnTriggerEnter(Collider collision)
+        public override void OnTriggerEnter(Collider collision)
         {
             GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
 
@@ -111,14 +113,14 @@ namespace Lodis.Gameplay
             }
         }
 
-        private void OnCollisionEnter(Collision collision)
+        public override void OnCollisionEnter(Collision collision)
         {
             KnockbackBehaviour knockbackBehaviour = collision.gameObject.GetComponent<KnockbackBehaviour>();
 
             if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed)
                 return;
 
-            if (!knockbackBehaviour.IsTumbling)
+            if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
                 return;
             
             if (collision.gameObject == Owner && !_ownerCollider)
