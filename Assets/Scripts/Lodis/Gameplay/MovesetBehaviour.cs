@@ -254,10 +254,7 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public Ability GetAbilityByName(string abilityName)
         {
-            if (_normalDeck.GetAbilityByName(abilityName) == null)
-                return _specialDeck.GetAbilityByName(abilityName);
-
-            return _normalDeck.GetAbilityByName(abilityName);
+            return _normalDeck.GetAbilityByName(abilityName) ?? _specialDeck.GetAbilityByName(abilityName);
         }
 
         /// <summary>

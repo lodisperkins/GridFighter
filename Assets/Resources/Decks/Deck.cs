@@ -182,8 +182,6 @@ namespace Lodis.Gameplay
                     return ability;
             }
 
-            Debug.LogError("Couldn't find ability of that matches the name " + name + " in deck " + DeckName);
-
             return null;
         }
 

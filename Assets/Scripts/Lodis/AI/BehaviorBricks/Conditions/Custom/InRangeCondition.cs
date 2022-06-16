@@ -23,6 +23,6 @@ public class InRangeCondition : GOCondition
         Vector2 dummyPos = _dummy.AIMovement.MovementBehaviour.CurrentPanel.Position;
         Vector2 enemyPos = _opponentMovement.CurrentPanel.Position;
 
-        return Mathf.Abs(dummyPos.x - enemyPos.x) >= 7 || Mathf.Abs(dummyPos.y - enemyPos.y) >= 2;
+        return Mathf.Abs(dummyPos.x - enemyPos.x) >= 6 || Mathf.Abs(dummyPos.y - enemyPos.y) >= 1;
     }
 }
