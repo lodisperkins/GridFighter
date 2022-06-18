@@ -110,7 +110,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
-  _rightSideMat: {fileID: 2100000, guid: 8e4f5f6196b2c6941808ea995c67682f, type: 2}
+  _rightSideMat: {fileID: 2100000, guid: 2989dc5c6d34fb141a447fbfcb8c721d, type: 2}
   _positionLHSColor: {r: 0.082858644, g: 0.83139145, b: 0.9245283, a: 0}
   _positionRHSColor: {r: 0.8867924, g: 0.054378804, b: 0.054378804, a: 0}
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
@@ -281,9 +281,14 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
     - target: {fileID: 6745302439343835087, guid: 7906e05a470c7ae4c96b3678168a6de0,
         type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6745302439343835087, guid: 7906e05a470c7ae4c96b3678168a6de0,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: dfdeada6b6bd7784f867e04560348074, type: 2}
+      objectReference: {fileID: 2100000, guid: ec917767f04f8644c9ff80fb667a8530, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7906e05a470c7ae4c96b3678168a6de0, type: 3}
 --- !u!4 &2154557362548190074 stripped
