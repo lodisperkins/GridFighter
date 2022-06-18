@@ -33,23 +33,15 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Deploys one of the links
         /// </summary>
-        private void FireLink()
+        private void FireLink(Vector2 position)
         {
             //Creates copy of link prefab
-            GameObject visualPrefab = MonoBehaviour.Instantiate(abilityData.visualPrefab, SpawnTransform.position, abilityData.visualPrefab.transform.rotation);
+            GameObject visualPrefab = Object.Instantiate(abilityData.visualPrefab, SpawnTransform.position, abilityData.visualPrefab.transform.rotation);
             //Get the movement script attached and add it to a list
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
-            gridMovement.Position = _ownerMoveScript.Position;
+            gridMovement.Position = position;
             gridMovement.Speed = abilityData.GetCustomStatValue("Speed");
             _linkMoveScripts.Add(gridMovement);
-
-            //Makes the link move until it runs into an obstacle
-            for (int i = (int)_maxTravelDistance; i >= 0; i--)
-            {
-                Vector2 moveOffset = new Vector2(i, 0);
-                if (gridMovement.MoveToPanel(_ownerMoveScript.CurrentPanel.Position + moveOffset * owner.transform.forward.x, false, GridScripts.GridAlignment.ANY))
-                    break;
-            }
         }
 
         /// <summary>
@@ -69,7 +61,7 @@ namespace Lodis.Gameplay
             //Spawns attackLinks on each panel in the path
             for (int i = 0; i < panels.Count; i++)
             {
-                GameObject attackLink = MonoBehaviour.Instantiate(_attackLinkVisual, panels[i].transform.position + new Vector3(0, .5f,0), _attackLinkVisual.transform.rotation);
+                GameObject attackLink = Object.Instantiate(_attackLinkVisual, panels[i].transform.position + new Vector3(0, .5f,0), _attackLinkVisual.transform.rotation);
                 HitColliderBehaviour collider = attackLink.AddComponent<HitColliderBehaviour>();
                 HitColliderBehaviour.Copy(_stunCollider, collider);
             }
@@ -102,39 +94,62 @@ namespace Lodis.Gameplay
                 return;
 
             if (_linkMoveScripts[0])
-                MonoBehaviour.Destroy(_linkMoveScripts[0].gameObject, time);
+                Object.Destroy(_linkMoveScripts[0].gameObject, time);
 
             if (_linkMoveScripts.Count <= 1)
                 return;
 
             if (_linkMoveScripts[1])
-                MonoBehaviour.Destroy(_linkMoveScripts[1].gameObject, time);
+                Object.Destroy(_linkMoveScripts[1].gameObject, time);
         }
 
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            //If the owner doesn't have a transform to spawn projectiles from...
-            if (!ownerMoveset.ProjectileSpawnTransform)
-                //...use the owners transform
-                SpawnTransform = owner.transform;
-            //Otherwise...
-            else
-                //...use the projectile transform
-                SpawnTransform = ownerMoveset.ProjectileSpawnTransform;
-
-            //Switch to know which stage of the ability should be activated
-            switch (currentActivationAmount)
+            if (currentActivationAmount > 1)
             {
-                case 1:
-                case 2:
-                    _maxTravelDistance = abilityData.GetCustomStatValue("PanelTravelDistance");
-                    FireLink();
+                ActivateStunPath();
+                return;;
+            }
+            
+            
+            //If the owner doesn't have a transform to spawn projectiles from...
+            SpawnTransform = !ownerMoveset.ProjectileSpawnTransform ? owner.transform : ownerMoveset.ProjectileSpawnTransform;
+
+            Vector2 attackDirection = (Vector2)args[1];
+
+            int gridTempMaxColumns = BlackBoardBehaviour.Instance.Grid.TempMaxColumns;
+            int closestPanelX = gridTempMaxColumns;
+
+            if (owner.transform.forward.x < 0)
+                closestPanelX--;
+                    
+            Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
+            
+            //Switch to know which stage of the ability should be activated
+            switch (attackDirection)
+            {
+                case Vector2 dir when dir.Equals(Vector2.right):
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), dimensions.y - 1));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), 0));
                     break;
-                case 3:
-                    ActivateStunPath();
-                    DestroyLinks(abilityData.GetColliderInfo(0).TimeActive);
+                case Vector2 dir when dir.Equals(Vector2.left):
+                    FireLink(new Vector2(closestPanelX, dimensions.y - 1));
+                    FireLink(new Vector2(closestPanelX, 0));
                     break;
+                case Vector2 dir when dir.Equals(Vector2.up):
+                    FireLink(new Vector2(closestPanelX, dimensions.y - 1));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), dimensions.y - 1));
+                    break;
+                case Vector2 dir when dir.Equals(Vector2.down):
+                    FireLink(new Vector2(closestPanelX, 0));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), 0));
+                    break;
+                default:
+                    FireLink(new Vector2(closestPanelX, dimensions.y - 2));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), dimensions.y - 2));
+                    break;
+                    
             }
         }
 

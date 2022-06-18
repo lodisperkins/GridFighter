@@ -5927,7 +5927,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 1
+  _mode: 2
   _ringBarrierL: {fileID: 1478321312}
   _ringBarrierR: {fileID: 2063412668}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
@@ -5935,6 +5935,7 @@ MonoBehaviour:
   _dummyLHSSpawnLocation: {x: 0, y: 0}
   _targetFrameRate: 60
   _invincibleBarriers: 0
+  _infiniteEnergy: 1
   _timeScale: 1
 --- !u!114 &1441118449
 MonoBehaviour:

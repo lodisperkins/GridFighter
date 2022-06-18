@@ -147,6 +147,8 @@ namespace Lodis.GridScripts
         public int P1MaxColumns { get => _p1MaxColumns; }
         public bool InvincibleBarriers { get => _invincibleBarriers; set => _invincibleBarriers = value; }
 
+        public int TempMaxColumns => _tempMaxColumns;
+
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.
         /// </summary>

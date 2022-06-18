@@ -51,6 +51,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _invincibleBarriers;
         [SerializeField]
+        private bool _infiniteEnergy;
+        [SerializeField]
         private float _timeScale = 1;
         private bool _p1DeviceSet;
         private bool _p2DeviceSet;
@@ -60,12 +62,15 @@ namespace Lodis.Gameplay
             get { return _targetFrameRate; }
         }
 
+        public static bool InfiniteEnergy { get; private set; }
+
 
         private void Awake()
         {
             _inputManager.playerPrefab = _playerRef;
             _grid.DestroyTempPanels();
             _grid.InvincibleBarriers = _invincibleBarriers;
+            InfiniteEnergy = _infiniteEnergy;
             
             if (_invincibleBarriers)
             {
