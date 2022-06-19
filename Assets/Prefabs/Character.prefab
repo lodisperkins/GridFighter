@@ -793,7 +793,7 @@ MonoBehaviour:
       duration: 0
       timeMode: 0
     - id: Flinching-Tumbling
-      label: 
+      label: Tumbling
       originID: Flinching
       targetID: Tumbling
       onEnterTransition:
@@ -885,11 +885,23 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition 7
+      label: Tumbling
+      originID: Stunned
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 128.45981, y: -277.38315}
+        dragOffset: {x: 156.23772, y: -6.2718496}
       gridSettings:
         isEnabled: 1
       labelSettings:

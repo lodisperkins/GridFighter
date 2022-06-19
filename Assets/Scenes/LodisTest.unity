@@ -5934,7 +5934,7 @@ MonoBehaviour:
   _dummyRHSSpawnLocation: {x: 7, y: 0}
   _dummyLHSSpawnLocation: {x: 0, y: 0}
   _targetFrameRate: 60
-  _invincibleBarriers: 0
+  _invincibleBarriers: 1
   _infiniteEnergy: 1
   _timeScale: 1
 --- !u!114 &1441118449

@@ -125,13 +125,14 @@ namespace Lodis.Gameplay
                 closestPanelX--;
                     
             Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
+                    int ownerFacing = (int)owner.transform.forward.x;
             
             //Switch to know which stage of the ability should be activated
             switch (attackDirection)
             {
                 case Vector2 dir when dir.Equals(Vector2.right):
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), dimensions.y - 1));
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), 0));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, dimensions.y - 1));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, 0));
                     break;
                 case Vector2 dir when dir.Equals(Vector2.left):
                     FireLink(new Vector2(closestPanelX, dimensions.y - 1));
@@ -139,15 +140,15 @@ namespace Lodis.Gameplay
                     break;
                 case Vector2 dir when dir.Equals(Vector2.up):
                     FireLink(new Vector2(closestPanelX, dimensions.y - 1));
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), dimensions.y - 1));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, dimensions.y - 1));
                     break;
                 case Vector2 dir when dir.Equals(Vector2.down):
                     FireLink(new Vector2(closestPanelX, 0));
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), 0));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, 0));
                     break;
                 default:
                     FireLink(new Vector2(closestPanelX, dimensions.y - 2));
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1), dimensions.y - 2));
+                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, dimensions.y - 2));
                     break;
                     
             }

@@ -49,7 +49,7 @@ namespace Lodis.Movement
         private void OnTriggerEnter(Collider other)
         {
             if (_knockback.CurrentAirState != AirState.NONE &&
-                other.CompareTag("Panel") && !_knockback.Stunned && CheckFalling())
+                other.CompareTag("Panel") && CheckFalling())
             {
                 CanCheckLanding = true;
             }
@@ -143,7 +143,7 @@ namespace Lodis.Movement
         private void FixedUpdate()
         {
             if (_knockback.Physics.Rigidbody.velocity.magnitude <= _knockback.NetForceLandingTolerance &&
-                !Landing && CanCheckLanding)
+                !Landing && CanCheckLanding && !_knockback.Stunned)
             {
                 StartLandingLag();
             }
