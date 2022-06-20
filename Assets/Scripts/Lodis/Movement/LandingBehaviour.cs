@@ -143,7 +143,7 @@ namespace Lodis.Movement
         private void FixedUpdate()
         {
             if (_knockback.Physics.Rigidbody.velocity.magnitude <= _knockback.NetForceLandingTolerance &&
-                !Landing && CanCheckLanding && !_knockback.Stunned)
+                !Landing && CanCheckLanding && !_knockback.Stunned && _knockback.Physics.IsGrounded)
             {
                 StartLandingLag();
             }

@@ -193,7 +193,9 @@ namespace Lodis.Movement
         public void AddOnTakeDamageTempAction(UnityAction action)
         {
             _onTakeDamageTemp += action;
-        }/// <summary>
+        }
+        
+        /// <summary>
         /// Adds an action to the event called right before damage is applied
         /// </summary>
         /// <param name="action">The new listener to to the event</param>
@@ -216,6 +218,7 @@ namespace Lodis.Movement
         {
             _onHitStun += action;
         }
+        
         public void AddOnHitStunTempAction(UnityAction action)
         {
             _onHitStunTemp += action;
@@ -226,8 +229,6 @@ namespace Lodis.Movement
             if (CurrentAirState != AirState.TUMBLING) return;
             Physics.Gravity += _gravityIncreaseValue.Value;
         }
-
-
 
         protected override IEnumerator ActivateStun(float time)
         {
