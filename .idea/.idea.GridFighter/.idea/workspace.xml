@@ -105,36 +105,4 @@
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/GridPhysicsBehaviour.cs</url>
-          <line>199</line>
-          <properties documentPath="C:\Users\lodis.perkins\Documents\GitHub\GridFighter\Assets\Scripts\Lodis\Movement\GridPhysicsBehaviour.cs" initialLine="199" containingFunctionPresentation="method 'FreezeConditionCoroutine'">
-            <startOffsets>
-              <option value="7511" />
-            </startOffsets>
-            <endOffsets>
-              <option value="7543" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/HealthBehaviour.cs</url>
-          <line>273</line>
-          <properties documentPath="C:\Users\lodis.perkins\Documents\GitHub\GridFighter\Assets\Scripts\Lodis\Gameplay\HealthBehaviour.cs" initialLine="273" containingFunctionPresentation="method 'SetInvincibilityByTimer'">
-            <startOffsets>
-              <option value="9089" />
-            </startOffsets>
-            <endOffsets>
-              <option value="9090" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
 </project>

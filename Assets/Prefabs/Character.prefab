@@ -897,11 +897,23 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition 8
+      label: Land
+      originID: Stunned
+      targetID: HardLanding
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 156.23772, y: -6.2718496}
+        dragOffset: {x: 244.01541, y: -29.60518}
       gridSettings:
         isEnabled: 1
       labelSettings:
