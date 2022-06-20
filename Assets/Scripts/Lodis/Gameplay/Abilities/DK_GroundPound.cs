@@ -86,7 +86,8 @@ namespace Lodis.Gameplay
             //Instantiate the first shockwave and attach a hit box to it
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
             HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider);
-
+            hitScript.ColliderInfo.OwnerAlignement = _ownerMoveScript.Alignment;
+            
             //Move first shockwave
             MoveHitBox(_visualPrefabInstances.Item1, owner.transform.forward);
             hitScript.DebuggingEnabled = true;

@@ -253,7 +253,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 8943288124560981146}
   _projectileSpawnPoint: {fileID: 6294458134703451932}
@@ -793,7 +793,7 @@ MonoBehaviour:
       duration: 0
       timeMode: 0
     - id: Flinching-Tumbling
-      label: 
+      label: Tumbling
       originID: Flinching
       targetID: Tumbling
       onEnterTransition:
@@ -885,11 +885,35 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition 7
+      label: Tumbling
+      originID: Stunned
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 8
+      label: Land
+      originID: Stunned
+      targetID: HardLanding
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 128.45981, y: -277.38315}
+        dragOffset: {x: 244.01541, y: -29.60518}
       gridSettings:
         isEnabled: 1
       labelSettings:

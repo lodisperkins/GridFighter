@@ -231,9 +231,11 @@ namespace Lodis.Movement
         /// freeze the object in place 
         /// </summary>
         /// <param name="condition">The condition event that will disable the freeze once true</param>
+        /// <param name="keepMomentum">If true, the object will have its original velocity applied to it after being frozen</param>
+        /// <param name="makeKinematic">If true, the object won't be able to have any forces applied to it during the freeze</param>
         public void FreezeInPlaceByCondition(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
         {
-            _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true));
+            _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true, makeKinematic));
         }
 
         /// <summary>

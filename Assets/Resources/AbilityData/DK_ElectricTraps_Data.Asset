@@ -18,7 +18,7 @@ MonoBehaviour:
   recoverTime: 0.1
   startUpTime: 0.05
   chargeTime: 1
-  maxActivationAmount: 3
+  maxActivationAmount: 2
   EnergyCost: 2
   canCancelStartUp: 0
   canCancelActive: 0
@@ -28,6 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 1
+  CanCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1
