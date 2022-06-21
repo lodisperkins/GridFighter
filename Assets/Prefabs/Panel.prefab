@@ -116,7 +116,7 @@ MonoBehaviour:
   _warningColor: {r: 0.7075472, g: 0.67043585, b: 0.20358667, a: 0}
   _dangerColor: {r: 0.9528302, g: 0.5708777, b: 0.04045032, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
-  _mesh: {fileID: 5183677429573749598}
+  _mesh: {fileID: 1038258789316435452}
 --- !u!1001 &1903967098269224081
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -302,9 +302,9 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1903967098269224081}
   m_PrefabAsset: {fileID: 0}
---- !u!23 &5183677429573749598 stripped
+--- !u!23 &1038258789316435452 stripped
 MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 6745302439343835087, guid: 7906e05a470c7ae4c96b3678168a6de0,
+  m_CorrespondingSourceObject: {fileID: 1442450553484104045, guid: 7906e05a470c7ae4c96b3678168a6de0,
     type: 3}
   m_PrefabInstance: {fileID: 1903967098269224081}
   m_PrefabAsset: {fileID: 0}

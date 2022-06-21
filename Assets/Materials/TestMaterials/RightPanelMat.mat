@@ -21,14 +21,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: RightPanelMat
-  m_Shader: {fileID: -6465566751694194690, guid: 57639f7d1ffcb7947bbba6b5f8e083db,
-    type: 3}
-  m_ShaderKeywords: USINGFRESNEL_ON
-  m_LightmapFlags: 2
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 6
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -141,7 +141,7 @@ Material:
     - Color_8B8CB8D8: {r: 0, g: 0.054832935, b: 1, a: 0}
     - Color_D72C77CE: {r: 1, g: 0.7466016, b: 0, a: 0}
     - Tint: {r: 0, g: 0.016161188, b: 0.735849, a: 0}
-    - _BaseColor: {r: 0, g: 0.059567206, b: 0.6039216, a: 1}
+    - _BaseColor: {r: 0.6039216, g: 0.030165976, b: 0, a: 1}
     - _Color: {r: 0.78431374, g: 0.007839228, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

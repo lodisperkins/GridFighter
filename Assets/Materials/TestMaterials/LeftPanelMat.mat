@@ -21,14 +21,14 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: LeftPanelMat
-  m_Shader: {fileID: -6465566751694194690, guid: 57639f7d1ffcb7947bbba6b5f8e083db,
-    type: 3}
-  m_ShaderKeywords: USINGFRESNEL_ON
-  m_LightmapFlags: 2
+  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -126,7 +126,7 @@ Material:
     - _ReceiveShadows: 1
     - _SampleGI: 0
     - _Shininess: 0
-    - _Smoothness: 0.5
+    - _Smoothness: 0
     - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
     - _SpecSource: 0
@@ -142,6 +142,6 @@ Material:
     - Color_D72C77CE: {r: 0, g: 0.90529394, b: 1, a: 0}
     - Tint: {r: 0, g: 0.016161188, b: 0.735849, a: 0}
     - _BaseColor: {r: 0, g: 0.059567206, b: 0.6039216, a: 1}
-    - _Color: {r: 0, g: 0.085090846, b: 0.7830189, a: 1}
+    - _Color: {r: 0, g: 0.09014153, b: 0.8584906, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
