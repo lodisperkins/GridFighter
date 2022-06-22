@@ -356,7 +356,7 @@ namespace Lodis.Gameplay
         /// </summary>
         protected virtual void End()
         {
-            if (!_ownerKnockBackScript.IsTumbling)
+            if (_ownerKnockBackScript.CurrentAirState != AirState.TUMBLING)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
         }
 

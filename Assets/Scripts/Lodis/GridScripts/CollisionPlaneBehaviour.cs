@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Lodis.Gameplay;
+using Lodis.Movement;
 using UnityEngine;
 
 namespace Lodis.GridScripts
@@ -20,7 +22,7 @@ namespace Lodis.GridScripts
 
             if (!knockbackScript)
                 return;
-            else if (knockbackScript.IsInvincible || knockbackScript.Landing || knockbackScript.InFreeFall)
+            else if (knockbackScript.IsInvincible || knockbackScript.LandingScript.Landing || knockbackScript.CurrentAirState == AirState.FREEFALL)
                 return;
 
             //Don't add a force if the object is traveling at a low speed
@@ -32,7 +34,7 @@ namespace Lodis.GridScripts
             //Calculate and apply friction force
             upMagnitude /= _bounceDampening;
 
-            knockbackScript.Physics.ApplyImpulseForce(Vector3.up * upMagnitude);
+            knockbackScript.TakeDamage("", 0, upMagnitude, 1.5f, DamageType.DEFAULT);
             knockbackScript.CancelHitStun();
         }
 

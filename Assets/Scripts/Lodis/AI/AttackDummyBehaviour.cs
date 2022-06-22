@@ -158,7 +158,7 @@ namespace Lodis.AI
             if (_executor.enabled) return;
 
             //Only attack if the dummy is grounded and delay timer is up
-            if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.RecoveringFromFall && !_chargingAttack)
+            if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.LandingScript.RecoveringFromFall && !_chargingAttack)
             {
                 //Clamps z direction in case its abs value becomes larger than one at runtime
                 _attackDirection.Normalize();

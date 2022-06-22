@@ -231,9 +231,11 @@ namespace Lodis.Movement
         /// freeze the object in place 
         /// </summary>
         /// <param name="condition">The condition event that will disable the freeze once true</param>
+        /// <param name="keepMomentum">If true, the object will have its original velocity applied to it after being frozen</param>
+        /// <param name="makeKinematic">If true, the object won't be able to have any forces applied to it during the freeze</param>
         public void FreezeInPlaceByCondition(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
         {
-            _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true));
+            _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true, makeKinematic));
         }
 
         /// <summary>
@@ -301,7 +303,7 @@ namespace Lodis.Movement
             magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Value);
 
             //Return the knockback force
-            return (new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * magnitude) * Mass;
+            return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * (magnitude * Mass);
         }
 
         /// <summary>
@@ -340,7 +342,7 @@ namespace Lodis.Movement
                 return new Vector3();
 
             //Return the knockback force
-            return (new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * magnitude) * mass;
+            return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * (magnitude * mass);
         }
 
         /// <summary>
@@ -546,24 +548,24 @@ namespace Lodis.Movement
         /// <returns></returns>
         private bool CheckIsGrounded()
         {
-            _isGrounded = false;
+            bool grounded = false;
 
             Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure"}));
 
             foreach (Collider collider in hits)
             {
-                Vector3 closestPoint = collider.ClosestPoint(transform.position);
-                float normalY = (transform.position - closestPoint).normalized.y;
+                var position = transform.position;
+                Vector3 closestPoint = collider.ClosestPoint(position);
+                float normalY = (position - closestPoint).normalized.y;
                 normalY = Mathf.Ceil(normalY);
                 if (normalY == 1)
-                    _isGrounded = true;
+                {
+                    if (!_isGrounded) _onCollisionWithGround?.Invoke();
+                    grounded = true;
+                }
             }
-
-            //RaycastHit hit;
-            //bool hitRecieved = Physics.Raycast(GroundedBoxPosition, Vector3.down, out hit, GroundedBoxExtents.y, LayerMask.GetMask("Panels", "Structure"));
-
-            //_isGrounded = hitRecieved && (hit.collider.CompareTag("Panel") || hit.collider.CompareTag("CollisionPlane"));
-            return _isGrounded;
+            
+            return grounded;
         }
 
         private void OnDrawGizmos()
@@ -583,8 +585,8 @@ namespace Lodis.Movement
             else
                 _constantForceBehaviour.force = Vector3.zero;
 
-
-            _objectAtRest = CheckIsGrounded() && _rigidbody.velocity.magnitude == 0;
+            _isGrounded = CheckIsGrounded();
+            _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude == 0;
         }
     }
 }

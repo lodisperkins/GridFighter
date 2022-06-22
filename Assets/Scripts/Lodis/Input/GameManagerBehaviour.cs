@@ -51,6 +51,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _invincibleBarriers;
         [SerializeField]
+        private bool _infiniteEnergy;
+        [SerializeField]
         private float _timeScale = 1;
         private bool _p1DeviceSet;
         private bool _p2DeviceSet;
@@ -60,12 +62,22 @@ namespace Lodis.Gameplay
             get { return _targetFrameRate; }
         }
 
+        public static bool InfiniteEnergy { get; private set; }
+
 
         private void Awake()
         {
             _inputManager.playerPrefab = _playerRef;
             _grid.DestroyTempPanels();
             _grid.InvincibleBarriers = _invincibleBarriers;
+            InfiniteEnergy = _infiniteEnergy;
+            
+            if (_invincibleBarriers)
+            {
+                _ringBarrierL.SetInvincibilityByCondition(condition => !_invincibleBarriers);
+                _ringBarrierR.SetInvincibilityByCondition(condition => !_invincibleBarriers);
+            }
+            
             //Initialize grid
             _grid.CreateGrid();
             Application.targetFrameRate = _targetFrameRate;
@@ -145,7 +157,7 @@ namespace Lodis.Gameplay
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
         }
 
-        public void Restart()
+        public static void Restart()
         {
             SceneManager.LoadScene(0);
         }
@@ -272,7 +284,7 @@ namespace Lodis.Gameplay
             DrawDefaultInspector();
             if (GUILayout.Button("Reset Game"))
             {
-                _manager.Restart();
+                GameManagerBehaviour.Restart();
             }
         }
     }

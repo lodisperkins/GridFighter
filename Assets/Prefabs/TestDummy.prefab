@@ -47,8 +47,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _character: {fileID: 8288026044989896973}
-  _attackType: 0
-  _attackDelay: 0
+  _attackType: 4
+  _attackDelay: 1
   _attackStrength: 1.06
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0

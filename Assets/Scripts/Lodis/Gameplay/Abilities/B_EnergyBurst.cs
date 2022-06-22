@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Lodis.Movement;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -25,7 +26,7 @@ namespace Lodis.Gameplay
             HitColliderBehaviour instantiatedCollider = barrier.AddComponent<HitColliderBehaviour>();
             HitColliderBehaviour.Copy(hitCollider, instantiatedCollider);
 
-            _ownerKnockBackScript.IsTumbling = false;
+            _ownerKnockBackScript.CurrentAirState = AirState.NONE;
             _ownerKnockBackScript.CancelHitStun();
             _ownerKnockBackScript.CancelStun();
             _ownerKnockBackScript.Physics.StopAllForces();
@@ -37,8 +38,8 @@ namespace Lodis.Gameplay
         {
             base.Deactivate();
 
-            if (!_ownerKnockBackScript.Physics.IsGrounded || _ownerKnockBackScript.IsTumbling)
-                _ownerKnockBackScript.InFreeFall = true;
+            if (!_ownerKnockBackScript.Physics.IsGrounded)
+                _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
         }
 
         protected override void End()

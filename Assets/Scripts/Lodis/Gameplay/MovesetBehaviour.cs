@@ -140,6 +140,9 @@ namespace Lodis.Gameplay
         {
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
+
+            if (GameManagerBehaviour.InfiniteEnergy)
+                _energy = _maxEnergyRef.Value;
         }
 
         // Start is called before the first frame update
@@ -254,10 +257,7 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public Ability GetAbilityByName(string abilityName)
         {
-            if (_normalDeck.GetAbilityByName(abilityName) == null)
-                return _specialDeck.GetAbilityByName(abilityName);
-
-            return _normalDeck.GetAbilityByName(abilityName);
+            return _normalDeck.GetAbilityByName(abilityName) ?? _specialDeck.GetAbilityByName(abilityName);
         }
 
         /// <summary>
@@ -372,7 +372,7 @@ namespace Lodis.Gameplay
             else if (currentAbility.abilityData.EnergyCost > _energy && currentAbility.currentActivationAmount == 0)
                 return null;
 
-            if (currentAbility.currentActivationAmount == 0)
+            if (currentAbility.currentActivationAmount == 0 && !GameManagerBehaviour.InfiniteEnergy)
                 _energy -= currentAbility.abilityData.EnergyCost;
 
             currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
@@ -449,7 +449,9 @@ namespace Lodis.Gameplay
         {
             if (Energy < actionCost) return false;
 
-            Energy -= actionCost;
+            if (!GameManagerBehaviour.InfiniteEnergy)
+                Energy -= actionCost;
+            
             action?.Invoke();
 
             return true;

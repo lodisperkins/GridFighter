@@ -62,14 +62,12 @@ namespace Lodis.Gameplay
 
             foreach (AbilityData ability in _abilityData)
             {
-                if (ability == null)
-                    Debug.Log("I'm null!" + _abilityData.Count); 
                 string name = ability.name.Substring(0, ability.name.Length - 5);
                 Type abilityType = Type.GetType("Lodis.Gameplay." + name);
 
                 if (abilityType == null)
                 {
-                    Debug.LogError("Couldn't find ability type. Name was " + name + ". Maybe the ability is mispelled?");
+                    Debug.LogError("Couldn't find ability type. Name was " + name + ". Maybe the ability is misspelled?");
                     continue;
                 }
 
@@ -183,8 +181,6 @@ namespace Lodis.Gameplay
                 if (ability.abilityData.abilityName == name)
                     return ability;
             }
-
-            Debug.LogError("Couldn't find ability of that matches the name " + name + " in deck " + DeckName);
 
             return null;
         }

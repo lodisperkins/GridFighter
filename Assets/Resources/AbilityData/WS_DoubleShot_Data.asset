@@ -15,10 +15,11 @@ MonoBehaviour:
   abilityName: DoubleShot
   AbilityType: 1
   timeActive: 0.2
-  recoverTime: 0.4
+  recoverTime: 0.3
   startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 0
+  EnergyCost: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
@@ -27,6 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 1
+  CanCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -34,6 +36,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 8897977150452739386, guid: c662ede171e2a26498c91a36fc787336,
     type: 3}
+  DisplayIcon: {fileID: 0}
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
@@ -45,7 +48,7 @@ MonoBehaviour:
       m_Bits: 0
     HitFrames: 0
     Damage: 2
-    BaseKnockBack: 0.1
+    BaseKnockBack: 0.5
     KnockBackScale: 0.3
     HitAngle: 0.5
     AdjustAngleBasedOnAlignment: 1
@@ -54,6 +57,7 @@ MonoBehaviour:
     HitStunTime: 0.3
     Priority: 1
     OwnerAlignement: 0
+    AbilityType: 1
   _customStats:
   - name: Speed
     value: 10

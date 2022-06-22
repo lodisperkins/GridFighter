@@ -48,12 +48,13 @@ namespace Lodis.AI
 
             if (behindBarrier) weight += ShieldEffectiveness;
 
-            if (!owner.Moveset.NormalDeckContains(AbilityName) && !owner.Moveset.SpecialDeckContains(AbilityName))
-                return 0;
+            if (owner.Moveset.SpecialDeckContains(AbilityName))
+                if (owner.Moveset.Energy < owner.Moveset.GetAbilityByName(AbilityName).abilityData.EnergyCost)
+                    return 0;
 
-            if (owner.Moveset.Energy < owner.Moveset.GetAbilityByName(AbilityName).abilityData.EnergyCost)
+            if (owner.Moveset.NormalDeckContains(AbilityName))
                 return 0;
-
+            
             if (opponentHealth > 150)
                 weight += KnockBackDealt;
 

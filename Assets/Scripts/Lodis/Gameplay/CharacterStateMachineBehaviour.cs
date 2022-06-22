@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Lodis.Utility;
 using UnityEngine;
 using Ilumisoft.VisualStateMachine;
+using Lodis.Movement;
 
 namespace Lodis.Gameplay
 {
@@ -33,14 +34,14 @@ namespace Lodis.Gameplay
             _stateMachine.SetTransitionConditionByLabel("Attack", args => _moveset.AbilityInUse);
             _stateMachine.SetTransitionCondition("Tumbling-BreakingFall", args => _characterDefense.BreakingFall);
             _stateMachine.SetTransitionConditionByLabel("Land", args => 
-            { return _knockBack.Landing && !_characterDefense.BreakingFall; });
-            _stateMachine.SetTransitionCondition("Landing-Down", args => _knockBack.IsDown);
-            _stateMachine.SetTransitionCondition("Down-GroundRecovery", args => _knockBack.RecoveringFromFall);
+            { return _knockBack.LandingScript.Landing && !_characterDefense.BreakingFall; });
+            _stateMachine.SetTransitionCondition("Landing-Down", args => _knockBack.LandingScript.IsDown);
+            _stateMachine.SetTransitionCondition("Down-GroundRecovery", args => _knockBack.LandingScript.RecoveringFromFall);
             _stateMachine.SetTransitionConditionByLabel("Parry", args => _characterDefense.IsDefending);
-            _stateMachine.SetTransitionCondition("Flinching-Tumbling", args => _knockBack.IsTumbling);
+            _stateMachine.SetTransitionConditionByLabel("Tumbling", args => _knockBack.CurrentAirState == AirState.TUMBLING);
             _stateMachine.SetTransitionCondition("Any-Flinching", condition => false);
             _knockBack.AddOnHitStunAction(() => _stateMachine.Trigger("Any-Flinching"));
-            _stateMachine.SetTransitionCondition("Any-FreeFall", args => _knockBack.InFreeFall);
+            _stateMachine.SetTransitionCondition("Any-FreeFall", args => _knockBack.CurrentAirState == AirState.FREEFALL);
             _stateMachine.SetTransitionConditionByLabel("Moving", args => _movement.IsMoving && !_moveset.AbilityInUse);
             _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall && !_characterDefense.IsDefending && !_moveset.AbilityInUse);
         }
