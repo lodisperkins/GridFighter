@@ -98,14 +98,14 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - LightingCutoff: 0.55
+    - LightingCutoff: 0.35
     - RimStrength: 0.474
     - Smoothness: 0
     - USENORMAL: 0
     - USINGFRESNEL: 1
-    - Vector1_76C25F58: 1
-    - Vector1_AF883DE0: 0.5
-    - Vector1_E0AB0ADF: 0.4
+    - Vector1_76C25F58: 0
+    - Vector1_AF883DE0: 1.72
+    - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1775448569543004365}
   - component: {fileID: 102267683996853085}
   - component: {fileID: -7809005986806037405}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Panel
   m_TagString: Panel
   m_Icon: {fileID: 0}
@@ -186,6 +186,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -2181743766629440291, guid: 7906e05a470c7ae4c96b3678168a6de0,
         type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -2181743766629440291, guid: 7906e05a470c7ae4c96b3678168a6de0,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -246,6 +251,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -466329591000292508, guid: 7906e05a470c7ae4c96b3678168a6de0,
         type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -466329591000292508, guid: 7906e05a470c7ae4c96b3678168a6de0,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -253,6 +263,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Arena34.fbx_Collection_10
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7906e05a470c7ae4c96b3678168a6de0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7906e05a470c7ae4c96b3678168a6de0,
         type: 3}
