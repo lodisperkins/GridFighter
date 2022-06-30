@@ -11,11 +11,17 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/../../../../../Program Files/2019.4.18f1/Editor/Data/Resources/PackageManager/BuiltInPackages/com.unity.2d.sprite/Tests/Editor/SpritePackageTests.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17ad9609ae064f2c9315931ff97adcf1116400/25/7c85e12b/Application.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17ad9609ae064f2c9315931ff97adcf1116400/4b/df842bea/MonoBehaviour.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17ad9609ae064f2c9315931ff97adcf1116400/5e/a840f7cd/Color.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17ad9609ae064f2c9315931ff97adcf1116400/97/b2a80d91/SetupCoroutine.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/17ad9609ae064f2c9315931ff97adcf1116400/ff/c82db9dc/Material.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9577ac7a62ef43179789031239ba87983e2400/f7/079f3f13/List`1.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/RingBarrierFeedbackBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lodis/Movement/LandingBehaviour.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lodis/Utility/ConditionAction.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scripts/Lodis/Utility/TimedAction.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Library/PackageCache/com.unity.render-pipelines.universal@7.5.3/Runtime/UniversalRenderPipeline.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -69,10 +75,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="29768">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" />
+      <option name="pid" value="29768" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -95,7 +101,7 @@
       <workItem from="1655432427967" duration="4935000" />
       <workItem from="1656034815529" duration="2000" />
       <workItem from="1656034843963" duration="600000" />
-      <workItem from="1656554147695" duration="2365000" />
+      <workItem from="1656554147695" duration="9414000" />
     </task>
     <servers />
   </component>
@@ -112,17 +118,30 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/RingBarrierBehaviour.cs</url>
-          <line>117</line>
-          <properties documentPath="C:\Users\lodis.perkins\Documents\GitHub\GridFighter\Assets\Scripts\Lodis\Gameplay\RingBarrierBehaviour.cs" initialLine="117" containingFunctionPresentation="method 'OnCollisionEnter'">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/RingBarrierFeedbackBehaviour.cs</url>
+          <line>39</line>
+          <properties documentPath="C:\Users\lodis.perkins\Documents\GitHub\GridFighter\Assets\Scripts\Lodis\Gameplay\RingBarrierFeedbackBehaviour.cs" initialLine="39" containingFunctionPresentation="method 'StartFadeIn'">
             <startOffsets>
-              <option value="4602" />
+              <option value="1414" />
             </startOffsets>
             <endOffsets>
-              <option value="4698" />
+              <option value="1434" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="1" />
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/Lodis/Gameplay/RingBarrierFeedbackBehaviour.cs</url>
+          <line>62</line>
+          <properties documentPath="C:\Users\lodis.perkins\Documents\GitHub\GridFighter\Assets\Scripts\Lodis\Gameplay\RingBarrierFeedbackBehaviour.cs" initialLine="62" containingFunctionPresentation="method 'Update'">
+            <startOffsets>
+              <option value="2294" />
+            </startOffsets>
+            <endOffsets>
+              <option value="2295" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

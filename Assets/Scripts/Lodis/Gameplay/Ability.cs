@@ -37,7 +37,7 @@ namespace Lodis.Gameplay
         private bool _inUse;
         private bool _canPlayAnimation;
         private List<HitColliderBehaviour> _colliders;
-        private RoutineBehaviour.TimedAction _currentTimer;
+        private TimedAction _currentTimer;
         protected KnockbackBehaviour _ownerKnockBackScript;
         protected Movement.GridMovementBehaviour _ownerMoveScript;
         protected CharacterAnimationBehaviour _ownerAnimationScript;
@@ -107,7 +107,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// The timed action that is counting down to the next ability phase
         /// </summary>
-        public RoutineBehaviour.TimedAction CurrentTimer
+        public TimedAction CurrentTimer
         {
             get { return _currentTimer; }
         }
@@ -252,7 +252,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void StopAbility()
         {
-            RoutineBehaviour.Instance.StopTimedAction(_currentTimer);
+            RoutineBehaviour.Instance.StopAction(_currentTimer);
             _inUse = false;
         }
 
@@ -261,7 +261,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void EndAbility()
         {
-            RoutineBehaviour.Instance.StopTimedAction(_currentTimer);
+            RoutineBehaviour.Instance.StopAction(_currentTimer);
             onDeactivate?.Invoke();
             Deactivate();
             onEnd?.Invoke();

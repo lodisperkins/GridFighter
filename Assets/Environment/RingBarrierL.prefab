@@ -69,6 +69,7 @@ GameObject:
   - component: {fileID: 8744172618015234542}
   - component: {fileID: 8744172618015234546}
   - component: {fileID: 3135977292930765005}
+  - component: {fileID: 8764218841854632973}
   m_Layer: 15
   m_Name: RingBarrierL
   m_TagString: Structure
@@ -115,7 +116,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 0}
   _invincibilityColor: {r: 0, g: 0, b: 0, a: 0}
   _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
-  OnTakeDamage: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
+  OnTakeDamageEvent: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   Owner: {fileID: 0}
   _bounceDampen: 0.8
   _hitStunOnCollision: 0.5
@@ -142,6 +143,51 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!114 &8764218841854632973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8744172618015234547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a62954eaccc7bb4d9f0df26c663edc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _visual: {fileID: 4911058991569425468}
+  _healthGradient:
+    serializedVersion: 2
+    key0: {r: 0.98039216, g: 0.5146489, b: 0, a: 0.17254902}
+    key1: {r: 1, g: 0.912394, b: 0, a: 0.12941177}
+    key2: {r: 0, g: 1, b: 0.003575325, a: 0.043137256}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 19661
+    ctime1: 45875
+    ctime2: 65535
+    ctime3: 0
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 19661
+    atime1: 45875
+    atime2: 65150
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_NumColorKeys: 3
+    m_NumAlphaKeys: 3
+  _maxTransparency: 0.5
+  _fadeInDuration: 0.2
+  _fadeOutDuration: 0.2
 --- !u!1001 &2651977474392805247
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -220,6 +266,12 @@ GameObject:
 --- !u!4 &8964414738555679688 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6388999027482328247, guid: e893e17d94a637a46a8feeaa5cd1fef5,
+    type: 3}
+  m_PrefabInstance: {fileID: 2651977474392805247}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &4911058991569425468 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6983430818311871299, guid: e893e17d94a637a46a8feeaa5cd1fef5,
     type: 3}
   m_PrefabInstance: {fileID: 2651977474392805247}
   m_PrefabAsset: {fileID: 0}

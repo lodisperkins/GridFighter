@@ -9,7 +9,7 @@ namespace Lodis.Movement
     {
         [Tooltip("The amount of time it takes for this object to regain footing after landing")] [SerializeField]
         private float _landingTime;
-        private RoutineBehaviour.TimedAction _landingAction;
+        private TimedAction _landingAction;
 
         [SerializeField] private float _knockDownTime;
         [SerializeField] private float _knockDownRecoverTime;
@@ -59,7 +59,7 @@ namespace Lodis.Movement
         {
             if (!Landing) return;
 
-            RoutineBehaviour.Instance.StopTimedAction(_landingAction);
+            RoutineBehaviour.Instance.StopAction(_landingAction);
             _knockback.DisableInvincibility();
             _knockback.Physics.Rigidbody.isKinematic = false;
             IsDown = false;
@@ -69,7 +69,7 @@ namespace Lodis.Movement
         
         private void TumblingLanding(object[] arguments)
         {
-            RoutineBehaviour.Instance.StopTimedAction(_knockback.GravityIncreaseTimer);
+            RoutineBehaviour.Instance.StopAction(_knockback.GravityIncreaseTimer);
             _knockback.Physics.Gravity = _knockback.StartGravity;
             //Start knockdown
             IsDown = true;
@@ -101,7 +101,7 @@ namespace Lodis.Movement
             _knockback.LastTimeInKnockBack = 0;
             _knockback.Physics.StopVelocity();
 
-            RoutineBehaviour.Instance.StopTimedAction(_landingAction);
+            RoutineBehaviour.Instance.StopAction(_landingAction);
             
             switch (_knockback.CurrentAirState)
             {

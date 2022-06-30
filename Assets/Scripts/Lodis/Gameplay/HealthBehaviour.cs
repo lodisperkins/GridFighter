@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 namespace Lodis.Gameplay
 {
@@ -29,7 +30,7 @@ namespace Lodis.Gameplay
         [Tooltip("Whether or not this object can be damaged or knocked back")]
         [SerializeField]
         private bool _isInvincible;
-        private RoutineBehaviour.TimedAction _invincibilityTimer;
+        private TimedAction _invincibilityTimer;
         private Condition _invincibilityCondition;
         private Condition _intagibilityCondition;
         [Tooltip("Whether or not this object is in a stunned state")]
@@ -53,8 +54,9 @@ namespace Lodis.Gameplay
         private Color _intangibilityColor;
         protected GridMovementBehaviour Movement;
         protected Condition AliveCondition;
-        [SerializeField]
-        protected GridGame.Event OnTakeDamage;
+        protected UnityAction _onTakeDamage;
+        [FormerlySerializedAs("OnTakeDamage")] [SerializeField]
+        protected GridGame.Event OnTakeDamageEvent;
 
         public bool Stunned 
         {
@@ -133,7 +135,7 @@ namespace Lodis.Gameplay
             if (Health < 0)
                 _health = 0;
 
-            OnTakeDamage.Raise(gameObject);
+            OnTakeDamageEvent.Raise(gameObject);
             return damageTaken;
         }
 
@@ -158,7 +160,7 @@ namespace Lodis.Gameplay
             if (_health < 0)
                 _health = 0;
 
-            OnTakeDamage.Raise(gameObject);
+            OnTakeDamageEvent.Raise(gameObject);
             return damageTaken;
         }
 
@@ -179,7 +181,7 @@ namespace Lodis.Gameplay
             if (_health < 0)
                 _health = 0;
 
-            OnTakeDamage.Raise(gameObject);
+            OnTakeDamageEvent.Raise(gameObject);
             return damageTaken;
         }
 
@@ -267,6 +269,15 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Adds an action to the event called when this object is damaged
+        /// </summary>
+        /// <param name="action">The new listener to to the event</param>
+        public void AddOnTakeDamageAction(UnityAction action)
+        {
+            _onTakeDamage += action;
+        }
+        
+        /// <summary>
         /// Makes the object invincible. No damage can be taken by the object
         /// </summary>
         /// <param name="time">How long in seconds the object is invincible for</param>
@@ -275,7 +286,7 @@ namespace Lodis.Gameplay
             _isInvincible = true;
 
             if (_invincibilityTimer != null)
-                RoutineBehaviour.Instance.StopTimedAction(_invincibilityTimer);
+                RoutineBehaviour.Instance.StopAction(_invincibilityTimer);
 
             _invincibilityTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => _isInvincible = false, TimedActionCountType.SCALEDTIME, time);
 

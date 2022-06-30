@@ -86,7 +86,7 @@ namespace Lodis.Gameplay
         private Movement.GridMovementBehaviour _movementBehaviour;
         private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
-        private RoutineBehaviour.TimedAction _rechargeAction;
+        private TimedAction _rechargeAction;
 
         public Transform ProjectileSpawnTransform => _projectileSpawnPoint;
 
@@ -117,7 +117,7 @@ namespace Lodis.Gameplay
                 _energyChargeEnabled = value;
 
                 if (!_energyChargeEnabled)
-                    RoutineBehaviour.Instance.StopTimedAction(_rechargeAction);
+                    RoutineBehaviour.Instance.StopAction(_rechargeAction);
             }
         }
 

@@ -57,7 +57,8 @@ namespace Lodis.Gameplay
 
             Health -= damage;
 
-            OnTakeDamage.Raise(gameObject);
+            OnTakeDamageEvent.Raise(gameObject);
+            _onTakeDamage?.Invoke();
             return damage;
         }
 
@@ -74,7 +75,8 @@ namespace Lodis.Gameplay
 
             Health -= info.Damage;
 
-            OnTakeDamage.Raise(gameObject);
+            OnTakeDamageEvent.Raise(gameObject);
+            _onTakeDamage?.Invoke();
             return info.Damage;
         }
 
@@ -93,7 +95,8 @@ namespace Lodis.Gameplay
 
             Health -= damage;
 
-            OnTakeDamage.Raise(gameObject);
+            OnTakeDamageEvent.Raise(gameObject);
+            _onTakeDamage?.Invoke();
             return damage;
         }
 

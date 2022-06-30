@@ -13,28 +13,11 @@ namespace Lodis.Utility
         FRAME
     }
 
+    public delegate void DelayedEvent(params object[] args);
+
     public class RoutineBehaviour : MonoBehaviour
     {
-        public delegate void TimedEvent(params object[] args);
-
-        
-
-        public class TimedAction
-        {
-            public float TimeStarted;
-            public float Duration;
-            public TimedActionCountType CountType;
-            public TimedEvent Event;
-            private bool _isActive;
-
-            public TimedAction() { }
-
-            public bool GetEnabled() { return _isActive; }
-            public void Enable() { _isActive = true; }
-            public void Disable() { _isActive = false; }
-        }
-
-        private List<TimedAction> _timedActions = new List<TimedAction>();
+        private List<DelayedAction> _delayedActions = new List<DelayedAction>();
 
         private static RoutineBehaviour _instance;
 
@@ -58,13 +41,14 @@ namespace Lodis.Utility
         /// <summary>
         /// Calls the given event after the given amount of time or frames have passed
         /// </summary>
-        /// <param name="timedEvent">The action to do once the timer is complete</param>
+        /// <param name="delayedEvent">The action to do once the timer is complete</param>
         /// <param name="countType">The type of counter to create. Ex. Counting by frames, counting by scaled time, counting by unscaled time</param>
         /// <param name="duration">How long to wait before performing the action</param>
+        /// <param name="args"></param>
         /// <returns></returns>
-        public TimedAction StartNewTimedAction(TimedEvent timedEvent, TimedActionCountType countType, float duration)
+        public TimedAction StartNewTimedAction(DelayedEvent delayedEvent, TimedActionCountType countType, float duration, params object[] args)
         {
-            TimedAction action = new TimedAction { CountType = countType, Duration = duration, Event = timedEvent };
+            TimedAction action = new TimedAction { CountType = countType, Duration = duration, Event = delayedEvent, args = args};
 
             switch (countType)
             {
@@ -78,8 +62,25 @@ namespace Lodis.Utility
                     action.TimeStarted = Time.frameCount;
                     break;
             }    
+            
             action.Enable();
-            _timedActions.Add(action);
+            _delayedActions.Add(action);
+            return action;
+        }
+
+        /// <summary>
+        /// Calls the given event after the given amount of time or frames have passed
+        /// </summary>
+        /// <param name="delayedEvent"></param>
+        /// <param name="condition"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public ConditionAction StartNewConditionAction(DelayedEvent delayedEvent, Condition condition, params object[] args)
+        {
+            ConditionAction action = new ConditionAction { EventCheck = condition, Event = delayedEvent, args = args};
+            
+            action.Enable();
+            _delayedActions.Add(action);
             return action;
         }
 
@@ -88,49 +89,22 @@ namespace Lodis.Utility
         /// </summary>
         /// <param name="action">The timed action to stop</param>
         /// <returns>False if the action is not in the list of actions</returns>
-        public bool StopTimedAction(TimedAction action)
+        public bool StopAction(DelayedAction action)
         {
             if (action == null)
                 return false;
 
             action.Disable();
-            return _timedActions.Remove(action);
+            return _delayedActions.Remove(action);
         }
 
-        private void TryInvokeTimedEvent(float time, int index)
-        {
-            TimedAction action = _timedActions[index];
-
-            if (time - action.TimeStarted >= action.Duration && action.GetEnabled())
-            {
-                action.Disable();
-                action.Event();
-                _timedActions.Remove(action);
-            }
-        }
 
         // Update is called once per frame
         void Update()
         {
-            //Iterate through all actions to try to invok their events
-            for (int i = 0; i < _timedActions.Count; i++)
-            {
-                TimedAction currentAction = _timedActions[i];
-
-                //Call event based on the type of counter
-                switch (currentAction.CountType)
-                {
-                    case TimedActionCountType.SCALEDTIME:
-                        TryInvokeTimedEvent(Time.time, i);
-                        break;
-                    case TimedActionCountType.UNSCALEDTIME:
-                        TryInvokeTimedEvent(Time.unscaledTime, i);
-                        break;
-                    case TimedActionCountType.FRAME:
-                        TryInvokeTimedEvent(Time.frameCount, i);
-                        break;
-                }
-            }
+            //Iterate through all actions to try to invoke their events
+            for (int i = 0; i < _delayedActions.Count; i++)
+                _delayedActions[i].TryInvokeEvent();
         }
     }
 }

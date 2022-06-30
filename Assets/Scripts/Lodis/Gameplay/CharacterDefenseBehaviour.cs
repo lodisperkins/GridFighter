@@ -78,11 +78,11 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _successPhaseShiftRestTime;
         private float _currentPhaseShiftRestTime;
-        private RoutineBehaviour.TimedAction _cooldownTimedAction;
+        private TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
-        private RoutineBehaviour.TimedAction _parryTimer;
-        private RoutineBehaviour.TimedAction _disableFallBreakAction;
-        private RoutineBehaviour.TimedAction _shieldTimer;
+        private TimedAction _parryTimer;
+        private TimedAction _disableFallBreakAction;
+        private TimedAction _shieldTimer;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
@@ -158,7 +158,7 @@ namespace Lodis.Gameplay
             _isParrying = false;
             //Allow the character to parry again
             _canParry = true;
-            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+            RoutineBehaviour.Instance.StopAction(_parryTimer);
         }
 
         public void DeactivateShield()
@@ -197,8 +197,8 @@ namespace Lodis.Gameplay
             if (_knockBack.CheckIfIdle())
                 DeactivateParry();
 
-            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
-            RoutineBehaviour.Instance.StopTimedAction(_shieldTimer);
+            RoutineBehaviour.Instance.StopAction(_parryTimer);
+            RoutineBehaviour.Instance.StopAction(_shieldTimer);
             _shieldCollider.gameObject.SetActive(false);
             _isDefending = false;
             _isParrying = false;
@@ -213,7 +213,7 @@ namespace Lodis.Gameplay
             IsBraced = false;
             _canBrace = true;
 
-            RoutineBehaviour.Instance.StopTimedAction(_cooldownTimedAction);
+            RoutineBehaviour.Instance.StopAction(_cooldownTimedAction);
         }
 
         /// <summary>
@@ -310,10 +310,10 @@ namespace Lodis.Gameplay
 
             //Prevents the player from buffering a parry while breaking a fall
             if (_parryTimer != null)
-                if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+                if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopAction(_parryTimer);
 
             RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
-            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+            RoutineBehaviour.Instance.StopAction(_parryTimer);
             DeactivateParry();
 
             onFallBroken?.Invoke(true);
@@ -387,10 +387,10 @@ namespace Lodis.Gameplay
             }
 
             if (_parryTimer != null)
-                if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+                if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopAction(_parryTimer);
 
             RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
-            RoutineBehaviour.Instance.StopTimedAction(_parryTimer);
+            RoutineBehaviour.Instance.StopAction(_parryTimer);
             DeactivateParry();
 
             onFallBroken?.Invoke(true);

@@ -38,14 +38,13 @@ namespace Lodis.Movement
         private Vector3 _launchForce;
         [SerializeField] private FloatVariable _gravityIncreaseRate;
         [SerializeField] private FloatVariable _gravityIncreaseValue;
-        private readonly RoutineBehaviour.TimedAction _gravityIncreaseTimer = new RoutineBehaviour.TimedAction();
+        private readonly TimedAction _gravityIncreaseTimer = new TimedAction();
         private float _startGravity;
 
         private UnityAction _onKnockBack;
         private UnityAction _onKnockBackStart;
         private UnityAction _onKnockBackTemp;
         private UnityAction _onKnockBackStartTemp;
-        private UnityAction _onTakeDamage;
         private UnityAction _onTakeDamageStart;
         private UnityAction _onTakeDamageStartTemp;
         private UnityAction _onTakeDamageTemp;
@@ -62,7 +61,7 @@ namespace Lodis.Movement
         [SerializeField] private bool _inHitStun;
         private bool _isFlinching;
         private float _timeInCurrentHitStun;
-        private RoutineBehaviour.TimedAction _hitStunTimer = new RoutineBehaviour.TimedAction();
+        private TimedAction _hitStunTimer = new TimedAction();
         
         private float _lastTotalKnockBack;
         private float _lastTimeInKnockBack;
@@ -104,7 +103,7 @@ namespace Lodis.Movement
 
         public FloatVariable GravityIncreaseValue => _gravityIncreaseValue;
 
-        public RoutineBehaviour.TimedAction GravityIncreaseTimer => _gravityIncreaseTimer;
+        public TimedAction GravityIncreaseTimer => _gravityIncreaseTimer;
 
         public LandingBehaviour LandingScript => _landingBehaviour;
 
@@ -174,15 +173,6 @@ namespace Lodis.Movement
         public void RemoveOnKnockBackStartTempAction(UnityAction action)
         {
             _onKnockBackStartTemp -= action;
-        }
-
-        /// <summary>
-        /// Adds an action to the event called when this object is damaged
-        /// </summary>
-        /// <param name="action">The new listener to to the event</param>
-        public void AddOnTakeDamageAction(UnityAction action)
-        {
-            _onTakeDamage += action;
         }
 
         /// <summary>
@@ -280,7 +270,7 @@ namespace Lodis.Movement
         public void CancelHitStun()
         {
             if (_hitStunTimer.GetEnabled())
-                RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
+                RoutineBehaviour.Instance.StopAction(_hitStunTimer);
 
             _timeInCurrentHitStun = 0;
             _inHitStun = false;
@@ -321,7 +311,7 @@ namespace Lodis.Movement
             _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
             if (_hitStunTimer.GetEnabled())
-                RoutineBehaviour.Instance.StopTimedAction(_hitStunTimer);
+                RoutineBehaviour.Instance.StopAction(_hitStunTimer);
 
             _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _inHitStun = false; _isFlinching = false; _timeInCurrentHitStun = 0; }, TimedActionCountType.SCALEDTIME, timeInHitStun);
             _onHitStun?.Invoke();
