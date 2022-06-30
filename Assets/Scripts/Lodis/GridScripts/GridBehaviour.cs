@@ -39,6 +39,9 @@ namespace Lodis.GridScripts
         [Tooltip("The amount of space that should be between each panel.")]
         [SerializeField]
         private float _panelSpacingZ;
+        [Tooltip("The amount of space that should be between each opposing panel in the center of the grid. Defaults to z spacing if zero.")]
+        [SerializeField]
+        private float _panelSpacingMiddle;
         private PanelBehaviour[,] _panels;
         [Tooltip("How many columns to give player 1 when the game starts. Use this to decide how much territory to give both players.")]
         [SerializeField]
@@ -154,6 +157,11 @@ namespace Lodis.GridScripts
         /// </summary>
         public void CreateGrid()
         {
+            if (_panelSpacingMiddle <= 0)
+                _panelSpacingMiddle = _panelSpacingX;
+
+            float spacingVal = 0;
+
             if (!BlackBoardBehaviour.Instance.Grid)
                 BlackBoardBehaviour.Instance.InitializeGrid();
 
@@ -178,13 +186,16 @@ namespace Lodis.GridScripts
                     xPos = 0;
                     spawnPosition.x = transform.position.x;
                     yPos++;
+                    
                     spawnPosition.z += _panelRef.transform.localScale.z + _panelSpacingZ;
                     continue;
                 }
 
+                spacingVal = xPos == _p1MaxColumns - 1 ? _panelSpacingMiddle : _panelSpacingX;
+
                 //Increase x position
                 xPos++;
-                spawnPosition.x += _panelRef.transform.localScale.x + _panelSpacingX;
+                spawnPosition.x += _panelRef.transform.localScale.x + spacingVal;
             }
 
 
@@ -225,11 +236,12 @@ namespace Lodis.GridScripts
             //Spawn the collision plane underneath the grid
             GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
 
-            _width = (_dimensions.x * _panelRef.transform.localScale.x) + (PanelSpacingX * _dimensions.x);
-            _height = (_dimensions.y * _panelRef.transform.localScale.z) + (PanelSpacingZ * _dimensions.y);
+            var localScale = _panelRef.transform.localScale;
+            _width = (_dimensions.x * localScale.x) + (PanelSpacingX * _dimensions.x - 1) + _panelSpacingMiddle;
+            _height = (_dimensions.y * localScale.z) + (PanelSpacingZ * _dimensions.y);
 
-            float collisionPlaneOffsetX = ((_dimensions.x - 1) * _panelRef.transform.localScale.x) + (PanelSpacingX * (_dimensions.x - 1));
-            float collisionPlaneOffsetY = ((_dimensions.y - 1) * _panelRef.transform.localScale.z) + (PanelSpacingZ * (_dimensions.y - 1));
+            float collisionPlaneOffsetX = ((_dimensions.x - 1) * localScale.x) + (PanelSpacingX * (_dimensions.x - 2) + _panelSpacingMiddle);
+            float collisionPlaneOffsetY = ((_dimensions.y - 1) * localScale.z) + (PanelSpacingZ * (_dimensions.y - 1));
 
             collisionPlane.transform.localScale = new Vector3(_width / 10, collisionPlane.transform.localScale.y, _height / 10);
             collisionPlane.transform.position += new Vector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);

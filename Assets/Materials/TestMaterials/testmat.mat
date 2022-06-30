@@ -113,7 +113,7 @@ Material:
     - USINGFRESNEL: 1
     - Vector1_76C25F58: 0
     - Vector1_AF883DE0: 0
-    - Vector1_E0AB0ADF: 0
+    - Vector1_E0AB0ADF: 0.04
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1

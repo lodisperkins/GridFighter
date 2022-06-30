@@ -134,7 +134,7 @@ Material:
     m_Colors:
     - Color_205411B7: {r: 1, g: 1, b: 1, a: 0}
     - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
-    - _BaseColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
+    - _BaseColor: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
     - _Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
