@@ -129,8 +129,11 @@ namespace Lodis.Gameplay
             if (_bounceDampen == 0)
                 _bounceDampen = 1;
 
+            var offsetX = collision.transform.position.x - transform.position.x;
+            float dir = offsetX / Mathf.Abs(offsetX);
+            
             //Find the direction this collider was going to apply force originally
-            Vector3 currentForceDirection = new Vector3(Mathf.Cos(_launchAngle) * transform.forward.x, Mathf.Sin(_launchAngle), 0);
+            Vector3 currentForceDirection = new Vector3(Mathf.Cos(_launchAngle) * dir, Mathf.Sin(_launchAngle), 0);
 
             //Find the new angle based on the direction of the attack on the x axis
             float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
