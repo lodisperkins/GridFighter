@@ -58,6 +58,8 @@ MonoBehaviour:
     Priority: 4
     OwnerAlignement: 0
     AbilityType: 10
+    HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
+      type: 3}
   _customStats: []
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: a8e48c70fc9e5a4409acfc0781e94b19, type: 3}

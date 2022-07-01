@@ -19,12 +19,16 @@ MonoBehaviour:
   startUpTime: 0.5
   chargeTime: 0
   maxActivationAmount: 0
+  EnergyCost: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
+  CanCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -32,6 +36,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 7648438965634708056, guid: 21e48ff7c2220634887d04ebcd36387a,
     type: 3}
+  DisplayIcon: {fileID: 0}
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
@@ -52,6 +57,9 @@ MonoBehaviour:
     HitStunTime: 0.2
     Priority: 3
     OwnerAlignement: 0
+    AbilityType: 4
+    HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
+      type: 3}
   _customStats:
   - name: Speed
     value: 20

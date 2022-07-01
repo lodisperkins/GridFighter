@@ -28,6 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
+  CanCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1
@@ -57,6 +58,8 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
+    HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
+      type: 3}
   _customStats:
   - name: TravelDistance
     value: 3

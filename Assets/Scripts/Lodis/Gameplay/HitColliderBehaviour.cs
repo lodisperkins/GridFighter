@@ -45,7 +45,8 @@ namespace Lodis.Gameplay
         public GridAlignment OwnerAlignement;
         [HideInInspector]
         public AbilityType AbilityType;
-
+        public GameObject HitSpark;
+        
         /// <summary>
         /// Get a copy of the hit collider info with the attack stats (damage, base knock back, knock back scale, hit stun time) scaled
         /// </summary>
@@ -235,8 +236,12 @@ namespace Lodis.Gameplay
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
             if (damageScript != null)
+            {
                 damageScript.TakeDamage(ColliderInfo, Owner);
-
+                if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
+                    Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
+            }
+            
             OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
@@ -306,8 +311,12 @@ namespace Lodis.Gameplay
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
             if (damageScript != null)
+            {
                 damageScript.TakeDamage(ColliderInfo, Owner);
-
+                if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
+                    Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
+            }
+            
             OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
@@ -379,8 +388,14 @@ namespace Lodis.Gameplay
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
             if (damageScript != null)
+            {
                 damageScript.TakeDamage(ColliderInfo, Owner);
+                if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
+                    Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
+            }
 
+            
+            
             OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
