@@ -77,6 +77,7 @@ namespace Lodis.Movement
 
         private Coroutine _currentCoroutine;
         private Sequence _sequence;
+        private bool _isFrozen;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -114,6 +115,8 @@ namespace Lodis.Movement
         public bool ObjectAtRest { get => _objectAtRest; }
         public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
+
+        public bool IsFrozen => _isFrozen;
 
         private void Awake()
         {
@@ -179,19 +182,24 @@ namespace Lodis.Movement
             bool gravityEnabled = UseGravity;
             Vector3 velocity = LastVelocity;
 
+            if (makeKinematic && _rigidbody.isKinematic)
+                makeKinematic = false;
+            
             if (makeKinematic)
                 MakeKinematic();
 
             StopAllForces();
+            _isFrozen = true;
             yield return new WaitForSeconds(time);
 
             if (makeKinematic)
                 Rigidbody.isKinematic = false;
 
-            if (keepMomentum)
+            if (keepMomentum && velocity.magnitude > 0)
                 ApplyVelocityChange(velocity);
 
             UseGravity = gravityEnabled;
+            _isFrozen = false;
         }
 
         private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
@@ -199,21 +207,25 @@ namespace Lodis.Movement
             bool gravityEnabled = UseGravity;
             Vector3 velocity = LastVelocity;
 
+            if (makeKinematic && _rigidbody.isKinematic)
+                makeKinematic = false;
+            
             if (makeKinematic)
                 MakeKinematic();
 
             StopAllForces();
-
+            _isFrozen = true;
             _wait = new WaitUntil(() => condition.Invoke());
             yield return _wait;
 
             if (makeKinematic)
                 Rigidbody.isKinematic = false;
 
-            if (keepMomentum)
+            if (keepMomentum && velocity.magnitude > 0)
                 ApplyVelocityChange(velocity);
 
             UseGravity = gravityEnabled;
+            _isFrozen = false;
         }
 
         /// <summary>
@@ -223,6 +235,9 @@ namespace Lodis.Movement
         /// <param name="time">The amount of time in seconds to freeze in place.</param>
         public void FreezeInPlaceByTimer(float time, bool keepMomentum = false, bool makeKinematic = false)
         {
+            if (_isFrozen)
+                return;
+                
             _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time, keepMomentum, makeKinematic));
         }
 
@@ -235,6 +250,8 @@ namespace Lodis.Movement
         /// <param name="makeKinematic">If true, the object won't be able to have any forces applied to it during the freeze</param>
         public void FreezeInPlaceByCondition(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
         {
+            if (_isFrozen)
+                return;
             _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true, makeKinematic));
         }
 
@@ -247,6 +264,7 @@ namespace Lodis.Movement
                 StopCoroutine(_currentCoroutine);
 
             UseGravity = true;
+            _isFrozen = false;
         }
 
         /// <summary>

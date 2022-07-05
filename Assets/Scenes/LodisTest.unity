@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 5bcdce3e482be174aac4d75d9eed2763,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -685,7 +685,7 @@ PrefabInstance:
     - target: {fileID: 8744172618015234542, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.67
+      value: -0.99
       objectReference: {fileID: 0}
     - target: {fileID: 8744172618015234542, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
@@ -1134,7 +1134,7 @@ PrefabInstance:
     - target: {fileID: 8744172618015234542, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 9.05
+      value: 9.57
       objectReference: {fileID: 0}
     - target: {fileID: 8744172618015234542, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
@@ -2227,7 +2227,6 @@ GameObject:
   - component: {fileID: 446117099}
   - component: {fileID: 446117098}
   - component: {fileID: 446117097}
-  - component: {fileID: 446117095}
   - component: {fileID: 446117096}
   m_Layer: 0
   m_Name: RingBarrierU
@@ -2236,39 +2235,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &446117095
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 446117094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 438dda136aaf75e4aa58f774a6f5dba4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _health: 5
-  _startingHealth: -1
-  _maxHealth: {fileID: 11400000, guid: 83e5ea0a3fbbb4940bd7e83fa9ac4062, type: 2}
-  _destroyOnDeath: 1
-  _isAlive: 1
-  _isInvincible: 1
-  _stunned: 0
-  _isIntangible: 0
-  _meshRenderer: {fileID: 0}
-  _invincibilityColor: {r: 0, g: 0, b: 0, a: 0}
-  _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
-  OnTakeDamage: {fileID: 0}
-  Owner: {fileID: 0}
-  _bounceDampen: 0
-  _hitStunOnCollision: 0.5
-  _collider: {fileID: 0}
-  _visual: {fileID: 0}
-  _shatterVelocityMagnitude: {fileID: 0}
-  _minimumDamageSpeed: 0
-  _knockBackDistance: 0
-  _launchAngle: 0
 --- !u!65 &446117096
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2300,7 +2266,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: b5f5fa3bf62f76644b3b55571435b23d, type: 2}
+  - {fileID: 6151071871934886045, guid: 9a73180412800aa42bddc227238e0a4f, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2337,7 +2303,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 446117094}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 5.41, y: 5.66, z: 1.37}
+  m_LocalPosition: {x: 5.41, y: 6.81, z: 1.37}
   m_LocalScale: {x: 1.2502, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -9433,6 +9399,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 0
+    HitSpark: {fileID: 0}
 --- !u!65 &1854253617
 BoxCollider:
   m_ObjectHideFlags: 0

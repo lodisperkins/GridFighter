@@ -45,8 +45,11 @@ namespace Lodis.Gameplay
         public GridAlignment OwnerAlignement;
         [HideInInspector]
         public AbilityType AbilityType;
+        [Tooltip("The spark effect that will spawn on hit.")]
         public GameObject HitSpark;
-        
+
+        [Tooltip("How long the hit stop will be scaled on hit.")]
+        public float HitStopTimeModifier;
         /// <summary>
         /// Get a copy of the hit collider info with the attack stats (damage, base knock back, knock back scale, hit stun time) scaled
         /// </summary>

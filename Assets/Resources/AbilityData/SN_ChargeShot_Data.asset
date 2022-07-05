@@ -54,7 +54,7 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     CanSpike: 0
-    HitStunTime: 0.2
+    HitStunTime: 0.8
     Priority: 3
     OwnerAlignement: 0
     AbilityType: 4
