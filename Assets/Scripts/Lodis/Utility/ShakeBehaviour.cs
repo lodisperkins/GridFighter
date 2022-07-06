@@ -13,15 +13,42 @@ public class ShakeBehaviour : MonoBehaviour
     private int _frequency;
     private Tweener _tweener;
     private Quaternion _startRotation;
+    private Vector3 _startPosition;
 
     private void Awake()
     {
         _startRotation = transform.rotation;
+        _startPosition = transform.position;
     }
 
-    public void Shake()
+    public void ShakeRotation()
     {
          _tweener = transform.DOShakeRotation(_duration, _strength, _frequency, 90);
         _tweener.onComplete += () => transform.rotation = _startRotation;
+    }
+
+    public void ShakeRotation(float duration, float strength, int frequency)
+    {
+         _tweener = transform.DOShakeRotation(duration, strength, frequency, 90);
+        _tweener.onComplete += () => transform.rotation = _startRotation;
+    }
+
+    public void ShakePosition()
+    {
+        if (_tweener?.active == false)
+            _startPosition = transform.localPosition;
+
+        _tweener = transform.DOShakePosition(_duration, _strength, _frequency, 90);
+        _tweener.onComplete += () => transform.localPosition = _startPosition;
+    }
+
+    public void ShakePosition(float duration, float strength, int frequency)
+    {
+        if (_tweener?.active == false)
+            _startPosition = transform.localPosition;
+
+        _tweener = transform.DOShakePosition(duration, strength, frequency, 90, false, false);
+        _tweener.onUpdate += () => transform.localPosition = new Vector3(_startPosition.x, transform.position.y, transform.position.z);
+        _tweener.onComplete += () => transform.localPosition = _startPosition;
     }
 }

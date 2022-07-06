@@ -177,10 +177,13 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze for.</param>
         /// <returns></returns>
-        private IEnumerator FreezeTimerCoroutine(float time, bool keepMomentum = false, bool makeKinematic = false)
+        private IEnumerator FreezeTimerCoroutine(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false)
         {
+            if (waitUntilForceApplied)
+                yield return new WaitUntil(() => _rigidbody.velocity.magnitude > 0);
+
             bool gravityEnabled = UseGravity;
-            Vector3 velocity = LastVelocity;
+            Vector3 velocity = _rigidbody.velocity;
 
             if (makeKinematic && _rigidbody.isKinematic)
                 makeKinematic = false;
@@ -189,7 +192,6 @@ namespace Lodis.Movement
                 MakeKinematic();
 
             StopAllForces();
-            _isFrozen = true;
             yield return new WaitForSeconds(time);
 
             if (makeKinematic)
@@ -202,10 +204,13 @@ namespace Lodis.Movement
             _isFrozen = false;
         }
 
-        private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
+        private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false)
         {
+            if (waitUntilForceApplied)
+                yield return new WaitUntil(() => _rigidbody.velocity.magnitude > 0);
+
             bool gravityEnabled = UseGravity;
-            Vector3 velocity = LastVelocity;
+            Vector3 velocity = _rigidbody.velocity;
 
             if (makeKinematic && _rigidbody.isKinematic)
                 makeKinematic = false;
@@ -214,7 +219,6 @@ namespace Lodis.Movement
                 MakeKinematic();
 
             StopAllForces();
-            _isFrozen = true;
             _wait = new WaitUntil(() => condition.Invoke());
             yield return _wait;
 
@@ -233,12 +237,13 @@ namespace Lodis.Movement
         /// freeze the object in place for the given time.
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze in place.</param>
-        public void FreezeInPlaceByTimer(float time, bool keepMomentum = false, bool makeKinematic = false)
+        public void FreezeInPlaceByTimer(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitForFixedUpdate = false)
         {
             if (_isFrozen)
                 return;
-                
-            _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time, keepMomentum, makeKinematic));
+
+            _isFrozen = true;
+            _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time, keepMomentum, makeKinematic, waitForFixedUpdate));
         }
 
         /// <summary>
@@ -252,6 +257,7 @@ namespace Lodis.Movement
         {
             if (_isFrozen)
                 return;
+            _isFrozen = true;
             _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true, makeKinematic));
         }
 

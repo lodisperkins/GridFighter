@@ -54,12 +54,13 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     CanSpike: 0
-    HitStunTime: 0.3
+    HitStunTime: 1
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
     HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
       type: 3}
+    HitStopTimeModifier: 10
   _customStats:
   - name: TravelDistance
     value: 3

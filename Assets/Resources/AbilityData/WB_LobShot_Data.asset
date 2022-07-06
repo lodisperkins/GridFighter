@@ -60,6 +60,7 @@ MonoBehaviour:
     AbilityType: 3
     HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
       type: 3}
+    HitStopTimeModifier: 1.2
   _customStats:
   - name: PanelDistance
     value: 6

@@ -60,6 +60,7 @@ MonoBehaviour:
     AbilityType: 7
     HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
       type: 3}
+    HitStopTimeModifier: 1.2
   - Name: WeakShot
     DespawnAfterTimeLimit: 1
     TimeActive: 5
@@ -81,6 +82,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 7
     HitSpark: {fileID: 0}
+    HitStopTimeModifier: 0
   _customStats:
   - name: StrongShotDistance
     value: 1

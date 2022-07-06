@@ -4355,7 +4355,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 934786780}
-        m_MethodName: Shake
+        m_MethodName: ShakeRotation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4383,7 +4383,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 934786780}
-        m_MethodName: Shake
+        m_MethodName: ShakeRotation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19842,6 +19842,16 @@ PrefabInstance:
       propertyPath: _ringBarrierR
       value: 
       objectReference: {fileID: 2063412668}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _infiniteEnergy
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _invincibleBarriers
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652314, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: m_RootOrder

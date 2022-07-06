@@ -4589,7 +4589,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 934786780}
-        m_MethodName: Shake
+        m_MethodName: ShakeRotation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4617,7 +4617,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 934786780}
-        m_MethodName: Shake
+        m_MethodName: ShakeRotation
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6759,7 +6759,7 @@ MonoBehaviour:
   _dummyRHSSpawnLocation: {x: 7, y: 0}
   _dummyLHSSpawnLocation: {x: 0, y: 0}
   _targetFrameRate: 60
-  _invincibleBarriers: 1
+  _invincibleBarriers: 0
   _infiniteEnergy: 1
   _timeScale: 1
 --- !u!114 &1441118449
@@ -9400,6 +9400,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 0
     HitSpark: {fileID: 0}
+    HitStopTimeModifier: 0
 --- !u!65 &1854253617
 BoxCollider:
   m_ObjectHideFlags: 0
