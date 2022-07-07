@@ -1,6 +1,11 @@
 fileFormatVersion: 2
-guid: 59f605d0341eafd4cb476d9ca4a78aae
+<<<<<<<< HEAD:Assets/Scenes/ArtTest.unity.meta
+guid: adb778df54f6a0e43bec43f8dab4444c
 DefaultImporter:
+========
+guid: d6176f32c5b6be54cb7f4f08a6f3b30c
+PrefabImporter:
+>>>>>>>> PhaseShift:Assets/Prefabs/Character.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
