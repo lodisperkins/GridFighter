@@ -52,11 +52,13 @@ namespace Lodis.Gameplay
         private Color _invincibilityColor;
         [SerializeField]
         private Color _intangibilityColor;
+        private HitColliderBehaviour _lastCollider;
         protected GridMovementBehaviour Movement;
         protected Condition AliveCondition;
         protected UnityAction _onTakeDamage;
         [FormerlySerializedAs("OnTakeDamage")] [SerializeField]
         protected GridGame.Event OnTakeDamageEvent;
+
 
         public bool Stunned 
         {
@@ -95,6 +97,12 @@ namespace Lodis.Gameplay
         }
         public bool IsInvincible { get => _isInvincible; }
         public FloatVariable MaxHealth { get => _maxHealth; }
+
+        public HitColliderBehaviour LastCollider
+        {
+            get => _lastCollider;
+            set => _lastCollider = value;
+        }
 
         protected virtual void Start()
         {
@@ -336,7 +344,6 @@ namespace Lodis.Gameplay
             _invincibilityCondition = null;
             _isInvincible = false;
         }
-
         public virtual void OnCollisionEnter(Collision collision)
         {
             KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();

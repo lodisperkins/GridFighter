@@ -240,6 +240,7 @@ namespace Lodis.Gameplay
             //If the damage script wasn't null damage the object
             if (damageScript != null)
             {
+                damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
                     Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
@@ -315,6 +316,7 @@ namespace Lodis.Gameplay
             //If the damage script wasn't null damage the object
             if (damageScript != null)
             {
+                damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
                     Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
@@ -392,6 +394,7 @@ namespace Lodis.Gameplay
             //If the damage script wasn't null damage the object
             if (damageScript != null)
             {
+                damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
                     Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);

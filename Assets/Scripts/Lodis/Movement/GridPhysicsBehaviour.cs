@@ -396,18 +396,26 @@ namespace Lodis.Movement
             _onCollisionWithGround += collisionEvent;
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            GameObject otherGameObject;
+            HealthBehaviour damageScript = (otherGameObject = other.gameObject).GetComponent<HealthBehaviour>();
+
+            _onCollision?.Invoke(otherGameObject, other.gameObject.GetComponent<ColliderBehaviour>(), other, GetComponent<Collider>(), damageScript);
+        }
+
         protected virtual void OnCollisionEnter(Collision collision)
         {
-            _onCollision?.Invoke(collision.gameObject, collision);
 
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
             GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
+
+            _onCollision?.Invoke(collision.gameObject, collision.gameObject.GetComponent<ColliderBehaviour>(), collision, GetComponent<Collider>(), damageScript);
 
             if (!gridPhysicsBehaviour || !damageScript)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
-
 
             //If no knockback script is attached, use this script to add force
             if (!knockBackScript)

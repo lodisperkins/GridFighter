@@ -16,7 +16,6 @@ namespace Lodis.Gameplay
         
         private DelayedAction _stopAction;
         private float _hitStopScale = 0.15f;
-        private HitColliderBehaviour _lastCollider;
 
         private void Awake()
         {
@@ -29,36 +28,15 @@ namespace Lodis.Gameplay
             else
                 _health.AddOnTakeDamageAction(StartHitStop);
         }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            if (other.gameObject.layer != LayerMask.NameToLayer("Ability"))
-                return;
-
-            HitColliderBehaviour collider = null;
-            if (other.attachedRigidbody)
-                collider = other.attachedRigidbody.GetComponent<HitColliderBehaviour>();
-            
-            if(!collider)
-                collider = other.GetComponent<HitColliderBehaviour>();
-
-            if (!collider)
-                return;
-            
-            if (collider.Owner == gameObject || _health.IsInvincible)
-                return;
-
-            _lastCollider = collider;
-        }
-
+        
         public void StartHitStop()
         {
-            float animationStopDelay = _lastCollider.ColliderInfo.HitStunTime * 0.05f;
+            float animationStopDelay = _health.LastCollider.ColliderInfo.HitStunTime * 0.05f;
 
-            _lastCollider.ColliderInfo.HitStopTimeModifier = Mathf.Clamp(_lastCollider.ColliderInfo.HitStopTimeModifier, 1, 5);
-            float time = _lastCollider.ColliderInfo.HitStunTime * _hitStopScale * _lastCollider.ColliderInfo.HitStopTimeModifier;
+            _health.LastCollider.ColliderInfo.HitStopTimeModifier = Mathf.Clamp(_health.LastCollider.ColliderInfo.HitStopTimeModifier, 1, 5);
+            float time = _health.LastCollider.ColliderInfo.HitStunTime * _hitStopScale * _health.LastCollider.ColliderInfo.HitStopTimeModifier;
 
-            _lastCollider.Owner.GetComponent<HitStopBehaviour>().StartHitStop(time, animationStopDelay, false, false);
+            _health.LastCollider.Owner.GetComponent<HitStopBehaviour>().StartHitStop(time, animationStopDelay, false, false);
             StartHitStop(time, animationStopDelay, true, true);
         }
 

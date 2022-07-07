@@ -279,7 +279,6 @@ namespace Lodis.Movement
 
         public override void OnCollisionEnter(Collision collision)
         {
-
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
             if (damageScript == null || CurrentAirState != AirState.TUMBLING || IsInvincible)
