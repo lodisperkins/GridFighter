@@ -1,5 +1,6 @@
 ﻿using System;
 using Lodis.Movement;
+using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using UnityEngine;
 
@@ -7,50 +8,81 @@ namespace Lodis.Gameplay
 {
     public class HitStopBehaviour : MonoBehaviour
     {
+        [Tooltip("This is the minimum knockback needed to make an attack shake the camera.")]
+        [SerializeField] private FloatVariable _knockbackToShakeCamera;
         private GridPhysicsBehaviour _physics;
-
+        [Tooltip("The animator attached to the character. Used to stop animations during hit stop.")]
         [SerializeField] private Animator _animator;
+        [Tooltip("The shake script attached to the model. Used to make the model shake during hit stop.")]
         [SerializeField] private ShakeBehaviour _shakeBehaviour;
 
         private HealthBehaviour _health;
-        
         private DelayedAction _stopAction;
         private float _hitStopScale = 0.15f;
 
         private void Awake()
         {
+            //Initialize component values
             _physics = GetComponent<GridPhysicsBehaviour>();
             _health = GetComponent<HealthBehaviour>();
-            KnockbackBehaviour knockBack = (KnockbackBehaviour)_health;
 
+            //Adds the hitstop event to the appropriate event based on the health scrip type
+            KnockbackBehaviour knockBack = (KnockbackBehaviour)_health;
             if (knockBack != null)
                 knockBack.AddOnKnockBackAction(StartHitStop);
             else
                 _health.AddOnTakeDamageAction(StartHitStop);
         }
         
-        public void StartHitStop()
+        /// <summary>
+        /// Freezes and shakes this game object to add extra effect to a hit.
+        /// </summary>
+        private void StartHitStop()
         {
-            float animationStopDelay = _health.LastCollider.ColliderInfo.HitStunTime * 0.05f;
+            //Gets the data for the last collider to hit this object to determine the length of the hit stun
+            HitColliderInfo lastColliderInfo = _health.LastCollider.ColliderInfo;
+            //Calculates a small delay for the animation so that it syncs up better with the hit
+            float animationStopDelay = lastColliderInfo.HitStunTime * 0.05f;
+            //Clamps the modifier so the character isn't frozen for too long
+            lastColliderInfo.HitStopTimeModifier = Mathf.Clamp(lastColliderInfo.HitStopTimeModifier, 1, 5);
+            //The length of the hit stop is found by combining the globla hit stop scale with the hit stun time and teh ability's modifier
+            float time = lastColliderInfo.HitStunTime * _hitStopScale * lastColliderInfo.HitStopTimeModifier;
+            //Starts the hit stop for the attacker
+            _health.LastCollider.Owner.GetComponent<HitStopBehaviour>().StartHitStop(time, animationStopDelay, false, false, false);
+            //Gets the total knockback of the attack so the camera only shakes if the attack is strong enough
+            float totalKnockback = KnockbackBehaviour.GetTotalKnockback(lastColliderInfo.BaseKnockBack, lastColliderInfo.KnockBackScale, _health.Health);
+            bool shakeCamera = totalKnockback >= _knockbackToShakeCamera.Value || lastColliderInfo.BaseKnockBack >= _knockbackToShakeCamera.Value;
 
-            _health.LastCollider.ColliderInfo.HitStopTimeModifier = Mathf.Clamp(_health.LastCollider.ColliderInfo.HitStopTimeModifier, 1, 5);
-            float time = _health.LastCollider.ColliderInfo.HitStunTime * _hitStopScale * _health.LastCollider.ColliderInfo.HitStopTimeModifier;
-
-            _health.LastCollider.Owner.GetComponent<HitStopBehaviour>().StartHitStop(time, animationStopDelay, false, false);
-            StartHitStop(time, animationStopDelay, true, true);
+            //Call the same function with the new parameters found
+            StartHitStop(time, animationStopDelay, true, true, shakeCamera);
         }
 
-        public void StartHitStop(float time, float animationStopDelay, bool waitForForceApplied, bool shake)
+        /// <summary>
+        /// Freezes and shakes this game object to add extra effect to a hit.
+        /// </summary>
+        /// <param name="time">The amount of time to stay in hit stop.</param>
+        /// <param name="animationStopDelay">How long the animation should be delayed so that it syncs up with the hitstop.</param>
+        /// <param name="waitForForceApplied">Whether or not we should wait until a force is applied before the hit stop is active.</param>
+        /// <param name="shakeCharacter">Whether or not the character model should shake during the hitstop.</param>
+        /// <param name="shakeCamera">Whether or not the camera should shake during the hitstop effect.</param>
+        public void StartHitStop(float time, float animationStopDelay, bool waitForForceApplied, bool shakeCharacter, bool shakeCamera)
         {
+            //If there is already a timer to make the object stop, cancel it.
             if (_stopAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_stopAction);
 
-            if (shake)
+            //Shake the camera or the chracter based on the arguments given
+            if (shakeCharacter)
                 _shakeBehaviour.ShakePosition(time, 0.3f, 1000);
+            if (shakeCamera)
+                CameraBehaviour.ShakeBehaviour.ShakeRotation(0.05f, 0.5f, 1);
 
+            //Calls for the physics component to freexe the object in place so it doesn't keep moving in air.
             _physics.FreezeInPlaceByTimer(time, true, true, waitForForceApplied);
+            //The animator should be disabled only after the animation stop delay time has passed.
             RoutineBehaviour.Instance.StartNewTimedAction(args => _animator.enabled = false,
                 TimedActionCountType.SCALEDTIME, animationStopDelay);
+
             _stopAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _animator.enabled = true, TimedActionCountType.SCALEDTIME, time);
         }
     }

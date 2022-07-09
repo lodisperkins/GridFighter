@@ -407,7 +407,7 @@ namespace Lodis.Movement
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
-            float totalKnockback = info.BaseKnockBack + Mathf.Round((Health / 100 * info.KnockBackScale));
+            float totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
@@ -474,6 +474,11 @@ namespace Lodis.Movement
             return info.Damage;
         }
 
+        public static float GetTotalKnockback(float baseKnockback, float knockbackScale, float health)
+        {
+            return baseKnockback + Mathf.Round((health / 100 * knockbackScale));
+        }
+
         public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
         {
             _onTakeDamageStart?.Invoke();
@@ -498,7 +503,7 @@ namespace Lodis.Movement
             _onTakeDamageTemp = null;
 
             //Calculate knockback value based on the current health and scale of the attack
-            float totalKnockback = info.BaseKnockBack + Mathf.Round((Health / 100 * info.KnockBackScale));
+            float totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
             _lastTotalKnockBack = totalKnockback;
             
             //Calculates force and applies it to the rigidbody
@@ -575,7 +580,7 @@ namespace Lodis.Movement
             _onTakeDamageTemp = null;
 
             //Calculate knockback value based on the current health and scale of the attack
-            float totalKnockback = baseKnockBack + Mathf.Round((Health / 100 * knockBackScale));
+            float totalKnockback = GetTotalKnockback(baseKnockBack, knockBackScale, Health);
             _lastTotalKnockBack = totalKnockback;
             
             //Calculates force and applies it to the rigidbody

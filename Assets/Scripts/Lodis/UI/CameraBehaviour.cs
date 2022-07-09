@@ -8,6 +8,7 @@ namespace Lodis
 {
     public class CameraBehaviour : MonoBehaviour
     {
+        private static ShakeBehaviour _shakeBehaviour;
         private Vector3 _cameraPosition;
         [SerializeField]
         private Vector3 _cameraMoveSpeed;
@@ -34,6 +35,13 @@ namespace Lodis
         [SerializeField]
         private bool _showAveragePosition;
         private Vector3 _startPosition;
+
+        public static ShakeBehaviour ShakeBehaviour { get => _shakeBehaviour; }
+
+        private void Awake()
+        {
+            _shakeBehaviour = GetComponent<ShakeBehaviour>();
+        }
 
         // Start is called before the first frame update
         void Start()

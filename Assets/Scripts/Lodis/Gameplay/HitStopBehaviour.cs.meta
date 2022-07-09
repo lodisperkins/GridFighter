@@ -3,7 +3,11 @@ guid: 721a5de7a7941c9459adf43918e00397
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _knockbackToShakeCamera: {fileID: 11400000, guid: 2a232216d7c7c6d4c8e92301134cc6b4,
+      type: 2}
+  - _animator: {instanceID: 0}
+  - _shakeBehaviour: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

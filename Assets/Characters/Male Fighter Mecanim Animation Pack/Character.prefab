@@ -964,6 +964,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 721a5de7a7941c9459adf43918e00397, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _knockbackToShakeCamera: {fileID: 11400000, guid: 2a232216d7c7c6d4c8e92301134cc6b4,
+    type: 2}
   _animator: {fileID: 5237796854253788945}
   _shakeBehaviour: {fileID: 5061871447764344821}
 --- !u!114 &631037068264074505
