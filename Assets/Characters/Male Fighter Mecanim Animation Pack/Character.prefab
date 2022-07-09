@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0}
+  _maxYPosition: {fileID: 11400000, guid: 57bc338bab9306a499149894ddbb2d60, type: 2}
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 10

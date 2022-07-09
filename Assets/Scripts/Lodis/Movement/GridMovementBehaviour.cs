@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine.Events;
 using System.Diagnostics;
 using System.Reflection;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.Movement
 {
@@ -17,6 +18,8 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("The position of the object on the grid.")]
         private Vector2 _position;
+        [SerializeField]
+        private FloatVariable _maxYPosition;
         private Vector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
         [SerializeField]
@@ -718,6 +721,15 @@ namespace Lodis.Movement
 
         private void FixedUpdate()
         {
+            //If the character is above the max y position...
+            if (transform.position.y > _maxYPosition.Value)
+            {
+                //...clamp their height.
+                Vector3 newPostion = new Vector3(transform.position.x, _maxYPosition.Value, transform.position.z);
+                transform.position = newPostion;
+            }
+
+
             if (!_checkIfBehindBarrier) return;
 
             IsBehindBarrier = Physics.Raycast(transform.position, transform.forward, BlackBoardBehaviour.Instance.Grid.PanelSpacingX, LayerMask.GetMask("Structure"));

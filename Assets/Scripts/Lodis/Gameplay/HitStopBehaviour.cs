@@ -47,8 +47,13 @@ namespace Lodis.Gameplay
             lastColliderInfo.HitStopTimeModifier = Mathf.Clamp(lastColliderInfo.HitStopTimeModifier, 1, 5);
             //The length of the hit stop is found by combining the globla hit stop scale with the hit stun time and teh ability's modifier
             float time = lastColliderInfo.HitStunTime * _hitStopScale * lastColliderInfo.HitStopTimeModifier;
-            //Starts the hit stop for the attacker
-            _health.LastCollider.Owner.GetComponent<HitStopBehaviour>().StartHitStop(time, animationStopDelay, false, false, false);
+
+            if (_health.LastCollider.Owner)
+            { 
+                //Starts the hit stop for the attacker
+                _health.LastCollider.Owner.GetComponent<HitStopBehaviour>().StartHitStop(time, animationStopDelay, false, false, false);
+            }
+
             //Gets the total knockback of the attack so the camera only shakes if the attack is strong enough
             float totalKnockback = KnockbackBehaviour.GetTotalKnockback(lastColliderInfo.BaseKnockBack, lastColliderInfo.KnockBackScale, _health.Health);
             bool shakeCamera = totalKnockback >= _knockbackToShakeCamera.Value || lastColliderInfo.BaseKnockBack >= _knockbackToShakeCamera.Value;
