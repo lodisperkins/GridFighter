@@ -120,19 +120,20 @@ namespace Lodis.Gameplay
 
             int gridTempMaxColumns = BlackBoardBehaviour.Instance.Grid.TempMaxColumns;
             int closestPanelX = gridTempMaxColumns;
-
             if (owner.transform.forward.x < 0)
                 closestPanelX--;
                     
             Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
-                    int ownerFacing = (int)owner.transform.forward.x;
+            int ownerFacing = (int)owner.transform.forward.x;
+
+            int farthestPanelX = (int)Mathf.Clamp(closestPanelX + (abilityData.GetCustomStatValue("DistanceBetweenStructures") * ownerFacing), 0, dimensions.x - 1);
             
             //Switch to know which stage of the ability should be activated
             switch (attackDirection)
             {
                 case Vector2 dir when dir.Equals(Vector2.right):
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, dimensions.y - 1));
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, 0));
+                    FireLink(new Vector2(farthestPanelX, dimensions.y - 1));
+                    FireLink(new Vector2(farthestPanelX * ownerFacing, 0));
                     break;
                 case Vector2 dir when dir.Equals(Vector2.left):
                     FireLink(new Vector2(closestPanelX, dimensions.y - 1));
@@ -140,15 +141,15 @@ namespace Lodis.Gameplay
                     break;
                 case Vector2 dir when dir.Equals(Vector2.up):
                     FireLink(new Vector2(closestPanelX, dimensions.y - 1));
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, dimensions.y - 1));
+                    FireLink(new Vector2(farthestPanelX, dimensions.y - 1));
                     break;
                 case Vector2 dir when dir.Equals(Vector2.down):
                     FireLink(new Vector2(closestPanelX, 0));
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, 0));
+                    FireLink(new Vector2(farthestPanelX, 0));
                     break;
                 default:
                     FireLink(new Vector2(closestPanelX, dimensions.y - 2));
-                    FireLink(new Vector2(closestPanelX + (gridTempMaxColumns - 1) * ownerFacing, dimensions.y - 2));
+                    FireLink(new Vector2(farthestPanelX, dimensions.y - 2));
                     break;
                     
             }

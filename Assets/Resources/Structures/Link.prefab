@@ -112,6 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0}
+  _maxYPosition: {fileID: 11400000, guid: 57bc338bab9306a499149894ddbb2d60, type: 2}
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 0
@@ -123,6 +124,8 @@ MonoBehaviour:
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 1
   _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!136 &3657027503068153941
 CapsuleCollider:
   m_ObjectHideFlags: 0
