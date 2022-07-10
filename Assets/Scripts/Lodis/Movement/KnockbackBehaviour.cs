@@ -36,6 +36,8 @@ namespace Lodis.Movement
         private Vector2 _newPanelPosition = new Vector2(float.NaN, float.NaN);
         private float _lastBaseKnockBack;
         private Vector3 _launchForce;
+        [Tooltip("The rate at which an objects move speed in air will decrease")]
+        private FloatVariable _velocityDecayRate;
         [SerializeField] private FloatVariable _gravityIncreaseRate;
         [SerializeField] private FloatVariable _gravityIncreaseValue;
         private readonly TimedAction _gravityIncreaseTimer = new TimedAction();
@@ -113,6 +115,7 @@ namespace Lodis.Movement
 
         private void Awake()
         {
+            _velocityDecayRate = Resources.Load<FloatVariable>("ScriptableObjects/VelocityDecayRate");
             _landingBehaviour = GetComponent<LandingBehaviour>();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
             _defenseBehaviour = GetComponent<CharacterDefenseBehaviour>();

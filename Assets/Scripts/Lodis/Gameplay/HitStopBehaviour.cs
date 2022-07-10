@@ -83,7 +83,7 @@ namespace Lodis.Gameplay
                 CameraBehaviour.ShakeBehaviour.ShakeRotation(0.05f, 0.5f, 1);
 
             //Calls for the physics component to freexe the object in place so it doesn't keep moving in air.
-            _physics.FreezeInPlaceByTimer(time, true, true, waitForForceApplied);
+            _physics.FreezeInPlaceByTimer(time, true, true, waitForForceApplied, true);
             //The animator should be disabled only after the animation stop delay time has passed.
             RoutineBehaviour.Instance.StartNewTimedAction(args => _animator.enabled = false,
                 TimedActionCountType.SCALEDTIME, animationStopDelay);

@@ -24,9 +24,6 @@ namespace Lodis.Movement
         private bool _objectAtRest;
         private Vector3 _acceleration;
         private Vector3 _lastVelocity;
-        [Tooltip("The rate at which an objects move speed in air will decrease")]
-        [SerializeField]
-        private FloatVariable _velocityDecayRate;
         [Tooltip("The strength of the force pushing downwards on this object once in air")]
         [SerializeField]
         private float _gravity = 9.81f;
@@ -78,11 +75,13 @@ namespace Lodis.Movement
         private Coroutine _currentCoroutine;
         private Sequence _sequence;
         private bool _isFrozen;
+        private bool _useVelocityForBounce;
+        private Vector3 _frozenStoredForce;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
         /// </summary>
-        public bool PanelBounceEnabled { get =>_panelBounceEnabled; set => _panelBounceEnabled = value; }
+        public bool PanelBounceEnabled { get =>_panelBounceEnabled; }
 
         /// <summary>
         /// How bouncy this object is
@@ -136,6 +135,24 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Makes it so that this object will bounce up once it hits the collision plane.
+        /// </summary>
+        /// <param name="useVelocityForBounce">Whether or not the strength of the bounce should be relative to the velocity. Uses default bounce value if false.</param>
+        public void EnablePanelBounce(bool useVelocityForBounce = true)
+        {
+            _panelBounceEnabled = true;
+            _useVelocityForBounce = useVelocityForBounce;
+        }
+
+        /// <summary>
+        /// Stops this object from bouncing upwards when it collides with the collision plane.
+        /// </summary>
+        public void DisablePanelBounce()
+        {
+            _panelBounceEnabled = false;
+        }
+
+        /// <summary>
         /// True if the rigidbody is sleeping.
         /// </summary>
         /// <param name="args"></param>
@@ -177,7 +194,7 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze for.</param>
         /// <returns></returns>
-        private IEnumerator FreezeTimerCoroutine(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false)
+        private IEnumerator FreezeTimerCoroutine(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
         {
             if (waitUntilForceApplied)
                 yield return new WaitUntil(() => _rigidbody.velocity.magnitude > 0);
@@ -202,9 +219,14 @@ namespace Lodis.Movement
 
             UseGravity = gravityEnabled;
             _isFrozen = false;
+
+            if (storeForceApplied && _frozenStoredForce.magnitude > 0)
+                ApplyImpulseForce(_frozenStoredForce);
+
+            _frozenStoredForce = Vector3.zero;
         }
 
-        private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false)
+        private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
         {
             if (waitUntilForceApplied)
                 yield return new WaitUntil(() => _rigidbody.velocity.magnitude > 0);
@@ -230,6 +252,11 @@ namespace Lodis.Movement
 
             UseGravity = gravityEnabled;
             _isFrozen = false;
+
+            if (storeForceApplied && _frozenStoredForce.magnitude > 0)
+                ApplyImpulseForce(_frozenStoredForce);
+
+            _frozenStoredForce = Vector3.zero;
         }
 
         /// <summary>
@@ -237,13 +264,13 @@ namespace Lodis.Movement
         /// freeze the object in place for the given time.
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze in place.</param>
-        public void FreezeInPlaceByTimer(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitForFixedUpdate = false)
+        public void FreezeInPlaceByTimer(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
         {
             if (_isFrozen)
                 return;
 
             _isFrozen = true;
-            _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time, keepMomentum, makeKinematic, waitForFixedUpdate));
+            _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time, keepMomentum, makeKinematic, waitUntilForceApplied, storeForceApplied));
         }
 
         /// <summary>
@@ -253,12 +280,12 @@ namespace Lodis.Movement
         /// <param name="condition">The condition event that will disable the freeze once true</param>
         /// <param name="keepMomentum">If true, the object will have its original velocity applied to it after being frozen</param>
         /// <param name="makeKinematic">If true, the object won't be able to have any forces applied to it during the freeze</param>
-        public void FreezeInPlaceByCondition(Condition condition, bool keepMomentum = false, bool makeKinematic = false)
+        public void FreezeInPlaceByCondition(Condition condition, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
         {
             if (_isFrozen)
                 return;
             _isFrozen = true;
-            _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true, makeKinematic));
+            _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true, makeKinematic, waitUntilForceApplied, storeForceApplied));
         }
 
         /// <summary>
@@ -271,6 +298,7 @@ namespace Lodis.Movement
 
             UseGravity = true;
             _isFrozen = false;
+            _frozenStoredForce = Vector3.zero;
         }
 
         /// <summary>
@@ -437,16 +465,16 @@ namespace Lodis.Movement
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
             float velocityMagnitude = 0;
-            float baseKnockBack = 0;
+            float baseKnockBack = 1;
 
-            if (knockBackScript)
+            if (knockBackScript && _useVelocityForBounce)
             {
-                velocityMagnitude = knockBackScript.Physics.Acceleration.magnitude;
+                velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
                 baseKnockBack = knockBackScript.LaunchVelocity.magnitude / velocityMagnitude + bounceDampening;
             }
-            else
+            else if (_useVelocityForBounce)
             {
-                velocityMagnitude = Acceleration.magnitude;
+                velocityMagnitude = LastVelocity.magnitude;
                 baseKnockBack = _lastForceAdded.magnitude / velocityMagnitude + bounceDampening;
             }
 
@@ -482,6 +510,9 @@ namespace Lodis.Movement
             _lastVelocity = force;
             _lastForceAdded = force;
             _onForceAdded?.Invoke(force);
+
+            if (IsFrozen)
+                _frozenStoredForce = _lastForceAdded;
         }
 
         /// <summary>
@@ -508,6 +539,9 @@ namespace Lodis.Movement
             Rigidbody.AddForce(force / Mass, ForceMode.Force);
             _lastForceAdded = force / Mass;
             _onForceAdded?.Invoke(force / Mass);
+
+            if (IsFrozen)
+                _frozenStoredForce = _lastForceAdded;
         }
 
         /// <summary>
@@ -539,6 +573,9 @@ namespace Lodis.Movement
 
             _lastForceAdded = force / Mass;
             _onForceAdded?.Invoke(force / Mass);
+
+            if (IsFrozen)
+                _frozenStoredForce = _lastForceAdded;
         }
 
         /// <summary>
@@ -620,6 +657,7 @@ namespace Lodis.Movement
         {
             _acceleration = (Rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
 
+            _lastVelocity = Rigidbody.velocity;
             _lastVelocity = Rigidbody.velocity;
 
             if (UseGravity && !IgnoreForces)

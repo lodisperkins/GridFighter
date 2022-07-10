@@ -47,7 +47,7 @@ namespace Lodis.Gameplay
             //Add the velocity to the character to make them jump
             _knockBackBehaviour.Physics.ApplyVelocityChange(AddForce(true), false);
             //Disable bouncing so the character doesn't bounce when landing
-            _knockBackBehaviour.Physics.PanelBounceEnabled = false;
+            _knockBackBehaviour.Physics.DisablePanelBounce();
 
             //Disable character movement so the jump isn't interrupted
             _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
@@ -101,16 +101,22 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.Physics.Gravity = _ownerGravity * abilityData.GetCustomStatValue("DownwardGravityMultiplier");
         }
 
+        /// <summary>
+        /// Makes the opponent bouncy after colliding with the ground.
+        /// </summary>
         private void EnableBounce(params object[] args)
         {
+            //This relys on the physics component so it returns if it isn't there.
             if (!_opponentPhysics)
                 return;
 
-            _opponentPhysics.PanelBounceEnabled = true;
+            //Enable the panel bounce and set the temporary bounce value using the custom bounce stat.
+            _opponentPhysics.EnablePanelBounce(false);
             _oldBounciness = _opponentPhysics.Bounciness;
-            _opponentPhysics.Bounciness = 3;
+            _opponentPhysics.Bounciness = abilityData.GetCustomStatValue("OpponentBounciness");
 
-            RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.PanelBounceEnabled = false; _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded);
+            //Starts a new delayed action to disable the panel bouncing after it has bounced once. 
+            RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce(); _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded);
         }
 
         protected override void Deactivate()
@@ -132,7 +138,7 @@ namespace Lodis.Gameplay
         {
             base.End();
             //Enable bouncing
-            _knockBackBehaviour.Physics.PanelBounceEnabled = false;
+            _knockBackBehaviour.Physics.DisablePanelBounce();
             //Reset character gravity to default
             _knockBackBehaviour.Physics.Gravity = _ownerGravity;
         }

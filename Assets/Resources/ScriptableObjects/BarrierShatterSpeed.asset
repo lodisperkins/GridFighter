@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f6ea0244cac0b48925350657bf7b83, type: 3}
   m_Name: BarrierShatterSpeed
   m_EditorClassIdentifier: 
-  _val: 15
+  _val: 10

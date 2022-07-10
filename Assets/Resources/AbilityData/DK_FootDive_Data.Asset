@@ -72,5 +72,7 @@ MonoBehaviour:
     value: 12
   - name: DownwardGravityMultiplier
     value: 8
+  - name: OpponentBounciness
+    value: 10
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 94bc1ca367d0ca3438de0aa2f84a61cc, type: 3}

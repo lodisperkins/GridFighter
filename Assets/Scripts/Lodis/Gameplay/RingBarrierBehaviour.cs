@@ -143,7 +143,11 @@ namespace Lodis.Gameplay
             float newAngle = Mathf.Acos(dotProduct);
 
             knockbackBehaviour.Physics.StopVelocity();
-            knockbackBehaviour.TakeDamage(name, 0, _knockBackDistance, newAngle, 0, 1.2f);
+            HitColliderInfo info = new HitColliderInfo { Name = name, BaseKnockBack = _knockBackDistance, KnockBackScale = 1.2f, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopTimeModifier = 1, };
+            HitColliderBehaviour hitCollider = new HitColliderBehaviour();
+            hitCollider.ColliderInfo = info;
+            knockbackBehaviour.LastCollider = hitCollider;
+            knockbackBehaviour.TakeDamage(info,gameObject);
         }
     }
 }
