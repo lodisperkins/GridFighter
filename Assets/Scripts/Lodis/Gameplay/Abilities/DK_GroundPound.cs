@@ -40,9 +40,6 @@ namespace Lodis.Gameplay
 
             //Calculate what gravity should be to get the character to fall down in the given start up time
             _knockBackBehaviour.Physics.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;
-
-            //Disable bouncing to prevent bouncing on landing
-            _knockBackBehaviour.Physics.PanelBounceEnabled = false;
         }
 
 
@@ -118,12 +115,6 @@ namespace Lodis.Gameplay
 
             //Reset gravity
             _knockBackBehaviour.Physics.Gravity = _ownerGravity;
-        }
-
-        protected override void End()
-        {
-            base.End();
-            _knockBackBehaviour.Physics.PanelBounceEnabled = true;
         }
     }
 }

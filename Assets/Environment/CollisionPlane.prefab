@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70740eb1a83ad834e8dbb5a3211c97f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bounceDampening: 3
+  _bounceDampening: 5
   _friction: 3
 --- !u!1001 &7307572072502270815
 PrefabInstance:

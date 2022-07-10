@@ -46,7 +46,7 @@ namespace Lodis.Movement
         [SerializeField]
         private float _bounciness = 0.8f;
         [SerializeField]
-        private bool _panelBounceEnabled = true;
+        private bool _panelBounceEnabled;
         private Vector3 _normalForce;
         [SerializeField]
         private bool _useGravity = true;
@@ -87,7 +87,7 @@ namespace Lodis.Movement
         /// <summary>
         /// How bouncy this object is
         /// </summary>
-        public float Bounciness { get => _bounciness; }
+        public float Bounciness { get => _bounciness; set { _bounciness = value; } }
 
         public float Gravity { get =>_gravity; set => _gravity = value; }
 
@@ -412,8 +412,18 @@ namespace Lodis.Movement
 
             _onCollision?.Invoke(collision.gameObject, collision.gameObject.GetComponent<ColliderBehaviour>(), collision, GetComponent<Collider>(), damageScript);
 
+            CollisionPlaneBehaviour collisionPlane = null;
+            float bounceDampening = BounceDampen;
+
             if (!gridPhysicsBehaviour || !damageScript)
-                return;
+            {
+                collisionPlane = collision.gameObject.GetComponent<CollisionPlaneBehaviour>();
+                if (!collisionPlane || !PanelBounceEnabled)
+                    return;
+
+                gridPhysicsBehaviour = this;
+                bounceDampening = collisionPlane.BounceDampening;
+            }
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;
 
@@ -431,20 +441,20 @@ namespace Lodis.Movement
 
             if (knockBackScript)
             {
-                velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
-                baseKnockBack = knockBackScript.LaunchVelocity.magnitude * (velocityMagnitude / knockBackScript.LaunchVelocity.magnitude);
+                velocityMagnitude = knockBackScript.Physics.Acceleration.magnitude;
+                baseKnockBack = knockBackScript.LaunchVelocity.magnitude / velocityMagnitude + bounceDampening;
             }
             else
             {
-                velocityMagnitude = LastVelocity.magnitude;
-                baseKnockBack = _lastForceAdded.magnitude * (velocityMagnitude / _lastForceAdded.magnitude);
+                velocityMagnitude = Acceleration.magnitude;
+                baseKnockBack = _lastForceAdded.magnitude / velocityMagnitude + bounceDampening;
             }
 
             if (baseKnockBack == 0 || float.IsNaN(baseKnockBack))
                 return;
 
             //Apply ricochet force
-            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(baseKnockBack * gridPhysicsBehaviour.Bounciness / BounceDampen, hitAngle));
+            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(baseKnockBack * gridPhysicsBehaviour.Bounciness, hitAngle));
         }
 
         /// <summary>

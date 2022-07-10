@@ -1745,7 +1745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70740eb1a83ad834e8dbb5a3211c97f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bounceDampening: 3
+  _bounceDampening: 2.5
   _friction: 3
 --- !u!65 &373605164
 BoxCollider:
@@ -7694,7 +7694,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 2
+  _mode: 1
   _ringBarrierL: {fileID: 1478321312}
   _ringBarrierR: {fileID: 2063412668}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}

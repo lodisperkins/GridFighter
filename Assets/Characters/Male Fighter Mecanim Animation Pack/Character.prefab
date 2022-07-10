@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0}
-  _maxYPosition: {fileID: 11400000, guid: 57bc338bab9306a499149894ddbb2d60, type: 2}
   _targetTolerance: 0.05
   _moveDirection: {x: 0, y: 0}
   _speed: 10
@@ -255,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 8943288124560981146}
   _projectileSpawnPoint: {fileID: 6294458134703451932}
@@ -301,8 +300,8 @@ MonoBehaviour:
   _bounceCollider: {fileID: 8697654749103335270}
   _isGrounded: 0
   _extraHeight: 0.5
-  _bounciness: 4
-  _panelBounceEnabled: 1
+  _bounciness: 1.5
+  _panelBounceEnabled: 0
   _useGravity: 1
   _ignoreForces: 0
   _rangeToIgnoreUpAngle: 0.2

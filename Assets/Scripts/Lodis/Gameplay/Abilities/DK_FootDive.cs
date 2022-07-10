@@ -1,5 +1,6 @@
 ﻿using Lodis.GridScripts;
 using Lodis.Movement;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,8 @@ namespace Lodis.Gameplay
         private float _timeForceAdded;
         private bool _forceAdded;
         private float _riseTime;
+        private GridPhysicsBehaviour _opponentPhysics;
+        private float _oldBounciness;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -32,6 +35,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
             _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
             _grid = BlackBoardBehaviour.Instance.Grid;
+            _opponentPhysics = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner)?.GetComponent<GridPhysicsBehaviour>();
         }
 
         protected override void Start(params object[] args)
@@ -88,12 +92,25 @@ namespace Lodis.Gameplay
             //Spawn particles and hitbox
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
             HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale / 2, _fistCollider);
+            hitScript.OnHit += EnableBounce;
             hitScript.DebuggingEnabled = true;
 
             //Apply downward force
             Vector3 spikeVelocity = AddForce(false).normalized * abilityData.GetCustomStatValue("DownwardSpeed");
             _knockBackBehaviour.Physics.ApplyVelocityChange(spikeVelocity, false);
             _knockBackBehaviour.Physics.Gravity = _ownerGravity * abilityData.GetCustomStatValue("DownwardGravityMultiplier");
+        }
+
+        private void EnableBounce(params object[] args)
+        {
+            if (!_opponentPhysics)
+                return;
+
+            _opponentPhysics.PanelBounceEnabled = true;
+            _oldBounciness = _opponentPhysics.Bounciness;
+            _opponentPhysics.Bounciness = 3;
+
+            RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.PanelBounceEnabled = false; _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded);
         }
 
         protected override void Deactivate()
@@ -115,7 +132,7 @@ namespace Lodis.Gameplay
         {
             base.End();
             //Enable bouncing
-            _knockBackBehaviour.Physics.PanelBounceEnabled = true;
+            _knockBackBehaviour.Physics.PanelBounceEnabled = false;
             //Reset character gravity to default
             _knockBackBehaviour.Physics.Gravity = _ownerGravity;
         }

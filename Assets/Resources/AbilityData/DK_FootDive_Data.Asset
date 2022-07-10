@@ -47,8 +47,8 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 65536
     HitFrames: 0
-    Damage: 12
-    BaseKnockBack: 5
+    Damage: 20
+    BaseKnockBack: 3
     KnockBackScale: 0.5
     HitAngle: -1
     AdjustAngleBasedOnAlignment: 1

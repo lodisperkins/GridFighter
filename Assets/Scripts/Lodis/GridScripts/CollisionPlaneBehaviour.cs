@@ -15,28 +15,7 @@ namespace Lodis.GridScripts
         [SerializeField]
         private float _friction = 3.0f;
 
-
-        private void OnCollisionEnter(Collision other)
-        {
-            Movement.KnockbackBehaviour knockbackScript = other.transform.root.GetComponent<Movement.KnockbackBehaviour>();
-
-            if (!knockbackScript)
-                return;
-            else if (knockbackScript.IsInvincible || knockbackScript.LandingScript.Landing || knockbackScript.CurrentAirState == AirState.FREEFALL)
-                return;
-
-            //Don't add a force if the object is traveling at a low speed
-            if (knockbackScript.Physics.LastVelocity.y > 3 || knockbackScript.Physics.Bounciness <= 0 || !knockbackScript.Physics.PanelBounceEnabled)
-                return;
-
-            float upMagnitude = knockbackScript.Physics.LastVelocity.magnitude * knockbackScript.Physics.Bounciness;
-
-            //Calculate and apply friction force
-            upMagnitude /= _bounceDampening;
-
-            knockbackScript.TakeDamage("", 0, upMagnitude, 1.5f, DamageType.DEFAULT);
-            knockbackScript.CancelHitStun();
-        }
+        public float BounceDampening { get => _bounceDampening; set => _bounceDampening = value; }
 
         private void OnCollisionStay(Collision other)
         {
