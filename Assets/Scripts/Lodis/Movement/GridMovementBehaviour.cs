@@ -18,7 +18,6 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("The position of the object on the grid.")]
         private Vector2 _position;
-        [SerializeField]
         private FloatVariable _maxYPosition;
         private Vector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
@@ -215,6 +214,8 @@ namespace Lodis.Movement
 
         private void Awake()
         {
+            _maxYPosition = (FloatVariable)Resources.Load("ScriptableObjects/MaxYPosition");
+
             //initialize events
             _moveEnabledEventListener = GetComponent<GridGame.GameEventListener>();
             _moveDisabledEventListener = new GridGame.GameEventListener(new GridGame.Event(), gameObject);

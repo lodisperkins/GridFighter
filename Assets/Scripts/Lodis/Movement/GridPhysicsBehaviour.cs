@@ -618,7 +618,7 @@ namespace Lodis.Movement
                 _constantForceBehaviour.force = Vector3.zero;
 
             _isGrounded = CheckIsGrounded();
-            _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude == 0;
+            _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude <= 0.01f;
         }
     }
 }

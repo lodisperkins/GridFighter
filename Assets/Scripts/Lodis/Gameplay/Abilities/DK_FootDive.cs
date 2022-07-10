@@ -116,6 +116,8 @@ namespace Lodis.Gameplay
             base.End();
             //Enable bouncing
             _knockBackBehaviour.Physics.PanelBounceEnabled = true;
+            //Reset character gravity to default
+            _knockBackBehaviour.Physics.Gravity = _ownerGravity;
         }
 
         public override void Update()

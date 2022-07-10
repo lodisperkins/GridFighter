@@ -78,7 +78,7 @@ namespace Lodis.Gameplay
 
             //Shake the camera or the chracter based on the arguments given
             if (shakeCharacter)
-                _shakeBehaviour.ShakePosition(time, 0.3f, 1000);
+                _shakeBehaviour.ShakePosition(time, 0.8f, 1000);
             if (shakeCamera)
                 CameraBehaviour.ShakeBehaviour.ShakeRotation(0.05f, 0.5f, 1);
 

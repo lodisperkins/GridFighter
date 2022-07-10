@@ -47,8 +47,8 @@ public class ShakeBehaviour : MonoBehaviour
         if (_tweener?.active == false)
             _startPosition = transform.localPosition;
 
-        _tweener = transform.DOShakePosition(duration, strength, frequency, 90, false, false);
-        _tweener.onUpdate += () => transform.localPosition = new Vector3(_startPosition.x, transform.position.y, transform.position.z);
-        _tweener.onComplete += () => transform.localPosition = _startPosition;
+        _tweener = transform.DOShakePosition(duration, new Vector3(strength, strength, 0), frequency, 90, false, true);
+        if (_tweener != null)
+            _tweener.onComplete += () => transform.localPosition = _startPosition;
     }
 }
