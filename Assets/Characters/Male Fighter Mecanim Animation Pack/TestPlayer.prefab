@@ -138,7 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _character: {fileID: 1858526886470613209}
   _canMove: 1
-  _minChargeLimit: 0.2
+  _minChargeLimit: 0.15
   _maxChargeTime: 5
   _attackDirectionBufferClearTime: 0.05
   _playerID: {fileID: 0}

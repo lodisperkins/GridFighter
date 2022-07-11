@@ -310,7 +310,7 @@ namespace Lodis.Movement
             GridScripts.PanelBehaviour panel = null;
 
             if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
-                _movementBehaviour.MoveToPanel(panel, false, GridScripts.GridAlignment.ANY);
+                _movementBehaviour.Position = panel.Position;
         }
 
         /// <summary>

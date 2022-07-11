@@ -186,6 +186,8 @@ MonoBehaviour:
   _phaseShiftDuration: 0.25
   _defaultPhaseShiftRestTime: 0.3
   _successPhaseShiftRestTime: 0
+  _slowMotionTimeScale: 0.3
+  _slowMotionTime: 0.1
 --- !u!114 &1463821011073023751
 MonoBehaviour:
   m_ObjectHideFlags: 0

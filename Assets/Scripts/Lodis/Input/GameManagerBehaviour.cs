@@ -20,6 +20,7 @@ namespace Lodis.Gameplay
 
     public class GameManagerBehaviour : MonoBehaviour
     {
+        private static GameManagerBehaviour _instance;
         [SerializeField]
         private PlayerInputManager _inputManager;
         [SerializeField]
@@ -57,6 +58,26 @@ namespace Lodis.Gameplay
         private bool _p1DeviceSet;
         private bool _p2DeviceSet;
 
+        /// <summary>
+        /// Gets the static instance of the black board. Creates one if none exists
+        /// </summary>
+        public static GameManagerBehaviour Instance
+        {
+            get
+            {
+                if (!_instance)
+                    _instance = FindObjectOfType(typeof(GameManagerBehaviour)) as GameManagerBehaviour;
+
+                if (!_instance)
+                {
+                    GameObject manager = new GameObject("GameManager");
+                    _instance = manager.AddComponent<GameManagerBehaviour>();
+                }
+
+                return _instance;
+            }
+        }
+
         public int TargetFrameRate
         {
             get { return _targetFrameRate; }
@@ -83,6 +104,17 @@ namespace Lodis.Gameplay
             Application.targetFrameRate = _targetFrameRate;
 
             SpawnEntitiesByMode();
+        }
+
+        /// <summary>
+        /// Temporarily changes the speed of time for the game.
+        /// </summary>
+        /// <param name="newTimeScale">The new time scale. 0 being no time passes and 1 being the normal speed.</param>
+        /// <param name="time">The amount of time the game will stay in the temporary time scale.</param>
+        public void ChangeTimeScale(float newTimeScale, float time)
+        {
+            _timeScale = newTimeScale;
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _timeScale = 1, TimedActionCountType.UNSCALEDTIME, time);
         }
 
         private void SpawnEntitiesByMode()

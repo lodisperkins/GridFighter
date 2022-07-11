@@ -5,6 +5,7 @@ using Lodis.Utility;
 using Lodis.Movement;
 using Lodis.GridScripts;
 using Lodis.ScriptableObjects;
+using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
@@ -83,6 +84,14 @@ namespace Lodis.Gameplay
         private TimedAction _parryTimer;
         private TimedAction _disableFallBreakAction;
         private TimedAction _shieldTimer;
+        private bool _canPhaseShift;
+        private UnityAction _onPhaseShift;
+        [SerializeField]
+        [Tooltip("The speed of the game after a phase shift passes through an attack.")]
+        private float _slowMotionTimeScale;
+        [SerializeField]
+        [Tooltip("The amount of time to stay in slow motion after a phase shift passes through an attack..")]
+        private float _slowMotionTime;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
@@ -93,6 +102,8 @@ namespace Lodis.Gameplay
         public float WallTechJumpDuration { get => _wallTechJumpDuration; }
         public ColliderBehaviour ParryCollider { get => _shieldCollider; }
         public bool IsDefending { get => _isDefending; }
+        public bool CanPhaseShift { get => _canPhaseShift; set => _canPhaseShift = value; }
+        public bool IsPhaseShifting { get => _isPhaseShifting; }
 
         // Start is called before the first frame update
         void Start()
@@ -110,9 +121,14 @@ namespace Lodis.Gameplay
             _shieldCollider.OnHit += args => { if (IsParrying) ActivateParryInvinciblity(args); };
         }
 
-        private void ActivatePhaseShift()
+        public void AddOnPhaseShiftAction(UnityAction action)
         {
-            if (!_isDefending) return;
+            _onPhaseShift += action;
+        }
+
+        public void ActivatePhaseShift()
+        {
+            if (!CanPhaseShift) return;
             _isParrying = false;
             //Allow the character to parry again
             _canParry = true;
@@ -121,16 +137,22 @@ namespace Lodis.Gameplay
             _shieldCollider.gameObject.SetActive(false);
             _currentPhaseShiftRestTime = _defaultPhaseShiftRestTime;
             _health.SetIntagibilityByTimer(_phaseShiftDuration);
-            _movement.AddOnMoveEndTempAction(() => { StartDefenseLag(_currentPhaseShiftRestTime); _isPhaseShifting = false; });
+            _onPhaseShift?.Invoke();
+            _movement.AddOnMoveEndTempAction(StartPhaseShiftLag);
+        }
+
+        private void StartPhaseShiftLag()
+        {
+            _movement.DisableMovement(condition => _isPhaseShifting == false, false);
+            //Start timer for player immobility
+            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isPhaseShifting = false; }, TimedActionCountType.SCALEDTIME, _currentPhaseShiftRestTime);
         }
 
         private void StartDefenseLag(float time)
         {
-            _isDefending = true;
             _movement.DisableMovement(condition => _isDefending == false, false);
             //Start timer for player immobility
             _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isDefending = false; }, TimedActionCountType.SCALEDTIME, time);
-
         }
 
         /// <summary>
@@ -340,6 +362,7 @@ namespace Lodis.Gameplay
                 if (collider.Owner == gameObject) return;
                 
                 _currentPhaseShiftRestTime = _successPhaseShiftRestTime;
+                GameManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, _slowMotionTime);
             }
 
             if (!IsBraced || !(other.CompareTag("Structure") || other.CompareTag("Panel")) || BreakingFall)

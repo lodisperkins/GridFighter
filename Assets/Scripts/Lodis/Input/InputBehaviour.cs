@@ -146,8 +146,11 @@ namespace Lodis.Input
             _playerControls.Player.Attack.started += context => { DisableMovement(); _attackButtonDown = true; };
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
-            _playerControls.Player.Parry.started += context => { _canBufferShield = true; _defense.Brace(); };
-            _playerControls.Player.Parry.performed += context => { _canBufferShield = false; RemoveShieldFromBuffer(); };
+            _playerControls.Player.Parry.started += context => 
+            { 
+                _canBufferShield = true; _defense.Brace();_defense.CanPhaseShift = true;
+            };
+            _playerControls.Player.Parry.performed += context => { _canBufferShield = false; RemoveShieldFromBuffer(); _defense.CanPhaseShift = false; };
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
             _playerControls.Player.UnblockableAttack.started += context => BufferUnblockableAbility(context);
@@ -452,7 +455,7 @@ namespace Lodis.Input
                 _timeOfLastDirectionInput = Time.time;
             }
 
-            if (_canBufferShield && !_defense.IsDefending)
+            if (_canBufferShield && !_defense.IsDefending && !_defense.IsPhaseShifting)
                 BufferShield();
 
             //Clear the buffer if its exceeded the alotted time
