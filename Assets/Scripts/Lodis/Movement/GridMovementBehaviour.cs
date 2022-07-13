@@ -72,6 +72,9 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("If true, the object is behind a barrier. Only updated if check if behind barrier is true")]
         private bool _isBehindBarrier;
+        [SerializeField]
+        [Tooltip("The amount speed will be reduced when moving from an opponent panel.")]
+        private float _opponentPanelSpeedReduction;
 
         /// <summary>
         /// Whether or not this object should move to its current panel when spawned
@@ -672,8 +675,10 @@ namespace Lodis.Movement
 
             int panelsEvaluated = 0;
             int offSet = 0;
-
+            float defaultMoveSpeed = _speed;
             PanelBehaviour panel = null;
+
+            _speed = _opponentPanelSpeedReduction;
 
             while (panelsEvaluated <= BlackBoardBehaviour.Instance.Grid.Dimensions.x * BlackBoardBehaviour.Instance.Grid.Dimensions.y)
             {
@@ -700,6 +705,8 @@ namespace Lodis.Movement
                 panelsEvaluated += 4;
                 offSet++;
             }
+
+            AddOnMoveEndTempAction(() => _speed = defaultMoveSpeed);
         }
 
         /// <summary>

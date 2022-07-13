@@ -136,6 +136,7 @@ MonoBehaviour:
   _moveOnStart: 1
   _checkIfBehindBarrier: 0
   _isBehindBarrier: 0
+  _opponentPanelSpeedReduction: 6
 --- !u!54 &5308582277602069232
 Rigidbody:
   m_ObjectHideFlags: 0
