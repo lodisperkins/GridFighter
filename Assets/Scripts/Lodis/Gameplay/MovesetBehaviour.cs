@@ -463,6 +463,16 @@ namespace Lodis.Gameplay
             return true;
         }
 
+        public bool TryUseEnergy(float actionCost)
+        {
+            if (Energy < actionCost) return false;
+
+            if (!GameManagerBehaviour.InfiniteEnergy)
+                Energy -= actionCost;
+
+            return true;
+        }
+
         /// <summary>
         /// Increases the current energy by the damage of the attack received by an ability.
         /// Only works if the collider is owned by the opponent.

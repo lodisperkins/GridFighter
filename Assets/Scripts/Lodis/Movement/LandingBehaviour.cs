@@ -48,8 +48,7 @@ namespace Lodis.Movement
 
         private void OnTriggerStay(Collider other)
         {
-            if (_knockback.CurrentAirState != AirState.NONE &&
-                other.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen)
+            if (_knockback.CurrentAirState != AirState.NONE && other.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen)
             {
                 CanCheckLanding = true;
             }

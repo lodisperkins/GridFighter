@@ -92,6 +92,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         [Tooltip("The amount of time to stay in slow motion after a phase shift passes through an attack..")]
         private float _slowMotionTime;
+        private bool _isShielding;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
@@ -167,9 +168,8 @@ namespace Lodis.Gameplay
 
             //Enable parry and update states
             _shieldCollider.gameObject.SetActive(true);
-            _isParrying = true;
-            _isDefending = true;
             _canParry = false;
+            _isDefending = true;
 
             RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateParry(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
@@ -189,12 +189,10 @@ namespace Lodis.Gameplay
             if (!_shieldCollider.gameObject.activeSelf)
                 return;
 
-            _isParrying = false;
             //Allow the character to parry again
             _canParry = true;
-
             _shieldCollider.gameObject.SetActive(false);
-
+            _moveset.EnergyChargeEnabled = true;
             StartDefenseLag(_groundParryRestTime);
         }
 
@@ -207,6 +205,7 @@ namespace Lodis.Gameplay
             if (_parryTimer?.GetEnabled() == true)
                 return;
 
+            _isParrying = true;
             _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { if (_canParry && _knockBack.CheckIfIdle()) ActivateParry(); }, TimedActionCountType.SCALEDTIME, _parryStartUpTime);
         }
 
@@ -424,6 +423,24 @@ namespace Lodis.Gameplay
             onFallBroken?.Invoke(true);
             _knockBack.CurrentAirState = AirState.BREAKINGFALL;
             //Debug.Log("Collided with " + other.name);
+
+        }
+
+        private void Update()
+        {
+            _isShielding = !_isParrying && _shieldCollider.gameObject.activeSelf;
+
+            if (!_isShielding)
+            {
+                _moveset.EnergyChargeEnabled = true;
+                return;
+            }
+
+            _moveset.EnergyChargeEnabled = false;
+
+            if (!_moveset.TryUseEnergy(_shieldDrainValue.Value * Time.deltaTime))
+                DeactivateShield();
+
 
         }
     }
