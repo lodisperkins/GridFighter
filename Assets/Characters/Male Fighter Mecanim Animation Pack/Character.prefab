@@ -177,11 +177,11 @@ MonoBehaviour:
   _isBraced: 0
   _braceCooldownTime: 1
   _groundTechInvincibilityTime: 0.4
-  _wallTechInvincibilityTime: 0.35
+  _wallTechInvincibilityTime: 0.1
   _fallBreakLength: 0.1
   _wallTechJumpDistance: 1
   _wallTechJumpHeight: 1
-  _wallTechJumpDuration: 0.6
+  _wallTechJumpDuration: 0.2
   _attackerStunTime: 5
   _phaseShiftDuration: 0.25
   _defaultPhaseShiftRestTime: 0.3
@@ -220,7 +220,7 @@ MonoBehaviour:
   _gravityIncreaseValue: {fileID: 11400000, guid: adec572f6a67e3546bf67037bfd2959f,
     type: 2}
   _freeFallGroundedPoint: {x: 0, y: -0.4, z: 0}
-  _freeFallGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
+  _freeFallGroundedPointExtents: {x: 0.6, y: 0.6, z: 0.6}
   _idleGroundedPoint: {x: 0, y: -0.4, z: 0}
   _idleGroundedPointExtents: {x: 0.3, y: 0.3, z: 0.3}
   _minimumLaunchMagnitude: {fileID: 11400000, guid: 2b1b835242b798f4d9228a6fd0127a83,

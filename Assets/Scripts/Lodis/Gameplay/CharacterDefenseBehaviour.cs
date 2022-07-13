@@ -292,6 +292,7 @@ namespace Lodis.Gameplay
 
         private void BreakFall(GameObject other)
         {
+            if (other == null) return;
 
             BreakingFall = true;
 
@@ -325,7 +326,6 @@ namespace Lodis.Gameplay
             if (other.gameObject.CompareTag("Structure") && _disableFallBreakAction == null)
             {
                 _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, WallTechJumpDuration);
-                _knockBack.Physics.Jump(_wallTechJumpDistance, _wallTechJumpHeight, _wallTechJumpDuration, true, false, _movement.Alignment);
                 onFallBroken?.Invoke(false);
                 return;
             }
@@ -368,7 +368,7 @@ namespace Lodis.Gameplay
             if (!IsBraced || !(other.CompareTag("Structure") || other.CompareTag("Panel")) || BreakingFall)
                 return;
 
-            BreakFall(other.gameObject);
+            BreakFall(other.attachedRigidbody?.gameObject);
         }
 
         private void DisableFallBreaking(params object[] args)
@@ -404,7 +404,6 @@ namespace Lodis.Gameplay
             if (collision.gameObject.CompareTag("Structure") && _disableFallBreakAction == null)
             {
                 _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration);
-                _knockBack.Physics.Jump(_wallTechJumpDistance, 0, _wallTechJumpDuration, true, false, _movement.Alignment, Vector3.up * _wallTechJumpHeight, DG.Tweening.Ease.OutQuart);
                 onFallBroken?.Invoke(false);
                 return;
             }

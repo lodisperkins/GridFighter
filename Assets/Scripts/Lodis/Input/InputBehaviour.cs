@@ -163,6 +163,7 @@ namespace Lodis.Input
             _gridMovement = Character.GetComponent<Movement.GridMovementBehaviour>();
             _moveset = Character.GetComponent<MovesetBehaviour>();
             _defense = Character.GetComponent<CharacterDefenseBehaviour>();
+            _gridMovement.AddOnMoveDisabledAction(() => _storedMoveInput = Vector3.zero);
         }
 
         private void OnEnable()

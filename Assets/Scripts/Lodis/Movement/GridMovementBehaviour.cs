@@ -246,8 +246,8 @@ namespace Lodis.Movement
             //else
             //    Debug.LogError(name + " could not find starting panel");
 
-            if (_knockbackBehaviour)
-                _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
+            //if (_knockbackBehaviour)
+            //    _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
 
             _tempAlignment = _defaultAlignment;
         }

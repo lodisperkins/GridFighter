@@ -299,7 +299,7 @@ namespace Lodis.Movement
             damageScript.TakeDamage(name, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
-        public void ActivateHitStunByTimer(float timeInHitStun)
+        private void ActivateHitStunByTimer(float timeInHitStun)
         {
             if (timeInHitStun <= 0)
             {
@@ -309,8 +309,6 @@ namespace Lodis.Movement
 
             _inHitStun = true;
             _timeInCurrentHitStun = timeInHitStun;
-
-            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
             if (_hitStunTimer.GetEnabled())
                 RoutineBehaviour.Instance.StopAction(_hitStunTimer);
@@ -359,6 +357,14 @@ namespace Lodis.Movement
             if (hitStun > 0)
                 _isFlinching = true;
 
+            //Snaps movement to the next panel to prevent the player from being launched between panels
+            if (_movementBehaviour.IsMoving)
+            {
+                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                _movementBehaviour.canCancelMovement = false;
+            }
+
             if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
@@ -367,13 +373,6 @@ namespace Lodis.Movement
 
                 _launchForce = knockBackForce;
                 Physics.Rigidbody.isKinematic = false;
-
-                if (_movementBehaviour.IsMoving)
-                {
-                    _movementBehaviour.canCancelMovement = true;
-                    _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                    _movementBehaviour.canCancelMovement = false;
-                }
 
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
@@ -418,6 +417,14 @@ namespace Lodis.Movement
             if (info.HitStunTime > 0)
                 _isFlinching = true;
 
+            //Snaps movement to the next panel to prevent the player from being launched between panels
+            if (_movementBehaviour.IsMoving)
+            {
+                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                _movementBehaviour.canCancelMovement = false;
+            }
+
             if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
@@ -426,13 +433,6 @@ namespace Lodis.Movement
 
                 _launchForce = knockBackForce;
                 Physics.Rigidbody.isKinematic = false;
-
-                if (_movementBehaviour.IsMoving)
-                {
-                    _movementBehaviour.canCancelMovement = true;
-                    _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                    _movementBehaviour.canCancelMovement = false;
-                }
 
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
@@ -514,6 +514,14 @@ namespace Lodis.Movement
             if (info.HitStunTime > 0)
                 _isFlinching = true;
 
+            //Snap the object to its target panel if it was moving
+            if (_movementBehaviour.IsMoving)
+            {
+                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                _movementBehaviour.canCancelMovement = false;
+            }
+
             //Return if this attack doesn't generate enough force
             if (!((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)) return info.Damage;
             
@@ -525,14 +533,6 @@ namespace Lodis.Movement
             //Store the force used to launch the character
             _launchForce = knockBackForce;
             Physics.Rigidbody.isKinematic = false;
-
-            //Snap the object to its target panel if it was moving
-            if (_movementBehaviour.IsMoving)
-            {
-                _movementBehaviour.canCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
-            }
 
             //Disables object movement on the grid
             _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
