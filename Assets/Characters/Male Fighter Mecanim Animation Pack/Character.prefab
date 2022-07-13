@@ -178,7 +178,7 @@ MonoBehaviour:
   _braceCooldownTime: 1
   _groundTechInvincibilityTime: 0.4
   _wallTechInvincibilityTime: 0.1
-  _fallBreakLength: 0.1
+  _fallBreakLength: 0.25
   _wallTechJumpDistance: 1
   _wallTechJumpHeight: 1
   _wallTechJumpDuration: 0.2
@@ -915,7 +915,7 @@ MonoBehaviour:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 244.01541, y: -29.60518}
+        dragOffset: {x: 187.34785, y: -46.271782}
       gridSettings:
         isEnabled: 1
       labelSettings:
@@ -948,7 +948,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c0f4c052ab27349b5a94def1a5a3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _landingTime: 0
+  _landingTime: 0.3
   _knockDownTime: 0.3
   _knockDownRecoverTime: 0.7
   _knockDownRecoverInvincibleTime: 1.5

@@ -48,9 +48,9 @@ MonoBehaviour:
       m_Bits: 131073
     HitFrames: 0
     Damage: 10
-    BaseKnockBack: 5
+    BaseKnockBack: 2
     KnockBackScale: 0.5
-    HitAngle: -0.6
+    HitAngle: 0.6
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     CanSpike: 0
@@ -60,6 +60,7 @@ MonoBehaviour:
     AbilityType: 9
     HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
       type: 3}
+    HitStopTimeModifier: 0
   _customStats:
   - name: Speed
     value: 8

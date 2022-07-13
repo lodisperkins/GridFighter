@@ -98,10 +98,11 @@ namespace Lodis.Utility
             return _delayedActions.Remove(action);
         }
 
-
         // Update is called once per frame
         void Update()
         {
+            _delayedActions.RemoveAll(action => !action.GetEnabled());
+
             //Iterate through all actions to try to invoke their events
             for (int i = 0; i < _delayedActions.Count; i++)
                 _delayedActions[i].TryInvokeEvent();

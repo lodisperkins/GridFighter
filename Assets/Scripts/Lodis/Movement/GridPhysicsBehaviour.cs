@@ -267,7 +267,7 @@ namespace Lodis.Movement
         public void FreezeInPlaceByTimer(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
         {
             if (_isFrozen)
-                return;
+                UnfreezeObject();
 
             _isFrozen = true;
             _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time, keepMomentum, makeKinematic, waitUntilForceApplied, storeForceApplied));
@@ -283,7 +283,8 @@ namespace Lodis.Movement
         public void FreezeInPlaceByCondition(Condition condition, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
         {
             if (_isFrozen)
-                return;
+                UnfreezeObject();
+
             _isFrozen = true;
             _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true, makeKinematic, waitUntilForceApplied, storeForceApplied));
         }

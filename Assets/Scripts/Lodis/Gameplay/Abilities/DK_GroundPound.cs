@@ -36,7 +36,7 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.Physics.ApplyVelocityChange(Vector3.up * abilityData.GetCustomStatValue("JumpForce"));
 
             //Disable movement to prevent the ability being interrupted
-            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER, false, true);
+            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
 
             //Calculate what gravity should be to get the character to fall down in the given start up time
             _knockBackBehaviour.Physics.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;

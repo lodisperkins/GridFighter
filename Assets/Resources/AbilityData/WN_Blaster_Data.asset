@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanCancelOnOpponentHit: 1
+  CanCancelOnOpponentHit: 0
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -55,7 +55,7 @@ MonoBehaviour:
     TypeOfDamage: 0
     CanSpike: 0
     HitStunTime: 0.25
-    Priority: 0
+    Priority: 1
     OwnerAlignement: 0
     AbilityType: 0
     HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,

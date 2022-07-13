@@ -13,7 +13,8 @@ namespace Lodis.Utility
         {
             if (!EventCheck.Invoke())
                 return false;
-            
+
+            Disable();
             Event.Invoke(args);
             return true;
         }

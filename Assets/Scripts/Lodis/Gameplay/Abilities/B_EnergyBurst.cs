@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using Lodis.Movement;
+using Lodis.Utility;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -26,12 +27,9 @@ namespace Lodis.Gameplay
             HitColliderBehaviour instantiatedCollider = barrier.AddComponent<HitColliderBehaviour>();
             HitColliderBehaviour.Copy(hitCollider, instantiatedCollider);
 
-            _ownerKnockBackScript.CurrentAirState = AirState.NONE;
-            _ownerKnockBackScript.CancelHitStun();
-            _ownerKnockBackScript.CancelStun();
-            _ownerKnockBackScript.Physics.StopAllForces();
+            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
 
-            _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER);
+            _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
         }
 
         protected override void Deactivate()
@@ -45,7 +43,6 @@ namespace Lodis.Gameplay
         protected override void End()
         {
             base.End();
-            _ownerKnockBackScript.Physics.UseGravity = true;
         }
     }
 }

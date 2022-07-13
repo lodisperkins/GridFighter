@@ -329,14 +329,22 @@ namespace Lodis.Gameplay
             {
                 _colliders[i].OnHit += arguments => OnHit?.Invoke(arguments);
                 _colliders[i].OnHit += arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; };
+                if (abilityData.CanCancelOnOpponentHit)
+                    OnHit += arguments => 
+                    {
+                        if ((GameObject)arguments[0] != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
+                            return;
+
+                        EndAbility(); 
+                    };
             }
 
             if (abilityData.cancelOnHit)
-                _ownerKnockBackScript.AddOnTakeDamageTempAction(() => { EndAbility(); StopAbility(); });
+                _ownerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
             else if (abilityData.cancelOnFlinch)
-                _ownerKnockBackScript.AddOnHitStunTempAction(() => { EndAbility(); StopAbility(); });
+                _ownerKnockBackScript.AddOnHitStunTempAction(EndAbility);
             else if (abilityData.cancelOnKnockback)
-                _ownerKnockBackScript.AddOnKnockBackStartTempAction(() => { EndAbility(); StopAbility(); });
+                _ownerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
 
         }
 
@@ -358,6 +366,12 @@ namespace Lodis.Gameplay
         {
             if (_ownerKnockBackScript.CurrentAirState != AirState.TUMBLING)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
+
+            for (int i = 0; i < _colliders.Count; i++)
+            {
+                _colliders[i].OnHit -= arguments => OnHit?.Invoke(arguments);
+                _colliders[i].OnHit -= arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; };
+            }
         }
 
         /// <summary>

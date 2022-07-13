@@ -35,7 +35,11 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
             _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
             _grid = BlackBoardBehaviour.Instance.Grid;
-            _opponentPhysics = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner)?.GetComponent<GridPhysicsBehaviour>();
+            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
+
+            if (opponent == null) return;
+
+            _opponentPhysics = opponent.GetComponent<GridPhysicsBehaviour>();
         }
 
         protected override void Start(params object[] args)
@@ -141,6 +145,7 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.Physics.DisablePanelBounce();
             //Reset character gravity to default
             _knockBackBehaviour.Physics.Gravity = _ownerGravity;
+
         }
 
         public override void Update()
