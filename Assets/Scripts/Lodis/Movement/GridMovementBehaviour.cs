@@ -75,6 +75,7 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("The amount speed will be reduced when moving from an opponent panel.")]
         private float _opponentPanelSpeedReduction;
+        private bool _searchingForSafePanel;
 
         /// <summary>
         /// Whether or not this object should move to its current panel when spawned
@@ -471,7 +472,7 @@ namespace Lodis.Movement
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
             _targetPosition = newPosition;
 
-            MoveDirection = panelPosition - _position;
+            MoveDirection = (panelPosition - _position).normalized;
 
             SetIsMoving(true);
 
@@ -593,7 +594,7 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
 
-            MoveDirection = targetPanel.Position - _position;
+            MoveDirection = (targetPanel.Position - _position).normalized;
 
             SetIsMoving(true);
 
@@ -650,7 +651,7 @@ namespace Lodis.Movement
 
             _moveRoutine = StartCoroutine(LerpPosition(newPosition));
 
-            MoveDirection = _currentPanel.Position - _position;
+            MoveDirection = (_currentPanel.Position - _position).normalized;
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
@@ -668,7 +669,8 @@ namespace Lodis.Movement
         public void MoveToClosestAlignedPanelOnRow()
         {
 
-            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || !CanMove || Alignment == GridAlignment.ANY || Alignment != _tempAlignment)
+            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || TargetPanel.Alignment == Alignment 
+                || !CanMove || Alignment == GridAlignment.ANY || Alignment != _tempAlignment || _searchingForSafePanel)
                 return;
 
             //NEEDS BETTER IMPLEMENTATION
@@ -679,9 +681,15 @@ namespace Lodis.Movement
             PanelBehaviour panel = null;
 
             _speed = _opponentPanelSpeedReduction;
+            AddOnMoveEndTempAction(() => 
+            {
+                _speed = defaultMoveSpeed; _searchingForSafePanel = false;
+            }
+            );
 
             while (panelsEvaluated <= BlackBoardBehaviour.Instance.Grid.Dimensions.x * BlackBoardBehaviour.Instance.Grid.Dimensions.y)
             {
+                _searchingForSafePanel = true;
                 if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.left * offSet, out panel, false, Alignment))
                 {
                     MoveToPanel(panel);
@@ -706,7 +714,6 @@ namespace Lodis.Movement
                 offSet++;
             }
 
-            AddOnMoveEndTempAction(() => _speed = defaultMoveSpeed);
         }
 
         /// <summary>

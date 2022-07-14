@@ -1,5 +1,6 @@
 ﻿using Ilumisoft.VisualStateMachine;
 using Lodis.ScriptableObjects;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -61,6 +62,10 @@ namespace Lodis.Gameplay
         private float _currentClipActiveTime;
         private float _currentClipRecoverTime;
         private bool _bracedAgainstFloor;
+        private TimedAction _timedMoveAction;
+        [SerializeField]
+        private float _moveAnimationHangTime;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -69,16 +74,6 @@ namespace Lodis.Gameplay
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
             _knockbackBehaviour.AddOnTakeDamageAction(PlayDamageAnimation);
-
-            _moveBehaviour.AddOnMoveBeginAction
-                (
-                    () =>
-                    {
-
-                        _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x);
-                        _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
-                    }
-                );
 
             _movesetBehaviour.OnUseAbility += PlayAbilityAnimation;
             _defenseBehaviour.onFallBroken += onFloor => _bracedAgainstFloor = onFloor;
@@ -371,11 +366,10 @@ namespace Lodis.Gameplay
         /// </summary>
         public void PlayMovementAnimation()
         {
+
             _animator.SetFloat("AnimationSpeedScale", 1);
             _animatingMotion = true;
             _animationPhase = 0;
-
-            _currentClipStartUpTime = _moveAnimationStartUpTime;
 
             //Calculates the time it takes to get to the destination
             Vector2 oldPosition = new Vector2();
@@ -385,9 +379,10 @@ namespace Lodis.Gameplay
 
             float travelDistance = (oldPosition - _moveBehaviour.CurrentPanel.Position).magnitude;
             float travelTime = travelDistance / _moveBehaviour.Speed;
-
-            _currentClipActiveTime = travelTime;
+            _currentClipStartUpTime = _moveAnimationStartUpTime;
+            _currentClipActiveTime = travelTime + _moveAnimationHangTime;
             _currentClipRecoverTime = _moveAnimationRecoverTime;
+            float totalTime = _currentClipStartUpTime + _currentClipRecoverTime + _currentClipActiveTime;
 
             int mirror = 1;
 
@@ -508,8 +503,6 @@ namespace Lodis.Gameplay
         {
             if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT)
                 _animator.SetBool("OnRightSide", true);
-
-
         }
     }
 }

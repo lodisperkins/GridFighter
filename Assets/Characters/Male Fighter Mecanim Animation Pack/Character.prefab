@@ -136,7 +136,7 @@ MonoBehaviour:
   _moveOnStart: 1
   _checkIfBehindBarrier: 0
   _isBehindBarrier: 0
-  _opponentPanelSpeedReduction: 6
+  _opponentPanelSpeedReduction: 4
 --- !u!54 &5308582277602069232
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1021,8 +1021,8 @@ MonoBehaviour:
   _animator: {fileID: 5237796854253788945}
   _runtimeController: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
   _characterStateManager: {fileID: 3495125533649590782}
-  _moveAnimationStartUpTime: 1
-  _moveAnimationRecoverTime: 1
+  _moveAnimationStartUpTime: 0
+  _moveAnimationRecoverTime: 0
   _flinchStartUpTime: 0
   _defaultCastAnimation: {fileID: 7400000, guid: 2a309e7f9de89cc4b9a8ca00474660a7,
     type: 3}
@@ -1030,6 +1030,7 @@ MonoBehaviour:
     type: 3}
   _defaultMeleeAnimation: {fileID: 7400000, guid: 635d947060dd41649bbcfe7bc1ebb900,
     type: 3}
+  _moveAnimationHangTime: 0
 --- !u!1 &6270007673300079391
 GameObject:
   m_ObjectHideFlags: 0

@@ -395,8 +395,8 @@ ModelImporter:
       name: DashForward
       takeName: Take 001
       internalID: 0
-      firstFrame: 0
-      lastFrame: 22
+      firstFrame: 3.7
+      lastFrame: 3.8
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -416,14 +416,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.10677966
+      - time: 0.041086234
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.38707626
+      - time: 0.9880495
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
