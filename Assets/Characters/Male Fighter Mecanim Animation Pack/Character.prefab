@@ -136,7 +136,7 @@ MonoBehaviour:
   _moveOnStart: 1
   _checkIfBehindBarrier: 0
   _isBehindBarrier: 0
-  _opponentPanelSpeedReduction: 4
+  _opponentPanelSpeedReduction: 10
 --- !u!54 &5308582277602069232
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 8943288124560981146}
   _projectileSpawnPoint: {fileID: 6294458134703451932}
@@ -296,9 +296,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 3
+  _mass: 4
   _gravity: 29.43
-  _bounceDampen: 4
+  _bounceDampen: 5
   _bounceCollider: {fileID: 8697654749103335270}
   _isGrounded: 0
   _extraHeight: 0.5

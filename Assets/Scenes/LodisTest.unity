@@ -7588,8 +7588,8 @@ MonoBehaviour:
   _ringBarrierL: {fileID: 1478321312}
   _ringBarrierR: {fileID: 2063412668}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
-  _dummyRHSSpawnLocation: {x: 7, y: 0}
-  _dummyLHSSpawnLocation: {x: 0, y: 0}
+  _dummyRHSSpawnLocation: {x: 5, y: 0}
+  _dummyLHSSpawnLocation: {x: 3, y: 0}
   _targetFrameRate: 60
   _invincibleBarriers: 0
   _infiniteEnergy: 0

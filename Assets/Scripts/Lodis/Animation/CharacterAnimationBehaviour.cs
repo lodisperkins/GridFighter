@@ -166,6 +166,8 @@ namespace Lodis.Gameplay
                     break;
 
                 case AnimationPhase.ACTIVE:
+                    if (!_currentClip)
+                        _currentClip = _animator.GetNextAnimatorClipInfo(0)[0].clip;
 
                     if (_currentClipActiveTime <= 0 && _currentClip.events.Length >= 2)
                     {

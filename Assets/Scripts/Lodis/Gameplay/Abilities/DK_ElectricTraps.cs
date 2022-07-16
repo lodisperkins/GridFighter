@@ -133,7 +133,7 @@ namespace Lodis.Gameplay
             {
                 case Vector2 dir when dir.Equals(Vector2.right):
                     FireLink(new Vector2(farthestPanelX, dimensions.y - 1));
-                    FireLink(new Vector2(farthestPanelX * ownerFacing, 0));
+                    FireLink(new Vector2(farthestPanelX, 0));
                     break;
                 case Vector2 dir when dir.Equals(Vector2.left):
                     FireLink(new Vector2(closestPanelX, dimensions.y - 1));

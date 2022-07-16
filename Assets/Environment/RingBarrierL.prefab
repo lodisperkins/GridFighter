@@ -118,7 +118,7 @@ MonoBehaviour:
   _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
   OnTakeDamageEvent: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   Owner: {fileID: 0}
-  _bounceDampen: 0.8
+  _bounceDampen: 1
   _hitStunOnCollision: 0.5
   _collider: {fileID: 3504853025319885305}
   _visual: {fileID: 5079541082680455700}
