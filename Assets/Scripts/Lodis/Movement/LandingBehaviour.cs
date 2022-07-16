@@ -1,4 +1,5 @@
 ﻿using System;
+using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ namespace Lodis.Movement
         [SerializeField] private float _knockDownRecoverTime;
         [SerializeField] private float _knockDownRecoverInvincibleTime;
         [SerializeField] private float _knockDownLandingTime;
+        [SerializeField] private IntVariable _groundedHitMax;
+        private int _groundedHitCounter;
         private KnockbackBehaviour _knockback;
         private bool _canCheckLanding;
 
@@ -38,17 +41,23 @@ namespace Lodis.Movement
         {
             _knockback = GetComponent<KnockbackBehaviour>();
             _knockback.AddOnStunAction(CancelLanding);
-            _knockback.AddOnKnockBackAction(() =>
+            _knockback.Physics.AddOnForceAddedEvent(args =>
             {
+                if (_groundedHitCounter > _groundedHitMax.Value)
+                    return;
+
                 CancelLanding();
-                if (_knockback.LaunchVelocity.magnitude > _knockback.MinimumLaunchMagnitude.Value)
-                    CanCheckLanding = false;
+                CanCheckLanding = false;
+
+                if (_knockback.Physics.IsGrounded)
+                    _groundedHitCounter++;
             });
         }
 
+
         private void OnTriggerStay(Collider other)
         {
-            if (_knockback.CurrentAirState != AirState.NONE && other.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen)
+            if (_knockback.CurrentAirState != AirState.NONE && other.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen && _knockback.Physics.ObjectAtRest)
             {
                 CanCheckLanding = true;
             }
@@ -89,6 +98,7 @@ namespace Lodis.Movement
                     RecoveringFromFall = false;
                     CanCheckLanding = false;
                     Landing = false;
+                    _knockback.CurrentAirState = AirState.NONE;
                 },
                 TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
         }
@@ -99,6 +109,7 @@ namespace Lodis.Movement
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
             _knockback.LastTimeInKnockBack = 0;
             _knockback.Physics.StopVelocity();
+            _knockback.CancelHitStun();
 
             RoutineBehaviour.Instance.StopAction(_landingAction);
             
@@ -139,13 +150,16 @@ namespace Lodis.Movement
             return dot >= 0;
         }
         
-        private void FixedUpdate()
+        private void LateUpdate()
         {
             if (_knockback.Physics.Rigidbody.velocity.magnitude <= _knockback.NetForceLandingTolerance &&
                 !Landing && CanCheckLanding && !_knockback.Stunned && _knockback.Physics.IsGrounded)
             {
                 StartLandingLag();
             }
+
+            if (!_knockback.Physics.IsGrounded || _knockback.CheckIfIdle())
+                _groundedHitCounter = 0;
         }
     }
 }

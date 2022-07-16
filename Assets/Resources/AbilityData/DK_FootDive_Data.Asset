@@ -30,7 +30,7 @@ MonoBehaviour:
   CanInputMovementWhileActive: 0
   CanCancelOnOpponentHit: 0
   cancelOnHit: 0
-  cancelOnFlinch: 0
+  cancelOnFlinch: 1
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0

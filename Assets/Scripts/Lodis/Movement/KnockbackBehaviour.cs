@@ -267,7 +267,7 @@ namespace Lodis.Movement
         {
             base.CancelStun();
 
-            Physics.UnfreezeObject();
+            Physics.CancelFreeze();
         }
 
         public void CancelHitStun()

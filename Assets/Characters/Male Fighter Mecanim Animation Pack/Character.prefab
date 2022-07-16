@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 8943288124560981146}
   _projectileSpawnPoint: {fileID: 6294458134703451932}
@@ -954,6 +954,7 @@ MonoBehaviour:
   _knockDownRecoverTime: 0.7
   _knockDownRecoverInvincibleTime: 1.5
   _knockDownLandingTime: 0.4
+  _groundedHitMax: {fileID: 11400000, guid: 5992caf4f86705a4b969023749ddea5c, type: 2}
 --- !u!114 &8261745225260295223
 MonoBehaviour:
   m_ObjectHideFlags: 0

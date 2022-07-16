@@ -7,6 +7,7 @@ using Lodis.ScriptableObjects;
 using DG.Tweening;
 using Lodis.GridScripts;
 using System;
+using Lodis.Utility;
 
 namespace Lodis.Movement
 {
@@ -70,6 +71,7 @@ namespace Lodis.Movement
         private CollisionEvent _onCollisionWithGround;
 
         private ForceAddedEvent _onForceAdded;
+        private ForceAddedEvent _onForceAddedTemp;
 
 
         private Coroutine _currentCoroutine;
@@ -77,6 +79,8 @@ namespace Lodis.Movement
         private bool _isFrozen;
         private bool _useVelocityForBounce;
         private Vector3 _frozenStoredForce;
+        private Vector3 _frozenVelocity;
+        private DelayedAction _freezeAction;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -189,88 +193,41 @@ namespace Lodis.Movement
         }
 
         /// <summary>
-        /// Adds a force in the opposite direction of velocity to temporarily
-        /// keep the object in place.
-        /// </summary>
-        /// <param name="time">The amount of time in seconds to freeze for.</param>
-        /// <returns></returns>
-        private IEnumerator FreezeTimerCoroutine(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
-        {
-            if (waitUntilForceApplied)
-                yield return new WaitUntil(() => _rigidbody.velocity.magnitude > 0);
-
-            bool gravityEnabled = UseGravity;
-            Vector3 velocity = _rigidbody.velocity;
-
-            if (makeKinematic && _rigidbody.isKinematic)
-                makeKinematic = false;
-            
-            if (makeKinematic)
-                MakeKinematic();
-
-            StopAllForces();
-            yield return new WaitForSeconds(time);
-
-            if (makeKinematic)
-                Rigidbody.isKinematic = false;
-
-            if (keepMomentum && velocity.magnitude > 0)
-                ApplyVelocityChange(velocity);
-
-            UseGravity = gravityEnabled;
-            _isFrozen = false;
-
-            if (storeForceApplied && _frozenStoredForce.magnitude > 0)
-                ApplyImpulseForce(_frozenStoredForce);
-
-            _frozenStoredForce = Vector3.zero;
-        }
-
-        private IEnumerator FreezeConditionCoroutine(Condition condition, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
-        {
-            if (waitUntilForceApplied)
-                yield return new WaitUntil(() => _rigidbody.velocity.magnitude > 0);
-
-            bool gravityEnabled = UseGravity;
-            Vector3 velocity = _rigidbody.velocity;
-
-            if (makeKinematic && _rigidbody.isKinematic)
-                makeKinematic = false;
-            
-            if (makeKinematic)
-                MakeKinematic();
-
-            StopAllForces();
-            _wait = new WaitUntil(() => condition.Invoke());
-            yield return _wait;
-
-            if (makeKinematic)
-                Rigidbody.isKinematic = false;
-
-            if (keepMomentum && velocity.magnitude > 0)
-                ApplyVelocityChange(velocity);
-
-            UseGravity = gravityEnabled;
-            _isFrozen = false;
-
-            if (storeForceApplied && _frozenStoredForce.magnitude > 0)
-                ApplyImpulseForce(_frozenStoredForce);
-
-            _frozenStoredForce = Vector3.zero;
-        }
-
-        /// <summary>
         /// If the object is being effected by non grid forces, 
         /// freeze the object in place for the given time.
         /// </summary>
         /// <param name="time">The amount of time in seconds to freeze in place.</param>
         public void FreezeInPlaceByTimer(float time, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
         {
+            if (waitUntilForceApplied)
+            {
+                _onForceAddedTemp +=
+                    args =>
+                    {
+                        _frozenStoredForce = (Vector3)args[0];
+                        FreezeInPlaceByTimer(time, keepMomentum, makeKinematic, false, storeForceApplied);
+                    };
+
+                return;
+            }
+
             if (_isFrozen)
-                UnfreezeObject();
+                return;
 
             _isFrozen = true;
-            _currentCoroutine = StartCoroutine(FreezeTimerCoroutine(time, keepMomentum, makeKinematic, waitUntilForceApplied, storeForceApplied));
+
+            bool gravityEnabled = UseGravity;
+            _frozenVelocity = _rigidbody.velocity;
+
+            if (makeKinematic && _rigidbody.isKinematic)
+                makeKinematic = false;
+
+            if (makeKinematic)
+                MakeKinematic();
+
+            StopAllForces();
+            _freezeAction = RoutineBehaviour.Instance.StartNewTimedAction(args => UnfreezeObject(makeKinematic, keepMomentum, gravityEnabled, storeForceApplied),
+                                                                          TimedActionCountType.SCALEDTIME, time);
         }
 
         /// <summary>
@@ -282,24 +239,72 @@ namespace Lodis.Movement
         /// <param name="makeKinematic">If true, the object won't be able to have any forces applied to it during the freeze</param>
         public void FreezeInPlaceByCondition(Condition condition, bool keepMomentum = false, bool makeKinematic = false, bool waitUntilForceApplied = false, bool storeForceApplied = false)
         {
+            if (waitUntilForceApplied)
+            {
+                _onForceAddedTemp +=
+                    args =>
+                    {
+                        _frozenStoredForce = (Vector3)args[0];
+                        FreezeInPlaceByCondition(condition, keepMomentum, makeKinematic, false, storeForceApplied);
+                    };
+
+                return;
+            }
+
             if (_isFrozen)
-                UnfreezeObject();
+                return;
 
             _isFrozen = true;
-            _currentCoroutine = StartCoroutine(FreezeConditionCoroutine(condition, true, makeKinematic, waitUntilForceApplied, storeForceApplied));
+            bool gravityEnabled = UseGravity;
+            _frozenVelocity = _rigidbody.velocity;
+
+            if (makeKinematic && _rigidbody.isKinematic)
+                makeKinematic = false;
+
+            if (makeKinematic)
+                MakeKinematic();
+
+            StopAllForces();
+            _freezeAction = RoutineBehaviour.Instance.StartNewConditionAction(args => UnfreezeObject(makeKinematic, keepMomentum, gravityEnabled, storeForceApplied), condition);
         }
 
         /// <summary>
         /// Immediately enables movement again if the object is frozen
         /// </summary>
-        public void UnfreezeObject()
+        private void UnfreezeObject(bool makeKinematic,bool keepMomentum, bool gravityEnabled, bool storeForceApplied)
         {
-            if (_currentCoroutine != null)
-                StopCoroutine(_currentCoroutine);
+            if (_freezeAction?.GetEnabled() == true)
+                RoutineBehaviour.Instance.StopAction(_freezeAction);
+
+            if (makeKinematic)
+                Rigidbody.isKinematic = false;
+
+            if (keepMomentum && _frozenVelocity.magnitude > 1)
+                ApplyVelocityChange(_frozenVelocity);
+
+            UseGravity = gravityEnabled;
+            _isFrozen = false;
+
+            if (storeForceApplied && _frozenStoredForce.magnitude > 0)
+                ApplyImpulseForce(_frozenStoredForce);
+
+            _frozenStoredForce = Vector3.zero;
+            _frozenVelocity = Vector3.zero;
+        }
+
+        /// <summary>
+        /// Canceled the current freeze operation by stopping the timer and enabling gravity.
+        /// Does not keep momentum or apply stored forces.
+        /// </summary>
+        public void CancelFreeze()
+        {
+            if (_freezeAction?.GetEnabled() == true)
+                RoutineBehaviour.Instance.StopAction(_freezeAction);
 
             UseGravity = true;
             _isFrozen = false;
             _frozenStoredForce = Vector3.zero;
+            _frozenVelocity = Vector3.zero;
         }
 
         /// <summary>
@@ -417,6 +422,15 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Adds a method to the event called when a force is applied to this object.
+        /// </summary>
+        /// <param name="forceEvent">The delegate to invoke upon collision</param>
+        public void AddOnForceAddedTempEvent(ForceAddedEvent forceEvent)
+        {
+            _onForceAddedTemp += forceEvent;
+        }
+
+        /// <summary>
         /// Adds an event to the event called when this object collides lands on a structure.
         /// </summary>
         /// <param name="collisionEvent">The delegate to invoke upon collision</param>
@@ -510,10 +524,13 @@ namespace Lodis.Movement
             Rigidbody.AddForce(force, ForceMode.VelocityChange);
             _lastVelocity = force;
             _lastForceAdded = force;
-            _onForceAdded?.Invoke(force);
 
             if (IsFrozen)
-                _frozenStoredForce = _lastForceAdded;
+                _frozenVelocity = _lastForceAdded;
+
+            _onForceAdded?.Invoke(force);
+            _onForceAddedTemp?.Invoke(force);
+            _onForceAddedTemp = null;
         }
 
         /// <summary>
@@ -539,10 +556,14 @@ namespace Lodis.Movement
 
             Rigidbody.AddForce(force / Mass, ForceMode.Force);
             _lastForceAdded = force / Mass;
-            _onForceAdded?.Invoke(force / Mass);
 
             if (IsFrozen)
                 _frozenStoredForce = _lastForceAdded;
+
+            _onForceAdded?.Invoke(force / Mass);
+            _onForceAddedTemp?.Invoke(force);
+            _onForceAddedTemp = null;
+
         }
 
         /// <summary>
@@ -573,10 +594,14 @@ namespace Lodis.Movement
             
 
             _lastForceAdded = force / Mass;
-            _onForceAdded?.Invoke(force / Mass);
 
             if (IsFrozen)
                 _frozenStoredForce = _lastForceAdded;
+
+            _onForceAdded?.Invoke(force / Mass);
+            _onForceAddedTemp?.Invoke(force);
+            _onForceAddedTemp = null;
+            _acceleration = force / Mass;
         }
 
         /// <summary>
