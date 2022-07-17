@@ -63,12 +63,12 @@ MonoBehaviour:
     HitStopTimeModifier: 1.2
   _customStats:
   - name: PanelDistance
-    value: 6
+    value: 10
   - name: MaxInstances
     value: 1
   - name: Gravity
     value: 29.43
   - name: Angle
-    value: 1
+    value: 0.6
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}

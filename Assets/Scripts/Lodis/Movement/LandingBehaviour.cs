@@ -135,6 +135,7 @@ namespace Lodis.Movement
                     _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
                     {
                         Landing = false;
+                        _knockback.CurrentAirState = AirState.NONE;
                     }, TimedActionCountType.SCALEDTIME, _knockback.DefenseBehaviour.GroundTechLength);
                     break;
             }

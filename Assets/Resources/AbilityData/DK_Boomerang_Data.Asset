@@ -45,7 +45,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 65536
-    HitFrames: 1
+    HitFrames: 10
     Damage: 5
     BaseKnockBack: 3
     KnockBackScale: 0.3
