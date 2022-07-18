@@ -21,6 +21,8 @@ namespace Lodis.GridScripts
         [SerializeField]
         private Material _rightSideMat;
         [SerializeField]
+        private float _emissionStrength;
+        [SerializeField]
         private Color _positionLHSColor;
         [SerializeField]
         private Color _positionRHSColor;
@@ -98,6 +100,7 @@ namespace Lodis.GridScripts
                 return;
             }
 
+            _mesh.material.EnableKeyword("_EMISSION");
             switch (markerType)
             {
                 case MarkerType.POSITION:
@@ -110,18 +113,27 @@ namespace Lodis.GridScripts
                         throw new System.Exception("Can't mark grid movement of object that doesn't have a GridMovementBehaviour attached. Object name is " + markObject.name);
 
                     if (_markerMovement.Alignment == GridAlignment.LEFT)
+                    {
                         _mesh.material.color = _positionLHSColor;
+                        _mesh.material.SetColor("_EmissionColor", _positionLHSColor * _emissionStrength);
+                    }
                     else if (_markerMovement.Alignment == GridAlignment.RIGHT)
+                    {
                         _mesh.material.color = _positionRHSColor;
+                        _mesh.material.SetColor("_EmissionColor", _positionRHSColor * _emissionStrength);
+                    }
                     break;
                 case MarkerType.WARNING:
                     _mesh.material.color = _warningColor;
+                    _mesh.material.SetColor("_EmissionColor", _warningColor * _emissionStrength);
                     break;
                 case MarkerType.DANGER:
                     _mesh.material.color = _dangerColor;
+                    _mesh.material.SetColor("_EmissionColor", _dangerColor * _emissionStrength);
                     break;
                 case MarkerType.UNBLOCKABLE:
                     _mesh.material.color = _unblockableColor;
+                    _mesh.material.SetColor("_EmissionColor", _unblockableColor * _emissionStrength);
                     break;
             }
 
@@ -132,6 +144,7 @@ namespace Lodis.GridScripts
         {
             _mesh.material.color = _defaultColor;
             _currentMarker = MarkerType.NONE;
+            _mesh.material.DisableKeyword("_EMISSION");
         }
 
         /// <summary>

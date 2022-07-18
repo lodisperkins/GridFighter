@@ -34,7 +34,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - DiffuseTexture:
-        m_Texture: {fileID: 2800000, guid: 523d3e5d1c9253c4584ad84693e99fe9, type: 3}
+        m_Texture: {fileID: 2800000, guid: 604ccf396ca0aae41b4d535da34ee81b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - NormalMap:
@@ -135,8 +135,9 @@ Material:
     - Color_205411B7: {r: 1, g: 1, b: 1, a: 0}
     - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
-    - _Color: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 1}
+    - _Color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _OffsetVal: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}

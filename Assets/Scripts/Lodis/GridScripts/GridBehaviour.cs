@@ -237,7 +237,7 @@ namespace Lodis.GridScripts
             GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
 
             var localScale = _panelRef.transform.localScale;
-            _width = (_dimensions.x * localScale.x) + (PanelSpacingX * _dimensions.x - 1) + _panelSpacingMiddle;
+            _width = (_dimensions.x * localScale.x) + (PanelSpacingX * _dimensions.x) + _panelSpacingMiddle;
             _height = (_dimensions.y * localScale.z) + (PanelSpacingZ * _dimensions.y);
 
             float collisionPlaneOffsetX = ((_dimensions.x - 1) * localScale.x) + (PanelSpacingX * (_dimensions.x - 2) + _panelSpacingMiddle);
