@@ -27,6 +27,8 @@ namespace Lodis.Gameplay
         private bool _forceAdded;
         private float _riseTime;
         private GridPhysicsBehaviour _opponentPhysics;
+        private float _distance;
+        private float _jumpHeight;
         private float _oldBounciness;
 
         //Called when ability is created
@@ -40,52 +42,54 @@ namespace Lodis.Gameplay
             if (opponent == null) return;
 
             _opponentPhysics = opponent.GetComponent<GridPhysicsBehaviour>();
+            _distance = abilityData.GetCustomStatValue("TravelDistance");
+            _jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
         }
 
         protected override void Start(params object[] args)
         {
             base.Start();
+            //Disable character movement so the jump isn't interrupted
+            _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
 
             //Calculate the time it takes to reache the peak height
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             //Add the velocity to the character to make them jump
-            _knockBackBehaviour.Physics.ApplyVelocityChange(AddForce(true), false);
+            _knockBackBehaviour.Physics.Jump((int)_distance, _jumpHeight, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, Vector3.zero);
             //Disable bouncing so the character doesn't bounce when landing
             _knockBackBehaviour.Physics.DisablePanelBounce();
 
-            //Disable character movement so the jump isn't interrupted
-            _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
         }
 
-        private Vector3 AddForce(bool yPositive)
-        {
-            //Find the position of the target panel
-            Vector2 targetPanelPos = _ownerMoveScript.Position + ((Vector2)owner.transform.forward * abilityData.GetCustomStatValue("TravelDistance"));
-            targetPanelPos.x = Mathf.Clamp(targetPanelPos.x, 0, _grid.Dimensions.x - 1);
-            targetPanelPos.y = Mathf.Clamp(targetPanelPos.y, 0, _grid.Dimensions.y - 1);
+        //private Vector3 AddForce(bool yPositive)
+        //{
+        //    //Find the position of the target panel
+        //    Vector2 targetPanelPos = _ownerMoveScript.Position + ((Vector2)owner.transform.forward * abilityData.GetCustomStatValue("TravelDistance"));
+        //    targetPanelPos.x = Mathf.Clamp(targetPanelPos.x, 0, _grid.Dimensions.x - 1);
+        //    targetPanelPos.y = Mathf.Clamp(targetPanelPos.y, 0, _grid.Dimensions.y - 1);
 
-            //Get a reference to the panel at the position found
-            PanelBehaviour panel;
-            _grid.GetPanel(targetPanelPos, out panel, true);
+        //    //Get a reference to the panel at the position found
+        //    PanelBehaviour panel;
+        //    _grid.GetPanel(targetPanelPos, out panel, true);
 
-            //Find the displacement
-            float displacement = Vector3.Distance(_ownerMoveScript.CurrentPanel.transform.position, panel.transform.position) / 2;
+        //    //Find the displacement
+        //    float displacement = Vector3.Distance(_ownerMoveScript.CurrentPanel.transform.position, panel.transform.position) / 2;
 
-            //Get float representing y direction based on argument given
-            int yDirection = yPositive ? 1 : -1;
+        //    //Get float representing y direction based on argument given
+        //    int yDirection = yPositive ? 1 : -1;
 
-            //Find y velocity 
-            _ownerGravity = _knockBackBehaviour.Physics.Gravity;
-            Vector3 velocityY;
-            velocityY.y = abilityData.GetCustomStatValue("JumpHeight") + (0.5f * _knockBackBehaviour.Physics.Gravity * _riseTime);
+        //    //Find y velocity 
+        //    _ownerGravity = _knockBackBehaviour.Physics.Gravity;
+        //    Vector3 velocityY;
+        //    velocityY.y = abilityData.GetCustomStatValue("JumpHeight") + (0.5f * _knockBackBehaviour.Physics.Gravity * _riseTime);
 
-            //Find x velocity
-            Vector3 velocityX;
-            velocityX.x = (displacement / abilityData.startUpTime) * owner.transform.forward.x;
+        //    //Find x velocity
+        //    Vector3 velocityX;
+        //    velocityX.x = (displacement / abilityData.startUpTime) * owner.transform.forward.x;
 
-            //Apply force
-            return new Vector3(velocityX.x, velocityY.y * yDirection, 0);
-        }
+        //    //Apply force
+        //    return new Vector3(velocityX.x, velocityY.y * yDirection, 0);
+        //}
 
         //Called when ability is used
         protected override void Activate(params object[] args)
@@ -97,12 +101,6 @@ namespace Lodis.Gameplay
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
             HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale / 2, _fistCollider);
             hitScript.OnHit += EnableBounce;
-            hitScript.DebuggingEnabled = true;
-
-            //Apply downward force
-            Vector3 spikeVelocity = AddForce(false).normalized * abilityData.GetCustomStatValue("DownwardSpeed");
-            _knockBackBehaviour.Physics.ApplyVelocityChange(spikeVelocity, false);
-            _knockBackBehaviour.Physics.Gravity = _ownerGravity * abilityData.GetCustomStatValue("DownwardGravityMultiplier");
         }
 
         /// <summary>
@@ -130,12 +128,12 @@ namespace Lodis.Gameplay
             //Destroy particles and hit box
             MonoBehaviour.Destroy(_visualPrefabInstances.Item1);
 
-            //Reset character gravity to default
-            _knockBackBehaviour.Physics.Gravity = _ownerGravity;
+            ////Reset character gravity to default
+            //_knockBackBehaviour.Physics.Gravity = _ownerGravity;
 
-            //Stop momentum if the character isn't somehow in knock back
-            if (_knockBackBehaviour.CurrentAirState != AirState.FREEFALL)
-                _knockBackBehaviour.Physics.StopVelocity();
+            ////Stop momentum if the character isn't somehow in knock back
+            //if (_knockBackBehaviour.CurrentAirState != AirState.FREEFALL)
+            //    _knockBackBehaviour.Physics.StopVelocity();
         }
 
         protected override void End()
@@ -144,7 +142,7 @@ namespace Lodis.Gameplay
             //Enable bouncing
             _knockBackBehaviour.Physics.DisablePanelBounce();
             //Reset character gravity to default
-            _knockBackBehaviour.Physics.Gravity = _ownerGravity;
+            //_knockBackBehaviour.Physics.Gravity = _ownerGravity;
 
         }
 
@@ -152,13 +150,13 @@ namespace Lodis.Gameplay
         {
             base.Update();
 
-            //If the ability is active and the amount of time it takes to reach the peak has passed...
-            if (_forceAdded && Time.time - _timeForceAdded >= _riseTime && CurrentAbilityPhase != AbilityPhase.ACTIVE)
-            {
-                //...freeze it in air
-                _knockBackBehaviour.Physics.StopAllForces();
-                _knockBackBehaviour.Physics.Gravity = 0;
-            }
+            ////If the ability is active and the amount of time it takes to reach the peak has passed...
+            //if (_forceAdded && Time.time - _timeForceAdded >= _riseTime && CurrentAbilityPhase != AbilityPhase.ACTIVE)
+            //{
+            //    //...freeze it in air
+            //    _knockBackBehaviour.Physics.StopAllForces();
+            //    _knockBackBehaviour.Physics.Gravity = 0;
+            //}
         }
     }
 }

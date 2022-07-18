@@ -133,7 +133,7 @@ namespace Lodis.Movement
         // Start is called before the first frame update
         void Start()
         {
-            _movementBehaviour.AddOnMoveEnabledAction(() =>
+            _movementBehaviour.AddOnMoveBeginAction(() =>
             { Rigidbody.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
         }
