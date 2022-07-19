@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: FootDive
   AbilityType: 8
-  timeActive: 0.2
+  timeActive: 0.1
   recoverTime: 0.5
   startUpTime: 0.4
   chargeTime: 5
@@ -50,7 +50,7 @@ MonoBehaviour:
     Damage: 20
     BaseKnockBack: 3
     KnockBackScale: 0.5
-    HitAngle: -1
+    HitAngle: -0.6
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     CanSpike: 0
@@ -67,7 +67,7 @@ MonoBehaviour:
   - name: JumpHeight
     value: 2
   - name: HangTime
-    value: 0.1
+    value: 0.2
   - name: DownwardSpeed
     value: 12
   - name: DownwardGravityMultiplier

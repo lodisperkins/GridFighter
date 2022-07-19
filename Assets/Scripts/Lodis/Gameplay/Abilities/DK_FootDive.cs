@@ -30,11 +30,16 @@ namespace Lodis.Gameplay
         private float _distance;
         private float _jumpHeight;
         private float _oldBounciness;
+        private AnimationCurve _curve;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
+            float hangTime = abilityData.GetCustomStatValue("HangTime") / (abilityData.startUpTime + abilityData.timeActive);
+            _riseTime = abilityData.startUpTime / (abilityData.startUpTime + abilityData.timeActive);
+            hangTime = Mathf.Clamp(hangTime, 0.1f, 0.5f) + 0.2f;
+            _curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(_riseTime, .5f), new Keyframe(hangTime, .5f), new Keyframe(1, 1)); 
             _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
             _grid = BlackBoardBehaviour.Instance.Grid;
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
@@ -55,7 +60,7 @@ namespace Lodis.Gameplay
             //Calculate the time it takes to reache the peak height
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             //Add the velocity to the character to make them jump
-            _knockBackBehaviour.Physics.Jump((int)_distance, _jumpHeight, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, Vector3.up * .5f);
+            _knockBackBehaviour.Physics.Jump((int)_distance, _jumpHeight, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, Vector3.up * .3f, _curve);
             //Disable bouncing so the character doesn't bounce when landing
             _knockBackBehaviour.Physics.DisablePanelBounce();
 

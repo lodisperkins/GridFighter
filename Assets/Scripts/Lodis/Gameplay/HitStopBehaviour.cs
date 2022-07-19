@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         [SerializeField] private Animator _animator;
         [Tooltip("The shake script attached to the model. Used to make the model shake during hit stop.")]
         [SerializeField] private ShakeBehaviour _shakeBehaviour;
+        private MovesetBehaviour _moveset;
 
         private HealthBehaviour _health;
         private DelayedAction _stopAction;
@@ -25,6 +26,7 @@ namespace Lodis.Gameplay
             //Initialize component values
             _physics = GetComponent<GridPhysicsBehaviour>();
             _health = GetComponent<HealthBehaviour>();
+            _moveset = GetComponent<MovesetBehaviour>();
 
             //Adds the hitstop event to the appropriate event based on the health scrip type
             KnockbackBehaviour knockBack = (KnockbackBehaviour)_health;
@@ -88,7 +90,15 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StartNewTimedAction(args => _animator.enabled = false,
                 TimedActionCountType.SCALEDTIME, animationStopDelay);
 
-            _stopAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _animator.enabled = true, TimedActionCountType.SCALEDTIME, time);
+            _stopAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                _animator.enabled = true;
+                if (_moveset.AbilityInUse)
+                    _moveset.LastAbilityInUse.UnpauseAbilityTimer();
+            }, TimedActionCountType.SCALEDTIME, time);
+
+            if (_moveset.AbilityInUse)
+                _moveset.LastAbilityInUse.PauseAbilityTimer();
         }
     }
 }

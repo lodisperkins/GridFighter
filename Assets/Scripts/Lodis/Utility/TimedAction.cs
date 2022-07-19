@@ -7,11 +7,44 @@ namespace Lodis.Utility
         public float TimeStarted;
         public float Duration;
         public TimedActionCountType CountType;
-        
+        private float _timeLeft;
+        private bool _isPaused;
+
         public TimedAction() { }
+
+        public bool IsPaused { get => _isPaused; }
+
+        public void Pause()
+        {
+            _isPaused = true;
+        }
+
+        public void Unpause()
+        {
+            _isPaused = false;
+
+            //Call event based on the type of counter
+            switch (CountType)
+            {
+                case TimedActionCountType.SCALEDTIME:
+                    TimeStarted = Time.time;
+                    break;
+                case TimedActionCountType.UNSCALEDTIME:
+                    TimeStarted = Time.unscaledTime;
+                    break;
+                case TimedActionCountType.FRAME:
+                    TimeStarted = Time.frameCount;
+                    break;
+            }
+
+            Duration = _timeLeft;
+        }
             
         public override bool TryInvokeEvent()
         {
+            if (_isPaused)
+                return false;
+
             float time = 0;
             
             //Call event based on the type of counter
@@ -35,6 +68,7 @@ namespace Lodis.Utility
                 return true;
             }
 
+            _timeLeft = Duration - (time - TimeStarted);
             return false;
         }
             

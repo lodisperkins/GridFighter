@@ -257,6 +257,22 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Stops the ability from moving to the next phase
+        /// </summary>
+        public virtual void PauseAbilityTimer()
+        {
+            _currentTimer.Pause();
+        }
+
+        /// <summary>
+        /// Allows the ability to move on to the next phase
+        /// </summary>
+        public virtual void UnpauseAbilityTimer()
+        {
+            _currentTimer.Unpause();
+        }
+
+        /// <summary>
         /// Stops ability, calls ending events, and removes the ability from the current ability slot
         /// </summary>
         public virtual void EndAbility()

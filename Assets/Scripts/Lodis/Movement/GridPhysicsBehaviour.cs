@@ -75,12 +75,13 @@ namespace Lodis.Movement
 
 
         private Coroutine _currentCoroutine;
-        private Sequence _sequence;
+        private Sequence _jumpSequence;
         private bool _isFrozen;
         private bool _useVelocityForBounce;
         private Vector3 _frozenStoredForce;
         private Vector3 _frozenVelocity;
         private DelayedAction _freezeAction;
+        private ConditionAction _bufferedJump;
 
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -216,6 +217,9 @@ namespace Lodis.Movement
 
             _isFrozen = true;
 
+            if (_jumpSequence?.IsPlaying() == true)
+                _jumpSequence?.TogglePause();
+
             bool gravityEnabled = UseGravity;
             _frozenVelocity = _rigidbody.velocity;
 
@@ -257,6 +261,8 @@ namespace Lodis.Movement
             _isFrozen = true;
             bool gravityEnabled = UseGravity;
             _frozenVelocity = _rigidbody.velocity;
+            if (_jumpSequence?.active == true)
+                _jumpSequence?.TogglePause();
 
             if (makeKinematic && _rigidbody.isKinematic)
                 makeKinematic = false;
@@ -279,11 +285,20 @@ namespace Lodis.Movement
             if (makeKinematic)
                 RB.isKinematic = false;
 
-            if (keepMomentum && _frozenVelocity.magnitude > 1)
-                ApplyVelocityChange(_frozenVelocity);
-
             UseGravity = gravityEnabled;
             _isFrozen = false;
+
+            if (_jumpSequence != null)
+            {
+                StopVelocity();
+                _jumpSequence?.TogglePause();
+                _frozenStoredForce = Vector3.zero;
+                _frozenVelocity = Vector3.zero;
+                return;
+            }
+
+            if (keepMomentum && _frozenVelocity.magnitude > 1)
+                ApplyVelocityChange(_frozenVelocity);
 
             if (storeForceApplied && _frozenStoredForce.magnitude > 0)
                 ApplyImpulseForce(_frozenStoredForce);
@@ -300,6 +315,9 @@ namespace Lodis.Movement
         {
             if (_freezeAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_freezeAction);
+
+            if (_jumpSequence?.active == true)
+                _jumpSequence?.Kill();
 
             UseGravity = true;
             _isFrozen = false;
@@ -615,6 +633,20 @@ namespace Lodis.Movement
         /// <param name="alignment">The alignment of the panels this object is allowed to jump on</param>
         public void Jump(int panelDistance, float height, float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, Vector3 panelOffset = default(Vector3), Ease ease = Ease.InOutSine)
         {
+            _jumpSequence?.Kill();
+
+            if (_isFrozen)
+            {
+                if (_bufferedJump?.GetEnabled() == true)
+                    RoutineBehaviour.Instance.StopAction(_bufferedJump);
+
+                _bufferedJump = RoutineBehaviour.Instance.StartNewConditionAction(
+                    args => Jump(panelDistance, height, duration, jumpToClosestAvailablePanel, canBeOccupied, alignment, panelOffset, ease),
+                    condition => !_isFrozen);
+
+                return;
+            }
+
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
@@ -638,12 +670,73 @@ namespace Lodis.Movement
             }
 
             //Perform the jump
-            _sequence = _rigidbody.DOJump(panelPosition + panelOffset, height, 1, duration).SetEase(ease);
+            _jumpSequence = _rigidbody.DOJump(panelPosition + panelOffset, height, 1, duration).SetEase(ease);
+            _jumpSequence.onKill += () => _jumpSequence = null;
+            _jumpSequence.onComplete += () => _jumpSequence = null;
 
             //Cancel the jump if a force is added
             _onForceAdded += args =>
             {
-                _sequence?.Kill();
+                _jumpSequence?.Kill();
+            };
+        }
+
+        /// <summary>
+        /// Interpolates from the objects current position to a panel at the given distance while adding a jump effect on the y.
+        /// </summary>
+        /// <param name="panelDistance">How many panels far the object will jump</param>
+        /// <param name="height">The maximum height of the jump</param>
+        /// <param name="duration">The amount of time the jump will last</param>
+        /// <param name="jumpToClosestAvailablePanel">If true, the object will try to jump to a closer panel if the destination isn't available</param>
+        /// <param name="canBeOccupied">If true, the destination panel can be occupied by another object</param>
+        /// <param name="alignment">The alignment of the panels this object is allowed to jump on</param>
+        public void Jump(int panelDistance, float height, float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, Vector3 panelOffset = default(Vector3), AnimationCurve curve = null)
+        {
+            _jumpSequence?.Kill();
+
+            if (_isFrozen)
+            {
+                if (_bufferedJump?.GetEnabled() == true)
+                    RoutineBehaviour.Instance.StopAction(_bufferedJump);
+
+                _bufferedJump = RoutineBehaviour.Instance.StartNewConditionAction(
+                    args => Jump(panelDistance, height, duration, jumpToClosestAvailablePanel, canBeOccupied, alignment, panelOffset, curve),
+                    condition => !_isFrozen);
+
+                return;
+            }
+
+            //Find the space between each panel and the panels size to use to find the total displacement
+            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
+            float displacement = (panelSize * panelDistance) + (panelSpacing * (panelDistance - 1));
+            RB.isKinematic = false;
+            //Try to find a panel at the location
+            PanelBehaviour panel;
+            Vector3 panelPosition = transform.position + transform.forward * panelDistance;
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
+
+            //Returns if a panel couldn't be found and we don't want to keep looking
+            if (!panel && !jumpToClosestAvailablePanel) return;
+
+
+            //Looks for a panel to land on
+            for (int i = panelDistance - 1; i > 0; i--)
+            {
+                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
+
+                if (panel) break;
+            }
+
+            //Perform the jump
+            _jumpSequence = _rigidbody.DOJump(panelPosition + panelOffset, height, 1, duration).SetEase(curve);
+            _jumpSequence.onKill += () => _jumpSequence = null;
+            _jumpSequence.onComplete += () => _jumpSequence = null;
+
+            //Cancel the jump if a force is added
+            _onForceAdded += args =>
+            {
+                _jumpSequence?.Kill();
             };
         }
 
