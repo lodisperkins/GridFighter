@@ -65,7 +65,7 @@ MonoBehaviour:
   - name: TravelDistance
     value: 3
   - name: JumpHeight
-    value: 5
+    value: 2
   - name: HangTime
     value: 0.1
   - name: DownwardSpeed

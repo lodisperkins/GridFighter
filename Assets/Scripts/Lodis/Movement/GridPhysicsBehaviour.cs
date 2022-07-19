@@ -111,7 +111,7 @@ namespace Lodis.Movement
         public bool IsGrounded{ get => _isGrounded; }
 
         public Vector3 Acceleration { get => _acceleration; }
-        public Rigidbody Rigidbody { get => _rigidbody; }
+        public Rigidbody RB { get => _rigidbody; }
         public Vector3 GroundedBoxPosition { get => _groundedBoxPosition; set => _groundedBoxPosition = value; }
         public Vector3 GroundedBoxExtents { get => _groundedBoxExtents; set => _groundedBoxExtents = value; }
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
@@ -124,8 +124,8 @@ namespace Lodis.Movement
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            Rigidbody.isKinematic = true;
-            Rigidbody.useGravity = false;
+            RB.isKinematic = true;
+            RB.useGravity = false;
             _constantForceBehaviour = GetComponent<ConstantForce>();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
         }
@@ -134,7 +134,7 @@ namespace Lodis.Movement
         void Start()
         {
             _movementBehaviour.AddOnMoveBeginAction(() =>
-            { Rigidbody.isKinematic = true; });
+            { RB.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
         }
 
@@ -163,7 +163,7 @@ namespace Lodis.Movement
         /// <returns></returns>
         public bool RigidbodyInactive(object[] args = null)
         {
-            return Rigidbody.IsSleeping();
+            return RB.IsSleeping();
         }
 
         /// <summary>
@@ -171,15 +171,15 @@ namespace Lodis.Movement
         /// </summary>
         public void StopVelocity()
         {
-            Rigidbody.velocity = Vector3.zero;
-            Rigidbody.angularVelocity = Vector3.zero;
+            RB.velocity = Vector3.zero;
+            RB.angularVelocity = Vector3.zero;
         }
         /// <summary>
         /// Makes the object kinematic
         /// </summary>
         public void MakeKinematic()
         {
-            Rigidbody.isKinematic = true;
+            RB.isKinematic = true;
         }
 
         /// <summary>
@@ -187,8 +187,8 @@ namespace Lodis.Movement
         /// </summary>
         public void StopAllForces()
         {
-            Rigidbody.velocity = Vector3.zero;
-            Rigidbody.angularVelocity = Vector3.zero;
+            RB.velocity = Vector3.zero;
+            RB.angularVelocity = Vector3.zero;
             UseGravity = false;
         }
 
@@ -277,7 +277,7 @@ namespace Lodis.Movement
                 RoutineBehaviour.Instance.StopAction(_freezeAction);
 
             if (makeKinematic)
-                Rigidbody.isKinematic = false;
+                RB.isKinematic = false;
 
             if (keepMomentum && _frozenVelocity.magnitude > 1)
                 ApplyVelocityChange(_frozenVelocity);
@@ -509,7 +509,7 @@ namespace Lodis.Movement
             if (IgnoreForces)
                 return;
 
-            Rigidbody.isKinematic = false;
+            RB.isKinematic = false;
 
             if (_movementBehaviour.IsMoving)
             {
@@ -521,7 +521,7 @@ namespace Lodis.Movement
             if (disableMovement)
                 _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
-            Rigidbody.AddForce(force, ForceMode.VelocityChange);
+            RB.AddForce(force, ForceMode.VelocityChange);
             _lastVelocity = force;
             _lastForceAdded = force;
 
@@ -542,7 +542,7 @@ namespace Lodis.Movement
             if (IgnoreForces)
                 return;
 
-            Rigidbody.isKinematic = false;
+            RB.isKinematic = false;
 
             if (_movementBehaviour.IsMoving)
             {
@@ -554,7 +554,7 @@ namespace Lodis.Movement
             if (disableMovement)
                 _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
-            Rigidbody.AddForce(force / Mass, ForceMode.Force);
+            RB.AddForce(force / Mass, ForceMode.Force);
             _lastForceAdded = force / Mass;
 
             if (IsFrozen)
@@ -583,14 +583,14 @@ namespace Lodis.Movement
                 _movementBehaviour.canCancelMovement = false;
             }
 
-            Rigidbody.isKinematic = false;
+            RB.isKinematic = false;
 
             _objectAtRest = false;
 
             if (disableMovement)
                 _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
-            Rigidbody.AddForce(force / Mass, ForceMode.Impulse);
+            RB.AddForce(force / Mass, ForceMode.Impulse);
             
 
             _lastForceAdded = force / Mass;
@@ -619,7 +619,7 @@ namespace Lodis.Movement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
             float displacement = (panelSize * panelDistance) + (panelSpacing * (panelDistance - 1));
-
+            RB.isKinematic = false;
             //Try to find a panel at the location
             PanelBehaviour panel;
             Vector3 panelPosition = transform.position + transform.forward * panelDistance;
@@ -681,10 +681,10 @@ namespace Lodis.Movement
 
         private void FixedUpdate()
         {
-            _acceleration = (Rigidbody.velocity - LastVelocity) / Time.fixedDeltaTime;
+            _acceleration = (RB.velocity - LastVelocity) / Time.fixedDeltaTime;
 
-            _lastVelocity = Rigidbody.velocity;
-            _lastVelocity = Rigidbody.velocity;
+            _lastVelocity = RB.velocity;
+            _lastVelocity = RB.velocity;
 
             if (UseGravity && !IgnoreForces)
                 _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);

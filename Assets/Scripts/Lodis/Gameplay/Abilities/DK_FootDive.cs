@@ -55,7 +55,7 @@ namespace Lodis.Gameplay
             //Calculate the time it takes to reache the peak height
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             //Add the velocity to the character to make them jump
-            _knockBackBehaviour.Physics.Jump((int)_distance, _jumpHeight, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, Vector3.zero);
+            _knockBackBehaviour.Physics.Jump((int)_distance, _jumpHeight, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, Vector3.up * .5f);
             //Disable bouncing so the character doesn't bounce when landing
             _knockBackBehaviour.Physics.DisablePanelBounce();
 

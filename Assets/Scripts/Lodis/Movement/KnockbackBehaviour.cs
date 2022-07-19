@@ -372,7 +372,7 @@ namespace Lodis.Movement
                 _onKnockBackStartTemp = null;
 
                 _launchForce = knockBackForce;
-                Physics.Rigidbody.isKinematic = false;
+                Physics.RB.isKinematic = false;
 
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
@@ -432,7 +432,7 @@ namespace Lodis.Movement
                 _onKnockBackStartTemp = null;
 
                 _launchForce = knockBackForce;
-                Physics.Rigidbody.isKinematic = false;
+                Physics.RB.isKinematic = false;
 
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
@@ -457,7 +457,7 @@ namespace Lodis.Movement
                 _onKnockBackStartTemp = null;
 
                 _launchForce = knockBackForce;
-                Physics.Rigidbody.isKinematic = false;
+                Physics.RB.isKinematic = false;
 
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
@@ -532,7 +532,7 @@ namespace Lodis.Movement
 
             //Store the force used to launch the character
             _launchForce = knockBackForce;
-            Physics.Rigidbody.isKinematic = false;
+            Physics.RB.isKinematic = false;
 
             //Disables object movement on the grid
             _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
@@ -601,7 +601,7 @@ namespace Lodis.Movement
             
             //Store the force used to launch the character
             _launchForce = knockBackForce;
-            Physics.Rigidbody.isKinematic = false;
+            Physics.RB.isKinematic = false;
             
             //Snap the object to its target panel if it was moving
             if (_movementBehaviour.IsMoving)
@@ -665,8 +665,8 @@ namespace Lodis.Movement
 
         private void FixedUpdate()
         {
-            if (Physics.Rigidbody.velocity.magnitude > _maxMagnitude.Value)
-                Physics.Rigidbody.velocity = Physics.Rigidbody.velocity.normalized * _maxMagnitude.Value;
+            if (Physics.RB.velocity.magnitude > _maxMagnitude.Value)
+                Physics.RB.velocity = Physics.RB.velocity.normalized * _maxMagnitude.Value;
 
             UpdateGroundedColliderPosition();
         }

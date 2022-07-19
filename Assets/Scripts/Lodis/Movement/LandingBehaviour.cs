@@ -69,7 +69,7 @@ namespace Lodis.Movement
 
             RoutineBehaviour.Instance.StopAction(_landingAction);
             _knockback.DisableInvincibility();
-            _knockback.Physics.Rigidbody.isKinematic = false;
+            _knockback.Physics.RB.isKinematic = false;
             IsDown = false;
             Landing = false;
             RecoveringFromFall = false;
@@ -153,7 +153,7 @@ namespace Lodis.Movement
         
         private void LateUpdate()
         {
-            if (_knockback.Physics.Rigidbody.velocity.magnitude <= _knockback.NetForceLandingTolerance &&
+            if (_knockback.Physics.RB.velocity.magnitude <= _knockback.NetForceLandingTolerance &&
                 !Landing && CanCheckLanding && !_knockback.Stunned && _knockback.Physics.IsGrounded)
             {
                 StartLandingLag();
