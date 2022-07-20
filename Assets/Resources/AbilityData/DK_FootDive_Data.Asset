@@ -46,10 +46,10 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 65536
-    HitFrames: 0
+    MultiHitWaitTime: 0
     Damage: 20
     BaseKnockBack: 3
-    KnockBackScale: 0.5
+    KnockBackScale: 1.5
     HitAngle: -0.6
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
@@ -73,6 +73,6 @@ MonoBehaviour:
   - name: DownwardGravityMultiplier
     value: 8
   - name: OpponentBounciness
-    value: 10
+    value: 15
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 94bc1ca367d0ca3438de0aa2f84a61cc, type: 3}

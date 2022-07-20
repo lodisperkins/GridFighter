@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: PanelSteal
   AbilityType: 8
-  timeActive: 0.1
-  recoverTime: 1
+  timeActive: 0.01
+  recoverTime: 0.05
   startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 1
@@ -28,6 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 1
+  CanCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1

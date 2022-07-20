@@ -109,6 +109,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bounceDampening: 5
   _friction: 3
+  _shakeSpeed: 15
+  _fallScreenShakeDuration: 0.06
+  _fallScreenShakeFrequency: 2
+  _fallScreenShakeStrength: 0.5
 --- !u!1001 &7307572072502270815
 PrefabInstance:
   m_ObjectHideFlags: 0

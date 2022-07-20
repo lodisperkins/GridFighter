@@ -17,7 +17,7 @@ namespace Lodis.Gameplay
     public delegate void CollisionEvent(params object[] args);
     public class ColliderBehaviour : MonoBehaviour
     {
-        protected Dictionary<GameObject, int> Collisions;
+        protected Dictionary<GameObject, float> Collisions;
         public CollisionEvent OnHit;
         [SerializeField]
         private GridGame.Event _onHitObject;
@@ -31,7 +31,7 @@ namespace Lodis.Gameplay
 
         private void Awake()
         {
-            Collisions = new Dictionary<GameObject, int>();
+            Collisions = new Dictionary<GameObject, float>();
         }
 
         /// <summary>

@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         private Vector3 _originalTravelDirection;
         private int _reboundCount;
         private ColliderBehaviour _reboundCollider;
+        private float _speedMultiplier;
 
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -22,6 +23,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
             //Load projectile asset
             ProjectileRef = (GameObject)Resources.Load("Projectiles/CrossProjectile");
+            _speedMultiplier = abilityData.GetCustomStatValue("SpeedMultiplier");
             //Set default hitbox traits
             DestroyOnHit = false;
             IsMultiHit = true;
@@ -64,7 +66,7 @@ namespace Lodis.Gameplay
             if ((other.CompareTag("Player") || other.CompareTag("Entity")))
             {
                 //...reverse velocity
-                projectile.AddForce(-projectile.velocity * 2, ForceMode.VelocityChange);
+                projectile.AddForce(-projectile.velocity * _speedMultiplier * 2, ForceMode.VelocityChange);
                 _reboundCount++;
                 _reboundCollider.Owner = other;
             }

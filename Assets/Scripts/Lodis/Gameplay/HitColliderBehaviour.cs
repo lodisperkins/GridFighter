@@ -23,8 +23,8 @@ namespace Lodis.Gameplay
         public bool IsMultiHit;
         [Tooltip("The collision layers to ignore when checking for valid collisions.")]
         public LayerMask LayersToIgnore;
-        [Tooltip("If this collider can hit multiple times, this is how many frames the object will have to wait before being able to register a collision with the same object.")]
-        public float HitFrames;
+        [Tooltip("If this collider can hit multiple times, this is how many seconds the object will have to wait before being able to register a collision with the same object.")]
+        public float MultiHitWaitTime;
         [Tooltip("The amount of damage this attack will deal.")]
         public float Damage;
         [Tooltip("How far back this attack will knock an object back.")]
@@ -106,7 +106,7 @@ namespace Lodis.Gameplay
 
         private void Awake()
         {
-            Collisions = new Dictionary<GameObject, int>();
+            Collisions = new Dictionary<GameObject, float>();
             gameObject.layer = LayerMask.NameToLayer("Ability");
         }
 
@@ -148,16 +148,16 @@ namespace Lodis.Gameplay
         /// <returns>Whether or not enough time has passed since the last hit</returns>
         protected bool CheckHitTime(GameObject gameObject)
         {
-            int lastHitFrame = 0;
-            if (!Collisions.TryGetValue(gameObject, out lastHitFrame))
+            float lastHitTime = 0;
+            if (!Collisions.TryGetValue(gameObject, out lastHitTime))
             {
-                Collisions.Add(gameObject, Time.frameCount);
-                return false;
+                Collisions.Add(gameObject, Time.time);
+                return true;
             }
 
-            if (Time.frameCount - lastHitFrame >= ColliderInfo.HitFrames)
+            if (Time.time - lastHitTime >= ColliderInfo.MultiHitWaitTime)
             {
-                Collisions[gameObject] = Time.frameCount;
+                Collisions[gameObject] = Time.time;
                 return true;
             }
 

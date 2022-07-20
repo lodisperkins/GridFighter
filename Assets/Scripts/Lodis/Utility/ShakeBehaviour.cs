@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using System;
 
 public class ShakeBehaviour : MonoBehaviour
 {
@@ -50,5 +51,10 @@ public class ShakeBehaviour : MonoBehaviour
         _tweener = transform.DOShakePosition(duration, new Vector3(strength, strength, 0), frequency, 90, false, true);
         if (_tweener != null)
             _tweener.onComplete += () => transform.localPosition = _startPosition;
+    }
+
+    internal void ShakeRotation(float fallScreenShakeDuration, object fallScreenShakeStrength, object fallScreenShakeFrequency)
+    {
+        throw new NotImplementedException();
     }
 }

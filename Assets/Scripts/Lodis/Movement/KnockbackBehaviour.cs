@@ -230,8 +230,6 @@ namespace Lodis.Movement
             GridMovementBehaviour movement = GetComponent<GridMovementBehaviour>();
 
             Stunned = true;
-            AirState prevState = CurrentAirState;
-
             if (CurrentAirState == AirState.FREEFALL || CurrentAirState == AirState.TUMBLING)
                Physics.FreezeInPlaceByCondition(condition =>!Stunned, false, true);
 
@@ -259,7 +257,8 @@ namespace Lodis.Movement
             if (inputBehaviour)
                 inputBehaviour.enabled = true;
 
-            CurrentAirState = prevState;
+            CurrentAirState = AirState.TUMBLING;
+            _onKnockBackTemp -= CancelStun;
             Stunned = false;
         }
 
@@ -267,7 +266,6 @@ namespace Lodis.Movement
         {
             base.CancelStun();
 
-            Physics.CancelFreeze();
         }
 
         public void CancelHitStun()
