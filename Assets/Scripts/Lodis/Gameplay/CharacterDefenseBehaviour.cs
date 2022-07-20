@@ -384,6 +384,7 @@ namespace Lodis.Gameplay
             if (!IsBraced || !(collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("Panel")) || BreakingFall)
                 return;
 
+
             BreakingFall = true;
 
             PanelBehaviour panel = collision.gameObject.GetComponent<PanelBehaviour>();

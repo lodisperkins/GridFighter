@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Boomerang
   AbilityType: 8
   timeActive: 0.1
-  recoverTime: 0.5
+  recoverTime: 0.3
   startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 1
@@ -47,7 +47,7 @@ MonoBehaviour:
       m_Bits: 65536
     MultiHitWaitTime: 0.1
     Damage: 5
-    BaseKnockBack: 15
+    BaseKnockBack: 12
     KnockBackScale: 1.2
     HitAngle: 1.4
     AdjustAngleBasedOnAlignment: 1
@@ -67,7 +67,7 @@ MonoBehaviour:
     value: 1
   - name: MaxRebounds
     value: 5
-  - name: MaxRebounds
-    value: 5
+  - name: SpeedMultiplier
+    value: 1
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: f2fdba8a6b7bbc540a4d208285dd348c, type: 3}
