@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 4
-  _gravity: 29.43
+  _gravity: 39.24
   _bounceDampen: 5
   _bounceCollider: {fileID: 8697654749103335270}
   _isGrounded: 0
@@ -949,11 +949,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c0f4c052ab27349b5a94def1a5a3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _landingTime: 0.3
-  _knockDownTime: 0.3
-  _knockDownRecoverTime: 0.7
-  _knockDownRecoverInvincibleTime: 1.5
-  _knockDownLandingTime: 0.4
+  _landingTime: 0.15
+  _knockDownTime: 0.1
+  _knockDownRecoverTime: 0.4
+  _knockDownRecoverInvincibleTime: 1
+  _knockDownLandingTime: 0.3
   _groundedHitMax: {fileID: 11400000, guid: 5992caf4f86705a4b969023749ddea5c, type: 2}
 --- !u!114 &8261745225260295223
 MonoBehaviour:

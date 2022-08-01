@@ -46,7 +46,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
-    HitFrames: 0
+    MultiHitWaitTime: 0
     Damage: 15
     BaseKnockBack: 2
     KnockBackScale: 0.5
@@ -63,7 +63,7 @@ MonoBehaviour:
     HitStopTimeModifier: 1.2
   _customStats:
   - name: Speed
-    value: 1.5
+    value: 2
   - name: MaxInstances
     value: 2
   animationType: 3
