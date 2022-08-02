@@ -69,15 +69,15 @@ Material:
     - Smoothness: 0.5
     - USENORMAL: 1
     - Vector1_76C25F58: 0
-    - Vector1_AF883DE0: 5.12
-    - Vector1_E0AB0ADF: 0.001
+    - Vector1_AF883DE0: 13.26
+    - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
-    - _EmissionStrength: 1.34
+    - _EmissionStrength: 23.34
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -104,7 +104,7 @@ Material:
     - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.78287315, g: 5.3123536, b: 10.680627, a: 1}
+    - _EmissionColor: {r: 0.0990566, g: 0.13430512, b: 1, a: 1}
     - _EmissionTiling: {r: 1, g: 1, b: 0, a: 0}
     - _Offset: {r: 1, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
