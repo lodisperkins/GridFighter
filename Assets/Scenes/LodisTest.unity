@@ -1186,7 +1186,7 @@ PrefabInstance:
     - target: {fileID: 8744172618015234547, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
@@ -1932,6 +1932,11 @@ PrefabInstance:
       propertyPath: _startingHealth
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 8744172618015234546, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _shieldController
+      value: 
+      objectReference: {fileID: 929767235}
     - target: {fileID: 8744172618015234546, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: _hitStunOnCollision
@@ -5432,6 +5437,56 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 271505824}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &929767235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 929767233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dae30b92eae17084ba3e4a71a65f8b15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shieldObject: {fileID: 1716894646}
+  hitCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  hitDuration: 0.3
+  impactPrefabName: VFX_ShieldImpact
+  rigidBodyImpacts: 0
+  maxHP: 10
+  minDissolve: -1
+  maxDissolve: 1
+  minGlow: 1
+  maxGlow: 100
+  loadDuration: 1.5
+  breakDuration: 0.1
+  rechargeDuration: 2
+  timeBeforeRecharge: 3
+  shieldEnabled: 0
 --- !u!4 &929767236 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8744172618015234542, guid: e447331d04560874e8eb89a06a5e656c,
@@ -7555,7 +7610,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 1
+  _mode: 2
   _ringBarrierL: {fileID: 1478321312}
   _ringBarrierR: {fileID: 2063412668}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
@@ -8676,9 +8731,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6983430818311871299, guid: e893e17d94a637a46a8feeaa5cd1fef5,
         type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6983430818311871299, guid: e893e17d94a637a46a8feeaa5cd1fef5,
+        type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 48798f0cc1cfabb4985ee443eb1b3a28, type: 2}
+      objectReference: {fileID: 2100000, guid: 92b68abe5907fd54faf993b576f528f3, type: 2}
+    - target: {fileID: 6983430818311871299, guid: e893e17d94a637a46a8feeaa5cd1fef5,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0f57ec65132e88740af09621c792fda2, type: 2}
     - target: {fileID: 7112187416335531371, guid: e893e17d94a637a46a8feeaa5cd1fef5,
         type: 3}
       propertyPath: m_Name

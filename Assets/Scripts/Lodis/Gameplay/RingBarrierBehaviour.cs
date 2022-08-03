@@ -27,11 +27,14 @@ namespace Lodis.Gameplay
         private float _knockBackDistance;
         [SerializeField]
         private float _launchAngle;
+        [SerializeField]
+        private ShieldController _shieldController;
 
         protected override void Start()
         {
             base.Start();
             AddOnDeathAction(DeactivateBarrier);
+            _shieldController.maxHP = Health;
         }
 
         /// <summary>
@@ -48,15 +51,15 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
         /// <param name="hitStun">The amount of time the object will be in hit stun</param>
-        public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public override float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             if (!Owner) return 0;
 
-            if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != Owner.name) || damage < _minimumDamageSpeed)
+            if (damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != Owner) || damage < _minimumDamageSpeed)
                 return 0;
 
             Health -= damage;
-
+            _shieldController.GetHit(attacker.transform.position, transform.forward, 1, damage);
             OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamage?.Invoke();
             return damage;

@@ -132,7 +132,7 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
-        public virtual float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public virtual float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             float damageTaken = _health;
 
@@ -354,7 +354,7 @@ namespace Lodis.Gameplay
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
         public virtual void OnTriggerEnter(Collider other)
@@ -367,7 +367,7 @@ namespace Lodis.Gameplay
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude; ;
 
             //Apply ricochet force and damage
-            knockBackScript.TakeDamage(name, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+            knockBackScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
         // Update is called once per frame

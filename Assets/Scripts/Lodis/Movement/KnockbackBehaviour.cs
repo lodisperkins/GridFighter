@@ -294,7 +294,7 @@ namespace Lodis.Movement
             float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
 
             //Apply ricochet force and damage
-            damageScript.TakeDamage(name, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+            damageScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
         private void ActivateHitStunByTimer(float timeInHitStun)
@@ -325,7 +325,7 @@ namespace Lodis.Movement
         {
             return CurrentAirState == AirState.NONE && !Physics.IsFrozen && Physics.ObjectAtRest && !_landingBehaviour.Landing && !InHitStun &&!IsFlinching && !_landingBehaviour.IsDown && !Stunned && !_landingBehaviour.RecoveringFromFall;
         }
-        public override float TakeDamage(string attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public override float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
         {
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
@@ -704,7 +704,7 @@ namespace Lodis.Movement
 
             if (GUILayout.Button("Test Attack"))
             {
-                _owner.TakeDamage("test button", _damage, _baseKnockBack, _hitAngle, DamageType.KNOCKBACK, _hitStun);
+                _owner.TakeDamage(null, _damage, _baseKnockBack, _hitAngle, DamageType.KNOCKBACK, _hitStun);
             }
         }
     }

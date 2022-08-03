@@ -1,0 +1,84 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 6
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: m_shieldWhite
+  m_Shader: {fileID: -6465566751694194690, guid: 97e8d1dfb721de642bd5b35e6bd297c3, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: 2999
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _SampleTexture2D_43FC6D8_Texture_1:
+        m_Texture: {fileID: 2800000, guid: db17334dfe5991a4bbe241ee9a728c38, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_45EDE771_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 87368334ead41044c909d20a14853fec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Triplanar_8DFA07F5_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 87368334ead41044c909d20a14853fec, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Floats:
+    - Vector1_387174AF: 5
+    - Vector1_3E9CDD42: 0.8
+    - Vector1_7049A996: 0.023
+    - Vector1_71817C4: 1
+    - Vector1_75FDB77B: 0.03
+    - Vector1_953C4648: -0.02
+    - Vector1_9AC050C7: -2
+    - Vector1_AAE75B6C: 2
+    - Vector1_B3FE5053: 0.1
+    - Vector1_BA192670: 0
+    - Vector1_C94BC04B: 0.5
+    - Vector1_D59BC91: 0.01
+    - Vector1_F3720F39: 0.09
+    - _Alpha: 0.941
+    - _Depth: 0.8
+    - _Dissolve: 0.96
+    - _Glow: 1
+    - _Inflate: 0
+    - _NoiseScale: 1000
+    - _Recharge: -1
+    - _RechargeNoise: 0.1
+    m_Colors:
+    - Color_4C010F9E: {r: 1.8301886, g: 1.8301886, b: 1.8301886, a: 0}
+    - Color_50175DB5: {r: 0.7490196, g: 0.7490196, b: 0.7490196, a: 0}
+    - Vector3_25BB5C71: {r: 0.1, g: 50, b: 4, a: 0}
+    - Vector3_5B14CA23: {r: 0, g: 0, b: 1, a: 0}
+    - Vector3_8AD1C9B3: {r: 1, g: 1, b: 0.1, a: 0}
+    - Vector3_D7F8219: {r: 1.51, g: 1.84, b: 2, a: 0}
+    - Vector4_A8EFE0F8: {r: 0, g: 0.25, b: -0.5, a: 0.5}
+    - Vector4_D635FDD7: {r: 0.48, g: -0.5, b: 0.5, a: 0.49}
+    - _DissolveDirection: {r: 0.36, g: 0.8, b: 0.97, a: 0}
+    - _Hit0: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit1: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit2: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit3: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit4: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit5: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit6: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit7: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit8: {r: 0, g: 0, b: 0, a: 0}
+    - _Hit9: {r: 0, g: 0, b: 0, a: 0}
+    - _HitOne: {r: 0, g: 0, b: 0, a: 0}
+    - _HitOneNormal: {r: 0, g: 1, b: 0, a: 0}
+    - _HitOneUV: {r: 0, g: 0, b: 0, a: 0}
+    - _HitThree: {r: 0, g: 0, b: 0, a: 0}
+    - _HitTwo: {r: 0, g: 0, b: 0, a: 0}
+    - _Noise: {r: 0.1, g: 75, b: 0.25, a: 0}
+    - _OnHitColor: {r: 341.78006, g: 341.78006, b: 341.78006, a: 0}
+    - _Tiling: {r: 40, g: 15, b: 0, a: 0}
+  m_BuildTextureStacks: []
