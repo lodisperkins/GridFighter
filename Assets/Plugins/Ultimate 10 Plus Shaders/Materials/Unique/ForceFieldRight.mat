@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Force Field
+  m_Name: ForceFieldRight
   m_Shader: {fileID: 4800000, guid: 2bffc50af4b1ff34cb151aa15bb9edb4, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -61,7 +61,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FresnelPower: 0.2
+    - _FresnelPower: 0.1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -75,6 +75,6 @@ Material:
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1.8640716, g: 3.718937, b: 10.680627, a: 1}
+    - _Color: {r: 10.680627, g: 2.071458, b: 1.9012632, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _ScrollDirection: {r: 0.045, g: 0.045, b: 0.045, a: 0}
