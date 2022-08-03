@@ -5456,8 +5456,8 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 0
-      outSlope: 0
+      inSlope: 2
+      outSlope: 2
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -5480,7 +5480,7 @@ MonoBehaviour:
   maxHP: 10
   minDissolve: -1
   maxDissolve: 1
-  minGlow: 1
+  minGlow: 50
   maxGlow: 100
   loadDuration: 1.5
   breakDuration: 0.1
@@ -8743,7 +8743,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 0f57ec65132e88740af09621c792fda2, type: 2}
+      objectReference: {fileID: 2100000, guid: 09daea6ed39499448993e1857a060a76, type: 2}
     - target: {fileID: 7112187416335531371, guid: e893e17d94a637a46a8feeaa5cd1fef5,
         type: 3}
       propertyPath: m_Name

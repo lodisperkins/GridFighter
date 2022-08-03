@@ -63,11 +63,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - Vector1_387174AF: 0.1
-    - Vector1_7049A996: 0.05
-    - Vector1_71817C4: 0.25
-    - Vector1_953C4648: -0.2
-    - Vector1_C94BC04B: 1
-    - Vector1_D59BC91: 0
+    - Vector1_7049A996: 1
+    - Vector1_71817C4: 1
+    - Vector1_953C4648: 1
+    - Vector1_C94BC04B: 0
+    - Vector1_D59BC91: 0.001
     - _Alpha: 1
     - _AlphaClip: 0
     - _Blend: 0
@@ -75,7 +75,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _Depth: 1
-    - _Dissolve: 3.43
+    - _Dissolve: 1
     - _DstBlend: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
@@ -97,8 +97,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_4C010F9E: {r: 0.1179245, g: 1, b: 0.9704587, a: 0}
-    - Color_50175DB5: {r: 0.1179245, g: 1, b: 0.9704587, a: 0}
+    - Color_4C010F9E: {r: 1, g: 0.11764705, b: 0.19520475, a: 1}
+    - Color_50175DB5: {r: 1, g: 0.11764705, b: 0.14309627, a: 0.99215686}
     - Vector3_D7F8219: {r: 2, g: 2, b: 3, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
@@ -115,6 +115,6 @@ Material:
     - _Hit8: {r: 0, g: 0, b: 0, a: 0}
     - _Hit9: {r: 0, g: 0, b: 0, a: 0}
     - _Noise: {r: 0.1, g: 50, b: 4, a: 0}
-    - _OnHitColor: {r: 0.2352941, g: 2.964706, b: 3.780392, a: 0}
+    - _OnHitColor: {r: 5.04712, g: 2.6092706, b: 0.11903583, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _Tiling: {r: 30, g: 15, b: 0, a: 0}

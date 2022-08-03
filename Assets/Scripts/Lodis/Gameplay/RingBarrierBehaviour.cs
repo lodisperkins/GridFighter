@@ -30,11 +30,17 @@ namespace Lodis.Gameplay
         [SerializeField]
         private ShieldController _shieldController;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            _shieldController.maxHP = Health;
+        }
+
         protected override void Start()
         {
             base.Start();
             AddOnDeathAction(DeactivateBarrier);
-            _shieldController.maxHP = Health;
+            //_shieldController.GetHit(transform.position, transform.forward, 1, 0);
         }
 
         /// <summary>
@@ -59,9 +65,9 @@ namespace Lodis.Gameplay
                 return 0;
 
             Health -= damage;
-            _shieldController.GetHit(attacker.transform.position, transform.forward, 1, damage);
             OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamage?.Invoke();
+            _shieldController.GetHit(attacker.transform.position, transform.forward, 1, damage);
             return damage;
         }
 

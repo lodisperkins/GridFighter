@@ -110,9 +110,23 @@ public class ShieldController : MonoBehaviour
             impactVFX.transform.localScale = Vector3.one * hitSize;
             Destroy(impactVFX, 0.6f);
         }
-       
-        // Start hit glow animation
-        StartCoroutine(HitAnimation(hitPosition, hitSize, currentHitIndex));
+
+        if (hitDuration == -1)
+        {
+
+            Vector4 hitAnimationVector;
+
+            // Set correct name from index
+            string hitMaterialName = "_Hit" + currentHitIndex.ToString();
+
+            // Get correct intensity from animation curve
+            hitAnimationVector = new Vector4(hitPosition.x, hitPosition.y, hitPosition.z, hitSize);
+            // Apply Vector to shader depending on index
+            shieldMaterial.SetVector(hitMaterialName, hitAnimationVector);
+        }
+        else
+            // Start hit glow animation
+            StartCoroutine(HitAnimation(hitPosition, hitSize, currentHitIndex));
 
         // Set next hit index (and reset to 0 when max value reached)
         if (currentHitIndex == 9)

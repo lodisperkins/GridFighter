@@ -104,6 +104,14 @@ namespace Lodis.Gameplay
             set => _lastCollider = value;
         }
 
+        protected virtual void Awake()
+        {
+            if (_startingHealth < 0)
+                _health = _maxHealth.Value;
+            else
+                _health = _startingHealth;
+        }
+
         protected virtual void Start()
         {
             _isAlive = true;
@@ -116,10 +124,6 @@ namespace Lodis.Gameplay
                 _defaultColor = _material.color;
             }
 
-            if (_startingHealth < 0)
-                _health = _maxHealth.Value;
-            else
-                _health = _startingHealth;
         }
 
         /// <summary>

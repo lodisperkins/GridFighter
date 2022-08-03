@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
         void Awake()
         {
             _health = GetComponent<RingBarrierBehaviour>();
-            _health.AddOnTakeDamageAction(StartFadeIn);
+            //_health.AddOnTakeDamageAction(StartFadeIn);
         }
 
         private void StartFadeIn()

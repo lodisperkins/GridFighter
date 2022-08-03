@@ -127,7 +127,6 @@ namespace Lodis.ScriptableObjects
             throw new Exception(
                 "Couldn't find stat. Either the stat doesn't exist or the name is misspelled. Attempted stat name was " +
                 statName);
-            return float.NaN;
         }
 
         public HitColliderInfo GetColliderInfo(int index)
@@ -135,7 +134,6 @@ namespace Lodis.ScriptableObjects
             if (index < 0 || index >= ColliderData.Length)
             {
                 throw  new WarningException("GetColliderInfo() was called with an invalid index passed as a parameter");
-                return new HitColliderInfo();
             }
             ColliderData[index].AbilityType = AbilityType;
             return ColliderData[index];

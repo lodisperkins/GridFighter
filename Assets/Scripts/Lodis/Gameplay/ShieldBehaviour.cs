@@ -12,8 +12,9 @@ namespace Lodis.Gameplay
 
         public GameObject Owner { get => _owner; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _owner = transform.root.gameObject;
         }
 

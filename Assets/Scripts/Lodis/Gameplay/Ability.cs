@@ -163,12 +163,10 @@ namespace Lodis.Gameplay
             if (!ownerMoveset)
             {
                 throw new Exception("Owner moveset component not found. Did you forget to call the base Init function?");
-                return;
             }
             else if (!abilityData)
             {
                 throw new Exception("Ability data couldn't be found. Did you forget to load the resource?");
-                return;
             }
 
             StartUpPhase(args);

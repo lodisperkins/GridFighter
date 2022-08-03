@@ -113,8 +113,9 @@ namespace Lodis.Movement
 
         public FloatVariable MinimumLaunchMagnitude => _minimumLaunchMagnitude;
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _velocityDecayRate = Resources.Load<FloatVariable>("ScriptableObjects/VelocityDecayRate");
             _landingBehaviour = GetComponent<LandingBehaviour>();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
