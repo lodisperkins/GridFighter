@@ -99,7 +99,7 @@ LightmapSettings:
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 112000000, guid: 5bcdce3e482be174aac4d75d9eed2763,
     type: 2}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -6723,7 +6723,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 2
+  _mode: 1
   _ringBarrierL: {fileID: 1478321312}
   _ringBarrierR: {fileID: 2063412668}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
@@ -11028,8 +11028,8 @@ MonoBehaviour:
   _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
   _rightSideMat: {fileID: 2100000, guid: 2989dc5c6d34fb141a447fbfcb8c721d, type: 2}
   _emissionStrength: 12
-  _positionLHSColor: {r: 0.0990566, g: 0.8994297, b: 1, a: 0}
-  _positionRHSColor: {r: 1, g: 0.25756997, b: 0.21226418, a: 0}
+  _positionLHSColor: {r: 0.0990566, g: 0.8994297, b: 1, a: 1}
+  _positionRHSColor: {r: 1, g: 0.25756997, b: 0.21226418, a: 0.99215686}
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
