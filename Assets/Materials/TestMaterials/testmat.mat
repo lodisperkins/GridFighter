@@ -113,7 +113,7 @@ Material:
     - USINGFRESNEL: 1
     - Vector1_76C25F58: 0
     - Vector1_AF883DE0: 0
-    - Vector1_E0AB0ADF: 0.04
+    - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -142,13 +142,14 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_205411B7: {r: 0.6698113, g: 0.6264902, b: 0, a: 0}
+    - Color_205411B7: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
     - Color_8B8CB8D8: {r: 0.9561099, g: 0.990566, b: 0, a: 0}
     - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
     - Tint: {r: 1, g: 0.99997795, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 0, a: 0}
-    - _Color: {r: 0.3207547, g: 0.3207547, b: 0.3207547, a: 0}
+    - _Color: {r: 0.254717, g: 0.2535155, b: 0.2535155, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _OffsetVal: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
