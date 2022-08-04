@@ -67,7 +67,7 @@ namespace Lodis.Gameplay
             Health -= damage;
             OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamage?.Invoke();
-            _shieldController.GetHit(attacker.transform.position, transform.forward, 1, damage);
+            _shieldController.GetHit(attacker.transform.position, transform.forward, 4, damage);
             return damage;
         }
 

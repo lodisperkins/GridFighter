@@ -5021,7 +5021,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hitDuration: 0.3
+  hitDuration: 0.5
   impactPrefabName: VFX_ShieldImpact
   rigidBodyImpacts: 0
   maxHP: 10
@@ -7066,7 +7066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1338925181
 Transform:
   m_ObjectHideFlags: 0
@@ -7074,12 +7074,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338925180}
-  m_LocalRotation: {x: -0.70710695, y: -0.70709884, z: 0.0016203821, w: -0.0028981268}
-  m_LocalPosition: {x: -0.5200001, y: -0.8799999, z: 0.21999997}
-  m_LocalScale: {x: 241.86778, y: 266.3544, z: 0.47839153}
+  m_LocalRotation: {x: -0.49795082, y: -0.49884862, z: 0.5011402, w: -0.50204945}
+  m_LocalPosition: {x: 0.00064617, y: 0.118064694, z: 0.011331443}
+  m_LocalScale: {x: 2.2954955, y: 0.8195759, z: 0.9315597}
   m_Children: []
-  m_Father: {fileID: 1563883509}
-  m_RootOrder: 4
+  m_Father: {fileID: 1470410497}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0.36600003, y: -90.104004, z: 90.00001}
 --- !u!23 &1338925182
 MeshRenderer:
@@ -7795,7 +7795,7 @@ MonoBehaviour:
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
   _grid: {fileID: 1443548383}
-  _mode: 2
+  _mode: 1
   _ringBarrierL: {fileID: 1478321312}
   _ringBarrierR: {fileID: 2063412668}
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
@@ -8355,6 +8355,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1456153437}
   m_Mesh: {fileID: -2228417370725966487, guid: 7906e05a470c7ae4c96b3678168a6de0, type: 3}
+--- !u!4 &1470410497 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8964414738555679688, guid: e447331d04560874e8eb89a06a5e656c,
+    type: 3}
+  m_PrefabInstance: {fileID: 150887733}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1471741255
 GameObject:
   m_ObjectHideFlags: 0
@@ -8837,7 +8843,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hitDuration: 0.3
+  hitDuration: 0.5
   impactPrefabName: VFX_ShieldImpact
   rigidBodyImpacts: 0
   maxHP: 10
@@ -10060,6 +10066,12 @@ GameObject:
 --- !u!23 &1716894648 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 6983430818311871299, guid: e893e17d94a637a46a8feeaa5cd1fef5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1584378588}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1716894649 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6388999027482328247, guid: e893e17d94a637a46a8feeaa5cd1fef5,
     type: 3}
   m_PrefabInstance: {fileID: 1584378588}
   m_PrefabAsset: {fileID: 0}
@@ -12951,7 +12963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2111544301
 Transform:
   m_ObjectHideFlags: 0
@@ -12959,12 +12971,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2111544300}
-  m_LocalRotation: {x: 0.0016203821, y: -0.0028981268, z: 0.70710695, w: 0.70709884}
-  m_LocalPosition: {x: 0.5400001, y: -0.13, z: 0.24999994}
-  m_LocalScale: {x: 241.86778, y: 266.3544, z: 0.4783916}
+  m_LocalRotation: {x: -0.49795082, y: -0.49884862, z: 0.5011402, w: -0.50204945}
+  m_LocalPosition: {x: 0.0005846305, y: -0.039354585, z: 0.011251977}
+  m_LocalScale: {x: 2.2680004, y: 0.8195763, z: 0.93146557}
   m_Children: []
-  m_Father: {fileID: 929767236}
-  m_RootOrder: 5
+  m_Father: {fileID: 1716894649}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0.36600003, y: -90.104004, z: 90.00001}
 --- !u!23 &2111544302
 MeshRenderer:
