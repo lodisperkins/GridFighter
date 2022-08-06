@@ -14,18 +14,24 @@ namespace Lodis.Gameplay
         [SerializeField] [Range(0,1)] private float _maxTransparency;
         [SerializeField] private float _fadeInDuration;
         [SerializeField] private float _fadeOutDuration;
+        [SerializeField] private Texture2D[] _targetEmissionTextures;
+        [SerializeField] private float _crackedEmissionStrength;
         private float _currentDuration;
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
         private Color _materialColor;
         private bool _fadeEnabled;
         private int _fadeDirection;
         private DelayedAction _fadeAction;
+        private Material _emissionMat;
+        private Color _emissionColor;
         
         // Start is called before the first frame update
         void Awake()
         {
+            _emissionMat = _visual.materials[1];
+            _emissionColor = _emissionMat.GetColor("_EmissionColor");
             _health = GetComponent<RingBarrierBehaviour>();
-            //_health.AddOnTakeDamageAction(StartFadeIn);
+            _health.AddOnTakeDamageAction(UpdateCracks);
         }
 
         private void StartFadeIn()
@@ -57,21 +63,42 @@ namespace Lodis.Gameplay
                 _visual.material.color = _materialColor;
             }, condition => _materialColor.a <= _baseTransparency);
         }
+
+        private void UpdateCracks()
+        {
+            float currentHealthPercentage = _health.Health / _health.MaxHealth.Value;
+            Texture2D currentTexture = null;
+
+            _emissionMat.SetColor("_EmissionColor", _emissionColor * _crackedEmissionStrength);
+
+            if (currentHealthPercentage < .25f)
+                currentTexture = _targetEmissionTextures[2];
+            else if (currentHealthPercentage < .50f)
+                currentTexture = _targetEmissionTextures[1];
+            else if (currentHealthPercentage < .75f)
+                currentTexture = _targetEmissionTextures[0];
+            else
+                _emissionMat.SetColor("_EmissionColor", _emissionColor);
+
+            _emissionMat.SetTexture("_EmissionMap", currentTexture);
+        }
+
         
         // Update is called once per frame
         void Update()
         {
-            if (!_fadeEnabled)
-            {
-                _visual.material.SetColor(EmissionColor, _healthGradient.Evaluate(_health.Health / _health.MaxHealth.Value));
-                _baseTransparency = _healthGradient.Evaluate(_health.MaxHealth.Value / _health.Health).a;
-                return;
-            }
-            
-            _materialColor = _visual.material.color;
-            _materialColor.a += (Time.deltaTime * (_maxTransparency - _baseTransparency) / _currentDuration) *
-                                _fadeDirection;
-            _visual.material.color = _materialColor;
+            //if (!_fadeEnabled)
+            //{
+            //    _visual.material.SetColor(EmissionColor, _healthGradient.Evaluate(_health.Health / _health.MaxHealth.Value));
+            //    _baseTransparency = _healthGradient.Evaluate(_health.MaxHealth.Value / _health.Health).a;
+            //    return;
+            //}
+
+            //_materialColor = _visual.material.color;
+            //_materialColor.a += (Time.deltaTime * (_maxTransparency - _baseTransparency) / _currentDuration) *
+            //                    _fadeDirection;
+            //_visual.material.color = _materialColor;
         }
     }
 }
+

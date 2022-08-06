@@ -378,6 +378,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 150887733}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &49708406 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3340707822704788680, guid: e447331d04560874e8eb89a06a5e656c,
+    type: 3}
+  m_PrefabInstance: {fileID: 150887733}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &63609183
 GameObject:
   m_ObjectHideFlags: 0
@@ -1144,6 +1150,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: b5f5fa3bf62f76644b3b55571435b23d, type: 2}
     - target: {fileID: 8744172618015234546, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
+      propertyPath: _visual
+      value: 
+      objectReference: {fileID: 49708403}
+    - target: {fileID: 8744172618015234546, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
       propertyPath: _direction
       value: 1
       objectReference: {fileID: 0}
@@ -1169,9 +1180,39 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
+      propertyPath: _visual
+      value: 
+      objectReference: {fileID: 49708406}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _crackedEmissionStrength
+      value: 50.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _targetEmissionTextures.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _targetEmissionTextures.Array.data[0]
+      value: 
+      objectReference: {fileID: 2800000, guid: c24121b774b7b5a4f8a26608206889b1, type: 3}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _targetEmissionTextures.Array.data[1]
+      value: 
+      objectReference: {fileID: 2800000, guid: 10f2ffdb8582a694da1457374622bd67, type: 3}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _targetEmissionTextures.Array.data[2]
+      value: 
+      objectReference: {fileID: 2800000, guid: ba83bc458137dca4e919772861ee7c22, type: 3}
     - target: {fileID: 8964414738555679688, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1203,7 +1244,7 @@ PrefabInstance:
       value: 0.16
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
+    - {fileID: 1526502410845728543, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
 --- !u!1 &161966312
 GameObject:
@@ -1819,7 +1860,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _visual
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 622575697}
     - target: {fileID: 8744172618015234546, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: _isInvincible
@@ -1854,14 +1895,39 @@ PrefabInstance:
         type: 3}
       propertyPath: _visual
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 622575700}
     - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _crackedEmissionStrength
+      value: 50.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _targetEmissionTextures.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _targetEmissionTextures.Array.data[0]
+      value: 
+      objectReference: {fileID: 2800000, guid: c24121b774b7b5a4f8a26608206889b1, type: 3}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _targetEmissionTextures.Array.data[1]
+      value: 
+      objectReference: {fileID: 2800000, guid: 10f2ffdb8582a694da1457374622bd67, type: 3}
+    - target: {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _targetEmissionTextures.Array.data[2]
+      value: 
+      objectReference: {fileID: 2800000, guid: ba83bc458137dca4e919772861ee7c22, type: 3}
     m_RemovedComponents:
-    - {fileID: 8764218841854632973, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
+    - {fileID: 1526502410845728543, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e447331d04560874e8eb89a06a5e656c, type: 3}
 --- !u!1 &272714657
 GameObject:
@@ -4190,6 +4256,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 271505824}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &622575700 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3340707822704788680, guid: e447331d04560874e8eb89a06a5e656c,
+    type: 3}
+  m_PrefabInstance: {fileID: 271505824}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &631634611
 GameObject:
   m_ObjectHideFlags: 0
@@ -5576,7 +5648,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hitDuration: 0.5
+  hitDuration: 0.2
   impactPrefabName: VFX_ShieldImpact
   rigidBodyImpacts: 0
   maxHP: 10
@@ -9478,7 +9550,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  hitDuration: 0.5
+  hitDuration: 0.2
   impactPrefabName: VFX_ShieldImpact
   rigidBodyImpacts: 0
   maxHP: 10
