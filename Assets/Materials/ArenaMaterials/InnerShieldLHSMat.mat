@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-769174776010542689
+--- !u!114 &-5220474722975179885
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,19 +20,32 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Test
-  m_Shader: {fileID: -6465566751694194690, guid: 97e8d1dfb721de642bd5b35e6bd297c3,
-    type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_Name: InnerShieldLHSMat
+  m_Shader: {fileID: 4800000, guid: 8d2bb70cbf9db8d4da26e15b26e74248, type: 3}
+  m_ShaderKeywords: _EMISSION
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
+  m_CustomRenderQueue: 3000
+  stringTagMap:
+    RenderType: Transparent
+  disabledShaderPasses:
+  - SHADOWCASTER
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - DiffuseTexture:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - NormalMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - Texture2D_B0106467:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BaseMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -41,8 +54,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _EmissionMap:
+    - _Emission:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _EmissionMap:
+        m_Texture: {fileID: 2800000, guid: ba83bc458137dca4e919772861ee7c22, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -61,60 +78,53 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Triplanar_8CAFEEC_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 0c1b2af35fca14e428b5ae377f0e57a8, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Vector1_387174AF: 0.1
-    - Vector1_7049A996: 1
-    - Vector1_71817C4: 1
-    - Vector1_953C4648: 1
-    - Vector1_C94BC04B: 0
-    - Vector1_D59BC91: 0.001
-    - _Alpha: 1
+    - LightingCutoff: -3.17
+    - Smoothness: 0.5
+    - USENORMAL: 0
+    - Vector1_5D516509: 7.78
+    - Vector1_76C25F58: 0
+    - Vector1_AF883DE0: 0
+    - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
-    - _Depth: 1
-    - _Dissolve: 1
-    - _DstBlend: 0
+    - _Distance: 0.18
+    - _DstBlend: 10
+    - _EmissionStrength: 0
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
+    - _GlossinessSource: 0
     - _GlossyReflections: 0
-    - _Glow: 1
-    - _Inflate: 0
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Recharge: 0
-    - _RechargeNoise: 0.1
+    - _Shininess: 0
     - _Smoothness: 0.5
+    - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
     - _SpecularHighlights: 1
-    - _SrcBlend: 1
-    - _Surface: 0
+    - _SrcBlend: 5
+    - _Surface: 1
+    - _UseEmission: 0
     - _WorkflowMode: 1
-    - _ZWrite: 1
+    - _ZWrite: 0
     m_Colors:
-    - Color_4C010F9E: {r: 1, g: 0.11764705, b: 0.19520475, a: 1}
-    - Color_50175DB5: {r: 1, g: 0.11764705, b: 0.14309627, a: 0.99215686}
-    - Vector3_D7F8219: {r: 2, g: 2, b: 3, a: 0}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _DissolveDirection: {r: 0, g: 1, b: 0, a: 0}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Hit0: {r: 0, g: 0, b: 0, a: 0}
-    - _Hit1: {r: 0, g: -0.25, b: -0.57, a: 0.5}
-    - _Hit2: {r: 0, g: 0.25, b: -0.5, a: 0.5}
-    - _Hit3: {r: 0.27, g: 0, b: -0.5, a: 0.5}
-    - _Hit4: {r: 0, g: 0, b: 0, a: 0}
-    - _Hit5: {r: 0, g: 0, b: 0, a: 0}
-    - _Hit6: {r: 0, g: 0, b: 0, a: 0}
-    - _Hit7: {r: 0, g: 0, b: 0, a: 0}
-    - _Hit8: {r: 0, g: 0, b: 0, a: 0}
-    - _Hit9: {r: 0, g: 0, b: 0, a: 0}
-    - _Noise: {r: 0.1, g: 50, b: 4, a: 0}
-    - _OnHitColor: {r: 5.04712, g: 2.6092706, b: 0.11903583, a: 1}
+    - Color_205411B7: {r: 1, g: 1, b: 1, a: 0}
+    - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
+    - _BaseColor: {r: 0.6839622, g: 0.89502656, b: 1, a: 0.27058825}
+    - _Color: {r: 1, g: 0.5330188, b: 0.5330188, a: 0}
+    - _EmissionColor: {r: 8.16105, g: 8.745657, b: 23.068567, a: 0}
+    - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
+    - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _Tiling: {r: 30, g: 15, b: 0, a: 0}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}

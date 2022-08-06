@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Test2
+  m_Name: RingBarrierLHSMat
   m_Shader: {fileID: -6465566751694194690, guid: 97e8d1dfb721de642bd5b35e6bd297c3,
     type: 3}
   m_ShaderKeywords: 
@@ -84,6 +84,9 @@ Material:
     - _Glow: 1
     - _Inflate: 0
     - _Metallic: 0
+    - _NoisePower: 2.5
+    - _NoiseScale: 50
+    - _NoiseY: 0
     - _OcclusionStrength: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -98,7 +101,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - Color_4C010F9E: {r: 0.11764705, g: 0.16830188, b: 1, a: 1}
-    - Color_50175DB5: {r: 0.11764705, g: 0.13735823, b: 1, a: 0.99215686}
+    - Color_50175DB5: {r: 0, g: 0.022222042, b: 1, a: 0.99215686}
     - Vector3_D7F8219: {r: 2, g: 2, b: 3, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
@@ -115,6 +118,7 @@ Material:
     - _Hit8: {r: 0, g: 0, b: 0, a: 0}
     - _Hit9: {r: 0, g: 0, b: 0, a: 0}
     - _Noise: {r: 0.1, g: 50, b: 4, a: 0}
+    - _NoiseDirection: {r: 0, g: -0.1, b: 0, a: 0}
     - _OnHitColor: {r: 5.04712, g: 2.6092706, b: 0.11903583, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _Tiling: {r: 30, g: 15, b: 0, a: 0}
