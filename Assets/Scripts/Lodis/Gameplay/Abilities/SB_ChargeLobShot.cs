@@ -66,7 +66,7 @@ namespace Lodis.Gameplay
             launchForce.z += axis.z * launchForce.magnitude;
             launchForce.x *= axis.x;
 
-            GameObject activeProjectile = spawnScript.FireProjectile(launchForce, hitCollider, true);
+            GameObject activeProjectile = spawnScript.FireProjectile(launchForce, hitCollider, true, true);
 
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = gravity;

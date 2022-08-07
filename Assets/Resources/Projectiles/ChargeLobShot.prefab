@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Marker: 2
+  _markPanelsBasedOnCollision: 0
 --- !u!1001 &825668777021031453
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -104,6 +105,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865856722670607820, guid: 1ce1ba52079e3d848a3c4e62f298ecdc,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.68586
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865856722670607820, guid: 1ce1ba52079e3d848a3c4e62f298ecdc,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.68586
+      objectReference: {fileID: 0}
+    - target: {fileID: 6865856722670607820, guid: 1ce1ba52079e3d848a3c4e62f298ecdc,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.68586
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5263767246121083425, guid: 1ce1ba52079e3d848a3c4e62f298ecdc, type: 3}

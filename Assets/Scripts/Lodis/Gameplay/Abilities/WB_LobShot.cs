@@ -82,7 +82,7 @@ namespace Lodis.Gameplay
             Vector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle);
             launchForce.x *= ownerForward.x;
 
-            GameObject activeProjectile = spawnScript.FireProjectile(launchForce, _projectileCollider, true);
+            GameObject activeProjectile = spawnScript.FireProjectile(launchForce, _projectileCollider, true, true);
 
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = _gravity;

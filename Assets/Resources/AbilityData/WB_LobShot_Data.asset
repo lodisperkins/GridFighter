@@ -46,7 +46,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
-    HitFrames: 0
+    MultiHitWaitTime: 0
     Damage: 2
     BaseKnockBack: 2
     KnockBackScale: 0.4
@@ -58,7 +58,7 @@ MonoBehaviour:
     Priority: 1
     OwnerAlignement: 0
     AbilityType: 3
-    HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
+    HitSpark: {fileID: 6002612636095783793, guid: 278762b1b2ec95445b398e191c409631,
       type: 3}
     HitStopTimeModifier: 1.2
   _customStats:

@@ -46,7 +46,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 65536
-    HitFrames: 0
+    MultiHitWaitTime: 0
     Damage: 10
     BaseKnockBack: 2
     KnockBackScale: 0.5
@@ -58,7 +58,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 7
-    HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
+    HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
     HitStopTimeModifier: 1.2
   - Name: WeakShot
@@ -69,7 +69,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
-    HitFrames: 0
+    MultiHitWaitTime: 0
     Damage: 1
     BaseKnockBack: 0.2
     KnockBackScale: 0

@@ -55,7 +55,7 @@ namespace Lodis.Gameplay
 
             //Fire laser
             GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
-
+            newProjectile.transform.localScale *= 2;
             ActiveProjectiles.Add(newProjectile);
 
             MonoBehaviour.Destroy(spawnerObject);

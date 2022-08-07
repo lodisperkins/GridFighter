@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
             if (!projectile)
                 return null;
 
-            GameObject temp = Instantiate(projectile, transform.position, new Quaternion(), null);
+            GameObject temp = Instantiate(projectile, transform.position, transform.rotation, null);
             Debug.Log(transform.position);
             Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
             rigidbody.useGravity = useGravity;
@@ -37,12 +37,12 @@ namespace Lodis.Gameplay
         /// <param name="hitCollider">The hit collider to attach to the projectile</param>
         /// <returns></returns>
         /// <param name="useGravity"></param>
-        public GameObject FireProjectile(Vector3 force, HitColliderBehaviour hitCollider, bool useGravity = false)
+        public GameObject FireProjectile(Vector3 force, HitColliderBehaviour hitCollider, bool useGravity = false, bool faceHeading = false)
         {
             if (!projectile)
                 return null;
 
-            GameObject temp = Instantiate(projectile, transform.position, new Quaternion(), null);
+            GameObject temp = Instantiate(projectile, transform.position, transform.rotation, null);
 
             HitColliderBehaviour collider = (temp.AddComponent<HitColliderBehaviour>());
             HitColliderBehaviour.Copy(hitCollider, collider);
@@ -54,6 +54,8 @@ namespace Lodis.Gameplay
                 physics = temp.AddComponent<GridPhysicsBehaviour>();
                 physics.MovementBehaviour.enabled = false;
             }
+
+            physics.FaceHeading = faceHeading;
 
             physics.UseGravity = useGravity;
 

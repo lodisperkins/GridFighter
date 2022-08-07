@@ -57,6 +57,8 @@ namespace Lodis.Movement
         [Tooltip("How fast will objects be allowed to travel in knockback")]
         [SerializeField]
         private ScriptableObjects.FloatVariable _maxMagnitude;
+        [SerializeField]
+        private bool _faceHeading;
         private Vector3 _lastForceAdded;
         private CustomYieldInstruction _wait;
         private GridMovementBehaviour _movementBehaviour;
@@ -121,6 +123,8 @@ namespace Lodis.Movement
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
 
         public bool IsFrozen => _isFrozen;
+
+        public bool FaceHeading { get => _faceHeading; set => _faceHeading = value; }
 
         private void Awake()
         {
@@ -786,6 +790,12 @@ namespace Lodis.Movement
 
             _isGrounded = CheckIsGrounded();
             _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude <= 0.01f;
+        }
+
+        private void Update()
+        {
+            if (FaceHeading && LastVelocity.magnitude > 0)
+                transform.forward = LastVelocity.normalized;
         }
     }
 }

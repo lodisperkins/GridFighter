@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Marker: 2
+  _markPanelsBasedOnCollision: 0
 --- !u!1001 &1251791396087439202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20,6 +21,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6676342820181627761, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6676342820181627761, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.89738166
+      objectReference: {fileID: 0}
+    - target: {fileID: 6676342820181627761, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.02352941
+      objectReference: {fileID: 0}
     - target: {fileID: 6730556455862515627, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: m_RootOrder
@@ -94,6 +110,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8393752405251270185, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.9607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 8393752405251270185, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.07843139
+      objectReference: {fileID: 0}
+    - target: {fileID: 8393752405251270185, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.37897092
       objectReference: {fileID: 0}
     - target: {fileID: 8897977150452739386, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
