@@ -18,8 +18,6 @@ namespace Lodis.Gameplay
         private Collider _collider;
         private Collider _ownerCollider;
         [SerializeField]
-        private GameObject _visual;
-        [SerializeField]
         private FloatVariable _shatterVelocityMagnitude;
         [SerializeField]
         private float _minimumDamageSpeed;
@@ -39,8 +37,7 @@ namespace Lodis.Gameplay
         protected override void Start()
         {
             base.Start();
-            AddOnDeathAction(DeactivateBarrier);
-            //_shieldController.GetHit(transform.position, transform.forward, 1, 0);
+            AddOnDeathAction(() => Physics.IgnoreCollision(_collider, _ownerCollider));
         }
 
         /// <summary>
@@ -109,11 +106,6 @@ namespace Lodis.Gameplay
             return damage;
         }
 
-        private void DeactivateBarrier()
-        {
-            Physics.IgnoreCollision(_collider, _ownerCollider);
-            _visual.SetActive(false);
-        }
 
         public override void OnTriggerEnter(Collider collision)
         {
@@ -121,7 +113,9 @@ namespace Lodis.Gameplay
 
             if (collision.gameObject == Owner && gridPhysicsBehaviour.LastVelocity.magnitude >= _shatterVelocityMagnitude.Value)
             {
-                DeactivateBarrier();
+                //TO DO: Create logic for instant shatter
+
+                Health = 0;
             }
         }
 

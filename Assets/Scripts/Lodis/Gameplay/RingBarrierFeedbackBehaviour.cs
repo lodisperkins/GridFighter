@@ -16,6 +16,10 @@ namespace Lodis.Gameplay
         [SerializeField] private float _fadeOutDuration;
         [SerializeField] private Texture2D[] _targetEmissionTextures;
         [SerializeField] private float _crackedEmissionStrength;
+        [SerializeField] private GameObject[] _deathParticles;
+        [SerializeField] private GameObject _topSupport;
+        [SerializeField] private GameObject _topSupportInactive;
+        [SerializeField] private Vector3 _supportVelocity;
         private float _currentDuration;
         private static readonly int EmissionColor = Shader.PropertyToID("_EmissionColor");
         private Color _materialColor;
@@ -24,7 +28,7 @@ namespace Lodis.Gameplay
         private DelayedAction _fadeAction;
         private Material _emissionMat;
         private Color _emissionColor;
-        
+
         // Start is called before the first frame update
         void Awake()
         {
@@ -32,6 +36,21 @@ namespace Lodis.Gameplay
             _emissionColor = _emissionMat.GetColor("_EmissionColor");
             _health = GetComponent<RingBarrierBehaviour>();
             _health.AddOnTakeDamageAction(UpdateCracks);
+            _health.AddOnDeathAction(DeactivateBarrier);
+        }
+
+        private void DeactivateBarrier()
+        {
+            _visual.gameObject.SetActive(false);
+
+            for (int i = 0; i < _deathParticles.Length; i++)
+            {
+                _deathParticles[i].SetActive(true);
+            }
+
+            _topSupport.SetActive(false);
+            _topSupportInactive.SetActive(true);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _topSupportInactive.GetComponent<Rigidbody>().AddForce(_supportVelocity, ForceMode.Impulse), TimedActionCountType.UNSCALEDTIME, Time.fixedDeltaTime);
         }
 
         private void StartFadeIn()
