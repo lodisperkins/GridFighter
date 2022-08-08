@@ -34,7 +34,7 @@ MonoBehaviour:
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 7648438965634708056, guid: 21e48ff7c2220634887d04ebcd36387a,
+  visualPrefab: {fileID: 7648438965634708056, guid: 87f1cdba99ba4a5438b7e636ea5effcd,
     type: 3}
   DisplayIcon: {fileID: 0}
   ColliderData:
@@ -46,7 +46,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
-    HitFrames: 0
+    MultiHitWaitTime: 0
     Damage: 5
     BaseKnockBack: 1
     KnockBackScale: 0.525
@@ -58,7 +58,7 @@ MonoBehaviour:
     Priority: 2
     OwnerAlignement: 0
     AbilityType: 5
-    HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
+    HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitStopTimeModifier: 1.1
   _customStats:

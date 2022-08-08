@@ -58,7 +58,7 @@ MonoBehaviour:
     Priority: 1
     OwnerAlignement: 0
     AbilityType: 6
-    HitSpark: {fileID: 6571386925041405448, guid: c16776485042c6a4893bcea9f1d39446,
+    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitStopTimeModifier: 1.2
   _customStats:
