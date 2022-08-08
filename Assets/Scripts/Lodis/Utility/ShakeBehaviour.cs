@@ -53,8 +53,4 @@ public class ShakeBehaviour : MonoBehaviour
             _tweener.onComplete += () => transform.localPosition = _startPosition;
     }
 
-    internal void ShakeRotation(float fallScreenShakeDuration, object fallScreenShakeStrength, object fallScreenShakeFrequency)
-    {
-        throw new NotImplementedException();
-    }
 }

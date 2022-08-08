@@ -62,7 +62,7 @@ MonoBehaviour:
     HitStopTimeModifier: 1
   _customStats:
   - name: Speed
-    value: 5
+    value: 6
   - name: MaxInstances
     value: 1
   - name: MaxRebounds

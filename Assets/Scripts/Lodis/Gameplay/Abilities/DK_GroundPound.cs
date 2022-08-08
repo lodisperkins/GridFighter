@@ -72,6 +72,7 @@ namespace Lodis.Gameplay
             movePosition.y = Mathf.Round(movePosition.y);
             //Move shockwave
             movementBehaviour.MoveToPanel(movePosition, false, GridScripts.GridAlignment.ANY, true);
+            movementBehaviour.AddOnMoveEndAction(() => Object.Destroy(movementBehaviour.gameObject));
         }
 
         //Called when ability is used
@@ -91,12 +92,15 @@ namespace Lodis.Gameplay
 
             //Instantiate the second shockwave and attack a hit box to it
             _visualPrefabInstances.Item2 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            _visualPrefabInstances.Item2.transform.forward = -owner.transform.forward;
+
             hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item2.transform, _visualPrefabInstances.Item2.transform.localScale, _shockWaveCollider);
 
             //Move second shockwave
             MoveHitBox(_visualPrefabInstances.Item2, -owner.transform.forward);
 
             hitScript.DebuggingEnabled = true;
+            CameraBehaviour.ShakeBehaviour.ShakeRotation();
         }
 
         protected override void Deactivate()
