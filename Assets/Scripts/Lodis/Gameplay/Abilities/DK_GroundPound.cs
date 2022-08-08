@@ -30,16 +30,10 @@ namespace Lodis.Gameplay
         protected override void Start(params object[] args)
         {
             base.Start();
-            //Store default gravity
-            _ownerGravity = _knockBackBehaviour.Physics.Gravity;
-            //Add force to character to make them jump
-            _knockBackBehaviour.Physics.ApplyVelocityChange(Vector3.up * abilityData.GetCustomStatValue("JumpForce"));
+            _knockBackBehaviour.Physics.Jump(0, 2, abilityData.startUpTime, false, true, GridScripts.GridAlignment.ANY, default, DG.Tweening.Ease.InSine);
 
             //Disable movement to prevent the ability being interrupted
             _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-
-            //Calculate what gravity should be to get the character to fall down in the given start up time
-            _knockBackBehaviour.Physics.Gravity = ((abilityData.GetCustomStatValue("JumpForce")) / 0.5f) / abilityData.startUpTime;
         }
 
 
@@ -116,9 +110,7 @@ namespace Lodis.Gameplay
             //Destroy shockwaves
             Object.Destroy(_visualPrefabInstances.Item1);
             Object.Destroy(_visualPrefabInstances.Item2);
-
-            //Reset gravity
-            _knockBackBehaviour.Physics.Gravity = _ownerGravity;
+            _knockBackBehaviour.Physics.RB.isKinematic = true;
         }
     }
 }
