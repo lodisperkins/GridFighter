@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: ChargeDoubleShot
   AbilityType: 5
-  timeActive: 0.2
-  recoverTime: 0.3
-  startUpTime: 0.4
+  timeActive: 0.1
+  recoverTime: 0.2
+  startUpTime: 0.1
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0

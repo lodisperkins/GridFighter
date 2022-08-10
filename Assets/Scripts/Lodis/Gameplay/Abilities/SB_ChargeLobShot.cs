@@ -66,7 +66,7 @@ namespace Lodis.Gameplay
             launchForce.z += axis.z * launchForce.magnitude;
             launchForce.x *= axis.x;
 
-            GameObject activeProjectile = spawnScript.FireProjectile(launchForce, hitCollider, true, true);
+            GameObject activeProjectile = spawnScript.FireProjectile(launchForce, hitCollider, true, false);
 
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = gravity;
@@ -108,7 +108,7 @@ namespace Lodis.Gameplay
 
             //Initialize stats of strong and weak colliders
             float powerScale = (float)args[0];
-            _strongShotDistance = (powerScale - 1) / abilityData.GetCustomStatValue("StrongShotForceIncreaseRate");
+            _strongShotDistance = (powerScale - 1) * abilityData.GetCustomStatValue("StrongShotForceIncreaseRate");
             _strongShotDistance = Mathf.Clamp(_strongShotDistance, 0, abilityData.GetCustomStatValue("StrongHitMaxPower"));
 
             //Initialize strong shot collider

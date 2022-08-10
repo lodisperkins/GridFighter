@@ -14448,7 +14448,7 @@ GameObject:
   - component: {fileID: 7409581658833189768}
   - component: {fileID: 1514784601337692002}
   m_Layer: 0
-  m_Name: Star_Flash
+  m_Name: Star_Flash_V1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14481,7 +14481,7 @@ ParticleSystem:
   serializedVersion: 6
   lengthInSec: 0.2
   simulationSpeed: 1
-  stopAction: 0
+  stopAction: 2
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}

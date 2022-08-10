@@ -55,7 +55,7 @@ PrefabInstance:
     - target: {fileID: 3198923806287051063, guid: 442486026d7ae68428087e1cf03543fe,
         type: 3}
       propertyPath: m_Name
-      value: Explosion_LightningRhs
+      value: Explosion_LightningRHS
       objectReference: {fileID: 0}
     - target: {fileID: 3252108860800845871, guid: 442486026d7ae68428087e1cf03543fe,
         type: 3}
@@ -86,6 +86,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key0.r
       value: 0.94509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3584456885056516277, guid: 442486026d7ae68428087e1cf03543fe,
+        type: 3}
+      propertyPath: stopAction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4112786429414228827, guid: 442486026d7ae68428087e1cf03543fe,
         type: 3}

@@ -25,7 +25,7 @@ MonoBehaviour:
   canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
+  CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
   CanCancelOnOpponentHit: 0

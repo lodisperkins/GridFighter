@@ -14309,7 +14309,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
-  prewarm: 1
+  prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -23805,7 +23805,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2673796481611648029}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.014, y: 0, z: -0.048}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.822567, y: 0.822567, z: 0.822567}
   m_Children:
   - {fileID: 2673796482341073517}
@@ -24388,7 +24388,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 1000
+    maxNumParticles: 1
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -33343,7 +33343,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
-  prewarm: 1
+  prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -33896,7 +33896,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 5
+    maxNumParticles: 1
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -38097,7 +38097,7 @@ ParticleSystem:
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
-  prewarm: 1
+  prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
@@ -47644,17 +47644,47 @@ PrefabInstance:
     - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 1.1804494
       objectReference: {fileID: 0}
     - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 1.1804494
       objectReference: {fileID: 0}
     - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: m_LocalScale.z
+      value: 1.1804494
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_LocalRotation.w
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1247949071094693503, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6730556455862515627, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}

@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: ChargeLobShot
   AbilityType: 7
-  timeActive: 0.2
+  timeActive: 0.05
   recoverTime: 0.3
-  startUpTime: 0.3
+  startUpTime: 0.2
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
@@ -85,9 +85,9 @@ MonoBehaviour:
     HitStopTimeModifier: 0
   _customStats:
   - name: StrongShotDistance
-    value: 1
+    value: 10
   - name: StrongShotForceIncreaseRate
-    value: 0.005
+    value: 1000
   - name: WeakShotDistance
     value: 0.5
   - name: WeakShotGravity
@@ -95,9 +95,9 @@ MonoBehaviour:
   - name: MaxInstances
     value: 2
   - name: StrongHitMaxPower
-    value: 15
+    value: 30
   - name: StrongShotGravity
-    value: 29.43
+    value: 58.86
   - name: StrongShotAngle
     value: 1
   - name: WeakShotAngle

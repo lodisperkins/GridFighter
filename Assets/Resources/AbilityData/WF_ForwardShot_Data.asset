@@ -15,19 +15,19 @@ MonoBehaviour:
   abilityName: ForwardShot
   AbilityType: 2
   timeActive: 0.1
-  recoverTime: 0.2
+  recoverTime: 0.1
   startUpTime: 0.05
   chargeTime: 1
   maxActivationAmount: 0
   EnergyCost: 0
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 0
+  canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
-  CanInputMovementWhileActive: 1
+  CanInputMovementWhileActive: 0
   CanCancelOnOpponentHit: 0
   cancelOnHit: 0
   cancelOnFlinch: 1

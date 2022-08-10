@@ -143,7 +143,7 @@ namespace Lodis.Input
             _playerControls.Player.MoveDown.started += context => UpdateInputY(-1);
             _playerControls.Player.MoveLeft.started += context => UpdateInputX(-1);
             _playerControls.Player.MoveRight.started += context => UpdateInputX(1);
-            _playerControls.Player.Attack.started += context => { DisableMovement(); _attackButtonDown = true; };
+            _playerControls.Player.Attack.started += context => { _attackButtonDown = true; };
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
             _playerControls.Player.Parry.started += context => 

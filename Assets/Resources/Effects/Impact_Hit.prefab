@@ -40,7 +40,12 @@ PrefabInstance:
     - target: {fileID: 7681821613543600161, guid: f00585eb1d3761e4eb76dcce81aa6162,
         type: 3}
       propertyPath: m_Name
-      value: Impact_Hit_Lv1
+      value: Impact_Hit
+      objectReference: {fileID: 0}
+    - target: {fileID: 7681821613543600163, guid: f00585eb1d3761e4eb76dcce81aa6162,
+        type: 3}
+      propertyPath: stopAction
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7681821613543600164, guid: f00585eb1d3761e4eb76dcce81aa6162,
         type: 3}
