@@ -37,7 +37,7 @@ namespace Lodis.Gameplay
         /// <param name="hitCollider">The hit collider to attach to the projectile</param>
         /// <returns></returns>
         /// <param name="useGravity"></param>
-        public GameObject FireProjectile(Vector3 force, HitColliderBehaviour hitCollider, bool useGravity = false, bool faceHeading = false)
+        public GameObject FireProjectile(Vector3 force, HitColliderBehaviour hitCollider, bool useGravity = false, bool faceHeading = true)
         {
             if (!projectile)
                 return null;

@@ -105,6 +105,22 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""PhaseShiftHorizontal"",
+                    ""type"": ""Button"",
+                    ""id"": ""f74f82c6-c0a1-4a57-a507-d77a0b457b97"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""PhaseShiftVertical"",
+                    ""type"": ""Button"",
+                    ""id"": ""8aaf5b10-05d9-41b3-995c-0f4045fde996"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -800,6 +816,182 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Burst"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""KeyBoard"",
+                    ""id"": ""de336a6c-0c2a-43a4-8726-ed4a871ad53e"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftHorizontal"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""bcab82b5-473e-4e20-b4e9-1d5103dddcfe"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""47ccd143-97b5-453f-817a-e35cd1d9a8ab"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""56eab399-d856-44d4-9f75-87c844489708"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""3c443884-09eb-4ac7-b70b-f8565c2ab263"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftHorizontal"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""cb7c4125-b647-4f3b-9873-a83cf1e878f0"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""3209bb38-e12e-4467-ae4a-34692e4ae260"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""7de94bc0-4b0d-4b6c-b89a-0f4b744c25e7"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftHorizontal"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""KeyBoard"",
+                    ""id"": ""34381ca6-890a-4ac1-958e-83fe7405570a"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftVertical"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""a0b02148-6e1a-4cf2-98bf-ad07ab1a5a54"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""c4f905f6-d693-4f85-97b0-9b9573eb5b3d"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""8e5807a4-1708-4c8e-817c-916c9d8df63c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Gamepad"",
+                    ""id"": ""e02415b5-63c6-4e7e-95db-4b937c5df914"",
+                    ""path"": ""ButtonWithTwoModifiers"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftVertical"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier1"",
+                    ""id"": ""16ea29c2-72a5-47e5-84c6-7377a1506f7c"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""modifier2"",
+                    ""id"": ""d3bea659-b250-4f2e-99ca-9ceafed8e62e"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""button"",
+                    ""id"": ""4d814cfa-cb0c-4059-a29f-f918bb18811a"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PhaseShiftVertical"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -819,6 +1011,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_Special2 = m_Player.FindAction("Special2", throwIfNotFound: true);
         m_Player_UnblockableAttack = m_Player.FindAction("UnblockableAttack", throwIfNotFound: true);
         m_Player_Burst = m_Player.FindAction("Burst", throwIfNotFound: true);
+        m_Player_PhaseShiftHorizontal = m_Player.FindAction("PhaseShiftHorizontal", throwIfNotFound: true);
+        m_Player_PhaseShiftVertical = m_Player.FindAction("PhaseShiftVertical", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -879,6 +1073,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Special2;
     private readonly InputAction m_Player_UnblockableAttack;
     private readonly InputAction m_Player_Burst;
+    private readonly InputAction m_Player_PhaseShiftHorizontal;
+    private readonly InputAction m_Player_PhaseShiftVertical;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -894,6 +1090,8 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Special2 => m_Wrapper.m_Player_Special2;
         public InputAction @UnblockableAttack => m_Wrapper.m_Player_UnblockableAttack;
         public InputAction @Burst => m_Wrapper.m_Player_Burst;
+        public InputAction @PhaseShiftHorizontal => m_Wrapper.m_Player_PhaseShiftHorizontal;
+        public InputAction @PhaseShiftVertical => m_Wrapper.m_Player_PhaseShiftVertical;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -936,6 +1134,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Burst.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBurst;
                 @Burst.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBurst;
                 @Burst.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnBurst;
+                @PhaseShiftHorizontal.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftHorizontal;
+                @PhaseShiftHorizontal.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftHorizontal;
+                @PhaseShiftHorizontal.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftHorizontal;
+                @PhaseShiftVertical.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftVertical;
+                @PhaseShiftVertical.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftVertical;
+                @PhaseShiftVertical.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftVertical;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -973,6 +1177,12 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Burst.started += instance.OnBurst;
                 @Burst.performed += instance.OnBurst;
                 @Burst.canceled += instance.OnBurst;
+                @PhaseShiftHorizontal.started += instance.OnPhaseShiftHorizontal;
+                @PhaseShiftHorizontal.performed += instance.OnPhaseShiftHorizontal;
+                @PhaseShiftHorizontal.canceled += instance.OnPhaseShiftHorizontal;
+                @PhaseShiftVertical.started += instance.OnPhaseShiftVertical;
+                @PhaseShiftVertical.performed += instance.OnPhaseShiftVertical;
+                @PhaseShiftVertical.canceled += instance.OnPhaseShiftVertical;
             }
         }
     }
@@ -990,5 +1200,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnSpecial2(InputAction.CallbackContext context);
         void OnUnblockableAttack(InputAction.CallbackContext context);
         void OnBurst(InputAction.CallbackContext context);
+        void OnPhaseShiftHorizontal(InputAction.CallbackContext context);
+        void OnPhaseShiftVertical(InputAction.CallbackContext context);
     }
 }

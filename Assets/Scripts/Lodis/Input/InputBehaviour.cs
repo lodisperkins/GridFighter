@@ -146,15 +146,14 @@ namespace Lodis.Input
             _playerControls.Player.Attack.started += context => { _attackButtonDown = true; };
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
-            _playerControls.Player.Parry.started += context => 
-            { 
-                _canBufferShield = true; _defense.Brace();_defense.CanPhaseShift = true;
-            };
+            _playerControls.Player.Parry.started += context => { _canBufferShield = true; _defense.Brace();};
             _playerControls.Player.Parry.performed += context => { _canBufferShield = false; RemoveShieldFromBuffer(); _defense.CanPhaseShift = false; };
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
-            _playerControls.Player.UnblockableAttack.started += context => BufferUnblockableAbility(context);
-            _playerControls.Player.Burst.started += context => BufferBurst(context);
+            _playerControls.Player.UnblockableAttack.started += BufferUnblockableAbility;
+            _playerControls.Player.Burst.started += BufferBurst;
+            _playerControls.Player.PhaseShiftHorizontal.started += context => BufferPhaseShift(context, true);
+            _playerControls.Player.PhaseShiftVertical.started += context => BufferPhaseShift(context, false);
         }
 
         // Start is called before the first frame update
@@ -225,17 +224,17 @@ namespace Lodis.Input
             _abilityBuffered = true;
         }
 
-        public void BufferUnblockableAbility(InputAction.CallbackContext context, params object[] args)
+        public void BufferUnblockableAbility(InputAction.CallbackContext context)
         {
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.UNBLOCKABLE, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.UNBLOCKABLE, null), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
             _abilityBuffered = true;
         }
 
-        public void BufferBurst(InputAction.CallbackContext context, params object[] args)
+        public void BufferBurst(InputAction.CallbackContext context)
         {
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.BURST, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.BURST, null), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
             _abilityBuffered = true;
         }
 
@@ -255,6 +254,14 @@ namespace Lodis.Input
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
             _abilityBuffered = true;
+        }
+
+        private void BufferPhaseShift(InputAction.CallbackContext context, params object[] args)
+        {
+            bool isHorizontal = (bool)args[0];
+            Vector2 direction = Vector2.zero;
+
+            if ()
         }
 
         private void RemoveShieldFromBuffer()
