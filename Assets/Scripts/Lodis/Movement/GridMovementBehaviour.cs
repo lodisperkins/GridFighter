@@ -758,7 +758,9 @@ namespace Lodis.Movement
             if (_canMove)
             {
                 MoveToCurrentPanel();
+
                 SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
+
 
                 if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
                     transform.rotation = Quaternion.Euler(0, -90, 0);

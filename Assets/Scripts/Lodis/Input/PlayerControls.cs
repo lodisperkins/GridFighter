@@ -137,6 +137,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Button"",
+                    ""id"": ""119ad6c1-9809-42d0-a1d5-f0b3bf2540a9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1096,6 +1104,116 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""PhaseShiftLeft"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""DPad"",
+                    ""id"": ""3b06797e-eafa-4090-979c-1300ae2f284a"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""d4ea59be-e498-4429-9644-1deb4d041315"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""b597a038-8625-4ead-a474-098655ac387b"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""5abb0fca-7063-4f95-b6ef-752f3f1ccf42"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""ef277a1e-c99e-4c79-b6c6-fa6427b759e7"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Analog"",
+                    ""id"": ""1e1e4938-7b50-4cd8-8349-85afc9d21c23"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""5fae9538-bf7a-4912-9d12-20d8f666e26d"",
+                    ""path"": ""<Gamepad>/leftStick/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""42c1cb25-9663-4ace-a7ab-1e6f846423ba"",
+                    ""path"": ""<Gamepad>/leftStick/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""a481dee1-0105-4b03-9159-4961b3daeac2"",
+                    ""path"": ""<Gamepad>/leftStick/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""d43d944f-8552-4226-b192-9079e5c08651"",
+                    ""path"": ""<Gamepad>/leftStick/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -1119,6 +1237,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_PhaseShiftDown = m_Player.FindAction("PhaseShiftDown", throwIfNotFound: true);
         m_Player_PhaseShiftRight = m_Player.FindAction("PhaseShiftRight", throwIfNotFound: true);
         m_Player_PhaseShiftLeft = m_Player.FindAction("PhaseShiftLeft", throwIfNotFound: true);
+        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1183,6 +1302,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_PhaseShiftDown;
     private readonly InputAction m_Player_PhaseShiftRight;
     private readonly InputAction m_Player_PhaseShiftLeft;
+    private readonly InputAction m_Player_Move;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1202,6 +1322,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @PhaseShiftDown => m_Wrapper.m_Player_PhaseShiftDown;
         public InputAction @PhaseShiftRight => m_Wrapper.m_Player_PhaseShiftRight;
         public InputAction @PhaseShiftLeft => m_Wrapper.m_Player_PhaseShiftLeft;
+        public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1256,6 +1377,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @PhaseShiftLeft.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftLeft;
                 @PhaseShiftLeft.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftLeft;
                 @PhaseShiftLeft.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPhaseShiftLeft;
+                @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1305,6 +1429,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @PhaseShiftLeft.started += instance.OnPhaseShiftLeft;
                 @PhaseShiftLeft.performed += instance.OnPhaseShiftLeft;
                 @PhaseShiftLeft.canceled += instance.OnPhaseShiftLeft;
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
             }
         }
     }
@@ -1326,5 +1453,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnPhaseShiftDown(InputAction.CallbackContext context);
         void OnPhaseShiftRight(InputAction.CallbackContext context);
         void OnPhaseShiftLeft(InputAction.CallbackContext context);
+        void OnMove(InputAction.CallbackContext context);
     }
 }

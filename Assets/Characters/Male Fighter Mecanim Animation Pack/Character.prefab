@@ -341,18 +341,7 @@ MonoBehaviour:
       id: Idle
       onEnterState:
         m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 5237796854253788945}
-            m_MethodName: SetTrigger
-            m_Mode: 5
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 1
-              m_StringArgument: Idle
-              m_BoolArgument: 0
-            m_CallState: 2
+          m_Calls: []
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -528,18 +517,7 @@ MonoBehaviour:
       id: Moving
       onEnterState:
         m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 8943288124560981146}
-            m_MethodName: PlayMovementAnimation
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 0
-            m_CallState: 2
+          m_Calls: []
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -730,7 +708,18 @@ MonoBehaviour:
       targetID: Idle
       onEnterTransition:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 5237796854253788945}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Idle
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -915,9 +904,9 @@ MonoBehaviour:
       timeMode: 0
     preferences:
       zoomSettings:
-        zoomFactor: 0.9
+        zoomFactor: 1
       dragSettings:
-        dragOffset: {x: 187.34785, y: -46.271782}
+        dragOffset: {x: 225.34785, y: -151.27179}
       gridSettings:
         isEnabled: 1
       labelSettings:

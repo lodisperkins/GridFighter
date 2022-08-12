@@ -66,36 +66,6 @@ namespace Lodis.Gameplay
 
         }
 
-        //private Vector3 AddForce(bool yPositive)
-        //{
-        //    //Find the position of the target panel
-        //    Vector2 targetPanelPos = _ownerMoveScript.Position + ((Vector2)owner.transform.forward * abilityData.GetCustomStatValue("TravelDistance"));
-        //    targetPanelPos.x = Mathf.Clamp(targetPanelPos.x, 0, _grid.Dimensions.x - 1);
-        //    targetPanelPos.y = Mathf.Clamp(targetPanelPos.y, 0, _grid.Dimensions.y - 1);
-
-        //    //Get a reference to the panel at the position found
-        //    PanelBehaviour panel;
-        //    _grid.GetPanel(targetPanelPos, out panel, true);
-
-        //    //Find the displacement
-        //    float displacement = Vector3.Distance(_ownerMoveScript.CurrentPanel.transform.position, panel.transform.position) / 2;
-
-        //    //Get float representing y direction based on argument given
-        //    int yDirection = yPositive ? 1 : -1;
-
-        //    //Find y velocity 
-        //    _ownerGravity = _knockBackBehaviour.Physics.Gravity;
-        //    Vector3 velocityY;
-        //    velocityY.y = abilityData.GetCustomStatValue("JumpHeight") + (0.5f * _knockBackBehaviour.Physics.Gravity * _riseTime);
-
-        //    //Find x velocity
-        //    Vector3 velocityX;
-        //    velocityX.x = (displacement / abilityData.startUpTime) * owner.transform.forward.x;
-
-        //    //Apply force
-        //    return new Vector3(velocityX.x, velocityY.y * yDirection, 0);
-        //}
-
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
@@ -132,13 +102,6 @@ namespace Lodis.Gameplay
 
             //Destroy particles and hit box
             MonoBehaviour.Destroy(_visualPrefabInstances.Item1);
-
-            ////Reset character gravity to default
-            //_knockBackBehaviour.Physics.Gravity = _ownerGravity;
-
-            ////Stop momentum if the character isn't somehow in knock back
-            //if (_knockBackBehaviour.CurrentAirState != AirState.FREEFALL)
-            //    _knockBackBehaviour.Physics.StopVelocity();
         }
 
         protected override void End()
@@ -146,22 +109,7 @@ namespace Lodis.Gameplay
             base.End();
             //Enable bouncing
             _knockBackBehaviour.Physics.DisablePanelBounce();
-            //Reset character gravity to default
-            //_knockBackBehaviour.Physics.Gravity = _ownerGravity;
 
-        }
-
-        public override void Update()
-        {
-            base.Update();
-
-            ////If the ability is active and the amount of time it takes to reach the peak has passed...
-            //if (_forceAdded && Time.time - _timeForceAdded >= _riseTime && CurrentAbilityPhase != AbilityPhase.ACTIVE)
-            //{
-            //    //...freeze it in air
-            //    _knockBackBehaviour.Physics.StopAllForces();
-            //    _knockBackBehaviour.Physics.Gravity = 0;
-            //}
         }
     }
 }

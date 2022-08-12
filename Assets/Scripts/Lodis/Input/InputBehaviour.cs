@@ -29,6 +29,9 @@ namespace Lodis.Input
 
         public bool UseAction()
         {
+            if (_action == null)
+                return false;
+
             if (_useCondition.Invoke())
             {
                 _action?.Invoke();
@@ -66,6 +69,10 @@ namespace Lodis.Input
         private GameObject _character;
         [SerializeField]
         private bool _canMove = true;
+        [SerializeField]
+        private bool _holdToMove;
+        [SerializeField]
+        private float _holdSpeed;
         private Vector2 _storedMoveInput;
         private Vector2 _attackDirection;
         [Tooltip("The minimum amount of time needed to hold the button down to change it to the charge variation.")]
@@ -90,12 +97,10 @@ namespace Lodis.Input
         private bool _attackButtonDown;
         [SerializeField]
         private bool _abilityBuffered;
-        [SerializeField]
-        private UnityAction _onPlayerMove;
-        private UnityAction _onPlayeMoveTemp;
         private bool _isPaused;
         private List<InputDevice> _devices = new List<InputDevice>();
         private bool _canBufferDefense;
+        private float _defaultSpeed;
 
         public List<InputDevice> Devices 
         {
@@ -141,10 +146,13 @@ namespace Lodis.Input
             //Initialize action delegates
 
             //Movement input
-            _playerControls.Player.MoveUp.started += context => UpdateInputY(1);
-            _playerControls.Player.MoveDown.started += context => UpdateInputY(-1);
-            _playerControls.Player.MoveLeft.started += context => UpdateInputX(-1);
-            _playerControls.Player.MoveRight.started += context => UpdateInputX(1);
+            if (!_holdToMove)
+            {
+                _playerControls.Player.MoveUp.started += context => BufferMovement(Vector2.up);
+                _playerControls.Player.MoveDown.started += context => BufferMovement(Vector2.down);
+                _playerControls.Player.MoveLeft.started += context => BufferMovement(Vector2.left);
+                _playerControls.Player.MoveRight.started += context => BufferMovement(Vector2.right);
+            }
 
             //Ability input
             _playerControls.Player.Attack.started += context => { _attackButtonDown = true; };
@@ -156,8 +164,8 @@ namespace Lodis.Input
             _playerControls.Player.Burst.started += BufferBurst;
 
             //Defense input
-            _playerControls.Player.Parry.started += context => { _canBufferDefense = true; _defense.Brace();};
-            _playerControls.Player.Parry.performed += context => { _canBufferDefense = false; RemoveShieldFromBuffer(); };
+            _playerControls.Player.Parry.started += context => { BufferShield(); _defense.Brace();};
+            _playerControls.Player.Parry.performed += context => {RemoveShieldFromBuffer(); };
             _playerControls.Player.PhaseShiftUp.started += context => BufferPhaseShift(context, Vector2.up);
             _playerControls.Player.PhaseShiftDown.started += context => BufferPhaseShift(context, Vector2.down);
             _playerControls.Player.PhaseShiftRight.started += context => BufferPhaseShift(context, Vector2.right);
@@ -171,6 +179,7 @@ namespace Lodis.Input
             _moveset = Character.GetComponent<MovesetBehaviour>();
             _defense = Character.GetComponent<CharacterDefenseBehaviour>();
             _gridMovement.AddOnMoveDisabledAction(() => _storedMoveInput = Vector3.zero);
+            _defaultSpeed = _gridMovement.Speed;
         }
 
         private void OnEnable()
@@ -222,13 +231,15 @@ namespace Lodis.Input
                 float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
                 args[0] = powerScale;
-                _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+                _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); }, condition => _moveset.GetCanUseAbility() && (_playerState == "Idle" || _playerState == "Attacking"), 0.2f);
                 _abilityBuffered = true;
                 return;
             }
 
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); }, 
+                condition =>
+                { return _moveset.GetCanUseAbility() && (_playerState == "Idle" || _playerState == "Attacking"); }, 0.2f);
             _abilityBuffered = true;
         }
 
@@ -266,16 +277,13 @@ namespace Lodis.Input
 
         private void BufferPhaseShift(InputAction.CallbackContext context, params object[] args)
         {
+            RemoveShieldFromBuffer();
             Vector2 direction = (Vector2)args[0];
-            //_storedMoveInput = Vector2.zero;
             _bufferedAction = new BufferedInput(action => _defense.ActivatePhaseShift(_attackDirection), condition => _playerState == "Idle" || _playerState == "Moving", 0.2f);
         }
 
         private void RemoveShieldFromBuffer()
         {
-            if (_defense.IsPhaseShifting)
-                return;
-
             _defense.DeactivateShield();
             _bufferedAction = null;
         }
@@ -286,14 +294,29 @@ namespace Lodis.Input
         /// <param name="context"></param>
         public void BufferShield()
         {
-            if (_attackButtonDown)
+            if (_attackButtonDown || _defense.IsPhaseShifting)
                 return;
             else if (_bufferedAction == null && (_playerState == "Idle" || _playerState == "Moving"))
-                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _playerState == "Idle", 0.2f);
             else if (_bufferedAction == null)
                 return;
             else if (!_bufferedAction.HasAction() && (_playerState == "Idle" || _playerState == "Moving"))
-                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _playerState == "Idle", 0.2f);
+        }
+
+        /// <summary>
+        /// Buffers input on the y axis
+        /// </summary>
+        /// <param name="y"></param>
+        public void BufferMovement(Vector2 direction)
+        {
+            if (_abilityBuffered)
+                return;
+
+            if (_canMove)
+                _storedMoveInput = direction;
+
+            _bufferedAction = new BufferedInput(action => _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position),condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, 0.2f);
         }
 
         /// <summary>
@@ -325,27 +348,8 @@ namespace Lodis.Input
             }
             else if (_lastAbilityUsed.abilityData.CanCancelOnMove)
             {
-                UnityAction action = () => _lastAbilityUsed.TryCancel();
-                AddOnPlayerMoveAction(action);
-                _lastAbilityUsed.onEnd += () => { _onPlayerMove -= action; };
-                DisableMovementBasedOnCondition(condition => _moveset.GetCanUseAbility());
-            }
-        }
-
-
-        /// <summary>
-        /// Disable player movement on grid. Mainly used to prevent player from moving while attacking.
-        /// USE CAREFULLY
-        /// </summary>
-        private void DisableMovement()
-        {
-            if (_playerState == "Tumbling")
-                return;
-
-            if (_attackDirection.normalized == _gridMovement.MoveDirection.normalized || _gridMovement.MoveDirection == Vector2.zero)
-            {
-                _canMove = false;
-                _storedMoveInput = Vector2.zero;
+                _gridMovement.AddOnMoveBeginTempAction(() => _lastAbilityUsed.TryCancel());
+                _gridMovement.DisableMovement(condition => _moveset.GetCanUseAbility());
             }
         }
 
@@ -360,16 +364,6 @@ namespace Lodis.Input
                 _canMove = false;
                 _storedMoveInput = Vector2.zero;
             }
-        }
-
-        public void AddOnPlayerMoveAction(UnityAction action)
-        {
-            _onPlayerMove += action;
-        }
-
-        public void AddOnPlayerMoveTempAction(UnityAction action)
-        {
-            _onPlayeMoveTemp += action;
         }
 
         /// <summary>
@@ -418,6 +412,22 @@ namespace Lodis.Input
                 _storedMoveInput = new Vector2(0, y);
         }
 
+        private void CheckMoveInput()
+        {
+            Vector2 newMoveInput = _playerControls.Player.Move.ReadValue<Vector2>();
+
+
+            if (_holdToMove && _storedMoveInput == newMoveInput)
+                _gridMovement.Speed = _holdSpeed;
+            else
+                _gridMovement.Speed = _defaultSpeed;
+
+            _storedMoveInput = newMoveInput;
+
+            if (_storedMoveInput.magnitude == 1 && _canMove)
+                _gridMovement.MoveToPanel(_gridMovement.Position + _storedMoveInput);
+        }
+
         // Update is called once per frame
         void Update()
         {
@@ -432,16 +442,9 @@ namespace Lodis.Input
                     _inputEnableCondition = null;
                 }
 
+            if (_holdToMove && !_abilityBuffered)
+                CheckMoveInput();
 
-            //Move if there is a movement stored and movement is allowed
-            if (_storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove)
-            {
-                _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position);
-                _onPlayerMove?.Invoke();
-                _onPlayeMoveTemp?.Invoke();
-                _onPlayeMoveTemp = null;
-                _storedMoveInput = Vector2.zero;
-            }
             //Checks to see if move input can be enabled 
 
             if (_moveInputEnableCondition != null)
@@ -468,9 +471,6 @@ namespace Lodis.Input
                 _attackDirection = attackDirInput;
                 _timeOfLastDirectionInput = Time.time;
             }
-
-            if (_canBufferDefense && !_defense.IsDefending && !_defense.IsPhaseShifting)
-                BufferShield();
 
             //Clear the buffer if its exceeded the alotted time
             if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
