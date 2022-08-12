@@ -383,7 +383,7 @@ namespace Lodis.Gameplay
             float travelTime = travelDistance / _moveBehaviour.Speed;
             _currentClipStartUpTime = _moveAnimationStartUpTime;
             _currentClipActiveTime = travelTime + _moveAnimationHangTime;
-            _currentClipRecoverTime = _moveAnimationRecoverTime;
+            _currentClipRecoverTime = _defenseBehaviour.IsPhaseShifting? _moveAnimationRecoverTime + _defenseBehaviour.DefaultPhaseShiftRestTime : _moveAnimationRecoverTime;
             float totalTime = _currentClipStartUpTime + _currentClipRecoverTime + _currentClipActiveTime;
 
             int mirror = 1;

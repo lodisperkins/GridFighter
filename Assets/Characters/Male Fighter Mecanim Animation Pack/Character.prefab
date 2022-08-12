@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 515641295c2b6d349bf41285419a96fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _parryLength: 0.2
+  _parryLength: 0.1
   _shieldCollider: {fileID: 631037068264074505}
   _isParrying: 0
   _parryInvincibilityLength: 0.1

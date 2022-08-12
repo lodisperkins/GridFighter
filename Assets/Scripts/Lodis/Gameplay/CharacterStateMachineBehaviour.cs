@@ -37,7 +37,7 @@ namespace Lodis.Gameplay
             { return _knockBack.LandingScript.Landing && !_characterDefense.BreakingFall; });
             _stateMachine.SetTransitionCondition("Landing-Down", args => _knockBack.LandingScript.IsDown);
             _stateMachine.SetTransitionCondition("Down-GroundRecovery", args => _knockBack.LandingScript.RecoveringFromFall);
-            _stateMachine.SetTransitionConditionByLabel("Parry", args => _characterDefense.IsDefending);
+            _stateMachine.SetTransitionConditionByLabel("Parry", args => (_characterDefense.IsShielding || _characterDefense.IsParrying) && !_characterDefense.IsPhaseShifting);
             _stateMachine.SetTransitionConditionByLabel("Tumbling", args => _knockBack.CurrentAirState == AirState.TUMBLING);
             _stateMachine.SetTransitionCondition("Any-Flinching", condition => false);
             _knockBack.AddOnHitStunAction(() => _stateMachine.Trigger("Any-Flinching"));

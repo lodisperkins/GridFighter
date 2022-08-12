@@ -105,6 +105,9 @@ namespace Lodis.Gameplay
         public bool IsDefending { get => _isDefending; }
         public bool CanPhaseShift { get => _canPhaseShift; set => _canPhaseShift = value; }
         public bool IsPhaseShifting { get => _isPhaseShifting; }
+        public float CurrentPhaseShiftRestTime { get => _currentPhaseShiftRestTime; }
+        public float DefaultPhaseShiftRestTime { get => _defaultPhaseShiftRestTime; set => _defaultPhaseShiftRestTime = value; }
+        public bool IsShielding { get => _isShielding; }
 
         // Start is called before the first frame update
         void Start()
@@ -118,7 +121,6 @@ namespace Lodis.Gameplay
             _knockBack.AddOnTakeDamageAction(StopShield);
             _knockBack.AddOnKnockBackAction(EnableBrace);
 
-            _movement.AddOnMoveBeginAction(ActivatePhaseShift);
             _shieldCollider.OnHit += args => { if (IsParrying) ActivateParryInvinciblity(args); };
         }
 
@@ -127,25 +129,34 @@ namespace Lodis.Gameplay
             _onPhaseShift += action;
         }
 
-        public void ActivatePhaseShift()
+        public void ActivatePhaseShift(Vector2 moveDirection)
         {
-            if (!CanPhaseShift) return;
+            if (_isPhaseShifting)
+                return;
+
             _isParrying = false;
+            _isShielding = false;
             //Allow the character to parry again
             _canParry = true;
-            _isDefending = false;
             _isPhaseShifting = true;
+            _isDefending = true;
             _shieldCollider.gameObject.SetActive(false);
+
+            _movement.CancelMovement();
+            _movement.MoveToPanel(_movement.Position + moveDirection * 2);
+
             _currentPhaseShiftRestTime = _defaultPhaseShiftRestTime;
             _health.SetIntagibilityByTimer(_phaseShiftDuration);
+
             _onPhaseShift?.Invoke();
-            _movement.AddOnMoveEndTempAction(StartPhaseShiftLag);
+            _movement.AddOnMoveEndTempAction(() => { _isPhaseShifting = false; StartDefenseLag(_currentPhaseShiftRestTime); });
         }
 
         private void StartPhaseShiftLag()
         {
             _movement.DisableMovement(condition => _isPhaseShifting == false, false);
             //Start timer for player immobility
+            RoutineBehaviour.Instance.StopAction(_shieldTimer);
             _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isPhaseShifting = false; }, TimedActionCountType.SCALEDTIME, _currentPhaseShiftRestTime);
         }
 
@@ -153,7 +164,8 @@ namespace Lodis.Gameplay
         {
             _movement.DisableMovement(condition => _isDefending == false, false);
             //Start timer for player immobility
-            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isDefending = false; }, TimedActionCountType.SCALEDTIME, time);
+            RoutineBehaviour.Instance.StopAction(_shieldTimer);
+            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isDefending = false; _isPhaseShifting = false; }, TimedActionCountType.SCALEDTIME, time);
         }
 
         /// <summary>

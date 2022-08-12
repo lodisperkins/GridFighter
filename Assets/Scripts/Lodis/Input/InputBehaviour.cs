@@ -95,7 +95,7 @@ namespace Lodis.Input
         private UnityAction _onPlayeMoveTemp;
         private bool _isPaused;
         private List<InputDevice> _devices = new List<InputDevice>();
-        private bool _canBufferShield;
+        private bool _canBufferDefense;
 
         public List<InputDevice> Devices 
         {
@@ -139,21 +139,29 @@ namespace Lodis.Input
         {
             _playerControls = new PlayerControls();
             //Initialize action delegates
+
+            //Movement input
             _playerControls.Player.MoveUp.started += context => UpdateInputY(1);
             _playerControls.Player.MoveDown.started += context => UpdateInputY(-1);
             _playerControls.Player.MoveLeft.started += context => UpdateInputX(-1);
             _playerControls.Player.MoveRight.started += context => UpdateInputX(1);
+
+            //Ability input
             _playerControls.Player.Attack.started += context => { _attackButtonDown = true; };
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
-            _playerControls.Player.Parry.started += context => { _canBufferShield = true; _defense.Brace();};
-            _playerControls.Player.Parry.performed += context => { _canBufferShield = false; RemoveShieldFromBuffer(); _defense.CanPhaseShift = false; };
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
             _playerControls.Player.UnblockableAttack.started += BufferUnblockableAbility;
             _playerControls.Player.Burst.started += BufferBurst;
-            _playerControls.Player.PhaseShiftHorizontal.started += context => BufferPhaseShift(context, true);
-            _playerControls.Player.PhaseShiftVertical.started += context => BufferPhaseShift(context, false);
+
+            //Defense input
+            _playerControls.Player.Parry.started += context => { _canBufferDefense = true; _defense.Brace();};
+            _playerControls.Player.Parry.performed += context => { _canBufferDefense = false; RemoveShieldFromBuffer(); };
+            _playerControls.Player.PhaseShiftUp.started += context => BufferPhaseShift(context, Vector2.up);
+            _playerControls.Player.PhaseShiftDown.started += context => BufferPhaseShift(context, Vector2.down);
+            _playerControls.Player.PhaseShiftRight.started += context => BufferPhaseShift(context, Vector2.right);
+            _playerControls.Player.PhaseShiftLeft.started += context => BufferPhaseShift(context, Vector2.left);
         }
 
         // Start is called before the first frame update
@@ -258,14 +266,16 @@ namespace Lodis.Input
 
         private void BufferPhaseShift(InputAction.CallbackContext context, params object[] args)
         {
-            bool isHorizontal = (bool)args[0];
-            Vector2 direction = Vector2.zero;
-
-            if ()
+            Vector2 direction = (Vector2)args[0];
+            //_storedMoveInput = Vector2.zero;
+            _bufferedAction = new BufferedInput(action => _defense.ActivatePhaseShift(_attackDirection), condition => _playerState == "Idle" || _playerState == "Moving", 0.2f);
         }
 
         private void RemoveShieldFromBuffer()
         {
+            if (_defense.IsPhaseShifting)
+                return;
+
             _defense.DeactivateShield();
             _bufferedAction = null;
         }
@@ -279,11 +289,11 @@ namespace Lodis.Input
             if (_attackButtonDown)
                 return;
             else if (_bufferedAction == null && (_playerState == "Idle" || _playerState == "Moving"))
-                _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => !_gridMovement.IsMoving, 0.2f);
             else if (_bufferedAction == null)
                 return;
             else if (!_bufferedAction.HasAction() && (_playerState == "Idle" || _playerState == "Moving"))
-                _bufferedAction = new BufferedInput(action => UseDefensiveAction(), condition => !_gridMovement.IsMoving, 0.2f);
+                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => !_gridMovement.IsMoving, 0.2f);
         }
 
         /// <summary>
@@ -322,10 +332,6 @@ namespace Lodis.Input
             }
         }
 
-        private void UseDefensiveAction()
-        {
-            _defense.BeginParry();
-        }
 
         /// <summary>
         /// Disable player movement on grid. Mainly used to prevent player from moving while attacking.
@@ -463,7 +469,7 @@ namespace Lodis.Input
                 _timeOfLastDirectionInput = Time.time;
             }
 
-            if (_canBufferShield && !_defense.IsDefending && !_defense.IsPhaseShifting)
+            if (_canBufferDefense && !_defense.IsDefending && !_defense.IsPhaseShifting)
                 BufferShield();
 
             //Clear the buffer if its exceeded the alotted time

@@ -721,6 +721,9 @@ namespace Lodis.Movement
         /// </summary>
         public void CancelMovement()
         {
+            if (!IsMoving || _moveRoutine == null)
+                return;
+
             StopCoroutine(_moveRoutine);
             _currentPanel.Occupied = false;
             _currentPanel = PreviousPanel;
