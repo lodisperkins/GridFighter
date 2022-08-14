@@ -277,7 +277,9 @@ namespace Lodis.Input
 
         private void BufferPhaseShift(InputAction.CallbackContext context, params object[] args)
         {
-            RemoveShieldFromBuffer();
+            if (_defense.IsResting)
+                return;
+
             Vector2 direction = (Vector2)args[0];
             _bufferedAction = new BufferedInput(action => _defense.ActivatePhaseShift(_attackDirection), condition => _playerState == "Idle" || _playerState == "Moving", 0.2f);
         }
@@ -294,7 +296,7 @@ namespace Lodis.Input
         /// <param name="context"></param>
         public void BufferShield()
         {
-            if (_attackButtonDown || _defense.IsPhaseShifting)
+            if (_attackButtonDown || _defense.IsPhaseShifting || _playerControls.Player.Move.ReadValue<Vector2>().magnitude != 0)
                 return;
             else if (_bufferedAction == null && (_playerState == "Idle" || _playerState == "Moving"))
                 _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _playerState == "Idle", 0.2f);
@@ -476,7 +478,7 @@ namespace Lodis.Input
             if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
                 _attackDirection = Vector2.zero;
 
-            if (_bufferedAction != null)
+            if (_bufferedAction?.HasAction() == true)
                 _bufferedAction.UseAction();
             else
                 _abilityBuffered = false;

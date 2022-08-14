@@ -40,7 +40,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1959598720044943059}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 6.1, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6779050623627054484}
@@ -122,14 +122,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _position: {x: 0, y: 0}
+  _position: {x: 5, y: 0}
   _targetTolerance: 0.05
-  _moveDirection: {x: 0, y: 0}
+  _moveDirection: {x: 1, y: 0}
   _speed: 10
   _isMoving: 0
   _canMove: 1
   canCancelMovement: 0
-  _defaultAlignment: 3
+  _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 1
@@ -137,6 +137,7 @@ MonoBehaviour:
   _checkIfBehindBarrier: 0
   _isBehindBarrier: 0
   _opponentPanelSpeedReduction: 10
+  _canMoveDiagonally: 0
 --- !u!54 &5308582277602069232
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -187,7 +188,7 @@ MonoBehaviour:
   _phaseShiftDuration: 0.25
   _defaultPhaseShiftRestTime: 0.3
   _successPhaseShiftRestTime: 0
-  _slowMotionTimeScale: 0.3
+  _slowMotionTimeScale: 0.01
   _slowMotionTime: 0.1
 --- !u!114 &1463821011073023751
 MonoBehaviour:
@@ -597,7 +598,7 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
-    - id: Transition 2
+    - id: Idle-Parry
       label: Parry
       originID: Idle
       targetID: Parrying
@@ -906,7 +907,7 @@ MonoBehaviour:
       zoomSettings:
         zoomFactor: 1
       dragSettings:
-        dragOffset: {x: 225.34785, y: -151.27179}
+        dragOffset: {x: 146.34785, y: -170.27179}
       gridSettings:
         isEnabled: 1
       labelSettings:

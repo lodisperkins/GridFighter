@@ -93,6 +93,7 @@ namespace Lodis.Gameplay
         [Tooltip("The amount of time to stay in slow motion after a phase shift passes through an attack..")]
         private float _slowMotionTime;
         private bool _isShielding;
+        private bool _isResting;
 
         public bool BreakingFall { get; private set; }
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
@@ -108,6 +109,7 @@ namespace Lodis.Gameplay
         public float CurrentPhaseShiftRestTime { get => _currentPhaseShiftRestTime; }
         public float DefaultPhaseShiftRestTime { get => _defaultPhaseShiftRestTime; set => _defaultPhaseShiftRestTime = value; }
         public bool IsShielding { get => _isShielding; }
+        public bool IsResting { get => _isResting; }
 
         // Start is called before the first frame update
         void Start()
@@ -120,6 +122,7 @@ namespace Lodis.Gameplay
 
             _knockBack.AddOnTakeDamageAction(StopShield);
             _knockBack.AddOnKnockBackAction(EnableBrace);
+            _movement.AddOnMoveBeginAction(StopShield);
 
             _shieldCollider.OnHit += args => { if (IsParrying) ActivateParryInvinciblity(args); };
         }
@@ -131,15 +134,17 @@ namespace Lodis.Gameplay
 
         public void ActivatePhaseShift(Vector2 moveDirection)
         {
-            if (_isPhaseShifting)
+            if (_isResting)
                 return;
+
+            if (moveDirection.magnitude > 1)
+                moveDirection = new Vector2(moveDirection.x, 0);
 
             _isParrying = false;
             _isShielding = false;
             //Allow the character to parry again
             _canParry = true;
             _isPhaseShifting = true;
-            _isDefending = true;
             _shieldCollider.gameObject.SetActive(false);
 
             _movement.CancelMovement();
@@ -149,63 +154,57 @@ namespace Lodis.Gameplay
             _health.SetIntagibilityByTimer(_phaseShiftDuration);
 
             _onPhaseShift?.Invoke();
-            _movement.AddOnMoveEndTempAction(() => { _isPhaseShifting = false; StartDefenseLag(_currentPhaseShiftRestTime); });
+            _movement.AddOnMoveEndTempAction(() => { _isPhaseShifting = false; StartDefenseLag(_currentPhaseShiftRestTime, _isPhaseShifting); });
         }
 
-        private void StartPhaseShiftLag()
+        private void StartDefenseLag(float time, bool value)
         {
-            _movement.DisableMovement(condition => _isPhaseShifting == false, false);
-            //Start timer for player immobility
-            RoutineBehaviour.Instance.StopAction(_shieldTimer);
-            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isPhaseShifting = false; }, TimedActionCountType.SCALEDTIME, _currentPhaseShiftRestTime);
-        }
+            if (_isResting)
+                return;
 
-        private void StartDefenseLag(float time)
-        {
-            _movement.DisableMovement(condition => _isDefending == false, false);
+            _isResting = true;
+
+            _movement.DisableMovement(condition => _isResting == false, false, true);
             //Start timer for player immobility
             RoutineBehaviour.Instance.StopAction(_shieldTimer);
-            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _isDefending = false; _isPhaseShifting = false; }, TimedActionCountType.SCALEDTIME, time);
+            _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => 
+            { _isResting = false;  value = false; }, TimedActionCountType.SCALEDTIME, time);
         }
 
         /// <summary>
         /// Enables the parry collider and freezes character actions
         /// </summary>
         /// <returns></returns>
-        private void ActivateParry()
+        private void ActivateReflector()
         {
             _shieldCollider.tag = "Reflector";
-            if (BlackBoardBehaviour.Instance.GetPlayerState(gameObject) != "Idle")
-                return;
-
             //Enable parry and update states
             _shieldCollider.gameObject.SetActive(true);
             _canParry = false;
-            _isDefending = true;
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateParry(), TimedActionCountType.SCALEDTIME, _parryLength);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateReflector(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
 
-        private void DeactivateParry()
+        private void DeactivateReflector()
         {
             _shieldCollider.tag = "Untagged";
             _isParrying = false;
             //Allow the character to parry again
             _canParry = true;
-            RoutineBehaviour.Instance.StopAction(_parryTimer);
         }
 
         public void DeactivateShield()
         {
-            DeactivateParry();
-            if (!_shieldCollider.gameObject.activeSelf)
+            if (!_isShielding && !_isParrying)
                 return;
+
+            DeactivateReflector();
 
             //Allow the character to parry again
             _canParry = true;
             _shieldCollider.gameObject.SetActive(false);
             _moveset.EnergyChargeEnabled = true;
-            StartDefenseLag(_groundParryRestTime);
+            StartDefenseLag(_groundParryRestTime, _isShielding);
         }
 
         /// <summary>
@@ -214,11 +213,12 @@ namespace Lodis.Gameplay
         /// </summary>
         public void BeginParry()
         {
-            if (_parryTimer?.GetEnabled() == true)
+            if (!_canParry || BlackBoardBehaviour.Instance.GetPlayerState(_shieldCollider.Owner) != "Idle")
                 return;
 
             _isParrying = true;
-            _parryTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { if (_canParry && _knockBack.CheckIfIdle()) ActivateParry(); }, TimedActionCountType.SCALEDTIME, _parryStartUpTime);
+            _movement.CancelMovement();
+            ActivateReflector();
         }
 
         /// <summary>
@@ -228,12 +228,13 @@ namespace Lodis.Gameplay
         public void StopShield()
         {
             if (_knockBack.CheckIfIdle())
-                DeactivateParry();
+                DeactivateReflector();
 
             RoutineBehaviour.Instance.StopAction(_parryTimer);
             RoutineBehaviour.Instance.StopAction(_shieldTimer);
             _shieldCollider.gameObject.SetActive(false);
-            _isDefending = false;
+            _isShielding = false;
+            _isResting = false;
             _isParrying = false;
             _canParry = true;
         }
@@ -443,6 +444,7 @@ namespace Lodis.Gameplay
         {
             _isShielding = !_isParrying && _shieldCollider.gameObject.activeSelf;
 
+            _isDefending = _isShielding || _isPhaseShifting || _isParrying;
             if (!_isShielding)
             {
                 _moveset.EnergyChargeEnabled = true;
@@ -453,8 +455,6 @@ namespace Lodis.Gameplay
 
             if (!_moveset.TryUseEnergy(_shieldDrainValue.Value * Time.deltaTime))
                 DeactivateShield();
-
-
         }
     }
 }

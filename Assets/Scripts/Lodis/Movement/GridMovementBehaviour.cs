@@ -75,6 +75,9 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("The amount speed will be reduced when moving from an opponent panel.")]
         private float _opponentPanelSpeedReduction;
+        [SerializeField]
+        [Tooltip("If true the object will be allowed to move diagonally on the grid.")]
+        private bool _canMoveDiagonally;
         private bool _searchingForSafePanel;
 
         /// <summary>
@@ -455,6 +458,9 @@ namespace Lodis.Movement
             else if (canCancelMovement && IsMoving)
                 StopAllCoroutines();
 
+            if (!_canMoveDiagonally && panelPosition.x != _position.x && panelPosition.y != _position.y)
+                panelPosition.y = _position.y;
+
             //If it's not possible to move to the panel at the given position, return false.
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition || canBeOccupied, tempAlignment))
                 return false;
@@ -517,6 +523,9 @@ namespace Lodis.Movement
             if (IsMoving && !canCancelMovement ||!_canMove)
                 return false;
 
+            if (!_canMoveDiagonally && x != _position.x && y != _position.y)
+                y = (int)_position.y;
+
             //If it's not possible to move to the panel at the given position, return false.
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, _position == new Vector2( x,y), tempAlignment))
                 return false;
@@ -578,6 +587,16 @@ namespace Lodis.Movement
 
             if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
                 return false;
+
+            //To Do: This section should make this function prevent diagonal movement based on the "_canMoveDiagonally" boolean
+            Vector2 targetPosition = targetPanel.Position;
+            if (!_canMoveDiagonally && targetPosition.x != _position.x && targetPosition.y != _position.y)
+            {
+                targetPosition.y = _position.y;
+                //If it's not possible to move to the panel at the given position, return false.
+                if (!BlackBoardBehaviour.Instance.Grid.GetPanel((int)targetPosition.x, (int)targetPosition.y, out targetPanel, _position == new Vector2(targetPosition.x, targetPosition.y), tempAlignment))
+                    return false;
+            }
 
             _previousPanel = _currentPanel;
             _targetPanel = targetPanel;

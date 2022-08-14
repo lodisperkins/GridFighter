@@ -88,6 +88,7 @@ namespace Lodis.Gameplay
                 return;
 
             Vector2 direction = (Vector2)args[1];
+            direction.x = 0;
             _ownerMoveScript.StartCoroutine(Shoot(direction));
         }
     }

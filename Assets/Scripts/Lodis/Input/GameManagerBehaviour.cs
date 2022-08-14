@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine.InputSystem.Utilities;
 using Lodis.Utility;
 using Lodis.Input;
+using DG.Tweening;
 
 namespace Lodis.Gameplay
 {
@@ -103,6 +104,7 @@ namespace Lodis.Gameplay
             _grid.CreateGrid();
             Application.targetFrameRate = _targetFrameRate;
 
+            Time.timeScale = _timeScale;
             SpawnEntitiesByMode();
         }
 
@@ -113,8 +115,7 @@ namespace Lodis.Gameplay
         /// <param name="time">The amount of time the game will stay in the temporary time scale.</param>
         public void ChangeTimeScale(float newTimeScale, float time)
         {
-            _timeScale = newTimeScale;
-            RoutineBehaviour.Instance.StartNewTimedAction(args => _timeScale = 1, TimedActionCountType.UNSCALEDTIME, time);
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, time).SetUpdate(true).onComplete += () => Time.timeScale = 1;
         }
 
         private void SpawnEntitiesByMode()
@@ -295,7 +296,7 @@ namespace Lodis.Gameplay
                 }
             }
 
-            Time.timeScale = _timeScale;
+            Debug.Log(_timeScale);
         }
     }
 
