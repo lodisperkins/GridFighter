@@ -521,6 +521,42 @@ namespace Lodis.GridScripts
         }
 
         /// <summary>
+        /// Finds and outputs the panel that makes the given condition true.
+        /// </summary>
+        /// <param name="panel">The panel reference to output to.</param>
+        /// <param name="player">The player whose panels will be searched. Searches through all panels if null.</param>
+        /// <returns>Returns true if the panel is found in the list and custom condition is met.</returns>
+        public bool GetPanel(Condition customCondition, out PanelBehaviour panel, GameObject player = null)
+        { 
+            panel = null;
+
+            if (_panels == null)
+                return false;
+
+            int xMin = 0;
+            int xMax = (int)Dimensions.x;
+
+            if (player == BlackBoardBehaviour.Instance.Player1)
+                xMax = TempMaxColumns;
+            else if (player == BlackBoardBehaviour.Instance.Player2)
+                xMin = TempMaxColumns;
+
+            for (int x = xMin; x < xMax; x++)
+            {
+                for (int y = 0; y < Dimensions.y; y++)
+                {
+                    if (customCondition(_panels[x,y]))
+                    {
+                        panel = _panels[x, y];
+                        return true;
+                    }    
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Gets the panel that is closest to the given location in the world
         /// </summary>
         /// <param name="location">The location to look for the panel in world space</param>

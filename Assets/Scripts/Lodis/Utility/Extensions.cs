@@ -44,5 +44,10 @@ namespace Lodis.Utility
         {
             return slider.value == slider.maxValue;
         }
+
+        public static bool GetIsPrefab(this GameObject gameObject)
+        {
+            return gameObject.scene.rootCount == 0;
+        }
     }
 }

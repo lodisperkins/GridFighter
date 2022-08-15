@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using System.Diagnostics;
 using System.Reflection;
 using Lodis.ScriptableObjects;
+using Lodis.Utility;
 
 namespace Lodis.Movement
 {
@@ -59,6 +60,7 @@ namespace Lodis.Movement
         [SerializeField]
         private bool _canBeWalkedThrough = false;
         private PanelBehaviour _previousPanel;
+        private float _heightOffset;
         private KnockbackBehaviour _knockbackBehaviour;
         private MeshFilter _meshFilter;
         private Collider _collider;
@@ -79,6 +81,8 @@ namespace Lodis.Movement
         [Tooltip("If true the object will be allowed to move diagonally on the grid.")]
         private bool _canMoveDiagonally;
         private bool _searchingForSafePanel;
+        private ParticleSystem _returnEffect;
+        private SkinnedMeshRenderer _renderer;
 
         /// <summary>
         /// Whether or not this object should move to its current panel when spawned
@@ -104,6 +108,11 @@ namespace Lodis.Movement
             get { return _speed; }
             set { _speed = value; }
         }
+
+        /// <summary>
+        /// How long it would take this object to travel to a panel based on its speed
+        /// </summary>
+        public float TravelTime { get => 1 / Speed; }
 
         /// <summary>
         /// The current panel this object is resting on
@@ -222,7 +231,7 @@ namespace Lodis.Movement
         private void Awake()
         {
             _maxYPosition = (FloatVariable)Resources.Load("ScriptableObjects/MaxYPosition");
-
+            _returnEffect = ((GameObject)Resources.Load("Effects/Teleport")).GetComponent<ParticleSystem>();
             //initialize events
             _moveEnabledEventListener = GetComponent<GridGame.GameEventListener>();
             _moveDisabledEventListener = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
@@ -231,6 +240,8 @@ namespace Lodis.Movement
             _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _onMoveEndTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
+            _renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+
             //Set the starting position
             _targetPosition = transform.position;
             _meshFilter = GetComponent<MeshFilter>();
@@ -253,8 +264,11 @@ namespace Lodis.Movement
             //else
             //    Debug.LogError(name + " could not find starting panel");
 
-            //if (_knockbackBehaviour)
-            //    _knockbackBehaviour.AddOnKnockBackAction(() => SetIsMoving(false));
+            //Adding the height ensures the gameObject is not placed inside the panel.
+            if (!_meshFilter)
+                _heightOffset = transform.localScale.y / 2;
+            else
+                _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
             _tempAlignment = _defaultAlignment;
         }
@@ -468,14 +482,9 @@ namespace Lodis.Movement
             _previousPanel = _currentPanel;
 
             //Sets the new position to be the position of the panel added to half the gameObjects height.
-            //Adding the height ensures the gameObject is not placed inside the panel.
-            float offset = 0;
-            if (!_meshFilter)
-                offset = transform.localScale.y / 2;
-            else
-                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+            
 
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, _heightOffset, 0);
             _targetPosition = newPosition;
 
             MoveDirection = (panelPosition - _position).normalized;
@@ -658,13 +667,13 @@ namespace Lodis.Movement
 
             //Sets the new position to be the position of the panel added to half the gameObjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            float offset = 0;
+            float _heightOffset = 0;
             if (!_meshFilter)
-                offset = transform.localScale.y / 2;
+                _heightOffset = transform.localScale.y / 2;
             else
-                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+                _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
+            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, _heightOffset, 0);
             _targetPosition = newPosition;
 
 
@@ -682,54 +691,77 @@ namespace Lodis.Movement
             _position = _currentPanel.Position;
         }
 
+        private void SpawnTeleportEffect()
+        {
+            //Offset the particles so they spawn at the players location
+            Vector3 offset = (Vector3.right * _targetTolerance * transform.forward.x) + Vector3.back * 0.2f + Vector3.up;
+
+            //Sets the y position so that the effect is at the players center
+            if (!_meshFilter)
+                offset.y = transform.localScale.y / 2;
+            else
+                offset.y = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            //Spawns the effect and makes it face the camera
+            Instantiate(_returnEffect, transform.position + offset, Camera.main.transform.rotation);
+        }
+
+
         /// <summary>
         /// Finds the closest panel that matchers this objects alignment and moves towards it
         /// </summary>
         public void MoveToClosestAlignedPanelOnRow()
         {
 
-            if (!_moveToAlignedSideIfStuck || _currentPanel.Alignment == Alignment || TargetPanel.Alignment == Alignment 
-                || !CanMove || Alignment == GridAlignment.ANY || Alignment != _tempAlignment || _searchingForSafePanel)
+            if (!_moveToAlignedSideIfStuck || _currentPanel?.Alignment == Alignment || TargetPanel?.Alignment == Alignment 
+                || !CanMove || Alignment == GridAlignment.ANY || _searchingForSafePanel || IsMoving)
                 return;
 
             //NEEDS BETTER IMPLEMENTATION
 
-            int panelsEvaluated = 0;
+            _searchingForSafePanel = true;
             int offSet = 0;
             float defaultMoveSpeed = _speed;
             PanelBehaviour panel = null;
 
+            CancelMovement();
             _speed = _opponentPanelSpeedReduction;
-            AddOnMoveEndTempAction(() => 
+
+            AddOnMoveBeginTempAction(() => 
+            { 
+                if (offSet <= 1) 
+                    return;
+
+                SpawnTeleportEffect();
+                _renderer.enabled = false;
+            });
+
+            RoutineBehaviour.Instance.StartNewConditionAction(args => 
             {
-                _speed = defaultMoveSpeed; _searchingForSafePanel = false;
-            }
+                _speed = defaultMoveSpeed;
+                _searchingForSafePanel = false;
+                if (offSet > 1)
+                    SpawnTeleportEffect();
+                _renderer.enabled = true;
+            },  
+            condition => _currentPanel?.Alignment == _defaultAlignment && transform.position == panel?.transform.position + Vector3.up * _heightOffset
             );
 
-            while (panelsEvaluated <= BlackBoardBehaviour.Instance.Grid.Dimensions.x * BlackBoardBehaviour.Instance.Grid.Dimensions.y)
+            for (int i = 0; i < BlackBoardBehaviour.Instance.Grid.Dimensions.x * BlackBoardBehaviour.Instance.Grid.Dimensions.y; i ++)
             {
-                _searchingForSafePanel = true;
-                if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.left * offSet, out panel, false, Alignment))
+                BlackBoardBehaviour.Instance.Grid.GetPanel(args =>
+                {
+                    return Vector2.Distance(((PanelBehaviour)args[0]).Position, _currentPanel.Position) <= offSet;
+                }, 
+                out panel, gameObject
+                );
+
+                if (panel != null)
                 {
                     MoveToPanel(panel);
+                    _searchingForSafePanel = false;
                     return;
                 }
-                else if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.right * offSet, out panel, false, Alignment))
-                {
-                    MoveToPanel(panel);
-                    return;
-                }
-                else if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.up * offSet, out panel, false, Alignment))
-                {
-                    MoveToPanel(panel);
-                    return;
-                }
-                else if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position + Vector2.down * offSet, out panel, false, Alignment))
-                {
-                    MoveToPanel(panel);
-                    return;
-                }
-                panelsEvaluated += 4;
                 offSet++;
             }
 
@@ -774,31 +806,27 @@ namespace Lodis.Movement
 
         private void Update()
         {
-            if (_canMove)
+            if (!_canMove && _movementEnableCheck?.Invoke() == false)
+                return;
+            else if (_movementEnableCheck?.Invoke() == true)
             {
+                _movementEnableCheck = null;
+                _canMove = true;
+                _isMoving = false;
+                _moveEnabledEventListener.Invoke(gameObject);
+            }
+
+            MoveToClosestAlignedPanelOnRow();
+
+            if (transform.position != _currentPanel?.transform.position + Vector3.up *_heightOffset || _searchingForSafePanel)
                 MoveToCurrentPanel();
 
-                SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
+            SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
 
-
-                if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
-                    transform.rotation = Quaternion.Euler(0, -90, 0);
-                else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
-                    transform.rotation = Quaternion.Euler(0, 90, 0);
-            }
-            else if (_movementEnableCheck != null)
-            {
-                if (_movementEnableCheck.Invoke())
-                {
-                    _movementEnableCheck = null;
-                    _canMove = true;
-                    _isMoving = false;
-                    _moveEnabledEventListener.Invoke(gameObject);
-                }
-            }
-
-            
-            MoveToClosestAlignedPanelOnRow();
+            if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
+                transform.rotation = Quaternion.Euler(0, -90, 0);
+            else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
+                transform.rotation = Quaternion.Euler(0, 90, 0);
         }
     }
 }

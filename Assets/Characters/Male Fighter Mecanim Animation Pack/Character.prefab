@@ -136,7 +136,7 @@ MonoBehaviour:
   _moveOnStart: 1
   _checkIfBehindBarrier: 0
   _isBehindBarrier: 0
-  _opponentPanelSpeedReduction: 10
+  _opponentPanelSpeedReduction: 7
   _canMoveDiagonally: 0
 --- !u!54 &5308582277602069232
 Rigidbody:
@@ -1594,6 +1594,10 @@ PrefabInstance:
     - target: {fileID: 9500000, guid: 3067d36b7321e7842932d94ad2dbd80b, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 13700002, guid: 3067d36b7321e7842932d94ad2dbd80b, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 13700002, guid: 3067d36b7321e7842932d94ad2dbd80b, type: 3}
       propertyPath: m_Materials.Array.data[0]

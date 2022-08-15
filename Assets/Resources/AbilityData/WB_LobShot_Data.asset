@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: LobShot
   AbilityType: 3
-  timeActive: 0.1
+  timeActive: 0.05
   recoverTime: 0.3
   startUpTime: 0.1
   chargeTime: 1
