@@ -164,6 +164,9 @@ namespace Lodis.Gameplay
 
             _isResting = true;
 
+            if (_isPhaseShifting)
+                time = _currentPhaseShiftRestTime;
+
             _movement.DisableMovement(condition => _isResting == false, false, true);
             //Start timer for player immobility
             RoutineBehaviour.Instance.StopAction(_shieldTimer);

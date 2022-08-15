@@ -139,7 +139,7 @@ MonoBehaviour:
   _character: {fileID: 1858526886470613209}
   _canMove: 1
   _holdToMove: 1
-  _holdSpeed: 8
+  _holdSpeed: 7
   _minChargeLimit: 0.15
   _maxChargeTime: 5
   _attackDirectionBufferClearTime: 0.05

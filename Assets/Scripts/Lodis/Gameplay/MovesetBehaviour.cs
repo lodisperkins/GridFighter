@@ -271,7 +271,7 @@ namespace Lodis.Gameplay
         {
 
             //Ignore player input if they aren't in a state that can attack
-            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && abilityType != AbilityType.BURST)
+            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && _stateMachineScript.StateMachine.CurrentState != "Moving" && abilityType != AbilityType.BURST)
                 return null;
             else if (abilityType == AbilityType.BURST && !_canBurst)
                 return null;

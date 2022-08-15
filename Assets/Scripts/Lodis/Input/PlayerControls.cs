@@ -60,7 +60,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 },
                 {
                     ""name"": ""AttackDirection"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""598d27b6-e9e6-474f-8b35-b9db0ea692ca"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",

@@ -296,7 +296,6 @@ namespace Lodis.Gameplay
                 }
             }
 
-            Debug.Log(_timeScale);
         }
     }
 

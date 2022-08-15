@@ -92,7 +92,6 @@ namespace Lodis.Input
         [SerializeField]
         private bool _inputDisabled;
         private BufferedInput _bufferedAction;
-        private string _playerState;
         private Ability _lastAbilityUsed = null;
         private bool _attackButtonDown;
         [SerializeField]
@@ -101,7 +100,7 @@ namespace Lodis.Input
         private List<InputDevice> _devices = new List<InputDevice>();
         private bool _canBufferDefense;
         private float _defaultSpeed;
-
+        private CharacterStateMachineBehaviour _stateMachineBehaviour;
         public List<InputDevice> Devices 
         {
             get { return _devices; }
@@ -144,7 +143,7 @@ namespace Lodis.Input
         {
             _playerControls = new PlayerControls();
             //Initialize action delegates
-
+            _stateMachineBehaviour = GetComponentInChildren<CharacterStateMachineBehaviour>();
             //Movement input
             if (!_holdToMove)
             {
@@ -231,7 +230,7 @@ namespace Lodis.Input
                 float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
                 args[0] = powerScale;
-                _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); }, condition => _moveset.GetCanUseAbility() && (_playerState == "Idle" || _playerState == "Attacking"), 0.2f);
+                _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); }, condition => _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"), 0.2f);
                 _abilityBuffered = true;
                 return;
             }
@@ -239,7 +238,7 @@ namespace Lodis.Input
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); }, 
                 condition =>
-                { return _moveset.GetCanUseAbility() && (_playerState == "Idle" || _playerState == "Attacking"); }, 0.2f);
+                { return _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"); }, 0.2f);
             _abilityBuffered = true;
         }
 
@@ -281,7 +280,7 @@ namespace Lodis.Input
                 return;
 
             Vector2 direction = (Vector2)args[0];
-            _bufferedAction = new BufferedInput(action => _defense.ActivatePhaseShift(_attackDirection), condition => _playerState == "Idle" || _playerState == "Moving", 0.2f);
+            _bufferedAction = new BufferedInput(action => _defense.ActivatePhaseShift(_attackDirection), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving", 0.2f);
         }
 
         private void RemoveShieldFromBuffer()
@@ -298,12 +297,12 @@ namespace Lodis.Input
         {
             if (_attackButtonDown || _defense.IsPhaseShifting || _playerControls.Player.Move.ReadValue<Vector2>().magnitude != 0)
                 return;
-            else if (_bufferedAction == null && (_playerState == "Idle" || _playerState == "Moving"))
-                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _playerState == "Idle", 0.2f);
+            else if (_bufferedAction == null && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"))
+                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle", 0.2f);
             else if (_bufferedAction == null)
                 return;
-            else if (!_bufferedAction.HasAction() && (_playerState == "Idle" || _playerState == "Moving"))
-                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _playerState == "Idle", 0.2f);
+            else if (!_bufferedAction.HasAction() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"))
+                _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle", 0.2f);
         }
 
         /// <summary>
@@ -374,9 +373,9 @@ namespace Lodis.Input
         public bool EnableMovement()
         {
             //Don't enable if player is in knockback or in free fall
-            if (_playerState == "Tumbling" || _playerState == "FreeFall")
+            if (_stateMachineBehaviour.StateMachine.CurrentState == "Tumbling" || _stateMachineBehaviour.StateMachine.CurrentState == "FreeFall")
             {
-                _moveInputEnableCondition = condition => _playerState == "Idle";
+                _moveInputEnableCondition = condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle";
                 return false;
             }
             _canMove = true;
@@ -433,7 +432,6 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
-            _playerState = BlackBoardBehaviour.Instance.GetPlayerStateFromID(PlayerID);
 
             //Checks to see if input can be enabled 
             if (_inputEnableCondition != null)
@@ -470,6 +468,7 @@ namespace Lodis.Input
             //If there is a direction input, update the attack direction buffer and the time of input
             if (attackDirInput.magnitude > 0)
             {
+                Debug.Log(attackDirInput);
                 _attackDirection = attackDirInput;
                 _timeOfLastDirectionInput = Time.time;
             }
