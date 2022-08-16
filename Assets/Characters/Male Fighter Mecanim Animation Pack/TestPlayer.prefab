@@ -139,7 +139,7 @@ MonoBehaviour:
   _character: {fileID: 1858526886470613209}
   _canMove: 1
   _holdToMove: 1
-  _holdSpeed: 7
+  _holdSpeed: 8
   _minChargeLimit: 0.15
   _maxChargeTime: 5
   _attackDirectionBufferClearTime: 0.05
@@ -153,6 +153,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2765739998997917291}
     m_Modifications:
+    - target: {fileID: 1959598720044943054, guid: 3b468cd3507bb6643a07d12c77fe9833,
+        type: 3}
+      propertyPath: _opponentPanelSpeedReduction
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1959598720044943058, guid: 3b468cd3507bb6643a07d12c77fe9833,
         type: 3}
       propertyPath: m_RootOrder

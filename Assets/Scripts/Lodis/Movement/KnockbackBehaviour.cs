@@ -402,7 +402,6 @@ namespace Lodis.Movement
             //Adds damage to the total damage
             Health += info.Damage;
 
-            ActivateHitStunByTimer(info.HitStunTime);
 
             _onTakeDamage?.Invoke();
             _onTakeDamageTemp?.Invoke();
@@ -415,6 +414,8 @@ namespace Lodis.Movement
             Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, info.HitAngle);
             if (info.HitStunTime > 0)
                 _isFlinching = true;
+
+            ActivateHitStunByTimer(info.HitStunTime);
 
             //Snaps movement to the next panel to prevent the player from being launched between panels
             if (_movementBehaviour.IsMoving)

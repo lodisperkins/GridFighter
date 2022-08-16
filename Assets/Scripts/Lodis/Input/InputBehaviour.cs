@@ -416,17 +416,19 @@ namespace Lodis.Input
         private void CheckMoveInput()
         {
             Vector2 newMoveInput = _playerControls.Player.Move.ReadValue<Vector2>();
-
+            if (newMoveInput == Vector2.zero)
+                return;
 
             if (_holdToMove && _storedMoveInput == newMoveInput)
                 _gridMovement.Speed = _holdSpeed;
-            else
+            else if (_stateMachineBehaviour.StateMachine.CurrentState != "Moving")
                 _gridMovement.Speed = _defaultSpeed;
 
             _storedMoveInput = newMoveInput;
-
             if (_storedMoveInput.magnitude == 1 && _canMove)
                 _gridMovement.MoveToPanel(_gridMovement.Position + _storedMoveInput);
+
+            Debug.Log(_gridMovement.Speed);
         }
 
         // Update is called once per frame

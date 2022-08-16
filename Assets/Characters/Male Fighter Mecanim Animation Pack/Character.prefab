@@ -125,7 +125,7 @@ MonoBehaviour:
   _position: {x: 5, y: 0}
   _targetTolerance: 0.05
   _moveDirection: {x: 1, y: 0}
-  _speed: 10
+  _speed: 8
   _isMoving: 0
   _canMove: 1
   canCancelMovement: 0

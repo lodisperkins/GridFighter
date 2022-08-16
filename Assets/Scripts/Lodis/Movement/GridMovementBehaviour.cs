@@ -107,7 +107,10 @@ namespace Lodis.Movement
         public float Speed
         {
             get { return _speed; }
-            set { _speed = value; }
+            set 
+            {
+                _speed = value;
+            }
         }
 
         /// <summary>
@@ -430,25 +433,6 @@ namespace Lodis.Movement
             }
         }
 
-        /// <summary>
-        /// Gradually moves the gameObject from its current position to the position given.
-        /// </summary>
-        /// <param name="newPosition"></param>
-        /// <returns></returns>
-        private IEnumerator LerpPosition(Vector3 newPosition)
-        {
-            float lerpVal = 0;
-            Vector3 startPosition = transform.position;
-
-            while (transform.position != newPosition)
-            {
-                //Sets the current position to be the current position in the interpolation
-                transform.position = Vector3.Lerp(startPosition, newPosition, lerpVal += Time.deltaTime * _speed);
-                //Waits until the next fixed update before resuming to be in line with any physics calls
-                yield return new WaitForFixedUpdate();
-            }
-        }
-
         private void ResetMovementValues()
         {
             if (CurrentPanel)
@@ -458,6 +442,21 @@ namespace Lodis.Movement
             _tempAlignment = Alignment;
         }
 
+        /// <summary>
+        /// Gradually moves the gameObject from its current position to the position given.
+        /// </summary>
+        /// <param name="newPosition"></param>
+        /// <returns></returns>
+        private void LerpPosition(Vector3 newPosition)
+        {
+            if (_moveTween?.active == true)
+                _moveTween.ChangeEndValue(newPosition, true);
+            else
+            {
+                _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed).SetEase(Ease.Linear);
+                _moveTween.onComplete = ResetMovementValues;
+            }
+        }
 
         /// <summary>
         /// Moves the gameObject from its current panel to the panel at the given position.
@@ -503,13 +502,7 @@ namespace Lodis.Movement
             }
             else
             {
-                if (_moveTween?.active == true)
-                    _moveTween.ChangeEndValue(newPosition, true);
-                else
-                {
-                    _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
-                    _moveTween.onComplete = ResetMovementValues;
-                }
+                LerpPosition(newPosition);
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -574,13 +567,7 @@ namespace Lodis.Movement
             }
             else
             {
-                if (_moveTween?.active == true)
-                    _moveTween.ChangeEndValue(newPosition, true);
-                else
-                {
-                    _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
-                    _moveTween.onComplete = ResetMovementValues;
-                }
+                LerpPosition(newPosition);
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -650,13 +637,7 @@ namespace Lodis.Movement
             }
             else
             {
-                if (_moveTween?.active == true)
-                    _moveTween.ChangeEndValue(newPosition, true);
-                else
-                {
-                    _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
-                    _moveTween.onComplete = ResetMovementValues;
-                }
+                LerpPosition(newPosition);
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -762,15 +743,15 @@ namespace Lodis.Movement
                 _renderer.enabled = false;
             });
 
-            RoutineBehaviour.Instance.StartNewConditionAction(args => 
+            RoutineBehaviour.Instance.StartNewConditionAction(args =>
             {
                 _speed = defaultMoveSpeed;
                 _searchingForSafePanel = false;
                 if (offSet > 1)
                     SpawnTeleportEffect();
                 _renderer.enabled = true;
-            },  
-            condition => _currentPanel?.Alignment == _defaultAlignment && transform.position == panel?.transform.position + Vector3.up * _heightOffset
+            },
+            condition => !IsMoving
             );
 
             for (int i = 0; i < BlackBoardBehaviour.Instance.Grid.Dimensions.x * BlackBoardBehaviour.Instance.Grid.Dimensions.y; i ++)
@@ -844,10 +825,14 @@ namespace Lodis.Movement
 
             MoveToClosestAlignedPanelOnRow();
 
-            if (transform.position != _currentPanel?.transform.position + Vector3.up *_heightOffset || _searchingForSafePanel)
+            if (!_currentPanel)
+                return;
+
+            if (transform.position != _currentPanel.transform.position + Vector3.up *_heightOffset || _searchingForSafePanel)
                 MoveToCurrentPanel();
 
             SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
+
 
             if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
                 transform.rotation = Quaternion.Euler(0, -90, 0);
