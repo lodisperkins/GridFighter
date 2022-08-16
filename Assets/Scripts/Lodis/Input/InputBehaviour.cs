@@ -468,7 +468,6 @@ namespace Lodis.Input
             //If there is a direction input, update the attack direction buffer and the time of input
             if (attackDirInput.magnitude > 0)
             {
-                Debug.Log(attackDirInput);
                 _attackDirection = attackDirInput;
                 _timeOfLastDirectionInput = Time.time;
             }

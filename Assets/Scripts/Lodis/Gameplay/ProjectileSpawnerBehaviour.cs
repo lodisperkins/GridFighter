@@ -52,7 +52,6 @@ namespace Lodis.Gameplay
             if (physics == null)
             {
                 physics = temp.AddComponent<GridPhysicsBehaviour>();
-                physics.MovementBehaviour.enabled = false;
             }
 
             physics.FaceHeading = faceHeading;

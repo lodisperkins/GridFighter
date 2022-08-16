@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
+using DG.Tweening;
 
 namespace Lodis.Movement
 {
@@ -67,7 +68,7 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("If true, the object will instantly move to its current position when the start function is called.")]
         private bool _moveOnStart = true;
-        private Coroutine _moveRoutine;
+        private Tweener _moveTween;
         [SerializeField]
         [Tooltip("If true, the object will cast a ray to check if it is currently behind a barrier.")]
         private bool _checkIfBehindBarrier;
@@ -446,13 +447,17 @@ namespace Lodis.Movement
                 //Waits until the next fixed update before resuming to be in line with any physics calls
                 yield return new WaitForFixedUpdate();
             }
+        }
 
+        private void ResetMovementValues()
+        {
             if (CurrentPanel)
                 CurrentPanel.Occupied = !CanBeWalkedThrough;
 
             MoveDirection = Vector2.zero;
             _tempAlignment = Alignment;
         }
+
 
         /// <summary>
         /// Moves the gameObject from its current panel to the panel at the given position.
@@ -480,9 +485,8 @@ namespace Lodis.Movement
                 return false;
 
             _previousPanel = _currentPanel;
-
             //Sets the new position to be the position of the panel added to half the gameObjects height.
-            
+
 
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, _heightOffset, 0);
             _targetPosition = newPosition;
@@ -499,7 +503,13 @@ namespace Lodis.Movement
             }
             else
             {
-                _moveRoutine = StartCoroutine(LerpPosition(newPosition));
+                if (_moveTween?.active == true)
+                    _moveTween.ChangeEndValue(newPosition, true);
+                else
+                {
+                    _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
+                    _moveTween.onComplete = ResetMovementValues;
+                }
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -564,7 +574,13 @@ namespace Lodis.Movement
             }
             else
             {
-                _moveRoutine = StartCoroutine(LerpPosition(newPosition));
+                if (_moveTween?.active == true)
+                    _moveTween.ChangeEndValue(newPosition, true);
+                else
+                {
+                    _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
+                    _moveTween.onComplete = ResetMovementValues;
+                }
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -606,7 +622,6 @@ namespace Lodis.Movement
                 if (!BlackBoardBehaviour.Instance.Grid.GetPanel((int)targetPosition.x, (int)targetPosition.y, out targetPanel, _position == new Vector2(targetPosition.x, targetPosition.y), tempAlignment))
                     return false;
             }
-
             _previousPanel = _currentPanel;
             _targetPanel = targetPanel;
 
@@ -635,7 +650,13 @@ namespace Lodis.Movement
             }
             else
             {
-                _moveRoutine = StartCoroutine(LerpPosition(newPosition));
+                if (_moveTween?.active == true)
+                    _moveTween.ChangeEndValue(newPosition, true);
+                else
+                {
+                    _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
+                    _moveTween.onComplete = ResetMovementValues;
+                }
             }
 
             //Sets the current panel to be unoccupied if it isn't null
@@ -676,8 +697,13 @@ namespace Lodis.Movement
             Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, _heightOffset, 0);
             _targetPosition = newPosition;
 
-
-            _moveRoutine = StartCoroutine(LerpPosition(newPosition));
+            if (_moveTween?.active == true)
+                _moveTween.ChangeEndValue(newPosition, true);
+            else
+            {
+                _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
+                _moveTween.onComplete = ResetMovementValues;
+            }
 
             MoveDirection = (_currentPanel.Position - _position).normalized;
 
@@ -772,10 +798,10 @@ namespace Lodis.Movement
         /// </summary>
         public void CancelMovement()
         {
-            if (!IsMoving || _moveRoutine == null)
+            if (!IsMoving || _moveTween == null)
                 return;
 
-            StopCoroutine(_moveRoutine);
+            _moveTween.Kill();
             _currentPanel.Occupied = false;
             _currentPanel = PreviousPanel;
             _currentPanel.Occupied = !CanBeWalkedThrough;

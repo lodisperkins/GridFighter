@@ -60,8 +60,7 @@ namespace Lodis.GridScripts
                 return;
 
             //Calculate and apply friction force
-            Vector3 frictionForce = new Vector3(physics.Mass * physics.LastVelocity.x, 0, 0).normalized * _friction;
-            physics.ApplyForce(-frictionForce);
+            physics.ApplyForce(_friction * (physics.LastVelocity.x / Mathf.Abs(physics.LastVelocity.x) * Vector3.right));
         }
     }
 }

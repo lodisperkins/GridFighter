@@ -13,7 +13,7 @@ namespace Lodis.Movement
 {
     public delegate void ForceAddedEvent(params object[] args);
 
-    [RequireComponent(typeof(GridMovementBehaviour))]
+
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(ConstantForce))]
     public class GridPhysicsBehaviour : MonoBehaviour
@@ -73,6 +73,7 @@ namespace Lodis.Movement
         private CollisionEvent _onCollisionWithGround;
 
         private ForceAddedEvent _onForceAdded;
+        private ForceAddedEvent _onForceStart;
         private ForceAddedEvent _onForceAddedTemp;
 
 
@@ -138,6 +139,9 @@ namespace Lodis.Movement
         // Start is called before the first frame update
         void Start()
         {
+            if (!_movementBehaviour)
+                return;
+
             _movementBehaviour.AddOnMoveBeginAction(() =>
             { RB.isKinematic = true; });
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
@@ -533,15 +537,15 @@ namespace Lodis.Movement
 
             RB.isKinematic = false;
 
-            if (_movementBehaviour.IsMoving)
+            if (_movementBehaviour?.IsMoving == true)
             {
                 _movementBehaviour.canCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
                 _movementBehaviour.canCancelMovement = false;
+                
+                if (disableMovement)
+                    _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
-
-            if (disableMovement)
-                _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             RB.AddForce(force, ForceMode.VelocityChange);
             _lastVelocity = force;
@@ -566,15 +570,15 @@ namespace Lodis.Movement
 
             RB.isKinematic = false;
 
-            if (_movementBehaviour.IsMoving)
+            if (_movementBehaviour?.IsMoving == true)
             {
                 _movementBehaviour.canCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
                 _movementBehaviour.canCancelMovement = false;
-            }
 
-            if (disableMovement)
-                _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
+                if (disableMovement)
+                    _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
+            }
 
             RB.AddForce(force / Mass, ForceMode.Force);
             _lastForceAdded = force / Mass;
@@ -598,19 +602,19 @@ namespace Lodis.Movement
             if (IgnoreForces)
                 return;
 
-            if (_movementBehaviour.IsMoving)
+            if (_movementBehaviour?.IsMoving == true)
             {
                 _movementBehaviour.canCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
                 _movementBehaviour.canCancelMovement = false;
+
+                if (disableMovement)
+                    _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
             RB.isKinematic = false;
 
             _objectAtRest = false;
-
-            if (disableMovement)
-                _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
 
             RB.AddForce(force / Mass, ForceMode.Impulse);
             
