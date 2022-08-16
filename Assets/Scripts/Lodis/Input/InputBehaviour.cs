@@ -161,6 +161,7 @@ namespace Lodis.Input
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
             _playerControls.Player.UnblockableAttack.started += BufferUnblockableAbility;
             _playerControls.Player.Burst.started += BufferBurst;
+            _playerControls.Player.Shuffle.started += BufferShuffle;
 
             //Defense input
             _playerControls.Player.Parry.started += context => { BufferShield(); _defense.Brace();};
@@ -272,6 +273,14 @@ namespace Lodis.Input
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
             _abilityBuffered = true;
+        }
+
+        private void BufferShuffle(InputAction.CallbackContext context)
+        {
+            if (_moveset.LoadingShuffle || _moveset.DeckReloading)
+                return;
+
+            _bufferedAction = new BufferedInput(action => _moveset.ManualShuffle(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving", 0.2f);
         }
 
         private void BufferPhaseShift(InputAction.CallbackContext context, params object[] args)

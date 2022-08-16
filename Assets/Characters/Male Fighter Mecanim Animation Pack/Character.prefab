@@ -273,6 +273,7 @@ MonoBehaviour:
   _energyChargeEnabled: 1
   _canBurst: 0
   _burstChargeTime: 20
+  _shuffleWaitTime: 2.01
 --- !u!75 &8944881979825174333
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -481,7 +482,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 566.55566, y: 564.1109}
+    - position: {x: 641.55566, y: 565.1109}
       id: Attacking
       onEnterState:
         m_PersistentCalls:
@@ -563,6 +564,17 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
+      onExitState:
+        m_PersistentCalls:
+          m_Calls: []
+      onUpdateState:
+        m_PersistentCalls:
+          m_Calls: []
+    - position: {x: 493.65216, y: 522.2718}
+      id: Shuffling
+      onEnterState:
+        m_PersistentCalls:
+          m_Calls: []
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -903,11 +915,57 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition 2
+      label: Shuffling
+      originID: Idle
+      targetID: Shuffling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5237796854253788945}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Shuffle
+              m_BoolArgument: 0
+            m_CallState: 2
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 9
+      label: Shuffling
+      originID: Moving
+      targetID: Shuffling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 5237796854253788945}
+            m_MethodName: SetTrigger
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: Shuffle
+              m_BoolArgument: 0
+            m_CallState: 2
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 1
       dragSettings:
-        dragOffset: {x: 146.34785, y: -170.27179}
+        dragOffset: {x: -63.65216, y: -166.27179}
       gridSettings:
         isEnabled: 1
       labelSettings:

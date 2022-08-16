@@ -79,7 +79,11 @@ namespace Lodis.Gameplay
         private bool _canBurst;
         [SerializeField]
         private float _burstChargeTime;
+        [SerializeField]
+        [Tooltip("How long the player will wait before beginning a manual shuffle.")]
+        private float _shuffleWaitTime;
         private UnityAction OnUpdateHand;
+        private bool _loadingShuffle;
 
         private CharacterStateMachineBehaviour _stateMachineScript;
         private bool _deckReloading;
@@ -132,9 +136,12 @@ namespace Lodis.Gameplay
         }
 
         public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
+
         public float BurstChargeTime { get => _burstChargeTime; private set => _burstChargeTime = value; }
         public bool CanBurst { get => _canBurst; private set => _canBurst = value; }
         public UnityAction OnBurst { get; set; }
+        public bool LoadingShuffle { get => _loadingShuffle; }
+        public bool DeckReloading { get => _deckReloading; }
 
         private void Awake()
         {
@@ -420,6 +427,20 @@ namespace Lodis.Gameplay
             OnUpdateHand?.Invoke();
         }
 
+        public void ManualShuffle()
+        {
+            _loadingShuffle = true;
+            _specialAbilitySlots[0] = null;
+            _specialAbilitySlots[1] = null;
+            NextAbilitySlot = null;
+            OnUpdateHand?.Invoke();
+            RoutineBehaviour.Instance.StartNewTimedAction(args => 
+            {
+                _specialDeck.ClearDeck();
+                _loadingShuffle = false;
+            }, TimedActionCountType.SCALEDTIME, _shuffleWaitTime);
+            _movementBehaviour.DisableMovement(condition => !_loadingShuffle, true, true);
+        }
 
         /// <summary>
         /// Removes the ability from the characters hand.

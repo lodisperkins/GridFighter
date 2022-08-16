@@ -145,6 +145,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Shuffle"",
+                    ""type"": ""Button"",
+                    ""id"": ""9b18b9c0-688e-424a-86c4-9458fc6796bc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1269,6 +1277,28 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f6d46d58-2dfb-4c64-a3f4-c0c2e76414a7"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shuffle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d3d39af9-063f-40f5-b820-588c0876a0ed"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shuffle"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1293,6 +1323,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_PhaseShiftRight = m_Player.FindAction("PhaseShiftRight", throwIfNotFound: true);
         m_Player_PhaseShiftLeft = m_Player.FindAction("PhaseShiftLeft", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_Shuffle = m_Player.FindAction("Shuffle", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1358,6 +1389,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_PhaseShiftRight;
     private readonly InputAction m_Player_PhaseShiftLeft;
     private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_Shuffle;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1378,6 +1410,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @PhaseShiftRight => m_Wrapper.m_Player_PhaseShiftRight;
         public InputAction @PhaseShiftLeft => m_Wrapper.m_Player_PhaseShiftLeft;
         public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @Shuffle => m_Wrapper.m_Player_Shuffle;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1435,6 +1468,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Move.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
                 @Move.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnMove;
+                @Shuffle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShuffle;
+                @Shuffle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShuffle;
+                @Shuffle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShuffle;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1487,6 +1523,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Move.started += instance.OnMove;
                 @Move.performed += instance.OnMove;
                 @Move.canceled += instance.OnMove;
+                @Shuffle.started += instance.OnShuffle;
+                @Shuffle.performed += instance.OnShuffle;
+                @Shuffle.canceled += instance.OnShuffle;
             }
         }
     }
@@ -1509,5 +1548,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnPhaseShiftRight(InputAction.CallbackContext context);
         void OnPhaseShiftLeft(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
+        void OnShuffle(InputAction.CallbackContext context);
     }
 }
