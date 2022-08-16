@@ -243,7 +243,7 @@ namespace Lodis.Gameplay
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
-                    Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
+                    Instantiate(ColliderInfo.HitSpark, other.transform.position + (.5f * Vector3.up), transform.rotation);
             }
             
             OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);

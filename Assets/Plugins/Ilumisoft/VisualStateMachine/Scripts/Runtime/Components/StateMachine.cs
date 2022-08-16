@@ -83,37 +83,37 @@
         private void Update()
         {
             // Trigger the OnUpdateState event of the currently active state
-            if (CurrentState != string.Empty && graph.TryGetState(CurrentState, out State state))
-            {
-                state?.OnUpdateState?.Invoke();
-                if (!_setTriggersManually)
-                {
-                    List<Transition> transitions = graph.GetStateTransitions(CurrentState);
-                    for (int i = 0; i < transitions.Count; i++)
-                    {
-                        if (transitions[i].TransitionCondition != null)
-                        {
-                            if (transitions[i].TransitionCondition.Invoke())
-                                Trigger(transitions[i]);
-                        }
-                        else
-                            Trigger(transitions[i]);
-                    }    
+            if (CurrentState == string.Empty || !graph.TryGetState(CurrentState, out State state))
+                return;
 
-                    for (int i = 0; i < _anyStates.Count; i++)
+            state?.OnUpdateState?.Invoke();
+            if (_setTriggersManually)
+                return;
+
+            _transitionsCache = graph.GetStateTransitions(CurrentState);
+            foreach (Transition transition in _transitionsCache)
+            {
+                if (transition.TransitionCondition != null)
+                {
+                    if (transition.TransitionCondition.Invoke())
+                        Trigger(transition);
+                }
+                else
+                    Trigger(transition);
+            }
+
+            for (int i = 0; i < _anyStates.Count; i++)
+            {
+                _transitionsCache = graph.GetStateTransitions(_anyStates[i].ID);
+                for (int j = 0; j < _transitionsCache.Count; j++)
+                {
+                    if (_transitionsCache[j].TransitionCondition != null)
                     {
-                        List<Transition> anyStateTransition = graph.GetStateTransitions(_anyStates[i].ID);
-                        for (int j = 0; j < anyStateTransition.Count; j++)
-                        {
-                            if (anyStateTransition[j].TransitionCondition != null)
-                            {
-                                if (anyStateTransition[j].TransitionCondition.Invoke() && anyStateTransition[j].TargetID != CurrentState)
-                                    Trigger(anyStateTransition[j]);
-                            }
-                            else
-                                Trigger(anyStateTransition[j]);
-                        }
+                        if (_transitionsCache[j].TransitionCondition.Invoke() && _transitionsCache[j].TargetID != CurrentState)
+                            Trigger(_transitionsCache[j]);
                     }
+                    else
+                        Trigger(_transitionsCache[j]);
                 }
             }
         }
@@ -307,6 +307,7 @@
         }
 
         string loopOrigin = string.Empty;
+        private List<Transition> _transitionsCache;
 
         /// <summary>
         /// Triggers the given transition
