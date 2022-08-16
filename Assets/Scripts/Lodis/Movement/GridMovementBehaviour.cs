@@ -464,7 +464,7 @@ namespace Lodis.Movement
         /// <param name="panelPosition">The position of the panel on the grid that the gameObject will travel to.</param>
         /// <param name="snapPosition">If true, the gameObject will immediately teleport to its destination without a smooth transition.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
-        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false, bool reservePanel = true)
+        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false, bool reservePanel = true, bool clampPosition = false)
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
@@ -474,10 +474,16 @@ namespace Lodis.Movement
             if (IsMoving && !canCancelMovement || !_canMove)
                 return false;
             else if (canCancelMovement && IsMoving)
-                StopAllCoroutines();
+                CancelMovement();
 
             if (!_canMoveDiagonally && panelPosition.x != _position.x && panelPosition.y != _position.y)
                 panelPosition.y = _position.y;
+
+            if (clampPosition)
+            {
+                panelPosition.x = Mathf.Clamp(panelPosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
+                panelPosition.y = Mathf.Clamp(panelPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+            }
 
             //If it's not possible to move to the panel at the given position, return false.
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition || canBeOccupied, tempAlignment))
@@ -785,6 +791,7 @@ namespace Lodis.Movement
             _moveTween.Kill();
             _currentPanel.Occupied = false;
             _currentPanel = PreviousPanel;
+            _targetPanel = null;
             _currentPanel.Occupied = !CanBeWalkedThrough;
             _isMoving = false;
         }

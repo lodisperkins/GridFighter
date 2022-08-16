@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: DoubleStrike
   AbilityType: 8
-  timeActive: 0.4
+  timeActive: 0.2
   recoverTime: 0.5
   startUpTime: 0.2
   chargeTime: 5

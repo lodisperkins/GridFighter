@@ -134,7 +134,7 @@ namespace Lodis.Gameplay
 
         public void ActivatePhaseShift(Vector2 moveDirection)
         {
-            if (_isResting)
+            if (_isResting || !_movement.CanMove)
                 return;
 
             if (moveDirection.magnitude > 1)
@@ -148,7 +148,7 @@ namespace Lodis.Gameplay
             _shieldCollider.gameObject.SetActive(false);
 
             _movement.CancelMovement();
-            _movement.MoveToPanel(_movement.Position + moveDirection * 2);
+            _movement.MoveToPanel(_movement.Position + moveDirection * 2, false, GridAlignment.NONE, false, true, true);
 
             _currentPhaseShiftRestTime = _defaultPhaseShiftRestTime;
             _health.SetIntagibilityByTimer(_phaseShiftDuration);
@@ -167,7 +167,7 @@ namespace Lodis.Gameplay
             if (_isPhaseShifting)
                 time = _currentPhaseShiftRestTime;
 
-            _movement.DisableMovement(condition => _isResting == false, false, true);
+            _movement.DisableMovement(condition => _isResting == false, true, true);
             //Start timer for player immobility
             RoutineBehaviour.Instance.StopAction(_shieldTimer);
             _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => 
