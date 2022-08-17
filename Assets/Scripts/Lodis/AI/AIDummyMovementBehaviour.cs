@@ -81,7 +81,7 @@ namespace Lodis.AI
             {
                 _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment);
                 _needPath = false;
-                _currentPathIndex = 0;
+                _currentPathIndex = 1;
 
                 if (_currentPath.Count > 0)
                     _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);

@@ -29,8 +29,8 @@ public class DefendAction : GOAction
         base.OnStart();
         _grid = BlackBoardBehaviour.Instance.Grid;
         //Return if the dummy can't currently defend itself
-        if (_dummy.StateMachine.CurrentState != "Idle")
-            return;
+        //if (_dummy.StateMachine.CurrentState != "Idle")
+        //    return;
 
         //Grab the health component attached to know when it takes damage
         _dummyHealth = _dummy.Character.GetComponent<KnockbackBehaviour>();
@@ -85,6 +85,9 @@ public class DefendAction : GOAction
             _dummy.Executor.blackboard.boolParams[4] = true;
         }
 
+        if (_dummyHealth.CurrentAirState == AirState.TUMBLING && _dummy.Moveset.CanBurst && choice > DefenseDecisionType.COUNTER)
+            choice = DefenseDecisionType.BURST;
+
         //Punish the decision if the dummy was damaged
         _dummyHealth.AddOnTakeDamageTempAction(() => _decision.Wins--);
 
@@ -111,8 +114,10 @@ public class DefendAction : GOAction
                 _dummy.Character.GetComponent<CharacterDefenseBehaviour>().BeginParry();
                 break;
             case DefenseDecisionType.BURST:
-                if (_dummy.Character.GetComponent<KnockbackBehaviour>().LastTimeInKnockBack >= _dummy.TimeNeededToBurst)
+                if (_dummy.Character.GetComponent<KnockbackBehaviour>().LastTimeInKnockBack >= _dummy.TimeNeededToBurst && _dummy.Moveset.CanBurst)
                     _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
+                else if (_dummyHealth.Physics.IsGrounded)
+                    _dummy.Character.GetComponent<CharacterDefenseBehaviour>().BeginParry();
                 break;
         }
 

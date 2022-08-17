@@ -27,6 +27,8 @@ namespace Lodis.AI
         [Tooltip("Sets the value that amplifies the power of strong attacks")]
         [SerializeField]
         private float _attackStrength;
+        [SerializeField]
+        private float _maxRange;
 
         [Tooltip("The direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
         [SerializeField]
@@ -38,6 +40,7 @@ namespace Lodis.AI
         private bool _enableRandomBehaviour;
         private bool _chargingAttack;
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
+        [SerializeField]
         private float _senseRadius = 6;
         private BehaviorExecutor _executor;
         private Coroutine _moveRoutine;
@@ -70,6 +73,7 @@ namespace Lodis.AI
         public float TimeNeededToBurst { get => _timeNeededToBurst; }
         public IntVariable PlayerID { get => _playerID; set => _playerID = value; }
         public GameObject Character { get => _character; private set => _character = value; }
+        public float MaxRange { get => _maxRange; set => _maxRange = value; }
 
         public DefenseNode LastDefenseDecision;
 

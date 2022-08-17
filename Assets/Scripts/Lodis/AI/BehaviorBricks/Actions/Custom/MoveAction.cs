@@ -24,25 +24,22 @@ public class MoveAction : GOAction
         _opponentMovement = _dummy.Opponent.GetComponent<GridMovementBehaviour>();
     }
 
+    private bool CheckPanelInRange(params object[] args)
+    {
+        PanelBehaviour panel = (PanelBehaviour)args[0];
+        return Mathf.Abs(panel.Position.x - _movementBehaviour.MovementBehaviour.Position.x) < _dummy.MaxRange && panel.Position.y == _opponentMovement.Position.y;
+    }
+
     public override TaskStatus OnUpdate()
     {
         PanelBehaviour panel = null;
         int xPos = (int)_movementBehaviour.MovementBehaviour.CurrentPanel.Position.x;
 
-        if (_dummy.StateMachine.CurrentState != "Idle") return TaskStatus.ABORTED;
+        if (_dummy.StateMachine.CurrentState != "Idle")
+            return TaskStatus.ABORTED;
 
-        for (int i = 0; i < BlackBoardBehaviour.Instance.Grid.Width; i++)
-        {
-            if (BlackBoardBehaviour.Instance.Grid.GetPanel(xPos, (int)_opponentMovement.CurrentPanel.Position.y, out panel, false))
-            {
-                if (panel.Alignment == _movementBehaviour.MovementBehaviour.Alignment)
-                    _movementBehaviour.MoveToLocation(panel);
-                
-                break;
-            }
-
-            xPos += (int)_movementBehaviour.transform.forward.x;
-        }
+        if (BlackBoardBehaviour.Instance.Grid.GetPanel(CheckPanelInRange, out panel, _dummy.Character))
+            _movementBehaviour.MoveToLocation(panel);
 
         return TaskStatus.COMPLETED;
     }

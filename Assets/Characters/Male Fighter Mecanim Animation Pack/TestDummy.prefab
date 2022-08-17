@@ -49,11 +49,13 @@ MonoBehaviour:
   _character: {fileID: 8288026044989896973}
   _attackType: 4
   _attackDelay: 1
-  _attackStrength: 1.06
+  _attackStrength: 1.15
+  _maxRange: 6.05
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
-  _maxDecisionCount: 1000
-  _timeNeededToBurst: 0.3
+  _senseRadius: 3
+  _maxDecisionCount: 2000
+  _timeNeededToBurst: 0
   LastDefenseDecision:
     VisitCount: 0
     Wins: 0
