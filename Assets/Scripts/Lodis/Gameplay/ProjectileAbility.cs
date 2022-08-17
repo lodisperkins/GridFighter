@@ -15,12 +15,14 @@ namespace Lodis.Gameplay
         public Transform SpawnTransform = null;
         //Usd to store a reference to the projectile prefab
         public GameObject ProjectileRef;
+        public Vector3 ShotDirection;
         public GameObject Projectile;
         //The collider attached to the projectile
         public HitColliderBehaviour ProjectileCollider;
         public List<GameObject> ActiveProjectiles = new List<GameObject>();
         public bool DestroyOnHit = true;
         public bool IsMultiHit = false;
+        public bool UseGravity;
 
         public bool despawnAfterTimeLimit { get; private set; }
 
@@ -33,7 +35,8 @@ namespace Lodis.Gameplay
             owner = newOwner;
 
             //Load the projectile prefab
-            ProjectileRef = (GameObject)Resources.Load("Projectiles/Laser");
+            if (!ProjectileRef)
+                ProjectileRef = (GameObject)Resources.Load("Projectiles/Laser");
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)
@@ -81,7 +84,8 @@ namespace Lodis.Gameplay
             ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
             spawnScript.projectile = ProjectileRef;
 
-            Projectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), ProjectileCollider);
+            ShotDirection = spawnerObject.transform.forward;
+            Projectile = spawnScript.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), ProjectileCollider, UseGravity);
 
             ProjectileCollider = Projectile.GetComponent<HitColliderBehaviour>();
 

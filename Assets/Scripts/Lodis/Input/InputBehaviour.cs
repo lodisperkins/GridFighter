@@ -437,7 +437,7 @@ namespace Lodis.Input
             if (_storedMoveInput.magnitude == 1 && _canMove)
                 _gridMovement.MoveToPanel(_gridMovement.Position + _storedMoveInput);
 
-            Debug.Log(_gridMovement.Speed);
+            //Debug.Log(_gridMovement.Speed);
         }
 
         // Update is called once per frame
