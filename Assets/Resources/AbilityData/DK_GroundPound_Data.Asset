@@ -63,7 +63,7 @@ MonoBehaviour:
     HitStopTimeModifier: 2
   _customStats:
   - name: ShockwaveProgressionDelay
-    value: 0.2
+    value: 0.05
   - name: JumpForce
     value: 16
   - name: ShockwaveTravelDistance

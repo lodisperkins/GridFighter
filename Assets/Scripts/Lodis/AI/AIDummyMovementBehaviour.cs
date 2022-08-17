@@ -83,7 +83,7 @@ namespace Lodis.AI
                 _needPath = false;
                 _currentPathIndex = 1;
 
-                if (_currentPath.Count > 0)
+                if (_currentPath.Count > 1)
                     _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
             }
 

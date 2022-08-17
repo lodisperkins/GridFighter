@@ -33,10 +33,7 @@ namespace Lodis.Gameplay
             //initialize default stats
             
             owner = newOwner;
-
-            //Load the projectile prefab
-            if (!ProjectileRef)
-                ProjectileRef = (GameObject)Resources.Load("Projectiles/Laser");
+            ProjectileRef = abilityData?.visualPrefab;
 
             //If no spawn transform has been set, use the default owner transform
             if (!ownerMoveset.ProjectileSpawnTransform)

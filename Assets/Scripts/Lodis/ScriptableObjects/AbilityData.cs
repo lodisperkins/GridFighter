@@ -46,7 +46,7 @@ namespace Lodis.ScriptableObjects
         [Tooltip("The amount of time this ability must be in an active slot before it can be used. Can be ignored if this ability is a normal type.")]
         public float chargeTime = 0;
         [Tooltip("The amount of time this ability can be used before it is removed from the active slot. Can be ignored if this ability is a normal type.")]
-        public int maxActivationAmount = 0;
+        public int maxActivationAmount = 1;
         [Tooltip("The amount energy it costs to activate this ability.")]
         public float EnergyCost = 0;
         [Tooltip("If true, this ability can be canceled into others in the start up phase")]

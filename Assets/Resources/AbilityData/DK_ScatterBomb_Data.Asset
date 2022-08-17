@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: DK_ScatterBomb_Data
   m_EditorClassIdentifier: 
   abilityName: ScatterBomb
-  AbilityType: 0
-  timeActive: 0
-  recoverTime: 0
-  startUpTime: 0
+  AbilityType: 8
+  timeActive: 0.05
+  recoverTime: 0.25
+  startUpTime: 0.2
   chargeTime: 0
-  maxActivationAmount: 0
-  EnergyCost: 0
+  maxActivationAmount: 1
+  EnergyCost: 2
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
@@ -27,30 +27,44 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
-  CanInputMovementWhileActive: 1
-  CanCancelOnOpponentHit: 1
+  CanInputMovementWhileActive: 0
+  CanCancelOnOpponentHit: 0
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1
-  useAbilityTimingForAnimation: 0
+  useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 0}
-  DisplayIcon: {fileID: 0}
-  ColliderData: []
+  visualPrefab: {fileID: 5820520729088480805, guid: 6d683c945f17ecc4eabd73a8cfa5e6e3,
+    type: 3}
+  DisplayIcon: {fileID: 21300000, guid: e1ad5027f3b05a74288aaa9b76b0054c, type: 3}
+  ColliderData:
+  - Name: BombCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.05
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 65536
+    MultiHitWaitTime: 0
+    Damage: 15
+    BaseKnockBack: 3
+    KnockBackScale: 1.5
+    HitAngle: 1.3
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0.2
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    HitSpark: {fileID: 2050967202763056129, guid: b80407ae74dc7e9499a6d2a7553d0eef,
+      type: 3}
+    HitStopTimeModifier: 1
   _customStats:
-  - name: Damage
-    value: 0
-  - name: baseKnockBack
-    value: 0
-  - name: HitAngle
-    value: 0
-  - name: HitStunTime
-    value: 0
-  - name: Speed
-    value: 1
-  - name: Lifetime
-    value: 1
-  - name: MaxInstances
-    value: -1
+  - name: BombMoveDuration
+    value: 0.2
+  - name: BombTimer
+    value: 3
   animationType: 0
   _customAnimation: {fileID: 0}

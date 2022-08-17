@@ -22,10 +22,10 @@ namespace Lodis.Gameplay
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
         {
-            _bombMoveDuration = abilityData.GetCustomStatValue("BombMoveDuration");
-            _explosionEffect = (GameObject)Resources.Load("Effects/Explosion");
-            _bombTimer = abilityData.GetCustomStatValue("BombTimer");
             base.Init(newOwner);
+            _bombMoveDuration = abilityData.GetCustomStatValue("BombMoveDuration");
+            _explosionEffect = (GameObject)Resources.Load("Effects/SmallExplosion");
+            _bombTimer = abilityData.GetCustomStatValue("BombTimer");
         }
 
         private void DetonateBombs()
@@ -33,8 +33,11 @@ namespace Lodis.Gameplay
             foreach(Transform t in _bombs)
             {
                 HitColliderSpawner.SpawnBoxCollider(t, Vector3.one, ProjectileCollider);
-                MonoBehaviour.Instantiate(_explosionEffect, t);
+                MonoBehaviour.Instantiate(_explosionEffect, t.position, Camera.main.transform.rotation);
+                t.GetComponent<MeshRenderer>().enabled = false;
+                MonoBehaviour.Destroy(t.gameObject, ProjectileCollider.ColliderInfo.TimeActive);
             }
+            CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
         }
 
 	    //Called when ability is used
@@ -44,19 +47,18 @@ namespace Lodis.Gameplay
 
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(_ownerMoveScript.Position + Vector2.right * _ownerMoveScript.transform.forward.x, out panel))
                 _targetPanels.Add(panel);
-            if (BlackBoardBehaviour.Instance.Grid.GetPanel(_ownerMoveScript.Position + Vector2.right * _ownerMoveScript.transform.forward.x + Vector2.up, out panel))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.up, out panel))
                 _targetPanels.Add(panel);
-            if (BlackBoardBehaviour.Instance.Grid.GetPanel(_ownerMoveScript.Position + Vector2.right * _ownerMoveScript.transform.forward.x + Vector2.down, out panel))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.down, out panel))
                 _targetPanels.Add(panel);
 
-            for (int i = 0; i < abilityData.GetCustomStatValue("BombCount"); i++)
+            for (int i = 0; i < _targetPanels.Count; i++)
             {
                 _bombs.Add(MonoBehaviour.Instantiate(abilityData.visualPrefab, SpawnTransform.position, SpawnTransform.rotation).transform);
-                _bombs[i].DOMove(_targetPanels[i].Position, _bombMoveDuration);
-                //MonoBehaviour.Destroy(_bombs[i], _bombTimer);
+                _bombs[i].DOMove(_targetPanels[i].transform.position, _bombMoveDuration);
             }
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DetonateBombs(), TimedActionCountType.SCALEDTIME, _bombTimer);
+            RoutineBehaviour.Instance.StartNewTimedAction(arguments => DetonateBombs(), TimedActionCountType.SCALEDTIME, _bombTimer);
         }
     }
 }
