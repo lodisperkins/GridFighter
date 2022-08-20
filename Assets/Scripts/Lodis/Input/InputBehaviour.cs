@@ -96,11 +96,19 @@ namespace Lodis.Input
         private bool _attackButtonDown;
         [SerializeField]
         private bool _abilityBuffered;
+        [SerializeField]
+        private GridGame.Event _onChargeStarted;
+        [SerializeField]
+        private GridGame.Event _onChargeEnded;
         private bool _isPaused;
         private List<InputDevice> _devices = new List<InputDevice>();
         private bool _canBufferDefense;
+        private KnockbackBehaviour _knockbackBehaviour;
         private float _defaultSpeed;
         private CharacterStateMachineBehaviour _stateMachineBehaviour;
+        private bool _canBufferAbility;
+        private TimedAction _chargeAction;
+
         public List<InputDevice> Devices 
         {
             get { return _devices; }
@@ -154,9 +162,9 @@ namespace Lodis.Input
             }
 
             //Ability input
-            _playerControls.Player.Attack.started += context => { _attackButtonDown = true; };
+            _playerControls.Player.Attack.started += context => { _attackButtonDown = true; TryChargeAttack(); };
             _playerControls.Player.Attack.canceled += context => _attackButtonDown = false;
-            _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
+            _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable();};
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
             _playerControls.Player.UnblockableAttack.started += BufferUnblockableAbility;
@@ -179,6 +187,8 @@ namespace Lodis.Input
             _moveset = Character.GetComponent<MovesetBehaviour>();
             _defense = Character.GetComponent<CharacterDefenseBehaviour>();
             _gridMovement.AddOnMoveDisabledAction(() => _storedMoveInput = Vector3.zero);
+            _knockbackBehaviour = Character.GetComponent<KnockbackBehaviour>();
+            _knockbackBehaviour.AddOnTakeDamageAction(DisableCharge);
             _defaultSpeed = _gridMovement.Speed;
         }
 
@@ -199,6 +209,26 @@ namespace Lodis.Input
             _playerControls.devices = _devices.ToArray();
         }
 
+        private void TryChargeAttack()
+        {
+            if (_stateMachineBehaviour.StateMachine.CurrentState != "Idle" && _stateMachineBehaviour.StateMachine.CurrentState != "Moving" && _stateMachineBehaviour.StateMachine.CurrentState != "Attacking")
+            {
+                _canBufferAbility = false;
+                return;
+            }
+            _canBufferAbility = true;
+            _chargeAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _onChargeStarted?.Raise(Character), TimedActionCountType.SCALEDTIME, _minChargeLimit);
+        }
+
+        private void DisableCharge()
+        {
+            _canBufferAbility = false;
+            _onChargeEnded?.Raise(Character);
+            _chargeAction?.Disable();
+            _attackButtonDown = false;
+            _abilityBuffered = false;
+        }
+
         /// <summary>
         /// Decides which ability to use based on the input context and activates it
         /// </summary>
@@ -208,6 +238,9 @@ namespace Lodis.Input
         /// index 1 is always the direction of input.</param>
         public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
         {
+            if (!_canBufferAbility)
+                return;
+
             AbilityType abilityType;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 
@@ -231,13 +264,13 @@ namespace Lodis.Input
                 float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
                 args[0] = powerScale;
-                _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); }, condition => _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"), 0.2f);
+                _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); }, condition => _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"), 0.2f);
                 _abilityBuffered = true;
                 return;
             }
 
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); }, 
+            _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); }, 
                 condition =>
                 { return _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"); }, 0.2f);
             _abilityBuffered = true;
