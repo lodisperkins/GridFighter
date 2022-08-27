@@ -71,7 +71,7 @@ namespace Lodis.Gameplay
             _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
             //Rotate the hitbox around when the ability is active
             if (CurrentAbilityPhase == AbilityPhase.ACTIVE && _inPosition)
-                _visualPrefabInstance.transform.RotateAround(owner.transform.position, Vector3.up, abilityData.GetCustomStatValue("RotationSpeed") * Time.deltaTime);
+                _visualPrefabInstance.transform.RotateAround(owner.transform.position, Vector3.up, owner.transform.forward.x * abilityData.GetCustomStatValue("RotationSpeed") * Time.deltaTime);
         }
 
         protected override void Deactivate()
