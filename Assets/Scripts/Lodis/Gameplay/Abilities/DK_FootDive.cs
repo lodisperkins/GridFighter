@@ -19,7 +19,7 @@ namespace Lodis.Gameplay
     {
         private KnockbackBehaviour _knockBackBehaviour;
         private float _ownerGravity;
-        private HitColliderBehaviour _fistCollider;
+        private HitColliderData _fistCollider;
         private (GameObject, GameObject) _visualPrefabInstances;
         private (Coroutine, Coroutine) _visualPrefabCoroutines;
         private GridBehaviour _grid;
@@ -70,12 +70,12 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create collider for character fists
-            _fistCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
+            _fistCollider = GetColliderData(0);
 
             //Spawn particles and hitbox
-            _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale / 2, _fistCollider);
-            hitScript.OnHit += EnableBounce;
+            _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale / 2, _fistCollider, owner);
+            hitScript.AddCollisionEvent(EnableBounce);
         }
 
         /// <summary>

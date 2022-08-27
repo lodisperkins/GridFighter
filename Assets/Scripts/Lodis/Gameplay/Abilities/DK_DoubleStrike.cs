@@ -15,7 +15,7 @@ namespace Lodis.Gameplay
     {
         private Input.InputBehaviour _ownerInput;
         private float _ownerMoveSpeed;
-        private HitColliderBehaviour _fistCollider;
+        private HitColliderData _fistCollider;
         private GameObject _visualPrefabInstance;
         private Vector2 _attackDirection;
         private bool _secondStrikeActivated;
@@ -51,13 +51,13 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create collider for attack
-            _fistCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
+            _fistCollider = GetColliderData(0);
 
             //Spawn particles
-            _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, ownerMoveset.MeleeHitBoxSpawnTransform);
+            _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
 
             //Spawn a game object with the collider attached
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, new Vector3(1, 0.5f, 0.2f), _fistCollider);
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, new Vector3(1, 0.5f, 0.2f), _fistCollider, owner);
             hitScript.DebuggingEnabled = true;
             Rigidbody rigid = hitScript.gameObject.AddComponent<Rigidbody>();
             rigid.useGravity = false;
@@ -98,9 +98,6 @@ namespace Lodis.Gameplay
             //Despawn particles and hit box
             MonoBehaviour.Destroy(_visualPrefabInstance);
 
-            if (_fistCollider)
-                MonoBehaviour.Destroy(_fistCollider.gameObject);
-
             if (!_secondStrikeActivated)
             {
                 StopAbility();
@@ -137,14 +134,14 @@ namespace Lodis.Gameplay
                 Deactivate();
                 StopAbility();
 
-                string[] slots = ownerMoveset.GetAbilityNamesInCurrentSlots();
+                string[] slots = OwnerMoveset.GetAbilityNamesInCurrentSlots();
 
                 abilityData.canCancelRecover = true;
 
                 if (slots[0] == abilityData.abilityName)
-                    ownerMoveset.UseSpecialAbility(0, _ownerInput.AttackDirection);
+                    OwnerMoveset.UseSpecialAbility(0, _ownerInput.AttackDirection);
                 else
-                    ownerMoveset.UseSpecialAbility(1, _ownerInput.AttackDirection);
+                    OwnerMoveset.UseSpecialAbility(1, _ownerInput.AttackDirection);
 
                 abilityData.canCancelRecover = false;
             }

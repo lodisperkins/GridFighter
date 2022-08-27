@@ -16,7 +16,7 @@ namespace Lodis.Gameplay
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
-        private HitColliderBehaviour _projectileCollider;
+        private HitColliderData _projectileCollider;
 
         public override void Init(GameObject newOwner)
         {
@@ -31,11 +31,6 @@ namespace Lodis.Gameplay
 
         public void SpawnProjectile()
         {
-            //If no spawn transform has been set, use the default owner transform
-            if (!ownerMoveset.ProjectileSpawnTransform)
-                SpawnTransform = owner.transform;
-            else
-                SpawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Log if a projectile couldn't be found
             if (!_projectile)
@@ -44,28 +39,18 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            //Create object to spawn laser from
-            GameObject spawnerObject = new GameObject();
-            spawnerObject.transform.parent = SpawnTransform;
-            spawnerObject.transform.localPosition = Vector3.zero;
-            spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
-            spawnerObject.transform.forward = owner.transform.forward;
-
-            //Initialize and attach spawn script
-            ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
-            spawnScript.projectile = _projectile;
+            ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
+            projectileSpawner.projectile = _projectile;
 
             //Fire laser
-            GameObject newProjectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+            GameObject newProjectile = projectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
 
             ActiveProjectiles.Add(newProjectile);
-
-            MonoBehaviour.Destroy(spawnerObject);
         }
 
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = GetColliderBehaviourCopy(0) as HitColliderBehaviour;
+            _projectileCollider = GetColliderData(0);
 
             CleanProjectileList();
             

@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
         private void Awake()
         {
             _collider = GetComponent<ColliderBehaviour>();
-            _collider.OnHit += OnCollision;
+            _collider.AddCollisionEvent(OnCollision);
 
             gameObject.tag = "Reflector";
         }

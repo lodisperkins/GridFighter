@@ -127,17 +127,17 @@ namespace Lodis.Gameplay
         /// <param name="size">The dimension of this collider</param>
         /// <param name="hitCollider">The hit collider this collider will copy its values from</param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, HitColliderBehaviour hitCollider)
+        public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, HitColliderData hitCollider)
         {
             GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.Owner.name + "BoxCollider";
+            hitObject.name = hitCollider.OwnerAlignement + "BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.position = position;
             collider.isTrigger = true;
             collider.size = size;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            HitColliderBehaviour.Copy(hitCollider, hitScript);
+            hitScript.ColliderInfo = hitCollider;
 
             return hitScript;
         }
@@ -180,10 +180,11 @@ namespace Lodis.Gameplay
         /// <param name="size">The dimension of the box collider</param>
         /// <param name="hitCollider">The hit collider this collider will copy its values from</param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderBehaviour hitCollider)
+        /// <param name="owner"></param>
+        public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderData hitCollider, GameObject owner)
         {
             GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.Owner.name + "BoxCollider";
+            hitObject.name = owner.name + " BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.parent = parent;
             hitObject.transform.localPosition = Vector3.zero;
@@ -192,7 +193,8 @@ namespace Lodis.Gameplay
             collider.size = size;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            HitColliderBehaviour.Copy(hitCollider, hitScript);
+            hitScript.ColliderInfo = hitCollider;
+            hitScript.Owner = owner;
 
             return hitScript;
         }

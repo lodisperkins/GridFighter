@@ -161,7 +161,7 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
-        public virtual float TakeDamage(HitColliderInfo info, GameObject attacker)
+        public virtual float TakeDamage(HitColliderData info, GameObject attacker)
         {
             float damageTaken = _health;
 

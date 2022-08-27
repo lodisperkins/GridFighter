@@ -37,8 +37,6 @@ namespace Lodis.Movement
         private Collider _bounceCollider;
         [SerializeField]
         private bool _isGrounded;
-        [SerializeField]
-        private float _extraHeight = 0.5f;
         private Vector3 _groundedBoxPosition;
         private Vector3 _groundedBoxExtents;
         [SerializeField]

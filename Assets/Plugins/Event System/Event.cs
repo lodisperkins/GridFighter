@@ -9,14 +9,11 @@ namespace GridGame
         //All listeners for the event
         private List<IListener> _listeners;
 
-        public Event()
-        {
-            _listeners = new List<IListener>();
-        }
-
         //Adds a listener to the event
         public void AddListener(IListener newListener)
         {
+            if (_listeners == null) _listeners = new List<IListener>();
+
             _listeners.Add(newListener);
         }
         //Raises the event with the gameobject information

@@ -16,7 +16,7 @@ namespace Lodis.Gameplay
     {
         private KnockbackBehaviour _knockBackBehaviour;
         private float _ownerGravity;
-        private HitColliderBehaviour _shockWaveCollider;
+        private HitColliderData _shockWaveCollider;
         private (GameObject, GameObject) _visualPrefabInstances;
         private (Coroutine, Coroutine) _visualPrefabCoroutines;
 
@@ -73,11 +73,11 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create collider for shockwaves
-            _shockWaveCollider = GetColliderBehaviourCopy(0);
+            _shockWaveCollider = GetColliderData(0);
 
             //Instantiate the first shockwave and attach a hit box to it
             _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider);
+            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider, owner);
             hitScript.ColliderInfo.OwnerAlignement = _ownerMoveScript.Alignment;
             
             //Move first shockwave
@@ -88,7 +88,7 @@ namespace Lodis.Gameplay
             _visualPrefabInstances.Item2 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
             _visualPrefabInstances.Item2.transform.forward = -owner.transform.forward;
 
-            hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item2.transform, _visualPrefabInstances.Item2.transform.localScale, _shockWaveCollider);
+            hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item2.transform, _visualPrefabInstances.Item2.transform.localScale, _shockWaveCollider, owner);
 
             //Move second shockwave
             MoveHitBox(_visualPrefabInstances.Item2, -owner.transform.forward);

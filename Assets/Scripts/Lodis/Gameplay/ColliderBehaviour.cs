@@ -18,7 +18,7 @@ namespace Lodis.Gameplay
     public class ColliderBehaviour : MonoBehaviour
     {
         protected Dictionary<GameObject, float> Collisions;
-        public CollisionEvent OnHit;
+        private CollisionEvent _onHit;
         [SerializeField]
         private GridGame.Event _onHitObject;
         protected float _lastHitFrame;
@@ -41,7 +41,7 @@ namespace Lodis.Gameplay
         /// <param name="collider2">The collider that will have its values overwritten</param>
         public static void Copy(ColliderBehaviour collider1, ColliderBehaviour collider2)
         {
-            collider2.OnHit = collider1.OnHit;
+            collider2._onHit = collider1._onHit;
             collider2._lastHitFrame = collider1._lastHitFrame;
             collider2.Owner = collider1.Owner;
             collider2.LayersToIgnore = collider1.LayersToIgnore;
@@ -66,6 +66,10 @@ namespace Lodis.Gameplay
             return false;
         }
 
+        public virtual void AddCollisionEvent(CollisionEvent collisionEvent)
+        {
+            _onHit += collisionEvent;
+        }
 
         private void OnTriggerEnter(Collider other)
         {
@@ -84,7 +88,7 @@ namespace Lodis.Gameplay
 
             //Calculate the normal and invoke hit event
             Vector3 collisionDirection = (otherGameObject.transform.position - transform.position).normalized;
-            OnHit?.Invoke(otherGameObject, otherCollider, collisionDirection);
+            _onHit?.Invoke(otherGameObject, otherCollider, collisionDirection);
             _onHitObject?.Raise(gameObject);
         }
 
@@ -110,7 +114,7 @@ namespace Lodis.Gameplay
 
             //Calculate the normal and invoke hit event
             Vector3 collisionDirection = (other.transform.position - transform.position).normalized;
-            OnHit?.Invoke(other, otherCollider, collisionDirection);
+            _onHit?.Invoke(other, otherCollider, collisionDirection);
             _onHitObject?.Raise(gameObject);
         }
     }

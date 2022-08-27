@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_EnergyBarrier : Ability
     {
-        private HitColliderBehaviour _barrierCollider;
+        private HitColliderData _barrierCollider;
         private GameObject _visualPrefabInstance;
         private Collider _prefabeInstanceCollider;
         private HealthBehaviour _ownerHealth;
@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
         protected override void Activate(params object[] args)
         {
             //Create barrier collider
-            _barrierCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
+            _barrierCollider = GetColliderData(0);
             //Allow canceling on hit
             _barrierCollider.OnHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
 
@@ -44,7 +44,7 @@ namespace Lodis.Gameplay
 
             //Attach hit box to barrier
             HitColliderBehaviour instanceBehaviour = _visualPrefabInstance.AddComponent<HitColliderBehaviour>();
-            HitColliderBehaviour.Copy(_barrierCollider, instanceBehaviour);
+            instanceBehaviour.ColliderInfo = _barrierCollider;
 
             //Store barrier collider
             _prefabeInstanceCollider = _visualPrefabInstance.GetComponent<BoxCollider>();

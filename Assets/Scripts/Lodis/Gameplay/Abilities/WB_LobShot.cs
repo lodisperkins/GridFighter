@@ -18,8 +18,7 @@ namespace Lodis.Gameplay
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
-        private HitColliderBehaviour _projectileCollider;
-        private float _shotDistance = 1;
+        private HitColliderData _projectileCollider;
         private float _distance;
         private float _angle;
         private float _gravity;
@@ -45,13 +44,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
-
-            //If no spawn transform has been set, use the default owner transform
-            if (!ownerMoveset.ProjectileSpawnTransform)
-                spawnTransform = owner.transform;
-            else
-                spawnTransform = ownerMoveset.ProjectileSpawnTransform;
+            _projectileCollider = GetColliderData(0);
 
             //Log if a projectile couldn't be found
             if (!_projectile)
@@ -67,30 +60,20 @@ namespace Lodis.Gameplay
             offSet.y = Mathf.RoundToInt(offSet.y);
 
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
-            
-            //Create object to spawn laser from
-            GameObject spawnerObject = new GameObject();
-            spawnerObject.transform.parent = spawnTransform;
-            spawnerObject.transform.localPosition = Vector3.up / 2;
-            var ownerForward = owner.transform.forward;
-            spawnerObject.transform.forward = ownerForward;
 
-            //Initialize and attach spawn script
-            ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
-            spawnScript.projectile = _projectile;
+            ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
+            projectileSpawner.projectile = _projectile;
 
             Vector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle);
-            launchForce.x *= ownerForward.x;
+            launchForce.x *= projectileSpawner.transform.forward.x;
 
-            GameObject activeProjectile = spawnScript.FireProjectile(launchForce, _projectileCollider, true, true);
+            GameObject activeProjectile = projectileSpawner.FireProjectile(launchForce, _projectileCollider, true, true);
 
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = _gravity;
             
             //Fire laser
             ActiveProjectiles.Add(activeProjectile);
-
-            Object.Destroy(spawnerObject);
         }
     }
 }

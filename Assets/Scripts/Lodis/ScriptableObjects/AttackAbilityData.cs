@@ -10,7 +10,7 @@ namespace Lodis.ScriptableObjects
     class AttackAbilityData : AbilityData
     {
 
-        public HitColliderInfo[] HitColliders
+        public HitColliderData[] HitColliders
         {
             get => base.ColliderData;
         }

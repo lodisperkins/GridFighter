@@ -73,7 +73,7 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="info">The hit collider data of the attack</param>
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        public override float TakeDamage(HitColliderInfo info, GameObject attacker)
+        public override float TakeDamage(HitColliderData info, GameObject attacker)
         {
             if (!Owner) return 0;
             if (info.TypeOfDamage != DamageType.KNOCKBACK || (attacker != Owner) || info.Damage < _minimumDamageSpeed)
@@ -146,7 +146,7 @@ namespace Lodis.Gameplay
             float newAngle = Mathf.Acos(dotProduct);
 
             knockbackBehaviour.Physics.StopVelocity();
-            HitColliderInfo info = new HitColliderInfo { Name = name, BaseKnockBack = _knockBackDistance, KnockBackScale = 1.2f, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopTimeModifier = 1, };
+            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = _knockBackDistance, KnockBackScale = 1.2f, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopTimeModifier = 1, };
             HitColliderBehaviour hitCollider = new HitColliderBehaviour();
             hitCollider.ColliderInfo = info;
             knockbackBehaviour.LastCollider = hitCollider;

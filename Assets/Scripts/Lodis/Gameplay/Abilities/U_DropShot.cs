@@ -63,9 +63,9 @@ namespace Lodis.Gameplay
             ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
             spawnScript.projectile = ProjectileRef;
 
-            ProjectileCollider = GetColliderBehaviourCopy(0);
+            ProjectileColliderData = GetColliderData(0);
 
-            Projectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), ProjectileCollider);
+            Projectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), ProjectileColliderData);
 
             Projectile.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.UNBLOCKABLE;
 

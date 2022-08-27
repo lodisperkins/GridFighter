@@ -21,11 +21,11 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            HitColliderBehaviour hitCollider = GetColliderBehaviourCopy(0);
+            HitColliderData hitColliderData = GetColliderData(0);
 
             GameObject barrier = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
             HitColliderBehaviour instantiatedCollider = barrier.AddComponent<HitColliderBehaviour>();
-            HitColliderBehaviour.Copy(hitCollider, instantiatedCollider);
+            instantiatedCollider.ColliderInfo = hitColliderData;
 
             _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
 

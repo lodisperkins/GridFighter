@@ -238,11 +238,21 @@ namespace Lodis.Movement
             _returnEffect = ((GameObject)Resources.Load("Effects/Teleport")).GetComponent<ParticleSystem>();
             //initialize events
             _moveEnabledEventListener = GetComponent<GridGame.GameEventListener>();
-            _moveDisabledEventListener = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
-            _onMoveBegin = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
-            _onMoveBeginTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
-            _onMoveEnd = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
-            _onMoveEndTemp = new GridGame.GameEventListener(new GridGame.Event(), gameObject);
+            _moveDisabledEventListener = gameObject.AddComponent<GridGame.GameEventListener>();
+            _moveDisabledEventListener.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+
+            _onMoveBegin = gameObject.AddComponent<GridGame.GameEventListener>();
+            _onMoveBegin.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+
+            _onMoveBeginTemp = gameObject.AddComponent<GridGame.GameEventListener>();
+            _onMoveBeginTemp.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+
+            _onMoveEnd = gameObject.AddComponent<GridGame.GameEventListener>();
+            _onMoveEnd.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+
+            _onMoveEndTemp = gameObject.AddComponent<GridGame.GameEventListener>();
+            _onMoveEndTemp.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
             _renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 

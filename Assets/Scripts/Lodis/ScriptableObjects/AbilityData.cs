@@ -83,7 +83,7 @@ namespace Lodis.ScriptableObjects
         public Sprite DisplayIcon;
         [Tooltip("Information for all colliders this ability will use")]
         [SerializeField]
-        protected HitColliderInfo[] ColliderData;
+        protected HitColliderData[] ColliderData;
         [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
         protected Stat[] _customStats;
@@ -128,7 +128,7 @@ namespace Lodis.ScriptableObjects
                 statName);
         }
 
-        public HitColliderInfo GetColliderInfo(int index)
+        public HitColliderData GetColliderInfo(int index)
         {
             if (index < 0 || index >= ColliderData.Length)
             {

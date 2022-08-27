@@ -10,7 +10,7 @@ using Lodis.Movement;
 namespace Lodis.Gameplay
 {
     [System.Serializable]
-    public struct HitColliderInfo
+    public struct HitColliderData
     {
         public string Name;
         [Tooltip("If true, the hit collider will despawn after the amount of active frames have been surpassed.")]
@@ -50,14 +50,23 @@ namespace Lodis.Gameplay
 
         [Tooltip("How long the hit stop will be scaled on hit.")]
         public float HitStopTimeModifier;
+
+        [Tooltip("Event called when this collider htis a valid object.")]
+        public CollisionEvent OnHit;
+
+        public void AddOnHitEvent(CollisionEvent collisionEvent)
+        {
+            OnHit += collisionEvent;
+        }
+
         /// <summary>
         /// Get a copy of the hit collider info with the attack stats (damage, base knock back, knock back scale, hit stun time) scaled
         /// </summary>
         /// <param name="scale">The amount to scale the stats by</param>
         /// <returns>A new copy of the hit collider info</returns>
-        public HitColliderInfo ScaleStats(float scale)
+        public HitColliderData ScaleStats(float scale)
         {
-            HitColliderInfo ColliderInfo = (HitColliderInfo)MemberwiseClone();
+            HitColliderData ColliderInfo = (HitColliderData)MemberwiseClone();
 
             ColliderInfo.Damage *= scale;
             ColliderInfo.BaseKnockBack *= scale;
@@ -74,7 +83,7 @@ namespace Lodis.Gameplay
         /// If enabled, draws the collider in the editor
         /// </summary>
         public bool DebuggingEnabled;
-        public HitColliderInfo ColliderInfo;
+        public HitColliderData ColliderInfo;
         private bool _addedToActiveList;
 
         public float StartTime { get; private set; }
@@ -83,11 +92,11 @@ namespace Lodis.Gameplay
         public HitColliderBehaviour(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
            : base()
         {
-            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnAlignment = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            HitColliderData info = new HitColliderData { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnAlignment = angleChangeOnCollision, HitStunTime = hitStunTimer };
             Init(info, owner);
         }
 
-        public HitColliderBehaviour(HitColliderInfo info, GameObject owner)
+        public HitColliderBehaviour(HitColliderData info, GameObject owner)
         {
             Init(info, owner);
         }
@@ -96,7 +105,7 @@ namespace Lodis.Gameplay
         {
         }
 
-        public  void Init(HitColliderInfo info, GameObject owner)
+        public  void Init(HitColliderData info, GameObject owner)
         {
 
             ColliderInfo = info;
@@ -124,8 +133,13 @@ namespace Lodis.Gameplay
         public static void Copy(HitColliderBehaviour collider1, HitColliderBehaviour collider2)
         {
             collider2.ColliderInfo = collider1.ColliderInfo;
-            collider2.OnHit = collider1.OnHit;
+            collider2.AddCollisionEvent(collider1.ColliderInfo.OnHit);
             collider2.Owner = collider1.Owner;
+        }
+
+        public override void AddCollisionEvent(CollisionEvent collisionEvent)
+        {
+            ColliderInfo.AddOnHitEvent(collisionEvent);
         }
 
         ///     <summary>
@@ -137,7 +151,7 @@ namespace Lodis.Gameplay
         /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
         public void Init(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
         {
-            HitColliderInfo info = new HitColliderInfo { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnAlignment = angleChangeOnCollision, HitStunTime = hitStunTimer };
+            HitColliderData info = new HitColliderData { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnAlignment = angleChangeOnCollision, HitStunTime = hitStunTimer };
             Init(info, owner);
         }
 
@@ -246,7 +260,7 @@ namespace Lodis.Gameplay
                     Instantiate(ColliderInfo.HitSpark, other.transform.position + (.5f * Vector3.up), transform.rotation);
             }
             
-            OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
+            ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
@@ -321,8 +335,8 @@ namespace Lodis.Gameplay
                 if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
                     Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
             }
-            
-            OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
+
+            ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);
@@ -400,9 +414,9 @@ namespace Lodis.Gameplay
                     Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
             }
 
-            
-            
-            OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
+
+
+            ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
                 Destroy(gameObject);

@@ -90,7 +90,7 @@ namespace Lodis.Input
         private IntVariable _playerID;
         private Condition _inputEnableCondition = null;
         [SerializeField]
-        private bool _inputDisabled;
+        private bool _inputDisabled = false;
         private BufferedInput _bufferedAction;
         private Ability _lastAbilityUsed = null;
         private bool _attackButtonDown;

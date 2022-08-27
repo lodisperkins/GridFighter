@@ -36,14 +36,14 @@ namespace Lodis.Gameplay
     {
         private bool _inUse;
         private bool _canPlayAnimation;
-        private List<HitColliderBehaviour> _colliders;
+        private List<HitColliderData> _colliderInfo;
         private TimedAction _currentTimer;
         protected KnockbackBehaviour _ownerKnockBackScript;
         protected Movement.GridMovementBehaviour _ownerMoveScript;
         protected CharacterAnimationBehaviour _ownerAnimationScript;
         //The object that is using the ability
         public GameObject owner = null;
-        public MovesetBehaviour ownerMoveset = null;
+        public MovesetBehaviour OwnerMoveset = null;
         public ScriptableObjects.AbilityData abilityData;
         /// <summary>
         /// Called when the character begins to use the ability and before the action actually happens
@@ -160,7 +160,7 @@ namespace Lodis.Gameplay
         public void UseAbility(params object[] args)
         {
             //Return if this bullet has no owner
-            if (!ownerMoveset)
+            if (!OwnerMoveset)
             {
                 throw new Exception("Owner moveset component not found. Did you forget to call the base Init function?");
             }
@@ -289,24 +289,24 @@ namespace Lodis.Gameplay
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/" + GetType().Name + "_Data"));
             currentActivationAmount = 0;
             _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
-            ownerMoveset = newOwner.GetComponent<MovesetBehaviour>();
+            OwnerMoveset = newOwner.GetComponent<MovesetBehaviour>();
             _ownerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
 
             _canPlayAnimation = !abilityData.playAnimationManually;
 
-            _colliders = new List<HitColliderBehaviour>();
+            _colliderInfo = new List<HitColliderData>();
 
             for (int i = 0; i < abilityData.ColliderInfoCount; i++)
             {
-                HitColliderBehaviour colliderComponent = new HitColliderBehaviour(abilityData.GetColliderInfo(i), owner);
-                colliderComponent.OnHit = OnHit;
+                HitColliderData info = abilityData.GetColliderInfo(i);
 
                 if (abilityData.AbilityType == AbilityType.UNBLOCKABLE)
-                    colliderComponent.ColliderInfo.LayersToIgnore |= (1 << LayerMask.NameToLayer("Reflector"));
+                    info.LayersToIgnore |= (1 << LayerMask.NameToLayer("Reflector"));
                 else
-                    colliderComponent.ColliderInfo.LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
+                    info.LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
 
-                _colliders.Add(colliderComponent);
+                info.OwnerAlignement = _ownerMoveScript.Alignment;
+                _colliderInfo.Add(info);
             }
         }
 
@@ -319,10 +319,8 @@ namespace Lodis.Gameplay
             if (!_ownerKnockBackScript)
                 return;
 
-            for (int i = 0; i < _colliders.Count; i++)
+            for (int i = 0; i < _colliderInfo.Count; i++)
             {
-                _colliders[i].OnHit += arguments => OnHit?.Invoke(arguments);
-                _colliders[i].OnHit += arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; };
                 if (abilityData.CanCancelOnOpponentHit)
                     OnHit += arguments => 
                     {
@@ -331,6 +329,11 @@ namespace Lodis.Gameplay
 
                         EndAbility(); 
                     };
+
+                HitColliderData data = _colliderInfo[i];
+                data.AddOnHitEvent(arguments => OnHit?.Invoke(arguments));
+                data.AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
+                _colliderInfo[i] = data;
             }
 
             if (abilityData.cancelOnHit)
@@ -361,10 +364,10 @@ namespace Lodis.Gameplay
             if (_ownerKnockBackScript.CurrentAirState != AirState.TUMBLING)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
 
-            for (int i = 0; i < _colliders.Count; i++)
+            for (int i = 0; i < _colliderInfo.Count; i++)
             {
-                _colliders[i].OnHit -= arguments => OnHit?.Invoke(arguments);
-                _colliders[i].OnHit -= arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; };
+                _colliderInfo[i].AddOnHitEvent(arguments => OnHit?.Invoke(arguments));
+                _colliderInfo[i].AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
             }
         }
 
@@ -378,27 +381,14 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void FixedUpdate() { }
 
-        public HitColliderBehaviour GetColliderBehaviourCopy(int index)
+        public HitColliderData GetColliderData(int index)
         {
-            HitColliderBehaviour hitColliderBehaviour = new HitColliderBehaviour();
-            HitColliderBehaviour.Copy(_colliders[index], hitColliderBehaviour);
-            return hitColliderBehaviour;
+            return _colliderInfo[index];
         }
 
-        public HitColliderBehaviour GetColliderBehaviourCopy(string name)
+        public HitColliderData GetColliderData(string name)
         {
-            HitColliderBehaviour hitColliderBehaviour = new HitColliderBehaviour();
-
-            for (int i = 0; i < _colliders.Count; i++)
-            {
-                if (_colliders[i].ColliderInfo.Name == name)
-                {
-                    HitColliderBehaviour.Copy(_colliders[i], hitColliderBehaviour);
-                    return hitColliderBehaviour;
-                }
-            }
-
-            return null;
+            return _colliderInfo.Find(info => info.Name == name);
         }
     }
 

@@ -53,7 +53,7 @@ namespace Lodis.Gameplay
         private CharacterAnimationBehaviour _animationBehaviour;
         [Tooltip("This transform is where projectile will spawn by default for this object.")]
         [SerializeField]
-        private Transform _projectileSpawnPoint;
+        private ProjectileSpawnerBehaviour _projectileSpawner;
         [Tooltip("This transform is where melee hit boxes will spawn by default for this object.")]
         [SerializeField]
         private Transform _meleeHitBoxSpawnPoint;
@@ -92,7 +92,7 @@ namespace Lodis.Gameplay
         private UnityAction _onUseAbility;
         private TimedAction _rechargeAction;
 
-        public Transform ProjectileSpawnTransform => _projectileSpawnPoint;
+        public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
         public Transform MeleeHitBoxSpawnTransform => _meleeHitBoxSpawnPoint;
 

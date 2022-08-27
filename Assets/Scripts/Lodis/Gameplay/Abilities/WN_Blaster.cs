@@ -18,7 +18,7 @@ namespace Lodis.Gameplay
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
         //The collider attached to the laser
-        private HitColliderBehaviour _projectileCollider;
+        private HitColliderData _projectileCollider;
 
         public override void Init(GameObject newOwner)
         {
@@ -34,15 +34,9 @@ namespace Lodis.Gameplay
 
         protected override void Activate(params object[] args)
         {
-            _projectileCollider = GetColliderBehaviourCopy(0);
+            _projectileCollider = GetColliderData(0);
 
             CleanProjectileList();
-
-            //If no spawn transform has been set, use the default owner transform
-            if (!ownerMoveset.ProjectileSpawnTransform)
-                spawnTransform = owner.transform;
-            else
-                spawnTransform = ownerMoveset.ProjectileSpawnTransform;
 
             //Log if a projectile couldn't be found
             if (!_projectile)
@@ -51,24 +45,13 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            //Create object to spawn laser from
-            GameObject spawnerObject = new GameObject();
-            spawnerObject.transform.parent = spawnTransform;
-            spawnerObject.transform.localPosition = Vector3.zero;
-            spawnerObject.transform.position = new Vector3(spawnerObject.transform.position.x, spawnerObject.transform.position.y, owner.transform.position.z);
-            spawnerObject.transform.forward = owner.transform.forward;
-
-            //Initialize and attach spawn script
-            ProjectileSpawnerBehaviour spawnScript = spawnerObject.AddComponent<ProjectileSpawnerBehaviour>();
-            spawnScript.projectile = _projectile;
+            OwnerMoveset.ProjectileSpawner.projectile = _projectile;
 
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {
-
                 //Fire laser
-                GameObject projectile = spawnScript.FireProjectile(spawnerObject.transform.forward * abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+                GameObject projectile = OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
                 ActiveProjectiles.Add(projectile);
-                MonoBehaviour.Destroy(spawnerObject);
             }
         }
     }

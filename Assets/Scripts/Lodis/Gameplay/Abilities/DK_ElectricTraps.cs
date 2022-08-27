@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
         private float _maxTravelDistance;
         private List<Movement.GridMovementBehaviour> _linkMoveScripts;
         private GameObject _attackLinkVisual;
-        private HitColliderBehaviour _stunCollider;
+        private HitColliderData _stunCollider;
 
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -50,7 +50,7 @@ namespace Lodis.Gameplay
         private void ActivateStunPath()
         {
             //Creates a new collider for the attackLinks in the path to use
-            _stunCollider = (HitColliderBehaviour)GetColliderBehaviourCopy(0);
+            _stunCollider = GetColliderData(0);
 
             //When the attackLinks in the path collide with an something else, try to stun it 
             _stunCollider.OnHit += StunEntity;
@@ -63,7 +63,8 @@ namespace Lodis.Gameplay
             {
                 GameObject attackLink = Object.Instantiate(_attackLinkVisual, panels[i].transform.position + new Vector3(0, .5f,0), _attackLinkVisual.transform.rotation);
                 HitColliderBehaviour collider = attackLink.AddComponent<HitColliderBehaviour>();
-                HitColliderBehaviour.Copy(_stunCollider, collider);
+                collider.Owner = owner;
+                collider.ColliderInfo = _stunCollider;
             }
 
         }
@@ -111,10 +112,10 @@ namespace Lodis.Gameplay
                 ActivateStunPath();
                 return;;
             }
-            
-            
+
+
             //If the owner doesn't have a transform to spawn projectiles from...
-            SpawnTransform = !ownerMoveset.ProjectileSpawnTransform ? owner.transform : ownerMoveset.ProjectileSpawnTransform;
+            SpawnTransform = OwnerMoveset.ProjectileSpawner.transform;
 
             Vector2 attackDirection = (Vector2)args[1];
 

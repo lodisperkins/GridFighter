@@ -124,7 +124,7 @@ namespace Lodis.Gameplay
             _knockBack.AddOnKnockBackAction(EnableBrace);
             _movement.AddOnMoveBeginAction(StopShield);
 
-            _shieldCollider.OnHit += args => { if (IsParrying) ActivateParryInvinciblity(args); };
+            _shieldCollider.AddCollisionEvent(args => { if (IsParrying) ActivateParryInvinciblity(args); });
         }
 
         public void AddOnPhaseShiftAction(UnityAction action)

@@ -390,7 +390,7 @@ namespace Lodis.Movement
 
             return damage;
         }
-        public override float TakeDamage(HitColliderInfo info, GameObject attacker)
+        public override float TakeDamage(HitColliderData info, GameObject attacker)
         {
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
@@ -492,7 +492,7 @@ namespace Lodis.Movement
                 return 0;
 
             //Get the hit collider data of the first collider attached to the ability data
-            HitColliderInfo info = abilityData.GetColliderInfo(0);
+            HitColliderData info = abilityData.GetColliderInfo(0);
 
             //Adds damage to the total damage
             Health += info.Damage;

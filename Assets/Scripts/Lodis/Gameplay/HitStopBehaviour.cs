@@ -42,7 +42,7 @@ namespace Lodis.Gameplay
         private void StartHitStop()
         {
             //Gets the data for the last collider to hit this object to determine the length of the hit stun
-            HitColliderInfo lastColliderInfo = _health.LastCollider.ColliderInfo;
+            HitColliderData lastColliderInfo = _health.LastCollider.ColliderInfo;
             //Calculates a small delay for the animation so that it syncs up better with the hit
             float animationStopDelay = lastColliderInfo.HitStunTime * 0.05f;
             //Clamps the modifier so the character isn't frozen for too long

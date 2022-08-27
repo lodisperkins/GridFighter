@@ -16,7 +16,7 @@ namespace GridGame
         //The sender the gameobject is waiting for the event to be raiased by
         public GameObject IntendedSender;
 
-        public GameEventListener(Event listenerEvent, GameObject sender)
+        public void Init(Event listenerEvent, GameObject sender)
         {
             Event = listenerEvent;
             Event.AddListener(this);
@@ -28,7 +28,7 @@ namespace GridGame
         void Start()
         {
             if (!Event)
-                Event = new Event();
+                Event = ScriptableObject.CreateInstance<GridGame.Event>();
 
             Event.AddListener(this);
         }

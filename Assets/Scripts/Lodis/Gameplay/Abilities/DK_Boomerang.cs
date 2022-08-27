@@ -35,7 +35,7 @@ namespace Lodis.Gameplay
             //Redirect projectile on hit
             base.Activate(args);
             _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
-            _reboundCollider.OnHit += TryRedirectProjectile;
+            _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
             _reboundCollider.Owner = owner;
         }
 
@@ -74,7 +74,7 @@ namespace Lodis.Gameplay
             else if(other.CompareTag("Structure"))
             {
                 //...destroy it
-                MonoBehaviour.Destroy(ProjectileCollider.gameObject);
+                MonoBehaviour.Destroy(_reboundCollider.gameObject);
             }
         }
     }
