@@ -50,7 +50,7 @@ namespace Lodis.Gameplay
         /// Spawns the smaller, weaker lobshot
         /// </summary>
         /// <param name="axis"></param>
-        private GameObject SpawnShot(Vector3 axis, float distance, float angle, GameObject projectile, HitColliderData hitColliderData, Transform spawn, float gravity)
+        private GameObject SpawnShot(Vector3 axis, float distance, float angle, GameObject projectile, HitColliderData hitColliderData, Vector3 position, float gravity)
         {
             OwnerMoveset.ProjectileSpawner.projectile = projectile;
 
@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
             launchForce.x *= axis.x;
 
             GameObject activeProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(launchForce, hitColliderData, true, false);
-            activeProjectile.transform.position = spawn.position;
+            activeProjectile.transform.position = position;
 
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = gravity;
@@ -72,10 +72,12 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         private void SpawnWeakShots(params object[] args)
         {
-            SpawnShot(new Vector3(1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, _weakSpawn, _weakShotGravity);
-            SpawnShot(new Vector3(-1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, _weakSpawn, _weakShotGravity);
-            SpawnShot(new Vector3(0, 0, 1), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, _weakSpawn, _weakShotGravity);
-            SpawnShot(new Vector3(0, 0, -1), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, _weakSpawn, _weakShotGravity);
+            HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[3];
+            Vector3 position = hitCollider.transform.position + Vector3.up * abilityData.GetCustomStatValue("WeakShotSpawnHeight");
+            SpawnShot(new Vector3(1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
+            SpawnShot(new Vector3(-1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
+            SpawnShot(new Vector3(0, 0, 1), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
+            SpawnShot(new Vector3(0, 0, -1), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
             _strongProjectileData.OnHit = null;
         }
 
@@ -117,7 +119,7 @@ namespace Lodis.Gameplay
 
             _strongProjectileData.OnHit += SpawnWeakShots;
             //Fire laser
-            GameObject activeStrongShot = SpawnShot(owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileData, OwnerMoveset.ProjectileSpawner.transform, _strongShotGravity);
+            GameObject activeStrongShot = SpawnShot(owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileData, OwnerMoveset.ProjectileSpawner.transform.position, _strongShotGravity);
             _weakSpawn = activeStrongShot.transform;
             ActiveProjectiles.Add(activeStrongShot);
         }
