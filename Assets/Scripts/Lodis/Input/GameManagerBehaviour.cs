@@ -27,6 +27,10 @@ namespace Lodis.Gameplay
         [SerializeField]
         private GameObject _playerRef;
         [SerializeField]
+        private GameObject _player1CharacterRef;
+        [SerializeField]
+        private GameObject _player2CharacterRef;
+        [SerializeField]
         private GridScripts.GridBehaviour _grid;
         [SerializeField]
         private GameMode _mode;
@@ -141,6 +145,8 @@ namespace Lodis.Gameplay
 
             _p2Input = _player2.GetComponent<IControllable>();
 
+            _p2Input.Character = Instantiate(_player2CharacterRef, _player2.transform);
+
             _p2Input.Character.name += "(P2)";
             _ringBarrierR.Owner = _p2Input.Character;
             _player2.transform.forward = Vector3.left;
@@ -165,11 +171,14 @@ namespace Lodis.Gameplay
         {
             //Spawn player 2
             if (_mode == GameMode.SIMULATE)
-                _player1 = Instantiate(_dummy.gameObject);
+                _dummy.Character = Instantiate(_player1CharacterRef, _player1.transform);
             else
                 _player1 = _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[0]).gameObject;
 
             _p1Input = _player1.GetComponent<IControllable>();
+
+            _p1Input.Character = Instantiate(_player1CharacterRef, _player1.transform);
+
             _p1Input.Character.name += "(P1)";
             _ringBarrierL.Owner = _p1Input.Character;
             _player1.transform.forward = Vector3.right;

@@ -89661,7 +89661,7 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _mode
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
@@ -89683,6 +89683,18 @@ PrefabInstance:
       propertyPath: _invincibleBarriers
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _player1CharacterRef
+      value: 
+      objectReference: {fileID: 561307191668043433, guid: 71e6ba92ebf74ae4ca930c1dddfd94f2,
+        type: 3}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _player2CharacterRef
+      value: 
+      objectReference: {fileID: 1959598720044943059, guid: 3b468cd3507bb6643a07d12c77fe9833,
+        type: 3}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _dummyLHSSpawnLocation.x

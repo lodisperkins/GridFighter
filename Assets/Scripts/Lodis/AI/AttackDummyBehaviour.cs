@@ -72,7 +72,7 @@ namespace Lodis.AI
         public DefenseDecisionTree DefenseDecisions { get => _defenseDecisions; }
         public float TimeNeededToBurst { get => _timeNeededToBurst; }
         public IntVariable PlayerID { get => _playerID; set => _playerID = value; }
-        public GameObject Character { get => _character; private set => _character = value; }
+        public GameObject Character { get => _character; set => _character = value; }
         public float MaxRange { get => _maxRange; set => _maxRange = value; }
 
         public DefenseNode LastDefenseDecision;
@@ -80,19 +80,17 @@ namespace Lodis.AI
         public Vector2 MovePosition;
         public bool EnableBehaviourTree;
 
-        // Start is called before the first frame update
-        void Awake()
+
+        private void Start()
         {
+
             Moveset = Character.GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             _knockbackBehaviour = Character.GetComponent<Movement.KnockbackBehaviour>();
             _executor = GetComponent<BehaviorExecutor>();
             _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
             _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
-        }
 
-        private void Start()
-        {
             _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(PlayerID);
 
             if (EnableBehaviourTree)

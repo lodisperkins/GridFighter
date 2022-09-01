@@ -19,6 +19,9 @@ namespace GridGame
         //Raises the event with the gameobject information
         public void Raise(GameObject sender)
         {
+            if (_listeners == null)
+                return;
+
             foreach(IListener listener in _listeners)
             {
                 listener.Invoke(sender);
@@ -27,6 +30,9 @@ namespace GridGame
         //Raises the game event with no information about who sent it
         public void Raise()
         {
+            if (_listeners == null)
+                return;
+
             foreach (IListener listener in _listeners)
             {
                 listener.Invoke(null);

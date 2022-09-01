@@ -145,13 +145,12 @@ namespace Lodis.Input
             }
         }
 
-        public GameObject Character { get => _character; private set => _character = value; }
+        public GameObject Character { get => _character; set => _character = value; }
 
         private void Awake()
         {
             _playerControls = new PlayerControls();
             //Initialize action delegates
-            _stateMachineBehaviour = GetComponentInChildren<CharacterStateMachineBehaviour>();
             //Movement input
             if (!_holdToMove)
             {
@@ -183,6 +182,7 @@ namespace Lodis.Input
         // Start is called before the first frame update
         void Start()
         {
+            _stateMachineBehaviour = GetComponentInChildren<CharacterStateMachineBehaviour>();
             _gridMovement = Character.GetComponent<Movement.GridMovementBehaviour>();
             _moveset = Character.GetComponent<MovesetBehaviour>();
             _defense = Character.GetComponent<CharacterDefenseBehaviour>();
@@ -391,7 +391,8 @@ namespace Lodis.Input
             }
             else if (_lastAbilityUsed.abilityData.CanCancelOnMove)
             {
-                _gridMovement.AddOnMoveBeginTempAction(() => _lastAbilityUsed.TryCancel());
+
+
                 _gridMovement.DisableMovement(condition => _moveset.GetCanUseAbility());
             }
         }
