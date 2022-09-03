@@ -2054,6 +2054,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: BaseBodyBlockout_SkeletalMesh (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2794375731157570990, guid: f517af319251f6d4ea62cf69a83cb651,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4941272823815691048, guid: f517af319251f6d4ea62cf69a83cb651,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ecafe47b24eb61e4fa9005a01b8988a4, type: 2}
     - target: {fileID: 5866666021909216657, guid: f517af319251f6d4ea62cf69a83cb651,
         type: 3}
       propertyPath: m_Controller
