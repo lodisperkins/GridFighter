@@ -237,7 +237,8 @@ namespace Lodis.Movement
             _maxYPosition = (FloatVariable)Resources.Load("ScriptableObjects/MaxYPosition");
             _returnEffect = ((GameObject)Resources.Load("Effects/Teleport")).GetComponent<ParticleSystem>();
             //initialize events
-            _moveEnabledEventListener = GetComponent<GridGame.GameEventListener>();
+            _moveEnabledEventListener = gameObject.AddComponent<GridGame.GameEventListener>();
+            _moveEnabledEventListener.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
             _moveDisabledEventListener = gameObject.AddComponent<GridGame.GameEventListener>();
             _moveDisabledEventListener.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
 
