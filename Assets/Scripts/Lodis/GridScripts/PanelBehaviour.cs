@@ -13,7 +13,7 @@ namespace Lodis.GridScripts
         private GridAlignment _alignment;
         [Tooltip("The material to give this panel if it is not aligned with either side of the grid.")]
         [SerializeField]
-        private Material _neutralMat;
+        private Color _neutralMat;
         [Tooltip("The material to give this panel if it is aligned with the left side of the grid.")]
         [SerializeField]
         private Material _leftSideMat;

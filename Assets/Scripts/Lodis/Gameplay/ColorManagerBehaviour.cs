@@ -5,28 +5,46 @@ using UnityEngine;
 
 namespace Lodis.Gameplay
 {
+    [System.Serializable]
+    public class ColorObject
+    {
+        public Renderer ObjectRenderer;
+        public string[] ShaderProperties;
+        public bool OnlyChangeHue;
+    }
+
     public class ColorManagerBehaviour : MonoBehaviour
     {
         [SerializeField] private IntVariable _ownerID;
-        [SerializeField] private string[] _shaderProperties;
-        [SerializeField] private MeshRenderer _renderer;
-        [SerializeField] private bool _onlyChangeHue;
+        [SerializeField] private ColorObject[] _objectsToColor;
         private Color _ownerColor;
 
-        private void SetHue(string property)
+        private void SetHue(ColorObject objectToColor)
         {
-            Color propertyColor = _renderer.material.GetColor(property);
+            Color propertyColor = new Color();
             Vector3 propertyHSV = new Vector3();
             Vector3 ownerHSV = new Vector3();
 
-            Color.RGBToHSV(propertyColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
-            Color.RGBToHSV(_ownerColor, out ownerHSV.x, out ownerHSV.y, out ownerHSV.z);
+            foreach (string property in objectToColor.ShaderProperties)
+            {
+                propertyColor = objectToColor.ObjectRenderer.material.GetColor(property);
+                Color.RGBToHSV(propertyColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
+                Color.RGBToHSV(_ownerColor, out ownerHSV.x, out ownerHSV.y, out ownerHSV.z);
 
-            propertyHSV.x = ownerHSV.x;
+                propertyHSV.x = ownerHSV.x;
 
-            Color newColor = Color.HSVToRGB(propertyHSV.x, propertyHSV.y, propertyHSV.z);
+                Color newColor = Color.HSVToRGB(propertyHSV.x, propertyHSV.y, propertyHSV.z);
 
-            _renderer.material.SetColor(property, newColor);
+                objectToColor.ObjectRenderer.material.SetColor(property, newColor);
+            }
+        }
+
+        private void SetColor(ColorObject objectToColor)
+        {
+            foreach (string property in objectToColor.ShaderProperties)
+            {
+                objectToColor.ObjectRenderer.material.SetColor(property, _ownerColor);
+            }
         }
 
         // Start is called before the first frame update
@@ -34,12 +52,12 @@ namespace Lodis.Gameplay
         {
             _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByID(_ownerID);    
 
-            foreach (string property in _shaderProperties)
+            foreach (ColorObject colorObject in _objectsToColor)
             {
-                if (_onlyChangeHue)
-                    SetHue(property);
+                if (colorObject.OnlyChangeHue)
+                    SetHue(colorObject);
                 else
-                    _renderer.material.SetColor(property, _ownerColor);
+                    SetColor(colorObject);
             }
         }
 
