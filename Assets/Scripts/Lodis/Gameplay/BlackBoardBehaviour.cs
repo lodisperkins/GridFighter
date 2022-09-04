@@ -9,6 +9,8 @@ namespace Lodis.Gameplay
     public class BlackBoardBehaviour : MonoBehaviour
     {
         public List<Color> AbilityCostColors;
+        public Color Player1Color;
+        public Color Player2Color;
         public GridScripts.GridBehaviour Grid { get; private set; }
         public string Player1State = null;
         public string Player2State = null;
@@ -175,6 +177,18 @@ namespace Lodis.Gameplay
                 return Player1;
 
             return null;
+        }
+
+        public Color GetPlayerColorByID(IntVariable id)
+        {
+            if (!id) return Color.black;
+
+            if (id.Value == 1)
+                return Player1Color;
+            else if (id.Value == 2)
+                return Player2Color;
+
+            return Color.black;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Awake()
         {
-            _emissionMat = _visual.materials[1];
+            _emissionMat = _visual.material;
             _emissionColor = _emissionMat.GetColor("_EmissionColor");
             _health = GetComponent<RingBarrierBehaviour>();
             _health.AddOnTakeDamageAction(UpdateCracks);
