@@ -73,7 +73,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 10.985587, g: 0.000002619168, b: 0, a: 1}
+    - _EmissionColor: {r: 1.4980392, g: 0.007843138, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
 --- !u!114 &3575645764685548604
 MonoBehaviour:

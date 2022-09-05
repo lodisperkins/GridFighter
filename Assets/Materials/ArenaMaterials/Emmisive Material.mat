@@ -101,8 +101,8 @@ Material:
     - Color_205411B7: {r: 0.009242535, g: 0, b: 1, a: 0}
     - Color_D72C77CE: {r: 0.23113209, g: 0.31287733, b: 1, a: 0}
     - _BaseColor: {r: 0, g: 0.15109777, b: 1, a: 1}
-    - _Color: {r: 0, g: 0.13257027, b: 1, a: 1}
-    - _EmissionColor: {r: 0.24327739, g: 0.21226418, b: 1, a: 1}
+    - _Color: {r: 0, g: 0.13333368, b: 1, a: 1}
+    - _EmissionColor: {r: 0.09901875, g: 0.06132078, b: 1, a: 1}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
