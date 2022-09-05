@@ -19,13 +19,14 @@ namespace Lodis.Gameplay
         [SerializeField] private GameObject _topSupport;
         [SerializeField] private GameObject _topSupportInactive;
         [SerializeField] private Vector3 _supportVelocity;
+        [SerializeField] private MeshRenderer _innerShieldRenderer;
         private Material _emissionMat;
         private Color _emissionColor;
 
         // Start is called before the first frame update
         void Awake()
         {
-            _emissionMat = _visual.material;
+            _emissionMat = _innerShieldRenderer.material;
             _emissionColor = _emissionMat.GetColor("_EmissionColor");
             _health = GetComponent<RingBarrierBehaviour>();
             _health.AddOnTakeDamageAction(UpdateCracks);

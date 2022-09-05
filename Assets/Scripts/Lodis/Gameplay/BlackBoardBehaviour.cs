@@ -190,6 +190,19 @@ namespace Lodis.Gameplay
 
             return Color.black;
         }
+
+        public Color GetPlayerColorByAlignment(GridScripts.GridAlignment alignment)
+        {
+            if (alignment == GridScripts.GridAlignment.ANY)
+                return Color.white;
+
+            if (alignment == GridScripts.GridAlignment.LEFT)
+                return Player1Color;
+            else if (alignment == GridScripts.GridAlignment.RIGHT)
+                return Player2Color;
+
+            return Color.black;
+        }
     }
 }
 

@@ -1,4 +1,6 @@
-﻿using Lodis.ScriptableObjects;
+﻿using Lodis.Movement;
+using Lodis.ScriptableObjects;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,32 +12,22 @@ namespace Lodis.Gameplay
     {
         public Renderer ObjectRenderer;
         public string[] ShaderProperties;
-        public bool OnlyChangeHue;
+        public bool OnlyChangeHue = true;
     }
 
     public class ColorManagerBehaviour : MonoBehaviour
     {
-        [SerializeField] private IntVariable _ownerID;
+        [SerializeField] private GridScripts.GridAlignment _alignment;
+        [SerializeField] private bool _autoDetectAlignment;
         [SerializeField] private ColorObject[] _objectsToColor;
         private Color _ownerColor;
 
+
         private void SetHue(ColorObject objectToColor)
         {
-            Color propertyColor = new Color();
-            Vector3 propertyHSV = new Vector3();
-            Vector3 ownerHSV = new Vector3();
-
             foreach (string property in objectToColor.ShaderProperties)
             {
-                propertyColor = objectToColor.ObjectRenderer.material.GetColor(property);
-                Color.RGBToHSV(propertyColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
-                Color.RGBToHSV(_ownerColor, out ownerHSV.x, out ownerHSV.y, out ownerHSV.z);
-
-                propertyHSV.x = ownerHSV.x;
-
-                Color newColor = Color.HSVToRGB(propertyHSV.x, propertyHSV.y, propertyHSV.z);
-
-                objectToColor.ObjectRenderer.material.SetColor(property, newColor);
+                objectToColor.ObjectRenderer.material.ChangeHue(_ownerColor, property);
             }
         }
 
@@ -50,7 +42,10 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
-            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByID(_ownerID);    
+            if (_autoDetectAlignment)
+                _alignment = GetComponent<GridMovementBehaviour>().Alignment;
+
+            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(_alignment);    
 
             foreach (ColorObject colorObject in _objectsToColor)
             {

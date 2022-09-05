@@ -49,5 +49,22 @@ namespace Lodis.Utility
         {
             return gameObject.scene.rootCount == 0;
         }
+
+        public static void ChangeHue(this Material material, Color newColor, string property)
+        {
+            Color propertyColor = new Color();
+            Vector3 propertyHSV = new Vector3();
+            Vector3 targetHSV = new Vector3();
+            
+            propertyColor = material.GetColor(property);
+            Color.RGBToHSV(propertyColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
+            Color.RGBToHSV(newColor, out targetHSV.x, out targetHSV.y, out targetHSV.z);
+
+            propertyHSV.x = targetHSV.x;
+
+            newColor = Color.HSVToRGB(propertyHSV.x, propertyHSV.y, propertyHSV.z);
+
+            material.SetColor(property, newColor);
+        }
     }
 }

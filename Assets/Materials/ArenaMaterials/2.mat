@@ -85,6 +85,7 @@ Material:
     - Vector1_AF883DE0: 5.54
     - Vector1_E0AB0ADF: 0.55
     - _AlphaClip: 0
+    - _AmbientStrength: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
@@ -92,6 +93,8 @@ Material:
     - _DstBlend: 0
     - _EmissionStrength: 0
     - _EnvironmentReflections: 1
+    - _FalloffAmount: 0
+    - _FresnelSize: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -114,6 +117,8 @@ Material:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
+    - _FresnelColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularColor: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
