@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1008597182785218708}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3354557969132034522}
@@ -337,9 +337,9 @@ GameObject:
   - component: {fileID: 8744172618015234542}
   - component: {fileID: 8744172618015234546}
   - component: {fileID: 3135977292930765005}
+  - component: {fileID: 893158910596431204}
   - component: {fileID: 8764218841854632973}
   - component: {fileID: 929767235}
-  - component: {fileID: 893158910596431204}
   m_Layer: 15
   m_Name: RingBarrier
   m_TagString: Structure
@@ -419,6 +419,43 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!114 &893158910596431204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8744172618015234547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dac4a0487bd52546bb87e3a03cb9124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _autoDetectAlignment: 0
+  _objectsToColor:
+  - ObjectRenderer: {fileID: 1711813854987330277}
+    ShaderProperties:
+    - _EmissionColor
+    OnlyChangeHue: 1
+  - ObjectRenderer: {fileID: 1711813854374387425}
+    ShaderProperties:
+    - _EmissionColor
+    OnlyChangeHue: 1
+  - ObjectRenderer: {fileID: 3340707822704788680}
+    ShaderProperties:
+    - _ColorInside
+    - _ColorEdges
+    OnlyChangeHue: 1
+  - ObjectRenderer: {fileID: 1880277003271008450}
+    ShaderProperties:
+    - _Color
+    - _EmissionColor
+    OnlyChangeHue: 1
+  - ObjectRenderer: {fileID: 2844560268254500083}
+    ShaderProperties:
+    - _EmissionColor
+    OnlyChangeHue: 1
 --- !u!114 &8764218841854632973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,43 +564,6 @@ MonoBehaviour:
   rechargeDuration: 2
   timeBeforeRecharge: 3
   shieldEnabled: 0
---- !u!114 &893158910596431204
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8744172618015234547}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8dac4a0487bd52546bb87e3a03cb9124, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _alignment: 0
-  _autoDetectAlignment: 0
-  _objectsToColor:
-  - ObjectRenderer: {fileID: 1711813854987330277}
-    ShaderProperties:
-    - _EmissionColor
-    OnlyChangeHue: 1
-  - ObjectRenderer: {fileID: 1711813854374387425}
-    ShaderProperties:
-    - _EmissionColor
-    OnlyChangeHue: 1
-  - ObjectRenderer: {fileID: 3340707822704788680}
-    ShaderProperties:
-    - _ColorInside
-    - _ColorEdges
-    OnlyChangeHue: 1
-  - ObjectRenderer: {fileID: 1880277003271008450}
-    ShaderProperties:
-    - _Color
-    - _EmissionColor
-    OnlyChangeHue: 1
-  - ObjectRenderer: {fileID: 2844560268254500083}
-    ShaderProperties:
-    - _EmissionColor
-    OnlyChangeHue: 1
 --- !u!1001 &1212653688
 PrefabInstance:
   m_ObjectHideFlags: 0

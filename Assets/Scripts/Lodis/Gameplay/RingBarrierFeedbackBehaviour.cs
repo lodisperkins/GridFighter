@@ -26,11 +26,15 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Awake()
         {
-            _emissionMat = _innerShieldRenderer.material;
-            _emissionColor = _emissionMat.GetColor("_EmissionColor");
             _health = GetComponent<RingBarrierBehaviour>();
             _health.AddOnTakeDamageAction(UpdateCracks);
             _health.AddOnDeathAction(DeactivateBarrier);
+        }
+
+        void Start()
+        {
+            _emissionMat = _innerShieldRenderer.material;
+            _emissionColor = _emissionMat.GetColor("_EmissionColor");
         }
 
         private void DeactivateBarrier()
