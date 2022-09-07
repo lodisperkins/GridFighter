@@ -34,7 +34,6 @@ namespace Lodis.Gameplay
         void Start()
         {
             _emissionMat = _innerShieldRenderer.material;
-            _emissionColor = _emissionMat.GetColor("_EmissionColor");
         }
 
         private void DeactivateBarrier()
@@ -55,6 +54,9 @@ namespace Lodis.Gameplay
         {
             float currentHealthPercentage = _health.Health / _health.MaxHealth.Value;
             Texture2D currentTexture = null;
+
+            if (_emissionColor == default(Color))
+                _emissionColor = _emissionMat.GetColor("_EmissionColor");
 
             _emissionMat.SetColor("_EmissionColor", _emissionColor * _crackedEmissionStrength);
 

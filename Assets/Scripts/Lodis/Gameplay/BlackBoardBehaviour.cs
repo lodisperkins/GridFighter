@@ -129,6 +129,21 @@ namespace Lodis.Gameplay
             return null;
         }
 
+        /// <summary>
+        /// Gets a reference to the player that is aligned with the given side
+        /// </summary>
+        /// <param name="alignment">The player's grid alignment.</param>
+        /// <returns></returns>
+        public GameObject GetPlayerFromAlignment(GridScripts.GridAlignment alignment)
+        {
+            if (alignment == GridScripts.GridAlignment.LEFT)
+                return Player1;
+            else if(alignment == GridScripts.GridAlignment.RIGHT)
+                return Player2;
+
+            return null;
+        }
+
         private void Awake()
         {
             Grid = FindObjectOfType<GridScripts.GridBehaviour>();

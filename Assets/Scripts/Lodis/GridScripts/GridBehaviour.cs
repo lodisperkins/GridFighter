@@ -9,6 +9,7 @@ namespace Lodis.GridScripts
     /// <summary>
     /// Used to label which side of the grid an object belongs to
     /// </summary>
+    [System.Serializable]
     public enum GridAlignment
     {
         NONE,

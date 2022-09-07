@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 9095670520320461415}
   - component: {fileID: 3504853025319885305}
   m_Layer: 15
-  m_Name: Collider
+  m_Name: BarrierCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -471,41 +471,41 @@ MonoBehaviour:
   _visual: {fileID: 3340707822704788680}
   _healthGradient:
     serializedVersion: 2
-    key0: {r: 0.98039216, g: 0.5146489, b: 0, a: 0.17254902}
-    key1: {r: 1, g: 0.912394, b: 0, a: 0.12941177}
-    key2: {r: 0, g: 1, b: 0.003575325, a: 0.043137256}
+    key0: {r: 1, g: 1, b: 1, a: 1}
+    key1: {r: 1, g: 1, b: 1, a: 1}
+    key2: {r: 0, g: 0, b: 0, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
     key6: {r: 0, g: 0, b: 0, a: 0}
     key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 19661
-    ctime1: 45875
-    ctime2: 65535
+    ctime0: 0
+    ctime1: 65535
+    ctime2: 0
     ctime3: 0
     ctime4: 0
     ctime5: 0
     ctime6: 0
     ctime7: 0
-    atime0: 19661
-    atime1: 45875
-    atime2: 65150
+    atime0: 0
+    atime1: 65535
+    atime2: 0
     atime3: 0
     atime4: 0
     atime5: 0
     atime6: 0
     atime7: 0
     m_Mode: 0
-    m_NumColorKeys: 3
-    m_NumAlphaKeys: 3
-  _maxTransparency: 0.5
-  _fadeInDuration: 0.2
-  _fadeOutDuration: 0.2
+    m_NumColorKeys: 2
+    m_NumAlphaKeys: 2
+  _maxTransparency: 0
+  _fadeInDuration: 0
+  _fadeOutDuration: 0
   _targetEmissionTextures:
   - {fileID: 2800000, guid: c24121b774b7b5a4f8a26608206889b1, type: 3}
   - {fileID: 2800000, guid: 10f2ffdb8582a694da1457374622bd67, type: 3}
   - {fileID: 2800000, guid: ba83bc458137dca4e919772861ee7c22, type: 3}
-  _crackedEmissionStrength: 50.6
+  _crackedEmissionStrength: 50
   _deathParticles:
   - {fileID: 5312346964771370304}
   - {fileID: 1703160581375671413}
