@@ -8,6 +8,7 @@ using UnityEngine.InputSystem.Utilities;
 using Lodis.Utility;
 using Lodis.Input;
 using DG.Tweening;
+using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
@@ -62,6 +63,7 @@ namespace Lodis.Gameplay
         private float _timeScale = 1;
         private bool _p1DeviceSet;
         private bool _p2DeviceSet;
+        public static UnityAction OnApplicationQuit;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -121,6 +123,7 @@ namespace Lodis.Gameplay
         {
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, time).SetUpdate(true).onComplete += () => Time.timeScale = 1;
         }
+
 
         private void SpawnEntitiesByMode()
         {
@@ -199,9 +202,17 @@ namespace Lodis.Gameplay
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
         }
 
-        public static void Restart()
+        public  void Restart()
         {
+
+            OnApplicationQuit?.Invoke();
             SceneManager.LoadScene(0);
+        }
+
+        public void QuitApplication()
+        {
+            OnApplicationQuit?.Invoke();
+            Application.Quit();
         }
 
         private bool DeviceInputReceived(out InputDevice device)
@@ -325,7 +336,7 @@ namespace Lodis.Gameplay
             DrawDefaultInspector();
             if (GUILayout.Button("Reset Game"))
             {
-                GameManagerBehaviour.Restart();
+                _manager.Restart();
             }
         }
     }

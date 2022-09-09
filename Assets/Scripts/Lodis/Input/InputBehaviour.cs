@@ -526,21 +526,8 @@ namespace Lodis.Input
             else
                 _abilityBuffered = false;
 
-            //Temp quit button for first prototype build
-            if (Keyboard.current.escapeKey.isPressed)
-            {
-                OnApplicationQuit?.Invoke();
-                Application.Quit();
-            }
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
-            if (Keyboard.current.backspaceKey.wasPressedThisFrame)
-                GameManagerBehaviour.Restart();
-            
-#if UNITY_EDITOR
-            if (Keyboard.current.enterKey.wasPressedThisFrame)
-                EditorApplication.isPaused = true;
-#endif
         }
     }
 }

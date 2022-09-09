@@ -104,8 +104,8 @@ namespace Lodis.AI
 
                 if (Application.isEditor) return;
 
-                Input.InputBehaviour.OnApplicationQuit += () => _attackDecisions?.Save(name);
-                Input.InputBehaviour.OnApplicationQuit += () => _defenseDecisions?.Save(name);
+                GameManagerBehaviour.OnApplicationQuit += () => _attackDecisions?.Save(name);
+                GameManagerBehaviour.OnApplicationQuit += () => _defenseDecisions?.Save(name);
             }
         }
 
