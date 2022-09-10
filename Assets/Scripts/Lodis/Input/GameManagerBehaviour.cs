@@ -24,35 +24,13 @@ namespace Lodis.Gameplay
     {
         private static GameManagerBehaviour _instance;
         [SerializeField]
-        private PlayerInputManager _inputManager;
-        [SerializeField]
-        private GameObject _playerRef;
-        [SerializeField]
-        private GameObject _player1CharacterRef;
-        [SerializeField]
-        private GameObject _player2CharacterRef;
-        [SerializeField]
         private GridScripts.GridBehaviour _grid;
         [SerializeField]
         private GameMode _mode;
-        private GameObject _player1;
-        private GameObject _player2;
-        private Movement.GridMovementBehaviour _p1Movement;
-        private Movement.GridMovementBehaviour _p2Movement;
-        private CharacterStateMachineBehaviour _p1StateManager;
-        private CharacterStateMachineBehaviour _p2StateManager;
-        private IControllable _p1Input;
-        private IControllable _p2Input;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierL;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierR;
-        [SerializeField]
-        private AI.AttackDummyBehaviour _dummy;
-        [SerializeField]
-        private Vector2 _dummyRHSSpawnLocation;
-        [SerializeField]
-        private Vector2 _dummyLHSSpawnLocation;
         [SerializeField]
         private int _targetFrameRate;
         [SerializeField]
@@ -61,9 +39,11 @@ namespace Lodis.Gameplay
         private bool _infiniteEnergy;
         [SerializeField]
         private float _timeScale = 1;
-        private bool _p1DeviceSet;
-        private bool _p2DeviceSet;
-        public static UnityAction OnApplicationQuit;
+        [SerializeField]
+        private UnityEvent _onApplicationQuit;
+        [SerializeField]
+        private UnityEvent _onMatchRestart;
+        private PlayerSpawnBehaviour _playerSpawner;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -91,27 +71,24 @@ namespace Lodis.Gameplay
         }
 
         public static bool InfiniteEnergy { get; private set; }
-
+        public bool InvincibleBarriers { get => _invincibleBarriers; set => _invincibleBarriers = value; }
 
         private void Awake()
         {
-            _inputManager.playerPrefab = _playerRef;
             _grid.DestroyTempPanels();
-            _grid.InvincibleBarriers = _invincibleBarriers;
+            _grid.InvincibleBarriers = InvincibleBarriers;
             InfiniteEnergy = _infiniteEnergy;
-            
-            if (_invincibleBarriers)
-            {
-                _ringBarrierL.SetInvincibilityByCondition(condition => !_invincibleBarriers);
-                _ringBarrierR.SetInvincibilityByCondition(condition => !_invincibleBarriers);
-            }
-            
+
             //Initialize grid
             _grid.CreateGrid();
+
+            _playerSpawner = GetComponent<PlayerSpawnBehaviour>();
+            _playerSpawner.SpawnEntitiesByMode(_mode);
+            _onMatchRestart.AddListener(_playerSpawner.ResetPlayers);
+
             Application.targetFrameRate = _targetFrameRate;
 
             Time.timeScale = _timeScale;
-            SpawnEntitiesByMode();
         }
 
         /// <summary>
@@ -124,198 +101,25 @@ namespace Lodis.Gameplay
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, time).SetUpdate(true).onComplete += () => Time.timeScale = 1;
         }
 
-
-        private void SpawnEntitiesByMode()
+        public void Restart()
         {
-            SpawnPlayer1();
-
-            if (_mode != GameMode.SINGLEPLAYER)
-            {
-                SpawnPlayer2();
-                _grid.AssignOwners(_player1.name, _player2.name);
-            }
-            else
-                _grid.AssignOwners(_player1.name);
-        }
-
-        private void SpawnPlayer2()
-        {
-            //Spawn player 2
-            if (_mode != GameMode.MULTIPLAYER)
-                _player2 = Instantiate(_dummy.gameObject);
-            else
-                _player2 = _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[0]).gameObject;
-
-            _p2Input = _player2.GetComponent<IControllable>();
-
-            _p2Input.Character = Instantiate(_player2CharacterRef, _player2.transform);
-
-            _p2Input.Character.name += "(P2)";
-            _ringBarrierR.Owner = _p2Input.Character;
-            _player2.transform.forward = Vector3.left;
-            BlackBoardBehaviour.Instance.Player2 = _p2Input.Character;
-            //Get reference to player 2 components
-            _p2Movement = _p2Input.Character.GetComponent<Movement.GridMovementBehaviour>();
-            _p2StateManager = _p2Input.Character.GetComponent<CharacterStateMachineBehaviour>();
-            _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
-
-            BlackBoardBehaviour.Instance.Player2Controller = _p2Input;
-
-            GridScripts.PanelBehaviour spawnPanel = null;
-            if (_grid.GetPanel(_dummyRHSSpawnLocation, out spawnPanel, false))
-                _p2Movement.MoveToPanel(spawnPanel, true, GridScripts.GridAlignment.ANY);
-            else
-                Debug.LogError("Invalid spawn point for player 2. Spawn was " + _grid.RhsSpawnPanel);
-
-            _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
-        }
-
-        private void SpawnPlayer1()
-        {
-            //Spawn player 2
-            if (_mode == GameMode.SIMULATE)
-                _dummy.Character = Instantiate(_player1CharacterRef, _player1.transform);
-            else
-                _player1 = _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[0]).gameObject;
-
-            _p1Input = _player1.GetComponent<IControllable>();
-
-            _p1Input.Character = Instantiate(_player1CharacterRef, _player1.transform);
-
-            _p1Input.Character.name += "(P1)";
-            _ringBarrierL.Owner = _p1Input.Character;
-            _player1.transform.forward = Vector3.right;
-            BlackBoardBehaviour.Instance.Player1 = _p1Input.Character;
-            //Get reference to player 2 components
-            _p1Movement = _p1Input.Character.GetComponent<Movement.GridMovementBehaviour>();
-            _p1StateManager = _p1Input.Character.GetComponent<CharacterStateMachineBehaviour>();
-            _p1Input.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
-
-            BlackBoardBehaviour.Instance.Player1Controller = _p1Input;
-
-            GridScripts.PanelBehaviour spawnPanel = null;
-            if (_grid.GetPanel(_dummyLHSSpawnLocation, out spawnPanel, false))
-                _p1Movement.MoveToPanel(spawnPanel, true, GridScripts.GridAlignment.ANY);
-            else
-                Debug.LogError("Invalid spawn point for player 1. Spawn was " + _grid.LhsSpawnPanel);
-
-            _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
-        }
-
-        public  void Restart()
-        {
-
-            OnApplicationQuit?.Invoke();
-            SceneManager.LoadScene(0);
+            _onMatchRestart?.Invoke();
         }
 
         public void QuitApplication()
         {
-            OnApplicationQuit?.Invoke();
+            _onApplicationQuit?.Invoke();
             Application.Quit();
         }
 
-        private bool DeviceInputReceived(out InputDevice device)
+        public void AddOnApplicationQuitAction(UnityAction action)
         {
-            device = null;
-            InputBehaviour p1Input = (InputBehaviour)_p1Input;
-
-            for (int i = 0; i < InputSystem.devices.Count; i++)
-            {
-                if (InputSystem.devices[i].IsPressed() && !InputSystem.devices[i].name.Contains("Mouse")
-                    && !p1Input.Devices.Contains(InputSystem.devices[i]))
-                {
-                    if (_mode == GameMode.MULTIPLAYER)
-                    { 
-                        InputBehaviour p2Input = (InputBehaviour)_p2Input;
-                        if (p2Input?.Devices.Contains(InputSystem.devices[i]) == true)
-                            continue;
-                    }
-
-                    device = InputSystem.devices[i];
-                    return true;
-                }
-            }
-
-            return false;
+            _onApplicationQuit.AddListener(action);
         }
 
-        private void AssignDevice(InputDevice device, int player)
+        public void AddOnMatchRestartAction(UnityAction action)
         {
-            Input.InputBehaviour playerInput = null;
-            if (player == 1)
-                playerInput = (InputBehaviour)_p1Input;
-            else playerInput = (InputBehaviour)_p2Input;
-
-            //If input was detected by a keyboard or mouse...
-            if (device.name.Contains("Mouse") || device.name.Contains("Keyboard"))
-            {
-                //...set the input device array to be the keyboard and mouse
-                playerInput.Devices = new List<InputDevice>(InputSystem.devices.GetDevices(args =>
-                {
-                    InputDevice input = (InputDevice)args[0];
-                    return input.name.Contains("Mouse") || input.name.Contains("Keyboard");
-                }
-                ));
-                return;
-            }
-
-            playerInput.Devices = new List<InputDevice>() { device };
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
-            
-            if (_mode == GameMode.SIMULATE)
-                return;
-
-            if (!_p1DeviceSet)
-            {
-                InputBehaviour p1Input = (InputBehaviour)_p1Input;
-
-                InputDevice device;
-                if (!DeviceInputReceived(out device))
-                    return;
-                Debug.Log("Input Received P1 " + device.name);
-
-                if (_mode == GameMode.MULTIPLAYER)
-                {
-                    InputBehaviour p2Input = (InputBehaviour)_p2Input;
-
-                    if (p2Input.Devices.Find(args => args.deviceId == device.deviceId) != null)
-                        return;
-                }
-
-                if (!device.name.Contains("Mouse"))
-                {
-                    Debug.Log("Input Assigned P1 " + device.name);
-                    AssignDevice(device, 1);
-                    p1Input.enabled = true;
-                    _p1DeviceSet = true;
-                }
-            }
-
-            if (_mode == GameMode.MULTIPLAYER && !_p2DeviceSet)
-            {
-                BlackBoardBehaviour.Instance.Player2State = _p2StateManager.StateMachine.CurrentState;
-                InputBehaviour p1Input = (InputBehaviour)_p1Input;
-                InputBehaviour p2Input = (InputBehaviour)_p2Input;
-
-                InputDevice device = null;
-                if (!DeviceInputReceived(out device))
-                    return;
-                Debug.Log("Input Received P2 " + device.name);
-                if (p1Input.Devices.Find(args => args.deviceId == device.deviceId) == null && !device.name.Contains("Mouse"))
-                {
-                    Debug.Log("Input Assigned P2 " + device.name);
-                    AssignDevice(device, 2);
-                    p2Input.enabled = true;
-                    _p2DeviceSet = true;
-                }
-            }
-
+            _onMatchRestart.AddListener(action);
         }
     }
 

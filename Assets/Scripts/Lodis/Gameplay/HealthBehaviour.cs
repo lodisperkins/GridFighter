@@ -203,6 +203,15 @@ namespace Lodis.Gameplay
             return healthAmount;
         }
 
+        public virtual void ResetHealth()
+        {
+            _health = _startingHealth;
+            _isAlive = true;
+
+            if (_stunned)
+                CancelStun();
+        }
+
         /// <summary>
         /// Starts the timer for the movement and input being disabled
         /// </summary>

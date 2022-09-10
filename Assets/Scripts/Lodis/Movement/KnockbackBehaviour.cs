@@ -269,6 +269,16 @@ namespace Lodis.Movement
 
         }
 
+        public override void ResetHealth()
+        {
+            base.ResetHealth();
+
+            CancelHitStun();
+            CurrentAirState = AirState.NONE;
+            Physics.CancelFreeze();
+            Physics.RB.isKinematic = true; 
+        }
+
         public void CancelHitStun()
         {
             if (_hitStunTimer.GetEnabled())

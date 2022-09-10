@@ -38,6 +38,9 @@ namespace Lodis.Gameplay
         {
             base.Start();
             AddOnDeathAction(() => Physics.IgnoreCollision(_collider, _ownerCollider));
+
+            if (GameManagerBehaviour.Instance.InvincibleBarriers)
+                SetInvincibilityByCondition(condition => !GameManagerBehaviour.Instance.InvincibleBarriers);
         }
 
         /// <summary>

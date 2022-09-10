@@ -11,8 +11,12 @@ GameObject:
   - component: {fileID: 3714706006734652314}
   - component: {fileID: 3714706006734652313}
   - component: {fileID: 3714706006734652312}
+  - component: {fileID: 6769407473129059388}
   - component: {fileID: 3714706006734652315}
   - component: {fileID: 3714706006734652316}
+  - component: {fileID: 1359032536}
+  - component: {fileID: 1359032537}
+  - component: {fileID: 1359032538}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -89,20 +93,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47f797b8b88b27d4b96f6d0cdbf360c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inputManager: {fileID: 3714706006734652313}
-  _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
-    type: 3}
   _grid: {fileID: 0}
-  _mode: 0
+  _mode: 2
   _ringBarrierL: {fileID: 0}
   _ringBarrierR: {fileID: 0}
-  _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
-  _dummyRHSSpawnLocation: {x: 7, y: 0}
-  _dummyLHSSpawnLocation: {x: 0, y: 0}
   _targetFrameRate: 60
   _invincibleBarriers: 0
   _infiniteEnergy: 0
   _timeScale: 1
+--- !u!114 &6769407473129059388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3714706006734652295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c77eb190848a1034091ba1fc9fb9e56c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
+  _dummyRHSSpawnLocation: {x: 5, y: 0}
+  _dummyLHSSpawnLocation: {x: 0, y: 0}
+  _inputManager: {fileID: 3714706006734652313}
+  _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
+    type: 3}
+  _player1CharacterRef: {fileID: 1959598720044943059, guid: 3b468cd3507bb6643a07d12c77fe9833,
+    type: 3}
+  _player2CharacterRef: {fileID: 1959598720044943059, guid: 3b468cd3507bb6643a07d12c77fe9833,
+    type: 3}
 --- !u!114 &3714706006734652315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -127,3 +147,79 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29409a0d163b824e97bf17cae711606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1359032536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3714706006734652295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1359032538}
+        m_MethodName: ChargeExplosion
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 3cc64ad6d1cac594bbf636a0233d9ac0,
+            type: 2}
+          m_ObjectArgumentAssemblyTypeName: Lodis.ScriptableObjects.IntVariable,
+            Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  IntendedSender: {fileID: 0}
+--- !u!114 &1359032537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3714706006734652295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1359032538}
+        m_MethodName: ChargeExplosion
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 80aa92efa7a08ce4c8c7d05e98fb1965,
+            type: 2}
+          m_ObjectArgumentAssemblyTypeName: Lodis.ScriptableObjects.IntVariable,
+            Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  IntendedSender: {fileID: 0}
+--- !u!114 &1359032538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3714706006734652295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dad08f18f383ce840b2238fe1a41a1a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _explosion: {fileID: 391899427738355809, guid: c9ead59b0b937914793e809c5592b5b9,
+    type: 3}
+  _explosionChargeTime: 1
+  _maxEmission: 150

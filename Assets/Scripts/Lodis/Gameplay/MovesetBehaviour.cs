@@ -427,13 +427,21 @@ namespace Lodis.Gameplay
             OnUpdateHand?.Invoke();
         }
 
-        public void ManualShuffle()
+        public void ManualShuffle(bool instantShuffle = false)
         {
+            if (instantShuffle)
+            {
+                InitializeDecks();
+                return;
+            }
+
             _loadingShuffle = true;
             _specialAbilitySlots[0] = null;
             _specialAbilitySlots[1] = null;
             NextAbilitySlot = null;
             OnUpdateHand?.Invoke();
+
+
             RoutineBehaviour.Instance.StartNewTimedAction(args => 
             {
                 _specialDeck.ClearDeck();
@@ -510,6 +518,11 @@ namespace Lodis.Gameplay
 
             if (_opponentMoveset)
                 _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
+        }
+
+        public void CancelCurrentBurstCharge()
+        {
+            RoutineBehaviour.Instance.StopAction(_rechargeAction);
         }
 
         private void FixedUpdate()

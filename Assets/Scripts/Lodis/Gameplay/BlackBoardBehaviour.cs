@@ -21,6 +21,8 @@ namespace Lodis.Gameplay
         public IControllable Player2Controller;
         public IntVariable Player1ID;
         public IntVariable Player2ID;
+        public RingBarrierBehaviour RingBarrierRHS;
+        public RingBarrierBehaviour RingBarrierLHS;
         private List<GameObject> _entitiesInGame = new List<GameObject>();
         private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
         private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();
@@ -56,6 +58,21 @@ namespace Lodis.Gameplay
             return _entitiesInGame;
         }
 
+        public void ClearGrid()
+        {
+            DestroyAllAbilityColliders();
+            DestroyAllNonPlayerEntities();
+        }
+
+        public void DestroyAllNonPlayerEntities()
+        {
+            foreach (GameObject entity in _entitiesInGame)
+            {
+                if (!entity.CompareTag("Player"))
+                    Destroy(entity);
+            }
+        }
+
         public List<HitColliderBehaviour> GetLHSActiveColliders()
         {
             if (_lhsActiveColliders.Count > 0)
@@ -81,6 +98,25 @@ namespace Lodis.Gameplay
                 });
 
             return _rhsActiveColliders;
+        }
+
+        public void DestroyAllAbilityColliders()
+        {
+            foreach (HitColliderBehaviour collider in GetLHSActiveColliders())
+            {
+                if (collider.transform.root.CompareTag("Player"))
+                    Destroy(collider.gameObject);
+                else
+                    Destroy(collider.transform.root);
+            }
+
+            foreach (HitColliderBehaviour collider in GetRHSActiveColliders())
+            {
+                if (collider.transform.root.CompareTag("Player"))
+                    Destroy(collider.gameObject);
+                else
+                    Destroy(collider.transform.root);
+            }
         }
 
         /// <summary>
