@@ -205,7 +205,7 @@ namespace Lodis.Gameplay
 
         public virtual void ResetHealth()
         {
-            _health = _startingHealth;
+            _health = _startingHealth == -1 ? _maxHealth.Value : _startingHealth;
             _isAlive = true;
 
             if (_stunned)
@@ -357,6 +357,12 @@ namespace Lodis.Gameplay
             _invincibilityCondition = null;
             _isInvincible = false;
         }
+
+        public void UpdateIsAlive()
+        {
+            _isAlive = AliveCondition.Invoke();
+        }
+
         public virtual void OnCollisionEnter(Collision collision)
         {
             KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();
@@ -390,7 +396,7 @@ namespace Lodis.Gameplay
             if (IsAlive && Health <= 0)
                 _onDeath?.Invoke();
 
-            _isAlive = AliveCondition.Invoke();
+            UpdateIsAlive();
 
             if (!IsAlive && _destroyOnDeath)
                 Destroy(gameObject);

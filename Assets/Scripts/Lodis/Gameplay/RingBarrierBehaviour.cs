@@ -41,6 +41,8 @@ namespace Lodis.Gameplay
 
             if (GameManagerBehaviour.Instance.InvincibleBarriers)
                 SetInvincibilityByCondition(condition => !GameManagerBehaviour.Instance.InvincibleBarriers);
+
+            _ownerCollider = Owner.GetComponent<GridPhysicsBehaviour>().BounceCollider;
         }
 
         /// <summary>
@@ -109,6 +111,12 @@ namespace Lodis.Gameplay
             return damage;
         }
 
+        public override void ResetHealth()
+        {
+            base.ResetHealth();
+            Physics.IgnoreCollision(_collider, _ownerCollider, false);
+            GetComponent<RingBarrierFeedbackBehaviour>().ResetVisuals();
+        }
 
         public override void OnTriggerEnter(Collider collision)
         {
@@ -131,9 +139,6 @@ namespace Lodis.Gameplay
 
             if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
                 return;
-            
-            if (collision.gameObject == Owner && !_ownerCollider)
-                _ownerCollider = collision.collider;
 
             if (_bounceDampen == 0)
                 _bounceDampen = 1;

@@ -18,7 +18,9 @@ namespace Lodis.Gameplay
         private Movement.GridMovementBehaviour _p1Movement;
         private Movement.GridMovementBehaviour _p2Movement;
         private CharacterStateMachineBehaviour _p1StateManager;
+        private KnockbackBehaviour _p1Knockback;
         private CharacterStateMachineBehaviour _p2StateManager;
+        private KnockbackBehaviour _p2Knockback;
         private GameMode _mode;
         [SerializeField]
         private AI.AttackDummyBehaviour _dummy;
@@ -44,6 +46,8 @@ namespace Lodis.Gameplay
 
         public Vector2 RHSSpawnLocation { get => _RHSSpawnLocation; private set => _RHSSpawnLocation = value; }
         public Vector2 LHSSpawnLocation { get => _LHSSpawnLocation; private set => _LHSSpawnLocation = value; }
+        public KnockbackBehaviour P1HealthScript { get => _p1Knockback; }
+        public KnockbackBehaviour P2HealthScript { get => _p2Knockback; }
 
         private void Awake()
         {
@@ -86,6 +90,7 @@ namespace Lodis.Gameplay
             //Get reference to player 2 components
             _p2Movement = _p2Input.Character.GetComponent<Movement.GridMovementBehaviour>();
             _p2StateManager = _p2Input.Character.GetComponent<CharacterStateMachineBehaviour>();
+            _p2Knockback = _p2Input.Character.GetComponent<KnockbackBehaviour>();
             _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
 
             BlackBoardBehaviour.Instance.Player2Controller = _p2Input;
@@ -117,6 +122,7 @@ namespace Lodis.Gameplay
             //Get reference to player 2 components
             _p1Movement = _p1Input.Character.GetComponent<Movement.GridMovementBehaviour>();
             _p1StateManager = _p1Input.Character.GetComponent<CharacterStateMachineBehaviour>();
+            _p1Knockback = _p1Input.Character.GetComponent<KnockbackBehaviour>();
             _p1Input.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
 
             BlackBoardBehaviour.Instance.Player1Controller = _p1Input;
@@ -133,13 +139,11 @@ namespace Lodis.Gameplay
         {
             //Reset the health for the players
             //Player1
-            KnockbackBehaviour knockback = _p1Input.Character.GetComponent<KnockbackBehaviour>();
-            knockback.LandingScript.CanCheckLanding = false;
-            knockback.ResetHealth();
+            _p1Knockback.LandingScript.CanCheckLanding = false;
+            _p1Knockback.ResetHealth();
             //Player2
-            knockback = _p2Input.Character.GetComponent<KnockbackBehaviour>();
-            knockback.LandingScript.CanCheckLanding = false;
-            knockback.ResetHealth();
+            _p2Knockback.LandingScript.CanCheckLanding = false;
+            _p2Knockback.ResetHealth();
 
             //Reset the position for the players
             //Player 1

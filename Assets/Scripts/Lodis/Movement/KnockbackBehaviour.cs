@@ -22,6 +22,8 @@ namespace Lodis.Movement
     [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class KnockbackBehaviour : HealthBehaviour
     {
+        [SerializeField]
+        private bool _hasExploded;
         [SerializeField] private AirState _currentAirState;
         [SerializeField] private float _netForceLandingTolerance = 0.5f;
 
@@ -113,6 +115,17 @@ namespace Lodis.Movement
 
         public FloatVariable MinimumLaunchMagnitude => _minimumLaunchMagnitude;
 
+        public bool HasExploded 
+        { 
+            get => _hasExploded;
+            set
+            {
+                _hasExploded = value;
+
+                UpdateIsAlive();
+            }
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -129,7 +142,7 @@ namespace Lodis.Movement
         protected override void Start()
         {
             base.Start();
-            AliveCondition = condition => gameObject.activeInHierarchy;
+            AliveCondition = args => !HasExploded;
             _onKnockBackStart += () => { Stunned = false; _movementBehaviour.CurrentPanel.Occupied = false; };
         }
 
@@ -273,6 +286,7 @@ namespace Lodis.Movement
         {
             base.ResetHealth();
 
+            HasExploded = false;
             CancelHitStun();
             CurrentAirState = AirState.NONE;
             Physics.CancelFreeze();

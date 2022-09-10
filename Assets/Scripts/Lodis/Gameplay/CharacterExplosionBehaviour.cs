@@ -40,6 +40,7 @@ namespace Lodis.Gameplay
                 {
                     playerCharacter.SetActive(false);
                     Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
+                    playerCharacter.GetComponent<KnockbackBehaviour>().HasExploded = true;
                     CameraBehaviour.ShakeBehaviour.ShakeRotation();
                 });
             

@@ -511,7 +511,7 @@ MonoBehaviour:
   - {fileID: 1703160581375671413}
   - {fileID: 1703160581762943488}
   _topSupport: {fileID: 919132148302905140}
-  _topSupportInactive: {fileID: 919132147739730386}
+  _topSupportInactive: {fileID: 676416993}
   _supportVelocity: {x: 0, y: 5, z: -5}
   _innerShieldRenderer: {fileID: 2844560268254500083}
 --- !u!114 &929767235
@@ -1076,6 +1076,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4063396999646836416, guid: a6c430fde04463447a9946cbedddd6ea,
+        type: 3}
+      propertyPath: stopAction
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7133975234242767524, guid: a6c430fde04463447a9946cbedddd6ea,
         type: 3}

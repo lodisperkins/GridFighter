@@ -43,6 +43,8 @@ namespace Lodis.Gameplay
         private UnityEvent _onApplicationQuit;
         [SerializeField]
         private UnityEvent _onMatchRestart;
+        [SerializeField]
+        private UnityEvent _onMatchOver;
         private PlayerSpawnBehaviour _playerSpawner;
 
         /// <summary>
@@ -86,6 +88,8 @@ namespace Lodis.Gameplay
             _playerSpawner.SpawnEntitiesByMode(_mode);
             _onMatchRestart.AddListener(_playerSpawner.ResetPlayers);
 
+            RoutineBehaviour.Instance.StartNewConditionAction(args => _onMatchOver?.Invoke(), args => !_playerSpawner.P1HealthScript.IsAlive || !_playerSpawner.P2HealthScript.IsAlive);
+
             Application.targetFrameRate = _targetFrameRate;
 
             Time.timeScale = _timeScale;
@@ -104,6 +108,7 @@ namespace Lodis.Gameplay
         public void Restart()
         {
             _onMatchRestart?.Invoke();
+            RoutineBehaviour.Instance.StartNewConditionAction(args => _onMatchOver?.Invoke(), args => !_playerSpawner.P1HealthScript.IsAlive || !_playerSpawner.P2HealthScript.IsAlive);
         }
 
         public void QuitApplication()
@@ -120,6 +125,11 @@ namespace Lodis.Gameplay
         public void AddOnMatchRestartAction(UnityAction action)
         {
             _onMatchRestart.AddListener(action);
+        }
+
+        public void AddOnMatchOverAction(UnityAction action)
+        {
+            _onMatchOver.AddListener(action);
         }
     }
 
