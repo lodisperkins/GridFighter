@@ -177,6 +177,8 @@ namespace Lodis.Input
             _playerControls.Player.PhaseShiftDown.started += context => BufferPhaseShift(context, Vector2.down);
             _playerControls.Player.PhaseShiftRight.started += context => BufferPhaseShift(context, Vector2.right);
             _playerControls.Player.PhaseShiftLeft.started += context => BufferPhaseShift(context, Vector2.left);
+
+            _playerControls.Player.Pause.started += context => GameManagerBehaviour.Instance.TogglePause();
         }
 
         // Start is called before the first frame update
@@ -190,6 +192,8 @@ namespace Lodis.Input
             _knockbackBehaviour = Character.GetComponent<KnockbackBehaviour>();
             _knockbackBehaviour.AddOnTakeDamageAction(DisableCharge);
             _defaultSpeed = _gridMovement.Speed;
+            GameManagerBehaviour.Instance.AddOnMatchPauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate);
+            GameManagerBehaviour.Instance.AddOnMatchUnpauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate);
         }
 
         private void OnEnable()

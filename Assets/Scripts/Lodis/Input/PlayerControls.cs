@@ -153,6 +153,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": ""Press""
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""be86c8af-8c8a-4b75-af31-a3d596a1fdbc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press""
                 }
             ],
             ""bindings"": [
@@ -1299,6 +1307,39 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Shuffle"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9c3faa5-48a2-444c-b672-dfa7cef57abf"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d9c340d-aea7-4950-83fa-f883cd254064"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cc8e00db-1a2e-47e7-ad45-935363104066"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1324,6 +1365,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_PhaseShiftLeft = m_Player.FindAction("PhaseShiftLeft", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Shuffle = m_Player.FindAction("Shuffle", throwIfNotFound: true);
+        m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1390,6 +1432,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_PhaseShiftLeft;
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Shuffle;
+    private readonly InputAction m_Player_Pause;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1411,6 +1454,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @PhaseShiftLeft => m_Wrapper.m_Player_PhaseShiftLeft;
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Shuffle => m_Wrapper.m_Player_Shuffle;
+        public InputAction @Pause => m_Wrapper.m_Player_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1471,6 +1515,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Shuffle.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShuffle;
                 @Shuffle.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShuffle;
                 @Shuffle.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShuffle;
+                @Pause.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1526,6 +1573,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Shuffle.started += instance.OnShuffle;
                 @Shuffle.performed += instance.OnShuffle;
                 @Shuffle.canceled += instance.OnShuffle;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -1549,5 +1599,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnPhaseShiftLeft(InputAction.CallbackContext context);
         void OnMove(InputAction.CallbackContext context);
         void OnShuffle(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

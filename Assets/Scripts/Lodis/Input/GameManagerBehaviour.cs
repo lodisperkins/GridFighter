@@ -9,6 +9,7 @@ using Lodis.Utility;
 using Lodis.Input;
 using DG.Tweening;
 using UnityEngine.Events;
+using System;
 
 namespace Lodis.Gameplay
 {
@@ -42,10 +43,15 @@ namespace Lodis.Gameplay
         [SerializeField]
         private UnityEvent _onApplicationQuit;
         [SerializeField]
+        private UnityEvent _onMatchPause;
+        [SerializeField]
+        private UnityEvent _onMatchUnpause;
+        [SerializeField]
         private UnityEvent _onMatchRestart;
         [SerializeField]
         private UnityEvent _onMatchOver;
         private PlayerSpawnBehaviour _playerSpawner;
+        private bool _isPaused;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -105,9 +111,30 @@ namespace Lodis.Gameplay
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, time).SetUpdate(true).onComplete += () => Time.timeScale = 1;
         }
 
+        public void TogglePause()
+        {
+            _isPaused = !_isPaused;
+            Time.timeScale = Convert.ToInt32(!_isPaused);
+
+            if (_isPaused)
+            {
+                _timeScale = 0;
+                _onMatchPause?.Invoke();
+            }
+            else
+            {
+                _timeScale = 1;
+                _onMatchUnpause.Invoke();
+            }
+        }
+
         public void Restart()
         {
             _onMatchRestart?.Invoke();
+
+            if (_isPaused)
+                TogglePause();
+
             RoutineBehaviour.Instance.StartNewConditionAction(args => _onMatchOver?.Invoke(), args => !_playerSpawner.P1HealthScript.IsAlive || !_playerSpawner.P2HealthScript.IsAlive);
         }
 
@@ -130,6 +157,16 @@ namespace Lodis.Gameplay
         public void AddOnMatchOverAction(UnityAction action)
         {
             _onMatchOver.AddListener(action);
+        }
+
+        public void AddOnMatchPauseAction(UnityAction action)
+        {
+            _onMatchPause.AddListener(action);
+        }
+
+        public void AddOnMatchUnpauseAction(UnityAction action)
+        {
+            _onMatchUnpause.AddListener(action);
         }
     }
 
