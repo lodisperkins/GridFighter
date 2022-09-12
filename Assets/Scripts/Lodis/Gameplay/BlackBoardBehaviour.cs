@@ -1,5 +1,6 @@
 ﻿using Lodis.Input;
 using Lodis.ScriptableObjects;
+using Lodis.Utility;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -105,17 +106,17 @@ namespace Lodis.Gameplay
             foreach (HitColliderBehaviour collider in GetLHSActiveColliders())
             {
                 if (collider.transform.root.CompareTag("Player"))
-                    Destroy(collider.gameObject);
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject);
                 else
-                    Destroy(collider.transform.root);
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(collider.transform.root.gameObject);
             }
 
             foreach (HitColliderBehaviour collider in GetRHSActiveColliders())
             {
                 if (collider.transform.root.CompareTag("Player"))
-                    Destroy(collider.gameObject);
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject);
                 else
-                    Destroy(collider.transform.root);
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(collider.transform.root.gameObject);
             }
         }
 

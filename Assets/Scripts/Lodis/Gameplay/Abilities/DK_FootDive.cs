@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _knockBackBehaviour;
         private float _ownerGravity;
         private HitColliderData _fistCollider;
-        private (GameObject, GameObject) _visualPrefabInstances;
+        private  GameObject _visualPrefabInstance;
         private (Coroutine, Coroutine) _visualPrefabCoroutines;
         private GridBehaviour _grid;
         private float _timeForceAdded;
@@ -31,6 +31,11 @@ namespace Lodis.Gameplay
         private float _jumpHeight;
         private float _oldBounciness;
         private AnimationCurve _curve;
+        private GameObject _chargeEffectRef;
+        private GameObject _chargeEffect;
+        private GameObject _fistTrail;
+        private Transform _spawnTransform;
+        private HitColliderBehaviour _hitScript;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -49,6 +54,8 @@ namespace Lodis.Gameplay
             _opponentPhysics = opponent.GetComponent<GridPhysicsBehaviour>();
             _distance = abilityData.GetCustomStatValue("TravelDistance");
             _jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
+            _chargeEffectRef = (GameObject)Resources.Load("Effects/RisingChargeEffect");
+            _spawnTransform = _ownerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[0] : OwnerMoveset.LeftMeleeSpawns[0];
         }
 
         protected override void Start(params object[] args)
@@ -64,21 +71,25 @@ namespace Lodis.Gameplay
             //Disable bouncing so the character doesn't bounce when landing
             _knockBackBehaviour.Physics.DisablePanelBounce();
 
+            _chargeEffect = Object.Instantiate(_chargeEffectRef, _spawnTransform);
+
         }
 
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
+            Object.Destroy(_chargeEffect);
             //Create collider for character fists
             _fistCollider = GetColliderData(0);
 
             //Spawn particles and hitbox
             //_visualPrefabInstances.Item1 = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
-            HitColliderBehaviour hitScript;
+            _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, _spawnTransform);
+            _visualPrefabInstance.transform.localPosition += Vector3.back * 0.3f;
             //Spawn a game object with the collider attached
-            if (!_visualPrefabInstances.Item1.TryGetComponent(out hitScript))
-                hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale / 2, _fistCollider, owner);
-            hitScript.AddCollisionEvent(EnableBounce);
+            _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one, _fistCollider, owner);
+            _hitScript.transform.localPosition = Vector3.zero;
+            _hitScript.AddCollisionEvent(EnableBounce);
         }
 
         /// <summary>
@@ -103,7 +114,8 @@ namespace Lodis.Gameplay
             base.Deactivate();
 
             //Destroy particles and hit box
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstances.Item1);
+            Object.Destroy(_visualPrefabInstance);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);
         }
 
         protected override void End()

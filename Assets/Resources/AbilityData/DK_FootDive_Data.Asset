@@ -34,7 +34,7 @@ MonoBehaviour:
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 3279573249412428936, guid: 937d652ceff8b964baec60f50c8bafc9,
+  visualPrefab: {fileID: 4584720517663278102, guid: 525e6a7282ad1a2468d433466a490abe,
     type: 3}
   DisplayIcon: {fileID: 21300000, guid: 384486fa8ee3f3b49af75e7c35e471b8, type: 3}
   ColliderData:

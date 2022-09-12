@@ -12,7 +12,9 @@ namespace Lodis.Gameplay
     /// </summary>
     public class B_EnergyBurst : Ability
     {
-	    //Called when ability is created
+        private GameObject _barrier;
+
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
@@ -23,12 +25,12 @@ namespace Lodis.Gameplay
         {
             HitColliderData hitColliderData = GetColliderData(0);
 
-            GameObject barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            _barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
 
             HitColliderBehaviour instantiatedCollider = null;
 
-            if (!barrier.TryGetComponent(out instantiatedCollider))
-                instantiatedCollider = barrier.AddComponent<HitColliderBehaviour>();
+            if (!_barrier.TryGetComponent(out instantiatedCollider))
+                instantiatedCollider = _barrier.AddComponent<HitColliderBehaviour>();
            
             instantiatedCollider.ColliderInfo = hitColliderData;
 
@@ -44,6 +46,8 @@ namespace Lodis.Gameplay
 
             if (!_ownerKnockBackScript.Physics.IsGrounded)
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
+
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
         }
 
         protected override void End()
