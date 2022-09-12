@@ -152,7 +152,7 @@ namespace Lodis.Gameplay
 
                     stateInfo = _animator.GetNextAnimatorStateInfo(0);
 
-                    if (_currentClipStartUpTime <= 0)
+                    if (_currentClipStartUpTime <= 0 || _movesetBehaviour.LastAbilityInUse != null && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 0)
                     {
                         _animator.Play(stateInfo.shortNameHash, 0, _currentClip.events[0].time);
                         break;
@@ -169,7 +169,7 @@ namespace Lodis.Gameplay
                     if (!_currentClip)
                         _currentClip = _animator.GetNextAnimatorClipInfo(0)[0].clip;
 
-                    if (_currentClipActiveTime <= 0 && _currentClip.events.Length >= 2)
+                    if ((_currentClipActiveTime <= 0 || _movesetBehaviour.LastAbilityInUse != null && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 1) && _currentClip.events.Length >= 2)
                     {
                         _animator.playbackTime = _currentClip.events[1].time;
                         break;

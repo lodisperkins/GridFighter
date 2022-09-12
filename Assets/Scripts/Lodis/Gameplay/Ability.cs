@@ -371,8 +371,6 @@ namespace Lodis.Gameplay
                 _colliderInfo[i].AddOnHitEvent(arguments => OnHit?.Invoke(arguments));
                 _colliderInfo[i].AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
             }
-
-            _canPlayAnimation = false;
         }
 
         /// <summary>

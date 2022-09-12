@@ -26,6 +26,8 @@ namespace Lodis.Gameplay
         protected override void Start(params object[] args)
         {
             base.Start(args);
+
+            DisableAnimation();
             _deactivated = false;
         }
 
@@ -50,11 +52,11 @@ namespace Lodis.Gameplay
 
             
 
-            Transform spawnTransform = _ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? OwnerMoveset.LeftMeleeSpawns[1] : OwnerMoveset.RightMeleeSpawns[1];
+            Transform spawnTransform = _ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
 
             //Spawn a game object with the collider attached
             _hitCollider = HitColliderSpawner.SpawnBoxCollider(spawnTransform, _hitBoxScale, hitColliderRef, owner);
-            _hitCollider.transform.localPosition = Vector3.forward * abilityData.GetCustomStatValue("HitBoxDistanceZ");
+            _hitCollider.transform.localPosition = -Vector3.up * abilityData.GetCustomStatValue("HitBoxDistanceX");
 
             _hitCollider.DebuggingEnabled = true;
         }
