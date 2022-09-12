@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
+using Lodis.Utility;
 
 namespace Lodis.Gameplay
 {
@@ -40,7 +41,7 @@ namespace Lodis.Gameplay
         {
             for (int i = 0; i < ActiveProjectiles.Count; i++)
             {
-                if (!ActiveProjectiles[i])
+                if (!ActiveProjectiles[i].activeInHierarchy)
                 {
                     ActiveProjectiles.RemoveAt(i);
                     i--;
@@ -79,7 +80,7 @@ namespace Lodis.Gameplay
             CleanProjectileList();
             for (int i = 0; i < ActiveProjectiles.Count; i++)
             {
-                MonoBehaviour.Destroy(ActiveProjectiles[i]);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(ActiveProjectiles[i]);
             }
         }
     }

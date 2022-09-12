@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ namespace Lodis.Gameplay
         {
             base.Init(newOwner);
             //Load projectile asset
-            ProjectileRef = (GameObject)Resources.Load("Projectiles/CrossProjectile");
+            ProjectileRef = (GameObject)Resources.Load("Projectiles/Prototype/CrossProjectile");
             _speedMultiplier = abilityData.GetCustomStatValue("SpeedMultiplier");
             //Set default hitbox traits
             DestroyOnHit = false;
@@ -50,7 +51,7 @@ namespace Lodis.Gameplay
             //If the projectile rebounded too many times...
             if (_reboundCount >= abilityData.GetCustomStatValue("MaxRebounds"))
                 //...destroy it
-                MonoBehaviour.Destroy(ActiveProjectiles[0]);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(ActiveProjectiles[0]);
 
             if (other == owner)
             {
@@ -74,7 +75,7 @@ namespace Lodis.Gameplay
             else if(other.CompareTag("Structure"))
             {
                 //...destroy it
-                MonoBehaviour.Destroy(_reboundCollider.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_reboundCollider.gameObject);
             }
         }
     }

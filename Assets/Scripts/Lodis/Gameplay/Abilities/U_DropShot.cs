@@ -21,15 +21,13 @@ namespace Lodis.Gameplay
 
         private Transform GetTarget()
         {
-            Ray ray = new Ray(owner.transform.position, owner.transform.forward);
-            RaycastHit info;
-
             Transform transform = null;
 
-            int layerMask = LayerMask.GetMask("Entity", "Player");
+            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
 
-            if (Physics.Raycast(ray, out info, BlackBoardBehaviour.Instance.Grid.Width, layerMask))
-                transform = info.transform;
+            PanelBehaviour targetPanel;
+            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.y == _ownerMoveScript.Position.y)
+                transform = targetPanel.transform;
 
             return transform;
         }

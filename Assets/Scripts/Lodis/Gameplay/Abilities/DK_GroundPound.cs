@@ -1,4 +1,5 @@
 ﻿using Lodis.Movement;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -66,7 +67,7 @@ namespace Lodis.Gameplay
             movePosition.y = Mathf.Round(movePosition.y);
             //Move shockwave
             movementBehaviour.MoveToPanel(movePosition, false, GridScripts.GridAlignment.ANY, true);
-            movementBehaviour.AddOnMoveEndAction(() => Object.Destroy(movementBehaviour.gameObject));
+            movementBehaviour.AddOnMoveEndAction(() => ObjectPoolBehaviour.Instance.ReturnGameObject(movementBehaviour.gameObject));
         }
 
         //Called when ability is used
@@ -76,8 +77,13 @@ namespace Lodis.Gameplay
             _shockWaveCollider = GetColliderData(0);
 
             //Instantiate the first shockwave and attach a hit box to it
-            _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider, owner);
+            _visualPrefabInstances.Item1 = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+
+            HitColliderBehaviour hitScript;
+            //Spawn a game object with the collider attached
+            if (!_visualPrefabInstances.Item1.TryGetComponent(out hitScript))
+                hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider, owner);
+
             hitScript.ColliderInfo.OwnerAlignement = _ownerMoveScript.Alignment;
             
             //Move first shockwave
@@ -85,7 +91,7 @@ namespace Lodis.Gameplay
             hitScript.DebuggingEnabled = true;
 
             //Instantiate the second shockwave and attack a hit box to it
-            _visualPrefabInstances.Item2 = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            _visualPrefabInstances.Item2 = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
             _visualPrefabInstances.Item2.transform.forward = -owner.transform.forward;
 
             hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item2.transform, _visualPrefabInstances.Item2.transform.localScale, _shockWaveCollider, owner);
@@ -108,8 +114,8 @@ namespace Lodis.Gameplay
                 _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
 
             //Destroy shockwaves
-            Object.Destroy(_visualPrefabInstances.Item1);
-            Object.Destroy(_visualPrefabInstances.Item2);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstances.Item1); 
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstances.Item1);
             _knockBackBehaviour.Physics.RB.isKinematic = true;
         }
     }

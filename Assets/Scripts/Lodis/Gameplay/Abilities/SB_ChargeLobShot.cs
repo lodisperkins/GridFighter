@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
 
             //Load the projectile prefab
             _strongProjectileRef = abilityData.visualPrefab;
-            _weakProjectilRef = (GameObject)Resources.Load("Projectiles/LobShot");
+            _weakProjectilRef = (GameObject)Resources.Load("Projectiles/Prototype/LobShot");
             _weakShotAngle = abilityData.GetCustomStatValue("WeakShotAngle");
             _strongShotAngle = abilityData.GetCustomStatValue("StrongShotAngle");
             _weakShotGravity = abilityData.GetCustomStatValue("WeakShotGravity");

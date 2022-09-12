@@ -73,8 +73,11 @@ namespace Lodis.Gameplay
             _fistCollider = GetColliderData(0);
 
             //Spawn particles and hitbox
-            _visualPrefabInstances.Item1 = MonoBehaviour.Instantiate(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale / 2, _fistCollider, owner);
+            //_visualPrefabInstances.Item1 = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
+            HitColliderBehaviour hitScript;
+            //Spawn a game object with the collider attached
+            if (!_visualPrefabInstances.Item1.TryGetComponent(out hitScript))
+                hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale / 2, _fistCollider, owner);
             hitScript.AddCollisionEvent(EnableBounce);
         }
 
@@ -83,8 +86,7 @@ namespace Lodis.Gameplay
         /// </summary>
         private void EnableBounce(params object[] args)
         {
-            //This relys on the physics component so it returns if it isn't there.
-            if (!_opponentPhysics)
+            if (_opponentPhysics?.PanelBounceEnabled == true)
                 return;
 
             //Enable the panel bounce and set the temporary bounce value using the custom bounce stat.
@@ -101,7 +103,7 @@ namespace Lodis.Gameplay
             base.Deactivate();
 
             //Destroy particles and hit box
-            MonoBehaviour.Destroy(_visualPrefabInstances.Item1);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstances.Item1);
         }
 
         protected override void End()

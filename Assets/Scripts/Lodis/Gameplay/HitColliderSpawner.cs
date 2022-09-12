@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Lodis.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -183,16 +184,22 @@ namespace Lodis.Gameplay
         /// <param name="owner"></param>
         public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderData hitCollider, GameObject owner)
         {
-            GameObject hitObject = new GameObject();
+            GameObject hitObject = ObjectPoolBehaviour.Instance.GetObject(owner.name + " BoxCollider", parent, true, true);
+
+            HitColliderBehaviour hitScript;
+
+            if (hitObject.TryGetComponent(out hitScript))
+                return hitScript;
+
             hitObject.name = owner.name + " BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
-            hitObject.transform.parent = parent;
+            hitObject.transform.SetParent(parent);
             hitObject.transform.localPosition = Vector3.zero;
-            hitObject.transform.localRotation = parent.rotation;
+            hitObject.transform.localRotation = Quaternion.identity;
             collider.isTrigger = true;
             collider.size = size;
 
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
+            hitScript = hitObject.AddComponent<HitColliderBehaviour>();
             hitScript.ColliderInfo = hitCollider;
             hitScript.Owner = owner;
 

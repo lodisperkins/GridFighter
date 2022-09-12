@@ -33,9 +33,9 @@ namespace Lodis.Gameplay
             foreach(Transform t in _bombs)
             {
                 HitColliderSpawner.SpawnBoxCollider(t, Vector3.one, ProjectileColliderData, owner);
-                MonoBehaviour.Instantiate(_explosionEffect, t.position, Camera.main.transform.rotation);
+                Object.Instantiate(_explosionEffect, t.position, Camera.main.transform.rotation);
                 t.GetComponent<MeshRenderer>().enabled = false;
-                MonoBehaviour.Destroy(t.gameObject, ProjectileColliderData.TimeActive);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(t.gameObject, ProjectileColliderData.TimeActive);
             }
             CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
         }
@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
 
             for (int i = 0; i < _targetPanels.Count; i++)
             {
-                _bombs.Add(MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation).transform);
+                _bombs.Add(ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation).transform);
                 _bombs[i].DOMove(_targetPanels[i].transform.position, _bombMoveDuration);
             }
 

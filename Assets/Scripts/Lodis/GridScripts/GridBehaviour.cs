@@ -252,6 +252,20 @@ namespace Lodis.GridScripts
             _panelExchangeRoutine = StartCoroutine(StartRowExchangeCountdown(amountOfRows, receiver, seconds));
         }
 
+        /// <summary>
+        /// Reset rows to default
+        /// </summary>
+        public void CancelRowExchange()
+        {
+            if (_panelExchangeRoutine != null)
+                StopCoroutine(_panelExchangeRoutine);
+
+            SetPanelAlignments(_p1MaxColumns);
+
+            _panelExchangeRoutine = null;
+            _tempMaxColumns = _p1MaxColumns;
+        }
+
         private IEnumerator StartRowExchangeCountdown(int amountOfRows, GridAlignment receiver, float seconds)
         {
             int newMaxColumns = _tempMaxColumns;

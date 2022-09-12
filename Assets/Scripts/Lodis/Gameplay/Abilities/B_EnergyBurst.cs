@@ -23,9 +23,15 @@ namespace Lodis.Gameplay
         {
             HitColliderData hitColliderData = GetColliderData(0);
 
-            GameObject barrier = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
-            HitColliderBehaviour instantiatedCollider = barrier.AddComponent<HitColliderBehaviour>();
+            GameObject barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+
+            HitColliderBehaviour instantiatedCollider = null;
+
+            if (!barrier.TryGetComponent(out instantiatedCollider))
+                instantiatedCollider = barrier.AddComponent<HitColliderBehaviour>();
+           
             instantiatedCollider.ColliderInfo = hitColliderData;
+
 
             _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
 

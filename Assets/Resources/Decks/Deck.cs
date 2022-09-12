@@ -100,6 +100,18 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Adds the ability to the list of abilities
+        /// </summary>
+        /// <param name="ability"></param>
+        public void AddAbilities(Deck abilityDeck)
+        {
+            if (_abilities == null)
+                _abilities = new List<Ability>();
+
+            _abilities.AddRange(abilityDeck._abilities);
+        }
+
+        /// <summary>
         /// Removes the ability from the list
         /// </summary>
         /// <param name="ability"></param>
@@ -187,9 +199,25 @@ namespace Lodis.Gameplay
 
         public bool Contains(string name)
         {
+            if (name == null)
+                return false;
+
             for(int i = 0; i < _abilities.Count; i++)
             {
                 if (_abilities[i].abilityData.abilityName == name)
+                    return true;
+            }
+            return false;
+        }
+
+        public bool Contains(Ability ability)
+        {
+            if (ability == null)
+                return false;
+
+            for(int i = 0; i < _abilities.Count; i++)
+            {
+                if (_abilities[i] == ability)
                     return true;
             }
             return false;
