@@ -80,7 +80,7 @@ namespace Lodis.Gameplay
                 _lhsActiveColliders.RemoveAll(hitCollider =>
                 {
                     if ((object)hitCollider != null)
-                        return hitCollider == null;
+                        return hitCollider.gameObject.activeInHierarchy;
 
                     return true;
                 });
@@ -93,7 +93,7 @@ namespace Lodis.Gameplay
                 _rhsActiveColliders.RemoveAll(hitCollider =>
                 {
                     if ((object)hitCollider != null)
-                        return hitCollider == null;
+                        return hitCollider.gameObject.activeInHierarchy;
 
                     return true;
                 });

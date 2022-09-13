@@ -444,12 +444,12 @@ namespace Lodis.Gameplay
 
         private void Update()
         {
-            if (gameObject == null || _addedToActiveList)
+            if (gameObject == null)
                 return;
 
-            if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
+            if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT && !_addedToActiveList)
                 BlackBoardBehaviour.Instance.GetLHSActiveColliders().Add(this);
-            else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+            else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT && !_addedToActiveList)
                 BlackBoardBehaviour.Instance.GetRHSActiveColliders().Add(this);
 
             _addedToActiveList = true;

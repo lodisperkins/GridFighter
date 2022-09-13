@@ -34,7 +34,8 @@ namespace Lodis.Gameplay
         protected override void Start(params object[] args)
         {
             base.Start(args);
-            _linkMoveScripts.Clear();
+            if (currentActivationAmount == 0)
+                _linkMoveScripts.Clear();
         }
 
         /// <summary>
