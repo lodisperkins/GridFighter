@@ -26,7 +26,6 @@ namespace Lodis.Gameplay
         public override void EndAbility()
         {
             base.EndAbility();
-            BlackBoardBehaviour.Instance.Grid.CancelRowExchange();
         }
 
         public override void StopAbility()
