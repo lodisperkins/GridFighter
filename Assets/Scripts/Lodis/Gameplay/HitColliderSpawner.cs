@@ -188,9 +188,6 @@ namespace Lodis.Gameplay
 
             HitColliderBehaviour hitScript;
 
-            if (hitObject.TryGetComponent(out hitScript))
-                return hitScript;
-
             hitObject.name = owner.name + " BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.SetParent(parent);
@@ -198,6 +195,9 @@ namespace Lodis.Gameplay
             hitObject.transform.localRotation = Quaternion.identity;
             collider.isTrigger = true;
             collider.size = size;
+
+            if (hitObject.TryGetComponent(out hitScript))
+                return hitScript;
 
             hitScript = hitObject.AddComponent<HitColliderBehaviour>();
             hitScript.ColliderInfo = hitCollider;

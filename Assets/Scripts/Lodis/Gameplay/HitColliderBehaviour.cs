@@ -231,6 +231,7 @@ namespace Lodis.Gameplay
             }
 
             float newHitAngle = ColliderInfo.HitAngle;
+            float defaultAngle = newHitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnAlignment)
@@ -268,6 +269,7 @@ namespace Lodis.Gameplay
             
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
+            ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
         }
@@ -308,6 +310,7 @@ namespace Lodis.Gameplay
 
 
             float newHitAngle = ColliderInfo.HitAngle;
+            float defaultAngle = newHitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnAlignment)
@@ -342,6 +345,7 @@ namespace Lodis.Gameplay
                     ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
             }
 
+            ColliderInfo.HitAngle = defaultAngle;
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
@@ -385,6 +389,7 @@ namespace Lodis.Gameplay
 
 
             float newHitAngle = ColliderInfo.HitAngle;
+            float defaultAngle = newHitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnAlignment)
@@ -422,7 +427,7 @@ namespace Lodis.Gameplay
 
 
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
-
+            ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
         }

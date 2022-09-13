@@ -28,14 +28,23 @@ namespace Lodis.Gameplay
             _bombTimer = abilityData.GetCustomStatValue("BombTimer");
         }
 
+        protected override void Start(params object[] args)
+        {
+            base.Start(args);
+            _bombs?.Clear();
+            _targetPanels?.Clear();
+            ProjectileColliderData.OwnerAlignement = _ownerMoveScript.Alignment;
+        }
+
         private void DetonateBombs()
         {
-            foreach(Transform t in _bombs)
+            foreach (Transform t in _bombs)
             {
                 HitColliderSpawner.SpawnBoxCollider(t, Vector3.one, ProjectileColliderData, owner);
                 Object.Instantiate(_explosionEffect, t.position, Camera.main.transform.rotation);
                 t.GetComponent<MeshRenderer>().enabled = false;
-                ObjectPoolBehaviour.Instance.ReturnGameObject(t.gameObject, ProjectileColliderData.TimeActive);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(t.gameObject, ProjectileColliderData.TimeActive + 0.1f);
+                t.DOKill();
             }
             CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
         }
@@ -55,6 +64,7 @@ namespace Lodis.Gameplay
             for (int i = 0; i < _targetPanels.Count; i++)
             {
                 _bombs.Add(ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation).transform);
+                _bombs[i].GetComponent<Renderer>().enabled = true;
                 _bombs[i].DOMove(_targetPanels[i].transform.position, _bombMoveDuration);
             }
 
