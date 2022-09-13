@@ -189,6 +189,7 @@ namespace Lodis.Gameplay
             _specialAbilitySlots[0] = _specialDeck.PopBack();
             _specialAbilitySlots[1] = _specialDeck.PopBack();
             NextAbilitySlot = _specialDeck.PopBack();
+            _deckReloading = false;
             OnUpdateHand?.Invoke();
         }
 
@@ -397,13 +398,16 @@ namespace Lodis.Gameplay
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
 
+            if (currentAbility.currentActivationAmount == 0)
+                _discardDeck.AddAbility(_lastAbilityInUse);
+
             currentAbility.currentActivationAmount++;
 
             if (!_deckReloading)
                 currentAbility.onEnd += () => { if (_specialAbilitySlots[abilitySlot] == currentAbility) UpdateHand(abilitySlot); };
 
             OnUseAbility?.Invoke();
-            _discardDeck.AddAbility(_lastAbilityInUse);
+
             //Return new ability
             return _lastAbilityInUse;
         }
@@ -460,7 +464,10 @@ namespace Lodis.Gameplay
 
             if (instantShuffle)
             {
+                _discardDeck.AddAbilities(_specialDeck);
+                _specialDeck.ClearDeck();
                 ResetSpecialDeck();
+                _deckReloading = true;
                 return;
             }
 

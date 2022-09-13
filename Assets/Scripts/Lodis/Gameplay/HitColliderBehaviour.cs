@@ -460,10 +460,6 @@ namespace Lodis.Gameplay
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
         }
-
-        private void FixedUpdate()
-        {
-        }
     }
 }
 
