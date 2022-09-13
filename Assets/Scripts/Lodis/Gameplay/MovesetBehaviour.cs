@@ -97,6 +97,7 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
         private TimedAction _rechargeAction;
+        private TimedAction _deckShuffleAction;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -398,10 +399,11 @@ namespace Lodis.Gameplay
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
 
-            if (currentAbility.currentActivationAmount == 0)
+            currentAbility.currentActivationAmount++;
+
+            if (currentAbility.MaxActivationAmountReached)
                 _discardDeck.AddAbility(_lastAbilityInUse);
 
-            currentAbility.currentActivationAmount++;
 
             if (!_deckReloading)
                 currentAbility.onEnd += () => { if (_specialAbilitySlots[abilitySlot] == currentAbility) UpdateHand(abilitySlot); };
@@ -460,6 +462,7 @@ namespace Lodis.Gameplay
 
         public void ManualShuffle(bool instantShuffle = false)
         {
+            RoutineBehaviour.Instance.StopAction(_deckShuffleAction);
             DiscardActiveSlots();
 
             if (instantShuffle)
@@ -467,14 +470,14 @@ namespace Lodis.Gameplay
                 _discardDeck.AddAbilities(_specialDeck);
                 _specialDeck.ClearDeck();
                 ResetSpecialDeck();
-                _deckReloading = true;
+                _loadingShuffle = false;
                 return;
             }
 
             _loadingShuffle = true;
             OnUpdateHand?.Invoke();
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args => 
+            _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => 
             {
                 _discardDeck.AddAbilities(_specialDeck);
                 _specialDeck.ClearDeck();
@@ -592,7 +595,7 @@ namespace Lodis.Gameplay
             {
                 _deckReloading = true;
                 DiscardActiveSlots();
-                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { ResetSpecialDeck(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
+                _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => ResetSpecialDeck(), TimedActionCountType.SCALEDTIME, _deckReloadTime);
             }
 
 
