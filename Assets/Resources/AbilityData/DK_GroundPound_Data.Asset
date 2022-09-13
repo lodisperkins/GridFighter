@@ -68,5 +68,7 @@ MonoBehaviour:
     value: 16
   - name: ShockwaveTravelDistance
     value: 5
+  - name: ShockwaveTravelSpeed
+    value: 15
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 92bfb16540334ae419cd838f2ab61620, type: 3}

@@ -18,10 +18,11 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _knockBackBehaviour;
         private float _ownerGravity;
         private HitColliderData _shockWaveCollider;
-        private (GameObject, GameObject) _visualPrefabInstances;
+        private GameObject _visualPrefabInstance;
         private (Coroutine, Coroutine) _visualPrefabCoroutines;
+        private bool _wavesSpawned;
 
-	    //Called when ability is created
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
@@ -46,14 +47,14 @@ namespace Lodis.Gameplay
         private void MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)
         {
             //Give the shockwave the ability to move
-            GridMovementBehaviour movementBehaviour = visualPrefabInstance.AddComponent<GridMovementBehaviour>();
+            GridMovementBehaviour movementBehaviour = visualPrefabInstance.GetComponent<GridMovementBehaviour>();
             movementBehaviour.CanBeWalkedThrough = true;
 
             //Set default traits for shockwave
             movementBehaviour.Position = _ownerMoveScript.Position;
             movementBehaviour.canCancelMovement = true;
             movementBehaviour.MoveOnStart = false;
-            movementBehaviour.Speed = 5;
+            movementBehaviour.Speed = abilityData.GetCustomStatValue("ShockwaveTravelSpeed");
 
             //Caluclate move position based on the travel distance and character facing
             int travelDistance = (int)abilityData.GetCustomStatValue("ShockwaveTravelDistance");
@@ -67,7 +68,9 @@ namespace Lodis.Gameplay
             movePosition.y = Mathf.Round(movePosition.y);
             //Move shockwave
             movementBehaviour.MoveToPanel(movePosition, false, GridScripts.GridAlignment.ANY, true);
-            movementBehaviour.AddOnMoveEndAction(() => ObjectPoolBehaviour.Instance.ReturnGameObject(movementBehaviour.gameObject));
+
+            if (!_wavesSpawned)
+                movementBehaviour.AddOnMoveEndAction(() => ObjectPoolBehaviour.Instance.ReturnGameObject(movementBehaviour.gameObject));
         }
 
         //Called when ability is used
@@ -77,30 +80,31 @@ namespace Lodis.Gameplay
             _shockWaveCollider = GetColliderData(0);
 
             //Instantiate the first shockwave and attach a hit box to it
-            _visualPrefabInstances.Item1 = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
 
-            HitColliderBehaviour hitScript;
-            //Spawn a game object with the collider attached
-            if (!_visualPrefabInstances.Item1.TryGetComponent(out hitScript))
-                hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item1.transform, _visualPrefabInstances.Item1.transform.localScale, _shockWaveCollider, owner);
-
+            HitColliderBehaviour hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
+            hitScript.ColliderInfo = _shockWaveCollider;
+            hitScript.Owner = owner;
             hitScript.ColliderInfo.OwnerAlignement = _ownerMoveScript.Alignment;
             
             //Move first shockwave
-            MoveHitBox(_visualPrefabInstances.Item1, owner.transform.forward);
-            hitScript.DebuggingEnabled = true;
+            MoveHitBox(_visualPrefabInstance, owner.transform.forward);
 
             //Instantiate the second shockwave and attack a hit box to it
-            _visualPrefabInstances.Item2 = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
-            _visualPrefabInstances.Item2.transform.forward = -owner.transform.forward;
+            _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            _visualPrefabInstance.transform.forward = -owner.transform.forward;
 
-            hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstances.Item2.transform, _visualPrefabInstances.Item2.transform.localScale, _shockWaveCollider, owner);
+            hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
+            hitScript.ColliderInfo = _shockWaveCollider;
+            hitScript.Owner = owner;
+            hitScript.ColliderInfo.OwnerAlignement = _ownerMoveScript.Alignment;
 
             //Move second shockwave
-            MoveHitBox(_visualPrefabInstances.Item2, -owner.transform.forward);
+            MoveHitBox(_visualPrefabInstance, -owner.transform.forward);
 
             hitScript.DebuggingEnabled = true;
             CameraBehaviour.ShakeBehaviour.ShakeRotation();
+            _wavesSpawned = true;
         }
 
         protected override void Deactivate()
@@ -113,9 +117,6 @@ namespace Lodis.Gameplay
             if (_visualPrefabCoroutines.Item2 != null)
                 _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
 
-            //Destroy shockwaves
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstances.Item1); 
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstances.Item1);
             _knockBackBehaviour.Physics.RB.isKinematic = true;
         }
     }
