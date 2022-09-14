@@ -17,8 +17,9 @@ namespace Lodis.Gameplay
         private int _reboundCount;
         private ColliderBehaviour _reboundCollider;
         private float _speedMultiplier;
+        private bool _reboundColliderAdded;
 
-	    //Called when ability is created
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
@@ -34,6 +35,7 @@ namespace Lodis.Gameplay
             DestroyOnHit = false;
             IsMultiHit = true;
             _reboundCount = 0;
+            _reboundCollider?.RemoveCollisionEvent(TryRedirectProjectile);
         }
 
 
@@ -42,7 +44,13 @@ namespace Lodis.Gameplay
         {
             //Redirect projectile on hit
             base.Activate(args);
-            _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
+
+            if (!_reboundColliderAdded)
+            {
+                _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
+                _reboundColliderAdded = true;
+
+            }
             _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
             _reboundCollider.Owner = owner;
         }

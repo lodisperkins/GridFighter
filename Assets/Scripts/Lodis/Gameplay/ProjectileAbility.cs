@@ -53,6 +53,7 @@ namespace Lodis.Gameplay
         {
             base.Start(args);
             ProjectileColliderData = GetColliderData(0);
+            CleanProjectileList();
         }
 
         protected override void Activate(params object[] args)
