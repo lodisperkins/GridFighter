@@ -24,13 +24,20 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
             //Load projectile asset
             ProjectileRef = (GameObject)Resources.Load("Projectiles/Prototype/CrossProjectile");
+        }
+
+        protected override void Start(params object[] args)
+        {
+            base.Start(args);
             _speedMultiplier = abilityData.GetCustomStatValue("SpeedMultiplier");
             //Set default hitbox traits
             DestroyOnHit = false;
             IsMultiHit = true;
+            _reboundCount = 0;
         }
 
-	    //Called when ability is used
+
+        //Called when ability is used
         protected override void Activate(params object[] args)
         {
             //Redirect projectile on hit

@@ -184,11 +184,11 @@ namespace Lodis.Gameplay
         /// <param name="owner"></param>
         public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderData hitCollider, GameObject owner)
         {
-            GameObject hitObject = ObjectPoolBehaviour.Instance.GetObject(owner.name + " BoxCollider", parent, true, true);
+            GameObject hitObject = ObjectPoolBehaviour.Instance.GetObject(owner.name + hitCollider.Name + " BoxCollider", parent, true, true);
 
             HitColliderBehaviour hitScript;
 
-            hitObject.name = owner.name + " BoxCollider";
+            hitObject.name = owner.name + hitCollider.Name + " BoxCollider";
             BoxCollider collider = hitObject.AddComponent<BoxCollider>();
             hitObject.transform.SetParent(parent);
             hitObject.transform.localPosition = Vector3.zero;

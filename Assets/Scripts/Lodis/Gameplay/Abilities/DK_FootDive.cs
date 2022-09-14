@@ -90,6 +90,7 @@ namespace Lodis.Gameplay
             _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one, _fistCollider, owner);
             _hitScript.transform.localPosition = Vector3.zero;
             _hitScript.AddCollisionEvent(EnableBounce);
+            _hitScript.AddCollisionEvent(context => Object.Destroy(_visualPrefabInstance));
         }
 
         /// <summary>
@@ -114,7 +115,9 @@ namespace Lodis.Gameplay
             base.Deactivate();
 
             //Destroy particles and hit box
-            Object.Destroy(_visualPrefabInstance);
+            if (_visualPrefabInstance)
+                Object.Destroy(_visualPrefabInstance);
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);
         }
 
