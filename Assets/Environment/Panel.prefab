@@ -108,12 +108,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _occupied: 0
-  _neutralMat: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
-  _leftSideMat: {fileID: 2100000, guid: 7aa89173fa56b7545aeece0ecedd9650, type: 2}
-  _rightSideMat: {fileID: 2100000, guid: 2989dc5c6d34fb141a447fbfcb8c721d, type: 2}
-  _emissionStrength: 12
-  _positionLHSColor: {r: 0.0990566, g: 0.8994297, b: 1, a: 0}
-  _positionRHSColor: {r: 1, g: 0.25756997, b: 0.21226418, a: 0}
+  _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
+  _emissionStrength: 15
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}

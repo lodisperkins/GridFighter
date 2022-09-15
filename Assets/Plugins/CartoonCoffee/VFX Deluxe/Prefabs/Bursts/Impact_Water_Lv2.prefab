@@ -14447,6 +14447,7 @@ GameObject:
   - component: {fileID: 5520475528910212017}
   - component: {fileID: 5520475528910212022}
   - component: {fileID: 5520475528910212023}
+  - component: {fileID: -3147433455607930478}
   m_Layer: 0
   m_Name: Impact_Water_Lv2
   m_TagString: Untagged
@@ -14486,7 +14487,7 @@ ParticleSystem:
   serializedVersion: 6
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 2
+  stopAction: 3
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -19198,6 +19199,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &-3147433455607930478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5520475528910212020}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f2664d998da214fb559b079792c1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5520475528953132472
 GameObject:
   m_ObjectHideFlags: 0

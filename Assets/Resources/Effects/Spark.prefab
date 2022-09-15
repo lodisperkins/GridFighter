@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1043731898483994600}
   - component: {fileID: 7496024260328918796}
+  - component: {fileID: 7639236723845431910}
+  - component: {fileID: 5029395448282585783}
+  - component: {fileID: 711812591780248062}
   m_Layer: 0
   m_Name: Spark
   m_TagString: Untagged
@@ -46,6 +49,76 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Marker: 2
   _markPanelsBasedOnCollision: 0
+--- !u!114 &7639236723845431910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279573249412428936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 0}
+  Owner: {fileID: 0}
+  _layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 0
+  DebuggingEnabled: 0
+  ColliderInfo:
+    Name: 
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    MultiHitWaitTime: 0
+    Damage: 0
+    BaseKnockBack: 0
+    KnockBackScale: 0
+    HitAngle: 0
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    CanSpike: 0
+    HitStunTime: 0
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 0
+    HitSpark: {fileID: 0}
+    HitStopTimeModifier: 0
+--- !u!65 &5029395448282585783
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279573249412428936}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!54 &711812591780248062
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3279573249412428936}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4364055132933458896
 GameObject:
   m_ObjectHideFlags: 0

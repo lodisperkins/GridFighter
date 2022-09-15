@@ -20,5 +20,11 @@ namespace Lodis.Input
             get;
             set;
         }
+
+        bool Enabled
+        {
+            get;
+            set;
+        }
     }
 }

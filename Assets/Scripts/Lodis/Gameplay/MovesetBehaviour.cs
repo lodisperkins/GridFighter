@@ -39,6 +39,9 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Deck _specialDeckRef;
         private Deck _specialDeck;
+        [Tooltip("The deck that stores used abilities")]
+        [SerializeField]
+        private Deck _discardDeck;
         [Tooltip("The slots that store the two loaded abilities from the special deck")]
         [SerializeField]
         private Ability[] _specialAbilitySlots = new Ability[2];
@@ -54,9 +57,12 @@ namespace Lodis.Gameplay
         [Tooltip("This transform is where projectile will spawn by default for this object.")]
         [SerializeField]
         private ProjectileSpawnerBehaviour _projectileSpawner;
-        [Tooltip("This transform is where melee hit boxes will spawn by default for this object.")]
+        [Tooltip("This transforms where melee hit boxes will spawn for this object.")]
         [SerializeField]
-        private Transform _meleeHitBoxSpawnPoint;
+        private Transform[] _leftMeleeSpawns;
+        [Tooltip("This transforms where melee hit boxes will spawn for this object.")]
+        [SerializeField]
+        private Transform[] _rightMeleeSpawns;
         [Tooltip("The amount of time it will take for the special deck to reload once all abilities are used")]
         [SerializeField]
         private float _deckReloadTime;
@@ -91,10 +97,10 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
         private TimedAction _rechargeAction;
+        private TimedAction _deckShuffleAction;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
-        public Transform MeleeHitBoxSpawnTransform => _meleeHitBoxSpawnPoint;
 
         /// <summary>
         /// True if there is some ability that is currently active.
@@ -142,6 +148,8 @@ namespace Lodis.Gameplay
         public UnityAction OnBurst { get; set; }
         public bool LoadingShuffle { get => _loadingShuffle; }
         public bool DeckReloading { get => _deckReloading; }
+        public Transform[] LeftMeleeSpawns { get => _leftMeleeSpawns; }
+        public Transform[] RightMeleeSpawns { get => _rightMeleeSpawns; }
 
         private void Awake()
         {
@@ -159,7 +167,9 @@ namespace Lodis.Gameplay
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_EnergyBurst_Data"));
             _specialDeck = Instantiate(_specialDeckRef);
             _normalDeck.InitAbilities(gameObject);
-            InitializeDecks();
+            _specialDeck.InitAbilities(gameObject);
+            _discardDeck = Deck.CreateInstance<Deck>();
+            ResetSpecialDeck();
             RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
 
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
@@ -171,13 +181,16 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Load abilities into both decks. Shuffles the special deck
         /// </summary>
-        private void InitializeDecks()
+        private void ResetSpecialDeck()
         {
-            _specialDeck.InitAbilities(gameObject);
+            while (_discardDeck.Count > 0)
+                _specialDeck.AddAbility(_discardDeck.PopBack());
+
             _specialDeck.Shuffle();
             _specialAbilitySlots[0] = _specialDeck.PopBack();
             _specialAbilitySlots[1] = _specialDeck.PopBack();
             NextAbilitySlot = _specialDeck.PopBack();
+            _deckReloading = false;
             OnUpdateHand?.Invoke();
         }
 
@@ -388,10 +401,15 @@ namespace Lodis.Gameplay
 
             currentAbility.currentActivationAmount++;
 
+            if (currentAbility.MaxActivationAmountReached)
+                _discardDeck.AddAbility(_lastAbilityInUse);
+
+
             if (!_deckReloading)
                 currentAbility.onEnd += () => { if (_specialAbilitySlots[abilitySlot] == currentAbility) UpdateHand(abilitySlot); };
 
             OnUseAbility?.Invoke();
+
             //Return new ability
             return _lastAbilityInUse;
         }
@@ -427,15 +445,41 @@ namespace Lodis.Gameplay
             OnUpdateHand?.Invoke();
         }
 
-        public void ManualShuffle()
+        private void DiscardActiveSlots()
         {
-            _loadingShuffle = true;
+
+            if (!_discardDeck.Contains(_specialAbilitySlots[0]) && _specialAbilitySlots[0] != null)
+                _discardDeck.AddAbility(_specialAbilitySlots[0]);
+            if (!_discardDeck.Contains(_specialAbilitySlots[1]) && _specialAbilitySlots[1] != null)
+                _discardDeck.AddAbility(_specialAbilitySlots[1]);
+            if (!_discardDeck.Contains(NextAbilitySlot) && NextAbilitySlot != null)
+                _discardDeck.AddAbility(NextAbilitySlot);
+
             _specialAbilitySlots[0] = null;
             _specialAbilitySlots[1] = null;
             NextAbilitySlot = null;
-            OnUpdateHand?.Invoke();
-            RoutineBehaviour.Instance.StartNewTimedAction(args => 
+        }
+
+        public void ManualShuffle(bool instantShuffle = false)
+        {
+            RoutineBehaviour.Instance.StopAction(_deckShuffleAction);
+            DiscardActiveSlots();
+
+            if (instantShuffle)
             {
+                _discardDeck.AddAbilities(_specialDeck);
+                _specialDeck.ClearDeck();
+                ResetSpecialDeck();
+                _loadingShuffle = false;
+                return;
+            }
+
+            _loadingShuffle = true;
+            OnUpdateHand?.Invoke();
+
+            _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => 
+            {
+                _discardDeck.AddAbilities(_specialDeck);
                 _specialDeck.ClearDeck();
                 _loadingShuffle = false;
             }, TimedActionCountType.SCALEDTIME, _shuffleWaitTime);
@@ -512,6 +556,11 @@ namespace Lodis.Gameplay
                 _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
         }
 
+        public void CancelCurrentBurstCharge()
+        {
+            RoutineBehaviour.Instance.StopAction(_rechargeAction);
+        }
+
         private void FixedUpdate()
         {
             //Call fixed update for abilities
@@ -542,10 +591,11 @@ namespace Lodis.Gameplay
                 _rechargeAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => Energy += _energyRechargeValue.Value, TimedActionCountType.SCALEDTIME, _energyRechargeRate.Value);
 
             //Reload the deck if there are no cards in the hands or the deck
-            if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading && NextAbilitySlot == null)
+            if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading && NextAbilitySlot == null && !_loadingShuffle)
             {
                 _deckReloading = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => { InitializeDecks(); _deckReloading = false; }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
+                DiscardActiveSlots();
+                _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => ResetSpecialDeck(), TimedActionCountType.SCALEDTIME, _deckReloadTime);
             }
 
 

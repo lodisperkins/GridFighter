@@ -1,4 +1,5 @@
 ﻿using Lodis.GridScripts;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,13 +31,20 @@ namespace Lodis.Gameplay
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
         }
 
+        protected override void Start(params object[] args)
+        {
+            base.Start(args);
+            if (currentActivationAmount == 0)
+                _linkMoveScripts.Clear();
+        }
+
         /// <summary>
         /// Deploys one of the links
         /// </summary>
         private void FireLink(Vector2 position)
         {
             //Creates copy of link prefab
-            GameObject visualPrefab = Object.Instantiate(abilityData.visualPrefab, SpawnTransform.position, abilityData.visualPrefab.transform.rotation);
+            GameObject visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, SpawnTransform.position, abilityData.visualPrefab.transform.rotation);
             //Get the movement script attached and add it to a list
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
             gridMovement.Position = position;
@@ -61,7 +69,7 @@ namespace Lodis.Gameplay
             //Spawns attackLinks on each panel in the path
             for (int i = 0; i < panels.Count; i++)
             {
-                GameObject attackLink = Object.Instantiate(_attackLinkVisual, panels[i].transform.position + new Vector3(0, .5f,0), _attackLinkVisual.transform.rotation);
+                GameObject attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].transform.position + new Vector3(0, .5f,0), _attackLinkVisual.transform.rotation);
                 HitColliderBehaviour collider = attackLink.AddComponent<HitColliderBehaviour>();
                 collider.Owner = owner;
                 collider.ColliderInfo = _stunCollider;
@@ -95,13 +103,13 @@ namespace Lodis.Gameplay
                 return;
 
             if (_linkMoveScripts[0])
-                Object.Destroy(_linkMoveScripts[0].gameObject, time);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_linkMoveScripts[0].gameObject, time);
 
             if (_linkMoveScripts.Count <= 1)
                 return;
 
             if (_linkMoveScripts[1])
-                Object.Destroy(_linkMoveScripts[1].gameObject, time);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_linkMoveScripts[1].gameObject, time);
         }
 
 	    //Called when ability is used

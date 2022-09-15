@@ -1,4 +1,5 @@
 ﻿using Lodis.Movement;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,8 @@ namespace Lodis.Gameplay
             Debug.Log(transform.position);
             Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
             rigidbody.useGravity = useGravity;
+            rigidbody.velocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
             if (rigidbody)
                 rigidbody.AddForce(force, ForceMode.Impulse);
 
@@ -46,6 +49,8 @@ namespace Lodis.Gameplay
             Debug.Log(transform.position);
             Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
             rigidbody.useGravity = useGravity;
+            rigidbody.velocity = Vector3.zero;
+            rigidbody.angularVelocity = Vector3.zero;
             if (rigidbody)
                 rigidbody.AddForce(transform.forward * forceScale, ForceMode.Impulse);
 
@@ -64,9 +69,12 @@ namespace Lodis.Gameplay
             if (!projectile)
                 return null;
 
-            GameObject temp = Instantiate(projectile, transform.position, transform.rotation, null);
+            GameObject temp = ObjectPoolBehaviour.Instance.GetObject(projectile, transform.position, transform.rotation);
 
-            HitColliderBehaviour collider = (temp.AddComponent<HitColliderBehaviour>());
+            HitColliderBehaviour collider;
+            if (!temp.TryGetComponent(out collider))
+                collider = temp.AddComponent<HitColliderBehaviour>();
+
             collider.ColliderInfo = hitColliderInfo;
             collider.Owner = Owner;
 
@@ -76,6 +84,8 @@ namespace Lodis.Gameplay
             {
                 physics = temp.AddComponent<GridPhysicsBehaviour>();
             }
+
+            physics.StopVelocity();
 
             physics.FaceHeading = faceHeading;
 
@@ -98,9 +108,12 @@ namespace Lodis.Gameplay
             if (!projectile)
                 return null;
 
-            GameObject temp = Instantiate(projectile, transform.position, transform.rotation, null);
+            GameObject temp = ObjectPoolBehaviour.Instance.GetObject(projectile, transform.position, transform.rotation);
 
-            HitColliderBehaviour collider = (temp.AddComponent<HitColliderBehaviour>());
+            HitColliderBehaviour collider;
+            if (!temp.TryGetComponent(out collider))
+                collider = temp.AddComponent<HitColliderBehaviour>();
+
             collider.ColliderInfo = hitColliderInfo;
             collider.Owner = Owner;
 
@@ -110,6 +123,8 @@ namespace Lodis.Gameplay
             {
                 physics = temp.AddComponent<GridPhysicsBehaviour>();
             }
+
+            physics.StopVelocity();
 
             physics.FaceHeading = faceHeading;
 

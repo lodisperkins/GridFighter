@@ -90,7 +90,7 @@ namespace Lodis.Input
         private IntVariable _playerID;
         private Condition _inputEnableCondition = null;
         [SerializeField]
-        private bool _inputDisabled = false;
+        private bool _inputEnabled = true;
         private BufferedInput _bufferedAction;
         private Ability _lastAbilityUsed = null;
         private bool _attackButtonDown;
@@ -146,6 +146,7 @@ namespace Lodis.Input
         }
 
         public GameObject Character { get => _character; set => _character = value; }
+        public bool Enabled { get => _inputEnabled; set => _inputEnabled = value; }
 
         private void Awake()
         {
@@ -177,6 +178,8 @@ namespace Lodis.Input
             _playerControls.Player.PhaseShiftDown.started += context => BufferPhaseShift(context, Vector2.down);
             _playerControls.Player.PhaseShiftRight.started += context => BufferPhaseShift(context, Vector2.right);
             _playerControls.Player.PhaseShiftLeft.started += context => BufferPhaseShift(context, Vector2.left);
+
+            _playerControls.Player.Pause.started += context => GameManagerBehaviour.Instance.TogglePause();
         }
 
         // Start is called before the first frame update
@@ -190,6 +193,8 @@ namespace Lodis.Input
             _knockbackBehaviour = Character.GetComponent<KnockbackBehaviour>();
             _knockbackBehaviour.AddOnTakeDamageAction(DisableCharge);
             _defaultSpeed = _gridMovement.Speed;
+            GameManagerBehaviour.Instance.AddOnMatchPauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate);
+            GameManagerBehaviour.Instance.AddOnMatchUnpauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate);
         }
 
         private void OnEnable()
@@ -431,7 +436,7 @@ namespace Lodis.Input
         /// <param name="condition">Delegate that is checked each update</param>
         public void DisableInput(Condition condition)
         {
-            _inputDisabled = true;
+            _inputEnabled = false;
             _playerControls.Disable();
             _inputEnableCondition = condition;
         }
@@ -483,9 +488,12 @@ namespace Lodis.Input
                 if (_inputEnableCondition.Invoke())
                 {
                     _playerControls.Player.Enable();
-                    _inputDisabled = false;
+                    _inputEnabled = true;
                     _inputEnableCondition = null;
                 }
+
+            if (!_inputEnabled)
+                return;
 
             if (_holdToMove && !_abilityBuffered)
                 CheckMoveInput();
@@ -526,21 +534,8 @@ namespace Lodis.Input
             else
                 _abilityBuffered = false;
 
-            //Temp quit button for first prototype build
-            if (Keyboard.current.escapeKey.isPressed)
-            {
-                OnApplicationQuit?.Invoke();
-                Application.Quit();
-            }
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
-            if (Keyboard.current.backspaceKey.wasPressedThisFrame)
-                GameManagerBehaviour.Restart();
-            
-#if UNITY_EDITOR
-            if (Keyboard.current.enterKey.wasPressedThisFrame)
-                EditorApplication.isPaused = true;
-#endif
         }
     }
 }

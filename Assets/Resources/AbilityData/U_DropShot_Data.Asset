@@ -46,11 +46,11 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 131073
-    HitFrames: 0
+    MultiHitWaitTime: 0
     Damage: 10
     BaseKnockBack: 2
     KnockBackScale: 0.5
-    HitAngle: 0.6
+    HitAngle: -0.6
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     CanSpike: 0

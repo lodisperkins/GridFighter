@@ -34,6 +34,11 @@ namespace Lodis.Gameplay
             Collisions = new Dictionary<GameObject, float>();
         }
 
+        private void OnEnable()
+        {
+            Collisions.Clear();
+        }
+
         /// <summary>
         /// Copies the values in collider 1 to collider 2
         /// </summary>
@@ -69,6 +74,11 @@ namespace Lodis.Gameplay
         public virtual void AddCollisionEvent(CollisionEvent collisionEvent)
         {
             _onHit += collisionEvent;
+        }
+
+        public virtual void RemoveCollisionEvent(CollisionEvent collisionEvent)
+        {
+            _onHit -= collisionEvent;
         }
 
         private void OnTriggerEnter(Collider other)

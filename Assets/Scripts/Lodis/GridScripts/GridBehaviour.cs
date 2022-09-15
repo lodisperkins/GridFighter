@@ -9,6 +9,7 @@ namespace Lodis.GridScripts
     /// <summary>
     /// Used to label which side of the grid an object belongs to
     /// </summary>
+    [System.Serializable]
     public enum GridAlignment
     {
         NONE,
@@ -54,37 +55,12 @@ namespace Lodis.GridScripts
         private Vector2[] _rhsBarrierPositions;
         [SerializeField]
         private GameObject _collisionPlaneRef;
-        private PanelBehaviour _lhsPlayerSpawnPanel;
-        private PanelBehaviour _rhsPlayerSpawnPanel;
         private List<BarrierBehaviour> _barriers;
         private Coroutine _panelExchangeRoutine;
         private int _tempMaxColumns;
         private float _width;
         private float _height;
         private bool _invincibleBarriers;
-
-        /// <summary>
-        /// The spawn point for the character on the left side of the grid
-        /// </summary>
-        public PanelBehaviour LhsSpawnPanel
-        {
-            get
-            {
-                return _lhsPlayerSpawnPanel;
-            }
-        }
-
-        /// <summary>
-        /// The spawn point for the character on the right side of the grid
-        /// </summary>
-        public PanelBehaviour RhsSpawnPanel
-        {
-            get
-            {
-                return _rhsPlayerSpawnPanel;
-            }
-        }
-
         /// <summary>
         /// A reference to the panel object to use for building the grid
         /// </summary>
@@ -205,34 +181,6 @@ namespace Lodis.GridScripts
             //Spawn barriers on both side and find the players' spawn location
             SpawnBarriers();
 
-            //If the lhs spawn still hasn't been assigned, set it to be the first open panel in the list
-            if (!_lhsPlayerSpawnPanel)
-            {
-                for (int x = 0; x < _p1MaxColumns; x++)
-                {
-                    for (int y = 0; y < _dimensions.y; y++)
-                    {
-                        if (GetPanel(x, y, out _lhsPlayerSpawnPanel, false, GridAlignment.LEFT)) break;
-                    }
-                    if (_lhsPlayerSpawnPanel)
-                        break;
-                }
-            }
-
-            //If the rhs spawn still hasn't been assigned, set it to be the first open panel in the list
-            if (!_rhsPlayerSpawnPanel)
-            {
-                for (int x = (int)_dimensions.x - 1; x > _dimensions.x - _p1MaxColumns; x--)
-                {
-                    for (int y = 0; y < _dimensions.y; y++)
-                    {
-                        if (GetPanel(x, y, out _rhsPlayerSpawnPanel, false, GridAlignment.RIGHT)) break;
-                        
-                    }
-                    if (_rhsPlayerSpawnPanel) break;
-                }
-            }
-
             //Spawn the collision plane underneath the grid
             GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
 
@@ -304,6 +252,20 @@ namespace Lodis.GridScripts
             _panelExchangeRoutine = StartCoroutine(StartRowExchangeCountdown(amountOfRows, receiver, seconds));
         }
 
+        /// <summary>
+        /// Reset rows to default
+        /// </summary>
+        public void CancelRowExchange()
+        {
+            if (_panelExchangeRoutine != null)
+                StopCoroutine(_panelExchangeRoutine);
+
+            SetPanelAlignments(_p1MaxColumns);
+
+            _panelExchangeRoutine = null;
+            _tempMaxColumns = _p1MaxColumns;
+        }
+
         private IEnumerator StartRowExchangeCountdown(int amountOfRows, GridAlignment receiver, float seconds)
         {
             int newMaxColumns = _tempMaxColumns;
@@ -365,10 +327,6 @@ namespace Lodis.GridScripts
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
                     barrierObject.transform.localScale = _barrierScale;
-                    //Searches for a potential player spawn position behind the barrier
-                    Vector2 potentialPlayerSpawn = new Vector2(position.x - 1, position.y);
-                    if (!_lhsPlayerSpawnPanel)
-                        GetPanel(potentialPlayerSpawn, out _lhsPlayerSpawnPanel, false, GridAlignment.LEFT);
                 }
 
                 if (_barriers == null)
@@ -396,10 +354,6 @@ namespace Lodis.GridScripts
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
                     barrierObject.transform.localScale = _barrierScale;
-                    //Searches for a potential player spawn position behind the barrier
-                    Vector2 potentialPlayerSpawn = new Vector2(position.x + 1, position.y);
-                    if (!_rhsPlayerSpawnPanel)
-                        GetPanel(potentialPlayerSpawn, out _rhsPlayerSpawnPanel, false, GridAlignment.RIGHT);
                 }
                 if (_barriers == null)
                 {

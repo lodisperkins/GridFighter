@@ -17,6 +17,7 @@ namespace Lodis.Gameplay
         private float _ownerMoveSpeed;
         private HitColliderData _fistCollider;
         private GameObject _visualPrefabInstance;
+        private HitColliderBehaviour _hitScript;
         private Vector2 _attackDirection;
         private bool _secondStrikeActivated;
 
@@ -54,13 +55,12 @@ namespace Lodis.Gameplay
             _fistCollider = GetColliderData(0);
 
             //Spawn particles
-            _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
-
+           _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform);
             //Spawn a game object with the collider attached
-            HitColliderBehaviour hitScript = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, new Vector3(1, 0.5f, 0.2f), _fistCollider, owner);
-            hitScript.DebuggingEnabled = true;
-            Rigidbody rigid = hitScript.gameObject.AddComponent<Rigidbody>();
-            rigid.useGravity = false;
+            _hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
+            _hitScript.ColliderInfo = _fistCollider;
+            _hitScript.Owner = owner;
+            _hitScript.DebuggingEnabled = true;
 
             //Set the direction of the attack
             Vector2 attackPosition;
@@ -96,7 +96,7 @@ namespace Lodis.Gameplay
             _ownerMoveScript.canCancelMovement = false;
 
             //Despawn particles and hit box
-            MonoBehaviour.Destroy(_visualPrefabInstance);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance);
 
             if (!_secondStrikeActivated)
             {

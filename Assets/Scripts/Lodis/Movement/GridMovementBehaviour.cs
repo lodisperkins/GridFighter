@@ -231,6 +231,8 @@ namespace Lodis.Movement
 
         public bool IsBehindBarrier { get => _isBehindBarrier; private set => _isBehindBarrier = value; }
         public bool CanBeWalkedThrough { get => _canBeWalkedThrough; set => _canBeWalkedThrough = value; }
+        public float HeightOffset { get => _heightOffset; private set => _heightOffset = value; }
+        public bool CanMoveDiagonally { get => _canMoveDiagonally; set => _canMoveDiagonally = value; }
 
         private void Awake()
         {
@@ -419,6 +421,14 @@ namespace Lodis.Movement
             _tempAlignment = Alignment;
         }
 
+        public void EnableMovement()
+        {
+            _movementEnableCheck = null;
+            _canMove = true;
+            _isMoving = false;
+            _moveEnabledEventListener.Invoke(gameObject);
+        }
+
         /// <summary>
         /// Invokes events based on what the is moving is being set to and updates the value.
         /// </summary>
@@ -487,7 +497,7 @@ namespace Lodis.Movement
             else if (canCancelMovement && IsMoving)
                 CancelMovement();
 
-            if (!_canMoveDiagonally && panelPosition.x != _position.x && panelPosition.y != _position.y)
+            if (!CanMoveDiagonally && panelPosition.x != _position.x && panelPosition.y != _position.y)
                 panelPosition.y = _position.y;
 
             if (clampPosition)
@@ -552,7 +562,7 @@ namespace Lodis.Movement
             if (IsMoving && !canCancelMovement ||!_canMove)
                 return false;
 
-            if (!_canMoveDiagonally && x != _position.x && y != _position.y)
+            if (!CanMoveDiagonally && x != _position.x && y != _position.y)
                 y = (int)_position.y;
 
             //If it's not possible to move to the panel at the given position, return false.
@@ -619,7 +629,7 @@ namespace Lodis.Movement
 
             //To Do: This section should make this function prevent diagonal movement based on the "_canMoveDiagonally" boolean
             Vector2 targetPosition = targetPanel.Position;
-            if (!_canMoveDiagonally && targetPosition.x != _position.x && targetPosition.y != _position.y)
+            if (!CanMoveDiagonally && targetPosition.x != _position.x && targetPosition.y != _position.y && CurrentPanel)
             {
                 targetPosition.y = _position.y;
                 //If it's not possible to move to the panel at the given position, return false.
@@ -835,10 +845,7 @@ namespace Lodis.Movement
                 return;
             else if (_movementEnableCheck?.Invoke() == true)
             {
-                _movementEnableCheck = null;
-                _canMove = true;
-                _isMoving = false;
-                _moveEnabledEventListener.Invoke(gameObject);
+                EnableMovement();
             }
 
             MoveToClosestAlignedPanelOnRow();
@@ -857,6 +864,7 @@ namespace Lodis.Movement
             else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
                 transform.rotation = Quaternion.Euler(0, 90, 0);
         }
+
     }
 }
 

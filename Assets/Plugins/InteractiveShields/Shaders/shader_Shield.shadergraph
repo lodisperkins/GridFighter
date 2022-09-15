@@ -28,13 +28,13 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"13fe7141-e272-4b98-acd6-fcc010947f5a\"\n    },\n    \"m_Name\": \"ColorInside\",\n    \"m_DefaultReferenceName\": \"Color_50175DB5\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": {\n        \"r\": 0.1179245114326477,\n        \"g\": 1.0,\n        \"b\": 0.9704586863517761,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 1\n}"
+            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"13fe7141-e272-4b98-acd6-fcc010947f5a\"\n    },\n    \"m_Name\": \"ColorInside\",\n    \"m_DefaultReferenceName\": \"Color_50175DB5\",\n    \"m_OverrideReferenceName\": \"_ColorInside\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": {\n        \"r\": 0.1179245114326477,\n        \"g\": 1.0,\n        \"b\": 0.9704586863517761,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 1\n}"
         },
         {
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"e949234f-d2a7-4757-a2da-c1298153862a\"\n    },\n    \"m_Name\": \"ColorEdges\",\n    \"m_DefaultReferenceName\": \"Color_4C010F9E\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": {\n        \"r\": 0.1179245114326477,\n        \"g\": 1.0,\n        \"b\": 0.9704586863517761,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 1\n}"
+            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"e949234f-d2a7-4757-a2da-c1298153862a\"\n    },\n    \"m_Name\": \"ColorEdges\",\n    \"m_DefaultReferenceName\": \"Color_4C010F9E\",\n    \"m_OverrideReferenceName\": \"_ColorEdges\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": {\n        \"r\": 0.1179245114326477,\n        \"g\": 1.0,\n        \"b\": 0.9704586863517761,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 1\n}"
         },
         {
             "typeInfo": {

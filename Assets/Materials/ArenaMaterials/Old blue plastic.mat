@@ -105,6 +105,7 @@ Material:
     - Vector1_AF883DE0: 0.5
     - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
+    - _AmbientStrength: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
@@ -113,6 +114,8 @@ Material:
     - _DstBlend: 0
     - _EmissionStrength: 0
     - _EnvironmentReflections: 1
+    - _FalloffAmount: 0
+    - _FresnelSize: 0
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -135,10 +138,12 @@ Material:
     - Color_205411B7: {r: 1, g: 1, b: 1, a: 0}
     - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
-    - _Color: {r: 0.14150941, g: 0.14150941, b: 0.14150941, a: 1}
+    - _Color: {r: 0.066037714, g: 0.066037714, b: 0.066037714, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _OffsetVal: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _Tiling: {r: 0, g: 0, b: 0, a: 0}

@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Lodis.GridScripts;
 using Lodis.Movement;
+using Lodis.Utility;
 
 namespace Lodis.Gameplay
 {
@@ -125,6 +126,12 @@ namespace Lodis.Gameplay
             StartTime = Time.time;
         }
 
+        private void OnEnable()
+        {
+            ResetActiveTime();
+            Collisions.Clear();
+        }
+
         /// <summary>
         /// Copies the values in collider 1 to collider 2
         /// </summary>
@@ -189,7 +196,6 @@ namespace Lodis.Gameplay
         }
 
 
-
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
@@ -217,7 +223,7 @@ namespace Lodis.Gameplay
                 {
                     //...destroy it if it has a lower priority
                     if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                        Destroy(gameObject);
+                        ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
 
                     //Ignore the collider otherwise
                     return;
@@ -225,6 +231,7 @@ namespace Lodis.Gameplay
             }
 
             float newHitAngle = ColliderInfo.HitAngle;
+            float defaultAngle = newHitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnAlignment)
@@ -262,8 +269,9 @@ namespace Lodis.Gameplay
             
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
+            ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
-                Destroy(gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
         }
 
         private void OnTriggerStay(Collider other)
@@ -293,7 +301,7 @@ namespace Lodis.Gameplay
                 {
                     //...destroy it if it has a lower priority
                     if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                        Destroy(gameObject);
+                        ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
 
                     //Ignore the collider otherwise
                     return;
@@ -302,6 +310,7 @@ namespace Lodis.Gameplay
 
 
             float newHitAngle = ColliderInfo.HitAngle;
+            float defaultAngle = newHitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnAlignment)
@@ -333,13 +342,14 @@ namespace Lodis.Gameplay
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
-                    Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
+                    ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
             }
 
+            ColliderInfo.HitAngle = defaultAngle;
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             if (ColliderInfo.DestroyOnHit)
-                Destroy(gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
         }
 
         private void OnCollisionEnter(Collision collision)
@@ -370,7 +380,7 @@ namespace Lodis.Gameplay
                 {
                     //...destroy it if it has a lower priority
                     if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                        Destroy(gameObject);
+                        ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
 
                     //Ignore the collider otherwise
                     return;
@@ -379,6 +389,7 @@ namespace Lodis.Gameplay
 
 
             float newHitAngle = ColliderInfo.HitAngle;
+            float defaultAngle = newHitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnAlignment)
@@ -411,15 +422,14 @@ namespace Lodis.Gameplay
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
-                    Instantiate(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
+                    ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
             }
 
 
-
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
-
+            ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
-                Destroy(gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
         }
 
 
@@ -439,25 +449,21 @@ namespace Lodis.Gameplay
 
         private void Update()
         {
-            if (gameObject == null || _addedToActiveList)
+            if (gameObject == null)
                 return;
 
-            if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
+            if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT && !_addedToActiveList)
                 BlackBoardBehaviour.Instance.GetLHSActiveColliders().Add(this);
-            else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+            else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT && !_addedToActiveList)
                 BlackBoardBehaviour.Instance.GetRHSActiveColliders().Add(this);
 
             _addedToActiveList = true;
-        }
-
-        private void FixedUpdate()
-        {
             //Update the amount of current frames
             CurrentTimeActive = Time.time - StartTime;
-            
+
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)
-                Destroy(gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
         }
     }
 }

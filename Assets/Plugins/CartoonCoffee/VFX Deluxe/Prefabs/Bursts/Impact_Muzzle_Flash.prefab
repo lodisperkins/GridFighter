@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7863754995381206464}
   - component: {fileID: 2829781055221166076}
   - component: {fileID: 1775408352805681402}
+  - component: {fileID: -7743480672461473884}
   m_Layer: 0
   m_Name: Impact_Muzzle_Flash
   m_TagString: Untagged
@@ -43,7 +44,7 @@ ParticleSystem:
   serializedVersion: 6
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 2
+  stopAction: 3
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -4755,6 +4756,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &-7743480672461473884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1856835495579851328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f2664d998da214fb559b079792c1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3989619049517877227
 GameObject:
   m_ObjectHideFlags: 0

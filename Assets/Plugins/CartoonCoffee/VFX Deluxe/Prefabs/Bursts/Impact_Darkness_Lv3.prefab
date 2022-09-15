@@ -38525,6 +38525,7 @@ GameObject:
   - component: {fileID: 7534276636495303606}
   - component: {fileID: 9092976673035006398}
   - component: {fileID: 1347133902876886182}
+  - component: {fileID: 2775709136574124545}
   m_Layer: 0
   m_Name: Impact_Darkness_Lv3
   m_TagString: Untagged
@@ -38565,7 +38566,7 @@ ParticleSystem:
   serializedVersion: 6
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 2
+  stopAction: 3
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -43277,6 +43278,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &2775709136574124545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8518192341572081556}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f2664d998da214fb559b079792c1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8556344513742635366
 GameObject:
   m_ObjectHideFlags: 0

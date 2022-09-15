@@ -1,4 +1,5 @@
 ﻿using Lodis.Gameplay;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,18 +14,10 @@ namespace Lodis.GridScripts
         private GridAlignment _alignment;
         [Tooltip("The material to give this panel if it is not aligned with either side of the grid.")]
         [SerializeField]
-        private Material _neutralMat;
-        [Tooltip("The material to give this panel if it is aligned with the left side of the grid.")]
-        [SerializeField]
-        private Material _leftSideMat;
-        [Tooltip("The material to give this panel if it is aligned with the right side of the grid.")]
-        [SerializeField]
-        private Material _rightSideMat;
+        private Color _neutralColor;
         [SerializeField]
         private float _emissionStrength;
-        [SerializeField]
         private Color _positionLHSColor;
-        [SerializeField]
         private Color _positionRHSColor;
         [SerializeField]
         private Color _warningColor;
@@ -40,15 +33,13 @@ namespace Lodis.GridScripts
         private Vector2 _lastMarkPosition;
         private MarkerType _currentMarker;
         
+
         private void Awake()
         {
-            //_mesh = GetComponent<MeshRenderer>();
+            _positionLHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.LEFT);
+            _positionRHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.RIGHT);
         }
 
-        private void Start()
-        {
-            _defaultColor = _mesh.material.color;
-        }
         /// <summary>
         /// The side of the grid this panel this panel belongs to
         /// </summary>
@@ -74,21 +65,24 @@ namespace Lodis.GridScripts
             if (_mesh == null)
                 _mesh = GetComponent<MeshRenderer>();
 
-            switch (_alignment)
+            switch (Alignment)
             {
+                case GridAlignment.NONE:
+                    _defaultColor = Color.black;
+                    break;
                 case GridAlignment.LEFT:
-                    _mesh.material = _leftSideMat;
-                    _defaultColor = _leftSideMat.color;
+                    _defaultColor = _positionLHSColor;
                     break;
                 case GridAlignment.RIGHT:
-                    _mesh.material = _rightSideMat;
-                    _defaultColor = _rightSideMat.color;
+                    _defaultColor = _positionRHSColor;
                     break;
                 case GridAlignment.ANY:
-                    _mesh.material = _neutralMat;
-                    _defaultColor = _neutralMat.color;
+                    _defaultColor = _neutralColor;
                     break;
             }
+
+
+            _mesh.material.ChangeHue(_defaultColor, "_Color");
         }
 
         public void Mark(Lodis.GridScripts.MarkerType markerType, GameObject markObject)
@@ -100,7 +94,7 @@ namespace Lodis.GridScripts
                 return;
             }
 
-            _mesh.material.EnableKeyword("_EMISSION");
+            _mesh.material.SetInt("_UseEmission", 1);
             switch (markerType)
             {
                 case MarkerType.POSITION:
@@ -114,25 +108,25 @@ namespace Lodis.GridScripts
 
                     if (_markerMovement.Alignment == GridAlignment.LEFT)
                     {
-                        _mesh.material.color = _positionLHSColor;
+                        _mesh.material.ChangeHue(_positionLHSColor, "_Color");
                         _mesh.material.SetColor("_EmissionColor", _positionLHSColor * _emissionStrength);
                     }
                     else if (_markerMovement.Alignment == GridAlignment.RIGHT)
                     {
-                        _mesh.material.color = _positionRHSColor;
+                        _mesh.material.ChangeHue(_positionRHSColor, "_Color");
                         _mesh.material.SetColor("_EmissionColor", _positionRHSColor * _emissionStrength);
                     }
                     break;
                 case MarkerType.WARNING:
-                    _mesh.material.color = _warningColor;
+                    _mesh.material.ChangeHue(_warningColor, "_Color");
                     _mesh.material.SetColor("_EmissionColor", _warningColor * _emissionStrength);
                     break;
                 case MarkerType.DANGER:
-                    _mesh.material.color = _dangerColor;
+                    _mesh.material.ChangeHue(_dangerColor, "_Color");
                     _mesh.material.SetColor("_EmissionColor", _dangerColor * _emissionStrength);
                     break;
                 case MarkerType.UNBLOCKABLE:
-                    _mesh.material.color = _unblockableColor;
+                    _mesh.material.ChangeHue(_unblockableColor, "_Color");
                     _mesh.material.SetColor("_EmissionColor", _unblockableColor * _emissionStrength);
                     break;
             }
@@ -142,9 +136,12 @@ namespace Lodis.GridScripts
 
         public void RemoveMark()
         {
-            _mesh.material.color = _defaultColor;
+            if (!_mesh)
+                return;
+
+            _mesh?.material.SetInt("_UseEmission", 0);
+            _mesh?.material.ChangeHue(_defaultColor, "_Color");
             _currentMarker = MarkerType.NONE;
-            _mesh.material.DisableKeyword("_EMISSION");
         }
 
         /// <summary>
@@ -179,7 +176,7 @@ namespace Lodis.GridScripts
 
         private void Update()
         {
-            if (!_markObject)
+            if (!_markObject || !_markObject.activeInHierarchy)
                 RemoveMark();
         }
     }

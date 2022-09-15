@@ -17,7 +17,7 @@ namespace Lodis.AI
     [System.Serializable]
     public class DefenseNode : TreeNode
     {
-        private List<GridPhysicsBehaviour> _attacksInRange = new List<GridPhysicsBehaviour>();
+        private List<GridPhysicsBehaviour> _attacksInRange;
         public DefenseDecisionType DefenseDecision;
         public string CounterAbilityName;
         public Vector3 AveragePosition;
@@ -26,8 +26,6 @@ namespace Lodis.AI
         public DefenseNode(List<GridPhysicsBehaviour> attacksInRange, TreeNode left, TreeNode right) : base(left, right)
         {
             _attacksInRange = attacksInRange;
-            AveragePosition = GetAveragePosition();
-            AverageVelocity = GetAverageVelocity();
         }
 
         private Vector3 GetAverageVelocity()
@@ -90,6 +88,8 @@ namespace Lodis.AI
 
         public override float Compare(TreeNode node)
         {
+            AveragePosition = GetAveragePosition();
+            AverageVelocity = GetAverageVelocity();
             DefenseNode defenseNode = node as DefenseNode;
 
             if (defenseNode == null) return 0;
