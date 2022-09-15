@@ -240,6 +240,9 @@ namespace Lodis.Utility
         /// <param name="objectInstance">The instance of the game object to return to the pool</param>
         public void ReturnGameObject(GameObject objectInstance)
         {
+            if (!objectInstance)
+                return;
+
             Queue<GameObject> queue;
             //If the object has a queue in the dictionary already...
             if (_objectPool.TryGetValue(objectInstance.name, out queue) && !queue.Contains(objectInstance))
