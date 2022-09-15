@@ -111,6 +111,12 @@ namespace Lodis.Gameplay
             DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, time).SetUpdate(true).onComplete += () => Time.timeScale = 1;
         }
 
+        public void SetPlayerControlsActive(bool value)
+        {
+            BlackBoardBehaviour.Instance.Player1Controller.Enabled = value;
+            BlackBoardBehaviour.Instance.Player2Controller.Enabled = value;
+        }
+
         public void TogglePause()
         {
             _isPaused = !_isPaused;
@@ -118,11 +124,13 @@ namespace Lodis.Gameplay
 
             if (_isPaused)
             {
+                SetPlayerControlsActive(false);
                 _timeScale = 0;
                 _onMatchPause?.Invoke();
             }
             else
             {
+                SetPlayerControlsActive(true);
                 _timeScale = 1;
                 _onMatchUnpause.Invoke();
             }

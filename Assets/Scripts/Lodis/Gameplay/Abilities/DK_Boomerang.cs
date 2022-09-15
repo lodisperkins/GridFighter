@@ -34,8 +34,6 @@ namespace Lodis.Gameplay
             //Set default hitbox traits
             DestroyOnHit = false;
             IsMultiHit = true;
-            _reboundCount = 0;
-            _reboundCollider?.RemoveCollisionEvent(TryRedirectProjectile);
         }
 
 
@@ -45,13 +43,16 @@ namespace Lodis.Gameplay
             //Redirect projectile on hit
             base.Activate(args);
 
-            if (!_reboundColliderAdded)
+            ColliderBehaviour[] colliderBehaviours = Projectile.GetComponents<ColliderBehaviour>();
+            if (colliderBehaviours.Length == 1)
             {
                 _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
-                _reboundColliderAdded = true;
+                _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
 
             }
-            _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
+            else
+                _reboundCollider = colliderBehaviours[1];
+
             _reboundCollider.Owner = owner;
         }
 
@@ -65,15 +66,22 @@ namespace Lodis.Gameplay
 
             //If the projectile rebounded too many times...
             if (_reboundCount >= abilityData.GetCustomStatValue("MaxRebounds"))
+            {   
                 //...destroy it
                 ObjectPoolBehaviour.Instance.ReturnGameObject(ActiveProjectiles[0]);
+                _reboundCount = 0;
+                return;
+            }
 
             if (other == owner)
             {
                 CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
 
                 if (stateMachine.StateMachine.CurrentState != "Idle" && stateMachine.StateMachine.CurrentState != "Moving")
+                {
+                    _reboundCount = 0;
                     return;
+                }
             }
 
             Rigidbody projectile = ActiveProjectiles[0].GetComponent<Rigidbody>();
@@ -91,6 +99,7 @@ namespace Lodis.Gameplay
             {
                 //...destroy it
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_reboundCollider.gameObject);
+                _reboundCount = 0;
             }
         }
     }

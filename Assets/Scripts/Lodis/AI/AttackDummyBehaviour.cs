@@ -74,6 +74,7 @@ namespace Lodis.AI
         public IntVariable PlayerID { get => _playerID; set => _playerID = value; }
         public GameObject Character { get => _character; set => _character = value; }
         public float MaxRange { get => _maxRange; set => _maxRange = value; }
+        public bool Enabled { get => enabled; set => enabled = value; }
 
         public DefenseNode LastDefenseDecision;
 

@@ -90,7 +90,7 @@ namespace Lodis.Input
         private IntVariable _playerID;
         private Condition _inputEnableCondition = null;
         [SerializeField]
-        private bool _inputDisabled = false;
+        private bool _inputEnabled = true;
         private BufferedInput _bufferedAction;
         private Ability _lastAbilityUsed = null;
         private bool _attackButtonDown;
@@ -146,6 +146,7 @@ namespace Lodis.Input
         }
 
         public GameObject Character { get => _character; set => _character = value; }
+        public bool Enabled { get => _inputEnabled; set => _inputEnabled = value; }
 
         private void Awake()
         {
@@ -435,7 +436,7 @@ namespace Lodis.Input
         /// <param name="condition">Delegate that is checked each update</param>
         public void DisableInput(Condition condition)
         {
-            _inputDisabled = true;
+            _inputEnabled = false;
             _playerControls.Disable();
             _inputEnableCondition = condition;
         }
@@ -487,9 +488,12 @@ namespace Lodis.Input
                 if (_inputEnableCondition.Invoke())
                 {
                     _playerControls.Player.Enable();
-                    _inputDisabled = false;
+                    _inputEnabled = true;
                     _inputEnableCondition = null;
                 }
+
+            if (!_inputEnabled)
+                return;
 
             if (_holdToMove && !_abilityBuffered)
                 CheckMoveInput();

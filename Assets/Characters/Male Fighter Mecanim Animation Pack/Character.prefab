@@ -245,7 +245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
-  _specialDeckRef: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab, type: 2}
+  _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _discardDeck: {fileID: 0}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 8943288124560981146}
@@ -266,7 +266,7 @@ MonoBehaviour:
   _energyChargeEnabled: 1
   _canBurst: 0
   _burstChargeTime: 20
-  _shuffleWaitTime: 2.01
+  _shuffleWaitTime: 1
 --- !u!75 &8944881979825174333
 ConstantForce:
   m_ObjectHideFlags: 0
