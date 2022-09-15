@@ -176,7 +176,7 @@ namespace Lodis.GridScripts
 
         private void Update()
         {
-            if (!_markObject)
+            if (!_markObject || !_markObject.activeInHierarchy)
                 RemoveMark();
         }
     }

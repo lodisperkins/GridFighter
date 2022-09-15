@@ -308,23 +308,6 @@ namespace Lodis.Gameplay
                 _colliderInfo.Add(info);
             }
 
-            for (int i = 0; i < _colliderInfo.Count; i++)
-            {
-                if (abilityData.CanCancelOnOpponentHit)
-                    OnHit += arguments => 
-                    {
-                        if ((GameObject)arguments[0] != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
-                            return;
-
-                        EndAbility(); 
-                    };
-
-                HitColliderData data = _colliderInfo[i];
-                data.AddOnHitEvent(arguments => OnHit?.Invoke(arguments));
-                data.AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
-                _colliderInfo[i] = data;
-            }
-
         }
 
         /// <summary>
@@ -333,6 +316,24 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         protected virtual void Start(params object[] args)
         {
+
+            for (int i = 0; i < _colliderInfo.Count; i++)
+            {
+                if (abilityData.CanCancelOnOpponentHit)
+                    OnHit += arguments =>
+                    {
+                        if ((GameObject)arguments[0] != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
+                            return;
+
+                        EndAbility();
+                    };
+
+                HitColliderData data = _colliderInfo[i];
+                data.AddOnHitEvent(arguments => OnHit?.Invoke(arguments));
+                data.AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
+                _colliderInfo[i] = data;
+            }
+
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             if (!_ownerKnockBackScript)
                 return;

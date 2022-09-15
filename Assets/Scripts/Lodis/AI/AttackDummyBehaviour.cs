@@ -48,7 +48,13 @@ namespace Lodis.AI
         private bool _needPath;
         private List<PanelBehaviour> _currentPath;
         private int _currentPathIndex;
+
         private GameObject _opponent;
+        private GridMovementBehaviour _opponentMove;
+        private KnockbackBehaviour _opponentKnocback;
+        private CharacterDefenseBehaviour _opponentDefense;
+
+        private CharacterDefenseBehaviour _defense;
         private AIDummyMovementBehaviour _movementBehaviour;
         private AttackDecisionTree _attackDecisions;
         private DefenseDecisionTree _defenseDecisions;
@@ -75,6 +81,11 @@ namespace Lodis.AI
         public GameObject Character { get => _character; set => _character = value; }
         public float MaxRange { get => _maxRange; set => _maxRange = value; }
         public bool Enabled { get => enabled; set => enabled = value; }
+        public GridMovementBehaviour OpponentMove { get => _opponentMove; private set => _opponentMove = value; }
+        public KnockbackBehaviour OpponentKnockback { get => _opponentKnocback; private set => _opponentKnocback = value; }
+        public KnockbackBehaviour Knockback { get => _knockbackBehaviour; private set => _knockbackBehaviour = value; }
+        public CharacterDefenseBehaviour Defense { get => _defense; private set => _defense = value; }
+        public CharacterDefenseBehaviour OpponentDefense { get => _opponentDefense; private set => _opponentDefense = value; }
 
         public DefenseNode LastDefenseDecision;
 
@@ -84,15 +95,18 @@ namespace Lodis.AI
 
         private void Start()
         {
-
+            Defense = Character.GetComponent<CharacterDefenseBehaviour>();
             Moveset = Character.GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
-            _knockbackBehaviour = Character.GetComponent<Movement.KnockbackBehaviour>();
+            Knockback = Character.GetComponent<Movement.KnockbackBehaviour>();
             _executor = GetComponent<BehaviorExecutor>();
             _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
             _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
 
             _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(PlayerID);
+            OpponentMove = _opponent.GetComponent<GridMovementBehaviour>();
+            OpponentKnockback = _opponent.GetComponent<KnockbackBehaviour>();
+            OpponentDefense = _opponent.GetComponent<CharacterDefenseBehaviour>();
 
             if (EnableBehaviourTree)
             {

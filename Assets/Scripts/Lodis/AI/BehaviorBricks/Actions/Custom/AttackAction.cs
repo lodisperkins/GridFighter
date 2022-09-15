@@ -17,7 +17,6 @@ public class AttackAction : GOAction
     private AttackDummyBehaviour _dummy;
     private AttackNode _decision;
     private AttackNode _situation;
-    private GridMovementBehaviour _opponentMoveBehaviour;
 
     public override void OnStart()
     {
@@ -27,7 +26,7 @@ public class AttackAction : GOAction
 
         if (_dummy.StateMachine.CurrentState == "Parrying")
         {
-            _dummy.Character.GetComponent<CharacterDefenseBehaviour>().DeactivateShield();
+            _dummy.Defense.DeactivateShield();
             return;
         }
 
@@ -38,13 +37,12 @@ public class AttackAction : GOAction
             return;
 
         //Gather information about the environment
-        _opponentMoveBehaviour = _dummy.Opponent.GetComponent<GridMovementBehaviour>();
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.transform.position;
-        float targetHealth = _dummy.Opponent.GetComponent<HealthBehaviour>().Health;
-        _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.Opponent.GetComponent<GridPhysicsBehaviour>().LastVelocity, null, null);
+        float targetHealth = _dummy.OpponentKnockback.Health;
+        _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.OpponentKnockback.Physics.LastVelocity, null, null);
 
         //Get a decision based on the current situation
-        _decision = (AttackNode)_dummy.AttackDecisions.GetDecision(_situation, _opponentMoveBehaviour, _opponentMoveBehaviour.IsBehindBarrier, targetHealth, _dummy);
+        _decision = (AttackNode)_dummy.AttackDecisions.GetDecision(_situation, _dummy.OpponentMove, _dummy.OpponentDefense.IsDefending, targetHealth, _dummy);
 
         //If a decision was found...
         if (_decision != null)
@@ -109,7 +107,7 @@ public class AttackAction : GOAction
 
         //Store information about the environment in case the hit is successful
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.transform.position;
-        float targetHealth = _dummy.Opponent.GetComponent<HealthBehaviour>().Health;
+        float targetHealth = _dummy.OpponentKnockback.Health;
 
         Ability ability = null;
 
@@ -194,14 +192,12 @@ public class AttackAction : GOAction
         if (!collisionObject.CompareTag("Player") && !collisionObject.CompareTag("Structure"))
             return;
 
-        if (_dummy.Opponent.GetComponent<CharacterDefenseBehaviour>().IsDefending && collisionObject.CompareTag("Player"))
+        if (_dummy.OpponentDefense.IsDefending && collisionObject.CompareTag("Player"))
             _decision.ShieldEffectiveness ++;
 
-        KnockbackBehaviour knockback = collisionObject.GetComponent<KnockbackBehaviour>();
+        if (!_dummy.OpponentKnockback.IsInvincible) _decision.Wins += 2;
 
-        if (!knockback.IsInvincible) _decision.Wins += 2;
-
-        _decision.KnockBackDealt = knockback.LastTotalKnockBack;
+        _decision.KnockBackDealt = _dummy.OpponentKnockback.LastTotalKnockBack;
     }
 
     public override TaskStatus OnUpdate()

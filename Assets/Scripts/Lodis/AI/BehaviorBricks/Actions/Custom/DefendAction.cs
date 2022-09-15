@@ -20,7 +20,6 @@ public class DefendAction : GOAction
     private DefenseNode _situation;
     private GridMovementBehaviour _opponentMoveBehaviour;
     private GridBehaviour _grid;
-    private KnockbackBehaviour _dummyHealth;
     [InParam("RandomDecisionChosen")]
     private bool _randomDecisionChosen;
 
@@ -31,9 +30,6 @@ public class DefendAction : GOAction
         //Return if the dummy can't currently defend itself
         //if (_dummy.StateMachine.CurrentState != "Idle")
         //    return;
-
-        //Grab the health component attached to know when it takes damage
-        _dummyHealth = _dummy.Character.GetComponent<KnockbackBehaviour>();
 
         //Store the current environment data
         _situation = new DefenseNode(GetPhysicsComponents(), null, null);
@@ -85,11 +81,11 @@ public class DefendAction : GOAction
             _dummy.Executor.blackboard.boolParams[4] = true;
         }
 
-        if (_dummyHealth.CurrentAirState == AirState.TUMBLING && _dummy.Moveset.CanBurst && choice > DefenseDecisionType.COUNTER)
+        if (_dummy.Knockback.CurrentAirState == AirState.TUMBLING && _dummy.Moveset.CanBurst && choice > DefenseDecisionType.COUNTER)
             choice = DefenseDecisionType.BURST;
 
         //Punish the decision if the dummy was damaged
-        _dummyHealth.AddOnTakeDamageTempAction(() => _decision.Wins--);
+        _dummy.Knockback.AddOnTakeDamageTempAction(() => _decision.Wins--);
 
         //Perform an action based on choice
         switch (choice)
@@ -111,13 +107,13 @@ public class DefendAction : GOAction
                 _dummy.Executor.blackboard.boolParams[3] = true;
                 break;
             case DefenseDecisionType.PARRY:
-                _dummy.Character.GetComponent<CharacterDefenseBehaviour>().BeginParry();
+                _dummy.Defense.BeginParry();
                 break;
             case DefenseDecisionType.BURST:
-                if (_dummy.Character.GetComponent<KnockbackBehaviour>().LastTimeInKnockBack >= _dummy.TimeNeededToBurst && _dummy.Moveset.CanBurst)
+                if (_dummy.Knockback.LastTimeInKnockBack >= _dummy.TimeNeededToBurst && _dummy.Moveset.CanBurst)
                     _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
-                else if (_dummyHealth.Physics.IsGrounded)
-                    _dummy.Character.GetComponent<CharacterDefenseBehaviour>().BeginParry();
+                else if (_dummy.Knockback.Physics.IsGrounded)
+                    _dummy.Defense.BeginParry();
                 break;
         }
 

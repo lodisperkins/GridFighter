@@ -128,5 +128,14 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.Physics.DisablePanelBounce();
 
         }
+
+        public override void StopAbility()
+        {
+            base.StopAbility();
+
+            //Destroy particles and hit box
+            if (_visualPrefabInstance)
+                Object.Destroy(_visualPrefabInstance);
+        }
     }
 }
