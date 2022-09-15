@@ -34,11 +34,11 @@ MonoBehaviour:
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 3279573249412428936, guid: 937d652ceff8b964baec60f50c8bafc9,
+  visualPrefab: {fileID: 4584720517663278102, guid: 525e6a7282ad1a2468d433466a490abe,
     type: 3}
   DisplayIcon: {fileID: 21300000, guid: 384486fa8ee3f3b49af75e7c35e471b8, type: 3}
   ColliderData:
-  - Name: 
+  - Name: FootDiveCollider
     DespawnAfterTimeLimit: 0
     TimeActive: 0
     DestroyOnHit: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
-    HitSpark: {fileID: 2050967202763056129, guid: b80407ae74dc7e9499a6d2a7553d0eef,
+    HitSpark: {fileID: 8482821253585752479, guid: b2d1a7e3c779c334183600eee56341df,
       type: 3}
     HitStopTimeModifier: 10
   _customStats:

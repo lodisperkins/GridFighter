@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,14 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
         }
 
+        protected override void Start(params object[] args)
+        {
+            base.Start(args);
+
+            DisableAnimation();
+            _deactivated = false;
+        }
+
         private void SpawnHitBox()
         {
             //Don't spawn the hitbox if the ability was told to deactivate
@@ -38,16 +47,18 @@ namespace Lodis.Gameplay
 
             _hitBoxScale = new Vector3(abilityData.GetCustomStatValue("HitBoxScaleX") * BlackBoardBehaviour.Instance.Grid.PanelScale.x, abilityData.GetCustomStatValue("HitBoxScaleY"), abilityData.GetCustomStatValue("HitBoxScaleZ") * BlackBoardBehaviour.Instance.Grid.PanelScale.z);
             //Instantiate particles and hit box
-            _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform);
+            _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
             HitColliderData hitColliderRef = GetColliderData(0);
 
-           HitColliderBehaviour hitCollider = HitColliderSpawner.SpawnBoxCollider(_visualPrefabInstance.transform, _hitBoxScale, hitColliderRef, owner);
+            
 
-            hitCollider.DebuggingEnabled = true;
+            Transform spawnTransform = _ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
 
-            //Set hitbox position
-            _visualPrefabInstance.transform.position = owner.transform.position + (owner.transform.forward * (abilityData.GetCustomStatValue("HitBoxDistanceZ") + BlackBoardBehaviour.Instance.Grid.PanelSpacingZ) +
-                (owner.transform.right * (abilityData.GetCustomStatValue("HitBoxDistanceX") + BlackBoardBehaviour.Instance.Grid.PanelSpacingX)));
+            //Spawn a game object with the collider attached
+            _hitCollider = HitColliderSpawner.SpawnBoxCollider(spawnTransform, _hitBoxScale, hitColliderRef, owner);
+            _hitCollider.transform.localPosition = -Vector3.up * abilityData.GetCustomStatValue("HitBoxDistanceX");
+
+            _hitCollider.DebuggingEnabled = true;
         }
 
 	    //Called when ability is used
@@ -69,16 +80,17 @@ namespace Lodis.Gameplay
         public override void Update()
         {
             _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
-            //Rotate the hitbox around when the ability is active
-            if (CurrentAbilityPhase == AbilityPhase.ACTIVE && _inPosition)
-                _visualPrefabInstance.transform.RotateAround(owner.transform.position, Vector3.up, owner.transform.forward.x * abilityData.GetCustomStatValue("RotationSpeed") * Time.deltaTime);
         }
 
         protected override void Deactivate()
         {
             base.Deactivate();
-            Object.Destroy(_visualPrefabInstance);
             _deactivated = true;
+
+            if (_visualPrefabInstance)
+                Object.Destroy(_visualPrefabInstance);
+
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_hitCollider.gameObject);
         }
 
         public override void EndAbility()

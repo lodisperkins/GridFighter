@@ -217,6 +217,7 @@ MonoBehaviour:
   _invincibilityColor: {r: 0, g: 1, b: 0.013520718, a: 0}
   _intangibilityColor: {r: 0.8113208, g: 0.5216221, b: 0.003826994, a: 1}
   OnTakeDamageEvent: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
+  _hasExploded: 0
   _currentAirState: 0
   _netForceLandingTolerance: 3
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
@@ -245,10 +246,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
+  _discardDeck: {fileID: 0}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 8943288124560981146}
   _projectileSpawner: {fileID: 7017793418317824913}
-  _meleeHitBoxSpawnPoint: {fileID: 5237796854260986027}
+  _leftMeleeSpawns:
+  - {fileID: 5237796854260986075}
+  - {fileID: 5237796854260986069}
+  _rightMeleeSpawns:
+  - {fileID: 5237796854260986031}
+  - {fileID: 5237796854260986025}
   _deckReloadTime: 6
   _energy: 0
   _maxEnergyRef: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
@@ -259,7 +266,7 @@ MonoBehaviour:
   _energyChargeEnabled: 1
   _canBurst: 0
   _burstChargeTime: 20
-  _shuffleWaitTime: 2.01
+  _shuffleWaitTime: 1
 --- !u!75 &8944881979825174333
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -1961,9 +1968,9 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 9b1cec72540162f438b83ca7c093c56a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3067d36b7321e7842932d94ad2dbd80b, type: 3}
---- !u!1 &5237796854261214589 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 100108, guid: 3067d36b7321e7842932d94ad2dbd80b,
+--- !u!4 &5237796854260986031 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400094, guid: 3067d36b7321e7842932d94ad2dbd80b,
     type: 3}
   m_PrefabInstance: {fileID: 5237796854261115505}
   m_PrefabAsset: {fileID: 0}
@@ -1979,9 +1986,27 @@ SkinnedMeshRenderer:
     type: 3}
   m_PrefabInstance: {fileID: 5237796854261115505}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5237796854260986027 stripped
+--- !u!1 &5237796854261214589 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100108, guid: 3067d36b7321e7842932d94ad2dbd80b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5237796854261115505}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5237796854260986069 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 400090, guid: 3067d36b7321e7842932d94ad2dbd80b,
+  m_CorrespondingSourceObject: {fileID: 400036, guid: 3067d36b7321e7842932d94ad2dbd80b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5237796854261115505}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5237796854260986025 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400088, guid: 3067d36b7321e7842932d94ad2dbd80b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5237796854261115505}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &5237796854260986075 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400042, guid: 3067d36b7321e7842932d94ad2dbd80b,
     type: 3}
   m_PrefabInstance: {fileID: 5237796854261115505}
   m_PrefabAsset: {fileID: 0}
@@ -2425,15 +2450,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1ea8786f246b004d862eff8225c561b, type: 3}
---- !u!4 &3564439412027063086 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5128395196212250462, guid: d1ea8786f246b004d862eff8225c561b,
-    type: 3}
-  m_PrefabInstance: {fileID: 8528927643390409840}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8631659609566867144 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 114004161566773944, guid: d1ea8786f246b004d862eff8225c561b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8528927643390409840}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3564439412027063086 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5128395196212250462, guid: d1ea8786f246b004d862eff8225c561b,
     type: 3}
   m_PrefabInstance: {fileID: 8528927643390409840}
   m_PrefabAsset: {fileID: 0}

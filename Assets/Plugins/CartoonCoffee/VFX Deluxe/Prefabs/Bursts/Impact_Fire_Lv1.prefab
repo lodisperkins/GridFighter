@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6734855844673046816}
   - component: {fileID: 437954252415718724}
   - component: {fileID: 8485462025481933230}
+  - component: {fileID: 3620897298460592623}
   m_Layer: 0
   m_Name: Impact_Fire_Lv1
   m_TagString: Untagged
@@ -46,7 +47,7 @@ ParticleSystem:
   serializedVersion: 6
   lengthInSec: 1
   simulationSpeed: 1
-  stopAction: 2
+  stopAction: 3
   cullingMode: 0
   ringBufferMode: 0
   ringBufferLoopRange: {x: 0, y: 1}
@@ -4758,6 +4759,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &3620897298460592623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2002340249453518022}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f2664d998da214fb559b079792c1f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2072514421118250686
 GameObject:
   m_ObjectHideFlags: 0

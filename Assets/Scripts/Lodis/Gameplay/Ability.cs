@@ -287,7 +287,6 @@ namespace Lodis.Gameplay
         {
             owner = newOwner;
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/" + GetType().Name + "_Data"));
-            currentActivationAmount = 0;
             _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
             OwnerMoveset = newOwner.GetComponent<MovesetBehaviour>();
             _ownerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
@@ -308,6 +307,7 @@ namespace Lodis.Gameplay
                 info.OwnerAlignement = _ownerMoveScript.Alignment;
                 _colliderInfo.Add(info);
             }
+
         }
 
         /// <summary>
@@ -316,18 +316,16 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         protected virtual void Start(params object[] args)
         {
-            if (!_ownerKnockBackScript)
-                return;
 
             for (int i = 0; i < _colliderInfo.Count; i++)
             {
                 if (abilityData.CanCancelOnOpponentHit)
-                    OnHit += arguments => 
+                    OnHit += arguments =>
                     {
                         if ((GameObject)arguments[0] != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
                             return;
 
-                        EndAbility(); 
+                        EndAbility();
                     };
 
                 HitColliderData data = _colliderInfo[i];
@@ -335,6 +333,10 @@ namespace Lodis.Gameplay
                 data.AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
                 _colliderInfo[i] = data;
             }
+
+            CurrentAbilityPhase = AbilityPhase.STARTUP;
+            if (!_ownerKnockBackScript)
+                return;
 
             if (abilityData.cancelOnHit)
                 _ownerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
@@ -361,6 +363,7 @@ namespace Lodis.Gameplay
         /// </summary>
         protected virtual void End()
         {
+            currentActivationAmount = 0;
             if (_ownerKnockBackScript.CurrentAirState != AirState.TUMBLING)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
 
@@ -369,6 +372,13 @@ namespace Lodis.Gameplay
                 _colliderInfo[i].AddOnHitEvent(arguments => OnHit?.Invoke(arguments));
                 _colliderInfo[i].AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
             }
+
+            onEnd = null;
+            onActivate = null;
+            onBegin = null;
+            onDeactivate = null;
+            OnHit = null;
+            OnHitTemp = null;
         }
 
         /// <summary>

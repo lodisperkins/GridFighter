@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,26 +17,42 @@ namespace Lodis.Gameplay
         private int _reboundCount;
         private ColliderBehaviour _reboundCollider;
         private float _speedMultiplier;
+        private bool _reboundColliderAdded;
 
-	    //Called when ability is created
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
             //Load projectile asset
-            ProjectileRef = (GameObject)Resources.Load("Projectiles/CrossProjectile");
+            ProjectileRef = (GameObject)Resources.Load("Projectiles/Prototype/CrossProjectile");
+        }
+
+        protected override void Start(params object[] args)
+        {
+            base.Start(args);
             _speedMultiplier = abilityData.GetCustomStatValue("SpeedMultiplier");
             //Set default hitbox traits
             DestroyOnHit = false;
             IsMultiHit = true;
         }
 
-	    //Called when ability is used
+
+        //Called when ability is used
         protected override void Activate(params object[] args)
         {
             //Redirect projectile on hit
             base.Activate(args);
-            _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
-            _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
+
+            ColliderBehaviour[] colliderBehaviours = Projectile.GetComponents<ColliderBehaviour>();
+            if (colliderBehaviours.Length == 1)
+            {
+                _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
+                _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
+
+            }
+            else
+                _reboundCollider = colliderBehaviours[1];
+
             _reboundCollider.Owner = owner;
         }
 
@@ -49,15 +66,22 @@ namespace Lodis.Gameplay
 
             //If the projectile rebounded too many times...
             if (_reboundCount >= abilityData.GetCustomStatValue("MaxRebounds"))
+            {   
                 //...destroy it
-                MonoBehaviour.Destroy(ActiveProjectiles[0]);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(ActiveProjectiles[0]);
+                _reboundCount = 0;
+                return;
+            }
 
             if (other == owner)
             {
                 CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
 
                 if (stateMachine.StateMachine.CurrentState != "Idle" && stateMachine.StateMachine.CurrentState != "Moving")
+                {
+                    _reboundCount = 0;
                     return;
+                }
             }
 
             Rigidbody projectile = ActiveProjectiles[0].GetComponent<Rigidbody>();
@@ -74,7 +98,8 @@ namespace Lodis.Gameplay
             else if(other.CompareTag("Structure"))
             {
                 //...destroy it
-                MonoBehaviour.Destroy(_reboundCollider.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_reboundCollider.gameObject);
+                _reboundCount = 0;
             }
         }
     }

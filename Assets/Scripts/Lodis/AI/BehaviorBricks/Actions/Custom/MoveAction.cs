@@ -14,32 +14,28 @@ public class MoveAction : GOAction
 {
     [InParam("Owner")]
     private AttackDummyBehaviour _dummy;
-    private AIDummyMovementBehaviour _movementBehaviour;
-    private GridMovementBehaviour _opponentMovement;
 
     public override void OnStart()
     {
         base.OnStart();
-        _movementBehaviour = _dummy.GetComponent<AIDummyMovementBehaviour>();
-        _opponentMovement = _dummy.Opponent.GetComponent<GridMovementBehaviour>();
     }
 
     private bool CheckPanelInRange(params object[] args)
     {
         PanelBehaviour panel = (PanelBehaviour)args[0];
-        return Mathf.Abs(panel.Position.x - _movementBehaviour.MovementBehaviour.Position.x) < _dummy.MaxRange && panel.Position.y == _opponentMovement.Position.y;
+        return Mathf.Abs(panel.Position.x - _dummy.AIMovement.MovementBehaviour.Position.x) < _dummy.MaxRange && panel.Position.y == _dummy.OpponentMove.Position.y;
     }
 
     public override TaskStatus OnUpdate()
     {
         PanelBehaviour panel = null;
-        int xPos = (int)_movementBehaviour.MovementBehaviour.CurrentPanel.Position.x;
+        int xPos = (int)_dummy.AIMovement.MovementBehaviour.CurrentPanel.Position.x;
 
         if (_dummy.StateMachine.CurrentState != "Idle")
             return TaskStatus.ABORTED;
 
         if (BlackBoardBehaviour.Instance.Grid.GetPanel(CheckPanelInRange, out panel, _dummy.Character))
-            _movementBehaviour.MoveToLocation(panel);
+            _dummy.AIMovement.MoveToLocation(panel);
 
         return TaskStatus.COMPLETED;
     }

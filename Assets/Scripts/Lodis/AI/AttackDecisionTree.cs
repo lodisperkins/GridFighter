@@ -47,7 +47,14 @@ namespace Lodis.AI
 
             StreamReader reader = new StreamReader(SaveLoadPath + ownerName + ".txt");
 
-            int count = JsonConvert.DeserializeObject<int>(reader.ReadLine());
+            int count = JsonConvert.DeserializeObject<int>(reader.ReadLine(), new JsonSerializerSettings
+            {
+                Error = (sender, args) =>
+                {
+                    Debug.LogError(args.ErrorContext.Error.Message);
+                    args.ErrorContext.Handled = true;
+                }
+            });
 
             for (int i = 0; i < count; i++)
             {

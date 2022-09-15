@@ -136,8 +136,11 @@ namespace Lodis.GridScripts
 
         public void RemoveMark()
         {
-            _mesh.material.SetInt("_UseEmission", 0);
-            _mesh.material.ChangeHue(_defaultColor, "_Color");
+            if (!_mesh)
+                return;
+
+            _mesh?.material.SetInt("_UseEmission", 0);
+            _mesh?.material.ChangeHue(_defaultColor, "_Color");
             _currentMarker = MarkerType.NONE;
         }
 
@@ -173,7 +176,7 @@ namespace Lodis.GridScripts
 
         private void Update()
         {
-            if (!_markObject)
+            if (!_markObject || !_markObject.activeInHierarchy)
                 RemoveMark();
         }
     }

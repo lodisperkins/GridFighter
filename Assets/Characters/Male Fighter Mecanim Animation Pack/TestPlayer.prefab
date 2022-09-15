@@ -143,7 +143,7 @@ MonoBehaviour:
   _maxChargeTime: 5
   _attackDirectionBufferClearTime: 0.05
   _playerID: {fileID: 0}
-  _inputDisabled: 0
+  _inputEnabled: 1
   _abilityBuffered: 0
   _onChargeStarted: {fileID: 11400000, guid: 0a1158f9dd9ab0f4b8dca57ab98000aa, type: 2}
   _onChargeEnded: {fileID: 11400000, guid: 5ef561623c994e44a91f274065867cf4, type: 2}

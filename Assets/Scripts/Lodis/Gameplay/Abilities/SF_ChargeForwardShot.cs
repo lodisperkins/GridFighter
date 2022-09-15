@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
+        private Vector3 _defaultScale;
 
         public override void Init(GameObject newOwner)
         {
@@ -25,6 +26,7 @@ namespace Lodis.Gameplay
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;
+            _defaultScale = _projectile.transform.localScale;
         }
 
         public void SpawnProjectile()
@@ -40,7 +42,7 @@ namespace Lodis.Gameplay
             //Fire laser
             OwnerMoveset.ProjectileSpawner.projectile = _projectile;
             GameObject newProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
-            newProjectile.transform.localScale *= 2;
+            newProjectile.transform.localScale = _defaultScale * 2;
             ActiveProjectiles.Add(newProjectile);
         }
 
