@@ -106,7 +106,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - LightingCutoff: 0.97
+    - LightingCutoff: 1
     - RimStrength: 0.474
     - Smoothness: 0
     - USENORMAL: 0
@@ -115,7 +115,7 @@ Material:
     - Vector1_AF883DE0: 0
     - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
-    - _AmbientStrength: 0
+    - _AmbientStrength: 1.2
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2

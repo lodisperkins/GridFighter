@@ -118,7 +118,8 @@ namespace Lodis.Gameplay
             if (_visualPrefabInstance)
                 Object.Destroy(_visualPrefabInstance);
 
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);
+            if (_hitScript)
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);
         }
 
         protected override void End()
