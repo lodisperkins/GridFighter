@@ -84,51 +84,51 @@ ModelImporter:
     - boneName: GridFighterBase_l_Leg_HipSHJnt
       humanName: LeftUpperLeg
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -30.23999, y: -2.3999977, z: -90}
+        max: {x: 14, y: 60, z: 50}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_r_Leg_HipSHJnt
       humanName: RightUpperLeg
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -30.23999, y: -11.039998, z: -90}
+        max: {x: 14, y: 60.000004, z: 50}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_l_Leg_KneeSHJnt
       humanName: LeftLowerLeg
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -6.5, y: 0, z: -30}
+        max: {x: 12.239998, y: 0, z: 80}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_r_Leg_KneeSHJnt
       humanName: RightLowerLeg
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -6.5, y: 0, z: -30}
+        max: {x: 12.24, y: 0, z: 80}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_l_Leg_AnkleSHJnt
       humanName: LeftFoot
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: 0, y: -30, z: -24.08}
+        max: {x: 0, y: 30, z: 15.440001}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_r_Leg_AnkleSHJnt
       humanName: RightFoot
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: 0, y: -30, z: -24.08}
+        max: {x: 0, y: 30, z: 15.44}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_Spine_01SHJnt
       humanName: Spine
       limit:
@@ -164,11 +164,11 @@ ModelImporter:
     - boneName: GridFighterBase_l_Arm_ClavicleSHJnt
       humanName: LeftShoulder
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: 0, y: -15, z: 0}
+        max: {x: 0, y: 15, z: 60.652164}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_r_Arm_ClavicleSHJnt
       humanName: RightShoulder
       limit:
@@ -180,11 +180,11 @@ ModelImporter:
     - boneName: GridFighterBase_l_Arm_ShoulderSHJnt
       humanName: LeftUpperArm
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -49.68, y: -42.4, z: -16.8}
+        max: {x: 101.52, y: 108.63999, z: 100}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_r_Arm_ShoulderSHJnt
       humanName: RightUpperArm
       limit:
@@ -196,11 +196,11 @@ ModelImporter:
     - boneName: GridFighterBase_l_Arm_ElbowSHJnt
       humanName: LeftLowerArm
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: -90, y: 0, z: -39.68}
+        max: {x: 90, y: 0, z: 80}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: GridFighterBase_r_Arm_ElbowSHJnt
       humanName: RightLowerArm
       limit:
@@ -514,18 +514,148 @@ ModelImporter:
         length: 0
         modified: 0
     skeleton:
-    - name: BaseBodyBlockout_SkeletalMesh(1)(Clone)
+    - name: GF_Proto_Character_SkeletalMesh(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBaseBodyBlockout_mesh
-      parentName: BaseBodyBlockout_SkeletalMesh(1)(Clone)
+    - name: GF_proto_character_mesh
+      parentName: GF_Proto_Character_SkeletalMesh(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: armor_01_mesh
+      parentName: GF_proto_character_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: briefs_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: chest_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: chestguard_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_arm_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_kneeguard_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_leg_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_shoulder_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_waistguard_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_arm_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_kneeguard_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_leg_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_shoulder_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: body_mesh
+      parentName: GF_proto_character_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: body_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: eyes_mesh
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_ear_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: mouth_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: nose_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_ear_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: -1}
+    - name: hair_01_mesh
+      parentName: GF_proto_character_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: hair_low
+      parentName: hair_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: head_accessory_01_mesh
+      parentName: GF_proto_character_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_earpiece_low
+      parentName: head_accessory_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: mask_low
+      parentName: head_accessory_01_mesh
+      position: {x: -0, y: 1.6391683, z: -0.0011530886}
+      rotation: {x: 0.18436173, y: -0, z: -0, w: 0.9828585}
+      scale: {x: 14.046982, y: 5.202818, z: 20.952461}
+    - name: r_earpiece_low
+      parentName: head_accessory_01_mesh
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: GridFighterBase
-      parentName: BaseBodyBlockout_SkeletalMesh(1)(Clone)
+      parentName: GF_Proto_Character_SkeletalMesh(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
@@ -538,6 +668,56 @@ ModelImporter:
       parentName: GridFighterBase_SHJntGrp
       position: {x: -0, y: 1.0988333, z: 0.04662009}
       rotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_HipSHJnt
+      parentName: GridFighterBase_ROOTSHJnt
+      position: {x: 0.05348467, y: -1.7763568e-17, z: -0.081468955}
+      rotation: {x: 0.037672073, y: -0.7060263, z: 0.70610255, w: 0.039075762}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_KneeSHJnt
+      parentName: GridFighterBase_l_Leg_HipSHJnt
+      position: {x: -0.31226578, y: -1.4210854e-16, z: -1.7583268e-13}
+      rotation: {x: 0, y: -0.000005479711, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_AnkleSHJnt
+      parentName: GridFighterBase_l_Leg_KneeSHJnt
+      position: {x: -0.43417916, y: 7.4606985e-16, z: -2.445688e-13}
+      rotation: {x: -0.00005364701, y: -0.0009870834, z: 0.054268915, w: 0.9985259}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_BallSHJnt
+      parentName: GridFighterBase_l_Leg_AnkleSHJnt
+      position: {x: -0.19330247, y: -1.0658141e-16, z: 0.058419622}
+      rotation: {x: -0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_ToeSHJnt
+      parentName: GridFighterBase_l_Leg_BallSHJnt
+      position: {x: -0.16454072, y: 2.1316282e-16, z: -0.07271148}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_HipSHJnt
+      parentName: GridFighterBase_ROOTSHJnt
+      position: {x: 0.05348467, y: -2.6645352e-17, z: 0.081468955}
+      rotation: {x: -0.70602626, y: -0.037672102, z: -0.039075732, w: 0.7061026}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_KneeSHJnt
+      parentName: GridFighterBase_r_Leg_HipSHJnt
+      position: {x: 0.31226578, y: -7.105427e-17, z: -3.5527136e-17}
+      rotation: {x: 0, y: -0.0000054189736, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_AnkleSHJnt
+      parentName: GridFighterBase_r_Leg_KneeSHJnt
+      position: {x: 0.43417916, y: -7.81597e-16, z: 1.1546319e-16}
+      rotation: {x: -0.000053648393, y: -0.0009871086, z: 0.054268915, w: 0.9985259}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_BallSHJnt
+      parentName: GridFighterBase_r_Leg_AnkleSHJnt
+      position: {x: 0.19330247, y: 0, z: -0.058419622}
+      rotation: {x: -0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_ToeSHJnt
+      parentName: GridFighterBase_r_Leg_BallSHJnt
+      position: {x: 0.16454072, y: 2.1316282e-16, z: 0.07271148}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: GridFighterBase_Spine_01SHJnt
       parentName: GridFighterBase_ROOTSHJnt
@@ -563,46 +743,6 @@ ModelImporter:
       parentName: GridFighterBase_Spine_04SHJnt
       position: {x: -0.06272586, y: -0.0167737, z: 0}
       rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_Neck_01SHJnt
-      parentName: GridFighterBase_Spine_TopSHJnt
-      position: {x: -0.068203, y: 0.0069479924, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_Neck_02SHJnt
-      parentName: GridFighterBase_Neck_01SHJnt
-      position: {x: -0.05708622, y: -0.0069479924, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_Neck_TopSHJnt
-      parentName: GridFighterBase_Neck_02SHJnt
-      position: {x: -0.06264461, y: -1.7685697e-12, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_Head_JawSHJnt
-      parentName: GridFighterBase_Neck_TopSHJnt
-      position: {x: -0.029866824, y: -0.010594097, z: 0}
-      rotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_Head_JawEndSHJnt
-      parentName: GridFighterBase_Head_JawSHJnt
-      position: {x: -0.1220098, y: -0.09680268, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_Head_TopSHJnt
-      parentName: GridFighterBase_Neck_TopSHJnt
-      position: {x: -0.20603125, y: -0.011658712, z: 0}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_l_Eye_01SHJnt
-      parentName: GridFighterBase_Head_TopSHJnt
-      position: {x: 0.13875708, y: -0.11739489, z: -0.04868896}
-      rotation: {x: 3.8857809e-16, y: -3.8857809e-16, z: 0.7071068, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_r_Eye_01SHJnt
-      parentName: GridFighterBase_Head_TopSHJnt
-      position: {x: 0.13875708, y: -0.11739489, z: 0.04868896}
-      rotation: {x: 3.8857809e-16, y: -3.8857809e-16, z: 0.7071068, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: GridFighterBase_l_Arm_ClavicleSHJnt
       parentName: GridFighterBase_Spine_TopSHJnt
@@ -637,7 +777,7 @@ ModelImporter:
     - name: GridFighterBase_l_Finger_01_03SHJnt
       parentName: GridFighterBase_l_Finger_01_02SHJnt
       position: {x: -0.040494807, y: -2.842171e-16, z: -3.0198067e-16}
-      rotation: {x: -0.00000003810354, y: -0.000000029099738, z: 0.041451775, w: 0.9991405}
+      rotation: {x: -0.000000038103543, y: -0.00000002909974, z: 0.04145178, w: 0.99914056}
       scale: {x: 1, y: 1, z: 1}
     - name: GridFighterBase_l_Finger_01_04SHJnt
       parentName: GridFighterBase_l_Finger_01_03SHJnt
@@ -697,7 +837,7 @@ ModelImporter:
     - name: GridFighterBase_l_Finger_04_03SHJnt
       parentName: GridFighterBase_l_Finger_04_02SHJnt
       position: {x: -0.024067396, y: -4.973799e-16, z: 1.0658141e-16}
-      rotation: {x: 0.0000000013933417, y: 0.000000004598801, z: 0.040602576, w: 0.99917537}
+      rotation: {x: 0.0000000013933418, y: 0.0000000045988013, z: 0.04060258, w: 0.9991754}
       scale: {x: 1, y: 1, z: 1}
     - name: GridFighterBase_l_Finger_04_04SHJnt
       parentName: GridFighterBase_l_Finger_04_03SHJnt
@@ -723,6 +863,46 @@ ModelImporter:
       parentName: GridFighterBase_l_Thumb_01_03SHJnt
       position: {x: -0.042575683, y: -4.973799e-16, z: 2.1316282e-16}
       rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Neck_01SHJnt
+      parentName: GridFighterBase_Spine_TopSHJnt
+      position: {x: -0.068203, y: 0.0069479924, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Neck_02SHJnt
+      parentName: GridFighterBase_Neck_01SHJnt
+      position: {x: -0.05708622, y: -0.0069479924, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Neck_TopSHJnt
+      parentName: GridFighterBase_Neck_02SHJnt
+      position: {x: -0.06264461, y: -1.7685697e-12, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Head_JawSHJnt
+      parentName: GridFighterBase_Neck_TopSHJnt
+      position: {x: -0.029866824, y: -0.010594097, z: 0}
+      rotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Head_JawEndSHJnt
+      parentName: GridFighterBase_Head_JawSHJnt
+      position: {x: -0.1220098, y: -0.09680268, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Head_TopSHJnt
+      parentName: GridFighterBase_Neck_TopSHJnt
+      position: {x: -0.20603125, y: -0.011658712, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Eye_01SHJnt
+      parentName: GridFighterBase_Head_TopSHJnt
+      position: {x: 0.13875708, y: -0.11739489, z: -0.04868896}
+      rotation: {x: 3.8857809e-16, y: -3.8857809e-16, z: 0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Eye_01SHJnt
+      parentName: GridFighterBase_Head_TopSHJnt
+      position: {x: 0.13875708, y: -0.11739489, z: 0.04868896}
+      rotation: {x: 3.8857809e-16, y: -3.8857809e-16, z: 0.7071068, w: 0.7071068}
       scale: {x: 1, y: 1, z: 1}
     - name: GridFighterBase_r_Arm_ClavicleSHJnt
       parentName: GridFighterBase_Spine_TopSHJnt
@@ -817,7 +997,7 @@ ModelImporter:
     - name: GridFighterBase_r_Finger_04_03SHJnt
       parentName: GridFighterBase_r_Finger_04_02SHJnt
       position: {x: 0.024067396, y: 7.105427e-17, z: -3.1974422e-16}
-      rotation: {x: 0.000000013405265, y: 0.00000051089813, z: 0.04060246, w: 0.99917537}
+      rotation: {x: 0.000000013405266, y: 0.0000005108982, z: 0.040602464, w: 0.9991754}
       scale: {x: 1, y: 1, z: 1}
     - name: GridFighterBase_r_Finger_04_04SHJnt
       parentName: GridFighterBase_r_Finger_04_03SHJnt
@@ -844,61 +1024,11 @@ ModelImporter:
       position: {x: 0.042575683, y: 5.684342e-16, z: 6.9277914e-16}
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_l_Leg_HipSHJnt
-      parentName: GridFighterBase_ROOTSHJnt
-      position: {x: 0.05348467, y: -1.7763568e-17, z: -0.081468955}
-      rotation: {x: 0.037672073, y: -0.7060263, z: 0.70610255, w: 0.039075762}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_l_Leg_KneeSHJnt
-      parentName: GridFighterBase_l_Leg_HipSHJnt
-      position: {x: -0.31226578, y: -1.4210854e-16, z: -1.7583268e-13}
-      rotation: {x: 0, y: -0.000005479711, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_l_Leg_AnkleSHJnt
-      parentName: GridFighterBase_l_Leg_KneeSHJnt
-      position: {x: -0.43417916, y: 7.4606985e-16, z: -2.445688e-13}
-      rotation: {x: -0.00005364701, y: -0.0009870834, z: 0.054268915, w: 0.9985259}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_l_Leg_BallSHJnt
-      parentName: GridFighterBase_l_Leg_AnkleSHJnt
-      position: {x: -0.19330247, y: -1.0658141e-16, z: 0.058419622}
-      rotation: {x: -0, y: 0.7071068, z: 0, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_l_Leg_ToeSHJnt
-      parentName: GridFighterBase_l_Leg_BallSHJnt
-      position: {x: -0.16454072, y: 2.1316282e-16, z: -0.07271148}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_r_Leg_HipSHJnt
-      parentName: GridFighterBase_ROOTSHJnt
-      position: {x: 0.05348467, y: -2.6645352e-17, z: 0.081468955}
-      rotation: {x: -0.70602626, y: -0.037672102, z: -0.039075732, w: 0.7061026}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_r_Leg_KneeSHJnt
-      parentName: GridFighterBase_r_Leg_HipSHJnt
-      position: {x: 0.31226578, y: -7.105427e-17, z: -3.5527136e-17}
-      rotation: {x: 0, y: -0.0000054189736, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_r_Leg_AnkleSHJnt
-      parentName: GridFighterBase_r_Leg_KneeSHJnt
-      position: {x: 0.43417916, y: -7.81597e-16, z: 1.1546319e-16}
-      rotation: {x: -0.000053648393, y: -0.0009871086, z: 0.054268915, w: 0.9985259}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_r_Leg_BallSHJnt
-      parentName: GridFighterBase_r_Leg_AnkleSHJnt
-      position: {x: 0.19330247, y: 0, z: -0.058419622}
-      rotation: {x: -0, y: 0.7071068, z: 0, w: 0.7071068}
-      scale: {x: 1, y: 1, z: 1}
-    - name: GridFighterBase_r_Leg_ToeSHJnt
-      parentName: GridFighterBase_r_Leg_BallSHJnt
-      position: {x: 0.16454072, y: 2.1316282e-16, z: 0.07271148}
-      rotation: {x: 0, y: -0, z: -0, w: 1}
-      scale: {x: 1, y: 1, z: 1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
     legTwist: 0.5
-    armStretch: 0.05
+    armStretch: 0.058
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
@@ -906,12 +1036,11 @@ ModelImporter:
     hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: f517af319251f6d4ea62cf69a83cb651,
-    type: 3}
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 2
+  avatarSetup: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
