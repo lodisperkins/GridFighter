@@ -11,6 +11,8 @@ namespace Lodis.Gameplay
     public class ColorObject
     {
         public Renderer ObjectRenderer;
+        [HideInInspector]
+        public Color DefaultColor;
         public string[] ShaderProperties;
         public bool OnlyChangeHue = true;
     }
@@ -22,6 +24,7 @@ namespace Lodis.Gameplay
         [SerializeField] private ColorObject[] _objectsToColor;
         private Color _ownerColor;
 
+        public ColorObject[] ObjectsToColor { get => _objectsToColor; private set => _objectsToColor = value; }
 
         private void SetHue(ColorObject objectToColor)
         {
@@ -47,8 +50,11 @@ namespace Lodis.Gameplay
 
             _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(_alignment);    
 
-            foreach (ColorObject colorObject in _objectsToColor)
+            foreach (ColorObject colorObject in ObjectsToColor)
             {
+                if (colorObject.ObjectRenderer.material.HasProperty("_Color"))
+                    colorObject.DefaultColor = colorObject.ObjectRenderer.material.color;
+
                 if (colorObject.OnlyChangeHue)
                     SetHue(colorObject);
                 else
