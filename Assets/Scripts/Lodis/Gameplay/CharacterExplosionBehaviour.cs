@@ -26,7 +26,8 @@ namespace Lodis.Gameplay
             GameObject playerCharacter = BlackBoardBehaviour.Instance.GetPlayerFromID(playerID);
             playerCharacter.GetComponent<GridPhysicsBehaviour>().FreezeInPlaceByTimer(_explosionChargeTime, false, true);
             _meshRenderer = playerCharacter.GetComponentInChildren<SkinnedMeshRenderer>();
-
+            Texture emissionTexture = _meshRenderer.material.GetTexture("_Emission");
+            _meshRenderer.material.SetTexture("_Emission", null);
             float emission = _meshRenderer.material.GetFloat("_EmissionStrength");
 
             _emissionStrengthValues[playerID.Value - 1] = emission;
@@ -39,6 +40,7 @@ namespace Lodis.Gameplay
                 OnComplete( () => 
                 {
                     playerCharacter.SetActive(false);
+                    _meshRenderer.material.SetTexture("_Emission", emissionTexture);
                     Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
                     playerCharacter.GetComponent<KnockbackBehaviour>().HasExploded = true;
                     CameraBehaviour.ShakeBehaviour.ShakeRotation();
