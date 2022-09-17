@@ -1424,7 +1424,7 @@ MonoBehaviour:
     ShaderProperties:
     - _Color
     - _EmissionColor
-    OnlyChangeHue: 0
+    OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 2291547495728154491}
     ShaderProperties:
     - _Color
@@ -2509,7 +2509,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2389398276613416560, guid: dc49d54e3eba6a446941613a3fc2efde, type: 3}
+  - {fileID: 2100000, guid: 75f48a9b138177e469cffc100f3193e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
