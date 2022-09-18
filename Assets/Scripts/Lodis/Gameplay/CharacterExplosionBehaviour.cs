@@ -4,6 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
+using Lodis.Utility;
 
 namespace Lodis.Gameplay
 {
@@ -11,7 +12,7 @@ namespace Lodis.Gameplay
     {
         [SerializeField] private GameObject _explosion;
         [SerializeField] private float _explosionChargeTime;
-        private Renderer _meshRenderer;
+        private CharacterFeedbackBehaviour _characterFeedback;
         [SerializeField] private float _maxEmission;
         private float[] _emissionStrengthValues = { 0, 0 };
 
@@ -25,40 +26,30 @@ namespace Lodis.Gameplay
 
             GameObject playerCharacter = BlackBoardBehaviour.Instance.GetPlayerFromID(playerID);
             playerCharacter.GetComponent<GridPhysicsBehaviour>().FreezeInPlaceByTimer(_explosionChargeTime, false, true);
-            _meshRenderer = playerCharacter.GetComponentInChildren<SkinnedMeshRenderer>();
-            Texture emissionTexture = _meshRenderer.material.GetTexture("_Emission");
-            _meshRenderer.material.SetTexture("_Emission", null);
-            float emission = _meshRenderer.material.GetFloat("_EmissionStrength");
+            _characterFeedback = playerCharacter.GetComponentInChildren<CharacterFeedbackBehaviour>();
 
-            _emissionStrengthValues[playerID.Value - 1] = emission;
+            float strength = _characterFeedback.EmissionStrength;
+            float oldTime = _characterFeedback.TimeBetweenFlashes;
 
-            DOTween.To(() => emission, time => emission = time, _maxEmission, _explosionChargeTime).
-                OnUpdate( () =>
-                {
-                    _meshRenderer.material.SetFloat("_EmissionStrength", emission);
-                }).
-                OnComplete( () => 
-                {
-                    playerCharacter.SetActive(false);
-                    _meshRenderer.material.SetTexture("_Emission", emissionTexture);
-                    Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
-                    playerCharacter.GetComponent<KnockbackBehaviour>().HasExploded = true;
-                    CameraBehaviour.ShakeBehaviour.ShakeRotation();
-                });
-            
+            _characterFeedback.EmissionStrength = _maxEmission;
+            _characterFeedback.FlashAllRenderers(BlackBoardBehaviour.Instance.GetPlayerColorByID(playerID));
+            _characterFeedback.TimeBetweenFlashes = _explosionChargeTime;
+
+            RoutineBehaviour.Instance.StartNewTimedAction( args => 
+            {
+                playerCharacter.SetActive(false);
+                Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
+                playerCharacter.GetComponent<KnockbackBehaviour>().HasExploded = true;
+                CameraBehaviour.ShakeBehaviour.ShakeRotation();
+
+                _characterFeedback.EmissionStrength = strength;
+               _characterFeedback.TimeBetweenFlashes = oldTime;
+            }, TimedActionCountType.SCALEDTIME, ExplosionChargeTime);
         }
 
         public void ResetEmission(IntVariable playerID)
         {
-            if (_emissionStrengthValues[playerID.Value - 1] == 0)
-                return;
-
-            GameObject playerCharacter = BlackBoardBehaviour.Instance.GetPlayerFromID(playerID);
-            _meshRenderer = playerCharacter.GetComponentInChildren<SkinnedMeshRenderer>();
-
-            float emission = _emissionStrengthValues[playerID.Value - 1];
-            _meshRenderer.material.SetFloat("_EmissionStrength", emission);
-            _emissionStrengthValues[playerID.Value - 1] = 0;
+            _characterFeedback.ResetAllRenderers();
         }
     }
 }

@@ -26771,12 +26771,12 @@ MonoBehaviour:
   _autoDetectAlignment: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 743429219}
-    DefaultColor: {r: 0, g: 0, b: 0, a: 0}
+    DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 1213761685}
-    DefaultColor: {r: 0, g: 0, b: 0, a: 0}
+    DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
@@ -36232,12 +36232,12 @@ MonoBehaviour:
   _autoDetectAlignment: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 990627883}
-    DefaultColor: {r: 0, g: 0, b: 0, a: 0}
+    DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 1228225639}
-    DefaultColor: {r: 0, g: 0, b: 0, a: 0}
+    DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
@@ -51015,11 +51015,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8172829524244689262, guid: 71e6ba92ebf74ae4ca930c1dddfd94f2,
-        type: 3}
-      propertyPath: _loopAmount
-      value: -1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 71e6ba92ebf74ae4ca930c1dddfd94f2, type: 3}
 --- !u!1 &1352403276
@@ -61875,12 +61870,12 @@ PrefabInstance:
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player1Color.b
-      value: 1
+      value: 0.46707344
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player1Color.g
-      value: 0.31960154
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
@@ -61895,17 +61890,17 @@ PrefabInstance:
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player2Color.b
-      value: 0.02352941
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player2Color.g
-      value: 0.10681161
+      value: 0.02352941
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player2Color.r
-      value: 1
+      value: 0.41087613
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
@@ -81292,6 +81287,10 @@ PrefabInstance:
       propertyPath: IntendedSender
       value: 
       objectReference: {fileID: 657297842}
+    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
+      propertyPath: _maxEmission
+      value: 600
+      objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652295, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: m_Name
@@ -81305,7 +81304,7 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
