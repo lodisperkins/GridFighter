@@ -84,6 +84,7 @@ namespace Lodis.Movement
         private bool _searchingForSafePanel;
         private ParticleSystem _returnEffect;
         private SkinnedMeshRenderer _renderer;
+        private DelayedAction _moveEnabledAction;
 
         /// <summary>
         /// Whether or not this object should move to its current panel when spawned
@@ -374,6 +375,9 @@ namespace Lodis.Movement
             if (!_canMove && !overridesMoveCondition)
                 return;
 
+            if (_moveEnabledAction?.GetEnabled() == true)
+                RoutineBehaviour.Instance.StopAction(_moveEnabledAction);
+
             if (IsMoving && waitForEndOfMovement)
             { 
                 AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); _isMoving = false; });
@@ -385,7 +389,7 @@ namespace Lodis.Movement
                 _isMoving = false;
             }
 
-            _movementEnableCheck = enableCondition;
+            _moveEnabledAction = RoutineBehaviour.Instance.StartNewConditionAction(args => EnableMovement(), enableCondition);
             _moveDisabledEventListener.Invoke(gameObject);
             _tempAlignment = Alignment;
         }
@@ -841,12 +845,8 @@ namespace Lodis.Movement
 
         private void Update()
         {
-            if (!_canMove && _movementEnableCheck?.Invoke() == false)
+            if (!_canMove)
                 return;
-            else if (_movementEnableCheck?.Invoke() == true)
-            {
-                EnableMovement();
-            }
 
             MoveToClosestAlignedPanelOnRow();
 
