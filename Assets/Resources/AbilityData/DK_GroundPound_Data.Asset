@@ -58,8 +58,9 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
-    HitSpark: {fileID: 134407622609432275, guid: 900c6149c7efc95428bed00f405b4f25,
+    HitSpark: {fileID: 7150885560406515932, guid: 896327d564dd09a40a6ae0c24becb75f,
       type: 3}
+    HitEffectLevel: 3
     HitStopTimeModifier: 2
   _customStats:
   - name: ShockwaveProgressionDelay

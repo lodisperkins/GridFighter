@@ -58,8 +58,9 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
-    HitSpark: {fileID: 8567834841006214754, guid: 7cd867e25d9d97044bb08948940288c8,
+    HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
+    HitEffectLevel: 1
     HitStopTimeModifier: 1
   _customStats:
   - name: TravelDistance

@@ -60,6 +60,7 @@ MonoBehaviour:
     AbilityType: 6
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
+    HitEffectLevel: 2
     HitStopTimeModifier: 1.2
   _customStats:
   - name: Speed

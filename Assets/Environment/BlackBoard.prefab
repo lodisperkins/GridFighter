@@ -50,6 +50,8 @@ MonoBehaviour:
   - {r: 0.8773585, g: 0.8012463, b: 0, a: 1}
   - {r: 0.85882354, g: 0, b: 0, a: 1}
   - {r: 0.776201, g: 0, b: 0.85882354, a: 1}
+  Player1Color: {r: 0, g: 0.42320108, b: 1, a: 1}
+  Player2Color: {r: 0.023828104, g: 1, b: 0.02352941, a: 1}
   Player1State: 
   Player2State: 
   MaxKnockBackHealth: {fileID: 11400000, guid: a850879eb5579a94c8611fe9609619f4, type: 2}
@@ -57,3 +59,11 @@ MonoBehaviour:
   Player2: {fileID: 0}
   Player1ID: {fileID: 11400000, guid: 3cc64ad6d1cac594bbf636a0233d9ac0, type: 2}
   Player2ID: {fileID: 11400000, guid: 80aa92efa7a08ce4c8c7d05e98fb1965, type: 2}
+  RingBarrierRHS: {fileID: 0}
+  RingBarrierLHS: {fileID: 0}
+  BlockEffect: {fileID: 7681821613543600163, guid: f00585eb1d3761e4eb76dcce81aa6162,
+    type: 3}
+  HitEffects:
+  - {fileID: 8567834841006214752, guid: 7cd867e25d9d97044bb08948940288c8, type: 3}
+  - {fileID: 2069248774462545479, guid: 993c029921b80a448b71f49a670a3271, type: 3}
+  - {fileID: 2050967202763056131, guid: b80407ae74dc7e9499a6d2a7553d0eef, type: 3}

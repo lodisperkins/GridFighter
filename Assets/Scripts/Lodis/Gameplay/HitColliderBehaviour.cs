@@ -48,6 +48,9 @@ namespace Lodis.Gameplay
         public AbilityType AbilityType;
         [Tooltip("The spark effect that will spawn on hit.")]
         public GameObject HitSpark;
+        [Tooltip("The size of the effect that will play on successful hit")]
+        [Range(0,3)]
+        public int HitEffectLevel;
 
         [Tooltip("How long the hit stop will be scaled on hit.")]
         public float HitStopTimeModifier;
@@ -230,6 +233,9 @@ namespace Lodis.Gameplay
                 }
             }
 
+            if (ColliderInfo.HitSpark)
+                Instantiate(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+
             float newHitAngle = ColliderInfo.HitAngle;
             float defaultAngle = newHitAngle;
 
@@ -263,8 +269,8 @@ namespace Lodis.Gameplay
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
-                if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
-                    Instantiate(ColliderInfo.HitSpark, other.transform.position + (.5f * Vector3.up), transform.rotation);
+                if (ColliderInfo.HitEffectLevel > 0 && !damageScript.IsInvincible)
+                    Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
             }
             
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
@@ -308,6 +314,8 @@ namespace Lodis.Gameplay
                 }
             }
 
+            if (ColliderInfo.HitSpark)
+                Instantiate(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
 
             float newHitAngle = ColliderInfo.HitAngle;
             float defaultAngle = newHitAngle;
@@ -341,8 +349,8 @@ namespace Lodis.Gameplay
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
-                if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
-                    ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
+                if (ColliderInfo.HitEffectLevel > 0 && !damageScript.IsInvincible)
+                    Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
             }
 
             ColliderInfo.HitAngle = defaultAngle;
@@ -387,6 +395,8 @@ namespace Lodis.Gameplay
                 }
             }
 
+            if (ColliderInfo.HitSpark)
+                Instantiate(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
 
             float newHitAngle = ColliderInfo.HitAngle;
             float defaultAngle = newHitAngle;
@@ -421,8 +431,8 @@ namespace Lodis.Gameplay
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
-                if (ColliderInfo.HitSpark && !damageScript.IsInvincible)
-                    ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, other.transform.position + Vector3.up * .5f, transform.rotation);
+                if (ColliderInfo.HitEffectLevel > 0 && !damageScript.IsInvincible)
+                    Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
             }
 
 
@@ -463,7 +473,12 @@ namespace Lodis.Gameplay
 
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)
+            {
+                if (ColliderInfo.HitSpark)
+                    Instantiate(ColliderInfo.HitSpark, transform.position, transform.rotation);
+
                 ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+            }
         }
     }
 }

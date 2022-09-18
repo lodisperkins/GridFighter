@@ -24,6 +24,8 @@ namespace Lodis.Gameplay
         public IntVariable Player2ID;
         public RingBarrierBehaviour RingBarrierRHS;
         public RingBarrierBehaviour RingBarrierLHS;
+        public ParticleSystem BlockEffect;
+        public ParticleSystem[] HitEffects;
         private List<GameObject> _entitiesInGame = new List<GameObject>();
         private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
         private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();

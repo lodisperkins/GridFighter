@@ -58,8 +58,9 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 9
-    HitSpark: {fileID: 5273676010718206759, guid: d66e29bbccf1454449db603069784da2,
+    HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
+    HitEffectLevel: 1
     HitStopTimeModifier: 0
   _customStats:
   - name: Speed

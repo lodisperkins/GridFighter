@@ -60,6 +60,7 @@ MonoBehaviour:
     AbilityType: 8
     HitSpark: {fileID: 8482821253585752479, guid: b2d1a7e3c779c334183600eee56341df,
       type: 3}
+    HitEffectLevel: 3
     HitStopTimeModifier: 10
   _customStats:
   - name: TravelDistance
