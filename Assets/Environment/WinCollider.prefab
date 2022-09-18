@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2450533449396607520}
   - component: {fileID: 8686420493220737724}
   - component: {fileID: 5688518588503441440}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: TopCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 3717015320140823590}
   - component: {fileID: 1158582814710670289}
   - component: {fileID: 7013021406238055759}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: BottomCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -199,7 +199,7 @@ GameObject:
   - component: {fileID: 2147858399054149919}
   - component: {fileID: 1884365214352214517}
   - component: {fileID: 5136676892803481549}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: WinCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}

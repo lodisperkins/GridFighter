@@ -56,7 +56,7 @@ namespace Lodis.Gameplay
 
             //Spawn a game object with the collider attached
             _hitCollider = HitColliderSpawner.SpawnBoxCollider(spawnTransform, _hitBoxScale, hitColliderRef, owner);
-            _hitCollider.transform.localPosition = -Vector3.up * abilityData.GetCustomStatValue("HitBoxDistanceX");
+            _hitCollider.transform.position += owner.transform.forward * abilityData.GetCustomStatValue("HitBoxDistanceX");
 
             _hitCollider.DebuggingEnabled = true;
         }

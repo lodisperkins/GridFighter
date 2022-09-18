@@ -114,10 +114,6 @@ namespace Lodis.Gameplay
         {
             base.Deactivate();
 
-            //Destroy particles and hit box
-            if (_visualPrefabInstance)
-                Object.Destroy(_visualPrefabInstance);
-
             if (_hitScript)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);
         }
@@ -127,7 +123,20 @@ namespace Lodis.Gameplay
             base.End();
             //Enable bouncing
             _knockBackBehaviour.Physics.DisablePanelBounce();
+            if (_visualPrefabInstance)
+                Object.Destroy(_visualPrefabInstance);
 
+        }
+
+        public override void EndAbility()
+        {
+            base.EndAbility();
+            //Destroy particles and hit box
+            if (_visualPrefabInstance)
+                Object.Destroy(_visualPrefabInstance);
+
+            if (_chargeEffect)
+                Object.Destroy(_chargeEffect);
         }
 
         public override void StopAbility()
@@ -137,6 +146,9 @@ namespace Lodis.Gameplay
             //Destroy particles and hit box
             if (_visualPrefabInstance)
                 Object.Destroy(_visualPrefabInstance);
+
+            if (_chargeEffect)
+                Object.Destroy(_chargeEffect);
         }
     }
 }

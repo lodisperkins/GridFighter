@@ -47,7 +47,7 @@ namespace Lodis.Gameplay
             GameObject visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, SpawnTransform.position, abilityData.visualPrefab.transform.rotation);
             //Get the movement script attached and add it to a list
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
-            gridMovement.Position = position;
+            gridMovement.MoveToPanel(position, true);
             gridMovement.Speed = abilityData.GetCustomStatValue("Speed");
             _linkMoveScripts.Add(gridMovement);
         }
