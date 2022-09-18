@@ -12,9 +12,23 @@ namespace Lodis.Gameplay
     {
         public Renderer ObjectRenderer;
         [HideInInspector]
-        public Color DefaultColor;
+        public Color[] DefaultColors;
         public string[] ShaderProperties;
         public bool OnlyChangeHue = true;
+
+        public void CacheColors()
+        {
+            DefaultColors = new Color[ShaderProperties.Length];
+
+            for (int i = 0; i < ShaderProperties.Length; i++)
+                DefaultColors[i] = ObjectRenderer.material.GetColor(ShaderProperties[i]);
+        }
+
+        public void SetColorsToCache()
+        {
+            for (int i = 0; i < ShaderProperties.Length; i++)
+                ObjectRenderer.material.SetColor(ShaderProperties[i], DefaultColors[i]);
+        }
     }
 
     public class ColorManagerBehaviour : MonoBehaviour
@@ -52,13 +66,12 @@ namespace Lodis.Gameplay
 
             foreach (ColorObject colorObject in ObjectsToColor)
             {
-                if (colorObject.ObjectRenderer.material.HasProperty("_Color"))
-                    colorObject.DefaultColor = colorObject.ObjectRenderer.material.color;
-
                 if (colorObject.OnlyChangeHue)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
+
+                colorObject.CacheColors();
             }
         }
 

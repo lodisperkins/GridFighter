@@ -30,74 +30,132 @@ namespace Lodis.Utility
 
         public static void Flash(Renderer renderer, Color color, float timeBetweenFlashes, int loopAmount, bool useEmission = false, float emissionStrength = 0)
         {
+            Color defaultColor;
+
             if (useEmission)
             {
-                renderer.materials[0].DOFloat(emissionStrength, "_EmissionStrength", timeBetweenFlashes).SetLoops(loopAmount);
-                renderer.materials[0].DOVector(color, "_EmissionColor", timeBetweenFlashes).SetLoops(loopAmount);
+                float defaultStrength = renderer.material.GetFloat("_EmissionStrength");
+                renderer.materials[0].DOFloat(emissionStrength, "_EmissionStrength", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
+                    () => renderer.material.SetFloat("_EmissionStrength", defaultStrength);
+
+                defaultColor = renderer.material.GetColor("_EmissionColor");
+                renderer.materials[0].DOVector(color, "_EmissionColor", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
+                    () => renderer.material.SetColor("_EmissionColor", defaultColor);
                 return;
             }
 
-            renderer.materials[0].DOVector(color, "_Color", timeBetweenFlashes).SetLoops(loopAmount);
+            defaultColor = renderer.material.GetColor("_Color");
+            renderer.materials[0].DOVector(color, "_Color", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
+                    () => renderer.material.SetColor("_Color", defaultColor); ;
         }
 
         public static void Flash(ColorObject colorObject, Color color, float timeBetweenFlashes, int loopAmount, bool useEmission = false, float emissionStrength = 0)
         {
+            Color defaultColor;
+
             if (useEmission)
             {
-                colorObject.ObjectRenderer.materials[0].DOFloat(emissionStrength, "_EmissionStrength", timeBetweenFlashes).SetLoops(loopAmount);
-                colorObject.ObjectRenderer.materials[0].DOVector(color, "_EmissionColor", timeBetweenFlashes).SetLoops(loopAmount);
+                float defaultStrength = colorObject.ObjectRenderer.material.GetFloat("_EmissionStrength");
+                colorObject.ObjectRenderer.materials[0].DOFloat(emissionStrength, "_EmissionStrength", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
+                    () => colorObject.ObjectRenderer.material.SetFloat("_EmissionStrength", defaultStrength);
+
+                defaultColor = colorObject.ObjectRenderer.material.GetColor("_EmissionColor");
+                colorObject.ObjectRenderer.materials[0].DOVector(color, "_EmissionColor", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
+                    () => colorObject.ObjectRenderer.material.SetColor("_EmissionColor", defaultColor);
                 return;
             }
 
-            colorObject.ObjectRenderer.materials[0].DOVector(color, "_Color", timeBetweenFlashes).SetLoops(loopAmount);
+            defaultColor = colorObject.ObjectRenderer.material.GetColor("_Color");
+            colorObject.ObjectRenderer.materials[0].DOVector(color, "_Color", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
+                    () => colorObject.ObjectRenderer.material.SetColor("_Color", defaultColor);
         }
 
         public void Flash(Renderer renderer, Color color)
         {
+            Color defaultColor;
+
             if (_useEmission)
             {
-                renderer.materials[0].DOFloat(_emissionStrength, "_EmissionStrength", _timeBetweenFlashes).SetLoops(_loopAmount);
-                renderer.materials[0].DOVector(color, "_EmissionColor", _timeBetweenFlashes).SetLoops(_loopAmount);
+                float defaultStrength = renderer.material.GetFloat("_EmissionStrength");
+                renderer.materials[0].DOFloat(_emissionStrength, "_EmissionStrength", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => renderer.material.SetFloat("_EmissionStrength", defaultStrength);
+
+                defaultColor = renderer.material.GetColor("_EmissionColor");
+                renderer.materials[0].DOVector(color, "_EmissionColor", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => renderer.material.SetColor("_EmissionColor", defaultColor);
+
                 return;
             }
 
-            renderer.materials[0].DOVector(color, "_Color", _timeBetweenFlashes).SetLoops(_loopAmount);
+            defaultColor = renderer.material.GetColor("_Color");
+            renderer.materials[0].DOVector(color, "_Color", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => renderer.material.SetColor("_Color", defaultColor);
         }
 
         public void Flash(ColorObject colorObject, Color color)
         {
+            Color defaultColor;
+
             if (_useEmission)
             {
-                colorObject.ObjectRenderer.materials[0].DOFloat(_emissionStrength, "_EmissionStrength", _timeBetweenFlashes).SetLoops(_loopAmount);
-                colorObject.ObjectRenderer.materials[0].DOVector(color, "_EmissionColor", _timeBetweenFlashes).SetLoops(_loopAmount);
+                float defaultStrength = colorObject.ObjectRenderer.material.GetFloat("_EmissionStrength");
+                colorObject.ObjectRenderer.materials[0].DOFloat(_emissionStrength, "_EmissionStrength", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => colorObject.ObjectRenderer.material.SetFloat("_EmissionStrength", defaultStrength);
+
+                defaultColor = colorObject.ObjectRenderer.material.GetColor("_EmissionColor");
+                colorObject.ObjectRenderer.materials[0].DOVector(color, "_EmissionColor", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => colorObject.ObjectRenderer.material.SetColor("_EmissionColor", defaultColor);
+
                 return;
             }
 
-            colorObject.ObjectRenderer.materials[0].DOVector(color, "_Color", _timeBetweenFlashes).SetLoops(_loopAmount);
+            defaultColor = colorObject.ObjectRenderer.material.GetColor("_Color");
+            colorObject.ObjectRenderer.materials[0].DOVector(color, "_Color", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => colorObject.ObjectRenderer.material.SetColor("_Color", defaultColor);
         }
 
         public void Flash(Color color, float timeBetweenFlashes, int loopAmount, bool useEmission = false, float emissionStrength = 0)
         {
-            if (useEmission)
+            Color defaultColor;
+
+            if (_useEmission)
             {
-                _mesh.materials[0].DOFloat(emissionStrength, "_EmissionStrength", timeBetweenFlashes).SetLoops(loopAmount);
-                _mesh.materials[0].DOVector(color, "_EmissionColor", timeBetweenFlashes).SetLoops(loopAmount);
+                float defaultStrength = _mesh.material.GetFloat("_EmissionStrength");
+                _mesh.materials[0].DOFloat(_emissionStrength, "_EmissionStrength", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => _mesh.material.SetFloat("_EmissionStrength", defaultStrength);
+
+                defaultColor = _mesh.material.GetColor("_EmissionColor");
+                _mesh.materials[0].DOVector(color, "_EmissionColor", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => _mesh.material.SetColor("_EmissionColor", defaultColor);
+
                 return;
             }
 
-            _mesh.materials[0].DOVector(color, "_Color", timeBetweenFlashes).SetLoops(loopAmount);
+            defaultColor = _mesh.material.GetColor("_Color");
+            _mesh.materials[0].DOVector(color, "_Color", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => _mesh.material.SetColor("_Color", defaultColor);
         }
 
         public void Flash()
         {
+            Color defaultColor;
+
             if (_useEmission)
             {
-                _mesh.materials[0].DOFloat(_emissionStrength, "_EmissionStrength", _timeBetweenFlashes).SetLoops(_loopAmount);
-                _mesh.materials[0].DOVector(_color, "_EmissionColor", _timeBetweenFlashes).SetLoops(_loopAmount);
+                float defaultStrength = _mesh.material.GetFloat("_EmissionStrength");
+                _mesh.materials[0].DOFloat(_emissionStrength, "_EmissionStrength", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => _mesh.material.SetFloat("_EmissionStrength", defaultStrength);
+
+                defaultColor = _mesh.material.GetColor("_EmissionColor");
+                _mesh.materials[0].DOVector(_color, "_EmissionColor", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => _mesh.material.SetColor("_EmissionColor", defaultColor);
+
                 return;
             }
 
-            _mesh.materials[0].DOVector(_color, "_Color", _timeBetweenFlashes).SetLoops(_loopAmount);
+            defaultColor = _mesh.material.GetColor("_Color");
+            _mesh.materials[0].DOVector(_color, "_Color", _timeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                    () => _mesh.material.SetColor("_Color", defaultColor);
         }
 
         public void StopFlash()

@@ -40,7 +40,6 @@ namespace Lodis.Gameplay
             foreach (ColorObject colorObject in _colorManager.ObjectsToColor)
             {
                 colorObject.ObjectRenderer.material.DOKill();
-                colorObject.ObjectRenderer.material.color = colorObject.DefaultColor;
             }
         }
     }

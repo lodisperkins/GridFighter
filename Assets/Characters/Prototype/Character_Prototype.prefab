@@ -1359,81 +1359,97 @@ MonoBehaviour:
   _autoDetectAlignment: 1
   _objectsToColor:
   - ObjectRenderer: {fileID: 6639209002818121124}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 7155008656095369309}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 3831023786008383766}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 2830795056918598711}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 352428427756210222}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 3223003742679397036}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 7472588424451523308}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 2067788495289702932}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 3179042024068313134}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 2415986910508142165}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 348025398091982472}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 5017225360137024011}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 1196322217663576068}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 2291547495728154491}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 7029130220549930067}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 2236023890446937048}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
@@ -5578,7 +5594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77fe7df173b940b4fb146475bca37124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeBetweenFlashes: 0.1
+  _timeBetweenFlashes: 1
   _color: {r: 0, g: 0, b: 0, a: 0}
   _useEmission: 1
   _emissionStrength: 10
@@ -5741,6 +5757,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8573480685531974960}
     m_Modifications:
+    - target: {fileID: 2883527202626676445, guid: a833dc0675124fc429e9a223bf04c922,
+        type: 3}
+      propertyPath: m_RenderMode
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2883527202686429329, guid: a833dc0675124fc429e9a223bf04c922,
         type: 3}
       propertyPath: m_Name
