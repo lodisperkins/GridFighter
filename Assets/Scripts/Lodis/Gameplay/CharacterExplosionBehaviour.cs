@@ -21,11 +21,15 @@ namespace Lodis.Gameplay
 
         public void ChargeExplosion(IntVariable playerID)
         {
-            if (_emissionStrengthValues[playerID.Value - 1] != 0)
-                return;
-
             GameObject playerCharacter = BlackBoardBehaviour.Instance.GetPlayerFromID(playerID);
             playerCharacter.GetComponent<GridPhysicsBehaviour>().FreezeInPlaceByTimer(_explosionChargeTime, false, true);
+            KnockbackBehaviour knockback = playerCharacter.GetComponent<KnockbackBehaviour>();
+            
+            if (knockback.HasExploded)
+                return;
+
+            knockback.HasExploded = true;
+
             _characterFeedback = playerCharacter.GetComponentInChildren<CharacterFeedbackBehaviour>();
 
             float strength = _characterFeedback.EmissionStrength;
@@ -37,13 +41,12 @@ namespace Lodis.Gameplay
 
             RoutineBehaviour.Instance.StartNewTimedAction( args => 
             {
-                playerCharacter.SetActive(false);
-                Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
-                playerCharacter.GetComponent<KnockbackBehaviour>().HasExploded = true;
-                CameraBehaviour.ShakeBehaviour.ShakeRotation();
-
                 _characterFeedback.EmissionStrength = strength;
                _characterFeedback.TimeBetweenFlashes = oldTime;
+                playerCharacter.SetActive(false);
+                Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
+                CameraBehaviour.ShakeBehaviour.ShakeRotation();
+
             }, TimedActionCountType.SCALEDTIME, ExplosionChargeTime);
         }
 
