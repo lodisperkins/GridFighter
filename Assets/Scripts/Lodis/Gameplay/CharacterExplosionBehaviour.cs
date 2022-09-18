@@ -49,7 +49,7 @@ namespace Lodis.Gameplay
 
         public void ResetEmission(IntVariable playerID)
         {
-            _characterFeedback.ResetAllRenderers();
+            _characterFeedback?.ResetAllRenderers();
         }
     }
 }

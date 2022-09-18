@@ -90,7 +90,7 @@ namespace Lodis.Gameplay
             if (_visualPrefabInstance)
                 Object.Destroy(_visualPrefabInstance);
 
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_hitCollider.gameObject);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_hitCollider?.gameObject);
         }
 
         public override void EndAbility()
