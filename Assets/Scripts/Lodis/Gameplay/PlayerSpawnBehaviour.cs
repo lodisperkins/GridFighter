@@ -107,7 +107,7 @@ namespace Lodis.Gameplay
         {
             //Spawn player 2
             if (_mode == GameMode.SIMULATE)
-                _dummy.Character = Instantiate(_player1CharacterRef, _player1.transform);
+                _player1 = Instantiate(_dummy.gameObject);
             else
                 _player1 = _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[0]).gameObject;
 
