@@ -170,5 +170,11 @@ namespace Lodis.Gameplay
 
             DestroyLinks(0);
         }
+
+        public override void StopAbility()
+        {
+            base.StopAbility();
+            DestroyLinks(0);
+        }
     }
 }

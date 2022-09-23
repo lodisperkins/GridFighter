@@ -23,11 +23,6 @@ namespace Lodis.Gameplay
             BlackBoardBehaviour.Instance.Grid.ExchangeRowsByTimer((int)abilityData.GetCustomStatValue("AmountOfRows"), _ownerMoveScript.Alignment, abilityData.GetCustomStatValue("OwnershipTime"));
         }
 
-        public override void EndAbility()
-        {
-            base.EndAbility();
-        }
-
         public override void StopAbility()
         {
             base.StopAbility();

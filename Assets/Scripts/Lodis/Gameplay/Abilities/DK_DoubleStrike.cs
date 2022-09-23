@@ -42,10 +42,7 @@ namespace Lodis.Gameplay
 
             //Play animation
             EnableAnimation();
-            //Store initial move speed
-            _ownerMoveSpeed = _ownerMoveScript.Speed;
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
-            _ownerMoveScript.AlwaysLookAtOpposingSide = false;
+            ChangeMoveAttributes();
         }
 
         //Called when ability is used
@@ -91,16 +88,14 @@ namespace Lodis.Gameplay
         protected override void Deactivate()
         {
             base.Deactivate();
-            //Reset the movement traits
-            _ownerMoveScript.Speed = _ownerMoveSpeed;
-            _ownerMoveScript.canCancelMovement = false;
+            ResetMoveAttributes();
 
             //Despawn particles and hit box
             ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance);
 
             if (!_secondStrikeActivated)
             {
-                StopAbility();
+                EndAbility();
                 onEnd?.Invoke();
                 End();
             }
@@ -109,12 +104,33 @@ namespace Lodis.Gameplay
         protected override void End()
         {
             base.End();
+            ResetMoveAttributes();
+        }
+
+        public override void StopAbility()
+        {
+            base.StopAbility();
+            ResetMoveAttributes();
+        }
+
+        private void ChangeMoveAttributes()
+        {
+            //Store initial move speed
+            _ownerMoveSpeed = _ownerMoveScript.Speed;
+            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
+            _ownerMoveScript.AlwaysLookAtOpposingSide = false;
+        }
+
+        private void ResetMoveAttributes()
+        {
             //Reset the movement traits
             if (_ownerMoveScript.IsMoving)
                 _ownerMoveScript.CancelMovement();
 
+            _ownerMoveScript.canCancelMovement = false;
             _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
             _ownerMoveScript.AlwaysLookAtOpposingSide = true;
+
         }
 
         public override void Update()
@@ -132,8 +148,11 @@ namespace Lodis.Gameplay
 
                 _secondStrikeActivated = true;
                 Deactivate();
+                int activationAmount = currentActivationAmount;
                 StopAbility();
 
+                ChangeMoveAttributes();
+                currentActivationAmount = activationAmount;
                 string[] slots = OwnerMoveset.GetAbilityNamesInCurrentSlots();
 
                 abilityData.canCancelRecover = true;

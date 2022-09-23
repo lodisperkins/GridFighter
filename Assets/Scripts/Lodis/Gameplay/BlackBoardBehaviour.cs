@@ -82,7 +82,7 @@ namespace Lodis.Gameplay
                 _lhsActiveColliders.RemoveAll(hitCollider =>
                 {
                     if ((object)hitCollider != null)
-                        return hitCollider.gameObject.activeInHierarchy;
+                        return !hitCollider.gameObject.activeInHierarchy;
 
                     return true;
                 });
@@ -95,7 +95,7 @@ namespace Lodis.Gameplay
                 _rhsActiveColliders.RemoveAll(hitCollider =>
                 {
                     if ((object)hitCollider != null)
-                        return hitCollider.gameObject.activeInHierarchy;
+                        return !hitCollider.gameObject.activeInHierarchy;
 
                     return true;
                 });
@@ -105,20 +105,14 @@ namespace Lodis.Gameplay
 
         public void DestroyAllAbilityColliders()
         {
-            foreach (HitColliderBehaviour collider in GetLHSActiveColliders())
+            foreach (HitColliderBehaviour collider in _lhsActiveColliders)
             {
-                if (collider.transform.root.CompareTag("Player"))
-                    ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject);
-                else
-                    ObjectPoolBehaviour.Instance.ReturnGameObject(collider.transform.root.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject, Time.deltaTime);
             }
 
-            foreach (HitColliderBehaviour collider in GetRHSActiveColliders())
+            foreach (HitColliderBehaviour collider in _rhsActiveColliders)
             {
-                if (collider.transform.root.CompareTag("Player"))
-                    ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject);
-                else
-                    ObjectPoolBehaviour.Instance.ReturnGameObject(collider.transform.root.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject, Time.deltaTime);
             }
         }
 

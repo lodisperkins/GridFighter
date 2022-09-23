@@ -39,6 +39,9 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            if (!InUse)
+                return;
+
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
             projectileSpawner.projectile = _projectile;
 

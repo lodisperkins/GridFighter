@@ -232,6 +232,7 @@ namespace Lodis.Gameplay
         {
             RoutineBehaviour.Instance.StopAction(_currentTimer);
             _inUse = false;
+            currentActivationAmount = 0;
         }
 
         /// <summary>

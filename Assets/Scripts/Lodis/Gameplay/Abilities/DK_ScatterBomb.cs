@@ -18,8 +18,9 @@ namespace Lodis.Gameplay
         private float _bombMoveDuration;
         private float _bombTimer;
         private GameObject _explosionEffect;
+        private TimedAction _explosionTimer;
 
-	    //Called when ability is created
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
@@ -46,6 +47,8 @@ namespace Lodis.Gameplay
                 ObjectPoolBehaviour.Instance.ReturnGameObject(t.gameObject, ProjectileColliderData.TimeActive + 0.1f);
                 t.DOKill();
             }
+
+            _bombs.Clear();
             CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
         }
 
@@ -68,7 +71,22 @@ namespace Lodis.Gameplay
                 _bombs[i].DOMove(_targetPanels[i].transform.position, _bombMoveDuration);
             }
 
-            RoutineBehaviour.Instance.StartNewTimedAction(arguments => DetonateBombs(), TimedActionCountType.SCALEDTIME, _bombTimer);
+            _explosionTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => DetonateBombs(), TimedActionCountType.SCALEDTIME, _bombTimer);
+        }
+
+        public override void StopAbility()
+        {
+            base.StopAbility();
+
+            RoutineBehaviour.Instance.StopAction(_explosionTimer);
+
+            foreach (Transform t in _bombs)
+            {
+                ObjectPoolBehaviour.Instance.ReturnGameObject(t.gameObject);
+            }
+
+            _targetPanels?.Clear();
+
         }
     }
 }

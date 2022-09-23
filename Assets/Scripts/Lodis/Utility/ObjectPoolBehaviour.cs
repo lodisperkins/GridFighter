@@ -9,6 +9,7 @@ namespace Lodis.Utility
     {
         private Dictionary<string, Queue<GameObject>> _objectPool = new Dictionary<string, Queue<GameObject>>();
         private static ObjectPoolBehaviour _instance;
+        private GridGame.Event _onReturnToPool;
 
         /// <summary>
         /// The only static instance of the object pool
@@ -28,6 +29,13 @@ namespace Lodis.Utility
 
                 return _instance;
             }
+        }
+
+        public GridGame.Event OnReturnToPool { get => _onReturnToPool; private set => _onReturnToPool = value; }
+
+        private void Awake()
+        {
+            OnReturnToPool = Resources.Load<GridGame.Event>("Events/OnReturnToPool");
         }
 
         /// <summary>
@@ -265,6 +273,7 @@ namespace Lodis.Utility
 
             //Disable the object in the scene
             objectInstance.SetActive(false);
+            OnReturnToPool?.Raise(objectInstance);
         }
 
         /// <summary>

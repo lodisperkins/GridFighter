@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +19,7 @@ namespace Lodis.Gameplay
     public class ColliderBehaviour : MonoBehaviour
     {
         protected Dictionary<GameObject, float> Collisions;
+        protected GridGame.GameEventListener ReturnToPoolListener;
         private CollisionEvent _onHit;
         [SerializeField]
         private GridGame.Event _onHitObject;
@@ -29,9 +31,16 @@ namespace Lodis.Gameplay
 
         public LayerMask LayersToIgnore { get => _layersToIgnore; set => _layersToIgnore = value; }
 
-        private void Awake()
+        protected virtual void Awake()
         {
+            ReturnToPoolListener = gameObject.AddComponent<GridGame.GameEventListener>();
             Collisions = new Dictionary<GameObject, float>();
+        }
+
+        protected virtual void Start()
+        {
+            ReturnToPoolListener.Event = ObjectPoolBehaviour.Instance.OnReturnToPool;
+            ReturnToPoolListener.IntendedSender = gameObject;
         }
 
         private void OnEnable()

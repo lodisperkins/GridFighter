@@ -81,6 +81,7 @@ namespace Lodis.Gameplay
         }
     }
 
+
     public class HitColliderBehaviour : ColliderBehaviour
     {
         /// <summary>
@@ -117,22 +118,45 @@ namespace Lodis.Gameplay
             Owner = owner;
         }
 
-        private void Awake()
+        protected override void Awake()
         {
-            Collisions = new Dictionary<GameObject, float>();
+            base.Awake();
             gameObject.layer = LayerMask.NameToLayer("Ability");
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
+
+            //ReturnToPoolListener.AddAction(RemoveFromActiveList);
+            AddToActiveList();
             LayersToIgnore = ColliderInfo.LayersToIgnore;
             StartTime = Time.time;
         }
 
         private void OnEnable()
         {
+            AddToActiveList();
             ResetActiveTime();
             Collisions.Clear();
+        }
+
+        private void AddToActiveList()
+        {
+            if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
+                BlackBoardBehaviour.Instance.GetLHSActiveColliders().Add(this);
+            else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+                BlackBoardBehaviour.Instance.GetRHSActiveColliders().Add(this);
+
+        }
+
+        private void RemoveFromActiveList()
+        {
+
+            if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
+                BlackBoardBehaviour.Instance.GetLHSActiveColliders().Remove(this);
+            else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+                BlackBoardBehaviour.Instance.GetRHSActiveColliders().Remove(this);
         }
 
         /// <summary>
@@ -462,10 +486,6 @@ namespace Lodis.Gameplay
             if (gameObject == null)
                 return;
 
-            if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT && !_addedToActiveList)
-                BlackBoardBehaviour.Instance.GetLHSActiveColliders().Add(this);
-            else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT && !_addedToActiveList)
-                BlackBoardBehaviour.Instance.GetRHSActiveColliders().Add(this);
 
             _addedToActiveList = true;
             //Update the amount of current frames

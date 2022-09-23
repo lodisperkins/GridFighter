@@ -162,12 +162,12 @@ namespace Lodis.Gameplay
             movement.CanMoveDiagonally = false;
 
             MovesetBehaviour moveset = _p1Input.Character.GetComponent<MovesetBehaviour>();
-            moveset.EndCurrentAbility();
+            moveset.LastAbilityInUse?.StopAbility();
             moveset.ManualShuffle(true);
             moveset.TryUseEnergy(moveset.Energy);
             
             moveset = _p2Input.Character.GetComponent<MovesetBehaviour>();
-            moveset.EndCurrentAbility();
+            moveset.LastAbilityInUse?.StopAbility();
             moveset.ManualShuffle(true);
             moveset.TryUseEnergy(moveset.Energy);
 
