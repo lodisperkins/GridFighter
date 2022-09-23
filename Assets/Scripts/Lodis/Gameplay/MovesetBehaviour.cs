@@ -449,9 +449,19 @@ namespace Lodis.Gameplay
         {
 
             if (!_discardDeck.Contains(_specialAbilitySlots[0]) && _specialAbilitySlots[0] != null)
+            {
+                if (!_specialAbilitySlots[0].MaxActivationAmountReached)
+                    _specialAbilitySlots[0].StopAbility();
+
                 _discardDeck.AddAbility(_specialAbilitySlots[0]);
+            }
             if (!_discardDeck.Contains(_specialAbilitySlots[1]) && _specialAbilitySlots[1] != null)
+            {
+                if (!_specialAbilitySlots[1].MaxActivationAmountReached)
+                    _specialAbilitySlots[1].StopAbility();
+
                 _discardDeck.AddAbility(_specialAbilitySlots[1]);
+            }
             if (!_discardDeck.Contains(NextAbilitySlot) && NextAbilitySlot != null)
                 _discardDeck.AddAbility(NextAbilitySlot);
 

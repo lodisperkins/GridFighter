@@ -230,6 +230,9 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void StopAbility()
         {
+            if (!_inUse)
+                return;
+
             RoutineBehaviour.Instance.StopAction(_currentTimer);
             _inUse = false;
             currentActivationAmount = 0;
