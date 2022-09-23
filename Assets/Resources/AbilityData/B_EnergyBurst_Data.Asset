@@ -45,7 +45,7 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 1606912
     MultiHitWaitTime: 0
     Damage: 5
     BaseKnockBack: 35

@@ -95,7 +95,7 @@ namespace Lodis.Gameplay
 
             if (!_secondStrikeActivated)
             {
-                EndAbility();
+                StopAbility();
                 onEnd?.Invoke();
                 End();
             }
