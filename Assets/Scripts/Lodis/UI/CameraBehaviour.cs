@@ -155,6 +155,16 @@ namespace Lodis
             transform.position = new Vector3(newX, transform.position.y, newZ);
 
             _lastCameraPosition = _cameraPosition;
+            Debug.Log("DeltaTime " + Time.deltaTime);
+            Debug.Log("CameraMoveSpeed " + _cameraMoveSpeed);
+            Debug.Log("CurrentTimeX " + _currentTimeX);
+            Debug.Log("CurrentTimeZ " + _currentTimeZ);
+            Debug.Log("newX " + newX);
+            Debug.Log("newZ " + newZ);
+            Debug.Log("Current position: " + transform.position);
+            Debug.Log("Average distance: " + avgDistance);
+            Debug.Log("Average Position " + _averagePosition);
+            Debug.Log("Last Camera Position " + _lastCameraPosition);
         }
     }
 }

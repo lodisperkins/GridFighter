@@ -265,8 +265,6 @@ namespace Lodis.Movement
             _meshFilter = GetComponent<MeshFilter>();
             _collider = GetComponent<Collider>();
 
-            if (CompareTag("Player") || CompareTag("Entity"))
-                BlackBoardBehaviour.Instance.AddEntityToList(gameObject);
         }
 
         private void Start()
@@ -289,6 +287,8 @@ namespace Lodis.Movement
                 _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
             _tempAlignment = _defaultAlignment;
+            if (CompareTag("Player") || CompareTag("Entity"))
+                BlackBoardBehaviour.Instance.AddEntityToList(gameObject);
         }
 
         /// <summary>
