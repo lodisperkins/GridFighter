@@ -151,7 +151,7 @@ namespace Lodis.Utility
                 objectInstance.transform.parent = parent;
 
                 if (resetPosition)
-                    objectInstance.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    objectInstance.transform.localPosition = Vector3.zero;
 
                 return objectInstance;
             }
@@ -235,8 +235,9 @@ namespace Lodis.Utility
         {
             GameObject newObject = Instantiate(gameObject, parent);
 
+
             if (resetPosition)
-                newObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+                newObject.transform.localPosition = Vector3.zero;
 
             newObject.name = gameObject.name;
             return newObject;

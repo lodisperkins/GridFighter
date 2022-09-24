@@ -249,8 +249,13 @@ namespace Lodis.Gameplay
                 if (otherCollider is HitColliderBehaviour hitCollider)
                 {
                     //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                        ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+                    if (ColliderInfo.Priority >= hitCollider.ColliderInfo.Priority)
+                    {
+                        ObjectPoolBehaviour.Instance.ReturnGameObject(otherGameObject);
+                        if (hitCollider.ColliderInfo.HitSpark)
+                            Instantiate(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+                    }
+
 
                     //Ignore the collider otherwise
                     return;

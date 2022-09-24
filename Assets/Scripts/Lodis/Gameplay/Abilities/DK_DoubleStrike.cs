@@ -52,7 +52,7 @@ namespace Lodis.Gameplay
             _fistCollider = GetColliderData(0);
 
             //Spawn particles
-           _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform);
+           _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
             //Spawn a game object with the collider attached
             _hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             _hitScript.ColliderInfo = _fistCollider;
