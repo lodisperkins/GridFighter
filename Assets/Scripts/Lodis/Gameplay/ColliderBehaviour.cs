@@ -28,13 +28,16 @@ namespace Lodis.Gameplay
         public GameObject Owner;
         [SerializeField]
         private LayerMask _layersToIgnore;
+        private Rigidbody _rigidbody;
 
         public LayerMask LayersToIgnore { get => _layersToIgnore; set => _layersToIgnore = value; }
+        public Rigidbody RB { get => _rigidbody; private set => _rigidbody = value; }
 
         protected virtual void Awake()
         {
             ReturnToPoolListener = gameObject.AddComponent<GridGame.GameEventListener>();
             Collisions = new Dictionary<GameObject, float>();
+            RB = transform.root.GetComponentInChildren<Rigidbody>();
         }
 
         protected virtual void Start()

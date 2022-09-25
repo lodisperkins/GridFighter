@@ -37,7 +37,7 @@ public class AttackAction : GOAction
             return;
 
         //Gather information about the environment
-        Vector3 displacement = _dummy.Opponent.transform.position - _dummy.transform.position;
+        Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
         float targetHealth = _dummy.OpponentKnockback.Health;
         _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.OpponentKnockback.Physics.LastVelocity, null, null);
 
@@ -106,7 +106,7 @@ public class AttackAction : GOAction
         float attackStrength = UnityEngine.Random.Range(0, 1.1f);
 
         //Store information about the environment in case the hit is successful
-        Vector3 displacement = _dummy.Opponent.transform.position - _dummy.transform.position;
+        Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
         float targetHealth = _dummy.OpponentKnockback.Health;
 
         Ability ability = null;
@@ -174,7 +174,7 @@ public class AttackAction : GOAction
         if (!collisionObject.CompareTag("Player") || collisionObject == _dummy.gameObject)
             return;
 
-        Vector3 displacement = collisionObject.transform.position - _dummy.transform.position;
+        Vector3 displacement = collisionObject.transform.position - _dummy.Character.transform.position;
         _decision = (AttackNode)_dummy.AttackDecisions.AddDecision(new AttackNode(displacement, targetHealth, 0, startUpTime, name, attackStrength, collisionObject.GetComponent<GridPhysicsBehaviour>().LastVelocity, null, null));
 
         if (_decision == null)

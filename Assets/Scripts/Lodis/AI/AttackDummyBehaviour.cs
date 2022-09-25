@@ -41,7 +41,7 @@ namespace Lodis.AI
         private bool _chargingAttack;
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
         [SerializeField]
-        private float _senseRadius = 6;
+        private Collider _senseCollider;
         private BehaviorExecutor _executor;
         private Coroutine _moveRoutine;
         private PanelBehaviour _moveTarget;
@@ -65,9 +65,6 @@ namespace Lodis.AI
         private float _timeNeededToBurst;
         private GridPhysicsBehaviour _gridPhysics;
         private IntVariable _playerID;
-
-
-        public float SenseRadius { get => _senseRadius; set => _senseRadius = value; }
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
         public MovesetBehaviour Moveset { get => _moveset; set => _moveset = value; }
@@ -108,6 +105,10 @@ namespace Lodis.AI
             OpponentKnockback = _opponent.GetComponent<KnockbackBehaviour>();
             OpponentDefense = _opponent.GetComponent<CharacterDefenseBehaviour>();
 
+            _senseCollider.transform.SetParent(Character.transform);
+            _senseCollider.transform.localPosition = Vector3.zero;
+
+
             if (EnableBehaviourTree)
             {
                 _attackDecisions = new AttackDecisionTree();
@@ -124,6 +125,21 @@ namespace Lodis.AI
             }
         }
 
+        private void OnEnable()
+        {
+            if (_executor && EnableBehaviourTree)
+                _executor.enabled = true;
+
+            if (_movementBehaviour)
+                _movementBehaviour.enabled = true;
+        }
+
+        private void OnDisable()
+        {
+            _executor.enabled = false;
+            _movementBehaviour.enabled = false;
+        }
+
         private void OnDestroy()
         {
             if (!Application.isEditor) return;
@@ -138,7 +154,7 @@ namespace Lodis.AI
                 _attacksInRange.RemoveAll(hitCollider =>
                 { 
                     if ((object)hitCollider != null)
-                        return hitCollider == null;
+                        return hitCollider == null || !hitCollider.gameObject.activeInHierarchy;
 
                     return true;
                 });
@@ -156,14 +172,6 @@ namespace Lodis.AI
                 Moveset.UseBasicAbility(type, new object[] { _attackStrength, _attackDirection });
             }
                 _chargingAttack = false;
-        }
-
-        private void OnTriggerEnter(Collider other)
-        {
-            HitColliderBehaviour collider = other.GetComponent<HitColliderBehaviour>();
-            if (collider)
-                GetAttacksInRange().Add(collider);
-
         }
 
         public void Update()

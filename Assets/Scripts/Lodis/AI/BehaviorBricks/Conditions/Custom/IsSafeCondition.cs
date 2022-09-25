@@ -15,21 +15,21 @@ public class IsSafeCondition : GOCondition
     [InParam("Owner")]
     private AttackDummyBehaviour _dummy;
 
-    private List<HitColliderBehaviour> FindAttacksInRange(AttackDummyBehaviour dummy)
-    {
-        if (dummy.AIMovement.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.LEFT)
-        {
-            _opponent = BlackBoardBehaviour.Instance.Player2;
-            return BlackBoardBehaviour.Instance.GetRHSActiveColliders().FindAll(collider => Vector3.Distance(collider.gameObject.transform.position, gameObject.transform.position) <= dummy.SenseRadius);
-        }
-        else if (dummy.AIMovement.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.RIGHT)
-        {
-            _opponent = BlackBoardBehaviour.Instance.Player1;
-            return BlackBoardBehaviour.Instance.GetLHSActiveColliders().FindAll(collider => Vector3.Distance(collider.gameObject.transform.position, gameObject.transform.position) <= dummy.SenseRadius);
-        }
+    //private List<HitColliderBehaviour> FindAttacksInRange(AttackDummyBehaviour dummy)
+    //{
+    //    if (dummy.AIMovement.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.LEFT)
+    //    {
+    //        _opponent = BlackBoardBehaviour.Instance.Player2;
+    //        return BlackBoardBehaviour.Instance.GetRHSActiveColliders().FindAll(collider => Vector3.Distance(collider.gameObject.transform.position, gameObject.transform.position) <= dummy.SenseRadius);
+    //    }
+    //    else if (dummy.AIMovement.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.RIGHT)
+    //    {
+    //        _opponent = BlackBoardBehaviour.Instance.Player1;
+    //        return BlackBoardBehaviour.Instance.GetLHSActiveColliders().FindAll(collider => Vector3.Distance(collider.gameObject.transform.position, gameObject.transform.position) <= dummy.SenseRadius);
+    //    }
 
-        return new List<HitColliderBehaviour>();
-    }
+    //    return new List<HitColliderBehaviour>();
+    //}
 
     /// <summary>
     /// Gets a list of physics components from all attacks in range
@@ -54,6 +54,7 @@ public class IsSafeCondition : GOCondition
         return false;
     }
 
+
     /// <summary>
     /// Considered unsafe if hit boxes are in range, in the tumbling state,  or an attack has been started on the same row
     /// </summary>
@@ -62,19 +63,16 @@ public class IsSafeCondition : GOCondition
     {
         List<HitColliderBehaviour> attacks = _dummy.GetAttacksInRange();
 
-        _dummy.GetAttacksInRange().AddRange(FindAttacksInRange(_dummy));
-
         if (_dummy.Executor.blackboard.boolParams[3] == true)
             return true;
 
-        if (CheckIfProjectilesWillHit())
+        if (attacks.Count > 0)
             return false;
 
-        if (_dummy.StateMachine.CurrentState == "Tumbling" || _dummy.StateMachine.CurrentState == "Flinching")
-            return false;
+        string opponentState = _dummy.PlayerID == BlackBoardBehaviour.Instance.Player1ID ? BlackBoardBehaviour.Instance.Player2State : BlackBoardBehaviour.Instance.Player1State;
 
-        if (_opponent.GetComponent<GridMovementBehaviour>().Position.y == _dummy.AIMovement.MovementBehaviour.Position.y && _opponent.GetComponent<CharacterStateMachineBehaviour>().StateMachine.CurrentState == "Attack")
-            return false;
+        //if (_dummy.OpponentMove.Position.y == _dummy.AIMovement.MovementBehaviour.Position.y && opponentState == "Attack")
+        //    return false;
 
         return true;
     }

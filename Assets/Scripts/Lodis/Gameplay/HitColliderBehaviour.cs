@@ -131,6 +131,7 @@ namespace Lodis.Gameplay
             //ReturnToPoolListener.AddAction(RemoveFromActiveList);
             AddToActiveList();
             LayersToIgnore = ColliderInfo.LayersToIgnore;
+            LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
             StartTime = Time.time;
         }
 

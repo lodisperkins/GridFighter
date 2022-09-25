@@ -22,6 +22,10 @@ public class DefendAction : GOAction
     private GridBehaviour _grid;
     [InParam("RandomDecisionChosen")]
     private bool _randomDecisionChosen;
+    [InParam("CanMakeNewDecision")]
+    private bool _canMakeNewDecision = true;
+    [InParam("LastAttackCount")]
+    private int _lastAttackCount;
 
     public override void OnStart()
     {
@@ -31,14 +35,18 @@ public class DefendAction : GOAction
         //if (_dummy.StateMachine.CurrentState != "Idle")
         //    return;
 
+        List<HitColliderBehaviour> attacks = _dummy.GetAttacksInRange();
+        int currentAttackCount = attacks.Count;
+
         //Store the current environment data
-        _situation = new DefenseNode(GetPhysicsComponents(), null, null);
+        _situation = new DefenseNode(attacks, null, null);
 
         //if the decision isn't null then it must be set to the last decision made
         if (_dummy.LastDefenseDecision != null)
         {
             //Increment the win count for the decision
-            _dummy.LastDefenseDecision.Wins += 2;
+            _canMakeNewDecision = true;
+            _dummy.LastDefenseDecision.Wins++;
 
             if (_dummy.LastDefenseDecision.DefenseDecision == DefenseDecisionType.COUNTER)
                 _dummy.LastDefenseDecision.CounterAbilityName = _dummy.Moveset.LastAbilityInUse.abilityData.abilityName;
@@ -52,6 +60,9 @@ public class DefendAction : GOAction
         }
 
         _dummy.Executor.blackboard.boolParams[4] = false;
+
+        if (!_canMakeNewDecision)
+            return;
 
         //Grab a decision that closely matches the current environment 
         _decision = (DefenseNode)_dummy.DefenseDecisions.GetDecision(_situation);
@@ -76,29 +87,31 @@ public class DefendAction : GOAction
         if (_decision == null)
         {
             //Create a new random decision
-            choice = (DefenseDecisionType)Random.Range(0, 4);
-            _decision = new DefenseNode(GetPhysicsComponents(), null, null);
+            choice = (DefenseDecisionType)Random.Range(0, 5);
+            _decision = new DefenseNode(_dummy.GetAttacksInRange(), null, null);
             _dummy.Executor.blackboard.boolParams[4] = true;
         }
 
         if (_dummy.Knockback.CurrentAirState == AirState.TUMBLING && _dummy.Moveset.CanBurst && choice > DefenseDecisionType.COUNTER)
             choice = DefenseDecisionType.BURST;
 
+        _dummy.LastDefenseDecision = _decision;
         //Punish the decision if the dummy was damaged
-        _dummy.Knockback.AddOnTakeDamageTempAction(() => _decision.Wins--);
+        _dummy.Knockback.AddOnTakeDamageTempAction(() => { _dummy.LastDefenseDecision.Wins -= 2; _canMakeNewDecision = true; });
 
         //Perform an action based on choice
         switch (choice)
         {
             case DefenseDecisionType.EVADE:
                 //Gets a direction for the dummy to run to
-                Vector3 fleeDirection = _dummy.transform.position - (_decision.AveragePosition + _decision.AverageVelocity);
+                Vector3 fleeDirection = _dummy.Character.transform.position - (_decision.AveragePosition + _decision.AverageVelocity);
                 fleeDirection.Normalize();
                 fleeDirection.Scale(new Vector3(_grid.PanelScale.x + _grid.PanelSpacingX, 0, _grid.PanelScale.z + _grid.PanelSpacingZ));
+                fleeDirection = new Vector3(fleeDirection.z, 0, -fleeDirection.x);
                 PanelBehaviour panel = null;
 
                 //If a panel is found at the new destination...
-                if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_dummy.transform.position + fleeDirection, out panel, false, _dummy.AIMovement.MovementBehaviour.Alignment))
+                if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_dummy.Character.transform.position + fleeDirection, out panel, false, _dummy.AIMovement.MovementBehaviour.Alignment))
                     //...move the dummy
                     _dummy.AIMovement.MoveToLocation(panel);
                 break;
@@ -107,18 +120,28 @@ public class DefendAction : GOAction
                 _dummy.Executor.blackboard.boolParams[3] = true;
                 break;
             case DefenseDecisionType.PARRY:
-                _dummy.Defense.BeginParry();
+                RoutineBehaviour.Instance.StartNewConditionAction(args => _dummy.Defense.BeginParry(), condition => _dummy.StateMachine.CurrentState == "Idle");
                 break;
             case DefenseDecisionType.BURST:
                 if (_dummy.Knockback.LastTimeInKnockBack >= _dummy.TimeNeededToBurst && _dummy.Moveset.CanBurst)
                     _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
                 else if (_dummy.Knockback.Physics.IsGrounded)
-                    _dummy.Defense.BeginParry();
+                    RoutineBehaviour.Instance.StartNewConditionAction(args => _dummy.Defense.BeginParry(), condition => _dummy.StateMachine.CurrentState == "Idle");
+                break;
+            case DefenseDecisionType.PHASESHIFT:
+                //Gets a direction for the dummy to run to
+                Vector3 phaseDirection = (_decision.AveragePosition + _decision.AverageVelocity) - _dummy.Character.transform.position;
+                phaseDirection.Normalize();
+
+                if (_dummy.StateMachine.CurrentState == "Idle" || _dummy.StateMachine.CurrentState == "Moving")
+                    _dummy.Defense.ActivatePhaseShift(new Vector2(phaseDirection.x, phaseDirection.z));
+
                 break;
         }
 
         _decision.DefenseDecision = choice;
-        _dummy.LastDefenseDecision = _decision;
+        _canMakeNewDecision = false;
+        _lastAttackCount = attacks.Count;
     }
 
     /// <summary>

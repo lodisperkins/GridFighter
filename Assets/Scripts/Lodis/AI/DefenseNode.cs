@@ -11,19 +11,20 @@ namespace Lodis.AI
         EVADE,
         COUNTER,
         PARRY,
-        BURST
+        BURST,
+        PHASESHIFT
     }
 
     [System.Serializable]
     public class DefenseNode : TreeNode
     {
-        private List<GridPhysicsBehaviour> _attacksInRange;
+        private List<HitColliderBehaviour> _attacksInRange;
         public DefenseDecisionType DefenseDecision;
         public string CounterAbilityName;
         public Vector3 AveragePosition;
         public Vector3 AverageVelocity;
 
-        public DefenseNode(List<GridPhysicsBehaviour> attacksInRange, TreeNode left, TreeNode right) : base(left, right)
+        public DefenseNode(List<HitColliderBehaviour> attacksInRange, TreeNode left, TreeNode right) : base(left, right)
         {
             _attacksInRange = attacksInRange;
         }
@@ -37,16 +38,9 @@ namespace Lodis.AI
             if (_attacksInRange.Count == 0)
                 return Vector3.zero;
 
-            _attacksInRange.RemoveAll(physics =>
-            {
-                if ((object)physics != null)
-                    return physics == null;
-
-                return true;
-            });
-
             for (int i = 0; i < _attacksInRange.Count; i++)
-                averageVelocity += _attacksInRange[i].LastVelocity;
+                if (_attacksInRange[i].RB)
+                    averageVelocity += _attacksInRange[i].RB.velocity;
 
             return averageVelocity /= _attacksInRange.Count;
         }
@@ -94,16 +88,19 @@ namespace Lodis.AI
 
             if (defenseNode == null) return 0;
 
-            float velocityAccuracy = Vector3.Dot(defenseNode.AverageVelocity.normalized, AverageVelocity.normalized);
-            if (float.IsNaN(velocityAccuracy))
-                velocityAccuracy = 0;
-
             float positionAccuracy = Vector3.Dot(defenseNode.AveragePosition.normalized, AveragePosition.normalized);
             if (float.IsNaN(positionAccuracy))
                 positionAccuracy = 0;
 
+            float velocityAccuracy = Vector3.Dot(defenseNode.AverageVelocity.normalized, AverageVelocity.normalized);
+            if (float.IsNaN(velocityAccuracy))
+                velocityAccuracy = 0;
+
             if (positionAccuracy > 1)
                 positionAccuracy -= positionAccuracy - 1;
+
+            if (velocityAccuracy > 1)
+                velocityAccuracy -= velocityAccuracy - 1;
 
             float totalAccuracy = (velocityAccuracy + positionAccuracy) / 2;
 
