@@ -37,8 +37,8 @@ namespace Lodis.Utility
 
             if (useEmission)
             {
-                Texture emissionTexture = renderer.material.GetTexture("_EmissionTexture");
-                renderer.material.SetTexture("_EmissionTexture", null);
+                Texture emissionTexture = renderer.material.GetTexture("_Emission");
+                renderer.material.SetTexture("_Emission", null);
                 float defaultStrength = renderer.material.GetFloat("_EmissionStrength");
                 renderer.materials[0].DOFloat(emissionStrength, "_EmissionStrength", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
                     () => renderer.material.SetFloat("_EmissionStrength", defaultStrength);
@@ -49,7 +49,7 @@ namespace Lodis.Utility
                     {
                         renderer.material.SetColor("_EmissionColor", defaultColor);
 
-                        renderer.material.SetTexture("_EmissionTexture", emissionTexture);
+                        renderer.material.SetTexture("_Emission", emissionTexture);
                     };
                 return;
             }
@@ -65,8 +65,8 @@ namespace Lodis.Utility
 
             if (useEmission)
             {
-                Texture emissionTexture = colorObject.ObjectRenderer.material.GetTexture("_EmissionTexture");
-                colorObject.ObjectRenderer.material.SetTexture("_EmissionTexture", null);
+                Texture emissionTexture = colorObject.ObjectRenderer.material.GetTexture("_Emission");
+                colorObject.ObjectRenderer.material.SetTexture("_Emission", null);
 
                 float defaultStrength = colorObject.ObjectRenderer.material.GetFloat("_EmissionStrength");
                 colorObject.ObjectRenderer.materials[0].DOFloat(emissionStrength, "_EmissionStrength", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
@@ -78,7 +78,7 @@ namespace Lodis.Utility
                     {
                         colorObject.ObjectRenderer.material.SetColor("_EmissionColor", defaultColor);
 
-                        colorObject.ObjectRenderer.material.SetTexture("_EmissionTexture", emissionTexture);
+                        colorObject.ObjectRenderer.material.SetTexture("_Emission", emissionTexture);
                     };
                 return;
             }
@@ -94,8 +94,8 @@ namespace Lodis.Utility
 
             if (_useEmission)
             {
-                Texture emissionTexture = renderer.material.GetTexture("_EmissionTexture");
-                renderer.material.SetTexture("_EmissionTexture", null);
+                Texture emissionTexture = renderer.material.GetTexture("_Emission");
+                renderer.material.SetTexture("_Emission", null);
                 float defaultStrength = renderer.material.GetFloat("_EmissionStrength");
                 renderer.materials[0].DOFloat(EmissionStrength, "_EmissionStrength", TimeBetweenFlashes).SetLoops(_loopAmount).onKill +=
                     () => renderer.material.SetFloat("_EmissionStrength", defaultStrength);
@@ -106,7 +106,7 @@ namespace Lodis.Utility
                     {
                         renderer.material.SetColor("_EmissionColor", defaultColor);
 
-                        renderer.material.SetTexture("_EmissionTexture", emissionTexture);
+                        renderer.material.SetTexture("_Emission", emissionTexture);
                     };
 
                 return;

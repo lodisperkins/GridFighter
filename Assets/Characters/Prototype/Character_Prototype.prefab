@@ -5599,8 +5599,8 @@ MonoBehaviour:
   _useEmission: 1
   _emissionStrength: 0.3
   _loopAmount: -1
-  _invincibleColor: {r: 0.7311321, g: 1, b: 0.7541123, a: 1}
-  _intangibleColor: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 1}
+  _invincibleColor: {r: 1, g: 1, b: 1, a: 1}
+  _intangibleColor: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   _stunParticles: {fileID: 755719142905574260}
   _health: {fileID: 624667988152981373}
   _colorManager: {fileID: 1988483426190075038}
