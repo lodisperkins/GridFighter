@@ -5597,10 +5597,10 @@ MonoBehaviour:
   _timeBetweenFlashes: 1
   _color: {r: 0, g: 0, b: 0, a: 0}
   _useEmission: 1
-  _emissionStrength: 10
+  _emissionStrength: 0.3
   _loopAmount: -1
-  _invincibleColor: {r: 0.32286638, g: 0.5188679, b: 0.28635636, a: 1}
-  _intangibleColor: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 0}
+  _invincibleColor: {r: 0.7311321, g: 1, b: 0.7541123, a: 1}
+  _intangibleColor: {r: 0.9056604, g: 0.9056604, b: 0.9056604, a: 1}
   _stunParticles: {fileID: 755719142905574260}
   _health: {fileID: 624667988152981373}
   _colorManager: {fileID: 1988483426190075038}
