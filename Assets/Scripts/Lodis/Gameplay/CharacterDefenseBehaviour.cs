@@ -160,7 +160,11 @@ namespace Lodis.Gameplay
             _shieldCollider.gameObject.SetActive(false);
 
             _movement.CancelMovement();
-            _movement.MoveToPanel(_movement.Position + moveDirection * 2, false, GridAlignment.NONE, false, true, true);
+            if (!_movement.MoveToPanel(_movement.Position + moveDirection * 2, false, GridAlignment.NONE, false, true, true))
+            {
+                _isPhaseShifting = false;
+                return;
+            }
 
             _currentPhaseShiftRestTime = _defaultPhaseShiftRestTime;
             _health.SetIntagibilityByTimer(_phaseShiftDuration);
@@ -327,19 +331,7 @@ namespace Lodis.Gameplay
 
             PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
 
-            ////If the player broke their fall on the other side...
-            //if (panel?.Alignment != _movement.Alignment && other.gameObject.CompareTag("Panel"))
-            //    //...make them invincible until they're back on their side
-            //    _knockBack.SetInvincibilityByCondition(condition =>
-            //    {
-            //        BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, true);
-            //        return panel.Alignment == _movement.Alignment;
-            //    });
-            ////Otherwise set invincibility based on the object collided with
-            //else if (other.gameObject.CompareTag("Panel"))
-            //    _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
-            //else
-                _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
+            _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
 
             if (_disableFallBreakAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_disableFallBreakAction);
@@ -356,18 +348,6 @@ namespace Lodis.Gameplay
                 onFallBroken?.Invoke(false);
                 return;
             }
-
-            ////Prevents the player from buffering a parry while breaking a fall
-            //if (_parryTimer != null)
-            //    if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopAction(_parryTimer);
-
-            //_disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
-
-            //RoutineBehaviour.Instance.StopAction(_parryTimer);
-            //DeactivateParry();
-
-            //onFallBroken?.Invoke(true);
-            //_knockBack.CurrentAirState = AirState.BREAKINGFALL;
         }
 
         private void OnDrawGizmos()
@@ -417,12 +397,7 @@ namespace Lodis.Gameplay
 
             PanelBehaviour panel = collision.gameObject.GetComponent<PanelBehaviour>();
 
-            //if (panel?.Alignment != _movement.Alignment && collision.gameObject.CompareTag("Panel"))
-            //    _knockBack.SetInvincibilityByCondition(condition => !_movement.IsMoving && _movement.CurrentPanel.Alignment == _movement.Alignment);
-            //else if (collision.gameObject.CompareTag("Panel"))
-            //    _knockBack.SetInvincibilityByTimer(BraceInvincibilityTime);
-            //else
-                _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
+            _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
 
             if (_disableFallBreakAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_disableFallBreakAction);
@@ -438,20 +413,6 @@ namespace Lodis.Gameplay
                 onFallBroken?.Invoke(false);
                 return;
             }
-
-            //if (_parryTimer != null)
-            //    if (_parryTimer.GetEnabled()) RoutineBehaviour.Instance.StopAction(_parryTimer);
-
-            //_disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, GroundTechLength);
-            //_knockBack.Physics.FreezeInPlaceByTimer(GroundTechLength, false, true);
-
-
-            //RoutineBehaviour.Instance.StopAction(_parryTimer);
-            //DeactivateParry();
-
-            //onFallBroken?.Invoke(true);
-            //_knockBack.CurrentAirState = AirState.BREAKINGFALL;
-            //Debug.Log("Collided with " + other.name);
 
         }
 
