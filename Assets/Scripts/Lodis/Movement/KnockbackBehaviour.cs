@@ -31,7 +31,6 @@ namespace Lodis.Movement
         private FloatVariable _maxMagnitude;
 
         private GridMovementBehaviour _movementBehaviour;
-        private CharacterDefenseBehaviour _defenseBehaviour;
         private GridPhysicsBehaviour _gridPhysicsBehaviour;
         private LandingBehaviour _landingBehaviour;
 
@@ -99,8 +98,6 @@ namespace Lodis.Movement
 
         public GridMovementBehaviour MovementBehaviour => _movementBehaviour;
 
-        public CharacterDefenseBehaviour DefenseBehaviour => _defenseBehaviour;
-
         public float StartGravity => _startGravity;
 
         public FloatVariable GravityIncreaseRate => _gravityIncreaseRate;
@@ -126,13 +123,14 @@ namespace Lodis.Movement
             }
         }
 
+
+
         protected override void Awake()
         {
             base.Awake();
             _velocityDecayRate = Resources.Load<FloatVariable>("ScriptableObjects/VelocityDecayRate");
             _landingBehaviour = GetComponent<LandingBehaviour>();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
-            _defenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
             Physics = GetComponent<GridPhysicsBehaviour>();
             _startGravity = Physics.Gravity;
             AddOnTakeDamageAction(IncreaseKnockbackGravity);

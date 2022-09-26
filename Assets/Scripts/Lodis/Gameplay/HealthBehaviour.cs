@@ -59,6 +59,7 @@ namespace Lodis.Gameplay
         protected UnityAction _onTakeDamage;
         [FormerlySerializedAs("OnTakeDamage")] [SerializeField]
         protected GridGame.Event OnTakeDamageEvent;
+        private CharacterDefenseBehaviour _defenseBehaviour;
 
 
         public bool Stunned 
@@ -137,12 +138,15 @@ namespace Lodis.Gameplay
             }
         }
 
+        public CharacterDefenseBehaviour DefenseBehaviour { get => _defenseBehaviour; private set => _defenseBehaviour = value; }
+
         protected virtual void Awake()
         {
             if (_startingHealth < 0)
                 _health = _maxHealth.Value;
             else
                 _health = _startingHealth;
+            DefenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
         }
 
         protected virtual void Start()
@@ -289,7 +293,7 @@ namespace Lodis.Gameplay
         /// <param name="time">The amount of time to disable the components for</param>
         public void Stun(float time)
         {
-            if (Stunned || IsInvincible)
+            if (Stunned || IsInvincible || _defenseBehaviour.IsShielding || IsIntangible)
                 return;
 
             _stunRoutine = StartCoroutine(ActivateStun(time));

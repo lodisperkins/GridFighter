@@ -295,11 +295,11 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
-            if (damageScript != null)
+            if (damageScript != null && !damageScript.IsInvincible && !damageScript.DefenseBehaviour.IsShielding)
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
-                if (ColliderInfo.HitEffectLevel > 0 && !damageScript.IsInvincible)
+                if (ColliderInfo.HitEffectLevel > 0)
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
             }
             
@@ -375,11 +375,11 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
-            if (damageScript != null)
+            if (damageScript != null && !damageScript.IsInvincible && !damageScript.DefenseBehaviour.IsShielding)
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
-                if (ColliderInfo.HitEffectLevel > 0 && !damageScript.IsInvincible)
+                if (ColliderInfo.HitEffectLevel > 0)
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
             }
 
@@ -457,11 +457,11 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
-            if (damageScript != null)
+            if (damageScript != null && !damageScript.IsInvincible && !damageScript.DefenseBehaviour.IsShielding)
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
-                if (ColliderInfo.HitEffectLevel > 0 && !damageScript.IsInvincible)
+                if (ColliderInfo.HitEffectLevel > 0)
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
             }
 
