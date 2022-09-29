@@ -93,6 +93,11 @@ namespace Lodis.Gameplay
             _onHit -= collisionEvent;
         }
 
+        public void ClearCollisionEvent()
+        {
+            _onHit = null;
+        }
+
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return

@@ -42,6 +42,7 @@ namespace Lodis.Gameplay
         {
             //Redirect projectile on hit
             base.Activate(args);
+            _reboundCount = 0;
 
             ColliderBehaviour[] colliderBehaviours = Projectile.GetComponents<ColliderBehaviour>();
             if (colliderBehaviours.Length == 1)
@@ -51,7 +52,11 @@ namespace Lodis.Gameplay
 
             }
             else
+            {
                 _reboundCollider = colliderBehaviours[1];
+                _reboundCollider.ClearCollisionEvent();
+                _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
+            }
 
             _reboundCollider.Owner = owner;
         }
@@ -68,7 +73,7 @@ namespace Lodis.Gameplay
             if (_reboundCount >= abilityData.GetCustomStatValue("MaxRebounds"))
             {   
                 //...destroy it
-                ObjectPoolBehaviour.Instance.ReturnGameObject(ActiveProjectiles[0]);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
                 _reboundCount = 0;
                 return;
             }
@@ -79,12 +84,11 @@ namespace Lodis.Gameplay
 
                 if (stateMachine.StateMachine.CurrentState != "Idle" && stateMachine.StateMachine.CurrentState != "Moving")
                 {
-                    _reboundCount = 0;
                     return;
                 }
             }
 
-            Rigidbody projectile = ActiveProjectiles[0].GetComponent<Rigidbody>();
+            Rigidbody projectile = Projectile.GetComponent<Rigidbody>();
 
             //If it hit a valid object...
             if ((other.CompareTag("Player") || other.CompareTag("Entity")))
@@ -98,7 +102,7 @@ namespace Lodis.Gameplay
             else if(other.CompareTag("Structure"))
             {
                 //...destroy it
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_reboundCollider.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
                 _reboundCount = 0;
             }
         }
