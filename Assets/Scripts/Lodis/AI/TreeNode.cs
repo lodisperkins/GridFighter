@@ -18,7 +18,7 @@ namespace Lodis.AI
         public TreeNode Right;
         [JsonIgnore]
         public TreeNode Parent;
-        public static int RandomDecisionConstant = 2;
+        public static int RandomDecisionConstant = 1;
 
         public TreeNode(TreeNode left, TreeNode right)
         {

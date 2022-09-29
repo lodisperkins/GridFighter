@@ -5594,12 +5594,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77fe7df173b940b4fb146475bca37124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeBetweenFlashes: 1
+  _timeBetweenFlashes: 5
   _color: {r: 0, g: 0, b: 0, a: 0}
   _useEmission: 1
   _emissionStrength: 0.3
   _loopAmount: -1
-  _invincibleColor: {r: 1, g: 1, b: 1, a: 1}
+  _invincibleColor: {r: 0.3207547, g: 0.28595585, b: 0.28595585, a: 1}
   _intangibleColor: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   _stunParticles: {fileID: 755719142905574260}
   _health: {fileID: 624667988152981373}

@@ -171,7 +171,7 @@ public class AttackAction : GOAction
     {
         GameObject collisionObject = (GameObject)args[0];
 
-        if (!collisionObject.CompareTag("Player") || collisionObject == _dummy.gameObject)
+        if (!collisionObject.CompareTag("Player") || collisionObject == _dummy.Character.gameObject)
             return;
 
         Vector3 displacement = collisionObject.transform.position - _dummy.Character.transform.position;
