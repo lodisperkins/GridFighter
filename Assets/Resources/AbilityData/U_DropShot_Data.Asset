@@ -53,7 +53,6 @@ MonoBehaviour:
     HitAngle: -0.6
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    CanSpike: 0
     HitStunTime: 0.5
     Priority: 0
     OwnerAlignement: 0
@@ -61,7 +60,8 @@ MonoBehaviour:
     HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
     HitEffectLevel: 1
-    HitStopTimeModifier: 0
+    HitStopTimeModifier: 1.2
+    ShakesCamera: 0
   _customStats:
   - name: Speed
     value: 8

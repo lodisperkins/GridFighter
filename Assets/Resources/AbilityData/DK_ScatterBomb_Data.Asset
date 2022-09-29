@@ -53,7 +53,6 @@ MonoBehaviour:
     HitAngle: 1.3
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    CanSpike: 0
     HitStunTime: 0.2
     Priority: 0
     OwnerAlignement: 0
@@ -61,7 +60,8 @@ MonoBehaviour:
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 1
+    HitStopTimeModifier: 2
+    ShakesCamera: 1
   _customStats:
   - name: BombMoveDuration
     value: 0.2

@@ -58,10 +58,9 @@ namespace Lodis.Gameplay
 
             //Gets the total knockback of the attack so the camera only shakes if the attack is strong enough
             float totalKnockback = KnockbackBehaviour.GetTotalKnockback(lastColliderInfo.BaseKnockBack, lastColliderInfo.KnockBackScale, _health.Health);
-            bool shakeCamera = totalKnockback >= _knockbackToShakeCamera.Value || lastColliderInfo.BaseKnockBack >= _knockbackToShakeCamera.Value;
 
             //Call the same function with the new parameters found
-            StartHitStop(time, animationStopDelay, true, true, shakeCamera);
+            StartHitStop(time, animationStopDelay, true, true, lastColliderInfo.ShakesCamera);
         }
 
         /// <summary>

@@ -14,6 +14,8 @@ namespace Lodis.Gameplay
     public struct HitColliderData
     {
         public string Name;
+
+        [Header("Collision Settings")]
         [Tooltip("If true, the hit collider will despawn after the amount of active frames have been surpassed.")]
         public bool DespawnAfterTimeLimit;
         [Tooltip("How long the hitbox will be active for.")]
@@ -38,23 +40,25 @@ namespace Lodis.Gameplay
         public bool AdjustAngleBasedOnAlignment;
         [Tooltip("The type of damage this collider will be read as")]
         public DamageType TypeOfDamage;
-        public bool CanSpike;
         [Tooltip("The amount of time a character can't perform any actions after being hit")]
         public float HitStunTime;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public float Priority;
+        [HideInInspector]
         public GridAlignment OwnerAlignement;
         [HideInInspector]
         public AbilityType AbilityType;
+
+        [Header("Collision Effects")]
         [Tooltip("The spark effect that will spawn on hit.")]
         public GameObject HitSpark;
         [Tooltip("The size of the effect that will play on successful hit")]
         [Range(0,3)]
         public int HitEffectLevel;
-
         [Tooltip("How long the hit stop will be scaled on hit.")]
         public float HitStopTimeModifier;
-
+        [Tooltip("If true, the camera will shake when this collider hits.")]
+        public bool ShakesCamera;
         [Tooltip("Event called when this collider htis a valid object.")]
         public CollisionEvent OnHit;
 
