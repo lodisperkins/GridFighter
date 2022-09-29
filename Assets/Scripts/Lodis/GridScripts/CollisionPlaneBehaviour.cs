@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Lodis.Gameplay;
 using Lodis.Movement;
+using Lodis.Utility;
 using UnityEngine;
 
 namespace Lodis.GridScripts
@@ -23,6 +24,9 @@ namespace Lodis.GridScripts
         private int _fallScreenShakeFrequency;
         [SerializeField]
         private float _fallScreenShakeStrength;
+        [SerializeField]
+        private ParticleSystem _groundDustParticlesRef;
+        private GameObject _groundDustParticles;
 
         public float BounceDampening { get => _bounceDampening; set => _bounceDampening = value; }
 
@@ -41,7 +45,8 @@ namespace Lodis.GridScripts
             if (physics.LastVelocity.y >= 0 || physics.LastVelocity.magnitude < _shakeSpeed || knockback.CurrentAirState != AirState.TUMBLING)
                 return;
 
-            //Calculate and apply friction force
+            _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, other.transform.position + Vector3.back, Camera.main.transform.rotation);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_groundDustParticles, _groundDustParticlesRef.main.duration);
             CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
         }
 
