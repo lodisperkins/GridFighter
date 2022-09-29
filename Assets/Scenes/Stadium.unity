@@ -32775,6 +32775,7 @@ MonoBehaviour:
   _fallScreenShakeDuration: 0.06
   _fallScreenShakeFrequency: 2
   _fallScreenShakeStrength: 0.5
+  _groundDustParticlesRef: {fileID: 0}
 --- !u!65 &894151439
 BoxCollider:
   m_ObjectHideFlags: 0
