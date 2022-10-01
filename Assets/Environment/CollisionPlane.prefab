@@ -113,7 +113,7 @@ MonoBehaviour:
   _fallScreenShakeDuration: 0.06
   _fallScreenShakeFrequency: 2
   _fallScreenShakeStrength: 0.5
-  _groundDustParticlesRef: {fileID: 1876183697936370498, guid: 174c5dc53fd3d0447bfa97c91f4c7794,
+  _groundDustParticlesRef: {fileID: 1876183697936370498, guid: 74d4aa76ed4837f47b6ad5896856780c,
     type: 3}
 --- !u!1001 &7307572072502270815
 PrefabInstance:

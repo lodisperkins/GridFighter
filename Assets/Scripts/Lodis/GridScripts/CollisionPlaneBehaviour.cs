@@ -40,14 +40,19 @@ namespace Lodis.GridScripts
             if (!physics || !knockback)
                 return;
 
+
             //Don't add a force if the object is traveling at a low speed
             float dotProduct = Vector3.Dot(physics.LastVelocity, Vector3.up);
-            if (physics.LastVelocity.y >= 0 || physics.LastVelocity.magnitude < _shakeSpeed || knockback.CurrentAirState != AirState.TUMBLING)
+            if (physics.LastVelocity.y >= 0 || knockback.CurrentAirState != AirState.TUMBLING)
                 return;
 
-            _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, other.transform.position + Vector3.back, Camera.main.transform.rotation);
+            Vector3 particleSpawnPosition = new Vector3(other.transform.position.x, 0, other.transform.position.z);
+
+            _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, particleSpawnPosition, Camera.main.transform.rotation);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_groundDustParticles, _groundDustParticlesRef.main.duration);
-            CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
+
+            if (physics.LastVelocity.magnitude >= _shakeSpeed)
+                CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
         }
 
         private void OnCollisionStay(Collision other)
