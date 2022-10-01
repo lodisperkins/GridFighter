@@ -98,6 +98,7 @@ namespace Lodis.Gameplay
         private UnityAction _onUseAbility;
         private TimedAction _rechargeAction;
         private TimedAction _deckShuffleAction;
+        private TimedAction _burstAction;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -170,12 +171,22 @@ namespace Lodis.Gameplay
             _specialDeck.InitAbilities(gameObject);
             _discardDeck = Deck.CreateInstance<Deck>();
             ResetSpecialDeck();
-            RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
+            _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
 
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
 
             _opponentMoveset = target.GetComponent<MovesetBehaviour>();
+        }
+
+        public void ResetAll()
+        {
+            LastAbilityInUse?.StopAbility();
+            ManualShuffle(true);
+            TryUseEnergy(Energy);
+            _canBurst = false;
+            RoutineBehaviour.Instance.StopAction(_burstAction);
+            _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
         }
 
         /// <summary>

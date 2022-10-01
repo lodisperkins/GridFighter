@@ -162,14 +162,10 @@ namespace Lodis.Gameplay
             movement.CanMoveDiagonally = false;
 
             MovesetBehaviour moveset = _p1Input.Character.GetComponent<MovesetBehaviour>();
-            moveset.LastAbilityInUse?.StopAbility();
-            moveset.ManualShuffle(true);
-            moveset.TryUseEnergy(moveset.Energy);
-            
+            moveset.ResetAll();
+
             moveset = _p2Input.Character.GetComponent<MovesetBehaviour>();
-            moveset.LastAbilityInUse?.StopAbility();
-            moveset.ManualShuffle(true);
-            moveset.TryUseEnergy(moveset.Energy);
+            moveset.ResetAll();
 
             //Enable both players in case either are inactive
             _p1Input.Character.SetActive(true);
