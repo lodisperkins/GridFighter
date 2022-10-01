@@ -54,5 +54,15 @@ namespace Lodis.Gameplay
         {
             base.End();
         }
+
+        public override void StopAbility()
+        {
+            base.StopAbility();
+            if (!_ownerKnockBackScript.Physics.IsGrounded)
+                _ownerKnockBackScript.CurrentAirState = AirState.TUMBLING;
+
+            _ownerKnockBackScript.DisableInvincibility();
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
+        }
     }
 }

@@ -523,8 +523,8 @@ MonoBehaviour:
     type: 2}
   _energyChargeEnabled: 1
   _canBurst: 0
-  _burstChargeTime: 20
-  _shuffleWaitTime: 2.01
+  _burstChargeTime: {fileID: 11400000, guid: 5360a10f9480d1442a1891ca5be134d5, type: 2}
+  _shuffleWaitTime: {fileID: 11400000, guid: b9487f9e39fb93644ba533ef433a270e, type: 2}
 --- !u!75 &6978705344430972743
 ConstantForce:
   m_ObjectHideFlags: 0

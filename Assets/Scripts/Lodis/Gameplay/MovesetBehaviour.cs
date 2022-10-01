@@ -84,10 +84,10 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _canBurst;
         [SerializeField]
-        private float _burstChargeTime;
+        private FloatVariable _burstChargeTime;
         [SerializeField]
         [Tooltip("How long the player will wait before beginning a manual shuffle.")]
-        private float _shuffleWaitTime;
+        private FloatVariable _shuffleWaitTime;
         private UnityAction OnUpdateHand;
         private bool _loadingShuffle;
 
@@ -144,7 +144,7 @@ namespace Lodis.Gameplay
 
         public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
 
-        public float BurstChargeTime { get => _burstChargeTime; private set => _burstChargeTime = value; }
+        public float BurstChargeTime { get => _burstChargeTime.Value; private set => _burstChargeTime.Value = value; }
         public bool CanBurst { get => _canBurst; private set => _canBurst = value; }
         public UnityAction OnBurst { get; set; }
         public bool LoadingShuffle { get => _loadingShuffle; }
@@ -171,7 +171,7 @@ namespace Lodis.Gameplay
             _specialDeck.InitAbilities(gameObject);
             _discardDeck = Deck.CreateInstance<Deck>();
             ResetSpecialDeck();
-            _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
+            _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime.Value);
 
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
@@ -186,7 +186,7 @@ namespace Lodis.Gameplay
             TryUseEnergy(Energy);
             _canBurst = false;
             RoutineBehaviour.Instance.StopAction(_burstAction);
-            _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
+            _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime.Value);
         }
 
         /// <summary>
@@ -328,7 +328,7 @@ namespace Lodis.Gameplay
             {
                 OnBurst?.Invoke();
                 _canBurst = false;
-                RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime);
+                RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime.Value);
             }
 
             //Return new ability
@@ -503,7 +503,7 @@ namespace Lodis.Gameplay
                 _discardDeck.AddAbilities(_specialDeck);
                 _specialDeck.ClearDeck();
                 _loadingShuffle = false;
-            }, TimedActionCountType.SCALEDTIME, _shuffleWaitTime);
+            }, TimedActionCountType.SCALEDTIME, _shuffleWaitTime.Value);
             _movementBehaviour.DisableMovement(condition => !_loadingShuffle, true, true);
         }
 
