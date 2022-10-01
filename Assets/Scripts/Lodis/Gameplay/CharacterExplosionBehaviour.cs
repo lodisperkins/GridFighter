@@ -15,9 +15,19 @@ namespace Lodis.Gameplay
         private CharacterFeedbackBehaviour _characterFeedback;
         [SerializeField] private float _maxEmission;
         private float[] _emissionStrengthValues = { 0, 0 };
+        private TimedAction _chargeAction;
+        private IntVariable _lastLoserID;
 
         public GameObject Explosion { get => _explosion; set => _explosion = value; }
         public float ExplosionChargeTime { get => _explosionChargeTime; set => _explosionChargeTime = value; }
+        public TimedAction ChargeAction { get => _chargeAction; private set => _chargeAction = value; }
+
+        public void Start()
+        {
+            GameManagerBehaviour.Instance.AddOnMatchRestartAction(
+                 () => RoutineBehaviour.Instance.StopAction(_chargeAction)
+                );
+        }
 
         public void ChargeExplosion(IntVariable playerID)
         {
@@ -39,7 +49,7 @@ namespace Lodis.Gameplay
             _characterFeedback.FlashAllRenderers(BlackBoardBehaviour.Instance.GetPlayerColorByID(playerID));
             _characterFeedback.TimeBetweenFlashes = _explosionChargeTime;
 
-            RoutineBehaviour.Instance.StartNewTimedAction( args => 
+            ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args => 
             {
                 _characterFeedback.EmissionStrength = strength;
                _characterFeedback.TimeBetweenFlashes = oldTime;
@@ -48,6 +58,12 @@ namespace Lodis.Gameplay
                 CameraBehaviour.ShakeBehaviour.ShakeRotation();
 
             }, TimedActionCountType.SCALEDTIME, ExplosionChargeTime);
+
+            ChargeAction.OnCancel += () =>
+            {
+                _characterFeedback.EmissionStrength = strength;
+                _characterFeedback.TimeBetweenFlashes = oldTime;
+            };
         }
 
         public void ResetEmission(IntVariable playerID)

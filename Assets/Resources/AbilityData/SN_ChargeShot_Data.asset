@@ -60,7 +60,7 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 3
-    HitStopTimeModifier: 3
+    HitStopTimeModifier: 2
     ShakesCamera: 1
   _customStats:
   - name: Speed

@@ -95,6 +95,7 @@ namespace Lodis.Utility
                 return false;
 
             action.Disable();
+            action.OnCancel?.Invoke();
             return _delayedActions.Remove(action);
         }
 
