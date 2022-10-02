@@ -81,6 +81,9 @@ namespace Lodis.ScriptableObjects
         public GameObject visualPrefab;
         [Tooltip("The icon thatv will display when this ability is on screen")]
         public Sprite DisplayIcon;
+        public AudioClip ActivateSound;
+        public AudioClip ActiveSound;
+        public AudioClip DeactivateSound;
         [Tooltip("Information for all colliders this ability will use")]
         [SerializeField]
         protected HitColliderData[] ColliderData;
