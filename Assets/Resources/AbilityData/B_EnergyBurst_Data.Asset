@@ -29,8 +29,8 @@ MonoBehaviour:
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
   CanCancelOnOpponentHit: 1
-  cancelOnHit: 0
-  cancelOnFlinch: 0
+  cancelOnHit: 1
+  cancelOnFlinch: 1
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
@@ -53,7 +53,6 @@ MonoBehaviour:
     HitAngle: 1.5
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    CanSpike: 0
     HitStunTime: 0.5
     Priority: 4
     OwnerAlignement: 0
@@ -62,6 +61,7 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 2
     HitStopTimeModifier: 1
+    ShakesCamera: 0
   _customStats: []
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: a8e48c70fc9e5a4409acfc0781e94b19, type: 3}

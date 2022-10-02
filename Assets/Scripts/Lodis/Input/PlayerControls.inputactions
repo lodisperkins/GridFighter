@@ -878,7 +878,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Gamepad",
+                    "name": "D-Pad",
                     "id": "c59a3439-92b4-40d9-afbe-603e6573a1a5",
                     "path": "ButtonWithOneModifier",
                     "interactions": "",
@@ -902,6 +902,39 @@
                 {
                     "name": "button",
                     "id": "0336f43f-14ac-48be-83b3-fd90a225a9cd",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftUp",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Analog Stick",
+                    "id": "07c96d09-ef22-466d-b450-b19c3f05ead6",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftUp",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "4c8d994c-c6df-45bf-b955-d47da0eedda7",
+                    "path": "<Gamepad>/leftStick/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftUp",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "b754377c-0e97-4a3e-9b22-ed08204f5cc1",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
@@ -944,7 +977,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Gamepad",
+                    "name": "D-Pad",
                     "id": "3fc2a938-d7dd-4d7e-94db-af6cd36e6520",
                     "path": "ButtonWithOneModifier",
                     "interactions": "",
@@ -968,6 +1001,39 @@
                 {
                     "name": "button",
                     "id": "3bf65e74-ec05-4d59-bd98-cefd75441dec",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftDown",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Analog Stick",
+                    "id": "28f79f38-49ba-4b97-ae38-5e3581155d5d",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftDown",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "5ef0a35a-5e23-4554-a7d8-b08a874222a0",
+                    "path": "<Gamepad>/leftStick/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftDown",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "599bc703-2e38-482f-8f56-83f7cacbbfb5",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
@@ -1010,7 +1076,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Gamepad",
+                    "name": "D-Pad",
                     "id": "de7afc28-241b-4ea1-b6b9-80b3fba71e8f",
                     "path": "ButtonWithOneModifier",
                     "interactions": "",
@@ -1034,6 +1100,39 @@
                 {
                     "name": "button",
                     "id": "8a8645eb-ae6f-4121-8bbb-1ec9fa55a2dd",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftRight",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Analog Stick",
+                    "id": "92ae3ec6-048c-4448-8707-7965646145e0",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftRight",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "ac75a237-658b-4b81-b2dc-cb9d4f2ba886",
+                    "path": "<Gamepad>/leftStick/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftRight",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "4b663061-acf1-4cf2-a591-d201bb594102",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
@@ -1076,7 +1175,7 @@
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Gamepad",
+                    "name": "D-Pad",
                     "id": "9e3e74e8-ea17-44cd-ad46-80078bf92a84",
                     "path": "ButtonWithOneModifier",
                     "interactions": "",
@@ -1100,6 +1199,39 @@
                 {
                     "name": "button",
                     "id": "22f96da0-7048-439a-8d53-e039b59aaadf",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Analog Stick",
+                    "id": "be91b913-e928-4f2f-bfba-d0da76d56aa2",
+                    "path": "ButtonWithOneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftLeft",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "567cf66d-8dcd-4dfd-b12f-398f03456183",
+                    "path": "<Gamepad>/leftStick/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PhaseShiftLeft",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "button",
+                    "id": "f42a4eae-a1d4-41a2-99bb-951d7e54e253",
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",

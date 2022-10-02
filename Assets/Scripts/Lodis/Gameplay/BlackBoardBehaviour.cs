@@ -65,6 +65,7 @@ namespace Lodis.Gameplay
         {
             DestroyAllAbilityColliders();
             DestroyAllNonPlayerEntities();
+            Grid.CancelRowExchange();
         }
 
         public void DestroyAllNonPlayerEntities()
