@@ -426,6 +426,7 @@ namespace Lodis.Movement
 
 
             _onTakeDamage?.Invoke();
+            OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
@@ -524,6 +525,7 @@ namespace Lodis.Movement
             
             //Call damage events to let others know this object was hit
             _onTakeDamage?.Invoke();
+            OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
@@ -601,6 +603,7 @@ namespace Lodis.Movement
             
             //Call damage events to let others know this object was hit
             _onTakeDamage?.Invoke();
+            OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 

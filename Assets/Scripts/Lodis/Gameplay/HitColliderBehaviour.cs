@@ -7,6 +7,7 @@ using UnityEngine.Events;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
+using Lodis.Sound;
 
 namespace Lodis.Gameplay
 {
@@ -61,7 +62,9 @@ namespace Lodis.Gameplay
         public bool ShakesCamera;
         [Tooltip("Event called when this collider htis a valid object.")]
         public CollisionEvent OnHit;
-
+        public AudioClip SpawnSound;
+        public AudioClip HitSound;
+        public AudioClip DespawnSound;
         public void AddOnHitEvent(CollisionEvent collisionEvent)
         {
             OnHit += collisionEvent;
@@ -126,6 +129,7 @@ namespace Lodis.Gameplay
         {
             base.Awake();
             gameObject.layer = LayerMask.NameToLayer("Ability");
+            ReturnToPoolListener.AddAction(() => SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.DespawnSound));
         }
 
         protected override void Start()
@@ -137,6 +141,7 @@ namespace Lodis.Gameplay
             LayersToIgnore = ColliderInfo.LayersToIgnore;
             LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
             StartTime = Time.time;
+            SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
         }
 
         private void OnEnable()
@@ -144,6 +149,7 @@ namespace Lodis.Gameplay
             AddToActiveList();
             ResetActiveTime();
             Collisions.Clear();
+            SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
         }
 
         private void AddToActiveList()
@@ -305,6 +311,8 @@ namespace Lodis.Gameplay
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitEffectLevel > 0)
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
+
+                SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
             }
             
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
