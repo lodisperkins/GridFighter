@@ -113,15 +113,15 @@ namespace Lodis.AI
             {
                 _attackDecisions = new AttackDecisionTree();
                 _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
-                _attackDecisions.Load(name);
+                _attackDecisions.Load(Character.name);
                 _defenseDecisions = new DefenseDecisionTree();
                 _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
-                _defenseDecisions.Load(name);
+                _defenseDecisions.Load(Character.name);
 
                 if (Application.isEditor) return;
 
-                GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _attackDecisions?.Save(name));
-                GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _defenseDecisions?.Save(name));
+                GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _attackDecisions?.Save(Character.name));
+                GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _defenseDecisions?.Save(Character.name));
             }
         }
 
@@ -144,8 +144,8 @@ namespace Lodis.AI
         {
             if (!Application.isEditor) return;
 
-            _attackDecisions?.Save(name);
-            _defenseDecisions?.Save(name);
+            _attackDecisions?.Save(Character.name);
+            _defenseDecisions?.Save(Character.name);
         }
 
         public List<HitColliderBehaviour> GetAttacksInRange()

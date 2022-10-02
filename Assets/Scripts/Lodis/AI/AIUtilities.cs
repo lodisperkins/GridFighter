@@ -143,7 +143,7 @@ namespace Lodis.AI
         /// <param name="allowOccupiedPanels">Whether or not the path should avoid panels that are occupied</param>
         /// <param name="alignment">The grid alignment this path can go through</param>
         /// <returns>A list containing the constructed path</returns>
-        public List<PanelBehaviour> GetPath(PanelBehaviour startPanel, PanelBehaviour endPanel, bool allowOccupiedPanels = false, GridAlignment alignment = GridAlignment.ANY)
+        public List<PanelBehaviour> GetPath(PanelBehaviour startPanel, PanelBehaviour endPanel, bool allowOccupiedPanels = false, GridAlignment alignment = GridAlignment.ANY, bool allowDiagonalMovement = false)
         {
             PanelNode panelNode;
             List<PanelNode> openList = new List<PanelNode>();
@@ -152,7 +152,7 @@ namespace Lodis.AI
             openList.Add(start);
             List<PanelNode> closedList = new List<PanelNode>();
             start.fScore =
-                CustomHeuristic(startPanel, endPanel);
+                CalculateManhattanDistance(startPanel, endPanel);
 
             while (openList.Count > 0)
             {
@@ -169,6 +169,7 @@ namespace Lodis.AI
 
                 foreach (PanelBehaviour neighbor in BlackBoardBehaviour.Instance.Grid.GetPanelNeighbors(panelNode.panel.Position))
                 {
+                    float distance = Vector2.Distance(neighbor.Position, panelNode.panel.Position);
                     if (ContainsPanel(closedList, neighbor) || ContainsPanel(openList, neighbor))
                     {
                         continue;
@@ -177,11 +178,15 @@ namespace Lodis.AI
                     {
                         continue;
                     }
+                    else if (distance > 1 && !allowDiagonalMovement)
+                    {
+                        continue;
+                    }
                     else
                     {
                         PanelNode newNode = new PanelNode { panel = neighbor };
                         newNode.gScore += panelNode.gScore;
-                        newNode.fScore = newNode.gScore + CustomHeuristic(neighbor, endPanel);
+                        newNode.fScore = newNode.gScore + CalculateManhattanDistance(neighbor, endPanel);
                         newNode.parent = panelNode;
                         openList.Add(newNode);
                     }

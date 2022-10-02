@@ -68,8 +68,9 @@ namespace Lodis.AI
             if (_currentPathIndex >= _currentPath.Count || _currentPath.Count < 0)
                 return;
 
-            _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
-            _currentPath.RemoveAt(0);
+            if (!_movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false))
+                throw new System.Exception(_dummyBehaviour.Character.name + " cannot move to panel at location " + _moveTarget.Position +
+                    ". Panel at location " + _currentPath[_currentPathIndex].Position + " cannot be reached.");
         }
 
         // Update is called once per frame

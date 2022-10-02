@@ -178,7 +178,7 @@ MonoBehaviour:
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
   _senseCollider: {fileID: 2917431262450575549}
-  _maxDecisionCount: 2000
+  _maxDecisionCount: 3000
   _timeNeededToBurst: 0
   LastDefenseDecision:
     VisitCount: 0

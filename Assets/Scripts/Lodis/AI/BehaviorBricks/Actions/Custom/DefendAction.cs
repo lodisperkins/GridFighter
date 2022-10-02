@@ -49,7 +49,7 @@ public class DefendAction : GOAction
             _dummy.LastDefenseDecision.Wins++;
 
             if (_dummy.LastDefenseDecision.DefenseDecision == DefenseDecisionType.COUNTER)
-                _dummy.LastDefenseDecision.CounterAbilityName = _dummy.Moveset.LastAbilityInUse.abilityData.abilityName;
+                _dummy.LastDefenseDecision.CounterAbilityName = _dummy.Moveset.LastAbilityInUse?.abilityData.abilityName;
 
             //If the decision was random and didn't recieve negative points...
             if (_randomDecisionChosen && _dummy.LastDefenseDecision.Wins > 0)
