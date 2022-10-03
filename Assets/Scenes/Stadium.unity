@@ -31009,13 +31009,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.35
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 167
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -42869,6 +42869,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arena
       objectReference: {fileID: 0}
+    - target: {fileID: 1133089646621576927, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.697
+      objectReference: {fileID: 0}
     - target: {fileID: 2637136086262534089, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_Layer
@@ -42879,10 +42884,25 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3255579054881826119, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3584456886307633492, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: stopAction
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4270941160990174846, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4659225906813241869, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.7
       objectReference: {fileID: 0}
     - target: {fileID: 5435718317274614100, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
@@ -42899,10 +42919,20 @@ PrefabInstance:
       propertyPath: m_CullingMask.m_Bits
       value: 1280
       objectReference: {fileID: 0}
+    - target: {fileID: 6252026506309108020, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.6
+      objectReference: {fileID: 0}
     - target: {fileID: 7020936670136691982, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_Layer
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 8382324922256599724, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.083
       objectReference: {fileID: 0}
     - target: {fileID: 8744172616445229445, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}

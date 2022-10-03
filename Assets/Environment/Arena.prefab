@@ -933,6 +933,7 @@ MonoBehaviour:
   _autoDetectAlignment: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 7908636675779063005}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
@@ -1502,6 +1503,7 @@ MonoBehaviour:
   _autoDetectAlignment: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 3196423559867798137}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
@@ -2299,6 +2301,7 @@ MonoBehaviour:
   _autoDetectAlignment: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 8014168982613723758}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
@@ -2478,6 +2481,7 @@ MonoBehaviour:
   _autoDetectAlignment: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 3222326086478295980}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
@@ -4970,6 +4974,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 300781129930833870}
     m_Modifications:
+    - target: {fileID: 3991252713363413223, guid: 5fe8caaa64d924f4c90db6376861d09f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7875047362911804311, guid: 5fe8caaa64d924f4c90db6376861d09f,
         type: 3}
       propertyPath: m_Name
@@ -4998,7 +5007,7 @@ PrefabInstance:
     - target: {fileID: 8679185744603700277, guid: 5fe8caaa64d924f4c90db6376861d09f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.124
+      value: 2.037
       objectReference: {fileID: 0}
     - target: {fileID: 8679185744603700277, guid: 5fe8caaa64d924f4c90db6376861d09f,
         type: 3}
@@ -5185,6 +5194,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 300781129930833870}
     m_Modifications:
+    - target: {fileID: 3991252713363413223, guid: 5fe8caaa64d924f4c90db6376861d09f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.5
+      objectReference: {fileID: 0}
     - target: {fileID: 7875047362911804311, guid: 5fe8caaa64d924f4c90db6376861d09f,
         type: 3}
       propertyPath: m_Name
@@ -5213,7 +5227,7 @@ PrefabInstance:
     - target: {fileID: 8679185744603700277, guid: 5fe8caaa64d924f4c90db6376861d09f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.73
+      value: -0.647
       objectReference: {fileID: 0}
     - target: {fileID: 8679185744603700277, guid: 5fe8caaa64d924f4c90db6376861d09f,
         type: 3}
