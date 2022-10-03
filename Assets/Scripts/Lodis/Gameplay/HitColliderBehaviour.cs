@@ -310,11 +310,14 @@ namespace Lodis.Gameplay
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitEffectLevel > 0)
+                {
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
+                    SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
+                }
 
-                SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
             }
-            
+            SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
+
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             ColliderInfo.HitAngle = defaultAngle;
@@ -392,7 +395,10 @@ namespace Lodis.Gameplay
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitEffectLevel > 0)
+                {
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
+                    SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
+                }
             }
 
             ColliderInfo.HitAngle = defaultAngle;
@@ -474,7 +480,10 @@ namespace Lodis.Gameplay
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
                 if (ColliderInfo.HitEffectLevel > 0)
+                {
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
+                    SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
+                }
             }
 
 

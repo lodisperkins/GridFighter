@@ -390,8 +390,6 @@ MonoBehaviour:
   _stunned: 0
   _isIntangible: 0
   _meshRenderer: {fileID: 0}
-  _invincibilityColor: {r: 0, g: 0, b: 0, a: 0}
-  _intangibilityColor: {r: 0, g: 0, b: 0, a: 0}
   OnTakeDamageEvent: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   Owner: {fileID: 0}
   _bounceDampen: 1
@@ -435,24 +433,29 @@ MonoBehaviour:
   _autoDetectAlignment: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 1711813854987330277}
+    DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 1711813854374387425}
+    DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 3340707822704788680}
+    DefaultColors: []
     ShaderProperties:
     - _ColorInside
     - _ColorEdges
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 1880277003271008450}
+    DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
   - ObjectRenderer: {fileID: 2844560268254500083}
+    DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
@@ -514,6 +517,8 @@ MonoBehaviour:
   _topSupportInactive: {fileID: 676416993}
   _supportVelocity: {x: 0, y: 5, z: -5}
   _innerShieldRenderer: {fileID: 2844560268254500083}
+  _damageSound: {fileID: 8300000, guid: 144018904077bdc4ca123a40935af801, type: 3}
+  _destroyedSound: {fileID: 8300000, guid: fe5eee8f1a46f24408fd0243d821a712, type: 3}
 --- !u!114 &929767235
 MonoBehaviour:
   m_ObjectHideFlags: 0

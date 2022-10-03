@@ -9,6 +9,7 @@ using System.IO;
 using Lodis.ScriptableObjects;
 using Lodis.Movement;
 using Lodis.Utility;
+using Lodis.Sound;
 
 namespace Lodis.Gameplay
 {
@@ -122,6 +123,7 @@ namespace Lodis.Gameplay
             _inUse = true;
             onBegin?.Invoke();
             CurrentAbilityPhase = AbilityPhase.STARTUP;
+            SoundManagerBehaviour.Instance.PlaySound(abilityData.ActivateSound);
             Start(args);
             _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => ActivePhase(args), TimedActionCountType.SCALEDTIME, abilityData.startUpTime);
         }
@@ -134,6 +136,7 @@ namespace Lodis.Gameplay
         {
             onActivate?.Invoke();
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
+            SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
             Activate(args);
             _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => RecoverPhase(args), TimedActionCountType.SCALEDTIME, abilityData.timeActive);
         }
@@ -146,6 +149,7 @@ namespace Lodis.Gameplay
         protected void RecoverPhase(params object[] args)
         {
             CurrentAbilityPhase = AbilityPhase.RECOVER;
+            SoundManagerBehaviour.Instance.PlaySound(abilityData.DeactivateSound);
             
             if (MaxActivationAmountReached)
                 _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);

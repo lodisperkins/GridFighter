@@ -37,6 +37,9 @@ MonoBehaviour:
   visualPrefab: {fileID: 151366202753034390, guid: c6f18bf7381957749a039c8b5cba9319,
     type: 3}
   DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 0}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: StrongShot
     DespawnAfterTimeLimit: 1
@@ -62,6 +65,9 @@ MonoBehaviour:
     HitEffectLevel: 2
     HitStopTimeModifier: 1.5
     ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 074a589fcabe2794fa4daa4a303d5518, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
   - Name: WeakShot
     DespawnAfterTimeLimit: 1
     TimeActive: 5
@@ -85,6 +91,9 @@ MonoBehaviour:
     HitEffectLevel: 0
     HitStopTimeModifier: 0
     ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: dc82c298b95f37448912cd57810ebb90, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
   _customStats:
   - name: StrongShotDistance
     value: 10

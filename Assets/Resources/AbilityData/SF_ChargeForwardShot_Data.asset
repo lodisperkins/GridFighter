@@ -37,6 +37,9 @@ MonoBehaviour:
   visualPrefab: {fileID: 679093164750957707, guid: be7b7a1c4b29e8d40b94e432e6cef299,
     type: 3}
   DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 0}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
@@ -62,6 +65,9 @@ MonoBehaviour:
     HitEffectLevel: 2
     HitStopTimeModifier: 1.5
     ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 5e7471077dd4eba46b4f16152e376577, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
     value: 2

@@ -13702,7 +13702,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 159
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -31009,7 +31009,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.8
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -57180,6 +57180,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _soundEffectSource: {fileID: 855454086}
   _musicSource: {fileID: 402693612}
+  _hitSounds:
+  - {fileID: 8300000, guid: bff4f9b7bbfd677488908428d1a79775, type: 3}
+  - {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
+  - {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
 --- !u!4 &1545201725
 Transform:
   m_ObjectHideFlags: 0
@@ -81224,8 +81228,20 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 657297842}
     - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
+      propertyPath: _chargeSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 647c8de60c5fc4a41b42e530941c2dc4, type: 3}
+    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
       propertyPath: _maxEmission
       value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
+      propertyPath: _explosionSound
+      value: 
+      objectReference: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
+      propertyPath: _explosionChargeTime
+      value: 1.1
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652295, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
@@ -81240,7 +81256,7 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _mode
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
@@ -81255,11 +81271,16 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _infiniteEnergy
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _targetFrameRate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _invincibleBarriers
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,

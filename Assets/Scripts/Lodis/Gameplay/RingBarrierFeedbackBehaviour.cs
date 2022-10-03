@@ -2,7 +2,7 @@
 using Lodis.Utility;
 using UnityEngine;
 using static Lodis.Utility.RoutineBehaviour;
-
+using Lodis.Sound;
 namespace Lodis.Gameplay
 {
     public class RingBarrierFeedbackBehaviour : MonoBehaviour
@@ -20,6 +20,8 @@ namespace Lodis.Gameplay
         [SerializeField] private Rigidbody _topSupportInactive;
         [SerializeField] private Vector3 _supportVelocity;
         [SerializeField] private MeshRenderer _innerShieldRenderer;
+        [SerializeField] private AudioClip _damageSound;
+        [SerializeField] private AudioClip _destroyedSound;
         private Material _emissionMat;
         private Color _emissionColor;
 
@@ -27,8 +29,18 @@ namespace Lodis.Gameplay
         void Awake()
         {
             _health = GetComponent<RingBarrierBehaviour>();
-            _health.AddOnTakeDamageAction(UpdateCracks);
-            _health.AddOnDeathAction(DeactivateBarrier);
+            _health.AddOnTakeDamageAction(() =>
+            {
+                UpdateCracks();
+                SoundManagerBehaviour.Instance.PlaySound(_damageSound);
+            }
+            );
+            _health.AddOnDeathAction(() =>
+            {
+                DeactivateBarrier();
+                SoundManagerBehaviour.Instance.PlaySound(_destroyedSound);
+            }
+            );
         }
 
         void Start()

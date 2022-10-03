@@ -65,7 +65,7 @@ MonoBehaviour:
     HitEffectLevel: 1
     HitStopTimeModifier: 1.3
     ShakesCamera: 0
-    SpawnSound: {fileID: 8300000, guid: 16ad883e515dd7e438d785b0973bbc37, type: 3}
+    SpawnSound: {fileID: 8300000, guid: dc82c298b95f37448912cd57810ebb90, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:

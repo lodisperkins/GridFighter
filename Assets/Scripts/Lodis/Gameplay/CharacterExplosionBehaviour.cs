@@ -5,6 +5,7 @@ using DG.Tweening;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
+using Lodis.Sound;
 
 namespace Lodis.Gameplay
 {
@@ -14,6 +15,8 @@ namespace Lodis.Gameplay
         [SerializeField] private float _explosionChargeTime;
         private CharacterFeedbackBehaviour _characterFeedback;
         [SerializeField] private float _maxEmission;
+        [SerializeField] private AudioClip _chargeSound;
+        [SerializeField] private AudioClip _explosionSound;
         private float[] _emissionStrengthValues = { 0, 0 };
         private TimedAction _chargeAction;
         private IntVariable _lastLoserID;
@@ -48,6 +51,9 @@ namespace Lodis.Gameplay
             _characterFeedback.EmissionStrength = _maxEmission;
             _characterFeedback.FlashAllRenderers(BlackBoardBehaviour.Instance.GetPlayerColorByID(playerID));
             _characterFeedback.TimeBetweenFlashes = _explosionChargeTime;
+            SoundManagerBehaviour.Instance.PlaySound(_chargeSound);
+            SoundManagerBehaviour.Instance.TogglePauseMusic();
+            GameManagerBehaviour.Instance.ChangeTimeScale(0, ExplosionChargeTime);
 
             ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args => 
             {
@@ -56,8 +62,10 @@ namespace Lodis.Gameplay
                 playerCharacter.SetActive(false);
                 Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
                 CameraBehaviour.ShakeBehaviour.ShakeRotation();
+                SoundManagerBehaviour.Instance.PlaySound(_explosionSound);
+                SoundManagerBehaviour.Instance.TogglePauseMusic();
 
-            }, TimedActionCountType.SCALEDTIME, ExplosionChargeTime);
+            }, TimedActionCountType.UNSCALEDTIME, ExplosionChargeTime);
 
             ChargeAction.OnCancel += () =>
             {

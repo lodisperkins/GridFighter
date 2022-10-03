@@ -23,7 +23,7 @@ MonoBehaviour:
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 1
-  CanCancelOnMove: 0
+  CanCancelOnMove: 1
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
@@ -65,7 +65,7 @@ MonoBehaviour:
     HitEffectLevel: 1
     HitStopTimeModifier: 1.2
     ShakesCamera: 0
-    SpawnSound: {fileID: 8300000, guid: e378d0dd5c3b95049a87d4238c1e488f, type: 3}
+    SpawnSound: {fileID: 8300000, guid: dc82c298b95f37448912cd57810ebb90, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:
