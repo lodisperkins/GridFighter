@@ -10,6 +10,7 @@ namespace Lodis.Sound
         [SerializeField] private AudioSource _soundEffectSource;
         [SerializeField] private AudioSource _musicSource;
         [SerializeField] private AudioClip[] _hitSounds;
+        private AudioClip _lastClip;
 
         /// <summary>
         /// Gets the static instance of the sound manager. Creates one if none exists
@@ -41,18 +42,21 @@ namespace Lodis.Sound
 
         public void PlaySound(AudioClip clip)
         {
-            if (!clip)
+            if (!clip || (_soundEffectSource.isPlaying && _lastClip == clip))
                 return;
 
+            _lastClip = clip;
             _soundEffectSource.PlayOneShot(clip);
         }
 
         public void PlayHitSound(int strength)
         {
             strength--;
-            if (strength < 0 || strength > _hitSounds.Length)
+            if (strength < 0 || strength > _hitSounds.Length || (_soundEffectSource.isPlaying && _lastClip.name == _hitSounds[strength].name))
                 return;
 
+
+            _lastClip = _hitSounds[strength];
             _soundEffectSource.PlayOneShot(_hitSounds[strength]);
         }
 
