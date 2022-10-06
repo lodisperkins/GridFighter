@@ -451,6 +451,7 @@ MonoBehaviour:
   _phaseShiftDuration: 0.25
   _defaultPhaseShiftRestTime: 0.3
   _successPhaseShiftRestTime: 0
+  _phaseShiftEvent: {fileID: 11400000, guid: c6ac7617b08515c49bcf4ca7031176dc, type: 2}
   _slowMotionTimeScale: 0.01
   _slowMotionTime: 0.1
 --- !u!114 &624667988152981373

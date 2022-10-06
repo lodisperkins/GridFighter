@@ -69,7 +69,7 @@ namespace Lodis.AI
                 return;
 
             if (!_movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false))
-                throw new System.Exception(_dummyBehaviour.Character.name + " cannot move to panel at location " + _moveTarget.Position +
+                Debug.Log(_dummyBehaviour.Character.name + " cannot move to panel at location " + _moveTarget.Position +
                     ". Panel at location " + _currentPath[_currentPathIndex].Position + " cannot be reached.");
         }
 

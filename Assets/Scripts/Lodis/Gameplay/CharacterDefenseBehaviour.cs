@@ -85,6 +85,8 @@ namespace Lodis.Gameplay
         private DelayedAction _disableFallBreakAction;
         private TimedAction _shieldTimer;
         private bool _canPhaseShift;
+        [SerializeField]
+        private GridGame.Event _phaseShiftEvent;
         private UnityAction _onPhaseShift;
         [SerializeField]
         [Tooltip("The speed of the game after a phase shift passes through an attack.")]
@@ -137,6 +139,8 @@ namespace Lodis.Gameplay
                     ActivateParryInvinciblity(args);
             }
             );
+
+            _onPhaseShift += () => _phaseShiftEvent?.Raise(_shieldCollider.Owner);
         }
 
         public void AddOnPhaseShiftAction(UnityAction action)
