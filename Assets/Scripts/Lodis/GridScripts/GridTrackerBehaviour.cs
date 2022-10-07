@@ -38,6 +38,7 @@ namespace Lodis.GridScripts
         private void OnDisable()
         {
             _lastPanelMarked?.RemoveMark();
+            _panelsInRange?.Clear();
         }
 
         public bool MarkPanelAtLocation(Vector3 position, MarkerType markerType)

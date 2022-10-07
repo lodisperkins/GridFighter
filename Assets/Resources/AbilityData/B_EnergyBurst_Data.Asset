@@ -25,8 +25,8 @@ MonoBehaviour:
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
-  CanCancelIntoNormal: 0
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
   CanInputMovementWhileActive: 0
   CanCancelOnOpponentHit: 1
   cancelOnHit: 1
@@ -37,6 +37,9 @@ MonoBehaviour:
   visualPrefab: {fileID: 7042668201603800225, guid: 2617db3ae35c0744699c7d5528743ca5,
     type: 3}
   DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 8300000, guid: 1603af129889a3a4da9ad43ab4d4dee4, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
@@ -45,7 +48,7 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 1606912
+      m_Bits: 1606656
     MultiHitWaitTime: 0
     Damage: 5
     BaseKnockBack: 35
@@ -60,8 +63,11 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 1
-    ShakesCamera: 0
+    HitStopTimeModifier: 3
+    ShakesCamera: 1
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
   _customStats: []
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: a8e48c70fc9e5a4409acfc0781e94b19, type: 3}

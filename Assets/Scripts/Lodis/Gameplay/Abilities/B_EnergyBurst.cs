@@ -13,11 +13,13 @@ namespace Lodis.Gameplay
     public class B_EnergyBurst : Ability
     {
         private GameObject _barrier;
+        private GameObject _burstEffect;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
+            if (!_burstEffect) _burstEffect = Resources.Load<GameObject>("AbilityData/Effects/EnergyBurst");
         }
 
 	    //Called when ability is used
@@ -34,6 +36,7 @@ namespace Lodis.Gameplay
            
             instantiatedCollider.ColliderInfo = hitColliderData;
 
+            Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
 
             _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
 
