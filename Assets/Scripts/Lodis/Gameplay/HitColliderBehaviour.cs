@@ -328,11 +328,11 @@ namespace Lodis.Gameplay
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(gameObject) || other.CompareTag("Reflector"))
+            if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(other.gameObject) || other.CompareTag("Reflector"))
                 return;
 
             if (!Collisions.ContainsKey(other.gameObject))
-                Collisions.Add(other.gameObject, Time.frameCount);
+                Collisions.Add(other.gameObject, Time.time);
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
