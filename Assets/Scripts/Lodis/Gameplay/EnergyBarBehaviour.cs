@@ -12,6 +12,8 @@ public class EnergyBarBehaviour : MonoBehaviour
 
     private MovesetBehaviour _target;
     [SerializeField]
+    private Image _backgroundImage;
+    [SerializeField]
     private Image _fill;
     [SerializeField]
     private Slider _slider;
@@ -23,7 +25,8 @@ public class EnergyBarBehaviour : MonoBehaviour
     private Image _energyTextCounterImage;
     [SerializeField]
     private Text _energyTextCounter;
-    private RectTransform _rectTransform;
+    [SerializeField]
+    private RectTransform _fillAreaTransform;
     [SerializeField]
     private FloatVariable _maxValue;
     [SerializeField]
@@ -44,9 +47,9 @@ public class EnergyBarBehaviour : MonoBehaviour
 
         Target = player.GetComponent<MovesetBehaviour>();
         _burstMeter.Init(Target);
-        _rectTransform = GetComponent<RectTransform>();
         _slider = GetComponent<Slider>();
         _slider.maxValue = MaxValue.Value;
+        _backgroundImage.color = BlackBoardBehaviour.Instance.GetPlayerColorByID(_playerID);
         CreateMeterTicks();
     }
 
@@ -58,9 +61,9 @@ public class EnergyBarBehaviour : MonoBehaviour
     private void CreateMeterTicks()
     {
         //Get the x position at the front end of the rect
-        float startXPos = _rectTransform.anchoredPosition.x - (_rectTransform.rect.width / 2);
+        float startXPos = _fillAreaTransform.anchoredPosition.x - (_fillAreaTransform.rect.width / 2);
         //Get the amount of space that should be between each tick
-        float xOffset = _rectTransform.rect.width / MaxValue.Value;
+        float xOffset = _fillAreaTransform.rect.width / MaxValue.Value;
         //Set the current x position to be the first tick position
         float currentXPos = startXPos +  xOffset;
 
@@ -68,10 +71,10 @@ public class EnergyBarBehaviour : MonoBehaviour
         for (int i = 0; i < (int)MaxValue.Value - 1; i++)
         {
             //Instantiate a new meter tick and store its rect transform
-            RectTransform meterTick = Instantiate(_meterTickRef, _rectTransform.parent);
+            RectTransform meterTick = Instantiate(_meterTickRef, _fillAreaTransform.parent);
             meterTick.localScale = Vector2.one;
-            meterTick.anchorMin = _rectTransform.anchorMin;
-            meterTick.anchorMax = _rectTransform.anchorMax;
+            meterTick.anchorMin = _fillAreaTransform.anchorMin;
+            meterTick.anchorMax = _fillAreaTransform.anchorMax;
 
             //Change the meter ticks position to the current x position
             meterTick.rect.Set(meterTick.rect.x, meterTick.rect.y, _meterTickWidth, _meterTickHeight);
