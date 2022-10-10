@@ -32,6 +32,8 @@ public class EnergyBarBehaviour : MonoBehaviour
     [SerializeField]
     private float _meterTickHeight;
     [SerializeField]
+    private Vector2 _meterTickOffset;
+    [SerializeField]
     private BurstMeterBehaviour _burstMeter;
 
     public MovesetBehaviour Target { get => _target; set => _target = value; }
@@ -78,7 +80,7 @@ public class EnergyBarBehaviour : MonoBehaviour
 
             //Change the meter ticks position to the current x position
             meterTick.rect.Set(meterTick.rect.x, meterTick.rect.y, _meterTickWidth, _meterTickHeight);
-            meterTick.anchoredPosition = new Vector2(currentXPos, meterTick.anchoredPosition.y);
+            meterTick.anchoredPosition = new Vector2(currentXPos, meterTick.anchoredPosition.y) + _meterTickOffset;
             //Move the x position to the position of the next tick
             currentXPos += xOffset;
         }
