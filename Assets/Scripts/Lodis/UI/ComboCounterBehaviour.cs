@@ -49,11 +49,11 @@ namespace Lodis.UI
 
         private void UpdateComboMessage()
         {
-            if (!_canCount)
+            _hitCount++;
+            if (!_canCount || _hitCount < _minHitCount)
                 return;
 
             _comboText.enabled = true;
-            _hitCount++;
 
             if (_nextComboMessageIndex < _comboMessages.Length && _hitCount >= _comboMessages[_nextComboMessageIndex].CountRequirement)
             {
