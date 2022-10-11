@@ -2,6 +2,7 @@
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Lodis.Movement
 {
@@ -17,6 +18,8 @@ namespace Lodis.Movement
         [SerializeField] private float _knockDownRecoverInvincibleTime;
         [SerializeField] private float _knockDownLandingTime;
         [SerializeField] private IntVariable _groundedHitMax;
+        private UnityAction _onLandingStart;
+        private UnityAction _onLand;
         private int _groundedHitCounter;
         private KnockbackBehaviour _knockback;
         private bool _canCheckLanding;
@@ -55,6 +58,16 @@ namespace Lodis.Movement
         }
 
 
+        public void AddOnLandingStartAction(UnityAction action)
+        {
+            _onLandingStart += action;
+        }
+
+        public void AddOnLandAction(UnityAction action)
+        {
+            _onLand += action;
+        }
+
         private void OnTriggerStay(Collider other)
         {
             if (_knockback.CurrentAirState != AirState.NONE && other.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen && _knockback.Physics.ObjectAtRest)
@@ -86,6 +99,7 @@ namespace Lodis.Movement
 
             _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(TumblingRecover,
                 TimedActionCountType.SCALEDTIME, _knockDownLandingTime);
+            _onLand?.Invoke();
         }
 
         private void TumblingRecover(object[] args)
@@ -106,6 +120,7 @@ namespace Lodis.Movement
         public void StartLandingLag()
         {
             Landing = true;
+            _onLandingStart?.Invoke();
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
             _knockback.LastTimeInKnockBack = 0;
             _knockback.Physics.StopVelocity();
@@ -126,6 +141,7 @@ namespace Lodis.Movement
                     _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
                         {
                             Landing = false;
+                            _onLand?.Invoke();
                         },
                         TimedActionCountType.SCALEDTIME, _landingTime);
                     break;
@@ -134,6 +150,7 @@ namespace Lodis.Movement
                     CanCheckLanding = false;
                     _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
                     {
+                        _onLand?.Invoke();
                         Landing = false;
                         _knockback.CurrentAirState = AirState.NONE;
                     }, TimedActionCountType.SCALEDTIME, _knockback.DefenseBehaviour.GroundTechLength);
