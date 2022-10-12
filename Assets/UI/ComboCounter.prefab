@@ -37,7 +37,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 150, y: -100}
-  m_SizeDelta: {x: 800, y: 150}
+  m_SizeDelta: {x: 900, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &643524680384907171
 CanvasRenderer:
@@ -67,9 +67,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 12800000, guid: 56587e2809686824f8d3173ba671e916, type: 3}
-    m_FontSize: 70
-    m_FontStyle: 0
+    m_Font: {fileID: 12800000, guid: 125a8011de7c10249b714e1c8f855943, type: 3}
+    m_FontSize: 60
+    m_FontStyle: 2
     m_BestFit: 0
     m_MinSize: 1
     m_MaxSize: 120
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 6, y: -2}
+  m_EffectDistance: {x: 4, y: 4}
   m_UseGraphicAlpha: 1
 --- !u!114 &643524680384907169
 MonoBehaviour:
@@ -111,18 +111,20 @@ MonoBehaviour:
   _comboMessages:
   - CountRequirement: 5
     MessageColor: {r: 0, g: 0.8463618, b: 0.9150943, a: 1}
-    Message: Nice
+    Message: Nice!
   - CountRequirement: 10
     MessageColor: {r: 0, g: 1, b: 0.06795335, a: 1}
-    Message: Cool
+    Message: Cool!
   - CountRequirement: 20
     MessageColor: {r: 1, g: 0.8780921, b: 0, a: 1}
-    Message: Stylish
+    Message: Stylish!
   - CountRequirement: 25
     MessageColor: {r: 1, g: 0.039559267, b: 0, a: 1}
-    Message: Insane
+    Message: Insane!
   - CountRequirement: 30
     MessageColor: {r: 1, g: 0, b: 0.99501085, a: 1}
-    Message: Ultra
+    Message: Ultra!
   _messageDespawnDelay: 2
   _comboText: {fileID: 643524680384907170}
+  _effectScale: 0.2
+  _effectDuration: 0.3

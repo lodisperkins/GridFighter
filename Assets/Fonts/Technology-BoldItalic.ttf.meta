@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 45ab475377fa80943a926f5c00f682e5
+guid: 103143e6a77954849a6be8c3deaebdf2
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -8,9 +8,9 @@ TrueTypeFontImporter:
   characterSpacing: 0
   characterPadding: 1
   includeFontData: 1
-  fontName: Bleach
+  fontName: Technology
   fontNames:
-  - Bleach
+  - Technology
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0

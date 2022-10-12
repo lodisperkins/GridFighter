@@ -6,6 +6,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Gameplay;
 using Lodis.Movement;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Lodis.UI
 {
@@ -23,6 +24,8 @@ namespace Lodis.UI
         [SerializeField] private ComboMessage[] _comboMessages;
         [SerializeField] private float _messageDespawnDelay;
         [SerializeField] private Text _comboText;
+        [SerializeField] private float _effectScale;
+        [SerializeField] private float _effectDuration;
         private int _minHitCount;
         private bool _canCount;
         private TimedAction _disableTextAction;
@@ -47,6 +50,12 @@ namespace Lodis.UI
             _ownerOpponent.LandingScript.AddOnLandAction(ResetComboMessage);
         }
 
+        private void StartSpawnEffect()
+        {
+            _comboText.rectTransform.DOComplete();
+            _comboText.rectTransform.DOPunchScale(new Vector3(_effectScale, _effectScale, _effectScale), _effectDuration);
+        }
+
         private void UpdateComboMessage()
         {
             _hitCount++;
@@ -64,11 +73,13 @@ namespace Lodis.UI
 
             _comboText.color = _currentColor;
             _comboText.text = _hitCount + " Hits";
+            StartSpawnEffect();
         }
 
         public void ResetComboMessage()
         {
             _canCount = false;
+            StartSpawnEffect();
             _comboText.text = _currentComboMessage;
             _disableTextAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
