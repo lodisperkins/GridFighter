@@ -4820,7 +4820,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f7980176c6a59140ace6a3282e91e41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _chargeSound: {fileID: 8300000, guid: 006e8658d3c9180448481354485967b5, type: 3}
+  _chargeSound: {fileID: 8300000, guid: 143dbcaf8d4d81741948f077c9ae5904, type: 3}
   _volumeScale: 1
 --- !u!1 &7801718138175851993
 GameObject:

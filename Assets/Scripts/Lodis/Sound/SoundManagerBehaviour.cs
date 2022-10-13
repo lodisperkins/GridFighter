@@ -46,6 +46,7 @@ namespace Lodis.Sound
 
         public void StopSound(AudioClip clip)
         {
+            return;
             if (!_soundEffectSource.isPlaying || clip != _lastClip)
                 return;
 
@@ -60,6 +61,7 @@ namespace Lodis.Sound
                 return;
 
             _lastClip = clip;
+            _soundEffectSource.clip = clip;
             _soundEffectSource.PlayOneShot(clip, volumeScale);
             _canPlaySameSFX = false;
 
