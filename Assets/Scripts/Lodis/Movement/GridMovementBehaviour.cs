@@ -55,6 +55,10 @@ namespace Lodis.Movement
         [Tooltip("Whether or not to move to the default aligned side if this object is on a panel belonging to the opposite side")]
         [SerializeField]
         private bool _moveToAlignedSideIfStuck = true;
+        [SerializeField]
+        private GridGame.Event _onTeleportStart;
+        [SerializeField]
+        private GridGame.Event _onTeleportEnd;
         [Tooltip("Whether or not this object should always rotate to face the opposite side")]
         [SerializeField]
         private bool _alwaysLookAtOpposingSide = true;
@@ -755,7 +759,6 @@ namespace Lodis.Movement
                 || !CanMove || Alignment == GridAlignment.ANY || _searchingForSafePanel || IsMoving)
                 return;
 
-            //NEEDS BETTER IMPLEMENTATION
 
             _searchingForSafePanel = true;
             int offSet = 0;
@@ -770,6 +773,7 @@ namespace Lodis.Movement
                 if (offSet <= 1) 
                     return;
 
+                _onTeleportStart?.Raise(gameObject);
                 SpawnTeleportEffect();
                 _renderer.enabled = false;
             });
@@ -779,7 +783,10 @@ namespace Lodis.Movement
                 _speed = defaultMoveSpeed;
                 _searchingForSafePanel = false;
                 if (offSet > 1)
+                {
+                    _onTeleportEnd?.Raise(gameObject);
                     SpawnTeleportEffect();
+                }
                 _renderer.enabled = true;
             },
             condition => !IsMoving

@@ -53,9 +53,9 @@ namespace Lodis.GridScripts
                 return;
 
             if (knockback.CurrentAirState != AirState.TUMBLING)
-                SoundManagerBehaviour.Instance.PlaySound(_softLandingClip, 0.5f);
+                SoundManagerBehaviour.Instance.PlaySound(_softLandingClip, 0.8f);
 
-            SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 0.5f);
+            SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 00.8f);
 
             Vector3 particleSpawnPosition = new Vector3(other.transform.position.x, 0, other.transform.position.z);
 

@@ -44,7 +44,15 @@ namespace Lodis.Sound
                 _musicSource.UnPause();
         }
 
-        public void PlaySound(AudioClip clip, float volumeScale = 1)
+        public void StopSound(AudioClip clip)
+        {
+            if (!_soundEffectSource.isPlaying || clip != _lastClip)
+                return;
+
+            _soundEffectSource.Stop();
+        }
+
+        public void PlaySound(AudioClip clip, float volumeScale)
         {
             if (!clip)
                 return;
@@ -53,6 +61,21 @@ namespace Lodis.Sound
 
             _lastClip = clip;
             _soundEffectSource.PlayOneShot(clip, volumeScale);
+            _canPlaySameSFX = false;
+
+            RoutineBehaviour.Instance.StopAction(_enableSameSFXAction);
+            _enableSameSFXAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canPlaySameSFX = true, TimedActionCountType.SCALEDTIME, _sameSoundDelay);
+        }
+        
+        public void PlaySound(AudioClip clip)
+        {
+            if (!clip)
+                return;
+            if (_soundEffectSource.isPlaying && !_canPlaySameSFX && _lastClip == clip)
+                return;
+
+            _lastClip = clip;
+            _soundEffectSource.PlayOneShot(clip);
             _canPlaySameSFX = false;
 
             RoutineBehaviour.Instance.StopAction(_enableSameSFXAction);

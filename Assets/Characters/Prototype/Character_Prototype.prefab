@@ -394,6 +394,8 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
+  _onTeleportStart: {fileID: 11400000, guid: 9bc9ffbb1888a5a44ba793fbbe5d91b5, type: 2}
+  _onTeleportEnd: {fileID: 11400000, guid: aecd38cd09557b44ab8a900c918a017a, type: 2}
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 1
   _moveOnStart: 1
@@ -1303,9 +1305,9 @@ MonoBehaviour:
   actions:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7724269172795492018}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 5882014074536293789}
+        m_MethodName: StartChargeEffect
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1331,9 +1333,9 @@ MonoBehaviour:
   actions:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7724269172795492018}
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 5882014074536293789}
+        m_MethodName: StopChargeEffect
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4806,6 +4808,20 @@ Transform:
   m_Father: {fileID: 893617988125740711}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5882014074536293789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7724269172795492018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f7980176c6a59140ace6a3282e91e41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _chargeSound: {fileID: 8300000, guid: 006e8658d3c9180448481354485967b5, type: 3}
+  _volumeScale: 1
 --- !u!1 &7801718138175851993
 GameObject:
   m_ObjectHideFlags: 0
@@ -6744,15 +6760,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7de0d22c7760ef43b78925612f0ca09, type: 3}
---- !u!4 &4823297948933055982 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
-    type: 3}
-  m_PrefabInstance: {fileID: 8293284421272956592}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &7228149465337761564 stripped
 BoxCollider:
   m_CorrespondingSourceObject: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
+    type: 3}
+  m_PrefabInstance: {fileID: 8293284421272956592}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4823297948933055982 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3600735448924097374, guid: d7de0d22c7760ef43b78925612f0ca09,
     type: 3}
   m_PrefabInstance: {fileID: 8293284421272956592}
   m_PrefabAsset: {fileID: 0}
