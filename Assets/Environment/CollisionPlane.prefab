@@ -115,6 +115,8 @@ MonoBehaviour:
   _fallScreenShakeStrength: 0.5
   _groundDustParticlesRef: {fileID: 1876183697936370498, guid: 74d4aa76ed4837f47b6ad5896856780c,
     type: 3}
+  _softLandingClip: {fileID: 8300000, guid: a39671ccb52009f468b0b3a1d4fc772d, type: 3}
+  _hardLandingClip: {fileID: 8300000, guid: b67a009ce06a8d64b993865715a8645a, type: 3}
 --- !u!1001 &7307572072502270815
 PrefabInstance:
   m_ObjectHideFlags: 0

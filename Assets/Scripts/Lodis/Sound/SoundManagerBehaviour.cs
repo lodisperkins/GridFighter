@@ -44,7 +44,7 @@ namespace Lodis.Sound
                 _musicSource.UnPause();
         }
 
-        public void PlaySound(AudioClip clip)
+        public void PlaySound(AudioClip clip, float volumeScale = 1)
         {
             if (!clip)
                 return;
@@ -52,7 +52,7 @@ namespace Lodis.Sound
                 return;
 
             _lastClip = clip;
-            _soundEffectSource.PlayOneShot(clip);
+            _soundEffectSource.PlayOneShot(clip, volumeScale);
             _canPlaySameSFX = false;
 
             RoutineBehaviour.Instance.StopAction(_enableSameSFXAction);

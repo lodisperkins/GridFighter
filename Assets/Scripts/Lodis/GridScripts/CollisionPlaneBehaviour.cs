@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Lodis.Gameplay;
 using Lodis.Movement;
+using Lodis.Sound;
 using Lodis.Utility;
 using UnityEngine;
 
@@ -26,9 +27,15 @@ namespace Lodis.GridScripts
         private float _fallScreenShakeStrength;
         [SerializeField]
         private ParticleSystem _groundDustParticlesRef;
+        [SerializeField]
+        private AudioClip _softLandingClip;
+        [SerializeField]
+        private AudioClip _hardLandingClip;
+
         private GameObject _groundDustParticles;
 
         public float BounceDampening { get => _bounceDampening; set => _bounceDampening = value; }
+
 
         private void OnCollisionEnter(Collision other)
         {
@@ -40,11 +47,15 @@ namespace Lodis.GridScripts
             if (!physics || !knockback)
                 return;
 
-
             //Don't add a force if the object is traveling at a low speed
             float dotProduct = Vector3.Dot(physics.LastVelocity, Vector3.up);
-            if (physics.LastVelocity.y >= 0 || knockback.CurrentAirState != AirState.TUMBLING)
+            if (physics.LastVelocity.y >= 0)
                 return;
+
+            if (knockback.CurrentAirState != AirState.TUMBLING)
+                SoundManagerBehaviour.Instance.PlaySound(_softLandingClip, 0.5f);
+
+            SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 0.5f);
 
             Vector3 particleSpawnPosition = new Vector3(other.transform.position.x, 0, other.transform.position.z);
 
