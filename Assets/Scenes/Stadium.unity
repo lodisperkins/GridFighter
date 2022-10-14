@@ -13720,7 +13720,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: e743ffdfdf20d1f42a034e4d638736a4, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.35
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -31160,13 +31160,13 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 150
+  Priority: 128
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -34522,6 +34522,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   IntendedSender: {fileID: 1058756581}
+  AcceptTagAsSender: 0
 --- !u!114 &934786779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34550,6 +34551,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   IntendedSender: {fileID: 564023511}
+  AcceptTagAsSender: 0
 --- !u!114 &934786780
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56268,6 +56270,12 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1520164187 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4280876806101315602, guid: 71e6ba92ebf74ae4ca930c1dddfd94f2,
+    type: 3}
+  m_PrefabInstance: {fileID: 1350949626}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1523048975
 GameObject:
   m_ObjectHideFlags: 0
@@ -57357,6 +57365,7 @@ GameObject:
   - component: {fileID: 1545201726}
   - component: {fileID: 1545201728}
   - component: {fileID: 1545201727}
+  - component: {fileID: 1545201729}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -57428,6 +57437,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: c6ac7617b08515c49bcf4ca7031176dc, type: 2}
   IntendedSender: {fileID: 0}
+  AcceptTagAsSender: 0
 --- !u!114 &1545201727
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57457,6 +57467,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: aecd38cd09557b44ab8a900c918a017a, type: 2}
   IntendedSender: {fileID: 0}
+  AcceptTagAsSender: 0
 --- !u!114 &1545201728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -57486,6 +57497,37 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 9bc9ffbb1888a5a44ba793fbbe5d91b5, type: 2}
   IntendedSender: {fileID: 0}
+  AcceptTagAsSender: 0
+--- !u!114 &1545201729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1545201723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1545201724}
+        m_MethodName: PlaySound
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 14302eb66d4c22948b89553d4e2f8c4c,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  IntendedSender: {fileID: 1520164187}
+  AcceptTagAsSender: 1
 --- !u!1 &1551454501
 GameObject:
   m_ObjectHideFlags: 0
@@ -67702,6 +67744,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   IntendedSender: {fileID: 1981573712}
+  AcceptTagAsSender: 0
 --- !u!114 &1802234850
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67741,6 +67784,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   IntendedSender: {fileID: 657297842}
+  AcceptTagAsSender: 0
 --- !u!1 &1804448937
 GameObject:
   m_ObjectHideFlags: 0
@@ -81812,7 +81856,7 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _mode
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}

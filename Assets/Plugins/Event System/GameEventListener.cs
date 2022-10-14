@@ -15,6 +15,7 @@ namespace GridGame
         public GridGame.Event Event;
         //The sender the gameobject is waiting for the event to be raiased by
         public GameObject IntendedSender;
+        public bool AcceptTagAsSender;
 
         public void Init(Event listenerEvent, GameObject sender)
         {
@@ -54,7 +55,7 @@ namespace GridGame
         //Invokes the actions delegate
         public void Invoke(GameObject Sender)
         {
-            if((IntendedSender == null || IntendedSender == Sender) && actions != null)
+            if((IntendedSender == null || IntendedSender == Sender) || (AcceptTagAsSender && Sender.CompareTag(IntendedSender?.tag)) && actions != null)
             {
                 actions.Invoke();
                 return;
