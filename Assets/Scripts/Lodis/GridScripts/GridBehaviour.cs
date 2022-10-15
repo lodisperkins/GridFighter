@@ -569,6 +569,28 @@ namespace Lodis.GridScripts
 
             return neighbors;
         }
+
+        public Vector2 ClampPanelPosition(Vector2 panelPosition, GridAlignment gridAlignment)
+        {
+            switch (gridAlignment)
+            {
+                case GridAlignment.NONE:
+                case GridAlignment.ANY:
+                    panelPosition.x = Mathf.Clamp(panelPosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
+                    panelPosition.y = Mathf.Clamp(panelPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+                    break;
+                case GridAlignment.LEFT:
+                    panelPosition.x = Mathf.Clamp(panelPosition.x, 0, TempMaxColumns - 1);
+                    panelPosition.y = Mathf.Clamp(panelPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+                    break;
+                case GridAlignment.RIGHT:
+                    panelPosition.x = Mathf.Clamp(panelPosition.x, TempMaxColumns - 1, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
+                    panelPosition.y = Mathf.Clamp(panelPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+                    break;
+            }
+
+            return panelPosition;
+        }
     }
 
 #if UNITY_EDITOR

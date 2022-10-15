@@ -487,11 +487,16 @@ namespace Lodis.Movement
             }
         }
 
+
         /// <summary>
         /// Moves the gameObject from its current panel to the panel at the given position.
         /// </summary>
         /// <param name="panelPosition">The position of the panel on the grid that the gameObject will travel to.</param>
         /// <param name="snapPosition">If true, the gameObject will immediately teleport to its destination without a smooth transition.</param>
+        /// <param name="tempAlignment">The alignment of this object during this move,</param>
+        /// <param name="canBeOccupied">Whether or not the target panel can be occupied</param>
+        /// <param name="reservePanel">If true, the target panel is marked occupied before the object reaches it.</param>
+        /// <param name="clampPosition">If true, will travel to the nearest available panel if the target can't be reached.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
         public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false, bool reservePanel = true, bool clampPosition = false)
         {
@@ -510,8 +515,10 @@ namespace Lodis.Movement
 
             if (clampPosition)
             {
-                panelPosition.x = Mathf.Clamp(panelPosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
-                panelPosition.y = Mathf.Clamp(panelPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+                panelPosition = BlackBoardBehaviour.Instance.Grid.ClampPanelPosition(panelPosition, tempAlignment);
+
+                if (panelPosition == Position)
+                    return false;
             }
 
             //If it's not possible to move to the panel at the given position, return false.

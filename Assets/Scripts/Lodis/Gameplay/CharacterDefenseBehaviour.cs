@@ -150,7 +150,7 @@ namespace Lodis.Gameplay
 
         public void ActivatePhaseShift(Vector2 moveDirection)
         {
-            if (_isResting || !_movement.CanMove)
+            if (_isResting || !_movement.CanMove || _isPhaseShifting)
                 return;
 
             if (moveDirection.magnitude > 1)
@@ -160,13 +160,19 @@ namespace Lodis.Gameplay
             _isShielding = false;
             //Allow the character to parry again
             _canParry = true;
-            _isPhaseShifting = true;
             _shieldCollider.gameObject.SetActive(false);
 
+            _isPhaseShifting = true;
+
+            PanelBehaviour panel;
+
+
             _movement.CancelMovement();
-            if (!_movement.MoveToPanel(_movement.Position + moveDirection * 2, false, GridAlignment.NONE, false, true, true))
+            if (!_movement.MoveToPanel(_movement.Position + (moveDirection * 2), false, _movement.Alignment, false, true, true))
             {
                 _isPhaseShifting = false;
+                RoutineBehaviour.Instance.StopAction(_shieldTimer);
+                _isResting = false;
                 return;
             }
 
