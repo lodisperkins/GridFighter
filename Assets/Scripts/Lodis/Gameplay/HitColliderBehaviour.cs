@@ -237,7 +237,7 @@ namespace Lodis.Gameplay
         private void OnTriggerEnter(Collider other)
         {
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || other.CompareTag("Reflector"))
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
@@ -305,7 +305,7 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
-            if (damageScript != null && !damageScript.IsInvincible && !damageScript.DefenseBehaviour.IsShielding)
+            if (damageScript != null && !damageScript.IsInvincible && (!damageScript.DefenseBehaviour.IsShielding || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
@@ -328,7 +328,7 @@ namespace Lodis.Gameplay
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(other.gameObject) || other.CompareTag("Reflector"))
+            if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(other.gameObject) || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (!Collisions.ContainsKey(other.gameObject))
@@ -390,7 +390,7 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
-            if (damageScript != null && !damageScript.IsInvincible && !damageScript.DefenseBehaviour.IsShielding)
+            if (damageScript != null && !damageScript.IsInvincible && (!damageScript.DefenseBehaviour.IsShielding || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);
@@ -413,7 +413,7 @@ namespace Lodis.Gameplay
             GameObject other = collision.gameObject;
 
             //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || other.CompareTag("Reflector"))
+            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
@@ -475,7 +475,7 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
-            if (damageScript != null && !damageScript.IsInvincible && !damageScript.DefenseBehaviour.IsShielding)
+            if (damageScript != null && !damageScript.IsInvincible && (!damageScript.DefenseBehaviour.IsShielding || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);

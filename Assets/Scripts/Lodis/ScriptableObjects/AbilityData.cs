@@ -66,7 +66,7 @@ namespace Lodis.ScriptableObjects
         [Tooltip("If false, the user of this ability can't move while it's active")]
         public bool CanInputMovementWhileActive = true;
         [Tooltip("If true, this ability can be ")]
-        public bool CanCancelOnOpponentHit = true;
+        public bool CanOnlyCancelOnOpponentHit = true;
         [Tooltip("If true, this ability will be canceled when the user is hit")]
         public bool cancelOnHit = false;
         [Tooltip("If true, this ability will be canceled when the user is flinching")]

@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: CartoonCoffee_Light_Ray_003-Add-[1.0]
-  m_Shader: {fileID: 4800000, guid: 6b10eff4bdd4fe145b220a0c2cdbe77d, type: 3}
+  m_Shader: {fileID: 4800000, guid: 1e9a07b1809f48344ac6fb78f7e2f733, type: 3}
   m_ShaderKeywords: ETC1_EXTERNAL_ALPHA _BLACKTINT_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0

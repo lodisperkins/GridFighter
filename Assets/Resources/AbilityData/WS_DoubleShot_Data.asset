@@ -21,14 +21,14 @@ MonoBehaviour:
   maxActivationAmount: 0
   EnergyCost: 0
   canCancelStartUp: 0
-  canCancelActive: 0
+  canCancelActive: 1
   canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 0
+  CanCancelIntoNormal: 1
   CanInputMovementWhileActive: 0
-  CanCancelOnOpponentHit: 1
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1

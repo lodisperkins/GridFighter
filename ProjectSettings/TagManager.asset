@@ -54,3 +54,6 @@ TagManager:
   - name: BattleHUD
     uniqueID: 1489586247
     locked: 0
+  - name: 2DEffects
+    uniqueID: 3776528163
+    locked: 0

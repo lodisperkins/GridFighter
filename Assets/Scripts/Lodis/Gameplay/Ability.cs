@@ -68,6 +68,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public CollisionEvent OnHit = null;
         public CollisionEvent OnHitTemp = null;
+        private bool _opponentHit;
 
         public AbilityPhase CurrentAbilityPhase { get; private set; }
 
@@ -179,7 +180,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Checks to see if the ability is able to be canceled in the current phase
         /// </summary>
-        public bool CheckIfAbilityCanBeCanceled()
+        public bool CheckIfAbilityCanBeCanceledInPhase()
         {
             switch (CurrentAbilityPhase)
             {
@@ -212,7 +213,10 @@ namespace Lodis.Gameplay
         /// <returns>Returns true if the current ability phase can be canceled</returns>
         public bool TryCancel(Ability nextAbility = null)
         {
-            if (!CheckIfAbilityCanBeCanceled())
+            if (!CheckIfAbilityCanBeCanceledInPhase())
+                return false;
+
+            if (abilityData.CanOnlyCancelOnOpponentHit && !_opponentHit)
                 return false;
 
             if (nextAbility != null)
@@ -327,13 +331,13 @@ namespace Lodis.Gameplay
 
             for (int i = 0; i < _colliderInfo.Count; i++)
             {
-                if (abilityData.CanCancelOnOpponentHit)
+                if (abilityData.CanOnlyCancelOnOpponentHit)
                     OnHit += arguments =>
                     {
-                        if ((GameObject)arguments[0] != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
+                        if ((GameObject)arguments[0] != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner) && CheckIfAbilityCanBeCanceledInPhase())
                             return;
 
-                        EndAbility();
+                        _opponentHit = true;
                     };
 
                 HitColliderData data = _colliderInfo[i];
@@ -343,6 +347,7 @@ namespace Lodis.Gameplay
             }
 
             CurrentAbilityPhase = AbilityPhase.STARTUP;
+            _opponentHit = false;
             if (!_ownerKnockBackScript)
                 return;
 

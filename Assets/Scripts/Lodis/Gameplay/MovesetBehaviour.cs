@@ -214,7 +214,7 @@ namespace Lodis.Gameplay
             if (!AbilityInUse)
                 return true;
 
-            return _lastAbilityInUse.CheckIfAbilityCanBeCanceled();
+            return _lastAbilityInUse.CheckIfAbilityCanBeCanceledInPhase();
         }
         
         /// <summary>
