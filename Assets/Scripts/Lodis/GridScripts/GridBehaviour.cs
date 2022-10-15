@@ -570,6 +570,12 @@ namespace Lodis.GridScripts
             return neighbors;
         }
 
+        /// <summary>
+        /// Clamps the given position to be within the bounds of the panels in the alignment.
+        /// </summary>
+        /// <param name="panelPosition">The value to clamp.</param>
+        /// <param name="gridAlignment">The alignment to clamp the position within.</param>
+        /// <returns>The clamped value. Will return the same value if it's already in range.</returns>
         public Vector2 ClampPanelPosition(Vector2 panelPosition, GridAlignment gridAlignment)
         {
             switch (gridAlignment)

@@ -120,14 +120,15 @@ namespace Lodis.Gameplay
 
         public override void OnTriggerEnter(Collider collision)
         {
-            GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
+            KnockbackBehaviour knockback = collision.attachedRigidbody?.GetComponent<KnockbackBehaviour>();
 
-            if (collision.gameObject == Owner && gridPhysicsBehaviour.LastVelocity.magnitude >= _shatterVelocityMagnitude.Value)
-            {
-                //TO DO: Create logic for instant shatter
+            if (!knockback)
+                return;
 
-                Health = 0;
-            }
+            float dot = Vector3.Dot(transform.forward, knockback.Physics.LastVelocity.normalized);
+
+            if (collision.gameObject == Owner && knockback.Physics.LastVelocity.magnitude >= _shatterVelocityMagnitude.Value && dot < 0 && knockback.CurrentAirState == AirState.TUMBLING)
+                TakeDamage(Owner, Health, 0, 0, DamageType.KNOCKBACK);
         }
 
         public override void OnCollisionEnter(Collision collision)
@@ -137,7 +138,7 @@ namespace Lodis.Gameplay
             if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed)
                 return;
 
-            if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
+            if (knockbackBehaviour.CurrentAirState == AirState.NONE)
                 return;
 
             if (_bounceDampen == 0)
