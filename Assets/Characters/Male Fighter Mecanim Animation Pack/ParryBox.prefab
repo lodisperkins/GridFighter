@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 5254046412119068983}
   m_Layer: 17
   m_Name: ParryBox
-  m_TagString: Untagged
+  m_TagString: ParryBox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -224,32 +224,32 @@ PrefabInstance:
     - target: {fileID: 598804161898402214, guid: 217e470a24a59a942a4cb4050355fdb5,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.21968
+      value: 0.38118875
       objectReference: {fileID: 0}
     - target: {fileID: 598804161898402214, guid: 217e470a24a59a942a4cb4050355fdb5,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.21968
+      value: 0.38118875
       objectReference: {fileID: 0}
     - target: {fileID: 598804161898402214, guid: 217e470a24a59a942a4cb4050355fdb5,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.21968
+      value: 0.38118875
       objectReference: {fileID: 0}
     - target: {fileID: 598804161898402214, guid: 217e470a24a59a942a4cb4050355fdb5,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.264
       objectReference: {fileID: 0}
     - target: {fileID: 598804161898402214, guid: 217e470a24a59a942a4cb4050355fdb5,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.05
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: 598804161898402214, guid: 217e470a24a59a942a4cb4050355fdb5,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.151
       objectReference: {fileID: 0}
     - target: {fileID: 598804161898402214, guid: 217e470a24a59a942a4cb4050355fdb5,
         type: 3}
