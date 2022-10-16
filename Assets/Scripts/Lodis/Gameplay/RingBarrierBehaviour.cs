@@ -27,6 +27,8 @@ namespace Lodis.Gameplay
         private float _launchAngle;
         [SerializeField]
         private ShieldController _shieldController;
+        [SerializeField]
+        private bool _canInstantShatter;
 
         protected override void Awake()
         {
@@ -120,6 +122,9 @@ namespace Lodis.Gameplay
 
         public override void OnTriggerEnter(Collider collision)
         {
+            if (!_canInstantShatter)
+                return;
+
             KnockbackBehaviour knockback = collision.attachedRigidbody?.GetComponent<KnockbackBehaviour>();
 
             if (!knockback)

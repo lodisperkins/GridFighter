@@ -34,7 +34,7 @@ MonoBehaviour:
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 679093164750957707, guid: 1ce1ba52079e3d848a3c4e62f298ecdc,
+  visualPrefab: {fileID: 679093164750957707, guid: 94c2bd7d9026ed44d8862ca67cbbd16b,
     type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 0}
@@ -60,6 +60,8 @@ MonoBehaviour:
     Priority: 1
     OwnerAlignement: 0
     AbilityType: 2
+    SpawnEffect: {fileID: 3641247538292551802, guid: 80bad1f38225a3a44bf688233774dbb0,
+      type: 3}
     HitSpark: {fileID: 6002612636095783793, guid: 278762b1b2ec95445b398e191c409631,
       type: 3}
     HitEffectLevel: 1

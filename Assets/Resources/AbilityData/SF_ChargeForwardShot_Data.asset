@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanCancelOnOpponentHit: 0
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -60,6 +60,8 @@ MonoBehaviour:
     Priority: 1
     OwnerAlignement: 0
     AbilityType: 6
+    SpawnEffect: {fileID: 6814929850833701180, guid: 0693a339a1c2f284695c43e038a8b3a8,
+      type: 3}
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2

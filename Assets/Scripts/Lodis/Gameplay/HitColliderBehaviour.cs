@@ -51,6 +51,8 @@ namespace Lodis.Gameplay
         public AbilityType AbilityType;
 
         [Header("Collision Effects")]
+        [Tooltip("The effect that will spawn when the hit box is spawned.")]
+        public GameObject SpawnEffect;
         [Tooltip("The spark effect that will spawn on hit.")]
         public GameObject HitSpark;
         [Tooltip("The size of the effect that will play on successful hit")]
@@ -141,6 +143,10 @@ namespace Lodis.Gameplay
             LayersToIgnore = ColliderInfo.LayersToIgnore;
             LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
             StartTime = Time.time;
+
+            if (ColliderInfo.SpawnEffect)
+                Instantiate(ColliderInfo.SpawnEffect, transform.position, Camera.main.transform.rotation);
+
             SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
         }
 
@@ -149,6 +155,10 @@ namespace Lodis.Gameplay
             AddToActiveList();
             ResetActiveTime();
             Collisions.Clear();
+
+            if (ColliderInfo.SpawnEffect)
+                Instantiate(ColliderInfo.SpawnEffect, transform.position, Camera.main.transform.rotation);
+
             SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
         }
 
@@ -522,7 +532,7 @@ namespace Lodis.Gameplay
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)
             {
                 if (ColliderInfo.HitSpark)
-                    Instantiate(ColliderInfo.HitSpark, transform.position, transform.rotation);
+                    Instantiate(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
 
                 ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
             }
