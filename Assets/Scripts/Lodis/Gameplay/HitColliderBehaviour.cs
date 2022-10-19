@@ -99,6 +99,7 @@ namespace Lodis.Gameplay
         public bool DebuggingEnabled;
         public HitColliderData ColliderInfo;
         private bool _addedToActiveList;
+        private bool _playedSpawnEffects;
 
         public float StartTime { get; private set; }
         public float CurrentTimeActive { get; private set; }
@@ -131,7 +132,12 @@ namespace Lodis.Gameplay
         {
             base.Awake();
             gameObject.layer = LayerMask.NameToLayer("Ability");
-            ReturnToPoolListener.AddAction(() => SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.DespawnSound));
+            ReturnToPoolListener.AddAction(
+                () =>
+                {
+                    SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.DespawnSound);
+                    _playedSpawnEffects = false;
+                });
         }
 
         protected override void Start()
@@ -143,11 +149,6 @@ namespace Lodis.Gameplay
             LayersToIgnore = ColliderInfo.LayersToIgnore;
             LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
             StartTime = Time.time;
-
-            if (ColliderInfo.SpawnEffect)
-                Instantiate(ColliderInfo.SpawnEffect, transform.position, Camera.main.transform.rotation);
-
-            SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
         }
 
         private void OnEnable()
@@ -155,11 +156,6 @@ namespace Lodis.Gameplay
             AddToActiveList();
             ResetActiveTime();
             Collisions.Clear();
-
-            if (ColliderInfo.SpawnEffect)
-                Instantiate(ColliderInfo.SpawnEffect, transform.position, Camera.main.transform.rotation);
-
-            SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
         }
 
         private void AddToActiveList()
@@ -523,6 +519,14 @@ namespace Lodis.Gameplay
             if (gameObject == null)
                 return;
 
+            if (!_playedSpawnEffects)
+            {
+                if (ColliderInfo.SpawnEffect)
+                    Instantiate(ColliderInfo.SpawnEffect, transform.position, Quaternion.LookRotation(-Owner.transform.right));
+
+                SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
+                _playedSpawnEffects = true;
+            }
 
             _addedToActiveList = true;
             //Update the amount of current frames
