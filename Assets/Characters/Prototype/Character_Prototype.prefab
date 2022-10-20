@@ -436,8 +436,7 @@ MonoBehaviour:
   _isParrying: 0
   _parryInvincibilityLength: 0.1
   _canParry: 1
-  _groundParryRestTime: 0.3
-  _parryStartUpTime: 0.05
+  _shieldRestTime: {fileID: 11400000, guid: 5bf3f81367d5f854f8a3938a1bad9f50, type: 2}
   _braceActiveTime: 0.1
   _shieldDrainValue: {fileID: 11400000, guid: 85dc43ae146cbf3429b43a067bad9d02, type: 2}
   _canBrace: 0
@@ -451,11 +450,13 @@ MonoBehaviour:
   _wallTechJumpDuration: 0.2
   _attackerStunTime: 5
   _phaseShiftDuration: 0.25
-  _defaultPhaseShiftRestTime: 0.3
-  _successPhaseShiftRestTime: 0
+  _defaultPhaseShiftRestTime: {fileID: 11400000, guid: 16a1dd921be893b4bb2e896d1c8970d9,
+    type: 2}
+  _successPhaseShiftRestTime: {fileID: 11400000, guid: 7d7239cd1de1f894db494487c6df6d8d,
+    type: 2}
   _phaseShiftEvent: {fileID: 11400000, guid: c6ac7617b08515c49bcf4ca7031176dc, type: 2}
-  _slowMotionTimeScale: 0.01
-  _slowMotionTime: 0.1
+  _slowMotionTimeScale: 0.02
+  _slowMotionTime: 0.2
 --- !u!114 &624667988152981373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5997,6 +5998,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 6347599831565965600, guid: 3750288d4cc41f440964731ec1982842,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8324301226956812270, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}

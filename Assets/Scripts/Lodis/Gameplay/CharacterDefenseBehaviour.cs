@@ -36,11 +36,9 @@ namespace Lodis.Gameplay
         [Tooltip("True if the parry cooldown timer is 0.")]
         [SerializeField]
         private bool _canParry = true;
-        [Tooltip("How long the character is left immobile after a failed parry.")]
+        [Tooltip("How long the character is left immobile after dropping shield.")]
         [SerializeField]
-        private float _groundParryRestTime;
-        [SerializeField]
-        private float _parryStartUpTime;
+        private FloatVariable _shieldRestTime;
         [Tooltip("How long in seconds is the object braced for it's fall.")]
         [SerializeField]
         private float _braceActiveTime;
@@ -75,10 +73,10 @@ namespace Lodis.Gameplay
         [SerializeField]
         private float _phaseShiftDuration;
         [SerializeField]
-        private float _defaultPhaseShiftRestTime;
+        private FloatVariable _defaultPhaseShiftRestTime;
         [SerializeField]
-        private float _successPhaseShiftRestTime;
-        private float _currentPhaseShiftRestTime;
+        private FloatVariable _successPhaseShiftRestTime;
+        private FloatVariable _currentPhaseShiftRestTime;
         private TimedAction _cooldownTimedAction;
         public FallBreakEvent onFallBroken;
         private TimedAction _parryTimer;
@@ -108,8 +106,8 @@ namespace Lodis.Gameplay
         public bool IsDefending { get => _isDefending; }
         public bool CanPhaseShift { get => _canPhaseShift; set => _canPhaseShift = value; }
         public bool IsPhaseShifting { get => _isPhaseShifting; }
-        public float CurrentPhaseShiftRestTime { get => _currentPhaseShiftRestTime; }
-        public float DefaultPhaseShiftRestTime { get => _defaultPhaseShiftRestTime; set => _defaultPhaseShiftRestTime = value; }
+        public FloatVariable CurrentPhaseShiftRestTime { get => _currentPhaseShiftRestTime; }
+        public FloatVariable DefaultPhaseShiftRestTime { get => _defaultPhaseShiftRestTime; set => _defaultPhaseShiftRestTime = value; }
         public bool IsShielding { get => _isShielding; }
         public bool IsResting { get => _isResting; }
 
@@ -183,21 +181,18 @@ namespace Lodis.Gameplay
             _movement.AddOnMoveEndTempAction(() => { _isPhaseShifting = false; StartDefenseLag(_currentPhaseShiftRestTime, _isPhaseShifting); });
         }
 
-        private void StartDefenseLag(float time, bool value)
+        private void StartDefenseLag(FloatVariable time, bool value)
         {
             if (_isResting)
                 return;
 
             _isResting = true;
 
-            if (_isPhaseShifting)
-                time = _currentPhaseShiftRestTime;
-
             _movement.DisableMovement(condition => _isResting == false, true, true);
             //Start timer for player immobility
             RoutineBehaviour.Instance.StopAction(_shieldTimer);
             _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => 
-            { _isResting = false;  value = false; }, TimedActionCountType.SCALEDTIME, time);
+            { _isResting = false;  value = false; }, TimedActionCountType.SCALEDTIME, time.Value);
         }
 
         /// <summary>
@@ -233,7 +228,7 @@ namespace Lodis.Gameplay
             _canParry = true;
             _shieldCollider.gameObject.SetActive(false);
             _moveset.EnergyChargeEnabled = true;
-            StartDefenseLag(_groundParryRestTime, _isShielding);
+            StartDefenseLag(_shieldRestTime, _isShielding);
         }
 
         /// <summary>

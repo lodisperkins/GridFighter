@@ -246,6 +246,8 @@ namespace Lodis.Gameplay
             if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
+            if (CheckIfLayerShouldBeIgnored(other.gameObject.layer)) return;
+
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
@@ -337,6 +339,8 @@ namespace Lodis.Gameplay
             if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(other.gameObject) || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
+            if (CheckIfLayerShouldBeIgnored(other.gameObject.layer)) return;
+
             if (!Collisions.ContainsKey(other.gameObject))
                 Collisions.Add(other.gameObject, Time.time);
 
@@ -421,6 +425,8 @@ namespace Lodis.Gameplay
             //If the object has already been hit or if the collider is multihit return
             if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
+
+            if (CheckIfLayerShouldBeIgnored(other.gameObject.layer)) return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
 
