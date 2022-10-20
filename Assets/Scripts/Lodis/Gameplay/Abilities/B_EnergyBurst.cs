@@ -52,7 +52,10 @@ namespace Lodis.Gameplay
             if (!_ownerKnockBackScript.Physics.IsGrounded)
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
             else
+            {
                 _ownerKnockBackScript.CurrentAirState = AirState.NONE;
+                _ownerKnockBackScript.Physics.RB.isKinematic = true;
+            }
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
         }
