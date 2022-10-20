@@ -291,7 +291,7 @@ namespace Lodis.Input
         public void BufferBurst(InputAction.CallbackContext context)
         {
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.BURST, null), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.BURST, null), condition => { _abilityBuffered = false; return true; }, 0.2f);
             _abilityBuffered = true;
         }
 

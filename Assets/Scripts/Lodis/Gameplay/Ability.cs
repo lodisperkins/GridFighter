@@ -213,6 +213,12 @@ namespace Lodis.Gameplay
         /// <returns>Returns true if the current ability phase can be canceled</returns>
         public bool TryCancel(Ability nextAbility = null)
         {
+            if (nextAbility?.abilityData.AbilityType == AbilityType.BURST)
+            {
+                EndAbility();
+                return true;
+            }
+
             if (!CheckIfAbilityCanBeCanceledInPhase())
                 return false;
 

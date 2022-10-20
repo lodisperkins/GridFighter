@@ -266,7 +266,6 @@ namespace Lodis.Gameplay
             return _specialAbilitySlots[index];
         }
 
-
         public void AddOnUpdateHandAction(UnityAction action)
         {
             OnUpdateHand += action;
@@ -348,7 +347,7 @@ namespace Lodis.Gameplay
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && abilityName != "EnergyBurst")
                 return null;
-            else if (abilityName == "EnergyBurst" && _deckReloading)
+            else if (abilityName == "EnergyBurst" && !_canBurst)
                 return null;
 
             //Find the ability in the deck and use it

@@ -41,6 +41,8 @@ namespace Lodis.Gameplay
             _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
 
             _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
+            _ownerKnockBackScript.CancelHitStun();
+            _ownerKnockBackScript.CancelStun();
         }
 
         protected override void Deactivate()
@@ -49,6 +51,8 @@ namespace Lodis.Gameplay
 
             if (!_ownerKnockBackScript.Physics.IsGrounded)
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
+            else
+                _ownerKnockBackScript.CurrentAirState = AirState.NONE;
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
         }

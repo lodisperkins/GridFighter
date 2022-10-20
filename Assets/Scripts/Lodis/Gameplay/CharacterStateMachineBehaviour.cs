@@ -44,7 +44,8 @@ namespace Lodis.Gameplay
             _stateMachine.SetTransitionCondition("Any-FreeFall", args => _knockBack.CurrentAirState == AirState.FREEFALL);
             _stateMachine.SetTransitionConditionByLabel("Moving", args => _movement.IsMoving && !_moveset.AbilityInUse);
             _stateMachine.SetTransitionConditionByLabel("Shuffling", args => _moveset.LoadingShuffle);
-            _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall && !_characterDefense.IsDefending && !_characterDefense.IsResting && !_moveset.AbilityInUse && !_moveset.LoadingShuffle);
+            _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall &&
+            !_characterDefense.IsDefending && !_characterDefense.IsResting && !_moveset.AbilityInUse && !_moveset.LoadingShuffle);
         }
         private void Update()
         {
