@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _character: {fileID: 0}
-  _attackType: 9
+  _attackType: 4
   _attackDelay: 1
   _attackStrength: 1.15
   _maxRange: 6.05

@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 1
-  CanCancelOnOpponentHit: 1
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1
@@ -44,7 +44,7 @@ MonoBehaviour:
   - Name: 
     DespawnAfterTimeLimit: 1
     TimeActive: 1
-    DestroyOnHit: 0
+    DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -60,13 +60,14 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
+    SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
     HitStopTimeModifier: 1.25
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
-    HitSound: {fileID: 8300000, guid: 8b9592648f7617046860a55c21618747, type: 3}
+    HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed

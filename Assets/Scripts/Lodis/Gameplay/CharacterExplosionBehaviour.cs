@@ -53,7 +53,7 @@ namespace Lodis.Gameplay
             _characterFeedback.TimeBetweenFlashes = _explosionChargeTime;
             SoundManagerBehaviour.Instance.PlaySound(_chargeSound);
             SoundManagerBehaviour.Instance.TogglePauseMusic();
-            GameManagerBehaviour.Instance.ChangeTimeScale(0, ExplosionChargeTime);
+            GameManagerBehaviour.Instance.ChangeTimeScale(0.2f, ExplosionChargeTime, ExplosionChargeTime);
 
             ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args => 
             {

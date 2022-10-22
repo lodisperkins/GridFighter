@@ -455,8 +455,16 @@ MonoBehaviour:
   _successPhaseShiftRestTime: {fileID: 11400000, guid: 7d7239cd1de1f894db494487c6df6d8d,
     type: 2}
   _phaseShiftEvent: {fileID: 11400000, guid: c6ac7617b08515c49bcf4ca7031176dc, type: 2}
-  _slowMotionTimeScale: 0.02
-  _slowMotionTime: 0.2
+  _phaseShiftSuccessEvent: {fileID: 11400000, guid: 54cce31da6ae48345959d37aafcf6629,
+    type: 2}
+  _onParryEvent: {fileID: 11400000, guid: f85e44f17a6ea714f837d01e081b9fbb, type: 2}
+  _slowMotionTimeScale: {fileID: 11400000, guid: 9565062a402585149a07d4ed92a3ad8d,
+    type: 2}
+  _slowMotionTime: {fileID: 11400000, guid: 1214f788298f60b4ea6deb2ccbac0f3c, type: 2}
+  _slowMotionTransitionSpeed: {fileID: 11400000, guid: b385be673ddf2e04f9c6a00d9725d95a,
+    type: 2}
+  _perfectDefenseEffect: {fileID: 2898190531585516874, guid: 0bed6fdeb3191e0478b5744febdaddb1,
+    type: 3}
 --- !u!114 &624667988152981373
 MonoBehaviour:
   m_ObjectHideFlags: 0

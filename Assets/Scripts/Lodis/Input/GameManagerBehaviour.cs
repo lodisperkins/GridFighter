@@ -105,10 +105,12 @@ namespace Lodis.Gameplay
         /// Temporarily changes the speed of time for the game.
         /// </summary>
         /// <param name="newTimeScale">The new time scale. 0 being no time passes and 1 being the normal speed.</param>
-        /// <param name="time">The amount of time the game will stay in the temporary time scale.</param>
-        public void ChangeTimeScale(float newTimeScale, float time)
+        /// <param name="speed">How long it takes to transition into the new time scale.</param>
+        /// <param name="duration">How long the timescale will be this speed.</param>
+        public void ChangeTimeScale(float newTimeScale, float speed, float duration)
         {
-            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, time).SetUpdate(true).onComplete += () => Time.timeScale = 1;
+            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => Time.timeScale = 1, TimedActionCountType.UNSCALEDTIME, duration);
         }
 
         public void SetPlayerControlsActive(bool value)

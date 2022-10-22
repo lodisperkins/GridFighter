@@ -85,13 +85,23 @@ namespace Lodis.Gameplay
         private bool _canPhaseShift;
         [SerializeField]
         private GridGame.Event _phaseShiftEvent;
+        [SerializeField]
+        private GridGame.Event _phaseShiftSuccessEvent;
+        [SerializeField]
+        private GridGame.Event _onParryEvent;
         private UnityAction _onPhaseShift;
         [SerializeField]
         [Tooltip("The speed of the game after a phase shift passes through an attack.")]
-        private float _slowMotionTimeScale;
+        private FloatVariable _slowMotionTimeScale;
         [SerializeField]
         [Tooltip("The amount of time to stay in slow motion after a phase shift passes through an attack..")]
-        private float _slowMotionTime;
+        private FloatVariable _slowMotionTime;
+        [SerializeField]
+        [Tooltip("The amount of time it takes to transition into slow motion.")]
+        private FloatVariable _slowMotionTransitionSpeed;
+        [SerializeField]
+        [Tooltip("The effect to play when the player defends perfectly.")]
+        private ParticleSystem _perfectDefenseEffect;
         private bool _isShielding;
         private bool _isResting;
 
@@ -126,13 +136,17 @@ namespace Lodis.Gameplay
 
             _shieldCollider.AddCollisionEvent(args => 
             {
-                if (args.Length < 4)
+                if (args.Length < 2)
                     return;
 
-                HitColliderBehaviour other = (HitColliderBehaviour)args[3];
+                HitColliderBehaviour other = (HitColliderBehaviour)args[1];
 
+                if (!other)
+                    return;
 
-                Instantiate(BlackBoardBehaviour.Instance.BlockEffect, other.transform.position + (.5f * Vector3.up), transform.rotation);
+                if (BlackBoardBehaviour.Instance.BlockEffect)
+                    Instantiate(BlackBoardBehaviour.Instance.BlockEffect, other.transform.position + (.5f * Vector3.up), transform.rotation);
+
                 if (IsParrying)
                     ActivateParryInvinciblity(args);
             }
@@ -314,8 +328,9 @@ namespace Lodis.Gameplay
                     return;
             }
 
-            if (otherHitCollider.Owner == _shieldCollider.Owner)
-                return;
+            _onParryEvent?.Raise(gameObject);
+            GameManagerBehaviour.Instance.ChangeTimeScale(0, 0, 0.05f);
+            Instantiate(_perfectDefenseEffect, transform.position + Vector3.up * 0.5f, Camera.main.transform.rotation);
 
             //Deactivate the parry
             _shieldCollider.gameObject.SetActive(false);
@@ -372,9 +387,10 @@ namespace Lodis.Gameplay
 
                 if (!collider) return;
                 if (collider.Owner == gameObject) return;
-                
+
+                _phaseShiftSuccessEvent?.Raise(gameObject);
                 _currentPhaseShiftRestTime = _successPhaseShiftRestTime;
-                GameManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, _slowMotionTime);
+                GameManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale.Value, _slowMotionTransitionSpeed.Value, _slowMotionTime.Value);
             }
 
             if (!IsBraced || !other.CompareTag("Structure") || other.CompareTag("CollisionPlane") || BreakingFall)
@@ -403,6 +419,7 @@ namespace Lodis.Gameplay
             PanelBehaviour panel = collision.gameObject.GetComponent<PanelBehaviour>();
 
             _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
+            Instantiate(_perfectDefenseEffect, transform.position, Camera.main.transform.rotation);
 
             if (_disableFallBreakAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_disableFallBreakAction);
