@@ -72867,7 +72867,7 @@ PrefabInstance:
     - target: {fileID: 2703200926333121850, guid: 896327d564dd09a40a6ae0c24becb75f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.49
+      value: 4.45
       objectReference: {fileID: 0}
     - target: {fileID: 2703200926333121850, guid: 896327d564dd09a40a6ae0c24becb75f,
         type: 3}
@@ -72908,6 +72908,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Impact_Shockwave (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9144379053555886430, guid: 896327d564dd09a40a6ae0c24becb75f,
+        type: 3}
+      propertyPath: stopAction
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 896327d564dd09a40a6ae0c24becb75f, type: 3}
