@@ -44478,7 +44478,7 @@ GameObject:
   - component: {fileID: 1139287553}
   - component: {fileID: 1139287552}
   m_Layer: 0
-  m_Name: Directional Light
+  m_Name: PlayerLight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44495,7 +44495,7 @@ Light:
   serializedVersion: 10
   m_Type: 1
   m_Shape: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7735849, g: 0.7735849, b: 0.7735849, a: 1}
   m_Intensity: 0.44
   m_Range: 10
   m_SpotAngle: 30
