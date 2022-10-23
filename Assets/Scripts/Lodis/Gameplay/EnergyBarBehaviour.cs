@@ -94,7 +94,14 @@ public class EnergyBarBehaviour : MonoBehaviour
             _slider.value = _target.Energy;
         else return;
 
-        _energyTextCounter.text = ((int)_target.Energy).ToString();
+        int currentEnergy = (int)_target.Energy;
+
+        if (currentEnergy == 0)
+            _energyTextCounter.color = new Vector4(_energyTextCounter.color.r, _energyTextCounter.color.g, _energyTextCounter.color.b, 0.5f);
+        else
+            _energyTextCounter.color = new Vector4(_energyTextCounter.color.r, _energyTextCounter.color.g, _energyTextCounter.color.b, 1);
+
+        _energyTextCounter.text = currentEnergy.ToString();
         _fill.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_target.Energy];
         _energyTextCounterImage.color = _fill.color;
     }
