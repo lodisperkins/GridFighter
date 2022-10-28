@@ -56,13 +56,12 @@ namespace Lodis.Gameplay
             }
         }
 
-        // Start is called before the first frame update
-        void Start()
+        public void SetColors()
         {
             if (_autoDetectAlignment)
                 _alignment = GetComponent<GridMovementBehaviour>().Alignment;
 
-            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(_alignment);    
+            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(_alignment);
 
             foreach (ColorObject colorObject in ObjectsToColor)
             {
@@ -73,6 +72,28 @@ namespace Lodis.Gameplay
 
                 colorObject.CacheColors();
             }
+        }
+
+        public void SetColors(int alignmentID)
+        {
+            GridScripts.GridAlignment alignment = (GridScripts.GridAlignment)alignmentID;
+            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(alignment);
+
+            foreach (ColorObject colorObject in ObjectsToColor)
+            {
+                if (colorObject.OnlyChangeHue)
+                    SetHue(colorObject);
+                else
+                    SetColor(colorObject);
+
+                colorObject.CacheColors();
+            }
+        }
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            SetColors();
         }
 
     }
