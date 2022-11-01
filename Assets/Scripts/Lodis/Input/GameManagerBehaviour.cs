@@ -50,6 +50,10 @@ namespace Lodis.Gameplay
         private UnityEvent _onMatchRestart;
         [SerializeField]
         private UnityEvent _onMatchOver;
+        [SerializeField]
+        private GridGame.Event _matchRestartEvent;
+        [SerializeField]
+        private GridGame.Event _matchOverEvent;
         private PlayerSpawnBehaviour _playerSpawner;
         private bool _isPaused;
 
@@ -94,7 +98,7 @@ namespace Lodis.Gameplay
             _playerSpawner.SpawnEntitiesByMode(_mode);
             _onMatchRestart.AddListener(_playerSpawner.ResetPlayers);
 
-            RoutineBehaviour.Instance.StartNewConditionAction(args => _onMatchOver?.Invoke(), args => !_playerSpawner.P1HealthScript.IsAlive || !_playerSpawner.P2HealthScript.IsAlive);
+            RoutineBehaviour.Instance.StartNewConditionAction(args => { _onMatchOver?.Invoke(); _matchOverEvent?.Raise(gameObject); }, args => !_playerSpawner.P1HealthScript.IsAlive || !_playerSpawner.P2HealthScript.IsAlive);
 
             Application.targetFrameRate = _targetFrameRate;
 
@@ -141,6 +145,7 @@ namespace Lodis.Gameplay
         public void Restart()
         {
             _onMatchRestart?.Invoke();
+            _matchRestartEvent.Raise(gameObject);
 
             if (_isPaused)
                 TogglePause();
