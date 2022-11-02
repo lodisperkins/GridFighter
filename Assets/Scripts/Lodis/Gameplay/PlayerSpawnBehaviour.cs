@@ -43,11 +43,13 @@ namespace Lodis.Gameplay
         private GridBehaviour _grid;
         private PanelBehaviour _lhsSpawnPanel;
         private PanelBehaviour _rhsSpawnPanel;
+        private bool _suddenDeathActive;
 
         public Vector2 RHSSpawnLocation { get => _RHSSpawnLocation; private set => _RHSSpawnLocation = value; }
         public Vector2 LHSSpawnLocation { get => _LHSSpawnLocation; private set => _LHSSpawnLocation = value; }
         public KnockbackBehaviour P1HealthScript { get => _p1Knockback; }
         public KnockbackBehaviour P2HealthScript { get => _p2Knockback; }
+        public bool SuddenDeathActive { get => _suddenDeathActive; set => _suddenDeathActive = value; }
 
         private void Awake()
         {

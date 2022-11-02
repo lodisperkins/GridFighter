@@ -17,6 +17,7 @@ namespace Lodis.Gameplay
         [SerializeField] private float _maxEmission;
         [SerializeField] private AudioClip _chargeSound;
         [SerializeField] private AudioClip _explosionSound;
+        [SerializeField] private GridGame.Event _onCharacterExplosion;
         private float[] _emissionStrengthValues = { 0, 0 };
         private TimedAction _chargeAction;
         private IntVariable _lastLoserID;
@@ -41,8 +42,6 @@ namespace Lodis.Gameplay
             if (knockback.HasExploded)
                 return;
 
-            knockback.HasExploded = true;
-
             _characterFeedback = playerCharacter.GetComponentInChildren<CharacterFeedbackBehaviour>();
 
             float strength = _characterFeedback.EmissionStrength;
@@ -55,8 +54,9 @@ namespace Lodis.Gameplay
             SoundManagerBehaviour.Instance.TogglePauseMusic();
             GameManagerBehaviour.Instance.ChangeTimeScale(0.2f, ExplosionChargeTime, ExplosionChargeTime);
 
-            ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args => 
+            ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args =>
             {
+                knockback.HasExploded = true;
                 _characterFeedback.EmissionStrength = strength;
                _characterFeedback.TimeBetweenFlashes = oldTime;
                 playerCharacter.SetActive(false);
@@ -64,6 +64,7 @@ namespace Lodis.Gameplay
                 CameraBehaviour.ShakeBehaviour.ShakeRotation();
                 SoundManagerBehaviour.Instance.PlaySound(_explosionSound);
                 SoundManagerBehaviour.Instance.TogglePauseMusic();
+                _onCharacterExplosion.Raise();
 
             }, TimedActionCountType.UNSCALEDTIME, ExplosionChargeTime);
 

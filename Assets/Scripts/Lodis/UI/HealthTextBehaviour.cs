@@ -17,8 +17,6 @@ public class HealthTextBehaviour : MonoBehaviour
     public HealthBehaviour HealthComponent { get => _healthComponent; set => _healthComponent = value; }
     public float MaxValue { get => _maxValue; set => _maxValue = value; }
 
-
-
     // Start is called before the first frame update
     void Start()
     {

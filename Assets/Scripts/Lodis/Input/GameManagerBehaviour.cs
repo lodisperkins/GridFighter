@@ -10,6 +10,7 @@ using Lodis.Input;
 using DG.Tweening;
 using UnityEngine.Events;
 using System;
+using Lodis.UI;
 
 namespace Lodis.Gameplay
 {
@@ -19,6 +20,13 @@ namespace Lodis.Gameplay
         PRACTICE,
         MULTIPLAYER,
         SIMULATE
+    }
+
+    public enum MatchResult
+    {
+        DRAW,
+        P1WINS,
+        P2WINS
     }
 
     public class GameManagerBehaviour : MonoBehaviour
@@ -56,6 +64,8 @@ namespace Lodis.Gameplay
         private GridGame.Event _matchOverEvent;
         private PlayerSpawnBehaviour _playerSpawner;
         private bool _isPaused;
+        private MatchResult _matchResult;
+        private bool _canPause = true;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -75,6 +85,11 @@ namespace Lodis.Gameplay
 
                 return _instance;
             }
+        }
+
+        public MatchResult LastMatchResult
+        {
+            get { return _matchResult; }
         }
 
         public int TargetFrameRate
@@ -98,11 +113,34 @@ namespace Lodis.Gameplay
             _playerSpawner.SpawnEntitiesByMode(_mode);
             _onMatchRestart.AddListener(_playerSpawner.ResetPlayers);
 
-            RoutineBehaviour.Instance.StartNewConditionAction(args => { _onMatchOver?.Invoke(); _matchOverEvent?.Raise(gameObject); }, args => !_playerSpawner.P1HealthScript.IsAlive || !_playerSpawner.P2HealthScript.IsAlive);
+            RoutineBehaviour.Instance.StartNewConditionAction(args =>
+            {
+                SetMatchResult();
+                _onMatchOver?.Invoke();
+                _matchOverEvent?.Raise(gameObject);
+                _canPause = false;
+                if (_matchResult == MatchResult.DRAW)
+                    RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
+            },
+            args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.TimeUp);
 
             Application.targetFrameRate = _targetFrameRate;
 
             Time.timeScale = _timeScale;
+        }
+
+        private void SetMatchResult()
+        {
+            if (_playerSpawner.P2HealthScript.HasExploded)
+                _matchResult = MatchResult.P1WINS;
+            else if (_playerSpawner.P1HealthScript.HasExploded)
+                _matchResult = MatchResult.P2WINS;
+            else if (!_ringBarrierR.IsAlive)
+                _matchResult = MatchResult.P1WINS;
+            else if (!_ringBarrierL.IsAlive)
+                _matchResult = MatchResult.P2WINS;
+            else
+                _matchResult = MatchResult.DRAW;
         }
 
         /// <summary>
@@ -125,6 +163,9 @@ namespace Lodis.Gameplay
 
         public void TogglePause()
         {
+            if (!_canPause)
+                return;
+
             _isPaused = !_isPaused;
             Time.timeScale = Convert.ToInt32(!_isPaused);
 
@@ -142,15 +183,31 @@ namespace Lodis.Gameplay
             }
         }
 
-        public void Restart()
+        public void Restart(bool suddenDeathActive = false)
         {
+            _playerSpawner.SuddenDeathActive = suddenDeathActive;
+            MatchTimerBehaviour.IsInfinite = suddenDeathActive;
+
             _onMatchRestart?.Invoke();
             _matchRestartEvent.Raise(gameObject);
+
+            _ringBarrierL.gameObject.SetActive(!suddenDeathActive);
+            _ringBarrierR.gameObject.SetActive(!suddenDeathActive);
 
             if (_isPaused)
                 TogglePause();
 
-            RoutineBehaviour.Instance.StartNewConditionAction(args => _onMatchOver?.Invoke(), args => !_playerSpawner.P1HealthScript.IsAlive || !_playerSpawner.P2HealthScript.IsAlive);
+            RoutineBehaviour.Instance.StartNewConditionAction(args =>
+            {
+                SetMatchResult();
+                _onMatchOver?.Invoke();
+                _matchOverEvent?.Raise(gameObject);
+
+                if (_matchResult == MatchResult.DRAW)
+                    RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
+            },
+            args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.TimeUp);
+            _canPause = true;
         }
 
         public void QuitApplication()

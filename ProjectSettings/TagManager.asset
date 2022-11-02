@@ -11,6 +11,7 @@ TagManager:
   - CollisionPlane
   - Panel
   - Reflector
+  - WinCollider
   layers:
   - Default
   - TransparentFX
