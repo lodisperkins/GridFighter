@@ -24,6 +24,8 @@ namespace Lodis.Movement
     {
         [SerializeField]
         private bool _hasExploded;
+        [SerializeField]
+        private bool _outOfBounds;
         [SerializeField] private AirState _currentAirState;
         [SerializeField] private float _netForceLandingTolerance = 0.5f;
 
@@ -123,7 +125,7 @@ namespace Lodis.Movement
             }
         }
 
-
+        public bool OutOfBounds { get => _outOfBounds; set => _outOfBounds = value; }
 
         protected override void Awake()
         {
@@ -284,6 +286,7 @@ namespace Lodis.Movement
         {
             base.ResetHealth();
 
+            OutOfBounds = false;
             HasExploded = false;
             CancelHitStun();
             CurrentAirState = AirState.NONE;

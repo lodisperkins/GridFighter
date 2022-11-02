@@ -39,8 +39,10 @@ namespace Lodis.Gameplay
             playerCharacter.GetComponent<GridPhysicsBehaviour>().FreezeInPlaceByTimer(_explosionChargeTime, false, true);
             KnockbackBehaviour knockback = playerCharacter.GetComponent<KnockbackBehaviour>();
             
-            if (knockback.HasExploded)
+            if (knockback.OutOfBounds)
                 return;
+
+            knockback.OutOfBounds = true;
 
             _characterFeedback = playerCharacter.GetComponentInChildren<CharacterFeedbackBehaviour>();
 

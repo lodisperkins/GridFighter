@@ -18,6 +18,7 @@ namespace Lodis.UI
         private GridGame.Event _onTimerUp;
         private static bool _timeUp;
         private static bool _isInfinite;
+        private static bool _isActive = true;
         private bool _eventRaised;
 
         public static bool TimeUp
@@ -26,17 +27,30 @@ namespace Lodis.UI
         }
 
         public static bool IsInfinite { get => _isInfinite; set => _isInfinite = value; }
+        public static bool IsActive { get => _isActive; set => _isActive = value; }
 
         // Start is called before the first frame update
         void Start()
         {
-            Gameplay.GameManagerBehaviour.Instance.AddOnMatchRestartAction(() => { _matchTimeRemaining = _matchTime.Value; _eventRaised = false; });
+            Gameplay.GameManagerBehaviour.Instance.AddOnMatchRestartAction(ResetTimer);
+            Gameplay.GameManagerBehaviour.Instance.AddOnMatchOverAction(() => IsActive = false);
             _matchTimeRemaining = _matchTime.Value;
+        }
+
+        public void ResetTimer()
+        {
+            _matchTimeRemaining = _matchTime.Value;
+            _eventRaised = false;
+            _timeUp = false;
+            IsActive = true;
         }
 
         // Update is called once per frame
         void Update()
         {
+            if (!IsActive)
+                return;
+
             string timeText = "";
             if (!IsInfinite)
             {
@@ -51,15 +65,11 @@ namespace Lodis.UI
                 timeText = _matchTimeRemaining.ToString();
             }
 
-            if (_timeUp)
+            if (_timeUp && !_eventRaised)
             {
-                if (!_eventRaised)
-                    _onTimerUp.Raise(gameObject);
-
-                return;
+                _onTimerUp.Raise(gameObject);
+                IsActive = false;
             }
-
-            
 
             _timerText.text = timeText;
         }
