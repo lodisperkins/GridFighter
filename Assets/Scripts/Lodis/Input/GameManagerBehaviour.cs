@@ -191,8 +191,11 @@ namespace Lodis.Gameplay
             _onMatchRestart?.Invoke();
             _matchRestartEvent.Raise(gameObject);
 
-            _ringBarrierL.gameObject.SetActive(!suddenDeathActive);
-            _ringBarrierR.gameObject.SetActive(!suddenDeathActive);
+            if (suddenDeathActive)
+            {
+                _ringBarrierL.Deactivate();
+                _ringBarrierR.Deactivate();
+            }
 
             if (_isPaused)
                 TogglePause();

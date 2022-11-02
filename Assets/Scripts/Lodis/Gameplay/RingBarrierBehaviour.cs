@@ -29,6 +29,8 @@ namespace Lodis.Gameplay
         private ShieldController _shieldController;
         [SerializeField]
         private bool _canInstantShatter;
+        [SerializeField]
+        private GameObject _visuals;
 
         protected override void Awake()
         {
@@ -113,9 +115,16 @@ namespace Lodis.Gameplay
             return damage;
         }
 
+        public void Deactivate()
+        {
+            Health = 0;
+            _visuals.SetActive(false);
+        }
+
         public override void ResetHealth()
         {
             base.ResetHealth();
+            _visuals.SetActive(true);
             Physics.IgnoreCollision(_collider, _ownerCollider, false);
             GetComponent<RingBarrierFeedbackBehaviour>().ResetVisuals();
         }
