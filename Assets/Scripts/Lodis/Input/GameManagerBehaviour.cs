@@ -77,6 +77,7 @@ namespace Lodis.Gameplay
         private bool _isPaused;
         private MatchResult _matchResult;
         private bool _canPause = true;
+        private bool _suddenDeathActive;
         private bool _matchStarted;
 
         /// <summary>
@@ -111,6 +112,7 @@ namespace Lodis.Gameplay
 
         public static bool InfiniteEnergy { get; private set; }
         public bool InvincibleBarriers { get => _invincibleBarriers; set => _invincibleBarriers = value; }
+        public bool SuddenDeathActive { get => _suddenDeathActive; private set => _suddenDeathActive = value; }
 
         private void Awake()
         {
@@ -135,7 +137,7 @@ namespace Lodis.Gameplay
                 if (_matchResult == MatchResult.DRAW)
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
             },
-            args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.TimeUp);
+            args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
 
             Application.targetFrameRate = _targetFrameRate;
 
@@ -146,9 +148,11 @@ namespace Lodis.Gameplay
         private void Start()
         {
             SetPlayerControlsActive(false);
+            _canPause = false;
 
             RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
+                _canPause = true;
                 SetPlayerControlsActive(true);
                 _matchStarted = true;
                 _onMatchStart?.Invoke();
@@ -213,7 +217,8 @@ namespace Lodis.Gameplay
         public void Restart(bool suddenDeathActive = false)
         {
             _playerSpawner.SuddenDeathActive = suddenDeathActive;
-            MatchTimerBehaviour.IsInfinite = suddenDeathActive;
+            SuddenDeathActive = suddenDeathActive;
+            MatchTimerBehaviour.Instance.IsInfinite = suddenDeathActive;
 
             _onMatchRestart?.Invoke();
             _matchRestartEvent.Raise(gameObject);
@@ -230,8 +235,11 @@ namespace Lodis.Gameplay
                 TogglePause();
 
             SetPlayerControlsActive(false);
+            _canPause = false;
             RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
+
+                _canPause = true;
                 SetPlayerControlsActive(true);
                 _matchStarted = true;
                 _onMatchStart?.Invoke();
@@ -247,7 +255,7 @@ namespace Lodis.Gameplay
                 if (_matchResult == MatchResult.DRAW)
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
             },
-            args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.TimeUp);
+            args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
             _canPause = true;
         }
 

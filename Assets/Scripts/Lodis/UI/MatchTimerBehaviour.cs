@@ -8,6 +8,7 @@ namespace Lodis.UI
 {
     public class MatchTimerBehaviour : MonoBehaviour
     {
+        private static MatchTimerBehaviour _instance;
         [SerializeField]
         private Text _timerText;
         [SerializeField]
@@ -15,54 +16,78 @@ namespace Lodis.UI
         [SerializeField]
         private float _matchTimeRemaining;
         [SerializeField]
+        private float _timeSinceRoundStart;
+        [SerializeField]
         private GridGame.Event _onTimerUp;
-        private static bool _timeUp;
-        private static bool _isInfinite;
-        private static bool _isActive = true;
+        private bool _timeUp;
+        private bool _isInfinite;
+        private bool _isActive;
         private bool _eventRaised;
 
-        public static bool TimeUp
+
+        public static MatchTimerBehaviour Instance
+        {
+            get
+            {
+                if (!_instance)
+                    _instance = FindObjectOfType(typeof(MatchTimerBehaviour)) as MatchTimerBehaviour;
+
+                if (!_instance)
+                {
+                    GameObject manager = new GameObject("MatchTimer");
+                    _instance = manager.AddComponent<MatchTimerBehaviour>();
+                }
+
+                return _instance;
+            }
+        }
+
+        public bool TimeUp
         {
             get { return _timeUp; }
         }
 
-        public static bool IsInfinite { get => _isInfinite; set => _isInfinite = value; }
-        public static bool IsActive { get => _isActive; set => _isActive = value; }
+        public bool IsInfinite { get => _isInfinite; set => _isInfinite = value; }
+        public bool IsActive { get => _isActive; set => _isActive = value; }
+        public float MatchTimeRemaining { get => _matchTimeRemaining; private set => _matchTimeRemaining = value; }
+        public float TimeSinceRoundStart { get => _timeSinceRoundStart; private set => _timeSinceRoundStart = value; }
 
         // Start is called before the first frame update
         void Start()
         {
+            Gameplay.GameManagerBehaviour.Instance.AddOnMatchStartAction(() => IsActive = true);
             Gameplay.GameManagerBehaviour.Instance.AddOnMatchRestartAction(ResetTimer);
             Gameplay.GameManagerBehaviour.Instance.AddOnMatchOverAction(() => IsActive = false);
-            _matchTimeRemaining = _matchTime.Value;
+            MatchTimeRemaining = _matchTime.Value;
         }
 
         public void ResetTimer()
         {
-            _matchTimeRemaining = _matchTime.Value;
+            MatchTimeRemaining = _matchTime.Value;
             _eventRaised = false;
             _timeUp = false;
-            IsActive = true;
+            TimeSinceRoundStart = 0;
         }
 
         // Update is called once per frame
         void Update()
         {
+            TimeSinceRoundStart += Time.deltaTime;
             if (!IsActive)
                 return;
 
             string timeText = "";
             if (!IsInfinite)
             {
-                _matchTimeRemaining -= Time.deltaTime;
-                _timeUp = _matchTimeRemaining <= 0;
-                timeText = Mathf.Ceil(_matchTimeRemaining).ToString();
+                MatchTimeRemaining -= Time.deltaTime;
+                _timeUp = MatchTimeRemaining <= 0;
+                timeText = Mathf.Ceil(MatchTimeRemaining).ToString();
             }
             else
             {
-                _matchTimeRemaining = float.PositiveInfinity;
+                MatchTimeRemaining = float.PositiveInfinity;
                 _timeUp = false;
-                timeText = _matchTimeRemaining.ToString();
+                timeText = MatchTimeRemaining.ToString();
             }
 
             if (_timeUp && !_eventRaised)

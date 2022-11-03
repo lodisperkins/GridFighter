@@ -14,6 +14,8 @@ namespace Lodis.UI
         [SerializeField]
         private FloatVariable _matchStartTime;
         [SerializeField]
+        private FloatVariable _matchTime;
+        [SerializeField]
         private float _textEffectDuration;
         [SerializeField]
         private float _textEnableDelay;
@@ -22,45 +24,110 @@ namespace Lodis.UI
         [SerializeField]
         private Vector3 _scaleEffectStrength;
         [SerializeField]
-        private Text _startText;
+        private Text _startTextBox;
         [SerializeField]
         private ParticleSystem _startEffect;
         [SerializeField]
         private ParticleSystem _secondaryStartEffect;
+        [SerializeField]
+        private ParticleSystem _suddenDeathStartEffect;
+        [SerializeField]
+        private ParticleSystem _suddenDeathSecondaryStartEffect;
+        [SerializeField]
+        private Color _suddenDeathTextColor;
+        [SerializeField]
+        private Color _startTextColor;
+        [SerializeField]
+        private Color _suddenDeathTextOutlineColor;
+        [SerializeField]
+        private Color _startTextOutlineColor;
+        [SerializeField]
+        private string _suddentDeathReadyUpText;
+        [SerializeField]
+        private string _suddenDeathMatchStartText;
+        [SerializeField]
+        private string _readyUpText;
+        [SerializeField]
+        private string _matchStartText;
+        private Vector3 _defaultScale;
+        private Outline _textOutline;
+
+        private void Awake()
+        {
+            _textOutline = _startTextBox.GetComponent<Outline>();
+            _defaultScale = _startTextBox.rectTransform.localScale;
+        }
 
         // Start is called before the first frame update
         void Start()
         {
             GameManagerBehaviour.Instance.AddOnMatchStartAction(() =>
             {
-                BeginStartMatchEffect(true);
                 RoutineBehaviour.Instance.StartNewTimedAction(args => DisableAll(), TimedActionCountType.SCALEDTIME, _textDisableDelay);
             });
 
-            GameManagerBehaviour.Instance.AddOnMatchRestartAction( () => BeginStartMatchEffect(false));
-            BeginStartMatchEffect(false);
+            GameManagerBehaviour.Instance.AddOnMatchRestartAction(BeginReadyUpEffect);
+            BeginReadyUpEffect();
         }
 
         private void DisableAll()
         {
             _startEffect.gameObject.SetActive(false);
             _secondaryStartEffect.gameObject.SetActive(false);
-            _startText.enabled = false;
+            _suddenDeathSecondaryStartEffect.gameObject.SetActive(false);
+            _suddenDeathStartEffect.gameObject.SetActive(false);
+            _startTextBox.enabled = false;
+            _startTextBox.rectTransform.localScale = _defaultScale;
         }
 
-        public void BeginStartMatchEffect(bool isSecondary)
+        private void BeginReadyUpEffect()
         {
-
-            _secondaryStartEffect.gameObject.SetActive(isSecondary);
-            _startEffect.gameObject.SetActive(!isSecondary);
+            _startTextBox.rectTransform.localScale = _defaultScale;
+            if (GameManagerBehaviour.Instance.SuddenDeathActive)
+            {
+                _suddenDeathSecondaryStartEffect.gameObject.SetActive(false);
+                _suddenDeathStartEffect.gameObject.SetActive(true);
+                _textOutline.effectColor = _suddenDeathTextOutlineColor;
+                _startTextBox.color = _suddenDeathTextColor;
+            }
+            else
+            {
+                _secondaryStartEffect.gameObject.SetActive(false);
+                _startEffect.gameObject.SetActive(true);
+                _textOutline.effectColor = _startTextOutlineColor;
+                _startTextBox.color = _startTextColor;
+            }
 
             RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
-                _startText.text = isSecondary? "Fight" : "Ready";
-                _startText.enabled = true;
-                _startText.rectTransform.DOPunchScale(_scaleEffectStrength, _textEffectDuration);
+                _startTextBox.text = GameManagerBehaviour.Instance.SuddenDeathActive ? _suddentDeathReadyUpText : _readyUpText;
+                _startTextBox.enabled = true;
+                _startTextBox.rectTransform.DOPunchScale(_scaleEffectStrength, _textEffectDuration).onComplete = BeginMatchStartEffect;
 
             }, TimedActionCountType.SCALEDTIME, _textEnableDelay);
+        }
+
+        private void BeginMatchStartEffect()
+        {
+            float currentDelay = (_matchStartTime.Value - MatchTimerBehaviour.Instance.TimeSinceRoundStart);
+
+            if (GameManagerBehaviour.Instance.SuddenDeathActive)
+                _suddenDeathSecondaryStartEffect.gameObject.SetActive(true);
+            else
+                _secondaryStartEffect.gameObject.SetActive(true);
+
+            RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                if (GameManagerBehaviour.Instance.SuddenDeathActive)
+                    _suddenDeathStartEffect.gameObject.SetActive(false);
+                else
+                    _startEffect.gameObject.SetActive(false);
+
+                _startTextBox.text = GameManagerBehaviour.Instance.SuddenDeathActive ? _suddenDeathMatchStartText : _matchStartText;
+                _startTextBox.enabled = true;
+                _startTextBox.rectTransform.DOPunchScale(_scaleEffectStrength, _textEffectDuration);
+
+            }, TimedActionCountType.SCALEDTIME, currentDelay);
         }
     }
 }
