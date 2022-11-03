@@ -11,6 +11,7 @@ using DG.Tweening;
 using UnityEngine.Events;
 using System;
 using Lodis.UI;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.Gameplay
 {
@@ -43,6 +44,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private int _targetFrameRate;
         [SerializeField]
+        private FloatVariable _matchStartTime;
+        [SerializeField]
         private bool _invincibleBarriers;
         [SerializeField]
         private bool _infiniteEnergy;
@@ -50,6 +53,9 @@ namespace Lodis.Gameplay
         private float _timeScale = 1;
         [SerializeField]
         private UnityEvent _onApplicationQuit;
+
+        [SerializeField]
+        private UnityEvent _onMatchStart;
         [SerializeField]
         private UnityEvent _onMatchPause;
         [SerializeField]
@@ -58,14 +64,19 @@ namespace Lodis.Gameplay
         private UnityEvent _onMatchRestart;
         [SerializeField]
         private UnityEvent _onMatchOver;
+
         [SerializeField]
         private GridGame.Event _matchRestartEvent;
         [SerializeField]
+        private GridGame.Event _matchStartEvent;
+        [SerializeField]
         private GridGame.Event _matchOverEvent;
+
         private PlayerSpawnBehaviour _playerSpawner;
         private bool _isPaused;
         private MatchResult _matchResult;
         private bool _canPause = true;
+        private bool _matchStarted;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -129,6 +140,19 @@ namespace Lodis.Gameplay
             Time.timeScale = _timeScale;
         }
 
+        private void Start()
+        {
+            SetPlayerControlsActive(false);
+
+            RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                SetPlayerControlsActive(true);
+                _matchStarted = true;
+                _onMatchStart?.Invoke();
+                _matchStartEvent.Raise();
+            }, TimedActionCountType.SCALEDTIME, _matchStartTime.Value);
+        }
+
         private void SetMatchResult()
         {
             if (_playerSpawner.P2HealthScript.HasExploded)
@@ -190,6 +214,8 @@ namespace Lodis.Gameplay
 
             _onMatchRestart?.Invoke();
             _matchRestartEvent.Raise(gameObject);
+            _matchStarted = false;
+
 
             if (suddenDeathActive)
             {
@@ -199,6 +225,15 @@ namespace Lodis.Gameplay
 
             if (_isPaused)
                 TogglePause();
+
+            SetPlayerControlsActive(false);
+            RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                SetPlayerControlsActive(true);
+                _matchStarted = true;
+                _onMatchStart?.Invoke();
+                _matchStartEvent.Raise();
+            }, TimedActionCountType.SCALEDTIME, _matchStartTime.Value);
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
             {
@@ -232,6 +267,11 @@ namespace Lodis.Gameplay
         public void AddOnMatchOverAction(UnityAction action)
         {
             _onMatchOver.AddListener(action);
+        }
+
+        public void AddOnMatchStartAction(UnityAction action)
+        {
+            _onMatchStart.AddListener(action);
         }
 
         public void AddOnMatchPauseAction(UnityAction action)

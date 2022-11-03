@@ -173,12 +173,12 @@ MonoBehaviour:
   _character: {fileID: 0}
   _attackType: 4
   _attackDelay: 1
-  _attackStrength: 1.15
-  _maxRange: 6.05
+  _attackStrength: 1.5
+  _maxRange: 7
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
   _senseCollider: {fileID: 2917431262450575549}
-  _maxDecisionCount: 3000
+  _maxDecisionCount: 4000
   _timeNeededToBurst: 0
   LastDefenseDecision:
     VisitCount: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 422fb6956201c7944ae2113a1a53b0b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxTasksPerTick: 500
+  maxTasksPerTick: 1000
   behavior: {fileID: 11400000, guid: 9aaa7bb72180ef0479a7bb47efa52cb6, type: 2}
   paused: 0
   restartWhenFinished: 1
