@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using Lodis.AI;
+using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.Movement;
 using Lodis.Utility;
@@ -68,6 +69,7 @@ namespace Lodis.Gameplay
             {
                 SpawnPlayer2();
                 BlackBoardBehaviour.Instance.Grid.AssignOwners(_player1.name, _player2.name);
+                LoadAIDecisions();
             }
             else
                 BlackBoardBehaviour.Instance.Grid.AssignOwners(_player1.name);
@@ -172,6 +174,21 @@ namespace Lodis.Gameplay
             //Enable both players in case either are inactive
             _p1Input.Character.SetActive(true);
             _p2Input.Character.SetActive(true);
+        }
+
+        private void LoadAIDecisions()
+        {
+            if (_mode != GameMode.PRACTICE && _mode != GameMode.SIMULATE)
+                return;
+
+            AttackDummyBehaviour dummyController = BlackBoardBehaviour.Instance.Player2Controller as AttackDummyBehaviour;
+            dummyController.LoadDecisions();
+
+            if (_mode == GameMode.SIMULATE)
+            {
+                dummyController = BlackBoardBehaviour.Instance.Player2Controller as AttackDummyBehaviour;
+                dummyController.LoadDecisions();
+            }
         }
 
         private bool DeviceInputReceived(out InputDevice device)

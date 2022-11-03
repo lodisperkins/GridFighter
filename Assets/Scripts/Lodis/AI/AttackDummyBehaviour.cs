@@ -90,6 +90,24 @@ namespace Lodis.AI
         public bool EnableBehaviourTree;
 
 
+        public void LoadDecisions()
+        {
+            if (!EnableBehaviourTree)
+                return;
+
+            _attackDecisions = new AttackDecisionTree();
+            _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
+            _attackDecisions.Load(Character.name);
+            _defenseDecisions = new DefenseDecisionTree();
+            _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
+            _defenseDecisions.Load(Character.name);
+
+            if (Application.isEditor) return;
+
+            GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _attackDecisions?.Save(Character.name));
+            GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _defenseDecisions?.Save(Character.name));
+        }
+
         private void Start()
         {
             Defense = Character.GetComponent<CharacterDefenseBehaviour>();
@@ -107,22 +125,6 @@ namespace Lodis.AI
 
             _senseCollider.transform.SetParent(Character.transform);
             _senseCollider.transform.localPosition = Vector3.zero;
-
-
-            if (EnableBehaviourTree)
-            {
-                _attackDecisions = new AttackDecisionTree();
-                _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
-                _attackDecisions.Load(Character.name);
-                _defenseDecisions = new DefenseDecisionTree();
-                _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
-                _defenseDecisions.Load(Character.name);
-
-                if (Application.isEditor) return;
-
-                GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _attackDecisions?.Save(Character.name));
-                GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _defenseDecisions?.Save(Character.name));
-            }
         }
 
         private void OnEnable()

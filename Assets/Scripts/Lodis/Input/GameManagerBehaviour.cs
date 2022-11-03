@@ -12,6 +12,7 @@ using UnityEngine.Events;
 using System;
 using Lodis.UI;
 using Lodis.ScriptableObjects;
+using Lodis.AI;
 
 namespace Lodis.Gameplay
 {
@@ -122,6 +123,7 @@ namespace Lodis.Gameplay
 
             _playerSpawner = GetComponent<PlayerSpawnBehaviour>();
             _playerSpawner.SpawnEntitiesByMode(_mode);
+
             _onMatchRestart.AddListener(_playerSpawner.ResetPlayers);
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
@@ -139,6 +141,7 @@ namespace Lodis.Gameplay
 
             Time.timeScale = _timeScale;
         }
+
 
         private void Start()
         {
