@@ -251,12 +251,12 @@ namespace Lodis.Gameplay
                 SetMatchResult();
                 _onMatchOver?.Invoke();
                 _matchOverEvent?.Raise(gameObject);
+                _canPause = false;
 
                 if (_matchResult == MatchResult.DRAW)
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
             },
             args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
-            _canPause = true;
         }
 
         public void QuitApplication()

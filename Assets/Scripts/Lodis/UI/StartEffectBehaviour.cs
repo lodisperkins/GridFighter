@@ -49,13 +49,14 @@ namespace Lodis.UI
         private string _readyUpText;
         [SerializeField]
         private string _matchStartText;
-        private Vector3 _defaultScale;
+        private Rect _defaultRect;
         private Outline _textOutline;
+        private TimedAction _currentAction;
 
         private void Awake()
         {
             _textOutline = _startTextBox.GetComponent<Outline>();
-            _defaultScale = _startTextBox.rectTransform.localScale;
+            _defaultRect = _startTextBox.rectTransform.rect;
         }
 
         // Start is called before the first frame update
@@ -63,26 +64,27 @@ namespace Lodis.UI
         {
             GameManagerBehaviour.Instance.AddOnMatchStartAction(() =>
             {
-                RoutineBehaviour.Instance.StartNewTimedAction(args => DisableAll(), TimedActionCountType.SCALEDTIME, _textDisableDelay);
+                _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args => DisableAll(), TimedActionCountType.SCALEDTIME, _textDisableDelay);
             });
 
-            GameManagerBehaviour.Instance.AddOnMatchRestartAction(BeginReadyUpEffect);
+            GameManagerBehaviour.Instance.AddOnMatchRestartAction( () => { DisableAll(); BeginReadyUpEffect(); });
             BeginReadyUpEffect();
         }
 
         private void DisableAll()
         {
+            RoutineBehaviour.Instance.StopAction(_currentAction);
             _startEffect.gameObject.SetActive(false);
             _secondaryStartEffect.gameObject.SetActive(false);
             _suddenDeathSecondaryStartEffect.gameObject.SetActive(false);
             _suddenDeathStartEffect.gameObject.SetActive(false);
             _startTextBox.enabled = false;
-            _startTextBox.rectTransform.localScale = _defaultScale;
+            _startTextBox.rectTransform.rect.Set(_defaultRect.x, _defaultRect.y, _defaultRect.width, _defaultRect.height);
         }
 
         private void BeginReadyUpEffect()
         {
-            _startTextBox.rectTransform.localScale = _defaultScale;
+            _startTextBox.rectTransform.rect.Set(_defaultRect.x, _defaultRect.y, _defaultRect.width, _defaultRect.height);
             if (GameManagerBehaviour.Instance.SuddenDeathActive)
             {
                 _suddenDeathSecondaryStartEffect.gameObject.SetActive(false);
@@ -98,7 +100,7 @@ namespace Lodis.UI
                 _startTextBox.color = _startTextColor;
             }
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
                 _startTextBox.text = GameManagerBehaviour.Instance.SuddenDeathActive ? _suddentDeathReadyUpText : _readyUpText;
                 _startTextBox.enabled = true;
@@ -116,7 +118,7 @@ namespace Lodis.UI
             else
                 _secondaryStartEffect.gameObject.SetActive(true);
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
                 if (GameManagerBehaviour.Instance.SuddenDeathActive)
                     _suddenDeathStartEffect.gameObject.SetActive(false);

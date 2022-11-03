@@ -488,6 +488,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 1196322217663576068}
   OnTakeDamageEvent: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   _hasExploded: 0
+  _outOfBounds: 0
   _currentAirState: 0
   _netForceLandingTolerance: 3
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
@@ -1694,7 +1695,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7013856285134678180, guid: dc49d54e3eba6a446941613a3fc2efde, type: 3}
+  - {fileID: 2100000, guid: 375adf84adc77744e9c135dccc3ce5e9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
