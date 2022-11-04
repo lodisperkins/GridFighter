@@ -108,14 +108,18 @@ namespace Lodis.AI
             GameManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _defenseDecisions?.Save(Character.name));
         }
 
+        private void Awake()
+        {
+            _executor = GetComponent<BehaviorExecutor>();
+            _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
+        }
+
         private void Start()
         {
             Defense = Character.GetComponent<CharacterDefenseBehaviour>();
             Moveset = Character.GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             Knockback = Character.GetComponent<Movement.KnockbackBehaviour>();
-            _executor = GetComponent<BehaviorExecutor>();
-            _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
             _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
 
             _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(PlayerID);

@@ -1,29 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using UnityEditor;
-using UnityEngine.InputSystem.Utilities;
 using Lodis.Utility;
-using Lodis.Input;
 using DG.Tweening;
 using UnityEngine.Events;
 using System;
 using Lodis.UI;
 using Lodis.ScriptableObjects;
-using Lodis.AI;
 
 namespace Lodis.Gameplay
 {
-    public enum GameMode
-    {
-        SINGLEPLAYER,
-        PRACTICE,
-        MULTIPLAYER,
-        SIMULATE
-    }
-
     public enum MatchResult
     {
         DRAW,
@@ -36,7 +23,6 @@ namespace Lodis.Gameplay
         private static GameManagerBehaviour _instance;
         [SerializeField]
         private GridScripts.GridBehaviour _grid;
-        [SerializeField]
         private GameMode _mode;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierL;
@@ -116,6 +102,8 @@ namespace Lodis.Gameplay
 
         private void Awake()
         {
+            _mode = (GameMode)SceneManagerBehaviour.Instance.GameMode.Value;
+
             _grid.DestroyTempPanels();
             _grid.InvincibleBarriers = InvincibleBarriers;
             InfiniteEnergy = _infiniteEnergy;
@@ -257,6 +245,11 @@ namespace Lodis.Gameplay
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
             },
             args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
+        }
+
+        public void ReturnToMainMenu()
+        {
+            SceneManagerBehaviour.Instance.LoadScene(0);
         }
 
         public void QuitApplication()

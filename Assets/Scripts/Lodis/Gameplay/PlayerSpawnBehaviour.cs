@@ -186,7 +186,7 @@ namespace Lodis.Gameplay
 
             if (_mode == GameMode.SIMULATE)
             {
-                dummyController = BlackBoardBehaviour.Instance.Player2Controller as AttackDummyBehaviour;
+                dummyController = BlackBoardBehaviour.Instance.Player1Controller as AttackDummyBehaviour;
                 dummyController.LoadDecisions();
             }
         }
