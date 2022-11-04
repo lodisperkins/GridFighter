@@ -68067,17 +68067,17 @@ PrefabInstance:
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player1Color.b
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player1Color.g
-      value: 0.5458693
+      value: 0.42026234
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player1Color.r
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
@@ -68087,12 +68087,12 @@ PrefabInstance:
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player2Color.g
-      value: 1
+      value: 0.19798015
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: Player2Color.r
-      value: 0.7826065
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
