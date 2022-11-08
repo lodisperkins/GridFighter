@@ -38,41 +38,37 @@ namespace Lodis.Gameplay
 
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
 
-            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
+            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
 
             _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
             _ownerKnockBackScript.CancelHitStun();
             _ownerKnockBackScript.CancelStun();
-        }
-
-        protected override void Deactivate()
-        {
-            base.Deactivate();
-
             if (!_ownerKnockBackScript.Physics.IsGrounded)
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
-            else
+        }
+
+        private void ResetState()
+        {
+            if (_ownerKnockBackScript.Physics.IsGrounded)
             {
                 _ownerKnockBackScript.CurrentAirState = AirState.NONE;
                 _ownerKnockBackScript.Physics.RB.isKinematic = true;
             }
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
+            _ownerKnockBackScript.DisableInvincibility();
         }
 
-        protected override void End()
+        protected override void Deactivate()
         {
-            base.End();
+            base.Deactivate();
+            ResetState();
         }
-
         public override void StopAbility()
         {
             base.StopAbility();
-            if (!_ownerKnockBackScript.Physics.IsGrounded)
-                _ownerKnockBackScript.CurrentAirState = AirState.TUMBLING;
 
-            _ownerKnockBackScript.DisableInvincibility();
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
+            ResetState();
         }
     }
 }

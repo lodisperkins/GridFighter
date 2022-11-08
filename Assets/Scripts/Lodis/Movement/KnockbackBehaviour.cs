@@ -279,7 +279,6 @@ namespace Lodis.Movement
         public override void CancelStun()
         {
             base.CancelStun();
-
         }
 
         public override void ResetHealth()
