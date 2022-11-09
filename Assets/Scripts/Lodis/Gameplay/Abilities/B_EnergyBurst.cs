@@ -14,15 +14,29 @@ namespace Lodis.Gameplay
     {
         private GameObject _barrier;
         private GameObject _burstEffect;
+        private float _defaultRestTime;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
             if (!_burstEffect) _burstEffect = Resources.Load<GameObject>("AbilityData/Effects/EnergyBurst");
+            _defaultRestTime = abilityData.recoverTime;
         }
 
-	    //Called when ability is used
+        protected override void Start(params object[] args)
+        {
+            base.Start(args);
+
+
+            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
+
+            _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
+            _ownerKnockBackScript.CancelHitStun();
+            _ownerKnockBackScript.CancelStun();
+        }
+
+        //Called when ability is used
         protected override void Activate(params object[] args)
         {
             HitColliderData hitColliderData = GetColliderData(0);
@@ -37,12 +51,6 @@ namespace Lodis.Gameplay
             instantiatedCollider.ColliderInfo = hitColliderData;
 
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
-
-            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-
-            _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
-            _ownerKnockBackScript.CancelHitStun();
-            _ownerKnockBackScript.CancelStun();
             if (!_ownerKnockBackScript.Physics.IsGrounded)
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
         }
@@ -69,6 +77,13 @@ namespace Lodis.Gameplay
             base.StopAbility();
 
             ResetState();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            if (CurrentAbilityPhase == AbilityPhase.RECOVER && !_ownerKnockBackScript.Physics.IsGrounded && InUse)
+                EndAbility();
         }
     }
 }

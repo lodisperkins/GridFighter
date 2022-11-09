@@ -23,11 +23,11 @@ MonoBehaviour:
   canCancelStartUp: 1
   canCancelActive: 1
   canCancelRecover: 1
-  CanCancelOnMove: 0
+  CanCancelOnMove: 1
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
-  CanInputMovementWhileActive: 0
+  CanInputMovementWhileActive: 1
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
