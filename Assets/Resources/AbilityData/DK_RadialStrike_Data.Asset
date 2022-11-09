@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanCancelOnOpponentHit: 0
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 1
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -42,8 +42,8 @@ MonoBehaviour:
   DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: RadialStrikeCollider
-    DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
@@ -60,6 +60,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
+    SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 3

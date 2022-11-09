@@ -87,10 +87,17 @@ namespace Lodis.Gameplay
             _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, _spawnTransform);
             _visualPrefabInstance.transform.localPosition += Vector3.back * 0.3f;
             //Spawn a game object with the collider attached
-            _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one, _fistCollider, owner);
+            _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one / 2, _fistCollider, owner);
             _hitScript.transform.localPosition = Vector3.zero;
             _hitScript.AddCollisionEvent(EnableBounce);
             _hitScript.AddCollisionEvent(context => Object.Destroy(_visualPrefabInstance));
+
+            GridTrackerBehaviour tracker;
+            if (!_hitScript.GetComponent<GridTrackerBehaviour>())
+            {
+                tracker = _hitScript.gameObject.AddComponent<GridTrackerBehaviour>();
+                tracker.Marker = MarkerType.DANGER;
+            }
         }
 
         /// <summary>

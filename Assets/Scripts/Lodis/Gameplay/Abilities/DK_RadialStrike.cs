@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using Lodis.GridScripts;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -57,6 +58,14 @@ namespace Lodis.Gameplay
             //Spawn a game object with the collider attached
             _hitCollider = HitColliderSpawner.SpawnBoxCollider(spawnTransform, _hitBoxScale, hitColliderRef, owner);
             _hitCollider.transform.position += owner.transform.forward * abilityData.GetCustomStatValue("HitBoxDistanceX");
+            GridTrackerBehaviour tracker;
+            if (!_hitCollider.GetComponent<GridTrackerBehaviour>())
+            {
+                tracker = _hitCollider.gameObject.AddComponent<GridTrackerBehaviour>();
+                tracker.Marker = MarkerType.DANGER;
+            }    
+
+
 
             _hitCollider.DebuggingEnabled = true;
         }
