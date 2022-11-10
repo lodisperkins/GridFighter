@@ -329,7 +329,7 @@ namespace Lodis.Gameplay
             }
 
             _onParryEvent?.Raise(gameObject);
-            GameManagerBehaviour.Instance.ChangeTimeScale(0, 0, 0.05f);
+            MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, 0.05f);
             Instantiate(_perfectDefenseEffect, transform.position + Vector3.up * 0.5f, Camera.main.transform.rotation);
 
             //Deactivate the parry
@@ -390,7 +390,7 @@ namespace Lodis.Gameplay
 
                 _phaseShiftSuccessEvent?.Raise(gameObject);
                 _currentPhaseShiftRestTime = _successPhaseShiftRestTime;
-                GameManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale.Value, _slowMotionTransitionSpeed.Value, _slowMotionTime.Value);
+                MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale.Value, _slowMotionTransitionSpeed.Value, _slowMotionTime.Value);
             }
 
             if (!IsBraced || !other.CompareTag("Structure") || other.CompareTag("CollisionPlane") || BreakingFall)

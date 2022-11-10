@@ -55,9 +55,9 @@ namespace Lodis.UI
         // Start is called before the first frame update
         void Start()
         {
-            Gameplay.GameManagerBehaviour.Instance.AddOnMatchStartAction(() => IsActive = true);
-            Gameplay.GameManagerBehaviour.Instance.AddOnMatchRestartAction(ResetTimer);
-            Gameplay.GameManagerBehaviour.Instance.AddOnMatchOverAction(() => IsActive = false);
+            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => IsActive = true);
+            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ResetTimer);
+            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => IsActive = false);
             MatchTimeRemaining = _matchTime.Value;
         }
 

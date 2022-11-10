@@ -28,7 +28,7 @@ namespace Lodis.Gameplay
 
         public void Start()
         {
-            GameManagerBehaviour.Instance.AddOnMatchRestartAction(
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(
                  () => RoutineBehaviour.Instance.StopAction(_chargeAction)
                 );
         }
@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
             _characterFeedback.TimeBetweenFlashes = _explosionChargeTime;
             SoundManagerBehaviour.Instance.PlaySound(_chargeSound);
             SoundManagerBehaviour.Instance.TogglePauseMusic();
-            GameManagerBehaviour.Instance.ChangeTimeScale(0.2f, ExplosionChargeTime, ExplosionChargeTime);
+            MatchManagerBehaviour.Instance.ChangeTimeScale(0.2f, ExplosionChargeTime, ExplosionChargeTime);
 
             ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args =>
             {

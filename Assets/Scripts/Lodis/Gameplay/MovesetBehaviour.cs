@@ -157,7 +157,7 @@ namespace Lodis.Gameplay
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
 
-            if (GameManagerBehaviour.InfiniteEnergy)
+            if (MatchManagerBehaviour.InfiniteEnergy)
                 _energy = _maxEnergyRef.Value;
         }
 
@@ -402,7 +402,7 @@ namespace Lodis.Gameplay
             else if (currentAbility.abilityData.EnergyCost > _energy && currentAbility.currentActivationAmount == 0)
                 return null;
 
-            if (currentAbility.currentActivationAmount == 0 && !GameManagerBehaviour.InfiniteEnergy)
+            if (currentAbility.currentActivationAmount == 0 && !MatchManagerBehaviour.InfiniteEnergy)
                 _energy -= currentAbility.abilityData.EnergyCost;
 
             currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
@@ -540,7 +540,7 @@ namespace Lodis.Gameplay
         {
             if (Energy < actionCost) return false;
 
-            if (!GameManagerBehaviour.InfiniteEnergy)
+            if (!MatchManagerBehaviour.InfiniteEnergy)
                 Energy -= actionCost;
             
             action?.Invoke();
@@ -552,7 +552,7 @@ namespace Lodis.Gameplay
         {
             if (Energy < actionCost) return false;
 
-            if (!GameManagerBehaviour.InfiniteEnergy)
+            if (!MatchManagerBehaviour.InfiniteEnergy)
                 Energy -= actionCost;
 
             return true;

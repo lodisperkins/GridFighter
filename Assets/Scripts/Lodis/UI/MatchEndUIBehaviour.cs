@@ -20,7 +20,7 @@ namespace Lodis.UI
         {
             _endText.gameObject.SetActive(true);
 
-            switch (GameManagerBehaviour.Instance.LastMatchResult)
+            switch (MatchManagerBehaviour.Instance.LastMatchResult)
             {
                 case MatchResult.DRAW:
                     _endText.text = "Draw!";

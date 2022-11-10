@@ -43,8 +43,8 @@ namespace Lodis.Gameplay
             base.Start();
             AddOnDeathAction(() => Physics.IgnoreCollision(_collider, _ownerCollider));
 
-            if (GameManagerBehaviour.Instance.InvincibleBarriers)
-                SetInvincibilityByCondition(condition => !GameManagerBehaviour.Instance.InvincibleBarriers);
+            if (MatchManagerBehaviour.Instance.InvincibleBarriers)
+                SetInvincibilityByCondition(condition => !MatchManagerBehaviour.Instance.InvincibleBarriers);
 
             _ownerCollider = Owner.GetComponent<GridPhysicsBehaviour>().BounceCollider;
         }

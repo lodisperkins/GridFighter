@@ -62,12 +62,12 @@ namespace Lodis.UI
         // Start is called before the first frame update
         void Start()
         {
-            GameManagerBehaviour.Instance.AddOnMatchStartAction(() =>
+            MatchManagerBehaviour.Instance.AddOnMatchStartAction(() =>
             {
                 _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args => DisableAll(), TimedActionCountType.SCALEDTIME, _textDisableDelay);
             });
 
-            GameManagerBehaviour.Instance.AddOnMatchRestartAction( () => { DisableAll(); BeginReadyUpEffect(); });
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction( () => { DisableAll(); BeginReadyUpEffect(); });
             BeginReadyUpEffect();
         }
 
@@ -85,7 +85,7 @@ namespace Lodis.UI
         private void BeginReadyUpEffect()
         {
             _startTextBox.rectTransform.rect.Set(_defaultRect.x, _defaultRect.y, _defaultRect.width, _defaultRect.height);
-            if (GameManagerBehaviour.Instance.SuddenDeathActive)
+            if (MatchManagerBehaviour.Instance.SuddenDeathActive)
             {
                 _suddenDeathSecondaryStartEffect.gameObject.SetActive(false);
                 _suddenDeathStartEffect.gameObject.SetActive(true);
@@ -102,7 +102,7 @@ namespace Lodis.UI
 
             _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
-                _startTextBox.text = GameManagerBehaviour.Instance.SuddenDeathActive ? _suddentDeathReadyUpText : _readyUpText;
+                _startTextBox.text = MatchManagerBehaviour.Instance.SuddenDeathActive ? _suddentDeathReadyUpText : _readyUpText;
                 _startTextBox.enabled = true;
                 _startTextBox.rectTransform.DOPunchScale(_scaleEffectStrength, _textEffectDuration).onComplete = BeginMatchStartEffect;
 
@@ -113,19 +113,19 @@ namespace Lodis.UI
         {
             float currentDelay = (_matchStartTime.Value - MatchTimerBehaviour.Instance.TimeSinceRoundStart);
 
-            if (GameManagerBehaviour.Instance.SuddenDeathActive)
+            if (MatchManagerBehaviour.Instance.SuddenDeathActive)
                 _suddenDeathSecondaryStartEffect.gameObject.SetActive(true);
             else
                 _secondaryStartEffect.gameObject.SetActive(true);
 
             _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
-                if (GameManagerBehaviour.Instance.SuddenDeathActive)
+                if (MatchManagerBehaviour.Instance.SuddenDeathActive)
                     _suddenDeathStartEffect.gameObject.SetActive(false);
                 else
                     _startEffect.gameObject.SetActive(false);
 
-                _startTextBox.text = GameManagerBehaviour.Instance.SuddenDeathActive ? _suddenDeathMatchStartText : _matchStartText;
+                _startTextBox.text = MatchManagerBehaviour.Instance.SuddenDeathActive ? _suddenDeathMatchStartText : _matchStartText;
                 _startTextBox.enabled = true;
                 _startTextBox.rectTransform.DOPunchScale(_scaleEffectStrength, _textEffectDuration);
 

@@ -10,8 +10,8 @@ namespace Lodis.Gameplay
     public class BlackBoardBehaviour : MonoBehaviour
     {
         public List<Color> AbilityCostColors;
-        public Color Player1Color;
-        public Color Player2Color;
+        public ColorVariable Player1Color;
+        public ColorVariable Player2Color;
         public GridScripts.GridBehaviour Grid { get; private set; }
         public string Player1State = null;
         public string Player2State = null;
