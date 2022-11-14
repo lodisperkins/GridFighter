@@ -90,17 +90,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 3714706006734652295}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f797b8b88b27d4b96f6d0cdbf360c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 1458e4b93598b4844b656506e56be59d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _grid: {fileID: 0}
-  _mode: 2
   _ringBarrierL: {fileID: 0}
   _ringBarrierR: {fileID: 0}
-  _targetFrameRate: 60
+  _targetFrameRate: 0
+  _matchStartTime: {fileID: 0}
   _invincibleBarriers: 0
   _infiniteEnergy: 0
   _timeScale: 1
+  _onApplicationQuit:
+    m_PersistentCalls:
+      m_Calls: []
+  _onMatchStart:
+    m_PersistentCalls:
+      m_Calls: []
+  _onMatchPause:
+    m_PersistentCalls:
+      m_Calls: []
+  _onMatchUnpause:
+    m_PersistentCalls:
+      m_Calls: []
+  _onMatchRestart:
+    m_PersistentCalls:
+      m_Calls: []
+  _onMatchOver:
+    m_PersistentCalls:
+      m_Calls: []
+  _matchRestartEvent: {fileID: 0}
+  _matchStartEvent: {fileID: 0}
+  _matchOverEvent: {fileID: 0}
 --- !u!114 &6769407473129059388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,8 +135,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
-  _dummyRHSSpawnLocation: {x: 5, y: 0}
-  _dummyLHSSpawnLocation: {x: 0, y: 0}
+  _RHSSpawnLocation: {x: 0, y: 0}
+  _LHSSpawnLocation: {x: 0, y: 0}
   _inputManager: {fileID: 3714706006734652313}
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
@@ -177,6 +198,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   IntendedSender: {fileID: 0}
+  AcceptTagAsSender: 0
 --- !u!114 &1359032537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207,6 +229,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   IntendedSender: {fileID: 0}
+  AcceptTagAsSender: 0
 --- !u!114 &1359032538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,3 +246,6 @@ MonoBehaviour:
     type: 3}
   _explosionChargeTime: 1
   _maxEmission: 150
+  _chargeSound: {fileID: 0}
+  _explosionSound: {fileID: 0}
+  _onCharacterExplosion: {fileID: 0}

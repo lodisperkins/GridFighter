@@ -23,7 +23,7 @@ namespace Lodis.ScriptableObjects
 
         public void SetColor(string hex)
         {
-            ColorUtility.TryParseHtmlString(hex, out _val);
+            ColorUtility.TryParseHtmlString("#" + hex, out _val);
         }
 
         public void Init(Color value)

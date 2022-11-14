@@ -56434,7 +56434,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 47f797b8b88b27d4b96f6d0cdbf360c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 1458e4b93598b4844b656506e56be59d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1359032538 stripped
@@ -68094,36 +68094,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: Player1Color.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: Player1Color.g
-      value: 0.42026234
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: Player1Color.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: Player2Color.b
-      value: 0.02352941
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: Player2Color.g
-      value: 0.19798015
-      objectReference: {fileID: 0}
-    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
-        type: 3}
-      propertyPath: Player2Color.r
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: RingBarrierLHS

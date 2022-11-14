@@ -50,8 +50,8 @@ MonoBehaviour:
   - {r: 0.8773585, g: 0.8012463, b: 0, a: 1}
   - {r: 0.85882354, g: 0, b: 0, a: 1}
   - {r: 0.776201, g: 0, b: 0.85882354, a: 1}
-  Player1Color: {r: 0, g: 0.42320108, b: 1, a: 1}
-  Player2Color: {r: 0.023828104, g: 1, b: 0.02352941, a: 1}
+  Player1Color: {fileID: 11400000, guid: 746d9f473f4780140b1becbef066dfce, type: 2}
+  Player2Color: {fileID: 11400000, guid: db5801176aa0d1143aabbc9690c96374, type: 2}
   Player1State: 
   Player2State: 
   MaxKnockBackHealth: {fileID: 11400000, guid: a850879eb5579a94c8611fe9609619f4, type: 2}
