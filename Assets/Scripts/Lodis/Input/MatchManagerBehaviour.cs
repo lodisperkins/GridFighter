@@ -8,6 +8,7 @@ using UnityEngine.Events;
 using System;
 using Lodis.UI;
 using Lodis.ScriptableObjects;
+using Lodis.Sound;
 
 namespace Lodis.Gameplay
 {
@@ -21,6 +22,7 @@ namespace Lodis.Gameplay
     public class MatchManagerBehaviour : MonoBehaviour
     {
         private static MatchManagerBehaviour _instance;
+        [Header("Environment References")]
         [SerializeField]
         private GridScripts.GridBehaviour _grid;
         private GameMode _mode;
@@ -28,6 +30,8 @@ namespace Lodis.Gameplay
         private RingBarrierBehaviour _ringBarrierL;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierR;
+
+        [Header("Match Options")]
         [SerializeField]
         private int _targetFrameRate;
         [SerializeField]
@@ -38,9 +42,16 @@ namespace Lodis.Gameplay
         private bool _infiniteEnergy;
         [SerializeField]
         private float _timeScale = 1;
+
+        [Header("Music")]
+        [SerializeField]
+        private AudioClip _matchMusic;
+        [SerializeField]
+        private AudioClip _suddenDeathMusic;
+
+        [Header("Match Events")]
         [SerializeField]
         private UnityEvent _onApplicationQuit;
-
         [SerializeField]
         private UnityEvent _onMatchStart;
         [SerializeField]
@@ -115,6 +126,14 @@ namespace Lodis.Gameplay
             _playerSpawner.SpawnEntitiesByMode(_mode);
 
             _onMatchRestart.AddListener(_playerSpawner.ResetPlayers);
+            _onMatchRestart.AddListener(() =>
+            {
+                if (SuddenDeathActive)
+                    SoundManagerBehaviour.Instance.SetMusic(_suddenDeathMusic);
+                else
+                    SoundManagerBehaviour.Instance.SetMusic(_matchMusic);
+
+            });
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
             {
