@@ -134,6 +134,9 @@ MonoBehaviour:
   canCancelMovement: 0
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
+  _onTeleportStart: {fileID: 0}
+  _onTeleportEnd: {fileID: 0}
+  _moveSound: {fileID: 8300000, guid: a5eda9809f8053a41b9797ee670acf36, type: 3}
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 1
   _moveOnStart: 1
@@ -174,8 +177,7 @@ MonoBehaviour:
   _isParrying: 0
   _parryInvincibilityLength: 0.1
   _canParry: 1
-  _groundParryRestTime: 0.3
-  _parryStartUpTime: 0.05
+  _shieldRestTime: {fileID: 0}
   _braceActiveTime: 0.1
   _shieldDrainValue: {fileID: 11400000, guid: 85dc43ae146cbf3429b43a067bad9d02, type: 2}
   _canBrace: 0
@@ -189,10 +191,15 @@ MonoBehaviour:
   _wallTechJumpDuration: 0.2
   _attackerStunTime: 5
   _phaseShiftDuration: 0.25
-  _defaultPhaseShiftRestTime: 0.3
-  _successPhaseShiftRestTime: 0
-  _slowMotionTimeScale: 0.01
-  _slowMotionTime: 0.1
+  _defaultPhaseShiftRestTime: {fileID: 0}
+  _successPhaseShiftRestTime: {fileID: 0}
+  _phaseShiftEvent: {fileID: 0}
+  _phaseShiftSuccessEvent: {fileID: 0}
+  _onParryEvent: {fileID: 0}
+  _slowMotionTimeScale: {fileID: 0}
+  _slowMotionTime: {fileID: 0}
+  _slowMotionTransitionSpeed: {fileID: 0}
+  _perfectDefenseEffect: {fileID: 0}
 --- !u!114 &1463821011073023751
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,6 +223,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 5237796854249644499}
   OnTakeDamageEvent: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   _hasExploded: 0
+  _outOfBounds: 0
   _currentAirState: 0
   _netForceLandingTolerance: 3
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
@@ -1038,6 +1046,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 0a1158f9dd9ab0f4b8dca57ab98000aa, type: 2}
   IntendedSender: {fileID: 1959598720044943059}
+  AcceptTagAsSender: 0
 --- !u!114 &2808544162688675292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,6 +1075,7 @@ MonoBehaviour:
         m_CallState: 2
   Event: {fileID: 11400000, guid: 5ef561623c994e44a91f274065867cf4, type: 2}
   IntendedSender: {fileID: 1959598720044943059}
+  AcceptTagAsSender: 0
 --- !u!114 &2520628267026621928
 MonoBehaviour:
   m_ObjectHideFlags: 0

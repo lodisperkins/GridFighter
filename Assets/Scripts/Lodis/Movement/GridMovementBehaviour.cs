@@ -10,6 +10,7 @@ using System.Reflection;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using DG.Tweening;
+using Lodis.Sound;
 
 namespace Lodis.Movement
 {
@@ -59,6 +60,8 @@ namespace Lodis.Movement
         private GridGame.Event _onTeleportStart;
         [SerializeField]
         private GridGame.Event _onTeleportEnd;
+        [SerializeField]
+        private AudioClip _moveSound;
         [Tooltip("Whether or not this object should always rotate to face the opposite side")]
         [SerializeField]
         private bool _alwaysLookAtOpposingSide = true;
@@ -251,6 +254,7 @@ namespace Lodis.Movement
 
             _onMoveBegin = gameObject.AddComponent<GridGame.GameEventListener>();
             _onMoveBegin.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+            _onMoveBegin.AddAction(() => SoundManagerBehaviour.Instance.PlaySound(_moveSound, 0.2f));
 
             _onMoveBeginTemp = gameObject.AddComponent<GridGame.GameEventListener>();
             _onMoveBeginTemp.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);

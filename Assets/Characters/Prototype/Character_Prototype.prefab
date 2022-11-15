@@ -396,6 +396,7 @@ MonoBehaviour:
   _moveToAlignedSideIfStuck: 1
   _onTeleportStart: {fileID: 11400000, guid: 9bc9ffbb1888a5a44ba793fbbe5d91b5, type: 2}
   _onTeleportEnd: {fileID: 11400000, guid: aecd38cd09557b44ab8a900c918a017a, type: 2}
+  _moveSound: {fileID: 8300000, guid: a5eda9809f8053a41b9797ee670acf36, type: 3}
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 1
   _moveOnStart: 1
