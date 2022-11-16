@@ -11,7 +11,7 @@ namespace Lodis.AI
     {
         public static string DecisionData;
 
-        public AttackDecisionTree(float compareThreshold = 0.95f) : base(compareThreshold)
+        public AttackDecisionTree(float compareThreshold = 0.8f) : base(compareThreshold)
         {
             SaveLoadPath = Application.persistentDataPath + "/AttackDecisionData";
             _nodeCache = new List<TreeNode>();

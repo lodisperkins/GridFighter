@@ -43,37 +43,32 @@ public class AttackAction : GOAction
 
         //Get a decision based on the current situation
         _decision = (AttackNode)_dummy.AttackDecisions.GetDecision(_situation, _dummy.OpponentMove, _dummy.OpponentDefense.IsDefending, targetHealth, _dummy);
-
-        //If a decision was found...
-        if (_decision != null)
+        
+        //If the decision has failed too many times remove it
+        if (_decision?.Wins <= -1)
         {
-            //Mark it as visited
-            _decision.VisitCount++;
-
-            //If the decision has failed too many times remove it
-            if (_decision.Wins <= -1)
-            {
-                _dummy.AttackDecisions.RemoveDecision(_decision);
-                _decision = null;
-            }
+            _dummy.AttackDecisions.RemoveDecision(_decision);
+            _decision = null;
         }
 
-        //If a valid decision wasn't found...
-        if (_decision != null)
-        {
-            //...check if the either deck contains the ability that the dummy wants to use
-            if (!_dummy.Moveset.SpecialDeckContains(_decision.AbilityName) && !_dummy.Moveset.NormalDeckContains(_decision.AbilityName))
-                return;
-
-            //Use the ability and mark it as visited
-            UseDecisionAbility(_dummy.Moveset.GetAbilityByName(_decision.AbilityName));
-            _decision.VisitCount++;
-        }
-        //Otherwise pick a new random decision
-        else
+        if (_decision == null)
         {
             UseRandomDecisionAbility();
-        }  
+            return;
+        }
+
+
+        //Mark it as visited
+        _decision.VisitCount++;
+
+        //Check if the either deck contains the ability that the dummy wants to use
+        if (!_dummy.Moveset.SpecialDeckContains(_decision.AbilityName) && !_dummy.Moveset.NormalDeckContains(_decision.AbilityName))
+            return;
+
+        //Use the ability and mark it as visited
+        UseDecisionAbility(_dummy.Moveset.GetAbilityByName(_decision.AbilityName));
+        _decision.VisitCount++;
+        
     }
 
     /// <summary>
@@ -89,6 +84,7 @@ public class AttackAction : GOAction
             _dummy.Moveset.UseSpecialAbility(1, _decision.AttackStrength, _decision.AttackDirection);
         else if (ability.abilityData.AbilityType != AbilityType.SPECIAL)
             _dummy.Moveset.UseBasicAbility(_decision.AbilityName, _decision.AttackStrength, _decision.AttackDirection);
+        else return;
 
         //Decrease the wins by default. Wins only have a net positive on hit
         _decision.Wins--;
@@ -103,7 +99,7 @@ public class AttackAction : GOAction
         //Pick a random range and attack
         AbilityType attackType = (AbilityType)UnityEngine.Random.Range(0, 11);
         Vector2 attackDirection = new Vector2(UnityEngine.Random.Range(-1, 2), UnityEngine.Random.Range(-1, 2));
-        float attackStrength = UnityEngine.Random.Range(0, 1.1f);
+        float attackStrength = UnityEngine.Random.Range(0, 1.3f);
 
         //Store information about the environment in case the hit is successful
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
@@ -131,21 +127,23 @@ public class AttackAction : GOAction
         attackDirection.x = Mathf.Round(attackDirection.x);
         attackDirection.y = Mathf.Round(attackDirection.y);
 
-        //Decide which ability type to use based on the input
-        if (attackDirection == Vector2.up || attackDirection == Vector2.down)
-            attackType = AbilityType.WEAKSIDE;
-        else if (attackDirection == Vector2.left)
-            attackType = AbilityType.WEAKBACKWARD;
-        else if (attackDirection == Vector2.right)
-            attackType = AbilityType.WEAKFORWARD;
-        else if (attackDirection == Vector2.zero)
-            attackType = AbilityType.WEAKNEUTRAL;
-
-        float timeHeld = (attackStrength - 1) / 0.1f;
-
-        if (timeHeld > 0.5f && (int)attackType < 4)
+        if ((int)attackType < 4)
         {
-            attackType += 4;
+            //Decide which ability type to use based on the input
+            if (attackDirection == Vector2.up || attackDirection == Vector2.down)
+                attackType = AbilityType.WEAKSIDE;
+            else if (attackDirection == Vector2.left)
+                attackType = AbilityType.WEAKBACKWARD;
+            else if (attackDirection == Vector2.right)
+                attackType = AbilityType.WEAKFORWARD;
+            else if (attackDirection == Vector2.zero)
+                attackType = AbilityType.WEAKNEUTRAL;
+        }
+        //Changes the normal attack into a charge version depending on the attack strength found.
+        else if ((int)attackType >= 4 && (int)attackType < 8)
+        {
+            attackStrength = UnityEngine.Random.Range(1.1f, 1.3f);
+            float timeHeld = (attackStrength - 1) / 0.1f;
             _dummy.StartCoroutine(_dummy.ChargeRoutine(timeHeld, attackType));
         }
 

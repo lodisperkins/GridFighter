@@ -41,6 +41,9 @@ public class DefendAction : GOAction
         //Store the current environment data
         _situation = new DefenseNode(attacks, null, null);
 
+        if (_situation.Compare(_dummy.LastDefenseDecision) > 0.9f)
+            return;
+
         //if the decision isn't null then it must be set to the last decision made
         if (_dummy.LastDefenseDecision != null)
         {

@@ -23,7 +23,11 @@ public class MoveAction : GOAction
     private bool CheckPanelInRange(params object[] args)
     {
         PanelBehaviour panel = (PanelBehaviour)args[0];
-        return Mathf.Abs(panel.Position.x - _dummy.OpponentMove.Position.x) < _dummy.MaxRange && panel.Position.y == _dummy.OpponentMove.Position.y;
+        float xDirection = _dummy.Character.transform.forward.x;
+
+        bool isInFrontOpponent = xDirection * panel.Position.x < xDirection * _dummy.OpponentMove.Position.x;
+
+        return Mathf.Abs(panel.Position.x - _dummy.OpponentMove.Position.x) < _dummy.MaxRange && panel.Position.y == _dummy.OpponentMove.Position.y && isInFrontOpponent;
     }
 
     public override TaskStatus OnUpdate()

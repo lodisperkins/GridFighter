@@ -174,7 +174,7 @@ MonoBehaviour:
   _attackType: 0
   _attackDelay: 1
   _attackStrength: 1.5
-  _maxRange: 7
+  _maxRange: 5
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
   _senseCollider: {fileID: 2917431262450575549}

@@ -88363,6 +88363,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
+      propertyPath: _matchMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: ad5cbf4a8382e444ba934b1a213d050b, type: 3}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
       propertyPath: _ringBarrierL
       value: 
       objectReference: {fileID: 1331087336}
@@ -88399,6 +88404,11 @@ PrefabInstance:
       propertyPath: _targetFrameRate
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _suddenDeathMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: ef09843f8d36a8244944a14a02142aef, type: 3}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _matchRestartEvent
