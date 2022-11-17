@@ -27,7 +27,7 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
-            _attackLinkVisual = (GameObject)Resources.Load("Structures/AttackLink");
+            _attackLinkVisual = (GameObject)Resources.Load("Structures/ElectricTraps/AttackLink");
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
         }
 
@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
             //Spawns attackLinks on each panel in the path
             for (int i = 0; i < panels.Count; i++)
             {
-                GameObject attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].transform.position + new Vector3(0, .5f,0), _attackLinkVisual.transform.rotation);
+                GameObject attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].transform.position, _attackLinkVisual.transform.rotation);
                 HitColliderBehaviour collider = attackLink.AddComponent<HitColliderBehaviour>();
                 collider.Owner = owner;
                 collider.ColliderInfo = _stunCollider;
