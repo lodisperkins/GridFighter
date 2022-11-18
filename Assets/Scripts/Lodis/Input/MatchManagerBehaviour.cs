@@ -169,7 +169,9 @@ namespace Lodis.Gameplay
 
         private void SetMatchResult()
         {
-            if (_playerSpawner.P2HealthScript.HasExploded)
+            if (_ringBarrierL.IsAlive == _ringBarrierR.IsAlive && !_suddenDeathActive)
+                _matchResult = MatchResult.DRAW;
+            else if (_playerSpawner.P2HealthScript.HasExploded)
                 _matchResult = MatchResult.P1WINS;
             else if (_playerSpawner.P1HealthScript.HasExploded)
                 _matchResult = MatchResult.P2WINS;
@@ -177,8 +179,6 @@ namespace Lodis.Gameplay
                 _matchResult = MatchResult.P1WINS;
             else if (!_ringBarrierL.IsAlive)
                 _matchResult = MatchResult.P2WINS;
-            else
-                _matchResult = MatchResult.DRAW;
         }
 
         /// <summary>

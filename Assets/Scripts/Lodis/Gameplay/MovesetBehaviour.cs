@@ -186,6 +186,7 @@ namespace Lodis.Gameplay
             TryUseEnergy(Energy);
             _canBurst = false;
             RoutineBehaviour.Instance.StopAction(_burstAction);
+            RoutineBehaviour.Instance.StopAction(_rechargeAction);
             _canBurst = true;
         }
 
