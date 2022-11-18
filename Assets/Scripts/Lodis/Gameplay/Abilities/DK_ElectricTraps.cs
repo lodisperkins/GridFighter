@@ -27,7 +27,7 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
-            _attackLinkVisual = (GameObject)Resources.Load("Structures/AttackLink");
+            _attackLinkVisual = (GameObject)Resources.Load("Structures/ElectricTraps/AttackLink");
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
         }
 
@@ -69,8 +69,12 @@ namespace Lodis.Gameplay
             //Spawns attackLinks on each panel in the path
             for (int i = 0; i < panels.Count; i++)
             {
-                GameObject attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].transform.position + new Vector3(0, .5f,0), _attackLinkVisual.transform.rotation);
-                HitColliderBehaviour collider = attackLink.AddComponent<HitColliderBehaviour>();
+                GameObject attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].transform.position + Vector3.up * 0.8f, _attackLinkVisual.transform.rotation);
+
+                HitColliderBehaviour collider = attackLink.GetComponent<HitColliderBehaviour>();
+                if (!collider)
+                    collider = attackLink.AddComponent<HitColliderBehaviour>();
+
                 collider.Owner = owner;
                 collider.ColliderInfo = _stunCollider;
             }
@@ -164,11 +168,10 @@ namespace Lodis.Gameplay
             }
         }
 
-        public override void EndAbility()
+        protected override void End()
         {
-            base.EndAbility();
-
-            DestroyLinks(0);
+            base.End();
+            DestroyLinks(1);
         }
 
         public override void StopAbility()

@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanCancelOnOpponentHit: 0
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -60,6 +60,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
+    SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 7150885560406515932, guid: 896327d564dd09a40a6ae0c24becb75f,
       type: 3}
     HitEffectLevel: 3
@@ -78,4 +79,4 @@ MonoBehaviour:
   - name: ShockwaveTravelSpeed
     value: 15
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: 92bfb16540334ae419cd838f2ab61620, type: 3}
+  _customAnimation: {fileID: 7400000, guid: 2be0533620ce0d2469d23e63635edfdd, type: 2}
