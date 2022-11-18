@@ -172,7 +172,6 @@ namespace Lodis.Gameplay
             _discardDeck = Deck.CreateInstance<Deck>();
             ResetSpecialDeck();
             _canBurst = true;
-
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
 
@@ -181,10 +180,10 @@ namespace Lodis.Gameplay
 
         public void ResetAll()
         {
+            enabled = true;
             LastAbilityInUse?.StopAbility();
             ManualShuffle(true);
             TryUseEnergy(Energy);
-            _canBurst = false;
             RoutineBehaviour.Instance.StopAction(_burstAction);
             RoutineBehaviour.Instance.StopAction(_rechargeAction);
             _canBurst = true;

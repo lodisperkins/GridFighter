@@ -285,6 +285,7 @@ namespace Lodis.Movement
         {
             base.ResetHealth();
 
+            CancelStun();
             OutOfBounds = false;
             HasExploded = false;
             CancelHitStun();
