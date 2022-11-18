@@ -82,7 +82,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _energyChargeEnabled = true;
         [SerializeField]
-        private bool _canBurst;
+        private bool _canBurst = true;
         [SerializeField]
         private FloatVariable _burstChargeTime;
         [SerializeField]
@@ -171,7 +171,7 @@ namespace Lodis.Gameplay
             _specialDeck.InitAbilities(gameObject);
             _discardDeck = Deck.CreateInstance<Deck>();
             ResetSpecialDeck();
-            _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime.Value);
+            _canBurst = true;
 
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
@@ -186,7 +186,7 @@ namespace Lodis.Gameplay
             TryUseEnergy(Energy);
             _canBurst = false;
             RoutineBehaviour.Instance.StopAction(_burstAction);
-            _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime.Value);
+            _canBurst = true;
         }
 
         /// <summary>

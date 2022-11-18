@@ -24,7 +24,6 @@ public class BurstMeterBehaviour : MonoBehaviour
         _target = target;
         _slider.maxValue = Target.BurstChargeTime;
         Target.OnBurst += () => _slider.value = 0;
-
     }
 
     // Update is called once per frame
@@ -32,12 +31,19 @@ public class BurstMeterBehaviour : MonoBehaviour
     {
         if (!Target) return;
 
-        if (!_slider.IsFilled())
+        if (_slider.IsFilled())
+        {
+            _fill.color = _fullColor;
+        }
+        else if (Target.CanBurst)
+        {
+            _fill.color = _fullColor;
+            _slider.value = _slider.maxValue;
+        }
+        else
         {
             _slider.value += Time.deltaTime;
             _fill.color = _defaultColor;
         }
-        else
-            _fill.color = _fullColor;
     }
 }
