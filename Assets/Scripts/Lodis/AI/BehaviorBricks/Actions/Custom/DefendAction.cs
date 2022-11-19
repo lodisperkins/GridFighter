@@ -41,7 +41,7 @@ public class DefendAction : GOAction
         //Store the current environment data
         _situation = new DefenseNode(attacks, null, null);
 
-        if (_situation.Compare(_dummy.LastDefenseDecision) > 0.9f)
+        if (_situation.Compare(_dummy.LastDefenseDecision) == 1f && _dummy.StateMachine.CurrentState != "Idle")
             return;
 
         //if the decision isn't null then it must be set to the last decision made
@@ -100,7 +100,7 @@ public class DefendAction : GOAction
 
         _dummy.LastDefenseDecision = _decision;
         //Punish the decision if the dummy was damaged
-        _dummy.Knockback.AddOnTakeDamageTempAction(() => { _dummy.LastDefenseDecision.Wins -= 2; _canMakeNewDecision = true; });
+        _dummy.Knockback.AddOnTakeDamageTempAction(PunishLastDecision);
 
         //Perform an action based on choice
         switch (choice)
@@ -129,7 +129,10 @@ public class DefendAction : GOAction
                 if (_dummy.Knockback.LastTimeInKnockBack >= _dummy.TimeNeededToBurst && _dummy.Moveset.CanBurst)
                     _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
                 else if (_dummy.Knockback.Physics.IsGrounded)
+                {
                     RoutineBehaviour.Instance.StartNewConditionAction(args => _dummy.Defense.BeginParry(), condition => _dummy.StateMachine.CurrentState == "Idle");
+                    choice = DefenseDecisionType.PARRY;
+                }
                 break;
             case DefenseDecisionType.PHASESHIFT:
                 //Gets a direction for the dummy to run to
@@ -145,6 +148,16 @@ public class DefendAction : GOAction
         _decision.DefenseDecision = choice;
         _canMakeNewDecision = false;
         _lastAttackCount = attacks.Count;
+    }
+
+    private void PunishLastDecision()
+    {
+        if (_dummy.LastDefenseDecision != null)
+        {
+            _dummy.LastDefenseDecision.Wins -= 2;
+            _dummy.LastDefenseDecision = null;
+        }
+        _canMakeNewDecision = true;
     }
 
     /// <summary>

@@ -42,6 +42,8 @@ namespace Lodis.AI
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
         [SerializeField]
         private Collider _senseCollider;
+        [SerializeField]
+        private bool _canAttack = true;
         private BehaviorExecutor _executor;
         private Coroutine _moveRoutine;
         private PanelBehaviour _moveTarget;
@@ -83,6 +85,7 @@ namespace Lodis.AI
         public KnockbackBehaviour Knockback { get => _knockbackBehaviour; private set => _knockbackBehaviour = value; }
         public CharacterDefenseBehaviour Defense { get => _defense; private set => _defense = value; }
         public CharacterDefenseBehaviour OpponentDefense { get => _opponentDefense; private set => _opponentDefense = value; }
+        public bool CanAttack { get => _canAttack; private set => _canAttack = value; }
 
         public DefenseNode LastDefenseDecision;
 

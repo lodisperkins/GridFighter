@@ -516,12 +516,12 @@ namespace Lodis.Input
             }
 
             //Stores the current attack direction input
-            Vector3 attackDirInput = _playerControls.Player.AttackDirection.ReadValue<Vector2>();
+            Vector2 attackDirInput = _playerControls.Player.AttackDirection.ReadValue<Vector2>();
 
             //If there is a direction input, update the attack direction buffer and the time of input
             if (attackDirInput.magnitude > 0)
             {
-                _attackDirection = attackDirInput;
+                _attackDirection = new Vector2(Mathf.Round(attackDirInput.x), Mathf.Round(attackDirInput.y));
                 _timeOfLastDirectionInput = Time.time;
             }
 

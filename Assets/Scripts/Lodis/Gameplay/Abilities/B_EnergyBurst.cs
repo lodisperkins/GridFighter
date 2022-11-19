@@ -49,6 +49,7 @@ namespace Lodis.Gameplay
                 instantiatedCollider = _barrier.AddComponent<HitColliderBehaviour>();
            
             instantiatedCollider.ColliderInfo = hitColliderData;
+            instantiatedCollider.Owner = owner;
 
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
             if (!_ownerKnockBackScript.Physics.IsGrounded)
@@ -59,6 +60,7 @@ namespace Lodis.Gameplay
         {
             if (_ownerKnockBackScript.Physics.IsGrounded)
             {
+                _ownerMoveScript.EnableMovement();
                 _ownerKnockBackScript.CurrentAirState = AirState.NONE;
                 _ownerKnockBackScript.Physics.RB.isKinematic = true;
             }

@@ -63,9 +63,6 @@ public class IsSafeCondition : GOCondition
     {
         List<HitColliderBehaviour> attacks = _dummy.GetAttacksInRange();
 
-        if (_dummy.Executor.blackboard.boolParams[3] == true)
-            return true;
-
         if (attacks.Count > 0)
             return false;
 
