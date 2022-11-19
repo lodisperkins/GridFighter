@@ -243,9 +243,9 @@ namespace Lodis.Gameplay
         {
             BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
 
-            if (_mode != GameMode.SINGLEPLAYER)
-                BlackBoardBehaviour.Instance.Player2State = _p2StateManager.StateMachine.CurrentState;
 
+            if (_mode != GameMode.SINGLEPLAYER)
+                BlackBoardBehaviour.Instance.Player2State = _p2StateManager?.StateMachine?.CurrentState;
 
             if (_mode == GameMode.SIMULATE)
                 return;
@@ -257,7 +257,7 @@ namespace Lodis.Gameplay
                 InputDevice device;
                 if (!DeviceInputReceived(out device))
                     return;
-                Debug.Log("Input Received P1 " + device.name);
+                //Debug.Log("Input Received P1 " + device.name);
 
                 if (_mode == GameMode.MULTIPLAYER)
                 {
@@ -269,7 +269,7 @@ namespace Lodis.Gameplay
 
                 if (!device.name.Contains("Mouse"))
                 {
-                    Debug.Log("Input Assigned P1 " + device.name);
+                    //Debug.Log("Input Assigned P1 " + device.name);
                     AssignDevice(device, 1);
                     p1Input.enabled = true;
                     _p1DeviceSet = true;
@@ -284,10 +284,10 @@ namespace Lodis.Gameplay
                 InputDevice device = null;
                 if (!DeviceInputReceived(out device))
                     return;
-                Debug.Log("Input Received P2 " + device.name);
+                //Debug.Log("Input Received P2 " + device.name);
                 if (p1Input.Devices.Find(args => args.deviceId == device.deviceId) == null && !device.name.Contains("Mouse"))
                 {
-                    Debug.Log("Input Assigned P2 " + device.name);
+                    //Debug.Log("Input Assigned P2 " + device.name);
                     AssignDevice(device, 2);
                     p2Input.enabled = true;
                     _p2DeviceSet = true;
