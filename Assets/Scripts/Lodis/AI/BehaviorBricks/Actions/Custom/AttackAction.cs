@@ -22,6 +22,9 @@ public class AttackAction : GOAction
     {
         base.OnStart();
 
+        if (!_dummy.CanAttack && !_dummy.Executor.blackboard.boolParams[3])
+            return;
+
         _dummy.Executor.blackboard.boolParams[3] = false;
 
         if (_dummy.StateMachine.CurrentState == "Parrying")

@@ -44,19 +44,22 @@ namespace Lodis.Movement
         {
             _knockback = GetComponent<KnockbackBehaviour>();
             _knockback.AddOnStunAction(CancelLanding);
-            _knockback.Physics.AddOnForceAddedEvent(args =>
-            {
-                if (_groundedHitCounter > _groundedHitMax.Value)
-                    return;
-
-                CancelLanding();
-                CanCheckLanding = false;
-
-                if (_knockback.Physics.IsGrounded)
-                    _groundedHitCounter++;
-            });
+            _knockback.Physics.AddOnForceAddedEvent(args => TryCancelLanding());
         }
 
+        private bool TryCancelLanding()
+        {
+            if (_groundedHitCounter > _groundedHitMax.Value)
+                return false;
+
+            CancelLanding();
+            CanCheckLanding = false;
+
+            if (_knockback.Physics.IsGrounded)
+                _groundedHitCounter++;
+
+            return true;
+        }
 
         public void AddOnLandingStartAction(UnityAction action)
         {

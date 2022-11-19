@@ -243,6 +243,10 @@ namespace Lodis.Gameplay
         {
             BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
 
+            if (_mode != GameMode.SINGLEPLAYER)
+                BlackBoardBehaviour.Instance.Player2State = _p2StateManager.StateMachine.CurrentState;
+
+
             if (_mode == GameMode.SIMULATE)
                 return;
 
@@ -274,7 +278,6 @@ namespace Lodis.Gameplay
 
             if (_mode == GameMode.MULTIPLAYER && !_p2DeviceSet)
             {
-                BlackBoardBehaviour.Instance.Player2State = _p2StateManager.StateMachine.CurrentState;
                 InputBehaviour p1Input = (InputBehaviour)_p1Input;
                 InputBehaviour p2Input = (InputBehaviour)_p2Input;
 
