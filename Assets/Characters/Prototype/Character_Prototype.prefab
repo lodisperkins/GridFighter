@@ -530,10 +530,16 @@ MonoBehaviour:
   - {fileID: 5426519631956644113}
   _deckReloadTime: 6
   _energy: 0
+  _burstEnergy: 0
   _maxEnergyRef: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
+  _maxBurstEnergyRef: {fileID: 11400000, guid: adf7850c118d0f04380b8ba33b419c43, type: 2}
   _energyRechargeValue: {fileID: 11400000, guid: 490d301c94c4e8a4ca55468f4f2ab3ed,
     type: 2}
+  _burstEnergyRechargeValue: {fileID: 11400000, guid: 2d6720c8921c0ee4d8a786a56d6977f0,
+    type: 2}
   _energyRechargeRate: {fileID: 11400000, guid: bcb306df5e8c18f499e8892c8bc5a618,
+    type: 2}
+  _burstEnergyRechargeRate: {fileID: 11400000, guid: 21df2b2c687a9e64c8c28a803e703faf,
     type: 2}
   _energyChargeEnabled: 1
   _canBurst: 0
