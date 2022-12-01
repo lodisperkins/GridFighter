@@ -446,9 +446,9 @@ MonoBehaviour:
   _groundTechInvincibilityTime: 0.4
   _wallTechInvincibilityTime: 0.1
   _fallBreakLength: 0.25
-  _wallTechJumpDistance: 1
-  _wallTechJumpHeight: 1
-  _wallTechJumpDuration: 0.2
+  _wallTechJumpDistance: 4
+  _wallTechJumpHeight: 2
+  _wallTechJumpDuration: 0.5
   _attackerStunTime: 5
   _phaseShiftDuration: 0.25
   _defaultPhaseShiftRestTime: {fileID: 11400000, guid: 16a1dd921be893b4bb2e896d1c8970d9,
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c0f4c052ab27349b5a94def1a5a3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _landingTime: 0.15
+  _landingTime: 0.05
   _knockDownTime: 0.1
   _knockDownRecoverTime: 0.4
   _knockDownRecoverInvincibleTime: 1

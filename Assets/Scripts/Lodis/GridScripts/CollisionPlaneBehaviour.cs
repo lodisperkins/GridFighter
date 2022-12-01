@@ -54,16 +54,18 @@ namespace Lodis.GridScripts
 
             if (knockback.CurrentAirState != AirState.TUMBLING)
                 SoundManagerBehaviour.Instance.PlaySound(_softLandingClip, 0.8f);
-
-            SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 00.8f);
+            else
+            {
+                SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 0.8f);
+                if (physics.LastVelocity.magnitude >= _shakeSpeed)
+                    CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
+            }
 
             Vector3 particleSpawnPosition = new Vector3(other.transform.position.x, 0, other.transform.position.z);
 
             _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, particleSpawnPosition, Camera.main.transform.rotation);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_groundDustParticles, _groundDustParticlesRef.main.duration);
 
-            if (physics.LastVelocity.magnitude >= _shakeSpeed)
-                CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
         }
 
         private void OnCollisionStay(Collision other)

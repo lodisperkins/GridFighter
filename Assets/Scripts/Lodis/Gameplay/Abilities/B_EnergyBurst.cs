@@ -28,17 +28,33 @@ namespace Lodis.Gameplay
         {
             base.Start(args);
 
-
-            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-
+            _ownerKnockBackScript.Physics.CancelFreeze();
+            _ownerKnockBackScript.Physics.IgnoreForces = true;
+            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => !InUse, false, true);
             _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
             _ownerKnockBackScript.CancelHitStun();
             _ownerKnockBackScript.CancelStun();
+
+            OnHitTemp += arguments =>
+            {
+                if (_ownerKnockBackScript.Physics.IsGrounded)
+                    return;
+
+                GameObject objectHit = (GameObject)arguments[0];
+
+                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
+                    return;
+
+                _ownerKnockBackScript.DisableInvincibility();
+                _ownerKnockBackScript.Physics.CancelFreeze();
+            };
         }
 
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
+
+
             HitColliderData hitColliderData = GetColliderData(0);
 
             _barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
@@ -54,6 +70,8 @@ namespace Lodis.Gameplay
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
             if (!_ownerKnockBackScript.Physics.IsGrounded)
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
+
+            _ownerKnockBackScript.Physics.IgnoreForces = false;
         }
 
         private void ResetState()
@@ -64,7 +82,6 @@ namespace Lodis.Gameplay
                 _ownerKnockBackScript.CurrentAirState = AirState.NONE;
                 _ownerKnockBackScript.Physics.RB.isKinematic = true;
             }
-
             ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
             _ownerKnockBackScript.DisableInvincibility();
         }
@@ -78,6 +95,12 @@ namespace Lodis.Gameplay
         {
             base.StopAbility();
 
+            ResetState();
+        }
+
+        public override void EndAbility()
+        {
+            base.EndAbility();
             ResetState();
         }
 

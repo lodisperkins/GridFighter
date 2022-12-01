@@ -71,6 +71,11 @@ namespace Lodis.Gameplay
                 return 0;
 
             Health -= damage;
+            KnockbackBehaviour attackerKnockback = null;
+
+            if (attacker.TryGetComponent(out attackerKnockback) && attackerKnockback.CurrentAirState == AirState.TUMBLING)
+                CameraBehaviour.ShakeBehaviour.ShakeRotation();
+
             OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamage?.Invoke();
             _shieldController.GetHit(attacker.transform.position - transform.forward, transform.forward, 4, damage);
@@ -89,6 +94,10 @@ namespace Lodis.Gameplay
                 return 0;
 
             Health -= info.Damage;
+            KnockbackBehaviour attackerKnockback = null;
+
+            if (attacker.TryGetComponent(out attackerKnockback) && attackerKnockback.CurrentAirState == AirState.TUMBLING)
+                CameraBehaviour.ShakeBehaviour.ShakeRotation();
 
             OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamage?.Invoke();
@@ -152,7 +161,7 @@ namespace Lodis.Gameplay
             if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed)
                 return;
 
-            if (knockbackBehaviour.CurrentAirState == AirState.NONE)
+            if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
                 return;
 
             if (_bounceDampen == 0)
