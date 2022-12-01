@@ -139,7 +139,7 @@ namespace Lodis.Gameplay
                 if (args.Length < 2)
                     return;
 
-                HitColliderBehaviour other = (HitColliderBehaviour)args[1];
+                HitColliderBehaviour other = args[1] as HitColliderBehaviour;
 
                 if (!other)
                     return;

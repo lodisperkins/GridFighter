@@ -70,7 +70,7 @@ namespace Lodis.Gameplay
         private void OnCollision(params object[] args)
         {
             GameObject other = (GameObject)args[0];
-            HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[1];
+            HitColliderBehaviour hitCollider = args[1] as HitColliderBehaviour;
 
             if (!hitCollider || !CompareTag("Reflector")) return;
 
