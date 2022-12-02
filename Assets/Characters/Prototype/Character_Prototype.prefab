@@ -613,7 +613,18 @@ MonoBehaviour:
       id: Idle
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 6147433529108062858}
+            m_MethodName: set_isKinematic
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -1235,7 +1246,7 @@ MonoBehaviour:
       zoomSettings:
         zoomFactor: 1
       dragSettings:
-        dragOffset: {x: 532.34784, y: -150.27179}
+        dragOffset: {x: 109.4388, y: -163.3627}
       gridSettings:
         isEnabled: 1
       labelSettings:

@@ -141,7 +141,6 @@ namespace Lodis.Movement
                 return;
 
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
-            _movementBehaviour.AddOnMoveEnabledAction(() => RB.isKinematic = true);
         }
 
         /// <summary>

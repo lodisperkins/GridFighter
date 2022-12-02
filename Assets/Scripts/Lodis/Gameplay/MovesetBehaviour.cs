@@ -215,6 +215,7 @@ namespace Lodis.Gameplay
             TryUseEnergy(Energy);
             RoutineBehaviour.Instance.StopAction(_burstAction);
             RoutineBehaviour.Instance.StopAction(_rechargeAction);
+            BurstEnergy = MaxBurstEnergy.Value; 
             _canBurst = true;
         }
 

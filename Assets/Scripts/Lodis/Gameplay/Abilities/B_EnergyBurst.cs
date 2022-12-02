@@ -79,8 +79,6 @@ namespace Lodis.Gameplay
             if (_ownerKnockBackScript.Physics.IsGrounded)
             {
                 _ownerMoveScript.EnableMovement();
-                _ownerKnockBackScript.CurrentAirState = AirState.NONE;
-                _ownerKnockBackScript.Physics.RB.isKinematic = true;
             }
             ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
             _ownerKnockBackScript.DisableInvincibility();

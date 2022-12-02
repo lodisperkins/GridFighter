@@ -871,7 +871,7 @@ namespace Lodis.Movement
             if (!_currentPanel)
                 return;
 
-            if (transform.position != _currentPanel.transform.position + Vector3.up *_heightOffset || _searchingForSafePanel)
+            if (Vector3.Distance(transform.position, _currentPanel.transform.position) < _targetTolerance || _searchingForSafePanel)
                 MoveToCurrentPanel();
 
             SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
