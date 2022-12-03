@@ -76,7 +76,7 @@ namespace Lodis.Gameplay
             _knockbackBehaviour.AddOnTakeDamageAction(PlayDamageAnimation);
 
             _movesetBehaviour.OnUseAbility += PlayAbilityAnimation;
-            _defenseBehaviour.onFallBroken += onFloor => _bracedAgainstFloor = onFloor;
+            //_defenseBehaviour.onFallBroken += onFloor => _bracedAgainstFloor = onFloor;
             //_animator.updateMode = AnimatorUpdateMode.UnscaledTime;
         }
 

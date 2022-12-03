@@ -6,6 +6,7 @@ using Lodis.Movement;
 using Lodis.GridScripts;
 using Lodis.ScriptableObjects;
 using UnityEngine.Events;
+using Lodis.Input;
 
 namespace Lodis.Gameplay
 {
@@ -102,6 +103,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         [Tooltip("The effect to play when the player defends perfectly.")]
         private ParticleSystem _perfectDefenseEffect;
+        [Tooltip("The script responsible for giving this character input/commands.")]
+        private IControllable _controller;
         private bool _isShielding;
         private bool _isResting;
 
@@ -109,6 +112,7 @@ namespace Lodis.Gameplay
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
+
         public bool IsBraced { get => _isBraced; private set => _isBraced = value; }
         public float GroundTechLength { get => _fallBreakLength; set => _fallBreakLength = value; }
         public float WallTechJumpDuration { get => _wallTechJumpDuration; }
@@ -129,6 +133,7 @@ namespace Lodis.Gameplay
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _health = GetComponent<HealthBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
+            _controller = GetComponentInParent<IControllable>();
 
             _knockBack.AddOnTakeDamageAction(StopShield);
             _knockBack.AddOnKnockBackAction(EnableBrace);
@@ -298,16 +303,14 @@ namespace Lodis.Gameplay
 
             IsBraced = true;
             _canBrace = false;
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateBrace(), TimedActionCountType.SCALEDTIME, _braceActiveTime);
         }
 
         /// <summary>
         /// Disables the brace and starts the cooldown
         /// </summary>
-        private void DeactivateBrace()
+        public void DeactivateBrace()
         {
             IsBraced = false;
-            _cooldownTimedAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canBrace = true, TimedActionCountType.SCALEDTIME, _braceCooldownTime);
         }
 
         /// <summary>
@@ -348,6 +351,7 @@ namespace Lodis.Gameplay
 
 
             BreakingFall = true;
+            _knockBack.CurrentAirState = AirState.BREAKINGFALL;
 
             PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
 
@@ -357,16 +361,24 @@ namespace Lodis.Gameplay
             if (_disableFallBreakAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_disableFallBreakAction);
 
-            _disableFallBreakAction = RoutineBehaviour.Instance.StartNewConditionAction(DisableFallBreaking, condition => !_knockBack.Physics.IsFrozen);
+            
             float direction = transform.position.x - other.transform.position.x;
             direction /= Mathf.Abs(direction);
 
             if (other.CompareTag("Structure"))
             {
 
-                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewConditionAction(DisableFallBreaking, condition => !_knockBack.Physics.IsFrozen);
-                _knockBack.CurrentAirState = AirState.BREAKINGFALL;
-                _knockBack.Physics.Jump(_wallTechJumpHeight, _wallTechJumpDistance * (int)direction, _wallTechJumpDuration, true, true);
+                if ((_controller.AttackDirection == Vector2.right && _movement.Alignment == GridAlignment.LEFT)
+                    || (_controller.AttackDirection == Vector2.left && _movement.Alignment == GridAlignment.RIGHT))
+                {
+                    _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 2.0f);
+                    _knockBack.Physics.Jump(_wallTechJumpHeight, _wallTechJumpDistance * (int)direction, _wallTechJumpDuration, true, true);
+                }
+                else
+                {
+                    _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 3.0f);
+                }
+
                 onFallBroken?.Invoke(false);
                 return;
             }

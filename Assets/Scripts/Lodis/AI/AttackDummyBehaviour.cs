@@ -87,6 +87,8 @@ namespace Lodis.AI
         public CharacterDefenseBehaviour OpponentDefense { get => _opponentDefense; private set => _opponentDefense = value; }
         public bool CanAttack { get => _canAttack; private set => _canAttack = value; }
 
+        public Vector2 AttackDirection => _attackDirection;
+
         public DefenseNode LastDefenseDecision;
 
         public Vector2 MovePosition;
