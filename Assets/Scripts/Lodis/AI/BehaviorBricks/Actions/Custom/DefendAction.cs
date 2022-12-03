@@ -10,6 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.GridScripts;
+using System;
 
 [Action("CustomAction/ChooseBestDefense")]
 public class DefendAction : GOAction
@@ -90,18 +91,31 @@ public class DefendAction : GOAction
         if (_decision == null)
         {
             //Create a new random decision
-            choice = (DefenseDecisionType)Random.Range(0, 5);
+            choice = (DefenseDecisionType)UnityEngine.Random.Range(0, 5);
             _decision = new DefenseNode(_dummy.GetAttacksInRange(), null, null);
             _dummy.Executor.blackboard.boolParams[4] = true;
         }
 
-        if (_dummy.Knockback.CurrentAirState == AirState.TUMBLING && _dummy.Moveset.CanBurst && choice > DefenseDecisionType.COUNTER)
-            choice = DefenseDecisionType.BURST;
+        //if (_dummy.Knockback.CurrentAirState == AirState.TUMBLING && _dummy.Moveset.CanBurst && choice > DefenseDecisionType.COUNTER)
+        //    choice = DefenseDecisionType.BURST;
 
         _dummy.LastDefenseDecision = _decision;
         //Punish the decision if the dummy was damaged
         _dummy.Knockback.AddOnTakeDamageTempAction(PunishLastDecision);
 
+        if (_dummy.Knockback.Physics.IsGrounded)
+            choice = ChooseGroundDefense();
+        else
+            choice = ChooseAirDefense();
+
+        _decision.DefenseDecision = choice;
+        _canMakeNewDecision = false;
+        _lastAttackCount = attacks.Count;
+    }
+
+    private DefenseDecisionType ChooseGroundDefense()
+    {
+        DefenseDecisionType choice = (DefenseDecisionType)UnityEngine.Random.Range(0, 3);
         //Perform an action based on choice
         switch (choice)
         {
@@ -125,15 +139,6 @@ public class DefendAction : GOAction
             case DefenseDecisionType.PARRY:
                 RoutineBehaviour.Instance.StartNewConditionAction(args => _dummy.Defense.BeginParry(), condition => _dummy.StateMachine.CurrentState == "Idle");
                 break;
-            case DefenseDecisionType.BURST:
-                if (_dummy.Knockback.LastTimeInKnockBack >= _dummy.TimeNeededToBurst && _dummy.Moveset.CanBurst)
-                    _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
-                else if (_dummy.Knockback.Physics.IsGrounded)
-                {
-                    RoutineBehaviour.Instance.StartNewConditionAction(args => _dummy.Defense.BeginParry(), condition => _dummy.StateMachine.CurrentState == "Idle");
-                    choice = DefenseDecisionType.PARRY;
-                }
-                break;
             case DefenseDecisionType.PHASESHIFT:
                 //Gets a direction for the dummy to run to
                 Vector3 phaseDirection = (_decision.AveragePosition + _decision.AverageVelocity) - _dummy.Character.transform.position;
@@ -145,9 +150,49 @@ public class DefendAction : GOAction
                 break;
         }
 
-        _decision.DefenseDecision = choice;
-        _canMakeNewDecision = false;
-        _lastAttackCount = attacks.Count;
+        return choice;
+    }
+    
+    private DefenseDecisionType ChooseAirDefense()
+    {
+        DefenseDecisionType choice = (DefenseDecisionType)UnityEngine.Random.Range(4, 7);
+
+        //Perform an action based on choice
+        switch (choice)
+        {
+            case DefenseDecisionType.BURST:
+                if (_dummy.Knockback.LastTimeInKnockBack >= _dummy.TimeNeededToBurst && _dummy.Moveset.CanBurst)
+                    _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
+                break;
+            case DefenseDecisionType.BREAKFALLJUMP:
+                //Gets a direction for the dummy to run to
+                float jumpDirection = -Convert.ToInt32(_dummy.TouchingOpponentBarrier) + Convert.ToInt32(_dummy.TouchingBarrier);
+
+                if (jumpDirection == 0)
+                {
+                    choice = DefenseDecisionType.NONE;
+                    break;
+                }
+
+                jumpDirection *= _dummy.Character.transform.forward.x;
+
+                _dummy.AttackDirection = new Vector2(jumpDirection, 0);
+
+                _dummy.Defense.Brace();
+                break;
+            case DefenseDecisionType.BREAKFALLNEUTRAL:
+
+                if (!_dummy.TouchingOpponentBarrier && !_dummy.TouchingBarrier)
+                {
+                    choice = DefenseDecisionType.NONE;
+                    break;
+                }
+
+                _dummy.Defense.Brace();
+                break;
+        }
+
+        return choice;
     }
 
     private void PunishLastDecision()
@@ -180,6 +225,9 @@ public class DefendAction : GOAction
 
     public override TaskStatus OnUpdate()
     {
+        if (_dummy.StateMachine.CurrentState == "Idle")
+            _dummy.Defense.DeactivateBrace();
+
         return TaskStatus.COMPLETED;
     }
 }

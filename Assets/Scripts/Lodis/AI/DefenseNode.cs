@@ -11,8 +11,11 @@ namespace Lodis.AI
         EVADE,
         COUNTER,
         PARRY,
+        PHASESHIFT,
         BURST,
-        PHASESHIFT
+        BREAKFALLJUMP,
+        BREAKFALLNEUTRAL,
+        NONE
     }
 
     [System.Serializable]

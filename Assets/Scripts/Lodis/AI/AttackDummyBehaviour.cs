@@ -60,6 +60,10 @@ namespace Lodis.AI
         private AIDummyMovementBehaviour _movementBehaviour;
         private AttackDecisionTree _attackDecisions;
         private DefenseDecisionTree _defenseDecisions;
+
+        private bool _touchingBarrier;
+        private bool _touchingOpponentBarrier;
+
         [SerializeField]
         private int _maxDecisionCount;
         [Tooltip("The amount of time the dummy has to be in knock back to consider using a burst.")]
@@ -87,13 +91,25 @@ namespace Lodis.AI
         public CharacterDefenseBehaviour OpponentDefense { get => _opponentDefense; private set => _opponentDefense = value; }
         public bool CanAttack { get => _canAttack; private set => _canAttack = value; }
 
-        public Vector2 AttackDirection => _attackDirection;
+        public Vector2 AttackDirection
+        {
+            get
+            {
+                return _attackDirection;
+            }
+            set
+            {
+                _attackDirection = value;
+            }
+        }
+
+        public bool TouchingBarrier { get => _touchingBarrier; set => _touchingBarrier = value; }
+        public bool TouchingOpponentBarrier { get => _touchingOpponentBarrier; set => _touchingOpponentBarrier = value; }
 
         public DefenseNode LastDefenseDecision;
 
         public Vector2 MovePosition;
         public bool EnableBehaviourTree;
-
 
         public void LoadDecisions()
         {

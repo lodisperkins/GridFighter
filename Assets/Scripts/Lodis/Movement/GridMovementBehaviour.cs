@@ -877,6 +877,10 @@ namespace Lodis.Movement
 
             SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
 
+            string state = BlackBoardBehaviour.Instance.GetPlayerState(gameObject);
+
+            if (state != "Idle")
+                return;
 
             if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
                 transform.rotation = Quaternion.Euler(0, -90, 0);

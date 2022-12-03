@@ -367,16 +367,18 @@ namespace Lodis.Gameplay
 
             if (other.CompareTag("Structure"))
             {
+                transform.rotation = Quaternion.Euler(0, direction * 90, 0);
 
                 if ((_controller.AttackDirection == Vector2.right && _movement.Alignment == GridAlignment.LEFT)
-                    || (_controller.AttackDirection == Vector2.left && _movement.Alignment == GridAlignment.RIGHT))
+                    || (_controller.AttackDirection == Vector2.left && _movement.Alignment == GridAlignment.RIGHT) && _controller.AttackDirection.x == direction)
                 {
                     _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 2.0f);
-                    _knockBack.Physics.Jump(_wallTechJumpHeight, _wallTechJumpDistance * (int)direction, _wallTechJumpDuration, true, true);
+                    _knockBack.Physics.Jump(_wallTechJumpHeight, _wallTechJumpDistance, _wallTechJumpDuration, true, true);
                 }
                 else
                 {
-                    _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 3.0f);
+                    _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 2.0f);
+                    _knockBack.Physics.Jump(_wallTechJumpHeight / 2, (_wallTechJumpDistance / 2), _wallTechJumpDuration, true, true);
                 }
 
                 onFallBroken?.Invoke(false);

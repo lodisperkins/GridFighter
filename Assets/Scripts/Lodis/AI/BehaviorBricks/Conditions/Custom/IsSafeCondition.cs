@@ -63,13 +63,10 @@ public class IsSafeCondition : GOCondition
     {
         List<HitColliderBehaviour> attacks = _dummy.GetAttacksInRange();
 
-        if (attacks.Count > 0)
+        if (attacks.Count > 0 || _dummy.Knockback.CurrentAirState == AirState.TUMBLING)
             return false;
 
-        string opponentState = _dummy.PlayerID == BlackBoardBehaviour.Instance.Player1ID ? BlackBoardBehaviour.Instance.Player2State : BlackBoardBehaviour.Instance.Player1State;
-
-        //if (_dummy.OpponentMove.Position.y == _dummy.AIMovement.MovementBehaviour.Position.y && opponentState == "Attack")
-        //    return false;
+        _dummy.Defense.DeactivateShield();
 
         return true;
     }
