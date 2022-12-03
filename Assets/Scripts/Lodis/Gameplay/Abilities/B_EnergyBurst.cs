@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         private GameObject _barrier;
         private GameObject _burstEffect;
         private float _defaultRestTime;
+        private bool _makeFreeFall;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -28,9 +29,11 @@ namespace Lodis.Gameplay
         {
             base.Start(args);
 
+            _makeFreeFall = _ownerKnockBackScript.CurrentAirState != AirState.NONE;
+
             _ownerKnockBackScript.Physics.CancelFreeze();
             _ownerKnockBackScript.Physics.IgnoreForces = true;
-            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => !InUse, false, true);
+            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
             _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
             _ownerKnockBackScript.CancelHitStun();
             _ownerKnockBackScript.CancelStun();
@@ -68,7 +71,8 @@ namespace Lodis.Gameplay
             instantiatedCollider.Owner = owner;
 
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
-            if (!_ownerKnockBackScript.Physics.IsGrounded)
+
+            if (_ownerKnockBackScript.CurrentAirState != AirState.NONE)
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
 
             _ownerKnockBackScript.Physics.IgnoreForces = false;
@@ -77,9 +81,8 @@ namespace Lodis.Gameplay
         private void ResetState()
         {
             if (_ownerKnockBackScript.Physics.IsGrounded)
-            {
                 _ownerMoveScript.EnableMovement();
-            }
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
             _ownerKnockBackScript.DisableInvincibility();
         }
