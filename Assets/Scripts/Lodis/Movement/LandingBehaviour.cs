@@ -1,4 +1,5 @@
 ﻿using System;
+using Lodis.Gameplay;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using UnityEngine;
@@ -111,17 +112,22 @@ namespace Lodis.Movement
             IsDown = false;
             //Start recovery from knock down
             _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(values =>
-                {
-                    RecoveringFromFall = false;
-                    CanCheckLanding = false;
-                    Landing = false;
-                    _knockback.CurrentAirState = AirState.NONE;
-                },
-                TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
+            {
+                RecoveringFromFall = false;
+                CanCheckLanding = false;
+                Landing = false;
+                _knockback.CurrentAirState = AirState.NONE;
+            },
+            TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
         }
 
         public void StartLandingLag()
         {
+            GridScripts.PanelBehaviour panel = null;
+
+            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
+                _knockback.MovementBehaviour.Position = panel.Position;
+
             Landing = true;
             _onLandingStart?.Invoke();
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);

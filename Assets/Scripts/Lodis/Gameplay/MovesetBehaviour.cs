@@ -69,15 +69,27 @@ namespace Lodis.Gameplay
         [Tooltip("The amount of energy this character has")]
         [SerializeField]
         private float _energy;
+        [Tooltip("The amount of burst energy this character has")]
+        [SerializeField]
+        private float _burstEnergy;
         [Tooltip("The maximum amount of energy characters can have")]
         [SerializeField]
         private FloatVariable _maxEnergyRef;
+        [Tooltip("The maximum amount of burst energy characters can have")]
+        [SerializeField]
+        private FloatVariable _maxBurstEnergyRef;
         [Tooltip("The amount of energy regained passively")]
         [SerializeField]
         private FloatVariable _energyRechargeValue;
+        [Tooltip("The amount of burst energy regained passively")]
+        [SerializeField]
+        private FloatVariable _burstEnergyRechargeValue;
         [Tooltip("The rate at which energy is regained")]
         [SerializeField]
         private FloatVariable _energyRechargeRate;
+        [Tooltip("The rate at which burst energy is regained")]
+        [SerializeField]
+        private FloatVariable _burstEnergyRechargeRate;
         [Tooltip("If true the character can charge energy passively")]
         [SerializeField]
         private bool _energyChargeEnabled = true;
@@ -142,6 +154,16 @@ namespace Lodis.Gameplay
             }
         }
 
+        public float BurstEnergy
+        { 
+            get => _burstEnergy;
+            private set 
+            {
+                _burstEnergy = value;
+                _burstEnergy = Mathf.Clamp(_burstEnergy, 0, _maxBurstEnergyRef.Value);
+            }
+        }
+
         public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
 
         public float BurstChargeTime { get => _burstChargeTime.Value; private set => _burstChargeTime.Value = value; }
@@ -151,6 +173,7 @@ namespace Lodis.Gameplay
         public bool DeckReloading { get => _deckReloading; }
         public Transform[] LeftMeleeSpawns { get => _leftMeleeSpawns; }
         public Transform[] RightMeleeSpawns { get => _rightMeleeSpawns; }
+        public FloatVariable MaxBurstEnergy { get => _maxBurstEnergyRef; }
 
         private void Awake()
         {
@@ -167,11 +190,17 @@ namespace Lodis.Gameplay
             _normalDeck = Instantiate(_normalDeckRef);
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_EnergyBurst_Data"));
             _specialDeck = Instantiate(_specialDeckRef);
+
             _normalDeck.InitAbilities(gameObject);
             _specialDeck.InitAbilities(gameObject);
+
             _discardDeck = Deck.CreateInstance<Deck>();
+
             ResetSpecialDeck();
+
             _canBurst = true;
+            BurstEnergy = MaxBurstEnergy.Value;
+
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
 
@@ -186,6 +215,7 @@ namespace Lodis.Gameplay
             TryUseEnergy(Energy);
             RoutineBehaviour.Instance.StopAction(_burstAction);
             RoutineBehaviour.Instance.StopAction(_rechargeAction);
+            BurstEnergy = MaxBurstEnergy.Value; 
             _canBurst = true;
         }
 
@@ -327,7 +357,7 @@ namespace Lodis.Gameplay
             {
                 OnBurst?.Invoke();
                 _canBurst = false;
-                RoutineBehaviour.Instance.StartNewTimedAction(arguments => _canBurst = true, TimedActionCountType.SCALEDTIME, _burstChargeTime.Value);
+                BurstEnergy = 0;
             }
 
             //Return new ability
@@ -573,7 +603,10 @@ namespace Lodis.Gameplay
             Energy += hitCollider.ColliderInfo.Damage / 100;
 
             if (_opponentMoveset)
+            {
                 _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
+                _opponentMoveset.BurstEnergy += hitCollider.ColliderInfo.Damage / 10;
+            }
         }
 
         public void CancelCurrentBurstCharge()
@@ -610,6 +643,11 @@ namespace Lodis.Gameplay
             if (!timerActive && EnergyChargeEnabled)
                 _rechargeAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => Energy += _energyRechargeValue.Value, TimedActionCountType.SCALEDTIME, _energyRechargeRate.Value);
 
+            timerActive = (_burstAction?.GetEnabled()).GetValueOrDefault();
+
+            if (!timerActive)
+                _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => BurstEnergy += _burstEnergyRechargeValue.Value, TimedActionCountType.SCALEDTIME, _burstEnergyRechargeRate.Value);
+
             //Reload the deck if there are no cards in the hands or the deck
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading && NextAbilitySlot == null && !_loadingShuffle)
             {
@@ -618,18 +656,8 @@ namespace Lodis.Gameplay
                 _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => ResetSpecialDeck(), TimedActionCountType.SCALEDTIME, _deckReloadTime);
             }
 
-
-            //CODE FOR DEBUGGING
-
-            string ability1Name = "Empty Slot";
-            string ability2Name = "Empty Slot";
-
-            if (_specialAbilitySlots[0] != null)
-                ability1Name = _specialAbilitySlots[0].abilityData.abilityName;
-            if (_specialAbilitySlots[1] != null)
-                ability2Name = _specialAbilitySlots[1].abilityData.abilityName;
-
-            //Debug.Log("1. " + ability1Name + "\n2. " + ability2Name);
+            if (!CanBurst)
+                CanBurst = BurstEnergy == _maxBurstEnergyRef.Value;
         }
     }
 }

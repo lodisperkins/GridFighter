@@ -15,6 +15,11 @@ namespace Lodis.Input
             get;set;
         }
 
+        Vector2 AttackDirection
+        {
+            get;
+        }
+
         GameObject Character
         {
             get;

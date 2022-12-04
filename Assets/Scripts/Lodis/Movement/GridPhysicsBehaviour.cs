@@ -141,7 +141,6 @@ namespace Lodis.Movement
                 return;
 
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
-            _movementBehaviour.AddOnMoveEnabledAction(() => RB.isKinematic = true);
         }
 
         /// <summary>
@@ -266,16 +265,17 @@ namespace Lodis.Movement
             _isFrozen = true;
             bool gravityEnabled = UseGravity;
             _frozenVelocity = _rigidbody.velocity;
+
             if (_jumpSequence?.active == true)
                 _jumpSequence?.TogglePause();
 
             if (makeKinematic && _rigidbody.isKinematic)
                 makeKinematic = false;
 
+            StopAllForces();
             if (makeKinematic)
                 MakeKinematic();
 
-            StopAllForces();
             _freezeAction = RoutineBehaviour.Instance.StartNewConditionAction(args => UnfreezeObject(makeKinematic, keepMomentum, gravityEnabled, storeForceApplied), condition);
         }
 
@@ -323,6 +323,9 @@ namespace Lodis.Movement
 
             if (_jumpSequence?.active == true)
                 _jumpSequence?.Kill();
+
+            if (!IsGrounded)
+                RB.isKinematic = false;
 
             UseGravity = true;
             _isFrozen = false;
@@ -636,7 +639,7 @@ namespace Lodis.Movement
         /// <param name="jumpToClosestAvailablePanel">If true, the object will try to jump to a closer panel if the destination isn't available</param>
         /// <param name="canBeOccupied">If true, the destination panel can be occupied by another object</param>
         /// <param name="alignment">The alignment of the panels this object is allowed to jump on</param>
-        public void Jump(int panelDistance, float height, float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, Vector3 panelOffset = default(Vector3), Ease ease = Ease.InOutSine)
+        public void Jump(float height, int panelDistance,  float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, Vector3 panelOffset = default(Vector3), Ease ease = Ease.InOutSine)
         {
             _jumpSequence?.Kill();
 
@@ -646,7 +649,7 @@ namespace Lodis.Movement
                     RoutineBehaviour.Instance.StopAction(_bufferedJump);
 
                 _bufferedJump = RoutineBehaviour.Instance.StartNewConditionAction(
-                    args => Jump(panelDistance, height, duration, jumpToClosestAvailablePanel, canBeOccupied, alignment, panelOffset, ease),
+                    args => Jump(height, panelDistance, duration, jumpToClosestAvailablePanel, canBeOccupied, alignment, panelOffset, ease),
                     condition => !_isFrozen);
 
                 return;

@@ -308,7 +308,10 @@ namespace Lodis.Movement
         {
             HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
 
-            if (damageScript == null || CurrentAirState != AirState.TUMBLING || IsInvincible)
+            if (damageScript == null)
+                return;
+
+            if (CurrentAirState != AirState.TUMBLING && CurrentAirState != AirState.BREAKINGFALL)
                 return;
 
             KnockbackBehaviour knockBackScript = damageScript as KnockbackBehaviour;

@@ -446,9 +446,9 @@ MonoBehaviour:
   _groundTechInvincibilityTime: 0.4
   _wallTechInvincibilityTime: 0.1
   _fallBreakLength: 0.25
-  _wallTechJumpDistance: 1
-  _wallTechJumpHeight: 1
-  _wallTechJumpDuration: 0.2
+  _wallTechJumpDistance: 4
+  _wallTechJumpHeight: 2
+  _wallTechJumpDuration: 0.5
   _attackerStunTime: 5
   _phaseShiftDuration: 0.25
   _defaultPhaseShiftRestTime: {fileID: 11400000, guid: 16a1dd921be893b4bb2e896d1c8970d9,
@@ -530,10 +530,16 @@ MonoBehaviour:
   - {fileID: 5426519631956644113}
   _deckReloadTime: 6
   _energy: 0
+  _burstEnergy: 0
   _maxEnergyRef: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
+  _maxBurstEnergyRef: {fileID: 11400000, guid: adf7850c118d0f04380b8ba33b419c43, type: 2}
   _energyRechargeValue: {fileID: 11400000, guid: 490d301c94c4e8a4ca55468f4f2ab3ed,
     type: 2}
+  _burstEnergyRechargeValue: {fileID: 11400000, guid: 2d6720c8921c0ee4d8a786a56d6977f0,
+    type: 2}
   _energyRechargeRate: {fileID: 11400000, guid: bcb306df5e8c18f499e8892c8bc5a618,
+    type: 2}
+  _burstEnergyRechargeRate: {fileID: 11400000, guid: 21df2b2c687a9e64c8c28a803e703faf,
     type: 2}
   _energyChargeEnabled: 1
   _canBurst: 0
@@ -607,7 +613,18 @@ MonoBehaviour:
       id: Idle
       onEnterState:
         m_PersistentCalls:
-          m_Calls: []
+          m_Calls:
+          - m_Target: {fileID: 6147433529108062858}
+            m_MethodName: set_isKinematic
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -1229,7 +1246,7 @@ MonoBehaviour:
       zoomSettings:
         zoomFactor: 1
       dragSettings:
-        dragOffset: {x: 532.34784, y: -150.27179}
+        dragOffset: {x: 109.4388, y: -163.3627}
       gridSettings:
         isEnabled: 1
       labelSettings:
@@ -1262,7 +1279,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c0f4c052ab27349b5a94def1a5a3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _landingTime: 0.15
+  _landingTime: 0.05
   _knockDownTime: 0.1
   _knockDownRecoverTime: 0.4
   _knockDownRecoverInvincibleTime: 1

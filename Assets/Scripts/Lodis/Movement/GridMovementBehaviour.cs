@@ -837,6 +837,7 @@ namespace Lodis.Movement
             _targetPanel = null;
             _currentPanel.Occupied = !CanBeWalkedThrough;
             _isMoving = false;
+            _targetPosition = Vector3.zero;
         }
 
         private void OnDestroy()
@@ -871,11 +872,15 @@ namespace Lodis.Movement
             if (!_currentPanel)
                 return;
 
-            if (transform.position != _currentPanel.transform.position + Vector3.up *_heightOffset || _searchingForSafePanel)
+            if (Vector3.Distance(transform.position, _currentPanel.transform.position + Vector3.up  * _heightOffset) >= _targetTolerance || _searchingForSafePanel)
                 MoveToCurrentPanel();
 
             SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
 
+            string state = BlackBoardBehaviour.Instance.GetPlayerState(gameObject);
+
+            if (state != "Idle")
+                return;
 
             if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
                 transform.rotation = Quaternion.Euler(0, -90, 0);

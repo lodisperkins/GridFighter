@@ -173,7 +173,7 @@ namespace Lodis.Input
 
             //Defense input
             _playerControls.Player.Parry.started += context => { BufferShield(); _defense.Brace();};
-            _playerControls.Player.Parry.performed += context => {RemoveShieldFromBuffer(); };
+            _playerControls.Player.Parry.performed += context => {RemoveShieldFromBuffer(); _defense.DeactivateBrace(); };
             _playerControls.Player.PhaseShiftUp.started += context => BufferPhaseShift(context, Vector2.up);
             _playerControls.Player.PhaseShiftDown.started += context => BufferPhaseShift(context, Vector2.down);
             _playerControls.Player.PhaseShiftRight.started += context => BufferPhaseShift(context, Vector2.right);

@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
         protected override void Start(params object[] args)
         {
             base.Start();
-            _knockBackBehaviour.Physics.Jump(0, 2, abilityData.startUpTime, false, true, GridScripts.GridAlignment.ANY, default, DG.Tweening.Ease.InSine);
+            _knockBackBehaviour.Physics.Jump(2, 0, abilityData.startUpTime, false, true, GridScripts.GridAlignment.ANY, default, DG.Tweening.Ease.InSine);
 
             //Disable movement to prevent the ability being interrupted
             _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);

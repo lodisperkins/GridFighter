@@ -6,6 +6,7 @@ using Lodis.Movement;
 using Lodis.GridScripts;
 using Lodis.ScriptableObjects;
 using UnityEngine.Events;
+using Lodis.Input;
 
 namespace Lodis.Gameplay
 {
@@ -102,6 +103,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         [Tooltip("The effect to play when the player defends perfectly.")]
         private ParticleSystem _perfectDefenseEffect;
+        [Tooltip("The script responsible for giving this character input/commands.")]
+        private IControllable _controller;
         private bool _isShielding;
         private bool _isResting;
 
@@ -109,6 +112,7 @@ namespace Lodis.Gameplay
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
         public bool CanParry { get => _canParry; }
         public bool IsParrying { get => _isParrying; }
+
         public bool IsBraced { get => _isBraced; private set => _isBraced = value; }
         public float GroundTechLength { get => _fallBreakLength; set => _fallBreakLength = value; }
         public float WallTechJumpDuration { get => _wallTechJumpDuration; }
@@ -129,6 +133,7 @@ namespace Lodis.Gameplay
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _health = GetComponent<HealthBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
+            _controller = GetComponentInParent<IControllable>();
 
             _knockBack.AddOnTakeDamageAction(StopShield);
             _knockBack.AddOnKnockBackAction(EnableBrace);
@@ -139,7 +144,7 @@ namespace Lodis.Gameplay
                 if (args.Length < 2)
                     return;
 
-                HitColliderBehaviour other = (HitColliderBehaviour)args[1];
+                HitColliderBehaviour other = args[1] as HitColliderBehaviour;
 
                 if (!other)
                     return;
@@ -298,16 +303,14 @@ namespace Lodis.Gameplay
 
             IsBraced = true;
             _canBrace = false;
-            RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateBrace(), TimedActionCountType.SCALEDTIME, _braceActiveTime);
         }
 
         /// <summary>
         /// Disables the brace and starts the cooldown
         /// </summary>
-        private void DeactivateBrace()
+        public void DeactivateBrace()
         {
             IsBraced = false;
-            _cooldownTimedAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canBrace = true, TimedActionCountType.SCALEDTIME, _braceCooldownTime);
         }
 
         /// <summary>
@@ -343,28 +346,41 @@ namespace Lodis.Gameplay
 
         private void BreakFall(GameObject other)
         {
-            if (other == null) return;
+            if (!IsBraced || !other.CompareTag("Structure") || other.CompareTag("CollisionPlane") || BreakingFall)
+                return;
+
 
             BreakingFall = true;
-
-            //Breaks fall on the ground
+            _knockBack.CurrentAirState = AirState.BREAKINGFALL;
 
             PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
 
             _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
+            Instantiate(_perfectDefenseEffect, transform.position, Camera.main.transform.rotation);
 
             if (_disableFallBreakAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_disableFallBreakAction);
 
+            
+            float direction = transform.position.x - other.transform.position.x;
+            direction /= Mathf.Abs(direction);
 
-            //Breaks fall on structures
-
-            //Makes the character jump if they broke their fall on structure
-            if (other.gameObject.CompareTag("Structure"))
+            if (other.CompareTag("Structure"))
             {
-                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewConditionAction(DisableFallBreaking, condition => !_knockBack.Physics.IsFrozen);
-                _knockBack.CurrentAirState = AirState.BREAKINGFALL;
-                _knockBack.Physics.FreezeInPlaceByTimer(WallTechJumpDuration, false, true);
+                transform.rotation = Quaternion.Euler(0, direction * 90, 0);
+
+                if ((_controller.AttackDirection == Vector2.right && _movement.Alignment == GridAlignment.LEFT)
+                    || (_controller.AttackDirection == Vector2.left && _movement.Alignment == GridAlignment.RIGHT) && _controller.AttackDirection.x == direction)
+                {
+                    _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 2.0f);
+                    _knockBack.Physics.Jump(_wallTechJumpHeight, _wallTechJumpDistance, _wallTechJumpDuration, true, true);
+                }
+                else
+                {
+                    _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 2.0f);
+                    _knockBack.Physics.Jump(_wallTechJumpHeight / 2, (_wallTechJumpDistance / 2), _wallTechJumpDuration, true, true);
+                }
+
                 onFallBroken?.Invoke(false);
                 return;
             }
@@ -410,32 +426,7 @@ namespace Lodis.Gameplay
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (!IsBraced || !collision.gameObject.CompareTag("Structure") || collision.gameObject.CompareTag("CollisionPlane") || BreakingFall)
-                return;
-
-
-            BreakingFall = true;
-
-            PanelBehaviour panel = collision.gameObject.GetComponent<PanelBehaviour>();
-
-            _knockBack.SetInvincibilityByTimer(_wallTechInvincibilityTime);
-            Instantiate(_perfectDefenseEffect, transform.position, Camera.main.transform.rotation);
-
-            if (_disableFallBreakAction?.GetEnabled() == true)
-                RoutineBehaviour.Instance.StopAction(_disableFallBreakAction);
-
-            _disableFallBreakAction = RoutineBehaviour.Instance.StartNewConditionAction(DisableFallBreaking, condition => !_knockBack.Physics.IsFrozen);
-
-            if (collision.gameObject.CompareTag("Structure"))
-            {
-
-                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewConditionAction(DisableFallBreaking, condition => !_knockBack.Physics.IsFrozen);
-                _knockBack.CurrentAirState = AirState.BREAKINGFALL;
-                _knockBack.Physics.FreezeInPlaceByTimer(WallTechJumpDuration, false, true);
-                onFallBroken?.Invoke(false);
-                return;
-            }
-
+            BreakFall(collision.gameObject);
         }
 
         private void Update()
