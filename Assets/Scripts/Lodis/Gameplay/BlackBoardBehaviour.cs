@@ -243,7 +243,7 @@ namespace Lodis.Gameplay
         public Color GetPlayerColorByAlignment(GridScripts.GridAlignment alignment)
         {
             if (alignment == GridScripts.GridAlignment.ANY)
-                return Vector4.Scale(Player2Color,Player1Color);
+                return Player2Color.Value + Player1Color.Value;
 
             if (alignment == GridScripts.GridAlignment.LEFT)
                 return Player1Color;
