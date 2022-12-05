@@ -21,7 +21,7 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            if (!_burstEffect) _burstEffect = Resources.Load<GameObject>("AbilityData/Effects/EnergyBurst");
+            if (!_burstEffect) _burstEffect = Resources.Load<GameObject>("Effects/EnergyBurst");
             _defaultRestTime = abilityData.recoverTime;
         }
 

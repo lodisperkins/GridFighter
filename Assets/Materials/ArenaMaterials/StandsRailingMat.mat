@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Foil Insulation Cladding
+  m_Name: StandsRailingMat
   m_Shader: {fileID: -6465566751694194690, guid: 57639f7d1ffcb7947bbba6b5f8e083db,
     type: 3}
   m_ShaderKeywords: _METALLICSPECGLOSSMAP _NORMALMAP
@@ -101,6 +101,7 @@ Material:
     - Vector1_AF883DE0: 0.5
     - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
+    - _AmbientStrength: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
@@ -109,6 +110,8 @@ Material:
     - _DstBlend: 0
     - _EmissionStrength: 0
     - _EnvironmentReflections: 1
+    - _FalloffAmount: 0
+    - _FresnelSize: 0
     - _GlossMapScale: 0.227
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -131,9 +134,11 @@ Material:
     - Color_205411B7: {r: 0, g: 0, b: 0, a: 0}
     - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0.8, g: 0.8, b: 0.8, a: 1}
-    - _Color: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 1}
+    - _Color: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}

@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Scifi Panels 07
+  m_Name: StageLHSMat
   m_Shader: {fileID: -6465566751694194690, guid: 57639f7d1ffcb7947bbba6b5f8e083db,
     type: 3}
   m_ShaderKeywords: USENORMAL_ON _EMISSION _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
@@ -149,6 +149,7 @@ Material:
     - Vector1_AF883DE0: 0.5
     - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
+    - _AmbientStrength: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
@@ -159,6 +160,8 @@ Material:
     - _EnableHeightBlend: 0
     - _EnableInstancedPerPixelNormal: 1
     - _EnvironmentReflections: 1
+    - _FalloffAmount: 0
+    - _FresnelSize: 0
     - _GlossMapScale: 0.331
     - _Glossiness: 0
     - _GlossyReflections: 1
@@ -194,9 +197,11 @@ Material:
     - _Color: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
     - _EmissionColor: {r: 0.06132078, g: 0.08410415, b: 1, a: 1}
     - _EmissionTiling: {r: 4.65, g: 4, b: 0, a: 0}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _OffsetVal: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _Tiling: {r: 4.65, g: 4, b: 0, a: 0}
 --- !u!114 &8460021852452993838
 MonoBehaviour:
