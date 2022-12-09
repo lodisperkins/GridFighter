@@ -113,6 +113,9 @@ namespace Lodis.Gameplay
             ResetMoveAttributes();
         }
 
+        /// <summary>
+        /// Allows the player to stay on the opponents side and rotate in different directions
+        /// </summary>
         private void ChangeMoveAttributes()
         {
             //Store initial move speed
@@ -121,6 +124,9 @@ namespace Lodis.Gameplay
             _ownerMoveScript.AlwaysLookAtOpposingSide = false;
         }
 
+        /// <summary>
+        /// Resets all movement variables to their defualt values.
+        /// </summary>
         private void ResetMoveAttributes()
         {
             //Reset the movement traits
@@ -151,12 +157,14 @@ namespace Lodis.Gameplay
                 int activationAmount = currentActivationAmount;
                 StopAbility();
 
+                //Disable movement feeatures to allow free movement on opponent side
                 ChangeMoveAttributes();
                 currentActivationAmount = activationAmount;
                 string[] slots = OwnerMoveset.GetAbilityNamesInCurrentSlots();
 
                 abilityData.canCancelRecover = true;
 
+                //Check slots to be sure only doublestrike is activated again
                 if (slots[0] == abilityData.abilityName)
                     OwnerMoveset.UseSpecialAbility(0, _ownerInput.AttackDirection);
                 else

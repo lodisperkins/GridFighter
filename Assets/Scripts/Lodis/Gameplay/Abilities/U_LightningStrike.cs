@@ -21,6 +21,9 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
         }
 
+        /// <summary>
+        /// Toggles whether or not the children that contain the hitboxes are active in the hierarchy
+        /// </summary>
         private void ToggleChildren()
         {
             for (int i = 0; i < _visualPrefabInstanceTransform.childCount; i++)
@@ -40,12 +43,20 @@ namespace Lodis.Gameplay
 
             //Create object to spawn projectile from
             _visualPrefabInstanceTransform = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, target.transform.position, new Quaternion()).transform;
+
+            //Initialize hit collider
             HitColliderBehaviour collider = _visualPrefabInstanceTransform.GetComponent<HitColliderBehaviour>();
             collider.ColliderInfo = GetColliderData(0);
             collider.Owner = owner;
+
+            //Activate hitboxes attached to lighting object
             ToggleChildren();
         }
 
+        /// <summary>
+        /// Finds the transform to aim at when firing lighting
+        /// </summary>
+        /// <returns></returns>
         private Transform GetTarget()
         {
             Transform transform = null;

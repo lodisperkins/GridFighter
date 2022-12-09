@@ -40,19 +40,23 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
-            //Redirect projectile on hit
             base.Activate(args);
             _reboundCount = 0;
 
+            //Stores the rebound collider and the hit box attached to this boomerang
             ColliderBehaviour[] colliderBehaviours = Projectile.GetComponents<ColliderBehaviour>();
+
+            //If the boomerang only has a hit collider...
             if (colliderBehaviours.Length == 1)
             {
+                //...add a rebound collider that can reflect the boomerang on hit
                 _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
                 _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
-
             }
+            //Otherwise...
             else
             {
+                //...update the rebound colliders event
                 _reboundCollider = colliderBehaviours[1];
                 _reboundCollider.ClearCollisionEvent();
                 _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
@@ -78,6 +82,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            //Don't redirect the projectile if the player isn't standing still or just moving
             if (other == owner)
             {
                 CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();

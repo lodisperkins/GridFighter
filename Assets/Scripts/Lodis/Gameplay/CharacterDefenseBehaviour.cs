@@ -62,19 +62,25 @@ namespace Lodis.Gameplay
         [Tooltip("How long in seconds the object is going to spend breaking its fall.")]
         [SerializeField]
         private float _fallBreakLength;
+        [Tooltip("How far the character will jump after successfully catching themselves when against a wall.")]
         [SerializeField]
         private int _wallTechJumpDistance;
+        [Tooltip("How high the character will jump after successfully catching themselves when against a wall.")]
         [SerializeField]
         private float _wallTechJumpHeight;
+        [Tooltip("How long it will take the character to jump after successfully catching themselves when against a wall")]
         [SerializeField]
         private float _wallTechJumpDuration;
         [Tooltip("How long in seconds to stun an enemy after a successful parry.")]
         [SerializeField]
         private float _attackerStunTime;
+        [Tooltip("How long the character will be phase-shifting for.")]
         [SerializeField]
         private float _phaseShiftDuration;
+        [Tooltip("The amount of time the character will not be able to perform actions after phase-shifting without dodging an attack")]
         [SerializeField]
         private FloatVariable _defaultPhaseShiftRestTime;
+        [Tooltip("The amount of time the character will not be able to perform actions after phase-shifting and dodging an attack")]
         [SerializeField]
         private FloatVariable _successPhaseShiftRestTime;
         private FloatVariable _currentPhaseShiftRestTime;
@@ -108,21 +114,80 @@ namespace Lodis.Gameplay
         private bool _isShielding;
         private bool _isResting;
 
+        /// <summary>
+        /// Whether or not this character is in the process of catching themselves after a fall
+        /// </summary>
         public bool BreakingFall { get; private set; }
+
+        /// <summary>
+        /// How long this character will be invincible after catching themselves after a fall
+        /// </summary>
         public float BraceInvincibilityTime { get => _groundTechInvincibilityTime; }
+
+        /// <summary>
+        /// Whether or not this character can activate a parry while shielding
+        /// </summary>
         public bool CanParry { get => _canParry; }
+
+        /// <summary>
+        /// Whether or not this character is has activated a parry while shielding
+        /// </summary>
         public bool IsParrying { get => _isParrying; }
 
+        /// <summary>
+        /// Whether or not this character is ready to catch themselves after a fall
+        /// </summary>
         public bool IsBraced { get => _isBraced; private set => _isBraced = value; }
+
+        /// <summary>
+        /// How long it takes this character to catch themselve on the ground after a fall
+        /// </summary>
         public float GroundTechLength { get => _fallBreakLength; set => _fallBreakLength = value; }
+
+        /// <summary>
+        /// How long it will take the character to jump after successfully catching themselves when against a wall
+        /// </summary>
         public float WallTechJumpDuration { get => _wallTechJumpDuration; }
+
+        /// <summary>
+        /// The collider attached to this character that will be used to block and parry
+        /// </summary>
         public ColliderBehaviour ParryCollider { get => _shieldCollider; }
+
+        /// <summary>
+        /// Whether or not this character is using any defense action
+        /// </summary>
         public bool IsDefending { get => _isDefending; }
+
+        /// <summary>
+        /// Whether or no this character can phase shift through attacks
+        /// </summary>
         public bool CanPhaseShift { get => _canPhaseShift; set => _canPhaseShift = value; }
+
+        /// <summary>
+        /// Whether or no this character is phase-shifting
+        /// </summary>
         public bool IsPhaseShifting { get => _isPhaseShifting; }
+
+        /// <summary>
+        /// The current time the character has to wait after phase-shifting.
+        /// Varies based on whether or not the charater successfully dodged an attack
+        /// </summary>
         public FloatVariable CurrentPhaseShiftRestTime { get => _currentPhaseShiftRestTime; }
+
+        /// <summary>
+        /// The amount of time the character will not be able to perform actions after phase-shifting without dodging an attack
+        /// </summary>
         public FloatVariable DefaultPhaseShiftRestTime { get => _defaultPhaseShiftRestTime; set => _defaultPhaseShiftRestTime = value; }
+
+        /// <summary>
+        /// Whether or not this character has their shield active
+        /// </summary>
         public bool IsShielding { get => _isShielding; }
+
+        /// <summary>
+        /// Whether or not this character is unable to perform another action due to a previously used defense action
+        /// </summary>
         public bool IsResting { get => _isResting; }
 
         // Start is called before the first frame update
@@ -149,9 +214,11 @@ namespace Lodis.Gameplay
                 if (!other)
                     return;
 
+                //Spawns particles after block for player feedback
                 if (BlackBoardBehaviour.Instance.BlockEffect)
                     Instantiate(BlackBoardBehaviour.Instance.BlockEffect, other.transform.position + (.5f * Vector3.up), transform.rotation);
 
+                //If the player was parrying still, make them invincible briefly
                 if (IsParrying)
                     ActivateParryInvinciblity(args);
             }
@@ -160,21 +227,31 @@ namespace Lodis.Gameplay
             _onPhaseShift += () => _phaseShiftEvent?.Raise(_shieldCollider.Owner);
         }
 
+        /// <summary>
+        /// Adds another action to perform when a phase-shift starts
+        /// </summary>
         public void AddOnPhaseShiftAction(UnityAction action)
         {
             _onPhaseShift += action;
         }
 
+        /// <summary>
+        /// Activates phase shift. Character moves while intangible.
+        /// </summary>
+        /// <param name="moveDirection">THe direction for the character move towards while phase-shifting</param>
         public void ActivatePhaseShift(Vector2 moveDirection)
         {
             if (_isResting || !_movement.CanMove || _isPhaseShifting)
                 return;
 
+            //Only take the x value if a diagnol direction was given
             if (moveDirection.magnitude > 1)
                 moveDirection = new Vector2(moveDirection.x, 0);
 
+            //Disable shield to prevent the shield from colliding with other attacks
             _isParrying = false;
             _isShielding = false;
+
             //Allow the character to parry again
             _canParry = true;
             _shieldCollider.gameObject.SetActive(false);
@@ -183,10 +260,11 @@ namespace Lodis.Gameplay
 
             PanelBehaviour panel;
 
-
+            //Stops character movement and tries to move to a new panel
             _movement.CancelMovement();
             if (!_movement.MoveToPanel(_movement.Position + (moveDirection * 2), false, _movement.Alignment, false, true, true))
             {
+                //Cancel the phase shift if the character couldn't move a valid panel
                 _isPhaseShifting = false;
                 RoutineBehaviour.Instance.StopAction(_shieldTimer);
                 _isResting = false;
@@ -200,6 +278,11 @@ namespace Lodis.Gameplay
             _movement.AddOnMoveEndTempAction(() => { _isPhaseShifting = false; StartDefenseLag(_currentPhaseShiftRestTime, _isPhaseShifting); });
         }
 
+        /// <summary>
+        /// Prevents the character from moving after using a defense action
+        /// </summary>
+        /// <param name="time">The amount of time the character will be resting for</param>
+        /// <param name="value"></param>
         private void StartDefenseLag(FloatVariable time, bool value)
         {
             if (_isResting)
@@ -228,6 +311,9 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StartNewTimedAction(args => DeactivateReflector(), TimedActionCountType.SCALEDTIME, _parryLength);
         }
 
+        /// <summary>
+        /// Removes the shields ability to reflect projectiles
+        /// </summary>
         private void DeactivateReflector()
         {
             _shieldCollider.tag = "Untagged";
@@ -236,6 +322,9 @@ namespace Lodis.Gameplay
             _canParry = true;
         }
 
+        /// <summary>
+        /// Turns of the shield and makes the character rest before using another action
+        /// </summary>
         public void DeactivateShield()
         {
             if (!_isShielding && !_isParrying)

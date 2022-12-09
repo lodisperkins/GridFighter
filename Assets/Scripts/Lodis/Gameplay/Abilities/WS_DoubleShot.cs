@@ -39,6 +39,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            //Stop if the ability got canceled before this call
             if (!InUse)
                 return;
 
@@ -51,11 +52,18 @@ namespace Lodis.Gameplay
             ActiveProjectiles.Add(newProjectile);
         }
 
+        /// <summary>
+        /// Fires the laser in the given direction after waiting for the shot delay
+        /// </summary>
+        /// <param name="direction">Thw direction the player is moving in</param>
+        /// <returns></returns>
         private IEnumerator Shoot(Vector2 direction)
         {
+            //Spawn the first projectile and wait for the shot delay before moving
             SpawnProjectile();
             yield return new WaitForSeconds(abilityData.GetCustomStatValue("TimeBetweenShots"));
 
+            //Move when the player moves in position or just fire the shot if they can't move
             if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment))
                 _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
             else

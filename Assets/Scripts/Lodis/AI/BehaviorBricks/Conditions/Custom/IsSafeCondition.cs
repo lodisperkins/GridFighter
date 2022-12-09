@@ -15,22 +15,6 @@ public class IsSafeCondition : GOCondition
     [InParam("Owner")]
     private AttackDummyBehaviour _dummy;
 
-    //private List<HitColliderBehaviour> FindAttacksInRange(AttackDummyBehaviour dummy)
-    //{
-    //    if (dummy.AIMovement.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.LEFT)
-    //    {
-    //        _opponent = BlackBoardBehaviour.Instance.Player2;
-    //        return BlackBoardBehaviour.Instance.GetRHSActiveColliders().FindAll(collider => Vector3.Distance(collider.gameObject.transform.position, gameObject.transform.position) <= dummy.SenseRadius);
-    //    }
-    //    else if (dummy.AIMovement.MovementBehaviour.Alignment == Lodis.GridScripts.GridAlignment.RIGHT)
-    //    {
-    //        _opponent = BlackBoardBehaviour.Instance.Player1;
-    //        return BlackBoardBehaviour.Instance.GetLHSActiveColliders().FindAll(collider => Vector3.Distance(collider.gameObject.transform.position, gameObject.transform.position) <= dummy.SenseRadius);
-    //    }
-
-    //    return new List<HitColliderBehaviour>();
-    //}
-
     /// <summary>
     /// Gets a list of physics components from all attacks in range
     /// </summary>

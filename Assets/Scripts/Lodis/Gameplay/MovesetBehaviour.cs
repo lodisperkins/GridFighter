@@ -11,8 +11,7 @@ using UnityEngine.InputSystem;
 namespace Lodis.Gameplay
 {
     /// <summary>
-    /// Abilities that are not in the special ability deck, but are
-    /// a part of the characters normal moveset.
+    /// A specific classification of an ability.
     /// </summary>
     public enum AbilityType
     {

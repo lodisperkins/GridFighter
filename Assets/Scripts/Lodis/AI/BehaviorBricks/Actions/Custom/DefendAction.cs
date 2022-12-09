@@ -32,9 +32,6 @@ public class DefendAction : GOAction
     {
         base.OnStart();
         _grid = BlackBoardBehaviour.Instance.Grid;
-        //Return if the dummy can't currently defend itself
-        //if (_dummy.StateMachine.CurrentState != "Idle")
-        //    return;
 
         List<HitColliderBehaviour> attacks = _dummy.GetAttacksInRange();
         int currentAttackCount = attacks.Count;
@@ -42,6 +39,7 @@ public class DefendAction : GOAction
         //Store the current environment data
         _situation = new DefenseNode(attacks, null, null);
 
+        //The dummy doesn't make a new decision of this situation is the same as the last and if it can't defend.
         if (_situation.Compare(_dummy.LastDefenseDecision) == 1f && _dummy.StateMachine.CurrentState != "Idle")
             return;
 
@@ -96,13 +94,11 @@ public class DefendAction : GOAction
             _dummy.Executor.blackboard.boolParams[4] = true;
         }
 
-        //if (_dummy.Knockback.CurrentAirState == AirState.TUMBLING && _dummy.Moveset.CanBurst && choice > DefenseDecisionType.COUNTER)
-        //    choice = DefenseDecisionType.BURST;
-
         _dummy.LastDefenseDecision = _decision;
         //Punish the decision if the dummy was damaged
         _dummy.Knockback.AddOnTakeDamageTempAction(PunishLastDecision);
 
+        //Picks a decision based on whether or not the dummy is grounded
         if (_dummy.Knockback.Physics.IsGrounded)
             choice = ChooseGroundDefense();
         else
@@ -161,11 +157,13 @@ public class DefendAction : GOAction
         switch (choice)
         {
             case DefenseDecisionType.BURST:
+                //Burst if the dummy was in knockback long enough and is allowed to burst
                 if (_dummy.Knockback.LastTimeInKnockBack >= _dummy.TimeNeededToBurst && _dummy.Moveset.CanBurst)
                     _dummy.Moveset.UseBasicAbility(AbilityType.BURST);
+
                 break;
             case DefenseDecisionType.BREAKFALLJUMP:
-                //Gets a direction for the dummy to run to
+                //Gets a direction for the dummy to jump towards based on the barrier its touching
                 float jumpDirection = -Convert.ToInt32(_dummy.TouchingOpponentBarrier) + Convert.ToInt32(_dummy.TouchingBarrier);
 
                 if (jumpDirection == 0)
@@ -174,10 +172,9 @@ public class DefendAction : GOAction
                     break;
                 }
 
+                //Update attack direction and brace for impact so the dummy can jump away from the barrer
                 jumpDirection *= _dummy.Character.transform.forward.x;
-
                 _dummy.AttackDirection = new Vector2(jumpDirection, 0);
-
                 _dummy.Defense.Brace();
                 break;
             case DefenseDecisionType.BREAKFALLNEUTRAL:
@@ -195,6 +192,9 @@ public class DefendAction : GOAction
         return choice;
     }
 
+    /// <summary>
+    /// Decrements the last decisions wins by 2
+    /// </summary>
     private void PunishLastDecision()
     {
         if (_dummy.LastDefenseDecision != null)
@@ -204,24 +204,6 @@ public class DefendAction : GOAction
         }
         _canMakeNewDecision = true;
     }
-
-    /// <summary>
-    /// Gets a list of physics components from all attacks in range
-    /// </summary>
-    /// <returns></returns>
-    private List<GridPhysicsBehaviour> GetPhysicsComponents()
-    {
-        List<GridPhysicsBehaviour> physics = new List<GridPhysicsBehaviour>();
-
-        for (int i = 0; i < _dummy.GetAttacksInRange().Count; i++)
-        {
-            physics.Add(_dummy.GetAttacksInRange()[i].GetComponent<GridPhysicsBehaviour>());
-        }
-
-        return physics;
-    }
-
-    
 
     public override TaskStatus OnUpdate()
     {

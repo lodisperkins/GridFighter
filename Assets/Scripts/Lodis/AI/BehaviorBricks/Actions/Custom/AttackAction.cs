@@ -22,13 +22,17 @@ public class AttackAction : GOAction
     {
         base.OnStart();
 
+        //Return if the dummy isn't attacking or counter attacking
         if (!_dummy.CanAttack && !_dummy.Executor.blackboard.boolParams[3])
             return;
 
+        //Set counter attacking to false so the next attack isn't set to counter attack
         _dummy.Executor.blackboard.boolParams[3] = false;
 
+        //If the dummy was shielding...
         if (_dummy.StateMachine.CurrentState == "Parrying")
         {
+            //..deactivate the shield so that they don't attack an defend at the same time
             _dummy.Defense.DeactivateShield();
             return;
         }
@@ -126,24 +130,14 @@ public class AttackAction : GOAction
             return;
         }
 
+        //Change the x direction based on dummy facing so that forward and backwards are attacks are oriented correctly
         attackDirection.x *= Mathf.Round(_dummy.transform.forward.x);
+        //Clamp the attack direction to appropriate values
         attackDirection.x = Mathf.Round(attackDirection.x);
         attackDirection.y = Mathf.Round(attackDirection.y);
 
-        if ((int)attackType < 4)
-        {
-            //Decide which ability type to use based on the input
-            if (attackDirection == Vector2.up || attackDirection == Vector2.down)
-                attackType = AbilityType.WEAKSIDE;
-            else if (attackDirection == Vector2.left)
-                attackType = AbilityType.WEAKBACKWARD;
-            else if (attackDirection == Vector2.right)
-                attackType = AbilityType.WEAKFORWARD;
-            else if (attackDirection == Vector2.zero)
-                attackType = AbilityType.WEAKNEUTRAL;
-        }
-        //Changes the normal attack into a charge version depending on the attack strength found.
-        else if ((int)attackType >= 4 && (int)attackType < 8)
+        //Changes the normal attack into a charge version depending on the attack strength found
+        if ((int)attackType >= 4 && (int)attackType < 8)
         {
             attackStrength = UnityEngine.Random.Range(1.1f, 1.3f);
             float timeHeld = (attackStrength - 1) / 0.1f;
@@ -172,30 +166,42 @@ public class AttackAction : GOAction
     {
         GameObject collisionObject = (GameObject)args[0];
 
+        //Don't create a new decision of the attack didn't hit a player or if it hit it's owner
         if (!collisionObject.CompareTag("Player") || collisionObject == _dummy.Character.gameObject)
             return;
 
+        //Initialize a new decision with the current situation to add to the tree
         Vector3 displacement = collisionObject.transform.position - _dummy.Character.transform.position;
         _decision = (AttackNode)_dummy.AttackDecisions.AddDecision(new AttackNode(displacement, targetHealth, 0, startUpTime, name, attackStrength, collisionObject.GetComponent<GridPhysicsBehaviour>().LastVelocity, null, null));
 
         if (_decision == null)
             return;
 
+        //Decrement the decisions effectiveness by default
         _decision.Wins--;
         _decision.VisitCount++;
+
+        //Increase the score based on what was hit
         IncreaseDecisionScore(args);
     }
 
+    /// <summary>
+    /// Increases the score of a decision based on what it hit
+    /// </summary>
+    /// <param name="args">Additional info about the current situation</param>
     void IncreaseDecisionScore(params object[] args)
     {
         GameObject collisionObject = (GameObject)args[0];
 
+        //Exit if the attack didn't hit a player or barrier
         if (!collisionObject.CompareTag("Player") && !collisionObject.CompareTag("Structure"))
             return;
 
+        //Incresase the shield stat if the opponent was blocking
         if (_dummy.OpponentDefense.IsDefending && collisionObject.CompareTag("Player"))
             _decision.ShieldEffectiveness ++;
 
+        //Increment the decision by two to give the attack a net positive
         if (!_dummy.OpponentKnockback.IsInvincible) _decision.Wins += 2;
 
         _decision.KnockBackDealt = _dummy.OpponentKnockback.LastTotalKnockBack;

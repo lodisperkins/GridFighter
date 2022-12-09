@@ -25,8 +25,11 @@ public class MoveAction : GOAction
         PanelBehaviour panel = (PanelBehaviour)args[0];
         float xDirection = _dummy.Character.transform.forward.x;
 
+        ///Stores if the x position is less than the opponents based on the direction their facing. 
+        ///This is to have the dummy continue combos when the enemy falls behind them.
         bool isInFrontOpponent = xDirection * panel.Position.x < xDirection * _dummy.OpponentMove.Position.x;
 
+        //Returns the distance between the dummy and its target and whether or not it's in front
         return Mathf.Abs(panel.Position.x - _dummy.OpponentMove.Position.x) < _dummy.MaxRange && panel.Position.y == _dummy.OpponentMove.Position.y && isInFrontOpponent;
     }
 
@@ -35,9 +38,11 @@ public class MoveAction : GOAction
         PanelBehaviour panel = null;
         int xPos = (int)_dummy.AIMovement.MovementBehaviour.CurrentPanel.Position.x;
 
+        //Quit trying to move if it's not possible
         if (_dummy.StateMachine.CurrentState != "Idle")
             return TaskStatus.ABORTED;
 
+        //Move to location if there is a valid panel in range
         if (BlackBoardBehaviour.Instance.Grid.GetPanel(CheckPanelInRange, out panel, _dummy.Character))
             _dummy.AIMovement.MoveToLocation(panel);
 

@@ -14,7 +14,7 @@ public class OutOfRangeCondition : GOCondition
     private GridMovementBehaviour _opponentMovement;
 
     /// <summary>
-    /// Considered unsafe if hit boxes are in range, in the tumbling state, or an attack has been started on the same row
+    /// Considered out of range if the enemy is too far from, behind, or not in directly in front of the dummy
     /// </summary>
     /// <returns></returns>
     public override bool Check()

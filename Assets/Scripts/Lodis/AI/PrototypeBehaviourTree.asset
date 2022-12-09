@@ -112,8 +112,8 @@ MonoBehaviour:
     <SequenceNode id=\"56\" />\r\n        </data>\r\n      </_data>\r\n    </SelectorNode>\r\n   
     <ConditionEvalNode id=\"0\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
     selected=\"False\" position=\"0 0\" name=\"AlwaysTrue\" description=\"Eval\"
-    cardinality=\"1\" hasParent=\"False\">\r\n          <ConditionEvalNode id=\"0\"
-    />\r\n        </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n    <DecoratorGuard
+    cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n       
+    </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n    <DecoratorGuard
     id=\"49\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
     position=\"451.5662 568.7891\" name=\"Guard\" description=\"Guard\" cardinality=\"1\"
     hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n          <DecoratorGuard
