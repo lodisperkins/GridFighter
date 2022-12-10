@@ -4729,8 +4729,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -518439133
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -9506,8 +9506,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -518439133
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -14787,8 +14787,8 @@ ParticleSystemRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -518439133
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_RenderMode: 0
   m_SortMode: 0
@@ -14820,6 +14820,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2778050533114035496, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778050533114035496, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -518439133
+      objectReference: {fileID: 0}
+    - target: {fileID: 6676342820181627760, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6676342820181627760, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: -518439133
+      objectReference: {fileID: 0}
     - target: {fileID: 6676342820181627761, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
