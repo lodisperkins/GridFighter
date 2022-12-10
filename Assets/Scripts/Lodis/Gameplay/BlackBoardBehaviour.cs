@@ -61,13 +61,19 @@ namespace Lodis.Gameplay
             return _entitiesInGame;
         }
 
+        /// <summary>
+        /// Removes all abilties and entites from the grid
+        /// </summary>
         public void ClearGrid()
         {
-            DestroyAllAbilityColliders();
+            DisableAllAbilityColliders();
             DestroyAllNonPlayerEntities();
             Grid.CancelRowExchange();
         }
 
+        /// <summary>
+        /// Destroys all entities currently in the scene with the exception of the players
+        /// </summary>
         public void DestroyAllNonPlayerEntities()
         {
             foreach (GameObject entity in _entitiesInGame)
@@ -77,6 +83,10 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// Gets all ability colliders that are aligned with the left side
+        /// </summary>
+        /// <returns>A list of hit colliders</returns>
         public List<HitColliderBehaviour> GetLHSActiveColliders()
         {
             if (_lhsActiveColliders.Count > 0)
@@ -90,6 +100,11 @@ namespace Lodis.Gameplay
 
             return _lhsActiveColliders;
         }
+
+        /// <summary>
+        /// Gets all ability colliders that are aligned with the right side
+        /// </summary>
+        /// <returns>A list of hit colliders</returns>
         public List<HitColliderBehaviour> GetRHSActiveColliders()
         {
             if (_rhsActiveColliders.Count > 0)
@@ -104,7 +119,10 @@ namespace Lodis.Gameplay
             return _rhsActiveColliders;
         }
 
-        public void DestroyAllAbilityColliders()
+        /// <summary>
+        /// Returns all ability colliders to the object pool
+        /// </summary>
+        public void DisableAllAbilityColliders()
         {
             foreach (HitColliderBehaviour collider in _lhsActiveColliders)
             {
@@ -228,6 +246,10 @@ namespace Lodis.Gameplay
             return null;
         }
 
+        /// <summary>
+        /// Gets the color of the players alignment
+        /// </summary>
+        /// <param name="id">A scriptable object storing the players ID</param>
         public Color GetPlayerColorByID(IntVariable id)
         {
             if (!id) return Color.black;
@@ -240,10 +262,14 @@ namespace Lodis.Gameplay
             return Color.black;
         }
 
+        /// <summary>
+        /// Gets the color of the player alignment
+        /// </summary>
+        /// <param name="alignment">The alignment to get the color for</param>
         public Color GetPlayerColorByAlignment(GridScripts.GridAlignment alignment)
         {
             if (alignment == GridScripts.GridAlignment.ANY)
-                return Vector4.Scale(Player2Color,Player1Color);
+                return Player2Color.Value + Player1Color.Value;
 
             if (alignment == GridScripts.GridAlignment.LEFT)
                 return Player1Color;

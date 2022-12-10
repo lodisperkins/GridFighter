@@ -56,10 +56,14 @@ namespace Lodis.Gameplay
             
             Vector2 moveDir = owner.transform.forward;
 
+            //Only fire if there aren't two many instances of this object active
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {
+                //If the player can move to another panel...
                 if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir))
+                    //...wait until they move to fire
                     _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+                //Otherwise just fire the shot
                 else
                     SpawnProjectile();
             }

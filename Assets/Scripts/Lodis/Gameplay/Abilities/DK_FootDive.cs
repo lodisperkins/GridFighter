@@ -41,17 +41,22 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
+
+            //Calculates the animation curve for the jump
             float hangTime = abilityData.GetCustomStatValue("HangTime") / (abilityData.startUpTime + abilityData.timeActive);
             _riseTime = abilityData.startUpTime / (abilityData.startUpTime + abilityData.timeActive);
             hangTime = Mathf.Clamp(hangTime, 0.1f, 0.5f) + 0.2f;
             _curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(_riseTime, .5f), new Keyframe(hangTime, .5f), new Keyframe(1, 1)); 
+
             _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
             _grid = BlackBoardBehaviour.Instance.Grid;
+
+            //Stores the opponents physics script to make them bounce later
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
-
             if (opponent == null) return;
-
             _opponentPhysics = opponent.GetComponent<GridPhysicsBehaviour>();
+
+            //Initialize default values
             _distance = abilityData.GetCustomStatValue("TravelDistance");
             _jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
             _chargeEffectRef = (GameObject)Resources.Load("Effects/RisingChargeEffect");

@@ -57,6 +57,7 @@ namespace Lodis.Gameplay
         {
             PanelBehaviour panel = null;
 
+            //Gets the panels in front of the character to form a "v" shape with the bombs
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(_ownerMoveScript.Position + Vector2.right * _ownerMoveScript.transform.forward.x, out panel))
                 _targetPanels.Add(panel);
             if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.up, out panel))
@@ -64,6 +65,7 @@ namespace Lodis.Gameplay
             if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.down, out panel))
                 _targetPanels.Add(panel);
 
+            //Spawn each bomb and move them into position
             for (int i = 0; i < _targetPanels.Count; i++)
             {
                 _bombs.Add(ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation).transform);
@@ -71,6 +73,7 @@ namespace Lodis.Gameplay
                 _bombs[i].DOMove(_targetPanels[i].transform.position, _bombMoveDuration);
             }
 
+            //Starts the bomb countdown
             _explosionTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => DetonateBombs(), TimedActionCountType.SCALEDTIME, _bombTimer);
         }
 
@@ -78,8 +81,10 @@ namespace Lodis.Gameplay
         {
             base.StopAbility();
 
+            //Stop the timer to prevent the explosion from happening
             RoutineBehaviour.Instance.StopAction(_explosionTimer);
 
+            //Disable each bomb in the scene
             foreach (Transform t in _bombs)
             {
                 ObjectPoolBehaviour.Instance.ReturnGameObject(t.gameObject);

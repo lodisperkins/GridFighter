@@ -52,27 +52,31 @@ namespace Lodis.Gameplay
 
             CleanProjectileList();
 
+            //Exit if too many lobshots are active
             if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
 
+            //Calculate how where the player should travel after firing
             Vector2 offSet = new Vector2(1, 0) * -owner.transform.forward;
             offSet.x = Mathf.RoundToInt(offSet.x);
             offSet.y = Mathf.RoundToInt(offSet.y);
 
+            //Moves player to panel behind so they can retreat while shooting
             _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
 
+            //Create a "gun" to fire the shot from
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
             projectileSpawner.projectile = _projectile;
 
+            //Calculate the force needed to make the lobshot travel the given distance
             Vector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle);
             launchForce.x *= projectileSpawner.transform.forward.x;
 
+            //Store the gravity of the lobshot for to change its falling speed
             GameObject activeProjectile = projectileSpawner.FireProjectile(launchForce, _projectileCollider, true, true);
-
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = _gravity;
             
-            //Fire laser
             ActiveProjectiles.Add(activeProjectile);
         }
     }

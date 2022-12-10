@@ -47,8 +47,11 @@ namespace Lodis.Gameplay
             GameObject visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, SpawnTransform.position, abilityData.visualPrefab.transform.rotation);
             //Get the movement script attached and add it to a list
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
+
+            //Place the link in its appropriate position
             gridMovement.MoveToPanel(position, true, GridAlignment.ANY, true);
             gridMovement.Speed = abilityData.GetCustomStatValue("Speed");
+
             _linkMoveScripts.Add(gridMovement);
         }
 
@@ -119,29 +122,31 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void Activate(params object[] args)
         {
+            //Activates the links if this is the second use of this ability
             if (currentActivationAmount > 1)
             {
                 ActivateStunPath();
                 return;;
             }
 
-
-            //If the owner doesn't have a transform to spawn projectiles from...
             SpawnTransform = OwnerMoveset.ProjectileSpawner.transform;
 
             Vector2 attackDirection = (Vector2)args[1];
 
+            //Finds closes panel on x to know how close to throw traps
             int gridTempMaxColumns = BlackBoardBehaviour.Instance.Grid.TempMaxColumns;
             int closestPanelX = gridTempMaxColumns;
+            //Temp max columns returns column count relative to player 1. 
+            //Decrements the x value to get the column count for player 2.
             if (owner.transform.forward.x < 0)
                 closestPanelX--;
                     
+            //Finds the farthest possible panel to know how far to throw traps
             Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
             int ownerFacing = (int)owner.transform.forward.x;
-
             int farthestPanelX = (int)Mathf.Clamp(closestPanelX + (abilityData.GetCustomStatValue("DistanceBetweenStructures") * ownerFacing), 0, dimensions.x - 1);
             
-            //Switch to know which stage of the ability should be activated
+            //Switch to know where to place the ability on the stage based on the direction given
             switch (attackDirection)
             {
                 case Vector2 dir when dir.Equals(Vector2.right):

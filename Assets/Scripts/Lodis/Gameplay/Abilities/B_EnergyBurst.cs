@@ -21,7 +21,7 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            if (!_burstEffect) _burstEffect = Resources.Load<GameObject>("AbilityData/Effects/EnergyBurst");
+            if (!_burstEffect) _burstEffect = Resources.Load<GameObject>("Effects/EnergyBurst");
             _defaultRestTime = abilityData.recoverTime;
         }
 
@@ -31,6 +31,7 @@ namespace Lodis.Gameplay
 
             _makeFreeFall = _ownerKnockBackScript.CurrentAirState != AirState.NONE;
 
+            //Freezes all forces in the knockback and physics components
             _ownerKnockBackScript.Physics.CancelFreeze();
             _ownerKnockBackScript.Physics.IgnoreForces = true;
             _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
@@ -38,6 +39,7 @@ namespace Lodis.Gameplay
             _ownerKnockBackScript.CancelHitStun();
             _ownerKnockBackScript.CancelStun();
 
+            //Disable ability benefits if the player is hit out of burst
             OnHitTemp += arguments =>
             {
                 if (_ownerKnockBackScript.Physics.IsGrounded)
@@ -56,23 +58,27 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void Activate(params object[] args)
         {
-
-
             HitColliderData hitColliderData = GetColliderData(0);
 
+            //Try to get a barrier from the pool to use as the hit box
             _barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
 
             HitColliderBehaviour instantiatedCollider = null;
 
+            //Add a hitcollider if there isn't one attached in order to deal damage
             if (!_barrier.TryGetComponent(out instantiatedCollider))
                 instantiatedCollider = _barrier.AddComponent<HitColliderBehaviour>();
            
+            //Update the new colliders data
             instantiatedCollider.ColliderInfo = hitColliderData;
             instantiatedCollider.Owner = owner;
 
+            //Spawns a new particle effect at this player's position
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
 
+            //If the player is resting on the ground...
             if (_ownerKnockBackScript.CurrentAirState != AirState.NONE)
+                //...put them in freefall
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
 
             _ownerKnockBackScript.Physics.IgnoreForces = false;
