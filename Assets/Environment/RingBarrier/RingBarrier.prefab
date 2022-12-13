@@ -428,6 +428,10 @@ MonoBehaviour:
   _shieldController: {fileID: 929767235}
   _canInstantShatter: 0
   _visuals: {fileID: 8750079460238425156}
+  _hitEffect: {fileID: 8567834841006214752, guid: 7cd867e25d9d97044bb08948940288c8,
+    type: 3}
+  _takeDamageEffect: {fileID: 5834264603216434513, guid: fbbca74d901113a419c1740c316e2ed7,
+    type: 3}
 --- !u!54 &3135977292930765005
 Rigidbody:
   m_ObjectHideFlags: 0
