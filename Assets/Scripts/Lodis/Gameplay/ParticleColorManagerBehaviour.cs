@@ -10,6 +10,8 @@ namespace Lodis.Gameplay
         [SerializeField] 
         private GridScripts.GridAlignment _alignment;
         [SerializeField]
+        private bool _onlyChangeHue;
+        [SerializeField]
         private bool _changeStartColor;
         [SerializeField]
         private bool _changeColorOverLifetime;
@@ -28,6 +30,23 @@ namespace Lodis.Gameplay
             SetColors();
         }
 
+        public Color ChangeHue(Color oldColor)
+        {
+            Color newColor = _color;
+            Color propertyColor = oldColor;
+            Vector3 propertyHSV = new Vector3();
+            Vector3 targetHSV = new Vector3();
+
+            Color.RGBToHSV(propertyColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
+            Color.RGBToHSV(newColor, out targetHSV.x, out targetHSV.y, out targetHSV.z);
+
+            propertyHSV.x = targetHSV.x;
+
+            newColor = Color.HSVToRGB(propertyHSV.x, propertyHSV.y, propertyHSV.z);
+
+            return newColor;
+        }
+
         public void SetColors()
         {
             foreach (ParticleSystem particleSystem in _particleSystems)
@@ -36,19 +55,31 @@ namespace Lodis.Gameplay
                 if (_changeStartColor)
                 {
                     ParticleSystem.MainModule main = particleSystem.main;
-                    main.startColor = _color;
+
+                    if (_onlyChangeHue)
+                        main.startColor = ChangeHue(main.startColor.color);
+                    else
+                        main.startColor = _color;
                 }
 
                 if (_changeColorOverLifetime)
                 {
                     ParticleSystem.ColorOverLifetimeModule lifetimeModule = particleSystem.colorOverLifetime;
-                    lifetimeModule.color = _color;  
+
+                    if (_onlyChangeHue)
+                        lifetimeModule.color = ChangeHue(lifetimeModule.color.color);
+                    else
+                        lifetimeModule.color = _color;
                 }
 
                 if (_changeColorBySpeed)
                 {
                     ParticleSystem.ColorBySpeedModule speedModule = particleSystem.colorBySpeed;
-                    speedModule.color = _color; 
+
+                    if (_onlyChangeHue)
+                        speedModule.color = ChangeHue(speedModule.color.color);
+                    else
+                        speedModule.color = _color;
                 }
             }
         }

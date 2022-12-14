@@ -14400,6 +14400,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _alignment: 0
+  _onlyChangeHue: 1
   _changeStartColor: 1
   _changeColorOverLifetime: 0
   _changeColorBySpeed: 0
