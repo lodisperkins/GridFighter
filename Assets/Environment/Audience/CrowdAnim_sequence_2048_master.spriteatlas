@@ -1,0 +1,139 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: CrowdAnim_sequence_2048_master
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings:
+    - serializedVersion: 3
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 8192
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 1
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+      m_ForceMaximumCompressionQuality_BC6H_BC7: 0
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 1
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: 8c0a14c966b8aa04fbc71732e2f96814, type: 3}
+    - {fileID: 102900000, guid: 0460c633dac38fb48902a27ade5ecb2e, type: 3}
+    - {fileID: 102900000, guid: 34553afe742a1d44a8270e3ae8567ba1, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: 10fcf2503ef845248b8d7cf11cd38c62, type: 3}
+  - {fileID: 21300000, guid: 452ba87002638b744912cfbf092a4995, type: 3}
+  - {fileID: 21300000, guid: 1f28d301d9a02544aab4dc043159da92, type: 3}
+  - {fileID: 21300000, guid: f0edcc01ed9adb5479285e8c4267d960, type: 3}
+  - {fileID: 21300000, guid: d9a0694168ed48340b650a3a19fe55c2, type: 3}
+  - {fileID: 21300000, guid: 1eac0391819128942ad0dcaf01b4bfc8, type: 3}
+  - {fileID: 21300000, guid: c895c4128d1e08f449dc12ec054dd551, type: 3}
+  - {fileID: 21300000, guid: 40260022a98c2ee438a4908bd6262e3d, type: 3}
+  - {fileID: 21300000, guid: 8db0a422b9332f74c87b98312398376a, type: 3}
+  - {fileID: 21300000, guid: 4a86e0b29f8f62c44b074771a5e7d316, type: 3}
+  - {fileID: 21300000, guid: 8c59348333494bb4f86b89ac90a5d366, type: 3}
+  - {fileID: 21300000, guid: c53c7cc3bf6d30a49bb858da889b3b8e, type: 3}
+  - {fileID: 21300000, guid: b24b3b041a9765046908f88429b8156b, type: 3}
+  - {fileID: 21300000, guid: 2bbbe5247ba6c524ab1a4eaf0935e3db, type: 3}
+  - {fileID: 21300000, guid: 3cdfea74b899652478a0a0e658c261a4, type: 3}
+  - {fileID: 21300000, guid: ed5a9b74e4e018f49ab2e573b541a90d, type: 3}
+  - {fileID: 21300000, guid: b166e8a4acc8f1449abde68c3b378c7d, type: 3}
+  - {fileID: 21300000, guid: b33bd9d51c4fc1645b4c67f989fc326d, type: 3}
+  - {fileID: 21300000, guid: 88c241971dd1ae24e801a4ecec4d5193, type: 3}
+  - {fileID: 21300000, guid: 199fae9767abbf84d9cb0e74eabefe95, type: 3}
+  - {fileID: 21300000, guid: 6479a7b7f96f56d4dab1f75f414638bb, type: 3}
+  - {fileID: 21300000, guid: cd3c14e776aa88a46a801f5d08cf35bc, type: 3}
+  - {fileID: 21300000, guid: 351432287a241a4429c78510664434d2, type: 3}
+  - {fileID: 21300000, guid: 59972fa81a2209045907e3d31893393a, type: 3}
+  - {fileID: 21300000, guid: 074015c84d9d5da4cbd32b8ec6470e12, type: 3}
+  - {fileID: 21300000, guid: b4d078c871b18be44a1349ff10ff8c17, type: 3}
+  - {fileID: 21300000, guid: aec72e19114433c40be17b98a2aa95b0, type: 3}
+  - {fileID: 21300000, guid: 8a5beb79d636a924eb3379aa8a41dc6e, type: 3}
+  - {fileID: 21300000, guid: 6b2d348aa8ab3954d9bde0523deba78b, type: 3}
+  - {fileID: 21300000, guid: 2a91219a40f52b841822cb6d950c7a9b, type: 3}
+  - {fileID: 21300000, guid: b94f54aaa3947a943aaca0b13c084f09, type: 3}
+  - {fileID: 21300000, guid: 70070aca162882b4a8c0191a4d275894, type: 3}
+  - {fileID: 21300000, guid: fe7ee22b7a0439346a85859dd69f684c, type: 3}
+  - {fileID: 21300000, guid: 5bdd7abbc6ad6ee4cad48d52440fd250, type: 3}
+  - {fileID: 21300000, guid: 007cffdb08d1a16479d7680e8e660587, type: 3}
+  - {fileID: 21300000, guid: fd24121c78ed28f4c9ff31359800017b, type: 3}
+  - {fileID: 21300000, guid: 5314a09c720cb4d49b1bdf3f2f87f794, type: 3}
+  - {fileID: 21300000, guid: 9623cfbcde4ff814bba3257882d14dfe, type: 3}
+  - {fileID: 21300000, guid: bddd43de17865b24aa03bd3b3d57b3a8, type: 3}
+  - {fileID: 21300000, guid: 79f804ee8d0a5334d9b0579f9ecaec6d, type: 3}
+  - {fileID: 21300000, guid: 87d5793f644c27e4cb3e44bc0269c851, type: 3}
+  - {fileID: 21300000, guid: fa57c08f25e4c5648a8dd18d60fb8155, type: 3}
+  - {fileID: 21300000, guid: b3e977ffd24fc224cb296638cc5a72dc, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - CrowdAnim_B_sequence.0031
+  - CrowdAnim_B_sequence.0038
+  - CrowdAnim_A_sequence.0013
+  - CrowdAnim_C_sequence.0068
+  - CrowdAnim_A_sequence.0011
+  - CrowdAnim_C_sequence.0051
+  - CrowdAnim_A_sequence.0017
+  - CrowdAnim_C_sequence.0052
+  - CrowdAnim_A_sequence.0014
+  - CrowdAnim_A_sequence.0016
+  - CrowdAnim_A_sequence.0010
+  - CrowdAnim_A_sequence.0015
+  - CrowdAnim_C_sequence.0064
+  - CrowdAnim_C_sequence.0050
+  - CrowdAnim_C_sequence.0053
+  - CrowdAnim_C_sequence.0059
+  - CrowdAnim_C_sequence.0054
+  - CrowdAnim_B_sequence.0039
+  - CrowdAnim_C_sequence.0061
+  - CrowdAnim_B_sequence.0033
+  - CrowdAnim_C_sequence.0067
+  - CrowdAnim_A_sequence.0018
+  - CrowdAnim_C_sequence.0056
+  - CrowdAnim_B_sequence.0035
+  - CrowdAnim_A_sequence.0020
+  - CrowdAnim_C_sequence.0062
+  - CrowdAnim_B_sequence.0036
+  - CrowdAnim_C_sequence.0063
+  - CrowdAnim_C_sequence.0066
+  - CrowdAnim_C_sequence.0058
+  - CrowdAnim_C_sequence.0057
+  - CrowdAnim_B_sequence.0032
+  - CrowdAnim_C_sequence.0065
+  - CrowdAnim_A_sequence.0019
+  - CrowdAnim_B_sequence.0034
+  - CrowdAnim_B_sequence.0037
+  - CrowdAnim_C_sequence.0055
+  - CrowdAnim_C_sequence.0070
+  - CrowdAnim_A_sequence.0012
+  - CrowdAnim_C_sequence.0060
+  - CrowdAnim_B_sequence.0030
+  - CrowdAnim_B_sequence.0040
+  - CrowdAnim_C_sequence.0069
+  m_Tag: CrowdAnim_sequence_2048_master
+  m_IsVariant: 0

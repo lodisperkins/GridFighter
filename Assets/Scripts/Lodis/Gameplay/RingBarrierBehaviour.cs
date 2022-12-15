@@ -1,5 +1,7 @@
-﻿using Lodis.Movement;
+﻿using Lodis.GridScripts;
+using Lodis.Movement;
 using Lodis.ScriptableObjects;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,6 +33,9 @@ namespace Lodis.Gameplay
         private bool _canInstantShatter;
         [SerializeField]
         private GameObject _visuals;
+        [SerializeField] private ParticleSystem _hitEffect;
+        [SerializeField] private ParticleColorManagerBehaviour _takeDamageEffect;
+        private GridAlignment _alignment;
 
         protected override void Awake()
         {
@@ -47,6 +52,7 @@ namespace Lodis.Gameplay
                 SetInvincibilityByCondition(condition => !MatchManagerBehaviour.Instance.InvincibleBarriers);
 
             _ownerCollider = Owner.GetComponent<GridPhysicsBehaviour>().BounceCollider;
+            _alignment = Owner.GetComponent<GridMovementBehaviour>().Alignment;
         }
 
         /// <summary>
@@ -183,6 +189,10 @@ namespace Lodis.Gameplay
             hitCollider.ColliderInfo = info;
             knockbackBehaviour.LastCollider = hitCollider;
             knockbackBehaviour.TakeDamage(info,gameObject);
+
+            Instantiate(_hitEffect.gameObject, collision.contacts[0].point, new Quaternion());
+            if (collision.gameObject == Owner)
+                Instantiate(_takeDamageEffect, collision.contacts[0].point, new Quaternion()).Alignment = _alignment;
         }
     }
 }

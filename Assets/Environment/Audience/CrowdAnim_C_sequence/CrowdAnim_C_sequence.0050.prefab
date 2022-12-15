@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &1583590563936260687
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2621069071636058097, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_FlipX
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058097, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 2bbbe5247ba6c524ab1a4eaf0935e3db,
+        type: 3}
+    - target: {fileID: 2621069071636058097, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_SortingLayer
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058097, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058097, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_SortingLayerID
+      value: 1285746283
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058097, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058098, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 02e279bd477a3e84bab5c756908e2406, type: 2}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.7499876
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.5999982
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.0299844
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9982022
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.05993595
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 6.872
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058099, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621069071636058100, guid: af11c84a20322d94e84829202ce2ab8a,
+        type: 3}
+      propertyPath: m_Name
+      value: CrowdAnim_C_sequence.0050
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: af11c84a20322d94e84829202ce2ab8a, type: 3}
