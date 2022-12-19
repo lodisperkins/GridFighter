@@ -261,6 +261,7 @@ namespace Lodis.Input
 
             //Assign the arguments for the ability
             args[1] = _attackDirection;
+            args[0] = 0.0f;
             //Find the power scale based on the time the button was held to use a charge ability
             float timeHeld = Mathf.Clamp((float)context.duration, 0, _maxChargeTime);
             if (timeHeld > _minChargeLimit && (int)abilityType < 4)

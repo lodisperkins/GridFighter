@@ -49,6 +49,7 @@ namespace Lodis.Gameplay
         private Ability _nextAbilitySlot;
         [SerializeField]
         private Ability _lastAbilityInUse;
+        private float _lastAttackStrength;
         [SerializeField]
         private bool _abilityInUse;
         [SerializeField]
@@ -110,6 +111,7 @@ namespace Lodis.Gameplay
         private TimedAction _rechargeAction;
         private TimedAction _deckShuffleAction;
         private TimedAction _burstAction;
+
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -173,6 +175,7 @@ namespace Lodis.Gameplay
         public Transform[] LeftMeleeSpawns { get => _leftMeleeSpawns; }
         public Transform[] RightMeleeSpawns { get => _rightMeleeSpawns; }
         public FloatVariable MaxBurstEnergy { get => _maxBurstEnergyRef; }
+        public float LastAttackStrength { get => _lastAttackStrength; private set => _lastAttackStrength = value; }
 
         private void Awake()
         {
@@ -320,6 +323,20 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Searches both decks for an ability that matches the condition.
+        /// </summary>
+        /// <param name="condition">The condition to use to find the ability. Will return the first ability to make this condition true.</param>
+        public Ability GetAbility(Condition condition)
+        {
+            Ability ability = _normalDeck.GetAbilityByCondition(condition);
+
+            if (ability == null)
+                ability = _specialDeck.GetAbilityByCondition(condition);
+
+            return ability;
+        }
+
+        /// <summary>
         /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
         /// the ability to use will be activated if the current ability in use can be canceled.
         /// </summary>
@@ -349,6 +366,8 @@ namespace Lodis.Gameplay
 
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
+            if (args?.Length > 0)
+                _lastAttackStrength = (float)args[0];
 
             OnUseAbility?.Invoke();
 
@@ -392,6 +411,8 @@ namespace Lodis.Gameplay
 
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
+            if (args?.Length > 0)
+                _lastAttackStrength = (float)args[0];
 
             OnUseAbility?.Invoke();
 

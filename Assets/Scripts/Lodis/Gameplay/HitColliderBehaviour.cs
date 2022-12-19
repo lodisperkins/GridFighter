@@ -88,6 +88,16 @@ namespace Lodis.Gameplay
 
             return ColliderInfo;
         }
+
+        public static bool operator ==(HitColliderData lhs, HitColliderData rhs)
+        {
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(HitColliderData lhs, HitColliderData rhs)
+        {
+            return !lhs.Equals(rhs);
+        }
     }
 
 

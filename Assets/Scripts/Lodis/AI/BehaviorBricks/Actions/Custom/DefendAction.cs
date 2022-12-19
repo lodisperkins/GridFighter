@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lodis.GridScripts;
 using System;
+using Lodis.ScriptableObjects;
 
 [Action("CustomAction/ChooseBestDefense")]
 public class DefendAction : GOAction
@@ -97,6 +98,7 @@ public class DefendAction : GOAction
         _dummy.LastDefenseDecision = _decision;
         //Punish the decision if the dummy was damaged
         _dummy.Knockback.AddOnTakeDamageTempAction(PunishLastDecision);
+        
 
         //Picks a decision based on whether or not the dummy is grounded
         if (_dummy.Knockback.Physics.IsGrounded)
@@ -203,6 +205,20 @@ public class DefendAction : GOAction
             _dummy.LastDefenseDecision = null;
         }
         _canMakeNewDecision = true;
+
+        Ability ability = _dummy.Moveset.GetAbility(args => ((Ability)args[0]).abilityData.GetColliderInfo(0) == _dummy.Knockback.LastCollider.ColliderInfo);
+
+        if (ability == null)
+            return;
+
+        Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
+
+        AbilityData abilityData = ability.abilityData;
+
+        MovesetBehaviour opponentMoveset = _dummy.Opponent.GetComponent<MovesetBehaviour>();
+
+        _dummy.AttackDecisions.AddDecision(new AttackNode(displacement, _dummy.Knockback.Health, 0, abilityData.startUpTime,
+            abilityData.abilityName, opponentMoveset.LastAttackStrength, _dummy.Knockback.Physics.LastVelocity, null, null));
     }
 
     public override TaskStatus OnUpdate()

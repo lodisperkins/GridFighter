@@ -197,6 +197,16 @@ namespace Lodis.Gameplay
             return null;
         }
 
+        /// <summary>
+        /// Gets the first ability in the deck that matches the name
+        /// </summary>
+        /// <param name="name">The name of ability to search for</param>
+        /// <returns></returns>
+        public Ability GetAbilityByCondition(Condition condition)
+        {
+            return _abilities.Find(ability => condition.Invoke(ability));
+        }
+
         public bool Contains(string name)
         {
             if (name == null)

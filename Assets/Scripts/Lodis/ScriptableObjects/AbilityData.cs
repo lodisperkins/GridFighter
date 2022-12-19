@@ -135,7 +135,7 @@ namespace Lodis.ScriptableObjects
         {
             if (index < 0 || index >= ColliderData.Length)
             {
-                throw  new WarningException("GetColliderInfo() was called with an invalid index passed as a parameter");
+                return new HitColliderData();
             }
             ColliderData[index].AbilityType = AbilityType;
             return ColliderData[index];
