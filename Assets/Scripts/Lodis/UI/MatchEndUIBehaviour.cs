@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Lodis.Gameplay;
 using Lodis.Utility;
+using UnityEngine.EventSystems;
 
 namespace Lodis.UI
 {
@@ -15,6 +16,9 @@ namespace Lodis.UI
         private GameObject _gameMenu;
         [SerializeField]
         private float _endTextDisplayDuration;
+        [SerializeField]
+        private EventSystem _eventSystem;
+        private GameObject _firstGameMenuButton;
 
         public void DisplayEndText()
         {
@@ -42,6 +46,12 @@ namespace Lodis.UI
                     }, TimedActionCountType.SCALEDTIME, _endTextDisplayDuration);
                     break;
             }
+        }
+
+        public void Update()
+        {
+            if (_eventSystem.currentSelectedGameObject == null)
+                _eventSystem.SetSelectedGameObject(_firstGameMenuButton);
         }
     }
 }

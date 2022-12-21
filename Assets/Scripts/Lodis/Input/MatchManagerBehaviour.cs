@@ -199,26 +199,21 @@ namespace Lodis.Gameplay
             BlackBoardBehaviour.Instance.Player2Controller.Enabled = value;
         }
 
-        public void TogglePause()
+        public void TogglePauseMenu()
         {
             if (!_canPause)
                 return;
 
             _isPaused = !_isPaused;
             Time.timeScale = Convert.ToInt32(!_isPaused);
+            _timeScale = Time.timeScale;
+
+            SetPlayerControlsActive(!_isPaused);
 
             if (_isPaused)
-            {
-                SetPlayerControlsActive(false);
-                _timeScale = 0;
                 _onMatchPause?.Invoke();
-            }
             else
-            {
-                SetPlayerControlsActive(true);
-                _timeScale = 1;
                 _onMatchUnpause.Invoke();
-            }
         }
 
         public void Restart(bool suddenDeathActive = false)
@@ -239,7 +234,7 @@ namespace Lodis.Gameplay
             }
 
             if (_isPaused)
-                TogglePause();
+                TogglePauseMenu();
 
             SetPlayerControlsActive(false);
             _canPause = false;

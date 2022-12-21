@@ -179,7 +179,7 @@ namespace Lodis.Input
             _playerControls.Player.PhaseShiftRight.started += context => BufferPhaseShift(context, Vector2.right);
             _playerControls.Player.PhaseShiftLeft.started += context => BufferPhaseShift(context, Vector2.left);
 
-            _playerControls.Player.Pause.started += context => MatchManagerBehaviour.Instance.TogglePause();
+            _playerControls.Player.Pause.started += context => MatchManagerBehaviour.Instance.TogglePauseMenu();
         }
 
         // Start is called before the first frame update
