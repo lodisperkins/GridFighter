@@ -110,6 +110,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Transparency: 1
     - _UVSec: 0
     - _UseEmission: 0
     - _WorkflowMode: 1
@@ -119,10 +120,10 @@ Material:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
-    - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
 --- !u!114 &4145070478314998610
 MonoBehaviour:
