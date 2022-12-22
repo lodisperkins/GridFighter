@@ -3160,6 +3160,17 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 1
             m_CallState: 2
+          - m_Target: {fileID: 6219169100083531830}
+            m_MethodName: ChangeEyesToIdle
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -3180,6 +3191,17 @@ MonoBehaviour:
               m_IntArgument: 0
               m_FloatArgument: 0
               m_StringArgument: Stunned
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 6219169100083531830}
+            m_MethodName: ChangeEyesToHurt
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
       onExitState:
@@ -3292,6 +3314,17 @@ MonoBehaviour:
               m_StringArgument: Tumbling
               m_BoolArgument: 0
             m_CallState: 2
+          - m_Target: {fileID: 6219169100083531830}
+            m_MethodName: ChangeEyesToHurt
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
       onExitState:
         m_PersistentCalls:
           m_Calls: []
@@ -3371,6 +3404,17 @@ MonoBehaviour:
           m_Calls:
           - m_Target: {fileID: 1704566032639041053}
             m_MethodName: PlayDamageAnimation
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 6219169100083531830}
+            m_MethodName: ChangeEyesToHurt
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -6385,6 +6429,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2168333433030672600}
   - component: {fileID: 1113044310393227149}
+  - component: {fileID: 6219169100083531830}
   m_Layer: 9
   m_Name: eyes_mesh
   m_TagString: Untagged
@@ -6458,6 +6503,25 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.11568421, y: -0.12185814, z: 0}
     m_Extent: {x: 0.08024615, y: 0.026222177, z: 0.08954864}
   m_DirtyAABB: 0
+--- !u!114 &6219169100083531830
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8170203234218259487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0819f8c53461e3438719d2fc3bd9db8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _renderer: {fileID: 1113044310393227149}
+  _textureName: DiffuseTexture
+  _timeBetweenBlinks: 2
+  _blinkDuration: 0.1
+  _idle: {fileID: 2800000, guid: 37782ecf1aa56854f9bba4c85c7ac162, type: 3}
+  _closed: {fileID: 2800000, guid: 75d9e3e2944fd3d41891efdcc24e4702, type: 3}
+  _hurt: {fileID: 2800000, guid: 8d28dfd4f1524c2449cb39bbe02f52a4, type: 3}
 --- !u!1 &8174968775724880270
 GameObject:
   m_ObjectHideFlags: 0
@@ -8307,15 +8371,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d1ea8786f246b004d862eff8225c561b, type: 3}
---- !u!4 &1544303373460774525 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5128395196212250462, guid: d1ea8786f246b004d862eff8225c561b,
-    type: 3}
-  m_PrefabInstance: {fileID: 5928373174375553315}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &6039548996895542171 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 114004161566773944, guid: d1ea8786f246b004d862eff8225c561b,
+    type: 3}
+  m_PrefabInstance: {fileID: 5928373174375553315}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1544303373460774525 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5128395196212250462, guid: d1ea8786f246b004d862eff8225c561b,
     type: 3}
   m_PrefabInstance: {fileID: 5928373174375553315}
   m_PrefabAsset: {fileID: 0}
