@@ -1423,7 +1423,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: 31f60460c9162e643acf241bb49e2ffe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2836,8 +2836,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4551166534780822400}
-  m_LocalRotation: {x: 0, y: 0.9761276, z: 0, w: 0.21719779}
-  m_LocalPosition: {x: 3.8552554, y: 0.47099996, z: 0.4749782}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1544303373460774525}
@@ -2847,7 +2847,7 @@ Transform:
   - {fileID: 3526140459935312136}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 154.91101, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4551166534780822428
 MeshFilter:
   m_ObjectHideFlags: 0
