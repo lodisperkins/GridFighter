@@ -35,6 +35,8 @@ namespace Lodis.ScriptableObjects
     {
         
         public string abilityName = "Unassigned";
+        [TextArea]
+        public string abilityDescription = "None";
         [Tooltip("The type describes the strength and input value for the ability")]
         public AbilityType AbilityType;
         [Tooltip("How long the ability should be active for")]

@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_FootDive_Data
   m_EditorClassIdentifier: 
-  abilityName: FootDive
+  abilityName: FireDunk
+  abilityDescription: Leap forward two panels before crashing down on your enemies!
+    Does great damage and can make airborne enemies bounce when they hit the ground.
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.5
@@ -28,7 +30,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanCancelOnOpponentHit: 0
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -60,6 +62,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
+    SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 8482821253585752479, guid: b2d1a7e3c779c334183600eee56341df,
       type: 3}
     HitEffectLevel: 3

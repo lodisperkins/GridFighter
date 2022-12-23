@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: DK_GroundPound_Data
   m_EditorClassIdentifier: 
   abilityName: GroundPound
+  abilityDescription: Performs a high jump before smashing into the ground. The traveling
+    shockwave can knock enemies toward you. Great for extending combos!
   AbilityType: 8
   timeActive: 0.5
   recoverTime: 0.2

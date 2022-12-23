@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: DK_DoubleStrike_Data
   m_EditorClassIdentifier: 
   abilityName: DoubleStrike
+  abilityDescription: 'Dash through enemies with this quick melee attack! The direction
+    of the dash changes based on the input held. Press a different direction after
+    the first dash to perform another. '
   AbilityType: 8
   timeActive: 0.2
   recoverTime: 0.5
@@ -28,7 +31,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanCancelOnOpponentHit: 0
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -60,6 +63,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
+    SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
     HitEffectLevel: 1

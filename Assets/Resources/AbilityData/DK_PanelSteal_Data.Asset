@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: DK_PanelSteal_Data
   m_EditorClassIdentifier: 
   abilityName: PanelSteal
+  abilityDescription: Temporarily takes a row of the opponent panels. Good for applying
+    extra pressure and removing movement options!
   AbilityType: 8
   timeActive: 0.01
   recoverTime: 0.05
@@ -28,7 +30,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 1
-  CanCancelOnOpponentHit: 1
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1

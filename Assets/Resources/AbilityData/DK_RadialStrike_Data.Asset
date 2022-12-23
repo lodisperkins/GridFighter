@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: DK_RadialStrike_Data
   m_EditorClassIdentifier: 
   abilityName: RadialStrike
+  abilityDescription: Dash forward at high speed before delivering an ultra-hot sweep
+    kick!
   AbilityType: 8
   timeActive: 0.5
   recoverTime: 0.3

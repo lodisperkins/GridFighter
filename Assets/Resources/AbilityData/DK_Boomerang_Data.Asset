@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: DK_Boomerang_Data
   m_EditorClassIdentifier: 
   abilityName: Boomerang
+  abilityDescription: Throws a spinning blade forward that will change direction
+    after hitting an enemy. Catch it on the way back to throw it again! Can be thrown
+    3 times before despawning.
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.3
@@ -28,7 +31,7 @@ MonoBehaviour:
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanCancelOnOpponentHit: 0
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1
@@ -59,6 +62,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
+    SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 168380961112235169, guid: e420048addf42694c911fc7ac19ea7bc,
       type: 3}
     HitEffectLevel: 2

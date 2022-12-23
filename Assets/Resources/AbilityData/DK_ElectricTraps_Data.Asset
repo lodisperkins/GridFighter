@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: DK_ElectricTraps_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   abilityName: ElectricTraps
+  abilityDescription: Throws out two electric pylons upon the first activation. Activate
+    it again to create an electric path that can stun enemies. You can change where
+    the pylons are placed by holding a direction.
   AbilityType: 8
   timeActive: 0.05
   recoverTime: 0.1
