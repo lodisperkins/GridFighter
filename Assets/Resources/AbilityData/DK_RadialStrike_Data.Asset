@@ -73,17 +73,17 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: HitBoxScaleX
-    value: 1
+    value: 2
   - name: HitBoxScaleY
     value: 1
   - name: HitBoxScaleZ
-    value: 1
+    value: 3
   - name: RotationSpeed
     value: 650
   - name: PanelTravelDistance
     value: 3
   - name: HitBoxDistanceX
-    value: 2
+    value: 1
   - name: HitBoxDistanceZ
     value: 0
   animationType: 3
