@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using UnityEngine;
@@ -40,7 +41,7 @@ namespace Lodis.Gameplay
             _ownerKnockBackScript.CancelStun();
 
             //Disable ability benefits if the player is hit out of burst
-            OnHitTemp += arguments =>
+            OnHit += arguments =>
             {
                 if (_ownerKnockBackScript.Physics.IsGrounded)
                     return;
@@ -52,6 +53,13 @@ namespace Lodis.Gameplay
 
                 _ownerKnockBackScript.DisableInvincibility();
                 _ownerKnockBackScript.Physics.CancelFreeze();
+
+                PanelBehaviour panel;
+
+                bool validPanel = BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(owner.transform.position, out panel);
+
+                if (validPanel)
+                    _ownerMoveScript.TeleportToPanel(panel);
             };
         }
 
