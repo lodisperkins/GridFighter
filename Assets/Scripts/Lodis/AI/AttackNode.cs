@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.Gameplay;
+using Newtonsoft.Json;
 
 namespace Lodis.AI
 {

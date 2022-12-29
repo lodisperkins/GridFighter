@@ -28,10 +28,7 @@ namespace Lodis.AI
             }
 
             StreamWriter writer = new StreamWriter(SaveLoadPath + ownerName + ".txt");
-            string json = _nodeCache.Count.ToString() + "\n";
-
-            for (int i = 0; i < _nodeCache.Count; i++)
-                json += JsonConvert.SerializeObject((AttackNode)_nodeCache[i]) + "\n";
+            string json =  JsonConvert.SerializeObject(_nodeCache, _settings);
 
             writer.Write(json);
             writer.Close();
@@ -47,20 +44,23 @@ namespace Lodis.AI
 
             StreamReader reader = new StreamReader(SaveLoadPath + ownerName + ".txt");
 
-            int count = JsonConvert.DeserializeObject<int>(reader.ReadLine(), new JsonSerializerSettings
-            {
-                Error = (sender, args) =>
-                {
-                    Debug.LogError(args.ErrorContext.Error.Message);
-                    args.ErrorContext.Handled = true;
-                }
-            });
+            //int count = JsonConvert.DeserializeObject<int>(reader.ReadLine(), new JsonSerializerSettings
+            //{
+            //    Error = (sender, args) =>
+            //    {
+            //        Debug.LogError(args.ErrorContext.Error.Message);
+            //        args.ErrorContext.Handled = true;
+            //    }
+            //});
 
-            for (int i = 0; i < count; i++)
-            {
-                AddDecision(JsonConvert.DeserializeObject<AttackNode>(reader.ReadLine()));
-            }
+            //for (int i = 0; i < count; i++)
+            //{
+            //    AddDecision(JsonConvert.DeserializeObject<AttackNode>(reader.ReadLine()));
+            //}
 
+            _nodeCache = JsonConvert.DeserializeObject<List<TreeNode>>(reader.ReadToEnd(), _settings);
+
+            Debug.Log("Loaded " + _nodeCache.Count + " attack decisions.");
             reader.Close();
 
             if (_nodeCache.Count == 0)
