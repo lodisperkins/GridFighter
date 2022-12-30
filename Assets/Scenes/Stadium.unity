@@ -22528,6 +22528,21 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: -368
       objectReference: {fileID: 0}
+    - target: {fileID: 5553018274570172798, guid: f1af0158e8143c444ad7751a963d8218,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 5553018274893877768, guid: f1af0158e8143c444ad7751a963d8218,
+        type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5553018274893877768, guid: f1af0158e8143c444ad7751a963d8218,
+        type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5553018274893877772, guid: f1af0158e8143c444ad7751a963d8218,
         type: 3}
       propertyPath: m_Pivot.x
