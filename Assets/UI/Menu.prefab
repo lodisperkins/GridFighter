@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6983262583683829302}
-  - component: {fileID: 357115640693488474}
+  - component: {fileID: 1290228543877197892}
   m_Layer: 5
   m_Name: Options
   m_TagString: Untagged
@@ -36,7 +36,7 @@ RectTransform:
   m_AnchoredPosition: {x: -0.000011444, y: -0.00014496}
   m_SizeDelta: {x: 300, y: 186.22485}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &357115640693488474
+--- !u!114 &1290228543877197892
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2869594066073183003}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b54b16f2fcdba244b49be1f398b6562, type: 3}
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
@@ -54,133 +54,13 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 1
-  m_Spacing: 90.925934
+  m_Spacing: 40
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
-  paddingSizerFallback:
-    screenConfigName: 
-    OptimizedSize:
-      left: 0
-      right: 0
-      top: 0
-      bottom: 0
-    MinSize:
-      left: 0
-      right: 0
-      top: 0
-      bottom: 0
-    MaxSize:
-      left: 1000
-      right: 1000
-      top: 1000
-      bottom: 1000
-    ModLeft:
-      ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 1
-        Impact: 1
-    ModRight:
-      ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 1
-        Impact: 1
-    ModTop:
-      ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 1
-        Impact: 1
-    ModBottom:
-      ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 1
-        Impact: 1
-  customPaddingSizers:
-    items:
-    - screenConfigName: Landscape
-      OptimizedSize:
-        left: 0
-        right: 0
-        top: 0
-        bottom: 0
-      MinSize:
-        left: 0
-        right: 0
-        top: 0
-        bottom: 0
-      MaxSize:
-        left: 1000
-        right: 1000
-        top: 1000
-        bottom: 1000
-      ModLeft:
-        ExponentialScale: 1
-        SizeModifiers:
-        - Mode: 1
-          Impact: 1
-      ModRight:
-        ExponentialScale: 1
-        SizeModifiers:
-        - Mode: 1
-          Impact: 1
-      ModTop:
-        ExponentialScale: 1
-        SizeModifiers:
-        - Mode: 1
-          Impact: 1
-      ModBottom:
-        ExponentialScale: 1
-        SizeModifiers:
-        - Mode: 1
-          Impact: 1
-  spacingSizerFallback:
-    screenConfigName: 
-    OptimizedSize: 200
-    MinSize: 0
-    MaxSize: 300
-    Mod:
-      ExponentialScale: 1
-      SizeModifiers:
-      - Mode: 0
-        Impact: 1
-  customSpacingSizers:
-    items:
-    - screenConfigName: Landscape
-      OptimizedSize: 200
-      MinSize: 0
-      MaxSize: 300
-      Mod:
-        ExponentialScale: 1
-        SizeModifiers:
-        - Mode: 0
-          Impact: 1
-  settingsFallback:
-    ChildAlignment: 4
-    ReverseArrangement: 0
-    ChildForceExpandHeight: 0
-    ChildForceExpandWidth: 0
-    ChildScaleWidth: 0
-    ChildScaleHeight: 0
-    ChildControlWidth: 1
-    ChildControlHeight: 1
-    Orientation: 1
-    screenConfigName: Fallback
-  customSettings:
-    items:
-    - ChildAlignment: 1
-      ReverseArrangement: 0
-      ChildForceExpandHeight: 0
-      ChildForceExpandWidth: 0
-      ChildScaleWidth: 0
-      ChildScaleHeight: 0
-      ChildControlWidth: 1
-      ChildControlHeight: 1
-      Orientation: 1
-      screenConfigName: Landscape
-  orientation: 1
 --- !u!1 &8659810684163384811
 GameObject:
   m_ObjectHideFlags: 0

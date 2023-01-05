@@ -14,7 +14,7 @@ namespace Lodis.Gameplay
         [SerializeField] private ParticleSystem _stunParticles;
         [SerializeField] private HealthBehaviour _health;
         [SerializeField] private ColorManagerBehaviour _colorManager;
-
+        [SerializeField] private ParticleSystem _deathSparks;
         public ColorManagerBehaviour ColorManager { get => _colorManager; private set => _colorManager = value; }
 
         void Start()
@@ -43,6 +43,11 @@ namespace Lodis.Gameplay
             {
                 colorObject.ObjectRenderer.material.DOKill();
             }
+        }
+
+        private void Update()
+        {
+            _deathSparks.gameObject.SetActive(Mathf.Ceil(_health.Health) == _health.MaxHealth.Value);
         }
     }
 }

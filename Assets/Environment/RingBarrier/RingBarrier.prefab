@@ -426,7 +426,7 @@ MonoBehaviour:
   _knockBackDistance: 1
   _launchAngle: 1
   _shieldController: {fileID: 929767235}
-  _canInstantShatter: 0
+  _canInstantShatter: 1
   _visuals: {fileID: 8750079460238425156}
   _hitEffect: {fileID: 8567834841006214752, guid: 7cd867e25d9d97044bb08948940288c8,
     type: 3}

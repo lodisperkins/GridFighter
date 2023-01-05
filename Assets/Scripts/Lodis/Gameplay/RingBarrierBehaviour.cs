@@ -156,7 +156,8 @@ namespace Lodis.Gameplay
 
             float dot = Vector3.Dot(transform.forward, knockback.Physics.LastVelocity.normalized);
 
-            if (collision.gameObject == Owner && knockback.Physics.LastVelocity.magnitude >= _shatterVelocityMagnitude.Value && dot < 0 && knockback.CurrentAirState == AirState.TUMBLING)
+            if (collision.gameObject == Owner && knockback.Physics.LastVelocity.magnitude >= _shatterVelocityMagnitude.Value && dot < 0
+                && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.Value)
                 TakeDamage(Owner, Health, 0, 0, DamageType.KNOCKBACK);
         }
 

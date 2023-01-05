@@ -15,6 +15,7 @@ namespace Lodis.AI
         [SerializeField]
         protected List<TreeNode> _nodeCache;
         protected string SaveLoadPath;
+        protected JsonSerializerSettings _settings;
         [SerializeField]
         private TreeNode _root;
         [SerializeField]
@@ -29,6 +30,8 @@ namespace Lodis.AI
         {
             _compareThreshold = compareThreshold;
             _nodeCache = new List<TreeNode>();
+            _settings = new JsonSerializerSettings();
+            _settings.TypeNameHandling = TypeNameHandling.All;
         }
 
         /// <summary>

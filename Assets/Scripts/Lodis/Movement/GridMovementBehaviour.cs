@@ -92,6 +92,7 @@ namespace Lodis.Movement
         private ParticleSystem _returnEffect;
         private SkinnedMeshRenderer _renderer;
         private DelayedAction _moveEnabledAction;
+        private TimedAction _teleportAction;
 
         /// <summary>
         /// Whether or not this object should move to its current panel when spawned
@@ -694,6 +695,28 @@ namespace Lodis.Movement
             _currentPanel = _targetPanel;
             _currentPanel.Occupied = !CanBeWalkedThrough;
             _position = _currentPanel.Position;
+
+            return true;
+        }
+
+        public bool TeleportToPanel(PanelBehaviour panel, float travelTime = 0.05f)
+        {
+            if (!panel)
+                return false;
+
+            RoutineBehaviour.Instance.StopAction(_teleportAction);
+
+            _onTeleportStart?.Raise(gameObject);
+            SpawnTeleportEffect();
+            gameObject.SetActive(false);
+
+            _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                gameObject.transform.position = panel.transform.position + Vector3.up * HeightOffset;
+                gameObject.SetActive(true);
+                _onTeleportEnd?.Raise(gameObject);
+                SpawnTeleportEffect();
+            },TimedActionCountType.SCALEDTIME, travelTime);
 
             return true;
         }

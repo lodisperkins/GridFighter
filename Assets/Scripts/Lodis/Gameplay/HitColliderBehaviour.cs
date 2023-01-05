@@ -335,7 +335,7 @@ namespace Lodis.Gameplay
 
             }
             SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
-
+            
             ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
 
             ColliderInfo.HitAngle = defaultAngle;
