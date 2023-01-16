@@ -581,6 +581,8 @@ MonoBehaviour:
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _faceHeading: 0
+  _bounceCombination: 3
+  _useVelocityForBounce: 1
 --- !u!114 &3205124130663625092
 MonoBehaviour:
   m_ObjectHideFlags: 0

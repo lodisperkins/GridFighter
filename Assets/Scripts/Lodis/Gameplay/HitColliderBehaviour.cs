@@ -323,7 +323,7 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
-            if (damageScript != null && !damageScript.IsInvincible && (!damageScript.DefenseBehaviour.IsShielding || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
+            if (damageScript != null && !damageScript.IsInvincible && (damageScript.DefenseBehaviour?.IsShielding == false || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
             {
                 damageScript.LastCollider = this;
                 damageScript.TakeDamage(ColliderInfo, Owner);

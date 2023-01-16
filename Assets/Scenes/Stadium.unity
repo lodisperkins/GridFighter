@@ -14738,7 +14738,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _panelRef
       value: 
-      objectReference: {fileID: 3853593270357521993, guid: 7508c41929b4ff64aa30beda90810caf,
+      objectReference: {fileID: -7809005986806037405, guid: 7508c41929b4ff64aa30beda90810caf,
         type: 3}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
@@ -14755,7 +14755,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _barrierRef
       value: 
-      objectReference: {fileID: 3170123629028843225, guid: 922b56b38a41c59479c787713e18b825,
+      objectReference: {fileID: -6427130180431272861, guid: 1d9fd07a41a6e774c907745c0ec12a47,
         type: 3}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
@@ -14847,12 +14847,12 @@ PrefabInstance:
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: _lhsBarrierPositions.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: _rhsBarrierPositions.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
@@ -14892,17 +14892,17 @@ PrefabInstance:
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: _lhsBarrierPositions.Array.data[0].y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: _lhsBarrierPositions.Array.data[1].x
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: _lhsBarrierPositions.Array.data[1].y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
@@ -14927,7 +14927,12 @@ PrefabInstance:
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: _rhsBarrierPositions.Array.data[0].x
-      value: 9
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _rhsBarrierPositions.Array.data[0].y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
