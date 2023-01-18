@@ -569,9 +569,9 @@ namespace Lodis.Movement
 
             if (_movementBehaviour?.IsMoving == true)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
                 
                 if (disableMovement)
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
@@ -602,9 +602,9 @@ namespace Lodis.Movement
 
             if (_movementBehaviour?.IsMoving == true)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
 
                 if (disableMovement)
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
@@ -634,9 +634,9 @@ namespace Lodis.Movement
 
             if (_movementBehaviour?.IsMoving == true)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
 
                 if (disableMovement)
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);

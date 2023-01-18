@@ -387,9 +387,9 @@ namespace Lodis.Movement
             //Snaps movement to the next panel to prevent the player from being launched between panels
             if (_movementBehaviour.IsMoving)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
             }
 
             if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
@@ -449,9 +449,9 @@ namespace Lodis.Movement
             //Snaps movement to the next panel to prevent the player from being launched between panels
             if (_movementBehaviour.IsMoving)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
             }
 
             if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
@@ -547,9 +547,9 @@ namespace Lodis.Movement
             //Snap the object to its target panel if it was moving
             if (_movementBehaviour.IsMoving)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
             }
 
             //Return if this attack doesn't generate enough force
@@ -637,9 +637,9 @@ namespace Lodis.Movement
             //Snap the object to its target panel if it was moving
             if (_movementBehaviour.IsMoving)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
             }
 
             //Disables object movement on the grid

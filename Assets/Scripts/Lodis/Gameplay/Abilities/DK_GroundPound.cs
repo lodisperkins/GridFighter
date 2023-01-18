@@ -52,7 +52,7 @@ namespace Lodis.Gameplay
 
             //Set default traits for shockwave
             movementBehaviour.Position = _ownerMoveScript.Position;
-            movementBehaviour.canCancelMovement = true;
+            movementBehaviour.CanCancelMovement = true;
             movementBehaviour.MoveOnStart = false;
             movementBehaviour.Speed = abilityData.GetCustomStatValue("ShockwaveTravelSpeed");
 

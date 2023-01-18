@@ -1,0 +1,1286 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Lodis.Gameplay.Deck" Collapsed="true">
+    <Position X="49" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAEAAAAABCABAACAAAAIQAAAAAiIDACAAAQCAwEAg=</HashCode>
+      <FileName>Assets\Resources\Decks\Deck.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.CharacterAnimationBehaviour" Collapsed="true">
+    <Position X="56" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQYAUBMCBCgQAiAGCgAwKIAAEBAMBBABaOAAAgAQwIA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Animation\CharacterAnimationBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.B_EnergyBurst" Collapsed="true">
+    <Position X="2.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAACBAABBAAAAAAAgEAAAAAAAAABBCAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\B_EnergyBurst.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_Boomerang" Collapsed="true">
+    <Position X="18.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAASCAgAABAQAAAAAAAAAAAAEAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_Boomerang.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_DoubleStrike" Collapsed="true">
+    <Position X="7" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAcACAAAACBAABRAAAAACAAAAAAAAAAAAIACAAAAAKI=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_DoubleStrike.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_ElectricTraps" Collapsed="true">
+    <Position X="25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAICAAgBBAAAAAAEAAIAAAEACAAAACAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_ElectricTraps.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_EnergyBarrier" Collapsed="true">
+    <Position X="34" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAgBAAABAAAAACAAAAAAAAAAEAAACBBAAAAI=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_EnergyBarrier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_FootDive" Collapsed="true">
+    <Position X="36.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IBMACAgBACBAABBAAIAACQAAAAEBAAAAABACEAKAIQE=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_FootDive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_GroundPound" Collapsed="true">
+    <Position X="38.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAIAAACBAAABAAAAACAAAAAABAAAAAgACAAKAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_GroundPound.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_PanelSteal" Collapsed="true">
+    <Position X="40.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABBAAAAAAAAAAAAAAAAAAAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_PanelSteal.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_RadialStrike" Collapsed="true">
+    <Position X="43" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAACJAAoBAAACACEAAAAAgAAAAABACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_RadialStrike.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.DK_ScatterBomb" Collapsed="true">
+    <Position X="31.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAACAQABBAABAAQAAAAAAAAAEABAACQAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\DK_ScatterBomb.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.SB_ChargeLobShot" Collapsed="true">
+    <Position X="9.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQRRAIAEABAACAAAAAABAAACCIgAEAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\SB_ChargeLobShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.SF_ChargeForwardShot" Collapsed="true">
+    <Position X="11.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAABAAAAQAAAAAIAAAAAAAQACAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\SF_ChargeForwardShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.SN_ChargeShot" Collapsed="true">
+    <Position X="13.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAABAAAAQAAAAAAAAAAAAAQACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\SN_ChargeShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.SS_ChargeDoubleShot" Collapsed="true">
+    <Position X="16" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABABAAAAQAAAAAAAAAAAAAQACAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\SS_ChargeDoubleShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.U_LightningStrike" Collapsed="true">
+    <Position X="4.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAACAAAAFAAAAAAAAAAAAAAAAAIAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\U_LightningStrike.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.WB_LobShot" Collapsed="true">
+    <Position X="20.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAACAAABAAEARAAAAAAAAAAAAAQACAAAAIAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\WB_LobShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.WF_ForwardShot" Collapsed="true">
+    <Position X="22.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAABAAAAQAABAAAAAAAAAAQACAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\WF_ForwardShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.WN_Blaster" Collapsed="true">
+    <Position X="27.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAABAAAAQAAAAAAAAAAAAAQACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\WN_Blaster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.WS_DoubleShot" Collapsed="true">
+    <Position X="29.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABABAAAAQAAAAAAAAAAAAAQACAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Abilities\WS_DoubleShot.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.Ability" Collapsed="true">
+    <Position X="22.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>MAYIAIFCUzBGgJBAAACiAAgAIAAAIEBAAhQDgCwgAIA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.CustomAssetModificationProcessor" Collapsed="true">
+    <Position X="63" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAQAAAAAAAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.BarrierBehaviour" Collapsed="true">
+    <Position X="7.5" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAgACAAiAAAAAAAAAAAAIAAAAAAAAAAAAAgAAgAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\BarrierBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.BlackBoardBehaviour" Collapsed="true">
+    <Position X="47.25" Y="1.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QABEBgCALAICUQiAwQAAABiAwgACAAIQQQQAAACBAMA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\BlackBoardBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.CharacterDefenseBehaviour" Collapsed="true">
+    <Position X="57.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>UG4FAdkoAKMOogh7KEAwNRxIAIxIEAgcYACBCEBBgAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\CharacterDefenseBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.CharacterExplosionBehaviour" Collapsed="true">
+    <Position X="59.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACACCAAAAEBAEAAAAAEEQQAAKAEAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\CharacterExplosionBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.CharacterStateMachineBehaviour" Collapsed="true">
+    <Position X="61.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAcAAACIAAAgAAAAAAQAAAAAAAAAAACAAAAAAABA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\CharacterStateMachineBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ChargeEffectBehaviour" Collapsed="true">
+    <Position X="63" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABACAAAAAAAQAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ChargeEffectBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ColliderBehaviour" Collapsed="true">
+    <Position X="8.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAGCADAAAAAAAAAQhAAAggCAAAAIQAAAAGQACMg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ColliderBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ColorObject" Collapsed="true">
+    <Position X="57.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAYAAAABAAAAAAAAAgEAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ColorManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ColorManagerBehaviour" Collapsed="true">
+    <Position X="56" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAACAAAgAAgAgEAAAAAAAAAQAAAAgAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ColorManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.HealthBehaviour" Collapsed="true">
+    <Position X="4.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQUQDHAIDDNQCACQREYAsbgCEBEEIAgOSAhIgqAIEEg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\HealthBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.HitColliderBehaviour" Collapsed="true">
+    <Position X="8.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAACAAABQAAQAAAABAIgAAAACJQAgCAAAEKEg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\HitColliderBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.HitColliderSpawner" Collapsed="true">
+    <Position X="50.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAIAAAAAAAAAAAAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\HitColliderSpawner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.HitStopBehaviour" Collapsed="true">
+    <Position X="52.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGAAAAEAAAAAAAACAAAAAAAEEAAAIACEAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\HitStopBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.MovesetBehaviour" Collapsed="true">
+    <Position X="63" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JnQEQlgCImBNHGAgCDEsFlMZoCDAAJEggCIAUCACYOg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\MovesetBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ParticleColorManagerBehaviour" Collapsed="true">
+    <Position X="57.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAACAIAAAAACAAAAAAAAAAAQAAAAgIBBACEAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ParticleColorManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ParticleSystemStopBehaviour" Collapsed="true">
+    <Position X="59.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ParticleSystemStopBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.PlayerSpawnBehaviour" Collapsed="true">
+    <Position X="63" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADUAUCAACgAAQAAAAogARQQCCgBIAAygAEIgAAAAA0A=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\PlayerSpawnBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ProjectileAbility" Collapsed="true">
+    <Position X="20.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAhACAAAABAgEAAAAAAgAAICAAAAAACAIQAIAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ProjectileAbility.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ProjectileSpawnerBehaviour" Collapsed="true">
+    <Position X="49" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ProjectileSpawnerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.RingBarrierBehaviour" Collapsed="true">
+    <Position X="3" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAADYACBAAAAFCAAAIAAAAAEAAQQMYAAAkAAAEEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\RingBarrierBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.RingBarrierFeedbackBehaviour" Collapsed="true">
+    <Position X="52.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACFAEAAgAAFAAgEKIACAAAAhQJACAAAgAEg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\RingBarrierFeedbackBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ShieldBehaviour" Collapsed="true">
+    <Position X="5.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ShieldBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ReflectorBehaviour" Collapsed="true">
+    <Position X="50.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAAAAAAAAACAAAAAAAAAAAAAAAIAAAAADAAEI=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\ReflectorBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.MatchManagerBehaviour" Collapsed="true">
+    <Position X="56" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>1RAEEFIACqCAIFBkWoISCBIggEIAAgIAUAAAAAAAAGA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Input\MatchManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.GameManagerEditor" Collapsed="true">
+    <Position X="54.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Input\MatchManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.CharacterFeedbackBehaviour" Collapsed="true">
+    <Position X="5.5" Y="12" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAACACECAAgAAAAAEIBAAAABAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\CharacterFeedbackBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.HealthBarBehaviour" Collapsed="true">
+    <Position X="47.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAACoAAAAAAAAAAAIAQAAAAAAAAAAgACAgAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\HealthBarBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.AIDummyMovementBehaviour" Collapsed="true">
+    <Position X="52.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAMAAACAEAAiBAAAgKAAAAAAAICAMAAAAAAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\AIDummyMovementBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.AIUtilities" Collapsed="true">
+    <Position X="54.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAkAAAAAAAACAAAAAAAAAAAAEACAAiAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\AIUtilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.AttackDecisionTree" Collapsed="true">
+    <Position X="10.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\AttackDecisionTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.AttackDummyBehaviour" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="61.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABRBQOgAEKRMgMzNZSB4YCAgEAECACQIA4CgRpoCCEI=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\AttackDummyBehaviour.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Lodis.AI.AttackNode" Collapsed="true">
+    <Position X="0.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABMAAAAAAAAAABQAAAAQAQAAAAAAAAIBBAACIAAE=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\AttackNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.DecisionTree" Collapsed="true">
+    <Position X="11.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAggIAgAAEQAAAAgAAAIAACAAAAAAAAIQBAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\DecisionTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.DefenseDecisionTree" Collapsed="true">
+    <Position X="12.75" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\DefenseDecisionTree.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.DefenseNode" Collapsed="true">
+    <Position X="2.75" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAACAAAAAAAAAAAAIAAAAUAAAAAAgAABAAgAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\DefenseNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.EntitySpawnBehaviour" Collapsed="true">
+    <Position X="56" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAUAAAAAAEAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\EntitySpawnBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.EntitySpawnEditor" Collapsed="true">
+    <Position X="57.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAACAAAAAAAAUAAAAAAEAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\EntitySpawnBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.ProjectileSenseBehaviour" Collapsed="true">
+    <Position X="47.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAAAAIAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\ProjectileSenseBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AI.TreeNode" Collapsed="true">
+    <Position X="1.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAgIQAAAAAAAAAAAAAQAgAQAAAAEAgCADBAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\TreeNode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AttackAction" Collapsed="true">
+    <Position X="59.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAUQAAAAAACAAAAAAAACAAAAEAAAE=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\Custom\AttackAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DefendAction" Collapsed="true">
+    <Position X="50.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAgAQAUoEAABAQCAAAAAAAACAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\Custom\DefendAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MoveAction" Collapsed="true">
+    <Position X="59.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAASAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\Custom\MoveAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BehaviorExecutor" Collapsed="true">
+    <Position X="45.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\BehaviorExecutor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BrickAsset" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="49" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\BrickAsset.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="IsSafeCondition" Collapsed="true">
+    <Position X="61.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQgAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\Custom\IsSafeCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="OutOfRangeCondition" Collapsed="true">
+    <Position X="54.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAACABAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\Custom\OutOfRangeCondition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DecisionDisplayBehaviour" Collapsed="true">
+    <Position X="47.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\DecisionDisplayBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="AnimationSpeedBehaviour" Collapsed="true">
+    <Position X="56" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Animation\AnimationSpeedBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="EnergyBarBehaviour" Collapsed="true">
+    <Position X="54.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAABACgAAAAAAAACQCIAQCAAgAQgAAAgACAAAAE=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\EnergyBarBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="@PlayerControls" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="45.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBEAAAAAASGAABCiAAAUCJAAAAAAAmAFAEQgQEAQAAw=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Input\PlayerControls.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="BurstMeterBehaviour" Collapsed="true">
+    <Position X="52.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAkAAAAEAAAAACIAQAAAAAAIAAACAAAABAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\BurstMeterBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FaceCameraBehaviour" Collapsed="true">
+    <Position X="63" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\FaceCameraBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FPSCounterBehaviour" Collapsed="true">
+    <Position X="50.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\FPSCounterBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HealthTextBehaviour" Collapsed="true">
+    <Position X="49" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAACIAAAAAAAAAAAAAQAAAAAAIAAAgACAgAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\HealthTextBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DebugBehaviour" Collapsed="true">
+    <Position X="45.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAACAgAAIAIAACAAABACAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\DebugBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="RotationBehaviour" Collapsed="true">
+    <Position X="54.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAABAAAAAAAAAAAAABAAAAAABAAQ=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\RotationBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ShakeBehaviour" Collapsed="true">
+    <Position X="52.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAFEAAAAAAAAAgAJAFAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\ShakeBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.PlayAnimation" Collapsed="true">
+    <Position X="61.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAACUAAAAAAAAAABAAAAAAAAAAFAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Animation\PlayAnimation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.PlaySound" Collapsed="true">
+    <Position X="45.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAACEAAAAAAAAAAAAAAgAAAAAAECAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Audio\PlaySound.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.SetBool" Collapsed="true">
+    <Position X="63" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAEAAAAAAAAAAAACAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Basic\SetBool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.SetFloat" Collapsed="true">
+    <Position X="45.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAEAAAAAAAAAAAACAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Basic\SetFloat.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.SetInt" Collapsed="true">
+    <Position X="47.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAEAAAAAAAAAAAACAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Basic\SetInt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.SetVector3" Collapsed="true">
+    <Position X="49" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAEAAAAAAAAAAAACAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Basic\SetVector3.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.ToggleBool" Collapsed="true">
+    <Position X="45.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Basic\toggleBool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.AddComponent" Collapsed="true">
+    <Position X="50.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAABAAAAEAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\AddComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.ClosestGameObjectWithTag" Collapsed="true">
+    <Position X="52.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAQA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\ClosestGameObjectWithTag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.Destroy" Collapsed="true">
+    <Position X="52.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\Destroy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.FindGameObjectByName" Collapsed="true">
+    <Position X="45.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAEAAAAAAAAAAEAAAAAAAAAAEAAQA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\FindGameObjectByName.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.FindGameObjectByTag" Collapsed="true">
+    <Position X="47.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAQA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\FindGameObjectByTag.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.GetComponent" Collapsed="true">
+    <Position X="56" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAEAAAAAAAAAABAAAAAAAAAAEAQAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\GetComponent.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.Instantiate" Collapsed="true">
+    <Position X="57.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAABAAAEAAAIAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\Instantiate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.LookAt" Collapsed="true">
+    <Position X="52.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAMAAAAAAAAAAIAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\LookAt.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.SendMessage" Collapsed="true">
+    <Position X="59.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAIAEAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\SendMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.SetActive" Collapsed="true">
+    <Position X="61.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAAIAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\GameObject\SetActive.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.MoveToGameObject" Collapsed="true">
+    <Position X="47.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAMAAAAAAAAAAIAAAAAAAAAAEAAQA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Navigation\MoveToGameObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.MoveToPosition" Collapsed="true">
+    <Position X="49" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAMAAAAAAAAAAAAAAAAAAAAAEAAQA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Navigation\MoveToPosition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.MoveToRandomPosition" Collapsed="true">
+    <Position X="50.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAgAAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAQE=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Navigation\MoveToRandomPosition.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.ApplyForce" Collapsed="true">
+    <Position X="57.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Physics\ApplyForce.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.FromMouseToWorld" Collapsed="true">
+    <Position X="52.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEgAAAAAAEAAAAAAAEAAAAAAAAAAAAAEAgAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Physics\FromMouseToWorld.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.SetVelocity" Collapsed="true">
+    <Position X="50.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAEAAAAAAAAAAAAAAAAAQAAAEAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Physics\SetVelocity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Actions.GetRandomInArea" Collapsed="true">
+    <Position X="57.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAEAAAE=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Vector3\GetRandomInArea.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBCore.Actions.WaitForSeconds" Collapsed="true">
+    <Position X="50.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAQAAAAAAEAAAAAAAAAAAAAAAAAAAAAEAAQA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Actions\System\Basic\WaitForSeconds.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBCore.Conditions.CheckBool" Collapsed="true">
+    <Position X="45.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\System\Basic\CheckBool.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBCore.Conditions.CheckButton" Collapsed="true">
+    <Position X="47.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\System\Basic\CheckButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBCore.Conditions.CheckKey" Collapsed="true">
+    <Position X="49" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\System\Basic\CheckKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBCore.Conditions.CheckMouseButton" Collapsed="true">
+    <Position X="50.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAhAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\System\Basic\CheckMouseButton.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Conditions.IsTargetClose" Collapsed="true">
+    <Position X="63" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAIAAAAAAAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\System\Perception\IsTargetClose.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Conditions.IsTargetCloseAndInSight" Collapsed="true">
+    <Position X="45.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAIAAAAAAAAAAAAAAAAAAIAABAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\System\Perception\IsTargetCloseAndInSight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BBUnity.Conditions.IsTargetInSight" Collapsed="true">
+    <Position X="47.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\BehaviorBricks\Conditions\System\Perception\IsTargetInSight.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AudienceMemberAnimationBehaviour" Collapsed="true">
+    <Position X="63" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAQAAAABAAAAAAAAAAAAAKAAAAAAAAEI=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Animation\AudienceMemberAnimationBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.AbilityImageDisplayBehaviour" Collapsed="true">
+    <Position X="49" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQABEAAACAAAAABAAAgQAAAAAAAABAAAAAAIAAAACA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\AbilityImageDisplayBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.CameraBehaviour" Collapsed="true">
+    <Position X="54.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAUECFRAACAAAAAEAAAAIAAAAAQECABAAAUEAAAAQEE=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\CameraBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Animation.EyeAnimationBehaviour" Collapsed="true">
+    <Position X="61.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ADQAAAAAEBAAAAQAAACAIAAAEAAgAACAQAAACAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Animation\EyeAnimationBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.GridScripts.CollisionPlaneBehaviour" Collapsed="true">
+    <Position X="54.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAgAAAAARAAAAAkAEAQIAAAAAIABACg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\CollisionPlaneBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.GridScripts.GridBehaviour" Collapsed="true">
+    <Position X="59.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQgFQeAAhCCAAAIICAIIA0KEIDAhAgFIAQAAAAAWwBA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\GridBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.GridScripts.GridEditor" Collapsed="true">
+    <Position X="61.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAIAACAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\GridBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.GridScripts.GridTrackerBehaviour" Collapsed="true">
+    <Position X="45.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAQAAAAAAAgAAAAAAAAAAQAAACAEAIAYQAAAACAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\GridTrackerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.GridScripts.PanelBehaviour" Collapsed="true">
+    <Position X="56" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEQGAEAAEEAUAAAgAGAAAAAAgAAQAQAIBQCEgAAACEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\PanelBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Input.BufferedInput" Collapsed="true">
+    <Position X="50.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAACAAAAAAAAAIABAAAAAAAAAgAAQAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Input\InputBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Input.InputBehaviour" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="56" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gFQQAFJQACAAOM0IYw9RQCAg4QGAEAIMBIoEAAAhCFA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Input\InputBehaviour.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Lodis.Movement.BarrierPhysicsBehaviour" Collapsed="true">
+    <Position X="10.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\BarrierPhysicsBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Movement.GridMovementBehaviour" Collapsed="true">
+    <Position X="63" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iIQBgG4iA7AQEGChDjkTgQABkSEExEHgFIIDiBokDEg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\GridMovementBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Movement.GridPhysicsBehaviour" Collapsed="true">
+    <Position X="10.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQFgCQAEiLM7CIXjQKRmEEgAgEgZoAMQlgcSWSAAUA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\GridPhysicsBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Movement.KnockbackBehaviour" Collapsed="true">
+    <Position X="0.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>m4QkwAAhDiEEAQLQIBrEucAAEVZJGAy5BUMBhEYDkkA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\KnockbackBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Movement.KnockbackEditor" Collapsed="true">
+    <Position X="49" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgABAAAAICAAAAAAACAAAAAAAAAAAAACAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\KnockbackBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Movement.LandingBehaviour" Collapsed="true">
+    <Position X="50.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACDAAAgAEIgBAAAASAKDACSQQAAEAAAAEgoEAAENA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\LandingBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.ScriptableObjects.Stat" Collapsed="true">
+    <Position X="59.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\AbilityData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.ScriptableObjects.AbilityData" Collapsed="true">
+    <Position X="6.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIQAAIBACIaFEACAAgNAAAGgFFAAAACBQgEAAAUIDA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\AbilityData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.ScriptableObjects.AbilityDataEditor" Collapsed="true">
+    <Position X="47.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAACAAAAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\AbilityData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.ScriptableObjects.AttackAbilityData" Collapsed="true">
+    <Position X="7.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\AttackAbilityData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.ScriptableObjects.ColorVariable" Collapsed="true">
+    <Position X="59.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAQAAAAAgAAAAAAACAAAAAAAgiAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\ColorVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.ScriptableObjects.FloatVariable" Collapsed="true">
+    <Position X="49" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAiAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\FloatVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.ScriptableObjects.IntVariable" Collapsed="true">
+    <Position X="59.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAiAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\IntVariable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.ScriptableObjects.ProjectileAbilityData" Collapsed="true">
+    <Position X="5.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\ProjectileAbilityData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Sound.SoundManagerBehaviour" Collapsed="true">
+    <Position X="56" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAACCAAAIAAAAoAAAAAsBAAAAAAAAQAAAAAAAAAM=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Sound\SoundManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.UI.ComboCounterBehaviour" Collapsed="true">
+    <Position X="61.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JQABABAIACAAAAAAAACAwAAgAAAACAAAAAQIABAAAEE=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\ComboCounterBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.UI.MatchEndUIBehaviour" Collapsed="true">
+    <Position X="54.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAQAAAoAAACAAAAAAEAEAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\MatchEndUIBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.UI.MatchTimerBehaviour" Collapsed="true">
+    <Position X="57.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQFAEAAACAAEKAAEIAQCIAAAABAgAkAQAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\MatchTimerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.UI.MoveDescriptionBehaviour" Collapsed="true">
+    <Position X="61.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQACIAAAAEAAAAAAAAAAAAAAAQAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\MoveDescriptionBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.UI.MovesListBehaviour" Collapsed="true">
+    <Position X="45.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAgAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\MovesListBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.UI.StartEffectBehaviour" Collapsed="true">
+    <Position X="57.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAIBQEAECCIAIARAIAAAABAAAAAIAAAEEKQACAGIEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\StartEffectBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.UI.UIColorManagerBehaviour" Collapsed="true">
+    <Position X="49" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAABAAAAAACAAAAAAAAABAAAAAAAACAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\UIColorManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.ConditionAction" Collapsed="true">
+    <Position X="0.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\ConditionAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.DelayedAction" Collapsed="true">
+    <Position X="1.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAACAAAAAAAAAAEAgQCAAAAgAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\DelayedAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.Extensions" Collapsed="true">
+    <Position X="59.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAEAAAAAAAAAAAAAAAAAABgAAAAAAAAEAAQAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.FlashBehaviour" Collapsed="true">
+    <Position X="5.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAACAIQAAAAQAAAAAAgAAABAAABAAACAAYAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\FlashBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.HoverBehaviour" Collapsed="true">
+    <Position X="54.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAgAAAAAAAAAAAAQAAAAABABBAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\HoverBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.ObjectPoolBehaviour" Collapsed="true">
+    <Position X="52.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAECAAAQAAAIIAEAAAAQAAAAAAAAAAAQAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\ObjectPoolBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.RoutineBehaviour" Collapsed="true">
+    <Position X="56" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQEAAAAAAAAAAAAAAAAAAACIAAAAAAAQAAAAAAAAQI=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\RoutineBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.SceneManagerBehaviour" Collapsed="true">
+    <Position X="57.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iAAEAIAAAAAAAAAAAAAACAAAAEAAAAAAQgAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\SceneManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.SizeLerpBehaviour" Collapsed="true">
+    <Position X="54.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAYJACBAQQAAEABAAAAgAAAAAABAAEAAAAAADAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\SizeLerpBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.Transition" Collapsed="true">
+    <Position X="47.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\StateMachineBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.State" Collapsed="true">
+    <Position X="61.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAIAAAAAAAAAACIAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\StateMachineBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.StateMachineBehaviour" Collapsed="true">
+    <Position X="63" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEQAAEAAAAAAAAAAAAACACAAAAAAAAAAAAAAAAACCFA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\StateMachineBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Utility.TimedAction" Collapsed="true">
+    <Position X="2.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgIAIAAAACEAAAAACQAAAAAAAAAAAAAAAgAAAEAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\TimedAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Lodis.Gameplay.HitColliderData" Collapsed="true">
+    <Position X="47.25" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAACCFABIAAEJEAAAAAAQEABDAABHEAAAQAAwgAjI=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\HitColliderBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Lodis.UI.ComboMessage" Collapsed="true">
+    <Position X="45.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAgAAAAgAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\UI\ComboCounterBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="Lodis.Input.IControllable" Collapsed="true">
+    <Position X="45.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIAAAQAAAAAgAAAAAAAAAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Input\IControllable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="Lodis.Gameplay.AbilityName" Collapsed="true">
+    <Position X="45.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAABIBAAAAAAAAAEAAQQAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Resources\Decks\Deck.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Gameplay.AnimationPhase" Collapsed="true">
+    <Position X="52.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAACAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Animation\CharacterAnimationBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Gameplay.DamageType" Collapsed="true">
+    <Position X="57.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAgAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Gameplay.AbilityPhase" Collapsed="true">
+    <Position X="47.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAEAAAAACAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\Ability.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Gameplay.AbilityType" Collapsed="true">
+    <Position X="49" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAQAIAAAAwAgAAAAoAAAIAAgAAAACAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\MovesetBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Gameplay.MatchResult" Collapsed="true">
+    <Position X="47.25" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAABCAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Input\MatchManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.AI.DefenseDecisionType" Collapsed="true">
+    <Position X="59.5" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAQAAAQABAAAAEAAAQAAAAAAAAQAEAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\DefenseNode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.GridScripts.GridAlignment" Collapsed="true">
+    <Position X="63" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAQAAAAAAAAgAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\GridBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.GridScripts.MarkerType" Collapsed="true">
+    <Position X="45.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAQAAEAAAAAAAACAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\GridTrackerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Movement.BounceCombination" Collapsed="true">
+    <Position X="56" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAACAAAAAAAAAAAAAAgAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\GridPhysicsBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Movement.AirState" Collapsed="true">
+    <Position X="50.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAQAAABAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\KnockbackBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.ScriptableObjects.AnimationType" Collapsed="true">
+    <Position X="54.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAQAAAAAAAAAAAAAAAAABAgAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\AbilityData.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Utility.TimedActionCountType" Collapsed="true">
+    <Position X="49" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAABAAAAAAAAAAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\RoutineBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Utility.GameMode" Collapsed="true">
+    <Position X="61.25" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACgAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\SceneManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Lodis.Gameplay.FallBreakEvent" Collapsed="true">
+    <Position X="50.75" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\CharacterDefenseBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Lodis.Gameplay.CollisionEvent" Collapsed="true">
+    <Position X="45.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ColliderBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Lodis.AI.SaveLoadEvent" Collapsed="true">
+    <Position X="56" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\AI\DecisionTree.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Lodis.Condition" Collapsed="true">
+    <Position X="47.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\StateMachineBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Lodis.Input.InputBufferAction" Collapsed="true">
+    <Position X="54.25" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Input\InputBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Lodis.Movement.ForceAddedEvent" Collapsed="true">
+    <Position X="52.5" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\GridPhysicsBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="Lodis.Utility.DelayedEvent" Collapsed="true">
+    <Position X="49" Y="15.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Utility\RoutineBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

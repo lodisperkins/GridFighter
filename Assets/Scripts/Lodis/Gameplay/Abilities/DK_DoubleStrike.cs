@@ -76,7 +76,7 @@ namespace Lodis.Gameplay
             _ownerMoveScript.Speed = (distance * 2/ abilityData.timeActive) * BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             //Change move traits to allow for free movement on the other side of the grid
-            _ownerMoveScript.canCancelMovement = true;
+            _ownerMoveScript.CanCancelMovement = true;
 
             //Change rotation to the direction of movement
             owner.transform.forward = new Vector3(_attackDirection.x, 0, _attackDirection.y);
@@ -133,7 +133,7 @@ namespace Lodis.Gameplay
             if (_ownerMoveScript.IsMoving)
                 _ownerMoveScript.CancelMovement();
 
-            _ownerMoveScript.canCancelMovement = false;
+            _ownerMoveScript.CanCancelMovement = false;
             _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
             _ownerMoveScript.AlwaysLookAtOpposingSide = true;
 
