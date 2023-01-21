@@ -113,10 +113,12 @@ namespace Lodis.Gameplay
             if (_opponentPhysics?.PanelBounceEnabled == true)
                 return;
 
+            float bounciness = abilityData.GetCustomStatValue("OpponentBounciness");
+
             //Enable the panel bounce and set the temporary bounce value using the custom bounce stat.
             _opponentPhysics.EnablePanelBounce(false);
             _oldBounciness = _opponentPhysics.Bounciness;
-            _opponentPhysics.Bounciness = abilityData.GetCustomStatValue("OpponentBounciness");
+            _opponentPhysics.Bounciness = bounciness;
 
             //Starts a new delayed action to disable the panel bouncing after it has bounced once. 
             RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce(); _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded);

@@ -577,12 +577,18 @@ namespace Lodis.Movement
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            RB.AddForce(force, ForceMode.VelocityChange);
             _lastVelocity = force;
             _lastForceAdded = force;
 
+            if (_panelBounceEnabled && IsGrounded && force.y < 0)
+                force.y *= -1;
+
             if (IsFrozen)
                 _frozenVelocity = _lastForceAdded;
+            else
+                RB.AddForce(force, ForceMode.VelocityChange);
+
+
 
             _onForceAdded?.Invoke(force);
             _onForceAddedTemp?.Invoke(force);
@@ -610,11 +616,16 @@ namespace Lodis.Movement
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            RB.AddForce(force / Mass, ForceMode.Force);
             _lastForceAdded = force / Mass;
 
+            if (_panelBounceEnabled && IsGrounded && force.y < 0)
+                force.y *= -1;
+
             if (IsFrozen)
-                _frozenStoredForce = _lastForceAdded;
+                _frozenVelocity = _lastForceAdded;
+            else
+                RB.AddForce(force / Mass, ForceMode.Force);
+
 
             _onForceAdded?.Invoke(force / Mass);
             _onForceAddedTemp?.Invoke(force);
@@ -646,10 +657,16 @@ namespace Lodis.Movement
 
             _objectAtRest = false;
 
-            RB.AddForce(force / Mass, ForceMode.Impulse);
-            
+
+            if (IsGrounded && force.y < 0)
+                force.y *= -0.5f;
 
             _lastForceAdded = force / Mass;
+            if (IsFrozen)
+                _frozenVelocity = _lastForceAdded;
+            else
+                RB.AddForce(force / Mass, ForceMode.Impulse);
+            
 
             if (IsFrozen)
                 _frozenStoredForce = _lastForceAdded;

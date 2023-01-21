@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: U_LightningStrike_Data
   m_EditorClassIdentifier: 
   abilityName: LightingStrike
+  abilityDescription: None
   AbilityType: 9
   timeActive: 0.2
   recoverTime: 0.5
@@ -51,15 +52,16 @@ MonoBehaviour:
       m_Bits: 1566775
     MultiHitWaitTime: 0
     Damage: 10
-    BaseKnockBack: 2
-    KnockBackScale: 0.5
-    HitAngle: -1.2
+    BaseKnockBack: 0.3
+    KnockBackScale: 0.2
+    HitAngle: -1.5
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.5
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 9
+    SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2
@@ -75,5 +77,7 @@ MonoBehaviour:
     value: 1
   - name: SpawnHeight
     value: 6
+  - name: OpponentBounciness
+    value: 1
   animationType: 1
   _customAnimation: {fileID: 0}

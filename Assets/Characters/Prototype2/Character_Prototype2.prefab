@@ -2921,24 +2921,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _position: {x: 5, y: 0}
-  _targetTolerance: 0.05
   _moveDirection: {x: 1, y: 0}
+  _targetTolerance: 0.05
   _speed: 8
+  _opponentPanelSpeedReduction: 7
   _isMoving: 0
   _canMove: 1
-  canCancelMovement: 0
+  _canCancelMovement: 0
   _defaultAlignment: 2
   _moveToAlignedSideIfStuck: 1
+  _moveSound: {fileID: 8300000, guid: a5eda9809f8053a41b9797ee670acf36, type: 3}
   _onTeleportStart: {fileID: 11400000, guid: 9bc9ffbb1888a5a44ba793fbbe5d91b5, type: 2}
   _onTeleportEnd: {fileID: 11400000, guid: aecd38cd09557b44ab8a900c918a017a, type: 2}
-  _moveSound: {fileID: 8300000, guid: a5eda9809f8053a41b9797ee670acf36, type: 3}
   _alwaysLookAtOpposingSide: 1
   _canBeWalkedThrough: 1
+  _canMoveDiagonally: 0
   _moveOnStart: 1
   _checkIfBehindBarrier: 0
   _isBehindBarrier: 0
-  _opponentPanelSpeedReduction: 7
-  _canMoveDiagonally: 0
 --- !u!54 &7904598044198350755
 Rigidbody:
   m_ObjectHideFlags: 0

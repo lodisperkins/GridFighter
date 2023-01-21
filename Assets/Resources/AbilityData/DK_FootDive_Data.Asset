@@ -55,7 +55,7 @@ MonoBehaviour:
     Damage: 20
     BaseKnockBack: 3
     KnockBackScale: 1.5
-    HitAngle: -0.6
+    HitAngle: -1.2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 1
@@ -83,6 +83,6 @@ MonoBehaviour:
   - name: DownwardGravityMultiplier
     value: 8
   - name: OpponentBounciness
-    value: 15
+    value: 3
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 94bc1ca367d0ca3438de0aa2f84a61cc, type: 3}
