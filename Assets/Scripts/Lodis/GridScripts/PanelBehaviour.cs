@@ -62,6 +62,9 @@ namespace Lodis.GridScripts
         /// </summary>
         private void UpdateMaterial()
         {
+            if (!Application.isPlaying)
+                return;
+
             if (_mesh == null)
                 _mesh = GetComponent<MeshRenderer>();
 

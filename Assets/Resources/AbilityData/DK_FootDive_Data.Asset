@@ -17,7 +17,7 @@ MonoBehaviour:
     Does great damage and can make airborne enemies bounce when they hit the ground.
   AbilityType: 8
   timeActive: 0.1
-  recoverTime: 0.5
+  recoverTime: 0.6
   startUpTime: 0.4
   chargeTime: 5
   maxActivationAmount: 1

@@ -14847,12 +14847,12 @@ PrefabInstance:
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: _lhsBarrierPositions.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: _rhsBarrierPositions.Array.size
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
