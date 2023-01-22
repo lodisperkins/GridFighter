@@ -87,7 +87,7 @@ namespace Lodis.Gameplay
             {
                 CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
 
-                if (stateMachine.StateMachine.CurrentState != "Idle" && stateMachine.StateMachine.CurrentState != "Moving")
+                if (stateMachine.StateMachine.CurrentState != "Idle" && stateMachine.StateMachine.CurrentState != "Moving" && stateMachine.StateMachine.CurrentState != "Attacking")
                 {
                     return;
                 }
