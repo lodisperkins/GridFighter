@@ -139,6 +139,7 @@ namespace Lodis.Gameplay
         }
 
         public CharacterDefenseBehaviour DefenseBehaviour { get => _defenseBehaviour; private set => _defenseBehaviour = value; }
+        public Renderer MeshRenderer { get => _meshRenderer; set => _meshRenderer = value; }
 
         protected virtual void Awake()
         {

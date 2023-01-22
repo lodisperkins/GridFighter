@@ -21,6 +21,8 @@ namespace Lodis.Gameplay
         private DelayedAction _stopAction;
         private float _hitStopScale = 0.15f;
 
+        public Animator Animator { get => _animator; set => _animator = value; }
+
         private void Awake()
         {
             //Initialize component values

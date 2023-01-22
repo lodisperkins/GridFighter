@@ -172,10 +172,11 @@ namespace Lodis.Gameplay
         public UnityAction OnBurst { get; set; }
         public bool LoadingShuffle { get => _loadingShuffle; }
         public bool DeckReloading { get => _deckReloading; }
-        public Transform[] LeftMeleeSpawns { get => _leftMeleeSpawns; }
-        public Transform[] RightMeleeSpawns { get => _rightMeleeSpawns; }
+        public Transform[] LeftMeleeSpawns { get => _leftMeleeSpawns; set => _leftMeleeSpawns = value; }
+        public Transform[] RightMeleeSpawns { get => _rightMeleeSpawns; set => _rightMeleeSpawns = value; }
         public FloatVariable MaxBurstEnergy { get => _maxBurstEnergyRef; }
         public float LastAttackStrength { get => _lastAttackStrength; private set => _lastAttackStrength = value; }
+        public CharacterAnimationBehaviour AnimationBehaviour { get => _animationBehaviour; set => _animationBehaviour = value; }
 
         private void Awake()
         {
