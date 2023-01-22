@@ -1,7 +1,6 @@
-﻿using Lodis.Gameplay;
+﻿using Lodis.Animation;
+using Lodis.Gameplay;
 using Lodis.Movement;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -18,6 +17,7 @@ namespace Lodis.Utility
 
         private ColorManagerBehaviour _colorManager;
         private CharacterAnimationBehaviour _characterAnimation;
+        private EyeAnimationBehaviour _eyeAnimator;
 
         private SkinnedMeshRenderer GetRenderer(string name)
         {
@@ -56,13 +56,12 @@ namespace Lodis.Utility
             return null;
         }
 
+        /// <summary>
+        /// Sets values that require a mesh for all relevant objects in prefab.
+        /// </summary>
         public void UpdateValues()
         {
-            //for (int i = transform.childCount - 1; i > 0; i--)
-            //{
-            //    DestroyImmediate(transform.GetChild(i), true);
-            //}
-
+            //Removes the children from the base skeletal mesh object and makes them a child of the prefab.
             GameObject meshInstance = Instantiate(_currentMesh.gameObject, transform);
 
             Transform child1 = meshInstance.transform.GetChild(0);
@@ -74,12 +73,16 @@ namespace Lodis.Utility
 
             DestroyImmediate(meshInstance);
 
+            //Get reference to all scripts to replace mesh values for.
             _knockback = GetComponentInParent<KnockbackBehaviour>();
             _moveset = GetComponentInParent<MovesetBehaviour>();
             _hitStop = GetComponentInParent<HitStopBehaviour>();
             _colorManager = GetComponentInParent<ColorManagerBehaviour>();
+            _eyeAnimator = GetComponent<EyeAnimationBehaviour>();
 
+            //Update renderers for in game feedback.
             _knockback.MeshRenderer = GetRenderer("body_low");
+            _eyeAnimator.Renderer = GetRenderer("eyes_mesh");
 
             CharacterAnimationBehaviour characterAnimationBehaviour = GetComponent<CharacterAnimationBehaviour>();
             Animator animator = GetComponent<Animator>();
@@ -87,6 +90,7 @@ namespace Lodis.Utility
             _moveset.AnimationBehaviour = characterAnimationBehaviour;
             _hitStop.Animator = animator;
 
+            //Set moveset transform using common body parts.
             Transform leftArm = FindChild(transform, "GridFighterBase_l_Arm_WristSHJnt");
             Transform leftLeg = FindChild(transform, "GridFighterBase_l_Leg_AnkleSHJnt");
 
@@ -95,15 +99,6 @@ namespace Lodis.Utility
 
             _moveset.RightMeleeSpawns = new Transform[] { rightLeg, rightArm };
             _moveset.LeftMeleeSpawns = new Transform[] { leftLeg, leftArm };
-
-
-            //foreach (ColorObject colorObject in _colorManager.ObjectsToColor)
-            //{
-            //    SkinnedMeshRenderer renderer = GetRenderer(colorObject.ObjectRenderer.name);
-
-            //    if (renderer)
-            //        colorObject.ObjectRenderer = renderer;
-            //}
         }
     }
 
@@ -123,6 +118,18 @@ namespace Lodis.Utility
             {
                 _owner.UpdateValues();
             }
+        }
+
+        /// <summary>
+        /// Creates a new variant of the base character prefab and puts it in its own folder.
+        /// </summary>
+        [MenuItem("Assets/Create/Character", false, 5)]
+        public static void CreateBaseCharacterVariant()
+        {
+            Object characterBasePrefab = AssetDatabase.LoadAssetAtPath<Object>("Assets/Resources/CharacterBase.prefab");
+            GameObject prefabInstance = (GameObject)PrefabUtility.InstantiatePrefab(characterBasePrefab);
+            AssetDatabase.CreateFolder("Assets/Characters", "NewCharacter");
+            PrefabUtility.SaveAsPrefabAsset(prefabInstance, "Assets/Characters/NewCharacter/NewCharacter.prefab");
         }
     }
 

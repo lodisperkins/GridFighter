@@ -28,14 +28,16 @@ namespace Lodis.Animation
         private bool _isBlinking;
         private TimedAction _currentAction;
 
+        public Renderer Renderer { get => _renderer; set => _renderer = value; }
+
         private void Blink()
         {
             _isBlinking = true;
-            _renderer.material.SetTexture(_textureName, _closed);
+            Renderer.material.SetTexture(_textureName, _closed);
 
             _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
-                _renderer.material.SetTexture(_textureName, _idle);
+                Renderer.material.SetTexture(_textureName, _idle);
                 _isBlinking = false;
             }, TimedActionCountType.SCALEDTIME, _blinkDuration);
 
@@ -45,13 +47,13 @@ namespace Lodis.Animation
         {
             RoutineBehaviour.Instance.StopAction(_currentAction);
             _isBlinking = false;
-            _renderer.material.SetTexture(_textureName, _hurt);
+            Renderer.material.SetTexture(_textureName, _hurt);
         }
 
         public void ChangeEyesToIdle()
         {
             _isBlinking = false;
-            _renderer.material.SetTexture(_textureName, _idle);
+            Renderer.material.SetTexture(_textureName, _idle);
         }
 
         // Update is called once per frame

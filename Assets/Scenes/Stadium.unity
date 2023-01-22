@@ -22486,13 +22486,13 @@ PrefabInstance:
         type: 3}
       propertyPath: _player1CharacterRef
       value: 
-      objectReference: {fileID: 4551166534780822400, guid: 2849c610c66c8904bb01b0c37094cce5,
+      objectReference: {fileID: 2492379211295133931, guid: 9c0f26416408c3249a6ca0462ece9f65,
         type: 3}
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _player2CharacterRef
       value: 
-      objectReference: {fileID: 561307191668043433, guid: 71e6ba92ebf74ae4ca930c1dddfd94f2,
+      objectReference: {fileID: 1658872878371820837, guid: eeeeeee9b08e2c74daab43fcaca65a83,
         type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
