@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SS_ChargeDoubleShot_Data
   m_EditorClassIdentifier: 
   abilityName: ChargeDoubleShot
+  abilityDescription: None
   AbilityType: 5
   timeActive: 0.1
   recoverTime: 0.2
@@ -53,7 +54,7 @@ MonoBehaviour:
     Damage: 5
     BaseKnockBack: 1
     KnockBackScale: 0.525
-    HitAngle: 0.2
+    HitAngle: 0.4
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.5

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: WF_ForwardShot_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   abilityName: ForwardShot
+  abilityDescription: None
   AbilityType: 2
   timeActive: 0.1
   recoverTime: 0.1
@@ -50,7 +51,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 5
+    Damage: 2
     BaseKnockBack: 8
     KnockBackScale: 0.5
     HitAngle: 1.4

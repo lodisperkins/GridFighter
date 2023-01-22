@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SF_ChargeForwardShot_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   abilityName: ChargeForwardShot
+  abilityDescription: None
   AbilityType: 6
   timeActive: 0.2
   recoverTime: 0.1
@@ -50,7 +51,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 15
+    Damage: 8
     BaseKnockBack: 2
     KnockBackScale: 0.5
     HitAngle: 1.3
