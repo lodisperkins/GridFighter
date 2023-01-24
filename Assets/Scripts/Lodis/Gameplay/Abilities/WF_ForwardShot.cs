@@ -48,7 +48,7 @@ namespace Lodis.Gameplay
             ActiveProjectiles.Add(newProjectile);
         }
 
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             _projectileCollider = GetColliderData(0);
 
@@ -59,11 +59,8 @@ namespace Lodis.Gameplay
             //Only fire if there aren't two many instances of this object active
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {
-                //If the player can move to another panel...
-                if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir))
-                    //...wait until they move to fire
+                if (_ownerMoveScript.IsMoving)
                     _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
-                //Otherwise just fire the shot
                 else
                     SpawnProjectile();
             }

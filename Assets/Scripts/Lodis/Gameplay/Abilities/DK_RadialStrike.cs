@@ -24,9 +24,9 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
 
             DisableAnimation();
             _deactivated = false;
@@ -53,7 +53,7 @@ namespace Lodis.Gameplay
 
             
 
-            Transform spawnTransform = _ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
+            Transform spawnTransform = _ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[0] : OwnerMoveset.LeftMeleeSpawns[0];
 
             //Spawn a game object with the collider attached
             _hitCollider = HitColliderSpawner.SpawnBoxCollider(spawnTransform, _hitBoxScale, hitColliderRef, owner);
@@ -71,7 +71,7 @@ namespace Lodis.Gameplay
         }
 
 	    //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             //Spawn a hit box when the destination has been reached
             _ownerMoveScript.AddOnMoveEndTempAction(SpawnHitBox);
@@ -91,9 +91,9 @@ namespace Lodis.Gameplay
             _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
         }
 
-        protected override void Deactivate()
+        protected override void OnDeactivate()
         {
-            base.Deactivate();
+            base.OnDeactivate();
             _deactivated = true;
 
             if (_visualPrefabInstance)
@@ -113,9 +113,9 @@ namespace Lodis.Gameplay
             _ownerMoveScript.StopAllCoroutines();
         }
 
-        protected override void End()
+        protected override void OnEnd()
         {
-            base.End();
+            base.OnEnd();
             _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
         }
     }

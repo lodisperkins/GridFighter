@@ -58,7 +58,7 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.3
-    Priority: 1
+    Priority: 2
     OwnerAlignement: 0
     AbilityType: 6
     SpawnEffect: {fileID: 6814929850833701180, guid: 0693a339a1c2f284695c43e038a8b3a8,

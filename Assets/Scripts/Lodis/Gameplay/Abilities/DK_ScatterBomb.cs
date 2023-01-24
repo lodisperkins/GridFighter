@@ -29,9 +29,9 @@ namespace Lodis.Gameplay
             _bombTimer = abilityData.GetCustomStatValue("BombTimer");
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
             _bombs?.Clear();
             _targetPanels?.Clear();
             ProjectileColliderData.OwnerAlignement = _ownerMoveScript.Alignment;
@@ -53,7 +53,7 @@ namespace Lodis.Gameplay
         }
 
 	    //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             PanelBehaviour panel = null;
 
@@ -63,6 +63,8 @@ namespace Lodis.Gameplay
             if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.up, out panel))
                 _targetPanels.Add(panel);
             if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.down, out panel))
+                _targetPanels.Add(panel);
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 3 * _ownerMoveScript.transform.forward.x), out panel))
                 _targetPanels.Add(panel);
 
             //Spawn each bomb and move them into position

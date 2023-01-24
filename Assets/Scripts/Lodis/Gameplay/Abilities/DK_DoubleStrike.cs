@@ -29,9 +29,9 @@ namespace Lodis.Gameplay
             _ownerInput = owner.GetComponentInParent<Input.InputBehaviour>();
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
             if (_ownerInput)
             {
                 //Set initial attack direction so player can change directions immediately
@@ -46,7 +46,7 @@ namespace Lodis.Gameplay
         }
 
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             //Create collider for attack
             _fistCollider = GetColliderData(0);
@@ -85,9 +85,9 @@ namespace Lodis.Gameplay
             _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
         }
 
-        protected override void Deactivate()
+        protected override void OnDeactivate()
         {
-            base.Deactivate();
+            base.OnDeactivate();
             ResetMoveAttributes();
 
             //Despawn particles and hit box
@@ -97,13 +97,13 @@ namespace Lodis.Gameplay
             {
                 StopAbility();
                 onEnd?.Invoke();
-                End();
+                OnEnd();
             }
         }
 
-        protected override void End()
+        protected override void OnEnd()
         {
-            base.End();
+            base.OnEnd();
             ResetMoveAttributes();
         }
 
@@ -153,7 +153,7 @@ namespace Lodis.Gameplay
                 _attackDirection = _ownerInput.AttackDirection;
 
                 _secondStrikeActivated = true;
-                Deactivate();
+                OnDeactivate();
                 int activationAmount = currentActivationAmount;
                 StopAbility();
 

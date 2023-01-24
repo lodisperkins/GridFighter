@@ -16,9 +16,9 @@ MonoBehaviour:
   abilityDescription: Dash forward at high speed before delivering an ultra-hot sweep
     kick!
   AbilityType: 8
-  timeActive: 0.5
-  recoverTime: 0.3
-  startUpTime: 0.1
+  timeActive: 0.3
+  recoverTime: 0.6
+  startUpTime: 0.2
   chargeTime: 5
   maxActivationAmount: 1
   EnergyCost: 4

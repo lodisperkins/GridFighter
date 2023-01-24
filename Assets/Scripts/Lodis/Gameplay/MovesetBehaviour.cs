@@ -96,8 +96,6 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _canBurst = true;
         [SerializeField]
-        private FloatVariable _burstChargeTime;
-        [SerializeField]
         [Tooltip("How long the player will wait before beginning a manual shuffle.")]
         private FloatVariable _shuffleWaitTime;
         private UnityAction OnUpdateHand;
@@ -166,8 +164,6 @@ namespace Lodis.Gameplay
         }
 
         public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
-
-        public float BurstChargeTime { get => _burstChargeTime.Value; private set => _burstChargeTime.Value = value; }
         public bool CanBurst { get => _canBurst; private set => _canBurst = value; }
         public UnityAction OnBurst { get; set; }
         public bool LoadingShuffle { get => _loadingShuffle; }

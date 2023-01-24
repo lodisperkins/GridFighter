@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: WS_DoubleShot_Data
   m_EditorClassIdentifier: 
   abilityName: DoubleShot
+  abilityDescription: None
   AbilityType: 1
   timeActive: 0.07
   recoverTime: 0.1
@@ -51,7 +52,7 @@ MonoBehaviour:
       m_Bits: 0
     MultiHitWaitTime: 0
     Damage: 2
-    BaseKnockBack: 0.5
+    BaseKnockBack: 0.3
     KnockBackScale: 0.3
     HitAngle: 0.5
     AdjustAngleBasedOnAlignment: 1

@@ -29,9 +29,9 @@ namespace Lodis.Gameplay
             _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start();
+            base.OnStart();
             _knockBackBehaviour.Physics.Jump(2, 0, abilityData.startUpTime, false, true, GridScripts.GridAlignment.ANY, default, DG.Tweening.Ease.InSine);
 
             //Disable movement to prevent the ability being interrupted
@@ -74,7 +74,7 @@ namespace Lodis.Gameplay
         }
 
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             //Create collider for shockwaves
             _shockWaveCollider = GetColliderData(0);
@@ -107,9 +107,9 @@ namespace Lodis.Gameplay
             _wavesSpawned = true;
         }
 
-        protected override void Deactivate()
+        protected override void OnDeactivate()
         {
-            base.Deactivate();
+            base.OnDeactivate();
 
             //Stop shockwaves from moving
             if (_visualPrefabCoroutines.Item1 != null)

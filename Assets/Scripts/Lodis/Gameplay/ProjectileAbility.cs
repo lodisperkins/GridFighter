@@ -49,14 +49,14 @@ namespace Lodis.Gameplay
             }
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
             ProjectileColliderData = GetColliderData(0);
             CleanProjectileList();
         }
 
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
 
             //Log if a projectile couldn't be found

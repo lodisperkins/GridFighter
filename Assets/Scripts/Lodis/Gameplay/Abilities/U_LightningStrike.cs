@@ -37,9 +37,9 @@ namespace Lodis.Gameplay
             }
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
 
             Transform target = GetTarget();
 
@@ -101,7 +101,7 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce(); _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded);
         }
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             if (!_visualPrefabInstanceTransform) return;
 

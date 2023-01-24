@@ -50,7 +50,7 @@ namespace Lodis.Gameplay
         /// Spawns the smaller, weaker lobshot
         /// </summary>
         /// <param name="axis"></param>
-        private GameObject SpawnShot(Vector3 axis, float distance, float angle, GameObject projectile, HitColliderData hitColliderData, Vector3 position, float gravity)
+        private GameObject SpawnStrongShot(Vector3 axis, float distance, float angle, GameObject projectile, HitColliderData hitColliderData, Vector3 position, float gravity)
         {
             OwnerMoveset.ProjectileSpawner.projectile = projectile;
 
@@ -74,15 +74,15 @@ namespace Lodis.Gameplay
         {
             HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[3];
             Vector3 position = hitCollider.transform.position + Vector3.up * abilityData.GetCustomStatValue("WeakShotSpawnHeight");
-            SpawnShot(new Vector3(1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
-            SpawnShot(new Vector3(-1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
-            SpawnShot(new Vector3(0, 0, 1), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
-            SpawnShot(new Vector3(0, 0, -1), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
+            SpawnStrongShot(new Vector3(1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
+            SpawnStrongShot(new Vector3(-1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
+            SpawnStrongShot(new Vector3(0, 0, 1), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
+            SpawnStrongShot(new Vector3(0, 0, -1), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
             _strongProjectileData.OnHit = null;
         }
 
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
 
             //Log if a projectile couldn't be found
@@ -106,20 +106,19 @@ namespace Lodis.Gameplay
             _weakProjectileData = _weakProjectileData.ScaleStats(powerScale);
 
             CleanProjectileList();
-           
+
             //If the maximum amount of lobshot instances has been reached for this owner, don't spawn a new one
             if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
 
-            Vector2 offSet = new Vector2(1, 0) * -owner.transform.forward;
-            offSet.x = Mathf.RoundToInt(offSet.x);
-            offSet.y = Mathf.RoundToInt(offSet.y);
-
-            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
-
             _strongProjectileData.OnHit += SpawnWeakShots;
             //Fire laser
-            GameObject activeStrongShot = SpawnShot(owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileData, OwnerMoveset.ProjectileSpawner.transform.position, _strongShotGravity);
+            SpawnProjectiles();
+        }
+
+        private void SpawnProjectiles()
+        {
+            GameObject activeStrongShot = SpawnStrongShot(owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileData, OwnerMoveset.ProjectileSpawner.transform.position, _strongShotGravity);
             _weakSpawn = activeStrongShot.transform;
             ActiveProjectiles.Add(activeStrongShot);
         }

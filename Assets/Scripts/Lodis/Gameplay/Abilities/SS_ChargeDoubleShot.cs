@@ -27,6 +27,7 @@ namespace Lodis.Gameplay
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;
+            
         }
 
         private void SpawnProjectile()
@@ -48,19 +49,8 @@ namespace Lodis.Gameplay
             ActiveProjectiles.Add(newProjectile);
         }
 
-        private IEnumerator Shoot(Vector2 direction)
-        {
-            SpawnProjectile();
-            yield return new WaitForSeconds(abilityData.GetCustomStatValue("TimeBetweenShots"));
-
-            if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + direction, false, _ownerMoveScript.Alignment))
-                _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
-            else
-                SpawnProjectile();
-        }
-
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             float powerScale = (float)args[0];
 
@@ -73,8 +63,15 @@ namespace Lodis.Gameplay
                 return;
 
             Vector2 direction = (Vector2)args[1];
-            direction.x = 0;
-            _ownerMoveScript.StartCoroutine(Shoot(direction));
+            direction.x = 0; 
+
+            SpawnProjectile();
+
+            if (_ownerMoveScript.IsMoving)
+            {
+                //Move when the player moves in position or just fire the shot if they can't move
+                _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+            }
         }
     }
 }

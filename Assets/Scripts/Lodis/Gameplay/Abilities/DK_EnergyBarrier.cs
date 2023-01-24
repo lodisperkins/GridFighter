@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
         }
 
 	    //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             //Create barrier collider
             _barrierCollider = GetColliderData(0);
@@ -96,9 +96,9 @@ namespace Lodis.Gameplay
                 
         }
 
-        protected override void Deactivate()
+        protected override void OnDeactivate()
         {
-            base.Deactivate();
+            base.OnDeactivate();
             //Destroy the barrier
             Object.Destroy(_visualPrefabInstance);
         }
