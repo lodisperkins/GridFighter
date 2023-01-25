@@ -73637,7 +73637,7 @@ PrefabInstance:
     - target: {fileID: 561307191668043433, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_Name
-      value: Character2
+      value: TestCharacter2
       objectReference: {fileID: 0}
     - target: {fileID: 624667988152981373, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -74349,6 +74349,12 @@ PrefabInstance:
       propertyPath: _renderer
       value: 
       objectReference: {fileID: 3297886460341345997}
+    - target: {fileID: 8801745021231139587, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _specialDeckRef
+      value: 
+      objectReference: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c,
+        type: 2}
     - target: {fileID: 8801745021231139587, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _leftMeleeSpawns.Array.data[0]

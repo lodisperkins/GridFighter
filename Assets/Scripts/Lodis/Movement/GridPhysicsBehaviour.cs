@@ -616,6 +616,14 @@ namespace Lodis.Movement
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
+            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.x,0).normalized);
+            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.y).normalized);
+
+            if (xDot < 0)
+                RB.velocity = new Vector3(0, RB.velocity.y, RB.velocity.z);
+            if (yDot < 0)
+                RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
+
             _lastForceAdded = force / Mass;
 
             if (_panelBounceEnabled && IsGrounded && force.y < 0)
@@ -657,6 +665,13 @@ namespace Lodis.Movement
 
             _objectAtRest = false;
 
+            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.x, 0).normalized);
+            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.y).normalized);
+
+            if (xDot < 0)
+                RB.velocity = new Vector3(0, RB.velocity.y, RB.velocity.z);
+            if (yDot < 0)
+                RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
 
             if (IsGrounded && force.y < 0)
                 force.y *= -0.5f;
