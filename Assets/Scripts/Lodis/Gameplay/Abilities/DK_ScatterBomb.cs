@@ -34,14 +34,15 @@ namespace Lodis.Gameplay
             base.OnStart(args);
             _bombs?.Clear();
             _targetPanels?.Clear();
-            ProjectileColliderData.OwnerAlignement = _ownerMoveScript.Alignment;
         }
 
         private void DetonateBombs()
         {
             foreach (Transform t in _bombs)
             {
-                HitColliderSpawner.SpawnBoxCollider(t, Vector3.one, ProjectileColliderData, owner);
+                if (!t.TryGetComponent<Collider>(out _))
+                    HitColliderSpawner.SpawnBoxCollider(t, Vector3.one, ProjectileColliderData, owner);
+
                 Object.Instantiate(_explosionEffect, t.position, Camera.main.transform.rotation);
                 t.GetComponent<MeshRenderer>().enabled = false;
                 ObjectPoolBehaviour.Instance.ReturnGameObject(t.gameObject, ProjectileColliderData.TimeActive + 0.1f);

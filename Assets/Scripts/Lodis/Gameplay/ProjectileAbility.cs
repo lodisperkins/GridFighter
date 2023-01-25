@@ -54,6 +54,7 @@ namespace Lodis.Gameplay
             base.OnStart(args);
             ProjectileColliderData = GetColliderData(0);
             CleanProjectileList();
+            ProjectileColliderData.OwnerAlignement = _ownerMoveScript.Alignment;
         }
 
         protected override void OnActivate(params object[] args)

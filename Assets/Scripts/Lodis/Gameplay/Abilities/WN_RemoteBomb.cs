@@ -24,7 +24,7 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
-            Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab);
+            Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, new Quaternion());
         }
 
         //Called when ability is used
@@ -41,10 +41,19 @@ namespace Lodis.Gameplay
                 gridMovementBehaviour.MoveToPanel(_ownerMoveScript.Position + direction * distance, false, GridScripts.GridAlignment.ANY, true, false);
             else
             {
-                Projectile.GetComponent<Collider>().enabled = true;
-                _explosionEffectInstance = ObjectPoolBehaviour.Instance.GetObject(_explosionEffect);
+                if (!Projectile.TryGetComponent<Collider>(out _))
+                    HitColliderSpawner.SpawnBoxCollider(Projectile.transform, Vector3.one, ProjectileColliderData, owner);
+
+                Object.Instantiate(_explosionEffect, Projectile.transform.position, Camera.main.transform.rotation);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile, ProjectileColliderData.TimeActive + 0.1f);
             }
 
+        }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
         }
     }
 }
