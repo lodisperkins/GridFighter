@@ -20,6 +20,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _hitScript;
         private Vector2 _attackDirection;
         private bool _secondStrikeActivated;
+        private Quaternion _rotation;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -43,6 +44,7 @@ namespace Lodis.Gameplay
             //Play animation
             EnableAnimation();
             ChangeMoveAttributes();
+            _rotation = owner.transform.rotation;
         }
 
         //Called when ability is used
@@ -89,6 +91,7 @@ namespace Lodis.Gameplay
         {
             base.OnDeactivate();
             ResetMoveAttributes();
+            owner.transform.rotation = _rotation;
 
             //Despawn particles and hit box
             ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance);

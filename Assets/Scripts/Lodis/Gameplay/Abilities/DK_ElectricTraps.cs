@@ -75,10 +75,15 @@ namespace Lodis.Gameplay
                 GameObject attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].transform.position + Vector3.up * 0.8f, _attackLinkVisual.transform.rotation);
 
                 HitColliderBehaviour collider = attackLink.GetComponent<HitColliderBehaviour>();
-                if (!collider)
-                    collider = attackLink.AddComponent<HitColliderBehaviour>();
 
+                if (!collider)
+                {
+                    collider = attackLink.AddComponent<HitColliderBehaviour>();
+                }
+
+                collider.GetComponent<Collider>().enabled = true;
                 collider.Owner = owner;
+                OnHitTemp += args => collider.GetComponent<Collider>().enabled = false;
                 collider.ColliderInfo = _stunCollider;
             }
 
