@@ -74351,6 +74351,12 @@ PrefabInstance:
       objectReference: {fileID: 3297886460341345997}
     - target: {fileID: 8801745021231139587, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _normalDeckRef
+      value: 
+      objectReference: {fileID: 11400000, guid: 39f29213bbfcbba43b5c1e7b9a3e1af9,
+        type: 2}
+    - target: {fileID: 8801745021231139587, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _specialDeckRef
       value: 
       objectReference: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab,

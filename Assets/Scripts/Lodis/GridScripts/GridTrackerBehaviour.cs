@@ -18,7 +18,7 @@ namespace Lodis.GridScripts
     {
         public MarkerType Marker;
         private PanelBehaviour _lastPanelMarked;
-        [Tooltip("If true, will mark all panels this object collides with.")]
+        [Tooltip("If true, will mark all panels this object collides with. Marks panels based on location by default.")]
         [SerializeField]
         private bool _markPanelsBasedOnCollision;
         private List<PanelBehaviour> _panelsInRange;

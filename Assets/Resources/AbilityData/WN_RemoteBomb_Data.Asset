@@ -16,46 +16,71 @@ MonoBehaviour:
   abilityDescription: Spawns a projectile that detonates on command. The farther
     it travels, the stronger the blast is.
   AbilityType: 0
-  timeActive: 0.1
-  recoverTime: 0.4
+  timeActive: 0.05
+  recoverTime: 0.2
   startUpTime: 0.2
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 0
   canCancelStartUp: 0
-  canCancelActive: 0
+  canCancelActive: 1
   canCancelRecover: 1
   CanCancelOnMove: 0
-  CanCancelIntoSelf: 0
+  CanCancelIntoSelf: 1
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
   CanInputMovementWhileActive: 0
-  CanOnlyCancelOnOpponentHit: 1
+  CanOnlyCancelOnOpponentHit: 0
   cancelOnHit: 1
   cancelOnFlinch: 0
   cancelOnKnockback: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 0}
+  visualPrefab: {fileID: 8229971569440717597, guid: 2c4414b85b8930e4eb3100229c798e7b,
+    type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 0}
-  ActiveSound: {fileID: 0}
+  ActiveSound: {fileID: 8300000, guid: 7f7ce279c0f71f349bd1fd267747889d, type: 3}
   DeactivateSound: {fileID: 0}
-  ColliderData: []
+  ColliderData:
+  - Name: RemoteBombExplosionCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.1
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 3992887
+    MultiHitWaitTime: 0
+    Damage: 7
+    BaseKnockBack: 1
+    KnockBackScale: 0.5
+    HitAngle: 1.35
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 0
+    SpawnEffect: {fileID: 5803877790521241106, guid: 9699fdb12d707aa4f8ef7a924c76132d,
+      type: 3}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 2
+    HitStopTimeModifier: 1
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
+    HitSound: {fileID: 8300000, guid: 2ac9b5bb3c7d52842a9092d79fa2b05f, type: 3}
+    DespawnSound: {fileID: 0}
   _customStats:
-  - name: Damage
-    value: 0
-  - name: baseKnockBack
-    value: 0
-  - name: HitAngle
-    value: 0
-  - name: HitStunTime
-    value: 0
   - name: Speed
-    value: 1
-  - name: Lifetime
-    value: 1
+    value: 10
   - name: MaxInstances
     value: -1
+  - name: DamageIncreaseRate
+    value: 5
+  - name: KnockbackIncreaseRate
+    value: 2
+  - name: TravelDistance
+    value: 8
   animationType: 0
   _customAnimation: {fileID: 0}

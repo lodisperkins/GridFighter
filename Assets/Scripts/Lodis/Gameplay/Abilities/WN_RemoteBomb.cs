@@ -12,40 +12,65 @@ namespace Lodis.Gameplay
     /// </summary>
     public class WN_RemoteBomb : ProjectileAbility
     {
-        private GameObject _explosionEffect;
-        private GameObject _explosionEffectInstance;
+        private HitColliderData _explosionColliderData;
+        private float _damage;
+        private float _baseKnockback;
+        private float _damageIncreaseRate;
+        private float _knockbackIncreaseRate;
+        private float _timeSpawned;
+
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            _explosionEffect = (GameObject)Resources.Load("Effects/SmallExplosion");
         }
 
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
-            Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, new Quaternion());
+            _damage = ProjectileColliderData.Damage;
+            _baseKnockback = ProjectileColliderData.BaseKnockBack;
+
+            _damageIncreaseRate = abilityData.GetCustomStatValue("DamageIncreaseRate");
+            _knockbackIncreaseRate = abilityData.GetCustomStatValue("KnockbackIncreaseRate");
+            ProjectileColliderData = new HitColliderData();
+
+            ProjectileColliderData.OnHit += collisionInfo =>
+            {
+                GameObject other = (GameObject)collisionInfo[0];
+                if (other.CompareTag("Structure"))
+                    DestroyActiveProjectiles();
+
+            };
+
+            _explosionColliderData = GetColliderData(0);
         }
+
 
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
             //The base activate func fires a single instance of the projectile when called
-            GridMovementBehaviour gridMovementBehaviour = Projectile.GetComponent<GridMovementBehaviour>();
-            gridMovementBehaviour.CanBeWalkedThrough = true;
 
             Vector2 direction = owner.transform.forward;
-            float distance = abilityData.GetCustomStatValue("Travel Distance");
 
             if (ActiveProjectiles.Count == 0)
-                gridMovementBehaviour.MoveToPanel(_ownerMoveScript.Position + direction * distance, false, GridScripts.GridAlignment.ANY, true, false);
+            {
+                base.OnActivate(args);
+                _timeSpawned = Time.time;
+            }
             else
             {
-                if (!Projectile.TryGetComponent<Collider>(out _))
-                    HitColliderSpawner.SpawnBoxCollider(Projectile.transform, Vector3.one, ProjectileColliderData, owner);
+                float timeElapsed = Time.time - _timeSpawned;
 
-                Object.Instantiate(_explosionEffect, Projectile.transform.position, Camera.main.transform.rotation);
-                ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile, ProjectileColliderData.TimeActive + 0.1f);
+                HitColliderData scaledData = _explosionColliderData;
+
+                scaledData.Damage = _damage + _damageIncreaseRate * timeElapsed;
+                scaledData.BaseKnockBack = _baseKnockback + _knockbackIncreaseRate * timeElapsed;
+
+                HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position, Vector3.one, scaledData, owner);
+
+                ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
             }
 
         }
@@ -53,7 +78,6 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
-            ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
         }
     }
 }
