@@ -98,7 +98,7 @@ namespace Lodis.GridScripts
         }
 
 
-        private void OnTriggerEnter(Collider other)
+        private void OnTriggerStay(Collider other)
         {
             if (!other.CompareTag("Panel") || !_markPanelsBasedOnCollision) return;
 
@@ -107,9 +107,10 @@ namespace Lodis.GridScripts
             if (!PanelsInRange.Contains(panel))
             {
                 PanelsInRange.Add(panel);
-                panel.Mark(Marker, gameObject);
-                _lastPanelMarked = panel;
             }
+
+            panel.Mark(Marker, gameObject);
+            _lastPanelMarked = panel;
         }
 
         private void OnTriggerExit(Collider other)

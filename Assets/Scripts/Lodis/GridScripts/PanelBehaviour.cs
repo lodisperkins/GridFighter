@@ -34,6 +34,38 @@ namespace Lodis.GridScripts
         private MarkerType _currentMarker;
         
 
+        /// <summary>
+        /// The position of this panel on the grid.
+        /// </summary>
+        public Vector2 Position
+        {
+            get
+            {
+                return _position;
+            }
+            set
+            {
+                _position = value;
+            }
+        }
+
+        /// <summary>
+        /// Returns if there is anything preventing an object from moving on to this panel.
+        /// </summary>
+        public bool Occupied
+        {
+            get
+            {
+                return _occupied;
+            }
+            set
+            {
+                _occupied = value;
+            }
+        }
+
+        public MarkerType CurrentMarker { get => _currentMarker; private set => _currentMarker = value; }
+
         private void Awake()
         {
             _positionLHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.LEFT);
@@ -101,7 +133,7 @@ namespace Lodis.GridScripts
             switch (markerType)
             {
                 case MarkerType.POSITION:
-                    if (_currentMarker != MarkerType.NONE) break;
+                    if (CurrentMarker != MarkerType.NONE) break;
 
                     if (markObject != _markObject)
                         _markerMovement = markObject.GetComponent<Movement.GridMovementBehaviour>();
@@ -135,6 +167,7 @@ namespace Lodis.GridScripts
             }
 
             _markObject = markObject;
+            CurrentMarker = markerType;
         }
 
         public void RemoveMark()
@@ -144,37 +177,7 @@ namespace Lodis.GridScripts
 
             _mesh?.material.SetInt("_UseEmission", 0);
             _mesh?.material.ChangeHue(_defaultColor, "_Color");
-            _currentMarker = MarkerType.NONE;
-        }
-
-        /// <summary>
-        /// The position of this panel on the grid.
-        /// </summary>
-        public Vector2 Position
-        {
-            get
-            {
-                return _position;
-            }
-            set
-            {
-                _position = value;
-            }
-        }
-
-        /// <summary>
-        /// Returns if there is anything preventing an object from moving on to this panel.
-        /// </summary>
-        public bool Occupied
-        {
-            get
-            {
-                return _occupied;
-            }
-            set
-            {
-                _occupied = value;
-            }
+            CurrentMarker = MarkerType.NONE;
         }
 
         private void Update()

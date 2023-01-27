@@ -11,22 +11,25 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class WN_RemoteBomb : ProjectileAbility
+    public class SN_ChargeRemoteBomb : ProjectileAbility
     {
         private HitColliderData _explosionColliderData;
         private float _travelDistance;
-        private  float _despawnTime;
+        private float _damage;
+        private float _timeSpawned;
+        private float _despawnTime;
         private TimedAction _despawnAction;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
-			base.Init(newOwner);
+            base.Init(newOwner);
         }
 
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
+            _damage = ProjectileColliderData.Damage;
 
             _travelDistance = abilityData.GetCustomStatValue("TravelDistance");
             _despawnTime = abilityData.GetCustomStatValue("DespawnTime");
@@ -35,8 +38,8 @@ namespace Lodis.Gameplay
 
         private void SpawnExplosion()
         {
-
-            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position, Vector3.one, _explosionColliderData, owner);
+            HitColliderData data = _explosionColliderData.ScaleStats(_damage);
+            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position, Vector3.one * 3, data, owner);
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
         }
@@ -44,6 +47,8 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            _damage = (float)args[0];
+
             //The base activate func fires a single instance of the projectile when called
 
             //Spawn remote bomb if none are out.
@@ -59,16 +64,11 @@ namespace Lodis.Gameplay
                 gridMovementBehaviour.Speed = abilityData.GetCustomStatValue("Speed");
 
                 gridMovementBehaviour.MoveToPanel(_ownerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
+                _timeSpawned = Time.time;
                 ActiveProjectiles.Add(Projectile);
 
                 //Sets a new timer to explode the bomb by default.
                 _despawnAction = RoutineBehaviour.Instance.StartNewTimedAction(parameters => SpawnExplosion(), TimedActionCountType.SCALEDTIME, _despawnTime);
-            }
-            //Otherwise the bomb is activated.
-            else
-            {
-                RoutineBehaviour.Instance.StopAction(_despawnAction);
-                SpawnExplosion();
             }
 
         }

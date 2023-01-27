@@ -10,15 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
-  m_Name: WN_RemoteBomb_Data
+  m_Name: SN_ChargeRemoteBomb_Data
   m_EditorClassIdentifier: 
-  abilityName: RemoteBomb
-  abilityDescription: Spawns a projectile that detonates on command. The farther
-    it travels, the stronger the blast is.
-  AbilityType: 0
-  timeActive: 0.05
-  recoverTime: 0.2
-  startUpTime: 0.2
+  abilityName: ChargeRemoteBomb
+  abilityDescription: Spawns a projectile that detonates on command.
+  AbilityType: 4
+  timeActive: 0.1
+  recoverTime: 0.4
+  startUpTime: 0.4
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 0
@@ -26,63 +25,60 @@ MonoBehaviour:
   canCancelActive: 1
   canCancelRecover: 1
   CanCancelOnMove: 0
-  CanCancelIntoSelf: 1
+  CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 1
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanOnlyCancelOnOpponentHit: 0
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 0
-  useAbilityTimingForAnimation: 1
+  useAbilityTimingForAnimation: 0
   playAnimationManually: 0
-  visualPrefab: {fileID: 8229971569440717597, guid: 2c4414b85b8930e4eb3100229c798e7b,
+  visualPrefab: {fileID: 8229971569440717597, guid: 72688a0b35ef03d4b9b6e4c9aceefc35,
     type: 3}
   DisplayIcon: {fileID: 0}
-  ActivateSound: {fileID: 0}
-  ActiveSound: {fileID: 8300000, guid: 7f7ce279c0f71f349bd1fd267747889d, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 18539e1bad355b64e82686604e42f44c, type: 3}
+  ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
-  - Name: RemoteBombExplosionCollider
+  - Name: ChargeRemoteBombCollider
     DespawnAfterTimeLimit: 1
     TimeActive: 0.1
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 3992887
+      m_Bits: 3992631
     MultiHitWaitTime: 0
-    Damage: 7
-    BaseKnockBack: 1
-    KnockBackScale: 0.5
+    Damage: 10
+    BaseKnockBack: 1.5
+    KnockBackScale: 0.08
     HitAngle: 1.35
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.5
+    HitStunTime: 0.8
     Priority: 0
     OwnerAlignement: 0
-    AbilityType: 0
-    SpawnEffect: {fileID: 5803877790521241106, guid: 9699fdb12d707aa4f8ef7a924c76132d,
+    AbilityType: 4
+    SpawnEffect: {fileID: 2408267167856685790, guid: 58fda082f086e4f4b80b3723cb1246f1,
       type: 3}
-    HitSpark: {fileID: 0}
+    HitSpark: {fileID: 5803877790521241106, guid: 9699fdb12d707aa4f8ef7a924c76132d,
+      type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 1
-    ShakesCamera: 0
-    SpawnSound: {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
+    HitStopTimeModifier: 1.3
+    ShakesCamera: 1
+    SpawnSound: {fileID: 8300000, guid: fe5eee8f1a46f24408fd0243d821a712, type: 3}
     HitSound: {fileID: 8300000, guid: 2ac9b5bb3c7d52842a9092d79fa2b05f, type: 3}
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 4
+    value: 3
   - name: MaxInstances
     value: -1
-  - name: DamageIncreaseRate
-    value: 5
-  - name: KnockbackIncreaseRate
-    value: 2
   - name: TravelDistance
-    value: 5
+    value: 4
   - name: DespawnTime
-    value: 10
+    value: 5
   animationType: 0
   _customAnimation: {fileID: 0}
