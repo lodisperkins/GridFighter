@@ -165,7 +165,7 @@ namespace Lodis.Movement
         /// </summary>
         public Vector2 Position
         {
-            get { return _currentPanel.Position; }
+            get { return _position; }
             set { _position = value; }
         }
 

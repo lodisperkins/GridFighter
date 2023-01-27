@@ -10,8 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8229971569440717538}
   - component: {fileID: 2678814906189136709}
-  - component: {fileID: 764120521755609940}
-  m_Layer: 0
+  - component: {fileID: -8381614818802109307}
+  - component: {fileID: 8933557024063451494}
+  m_Layer: 16
   m_Name: RemoteBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8229971569440717597}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5092894759819128320}
@@ -47,19 +48,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Marker: 1
   _markPanelsBasedOnCollision: 0
---- !u!65 &764120521755609940
-BoxCollider:
+--- !u!114 &-8381614818802109307
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8229971569440717597}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+    m_PersistentCalls:
+      m_Calls: []
+  Event: {fileID: 0}
+  IntendedSender: {fileID: 0}
+  AcceptTagAsSender: 0
+--- !u!114 &8933557024063451494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8229971569440717597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _position: {x: 0, y: 0}
+  _moveDirection: {x: 0, y: 0}
+  _targetTolerance: 0.05
+  _speed: 0
+  _opponentPanelSpeedReduction: 0
+  _isMoving: 0
+  _canMove: 1
+  _canCancelMovement: 1
+  _defaultAlignment: 3
+  _moveToAlignedSideIfStuck: 1
+  _moveSound: {fileID: 0}
+  _onTeleportStart: {fileID: 0}
+  _onTeleportEnd: {fileID: 0}
+  _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 1
+  _canMoveDiagonally: 0
+  _moveOnStart: 0
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
 --- !u!1001 &8229971568338684147
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -67,10 +104,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8229971569440717538}
     m_Modifications:
+    - target: {fileID: 3790662290738514689, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790662291215335483, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790662292103056584, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3790662292754130670, guid: 2bff5b4f841774d489812283265fcba6,
         type: 3}
       propertyPath: m_Name
       value: RemoteBombOrb
+      objectReference: {fileID: 0}
+    - target: {fileID: 3790662292754130670, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 3790662292754130675, guid: 2bff5b4f841774d489812283265fcba6,
         type: 3}
@@ -80,17 +137,17 @@ PrefabInstance:
     - target: {fileID: 3790662292754130675, guid: 2bff5b4f841774d489812283265fcba6,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.2762
+      value: 0.6183566
       objectReference: {fileID: 0}
     - target: {fileID: 3790662292754130675, guid: 2bff5b4f841774d489812283265fcba6,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.2762
+      value: 0.6183566
       objectReference: {fileID: 0}
     - target: {fileID: 3790662292754130675, guid: 2bff5b4f841774d489812283265fcba6,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.2762
+      value: 0.6183566
       objectReference: {fileID: 0}
     - target: {fileID: 3790662292754130675, guid: 2bff5b4f841774d489812283265fcba6,
         type: 3}
@@ -141,6 +198,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272529554709092336, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272529554742242157, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272529555331171004, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272529555894948199, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6272529556537235049, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 9125063264461693353, guid: 2bff5b4f841774d489812283265fcba6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2bff5b4f841774d489812283265fcba6, type: 3}

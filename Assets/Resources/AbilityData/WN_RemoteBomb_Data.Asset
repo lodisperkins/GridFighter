@@ -73,7 +73,7 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 10
+    value: 4
   - name: MaxInstances
     value: -1
   - name: DamageIncreaseRate
@@ -81,6 +81,8 @@ MonoBehaviour:
   - name: KnockbackIncreaseRate
     value: 2
   - name: TravelDistance
-    value: 8
+    value: 5
+  - name: DespawnTime
+    value: 10
   animationType: 0
   _customAnimation: {fileID: 0}
