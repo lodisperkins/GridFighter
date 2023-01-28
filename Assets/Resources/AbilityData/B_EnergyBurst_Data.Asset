@@ -33,7 +33,7 @@ MonoBehaviour:
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 0
-  useAbilityTimingForAnimation: 1
+  useAbilityTimingForAnimation: 0
   playAnimationManually: 0
   visualPrefab: {fileID: 7042668201603800225, guid: 2617db3ae35c0744699c7d5528743ca5,
     type: 3}

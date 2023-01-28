@@ -37,7 +37,7 @@ MonoBehaviour:
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 1
-  visualPrefab: {fileID: 5000259334688197389, guid: 95ae451ffeabfdc4c802a7736ad85229,
+  visualPrefab: {fileID: 2687681970527639378, guid: ca4f72983901ab345bd9ed830c3c6d5f,
     type: 3}
   DisplayIcon: {fileID: 21300000, guid: 03f6af0b5e869c6408d27c5e7aebbc6c, type: 3}
   ActivateSound: {fileID: 0}
@@ -51,7 +51,7 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 65536
+      m_Bits: 65792
     MultiHitWaitTime: 0
     Damage: 5
     BaseKnockBack: 15

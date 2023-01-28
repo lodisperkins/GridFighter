@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: ChargeSpinningOrbs
   abilityDescription: None
   AbilityType: 5
-  timeActive: 0.6
+  timeActive: 0.4
   recoverTime: 0.5
   startUpTime: 0.2
   chargeTime: 0
