@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
         private void SpawnExplosion()
         {
             HitColliderData data = _explosionColliderData.ScaleStats(_damage);
-            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position, Vector3.one * 3, data, owner);
+            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position + Vector3.up * 0.5f, Vector3.one * 3, data, owner);
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
         }
