@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: WS_SpinningOrbs_Data
+  m_EditorClassIdentifier: 
+  abilityName: SpinningOrbs
+  abilityDescription: None
+  AbilityType: 1
+  timeActive: 0.3
+  recoverTime: 0.3
+  startUpTime: 0.1
+  chargeTime: 0
+  maxActivationAmount: 1
+  EnergyCost: 0
+  canCancelStartUp: 0
+  canCancelActive: 1
+  canCancelRecover: 1
+  CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
+  CanInputMovementWhileActive: 0
+  CanOnlyCancelOnOpponentHit: 1
+  cancelOnHit: 0
+  cancelOnFlinch: 0
+  cancelOnKnockback: 1
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 4418831361922760892, guid: 380dea3bddb8c654e9350bcf040e3464,
+    type: 3}
+  DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: 
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 0
+    IsMultiHit: 1
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057399
+    MultiHitWaitTime: 0.2
+    Damage: 2
+    BaseKnockBack: 0.3
+    KnockBackScale: 0.5
+    HitAngle: 1.2
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.7
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 1
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopTimeModifier: 1.3
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 9d46610105635f44eb9f7863784aaf9c, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: OrbHeight
+    value: 1
+  - name: RotationSpeed
+    value: 10
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: d89f4ea713a48de4d8aee38ec0202058, type: 3}
