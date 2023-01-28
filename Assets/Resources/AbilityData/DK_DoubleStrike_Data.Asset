@@ -25,7 +25,7 @@ MonoBehaviour:
   EnergyCost: 2
   canCancelStartUp: 0
   canCancelActive: 1
-  canCancelRecover: 1
+  canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 1
-  visualPrefab: {fileID: 3279573249412428936, guid: a5f34ccc8f5a5b649acae042098deeb7,
+  visualPrefab: {fileID: 5000259334688197389, guid: 95ae451ffeabfdc4c802a7736ad85229,
     type: 3}
   DisplayIcon: {fileID: 21300000, guid: 03f6af0b5e869c6408d27c5e7aebbc6c, type: 3}
   ActivateSound: {fileID: 0}
@@ -64,7 +64,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     SpawnEffect: {fileID: 0}
-    HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 1
     HitStopTimeModifier: 1.3

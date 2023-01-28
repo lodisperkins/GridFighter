@@ -7,7 +7,7 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Enter ability description here
+    ///  Two energy orbs orbits around the character damaging anything in range. 
     /// </summary>
     public class WS_SpinningOrbs : Ability
     {

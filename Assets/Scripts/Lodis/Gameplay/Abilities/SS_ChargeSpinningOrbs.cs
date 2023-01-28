@@ -7,7 +7,7 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// Enter ability description here
+    /// Two stronger energy orbs orbits around the character damaging anything in range. 
     /// </summary>
     public class SS_ChargeSpinningOrbs : Ability
     {
