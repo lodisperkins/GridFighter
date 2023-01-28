@@ -86,13 +86,13 @@ namespace Lodis.Gameplay
 
             //Move towards panel
             _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
-            //Despawn particles and hit box
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance, abilityData.timeActive - abilityData.timeActive/3);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance, abilityData.timeActive + abilityData.timeActive / 3);
         }
 
         protected override void OnDeactivate()
         {
             base.OnDeactivate();
+            //Despawn particles and hit box
             ResetMoveAttributes();
             owner.transform.rotation = _rotation;
 
