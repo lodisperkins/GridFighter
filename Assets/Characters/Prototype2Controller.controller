@@ -685,7 +685,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ProtoypeController
+  m_Name: Prototype2Controller
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: OnRightSide
@@ -834,14 +834,20 @@ AnimatorController:
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
   - serializedVersion: 5
-    m_Name: New Layer
+    m_Name: Layer Mask
     m_StateMachine: {fileID: 6304818230954255710}
-    m_Mask: {fileID: 0}
-    m_Motions: []
+    m_Mask: {fileID: 101100000, guid: 12d4a8ff5f7951f429e12d0337087fd8, type: 2}
+    m_Motions:
+    - serializedVersion: 2
+      m_State: {fileID: 1245146988074993085}
+      m_Motion: {fileID: 0}
+    - serializedVersion: 2
+      m_State: {fileID: -5711968250193457630}
+      m_Motion: {fileID: 7400000, guid: c1857e4094b87fe40a724b81e470c20d, type: 3}
     m_Behaviours: []
     m_BlendingMode: 0
-    m_SyncedLayerIndex: -1
-    m_DefaultWeight: 0
+    m_SyncedLayerIndex: 0
+    m_DefaultWeight: 1
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
     m_Controller: {fileID: 9100000}
@@ -1324,7 +1330,7 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: New Layer
+  m_Name: Layer Mask
   m_ChildStates: []
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
