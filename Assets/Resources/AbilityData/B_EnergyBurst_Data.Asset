@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: B_EnergyBurst_Data
   m_EditorClassIdentifier: 
   abilityName: EnergyBurst
+  abilityDescription: None
   AbilityType: 10
   timeActive: 0.6
   recoverTime: 0.8
@@ -71,4 +72,4 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats: []
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: a8e48c70fc9e5a4409acfc0781e94b19, type: 3}
+  _customAnimation: {fileID: 7400000, guid: f2d2ab98b82d0af4894a75927c4cea8e, type: 3}

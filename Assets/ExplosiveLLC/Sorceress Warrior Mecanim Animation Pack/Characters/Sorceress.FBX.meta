@@ -1,0 +1,970 @@
+fileFormatVersion: 2
+guid: bb5ada740cae9e749a27ebcf41af0d85
+ModelImporter:
+  serializedVersion: 19301
+  internalIDToNameTable:
+  - first:
+      1: 100000
+    second: B_Head
+  - first:
+      1: 100002
+    second: B_L_Calf
+  - first:
+      1: 100004
+    second: B_L_Clavicle
+  - first:
+      1: 100006
+    second: B_L_Finger0
+  - first:
+      1: 100008
+    second: B_L_Finger01
+  - first:
+      1: 100010
+    second: B_L_Finger02
+  - first:
+      1: 100012
+    second: B_L_Finger1
+  - first:
+      1: 100014
+    second: B_L_Finger11
+  - first:
+      1: 100016
+    second: B_L_Finger12
+  - first:
+      1: 100018
+    second: B_L_Finger2
+  - first:
+      1: 100020
+    second: B_L_Finger21
+  - first:
+      1: 100022
+    second: B_L_Finger22
+  - first:
+      1: 100024
+    second: B_L_Finger3
+  - first:
+      1: 100026
+    second: B_L_Finger31
+  - first:
+      1: 100028
+    second: B_L_Finger32
+  - first:
+      1: 100030
+    second: B_L_Finger4
+  - first:
+      1: 100032
+    second: B_L_Finger41
+  - first:
+      1: 100034
+    second: B_L_Finger42
+  - first:
+      1: 100036
+    second: B_L_Foot
+  - first:
+      1: 100038
+    second: B_L_Forearm
+  - first:
+      1: 100040
+    second: B_L_Hand
+  - first:
+      1: 100042
+    second: B_L_Thigh
+  - first:
+      1: 100044
+    second: B_L_Toe0
+  - first:
+      1: 100046
+    second: B_L_UpperArm
+  - first:
+      1: 100048
+    second: B_Neck
+  - first:
+      1: 100050
+    second: B_Pelvis
+  - first:
+      1: 100052
+    second: B_R_Calf
+  - first:
+      1: 100054
+    second: B_R_Clavicle
+  - first:
+      1: 100056
+    second: B_R_Finger0
+  - first:
+      1: 100058
+    second: B_R_Finger01
+  - first:
+      1: 100060
+    second: B_R_Finger02
+  - first:
+      1: 100062
+    second: B_R_Finger1
+  - first:
+      1: 100064
+    second: B_R_Finger11
+  - first:
+      1: 100066
+    second: B_R_Finger12
+  - first:
+      1: 100068
+    second: B_R_Finger2
+  - first:
+      1: 100070
+    second: B_R_Finger21
+  - first:
+      1: 100072
+    second: B_R_Finger22
+  - first:
+      1: 100074
+    second: B_R_Finger3
+  - first:
+      1: 100076
+    second: B_R_Finger31
+  - first:
+      1: 100078
+    second: B_R_Finger32
+  - first:
+      1: 100080
+    second: B_R_Finger4
+  - first:
+      1: 100082
+    second: B_R_Finger41
+  - first:
+      1: 100084
+    second: B_R_Finger42
+  - first:
+      1: 100086
+    second: B_R_Foot
+  - first:
+      1: 100088
+    second: B_R_Forearm
+  - first:
+      1: 100090
+    second: B_R_Hand
+  - first:
+      1: 100092
+    second: B_R_Thigh
+  - first:
+      1: 100094
+    second: B_R_Toe0
+  - first:
+      1: 100096
+    second: B_R_UpperArm
+  - first:
+      1: 100098
+    second: B_Spine
+  - first:
+      1: 100100
+    second: B_Spine1
+  - first:
+      1: 100102
+    second: Mesh_Karate
+  - first:
+      1: 100104
+    second: Motion
+  - first:
+      1: 100106
+    second: //RootNode
+  - first:
+      1: 100108
+    second: Mesh_Ninja
+  - first:
+      1: 100110
+    second: Mesh_Sorceress
+  - first:
+      4: 400000
+    second: B_Head
+  - first:
+      4: 400002
+    second: B_L_Calf
+  - first:
+      4: 400004
+    second: B_L_Clavicle
+  - first:
+      4: 400006
+    second: B_L_Finger0
+  - first:
+      4: 400008
+    second: B_L_Finger01
+  - first:
+      4: 400010
+    second: B_L_Finger02
+  - first:
+      4: 400012
+    second: B_L_Finger1
+  - first:
+      4: 400014
+    second: B_L_Finger11
+  - first:
+      4: 400016
+    second: B_L_Finger12
+  - first:
+      4: 400018
+    second: B_L_Finger2
+  - first:
+      4: 400020
+    second: B_L_Finger21
+  - first:
+      4: 400022
+    second: B_L_Finger22
+  - first:
+      4: 400024
+    second: B_L_Finger3
+  - first:
+      4: 400026
+    second: B_L_Finger31
+  - first:
+      4: 400028
+    second: B_L_Finger32
+  - first:
+      4: 400030
+    second: B_L_Finger4
+  - first:
+      4: 400032
+    second: B_L_Finger41
+  - first:
+      4: 400034
+    second: B_L_Finger42
+  - first:
+      4: 400036
+    second: B_L_Foot
+  - first:
+      4: 400038
+    second: B_L_Forearm
+  - first:
+      4: 400040
+    second: B_L_Hand
+  - first:
+      4: 400042
+    second: B_L_Thigh
+  - first:
+      4: 400044
+    second: B_L_Toe0
+  - first:
+      4: 400046
+    second: B_L_UpperArm
+  - first:
+      4: 400048
+    second: B_Neck
+  - first:
+      4: 400050
+    second: B_Pelvis
+  - first:
+      4: 400052
+    second: B_R_Calf
+  - first:
+      4: 400054
+    second: B_R_Clavicle
+  - first:
+      4: 400056
+    second: B_R_Finger0
+  - first:
+      4: 400058
+    second: B_R_Finger01
+  - first:
+      4: 400060
+    second: B_R_Finger02
+  - first:
+      4: 400062
+    second: B_R_Finger1
+  - first:
+      4: 400064
+    second: B_R_Finger11
+  - first:
+      4: 400066
+    second: B_R_Finger12
+  - first:
+      4: 400068
+    second: B_R_Finger2
+  - first:
+      4: 400070
+    second: B_R_Finger21
+  - first:
+      4: 400072
+    second: B_R_Finger22
+  - first:
+      4: 400074
+    second: B_R_Finger3
+  - first:
+      4: 400076
+    second: B_R_Finger31
+  - first:
+      4: 400078
+    second: B_R_Finger32
+  - first:
+      4: 400080
+    second: B_R_Finger4
+  - first:
+      4: 400082
+    second: B_R_Finger41
+  - first:
+      4: 400084
+    second: B_R_Finger42
+  - first:
+      4: 400086
+    second: B_R_Foot
+  - first:
+      4: 400088
+    second: B_R_Forearm
+  - first:
+      4: 400090
+    second: B_R_Hand
+  - first:
+      4: 400092
+    second: B_R_Thigh
+  - first:
+      4: 400094
+    second: B_R_Toe0
+  - first:
+      4: 400096
+    second: B_R_UpperArm
+  - first:
+      4: 400098
+    second: B_Spine
+  - first:
+      4: 400100
+    second: B_Spine1
+  - first:
+      4: 400102
+    second: Mesh_Karate
+  - first:
+      4: 400104
+    second: Motion
+  - first:
+      4: 400106
+    second: //RootNode
+  - first:
+      4: 400108
+    second: Mesh_Ninja
+  - first:
+      4: 400110
+    second: Mesh_Sorceress
+  - first:
+      43: 4300000
+    second: Mesh_Karate
+  - first:
+      43: 4300002
+    second: Mesh_Ninja
+  - first:
+      43: 4300004
+    second: Mesh_Sorceress
+  - first:
+      74: 7400000
+    second: Take 001
+  - first:
+      95: 9500000
+    second: //RootNode
+  - first:
+      137: 13700000
+    second: Mesh_Karate
+  - first:
+      137: 13700002
+    second: Mesh_Ninja
+  - first:
+      137: 13700004
+    second: Mesh_Sorceress
+  - first:
+      41386430: 2186277476908879412
+    second: ImportLogs
+  externalObjects: {}
+  materials:
+    materialImportMode: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 0.01
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 0
+    importBlendShapes: 0
+    importCameras: 0
+    importLights: 0
+    fileIdsGeneration: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+  tangentSpace:
+    normalSmoothAngle: 0
+    normalImportMode: 1
+    tangentImportMode: 2
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton:
+    - name: GF_Proto_Character_SkeletalMesh(Clone)
+      parentName: 
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GF_proto_character_mesh
+      parentName: GF_Proto_Character_SkeletalMesh(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: armor_01_mesh
+      parentName: GF_proto_character_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: briefs_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: chest_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: chestguard_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_arm_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_kneeguard_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_leg_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_shoulder_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_waistguard_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_arm_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_kneeguard_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_leg_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_shoulder_low
+      parentName: armor_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: body_mesh
+      parentName: GF_proto_character_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: body_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: eyes_mesh
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_ear_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: mouth_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: nose_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: r_ear_low
+      parentName: body_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 6.123234e-17, y: 1, z: -6.123234e-17, w: -6.123234e-17}
+      scale: {x: 1, y: 1, z: -1}
+    - name: hair_01_mesh
+      parentName: GF_proto_character_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: hair_low
+      parentName: hair_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: head_accessory_01_mesh
+      parentName: GF_proto_character_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: l_earpiece_low
+      parentName: head_accessory_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: mask_low
+      parentName: head_accessory_01_mesh
+      position: {x: -0, y: 0.016391682, z: -0.000011530886}
+      rotation: {x: 0.18436173, y: -0, z: -0, w: 0.9828585}
+      scale: {x: 14.046982, y: 5.202818, z: 20.952461}
+    - name: r_earpiece_low
+      parentName: head_accessory_01_mesh
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase
+      parentName: GF_Proto_Character_SkeletalMesh(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_SHJntGrp
+      parentName: GridFighterBase
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_ROOTSHJnt
+      parentName: GridFighterBase_SHJntGrp
+      position: {x: -0, y: 0.010988333, z: 0.00046620087}
+      rotation: {x: -0.5, y: 0.5, z: -0.5, w: 0.5}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_HipSHJnt
+      parentName: GridFighterBase_ROOTSHJnt
+      position: {x: 0.0005348467, y: -1.7763568e-19, z: -0.00081468956}
+      rotation: {x: 0.037672073, y: -0.7060263, z: 0.70610255, w: 0.039075762}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_KneeSHJnt
+      parentName: GridFighterBase_l_Leg_HipSHJnt
+      position: {x: -0.0031226578, y: -1.4210854e-18, z: -1.7583268e-15}
+      rotation: {x: 0, y: -0.000005479711, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_AnkleSHJnt
+      parentName: GridFighterBase_l_Leg_KneeSHJnt
+      position: {x: -0.0043417914, y: 7.4606985e-18, z: -2.445688e-15}
+      rotation: {x: -0.00005364701, y: -0.0009870834, z: 0.054268915, w: 0.9985259}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_BallSHJnt
+      parentName: GridFighterBase_l_Leg_AnkleSHJnt
+      position: {x: -0.0019330246, y: -1.065814e-18, z: 0.0005841962}
+      rotation: {x: -0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Leg_ToeSHJnt
+      parentName: GridFighterBase_l_Leg_BallSHJnt
+      position: {x: -0.0016454072, y: 2.131628e-18, z: -0.0007271148}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_HipSHJnt
+      parentName: GridFighterBase_ROOTSHJnt
+      position: {x: 0.0005348467, y: -2.664535e-19, z: 0.00081468956}
+      rotation: {x: -0.70602626, y: -0.037672102, z: -0.039075732, w: 0.7061026}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_KneeSHJnt
+      parentName: GridFighterBase_r_Leg_HipSHJnt
+      position: {x: 0.0031226578, y: -7.105427e-19, z: -3.5527136e-19}
+      rotation: {x: 0, y: -0.0000054189736, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_AnkleSHJnt
+      parentName: GridFighterBase_r_Leg_KneeSHJnt
+      position: {x: 0.0043417914, y: -7.81597e-18, z: 1.1546318e-18}
+      rotation: {x: -0.000053648393, y: -0.0009871086, z: 0.054268915, w: 0.9985259}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_BallSHJnt
+      parentName: GridFighterBase_r_Leg_AnkleSHJnt
+      position: {x: 0.0019330246, y: 0, z: -0.0005841962}
+      rotation: {x: -0, y: 0.7071068, z: 0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Leg_ToeSHJnt
+      parentName: GridFighterBase_r_Leg_BallSHJnt
+      position: {x: 0.0016454072, y: 2.131628e-18, z: 0.0007271148}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Spine_01SHJnt
+      parentName: GridFighterBase_ROOTSHJnt
+      position: {x: -0.00062725856, y: 0.00005876963, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Spine_02SHJnt
+      parentName: GridFighterBase_Spine_01SHJnt
+      position: {x: -0.00062725856, y: 0.00012983054, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Spine_03SHJnt
+      parentName: GridFighterBase_Spine_02SHJnt
+      position: {x: -0.00062725856, y: 0.00011650661, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Spine_04SHJnt
+      parentName: GridFighterBase_Spine_03SHJnt
+      position: {x: -0.00062725856, y: 0.00015647837, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Spine_TopSHJnt
+      parentName: GridFighterBase_Spine_04SHJnt
+      position: {x: -0.00062725856, y: -0.000167737, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Arm_ClavicleSHJnt
+      parentName: GridFighterBase_Spine_TopSHJnt
+      position: {x: -0.00021917623, y: -0.00017458772, z: -0.0005718484}
+      rotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Arm_ShoulderSHJnt
+      parentName: GridFighterBase_l_Arm_ClavicleSHJnt
+      position: {x: -0.00103507, y: -0.0003089738, z: -0.000168175}
+      rotation: {x: 0.025447398, y: 0.00013580918, z: 0.016102284, w: 0.9995465}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Arm_ElbowSHJnt
+      parentName: GridFighterBase_l_Arm_ShoulderSHJnt
+      position: {x: -0.0016167256, y: 8.526512e-18, z: 0}
+      rotation: {x: -0.0004009194, y: 0.03857523, z: -0.0062905247, w: 0.9992358}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Arm_WristSHJnt
+      parentName: GridFighterBase_l_Arm_ElbowSHJnt
+      position: {x: -0.0030789666, y: -7.105427e-18, z: -5.32907e-19}
+      rotation: {x: -0.021594541, y: -0.055701543, z: 0.0137774, w: 0.9981189}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_01_01SHJnt
+      parentName: GridFighterBase_l_Arm_WristSHJnt
+      position: {x: -0.0016217703, y: -0.00016430607, z: 0.0006373815}
+      rotation: {x: 0.08473595, y: 0.09660362, z: 0.06388641, w: 0.98964953}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_01_02SHJnt
+      parentName: GridFighterBase_l_Finger_01_01SHJnt
+      position: {x: -0.00052189303, y: 8.526512e-18, z: -2.3092637e-18}
+      rotation: {x: -0.000000022351736, y: 0.00000017136331, z: 0.039484505, w: 0.99922025}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_01_03SHJnt
+      parentName: GridFighterBase_l_Finger_01_02SHJnt
+      position: {x: -0.00040494805, y: -2.8421709e-18, z: -3.0198067e-18}
+      rotation: {x: -0.000000038103543, y: -0.00000002909974, z: 0.04145178, w: 0.99914056}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_01_04SHJnt
+      parentName: GridFighterBase_l_Finger_01_03SHJnt
+      position: {x: -0.00033316936, y: 1.563194e-17, z: 3.3750778e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_02_01SHJnt
+      parentName: GridFighterBase_l_Arm_WristSHJnt
+      position: {x: -0.0017498336, y: -0.000111935966, z: 0.00021206106}
+      rotation: {x: 0.03247125, y: 0.026955651, z: -0.028873943, w: 0.9986918}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_02_02SHJnt
+      parentName: GridFighterBase_l_Finger_02_01SHJnt
+      position: {x: -0.0006867708, y: -0.00018358613, z: 1.110223e-18}
+      rotation: {x: -0.00000006705522, y: 0.00000029988584, z: 0.16932322, w: 0.9855606}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_02_03SHJnt
+      parentName: GridFighterBase_l_Finger_02_02SHJnt
+      position: {x: -0.0004856047, y: 2.8421709e-18, z: -4.440892e-20}
+      rotation: {x: 0, y: 0, z: 0.037840094, w: 0.9992838}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_02_04SHJnt
+      parentName: GridFighterBase_l_Finger_02_03SHJnt
+      position: {x: -0.00032158743, y: -3.5527134e-18, z: -1.7319478e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_03_01SHJnt
+      parentName: GridFighterBase_l_Arm_WristSHJnt
+      position: {x: -0.0017145231, y: -0.00006902028, z: -0.00025753907}
+      rotation: {x: 0.044272643, y: 0.015350552, z: 0.013356541, w: 0.9988123}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_03_02SHJnt
+      parentName: GridFighterBase_l_Finger_03_01SHJnt
+      position: {x: -0.000615287, y: -0.00009690652, z: -1.2434497e-18}
+      rotation: {x: 0.00000005215404, y: 0.0000002644955, z: 0.115855195, w: 0.9932661}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_03_03SHJnt
+      parentName: GridFighterBase_l_Finger_03_02SHJnt
+      position: {x: -0.0003476703, y: -4.973799e-18, z: -1.9539925e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_03_04SHJnt
+      parentName: GridFighterBase_l_Finger_03_03SHJnt
+      position: {x: -0.00024133215, y: 2.8421709e-18, z: -1.598721e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_04_01SHJnt
+      parentName: GridFighterBase_l_Arm_WristSHJnt
+      position: {x: -0.0016834848, y: -0.00016092896, z: -0.0006740688}
+      rotation: {x: -0.02372604, y: -0.015496679, z: -0.04067661, w: 0.9987705}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_04_02SHJnt
+      parentName: GridFighterBase_l_Finger_04_01SHJnt
+      position: {x: -0.00034332945, y: -0.000063627806, z: 2.131628e-18}
+      rotation: {x: -0.000000029802312, y: 0.00000043865276, z: 0.12837635, w: 0.99172556}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_04_03SHJnt
+      parentName: GridFighterBase_l_Finger_04_02SHJnt
+      position: {x: -0.00024067395, y: -4.973799e-18, z: 1.065814e-18}
+      rotation: {x: 0.0000000013933418, y: 0.0000000045988013, z: 0.04060258, w: 0.9991754}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Finger_04_04SHJnt
+      parentName: GridFighterBase_l_Finger_04_03SHJnt
+      position: {x: -0.00021718728, y: -1.4210854e-18, z: 1.4210854e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Thumb_01_01SHJnt
+      parentName: GridFighterBase_l_Arm_WristSHJnt
+      position: {x: -0.0005785058, y: -0.00014735847, z: 0.0004927596}
+      rotation: {x: 0.3428245, y: 0.421352, z: -0.0664832, w: 0.83696705}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Thumb_01_02SHJnt
+      parentName: GridFighterBase_l_Thumb_01_01SHJnt
+      position: {x: -0.0006017591, y: 1.3500311e-17, z: -2.3092637e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Thumb_01_03SHJnt
+      parentName: GridFighterBase_l_Thumb_01_02SHJnt
+      position: {x: -0.0006926903, y: 1.065814e-17, z: 4.973799e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Thumb_01_04SHJnt
+      parentName: GridFighterBase_l_Thumb_01_03SHJnt
+      position: {x: -0.00042575682, y: -4.973799e-18, z: 2.131628e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Neck_01SHJnt
+      parentName: GridFighterBase_Spine_TopSHJnt
+      position: {x: -0.00068203, y: 0.000069479924, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Neck_02SHJnt
+      parentName: GridFighterBase_Neck_01SHJnt
+      position: {x: -0.00057086215, y: -0.000069479924, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Neck_TopSHJnt
+      parentName: GridFighterBase_Neck_02SHJnt
+      position: {x: -0.0006264461, y: -1.7685696e-14, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Head_JawSHJnt
+      parentName: GridFighterBase_Neck_TopSHJnt
+      position: {x: -0.00029866822, y: -0.00010594097, z: 0}
+      rotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Head_JawEndSHJnt
+      parentName: GridFighterBase_Head_JawSHJnt
+      position: {x: -0.001220098, y: -0.0009680268, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_Head_TopSHJnt
+      parentName: GridFighterBase_Neck_TopSHJnt
+      position: {x: -0.0020603125, y: -0.00011658712, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_l_Eye_01SHJnt
+      parentName: GridFighterBase_Head_TopSHJnt
+      position: {x: 0.0013875708, y: -0.0011739489, z: -0.0004868896}
+      rotation: {x: 3.8857809e-16, y: -3.8857809e-16, z: 0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Eye_01SHJnt
+      parentName: GridFighterBase_Head_TopSHJnt
+      position: {x: 0.0013875708, y: -0.0011739489, z: 0.0004868896}
+      rotation: {x: 3.8857809e-16, y: -3.8857809e-16, z: 0.7071068, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Arm_ClavicleSHJnt
+      parentName: GridFighterBase_Spine_TopSHJnt
+      position: {x: -0.00021917623, y: -0.00017458772, z: 0.0005718484}
+      rotation: {x: 0.5, y: 0.5, z: 0.5, w: -0.5}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Arm_ShoulderSHJnt
+      parentName: GridFighterBase_r_Arm_ClavicleSHJnt
+      position: {x: 0.00103507, y: 0.0003089738, z: 0.000168175}
+      rotation: {x: 0.025447428, y: 0.00013577938, z: 0.016102314, w: 0.9995465}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Arm_ElbowSHJnt
+      parentName: GridFighterBase_r_Arm_ShoulderSHJnt
+      position: {x: 0.0016167256, y: -7.105427e-18, z: -2.797762e-18}
+      rotation: {x: -0.00040097724, y: 0.03857508, z: -0.0062906262, w: 0.9992358}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Arm_WristSHJnt
+      parentName: GridFighterBase_r_Arm_ElbowSHJnt
+      position: {x: 0.0030789666, y: 0, z: 1.9539925e-18}
+      rotation: {x: -0.021594541, y: -0.055701543, z: 0.0137774, w: 0.9981189}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_01_01SHJnt
+      parentName: GridFighterBase_r_Arm_WristSHJnt
+      position: {x: 0.0016217703, y: 0.00016430607, z: -0.0006373815}
+      rotation: {x: 0.08473595, y: 0.09660362, z: 0.06388641, w: 0.98964953}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_01_02SHJnt
+      parentName: GridFighterBase_r_Finger_01_01SHJnt
+      position: {x: 0.00052189303, y: -8.526512e-18, z: 1.7763568e-19}
+      rotation: {x: 0.000000022351735, y: 0.000000476837, z: 0.03948297, w: 0.99922025}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_01_03SHJnt
+      parentName: GridFighterBase_r_Finger_01_02SHJnt
+      position: {x: 0.00040494805, y: 1.2789768e-17, z: 3.7303492e-18}
+      rotation: {x: -0.000000014585964, y: -0.000000057737488, z: 0.04144966, w: 0.9991406}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_01_04SHJnt
+      parentName: GridFighterBase_r_Finger_01_03SHJnt
+      position: {x: 0.00033316936, y: -1.563194e-17, z: -4.6185274e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_02_01SHJnt
+      parentName: GridFighterBase_r_Arm_WristSHJnt
+      position: {x: 0.0017498336, y: 0.000111935966, z: -0.00021206106}
+      rotation: {x: 0.03247119, y: 0.026955828, z: -0.028874766, w: 0.9986918}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_02_02SHJnt
+      parentName: GridFighterBase_r_Finger_02_01SHJnt
+      position: {x: 0.0006867708, y: 0.00018358613, z: -6.6613377e-19}
+      rotation: {x: -0.0000000074505797, y: 0.00000032968816, z: 0.16932239, w: 0.9855608}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_02_03SHJnt
+      parentName: GridFighterBase_r_Finger_02_02SHJnt
+      position: {x: 0.0004856047, y: -4.263256e-18, z: -7.105427e-19}
+      rotation: {x: 0, y: 0, z: 0.037840094, w: 0.9992838}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_02_04SHJnt
+      parentName: GridFighterBase_r_Finger_02_03SHJnt
+      position: {x: 0.00032158743, y: 0, z: 2.4424906e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_03_01SHJnt
+      parentName: GridFighterBase_r_Arm_WristSHJnt
+      position: {x: 0.0017145231, y: 0.00006902028, z: 0.00025753907}
+      rotation: {x: 0.044272583, y: 0.015350493, z: 0.013356307, w: 0.99881226}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_03_02SHJnt
+      parentName: GridFighterBase_r_Finger_03_01SHJnt
+      position: {x: 0.000615287, y: 0.00009690652, z: 1.4210854e-18}
+      rotation: {x: -0.000000029802312, y: 0.00000026635817, z: 0.115855135, w: 0.9932661}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_03_03SHJnt
+      parentName: GridFighterBase_r_Finger_03_02SHJnt
+      position: {x: 0.0003476703, y: 0, z: 2.131628e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_03_04SHJnt
+      parentName: GridFighterBase_r_Finger_03_03SHJnt
+      position: {x: 0.00024133215, y: -2.8421709e-18, z: 1.065814e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_04_01SHJnt
+      parentName: GridFighterBase_r_Arm_WristSHJnt
+      position: {x: 0.0016834848, y: 0.00016092896, z: 0.0006740688}
+      rotation: {x: -0.023725973, y: -0.015496828, z: -0.040676787, w: 0.9987705}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_04_02SHJnt
+      parentName: GridFighterBase_r_Finger_04_01SHJnt
+      position: {x: 0.00034332945, y: 0.000063627806, z: -1.7763567e-18}
+      rotation: {x: 0.0000000037252899, y: -0.00000031758097, z: 0.12838033, w: 0.9917251}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_04_03SHJnt
+      parentName: GridFighterBase_r_Finger_04_02SHJnt
+      position: {x: 0.00024067395, y: 7.105427e-19, z: -3.197442e-18}
+      rotation: {x: 0.000000013405266, y: 0.0000005108982, z: 0.040602464, w: 0.9991754}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Finger_04_04SHJnt
+      parentName: GridFighterBase_r_Finger_04_03SHJnt
+      position: {x: 0.00021718728, y: 4.973799e-18, z: 7.105427e-19}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Thumb_01_01SHJnt
+      parentName: GridFighterBase_r_Arm_WristSHJnt
+      position: {x: 0.0005785058, y: 0.00014735847, z: -0.0004927596}
+      rotation: {x: 0.3428244, y: 0.4213524, z: -0.06648332, w: 0.836967}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Thumb_01_02SHJnt
+      parentName: GridFighterBase_r_Thumb_01_01SHJnt
+      position: {x: 0.0006017591, y: -1.13686835e-17, z: -1.7763567e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Thumb_01_03SHJnt
+      parentName: GridFighterBase_r_Thumb_01_02SHJnt
+      position: {x: 0.0006926903, y: -1.3500311e-17, z: 7.283063e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: GridFighterBase_r_Thumb_01_04SHJnt
+      parentName: GridFighterBase_r_Thumb_01_03SHJnt
+      position: {x: 0.00042575682, y: 5.6843417e-18, z: 6.927791e-18}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.08
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 0.01
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 1
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 3
+  humanoidOversampling: 1
+  avatarSetup: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

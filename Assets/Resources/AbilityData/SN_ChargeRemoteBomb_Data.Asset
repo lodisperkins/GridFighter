@@ -38,7 +38,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 8229971569440717597, guid: 72688a0b35ef03d4b9b6e4c9aceefc35,
     type: 3}
   DisplayIcon: {fileID: 0}
-  ActivateSound: {fileID: 8300000, guid: 18539e1bad355b64e82686604e42f44c, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 7f7ce279c0f71f349bd1fd267747889d, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
@@ -68,7 +68,7 @@ MonoBehaviour:
     HitEffectLevel: 2
     HitStopTimeModifier: 1.3
     ShakesCamera: 1
-    SpawnSound: {fileID: 8300000, guid: fe5eee8f1a46f24408fd0243d821a712, type: 3}
+    SpawnSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
     HitSound: {fileID: 8300000, guid: 2ac9b5bb3c7d52842a9092d79fa2b05f, type: 3}
     DespawnSound: {fileID: 0}
   _customStats:

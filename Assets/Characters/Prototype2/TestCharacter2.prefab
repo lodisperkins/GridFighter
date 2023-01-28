@@ -73639,6 +73639,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TestCharacter2
       objectReference: {fileID: 0}
+    - target: {fileID: 580271814038316065, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 2.83
+      objectReference: {fileID: 0}
     - target: {fileID: 624667988152981373, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _meshRenderer
@@ -74311,9 +74316,29 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2313499556558640970, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 7ce51fa63e7ee0a4c919026fd57afd3e, type: 2}
+    - target: {fileID: 2313499556558640970, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3406130847468409652, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _animationLayer
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3406130847468409652, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _runtimeController
+      value: 
+      objectReference: {fileID: 9100000, guid: 7ce51fa63e7ee0a4c919026fd57afd3e, type: 2}
+    - target: {fileID: 3406130847468409652, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _defaultCastAnimation
+      value: 
+      objectReference: {fileID: 7400000, guid: c1857e4094b87fe40a724b81e470c20d, type: 3}
     - target: {fileID: 6183443034730705748, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _currentMesh
