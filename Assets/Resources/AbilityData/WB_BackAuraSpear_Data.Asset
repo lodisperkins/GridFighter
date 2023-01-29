@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
+  m_Name: WB_BackAuraSpear_Data
+  m_EditorClassIdentifier: 
+  abilityName: Unassigned
+  abilityDescription: None
+  AbilityType: 0
+  timeActive: 0
+  recoverTime: 0
+  startUpTime: 0
+  chargeTime: 0
+  maxActivationAmount: 1
+  EnergyCost: 0
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 0
+  CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
+  CanInputMovementWhileActive: 1
+  CanOnlyCancelOnOpponentHit: 1
+  cancelOnHit: 0
+  cancelOnFlinch: 0
+  cancelOnKnockback: 1
+  useAbilityTimingForAnimation: 0
+  playAnimationManually: 0
+  visualPrefab: {fileID: 0}
+  DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 0}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData: []
+  _customStats:
+  - name: Damage
+    value: 0
+  - name: baseKnockBack
+    value: 0
+  - name: HitAngle
+    value: 0
+  - name: HitStunTime
+    value: 0
+  - name: Speed
+    value: 1
+  - name: Lifetime
+    value: 1
+  - name: MaxInstances
+    value: -1
+  animationType: 0
+  _customAnimation: {fileID: 0}

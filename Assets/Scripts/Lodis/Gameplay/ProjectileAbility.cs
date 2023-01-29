@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
             if (ScaleStats)
                 data = ProjectileColliderData.ScaleStats((float)args[0]);
 
-            Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), ProjectileColliderData, UseGravity);
+            Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), data, UseGravity);
 
             //Fire projectile
             ActiveProjectiles.Add(Projectile);
