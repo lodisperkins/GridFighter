@@ -38,6 +38,7 @@ namespace Lodis.Gameplay
             SpawnTransform = panel.transform;
 
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, SpawnTransform.position + Vector3.up, SpawnTransform.rotation);
+            _chargeEffect.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.WARNING;
         }
 
         //Called when ability is used

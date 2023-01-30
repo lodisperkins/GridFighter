@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: SB_ChargeBackAuraSpear_Data
   m_EditorClassIdentifier: 
-  abilityName: Unassigned
+  abilityName: ChargeBackAuraSpear
   abilityDescription: None
-  AbilityType: 0
-  timeActive: 0
-  recoverTime: 0
-  startUpTime: 0
+  AbilityType: 7
+  timeActive: 0.1
+  recoverTime: 0.4
+  startUpTime: 0.3
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 0
@@ -26,35 +26,55 @@ MonoBehaviour:
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
-  CanCancelIntoNormal: 0
-  CanInputMovementWhileActive: 1
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
+  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
-  cancelOnFlinch: 0
+  cancelOnFlinch: 1
   cancelOnKnockback: 1
-  useAbilityTimingForAnimation: 0
+  useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 0}
+  visualPrefab: {fileID: 1697626822471647621, guid: 3f3be6fac60b20641a97a584fcfed1bb,
+    type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
-  ColliderData: []
+  ColliderData:
+  - Name: ChargeBackAuraSpearCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.4
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 3991863
+    MultiHitWaitTime: 0
+    Damage: 8
+    BaseKnockBack: 1
+    KnockBackScale: 0.7
+    HitAngle: 1.8
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 2
+    OwnerAlignement: 0
+    AbilityType: 7
+    SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
+      type: 3}
+    HitSpark: {fileID: 5803877790521241106, guid: 9699fdb12d707aa4f8ef7a924c76132d,
+      type: 3}
+    HitEffectLevel: 2
+    HitStopTimeModifier: 1.7
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: ae07fdbfcc3185847beedc32e8d2a324, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
   _customStats:
-  - name: Damage
-    value: 0
-  - name: baseKnockBack
-    value: 0
-  - name: HitAngle
-    value: 0
-  - name: HitStunTime
-    value: 0
   - name: Speed
-    value: 1
-  - name: Lifetime
-    value: 1
+    value: 10
   - name: MaxInstances
-    value: -1
-  animationType: 0
-  _customAnimation: {fileID: 0}
+    value: 1
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: 6dcef57e9129714468043e17465ac152, type: 3}

@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
-  CanInputMovementWhileActive: 1
+  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
@@ -49,7 +49,7 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 3991863
     MultiHitWaitTime: 0
     Damage: 8
     BaseKnockBack: 1
