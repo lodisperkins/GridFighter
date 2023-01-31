@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6735536287938330603}
   - component: {fileID: 1259676765116530832}
   - component: {fileID: 220106413565314361}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   - component: {fileID: 8000185045500080017}
   - component: {fileID: 6492616430806497637}
   - component: {fileID: 5233489787702884761}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: AuraSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +215,7 @@ GameObject:
   - component: {fileID: 2325052946810715190}
   - component: {fileID: 4559739145844011181}
   - component: {fileID: 4127133974023691369}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: OuterSphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,8 +293,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4634115033632749016, guid: 9b4a6812b3285fd47a03228b08422e2d,
         type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634115033632749016, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634115033837664760, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4634115033837664760, guid: 9b4a6812b3285fd47a03228b08422e2d,
         type: 3}
@@ -303,8 +313,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4634115034115366334, guid: 9b4a6812b3285fd47a03228b08422e2d,
         type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634115034115366334, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634115034208927458, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634115034813514132, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4634115034813514132, guid: 9b4a6812b3285fd47a03228b08422e2d,
         type: 3}
@@ -321,10 +346,20 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.38659573
       objectReference: {fileID: 0}
+    - target: {fileID: 4634115034858562733, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4634115034903089933, guid: 9b4a6812b3285fd47a03228b08422e2d,
         type: 3}
       propertyPath: m_Name
       value: Projectile_Lightning_Ball_Lv4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634115034903089933, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4634115034903089933, guid: 9b4a6812b3285fd47a03228b08422e2d,
         type: 3}
@@ -403,8 +438,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4634115035325839659, guid: 9b4a6812b3285fd47a03228b08422e2d,
         type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634115035325839659, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634115035515596156, guid: 9b4a6812b3285fd47a03228b08422e2d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4634115035515596156, guid: 9b4a6812b3285fd47a03228b08422e2d,
         type: 3}

@@ -468,7 +468,14 @@ ModelImporter:
       curves: []
       events:
       - time: 0.29734847
-        functionName: Hit
+        functionName: IncrementAnimationPhase
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.36737588
+        functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -585,7 +592,7 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 22
     isReadable: 1
   meshes:
     lODScreenPercentages: []

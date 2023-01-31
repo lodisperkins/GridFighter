@@ -141,6 +141,7 @@ namespace Lodis.Gameplay
 
             _collider = _auraSphere.GetComponent<HitColliderBehaviour>();
             _collider.ColliderInfo = GetColliderData(0);
+            _collider.Owner = owner;
             _collider.ColliderInfo.OnHit += LiftOpponent;
         }
 

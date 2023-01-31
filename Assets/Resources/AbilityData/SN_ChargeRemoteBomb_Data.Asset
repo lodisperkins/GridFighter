@@ -79,6 +79,6 @@ MonoBehaviour:
   - name: TravelDistance
     value: 4
   - name: DespawnTime
-    value: 5
+    value: 1
   animationType: 0
   _customAnimation: {fileID: 0}

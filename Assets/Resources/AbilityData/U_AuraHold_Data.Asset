@@ -71,10 +71,10 @@ MonoBehaviour:
     DespawnSound: {fileID: 8300000, guid: be3c38e5fdd93f547aa359b4fa7acd0e, type: 3}
   _customStats:
   - name: RiseSpeed
-    value: 3
+    value: 2
   - name: KnockbackThreshold
     value: 1
   - name: LiftTime
-    value: 3
+    value: 2
   animationType: 0
   _customAnimation: {fileID: 0}

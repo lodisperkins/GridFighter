@@ -44,7 +44,7 @@ MonoBehaviour:
   ColliderData:
   - Name: ChargeBackAuraSpearCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.4
+    TimeActive: 1
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
