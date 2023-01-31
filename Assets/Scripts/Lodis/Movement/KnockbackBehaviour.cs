@@ -193,6 +193,15 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Removes the listener from the on knock back start  event
+        /// </summary>
+        /// <param name="action"></param>
+        public void RemoveOnKnockBackStartAction(UnityAction action)
+        {
+            _onKnockBackStart -= action;
+        }
+
+        /// <summary>
         /// Adds an action to the event called when this object is damaged.
         /// Listeners cleared after event is called
         /// </summary>

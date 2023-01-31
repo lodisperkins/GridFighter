@@ -82,6 +82,9 @@ namespace Lodis.GridScripts
             if (dotProduct >= 0 || dotProduct == -1)
                 return;
 
+            if (physics.LastVelocity.x == 0)
+                return;
+
             //Calculate and apply friction force
             physics.ApplyForce(_friction * (physics.LastVelocity.x / Mathf.Abs(physics.LastVelocity.x) * Vector3.right));
         }

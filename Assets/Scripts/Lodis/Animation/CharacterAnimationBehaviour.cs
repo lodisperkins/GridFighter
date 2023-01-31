@@ -55,6 +55,8 @@ namespace Lodis.Gameplay
         private AnimationClip _defaultSummonAnimation;
         [SerializeField]
         private AnimationClip _defaultMeleeAnimation;
+        [SerializeField]
+        private  int _animationLayer = 0;
         private AnimatorTransitionInfo _lastTransitionInfo;
         public Coroutine AbilityAnimationRoutine;
         private AnimatorOverrideController _overrideController;
@@ -154,7 +156,7 @@ namespace Lodis.Gameplay
 
                     if (_currentClipStartUpTime <= 0 || _movesetBehaviour.LastAbilityInUse != null && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 0)
                     {
-                        _animator.Play(stateInfo.shortNameHash, 0, _currentClip.events[0].time);
+                        _animator.Play(stateInfo.shortNameHash, _animationLayer, _currentClip.events[0].time);
                         break;
                     }
 

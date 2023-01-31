@@ -40,7 +40,7 @@ MonoBehaviour:
     type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 0}
-  ActiveSound: {fileID: 8300000, guid: 7f7ce279c0f71f349bd1fd267747889d, type: 3}
+  ActiveSound: {fileID: 8300000, guid: 18539e1bad355b64e82686604e42f44c, type: 3}
   DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: RemoteBombExplosionCollider

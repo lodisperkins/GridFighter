@@ -81,6 +81,9 @@ namespace Lodis.Gameplay
         [Tooltip("The amount of energy regained passively")]
         [SerializeField]
         private FloatVariable _energyRechargeValue;
+        [Tooltip("The amount of energy this character starts with")]
+        [SerializeField]
+        private FloatVariable _startEnergy;
         [Tooltip("The amount of burst energy regained passively")]
         [SerializeField]
         private FloatVariable _burstEnergyRechargeValue;
@@ -200,6 +203,9 @@ namespace Lodis.Gameplay
             _canBurst = true;
             BurstEnergy = MaxBurstEnergy.Value;
 
+            if (!MatchManagerBehaviour.InfiniteEnergy)
+                Energy = _startEnergy.Value;
+
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
 
@@ -211,7 +217,10 @@ namespace Lodis.Gameplay
             enabled = true;
             LastAbilityInUse?.StopAbility();
             ManualShuffle(true);
-            TryUseEnergy(Energy);
+
+            if (!MatchManagerBehaviour.InfiniteEnergy)
+                Energy = _startEnergy.Value;
+
             RoutineBehaviour.Instance.StopAction(_burstAction);
             RoutineBehaviour.Instance.StopAction(_rechargeAction);
             BurstEnergy = MaxBurstEnergy.Value; 

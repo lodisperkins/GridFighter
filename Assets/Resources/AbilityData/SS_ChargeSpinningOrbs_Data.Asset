@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: SS_ChargeSpinningOrbs_Data
+  m_EditorClassIdentifier: 
+  abilityName: ChargeSpinningOrbs
+  abilityDescription: None
+  AbilityType: 5
+  timeActive: 0.1
+  recoverTime: 0.5
+  startUpTime: 0.2
+  chargeTime: 0
+  maxActivationAmount: 1
+  EnergyCost: 0
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 0
+  CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
+  CanInputMovementWhileActive: 0
+  CanOnlyCancelOnOpponentHit: 1
+  cancelOnHit: 0
+  cancelOnFlinch: 0
+  cancelOnKnockback: 1
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 4418831361922760892, guid: d581097eabb7c0a4baebc14a69546078,
+    type: 3}
+  DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: 
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 0
+    IsMultiHit: 1
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057399
+    MultiHitWaitTime: 0.2
+    Damage: 4
+    BaseKnockBack: 0.5
+    KnockBackScale: 0.7
+    HitAngle: 1
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.7
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 5
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 2
+    HitStopTimeModifier: 1.5
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 03ac7b0c6287a7c498c7ab4d7b5bc9c0, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: OrbHeight
+    value: 1
+  - name: RotationSpeed
+    value: 11
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: d89f4ea713a48de4d8aee38ec0202058, type: 3}

@@ -7,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 222042615352132624, guid: 80519f73d0fbaac43b993713face7201,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.5
+      objectReference: {fileID: 0}
     - target: {fileID: 222042615352132626, guid: 80519f73d0fbaac43b993713face7201,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b

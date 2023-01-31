@@ -55,6 +55,7 @@ namespace Lodis.Gameplay
 
             //Spawn particles
            _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
+            _visualPrefabInstance.transform.forward = owner.transform.forward;
             //Spawn a game object with the collider attached
             _hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             _hitScript.ColliderInfo = _fistCollider;
@@ -85,16 +86,16 @@ namespace Lodis.Gameplay
 
             //Move towards panel
             _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance, abilityData.timeActive + abilityData.timeActive / 3);
         }
 
         protected override void OnDeactivate()
         {
             base.OnDeactivate();
+            //Despawn particles and hit box
             ResetMoveAttributes();
             owner.transform.rotation = _rotation;
 
-            //Despawn particles and hit box
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance);
 
             if (!_secondStrikeActivated)
             {

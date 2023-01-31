@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
         public bool UseGravity;
 
         public bool despawnAfterTimeLimit { get; private set; }
+        public bool ScaleStats { get; set; }
 
         public override void Init(GameObject newOwner)
         {
@@ -71,7 +72,12 @@ namespace Lodis.Gameplay
             projectileSpawner.projectile = ProjectileRef;
             SpawnTransform = projectileSpawner.transform;
             ShotDirection = projectileSpawner.transform.forward;
-            Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), ProjectileColliderData, UseGravity);
+
+            HitColliderData data = ProjectileColliderData;
+            if (ScaleStats)
+                data = ProjectileColliderData.ScaleStats((float)args[0]);
+
+            Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), data, UseGravity);
 
             //Fire projectile
             ActiveProjectiles.Add(Projectile);

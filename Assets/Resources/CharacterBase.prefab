@@ -277,6 +277,7 @@ MonoBehaviour:
   _maxBurstEnergyRef: {fileID: 11400000, guid: adf7850c118d0f04380b8ba33b419c43, type: 2}
   _energyRechargeValue: {fileID: 11400000, guid: 490d301c94c4e8a4ca55468f4f2ab3ed,
     type: 2}
+  _startEnergy: {fileID: 11400000, guid: 8ceb9b65480e4e84698f453daf4031b5, type: 2}
   _burstEnergyRechargeValue: {fileID: 11400000, guid: 2d6720c8921c0ee4d8a786a56d6977f0,
     type: 2}
   _energyRechargeRate: {fileID: 11400000, guid: bcb306df5e8c18f499e8892c8bc5a618,
@@ -285,7 +286,6 @@ MonoBehaviour:
     type: 2}
   _energyChargeEnabled: 1
   _canBurst: 0
-  _burstChargeTime: {fileID: 11400000, guid: 5360a10f9480d1442a1891ca5be134d5, type: 2}
   _shuffleWaitTime: {fileID: 11400000, guid: b9487f9e39fb93644ba533ef433a270e, type: 2}
 --- !u!75 &6978705344430972743
 ConstantForce:
@@ -1340,6 +1340,7 @@ MonoBehaviour:
     type: 3}
   _defaultMeleeAnimation: {fileID: 7400000, guid: 635d947060dd41649bbcfe7bc1ebb900,
     type: 3}
+  _animationLayer: 0
   _moveAnimationHangTime: 0
 --- !u!114 &6998622809068475899
 MonoBehaviour:
@@ -1563,7 +1564,7 @@ PrefabInstance:
     - target: {fileID: 3398144866962564313, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3398144866962564313, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}

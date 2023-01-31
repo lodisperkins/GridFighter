@@ -439,7 +439,7 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Called after the ability has recovered and just before the user goes back to idle
+        /// Called after the ability has reach max activation limit or is canceled and just before the user goes back to idle
         /// </summary>
         protected virtual void OnEnd(){ }
 

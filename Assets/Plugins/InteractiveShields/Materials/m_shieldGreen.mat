@@ -8,7 +8,8 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: m_shieldGreen
-  m_Shader: {fileID: -6465566751694194690, guid: 97e8d1dfb721de642bd5b35e6bd297c3, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 97e8d1dfb721de642bd5b35e6bd297c3,
+    type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -34,7 +35,7 @@ Material:
     m_Floats:
     - Vector1_387174AF: 0.589
     - Vector1_3E9CDD42: 0.8
-    - Vector1_7049A996: 0.206
+    - Vector1_7049A996: 1
     - Vector1_71817C4: 1
     - Vector1_75FDB77B: 0.03
     - Vector1_953C4648: -0.07
@@ -43,13 +44,14 @@ Material:
     - Vector1_B3FE5053: 0.1
     - Vector1_BA192670: 1
     - Vector1_C94BC04B: 1
-    - Vector1_D59BC91: 0
+    - Vector1_D59BC91: 0.01
     - Vector1_F3720F39: 0.09
-    - _Alpha: 0.739
+    - _Alpha: 1
     - _Depth: 1
     - _Dissolve: 0.84
     - _Glow: 0
     - _Inflate: 0.02
+    - _NoisePower: 4
     - _NoiseScale: 50
     - _Recharge: -1
     - _RechargeNoise: 0.1
@@ -61,6 +63,8 @@ Material:
     - Vector3_D7F8219: {r: 2, g: 2, b: 10, a: 0}
     - Vector4_A8EFE0F8: {r: 0, g: 0.25, b: -0.5, a: 0.5}
     - Vector4_D635FDD7: {r: 0.48, g: -0.5, b: 0.5, a: 0.49}
+    - _ColorEdges: {r: 592.159, g: 24.15094, b: 1024, a: 0}
+    - _ColorInside: {r: 5.0382566, g: 3.8064752, b: 9.493797, a: 1}
     - _DissolveDirection: {r: 1, g: 0, b: 0, a: 0}
     - _Hit0: {r: 0, g: 0, b: 0, a: 0}
     - _Hit1: {r: 0, g: 0, b: 0, a: 0}
@@ -78,6 +82,6 @@ Material:
     - _HitThree: {r: 0, g: 0, b: 0, a: 0}
     - _HitTwo: {r: 0, g: 0, b: 0, a: 0}
     - _Noise: {r: 0.2, g: 25, b: 0.25, a: 0}
+    - _NoiseDirection: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _OnHitColor: {r: 0, g: 625.5223, b: 449.4201, a: 0}
     - _Tiling: {r: 150.19, g: 60, b: 0, a: 0}
-  m_BuildTextureStacks: []

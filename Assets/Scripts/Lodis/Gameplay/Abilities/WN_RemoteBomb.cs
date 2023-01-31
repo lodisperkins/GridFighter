@@ -36,7 +36,7 @@ namespace Lodis.Gameplay
         private void SpawnExplosion()
         {
 
-            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position, Vector3.one, _explosionColliderData, owner);
+            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position + Vector3.up * 0.5f, Vector3.one, _explosionColliderData, owner);
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
         }

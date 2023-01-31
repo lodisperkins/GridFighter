@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: U_AuraHold_Data
+  m_EditorClassIdentifier: 
+  abilityName: AuraHold
+  abilityDescription: None
+  AbilityType: 9
+  timeActive: 0.1
+  recoverTime: 0.5
+  startUpTime: 0.2
+  chargeTime: 0
+  maxActivationAmount: 1
+  EnergyCost: 0
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 1
+  CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
+  CanInputMovementWhileActive: 0
+  CanOnlyCancelOnOpponentHit: 1
+  cancelOnHit: 0
+  cancelOnFlinch: 1
+  cancelOnKnockback: 1
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 3437269764972176412, guid: a1575d5dcb7821a45a26b89e4543681c,
+    type: 3}
+  DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 8300000, guid: 006e8658d3c9180448481354485967b5, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: AuraSphereCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4189239
+    MultiHitWaitTime: 0
+    Damage: 1
+    BaseKnockBack: 30
+    KnockBackScale: 1
+    HitAngle: 1.5
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 9
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopTimeModifier: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 7748e202bd3376244bccb4648020bccf, type: 3}
+    HitSound: {fileID: 8300000, guid: e1f896df0bb013141b6464a542be96ce, type: 3}
+    DespawnSound: {fileID: 8300000, guid: be3c38e5fdd93f547aa359b4fa7acd0e, type: 3}
+  _customStats:
+  - name: RiseSpeed
+    value: 2
+  - name: KnockbackThreshold
+    value: 1
+  - name: LiftTime
+    value: 2
+  animationType: 0
+  _customAnimation: {fileID: 0}

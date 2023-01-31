@@ -12,11 +12,13 @@ public class RotationBehaviour : MonoBehaviour
     private bool _rotateOnSelf;
 
     public bool RotateOnSelf { get => _rotateOnSelf; set => _rotateOnSelf = value; }
+    public float Speed { get => _speed; set => _speed = value; }
+    public Vector3 Axis { get => _axis; set => _axis = value; }
 
     // Use this for initialization
     void Start()
     {
-        _axis = _axis * _speed;
+        Axis = Axis * Speed;
     }
 
     // Update is called once per frame
@@ -28,9 +30,9 @@ public class RotationBehaviour : MonoBehaviour
         }
         if (RotateOnSelf)
         {
-            transform.Rotate(_axis, Space.Self);
+            transform.Rotate(Axis, Space.Self);
             return;
         }
-        transform.Rotate(_axis, Space.World);
+        transform.Rotate(Axis, Space.World);
     }
 }
