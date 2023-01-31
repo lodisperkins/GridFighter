@@ -52,7 +52,7 @@ namespace Lodis.Gameplay
             _opponentTransform = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform;
             _opponentKnockback = _opponentTransform.GetComponent<KnockbackBehaviour>();
 
-            if (!_opponentKnockback.Physics.IsGrounded)
+            if (!_opponentKnockback.MovementBehaviour.CanMove)
                 return;
 
             _opponentParent = _opponentTransform.parent;
@@ -108,7 +108,7 @@ namespace Lodis.Gameplay
 
         private void DespawnSphere()
         {
-            if (!_auraSphere.activeInHierarchy || (_opponentKnockback.LastTotalKnockBack < _knockbackThreshold && _opponentCaptured))
+            if (!_auraSphere || !_auraSphere.activeInHierarchy || (_opponentKnockback.LastTotalKnockBack < _knockbackThreshold && _opponentCaptured))
                 return;
 
             RoutineBehaviour.Instance.StopAction(_despawnTimer);
@@ -130,7 +130,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            if (!_panelTransform || !_opponentKnockback.Physics.IsGrounded)
+            if (!_panelTransform || !_opponentKnockback.MovementBehaviour.CanMove)
             {
                 DespawnSphere();
                 return;
