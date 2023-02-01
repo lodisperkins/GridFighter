@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Prototype2_Specials
   m_EditorClassIdentifier: 
   _abilityData:
-  - {fileID: 11400000, guid: cccc243dfbdae164e975ceb1d94d4f20, type: 2}
+  - {fileID: 11400000, guid: e82100397d9a0a34b9151efb0e2bbd69, type: 2}
   - {fileID: 11400000, guid: 94c2c8358acbbab48989dbd917fb033e, type: 2}
-  - {fileID: 11400000, guid: 496865d782398c041bd57fc248ce9cb8, type: 2}
+  - {fileID: 11400000, guid: bf8b83a199fd7dd47b42bcbe100818c8, type: 2}
   - {fileID: 11400000, guid: 0e09f202c8f3add448e1fbc67b7e6892, type: 2}
   - {fileID: 11400000, guid: 94cd4137d00123b42b8f1aa6a366a478, type: 2}
   - {fileID: 11400000, guid: 6aba4d7369006da4a8fb8beaa0981dc0, type: 2}
