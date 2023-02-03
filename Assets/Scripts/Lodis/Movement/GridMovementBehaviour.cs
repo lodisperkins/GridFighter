@@ -721,6 +721,30 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Moves this object to another location and plays the teleportation effect. 
+        /// Will move regardless of movement rules like like being unable to move onto occupied panels.
+        /// </summary>
+        /// <param name="position">Spawns the character at the exact position given ignoring the height offset.</param>
+        /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
+        public void TeleportToLocation(Vector3 position, float travelTime = 0.05f)
+        {
+
+            RoutineBehaviour.Instance.StopAction(_teleportAction);
+
+            _onTeleportStart?.Raise(gameObject);
+            SpawnTeleportEffect();
+            gameObject.SetActive(false);
+
+            _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                gameObject.transform.position = position;
+                gameObject.SetActive(true);
+                _onTeleportEnd?.Raise(gameObject);
+                SpawnTeleportEffect();
+            },TimedActionCountType.SCALEDTIME, travelTime);
+        }
+
+        /// <summary>
         /// Moves this object to the panel it should be resting on
         /// </summary>
         private void MoveToCurrentPanel()
