@@ -18,7 +18,6 @@ namespace Lodis.Movement
         BREAKINGFALL
     }
     
-    [RequireComponent(typeof(LandingBehaviour))]
     [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class KnockbackBehaviour : HealthBehaviour
     {
