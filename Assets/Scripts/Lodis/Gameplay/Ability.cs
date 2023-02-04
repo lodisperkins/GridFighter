@@ -308,6 +308,7 @@ namespace Lodis.Gameplay
             _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
             OwnerMoveset = newOwner.GetComponent<MovesetBehaviour>();
             _ownerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
+            _ownerAnimationScript = newOwner.GetComponentInChildren<CharacterAnimationBehaviour>();
 
             _canPlayAnimation = !abilityData.playAnimationManually;
 

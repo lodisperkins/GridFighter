@@ -42,7 +42,7 @@ namespace Lodis.Gameplay
                 _attackDirection = owner.transform.forward;
 
             //Play animation
-            EnableAnimation();
+            _ownerAnimationScript.PlayAbilityAnimation();
             ChangeMoveAttributes();
             _rotation = owner.transform.rotation;
         }

@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Play animation now that the character has reached the target panel
-            EnableAnimation();
+            _ownerAnimationScript.PlayAbilityAnimation();
 
             _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
 

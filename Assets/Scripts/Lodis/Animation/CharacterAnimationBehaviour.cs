@@ -77,9 +77,11 @@ namespace Lodis.Gameplay
             _characterStateMachine = _characterStateManager.StateMachine;
             _knockbackBehaviour.AddOnTakeDamageAction(PlayDamageAnimation);
 
-            _movesetBehaviour.OnUseAbility += PlayAbilityAnimation;
-            //_defenseBehaviour.onFallBroken += onFloor => _bracedAgainstFloor = onFloor;
-            //_animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+            _movesetBehaviour.OnUseAbility += () =>
+            {
+                if (!_movesetBehaviour.LastAbilityInUse.abilityData.playAnimationManually)
+                    PlayAbilityAnimation();
+            };
         }
 
         /// <summary>
@@ -247,16 +249,16 @@ namespace Lodis.Gameplay
             return lhs.weight > rhs.weight? -1 : 1;
         }
 
-        /// <summary>
-        /// Starts the animation playback for this ability. 
-        /// </summary>
-        /// <param name="ability">The ability that the animation belongs to</param>
-        public IEnumerator StartAbilityAnimationRoutine(Ability ability)
+        public void PlayAbilityAnimation()
         {
-            //StopCurrentAnimation();
+            Ability ability = _movesetBehaviour.LastAbilityInUse;
+
             _currentAbilityAnimating = ability;
             _animator.SetFloat("AnimationSpeedScale", 1);
             _animationPhase = 0;
+
+            StopCurrentAnimation();
+
             ///Play animation based on type
             switch (_currentAbilityAnimating.abilityData.animationType)
             {
@@ -266,7 +268,6 @@ namespace Lodis.Gameplay
                     {
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
-                        yield return new WaitUntil(() => ability.CanPlayAnimation);
                         _currentClip = _defaultCastAnimation;
                         _overrideController["Cast"] = _defaultCastAnimation;
                         _animatingMotion = false;
@@ -282,7 +283,6 @@ namespace Lodis.Gameplay
                     {
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
-                        yield return new WaitUntil(() => ability.CanPlayAnimation);
                         _currentClip = _defaultMeleeAnimation;
 
                         _overrideController["Cast"] = _defaultMeleeAnimation;
@@ -299,7 +299,6 @@ namespace Lodis.Gameplay
                     {
                         ///Wait until the ability is allowed to play the animation.
                         ///This is here in case the animation is activated manually
-                        yield return new WaitUntil(() => ability.CanPlayAnimation);
 
                         _currentClip = _defaultSummonAnimation;
                         _overrideController["Cast"] = _defaultSummonAnimation;
@@ -315,12 +314,11 @@ namespace Lodis.Gameplay
                     if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
                     {
                         Debug.LogError("Can't play custom clip. No custom clip found for " + ability.abilityData.abilityName);
-                        yield return null;
+                        return;
                     }
 
                     ///Wait until the ability is allowed to play the animation.
                     ///This is here in case the animation is activated manually
-                    yield return new WaitUntil(() => ability.CanPlayAnimation);
                     _overrideController["Cast"] = _currentClip;
 
                     //Play custom clip with appropriate speed
@@ -339,20 +337,6 @@ namespace Lodis.Gameplay
                 _animationPhase = 3;
 
             _animator.SetTrigger("Attack");
-
-            //if (_currentClip.events[0] != null)
-            //    if (_currentClip.events[0].functionName == "CalculateAnimationSpeed")
-            //        yield break;
-
-            //AnimationEvent animationEvent = new AnimationEvent();
-            //animationEvent.time = 0;
-            //animationEvent.functionName = "CalculateAnimationSpeed";
-            //_currentClip.AddEvent(animationEvent);
-        }
-
-        public void PlayAbilityAnimation()
-        {
-            StartCoroutine(StartAbilityAnimationRoutine(_movesetBehaviour.LastAbilityInUse));
         }
 
         /// <summary>
