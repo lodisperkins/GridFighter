@@ -519,7 +519,7 @@ namespace Lodis.Movement
             {
                 panelPosition = BlackBoardBehaviour.Instance.Grid.ClampPanelPosition(panelPosition, tempAlignment);
 
-                if (panelPosition == Position)
+                if (panelPosition == _currentPanel?.Position)
                     return false;
             }
 
