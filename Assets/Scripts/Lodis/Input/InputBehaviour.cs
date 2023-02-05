@@ -369,6 +369,14 @@ namespace Lodis.Input
         }
 
         /// <summary>
+        /// Removes the last input from the input buffer.
+        /// </summary>
+        public void ClearBuffer()
+        {
+            _bufferedAction = null;
+        }
+
+        /// <summary>
         /// Uses the basic moveset ability given and updates the move input enabled condition
         /// </summary>
         /// <param name="abilityType">The basic ability type to use</param>

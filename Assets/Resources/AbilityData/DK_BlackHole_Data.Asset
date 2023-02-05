@@ -32,8 +32,8 @@ MonoBehaviour:
   CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
-  cancelOnFlinch: 1
-  cancelOnKnockback: 1
+  cancelOnFlinch: 0
+  cancelOnKnockback: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 8502064466816610340, guid: 36fe61a463c34094b8f27ff52fa3ef9c,

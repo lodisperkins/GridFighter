@@ -157,6 +157,11 @@ namespace Lodis.Gameplay
             movement.CanMoveDiagonally = true;
             movement.MoveToPanel(LHSSpawnLocation, true);
             movement.CanMoveDiagonally = false;
+
+            InputBehaviour input = _player1.GetComponent<InputBehaviour>();
+            if (input)
+                input.ClearBuffer();
+
             //Player 2
             movement = _p2Input.Character.GetComponent<GridMovementBehaviour>();
             movement.CancelMovement();
@@ -164,6 +169,10 @@ namespace Lodis.Gameplay
             movement.CanMoveDiagonally = true;
             movement.MoveToPanel(RHSSpawnLocation, true);
             movement.CanMoveDiagonally = false;
+
+            input = _player2.GetComponent<InputBehaviour>();
+            if (input)
+                input.ClearBuffer();
 
             MovesetBehaviour moveset = _p1Input.Character.GetComponent<MovesetBehaviour>();
             moveset.ResetAll();
