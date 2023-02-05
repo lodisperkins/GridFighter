@@ -28,6 +28,7 @@ namespace Lodis.Gameplay
         private GameObject _chargeEffectRef;
         private GameObject _chargeEffect;
         private Transform _opponentParent;
+        private int _originalChildCount;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -58,6 +59,7 @@ namespace Lodis.Gameplay
             _opponentParent = _opponentTransform.parent;
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, Camera.main.transform.rotation);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect, 1);
             _chargeEffect.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.UNBLOCKABLE;
 
             //Cache stat values to avoid repetitive calls.
@@ -139,6 +141,8 @@ namespace Lodis.Gameplay
             _auraSphere = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, _spawnPosition, new Quaternion());
             _auraSphere.transform.GetChild(0).gameObject.SetActive(false);
 
+            _originalChildCount = _auraSphere.transform.childCount;
+
             _collider = _auraSphere.GetComponent<HitColliderBehaviour>();
             _collider.ColliderInfo = GetColliderData(0);
             _collider.Owner = owner;
@@ -158,7 +162,7 @@ namespace Lodis.Gameplay
             base.OnDeactivate();
             _shouldRise = false;
 
-            if (!_opponentCaptured)
+            if (!_opponentCaptured || _originalChildCount == _auraSphere.transform.childCount)
                 DespawnSphere();
         }
 

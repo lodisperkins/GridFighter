@@ -11,6 +11,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using DG.Tweening;
 using Lodis.Sound;
+using GridGame;
 
 namespace Lodis.Movement
 {
@@ -80,7 +81,7 @@ namespace Lodis.Movement
         private Vector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
         private PanelBehaviour _currentPanel;
-        private GridGame.GameEventListener _moveEnabledEventListener;
+        private GameEventListener _moveEnabledEventListener;
         private GridGame.GameEventListener _moveDisabledEventListener;
         private GridGame.GameEventListener _onMoveBegin;
         private GridGame.GameEventListener _onMoveBeginTemp;

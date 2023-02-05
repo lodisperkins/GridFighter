@@ -282,22 +282,6 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Manually activates the animation
-        /// </summary>
-        public void EnableAnimation()
-        {
-            _canPlayAnimation = true;
-        }
-
-        /// <summary>
-        /// Manually deactivates the animation
-        /// </summary>
-        public void DisableAnimation()
-        {
-            _canPlayAnimation = false;
-        }
-
-        /// <summary>
         /// Initializes base stats and members for the ability
         /// </summary>
         /// <param name="newOwner">The user of the ability</param>

@@ -27,8 +27,6 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
-
-            DisableAnimation();
             _deactivated = false;
         }
 
