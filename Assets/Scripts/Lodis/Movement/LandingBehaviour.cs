@@ -187,6 +187,9 @@ namespace Lodis.Movement
 
             if (!_knockback.Physics.IsGrounded || _knockback.CheckIfIdle())
                 _groundedHitCounter = 0;
+
+            if (Landing && !_knockback.Physics.IsGrounded)
+                CancelLanding();
         }
     }
 }

@@ -52,7 +52,7 @@ namespace Lodis.Gameplay
 
                 hitColliders[i].gameObject.SetActive(true);
 
-                RoutineBehaviour.Instance.StartNewTimedAction(args =>
+                _despawnAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_blackHoleInstance), TimedActionCountType.SCALEDTIME, _despawnTime + 0.2f);
             }
 
