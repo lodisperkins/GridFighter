@@ -21,7 +21,7 @@ MonoBehaviour:
   startUpTime: 0.1
   chargeTime: 0
   maxActivationAmount: 1
-  EnergyCost: 3
+  EnergyCost: 4
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 1
@@ -43,8 +43,8 @@ MonoBehaviour:
   DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: LaunchCollider
-    DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    DespawnAfterTimeLimit: 1
+    TimeActive: 1
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
@@ -63,7 +63,7 @@ MonoBehaviour:
     AbilityType: 8
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 0}
-    HitEffectLevel: 0
+    HitEffectLevel: 1
     HitStopTimeModifier: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
@@ -71,13 +71,13 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: ThrowHeight
-    value: 3
+    value: 2
   - name: ThrowDelay
-    value: 1
+    value: 0.4
   - name: ThrowAngle
-    value: -1.2
+    value: -0.6
   - name: ThrowForce
-    value: 50
+    value: 30
   - name: TravelDistance
     value: 4
   animationType: 3

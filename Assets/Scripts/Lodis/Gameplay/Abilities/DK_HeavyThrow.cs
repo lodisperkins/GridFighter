@@ -31,10 +31,10 @@ namespace Lodis.Gameplay
             if (!other.CompareTag("Player"))
                 return;
 
-            if (_opponentPhysics.GetComponent<KnockbackBehaviour>().IsInvincible)
-                return;
 
             _opponentPhysics = other.GetComponent<GridPhysicsBehaviour>();
+            if (_opponentPhysics.GetComponent<KnockbackBehaviour>().IsInvincible)
+                return;
 
             _opponentPhysics.StopAllForces();
 

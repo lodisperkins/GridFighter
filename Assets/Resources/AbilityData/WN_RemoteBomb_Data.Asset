@@ -81,7 +81,7 @@ MonoBehaviour:
   - name: KnockbackIncreaseRate
     value: 2
   - name: TravelDistance
-    value: 5
+    value: 4
   - name: DespawnTime
     value: 10
   animationType: 0
