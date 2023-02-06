@@ -38,11 +38,11 @@ namespace Lodis.Gameplay
             ProjectileRef = abilityData?.visualPrefab;
         }
 
-        public void CleanProjectileList()
+        public void CleanProjectileList(bool useName = false)
         {
             for (int i = 0; i < ActiveProjectiles.Count; i++)
             {
-                if (!ActiveProjectiles[i].activeInHierarchy)
+                if (!ActiveProjectiles[i].activeInHierarchy || (ActiveProjectiles[i].name != ProjectileRef.name + "(" + abilityData.name + ")" && useName))
                 {
                     ActiveProjectiles.RemoveAt(i);
                     i--;
@@ -80,6 +80,7 @@ namespace Lodis.Gameplay
             Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), data, UseGravity);
 
             //Fire projectile
+            Projectile.name += "(" + abilityData.name + ")";
             ActiveProjectiles.Add(Projectile);
         }
 

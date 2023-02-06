@@ -262,6 +262,7 @@ namespace Lodis.Gameplay
 
             //Stops character movement and tries to move to a new panel
             _movement.CancelMovement();
+            _movement.Position = _movement.CurrentPanel.Position;
             if (!_movement.MoveToPanel(_movement.Position + (moveDirection * 2), false, _movement.Alignment, false, true, true))
             {
                 //Cancel the phase shift if the character couldn't move a valid panel

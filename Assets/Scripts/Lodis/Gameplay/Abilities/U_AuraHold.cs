@@ -58,7 +58,8 @@ namespace Lodis.Gameplay
             if (!_opponentKnockback.MovementBehaviour.CanMove)
                 return;
 
-            _opponentParent = _opponentTransform.parent;
+            if (!_opponentParent)
+                _opponentParent = _opponentTransform.parent;
 
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, Camera.main.transform.rotation);
