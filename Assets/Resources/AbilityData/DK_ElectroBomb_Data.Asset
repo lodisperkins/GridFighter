@@ -66,7 +66,7 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 2.5
+    HitStopTimeModifier: 3.5
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}
@@ -94,7 +94,7 @@ MonoBehaviour:
       type: 3}
     HitSpark: {fileID: 0}
     HitEffectLevel: 3
-    HitStopTimeModifier: 3.5
+    HitStopTimeModifier: 6
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: 408bb1bb65309df4c9fda578b2f27a34, type: 3}
     HitSound: {fileID: 0}
