@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
+  m_Name: DK_ElectroBomb_Data
+  m_EditorClassIdentifier: 
+  abilityName: ElectroBomb
+  abilityDescription: Unleashes a devastating ball of energy that does massive damage
+    and knockback.
+  AbilityType: 8
+  timeActive: 1
+  recoverTime: 1.5
+  startUpTime: 1.25
+  chargeTime: 0
+  maxActivationAmount: 1
+  EnergyCost: 5
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 0
+  CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
+  CanInputMovementWhileActive: 0
+  CanOnlyCancelOnOpponentHit: 0
+  cancelOnHit: 0
+  cancelOnFlinch: 1
+  cancelOnKnockback: 1
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 120879900363717271, guid: 3744f3d4f0443be4485c61a30c15069e,
+    type: 3}
+  DisplayIcon: {fileID: 21300000, guid: ed1328bebb7a1f7498608426e301efc9, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 96862131907dbd34783bda7432ae5baf, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: OrbCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 1
+    DestroyOnHit: 0
+    IsMultiHit: 1
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 3958839
+    MultiHitWaitTime: 0.05
+    Damage: 1.5
+    BaseKnockBack: 1
+    KnockBackScale: 1
+    HitAngle: 1.3
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
+      type: 3}
+    HitEffectLevel: 2
+    HitStopTimeModifier: 2.5
+    ShakesCamera: 1
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  - Name: ExplosionCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057399
+    MultiHitWaitTime: 0
+    Damage: 10
+    BaseKnockBack: 5
+    KnockBackScale: 2
+    HitAngle: 1.2
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 1
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 8518192341572081556, guid: d10776942586398478a63c6485c7582e,
+      type: 3}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 3
+    HitStopTimeModifier: 3.5
+    ShakesCamera: 1
+    SpawnSound: {fileID: 8300000, guid: 408bb1bb65309df4c9fda578b2f27a34, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: ExplosionColliderHeight
+    value: 2
+  - name: ExplosionColliderWidth
+    value: 3
+  - name: JumpHeight
+    value: 2.5
+  - name: Speed
+    value: 2
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: 84b5ee8f967ca9e498147fc69cff8d83, type: 3}

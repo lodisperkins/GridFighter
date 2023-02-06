@@ -727,14 +727,16 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="position">Spawns the character at the exact position given ignoring the height offset.</param>
         /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
-        public void TeleportToLocation(Vector3 position, float travelTime = 0.05f)
+        public void TeleportToLocation(Vector3 position, float travelTime = 0.05f, bool setInactive = true)
         {
 
             RoutineBehaviour.Instance.StopAction(_teleportAction);
 
             _onTeleportStart?.Raise(gameObject);
             SpawnTeleportEffect();
-            gameObject.SetActive(false);
+
+            if (setInactive)
+                gameObject.SetActive(false);
 
             _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {

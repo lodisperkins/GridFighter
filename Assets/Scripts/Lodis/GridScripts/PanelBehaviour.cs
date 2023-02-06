@@ -133,9 +133,11 @@ namespace Lodis.GridScripts
             switch (markerType)
             {
                 case MarkerType.POSITION:
-                    if (CurrentMarker != MarkerType.NONE) break;
 
-                    if (markObject != _markObject)
+                    if (CurrentMarker != MarkerType.NONE && CurrentMarker != MarkerType.POSITION)
+                        break;
+
+                    if (markObject != _markObject || !_markerMovement)
                         _markerMovement = markObject.GetComponent<Movement.GridMovementBehaviour>();
 
                     if (!_markerMovement)
