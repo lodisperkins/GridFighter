@@ -40,6 +40,7 @@ namespace Lodis.Gameplay
             float radians = abilityData.GetCustomStatValue("ShotAngle");
             float magnitude = abilityData.GetCustomStatValue("ShotForce");
             Vector3 force = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians)) * magnitude;
+            force.x *= _ownerMoveScript.GetAlignmentX();
 
             physics.ApplyImpulseForce(force);
         }

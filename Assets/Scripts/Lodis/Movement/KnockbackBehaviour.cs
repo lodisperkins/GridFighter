@@ -7,6 +7,7 @@ using Lodis.Gameplay;
 using UnityEngine.Events;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
+using Lodis.GridScripts;
 
 namespace Lodis.Movement
 {
@@ -161,7 +162,9 @@ namespace Lodis.Movement
                     return;
 
                 _movementBehaviour.CanCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
+                PanelBehaviour panel;
+                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel);
+                _movementBehaviour.MoveToPanel(panel);
                 _movementBehaviour.CanCancelMovement = false;
             };
         }
