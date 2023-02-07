@@ -132,7 +132,6 @@ namespace Lodis.Movement
             _onLandingStart?.Invoke();
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
             _knockback.LastTimeInKnockBack = 0;
-            _knockback.Physics.StopVelocity();
             _knockback.CancelHitStun();
 
             RoutineBehaviour.Instance.StopAction(_landingAction);

@@ -71,6 +71,13 @@ namespace Lodis.AI
         private float _timeNeededToBurst;
         private GridPhysicsBehaviour _gridPhysics;
         private IntVariable _playerID;
+        public DefenseNode LastDefenseDecision;
+
+        public Vector2 MovePosition;
+        public bool EnableBehaviourTree;
+        [SerializeField]
+        private bool _copyAttacks;
+
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
         public MovesetBehaviour Moveset { get => _moveset; set => _moveset = value; }
@@ -105,11 +112,8 @@ namespace Lodis.AI
 
         public bool TouchingBarrier { get => _touchingBarrier; set => _touchingBarrier = value; }
         public bool TouchingOpponentBarrier { get => _touchingOpponentBarrier; set => _touchingOpponentBarrier = value; }
+        public bool CopyAttacks { get => _copyAttacks; set => _copyAttacks = value; }
 
-        public DefenseNode LastDefenseDecision;
-
-        public Vector2 MovePosition;
-        public bool EnableBehaviourTree;
 
         public void LoadDecisions()
         {

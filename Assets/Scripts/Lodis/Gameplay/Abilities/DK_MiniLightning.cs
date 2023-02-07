@@ -107,7 +107,8 @@ namespace Lodis.Gameplay
         public override void StopAbility()
         {
             base.StopAbility();
-            _ownerMoveScript.StopCoroutine(_spawnRoutine);
+            if (_spawnRoutine != null)
+                _ownerMoveScript.StopCoroutine(_spawnRoutine);
         }
     }
 }

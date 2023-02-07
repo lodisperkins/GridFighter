@@ -233,7 +233,7 @@ MonoBehaviour:
   _hasExploded: 0
   _outOfBounds: 0
   _currentAirState: 0
-  _netForceLandingTolerance: 3
+  _netForceLandingTolerance: 1
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _gravityIncreaseRate: {fileID: 11400000, guid: 6d175ac0f54b56643b6a85c2806f5ab3,
     type: 2}
