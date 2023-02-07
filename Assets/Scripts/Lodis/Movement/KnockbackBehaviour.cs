@@ -509,6 +509,8 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
+            else
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
             return info.Damage;
         }

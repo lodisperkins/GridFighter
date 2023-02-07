@@ -68,6 +68,7 @@ namespace Lodis.Gameplay
                     float radians = abilityData.GetCustomStatValue("ThrowAngle");
                     float magnitude = abilityData.GetCustomStatValue("ThrowForce");
                     Vector3 force = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians)) * magnitude;
+                    force.x *= owner.transform.forward.x;
                     _opponentPhysics.UseGravity = true;
                     _opponentCaptured = false;
 
@@ -86,7 +87,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Enable the panel bounce and set the temporary bounce value using the custom bounce stat.
-            _opponentPhysics.EnablePanelBounce(false);
+            _opponentPhysics.EnablePanelBounce(true);
 
             //Starts a new delayed action to disable the panel bouncing after it has bounced once. 
             RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce();}, condition => _opponentPhysics.IsGrounded);

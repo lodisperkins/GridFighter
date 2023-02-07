@@ -10,71 +10,70 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
-  m_Name: WB_BackAuraSpear_Data
+  m_Name: DK_DeckRebooter_Data
   m_EditorClassIdentifier: 
-  abilityName: BackAuraSpear
-  abilityDescription: None
-  AbilityType: 3
+  abilityName: DeckRebooter
+  abilityDescription: Fires a projectile that forces the opponent to reshuffle their
+    deck.
+  AbilityType: 8
   timeActive: 0.1
-  recoverTime: 0.1
-  startUpTime: 0.25
+  recoverTime: 0.3
+  startUpTime: 0.15
   chargeTime: 0
   maxActivationAmount: 1
-  EnergyCost: 0
+  EnergyCost: 2
   canCancelStartUp: 0
-  canCancelActive: 1
-  canCancelRecover: 1
+  canCancelActive: 0
+  canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 1
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
-  CanOnlyCancelOnOpponentHit: 1
+  CanOnlyCancelOnOpponentHit: 0
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 1697626822471647621, guid: 08c30329d97a6be479634e37e369e13c,
+  visualPrefab: {fileID: 6451543368093396670, guid: 55a2d03e2d4f5cf449c33719ce01d75b,
     type: 3}
-  DisplayIcon: {fileID: 0}
-  ActivateSound: {fileID: 8300000, guid: 143dbcaf8d4d81741948f077c9ae5904, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: e9957a41eae6e0042b1d1c032093b2a2, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 9d9bcff4b6c870642a2329d3406aac92, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
-  - Name: 
+  - Name: DeckRebooterCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.7
+    TimeActive: 2
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 3991863
+      m_Bits: 4025655
     MultiHitWaitTime: 0
-    Damage: 5
-    BaseKnockBack: 1
-    KnockBackScale: 0.1
-    HitAngle: 2.2
-    AdjustAngleBasedOnAlignment: 1
+    Damage: 0
+    BaseKnockBack: 0
+    KnockBackScale: 0
+    HitAngle: 0
+    AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0.3
-    Priority: 1
+    HitStunTime: 0.5
+    Priority: 0
     OwnerAlignement: 0
-    AbilityType: 3
+    AbilityType: 8
     SpawnEffect: {fileID: 3641247538292551802, guid: 80bad1f38225a3a44bf688233774dbb0,
       type: 3}
-    HitSpark: {fileID: 5803877790521241106, guid: 9699fdb12d707aa4f8ef7a924c76132d,
+    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 1
-    HitStopTimeModifier: 1.3
+    HitStopTimeModifier: 7
     ShakesCamera: 0
-    SpawnSound: {fileID: 8300000, guid: 63fac2f884da3d54497e643db5ca0f25, type: 3}
-    HitSound: {fileID: 0}
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: 4a5ff4f44ff152a4096f848ce7e4620f, type: 3}
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 12
-  - name: MaxInstances
-    value: 1
-  animationType: 3
-  _customAnimation: {fileID: 7400000, guid: 6dcef57e9129714468043e17465ac152, type: 3}
+    value: 5
+  animationType: 0
+  _customAnimation: {fileID: 0}

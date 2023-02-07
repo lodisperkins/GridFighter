@@ -538,6 +538,9 @@ namespace Lodis.Gameplay
 
         public void ManualShuffle(bool instantShuffle = false)
         {
+            if (LoadingShuffle)
+                return;
+
             RoutineBehaviour.Instance.StopAction(_deckShuffleAction);
             DiscardActiveSlots();
 

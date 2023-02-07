@@ -889,6 +889,21 @@ namespace Lodis.Movement
             _targetPosition = Vector3.zero;
         }
 
+        public float GetAlignmentX()
+        {
+            switch (Alignment)
+            {
+                case GridAlignment.LEFT:
+                    return 1;
+                case GridAlignment.RIGHT:
+                    return -1;
+                case GridAlignment.ANY:
+                    return 2;
+                default:
+                    return 0;
+            }
+        }
+
         private void OnDestroy()
         {
             if (_currentPanel)
