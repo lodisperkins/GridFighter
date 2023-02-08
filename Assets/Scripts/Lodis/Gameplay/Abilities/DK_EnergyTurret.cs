@@ -92,7 +92,9 @@ namespace Lodis.Gameplay
         public override void StopAbility()
         {
             base.StopAbility();
-            _projectileSpawner.StopAllCoroutines();
+            if (_projectileSpawner)
+                _projectileSpawner.StopAllCoroutines();
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_spawn);
 
         }
