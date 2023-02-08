@@ -18,6 +18,8 @@ namespace Lodis.Gameplay
         [SerializeField] private GameObject _effects;
         [Tooltip("The replacement support bar that spawns when the barrier explodes.")]
         [SerializeField] private Rigidbody _topSupportInactive;
+        [Tooltip("The replacement support bar that spawns when the barrier explodes.")]
+        [SerializeField] private GameObject _bottomSupport;
         [Tooltip("The the velocity applied to the replacement support bar when the barrier explodes.")]
         [SerializeField] private Vector3 _supportVelocity;
         [Tooltip("The renderer attached to the inner portion of the barrier that displays the shield effect.")]
@@ -82,7 +84,10 @@ namespace Lodis.Gameplay
             _visual.gameObject.SetActive(false);
 
             if (!spawnEffects)
+            {
+                _bottomSupport.SetActive(false);
                 return;
+            }
 
             _effects.SetActive(true);
             _topSupportInactive.gameObject.SetActive(true);
