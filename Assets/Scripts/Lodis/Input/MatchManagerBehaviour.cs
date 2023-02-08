@@ -229,8 +229,8 @@ namespace Lodis.Gameplay
 
             if (suddenDeathActive)
             {
-                _ringBarrierL.Deactivate();
-                _ringBarrierR.Deactivate();
+                _ringBarrierL.gameObject.SetActive(false);
+                _ringBarrierR.gameObject.SetActive(false);
             }
 
             if (_isPaused)

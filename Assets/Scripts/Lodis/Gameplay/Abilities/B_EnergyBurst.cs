@@ -26,9 +26,9 @@ namespace Lodis.Gameplay
             _defaultRestTime = abilityData.recoverTime;
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
 
             _makeFreeFall = _ownerKnockBackScript.CurrentAirState != AirState.NONE;
 
@@ -64,7 +64,7 @@ namespace Lodis.Gameplay
         }
 
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             HitColliderData hitColliderData = GetColliderData(0);
 
@@ -101,9 +101,9 @@ namespace Lodis.Gameplay
             _ownerKnockBackScript.DisableInvincibility();
         }
 
-        protected override void Deactivate()
+        protected override void OnDeactivate()
         {
-            base.Deactivate();
+            base.OnDeactivate();
             ResetState();
         }
         public override void StopAbility()

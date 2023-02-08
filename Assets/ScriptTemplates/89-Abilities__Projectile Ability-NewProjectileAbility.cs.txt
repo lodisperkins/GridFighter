@@ -17,10 +17,10 @@ namespace Lodis.Gameplay
         }
 
 	    //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             //The base activate func fires a single instance of the projectile when called
-            base.Activate(args);
+            base.OnActivate(args);
         }
     }
 }

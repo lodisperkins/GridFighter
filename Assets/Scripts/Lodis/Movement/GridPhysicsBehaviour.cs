@@ -13,6 +13,13 @@ namespace Lodis.Movement
 {
     public delegate void ForceAddedEvent(params object[] args);
 
+    public enum BounceCombination
+    {
+        AVERAGE,
+        MULTIPLY,
+        MINIMUM,
+        MAXIMUM
+    }
 
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(ConstantForce))]
@@ -60,6 +67,8 @@ namespace Lodis.Movement
         private Vector3 _lastForceAdded;
         private CustomYieldInstruction _wait;
         private GridMovementBehaviour _movementBehaviour;
+        [SerializeField]
+        private BounceCombination _bounceCombination;
 
         /// <summary>
         /// The event called when this object collides with another
@@ -78,6 +87,7 @@ namespace Lodis.Movement
         private Coroutine _currentCoroutine;
         private Sequence _jumpSequence;
         private bool _isFrozen;
+        [SerializeField]
         private bool _useVelocityForBounce;
         private Vector3 _frozenStoredForce;
         private Vector3 _frozenVelocity;
@@ -505,6 +515,8 @@ namespace Lodis.Movement
             Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
+
+
             float velocityMagnitude = 0;
             float baseKnockBack = 1;
 
@@ -522,8 +534,26 @@ namespace Lodis.Movement
             if (baseKnockBack == 0 || float.IsNaN(baseKnockBack))
                 return;
 
+            float bounce = 0;
+
+            switch (_bounceCombination)
+            {
+                case BounceCombination.AVERAGE:
+                    bounce = (Bounciness + gridPhysicsBehaviour.Bounciness) / 2;
+                    break;
+                case BounceCombination.MULTIPLY:
+                    bounce = gridPhysicsBehaviour == this ? Bounciness : Bounciness * gridPhysicsBehaviour.Bounciness;
+                    break;
+                case BounceCombination.MINIMUM:
+                    bounce = Bounciness < gridPhysicsBehaviour.Bounciness ? Bounciness : gridPhysicsBehaviour.Bounciness;
+                    break;
+                case BounceCombination.MAXIMUM:
+                    bounce = Bounciness > gridPhysicsBehaviour.Bounciness ? Bounciness : gridPhysicsBehaviour.Bounciness;
+                    break;
+            }
+
             //Apply ricochet force
-            gridPhysicsBehaviour.ApplyImpulseForce(CalculatGridForce(baseKnockBack * gridPhysicsBehaviour.Bounciness, hitAngle));
+            gridPhysicsBehaviour.ApplyVelocityChange(CalculatGridForce(baseKnockBack * bounce, hitAngle));
         }
 
         /// <summary>
@@ -539,20 +569,26 @@ namespace Lodis.Movement
 
             if (_movementBehaviour?.IsMoving == true)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
                 
                 if (disableMovement)
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            RB.AddForce(force, ForceMode.VelocityChange);
             _lastVelocity = force;
             _lastForceAdded = force;
 
+            if (_panelBounceEnabled && IsGrounded && force.y < 0)
+                force.y *= -1;
+
             if (IsFrozen)
                 _frozenVelocity = _lastForceAdded;
+            else
+                RB.AddForce(force, ForceMode.VelocityChange);
+
+
 
             _onForceAdded?.Invoke(force);
             _onForceAddedTemp?.Invoke(force);
@@ -572,19 +608,32 @@ namespace Lodis.Movement
 
             if (_movementBehaviour?.IsMoving == true)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
 
                 if (disableMovement)
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            RB.AddForce(force / Mass, ForceMode.Force);
+            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.x,0).normalized);
+            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.y).normalized);
+
+            if (xDot < 0)
+                RB.velocity = new Vector3(0, RB.velocity.y, RB.velocity.z);
+            if (yDot < 0)
+                RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
+
             _lastForceAdded = force / Mass;
 
+            if (_panelBounceEnabled && IsGrounded && force.y < 0)
+                force.y *= -1;
+
             if (IsFrozen)
-                _frozenStoredForce = _lastForceAdded;
+                _frozenVelocity = _lastForceAdded;
+            else
+                RB.AddForce(force / Mass, ForceMode.Force);
+
 
             _onForceAdded?.Invoke(force / Mass);
             _onForceAddedTemp?.Invoke(force);
@@ -604,9 +653,9 @@ namespace Lodis.Movement
 
             if (_movementBehaviour?.IsMoving == true)
             {
-                _movementBehaviour.canCancelMovement = true;
+                _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.canCancelMovement = false;
+                _movementBehaviour.CanCancelMovement = false;
 
                 if (disableMovement)
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
@@ -616,10 +665,23 @@ namespace Lodis.Movement
 
             _objectAtRest = false;
 
-            RB.AddForce(force / Mass, ForceMode.Impulse);
-            
+            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.x, 0).normalized);
+            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.y).normalized);
+
+            if (xDot < 0)
+                RB.velocity = new Vector3(0, RB.velocity.y, RB.velocity.z);
+            if (yDot < 0)
+                RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
+
+            if (IsGrounded && force.y < 0)
+                force.y *= -0.5f;
 
             _lastForceAdded = force / Mass;
+            if (IsFrozen)
+                _frozenVelocity = _lastForceAdded;
+            else
+                RB.AddForce(force / Mass, ForceMode.Impulse);
+            
 
             if (IsFrozen)
                 _frozenStoredForce = _lastForceAdded;

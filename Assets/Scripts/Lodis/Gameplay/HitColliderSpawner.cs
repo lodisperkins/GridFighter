@@ -128,7 +128,7 @@ namespace Lodis.Gameplay
         /// <param name="size">The dimension of this collider</param>
         /// <param name="hitCollider">The hit collider this collider will copy its values from</param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, HitColliderData hitCollider)
+        public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, HitColliderData hitCollider, GameObject owner)
         {
             GameObject hitObject = new GameObject();
             hitObject.name = hitCollider.OwnerAlignement + "BoxCollider";
@@ -139,6 +139,7 @@ namespace Lodis.Gameplay
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
             hitScript.ColliderInfo = hitCollider;
+            hitScript.Owner = owner;
 
             return hitScript;
         }

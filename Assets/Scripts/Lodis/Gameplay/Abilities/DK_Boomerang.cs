@@ -27,9 +27,9 @@ namespace Lodis.Gameplay
             ProjectileRef = (GameObject)Resources.Load("Projectiles/Prototype/CrossProjectile");
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
             _speedMultiplier = abilityData.GetCustomStatValue("SpeedMultiplier");
             //Set default hitbox traits
             DestroyOnHit = false;
@@ -38,9 +38,9 @@ namespace Lodis.Gameplay
 
 
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
-            base.Activate(args);
+            base.OnActivate(args);
             _reboundCount = 0;
 
             //Stores the rebound collider and the hit box attached to this boomerang
@@ -87,7 +87,7 @@ namespace Lodis.Gameplay
             {
                 CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
 
-                if (stateMachine.StateMachine.CurrentState != "Idle" && stateMachine.StateMachine.CurrentState != "Moving")
+                if (stateMachine.StateMachine.CurrentState != "Idle" && stateMachine.StateMachine.CurrentState != "Moving" && stateMachine.StateMachine.CurrentState != "Attacking")
                 {
                     return;
                 }

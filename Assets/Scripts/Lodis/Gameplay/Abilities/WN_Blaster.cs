@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
             _projectile = abilityData.visualPrefab;
         }
 
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             _projectileCollider = GetColliderData(0);
 

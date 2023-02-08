@@ -275,6 +275,11 @@ namespace Lodis.Utility
             //Disable the object in the scene
             objectInstance.SetActive(false);
             OnReturnToPool?.Raise(objectInstance);
+
+            for (int i = 0; i < objectInstance.transform.childCount; i++)
+            {
+                OnReturnToPool?.Raise(objectInstance.transform.GetChild(i).gameObject);
+            }
         }
 
         /// <summary>

@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Lodis.Gameplay.ParticleColorManagerBehaviour">
+    <Position X="13.25" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAACAIAAAAACAAAAAAAAAAAQAAAAgIBBACEAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ParticleColorManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ColorObject">
+    <Position X="18.75" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAYAAAABAAAAAAAAAgEAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ColorManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.ColorManagerBehaviour">
+    <Position X="16" Y="2" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAACAAAgAAgAgEAAAAAAAAAQAAAAgAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\ColorManagerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

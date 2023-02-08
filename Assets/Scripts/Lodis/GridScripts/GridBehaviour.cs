@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Lodis.Gameplay;
+using Lodis.Movement;
 
 namespace Lodis.GridScripts
 {
@@ -23,10 +24,10 @@ namespace Lodis.GridScripts
     {
         [Tooltip("The grid will use this game object to create the panels. MUST HAVE A PANEL BEHAVIOUR ATTACHED")]
         [SerializeField]
-        private GameObject _panelRef;
+        private PanelBehaviour _panelRef;
         [Tooltip("The grid will use this game object to create the barriers. MUST HAVE A GRID MOVEMENT SCRIPT ATTACHED")]
         [SerializeField]
-        private GameObject _barrierRef;
+        private GridMovementBehaviour _barrierRef;
         [Tooltip("The dimensions to use when building the grid.")]
         [SerializeField]
         private Vector2 _dimensions;
@@ -64,7 +65,7 @@ namespace Lodis.GridScripts
         /// <summary>
         /// A reference to the panel object to use for building the grid
         /// </summary>
-        public GameObject PanelRef
+        public PanelBehaviour PanelRef
         {
             get
             {
@@ -151,7 +152,7 @@ namespace Lodis.GridScripts
             int yPos = 0;
             for (int i = 0; i < (int)_dimensions.x * (int)_dimensions.y; i++)
             {
-                GameObject panel = (Instantiate(_panelRef, spawnPosition, new Quaternion(), transform));
+                GameObject panel = (Instantiate(_panelRef.gameObject, spawnPosition, new Quaternion(), transform));
                 panel.transform.localScale = _panelScale;
                 _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
                 _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
@@ -325,7 +326,7 @@ namespace Lodis.GridScripts
                 if (GetPanel(position, out spawnPanel, false))
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
-                    barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
+                    barrierObject = Instantiate(_barrierRef.gameObject, spawnPosition, new Quaternion(), transform);
                     barrierObject.transform.localScale = _barrierScale;
                 }
 
@@ -339,7 +340,7 @@ namespace Lodis.GridScripts
 
                 _barriers.Add(barrier);
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
-                movement.MoveToPanel(spawnPanel.Position);
+                movement.Position = spawnPanel.Position;
                 movement.Alignment = GridAlignment.LEFT;
                 barrierObject.transform.forward = Vector3.right;
             }
@@ -352,7 +353,7 @@ namespace Lodis.GridScripts
                 if (GetPanel(position, out spawnPanel, false))
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
-                    barrierObject = Instantiate(_barrierRef, spawnPosition, new Quaternion(), transform);
+                    barrierObject = Instantiate(_barrierRef.gameObject, spawnPosition, new Quaternion(), transform);
                     barrierObject.transform.localScale = _barrierScale;
                 }
                 if (_barriers == null)
@@ -369,7 +370,7 @@ namespace Lodis.GridScripts
 
                 _barriers.Add(barrier);
                 Movement.GridMovementBehaviour movement = barrierObject.GetComponent<Movement.GridMovementBehaviour>();
-                movement.MoveToPanel(spawnPanel.Position);
+                movement.Position = spawnPanel.Position;
                 movement.Alignment = GridAlignment.RIGHT;
                 barrierObject.transform.forward = Vector3.left;
             }

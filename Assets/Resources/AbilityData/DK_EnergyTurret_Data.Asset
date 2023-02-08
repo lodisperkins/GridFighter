@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
+  m_Name: DK_EnergyTurret_Data
+  m_EditorClassIdentifier: 
+  abilityName: EnergyTurret
+  abilityDescription: Creates a turret that fires a rapid barrage of lasers.
+  AbilityType: 8
+  timeActive: 0.1
+  recoverTime: 0.2
+  startUpTime: 0.1
+  chargeTime: 0
+  maxActivationAmount: 1
+  EnergyCost: 1
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 0
+  CanCancelOnMove: 0
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 0
+  CanCancelIntoNormal: 0
+  CanInputMovementWhileActive: 0
+  CanOnlyCancelOnOpponentHit: 0
+  cancelOnHit: 0
+  cancelOnFlinch: 1
+  cancelOnKnockback: 1
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 4767874893531218292, guid: 2b38541aaca66e541b75a5af70f2e55c,
+    type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 87dc657afdc74ff41900816975f07c85, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 7072720a80127014fb59a4416cfa9c5c, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: LaserCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0.5
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 3991863
+    MultiHitWaitTime: 0
+    Damage: 1
+    BaseKnockBack: 0
+    KnockBackScale: 0
+    HitAngle: 1
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.7
+    Priority: 1
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 3641247538292551802, guid: 80bad1f38225a3a44bf688233774dbb0,
+      type: 3}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopTimeModifier: 1.2
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 8c7f6259c913f6d4aa79713d465a3042, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  - Name: LargeLaserCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0.5
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 3959095
+    MultiHitWaitTime: 0
+    Damage: 5
+    BaseKnockBack: 2
+    KnockBackScale: 1.5
+    HitAngle: 1
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.7
+    Priority: 2
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
+      type: 3}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 2
+    HitStopTimeModifier: 1.2
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: dc82c298b95f37448912cd57810ebb90, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: ShotCount
+    value: 8
+  - name: ShotDelay
+    value: 0.1
+  - name: Speed
+    value: 20
+  animationType: 0
+  _customAnimation: {fileID: 0}

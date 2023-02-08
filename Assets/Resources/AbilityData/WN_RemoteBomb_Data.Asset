@@ -1,0 +1,88 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
+  m_Name: WN_RemoteBomb_Data
+  m_EditorClassIdentifier: 
+  abilityName: RemoteBomb
+  abilityDescription: Spawns a projectile that detonates on command. The farther
+    it travels, the stronger the blast is.
+  AbilityType: 0
+  timeActive: 0.05
+  recoverTime: 0.2
+  startUpTime: 0.2
+  chargeTime: 0
+  maxActivationAmount: 1
+  EnergyCost: 0
+  canCancelStartUp: 0
+  canCancelActive: 1
+  canCancelRecover: 1
+  CanCancelOnMove: 0
+  CanCancelIntoSelf: 1
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
+  CanInputMovementWhileActive: 1
+  CanOnlyCancelOnOpponentHit: 0
+  cancelOnHit: 0
+  cancelOnFlinch: 1
+  cancelOnKnockback: 0
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 8229971569440717597, guid: 2c4414b85b8930e4eb3100229c798e7b,
+    type: 3}
+  DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 0}
+  ActiveSound: {fileID: 8300000, guid: 18539e1bad355b64e82686604e42f44c, type: 3}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: RemoteBombExplosionCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.1
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 3992887
+    MultiHitWaitTime: 0
+    Damage: 7
+    BaseKnockBack: 1
+    KnockBackScale: 0.5
+    HitAngle: 1.35
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 0
+    SpawnEffect: {fileID: 5803877790521241106, guid: 9699fdb12d707aa4f8ef7a924c76132d,
+      type: 3}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 2
+    HitStopTimeModifier: 1
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
+    HitSound: {fileID: 8300000, guid: 2ac9b5bb3c7d52842a9092d79fa2b05f, type: 3}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: Speed
+    value: 4
+  - name: MaxInstances
+    value: -1
+  - name: DamageIncreaseRate
+    value: 5
+  - name: KnockbackIncreaseRate
+    value: 2
+  - name: TravelDistance
+    value: 4
+  - name: DespawnTime
+    value: 10
+  animationType: 0
+  _customAnimation: {fileID: 0}

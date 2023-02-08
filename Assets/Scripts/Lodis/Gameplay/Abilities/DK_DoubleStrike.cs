@@ -20,6 +20,7 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _hitScript;
         private Vector2 _attackDirection;
         private bool _secondStrikeActivated;
+        private Quaternion _rotation;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -29,9 +30,9 @@ namespace Lodis.Gameplay
             _ownerInput = owner.GetComponentInParent<Input.InputBehaviour>();
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
             if (_ownerInput)
             {
                 //Set initial attack direction so player can change directions immediately
@@ -41,18 +42,20 @@ namespace Lodis.Gameplay
                 _attackDirection = owner.transform.forward;
 
             //Play animation
-            EnableAnimation();
             ChangeMoveAttributes();
+            _rotation = owner.transform.rotation;
         }
 
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
+            _ownerAnimationScript.PlayAbilityAnimation();
             //Create collider for attack
             _fistCollider = GetColliderData(0);
 
             //Spawn particles
            _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
+            _visualPrefabInstance.transform.forward = owner.transform.forward;
             //Spawn a game object with the collider attached
             _hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             _hitScript.ColliderInfo = _fistCollider;
@@ -76,34 +79,35 @@ namespace Lodis.Gameplay
             _ownerMoveScript.Speed = (distance * 2/ abilityData.timeActive) * BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             //Change move traits to allow for free movement on the other side of the grid
-            _ownerMoveScript.canCancelMovement = true;
+            _ownerMoveScript.CanCancelMovement = true;
 
             //Change rotation to the direction of movement
             owner.transform.forward = new Vector3(_attackDirection.x, 0, _attackDirection.y);
 
             //Move towards panel
             _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance, abilityData.timeActive + abilityData.timeActive / 3);
         }
 
-        protected override void Deactivate()
+        protected override void OnDeactivate()
         {
-            base.Deactivate();
-            ResetMoveAttributes();
-
+            base.OnDeactivate();
             //Despawn particles and hit box
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance);
+            ResetMoveAttributes();
+            owner.transform.rotation = _rotation;
+
 
             if (!_secondStrikeActivated)
             {
                 StopAbility();
                 onEnd?.Invoke();
-                End();
+                OnEnd();
             }
         }
 
-        protected override void End()
+        protected override void OnEnd()
         {
-            base.End();
+            base.OnEnd();
             ResetMoveAttributes();
         }
 
@@ -133,7 +137,7 @@ namespace Lodis.Gameplay
             if (_ownerMoveScript.IsMoving)
                 _ownerMoveScript.CancelMovement();
 
-            _ownerMoveScript.canCancelMovement = false;
+            _ownerMoveScript.CanCancelMovement = false;
             _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
             _ownerMoveScript.AlwaysLookAtOpposingSide = true;
 
@@ -153,7 +157,7 @@ namespace Lodis.Gameplay
                 _attackDirection = _ownerInput.AttackDirection;
 
                 _secondStrikeActivated = true;
-                Deactivate();
+                OnDeactivate();
                 int activationAmount = currentActivationAmount;
                 StopAbility();
 

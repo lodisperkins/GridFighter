@@ -57,7 +57,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Called when the ability's action happens
         /// </summary>
-        public UnityAction onActivate = null;
+        public UnityAction onActivateStart = null;
         /// <summary>
         /// Called when the ability is used and before the character has recovered
         /// </summary>
@@ -135,7 +135,7 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         protected void ActivePhase(params object[] args)
         {
-            onActivate?.Invoke();
+            onActivateStart?.Invoke();
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
             Activate(args);
@@ -275,26 +275,10 @@ namespace Lodis.Gameplay
         {
             RoutineBehaviour.Instance.StopAction(_currentTimer);
             onDeactivate?.Invoke();
-            Deactivate();
+            OnDeactivate();
             onEnd?.Invoke();
             End();
             _inUse = false;
-        }
-
-        /// <summary>
-        /// Manually activates the animation
-        /// </summary>
-        public void EnableAnimation()
-        {
-            _canPlayAnimation = true;
-        }
-
-        /// <summary>
-        /// Manually deactivates the animation
-        /// </summary>
-        public void DisableAnimation()
-        {
-            _canPlayAnimation = false;
         }
 
         /// <summary>
@@ -308,6 +292,7 @@ namespace Lodis.Gameplay
             _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
             OwnerMoveset = newOwner.GetComponent<MovesetBehaviour>();
             _ownerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
+            _ownerAnimationScript = newOwner.GetComponentInChildren<CharacterAnimationBehaviour>();
 
             _canPlayAnimation = !abilityData.playAnimationManually;
 
@@ -328,13 +313,8 @@ namespace Lodis.Gameplay
 
         }
 
-        /// <summary>
-        /// Called at the beginning of ability activation
-        /// </summary>
-        /// <param name="args"></param>
-        protected virtual void Start(params object[] args)
+        private void Start(params object[] args)
         {
-
             for (int i = 0; i < _colliderInfo.Count; i++)
             {
                 if (abilityData.CanOnlyCancelOnOpponentHit)
@@ -364,24 +344,65 @@ namespace Lodis.Gameplay
             else if (abilityData.cancelOnKnockback)
                 _ownerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
 
+            OnStart();
         }
+
+        /// <summary>
+        /// Called at the beginning of ability activation
+        /// </summary>
+        /// <param name="args"></param>
+        protected virtual void OnStart(params object[] args) {}
 
         /// <summary>
         /// Called when the ability is actually in action. Usually used to spawn hit boxes or status effects
         /// </summary>
         /// <param name="args"></param>
-        protected abstract void Activate(params object[] args);
+        private void Activate(params object[] args)
+        {
+            if (args == null || args.Length <= 1 || args[1] == null)
+            {
+                OnActivate(args);
+                return;
+            }
+
+            Vector2 attackDirection = (Vector2)args[1];
+
+            if (_ownerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
+                attackDirection.x *= -1;
+
+            if (attackDirection.magnitude > 0 && (int)abilityData.AbilityType < 8)
+            {
+                _ownerMoveScript.CanCancelMovement = true;
+                _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + attackDirection);
+                _ownerMoveScript.CanCancelMovement = false;
+            }
+
+            OnActivate(args);
+        }
+
+
+        /// <summary>
+        /// Called when the ability is actually in action. Usually used to spawn hit boxes or status effects
+        /// </summary>
+        /// <param name="args"></param>
+        protected virtual void OnActivate(params object[] args){}
 
         /// <summary>
         /// Called when the ability is entering its recovering phase after use
         /// </summary>
-        protected virtual void Deactivate() { }
+        private void Deactivate()
+        {
+            OnDeactivate();
+        }
 
         /// <summary>
-        /// Called after the ability has recovered and just before the user goes back to idle
+        /// Called when the ability is entering its recovering phase after use
         /// </summary>
-        protected virtual void End()
+        protected virtual void OnDeactivate() { }
+
+        private void End()
         {
+
             currentActivationAmount = 0;
             if (_ownerKnockBackScript.CurrentAirState != AirState.TUMBLING)
                 _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
@@ -393,12 +414,19 @@ namespace Lodis.Gameplay
             }
 
             onEnd = null;
-            onActivate = null;
+            onActivateStart = null;
             onBegin = null;
             onDeactivate = null;
             OnHit = null;
             OnHitTemp = null;
+
+            OnEnd();
         }
+
+        /// <summary>
+        /// Called after the ability has reach max activation limit or is canceled and just before the user goes back to idle
+        /// </summary>
+        protected virtual void OnEnd(){ }
 
         /// <summary>
         /// Called in every update for the ability owner

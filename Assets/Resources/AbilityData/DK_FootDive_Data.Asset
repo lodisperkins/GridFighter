@@ -17,11 +17,11 @@ MonoBehaviour:
     Does great damage and can make airborne enemies bounce when they hit the ground.
   AbilityType: 8
   timeActive: 0.1
-  recoverTime: 0.5
+  recoverTime: 0.6
   startUpTime: 0.4
   chargeTime: 5
   maxActivationAmount: 1
-  EnergyCost: 2
+  EnergyCost: 4
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
     Damage: 20
     BaseKnockBack: 3
     KnockBackScale: 1.5
-    HitAngle: -0.6
+    HitAngle: -1.2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 1
@@ -83,6 +83,6 @@ MonoBehaviour:
   - name: DownwardGravityMultiplier
     value: 8
   - name: OpponentBounciness
-    value: 15
+    value: 3
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 94bc1ca367d0ca3438de0aa2f84a61cc, type: 3}

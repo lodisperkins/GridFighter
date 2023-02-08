@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
         public bool UseGravity;
 
         public bool despawnAfterTimeLimit { get; private set; }
+        public bool ScaleStats { get; set; }
 
         public override void Init(GameObject newOwner)
         {
@@ -37,11 +38,11 @@ namespace Lodis.Gameplay
             ProjectileRef = abilityData?.visualPrefab;
         }
 
-        public void CleanProjectileList()
+        public void CleanProjectileList(bool useName = false)
         {
             for (int i = 0; i < ActiveProjectiles.Count; i++)
             {
-                if (!ActiveProjectiles[i].activeInHierarchy)
+                if (!ActiveProjectiles[i].activeInHierarchy || (ActiveProjectiles[i].name != ProjectileRef.name + "(" + abilityData.name + ")" && useName))
                 {
                     ActiveProjectiles.RemoveAt(i);
                     i--;
@@ -49,14 +50,15 @@ namespace Lodis.Gameplay
             }
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
             ProjectileColliderData = GetColliderData(0);
             CleanProjectileList();
+            ProjectileColliderData.OwnerAlignement = _ownerMoveScript.Alignment;
         }
 
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
 
             //Log if a projectile couldn't be found
@@ -70,9 +72,15 @@ namespace Lodis.Gameplay
             projectileSpawner.projectile = ProjectileRef;
             SpawnTransform = projectileSpawner.transform;
             ShotDirection = projectileSpawner.transform.forward;
-            Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), ProjectileColliderData, UseGravity);
+
+            HitColliderData data = ProjectileColliderData;
+            if (ScaleStats)
+                data = ProjectileColliderData.ScaleStats((float)args[0]);
+
+            Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), data, UseGravity);
 
             //Fire projectile
+            Projectile.name += "(" + abilityData.name + ")";
             ActiveProjectiles.Add(Projectile);
         }
 

@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: SN_ChargeShot_Data
   m_EditorClassIdentifier: 
   abilityName: ChargeShot
+  abilityDescription: None
   AbilityType: 4
   timeActive: 0.1
   recoverTime: 0.5
-  startUpTime: 0.5
+  startUpTime: 0.35
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
@@ -50,10 +51,10 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 12
-    BaseKnockBack: 4
+    Damage: 10
+    BaseKnockBack: 2
     KnockBackScale: 1.5
-    HitAngle: 0.3
+    HitAngle: 0.5
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.8

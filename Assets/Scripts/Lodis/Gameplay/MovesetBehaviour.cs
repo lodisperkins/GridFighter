@@ -81,6 +81,9 @@ namespace Lodis.Gameplay
         [Tooltip("The amount of energy regained passively")]
         [SerializeField]
         private FloatVariable _energyRechargeValue;
+        [Tooltip("The amount of energy this character starts with")]
+        [SerializeField]
+        private FloatVariable _startEnergy;
         [Tooltip("The amount of burst energy regained passively")]
         [SerializeField]
         private FloatVariable _burstEnergyRechargeValue;
@@ -95,8 +98,6 @@ namespace Lodis.Gameplay
         private bool _energyChargeEnabled = true;
         [SerializeField]
         private bool _canBurst = true;
-        [SerializeField]
-        private FloatVariable _burstChargeTime;
         [SerializeField]
         [Tooltip("How long the player will wait before beginning a manual shuffle.")]
         private FloatVariable _shuffleWaitTime;
@@ -166,16 +167,15 @@ namespace Lodis.Gameplay
         }
 
         public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
-
-        public float BurstChargeTime { get => _burstChargeTime.Value; private set => _burstChargeTime.Value = value; }
         public bool CanBurst { get => _canBurst; private set => _canBurst = value; }
         public UnityAction OnBurst { get; set; }
         public bool LoadingShuffle { get => _loadingShuffle; }
         public bool DeckReloading { get => _deckReloading; }
-        public Transform[] LeftMeleeSpawns { get => _leftMeleeSpawns; }
-        public Transform[] RightMeleeSpawns { get => _rightMeleeSpawns; }
+        public Transform[] LeftMeleeSpawns { get => _leftMeleeSpawns; set => _leftMeleeSpawns = value; }
+        public Transform[] RightMeleeSpawns { get => _rightMeleeSpawns; set => _rightMeleeSpawns = value; }
         public FloatVariable MaxBurstEnergy { get => _maxBurstEnergyRef; }
         public float LastAttackStrength { get => _lastAttackStrength; private set => _lastAttackStrength = value; }
+        public CharacterAnimationBehaviour AnimationBehaviour { get => _animationBehaviour; set => _animationBehaviour = value; }
 
         private void Awake()
         {
@@ -203,6 +203,9 @@ namespace Lodis.Gameplay
             _canBurst = true;
             BurstEnergy = MaxBurstEnergy.Value;
 
+            if (!MatchManagerBehaviour.InfiniteEnergy)
+                Energy = _startEnergy.Value;
+
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
 
@@ -214,7 +217,10 @@ namespace Lodis.Gameplay
             enabled = true;
             LastAbilityInUse?.StopAbility();
             ManualShuffle(true);
-            TryUseEnergy(Energy);
+
+            if (!MatchManagerBehaviour.InfiniteEnergy)
+                Energy = _startEnergy.Value;
+
             RoutineBehaviour.Instance.StopAction(_burstAction);
             RoutineBehaviour.Instance.StopAction(_rechargeAction);
             BurstEnergy = MaxBurstEnergy.Value; 
@@ -532,6 +538,9 @@ namespace Lodis.Gameplay
 
         public void ManualShuffle(bool instantShuffle = false)
         {
+            if (LoadingShuffle)
+                return;
+
             RoutineBehaviour.Instance.StopAction(_deckShuffleAction);
             DiscardActiveSlots();
 

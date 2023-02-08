@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: WF_ForwardShot_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   abilityName: ForwardShot
+  abilityDescription: None
   AbilityType: 2
   timeActive: 0.1
   recoverTime: 0.1
-  startUpTime: 0.05
+  startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 0
   EnergyCost: 0
@@ -43,17 +44,17 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.3
+    TimeActive: 0.2
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 5
-    BaseKnockBack: 8
+    Damage: 2
+    BaseKnockBack: 0.5
     KnockBackScale: 0.5
-    HitAngle: 1.4
+    HitAngle: 1.3
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.3

@@ -42,7 +42,7 @@ namespace Lodis.Gameplay
         }
 
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             _projectileCollider = GetColliderData(0);
 
@@ -56,14 +56,11 @@ namespace Lodis.Gameplay
             if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
 
-            //Calculate how where the player should travel after firing
-            Vector2 offSet = new Vector2(1, 0) * -owner.transform.forward;
-            offSet.x = Mathf.RoundToInt(offSet.x);
-            offSet.y = Mathf.RoundToInt(offSet.y);
+            FireProjectile();
+        }
 
-            //Moves player to panel behind so they can retreat while shooting
-            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offSet);
-
+        private void FireProjectile()
+        {
             //Create a "gun" to fire the shot from
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
             projectileSpawner.projectile = _projectile;
@@ -76,7 +73,7 @@ namespace Lodis.Gameplay
             GameObject activeProjectile = projectileSpawner.FireProjectile(launchForce, _projectileCollider, true, true);
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = _gravity;
-            
+
             ActiveProjectiles.Add(activeProjectile);
         }
     }

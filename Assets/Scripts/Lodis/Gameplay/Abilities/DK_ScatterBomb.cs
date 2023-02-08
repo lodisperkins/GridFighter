@@ -29,19 +29,20 @@ namespace Lodis.Gameplay
             _bombTimer = abilityData.GetCustomStatValue("BombTimer");
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
             _bombs?.Clear();
             _targetPanels?.Clear();
-            ProjectileColliderData.OwnerAlignement = _ownerMoveScript.Alignment;
         }
 
         private void DetonateBombs()
         {
             foreach (Transform t in _bombs)
             {
-                HitColliderSpawner.SpawnBoxCollider(t, Vector3.one, ProjectileColliderData, owner);
+                if (!t.TryGetComponent<Collider>(out _))
+                    HitColliderSpawner.SpawnBoxCollider(t, Vector3.one, ProjectileColliderData, owner);
+
                 Object.Instantiate(_explosionEffect, t.position, Camera.main.transform.rotation);
                 t.GetComponent<MeshRenderer>().enabled = false;
                 ObjectPoolBehaviour.Instance.ReturnGameObject(t.gameObject, ProjectileColliderData.TimeActive + 0.1f);
@@ -53,7 +54,7 @@ namespace Lodis.Gameplay
         }
 
 	    //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             PanelBehaviour panel = null;
 
@@ -63,6 +64,8 @@ namespace Lodis.Gameplay
             if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.up, out panel))
                 _targetPanels.Add(panel);
             if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.down, out panel))
+                _targetPanels.Add(panel);
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 3 * _ownerMoveScript.transform.forward.x), out panel))
                 _targetPanels.Add(panel);
 
             //Spawn each bomb and move them into position

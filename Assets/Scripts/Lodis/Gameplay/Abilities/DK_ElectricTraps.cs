@@ -31,9 +31,9 @@ namespace Lodis.Gameplay
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start(args);
+            base.OnStart(args);
             if (currentActivationAmount == 0)
                 _linkMoveScripts.Clear();
         }
@@ -75,10 +75,15 @@ namespace Lodis.Gameplay
                 GameObject attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].transform.position + Vector3.up * 0.8f, _attackLinkVisual.transform.rotation);
 
                 HitColliderBehaviour collider = attackLink.GetComponent<HitColliderBehaviour>();
-                if (!collider)
-                    collider = attackLink.AddComponent<HitColliderBehaviour>();
 
+                if (!collider)
+                {
+                    collider = attackLink.AddComponent<HitColliderBehaviour>();
+                }
+
+                collider.GetComponent<Collider>().enabled = true;
                 collider.Owner = owner;
+                OnHitTemp += args => collider.GetComponent<Collider>().enabled = false;
                 collider.ColliderInfo = _stunCollider;
             }
 
@@ -120,7 +125,7 @@ namespace Lodis.Gameplay
         }
 
 	    //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             //Activates the links if this is the second use of this ability
             if (currentActivationAmount > 1)
@@ -173,9 +178,9 @@ namespace Lodis.Gameplay
             }
         }
 
-        protected override void End()
+        protected override void OnEnd()
         {
-            base.End();
+            base.OnEnd();
             DestroyLinks(1);
         }
 

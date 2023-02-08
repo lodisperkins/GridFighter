@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: WB_LobShot_Data
   m_EditorClassIdentifier: 
   abilityName: LobShot
+  abilityDescription: None
   AbilityType: 3
   timeActive: 0.05
   recoverTime: 0.3
@@ -50,7 +51,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 2
+    Damage: 1
     BaseKnockBack: 2
     KnockBackScale: 0.4
     HitAngle: 2

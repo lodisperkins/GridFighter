@@ -46,7 +46,7 @@ namespace Lodis.Gameplay
             ActiveProjectiles.Add(newProjectile);
         }
 
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             //Initialize collider stats
             float powerScale = (float)args[0];
@@ -54,13 +54,11 @@ namespace Lodis.Gameplay
             _projectileCollider = _projectileCollider.ScaleStats(powerScale);
 
             CleanProjectileList();
-            
-            Vector2 moveDir = owner.transform.forward;
 
             //If the maximum amount of instances has been reached for this owner, don't spawn a new one
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
-            { 
-                if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + moveDir))
+            {
+                if (_ownerMoveScript.IsMoving)
                     _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
                 else
                     SpawnProjectile();

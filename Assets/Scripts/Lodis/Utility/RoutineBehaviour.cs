@@ -68,11 +68,6 @@ namespace Lodis.Utility
             return action;
         }
 
-        internal TimedAction StartNewTimedAction(Action<object[]> p, TimedActionCountType sCALEDTIME, object sameSoundDelay)
-        {
-            throw new NotImplementedException();
-        }
-
         /// <summary>
         /// Calls the given event after the given amount of time or frames have passed
         /// </summary>

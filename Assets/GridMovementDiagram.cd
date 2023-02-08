@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Lodis.GridScripts.GridBehaviour">
+    <Position X="11.75" Y="2.5" Width="3.25" />
+    <AssociationLine Name="_barrierRef" Type="Lodis.Movement.GridMovementBehaviour" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="15" Y="3.438" />
+        <Point X="15.49" Y="3.438" />
+        <Point X="15.49" Y="3.438" />
+        <Point X="16" Y="3.438" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true" ManuallySized="true">
+        <Position X="0.051" Y="0.135" Height="0.182" Width="1.115" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="_panelRef" Type="Lodis.GridScripts.PanelBehaviour" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="11.75" Y="2.938" />
+        <Point X="11.375" Y="2.938" />
+        <Point X="11.375" Y="3.187" />
+        <Point X="10.25" Y="3.187" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AQgFQeAAhCCAAAIICAIIA0KEIDAhAgFIAQAAAAAWwBA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\GridBehaviour.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_barrierRef" />
+      <Field Name="_panelRef" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Lodis.Movement.GridMovementBehaviour">
+    <Position X="16" Y="3" Width="3.5" />
+    <Compartments>
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <AssociationLine Name="_defaultAlignment" Type="Lodis.GridScripts.GridAlignment" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19.5" Y="3.75" />
+        <Point X="19.875" Y="3.75" />
+        <Point X="19.875" Y="3.715" />
+        <Point X="21" Y="3.715" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>iMQBgG4iA7AQEGChBjkSgQABkSEExEHgFAIDiDokDEg=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\GridMovementBehaviour.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_defaultAlignment" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Lodis.GridScripts.PanelBehaviour">
+    <Position X="7" Y="2.75" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>BEQGAEAAEEAUAAAgAGAAAAAAgAAQAQAIBQCEgAAACEA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\PanelBehaviour.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_currentMarker" />
+    </ShowAsAssociation>
+  </Class>
+  <Enum Name="Lodis.GridScripts.GridAlignment">
+    <Position X="21" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAQAAAAAAAAgAAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\GridBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.GridScripts.MarkerType">
+    <Position X="4.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAQAAEAAAAAAAACAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\GridScripts\GridTrackerBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

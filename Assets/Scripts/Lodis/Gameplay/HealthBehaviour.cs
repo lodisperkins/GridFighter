@@ -139,6 +139,7 @@ namespace Lodis.Gameplay
         }
 
         public CharacterDefenseBehaviour DefenseBehaviour { get => _defenseBehaviour; private set => _defenseBehaviour = value; }
+        public Renderer MeshRenderer { get => _meshRenderer; set => _meshRenderer = value; }
 
         protected virtual void Awake()
         {
@@ -293,7 +294,7 @@ namespace Lodis.Gameplay
         /// <param name="time">The amount of time to disable the components for</param>
         public void Stun(float time)
         {
-            if (Stunned || IsInvincible || _defenseBehaviour.IsShielding || IsIntangible)
+            if (Stunned || IsInvincible || _defenseBehaviour?.IsShielding == true || IsIntangible)
                 return;
 
             _stunRoutine = StartCoroutine(ActivateStun(time));

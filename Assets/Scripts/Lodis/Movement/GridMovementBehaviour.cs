@@ -11,6 +11,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using DG.Tweening;
 using Lodis.Sound;
+using GridGame;
 
 namespace Lodis.Movement
 {
@@ -21,18 +22,18 @@ namespace Lodis.Movement
         [SerializeField]
         [Tooltip("The position of the object on the grid.")]
         private Vector2 _position;
-        private FloatVariable _maxYPosition;
-        private Vector3 _targetPosition;
-        private PanelBehaviour _targetPanel = null;
-        [SerializeField]
-        [Tooltip("This is how close the object has to be to the panel it's moving towards to say its reached it.")]
-        private float _targetTolerance = 0.05f;
         [SerializeField]
         [Tooltip("The current direction the object is moving in.")]
         private Vector2 _moveDirection;
         [SerializeField]
+        [Tooltip("This is how close the object has to be to the panel it's moving towards to say its reached it.")]
+        private float _targetTolerance = 0.05f;
+        [SerializeField]
         [Tooltip("How fast the object can move towards a panel.")]
         private float _speed;
+        [SerializeField]
+        [Tooltip("The amount speed will be reduced when moving from an opponent panel.")]
+        private float _opponentPanelSpeedReduction;
         [Tooltip("Whether or not this object is moving towards a panel")]
         [SerializeField]
         private bool _isMoving;
@@ -40,54 +41,55 @@ namespace Lodis.Movement
         [SerializeField]
         private bool _canMove = true;
         [Tooltip("If true, the object can cancel its movement in one direction, and start moving in another direction.")]
-        public bool canCancelMovement;
+        [SerializeField]
+        private bool _canCancelMovement;
         [Tooltip("The side of the grid that this object can move on by default.")]
         [SerializeField]
         private GridAlignment _defaultAlignment = GridAlignment.ANY;
-        private GridAlignment _tempAlignment;
-        private PanelBehaviour _currentPanel;
-        private Condition _movementEnableCheck;
-        private GridGame.GameEventListener _moveEnabledEventListener;
-        private GridGame.GameEventListener _moveDisabledEventListener;
-        private GridGame.GameEventListener _onMoveBegin;
-        private GridGame.GameEventListener _onMoveBeginTemp;
-        private GridGame.GameEventListener _onMoveEnd;
-        private GridGame.GameEventListener _onMoveEndTemp;
+
         [Tooltip("Whether or not to move to the default aligned side if this object is on a panel belonging to the opposite side")]
         [SerializeField]
         private bool _moveToAlignedSideIfStuck = true;
         [SerializeField]
+        private AudioClip _moveSound;
+        [SerializeField]
         private GridGame.Event _onTeleportStart;
         [SerializeField]
         private GridGame.Event _onTeleportEnd;
-        [SerializeField]
-        private AudioClip _moveSound;
+
         [Tooltip("Whether or not this object should always rotate to face the opposite side")]
         [SerializeField]
         private bool _alwaysLookAtOpposingSide = true;
         [SerializeField]
         private bool _canBeWalkedThrough = false;
-        private PanelBehaviour _previousPanel;
-        private float _heightOffset;
-        private KnockbackBehaviour _knockbackBehaviour;
-        private MeshFilter _meshFilter;
-        private Collider _collider;
+        [SerializeField]
+        [Tooltip("If true the object will be allowed to move diagonally on the grid.")]
+        private bool _canMoveDiagonally;
+
         [SerializeField]
         [Tooltip("If true, the object will instantly move to its current position when the start function is called.")]
         private bool _moveOnStart = true;
-        private Tweener _moveTween;
         [SerializeField]
         [Tooltip("If true, the object will cast a ray to check if it is currently behind a barrier.")]
         private bool _checkIfBehindBarrier;
         [SerializeField]
         [Tooltip("If true, the object is behind a barrier. Only updated if check if behind barrier is true")]
         private bool _isBehindBarrier;
-        [SerializeField]
-        [Tooltip("The amount speed will be reduced when moving from an opponent panel.")]
-        private float _opponentPanelSpeedReduction;
-        [SerializeField]
-        [Tooltip("If true the object will be allowed to move diagonally on the grid.")]
-        private bool _canMoveDiagonally;
+
+        private Tweener _moveTween;
+        private FloatVariable _maxYPosition;
+        private Vector3 _targetPosition;
+        private PanelBehaviour _targetPanel = null;
+        private PanelBehaviour _currentPanel;
+        private GameEventListener _moveEnabledEventListener;
+        private GridGame.GameEventListener _moveDisabledEventListener;
+        private GridGame.GameEventListener _onMoveBegin;
+        private GridGame.GameEventListener _onMoveBeginTemp;
+        private GridGame.GameEventListener _onMoveEnd;
+        private GridGame.GameEventListener _onMoveEndTemp;
+        private PanelBehaviour _previousPanel;
+        private float _heightOffset;
+        private MeshFilter _meshFilter;
         private bool _searchingForSafePanel;
         private ParticleSystem _returnEffect;
         private SkinnedMeshRenderer _renderer;
@@ -164,7 +166,7 @@ namespace Lodis.Movement
         /// </summary>
         public Vector2 Position
         {
-            get { return _currentPanel.Position; }
+            get { return _position; }
             set { _position = value; }
         }
 
@@ -242,6 +244,7 @@ namespace Lodis.Movement
         public bool CanBeWalkedThrough { get => _canBeWalkedThrough; set => _canBeWalkedThrough = value; }
         public float HeightOffset { get => _heightOffset; private set => _heightOffset = value; }
         public bool CanMoveDiagonally { get => _canMoveDiagonally; set => _canMoveDiagonally = value; }
+        public bool CanCancelMovement { get => _canCancelMovement; set => _canCancelMovement = value; }
 
         private void Awake()
         {
@@ -266,13 +269,11 @@ namespace Lodis.Movement
             _onMoveEndTemp = gameObject.AddComponent<GridGame.GameEventListener>();
             _onMoveEndTemp.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
 
-            _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
             _renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
             //Set the starting position
             _targetPosition = transform.position;
             _meshFilter = GetComponent<MeshFilter>();
-            _collider = GetComponent<Collider>();
 
         }
 
@@ -295,7 +296,6 @@ namespace Lodis.Movement
             else
                 _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
-            _tempAlignment = _defaultAlignment;
             if (CompareTag("Player") || CompareTag("Entity"))
                 BlackBoardBehaviour.Instance.AddEntityToList(gameObject);
         }
@@ -400,7 +400,6 @@ namespace Lodis.Movement
 
             _moveEnabledAction = RoutineBehaviour.Instance.StartNewConditionAction(args => EnableMovement(), enableCondition);
             _moveDisabledEventListener.Invoke(gameObject);
-            _tempAlignment = Alignment;
         }
 
         /// <summary>
@@ -412,7 +411,7 @@ namespace Lodis.Movement
         /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
         /// its destination. If false, movement is stopped immediately.</param>
         /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
-        public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true, bool overridesMoveCondition = false)
+        public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true)
         {
             if (!_canMove)
                 return;
@@ -431,12 +430,13 @@ namespace Lodis.Movement
             _moveEnabledEventListener.IntendedSender = intendedSender;
             _moveEnabledEventListener.AddAction(() => { _canMove = true; });
             _moveDisabledEventListener.Invoke(gameObject);
-            _tempAlignment = Alignment;
         }
 
+        /// <summary>
+        /// Allows this object to move on the grid again and raises the move enabled event.
+        /// </summary>
         public void EnableMovement()
         {
-            _movementEnableCheck = null;
             _canMove = true;
             _isMoving = false;
             _moveEnabledEventListener.Invoke(gameObject);
@@ -473,7 +473,6 @@ namespace Lodis.Movement
                 CurrentPanel.Occupied = !CanBeWalkedThrough;
 
             MoveDirection = Vector2.zero;
-            _tempAlignment = Alignment;
         }
 
         /// <summary>
@@ -507,12 +506,10 @@ namespace Lodis.Movement
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
-            else
-                _tempAlignment = tempAlignment;
 
-            if (IsMoving && !canCancelMovement || !_canMove)
+            if (IsMoving && !CanCancelMovement || !_canMove)
                 return false;
-            else if (canCancelMovement && IsMoving)
+            else if (CanCancelMovement && IsMoving)
                 CancelMovement();
 
             if (!CanMoveDiagonally && panelPosition.x != _position.x && panelPosition.y != _position.y)
@@ -576,10 +573,8 @@ namespace Lodis.Movement
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
-            else
-                _tempAlignment = tempAlignment;
 
-            if (IsMoving && !canCancelMovement ||!_canMove)
+            if (IsMoving && !CanCancelMovement ||!_canMove)
                 return false;
 
             if (!CanMoveDiagonally && x != _position.x && y != _position.y)
@@ -638,13 +633,11 @@ namespace Lodis.Movement
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
-            else
-                _tempAlignment = tempAlignment;
 
             if (!targetPanel)
                 return false;
 
-            if (IsMoving && !canCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
+            if (IsMoving && !CanCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
                 return false;
 
             //To Do: This section should make this function prevent diagonal movement based on the "_canMoveDiagonally" boolean
@@ -699,6 +692,13 @@ namespace Lodis.Movement
             return true;
         }
 
+        /// <summary>
+        /// Moves this object to another location and plays the teleportation effect. 
+        /// Will move regardless of movement rules like like being unable to move onto occupied panels.
+        /// </summary>
+        /// <param name="panel">The panel to teleport to. Spawns the character on top of the panel using its height offset.</param>
+        /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
+        /// <returns>Returns false if the panel is null.</returns>
         public bool TeleportToPanel(PanelBehaviour panel, float travelTime = 0.05f)
         {
             if (!panel)
@@ -722,12 +722,38 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Moves this object to another location and plays the teleportation effect. 
+        /// Will move regardless of movement rules like like being unable to move onto occupied panels.
+        /// </summary>
+        /// <param name="position">Spawns the character at the exact position given ignoring the height offset.</param>
+        /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
+        public void TeleportToLocation(Vector3 position, float travelTime = 0.05f, bool setInactive = true)
+        {
+
+            RoutineBehaviour.Instance.StopAction(_teleportAction);
+
+            _onTeleportStart?.Raise(gameObject);
+            SpawnTeleportEffect();
+
+            if (setInactive)
+                gameObject.SetActive(false);
+
+            _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                gameObject.transform.position = position;
+                gameObject.SetActive(true);
+                _onTeleportEnd?.Raise(gameObject);
+                SpawnTeleportEffect();
+            },TimedActionCountType.SCALEDTIME, travelTime);
+        }
+
+        /// <summary>
         /// Moves this object to the panel it should be resting on
         /// </summary>
         private void MoveToCurrentPanel()
         {
 
-            if (IsMoving && !canCancelMovement || !_canMove)
+            if (IsMoving && !CanCancelMovement || !_canMove)
                 return;
 
             //If it's not possible to move to the panel at the given position, return false.
@@ -861,6 +887,21 @@ namespace Lodis.Movement
             _currentPanel.Occupied = !CanBeWalkedThrough;
             _isMoving = false;
             _targetPosition = Vector3.zero;
+        }
+
+        public float GetAlignmentX()
+        {
+            switch (Alignment)
+            {
+                case GridAlignment.LEFT:
+                    return 1;
+                case GridAlignment.RIGHT:
+                    return -1;
+                case GridAlignment.ANY:
+                    return 2;
+                default:
+                    return 0;
+            }
         }
 
         private void OnDestroy()

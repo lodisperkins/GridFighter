@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Lodis.Movement.GridPhysicsBehaviour">
+    <Position X="15.5" Y="2.75" Width="3.5" />
+    <Members>
+      <Field Name="_acceleration" Hidden="true" />
+      <Field Name="_bounceCollider" Hidden="true" />
+      <Field Name="_bounceCombination" Hidden="true" />
+      <Field Name="_bounceDampen" Hidden="true" />
+      <Field Name="_bounciness" Hidden="true" />
+      <Field Name="_bufferedJump" Hidden="true" />
+      <Field Name="_constantForceBehaviour" Hidden="true" />
+      <Field Name="_currentCoroutine" Hidden="true" />
+      <Field Name="_faceHeading" Hidden="true" />
+      <Field Name="_freezeAction" Hidden="true" />
+      <Field Name="_frozenStoredForce" Hidden="true" />
+      <Field Name="_frozenVelocity" Hidden="true" />
+      <Field Name="_gravity" Hidden="true" />
+      <Field Name="_groundedBoxExtents" Hidden="true" />
+      <Field Name="_groundedBoxPosition" Hidden="true" />
+      <Field Name="_ignoreForces" Hidden="true" />
+      <Field Name="_isFrozen" Hidden="true" />
+      <Field Name="_isGrounded" Hidden="true" />
+      <Field Name="_jumpSequence" Hidden="true" />
+      <Field Name="_lastForceAdded" Hidden="true" />
+      <Field Name="_lastVelocity" Hidden="true" />
+      <Field Name="_mass" Hidden="true" />
+      <Field Name="_maxMagnitude" Hidden="true" />
+      <Field Name="_movementBehaviour" Hidden="true" />
+      <Field Name="_normalForce" Hidden="true" />
+      <Field Name="_objectAtRest" Hidden="true" />
+      <Field Name="_onCollision" Hidden="true" />
+      <Field Name="_onCollisionWithGround" Hidden="true" />
+      <Field Name="_onForceAdded" Hidden="true" />
+      <Field Name="_onForceAddedTemp" Hidden="true" />
+      <Field Name="_onForceStart" Hidden="true" />
+      <Field Name="_panelBounceEnabled" Hidden="true" />
+      <Field Name="_rangeToIgnoreUpAngle" Hidden="true" />
+      <Field Name="_rigidbody" Hidden="true" />
+      <Field Name="_useGravity" Hidden="true" />
+      <Field Name="_useVelocityForBounce" Hidden="true" />
+      <Field Name="_wait" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AIQFgCQAEiLM7CIXjQKRmEEgAgEgZoAMQlgcSWSAAUA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\GridPhysicsBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Movement.KnockbackBehaviour">
+    <Position X="19.25" Y="2.75" Width="3.5" />
+    <Members>
+      <Field Name="_currentAirState" Hidden="true" />
+      <Field Name="_freeFallGroundedPoint" Hidden="true" />
+      <Field Name="_freeFallGroundedPointExtents" Hidden="true" />
+      <Field Name="_gravityIncreaseRate" Hidden="true" />
+      <Field Name="_gravityIncreaseTimer" Hidden="true" />
+      <Field Name="_gravityIncreaseValue" Hidden="true" />
+      <Field Name="_gridPhysicsBehaviour" Hidden="true" />
+      <Field Name="_hasExploded" Hidden="true" />
+      <Field Name="_hitStunTimer" Hidden="true" />
+      <Field Name="_idleGroundedPoint" Hidden="true" />
+      <Field Name="_idleGroundedPointExtents" Hidden="true" />
+      <Field Name="_inHitStun" Hidden="true" />
+      <Field Name="_isFlinching" Hidden="true" />
+      <Field Name="_landingBehaviour" Hidden="true" />
+      <Field Name="_lastBaseKnockBack" Hidden="true" />
+      <Field Name="_lastTimeInKnockBack" Hidden="true" />
+      <Field Name="_lastTotalKnockBack" Hidden="true" />
+      <Field Name="_launchForce" Hidden="true" />
+      <Field Name="_maxMagnitude" Hidden="true" />
+      <Field Name="_minimumLaunchMagnitude" Hidden="true" />
+      <Field Name="_movementBehaviour" Hidden="true" />
+      <Field Name="_netForceLandingTolerance" Hidden="true" />
+      <Field Name="_newPanelPosition" Hidden="true" />
+      <Field Name="_onHitStun" Hidden="true" />
+      <Field Name="_onHitStunTemp" Hidden="true" />
+      <Field Name="_onKnockBack" Hidden="true" />
+      <Field Name="_onKnockBackStart" Hidden="true" />
+      <Field Name="_onKnockBackStartTemp" Hidden="true" />
+      <Field Name="_onKnockBackTemp" Hidden="true" />
+      <Field Name="_onTakeDamageStart" Hidden="true" />
+      <Field Name="_onTakeDamageStartTemp" Hidden="true" />
+      <Field Name="_onTakeDamageTemp" Hidden="true" />
+      <Field Name="_outOfBounds" Hidden="true" />
+      <Field Name="_startGravity" Hidden="true" />
+      <Field Name="_timeInCurrentHitStun" Hidden="true" />
+      <Field Name="_velocityDecayRate" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>m4QkwAAhDiEEAQLQIBrEucAAEVZJGAy5BUMBhEYDkkA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\KnockbackBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Lodis.Movement.BounceCombination">
+    <Position X="13.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAACAAAAAAAAAAAAAAgAAAAAAACAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\GridPhysicsBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Lodis.Movement.AirState" Collapsed="true">
+    <Position X="23" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAAQAAABAAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\KnockbackBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="Lodis.Movement.ForceAddedEvent">
+    <Position X="13.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Movement\GridPhysicsBehaviour.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

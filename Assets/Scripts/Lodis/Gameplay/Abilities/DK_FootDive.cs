@@ -60,12 +60,12 @@ namespace Lodis.Gameplay
             _distance = abilityData.GetCustomStatValue("TravelDistance");
             _jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
             _chargeEffectRef = (GameObject)Resources.Load("Effects/RisingChargeEffect");
-            _spawnTransform = _ownerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[0] : OwnerMoveset.LeftMeleeSpawns[0];
+            _spawnTransform = _ownerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
         }
 
-        protected override void Start(params object[] args)
+        protected override void OnStart(params object[] args)
         {
-            base.Start();
+            base.OnStart();
             //Disable character movement so the jump isn't interrupted
             _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
 
@@ -81,7 +81,7 @@ namespace Lodis.Gameplay
         }
 
         //Called when ability is used
-        protected override void Activate(params object[] args)
+        protected override void OnActivate(params object[] args)
         {
             Object.Destroy(_chargeEffect);
             //Create collider for character fists
@@ -113,26 +113,28 @@ namespace Lodis.Gameplay
             if (_opponentPhysics?.PanelBounceEnabled == true)
                 return;
 
+            float bounciness = abilityData.GetCustomStatValue("OpponentBounciness");
+
             //Enable the panel bounce and set the temporary bounce value using the custom bounce stat.
             _opponentPhysics.EnablePanelBounce(false);
             _oldBounciness = _opponentPhysics.Bounciness;
-            _opponentPhysics.Bounciness = abilityData.GetCustomStatValue("OpponentBounciness");
+            _opponentPhysics.Bounciness = bounciness;
 
             //Starts a new delayed action to disable the panel bouncing after it has bounced once. 
             RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce(); _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded);
         }
 
-        protected override void Deactivate()
+        protected override void OnDeactivate()
         {
-            base.Deactivate();
+            base.OnDeactivate();
 
             if (_hitScript)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);
         }
 
-        protected override void End()
+        protected override void OnEnd()
         {
-            base.End();
+            base.OnEnd();
             //Enable bouncing
             _knockBackBehaviour.Physics.DisablePanelBounce();
             if (_visualPrefabInstance)

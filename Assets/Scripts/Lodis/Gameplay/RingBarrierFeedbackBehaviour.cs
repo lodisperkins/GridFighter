@@ -8,18 +8,24 @@ namespace Lodis.Gameplay
     public class RingBarrierFeedbackBehaviour : MonoBehaviour
     {
         private RingBarrierBehaviour _health;
+        [Tooltip("The mesh of the game object that is the visual representation of the barrier.")]
         [SerializeField] private MeshRenderer _visual;
-        [SerializeField] private Gradient _healthGradient;
-        [SerializeField] [Range(0,1)] private float _maxTransparency;
-        [SerializeField] private float _fadeInDuration;
-        [SerializeField] private float _fadeOutDuration;
+        [Tooltip("The textures that will be used to display the barriers battle damage. The textures should be ordered from smallest to greatest damage.")]
         [SerializeField] private Texture2D[] _targetEmissionTextures;
+        [Tooltip("How intense the glow of the damage textures are.")]
         [SerializeField] private float _crackedEmissionStrength;
+        [Tooltip("The particles that will spawn when the barrier is broken.")]
         [SerializeField] private GameObject[] _deathParticles;
+
+        [Tooltip("The support at the top of the barrier.")]
         [SerializeField] private GameObject _topSupport;
+        [Tooltip("The replacement support bar that spawns when the barrier explodes.")]
         [SerializeField] private Rigidbody _topSupportInactive;
+        [Tooltip("The the velocity applied to the replacement support bar when the barrier explodes.")]
         [SerializeField] private Vector3 _supportVelocity;
+        [Tooltip("The renderer attached to the inner portion of the barrier that displays the shield effect.")]
         [SerializeField] private MeshRenderer _innerShieldRenderer;
+
         [SerializeField] private AudioClip _damageSound;
         [SerializeField] private AudioClip _destroyedSound;
         private Material _emissionMat;
@@ -48,6 +54,9 @@ namespace Lodis.Gameplay
             _emissionMat = _innerShieldRenderer.material;
         }
 
+        /// <summary>
+        /// Makes the visual game object visible again, disables death particles, and removes the damage textures.
+        /// </summary>
         public void ResetVisuals()
         {
             _visual.gameObject.SetActive(true);
@@ -68,6 +77,9 @@ namespace Lodis.Gameplay
             UpdateCracks();
         }
 
+        /// <summary>
+        /// Makes the barrier explode and become invisible.
+        /// </summary>
         private void DeactivateBarrier()
         {
             _visual.gameObject.SetActive(false);
@@ -82,6 +94,9 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StartNewTimedAction(args => _topSupportInactive.AddForce(_supportVelocity, ForceMode.Impulse), TimedActionCountType.UNSCALEDTIME, Time.fixedDeltaTime);
         }
 
+        /// <summary>
+        /// Changes the damage texture to a new one based on the current health.
+        /// </summary>
         private void UpdateCracks()
         {
             float currentHealthPercentage = _health.Health / _health.MaxHealth.Value;

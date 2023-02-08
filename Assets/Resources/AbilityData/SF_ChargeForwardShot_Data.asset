@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SF_ChargeForwardShot_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   abilityName: ChargeForwardShot
+  abilityDescription: None
   AbilityType: 6
   timeActive: 0.2
   recoverTime: 0.1
@@ -25,7 +26,7 @@ MonoBehaviour:
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
+  CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 0
   CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
@@ -50,14 +51,14 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 15
+    Damage: 8
     BaseKnockBack: 2
     KnockBackScale: 0.5
     HitAngle: 1.3
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.3
-    Priority: 1
+    Priority: 2
     OwnerAlignement: 0
     AbilityType: 6
     SpawnEffect: {fileID: 6814929850833701180, guid: 0693a339a1c2f284695c43e038a8b3a8,
