@@ -69,13 +69,13 @@ Material:
     - Smoothness: 0
     - USENORMAL: 0
     - _AlphaClip: 0
-    - _AmbientStrength: 2.02
+    - _AmbientStrength: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
-    - _EmissionStrength: 53.11
+    - _EmissionStrength: 9.53
     - _EnvironmentReflections: 1
     - _FalloffAmount: 0
     - _FresnelSize: 0
@@ -92,13 +92,13 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _Transparency: 1
-    - _UseEmission: 0
+    - _UseEmission: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 0, b: 0, a: 0.29803923}
-    - _EmissionColor: {r: 0, g: 0.0512764, b: 0.084905684, a: 1}
+    - _Color: {r: 0.2800312, g: 0, b: 1, a: 0.105882354}
+    - _EmissionColor: {r: 0.06016379, g: 0.4359149, b: 0.9811321, a: 1}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
