@@ -180,6 +180,21 @@ namespace Lodis.Gameplay
 
             return null;
         }
+        
+        /// <summary>
+        /// Gets the state of the player that matches the ID
+        /// </summary>
+        /// <param name="id">The player's ID</param>
+        /// <returns></returns>
+        public GameObject GetPlayerFromID(int id)
+        {
+            if (id == 1)
+                return Player1;
+            else if(id == 2)
+                return Player2;
+
+            return null;
+        }
 
         /// <summary>
         /// Gets a reference to the player that is aligned with the given side

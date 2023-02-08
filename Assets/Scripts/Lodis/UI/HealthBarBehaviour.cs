@@ -8,7 +8,7 @@ namespace Lodis.Gameplay
     public class HealthBarBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private GameObject _target;
+        private int _targetID;
 
         private HealthBehaviour _healthComponent;
         [SerializeField]
@@ -26,11 +26,8 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
-            if (_target)
-            {
-                HealthComponent = _target.GetComponent<HealthBehaviour>();
-                MaxValue = HealthComponent.MaxHealth.Value;
-            }
+            HealthComponent = BlackBoardBehaviour.Instance.GetPlayerFromID(_targetID).GetComponent<HealthBehaviour>();
+            MaxValue = HealthComponent.MaxHealth.Value;
 
             _slider = GetComponent<Slider>();
             _fill.color = _healthGradient.Evaluate(1f);

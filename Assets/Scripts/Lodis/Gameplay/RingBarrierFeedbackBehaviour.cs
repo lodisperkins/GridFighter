@@ -9,16 +9,13 @@ namespace Lodis.Gameplay
     {
         private RingBarrierBehaviour _health;
         [Tooltip("The mesh of the game object that is the visual representation of the barrier.")]
-        [SerializeField] private MeshRenderer _visual;
+        [SerializeField] private GameObject _visual;
         [Tooltip("The textures that will be used to display the barriers battle damage. The textures should be ordered from smallest to greatest damage.")]
         [SerializeField] private Texture2D[] _targetEmissionTextures;
         [Tooltip("How intense the glow of the damage textures are.")]
         [SerializeField] private float _crackedEmissionStrength;
         [Tooltip("The particles that will spawn when the barrier is broken.")]
-        [SerializeField] private GameObject[] _deathParticles;
-
-        [Tooltip("The support at the top of the barrier.")]
-        [SerializeField] private GameObject _topSupport;
+        [SerializeField] private GameObject _effects;
         [Tooltip("The replacement support bar that spawns when the barrier explodes.")]
         [SerializeField] private Rigidbody _topSupportInactive;
         [Tooltip("The the velocity applied to the replacement support bar when the barrier explodes.")]
@@ -30,6 +27,8 @@ namespace Lodis.Gameplay
         [SerializeField] private AudioClip _destroyedSound;
         private Material _emissionMat;
         private Color _emissionColor;
+        private Vector3 _inactiveSupportPosition;
+        private Quaternion _inactiveSupportRotation;
 
         // Start is called before the first frame update
         void Awake()
@@ -47,6 +46,9 @@ namespace Lodis.Gameplay
                 SoundManagerBehaviour.Instance.PlaySound(_destroyedSound);
             }
             );
+
+            _inactiveSupportPosition = _topSupportInactive.position;
+            _inactiveSupportRotation = _topSupportInactive.rotation;
         }
 
         void Start()
@@ -61,18 +63,13 @@ namespace Lodis.Gameplay
         {
             _visual.gameObject.SetActive(true);
 
-            for (int i = 0; i < _deathParticles.Length; i++)
-            {
-                _deathParticles[i].SetActive(false);
-            }
-
-            _topSupport.SetActive(true);
+            _effects.SetActive(false);
 
             _topSupportInactive.gameObject.SetActive(false);
             _topSupportInactive.velocity = Vector3.zero;
             _topSupportInactive.angularVelocity = Vector3.zero;
-            _topSupportInactive.transform.position = _topSupport.transform.position;
-            _topSupportInactive.transform.rotation = _topSupport.transform.rotation;
+            _topSupportInactive.transform.position = _inactiveSupportPosition;
+            _topSupportInactive.transform.rotation = _inactiveSupportRotation;
 
             UpdateCracks();
         }
@@ -80,16 +77,14 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Makes the barrier explode and become invisible.
         /// </summary>
-        private void DeactivateBarrier()
+        public void DeactivateBarrier(bool spawnEffects = true)
         {
             _visual.gameObject.SetActive(false);
 
-            for (int i = 0; i < _deathParticles.Length; i++)
-            {
-                _deathParticles[i].SetActive(true);
-            }
+            if (!spawnEffects)
+                return;
 
-            _topSupport.SetActive(false);
+            _effects.SetActive(true);
             _topSupportInactive.gameObject.SetActive(true);
             RoutineBehaviour.Instance.StartNewTimedAction(args => _topSupportInactive.AddForce(_supportVelocity, ForceMode.Impulse), TimedActionCountType.UNSCALEDTIME, Time.fixedDeltaTime);
         }
