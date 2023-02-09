@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3615996150654089962}
   - component: {fileID: 6076612309724207451}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_disc_mesh_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 1753009448603398212}
   - component: {fileID: 7101234089276156119}
   - component: {fileID: 4170731689463613367}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Rainbow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4846,7 +4846,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2758318825500193487}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_04_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4876,7 +4876,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2953130400904268060}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_02_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4908,7 +4908,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6581288776408839978}
   - component: {fileID: 2574793815463271076}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_07_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4990,7 +4990,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1011600082271271671}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Thumb_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5021,7 +5021,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4143457580990699493}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Leg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5052,7 +5052,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2164122041335740764}
   - component: {fileID: 5665339203748331548}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_disc_mesh_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5134,7 +5134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3362325841104993842}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_04_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5166,7 +5166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3375488842643854224}
   - component: {fileID: 113591955004876596}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_disc_mesh_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5248,7 +5248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4522445839719778203}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_02_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5280,7 +5280,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8733087109936612697}
   - component: {fileID: 2862567400520607733}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_disc_mesh_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5362,7 +5362,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6893230126831714224}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Leg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5393,7 +5393,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8111652456701853549}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_03_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5424,7 +5424,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6741483039912683836}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Arm_ShoulderSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5455,7 +5455,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3865316152058284981}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Arm_ClavicleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5486,7 +5486,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4493660205373494340}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5517,7 +5517,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8691618419493631811}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5548,7 +5548,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3424598818334534418}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Head_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5580,7 +5580,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8216099489624204238}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_03_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5610,7 +5610,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7072521479637837412}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5641,7 +5641,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6535828335420746638}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_03_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5674,7 +5674,7 @@ GameObject:
   - component: {fileID: 8831590405233985418}
   - component: {fileID: 353829044700204999}
   - component: {fileID: 4800081937229335257}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Halo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10426,7 +10426,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6651410831541852194}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_04_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10457,7 +10457,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3034640515334675470}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Leg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10489,7 +10489,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5390133350862165523}
   - component: {fileID: 6221090839160468193}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_disc_mesh_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10571,7 +10571,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8215714521646227090}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Thumb_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10603,7 +10603,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3628865972704789753}
   - component: {fileID: 2583311117453218959}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_03_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10685,7 +10685,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4720867334395886673}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Spine_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10718,7 +10718,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4687058934508856781}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Leg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10750,7 +10750,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4236665709444133967}
   - component: {fileID: 8212253843110714372}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_earpiece_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10833,7 +10833,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8478362894438899785}
   - component: {fileID: 6039602993413332472}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_base_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10915,7 +10915,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2009822574097701949}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_04_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10945,7 +10945,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5521709778626495316}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Arm_WristSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10980,7 +10980,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5745678282464963102}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_04_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11011,7 +11011,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3038184983800080341}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_02_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11042,7 +11042,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3381026824320238984}
   - component: {fileID: 6667838982244578951}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_disc_mesh_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11124,7 +11124,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3266014282673871707}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11156,7 +11156,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7512316538849084098}
   - component: {fileID: 7692506028044951760}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_boot_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11247,7 +11247,7 @@ GameObject:
   - component: {fileID: 7367285399427261036}
   - component: {fileID: 5776143877796640126}
   - component: {fileID: 8030163426240748375}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Glow_Faint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15999,7 +15999,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3355355357017518188}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_03_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16031,7 +16031,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4603388841468362289}
   - component: {fileID: 193074867719140374}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_02_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16114,7 +16114,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5814607210743023739}
   - component: {fileID: 6589212742692352549}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_08_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16197,7 +16197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1063310773352731361}
   - component: {fileID: 7031198123262661881}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hairtie_02_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16279,7 +16279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8571854399920646860}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Spine_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16310,7 +16310,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5720375626439087953}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Eye_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16340,7 +16340,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7998027657678943797}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Neck_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16373,7 +16373,7 @@ GameObject:
   - component: {fileID: 5999766630591797618}
   - component: {fileID: 6009798042177229445}
   - component: {fileID: 3160332635259124937}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21134,7 +21134,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3061178970735073544}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Thumb_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21166,7 +21166,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4303281634056368274}
   - component: {fileID: 575686298880986375}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_05_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21248,7 +21248,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5548067733656326447}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Thumb_01_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21279,7 +21279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 659466321180009912}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21320,7 +21320,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4645033718793752425}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Eye_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21350,7 +21350,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7872613069163073695}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_02_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21381,7 +21381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5042584778917742969}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: visor_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21416,7 +21416,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7071493960543301630}
   - component: {fileID: 753366569560922515}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_armpiece_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21499,7 +21499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6551964132867539823}
   - component: {fileID: 6976260252336373854}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_ear_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21582,7 +21582,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7073088841561756525}
   - component: {fileID: 3825604228404265513}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_ear_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21664,7 +21664,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1856868033136899207}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21697,7 +21697,7 @@ GameObject:
   - component: {fileID: 3743494280243038858}
   - component: {fileID: 8055755934275106734}
   - component: {fileID: 7235926492039768403}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Glow_Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26451,7 +26451,7 @@ GameObject:
   - component: {fileID: 842155217521307687}
   - component: {fileID: 7689109381719955388}
   - component: {fileID: 913119526619827365}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: DeathSparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31216,7 +31216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8180706724816752356}
   - component: {fileID: 4832047226252326468}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_earpiece_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31299,7 +31299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4465716752144706236}
   - component: {fileID: 1933556203757899663}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_disc_mesh_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31381,7 +31381,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 510956350088750928}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Arm_ClavicleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -31414,7 +31414,7 @@ GameObject:
   - component: {fileID: 2374762288338386834}
   - component: {fileID: 4085356087548447092}
   - component: {fileID: 7922153612787911999}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Lightning_Sparks_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36166,7 +36166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6297398588511198811}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Thumb_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36198,7 +36198,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8813270619827225076}
   - component: {fileID: 2598439863227179699}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_boot_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -36289,7 +36289,7 @@ GameObject:
   - component: {fileID: 6478838502761545283}
   - component: {fileID: 2833335474981907999}
   - component: {fileID: 4692260471252858831}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Glow_Black
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41041,7 +41041,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3074057908824839474}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Spine_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41073,7 +41073,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4104032164857380440}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_04_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41104,7 +41104,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1227677443184825397}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Arm_ElbowSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41135,7 +41135,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2536595797782075553}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Spine_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41166,7 +41166,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5549461761682194348}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Thumb_01_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41197,7 +41197,7 @@ GameObject:
   m_Component:
   - component: {fileID: 973584705309375892}
   - component: {fileID: 120200198450445766}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_disc_mesh_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41279,7 +41279,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8408258821974686489}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Arm_WristSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41316,7 +41316,7 @@ GameObject:
   - component: {fileID: 5845527112586134107}
   - component: {fileID: 4588369928101340990}
   - component: {fileID: 358750749830569337}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Light_Rays
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46069,7 +46069,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8060751492521916485}
   - component: {fileID: 2884864070713560347}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: visorbands_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46153,7 +46153,7 @@ GameObject:
   - component: {fileID: 5143410377836076619}
   - component: {fileID: 5685018945547557120}
   - component: {fileID: 655066328945069172}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Center
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50905,7 +50905,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3457535972023153114}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Leg_ToeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50935,7 +50935,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7869248295997003546}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Thumb_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50966,7 +50966,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3939509711936096416}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Leg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50997,7 +50997,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5380843188674252279}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_ROOTSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51031,7 +51031,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8775128093376567694}
   - component: {fileID: 213481573212677398}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: body_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51179,7 +51179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7290413335179845719}
   - component: {fileID: 4953123691357363487}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_09_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51261,7 +51261,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5319873143073376486}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_01_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51292,7 +51292,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8127373617805143241}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_02_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51323,7 +51323,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6494323768906694080}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_SHJntGrp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51355,7 +51355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3329172778563841196}
   - component: {fileID: 1273993353005896997}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: chestpiece_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51450,7 +51450,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4433248496747077358}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Leg_HipSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51481,7 +51481,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5929769010001481260}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_03_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51511,7 +51511,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4328617597865969189}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_01_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51543,7 +51543,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9019254906250817328}
   - component: {fileID: 354209370461537489}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_armpiece_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51625,7 +51625,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1690028903419902540}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Arm_ShoulderSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51656,7 +51656,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8645285695482237596}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_04_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51687,7 +51687,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2146225096739343914}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: body_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51723,7 +51723,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 220974973120694855}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Leg_AnkleSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51754,7 +51754,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4610801962351207763}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_01_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51785,7 +51785,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6608280463274236964}
   - component: {fileID: 3297886460341345997}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: eyes_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51867,7 +51867,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6134105783002568892}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_02_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51900,7 +51900,7 @@ GameObject:
   - component: {fileID: 2180702132719603328}
   - component: {fileID: 7166213934184527662}
   - component: {fileID: 6812757073346975593}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Lightning_Orb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56652,7 +56652,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8676847972483334854}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GF_proto_character_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56688,7 +56688,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9157407436629561493}
   - component: {fileID: 90169120775918617}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_disc_mesh_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56771,7 +56771,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8086382083717262347}
   - component: {fileID: 7813261794133912699}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_01_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56855,7 +56855,7 @@ GameObject:
   - component: {fileID: 2104436284930041802}
   - component: {fileID: 851096312786352923}
   - component: {fileID: 8025887123133942529}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Glow_Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61607,7 +61607,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 923863848790756490}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Arm_ElbowSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -61640,7 +61640,7 @@ GameObject:
   - component: {fileID: 4699906510584855790}
   - component: {fileID: 1217583265314759926}
   - component: {fileID: 6293871406024660859}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: Lightning_Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66402,7 +66402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5182114168093316325}
   - component: {fileID: 6767040547840581300}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: centerdisc_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66491,7 +66491,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 570503850856485793}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_04_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66522,7 +66522,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1192712443273548772}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_02_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66554,7 +66554,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7456878045274152614}
   - component: {fileID: 8326822394354513153}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: r_disc_mesh_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66636,7 +66636,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1176496389905571423}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: discs_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66679,7 +66679,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 289750470429861711}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_01_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66710,7 +66710,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4298497002830579304}
   - component: {fileID: 1675786361458130368}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_04_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66792,7 +66792,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3185907877020235734}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_03_02SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66823,7 +66823,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1305814161989922504}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_02_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66853,7 +66853,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5295346360021273769}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Neck_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66884,7 +66884,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3042155764102921927}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Head_JawSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66915,7 +66915,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4745328781573837398}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Leg_KneeSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66946,7 +66946,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4975164763110414763}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: armor_02_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66982,7 +66982,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2019522426252878776}
   - component: {fileID: 1753453107853248353}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_disc_mesh_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67064,7 +67064,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4651752231090850579}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Leg_BallSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67096,7 +67096,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8814230440664344102}
   - component: {fileID: 4063353117980412847}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: visorscreen_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67179,7 +67179,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4469560752033897499}
   - component: {fileID: 7902607109720004740}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: l_disc_mesh_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67262,7 +67262,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7390711239690828876}
   - component: {fileID: 1675911470429824156}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: nose_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67344,7 +67344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5740962014347265404}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Head_JawEndSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67374,7 +67374,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2165120216071029495}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Neck_TopSHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67406,7 +67406,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1254584030050776731}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_Spine_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67437,7 +67437,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4777802597004036816}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Finger_03_03SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67469,7 +67469,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7293970574355181715}
   - component: {fileID: 591944849678687814}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: mouth_low
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67508,7 +67508,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 398e4dbf80fcf394a8ec3948d63daf44, type: 2}
+  - {fileID: 2100000, guid: 9e33ad11d1055f84a9f9ef04f647e305, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67552,7 +67552,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1765655473946893358}
   - component: {fileID: 2050123420710247079}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: hair_02_strand_06_mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67634,7 +67634,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7060323833573795387}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_l_Finger_03_01SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67665,7 +67665,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3238529198069881102}
-  m_Layer: 9
+  m_Layer: 23
   m_Name: GridFighterBase_r_Thumb_01_04SHJnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67763,6 +67763,21 @@ PrefabInstance:
       propertyPath: _meshRenderer
       value: 
       objectReference: {fileID: 213481573212677398}
+    - target: {fileID: 755719142905574258, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 755719142961102140, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
+    - target: {fileID: 1116720594787510076, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 8388608
+      objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.size
@@ -68463,6 +68478,31 @@ PrefabInstance:
       propertyPath: _currentMesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7352755145141035481, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771075552791449285, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771075552791449285, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771075552791449285, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7771075552791449285, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 8388608
+      objectReference: {fileID: 0}
     - target: {fileID: 8172829524244689262, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _deathSparks
@@ -68525,6 +68565,11 @@ PrefabInstance:
       propertyPath: _rightMeleeSpawns.Array.data[1]
       value: 
       objectReference: {fileID: 5521709778626495316}
+    - target: {fileID: 9056967475098163082, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 23
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c600a5779f55f8e44a90699633fe29a7, type: 3}
 --- !u!4 &7364712161548007100 stripped

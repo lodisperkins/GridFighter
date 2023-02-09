@@ -66,6 +66,7 @@ namespace Lodis.Gameplay
             _visual.gameObject.SetActive(true);
 
             _effects.SetActive(false);
+            _bottomSupport.SetActive(true);
 
             _topSupportInactive.gameObject.SetActive(false);
             _topSupportInactive.velocity = Vector3.zero;
