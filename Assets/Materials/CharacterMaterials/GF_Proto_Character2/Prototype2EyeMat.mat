@@ -70,7 +70,7 @@ Material:
     - Smoothness: 0.5
     - USENORMAL: 0
     - _AlphaClip: 0
-    - _AmbientStrength: 0.6
+    - _AmbientStrength: 0.5
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2

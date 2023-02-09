@@ -97,8 +97,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.2800312, g: 0, b: 1, a: 0.105882354}
-    - _EmissionColor: {r: 0.06016379, g: 0.4359149, b: 0.9811321, a: 1}
+    - _Color: {r: 0, g: 0.45098042, b: 1, a: 0.050980393}
+    - _EmissionColor: {r: 0.06016379, g: 0.47550246, b: 0.9811321, a: 1}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}

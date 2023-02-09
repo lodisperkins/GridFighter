@@ -100,15 +100,15 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.3931559, g: 0.53170687, b: 0.8962264, a: 1}
-    - _EmissionColor: {r: 0, g: 0.35088015, b: 1, a: 1}
+    - _Color: {r: 0.497152, g: 0.5223327, b: 0.7924528, a: 1}
+    - _EmissionColor: {r: 0, g: 0.0017962456, b: 1, a: 1}
     - _EmissionTiling: {r: 1, g: 1, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _PrimaryColor: {r: 0, g: 0, b: 0, a: 0}
     - _SecondaryColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
-    - _SpecularColor: {r: 0.9433962, g: 0.9433962, b: 0.9433962, a: 0}
+    - _SpecularColor: {r: 0.94509804, g: 0.94509804, b: 0.94509804, a: 1}
     - _TertiaryColor: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
 --- !u!114 &939680317489103089
