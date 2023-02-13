@@ -140,6 +140,7 @@ namespace Lodis.Movement
             {
                 case AirState.TUMBLING:
                     _knockback.CurrentAirState = AirState.NONE;
+                    CanCheckLanding = false;
                     _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(TumblingLanding,
                         TimedActionCountType.SCALEDTIME, _knockDownLandingTime);
                     break;

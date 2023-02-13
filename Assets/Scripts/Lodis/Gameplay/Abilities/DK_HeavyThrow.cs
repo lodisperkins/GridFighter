@@ -88,9 +88,9 @@ namespace Lodis.Gameplay
 
             //Enable the panel bounce and set the temporary bounce value using the custom bounce stat.
             _opponentPhysics.EnablePanelBounce(true);
-
+            string opponentState = BlackBoardBehaviour.Instance.GetPlayerState(_opponentPhysics.gameObject);
             //Starts a new delayed action to disable the panel bouncing after it has bounced once. 
-            RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce();}, condition => _opponentPhysics.IsGrounded);
+            RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce();}, condition => _opponentPhysics.IsGrounded || opponentState != "Tumbling");
         }
 
         //Called when ability is used

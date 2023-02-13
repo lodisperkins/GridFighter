@@ -49,8 +49,8 @@ namespace Lodis.Gameplay
             }
             );
 
-            _inactiveSupportPosition = _topSupportInactive.position;
-            _inactiveSupportRotation = _topSupportInactive.rotation;
+            _inactiveSupportPosition = _topSupportInactive.transform.position;
+            _inactiveSupportRotation = _topSupportInactive.transform.rotation;
         }
 
         void Start()
