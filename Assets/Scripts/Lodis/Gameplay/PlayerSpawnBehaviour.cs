@@ -33,10 +33,12 @@ namespace Lodis.Gameplay
         private PlayerInputManager _inputManager;
         [SerializeField]
         private GameObject _playerRef;
-        [SerializeField]
-        private GameObject _player1CharacterRef;
-        [SerializeField]
-        private GameObject _player2CharacterRef;
+        [SerializeField()]
+        [Tooltip("The data of the character to use when spawning player 1.")]
+        private CharacterData _player1Data;
+        [SerializeField()]
+        [Tooltip("The data of the character to use when spawning player 2.")]
+        private CharacterData _player2Data;
         private IControllable _p1Input;
         private IControllable _p2Input;
         private RingBarrierBehaviour _ringBarrierR;
@@ -48,6 +50,15 @@ namespace Lodis.Gameplay
 
         public Vector2 RHSSpawnLocation { get => _RHSSpawnLocation; private set => _RHSSpawnLocation = value; }
         public Vector2 LHSSpawnLocation { get => _LHSSpawnLocation; private set => _LHSSpawnLocation = value; }
+
+        /// <summary>
+        /// The data of the character to use when spawning player 1.
+        /// </summary>
+        public CharacterData Player1Data { get => _player1Data; set => _player1Data = value; }
+        /// <summary>
+        /// The data of the character to use when spawning player 1.
+        /// </summary>
+        public CharacterData Player2Data { get => _player2Data; set => _player2Data = value; }
         public KnockbackBehaviour P1HealthScript { get => _p1Knockback; }
         public KnockbackBehaviour P2HealthScript { get => _p2Knockback; }
         public bool SuddenDeathActive { get => _suddenDeathActive; set => _suddenDeathActive = value; }
@@ -85,7 +96,7 @@ namespace Lodis.Gameplay
 
             _p2Input = _player2.GetComponent<IControllable>();
 
-            _p2Input.Character = Instantiate(_player2CharacterRef, _player2.transform);
+            _p2Input.Character = Instantiate(_player2Data.CharacterReference, _player2.transform);
 
             _p2Input.Character.name += "(P2)";
             _ringBarrierR.Owner = _p2Input.Character;
@@ -117,7 +128,7 @@ namespace Lodis.Gameplay
 
             _p1Input = _player1.GetComponent<IControllable>();
 
-            _p1Input.Character = Instantiate(_player1CharacterRef, _player1.transform);
+            _p1Input.Character = Instantiate(_player1Data.CharacterReference, _player1.transform);
 
             _p1Input.Character.name += "(P1)";
             _ringBarrierL.Owner = _p1Input.Character;

@@ -6370,7 +6370,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &553712049
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -17291,7 +17291,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1657256369
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -19963,7 +19963,7 @@ PrefabInstance:
     - target: {fileID: 2492379211295133931, guid: 9c0f26416408c3249a6ca0462ece9f65,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8204989528223261235, guid: 9c0f26416408c3249a6ca0462ece9f65,
         type: 3}
@@ -24319,6 +24319,18 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _player1Data
+      value: 
+      objectReference: {fileID: 11400000, guid: d8bcb9ee48e4a9a498847d811eb5e674,
+        type: 2}
+    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _player2Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 567c30f40491a064f90f02a5a10582ab,
+        type: 2}
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _LHSSpawnLocation.x
