@@ -47,7 +47,7 @@ namespace Lodis.Gameplay
         private PanelBehaviour _lhsSpawnPanel;
         private PanelBehaviour _rhsSpawnPanel;
         private bool _suddenDeathActive;
-
+        private SceneManagerBehaviour _sceneManager;
         public Vector2 RHSSpawnLocation { get => _RHSSpawnLocation; private set => _RHSSpawnLocation = value; }
         public Vector2 LHSSpawnLocation { get => _LHSSpawnLocation; private set => _LHSSpawnLocation = value; }
 
@@ -68,6 +68,7 @@ namespace Lodis.Gameplay
             _ringBarrierL = BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ringBarrierR = BlackBoardBehaviour.Instance.RingBarrierRHS;
             _inputManager.playerPrefab = _playerRef;
+            _sceneManager = SceneManagerBehaviour.Instance;
         }
 
         public void SpawnEntitiesByMode(GameMode gameMode)
@@ -92,7 +93,10 @@ namespace Lodis.Gameplay
             if (_mode != GameMode.MULTIPLAYER)
                 _player2 = Instantiate(_dummy.gameObject);
             else
-                _player2 = _inputManager.JoinPlayer(1, 1, "Player", InputSystem.devices[0]).gameObject;
+            {
+                _player2 = _inputManager.JoinPlayer(1, 1, _sceneManager.P2ControlScheme, _sceneManager.P2Devices).gameObject;
+                _player2.GetComponent<InputBehaviour>().Devices = _sceneManager.P2Devices;
+            }
 
             _p2Input = _player2.GetComponent<IControllable>();
 
@@ -107,7 +111,7 @@ namespace Lodis.Gameplay
             _p2StateManager = _p2Input.Character.GetComponent<CharacterStateMachineBehaviour>();
             _p2Knockback = _p2Input.Character.GetComponent<KnockbackBehaviour>();
             _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
-
+            _p2Input.Enabled = true;
             BlackBoardBehaviour.Instance.Player2Controller = _p2Input;
 
             if (_grid.GetPanel(RHSSpawnLocation, out _rhsSpawnPanel, false))
@@ -124,10 +128,13 @@ namespace Lodis.Gameplay
             if (_mode == GameMode.SIMULATE)
                 _player1 = Instantiate(_dummy.gameObject);
             else
-                _player1 = _inputManager.JoinPlayer(0, 0, "Player", InputSystem.devices[0]).gameObject;
+            {
+                _player1 = _inputManager.JoinPlayer(0, 0, _sceneManager.P1ControlScheme, _sceneManager.P1Devices).gameObject;
+                _player1.GetComponent<InputBehaviour>().Devices = _sceneManager.P1Devices;
+            }
+
 
             _p1Input = _player1.GetComponent<IControllable>();
-
             _p1Input.Character = Instantiate(_player1Data.CharacterReference, _player1.transform);
 
             _p1Input.Character.name += "(P1)";
@@ -139,6 +146,7 @@ namespace Lodis.Gameplay
             _p1StateManager = _p1Input.Character.GetComponent<CharacterStateMachineBehaviour>();
             _p1Knockback = _p1Input.Character.GetComponent<KnockbackBehaviour>();
             _p1Input.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
+            
 
             BlackBoardBehaviour.Instance.Player1Controller = _p1Input;
 
@@ -211,54 +219,6 @@ namespace Lodis.Gameplay
             }
         }
 
-        private bool DeviceInputReceived(out InputDevice device)
-        {
-            device = null;
-            InputBehaviour p1Input = (InputBehaviour)_p1Input;
-
-            for (int i = 0; i < InputSystem.devices.Count; i++)
-            {
-                if (InputSystem.devices[i].IsPressed() && !InputSystem.devices[i].name.Contains("Mouse")
-                    && !p1Input.Devices.Contains(InputSystem.devices[i]))
-                {
-                    if (_mode == GameMode.MULTIPLAYER)
-                    {
-                        InputBehaviour p2Input = (InputBehaviour)_p2Input;
-                        if (p2Input?.Devices.Contains(InputSystem.devices[i]) == true)
-                            continue;
-                    }
-
-                    device = InputSystem.devices[i];
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        private void AssignDevice(InputDevice device, int player)
-        {
-            Input.InputBehaviour playerInput = null;
-            if (player == 1)
-                playerInput = (InputBehaviour)_p1Input;
-            else playerInput = (InputBehaviour)_p2Input;
-
-            //If input was detected by a keyboard or mouse...
-            if (device.name.Contains("Mouse") || device.name.Contains("Keyboard"))
-            {
-                //...set the input device array to be the keyboard and mouse
-                playerInput.Devices = new List<InputDevice>(InputSystem.devices.GetDevices(args =>
-                {
-                    InputDevice input = (InputDevice)args[0];
-                    return input.name.Contains("Mouse") || input.name.Contains("Keyboard");
-                }
-                ));
-                return;
-            }
-
-            playerInput.Devices = new List<InputDevice>() { device };
-        }
-
         private void Update()
         {
             BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
@@ -266,53 +226,6 @@ namespace Lodis.Gameplay
 
             if (_mode != GameMode.SINGLEPLAYER)
                 BlackBoardBehaviour.Instance.Player2State = _p2StateManager?.StateMachine?.CurrentState;
-
-            if (_mode == GameMode.SIMULATE)
-                return;
-
-            if (!_p1DeviceSet)
-            {
-                InputBehaviour p1Input = (InputBehaviour)_p1Input;
-
-                InputDevice device;
-                if (!DeviceInputReceived(out device))
-                    return;
-                //Debug.Log("Input Received P1 " + device.name);
-
-                if (_mode == GameMode.MULTIPLAYER)
-                {
-                    InputBehaviour p2Input = (InputBehaviour)_p2Input;
-
-                    if (p2Input.Devices.Find(args => args.deviceId == device.deviceId) != null)
-                        return;
-                }
-
-                if (!device.name.Contains("Mouse"))
-                {
-                    //Debug.Log("Input Assigned P1 " + device.name);
-                    AssignDevice(device, 1);
-                    p1Input.enabled = true;
-                    _p1DeviceSet = true;
-                }
-            }
-
-            if (_mode == GameMode.MULTIPLAYER && !_p2DeviceSet)
-            {
-                InputBehaviour p1Input = (InputBehaviour)_p1Input;
-                InputBehaviour p2Input = (InputBehaviour)_p2Input;
-
-                InputDevice device = null;
-                if (!DeviceInputReceived(out device))
-                    return;
-                //Debug.Log("Input Received P2 " + device.name);
-                if (p1Input.Devices.Find(args => args.deviceId == device.deviceId) == null && !device.name.Contains("Mouse"))
-                {
-                    //Debug.Log("Input Assigned P2 " + device.name);
-                    AssignDevice(device, 2);
-                    p2Input.enabled = true;
-                    _p2DeviceSet = true;
-                }
-            }
         }
     }
 }

@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 using UnityEngine.SceneManagement;
 
 namespace Lodis.Utility
@@ -21,6 +23,10 @@ namespace Lodis.Utility
         private static SceneManagerBehaviour _instance;
         [SerializeField]
         private IntVariable _gameMode;
+        private string _p1ControlScheme;
+        private string _p2ControlScheme;
+        private InputDevice[] _p1Devices;
+        private InputDevice[] _p2Device;
 
         public static SceneManagerBehaviour Instance
         {
@@ -40,6 +46,10 @@ namespace Lodis.Utility
         }
 
         public IntVariable GameMode { get => _gameMode; set => _gameMode = value; }
+        public string P1ControlScheme { get => _p1ControlScheme; set => _p1ControlScheme = value; }
+        public string P2ControlScheme { get => _p2ControlScheme; set => _p2ControlScheme = value; }
+        public InputDevice[] P1Devices { get => _p1Devices; set => _p1Devices = value; }
+        public InputDevice[] P2Devices { get => _p2Device; set => _p2Device = value; }
 
         private void Awake()
         {
