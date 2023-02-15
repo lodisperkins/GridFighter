@@ -152,6 +152,7 @@ namespace Lodis.Gameplay
             _auraSphere.transform.GetChild(0).gameObject.SetActive(false);
             _returnToPool = _auraSphere.GetComponent<GameEventListener>();
             _returnToPool.AddAction(() => _opponentTransform.parent = _opponentParent);
+            _returnToPool.IntendedSender = _auraSphere;
 
             _originalChildCount = _auraSphere.transform.childCount;
 
