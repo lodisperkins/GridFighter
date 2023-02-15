@@ -57,5 +57,10 @@ namespace Lodis.UI
             _p2Data.name = data.name;
             _p2Data.CharacterReference = data.CharacterReference;
         }
+
+        public void StartMatch()
+        {
+            SceneManagerBehaviour.Instance.LoadScene(2);
+        }
     }
 }

@@ -24323,13 +24323,13 @@ PrefabInstance:
         type: 3}
       propertyPath: _player1Data
       value: 
-      objectReference: {fileID: 11400000, guid: d8bcb9ee48e4a9a498847d811eb5e674,
+      objectReference: {fileID: 11400000, guid: 9e61dee5c98e8fe4ab94070dfc1b05b4,
         type: 2}
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _player2Data
       value: 
-      objectReference: {fileID: 11400000, guid: 567c30f40491a064f90f02a5a10582ab,
+      objectReference: {fileID: 11400000, guid: e58f4edf10230094aabb53e76bd1dc76,
         type: 2}
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}

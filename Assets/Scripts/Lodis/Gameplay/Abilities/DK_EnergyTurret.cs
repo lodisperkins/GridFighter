@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
             _chargeEffectRef = Resources.Load<GameObject>("Effects/Charge_Darkness");
             _largeLaserRef = Resources.Load<GameObject>("Projectiles/Prototype2/LargeBlueLaser");
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(() => ObjectPoolBehaviour.Instance.ReturnGameObject(_spawn));
         }
 
         protected override void OnStart(params object[] args)
@@ -40,7 +41,6 @@ namespace Lodis.Gameplay
             _spawnPosition = panel.transform.position + Vector3.up;
             _spawn = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, owner.transform.rotation);
             _spawn.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.WARNING;
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_spawn,_shotCount + 1 * _shotDelay);
         }
 
         private IEnumerator FireShots()

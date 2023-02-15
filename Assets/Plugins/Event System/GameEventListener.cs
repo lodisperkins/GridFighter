@@ -45,6 +45,7 @@ namespace GridGame
         public void ClearActions()
         {
             actions.RemoveAllListeners();
+
         }
 
         public void ClearEvent()

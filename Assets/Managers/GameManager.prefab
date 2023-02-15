@@ -101,6 +101,8 @@ MonoBehaviour:
   _invincibleBarriers: 0
   _infiniteEnergy: 0
   _timeScale: 1
+  _matchMusic: {fileID: 0}
+  _suddenDeathMusic: {fileID: 0}
   _onApplicationQuit:
     m_PersistentCalls:
       m_Calls: []
@@ -140,10 +142,8 @@ MonoBehaviour:
   _inputManager: {fileID: 3714706006734652313}
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
-  _player1CharacterRef: {fileID: 1959598720044943059, guid: 3b468cd3507bb6643a07d12c77fe9833,
-    type: 3}
-  _player2CharacterRef: {fileID: 1959598720044943059, guid: 3b468cd3507bb6643a07d12c77fe9833,
-    type: 3}
+  _player1Data: {fileID: 11400000, guid: 9e61dee5c98e8fe4ab94070dfc1b05b4, type: 2}
+  _player2Data: {fileID: 11400000, guid: e58f4edf10230094aabb53e76bd1dc76, type: 2}
 --- !u!114 &3714706006734652315
 MonoBehaviour:
   m_ObjectHideFlags: 0
