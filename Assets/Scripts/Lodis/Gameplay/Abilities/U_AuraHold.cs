@@ -69,6 +69,7 @@ namespace Lodis.Gameplay
             _riseSpeed = abilityData.GetCustomStatValue("RiseSpeed");
             _knockbackThreshold = abilityData.GetCustomStatValue("KnockbackThreshold");
             _liftTime = abilityData.GetCustomStatValue("LiftTime");
+            _returnToPool?.ClearActions();
         }
 
 
@@ -129,7 +130,6 @@ namespace Lodis.Gameplay
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_auraSphere);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
-            _returnToPool.ClearActions();
             _collider.ColliderInfo.OnHit -= LiftOpponent;
         }
 
