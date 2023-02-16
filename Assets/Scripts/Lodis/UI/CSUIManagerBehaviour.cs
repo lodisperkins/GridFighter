@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using Lodis.Gameplay;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,27 +13,36 @@ namespace Lodis.UI
         [SerializeField]
         private GameObject _player1Root;
         [SerializeField]
-        private GameObject _player1FirstSelected;
+        private CharacterSelectButtonBehaviour _player1FirstSelected;
         [SerializeField]
         private GameObject _player2Root;
         [SerializeField]
-        private GameObject _player2FirstSelected;
+        private CharacterSelectButtonBehaviour _player2FirstSelected;
         [SerializeField]
         private CharacterData _p1Data;
         [SerializeField]
         private CharacterData _p2Data;
+        private bool _gridCreated;
 
         [SerializeField]
         private int _currentPlayer = 1;
 
         public void UpdateEventSystem(PlayerInput playerInput)
         {
+            if (!_gridCreated)
+            {
+                BlackBoardBehaviour.Instance.Grid.CreateGrid();
+                _gridCreated = true;
+            }
+
             MultiplayerEventSystem eventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
 
             if (_currentPlayer == 1)
             {
                 eventSystem.playerRoot = _player1Root;
-                eventSystem.firstSelectedGameObject = _player1FirstSelected;
+                eventSystem.SetSelectedGameObject(_player1FirstSelected.gameObject);
+                _player1FirstSelected.OnSelect(null);
+
                 _currentPlayer++;
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
@@ -40,7 +50,9 @@ namespace Lodis.UI
             else if (_currentPlayer == 2)
             {
                 eventSystem.playerRoot = _player2Root;
-                eventSystem.firstSelectedGameObject = _player2FirstSelected;
+                eventSystem.SetSelectedGameObject(_player2FirstSelected.gameObject);
+                _player2FirstSelected.OnSelect(null);
+
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();
             }

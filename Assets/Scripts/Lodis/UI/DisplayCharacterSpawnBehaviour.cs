@@ -10,7 +10,7 @@ namespace Lodis.AI
 {
     public class DisplayCharacterSpawnBehaviour : EntitySpawnBehaviour
     {
-        private GameObject _previousCharacterInstance;
+        private GridMovementBehaviour _previousCharacterInstance;
 
         /// <summary>
         /// Creates a new instance of the entity and places it on the grid
@@ -27,25 +27,29 @@ namespace Lodis.AI
                 Debug.LogError("You can't spawn a game object that doesn't have a grid movement script. Game object was " + entity.name);
             }
             PanelBehaviour targetPanel;
-            moveScript.Alignment = Alignment;
 
             //Set spawn point and create instance
             BlackBoardBehaviour.Instance.Grid.GetPanel(condition =>
             {
                 PanelBehaviour panel = (PanelBehaviour)condition[0];
-                return panel.Alignment == moveScript.Alignment;
+                return panel.Alignment == Alignment;
             }, out targetPanel);
 
-            moveScript.Position = targetPanel.Position;
-            Destroy(_previousCharacterInstance);
-            _previousCharacterInstance = Instantiate(moveScript.gameObject, null);
-            moveScript.gameObject.SetActive(true);
+            if (_previousCharacterInstance)
+                Destroy(_previousCharacterInstance.gameObject);
+
+            _previousCharacterInstance = Instantiate(moveScript.gameObject, null).GetComponent<GridMovementBehaviour>();
+            _previousCharacterInstance.Alignment = Alignment;
+            _previousCharacterInstance.Position = targetPanel.Position;
 
 
-            if (SetAlignmentRotation && moveScript.Alignment == GridAlignment.RIGHT)
-                moveScript.transform.rotation = Quaternion.Euler(0, -90, 0);
-            else if (SetAlignmentRotation && moveScript.Alignment == GridAlignment.LEFT)
-                moveScript.transform.rotation = Quaternion.Euler(0, 90, 0);
+            if (SetAlignmentRotation && _previousCharacterInstance.Alignment == GridAlignment.RIGHT)
+                _previousCharacterInstance.transform.rotation = Quaternion.Euler(0, -90, 0);
+            else if (SetAlignmentRotation && _previousCharacterInstance.Alignment == GridAlignment.LEFT)
+                _previousCharacterInstance.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+            Animator animator = _previousCharacterInstance.GetComponentInChildren<Animator>();
+            animator.SetBool("OnRightSide", _previousCharacterInstance.Alignment == GridAlignment.RIGHT);
         }
     }
 

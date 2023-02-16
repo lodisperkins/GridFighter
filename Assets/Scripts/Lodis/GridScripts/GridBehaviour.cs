@@ -495,9 +495,9 @@ namespace Lodis.GridScripts
             int xMin = 0;
             int xMax = (int)Dimensions.x;
 
-            if (player == BlackBoardBehaviour.Instance.Player1)
+            if (player == BlackBoardBehaviour.Instance.Player1 && player != null)
                 xMax = TempMaxColumns;
-            else if (player == BlackBoardBehaviour.Instance.Player2)
+            else if (player == BlackBoardBehaviour.Instance.Player2 && player != null)
                 xMin = TempMaxColumns;
 
             for (int x = xMin; x < xMax; x++)
