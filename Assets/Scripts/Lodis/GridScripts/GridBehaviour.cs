@@ -182,12 +182,16 @@ namespace Lodis.GridScripts
             //Spawn barriers on both side and find the players' spawn location
             SpawnBarriers();
 
-            //Spawn the collision plane underneath the grid
-            GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
-
             var localScale = _panelRef.transform.localScale;
             _width = (_dimensions.x * localScale.x) + (PanelSpacingX * _dimensions.x) + _panelSpacingMiddle;
             _height = (_dimensions.y * localScale.z) + (PanelSpacingZ * _dimensions.y);
+
+            if (!_collisionPlaneRef)
+                return;
+
+            //Spawn the collision plane underneath the grid
+            GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
+
 
             float collisionPlaneOffsetX = ((_dimensions.x - 1) * localScale.x) + (PanelSpacingX * (_dimensions.x - 2) + _panelSpacingMiddle);
             float collisionPlaneOffsetY = ((_dimensions.y - 1) * localScale.z) + (PanelSpacingZ * (_dimensions.y - 1));

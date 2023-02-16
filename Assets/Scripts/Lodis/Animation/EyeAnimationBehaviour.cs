@@ -62,5 +62,10 @@ namespace Lodis.Animation
             if ((_currentAction == null || !_currentAction.GetEnabled()) && !_isBlinking)
                 _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Blink(), TimedActionCountType.SCALEDTIME, _timeBetweenBlinks);
         }
+
+        private void OnDestroy()
+        {
+            RoutineBehaviour.Instance.StopAction(_currentAction);
+        }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using Lodis.Gameplay;
 
 namespace Lodis.AI
 {
@@ -18,6 +19,34 @@ namespace Lodis.AI
         [Tooltip("The side of the grid this entity will belong to")]
         [SerializeField]
         private GridAlignment _alignment;
+        [Tooltip("Will rotate the entity to face opponent side if enabled. Rotation in the grid movement behaviour for the entity will override this.")]
+        [SerializeField]
+        private bool _setAlignmentRotation;
+        private static EntitySpawnBehaviour _instance;
+
+        public  bool SetAlignmentRotation { get => _setAlignmentRotation; set => _setAlignmentRotation = value; }
+        /// <s
+        /// ummary>
+        /// Gets the static instance of the sound manager. Creates one if none exists
+        /// </summary>
+        public static EntitySpawnBehaviour Instance
+        {
+            get
+            {
+                if (!_instance)
+                    _instance = FindObjectOfType(typeof(EntitySpawnBehaviour)) as EntitySpawnBehaviour;
+
+                if (!_instance)
+                {
+                    GameObject blackBoard = new GameObject("EntitySpawn");
+                    _instance = blackBoard.AddComponent<EntitySpawnBehaviour>();
+                }
+
+                return _instance;
+            }
+        }
+
+        public GridAlignment Alignment { get => _alignment; set => _alignment = value; }
 
         /// <summary>
         /// Creates a new instance of the entity and places it on the grid
@@ -25,7 +54,7 @@ namespace Lodis.AI
         /// <param name="entity">The entity to create a new instance of</param>
         /// <param name="position">The position in world space to spawn the entity</param>
         /// <param name="gridAlignment">The side of the grid this entity will belong to</param>
-        public static void SpawnEntity(GameObject entity, Vector2 position, GridAlignment gridAlignment = GridAlignment.ANY)
+        public void SpawnEntity(GameObject entity, Vector2 position, GridAlignment gridAlignment = GridAlignment.ANY)
         {
             //Try to get the move script attached
             GridMovementBehaviour moveScript = entity.GetComponent<GridMovementBehaviour>();
@@ -37,8 +66,49 @@ namespace Lodis.AI
             //Set spawn point and create instance
             moveScript.Position = position;
             Instantiate(moveScript.gameObject, null);
+            moveScript.gameObject.SetActive(true);
 
             moveScript.Alignment = gridAlignment;
+
+            if (SetAlignmentRotation && moveScript.Alignment == GridAlignment.RIGHT)
+                moveScript.transform.rotation = Quaternion.Euler(0, -90, 0);
+            else if (SetAlignmentRotation && moveScript.Alignment == GridAlignment.LEFT)
+                moveScript.transform.rotation = Quaternion.Euler(0, 90, 0);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the entity and places it on the grid
+        /// </summary>
+        /// <param name="entity">The entity to create a new instance of</param>
+        /// <param name="position">The position in world space to spawn the entity</param>
+        /// <param name="gridAlignment">The side of the grid this entity will belong to</param>
+        public virtual void SpawnEntity(GameObject entity)
+        {
+            //Try to get the move script attached
+            GridMovementBehaviour moveScript = entity.GetComponent<GridMovementBehaviour>();
+            if (!moveScript)
+            {
+                Debug.LogError("You can't spawn a game object that doesn't have a grid movement script. Game object was " + entity.name);
+            }
+            PanelBehaviour targetPanel;
+
+            //Set spawn point and create instance
+            BlackBoardBehaviour.Instance.Grid.GetPanel(condition =>
+            {
+                PanelBehaviour panel = (PanelBehaviour)condition[0];
+                return panel.Alignment == moveScript.Alignment;
+            }, out targetPanel);
+
+            moveScript.Position = targetPanel.Position;
+            Instantiate(moveScript.gameObject, null);
+            moveScript.gameObject.SetActive(true);
+
+            moveScript.Alignment = Alignment;
+
+            if (SetAlignmentRotation && moveScript.Alignment == GridAlignment.RIGHT)
+                moveScript.transform.rotation = Quaternion.Euler(0, -90, 0);
+            else if (SetAlignmentRotation && moveScript.Alignment == GridAlignment.LEFT)
+                moveScript.transform.rotation = Quaternion.Euler(0, 90, 0);
         }
     }
 
@@ -54,7 +124,7 @@ namespace Lodis.AI
 
         private void Awake()
         {
-            _entity = serializedObject.FindProperty("_entityMovementScript");
+            _entity = serializedObject.FindProperty("_entity");
             _entitySpawnPoint = serializedObject.FindProperty("_entitySpawnPoint");
             _alignment = serializedObject.FindProperty("_alignment");
         }
@@ -65,7 +135,7 @@ namespace Lodis.AI
 
             if (GUILayout.Button("SpawnEntity"))
             {
-                EntitySpawnBehaviour.SpawnEntity((GameObject)_entity.objectReferenceValue, _entitySpawnPoint.vector2Value, (GridAlignment)_alignment.enumValueIndex);
+                EntitySpawnBehaviour.Instance.SpawnEntity((GameObject)_entity.objectReferenceValue, _entitySpawnPoint.vector2Value, (GridAlignment)_alignment.enumValueIndex);
             }
         }
     }
