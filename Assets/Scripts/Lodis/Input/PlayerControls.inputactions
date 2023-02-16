@@ -1483,6 +1483,14 @@
                     "interactions": ""
                 },
                 {
+                    "name": "MiddleClick",
+                    "type": "Button",
+                    "id": "c3e67d61-7767-45ba-93c2-8d0dc8dc4193",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
                     "name": "Cancel",
                     "type": "Button",
                     "id": "f082a807-f05d-4aa9-8b46-3f643371a4e3",
@@ -1511,14 +1519,6 @@
                     "type": "PassThrough",
                     "id": "68fab167-7196-4fd1-97e6-ec316c44875e",
                     "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": ""
-                },
-                {
-                    "name": "MiddleClick",
-                    "type": "PassThrough",
-                    "id": "73530349-0f77-494d-b120-13d18739d9d2",
-                    "expectedControlType": "",
                     "processors": "",
                     "interactions": ""
                 },
@@ -1946,17 +1946,6 @@
                 },
                 {
                     "name": "",
-                    "id": "4a12894d-93b3-4f45-acec-a384579473ac",
-                    "path": "<Mouse>/middleButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Keyboard&Mouse",
-                    "action": "MiddleClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "9dcf237d-c7c4-40ae-b3fa-261785973653",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
@@ -1985,6 +1974,28 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8f5ef431-9a50-4a21-b86e-d743f1aeb7e1",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "MiddleClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "39f14657-1151-49f7-af2e-4a5c95a2afb2",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "MiddleClick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

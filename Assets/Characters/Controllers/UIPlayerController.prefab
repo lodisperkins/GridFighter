@@ -166,7 +166,7 @@ MonoBehaviour:
     type: 3}
   m_LeftClickAction: {fileID: 474425600848401959, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
     type: 3}
-  m_MiddleClickAction: {fileID: 7296700735845772433, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
+  m_MiddleClickAction: {fileID: -7218789457937707307, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
     type: 3}
   m_RightClickAction: {fileID: 988636656783851396, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
     type: 3}
@@ -176,5 +176,5 @@ MonoBehaviour:
     type: 3}
   m_TrackedDeviceOrientationAction: {fileID: -1283444988724195413, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
     type: 3}
-  m_DeselectOnBackgroundClick: 1
+  m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
