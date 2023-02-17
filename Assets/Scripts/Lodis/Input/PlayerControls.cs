@@ -1493,7 +1493,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""0716b01d-d142-4d63-abdf-a50366798baf"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press""
                 },
                 {
                     ""name"": ""MiddleClick"",

@@ -191,6 +191,7 @@ MonoBehaviour:
     AverageVelocity: {x: 0, y: 0, z: 0}
   MovePosition: {x: 0, y: 0}
   EnableBehaviourTree: 1
+  _copyAttacks: 0
 --- !u!114 &7025333189879560728
 MonoBehaviour:
   m_ObjectHideFlags: 0

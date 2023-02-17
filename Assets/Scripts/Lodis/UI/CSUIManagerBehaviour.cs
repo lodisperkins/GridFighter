@@ -42,6 +42,7 @@ namespace Lodis.UI
             {
                 eventSystem.playerRoot = _player1Root;
                 _player1Root.SetActive(true);
+
                 eventSystem.SetSelectedGameObject(_player1FirstSelected.gameObject);
                 _player1FirstSelected.OnSelect(null);
 
@@ -51,7 +52,8 @@ namespace Lodis.UI
             else if (playerNum == 2)
             {
                 eventSystem.playerRoot = _player2Root;
-                _player2Root.SetActive(true);
+                _player2Root.SetActive(true); 
+
                 eventSystem.SetSelectedGameObject(_player2FirstSelected.gameObject);
                 _player2FirstSelected.OnSelect(null);
 
@@ -98,6 +100,9 @@ namespace Lodis.UI
 
         void Update()
         {
+            if (_currentPlayer <= 1)
+                return;
+
             _readyP1Text.SetActive(!_player1Root.activeInHierarchy);
             _readyP2Text.SetActive(!_player2Root.activeInHierarchy);
 
