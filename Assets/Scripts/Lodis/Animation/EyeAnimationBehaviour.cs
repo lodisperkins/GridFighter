@@ -32,6 +32,9 @@ namespace Lodis.Animation
 
         private void Blink()
         {
+            if (!Renderer)
+                return;
+
             _isBlinking = true;
             Renderer.material.SetTexture(_textureName, _closed);
 
@@ -62,5 +65,7 @@ namespace Lodis.Animation
             if ((_currentAction == null || !_currentAction.GetEnabled()) && !_isBlinking)
                 _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Blink(), TimedActionCountType.SCALEDTIME, _timeBetweenBlinks);
         }
+        
+        
     }
 }

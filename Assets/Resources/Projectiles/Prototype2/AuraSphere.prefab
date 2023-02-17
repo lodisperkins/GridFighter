@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 8000185045500080017}
   - component: {fileID: 6492616430806497637}
   - component: {fileID: 5233489787702884761}
+  - component: {fileID: 302157762881201409}
   m_Layer: 16
   m_Name: AuraSphere
   m_TagString: Untagged
@@ -204,6 +205,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Marker: 3
   _markPanelsBasedOnCollision: 0
+--- !u!114 &302157762881201409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3437269764972176412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+    m_PersistentCalls:
+      m_Calls: []
+  Event: {fileID: 11400000, guid: b5c7e7324aa18524e8b69009d75e77f5, type: 2}
+  IntendedSender: {fileID: 3437269764972176412}
+  AcceptTagAsSender: 0
 --- !u!1 &6519207070671889585
 GameObject:
   m_ObjectHideFlags: 0

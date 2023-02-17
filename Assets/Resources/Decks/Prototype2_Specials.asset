@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Prototype2_Specials
   m_EditorClassIdentifier: 
   _abilityData:
-  - {fileID: 11400000, guid: cccc243dfbdae164e975ceb1d94d4f20, type: 2}
-  - {fileID: 11400000, guid: 94c2c8358acbbab48989dbd917fb033e, type: 2}
-  - {fileID: 11400000, guid: 496865d782398c041bd57fc248ce9cb8, type: 2}
-  - {fileID: 11400000, guid: 0e09f202c8f3add448e1fbc67b7e6892, type: 2}
-  - {fileID: 11400000, guid: 94cd4137d00123b42b8f1aa6a366a478, type: 2}
-  - {fileID: 11400000, guid: 6aba4d7369006da4a8fb8beaa0981dc0, type: 2}
-  - {fileID: 11400000, guid: f1c8f2a01275dbe43813a2ca028dd731, type: 2}
-  - {fileID: 11400000, guid: c75a4568c2ef5d0468cb17db59310e95, type: 2}
-  _deckName: PrototypeSpecials
+  - {fileID: 11400000, guid: e82100397d9a0a34b9151efb0e2bbd69, type: 2}
+  - {fileID: 11400000, guid: f1564f8bd8128f74e91700d356b75eab, type: 2}
+  - {fileID: 11400000, guid: bf8b83a199fd7dd47b42bcbe100818c8, type: 2}
+  - {fileID: 11400000, guid: 4a835fa8bc2d3af45898cf3fa58ca036, type: 2}
+  - {fileID: 11400000, guid: e3603ce1e130fb040895169ddb06afdc, type: 2}
+  - {fileID: 11400000, guid: 4a3f5f5be3eb9fc438b8b62bbfe512a6, type: 2}
+  - {fileID: 11400000, guid: 0f8aa02fe11dce344b208e14077eac43, type: 2}
+  - {fileID: 11400000, guid: 09a82839703e0d14e93e0624580e8628, type: 2}
+  _deckName: Prototype2Specials

@@ -23,7 +23,7 @@ MonoBehaviour:
   EnergyCost: 0
   canCancelStartUp: 0
   canCancelActive: 0
-  canCancelRecover: 0
+  canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1

@@ -35,8 +35,8 @@ TagManager:
   - MainStage
   - WinCollider
   - OverlayEffect
-  - 
-  - 
+  - LHSMesh
+  - RHSMesh
   - 
   - 
   - 

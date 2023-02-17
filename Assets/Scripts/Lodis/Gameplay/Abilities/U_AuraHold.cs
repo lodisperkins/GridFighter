@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using GridGame;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -28,13 +29,14 @@ namespace Lodis.Gameplay
         private GameObject _chargeEffectRef;
         private GameObject _chargeEffect;
         private Transform _opponentParent;
+        private int _originalChildCount;
+        private GameEventListener _returnToPool;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
             _chargeEffectRef = Resources.Load<GameObject>("Effects/Charge_Darkness");
-
         }
 
         protected override void OnStart(params object[] args)
@@ -55,15 +57,19 @@ namespace Lodis.Gameplay
             if (!_opponentKnockback.MovementBehaviour.CanMove)
                 return;
 
-            _opponentParent = _opponentTransform.parent;
+            if (!_opponentParent)
+                _opponentParent = _opponentTransform.parent;
+
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, Camera.main.transform.rotation);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect, 1);
             _chargeEffect.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.UNBLOCKABLE;
 
             //Cache stat values to avoid repetitive calls.
             _riseSpeed = abilityData.GetCustomStatValue("RiseSpeed");
             _knockbackThreshold = abilityData.GetCustomStatValue("KnockbackThreshold");
             _liftTime = abilityData.GetCustomStatValue("LiftTime");
+            _returnToPool?.ClearActions();
         }
 
 
@@ -130,15 +136,34 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            if (!_panelTransform || !_opponentKnockback.MovementBehaviour.CanMove)
+            //The opponent should only be captured if they are allowed to move at a valid location.
+            if (!_panelTransform || (!_opponentKnockback.MovementBehaviour.CanMove && !_opponentKnockback.Stunned))
             {
                 DespawnSphere();
                 return;
             }
 
+            //Despawn the old sphere if there is one.
+            if (_auraSphere)
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_auraSphere);
+
+            //Spawn the new sphere and set its effect to inactive by default. The effect should only appear when the opponent is lifted.
             _auraSphere = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, _spawnPosition, new Quaternion());
             _auraSphere.transform.GetChild(0).gameObject.SetActive(false);
+            _returnToPool = _auraSphere.GetComponent<GameEventListener>();
+            _returnToPool.AddAction(() =>
+            {
+                if (!_opponentTransform)
+                    return;
 
+                _opponentTransform.parent = _opponentParent;
+            });
+
+            _returnToPool.IntendedSender = _auraSphere;
+
+            _originalChildCount = _auraSphere.transform.childCount;
+
+            //Initialize new collider for this attack.
             _collider = _auraSphere.GetComponent<HitColliderBehaviour>();
             _collider.ColliderInfo = GetColliderData(0);
             _collider.Owner = owner;
@@ -158,7 +183,7 @@ namespace Lodis.Gameplay
             base.OnDeactivate();
             _shouldRise = false;
 
-            if (!_opponentCaptured)
+            if (!_opponentCaptured || _originalChildCount == _auraSphere.transform.childCount)
                 DespawnSphere();
         }
 

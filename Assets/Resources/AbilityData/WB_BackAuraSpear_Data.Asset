@@ -16,7 +16,7 @@ MonoBehaviour:
   abilityDescription: None
   AbilityType: 3
   timeActive: 0.1
-  recoverTime: 0.3
+  recoverTime: 0.1
   startUpTime: 0.25
   chargeTime: 0
   maxActivationAmount: 1
@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
-  CanInputMovementWhileActive: 1
+  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1

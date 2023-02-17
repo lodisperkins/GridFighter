@@ -11,6 +11,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using DG.Tweening;
 using Lodis.Sound;
+using GridGame;
 
 namespace Lodis.Movement
 {
@@ -80,7 +81,7 @@ namespace Lodis.Movement
         private Vector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
         private PanelBehaviour _currentPanel;
-        private GridGame.GameEventListener _moveEnabledEventListener;
+        private GameEventListener _moveEnabledEventListener;
         private GridGame.GameEventListener _moveDisabledEventListener;
         private GridGame.GameEventListener _onMoveBegin;
         private GridGame.GameEventListener _onMoveBeginTemp;
@@ -721,6 +722,32 @@ namespace Lodis.Movement
         }
 
         /// <summary>
+        /// Moves this object to another location and plays the teleportation effect. 
+        /// Will move regardless of movement rules like like being unable to move onto occupied panels.
+        /// </summary>
+        /// <param name="position">Spawns the character at the exact position given ignoring the height offset.</param>
+        /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
+        public void TeleportToLocation(Vector3 position, float travelTime = 0.05f, bool setInactive = true)
+        {
+
+            RoutineBehaviour.Instance.StopAction(_teleportAction);
+
+            _onTeleportStart?.Raise(gameObject);
+            SpawnTeleportEffect();
+
+            if (setInactive)
+                gameObject.SetActive(false);
+
+            _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                gameObject.transform.position = position;
+                gameObject.SetActive(true);
+                _onTeleportEnd?.Raise(gameObject);
+                SpawnTeleportEffect();
+            },TimedActionCountType.SCALEDTIME, travelTime);
+        }
+
+        /// <summary>
         /// Moves this object to the panel it should be resting on
         /// </summary>
         private void MoveToCurrentPanel()
@@ -860,6 +887,21 @@ namespace Lodis.Movement
             _currentPanel.Occupied = !CanBeWalkedThrough;
             _isMoving = false;
             _targetPosition = Vector3.zero;
+        }
+
+        public float GetAlignmentX()
+        {
+            switch (Alignment)
+            {
+                case GridAlignment.LEFT:
+                    return 1;
+                case GridAlignment.RIGHT:
+                    return -1;
+                case GridAlignment.ANY:
+                    return 2;
+                default:
+                    return 0;
+            }
         }
 
         private void OnDestroy()

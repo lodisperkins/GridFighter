@@ -50,7 +50,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4155703
-    MultiHitWaitTime: 0.1
+    MultiHitWaitTime: 0.03
     Damage: 1
     BaseKnockBack: 6
     KnockBackScale: 1
@@ -73,6 +73,6 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 2
+    value: 7
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: dfbc9c57a1c3f9c4ca15c0d475d471ff, type: 3}

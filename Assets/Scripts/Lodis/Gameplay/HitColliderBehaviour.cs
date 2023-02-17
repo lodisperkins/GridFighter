@@ -326,7 +326,17 @@ namespace Lodis.Gameplay
             if (damageScript != null && !damageScript.IsInvincible && (damageScript.DefenseBehaviour?.IsShielding == false || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
             {
                 damageScript.LastCollider = this;
-                damageScript.TakeDamage(ColliderInfo, Owner);
+                KnockbackBehaviour knockback;
+
+                if (ColliderInfo.Damage > 0)
+                    damageScript.TakeDamage(ColliderInfo, Owner);
+                else if (knockback = damageScript as KnockbackBehaviour)
+                {
+                    float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
+                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle);
+                    knockback.Physics.ApplyImpulseForce(force);
+                }
+
                 if (ColliderInfo.HitEffectLevel > 0)
                 {
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
@@ -413,7 +423,17 @@ namespace Lodis.Gameplay
             if (damageScript != null && !damageScript.IsInvincible && (!damageScript.DefenseBehaviour.IsShielding || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
             {
                 damageScript.LastCollider = this;
-                damageScript.TakeDamage(ColliderInfo, Owner);
+                KnockbackBehaviour knockback;
+
+                if (ColliderInfo.Damage > 0)
+                    damageScript.TakeDamage(ColliderInfo, Owner);
+                else if (knockback = damageScript as KnockbackBehaviour)
+                {
+                    float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
+                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle);
+                    knockback.Physics.ApplyImpulseForce(force);
+                }
+
                 if (ColliderInfo.HitEffectLevel > 0)
                 {
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
@@ -497,10 +517,20 @@ namespace Lodis.Gameplay
             //Grab whatever health script is attached to this object
             HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
             //If the damage script wasn't null damage the object
-            if (damageScript != null && !damageScript.IsInvincible && (!damageScript.DefenseBehaviour.IsShielding || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
+            if (damageScript != null && !damageScript.IsInvincible && (damageScript.DefenseBehaviour?.IsShielding == false || ColliderInfo.AbilityType == AbilityType.UNBLOCKABLE))
             {
                 damageScript.LastCollider = this;
-                damageScript.TakeDamage(ColliderInfo, Owner);
+                KnockbackBehaviour knockback;
+
+                if (ColliderInfo.Damage > 0)
+                    damageScript.TakeDamage(ColliderInfo, Owner);
+                else if (knockback = damageScript as KnockbackBehaviour)
+                {
+                    float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
+                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle);
+                    knockback.Physics.ApplyImpulseForce(force);
+                }
+
                 if (ColliderInfo.HitEffectLevel > 0)
                 {
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);

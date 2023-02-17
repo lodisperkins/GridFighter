@@ -101,7 +101,7 @@ namespace Lodis.Input
         [SerializeField]
         private GridGame.Event _onChargeEnded;
         private bool _isPaused;
-        private List<InputDevice> _devices = new List<InputDevice>();
+        private InputDevice[] _devices;
         private bool _canBufferDefense;
         private KnockbackBehaviour _knockbackBehaviour;
         private float _defaultSpeed;
@@ -109,13 +109,13 @@ namespace Lodis.Input
         private bool _canBufferAbility;
         private TimedAction _chargeAction;
 
-        public List<InputDevice> Devices 
+        public InputDevice[] Devices 
         {
             get { return _devices; }
             set
             {
                 _devices = value;
-                _playerControls.devices = _devices.ToArray();
+                _playerControls.devices = _devices;
             }
         }
 
@@ -200,18 +200,12 @@ namespace Lodis.Input
         private void OnEnable()
         {
             _playerControls.Enable();
-            _playerControls.devices = _devices.ToArray();
+            _playerControls.devices = _devices;
         }
 
         private void OnDisable()
         {
             _playerControls.Disable();
-        }
-
-        public void AddDevice(InputDevice device)
-        {
-            _devices.Add(device);
-            _playerControls.devices = _devices.ToArray();
         }
 
         private void TryChargeAttack()
@@ -366,6 +360,14 @@ namespace Lodis.Input
                 _storedMoveInput = direction;
 
             _bufferedAction = new BufferedInput(action => _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position),condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, 0.2f);
+        }
+
+        /// <summary>
+        /// Removes the last input from the input buffer.
+        /// </summary>
+        public void ClearBuffer()
+        {
+            _bufferedAction = null;
         }
 
         /// <summary>

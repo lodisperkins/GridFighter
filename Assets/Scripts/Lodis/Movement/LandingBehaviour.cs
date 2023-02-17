@@ -132,7 +132,6 @@ namespace Lodis.Movement
             _onLandingStart?.Invoke();
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
             _knockback.LastTimeInKnockBack = 0;
-            _knockback.Physics.StopVelocity();
             _knockback.CancelHitStun();
 
             RoutineBehaviour.Instance.StopAction(_landingAction);
@@ -141,6 +140,7 @@ namespace Lodis.Movement
             {
                 case AirState.TUMBLING:
                     _knockback.CurrentAirState = AirState.NONE;
+                    CanCheckLanding = false;
                     _landingAction = RoutineBehaviour.Instance.StartNewTimedAction(TumblingLanding,
                         TimedActionCountType.SCALEDTIME, _knockDownLandingTime);
                     break;
@@ -187,6 +187,9 @@ namespace Lodis.Movement
 
             if (!_knockback.Physics.IsGrounded || _knockback.CheckIfIdle())
                 _groundedHitCounter = 0;
+
+            if (Landing && !_knockback.Physics.IsGrounded)
+                CancelLanding();
         }
     }
 }

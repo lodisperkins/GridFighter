@@ -20,9 +20,9 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            CleanProjectileList();
+            CleanProjectileList(true);
 
-            //Only fire if there aren't two many instances of this object active
+            //Only fire if there aren't too many instances of this object active
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {
                 if (_ownerMoveScript.IsMoving)

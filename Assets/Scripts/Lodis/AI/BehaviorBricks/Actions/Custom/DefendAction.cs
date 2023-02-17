@@ -206,10 +206,14 @@ public class DefendAction : GOAction
         }
         _canMakeNewDecision = true;
 
+        if (!_dummy.CopyAttacks)
+            return;
+
         Ability ability = _dummy.Moveset.GetAbility(args => ((Ability)args[0]).abilityData.GetColliderInfo(0).Name == _dummy.Knockback.LastCollider.ColliderInfo.Name);
 
         if (ability == null)
             return;
+
 
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
 

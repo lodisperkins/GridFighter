@@ -45,6 +45,7 @@ namespace Lodis.Gameplay
         [Tooltip("The effect to play when a character damages the barrier.")]
         [SerializeField] private ParticleColorManagerBehaviour _takeDamageEffect;
         private GridAlignment _alignment;
+        private RingBarrierFeedbackBehaviour _ringBarrierFeedbackBehaviour;
 
         /// <summary>
         /// The character that owns this ring barrier.
@@ -55,6 +56,7 @@ namespace Lodis.Gameplay
         {
             base.Awake();
             _shieldController.maxHP = Health;
+            _ringBarrierFeedbackBehaviour = GetComponent<RingBarrierFeedbackBehaviour>();
         }
 
         protected override void Start()
@@ -154,7 +156,13 @@ namespace Lodis.Gameplay
             _visuals.SetActive(true);
 
             Physics.IgnoreCollision(_collider, _ownerCollider, false);
-            GetComponent<RingBarrierFeedbackBehaviour>().ResetVisuals();
+            _ringBarrierFeedbackBehaviour.ResetVisuals();
+        }
+
+        public void Deactivate(bool spawnEffects = true)
+        {
+            Physics.IgnoreCollision(_collider, _ownerCollider);
+            _ringBarrierFeedbackBehaviour.DeactivateBarrier(spawnEffects);
         }
 
         public override void OnTriggerEnter(Collider collision)

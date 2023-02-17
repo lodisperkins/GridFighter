@@ -419,11 +419,11 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: Motion
+    motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
       copied configuration does not match position in animation file:\n\t'B_L_Thigh'
-      : position error = 32.518150 mm\n\t'B_R_Thigh' : position error = 32.518166
+      : position error = 32.518158 mm\n\t'B_R_Thigh' : position error = 32.518158
       mm\n"
     animationImportErrors: 
     animationImportWarnings: "\nClip 'Take 001' has import animation warnings that
@@ -450,7 +450,7 @@ ModelImporter:
       lastFrame: 55
       wrapMode: 0
       orientationOffsetY: 0
-      level: 0
+      level: 0.31
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
@@ -468,7 +468,14 @@ ModelImporter:
       curves: []
       events:
       - time: 0.342803
-        functionName: Shoot
+        functionName: IncrementAnimationPhase
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5017482
+        functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0

@@ -42,7 +42,6 @@ namespace Lodis.Gameplay
                 _attackDirection = owner.transform.forward;
 
             //Play animation
-            EnableAnimation();
             ChangeMoveAttributes();
             _rotation = owner.transform.rotation;
         }
@@ -50,6 +49,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            _ownerAnimationScript.PlayAbilityAnimation();
             //Create collider for attack
             _fistCollider = GetColliderData(0);
 

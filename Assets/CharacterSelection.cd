@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="CharacterData">
+    <Position X="2" Y="3.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAEAAAAAAAAQAAAAAAAQAAAAAAAAGAAA=</HashCode>
+      <FileName>Assets\Scripts\Lodis\ScriptableObjects\CharacterData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Lodis.Gameplay.PlayerSpawnBehaviour">
+    <Position X="5.25" Y="3.25" Width="2" />
+    <Members>
+      <Field Name="_dummy" Hidden="true" />
+      <Field Name="_grid" Hidden="true" />
+      <Field Name="_inputManager" Hidden="true" />
+      <Field Name="_LHSSpawnLocation" Hidden="true" />
+      <Field Name="_lhsSpawnPanel" Hidden="true" />
+      <Field Name="_mode" Hidden="true" />
+      <Field Name="_p1DeviceSet" Hidden="true" />
+      <Field Name="_p1Input" Hidden="true" />
+      <Field Name="_p1Knockback" Hidden="true" />
+      <Field Name="_p1Movement" Hidden="true" />
+      <Field Name="_p1StateManager" Hidden="true" />
+      <Field Name="_p2DeviceSet" Hidden="true" />
+      <Field Name="_p2Input" Hidden="true" />
+      <Field Name="_p2Knockback" Hidden="true" />
+      <Field Name="_p2Movement" Hidden="true" />
+      <Field Name="_p2StateManager" Hidden="true" />
+      <Field Name="_player1" Hidden="true" />
+      <Field Name="_player2" Hidden="true" />
+      <Field Name="_playerRef" Hidden="true" />
+      <Field Name="_RHSSpawnLocation" Hidden="true" />
+      <Field Name="_rhsSpawnPanel" Hidden="true" />
+      <Field Name="_ringBarrierL" Hidden="true" />
+      <Field Name="_ringBarrierR" Hidden="true" />
+      <Field Name="_suddenDeathActive" Hidden="true" />
+      <Property Name="LHSSpawnLocation" Hidden="true" />
+      <Property Name="P1HealthScript" Hidden="true" />
+      <Property Name="P2HealthScript" Hidden="true" />
+      <Property Name="RHSSpawnLocation" Hidden="true" />
+      <Property Name="SuddenDeathActive" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>ADUAUCAACgAASAAAAogARQQAigBIAEygAEIgAAAAA0A=</HashCode>
+      <FileName>Assets\Scripts\Lodis\Gameplay\PlayerSpawnBehaviour.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="_player1Data" />
+      <Field Name="_player2Data" />
+    </ShowAsAssociation>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

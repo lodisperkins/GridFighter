@@ -7,6 +7,7 @@ using Lodis.Gameplay;
 using UnityEngine.Events;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
+using Lodis.GridScripts;
 
 namespace Lodis.Movement
 {
@@ -18,7 +19,6 @@ namespace Lodis.Movement
         BREAKINGFALL
     }
     
-    [RequireComponent(typeof(LandingBehaviour))]
     [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class KnockbackBehaviour : HealthBehaviour
     {
@@ -143,7 +143,30 @@ namespace Lodis.Movement
         {
             base.Start();
             AliveCondition = args => !HasExploded;
-            _onKnockBackStart += () => { Stunned = false; _movementBehaviour.CurrentPanel.Occupied = false; };
+            _onKnockBackStart += () => 
+            {
+                Stunned = false;
+
+                if (!_movementBehaviour)
+                    return;
+
+                _movementBehaviour.CurrentPanel.Occupied = false;
+
+                //Disables object movement on the grid
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+            };
+
+            _onTakeDamage += () =>
+            {
+                if (!_movementBehaviour || !_movementBehaviour.IsMoving)
+                    return;
+
+                _movementBehaviour.CanCancelMovement = true;
+                PanelBehaviour panel;
+                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel);
+                _movementBehaviour.MoveToPanel(panel);
+                _movementBehaviour.CanCancelMovement = false;
+            };
         }
 
         /// <summary>
@@ -369,7 +392,7 @@ namespace Lodis.Movement
             _onTakeDamageStartTemp?.Invoke();
 
             //Return if there is no rigidbody or movement script attached
-            if (!_movementBehaviour || IsInvincible)
+            if (IsInvincible)
                 return 0;
 
             //Update current knockback scale
@@ -393,14 +416,6 @@ namespace Lodis.Movement
             if (hitStun > 0)
                 _isFlinching = true;
 
-            //Snaps movement to the next panel to prevent the player from being launched between panels
-            if (_movementBehaviour.IsMoving)
-            {
-                _movementBehaviour.CanCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.CanCancelMovement = false;
-            }
-
             if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
@@ -409,9 +424,6 @@ namespace Lodis.Movement
 
                 _launchForce = knockBackForce;
                 Physics.RB.isKinematic = false;
-
-                //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
                 //Add force to objectd
                 Physics.ApplyImpulseForce(_launchForce);
@@ -433,7 +445,7 @@ namespace Lodis.Movement
             _onTakeDamageStartTemp?.Invoke();
 
             //Return if there is no rigidbody or movement script attached
-            if (!_movementBehaviour || IsInvincible)
+            if (IsInvincible)
                 return 0;
 
             //Adds damage to the total damage
@@ -455,14 +467,6 @@ namespace Lodis.Movement
 
             ActivateHitStunByTimer(info.HitStunTime);
 
-            //Snaps movement to the next panel to prevent the player from being launched between panels
-            if (_movementBehaviour.IsMoving)
-            {
-                _movementBehaviour.CanCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.CanCancelMovement = false;
-            }
-
             if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
@@ -471,9 +475,6 @@ namespace Lodis.Movement
 
                 _launchForce = knockBackForce;
                 Physics.RB.isKinematic = false;
-
-                //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
                 //Add force to objectd
                 Physics.ApplyImpulseForce(_launchForce);
@@ -511,6 +512,8 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
+            else
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
             return info.Damage;
         }
@@ -526,7 +529,7 @@ namespace Lodis.Movement
             _onTakeDamageStartTemp?.Invoke();
 
             //Return if there is no rigidbody or movement script attached
-            if (!_movementBehaviour || IsInvincible)
+            if (IsInvincible)
                 return 0;
 
             //Get the hit collider data of the first collider attached to the ability data
@@ -553,14 +556,6 @@ namespace Lodis.Movement
             if (info.HitStunTime > 0)
                 _isFlinching = true;
 
-            //Snap the object to its target panel if it was moving
-            if (_movementBehaviour.IsMoving)
-            {
-                _movementBehaviour.CanCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.CanCancelMovement = false;
-            }
-
             //Return if this attack doesn't generate enough force
             if (!((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)) return info.Damage;
             
@@ -572,9 +567,6 @@ namespace Lodis.Movement
             //Store the force used to launch the character
             _launchForce = knockBackForce;
             Physics.RB.isKinematic = false;
-
-            //Disables object movement on the grid
-            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
             //Add force to object
             Physics.ApplyImpulseForce(_launchForce);

@@ -419,7 +419,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    motionNodeName: Motion
+    motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: "Copied Avatar Rig Configuration mis-match. Bone length in
       copied configuration does not match position in animation file:\n\t'B_L_Thigh'
@@ -447,7 +447,7 @@ ModelImporter:
       lastFrame: 91
       wrapMode: 0
       orientationOffsetY: 0
-      level: 0
+      level: 0.67
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
@@ -465,7 +465,14 @@ ModelImporter:
       curves: []
       events:
       - time: 0.4696969
-        functionName: Hit
+        functionName: IncrementAnimationPhase
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6761565
+        functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -582,7 +589,7 @@ ModelImporter:
         weight: 1
       maskType: 0
       maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
+      additiveReferencePoseFrame: 44
     isReadable: 1
   meshes:
     lODScreenPercentages: []

@@ -119,9 +119,10 @@ namespace Lodis.Gameplay
             _opponentPhysics.EnablePanelBounce(false);
             _oldBounciness = _opponentPhysics.Bounciness;
             _opponentPhysics.Bounciness = bounciness;
+            string opponentState = BlackBoardBehaviour.Instance.GetPlayerState(_opponentPhysics.gameObject);
 
             //Starts a new delayed action to disable the panel bouncing after it has bounced once. 
-            RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce(); _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded);
+            RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce(); _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded || opponentState != "Tumbling");
         }
 
         protected override void OnDeactivate()
