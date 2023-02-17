@@ -29,6 +29,8 @@ namespace Lodis.UI
         [SerializeField]
         private GameObject _readyP2Text;
         private bool _canStart;
+        private bool _p1CharacterSelected;
+        private bool _p2CharacterSelected;
         private bool _gridCreated;
 
         [SerializeField]
@@ -45,6 +47,7 @@ namespace Lodis.UI
 
                 eventSystem.SetSelectedGameObject(_player1FirstSelected.gameObject);
                 _player1FirstSelected.OnSelect(null);
+                _p1CharacterSelected = false;
 
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
@@ -56,6 +59,7 @@ namespace Lodis.UI
 
                 eventSystem.SetSelectedGameObject(_player2FirstSelected.gameObject);
                 _player2FirstSelected.OnSelect(null);
+                _p2CharacterSelected = false;
 
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();
@@ -72,8 +76,11 @@ namespace Lodis.UI
             int num = _currentPlayer;
             playerInput.actions.actionMaps[1].FindAction("Cancel").started += context => ActivateMenu(playerInput, num);
 
-            playerInput.actions.actionMaps[1].FindAction("MiddleClick").started += context => StartMatch();
-            ActivateMenu(playerInput, _currentPlayer);
+            playerInput.actions.actionMaps[1].FindAction("MiddleClick").started += context =>
+            {
+                StartMatch();
+                ActivateMenu(playerInput, num);
+            };
 
             _currentPlayer = 2;
         }
@@ -82,12 +89,14 @@ namespace Lodis.UI
         {
             _p1Data.name = data.name;
             _p1Data.CharacterReference = data.CharacterReference;
+            _p1CharacterSelected = true;
         }
 
         public void SetDataP2(CharacterData data)
         {
             _p2Data.name = data.name;
             _p2Data.CharacterReference = data.CharacterReference;
+            _p2CharacterSelected = true;
         }
 
         public void StartMatch()
@@ -103,10 +112,10 @@ namespace Lodis.UI
             if (_currentPlayer <= 1)
                 return;
 
-            _readyP1Text.SetActive(!_player1Root.activeInHierarchy);
-            _readyP2Text.SetActive(!_player2Root.activeInHierarchy);
+            _readyP1Text.SetActive(_p1CharacterSelected);
+            _readyP2Text.SetActive(_p2CharacterSelected);
 
-            _canStart = !_player1Root.activeInHierarchy && !_player2Root.activeInHierarchy;
+            _canStart = _p1CharacterSelected && _p2CharacterSelected;
             _startText.SetActive(_canStart);
         }
     }
