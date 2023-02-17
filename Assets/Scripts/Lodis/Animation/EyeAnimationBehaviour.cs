@@ -32,6 +32,9 @@ namespace Lodis.Animation
 
         private void Blink()
         {
+            if (!Renderer)
+                return;
+
             _isBlinking = true;
             Renderer.material.SetTexture(_textureName, _closed);
 
@@ -41,11 +44,6 @@ namespace Lodis.Animation
                 _isBlinking = false;
             }, TimedActionCountType.SCALEDTIME, _blinkDuration);
 
-        }
-
-        void OnDisable()
-        {
-            RoutineBehaviour.Instance.StopAction(_currentAction);
         }
 
         public void ChangeEyesToHurt()
