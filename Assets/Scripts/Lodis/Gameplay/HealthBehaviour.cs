@@ -24,6 +24,8 @@ namespace Lodis.Gameplay
         [Tooltip("Whether or not this object should be deleted if the health is 0")]
         [SerializeField]
         private bool _destroyOnDeath;
+        [SerializeField]
+        private UnityEvent _onDeath;
         [Tooltip("Whether or not the health value for this object is above 0")]
         [SerializeField]
         private bool _isAlive = true;
@@ -51,7 +53,6 @@ namespace Lodis.Gameplay
         private UnityAction _onIntagibilityDeactivated;
         private UnityAction _onStunEnabled;
         private UnityAction _onStunDisabled;
-        private UnityAction _onDeath;
         private string _defaultLayer;
         private HitColliderBehaviour _lastCollider;
         protected GridMovementBehaviour Movement;
@@ -328,7 +329,7 @@ namespace Lodis.Gameplay
 
         public void AddOnDeathAction(UnityAction action)
         {
-            _onDeath += action;
+            _onDeath.AddListener(action);
         }
 
         /// <summary>

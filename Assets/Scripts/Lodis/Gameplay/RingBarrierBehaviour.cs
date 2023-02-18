@@ -44,6 +44,8 @@ namespace Lodis.Gameplay
         [SerializeField] private ParticleSystem _hitEffect;
         [Tooltip("The effect to play when a character damages the barrier.")]
         [SerializeField] private ParticleColorManagerBehaviour _takeDamageEffect;
+        [Tooltip("The collider that explodes the loser of the match.")]
+        [SerializeField] private GameObject _winCollider;
         private GridAlignment _alignment;
         private RingBarrierFeedbackBehaviour _ringBarrierFeedbackBehaviour;
 
@@ -64,7 +66,11 @@ namespace Lodis.Gameplay
             base.Start();
 
             //Ignore the owner when it dies so they can pass through.
-            AddOnDeathAction(() => Physics.IgnoreCollision(_collider, _ownerCollider));
+            AddOnDeathAction(() =>
+            {
+                Physics.IgnoreCollision(_collider, _ownerCollider);
+                _winCollider.SetActive(true);
+            });
 
             //Set invincibility for debugging based on match manager value.
             if (MatchManagerBehaviour.Instance.InvincibleBarriers)
@@ -154,6 +160,7 @@ namespace Lodis.Gameplay
             base.ResetHealth();
 
             _visuals.SetActive(true);
+            _winCollider.SetActive(false);
 
             Physics.IgnoreCollision(_collider, _ownerCollider, false);
             _ringBarrierFeedbackBehaviour.ResetVisuals();
