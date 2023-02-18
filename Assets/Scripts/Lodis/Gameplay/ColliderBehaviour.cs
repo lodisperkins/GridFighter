@@ -41,6 +41,10 @@ namespace Lodis.Gameplay
             RB = transform.root.GetComponentInChildren<Rigidbody>();
         }
 
+        protected virtual void Start()
+        {
+        }
+
         private void OnEnable()
         {
             Collisions.Clear();
