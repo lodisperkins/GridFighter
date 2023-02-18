@@ -36,14 +36,9 @@ namespace Lodis.Gameplay
         protected virtual void Awake()
         {
             ReturnToPoolListener = gameObject.AddComponent<GridGame.GameEventListener>();
+            ReturnToPoolListener.Init(ObjectPoolBehaviour.Instance.OnReturnToPool, gameObject);
             Collisions = new Dictionary<GameObject, float>();
             RB = transform.root.GetComponentInChildren<Rigidbody>();
-        }
-
-        protected virtual void Start()
-        {
-            ReturnToPoolListener.Event = ObjectPoolBehaviour.Instance.OnReturnToPool;
-            ReturnToPoolListener.IntendedSender = gameObject;
         }
 
         private void OnEnable()

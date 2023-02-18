@@ -28,10 +28,7 @@ namespace GridGame
         // Use this for initialization
         void Awake()
         {
-            if (!Event)
-                Event = ScriptableObject.CreateInstance<GridGame.Event>();
-
-            Event.AddListener(this);
+            Event?.AddListener(this);
         }
 
         public void AddAction(UnityAction action)
