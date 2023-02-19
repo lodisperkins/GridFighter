@@ -9,6 +9,7 @@ using System;
 using Lodis.UI;
 using Lodis.ScriptableObjects;
 using Lodis.Sound;
+using UnityEngine.UI;
 
 namespace Lodis.Gameplay
 {
@@ -30,6 +31,8 @@ namespace Lodis.Gameplay
         private RingBarrierBehaviour _ringBarrierL;
         [SerializeField]
         private RingBarrierBehaviour _ringBarrierR;
+        [SerializeField]
+        private Button _firstSelectedPauseButton;
 
         [Header("Match Options")]
         [SerializeField]
@@ -211,7 +214,10 @@ namespace Lodis.Gameplay
             SetPlayerControlsActive(!_isPaused);
 
             if (_isPaused)
+            {
                 _onMatchPause?.Invoke();
+                _firstSelectedPauseButton.OnSelect(null);
+            }
             else
                 _onMatchUnpause.Invoke();
         }

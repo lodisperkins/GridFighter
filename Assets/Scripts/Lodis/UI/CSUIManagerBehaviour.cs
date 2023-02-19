@@ -38,6 +38,9 @@ namespace Lodis.UI
 
         private void ActivateMenu(PlayerInput playerInput, int playerNum)
         {
+            if (!playerInput)
+                return; 
+
             MultiplayerEventSystem eventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
 
             if (playerNum == 1)

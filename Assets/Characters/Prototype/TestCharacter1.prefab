@@ -5051,6 +5051,11 @@ PrefabInstance:
       propertyPath: _deathSparks
       value: 
       objectReference: {fileID: 1489342991040238881}
+    - target: {fileID: 8516649324113743832, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _gravity
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 8767532388978379680, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _renderer

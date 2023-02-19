@@ -708,6 +708,8 @@ namespace Lodis.Movement
             base.Update();
 
             if (CurrentAirState == AirState.TUMBLING) _lastTimeInKnockBack += Time.deltaTime;
+
+            LandingScript.enabled = !OutOfBounds;
         }
     }
 

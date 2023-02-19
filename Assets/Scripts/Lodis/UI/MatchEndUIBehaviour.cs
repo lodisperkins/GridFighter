@@ -18,7 +18,8 @@ namespace Lodis.UI
         private float _endTextDisplayDuration;
         [SerializeField]
         private EventSystem _eventSystem;
-        private GameObject _firstGameMenuButton;
+        [SerializeField]
+        private Button _firstGameMenuButton;
 
         public void DisplayEndText()
         {
@@ -35,6 +36,8 @@ namespace Lodis.UI
                     {
                         _endText.gameObject.SetActive(false);
                         _gameMenu.SetActive(true);
+                        _eventSystem.SetSelectedGameObject(_firstGameMenuButton.gameObject);
+                        _firstGameMenuButton.OnSelect(null);
                     }, TimedActionCountType.SCALEDTIME, _endTextDisplayDuration);
                     break;
                 case MatchResult.P2WINS:
@@ -43,15 +46,11 @@ namespace Lodis.UI
                     {
                         _endText.gameObject.SetActive(false);
                         _gameMenu.SetActive(true);
+                        _eventSystem.SetSelectedGameObject(_firstGameMenuButton.gameObject);
+                        _firstGameMenuButton.OnSelect(null);
                     }, TimedActionCountType.SCALEDTIME, _endTextDisplayDuration);
                     break;
             }
-        }
-
-        public void Update()
-        {
-            if (_eventSystem.currentSelectedGameObject == null)
-                _eventSystem.SetSelectedGameObject(_firstGameMenuButton);
         }
     }
 }
