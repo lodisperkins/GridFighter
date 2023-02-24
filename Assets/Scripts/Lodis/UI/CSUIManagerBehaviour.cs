@@ -107,7 +107,7 @@ namespace Lodis.UI
             if (!_canStart)
                 return;
 
-            SceneManagerBehaviour.Instance.LoadScene(2);
+            SceneManagerBehaviour.Instance.LoadScene(3);
         }
 
         void Update()
