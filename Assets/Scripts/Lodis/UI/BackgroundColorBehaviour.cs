@@ -15,6 +15,8 @@ namespace Lodis.UI
         private Image _backgroundImage;
         [SerializeField]
         private Image _topBar;
+        [SerializeField]
+        private Image _displayBorder;
 
         public void SetPrimaryColor(string hex)
         {
@@ -31,7 +33,15 @@ namespace Lodis.UI
             ColorUtility.TryParseHtmlString("#" + hex, out color);
             _primaryColor = color;
             _backgroundImage.material.SetColor("EndColor", color);
+            _displayBorder.color = color;
             _topBar.color = _primaryColor + _secondaryColor;
+        }
+
+        public void SetDisplayBorderColor(string hex)
+        {
+            Color color;
+            ColorUtility.TryParseHtmlString("#" + hex, out color);
+            _displayBorder.color = color;
         }
     }
 }
