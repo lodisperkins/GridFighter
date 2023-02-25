@@ -84,5 +84,23 @@ namespace Lodis.Utility
 
             image.color = newColor;
         }
+
+        public static void ChangeHue(this Image image)
+        {
+            Color newColor = new Color();
+            Color propertyColor = new Color();
+            Vector3 propertyHSV = new Vector3();
+            Vector3 targetHSV = new Vector3();
+            
+            propertyColor = image.color;
+            Color.RGBToHSV(propertyColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
+            Color.RGBToHSV(newColor, out targetHSV.x, out targetHSV.y, out targetHSV.z);
+
+            propertyHSV.x = targetHSV.x;
+
+            newColor = Color.HSVToRGB(propertyHSV.x, propertyHSV.y, propertyHSV.z);
+
+            image.color = newColor;
+        }
     }
 }

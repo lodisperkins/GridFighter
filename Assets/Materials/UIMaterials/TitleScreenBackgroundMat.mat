@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ScrollingTextureMat
+  m_Name: TitleScreenBackgroundMat
   m_Shader: {fileID: -6465566751694194690, guid: aec51235d1680a94ba04169118888fff,
     type: 3}
   m_ShaderKeywords: 

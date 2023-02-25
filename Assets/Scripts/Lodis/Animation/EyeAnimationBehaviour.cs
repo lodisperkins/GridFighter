@@ -40,6 +40,9 @@ namespace Lodis.Animation
 
             _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
+                if (!Renderer)
+                    return;
+
                 Renderer.material.SetTexture(_textureName, _idle);
                 _isBlinking = false;
             }, TimedActionCountType.SCALEDTIME, _blinkDuration);
