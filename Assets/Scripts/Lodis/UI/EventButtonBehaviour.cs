@@ -5,12 +5,14 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEditor;
+using Lodis.Sound;
 
 namespace Lodis.UI
 {
     [RequireComponent(typeof(Button))]
     public class EventButtonBehaviour : MonoBehaviour, ISelectHandler,IDeselectHandler, IPointerEnterHandler,IPointerExitHandler
     {
+        [Header("Button Events")]
         [SerializeField]
         private UnityEvent _onSelect;
         [SerializeField]
@@ -21,9 +23,16 @@ namespace Lodis.UI
         private UnityEvent _onUnhighlight;
         private Button _button;
 
+        [Header("Button Sounds")]
+        [SerializeField]
+        private AudioClip _selectSound;
+        [SerializeField]
+        private AudioClip _clickSound;
+
         private void Awake()
         {
             _button = GetComponent<Button>();
+            _button.onClick.AddListener(() => SoundManagerBehaviour.Instance.PlaySound(_clickSound));
         }
 
         public void OnSelect()
@@ -51,9 +60,8 @@ namespace Lodis.UI
 
         public void OnSelect(BaseEventData eventData)
         {
+            SoundManagerBehaviour.Instance.PlaySound(_selectSound);
             _onSelect?.Invoke();
         }
-
-        
     }
 }

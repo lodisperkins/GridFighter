@@ -30,6 +30,12 @@ namespace Lodis.Sound
                 {
                     GameObject blackBoard = new GameObject("SoundManager");
                     _instance = blackBoard.AddComponent<SoundManagerBehaviour>();
+
+                    _instance._musicSource = new GameObject("MusicSource").AddComponent<AudioSource>();
+                    _instance._musicSource.transform.SetParent(_instance.transform);
+
+                    _instance._soundEffectSource = new GameObject("SoundEffectSource").AddComponent<AudioSource>();
+                    _instance._soundEffectSource.transform.SetParent(_instance.transform);
                 }
 
                 return _instance;
@@ -84,6 +90,13 @@ namespace Lodis.Sound
             _enableSameSFXAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canPlaySameSFX = true, TimedActionCountType.SCALEDTIME, _sameSoundDelay);
         }
 
+        /// <summary>
+        /// Plays one of the default hit sound effects.
+        /// </summary>
+        /// <param name="strength">The strength of the hit. Used to determine which sound to play.
+        /// 1 = Light,
+        /// 2 = Medium,
+        /// 3 = Heavy</param>
         public void PlayHitSound(int strength)
         {
             strength--;
