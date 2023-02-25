@@ -269,7 +269,7 @@ namespace Lodis.Gameplay
 
         public void ReturnToMainMenu()
         {
-            SceneManagerBehaviour.Instance.LoadScene(0);
+            SceneManagerBehaviour.Instance.LoadScene(1);
         }
 
         public void QuitApplication()

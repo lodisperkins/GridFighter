@@ -91,9 +91,9 @@ Material:
     m_Colors:
     - Color_A1FDE7CC: {r: 1, g: 0.30269465, b: 0, a: 1}
     - Color_F2A327A8: {r: 0.058823533, g: 0.1545503, b: 0.98039216, a: 1}
-    - EndColor: {r: 0.6792453, g: 0.08767468, b: 0.022427924, a: 1}
+    - EndColor: {r: 1, g: 0.08098815, b: 0.0141509175, a: 1}
     - ScrollDirection: {r: -1, g: 1, b: 0, a: 0}
-    - StartColor: {r: 0.048727296, g: 0.05365002, b: 0.6886792, a: 1}
+    - StartColor: {r: 0.01025629, g: 0, b: 1, a: 1}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

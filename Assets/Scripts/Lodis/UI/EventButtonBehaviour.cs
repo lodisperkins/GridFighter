@@ -19,6 +19,20 @@ namespace Lodis.UI
         private UnityEvent _onHighlight;
         [SerializeField]
         private UnityEvent _onUnhighlight;
+        private Button _button;
+
+        private void Awake()
+        {
+            _button = GetComponent<Button>();
+        }
+
+        public void OnSelect()
+        {
+            if (!_button)
+                _button = GetComponent<Button>();
+
+            _button.OnSelect(null);
+        }
 
         public void OnDeselect(BaseEventData eventData)
         {
