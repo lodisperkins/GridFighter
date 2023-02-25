@@ -16,9 +16,13 @@ namespace Lodis.UI
         [SerializeField]
         private Button _player1FirstSelected;
         [SerializeField]
+        private Text _player1JoinInstruction;
+        [SerializeField]
         private GameObject _player2Root;
         [SerializeField]
         private Button _player2FirstSelected;
+        [SerializeField]
+        private Text _player2JoinInstruction;
         [SerializeField]
         private CharacterData _p1Data;
         [SerializeField]
@@ -52,6 +56,7 @@ namespace Lodis.UI
                 eventSystem.SetSelectedGameObject(_player1FirstSelected.gameObject);
                 _player1FirstSelected.OnSelect(null);
                 _p1CharacterSelected = false;
+                _player1JoinInstruction.gameObject.SetActive(false);
 
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
@@ -64,6 +69,7 @@ namespace Lodis.UI
                 eventSystem.SetSelectedGameObject(_player2FirstSelected.gameObject);
                 _player2FirstSelected.OnSelect(null);
                 _p2CharacterSelected = false;
+                _player2JoinInstruction.gameObject.SetActive(false);
 
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();
@@ -116,6 +122,7 @@ namespace Lodis.UI
             if (_currentPlayer <= 1)
                 return;
 
+            _player1Root.SetActive(!_p1CharacterSelected);
             _readyP1Text.SetActive(_p1CharacterSelected);
             _readyP2Text.SetActive(_p2CharacterSelected);
 
