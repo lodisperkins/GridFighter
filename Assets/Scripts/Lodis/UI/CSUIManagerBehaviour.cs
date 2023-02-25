@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.UI;
 
 namespace Lodis.UI
 {
@@ -13,11 +14,11 @@ namespace Lodis.UI
         [SerializeField]
         private GameObject _player1Root;
         [SerializeField]
-        private CharacterSelectButtonBehaviour _player1FirstSelected;
+        private Button _player1FirstSelected;
         [SerializeField]
         private GameObject _player2Root;
         [SerializeField]
-        private CharacterSelectButtonBehaviour _player2FirstSelected;
+        private Button _player2FirstSelected;
         [SerializeField]
         private CharacterData _p1Data;
         [SerializeField]
