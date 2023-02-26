@@ -177,6 +177,7 @@ MonoBehaviour:
   _flashActiveTime: 0.2
   _flashInactiveTime: 0.5
   _flashOnStart: 1
+  _flashOnEnable: 0
   _flashActive: 0
 --- !u!114 &3231125
 MonoBehaviour:
@@ -289,6 +290,7 @@ MonoBehaviour:
   _flashActiveTime: 0.2
   _flashInactiveTime: 0.5
   _flashOnStart: 1
+  _flashOnEnable: 0
   _flashActive: 0
 --- !u!114 &42006084
 MonoBehaviour:
@@ -1173,6 +1175,81 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 272797258}
+  m_CullTransparentMesh: 0
+--- !u!1 &288031612
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 288031613}
+  - component: {fileID: 288031616}
+  - component: {fileID: 288031615}
+  m_Layer: 5
+  m_Name: Background
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &288031613
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288031612}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 2065300405}
+  m_Father: {fileID: 1209793194}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 5, y: 74}
+  m_SizeDelta: {x: 1188.0845, y: 334.1881}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &288031615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288031612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: cf7aedf69825b514ea24d46f21463b9d, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &288031616
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288031612}
   m_CullTransparentMesh: 0
 --- !u!1 &402693611
 GameObject:
@@ -2780,7 +2857,7 @@ MonoBehaviour:
   _player2JoinInstruction: {fileID: 42006085}
   _p1Data: {fileID: 11400000, guid: 9e61dee5c98e8fe4ab94070dfc1b05b4, type: 2}
   _p2Data: {fileID: 11400000, guid: e58f4edf10230094aabb53e76bd1dc76, type: 2}
-  _startText: {fileID: 2065300404}
+  _startText: {fileID: 1209793193}
   _readyP1Text: {fileID: 635565907}
   _readyP2Text: {fileID: 2074725601}
   _colorManager: {fileID: 1409404535}
@@ -3219,7 +3296,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1209793194
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3231,7 +3308,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 2065300405}
+  - {fileID: 288031613}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3269,12 +3346,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -5046,13 +5123,14 @@ GameObject:
   - component: {fileID: 2065300405}
   - component: {fileID: 2065300407}
   - component: {fileID: 2065300406}
+  - component: {fileID: 2065300408}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2065300405
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5064,13 +5142,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1209793194}
+  m_Father: {fileID: 288031613}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -669.73, y: -461}
+  m_SizeDelta: {x: 353.96277, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2065300406
 MonoBehaviour:
@@ -5085,21 +5163,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9263687, g: 1, b: 0.48584908, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
+    m_Font: {fileID: 12800000, guid: f02ed590375fead4da7acf2228a6a6ea, type: 3}
+    m_FontSize: 17
+    m_FontStyle: 1
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 4
-    m_AlignByGeometry: 0
+    m_AlignByGeometry: 1
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
@@ -5115,6 +5193,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2065300404}
   m_CullTransparentMesh: 0
+--- !u!114 &2065300408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065300404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 017ddbe5a030bdb40bd882dc54bfb3e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _flashColor: {r: 0, g: 0, b: 0, a: 0}
+  _flashActiveTime: 0.2
+  _flashInactiveTime: 0.5
+  _flashOnStart: 0
+  _flashOnEnable: 1
+  _flashActive: 0
 --- !u!1 &2074725601
 GameObject:
   m_ObjectHideFlags: 0

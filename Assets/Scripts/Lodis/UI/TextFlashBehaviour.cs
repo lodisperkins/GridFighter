@@ -17,6 +17,8 @@ namespace Lodis.UI
         [SerializeField]
         private bool _flashOnStart;
         [SerializeField]
+        private bool _flashOnEnable;
+        [SerializeField]
         private bool _flashActive;
         private Text _text;
 
@@ -32,6 +34,12 @@ namespace Lodis.UI
         private void Start()
         {
             if (_flashOnStart)
+                StartFlash();
+        }
+
+        private void OnEnable()
+        {
+            if (_flashOnEnable)
                 StartFlash();
         }
 
