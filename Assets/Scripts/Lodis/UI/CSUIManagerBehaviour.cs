@@ -138,6 +138,7 @@ namespace Lodis.UI
             _p1Data.name = data.name;
             _p1Data.CharacterReference = data.CharacterReference;
             _p1CharacterSelected = true;
+            _player1Root.SetActive(false);
         }
 
         public void SetDataP2(CharacterData data)
@@ -145,6 +146,7 @@ namespace Lodis.UI
             _p2Data.name = data.name;
             _p2Data.CharacterReference = data.CharacterReference;
             _p2CharacterSelected = true;
+            _player2Root.SetActive(false);
         }
 
         public void StartMatch()
@@ -160,7 +162,6 @@ namespace Lodis.UI
             if (_currentPlayer <= 1)
                 return;
 
-            _player1Root.SetActive(!_p1CharacterSelected);
             _readyP1Text.SetActive(_p1CharacterSelected);
             _readyP2Text.SetActive(_p2CharacterSelected);
 
