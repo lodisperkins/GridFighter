@@ -82,6 +82,12 @@ namespace Lodis.GridScripts
             }
         }
 
+        private void Awake()
+        {
+            _positionLHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.LEFT);
+            _positionRHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.RIGHT);
+        }
+
         /// <summary>
         /// Changes the material of the panel based on the side of the
         /// grid that its on.

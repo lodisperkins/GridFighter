@@ -90,6 +90,9 @@ namespace Lodis.UI
 
         private void SetColor(int playerNum)
         {
+            if (!_colorManager)
+                return;
+
             if (playerNum == 1)
             {
                 _p1ColorIndex++;
