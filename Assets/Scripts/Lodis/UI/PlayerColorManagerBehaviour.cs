@@ -21,6 +21,8 @@ namespace Lodis.UI
         private UnityEvent _onSetColor;
 
         public Color[] PossibleColors { get => _possibleColors; private set => _possibleColors = value; }
+        public ColorVariable P1Color { get => _p1Color; private set => _p1Color = value; }
+        public ColorVariable P2Color { get => _p2Color; private set => _p2Color = value; }
 
         public void SetPlayer(int playerNum)
         {
@@ -30,9 +32,9 @@ namespace Lodis.UI
         public void SetPlayerColor(string hexCode)
         {
             if (_player == 1)
-                _p1Color.SetColor(hexCode);
+                P1Color.SetColor(hexCode);
             else if (_player == 2)
-                _p2Color.SetColor(hexCode);
+                P2Color.SetColor(hexCode);
 
             _setColorEvent?.Raise(gameObject);
             _onSetColor?.Invoke();
@@ -41,9 +43,9 @@ namespace Lodis.UI
         public void SetPlayerColor(int player, int index)
         {
             if (player == 1)
-                _p1Color.Value = PossibleColors[index];
+                P1Color.Value = PossibleColors[index];
             else if (player == 2)
-                _p2Color.Value = PossibleColors[index];
+                P2Color.Value = PossibleColors[index];
 
             _setColorEvent?.Raise(gameObject);
             _onSetColor?.Invoke();

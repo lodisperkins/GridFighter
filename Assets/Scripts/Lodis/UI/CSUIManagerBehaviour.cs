@@ -35,6 +35,8 @@ namespace Lodis.UI
         private GameObject _readyP2Text;
         [SerializeField]
         private PlayerColorManagerBehaviour _colorManager;
+        [SerializeField]
+        private BackgroundColorBehaviour _backgroundImage;
         private bool _canStart;
         private bool _p1CharacterSelected;
         private bool _p2CharacterSelected;
@@ -96,6 +98,7 @@ namespace Lodis.UI
                     _p1ColorIndex = 0;
 
                 _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
+                _backgroundImage.SetPrimaryColor(_colorManager.P1Color.Value / 2);
             }
             else if (playerNum == 2)
             {
@@ -105,6 +108,7 @@ namespace Lodis.UI
                     _p2ColorIndex = 0;
 
                 _colorManager.SetPlayerColor(playerNum, _p2ColorIndex);
+                _backgroundImage.SetSecondaryColor(_colorManager.P2Color.Value / 2);
             }
         }
 

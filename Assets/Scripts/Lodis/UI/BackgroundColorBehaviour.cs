@@ -85,5 +85,26 @@ namespace Lodis.UI
             ColorUtility.TryParseHtmlString("#" + hex, out color);
             _displayBorder.color = color;
         }
+
+        public void SetPrimaryColor(Color color)
+        {
+            _primaryColor = color;
+            _backgroundImage.material.SetColor("StartColor", color);
+            UpdatePrimaryColorImages();
+            UpdateBlendColorImages();
+        }
+
+        public void SetSecondaryColor(Color color)
+        {
+            _backgroundImage.material.SetColor("EndColor", color);
+            _secondaryColor = color;
+            UpdateSecondaryColorImages();
+            UpdateBlendColorImages();
+        }
+
+        public void SetDisplayBorderColor(Color color)
+        {
+            _displayBorder.color = color;
+        }
     }
 }

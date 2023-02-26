@@ -2072,6 +2072,7 @@ MonoBehaviour:
   _readyP1Text: {fileID: 635565907}
   _readyP2Text: {fileID: 1400029378}
   _colorManager: {fileID: 1409404535}
+  _backgroundImage: {fileID: 458338553}
   _currentPlayer: 1
 --- !u!1 &1047616432
 GameObject:
