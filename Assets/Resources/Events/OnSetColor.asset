@@ -9,7 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f027f63cb29cf1949b349da291072880, type: 3}
-  m_Name: Player1Color
+  m_Script: {fileID: 11500000, guid: fdfad9df7a659f74c8a9799061666812, type: 3}
+  m_Name: OnSetColor
   m_EditorClassIdentifier: 
-  _val: {r: 0, g: 0.541559, b: 1, a: 1}

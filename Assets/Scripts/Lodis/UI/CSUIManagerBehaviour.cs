@@ -33,13 +33,23 @@ namespace Lodis.UI
         private GameObject _readyP1Text;
         [SerializeField]
         private GameObject _readyP2Text;
+        [SerializeField]
+        private PlayerColorManagerBehaviour _colorManager;
         private bool _canStart;
         private bool _p1CharacterSelected;
         private bool _p2CharacterSelected;
         private bool _gridCreated;
+        private int _p1ColorIndex = -1;
+        private int _p2ColorIndex = -1;
 
         [SerializeField]
         private int _currentPlayer = 1;
+
+        private void Start()
+        {
+            SetColor(1);
+            SetColor(2);
+        }
 
         private void ActivateMenu(PlayerInput playerInput, int playerNum)
         {
@@ -76,6 +86,28 @@ namespace Lodis.UI
             }
         }
 
+        private void SetColor(int playerNum)
+        {
+            if (playerNum == 1)
+            {
+                _p1ColorIndex++;
+
+                if (_p1ColorIndex >= _colorManager.PossibleColors.Length)
+                    _p1ColorIndex = 0;
+
+                _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
+            }
+            else if (playerNum == 2)
+            {
+                _p2ColorIndex++;
+
+                if (_p2ColorIndex >= _colorManager.PossibleColors.Length)
+                    _p2ColorIndex = 0;
+
+                _colorManager.SetPlayerColor(playerNum, _p2ColorIndex);
+            }
+        }
+
         public void UpdateEventSystem(PlayerInput playerInput)
         {
             if (!_gridCreated)
@@ -91,6 +123,8 @@ namespace Lodis.UI
                 StartMatch();
                 ActivateMenu(playerInput, num);
             };
+
+            playerInput.actions.actionMaps[1].FindAction("RightClick").started += context => SetColor(num);
 
             _currentPlayer = 2;
         }
