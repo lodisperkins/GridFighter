@@ -138,16 +138,18 @@ namespace Lodis.UI
 
         public void SetDataP1(CharacterData data)
         {
-            _p1Data.name = data.name;
+            _p1Data.DisplayName = data.DisplayName;
             _p1Data.CharacterReference = data.CharacterReference;
+            _p1Data.HeadShot = data.HeadShot;
             _p1CharacterSelected = true;
             _player1Root.SetActive(false);
         }
 
         public void SetDataP2(CharacterData data)
         {
-            _p2Data.name = data.name;
+            _p2Data.DisplayName = data.DisplayName;
             _p2Data.CharacterReference = data.CharacterReference;
+            _p2Data.HeadShot = data.HeadShot;
             _p2CharacterSelected = true;
             _player2Root.SetActive(false);
         }

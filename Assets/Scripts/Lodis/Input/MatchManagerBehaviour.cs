@@ -113,6 +113,7 @@ namespace Lodis.Gameplay
         public static bool InfiniteEnergy { get; private set; }
         public bool InvincibleBarriers { get => _invincibleBarriers; set => _invincibleBarriers = value; }
         public bool SuddenDeathActive { get => _suddenDeathActive; private set => _suddenDeathActive = value; }
+        public PlayerSpawnBehaviour PlayerSpawner { get => _playerSpawner; private set => _playerSpawner = value; }
 
         private void Awake()
         {
@@ -125,10 +126,10 @@ namespace Lodis.Gameplay
             //Initialize grid
             _grid.CreateGrid();
 
-            _playerSpawner = GetComponent<PlayerSpawnBehaviour>();
-            _playerSpawner.SpawnEntitiesByMode(_mode);
+            PlayerSpawner = GetComponent<PlayerSpawnBehaviour>();
+            PlayerSpawner.SpawnEntitiesByMode(_mode);
 
-            _onMatchRestart.AddListener(_playerSpawner.ResetPlayers);
+            _onMatchRestart.AddListener(PlayerSpawner.ResetPlayers);
             _onMatchRestart.AddListener(() =>
             {
                 if (SuddenDeathActive)
@@ -147,7 +148,7 @@ namespace Lodis.Gameplay
                 if (_matchResult == MatchResult.DRAW)
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
             },
-            args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
+            args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
 
             Application.targetFrameRate = _targetFrameRate;
 
@@ -172,9 +173,9 @@ namespace Lodis.Gameplay
 
         private void SetMatchResult()
         {
-            if (_playerSpawner.P2HealthScript.HasExploded)
+            if (PlayerSpawner.P2HealthScript.HasExploded)
                 _matchResult = MatchResult.P1WINS;
-            else if (_playerSpawner.P1HealthScript.HasExploded)
+            else if (PlayerSpawner.P1HealthScript.HasExploded)
                 _matchResult = MatchResult.P2WINS;
             else if (_ringBarrierL.IsAlive == _ringBarrierR.IsAlive && !_suddenDeathActive)
                 _matchResult = MatchResult.DRAW;
@@ -224,7 +225,7 @@ namespace Lodis.Gameplay
 
         public void Restart(bool suddenDeathActive = false)
         {
-            _playerSpawner.SuddenDeathActive = suddenDeathActive;
+            PlayerSpawner.SuddenDeathActive = suddenDeathActive;
             SuddenDeathActive = suddenDeathActive;
             MatchTimerBehaviour.Instance.IsInfinite = suddenDeathActive;
 
@@ -264,7 +265,7 @@ namespace Lodis.Gameplay
                 if (_matchResult == MatchResult.DRAW)
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
             },
-            args => _playerSpawner.P1HealthScript.HasExploded || _playerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
+            args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
         }
 
         public void ReturnToMainMenu()

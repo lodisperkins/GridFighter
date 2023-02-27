@@ -2005,6 +2005,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterUI
       objectReference: {fileID: 0}
+    - target: {fileID: 3145003144209708604, guid: 7a2efd575c69b274c968d7856168638b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4432506967748626867, guid: 7a2efd575c69b274c968d7856168638b,
         type: 3}
       propertyPath: _moveSet

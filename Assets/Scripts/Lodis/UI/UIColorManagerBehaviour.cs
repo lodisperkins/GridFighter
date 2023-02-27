@@ -40,6 +40,8 @@ namespace Lodis.UI
         [Tooltip("The objects that will have their colors changed to match the alignment.")]
         [SerializeField] private ColorObject[] _objectsToColor;
         private Color _ownerColor;
+        [SerializeField]
+        private bool _setColorsOnStart = true;
 
         public ColorObject[] ObjectsToColor { get => _objectsToColor; private set => _objectsToColor = value; }
 
@@ -118,7 +120,8 @@ namespace Lodis.UI
         // Start is called before the first frame update
         void Start()
         {
-            SetColors();
+            if (_setColorsOnStart)
+                SetColors();
         }
     }
 }

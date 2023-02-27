@@ -11,7 +11,7 @@ public class CharacterData : ScriptableObject
     private string _displayName = "none";
     [SerializeField()]
     [Tooltip("The image that will display on the character selection screen.")]
-    private Image _displayIcon;
+    private GameObject _headShot;
     [SerializeField()]
     [Tooltip("The prefab that will be loaded when this character is spawned.")]
     private GameObject _characterReference;
@@ -23,7 +23,7 @@ public class CharacterData : ScriptableObject
     /// <summary>
     /// The image that will display on the character selection screen.
     /// </summary>
-    public Image DisplayIcon { get => _displayIcon; set => _displayIcon = value; }
+    public GameObject HeadShot { get => _headShot; set => _headShot = value; }
     /// <summary>
     /// he prefab that will be loaded when this character is spawned.
     /// </summary>
