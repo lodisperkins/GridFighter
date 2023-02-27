@@ -52,7 +52,7 @@ public class EnergyBarBehaviour : MonoBehaviour
         _slider = GetComponent<Slider>();
         _slider.maxValue = MaxValue.Value;
         _backgroundImage.color = BlackBoardBehaviour.Instance.GetPlayerColorByID(_playerID);
-        CreateMeterTicks();
+        //CreateMeterTicks();
     }
 
     /// <summary>
@@ -93,6 +93,8 @@ public class EnergyBarBehaviour : MonoBehaviour
         if (_target != null)
             _slider.value = _target.Energy;
         else return;
+
+        _energyTextCounter.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_target.Energy];
 
         int currentEnergy = (int)_target.Energy;
 

@@ -202,3 +202,4 @@ MonoBehaviour:
   _objectsToColor:
   - ObjectImage: {fileID: 2742910789721913310}
     OnlyChangeHue: 0
+  _setColorsOnStart: 0
