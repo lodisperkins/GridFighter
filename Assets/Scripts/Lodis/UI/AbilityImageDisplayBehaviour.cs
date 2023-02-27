@@ -23,6 +23,10 @@ namespace Lodis
         private bool _updateAbilityColors;
         [SerializeField]
         private bool _displayNext;
+        [SerializeField]
+        private Text _costText1;
+        [SerializeField]
+        private Text _costText2;
 
         private void Start()
         {
@@ -88,6 +92,11 @@ namespace Lodis
                 _abilitySlot2Image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_ability2Cost];
             else
                 _abilitySlot2Image.color = Color.white;
+
+            _costText1.text = _ability1Cost.ToString();
+            _costText1.color = _abilitySlot1Image.color;
+            _costText2.text = _ability2Cost.ToString();
+            _costText2.color = _abilitySlot2Image.color;
         }
     }
 }

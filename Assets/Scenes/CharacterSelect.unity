@@ -1826,6 +1826,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
   - ObjectImage: {fileID: 197520670}
     OnlyChangeHue: 1
+  _setColorsOnStart: 1
 --- !u!4 &598902719
 Transform:
   m_ObjectHideFlags: 0
@@ -2152,6 +2153,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
   - ObjectImage: {fileID: 272797260}
     OnlyChangeHue: 1
+  _setColorsOnStart: 1
 --- !u!4 &743233165
 Transform:
   m_ObjectHideFlags: 0
@@ -3490,7 +3492,7 @@ MonoBehaviour:
   _p1Color: {fileID: 11400000, guid: 746d9f473f4780140b1becbef066dfce, type: 2}
   _p2Color: {fileID: 11400000, guid: db5801176aa0d1143aabbc9690c96374, type: 2}
   _possibleColors:
-  - {r: 0, g: 0.54509807, b: 1, a: 0.99215686}
+  - {r: 0, g: 0.54509807, b: 1, a: 1}
   - {r: 0.9254902, g: 0.18039216, b: 0.08235294, a: 1}
   - {r: 1, g: 0.7394293, b: 0, a: 1}
   - {r: 0.32768464, g: 1, b: 0, a: 1}
