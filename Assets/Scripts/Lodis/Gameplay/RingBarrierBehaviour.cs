@@ -169,6 +169,7 @@ namespace Lodis.Gameplay
         public void Deactivate(bool spawnEffects = true)
         {
             Physics.IgnoreCollision(_collider, _ownerCollider);
+            _winCollider.SetActive(true);
             _ringBarrierFeedbackBehaviour.DeactivateBarrier(spawnEffects);
         }
 
