@@ -93,10 +93,26 @@ namespace Lodis
             else
                 _abilitySlot2Image.color = Color.white;
 
-            _costText1.text = _ability1Cost.ToString();
-            _costText1.color = _abilitySlot1Image.color;
-            _costText2.text = _ability2Cost.ToString();
-            _costText2.color = _abilitySlot2Image.color;
+            if (_abilitySlot1Image.enabled)
+            {
+                _costText1.text = _ability1Cost.ToString();
+                _costText1.color = _abilitySlot1Image.color;
+            }
+            else
+            {
+                _costText1.text = "X";
+                _costText1.color = Color.grey;
+            }
+            if (_abilitySlot2Image.enabled)
+            {
+                _costText2.text = _ability2Cost.ToString();
+                _costText2.color = _abilitySlot2Image.color;
+            }
+            else
+            {
+                _costText2.text = "X";
+                _costText2.color = Color.grey;
+            }
         }
     }
 }
