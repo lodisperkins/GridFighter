@@ -132,6 +132,7 @@ namespace Lodis.UI
             };
 
             playerInput.actions.actionMaps[1].FindAction("RightClick").started += context => SetColor(num);
+            playerInput.actions.actionMaps[1].FindAction("Cancel").performed += context => TryGoingToMainMenu(_currentPlayer);
 
             _currentPlayer = 2;
         }
@@ -152,6 +153,17 @@ namespace Lodis.UI
             _p2Data.HeadShot = data.HeadShot;
             _p2CharacterSelected = true;
             _player2Root.SetActive(false);
+        }
+
+        public void TryGoingToMainMenu(int playerNum)
+        {
+            if (_p1CharacterSelected && playerNum == 1)
+                return;
+
+            if (_p2CharacterSelected && playerNum == 2)
+                return;
+
+            SceneManagerBehaviour.Instance.LoadScene(1);
         }
 
         public void StartMatch()

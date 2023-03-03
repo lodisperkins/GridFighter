@@ -1509,7 +1509,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""id"": ""f082a807-f05d-4aa9-8b46-3f643371a4e3"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Hold""
                 },
                 {
                     ""name"": ""Point"",
