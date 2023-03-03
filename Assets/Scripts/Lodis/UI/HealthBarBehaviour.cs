@@ -16,8 +16,11 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Image _fill;
         [SerializeField]
+        private Image[] _imagesToUpdate;
+        [SerializeField]
         private Slider _slider;
         private float _maxValue = 1;
+        private float _lastHealth;
         public HealthBehaviour HealthComponent { get => _healthComponent; set => _healthComponent = value; }
         public float MaxValue { get => _maxValue; set => _maxValue = value; }
 
@@ -42,6 +45,16 @@ namespace Lodis.Gameplay
             _slider.maxValue = MaxValue;
 
             _fill.color = _healthGradient.Evaluate(_slider.value / _slider.maxValue);
+
+            if (_lastHealth != _healthComponent.Health)
+            {
+                foreach(Image image in _imagesToUpdate)
+                {
+                    image.color = _healthGradient.Evaluate(_slider.value / _slider.maxValue);
+                }
+            }
+
+            _lastHealth = _healthComponent.Health;
         }
     }
 }

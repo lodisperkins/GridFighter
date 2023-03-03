@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Prototype1Data
   m_EditorClassIdentifier: 
   _displayName: Prototype1
-  _displayIcon: {fileID: 0}
+  _headShot: {fileID: 6370303588712990288, guid: 64a04c944e929be4faad39f520c38892,
+    type: 3}
   _characterReference: {fileID: 2492379211295133931, guid: 9c0f26416408c3249a6ca0462ece9f65,
     type: 3}

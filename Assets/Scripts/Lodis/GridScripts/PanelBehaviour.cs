@@ -66,12 +66,6 @@ namespace Lodis.GridScripts
 
         public MarkerType CurrentMarker { get => _currentMarker; private set => _currentMarker = value; }
 
-        private void Awake()
-        {
-            _positionLHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.LEFT);
-            _positionRHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.RIGHT);
-        }
-
         /// <summary>
         /// The side of the grid this panel this panel belongs to
         /// </summary>
@@ -86,6 +80,12 @@ namespace Lodis.GridScripts
                 _alignment = value;
                 UpdateMaterial();
             }
+        }
+
+        private void Awake()
+        {
+            _positionLHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.LEFT);
+            _positionRHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.RIGHT);
         }
 
         /// <summary>
@@ -142,6 +142,9 @@ namespace Lodis.GridScripts
 
                     if (!_markerMovement)
                         throw new System.Exception("Can't mark grid movement of object that doesn't have a GridMovementBehaviour attached. Object name is " + markObject.name);
+
+                    _positionLHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.LEFT);
+                    _positionRHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.RIGHT);
 
                     if (_markerMovement.Alignment == GridAlignment.LEFT)
                     {

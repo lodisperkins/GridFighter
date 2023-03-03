@@ -1,29 +1,127 @@
-﻿using Lodis.ScriptableObjects;
+﻿using Lodis.Gameplay;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Lodis.UI
 {
-    public class UIColorManagerBehaviour : MonoBehaviour
+    /// <summary>
+    /// An object that stores a renderer and th color properties to adjust on that renderer.
+    /// </summary>
+    [System.Serializable]
+    public class ColorObject
     {
-        private int _player;
-        [SerializeField]
-        private ColorVariable _p1Color;
-        [SerializeField]
-        private ColorVariable _p2Color;
+        public Image ObjectImage;
+        private Color _defaultColor;
+        public bool OnlyChangeHue = true;
 
-        public void SetPlayer(int playerNum)
+        /// <summary>
+        /// Store the current colors that are on this object.
+        /// </summary>
+        public virtual void CacheColor()
         {
-            _player = playerNum;
+            _defaultColor = ObjectImage.color;
         }
 
-        public void SetPlayerColor(string hexCode)
+        /// <summary>
+        /// Override the current colors on this object with the colors currently cached.
+        /// </summary>
+        public virtual void SetColorToCache()
         {
-            if (_player == 1)
-                _p1Color.SetColor(hexCode);
-            else if (_player == 2)
-                _p2Color.SetColor(hexCode);
+            ObjectImage.color = _defaultColor;
+        }
+    }
+    public class UIColorManagerBehaviour : MonoBehaviour
+    {
+        [Tooltip("The character alignment that these objects will match the color of.")]
+        [SerializeField] private GridScripts.GridAlignment _alignment;
+        [Tooltip("The objects that will have their colors changed to match the alignment.")]
+        [SerializeField] private ColorObject[] _objectsToColor;
+        private Color _ownerColor;
+        [SerializeField]
+        private bool _setColorsOnStart = true;
+
+        public ColorObject[] ObjectsToColor { get => _objectsToColor; private set => _objectsToColor = value; }
+
+        private void SetHue(ColorObject objectToColor)
+        {
+            objectToColor.ObjectImage.ChangeHue(_ownerColor);
+        }
+
+        private void SetColor(ColorObject objectToColor)
+        {
+            objectToColor.ObjectImage.color = _ownerColor;
+        }
+
+        /// <summary>
+        /// Sets all objects and their color properties to match the alignment.
+        /// </summary>
+        public void SetColors()
+        {
+            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(_alignment);
+
+            foreach (ColorObject colorObject in ObjectsToColor)
+            {
+                if (colorObject.OnlyChangeHue)
+                    SetHue(colorObject);
+                else
+                    SetColor(colorObject);
+
+                colorObject.CacheColor();
+            }
+        }
+
+        /// <summary>
+        /// Sets all objects and their color properties to match the alignment.
+        /// </summary>
+        public void SetColors(string hex)
+        {
+            Color color;
+            ColorUtility.TryParseHtmlString("#" + hex, out color);
+            _ownerColor = color;
+
+            foreach (ColorObject colorObject in ObjectsToColor)
+            {
+                if (colorObject.OnlyChangeHue)
+                    SetHue(colorObject);
+                else
+                    SetColor(colorObject);
+
+                colorObject.CacheColor();
+            }
+        }
+
+        /// <summary>
+        /// Sets all objects and their color properties to match the alignment.
+        /// </summary>
+        /// <param name="alignmentID">The ID to use when finding the new alignement. 
+        /// 0 = None
+        /// 1 = Left
+        /// 2 = Right
+        /// 3 = Any</param>
+        public void SetColors(int alignmentID)
+        {
+            GridScripts.GridAlignment alignment = (GridScripts.GridAlignment)alignmentID;
+            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(alignment);
+
+            foreach (ColorObject colorObject in ObjectsToColor)
+            {
+                if (colorObject.OnlyChangeHue)
+                    SetHue(colorObject);
+                else
+                    SetColor(colorObject);
+
+                colorObject.CacheColor();
+            }
+        }
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            if (_setColorsOnStart)
+                SetColors();
         }
     }
 }

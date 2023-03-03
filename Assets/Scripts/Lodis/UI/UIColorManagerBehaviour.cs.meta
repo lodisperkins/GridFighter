@@ -1,11 +1,9 @@
 fileFormatVersion: 2
-guid: 19da866c2dd8bf04d8f180eab2f7a1e5
+guid: a6d28571809b9714f815c3344635d9c9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences:
-  - _p1Color: {fileID: 11400000, guid: 746d9f473f4780140b1becbef066dfce, type: 2}
-  - _p2Color: {fileID: 11400000, guid: db5801176aa0d1143aabbc9690c96374, type: 2}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

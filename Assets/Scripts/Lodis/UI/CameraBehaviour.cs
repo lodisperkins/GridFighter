@@ -22,6 +22,8 @@ namespace Lodis
         [SerializeField]
         private float _maxX;
         [SerializeField]
+        private float _maxY;
+        [SerializeField]
         private float _minZ;
         [SerializeField]
         private float _midZ;
@@ -35,6 +37,7 @@ namespace Lodis
         [SerializeField]
         private bool _showAveragePosition;
         private Vector3 _startPosition;
+        private float _currentTimeY;
 
         public static ShakeBehaviour ShakeBehaviour { get => _shakeBehaviour; }
 
@@ -108,7 +111,7 @@ namespace Lodis
             return averageDistance;
         }
 
-        private float GetAxisPositionByAvg(float min, float mid, float max, float averagePositionOnAxis, float moveSensitivity)
+        private float GetXAxisPositionByAvg(float min, float mid, float max, float averagePositionOnAxis, float moveSensitivity)
         {
             if (averagePositionOnAxis - mid >= moveSensitivity)
             {
@@ -118,6 +121,28 @@ namespace Lodis
                 return _startPosition.x - min;
             else
                 return mid;
+        }
+
+        private float GetZAxisPositionByAvg(float min, float mid, float max, float averagePositionOnAxis, float moveSensitivity)
+        {
+            if (averagePositionOnAxis - mid >= moveSensitivity)
+            {
+                return _startPosition.z + max;
+            }
+            else if (averagePositionOnAxis - mid <= -moveSensitivity)
+                return _startPosition.z - min;
+            else
+                return mid;
+        }
+
+        private float GetYAxisPositionByAvg(float min, float mid, float max, float averagePositionOnAxis, float moveSensitivity)
+        {
+            if (averagePositionOnAxis >= moveSensitivity)
+            {
+                return _startPosition.y + max;
+            }
+            else
+                return _startPosition.y;
         }
 
 
@@ -134,25 +159,33 @@ namespace Lodis
             _averagePosition = GetNewPosition();
             float avgDistance = GetAverageDistance(_averagePosition);
 
-            _cameraPosition.x = GetAxisPositionByAvg(_minX,_midX, _maxX, _averagePosition.x, _moveSensitivity.x);
+            _cameraPosition.x = GetXAxisPositionByAvg(_minX,_midX, _maxX, _averagePosition.x, _moveSensitivity.x);
             if (Mathf.Abs(_averagePosition.z) > 0)
-                _cameraPosition.z = GetAxisPositionByAvg(_minZ, _midZ, _maxZ, _averagePosition.z, _moveSensitivity.z);
+                _cameraPosition.z = GetZAxisPositionByAvg(_minZ, _midZ, _maxZ, _averagePosition.z, _moveSensitivity.z);
+
+            _cameraPosition.y = GetYAxisPositionByAvg(0, _startPosition.y, _maxY, _averagePosition.y, _moveSensitivity.y);
 
 
             if (_cameraPosition.x != _lastCameraPosition.x)
                 _currentTimeX = 0;
 
+            if (_cameraPosition.y != _lastCameraPosition.y)
+                _currentTimeY = 0;
+
             if (_cameraPosition.z != _lastCameraPosition.z)
                 _currentTimeZ = 0;
 
             _currentTimeX = Mathf.MoveTowards(_currentTimeX, 1, _cameraMoveSpeed.x * Time.deltaTime);
+            _currentTimeY = Mathf.MoveTowards(_currentTimeY, 1, _cameraMoveSpeed.y * Time.deltaTime);
             _currentTimeZ = Mathf.MoveTowards(_currentTimeZ, 1, _cameraMoveSpeed.z * Time.deltaTime);
 
             float newX = 0;
             newX = Mathf.Lerp(transform.position.x, _cameraPosition.x, _currentTimeX);
+            float newY = 0;
+            newY = Mathf.Lerp(transform.position.y, _cameraPosition.y, _currentTimeY);
             float newZ = 0;
             newZ = Mathf.Lerp(transform.position.z, _cameraPosition.z, _currentTimeZ);
-            transform.position = new Vector3(newX, transform.position.y, newZ);
+            transform.position = new Vector3(newX, newY, newZ);
 
             _lastCameraPosition = _cameraPosition;
         }
