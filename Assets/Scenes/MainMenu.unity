@@ -1430,12 +1430,17 @@ PrefabInstance:
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_Text
-      value: Single Player
+      value: Player vs CPU
       objectReference: {fileID: 0}
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_FontData.m_MaxSize
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4869551919099509732, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -1599,84 +1604,6 @@ PrefabInstance:
     - {fileID: 7431944277009476013, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
     - {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
---- !u!1 &384993138 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7997891043035845414, guid: cd44e3f1f47b4e844bb56c12bc030286,
-    type: 3}
-  m_PrefabInstance: {fileID: 368159330}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &384993140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 384993138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 46dd77c46ce693c4a84da3aa40209fd5, type: 3}
-    m_FontSize: 18
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 0
-    m_MaxSize: 50
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Singleplayer
---- !u!1 &397517634 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7997891043035845414, guid: cd44e3f1f47b4e844bb56c12bc030286,
-    type: 3}
-  m_PrefabInstance: {fileID: 1287463999}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &397517636
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 397517634}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 46dd77c46ce693c4a84da3aa40209fd5, type: 3}
-    m_FontSize: 18
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 0
-    m_MaxSize: 50
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Back
 --- !u!1 &446875680
 GameObject:
   m_ObjectHideFlags: 0
@@ -2010,12 +1937,22 @@ PrefabInstance:
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_Text
-      value: Multiplayer
+      value: Player vs Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_FontData.m_MaxSize
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 4869551919099509732, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -2324,45 +2261,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!1 &734766564 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7997891043035845414, guid: cd44e3f1f47b4e844bb56c12bc030286,
-    type: 3}
-  m_PrefabInstance: {fileID: 633407863}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &734766566
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 734766564}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 46dd77c46ce693c4a84da3aa40209fd5, type: 3}
-    m_FontSize: 19
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 0
-    m_MaxSize: 50
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Multiplayer
 --- !u!1 &791748118
 GameObject:
   m_ObjectHideFlags: 0
@@ -2639,6 +2537,11 @@ PrefabInstance:
       propertyPath: m_FontData.m_MaxSize
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 4869551919099509732, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -2806,45 +2709,6 @@ PrefabInstance:
     - {fileID: 7431944277009476013, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
     - {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
---- !u!1 &877208920 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7997891043035845414, guid: cd44e3f1f47b4e844bb56c12bc030286,
-    type: 3}
-  m_PrefabInstance: {fileID: 873891259}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &877208922
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 877208920}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 46dd77c46ce693c4a84da3aa40209fd5, type: 3}
-    m_FontSize: 18
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 0
-    m_MaxSize: 50
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: CPU vs CPU
 --- !u!224 &1050588949 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6983262583683829302, guid: e07f9430fa55a7a41aaf98461377f925,
@@ -3197,6 +3061,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_FontData.m_MaxSize
       value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4869551919099509732, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -4482,6 +4351,11 @@ PrefabInstance:
       propertyPath: m_FontData.m_FontSize
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_FontData.m_RichText
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4869551919099509732, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_TargetGraphic
@@ -4694,51 +4568,12 @@ PrefabInstance:
     - {fileID: 7431944277009476013, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
     - {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
---- !u!1 &2044561094 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7997891043035845414, guid: cd44e3f1f47b4e844bb56c12bc030286,
-    type: 3}
-  m_PrefabInstance: {fileID: 2044561093}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2044561095 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7997891042039204573, guid: cd44e3f1f47b4e844bb56c12bc030286,
     type: 3}
   m_PrefabInstance: {fileID: 2044561093}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2044561096
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2044561094}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 46dd77c46ce693c4a84da3aa40209fd5, type: 3}
-    m_FontSize: 50
-    m_FontStyle: 0
-    m_BestFit: 1
-    m_MinSize: 0
-    m_MaxSize: 50
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Exit
 --- !u!114 &2044561097
 MonoBehaviour:
   m_ObjectHideFlags: 0
