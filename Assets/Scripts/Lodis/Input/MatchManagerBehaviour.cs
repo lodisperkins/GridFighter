@@ -270,6 +270,7 @@ namespace Lodis.Gameplay
 
         public void ReturnToMainMenu()
         {
+            Time.timeScale = 1;
             SceneManagerBehaviour.Instance.LoadScene(1);
         }
 
