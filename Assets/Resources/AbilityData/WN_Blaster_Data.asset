@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: WN_Blaster_Data
   m_EditorClassIdentifier: 
   abilityName: Blaster
+  abilityDescription: None
   AbilityType: 0
   timeActive: 0.05
   recoverTime: 0.2

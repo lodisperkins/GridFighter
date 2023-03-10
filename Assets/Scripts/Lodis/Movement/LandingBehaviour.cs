@@ -172,6 +172,9 @@ namespace Lodis.Movement
         private bool CheckFalling()
         {
             Vector3 velocity = _knockback.Physics.LastVelocity;
+            if (velocity.magnitude == 0)
+                return false;
+
             float dot = Vector3.Dot(Vector3.down, velocity.normalized);
 
             return dot >= 0;

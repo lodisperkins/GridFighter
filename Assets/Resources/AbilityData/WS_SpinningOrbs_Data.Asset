@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: SpinningOrbs
   abilityDescription: None
   AbilityType: 1
-  timeActive: 0.3
+  timeActive: 0.08
   recoverTime: 0.3
   startUpTime: 0.1
   chargeTime: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
-  CanInputMovementWhileActive: 0
+  CanInputMovementWhileActive: 1
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0

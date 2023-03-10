@@ -39,18 +39,24 @@ namespace Lodis.ScriptableObjects
         public string abilityDescription = "None";
         [Tooltip("The type describes the strength and input value for the ability")]
         public AbilityType AbilityType;
+
+        [Header("Usage Timing")]
         [Tooltip("How long the ability should be active for")]
         public float timeActive = 0;
         [Tooltip("How long does the object that used the ability needs before returning to idle")]
         public float recoverTime = 0;
         [Tooltip("How long does the object that used the ability must wait before the ability activates")]
         public float startUpTime = 0;
+
+        [Header("Activation")]
         [Tooltip("The amount of time this ability must be in an active slot before it can be used. Can be ignored if this ability is a normal type.")]
         public float chargeTime = 0;
         [Tooltip("The amount of time this ability can be used before it is removed from the active slot. Can be ignored if this ability is a normal type.")]
         public int maxActivationAmount = 1;
         [Tooltip("The amount energy it costs to activate this ability.")]
         public float EnergyCost = 0;
+
+        [Header("Cancellation Rules")]
         [Tooltip("If true, this ability can be canceled into others in the start up phase")]
         public bool canCancelStartUp = false;
         [Tooltip("If true, this ability can be canceled into others in the active phase")]
@@ -65,8 +71,6 @@ namespace Lodis.ScriptableObjects
         public bool CanCancelIntoSpecial = false;
         [Tooltip("If true, this ability can be canceled if a normal move is used")]
         public bool CanCancelIntoNormal = false;
-        [Tooltip("If false, the user of this ability can't move while it's active")]
-        public bool CanInputMovementWhileActive = true;
         [Tooltip("If true, this ability can be ")]
         public bool CanOnlyCancelOnOpponentHit = true;
         [Tooltip("If true, this ability will be canceled when the user is hit")]
@@ -75,6 +79,16 @@ namespace Lodis.ScriptableObjects
         public bool cancelOnFlinch = false;
         [Tooltip("If true, this ability will be canceled when the user is in knockback")]
         public bool cancelOnKnockback = true;
+
+        [Header("Movement Rules")]
+        [Tooltip("If false, the user of this ability can't move while it's winding up")]
+        public bool CanInputMovementDuringStartUp;
+        [Tooltip("If false, the user of this ability can't move while it's active")]
+        public bool CanInputMovementWhileActive;
+        [Tooltip("If false, the user of this ability can't move while their recovering")]
+        public bool CanInputMovementWhileRecovering;
+
+        [Header("Sound and Appearance")]
         [Tooltip("If true, the animation will change speed according to the start, active, and recover times")]
         public bool useAbilityTimingForAnimation;
         [Tooltip("If true, the animation will only play when specified in the ability script")]
@@ -86,6 +100,8 @@ namespace Lodis.ScriptableObjects
         public AudioClip ActivateSound;
         public AudioClip ActiveSound;
         public AudioClip DeactivateSound;
+
+        [Header("Usage Stats")]
         [Tooltip("Information for all colliders this ability will use")]
         [SerializeField]
         protected HitColliderData[] ColliderData;
@@ -93,6 +109,7 @@ namespace Lodis.ScriptableObjects
         [SerializeField]
         protected Stat[] _customStats;
 
+        [Header("Animation Options")]
         [Tooltip("The type of animation that will play. If custom is selected the animation in the custom slot will be used")]
         public AnimationType animationType;
 

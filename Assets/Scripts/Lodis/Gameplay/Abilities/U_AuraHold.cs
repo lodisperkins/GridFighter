@@ -145,7 +145,7 @@ namespace Lodis.Gameplay
 
             //Despawn the old sphere if there is one.
             if (_auraSphere)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_auraSphere);
+                DespawnSphere();
 
             //Spawn the new sphere and set its effect to inactive by default. The effect should only appear when the opponent is lifted.
             _auraSphere = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, _spawnPosition, new Quaternion());

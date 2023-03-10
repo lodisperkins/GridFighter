@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SB_ChargeLobShot_Data
   m_EditorClassIdentifier: 
   abilityName: ChargeLobShot
+  abilityDescription: None
   AbilityType: 7
   timeActive: 0.05
   recoverTime: 0.3
