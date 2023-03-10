@@ -115,6 +115,14 @@ namespace Lodis.UI
             }
         }
 
+        public bool GetPlayerReady(int num)
+        {
+            if (num == 1)
+                return _p1CharacterSelected;
+
+            return _p2CharacterSelected;
+        }
+
         public void UpdateEventSystem(PlayerInput playerInput)
         {
             if (!_gridCreated)
@@ -127,8 +135,10 @@ namespace Lodis.UI
 
             playerInput.actions.actionMaps[1].FindAction("MiddleClick").started += context =>
             {
-                StartMatch();
-                ActivateMenu(playerInput, num);
+                if (_canStart)
+                    StartMatch();
+                else if (!GetPlayerReady(num))
+                    ActivateMenu(playerInput, num);
             };
 
             playerInput.actions.actionMaps[1].FindAction("RightClick").started += context => SetColor(num);
@@ -168,9 +178,6 @@ namespace Lodis.UI
 
         public void StartMatch()
         {
-            if (!_canStart)
-                return;
-
             SceneManagerBehaviour.Instance.LoadScene(3);
         }
 
