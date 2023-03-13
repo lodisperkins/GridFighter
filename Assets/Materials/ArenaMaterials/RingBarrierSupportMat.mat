@@ -72,6 +72,7 @@ Material:
     - Vector1_AF883DE0: 13.26
     - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
+    - _AmbientStrength: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
@@ -79,6 +80,8 @@ Material:
     - _DstBlend: 0
     - _EmissionStrength: 23.34
     - _EnvironmentReflections: 1
+    - _FalloffAmount: 0
+    - _FresnelSize: 0
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossinessSource: 0
@@ -96,6 +99,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Transparency: 1
     - _UseEmission: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
@@ -104,10 +108,12 @@ Material:
     - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0.0990566, g: 0.13430512, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 0.10725349, b: 0.09803921, a: 1}
     - _EmissionTiling: {r: 1, g: 1, b: 0, a: 0}
+    - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _Offset: {r: 1, g: 1, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
+    - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
 --- !u!114 &2345445455213835167
 MonoBehaviour:

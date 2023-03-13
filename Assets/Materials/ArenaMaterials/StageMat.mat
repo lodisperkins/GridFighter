@@ -7,11 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: StageLHSMat
+  m_Name: StageMat
   m_Shader: {fileID: -6465566751694194690, guid: 57639f7d1ffcb7947bbba6b5f8e083db,
     type: 3}
-  m_ShaderKeywords: USENORMAL_ON _EMISSION _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP
-    _RECEIVE_SHADOWS_OFF
+  m_ShaderKeywords: _EMISSION _METALLICSPECGLOSSMAP _NORMALMAP _OCCLUSIONMAP _RECEIVE_SHADOWS_OFF
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -26,7 +25,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - NormalMap:
-        m_Texture: {fileID: 2800000, guid: e1e7baa9fa75bed4292e5490a8bdac9a, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_B0106467:
@@ -144,19 +143,19 @@ Material:
     m_Floats:
     - LightingCutoff: 0.5
     - Smoothness: 0.5
-    - USENORMAL: 1
+    - USENORMAL: 0
     - Vector1_76C25F58: 0
     - Vector1_AF883DE0: 0.5
     - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
-    - _AmbientStrength: 0
+    - _AmbientStrength: 0.01
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EmissionStrength: 30
+    - _EmissionStrength: 0.6
     - _EnableHeightBlend: 0
     - _EnableInstancedPerPixelNormal: 1
     - _EnvironmentReflections: 1
@@ -186,17 +185,16 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _Transparency: 1
     - _UVSec: 0
     - _UseEmission: 1
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_205411B7: {r: 1, g: 1, b: 1, a: 0}
-    - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
+    - Color_205411B7: {r: 1, g: 1, b: 1, a: 1}
+    - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 1}
     - _BaseColor: {r: 0.6792453, g: 0.6504094, b: 0.6504094, a: 1}
-    - _Color: {r: 0.16981131, g: 0.16981131, b: 0.16981131, a: 1}
-    - _EmissionColor: {r: 0.06132078, g: 0.08410415, b: 1, a: 1}
+    - _Color: {r: 0.21698111, g: 0.21698111, b: 0.21698111, a: 1}
+    - _EmissionColor: {r: 1, g: 0.042452812, b: 0.042452812, a: 1}
     - _EmissionTiling: {r: 4.65, g: 4, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}

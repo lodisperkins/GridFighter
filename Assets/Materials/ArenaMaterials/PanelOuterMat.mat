@@ -105,7 +105,7 @@ Material:
     - Vector1_AF883DE0: 0.5
     - Vector1_E0AB0ADF: 0
     - _AlphaClip: 0
-    - _AmbientStrength: 0
+    - _AmbientStrength: 0.01
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
