@@ -86,9 +86,10 @@ namespace Lodis.Gameplay
 
             if (!spawnEffects)
             {
-                _bottomSupport.SetActive(false);
+                _bottomSupport.SetActive(true);
                 return;
             }
+            _bottomSupport.SetActive(false);
 
             _effects.SetActive(true);
             _topSupportInactive.gameObject.SetActive(true);

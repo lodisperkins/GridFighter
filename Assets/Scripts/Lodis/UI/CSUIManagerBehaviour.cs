@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 namespace Lodis.UI
 {
@@ -51,6 +52,16 @@ namespace Lodis.UI
         {
             SetColor(1);
             SetColor(2);
+            SceneManager.sceneLoaded += ResetValues;
+        }
+
+        private void ResetValues(Scene arg0, LoadSceneMode arg1)
+        {
+            SetColor(1);
+            SetColor(2);
+            _canStart = false;
+            _p1CharacterSelected = false;
+            _p2CharacterSelected = false;
         }
 
         private void ActivateMenu(PlayerInput playerInput, int playerNum)
