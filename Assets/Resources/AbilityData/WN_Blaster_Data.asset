@@ -28,14 +28,16 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
-  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 0
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 8897977150452739386, guid: c662ede171e2a26498c91a36fc787336,
+  visualPrefab: {fileID: 428546948933386335, guid: f6aa92e48d9d49948a4e439c7af2904f,
     type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 0}
@@ -44,7 +46,7 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.15
+    TimeActive: 0.16
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
@@ -61,9 +63,9 @@ MonoBehaviour:
     Priority: 1
     OwnerAlignement: 0
     AbilityType: 0
-    SpawnEffect: {fileID: 3282541377240078780, guid: 80519f73d0fbaac43b993713face7201,
+    SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
       type: 3}
-    HitSpark: {fileID: 7495853581713593668, guid: 8316cbf2b44a4fa46b1fabcd4c2f1428,
+    HitSpark: {fileID: 1493204891009420812, guid: 4fd7b1505062b0d4983e510a086c28ba,
       type: 3}
     HitEffectLevel: 1
     HitStopTimeModifier: 1.2
@@ -76,5 +78,5 @@ MonoBehaviour:
     value: 30
   - name: MaxInstances
     value: 3
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: ee0bd1fb10dc36e44941e335cd0e5ad7, type: 3}
