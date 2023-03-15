@@ -9,15 +9,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
-  m_Name: SN_ChargeShot_Data
+  m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
+  m_Name: SB_ChargeFlareLauncher_Data
   m_EditorClassIdentifier: 
-  abilityName: ChargeShot
+  abilityName: ChargeFlareLauncher
   abilityDescription: None
-  AbilityType: 4
+  AbilityType: 7
   timeActive: 0.1
-  recoverTime: 0.5
-  startUpTime: 0.35
+  recoverTime: 0.3
+  startUpTime: 0.5
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
@@ -37,46 +37,45 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 428546948933386335, guid: 7adb64eb3941ed5449a2af38fda12a6b,
+  visualPrefab: {fileID: 2063756346932270615, guid: f2d8bc3ca04e8bc4aaac7874a094ac06,
     type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
-  - Name: 
+  - Name: ChargeFlareLauncher
     DespawnAfterTimeLimit: 1
-    TimeActive: 2
-    DestroyOnHit: 1
-    IsMultiHit: 0
+    TimeActive: 0.7
+    DestroyOnHit: 0
+    IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
-    MultiHitWaitTime: 0
-    Damage: 10
-    BaseKnockBack: 2
+    MultiHitWaitTime: 0.3
+    Damage: 1
+    BaseKnockBack: 1
     KnockBackScale: 1.5
-    HitAngle: 0.5
+    HitAngle: 1.85
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.8
-    Priority: 3
+    HitStunTime: 0.5
+    Priority: 0
     OwnerAlignement: 0
-    AbilityType: 4
-    SpawnEffect: {fileID: 6814929850833701180, guid: 0693a339a1c2f284695c43e038a8b3a8,
+    AbilityType: 0
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
-    HitSpark: {fileID: 2972137616953671510, guid: 3b6d31ab622956941a502c2a29929280,
-      type: 3}
-    HitEffectLevel: 3
-    HitStopTimeModifier: 2
-    ShakesCamera: 1
-    SpawnSound: {fileID: 8300000, guid: b2a5d6c25039d454da0cc372697f7677, type: 3}
+    HitEffectLevel: 2
+    HitStopTimeModifier: 1.2
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 20
+    value: 0.7
   - name: MaxInstances
     value: 1
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: f2fdba8a6b7bbc540a4d208285dd348c, type: 3}
+  _customAnimation: {fileID: 7400000, guid: 27cbd5ad6678cc44f8df7e0dce3720a8, type: 3}
