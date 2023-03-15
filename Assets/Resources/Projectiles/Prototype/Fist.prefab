@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &428546948933386335
+--- !u!1 &344515849523647356
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,50 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1060968803567983333}
-  - component: {fileID: 4113627128832972096}
-  - component: {fileID: 2229982607149310346}
-  - component: {fileID: 6641352447523590860}
-  - component: {fileID: 3321150375158842755}
-  - component: {fileID: 5398745584673351793}
+  - component: {fileID: 2566682535266186685}
+  - component: {fileID: 6532894703450611539}
+  - component: {fileID: 8411398596607670622}
+  - component: {fileID: 3377279939266685762}
   m_Layer: 0
-  m_Name: Fist
+  m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1060968803567983333
+--- !u!4 &2566682535266186685
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428546948933386335}
-  m_LocalRotation: {x: 0.14133465, y: 0.74824053, z: 0.63693494, w: -0.12031025}
-  m_LocalPosition: {x: 4.55, y: 0.87829, z: 1.9885}
-  m_LocalScale: {x: 1.4459847, y: 1.4459847, z: 1.6654853}
-  m_Children:
-  - {fileID: 5887651232948056770}
-  - {fileID: 2093807819098471086}
-  m_Father: {fileID: 0}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -80.812004, y: 179.99998, z: 21.393002}
---- !u!33 &4113627128832972096
+  m_GameObject: {fileID: 344515849523647356}
+  m_LocalRotation: {x: -0.24525392, y: 0.67381316, z: 0.25470617, w: 0.6488076}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1060968803567983333}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: -41.414, y: 92.16601, z: 0}
+--- !u!33 &6532894703450611539
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428546948933386335}
+  m_GameObject: {fileID: 344515849523647356}
   m_Mesh: {fileID: 6138857327170793828, guid: 0be26286dc59bdc42b82bf88efeadb1f, type: 3}
---- !u!23 &2229982607149310346
+--- !u!23 &8411398596607670622
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428546948933386335}
+  m_GameObject: {fileID: 344515849523647356}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -84,14 +80,14 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!96 &6641352447523590860
+--- !u!96 &3377279939266685762
 TrailRenderer:
   serializedVersion: 2
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 428546948933386335}
+  m_GameObject: {fileID: 344515849523647356}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -190,6 +186,41 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!1 &428546948933386335
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1060968803567983333}
+  - component: {fileID: 3321150375158842755}
+  - component: {fileID: 5398745584673351793}
+  m_Layer: 0
+  m_Name: Fist
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1060968803567983333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428546948933386335}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.55, y: 0.87829, z: 1.9885}
+  m_LocalScale: {x: 1.4459847, y: 1.4459847, z: 1.6654853}
+  m_Children:
+  - {fileID: 5887651232948056770}
+  - {fileID: 2093807819098471086}
+  - {fileID: 2566682535266186685}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3321150375158842755
 Rigidbody:
   m_ObjectHideFlags: 0
