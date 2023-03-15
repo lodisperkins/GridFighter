@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: WB_FlareLauncher_Data
+  m_EditorClassIdentifier: 
+  abilityName: FlareLauncher
+  abilityDescription: None
+  AbilityType: 3
+  timeActive: 0.05
+  recoverTime: 0.3
+  startUpTime: 0.1
+  chargeTime: 0
+  maxActivationAmount: 0
+  EnergyCost: 0
+  canCancelStartUp: 0
+  canCancelActive: 0
+  canCancelRecover: 1
+  CanCancelOnMove: 1
+  CanCancelIntoSelf: 0
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
+  CanOnlyCancelOnOpponentHit: 1
+  cancelOnHit: 0
+  cancelOnFlinch: 1
+  cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 9125275198285931057, guid: ee2f2d17a81805a4abd49d9da5c3455e,
+    type: 3}
+  DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 0}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: FlareLauncherCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 16640311
+    MultiHitWaitTime: 0
+    Damage: 3
+    BaseKnockBack: 2
+    KnockBackScale: 0.4
+    HitAngle: 2
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.3
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 0
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
+      type: 3}
+    HitEffectLevel: 1
+    HitStopTimeModifier: 1.3
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  _customStats: []
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: 27cbd5ad6678cc44f8df7e0dce3720a8, type: 3}
