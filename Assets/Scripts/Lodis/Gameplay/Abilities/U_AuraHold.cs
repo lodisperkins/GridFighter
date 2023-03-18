@@ -37,6 +37,7 @@ namespace Lodis.Gameplay
         {
 			base.Init(newOwner);
             _chargeEffectRef = Resources.Load<GameObject>("Effects/Charge_Darkness");
+            _opponentParent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform.parent;
         }
 
         protected override void OnStart(params object[] args)
@@ -56,9 +57,6 @@ namespace Lodis.Gameplay
 
             if (!_opponentKnockback.MovementBehaviour.CanMove)
                 return;
-
-            if (!_opponentParent)
-                _opponentParent = _opponentTransform.parent;
 
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, Camera.main.transform.rotation);

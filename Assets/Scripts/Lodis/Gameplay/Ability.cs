@@ -151,7 +151,7 @@ namespace Lodis.Gameplay
         {
             CurrentAbilityPhase = AbilityPhase.RECOVER;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.DeactivateSound);
-            
+
             if (MaxActivationAmountReached)
                 _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
             else
@@ -327,7 +327,8 @@ namespace Lodis.Gameplay
                     };
 
                 HitColliderData data = _colliderInfo[i];
-                data.AddOnHitEvent(arguments => OnHit?.Invoke(arguments));
+                data.AddOnHitEvent(arguments =>
+                { OnHit?.Invoke(arguments); });
                 data.AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
                 _colliderInfo[i] = data;
             }

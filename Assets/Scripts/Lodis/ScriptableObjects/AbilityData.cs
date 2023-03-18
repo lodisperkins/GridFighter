@@ -120,6 +120,7 @@ namespace Lodis.ScriptableObjects
         [Tooltip("Any animations that will be used in the ability script.")]
         [SerializeField]
         private AnimationClip[] _additionalAnimations;
+
         /// <summary>
         /// Gets the custom animation attached this data
         /// </summary>
@@ -133,6 +134,23 @@ namespace Lodis.ScriptableObjects
                 return false;
 
             customAnimation = _customAnimation;
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the animation stored in the additional animations array. Excludes the custom or default animation set.
+        /// </summary>
+        /// <param name="clip">The reference to initialize</param>
+        /// <returns>Whether or not the index was in bounds.</returns>
+        public bool GetAdditionalAnimation(int index, out AnimationClip clip)
+        {
+            clip = null;
+
+            if (index < 0 || _additionalAnimations == null || index >= _additionalAnimations.Length)
+                return false;
+
+            clip = _additionalAnimations[index];
+
             return true;
         }
 

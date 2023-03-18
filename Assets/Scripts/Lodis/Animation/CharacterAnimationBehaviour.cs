@@ -252,7 +252,20 @@ namespace Lodis.Gameplay
         public void PlayAnimation(AnimationClip clip, float speed = 1)
         {
             StopCurrentAnimation();
-            _animator.SetFloat("AnimationSpeedScale", 1);
+            _animator.SetFloat("AnimationSpeedScale", speed);
+            _overrideController["rig|rigAction"] = clip;
+
+            _animator.SetTrigger("ActivateCustom");
+        }
+
+        public void PlayAnimation(float time, AnimationClip clip)
+        {
+            if (time <= 0)
+              return;
+
+            float newSpeed = (clip.length / time );
+
+            PlayAnimation(clip, newSpeed);
         }
 
         public void PlayAbilityAnimation()

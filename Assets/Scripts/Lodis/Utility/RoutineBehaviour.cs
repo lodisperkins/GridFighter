@@ -64,6 +64,7 @@ namespace Lodis.Utility
             }    
             
             action.Enable();
+            action.Event += context => _delayedActions.Remove(action);
             _delayedActions.Add(action);
             return action;
         }
@@ -81,6 +82,7 @@ namespace Lodis.Utility
             
             action.Enable();
             _delayedActions.Add(action);
+            action.Event += context => _delayedActions.Remove(action);
             return action;
         }
 
@@ -106,7 +108,10 @@ namespace Lodis.Utility
 
             //Iterate through all actions to try to invoke their events
             for (int i = 0; i < _delayedActions.Count; i++)
-                _delayedActions[i].TryInvokeEvent();
+            {
+                if (_delayedActions[i].GetEnabled())
+                    _delayedActions[i].TryInvokeEvent();
+            }
         }
     }
 }
