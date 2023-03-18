@@ -249,6 +249,12 @@ namespace Lodis.Gameplay
             return lhs.weight > rhs.weight? -1 : 1;
         }
 
+        public void PlayAnimation(AnimationClip clip, float speed = 1)
+        {
+            StopCurrentAnimation();
+            _animator.SetFloat("AnimationSpeedScale", 1);
+        }
+
         public void PlayAbilityAnimation()
         {
             Ability ability = _movesetBehaviour.LastAbilityInUse;

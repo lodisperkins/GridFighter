@@ -116,6 +116,10 @@ namespace Lodis.ScriptableObjects
         [Tooltip("A unique animation that will be used for the attack instead of one of the defaults")]
         [SerializeField]
         private AnimationClip _customAnimation;
+
+        [Tooltip("Any animations that will be used in the ability script.")]
+        [SerializeField]
+        private AnimationClip[] _additionalAnimations;
         /// <summary>
         /// Gets the custom animation attached this data
         /// </summary>
