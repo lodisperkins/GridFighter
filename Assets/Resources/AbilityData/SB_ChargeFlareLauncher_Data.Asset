@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: ChargeFlareLauncher
   abilityDescription: None
   AbilityType: 7
-  timeActive: 0.1
+  timeActive: 0.4
   recoverTime: 0.3
   startUpTime: 0.5
   chargeTime: 0
@@ -51,18 +51,18 @@ MonoBehaviour:
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 0
-    MultiHitWaitTime: 0.3
-    Damage: 1
-    BaseKnockBack: 1
+      m_Bits: 16640311
+    MultiHitWaitTime: 0.1
+    Damage: 1.5
+    BaseKnockBack: 5
     KnockBackScale: 1.5
-    HitAngle: 1.85
+    HitAngle: 1.5
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.5
     Priority: 0
     OwnerAlignement: 0
-    AbilityType: 0
+    AbilityType: 7
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
@@ -78,4 +78,6 @@ MonoBehaviour:
   - name: MaxInstances
     value: 1
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: 27cbd5ad6678cc44f8df7e0dce3720a8, type: 3}
+  _customAnimation: {fileID: 6799277343206176382, guid: 3916c8cafe8b9184a8c8807dd1564c95,
+    type: 3}
+  _additionalAnimations: []

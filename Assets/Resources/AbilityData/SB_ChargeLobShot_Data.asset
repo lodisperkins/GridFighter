@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: ChargeLobShot
   abilityDescription: None
   AbilityType: 7
-  timeActive: 0.05
+  timeActive: 0.1
   recoverTime: 0.3
   startUpTime: 0.2
   chargeTime: 0
@@ -28,11 +28,13 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
-  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 151366202753034390, guid: c6f18bf7381957749a039c8b5cba9319,
@@ -121,3 +123,4 @@ MonoBehaviour:
     value: 0.5
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}
+  _additionalAnimations: []

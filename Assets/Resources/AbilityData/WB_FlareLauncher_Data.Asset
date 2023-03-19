@@ -15,9 +15,9 @@ MonoBehaviour:
   abilityName: FlareLauncher
   abilityDescription: None
   AbilityType: 3
-  timeActive: 0.05
-  recoverTime: 0.5
-  startUpTime: 0.1
+  timeActive: 0.12
+  recoverTime: 0.2
+  startUpTime: 0.15
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
@@ -54,9 +54,9 @@ MonoBehaviour:
       m_Bits: 16641335
     MultiHitWaitTime: 0
     Damage: 3
-    BaseKnockBack: 2
-    KnockBackScale: 0.4
-    HitAngle: 2
+    BaseKnockBack: 0.7
+    KnockBackScale: 0.7
+    HitAngle: 1.3
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.3
@@ -73,4 +73,6 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats: []
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: 27cbd5ad6678cc44f8df7e0dce3720a8, type: 3}
+  _customAnimation: {fileID: 6799277343206176382, guid: 3916c8cafe8b9184a8c8807dd1564c95,
+    type: 3}
+  _additionalAnimations: []
