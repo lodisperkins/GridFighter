@@ -38,6 +38,9 @@ namespace Lodis.UI
         private PlayerColorManagerBehaviour _colorManager;
         [SerializeField]
         private BackgroundColorBehaviour _backgroundImage;
+        [SerializeField]
+        private CharacterData _defaultAICharacter;
+        private PlayerInputManager _inputManager;
         private bool _canStart;
         private bool _p1CharacterSelected;
         private bool _p2CharacterSelected;
@@ -53,6 +56,13 @@ namespace Lodis.UI
             SetColor(1);
             SetColor(2);
             SceneManager.sceneLoaded += ResetValues;
+            _inputManager = GetComponent<PlayerInputManager>();
+
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
+            {
+                SetDataP2(_defaultAICharacter);
+                _player2JoinInstruction.enabled = false;
+            }
         }
 
         private void ResetValues(Scene arg0, LoadSceneMode arg1)
@@ -114,7 +124,7 @@ namespace Lodis.UI
                 _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
                 _backgroundImage.SetPrimaryColor(_colorManager.P1Color.Value / 2);
             }
-            else if (playerNum == 2)
+            else if (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER)
             {
                 _p2ColorIndex++;
 
