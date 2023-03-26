@@ -355,6 +355,7 @@ namespace Lodis.Gameplay
             else
                 _animationPhase = 3;
 
+            _animator.Update(Time.deltaTime);
             _animator.SetTrigger("Attack");
         }
 
