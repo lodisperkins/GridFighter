@@ -5030,6 +5030,12 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3406130847468409652, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _defaultMeleeAnimation
+      value: 
+      objectReference: {fileID: 5180280961208456968, guid: d03fc9930c8f3bd4fa57a7bb13a28389,
+        type: 3}
     - target: {fileID: 4280876806101315602, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_IsActive
