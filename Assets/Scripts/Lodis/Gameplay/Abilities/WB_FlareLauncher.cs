@@ -22,7 +22,8 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            GameObject instance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            GameObject instance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
+            instance.transform.localRotation = Quaternion.identity;
             _hitColliderBehaviour = instance.GetComponent<HitColliderBehaviour>();
 
             _hitColliderBehaviour.ColliderInfo = GetColliderData(0);

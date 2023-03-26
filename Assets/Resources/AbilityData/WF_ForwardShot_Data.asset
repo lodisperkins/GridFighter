@@ -22,7 +22,7 @@ MonoBehaviour:
   maxActivationAmount: 0
   EnergyCost: 0
   canCancelStartUp: 0
-  canCancelActive: 0
+  canCancelActive: 1
   canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
@@ -80,3 +80,4 @@ MonoBehaviour:
     value: 1
   animationType: 2
   _customAnimation: {fileID: 0}
+  _additionalAnimations: []

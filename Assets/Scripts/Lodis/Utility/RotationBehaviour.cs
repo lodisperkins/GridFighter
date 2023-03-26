@@ -10,6 +10,9 @@ public class RotationBehaviour : MonoBehaviour
     private float _speed;
     [SerializeField]
     private bool _rotateOnSelf;
+    [SerializeField]
+    private bool _resetOnDisable;
+    private Quaternion _startRotation;
 
     public bool RotateOnSelf { get => _rotateOnSelf; set => _rotateOnSelf = value; }
     public float Speed { get => _speed; set => _speed = value; }
@@ -19,10 +22,11 @@ public class RotationBehaviour : MonoBehaviour
     void Start()
     {
         Axis = Axis * Speed;
+        _startRotation = transform.rotation;
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (Time.timeScale == 0)
         {
@@ -34,5 +38,11 @@ public class RotationBehaviour : MonoBehaviour
             return;
         }
         transform.Rotate(Axis, Space.World);
+    }
+
+    private void OnDisable()
+    {
+        if (_resetOnDisable)
+            transform.rotation = _startRotation; 
     }
 }
