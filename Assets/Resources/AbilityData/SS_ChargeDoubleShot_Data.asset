@@ -28,14 +28,16 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
-  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 7648438965634708056, guid: 87f1cdba99ba4a5438b7e636ea5effcd,
+  visualPrefab: {fileID: 428546948933386335, guid: 1f747bc727574ad4489540defe5382d7,
     type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 0}
@@ -63,7 +65,7 @@ MonoBehaviour:
     AbilityType: 5
     SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
       type: 3}
-    HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2
     HitStopTimeModifier: 1.1
@@ -80,3 +82,4 @@ MonoBehaviour:
     value: 0
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}
+  _additionalAnimations: []

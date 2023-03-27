@@ -17,7 +17,7 @@ MonoBehaviour:
   AbilityType: 4
   timeActive: 0.1
   recoverTime: 0.5
-  startUpTime: 0.35
+  startUpTime: 0.4
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
@@ -53,7 +53,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 10
+    Damage: 12
     BaseKnockBack: 2
     KnockBackScale: 1.5
     HitAngle: 0.5
@@ -79,4 +79,6 @@ MonoBehaviour:
   - name: MaxInstances
     value: 1
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: f2fdba8a6b7bbc540a4d208285dd348c, type: 3}
+  _customAnimation: {fileID: 5180280961208456968, guid: d03fc9930c8f3bd4fa57a7bb13a28389,
+    type: 3}
+  _additionalAnimations: []
