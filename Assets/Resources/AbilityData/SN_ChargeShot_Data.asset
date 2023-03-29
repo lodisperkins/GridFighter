@@ -40,7 +40,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 428546948933386335, guid: 7adb64eb3941ed5449a2af38fda12a6b,
     type: 3}
   DisplayIcon: {fileID: 0}
-  ActivateSound: {fileID: 0}
+  ActivateSound: {fileID: 8300000, guid: 2292a753dfa58d94c8d884e956ff99c1, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
@@ -79,6 +79,6 @@ MonoBehaviour:
   - name: MaxInstances
     value: 1
   animationType: 3
-  _customAnimation: {fileID: 5180280961208456968, guid: d03fc9930c8f3bd4fa57a7bb13a28389,
+  _customAnimation: {fileID: 5180280961208456968, guid: 3f22158e12ff636468af81f5cf89f28c,
     type: 3}
   _additionalAnimations: []
