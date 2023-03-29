@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1944286091720966031
 Transform:
   m_ObjectHideFlags: 0
@@ -27,10 +27,9 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 2506736969951840973}
+  m_Children: []
   m_Father: {fileID: 806058653666480601}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3906756406920541512
 MonoBehaviour:
@@ -74,12 +73,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1825070932033714744}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.16}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.02, z: 0.56}
   m_LocalScale: {x: 1, y: 1, z: 2.344507}
   m_Children: []
-  m_Father: {fileID: 1944286091720966031}
-  m_RootOrder: 0
+  m_Father: {fileID: 806058653666480601}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &3001141438952070730
 MeshFilter:
@@ -159,7 +158,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8681523565276227420
 Transform:
   m_ObjectHideFlags: 0
@@ -172,7 +171,7 @@ Transform:
   m_LocalScale: {x: 3.1633053, y: 2.0388815, z: 1}
   m_Children: []
   m_Father: {fileID: 806058653666480601}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -89.66901, z: 0}
 --- !u!33 &7062712783594599477
 MeshFilter:
@@ -265,6 +264,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5095634157879002076}
+  - {fileID: 2506736969951840973}
   - {fileID: 8681523565276227420}
   - {fileID: 5268947187665983885}
   - {fileID: 1944286091720966031}
@@ -346,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Marker: 2
-  _markPanelsBasedOnCollision: 0
+  _markPanelsBasedOnCollision: 1
 --- !u!1001 &5884849705868169041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -557,7 +557,7 @@ PrefabInstance:
     - target: {fileID: 1665342181930175629, guid: 6e74f5fc4d71ec64e89dc440b7878630,
         type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1665342181930175629, guid: 6e74f5fc4d71ec64e89dc440b7878630,
         type: 3}
