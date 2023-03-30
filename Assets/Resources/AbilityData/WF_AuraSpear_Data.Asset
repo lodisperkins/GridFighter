@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: WF_AuraSpear_Data
   m_EditorClassIdentifier: 
   abilityName: AuraSpear
-  abilityDescription: None
+  abilityDescription: Fires a quick mid range projectile that does moderate knockback
+    on hit.
   AbilityType: 2
   timeActive: 0.1
   recoverTime: 0.3

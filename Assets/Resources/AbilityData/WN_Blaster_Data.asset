@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: WN_Blaster_Data
   m_EditorClassIdentifier: 
-  abilityName: Blaster
-  abilityDescription: None
+  abilityName: Jab
+  abilityDescription: "Fires a quick flame punch. Doesn\u2019t do knockback, but
+    good for building damage and disrupting attacks.\r"
   AbilityType: 0
   timeActive: 0.05
   recoverTime: 0.2

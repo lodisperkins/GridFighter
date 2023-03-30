@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: SN_ChargeShot_Data
   m_EditorClassIdentifier: 
-  abilityName: ChargeShot
-  abilityDescription: None
+  abilityName: Haymaker
+  abilityDescription: Winds up and fires a powerful flaming punch projectile.
   AbilityType: 4
   timeActive: 0.1
   recoverTime: 0.5

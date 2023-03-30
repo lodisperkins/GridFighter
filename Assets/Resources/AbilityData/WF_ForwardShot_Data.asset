@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: WF_ForwardShot_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
-  abilityName: ForwardShot
-  abilityDescription: None
+  abilityName: Straight
+  abilityDescription: "Fires a quick flame punch. Doesn\u2019t travel far, but does
+    a little knockback to the opponent when it lands.\r\n"
   AbilityType: 2
   timeActive: 0.1
   recoverTime: 0.1
