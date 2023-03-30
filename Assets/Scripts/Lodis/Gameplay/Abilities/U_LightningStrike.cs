@@ -1,4 +1,4 @@
-﻿using Lodis.GridScripts;
+﻿ using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -18,11 +18,14 @@ namespace Lodis.Gameplay
         private float _oldBounciness;
         private GridPhysicsBehaviour _opponentPhysics;
         private HitColliderBehaviour _collider;
+        private GameObject _stompEffectRef;
+        private GameObject _stompEffect;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
+            _stompEffectRef = Resources.Load<GameObject>("Effects/LightningStomp");
         }
 
         /// <summary>
@@ -104,6 +107,8 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             if (!_visualPrefabInstanceTransform) return;
+
+            _stompEffect = MonoBehaviour.Instantiate(_stompEffectRef, owner.transform.position, Camera.main.transform.rotation);
 
             ToggleChildren();
         }

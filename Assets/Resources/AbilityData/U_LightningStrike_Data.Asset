@@ -28,18 +28,20 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
-  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 1
   cancelOnFlinch: 1
   cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 3784202472332545888, guid: 1d6088f7db684624dbbff7e835da58c4,
     type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 8300000, guid: ee8f2139b07a6884fbbecea4a3b3030b, type: 3}
-  ActiveSound: {fileID: 0}
+  ActiveSound: {fileID: 8300000, guid: 53a543d7c16e1c147b7302d17cba3f9e, type: 3}
   DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: 
@@ -79,5 +81,6 @@ MonoBehaviour:
     value: 6
   - name: OpponentBounciness
     value: 1
-  animationType: 1
-  _customAnimation: {fileID: 0}
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: 3433ce6b68ec77242a998e58082ac474, type: 3}
+  _additionalAnimations: []
