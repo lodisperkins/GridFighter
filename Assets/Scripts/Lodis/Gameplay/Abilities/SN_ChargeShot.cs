@@ -39,7 +39,15 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
-            GameObject chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, OwnerMoveset.RightMeleeSpawns[1], true);
+
+            Transform spawnTransform = null;
+
+            if (_ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT)
+                spawnTransform = OwnerMoveset.RightMeleeSpawns[1];
+            else
+                spawnTransform = OwnerMoveset.LeftMeleeSpawns[1];
+
+            GameObject chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, spawnTransform, true);
             GameObject smokeTrail = ObjectPoolBehaviour.Instance.GetObject(_smokeTrailRef, owner.transform.position - Vector3.up / 2, owner.transform.rotation);
 
             RoutineBehaviour.Instance.StartNewConditionAction(arguments =>
