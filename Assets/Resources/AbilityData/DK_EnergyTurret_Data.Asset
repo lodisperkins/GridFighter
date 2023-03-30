@@ -28,11 +28,13 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
-  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 0
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 4767874893531218292, guid: 2b38541aaca66e541b75a5af70f2e55c,
@@ -80,8 +82,8 @@ MonoBehaviour:
       m_Bits: 3959095
     MultiHitWaitTime: 0
     Damage: 5
-    BaseKnockBack: 2
-    KnockBackScale: 1.5
+    BaseKnockBack: 1
+    KnockBackScale: 1
     HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
@@ -107,3 +109,4 @@ MonoBehaviour:
     value: 20
   animationType: 0
   _customAnimation: {fileID: 0}
+  _additionalAnimations: []

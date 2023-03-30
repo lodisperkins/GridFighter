@@ -16,8 +16,8 @@ MonoBehaviour:
   abilityDescription: Creates a large black hole that pushes opponents towards its
     center.
   AbilityType: 8
-  timeActive: 0.2
-  recoverTime: 0.3
+  timeActive: 0.1
+  recoverTime: 0.2
   startUpTime: 0.1
   chargeTime: 0
   maxActivationAmount: 1
@@ -29,11 +29,13 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
-  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 0
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 8502064466816610340, guid: 36fe61a463c34094b8f27ff52fa3ef9c,
@@ -127,7 +129,7 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   - Name: LaunchCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 5
+    TimeActive: 3
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
@@ -156,8 +158,9 @@ MonoBehaviour:
   - name: TravelDistance
     value: 3
   - name: DespawnTime
-    value: 5
+    value: 2.5
   - name: Speed
     value: 5
   animationType: 0
   _customAnimation: {fileID: 0}
+  _additionalAnimations: []

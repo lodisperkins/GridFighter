@@ -143,6 +143,7 @@ MonoBehaviour:
   _axis: {x: 0, y: 1, z: 0}
   _speed: 0
   _rotateOnSelf: 1
+  _resetOnDisable: 1
 --- !u!114 &8712097904300987674
 MonoBehaviour:
   m_ObjectHideFlags: 0

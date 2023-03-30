@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Lodis.Utility;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +17,8 @@ namespace Lodis.Gameplay
         private GameObject _projectile;
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
+        private GameObject _smokeTrailRef;
+        private GameObject _chargeEffectRef;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -24,13 +27,31 @@ namespace Lodis.Gameplay
 
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SN_ChargeShot_Data"));
+            _chargeEffectRef = Resources.Load<GameObject>("Effects/RisingChargeEffect");
+            _smokeTrailRef = Resources.Load<GameObject>("Effects/GroundWindTrail");
+
             owner = newOwner;
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;
         }
 
-	    //Called when ability is used
+        protected override void OnStart(params object[] args)
+        {
+            base.OnStart(args);
+            GameObject chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, OwnerMoveset.RightMeleeSpawns[1], true);
+            GameObject smokeTrail = ObjectPoolBehaviour.Instance.GetObject(_smokeTrailRef, owner.transform.position - Vector3.up / 2, owner.transform.rotation);
+
+            RoutineBehaviour.Instance.StartNewConditionAction(arguments =>
+            {
+
+                ObjectPoolBehaviour.Instance.ReturnGameObject(chargeEffect);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(smokeTrail);
+
+            },condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
+        }
+
+        //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
 

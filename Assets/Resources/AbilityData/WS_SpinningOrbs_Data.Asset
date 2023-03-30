@@ -28,11 +28,13 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
-  CanInputMovementWhileActive: 1
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 1
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 4418831361922760892, guid: 380dea3bddb8c654e9350bcf040e3464,
@@ -73,6 +75,7 @@ MonoBehaviour:
   - name: OrbHeight
     value: 1
   - name: RotationSpeed
-    value: 10
+    value: 20
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: d89f4ea713a48de4d8aee38ec0202058, type: 3}
+  _additionalAnimations: []
