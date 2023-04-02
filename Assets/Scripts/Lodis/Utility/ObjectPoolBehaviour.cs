@@ -92,6 +92,10 @@ namespace Lodis.Utility
             {
                 //...set the first instance found active and return the object
                 GameObject objectInstance = objectQueue.Dequeue();
+
+                if (!objectInstance)
+                    return null;
+
                 objectInstance.transform.SetPositionAndRotation(position, rotation);
                 objectInstance.SetActive(true);
                 return objectInstance;

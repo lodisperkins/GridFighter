@@ -19,6 +19,7 @@ namespace Lodis.Gameplay
 
         private HealthBehaviour _health;
         private DelayedAction _stopAction;
+        private TimedAction _enableAction;
         private float _hitStopScale = 0.15f;
 
         public Animator Animator { get => _animator; set => _animator = value; }
@@ -52,6 +53,9 @@ namespace Lodis.Gameplay
             //The length of the hit stop is found by combining the globla hit stop scale with the hit stun time and teh ability's modifier
             float time = lastColliderInfo.HitStunTime * _hitStopScale * lastColliderInfo.HitStopTimeModifier;
 
+            if (time == 0)
+                return;
+
             if (_health.LastCollider.Owner)
             { 
                 //Starts the hit stop for the attacker
@@ -78,6 +82,9 @@ namespace Lodis.Gameplay
             //If there is already a timer to make the object stop, cancel it.
             if (_stopAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_stopAction);
+            //If there is already a timer to make the object enabled, cancel it.
+            if (_enableAction?.GetEnabled() == true)
+                RoutineBehaviour.Instance.StopAction(_enableAction);
 
             //Shake the camera or the chracter based on the arguments given
             if (shakeCharacter)
@@ -88,10 +95,10 @@ namespace Lodis.Gameplay
             //Calls for the physics component to freexe the object in place so it doesn't keep moving in air.
             _physics.FreezeInPlaceByTimer(time, true, true, waitForForceApplied, true);
             //The animator should be disabled only after the animation stop delay time has passed.
-            RoutineBehaviour.Instance.StartNewTimedAction(args => _animator.enabled = false,
+            _stopAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _animator.enabled = false,
                 TimedActionCountType.SCALEDTIME, animationStopDelay);
 
-            _stopAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            _enableAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
                 _animator.enabled = true;
                 if (_moveset.AbilityInUse)

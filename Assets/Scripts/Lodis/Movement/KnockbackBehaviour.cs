@@ -277,7 +277,7 @@ namespace Lodis.Movement
 
             Stunned = true;
             if (CurrentAirState == AirState.FREEFALL || CurrentAirState == AirState.TUMBLING)
-               Physics.FreezeInPlaceByCondition(condition =>!Stunned, false, true);
+               Physics.FreezeInPlaceByCondition(condition =>!Stunned, false, true, false, true);
 
             
             if (moveset)
