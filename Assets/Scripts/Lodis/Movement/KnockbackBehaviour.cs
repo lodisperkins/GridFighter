@@ -293,7 +293,10 @@ namespace Lodis.Movement
             if (movement && CurrentAirState == AirState.NONE)
                 movement.DisableMovement(condition => Stunned == false, false, true);
 
+            AirState previousState = CurrentAirState;
+
             CurrentAirState = AirState.NONE;
+            
             _onKnockBackTemp += CancelStun;
 
             yield return new WaitForSeconds(time);
@@ -303,7 +306,8 @@ namespace Lodis.Movement
             if (inputBehaviour)
                 inputBehaviour.enabled = true;
 
-            CurrentAirState = AirState.TUMBLING;
+            CurrentAirState = previousState;
+
             _onKnockBackTemp -= CancelStun;
             Stunned = false;
         }

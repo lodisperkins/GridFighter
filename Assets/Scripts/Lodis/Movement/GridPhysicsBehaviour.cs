@@ -65,6 +65,7 @@ namespace Lodis.Movement
         [SerializeField]
         private bool _faceHeading;
         private Vector3 _lastForceAdded;
+        private Vector3 _forceToApply;
         private CustomYieldInstruction _wait;
         private GridMovementBehaviour _movementBehaviour;
         [SerializeField]
@@ -134,6 +135,7 @@ namespace Lodis.Movement
         public bool IsFrozen => _isFrozen;
 
         public bool FaceHeading { get => _faceHeading; set => _faceHeading = value; }
+        public Vector3 ForceToApply { get => _forceToApply; private set => _forceToApply = value; }
 
         private void Awake()
         {
@@ -579,6 +581,7 @@ namespace Lodis.Movement
 
             _lastVelocity = force;
             _lastForceAdded = force;
+            ForceToApply = force;
 
             if (_panelBounceEnabled && IsGrounded && force.y < 0)
                 force.y *= -1;
@@ -625,6 +628,7 @@ namespace Lodis.Movement
                 RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
 
             _lastForceAdded = force / Mass;
+            ForceToApply = _lastForceAdded;
 
             if (_panelBounceEnabled && IsGrounded && force.y < 0)
                 force.y *= -1;
@@ -677,6 +681,8 @@ namespace Lodis.Movement
                 force.y *= -0.5f;
 
             _lastForceAdded = force / Mass;
+            ForceToApply = _lastForceAdded;
+
             if (IsFrozen)
                 _frozenVelocity = _lastForceAdded;
             else
@@ -856,6 +862,7 @@ namespace Lodis.Movement
 
             _isGrounded = CheckIsGrounded();
             _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude <= 0.01f;
+            ForceToApply = Vector3.zero;
         }
 
         private void Update()
