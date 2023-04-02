@@ -30,11 +30,13 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
-  CanInputMovementWhileActive: 1
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 0
   cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 1
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 4353001235416084576, guid: 4935b4d4a80c2024c886a0d0e749b000,
@@ -44,7 +46,7 @@ MonoBehaviour:
   ActiveSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
   DeactivateSound: {fileID: 0}
   ColliderData:
-  - Name: 
+  - Name: ElectricTrapCollider
     DespawnAfterTimeLimit: 1
     TimeActive: 1
     DestroyOnHit: 0
@@ -81,3 +83,4 @@ MonoBehaviour:
     value: 3
   animationType: 0
   _customAnimation: {fileID: 0}
+  _additionalAnimations: []

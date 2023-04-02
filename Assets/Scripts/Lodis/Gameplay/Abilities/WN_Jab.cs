@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
     /// applying pressure and applying chip damage
     /// </summary>
     [System.Serializable]
-    public class WN_Blaster : ProjectileAbility
+    public class WN_Jab : ProjectileAbility
     {
         [SerializeField]
         public Transform spawnTransform = null;
@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WN_Blaster_Data"));
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WN_Jab_Data"));
             owner = newOwner;
 
             //Load the projectile prefab

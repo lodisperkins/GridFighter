@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Shoots a single powerful charge shot down the row the character is facing.
     /// </summary>
-    public class SN_ChargeShot : ProjectileAbility
+    public class SN_Haymaker : ProjectileAbility
     {
         public Transform spawnTransform = null;
 
@@ -26,7 +26,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SN_ChargeShot_Data"));
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SN_Haymaker_Data"));
             _chargeEffectRef = Resources.Load<GameObject>("Effects/RisingChargeEffect");
             _smokeTrailRef = Resources.Load<GameObject>("Effects/GroundWindTrail");
 

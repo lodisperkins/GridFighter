@@ -8,7 +8,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class SF_ChargeForwardShot : ProjectileAbility
+    public class SF_DoublePunch : ProjectileAbility
     {
         public Transform spawnTransform = null;
         //Used to store a reference to the laser prefab
@@ -22,7 +22,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_ChargeForwardShot_Data"));
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_DoublePunch_Data"));
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;

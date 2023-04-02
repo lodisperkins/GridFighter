@@ -10,25 +10,26 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
-  m_Name: SN_ChargeShot_Data
+  m_Name: WN_Jab_Data
   m_EditorClassIdentifier: 
-  abilityName: Haymaker
-  abilityDescription: Winds up and fires a powerful flaming punch projectile.
-  AbilityType: 4
-  timeActive: 0.1
-  recoverTime: 0.5
-  startUpTime: 0.4
-  chargeTime: 0
+  abilityName: Jab
+  abilityDescription: "Fires a quick flame punch. Doesn\u2019t do knockback, but
+    good for building damage and disrupting attacks.\r"
+  AbilityType: 0
+  timeActive: 0.05
+  recoverTime: 0.2
+  startUpTime: 0.06
+  chargeTime: 1
   maxActivationAmount: 0
   EnergyCost: 0
   canCancelStartUp: 0
-  canCancelActive: 0
-  canCancelRecover: 0
+  canCancelActive: 1
+  canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
-  CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 0
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -37,48 +38,48 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 428546948933386335, guid: 7adb64eb3941ed5449a2af38fda12a6b,
+  visualPrefab: {fileID: 428546948933386335, guid: f6aa92e48d9d49948a4e439c7af2904f,
     type: 3}
   DisplayIcon: {fileID: 0}
-  ActivateSound: {fileID: 8300000, guid: 2292a753dfa58d94c8d884e956ff99c1, type: 3}
+  ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 2
+    TimeActive: 0.16
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 67584
     MultiHitWaitTime: 0
-    Damage: 12
-    BaseKnockBack: 2
-    KnockBackScale: 1.5
+    Damage: 1
+    BaseKnockBack: 0
+    KnockBackScale: 0
     HitAngle: 0.5
-    AdjustAngleBasedOnAlignment: 1
+    AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0.8
-    Priority: 3
+    HitStunTime: 0.25
+    Priority: 1
     OwnerAlignement: 0
-    AbilityType: 4
-    SpawnEffect: {fileID: 6814929850833701180, guid: 0693a339a1c2f284695c43e038a8b3a8,
+    AbilityType: 0
+    SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
       type: 3}
-    HitSpark: {fileID: 2972137616953671510, guid: 3b6d31ab622956941a502c2a29929280,
+    HitSpark: {fileID: 1493204891009420812, guid: 4fd7b1505062b0d4983e510a086c28ba,
       type: 3}
-    HitEffectLevel: 3
-    HitStopTimeModifier: 2
-    ShakesCamera: 1
-    SpawnSound: {fileID: 8300000, guid: b2a5d6c25039d454da0cc372697f7677, type: 3}
+    HitEffectLevel: 1
+    HitStopTimeModifier: 1.3
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: a39671ccb52009f468b0b3a1d4fc772d, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 20
+    value: 30
   - name: MaxInstances
-    value: 1
+    value: 3
   animationType: 3
-  _customAnimation: {fileID: 5180280961208456968, guid: 3f22158e12ff636468af81f5cf89f28c,
+  _customAnimation: {fileID: 2472269385163858818, guid: 98a0dc63639b74444bb6d9af35cce79c,
     type: 3}
   _additionalAnimations: []

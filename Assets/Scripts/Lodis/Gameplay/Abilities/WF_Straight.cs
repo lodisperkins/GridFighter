@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// Shoots a stronger, slow moving shot.
     /// The shot travels for 2 panels before dissipating.
     /// </summary>
-    public class WF_ForwardShot : ProjectileAbility
+    public class WF_Straight : ProjectileAbility
     {
         //How fast the laser will travel
         public float ShotSpeed = 2;
@@ -22,7 +22,7 @@ namespace Lodis.Gameplay
         {
             base.Init(newOwner);
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WF_ForwardShot_Data"));
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WF_Straight_Data"));
             owner = newOwner;
 
             //Load the projectile prefab

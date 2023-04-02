@@ -43,7 +43,7 @@ namespace Lodis.Gameplay
             //Disable ability benefits if the player is hit out of burst
             OnHit += arguments =>
             {
-                if (_ownerKnockBackScript.Physics.IsGrounded)
+                if (_ownerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
 
                 GameObject objectHit = (GameObject)arguments[0];
@@ -59,7 +59,12 @@ namespace Lodis.Gameplay
                 bool validPanel = BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(owner.transform.position, out panel);
 
                 if (validPanel)
+                {
                     _ownerMoveScript.TeleportToPanel(panel);
+                    _ownerMoveScript.EnableMovement();
+                    _ownerKnockBackScript.Physics.RB.isKinematic = true;
+                    _ownerKnockBackScript.CurrentAirState = AirState.NONE;
+                }
             };
         }
 
@@ -84,7 +89,7 @@ namespace Lodis.Gameplay
             //Spawns a new particle effect at this player's position
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
 
-            //If the player is resting on the ground...
+            //If the player isn't resting on the ground...
             if (_ownerKnockBackScript.CurrentAirState != AirState.NONE)
                 //...put them in freefall
                 _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;

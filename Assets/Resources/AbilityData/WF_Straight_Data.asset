@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
-  m_Name: WN_Blaster_Data
-  m_EditorClassIdentifier: 
-  abilityName: Jab
-  abilityDescription: "Fires a quick flame punch. Doesn\u2019t do knockback, but
-    good for building damage and disrupting attacks.\r"
-  AbilityType: 0
-  timeActive: 0.05
-  recoverTime: 0.2
-  startUpTime: 0.06
+  m_Name: WF_Straight_Data
+  m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
+  abilityName: Straight
+  abilityDescription: "Fires a quick flame punch. Doesn\u2019t travel far, but does
+    a little knockback to the opponent when it lands.\r\n"
+  AbilityType: 2
+  timeActive: 0.1
+  recoverTime: 0.1
+  startUpTime: 0.1
   chargeTime: 1
   maxActivationAmount: 0
   EnergyCost: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 428546948933386335, guid: f6aa92e48d9d49948a4e439c7af2904f,
+  visualPrefab: {fileID: 428546948933386335, guid: ff04b5a3940f83245bdb83ced080d189,
     type: 3}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 0}
@@ -47,39 +47,38 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.16
+    TimeActive: 0.2
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 67584
+      m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 1
-    BaseKnockBack: 0
-    KnockBackScale: 0
-    HitAngle: 0.5
-    AdjustAngleBasedOnAlignment: 0
+    Damage: 2
+    BaseKnockBack: 0.5
+    KnockBackScale: 0.5
+    HitAngle: 1.3
+    AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.25
+    HitStunTime: 0.3
     Priority: 1
     OwnerAlignement: 0
-    AbilityType: 0
-    SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
+    AbilityType: 2
+    SpawnEffect: {fileID: 3641247538292551802, guid: 80bad1f38225a3a44bf688233774dbb0,
       type: 3}
-    HitSpark: {fileID: 1493204891009420812, guid: 4fd7b1505062b0d4983e510a086c28ba,
+    HitSpark: {fileID: 6002612636095783793, guid: 278762b1b2ec95445b398e191c409631,
       type: 3}
     HitEffectLevel: 1
-    HitStopTimeModifier: 1.3
+    HitStopTimeModifier: 1.4
     ShakesCamera: 0
-    SpawnSound: {fileID: 8300000, guid: a39671ccb52009f468b0b3a1d4fc772d, type: 3}
+    SpawnSound: {fileID: 8300000, guid: af50f7bb1554c27498f4ae9c60c3325a, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 30
+    value: 15
   - name: MaxInstances
-    value: 3
-  animationType: 3
-  _customAnimation: {fileID: 2472269385163858818, guid: 98a0dc63639b74444bb6d9af35cce79c,
-    type: 3}
+    value: 1
+  animationType: 2
+  _customAnimation: {fileID: 0}
   _additionalAnimations: []
