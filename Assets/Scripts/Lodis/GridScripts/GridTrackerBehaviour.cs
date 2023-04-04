@@ -35,6 +35,8 @@ namespace Lodis.GridScripts
             set => _panelsInRange = value;
         }
 
+        public bool MarkPanelsBasedOnCollision { get => _markPanelsBasedOnCollision; set => _markPanelsBasedOnCollision = value; }
+
         private void OnDisable()
         {
             _lastPanelMarked?.RemoveMark();
@@ -100,7 +102,7 @@ namespace Lodis.GridScripts
 
         private void OnTriggerStay(Collider other)
         {
-            if (!other.CompareTag("Panel") || !_markPanelsBasedOnCollision) return;
+            if (!other.CompareTag("Panel") || !MarkPanelsBasedOnCollision) return;
 
             PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
             
@@ -115,7 +117,7 @@ namespace Lodis.GridScripts
 
         private void OnTriggerExit(Collider other)
         {
-            if (!other.CompareTag("Panel") || !_markPanelsBasedOnCollision) return;
+            if (!other.CompareTag("Panel") || !MarkPanelsBasedOnCollision) return;
             PanelBehaviour panel = other.GetComponent<PanelBehaviour>();
 
             if (PanelsInRange.Contains(panel))
@@ -128,7 +130,7 @@ namespace Lodis.GridScripts
         // Update is called once per frame
         void Update()
         {
-            if (!_markPanelsBasedOnCollision)
+            if (!MarkPanelsBasedOnCollision)
                 MarkPanelAtLocation(transform.position, Marker);
         }
     }

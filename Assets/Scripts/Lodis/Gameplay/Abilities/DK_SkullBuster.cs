@@ -15,7 +15,7 @@ namespace Lodis.Gameplay
     ///If the attack lands, spiked
     ///opponents crack the panel they land on.
     /// </summary>
-    public class DK_FootDive : Ability
+    public class DK_SkullBuster : Ability
     {
         private KnockbackBehaviour _knockBackBehaviour;
         private float _ownerGravity;
@@ -55,7 +55,6 @@ namespace Lodis.Gameplay
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
             if (opponent == null) return;
             _opponentPhysics = opponent.GetComponent<GridPhysicsBehaviour>();
-
             //Initialize default values
             _distance = abilityData.GetCustomStatValue("TravelDistance");
             _jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
@@ -92,7 +91,7 @@ namespace Lodis.Gameplay
             _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, _spawnTransform);
             _visualPrefabInstance.transform.localPosition += Vector3.back * 0.3f;
             //Spawn a game object with the collider attached
-            _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one / 2, _fistCollider, owner);
+            _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one, _fistCollider, owner);
             _hitScript.transform.localPosition = Vector3.zero;
             _hitScript.AddCollisionEvent(EnableBounce);
             _hitScript.AddCollisionEvent(context => Object.Destroy(_visualPrefabInstance));
@@ -102,6 +101,7 @@ namespace Lodis.Gameplay
             {
                 tracker = _hitScript.gameObject.AddComponent<GridTrackerBehaviour>();
                 tracker.Marker = MarkerType.DANGER;
+                tracker.MarkPanelsBasedOnCollision = true;
             }
         }
 
@@ -131,6 +131,9 @@ namespace Lodis.Gameplay
 
             if (_hitScript)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);
+
+            if (_visualPrefabInstance)
+                Object.Destroy(_visualPrefabInstance);
         }
 
         protected override void OnEnd()
