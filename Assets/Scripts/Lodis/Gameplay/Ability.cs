@@ -444,6 +444,11 @@ namespace Lodis.Gameplay
             return _colliderInfo[index];
         }
 
+        public HitColliderData GetColliderData(int index, float statScale)
+        {
+            return _colliderInfo[index].ScaleStats(statScale);
+        }
+
         public HitColliderData GetColliderData(string name)
         {
             return _colliderInfo.Find(info => info.Name == name);

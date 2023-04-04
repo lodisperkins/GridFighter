@@ -16,10 +16,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2fa6142ed29da744aa654d7ba40f67b4, type: 2}
   - {fileID: 11400000, guid: eb5ec69e7ebc6014898cbaedc98cea65, type: 2}
   - {fileID: 11400000, guid: dfda0348e2278934ab0c713d20d1ad35, type: 2}
-  - {fileID: 11400000, guid: 5e8e208c598c390478d27e2e07888405, type: 2}
+  - {fileID: 11400000, guid: 641868c27e000da44be8a3f52b71b09b, type: 2}
   - {fileID: 11400000, guid: 7483e953ed5d2844d964d9daa4da2cb0, type: 2}
   - {fileID: 11400000, guid: 88c92e50bc6cde54b90596ed06471ba6, type: 2}
   - {fileID: 11400000, guid: f69e4bd447a76ba49a690c322f39681f, type: 2}
-  - {fileID: 11400000, guid: dbc565054a0000a44828335acd8663cd, type: 2}
+  - {fileID: 11400000, guid: 9aa3605465b8d8a41a55248df984a0dd, type: 2}
   - {fileID: 11400000, guid: b72add4928f0f254abdeadc940000e64, type: 2}
   _deckName: PrototypeNormals

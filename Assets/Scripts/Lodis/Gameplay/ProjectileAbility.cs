@@ -24,10 +24,9 @@ namespace Lodis.Gameplay
         public bool DestroyOnHit = true;
         public bool IsMultiHit = false;
         public bool UseGravity;
-
         public bool despawnAfterTimeLimit { get; private set; }
-        public bool ScaleStats { get; set; }
 
+        public bool ScaleStats { get; set; }
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
