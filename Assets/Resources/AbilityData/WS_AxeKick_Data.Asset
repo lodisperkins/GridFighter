@@ -22,12 +22,12 @@ MonoBehaviour:
   maxActivationAmount: 1
   EnergyCost: 0
   canCancelStartUp: 0
-  canCancelActive: 0
+  canCancelActive: 1
   canCancelRecover: 1
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
-  CanCancelIntoNormal: 0
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
@@ -54,15 +54,15 @@ MonoBehaviour:
       m_Bits: 4057399
     MultiHitWaitTime: 0
     Damage: 3
-    BaseKnockBack: 2
-    KnockBackScale: 0
+    BaseKnockBack: 0.7
+    KnockBackScale: 0.5
     HitAngle: 0.3
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.5
     Priority: 0
     OwnerAlignement: 0
-    AbilityType: 0
+    AbilityType: 1
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 0}
     HitEffectLevel: 1

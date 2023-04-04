@@ -59,10 +59,10 @@ MonoBehaviour:
     HitAngle: 1.35
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0
+    HitStunTime: 0.6
     Priority: 0
     OwnerAlignement: 0
-    AbilityType: 0
+    AbilityType: 5
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}

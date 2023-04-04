@@ -67,6 +67,7 @@ namespace Lodis.Gameplay
         private TimedAction _timedMoveAction;
         [SerializeField]
         private float _moveAnimationHangTime;
+        private ConditionAction _bufferedAnimation;
 
         // Start is called before the first frame update
         void Start()
@@ -355,6 +356,7 @@ namespace Lodis.Gameplay
             else
                 _animationPhase = 3;
 
+            _animator.ResetTrigger("Attack");
             _animator.Update(Time.deltaTime);
             _animator.SetTrigger("Attack");
         }
@@ -364,6 +366,9 @@ namespace Lodis.Gameplay
         /// </summary>
         public void StopCurrentAnimation()
         {
+            RoutineBehaviour.Instance.StopAction(_bufferedAnimation);
+
+            _animator.Rebind();
             _animator.StopPlayback();
             _overrideController["Cast"] = _runtimeController.animationClips[0];
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
