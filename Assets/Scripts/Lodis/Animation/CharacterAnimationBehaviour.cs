@@ -250,9 +250,11 @@ namespace Lodis.Gameplay
             return lhs.weight > rhs.weight? -1 : 1;
         }
 
-        public void PlayAnimation(AnimationClip clip, float speed = 1)
+        public void PlayAnimation(AnimationClip clip, float speed = 1, bool stopCurrentAnimation = false)
         {
-            StopCurrentAnimation();
+            if (stopCurrentAnimation)
+                StopCurrentAnimation();
+
             _animator.SetFloat("AnimationSpeedScale", speed);
             _overrideController["rig|rigAction"] = clip;
 
@@ -366,8 +368,6 @@ namespace Lodis.Gameplay
         /// </summary>
         public void StopCurrentAnimation()
         {
-            RoutineBehaviour.Instance.StopAction(_bufferedAnimation);
-
             _animator.Rebind();
             _animator.StopPlayback();
             _overrideController["Cast"] = _runtimeController.animationClips[0];
