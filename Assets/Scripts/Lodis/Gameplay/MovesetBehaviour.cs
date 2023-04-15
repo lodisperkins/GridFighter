@@ -119,6 +119,15 @@ namespace Lodis.Gameplay
         private FloatVariable _burstEnergyRechargeRate;
         [SerializeField]
         private bool _canBurst = true;
+
+        [Header("Sounds")]
+        [SerializeField]
+        [Tooltip("The sound that will play when shuffling starts any time.")]
+        private AudioClip _shuffleStart;
+        [SerializeField]
+        [Tooltip("The sound that will play when shuffling ends any time.")]
+        private AudioClip _shuffleEnd;
+
         private UnityAction OnUpdateHand;
         private bool _loadingShuffle;
 
@@ -562,6 +571,7 @@ namespace Lodis.Gameplay
 
             RoutineBehaviour.Instance.StopAction(_deckShuffleAction);
             DiscardActiveSlots();
+            Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleStart);
 
             if (instantShuffle)
             {
@@ -580,6 +590,7 @@ namespace Lodis.Gameplay
                 _discardDeck.AddAbilities(_specialDeck);
                 _specialDeck.ClearDeck();
                 ResetSpecialDeck();
+                Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleEnd);
             }, TimedActionCountType.SCALEDTIME, _manualShuffleStartTime + _manualShuffleActiveTime);
             
             RoutineBehaviour.Instance.StartNewTimedAction(args => 
@@ -707,8 +718,13 @@ namespace Lodis.Gameplay
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading && NextAbilitySlot == null && !_loadingShuffle)
             {
                 _deckReloading = true;
+                Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleStart);
                 DiscardActiveSlots();
-                _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => ResetSpecialDeck(), TimedActionCountType.SCALEDTIME, _deckReloadTime);
+                _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent =>
+                {
+                    ResetSpecialDeck();
+                    Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleEnd);
+                }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
             }
 
             if (!CanBurst)

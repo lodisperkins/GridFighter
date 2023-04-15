@@ -298,6 +298,8 @@ MonoBehaviour:
   _burstEnergyRechargeRate: {fileID: 11400000, guid: 21df2b2c687a9e64c8c28a803e703faf,
     type: 2}
   _canBurst: 0
+  _shuffleStart: {fileID: 8300000, guid: ce31763ab2877064d9d8187090bd904f, type: 3}
+  _shuffleEnd: {fileID: 8300000, guid: ba8a777b86e30d54597c7dd8e59a08c2, type: 3}
 --- !u!75 &6978705344430972743
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -1611,6 +1613,7 @@ MonoBehaviour:
   _health: {fileID: 624667988152981373}
   _colorManager: {fileID: 1988483426190075038}
   _deathSparks: {fileID: 0}
+  _additionalEffects: []
 --- !u!114 &6183443034730705748
 MonoBehaviour:
   m_ObjectHideFlags: 0
