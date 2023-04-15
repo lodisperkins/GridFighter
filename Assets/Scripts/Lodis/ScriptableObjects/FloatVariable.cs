@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,6 +32,31 @@ namespace Lodis.ScriptableObjects
             var data = CreateInstance<FloatVariable>();
             data.Init(value);
             return data;
+        }
+
+        public static FloatVariable operator + (FloatVariable lhs, FloatVariable rhs)
+        {
+            return CreateInstance(lhs.Value + rhs.Value);
+        }
+
+        public static FloatVariable operator - (FloatVariable lhs, FloatVariable rhs)
+        {
+            return CreateInstance(lhs.Value - rhs.Value);
+        }
+
+        public static FloatVariable operator * (FloatVariable lhs, FloatVariable rhs)
+        {
+            return CreateInstance(lhs.Value * rhs.Value);
+        }
+
+        public static FloatVariable operator / (FloatVariable lhs, FloatVariable rhs)
+        {
+            return CreateInstance(lhs.Value - rhs.Value);
+        }
+
+        public static implicit operator float(FloatVariable v)
+        {
+            return v.Value;
         }
     }
 }

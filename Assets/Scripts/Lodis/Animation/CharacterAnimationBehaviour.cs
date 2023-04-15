@@ -69,6 +69,17 @@ namespace Lodis.Gameplay
         private float _moveAnimationHangTime;
         private ConditionAction _bufferedAnimation;
 
+        [SerializeField]
+        [Tooltip("How long it will take to start manually shuffling.")]
+        private FloatVariable _manualShuffleStartTime;
+        [SerializeField]
+        [Tooltip("How long it will take to activate the manual shuffle.")]
+        private FloatVariable _manualShuffleActiveTime;
+        [SerializeField]
+        [Tooltip("How long it will take to move again after shuffling.")]
+        private FloatVariable _manualShuffleRecoverTime;
+        private bool _animatingAbility;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -127,6 +138,11 @@ namespace Lodis.Gameplay
             return eventIndex;
         }
 
+        public void ResetAnimationPhase()
+        {
+            _animationPhase = 0;
+        }
+
         public void CalculateAnimationSpeed()
         {
             
@@ -157,7 +173,8 @@ namespace Lodis.Gameplay
 
                     stateInfo = _animator.GetNextAnimatorStateInfo(0);
 
-                    if (_currentClipStartUpTime <= 0 || _movesetBehaviour.LastAbilityInUse != null && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 0)
+                    if (_currentClipStartUpTime <= 0 || _movesetBehaviour.LastAbilityInUse != null
+                        && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 0 && _animatingAbility)
                     {
                         _animator.Play(stateInfo.shortNameHash, _animationLayer, _currentClip.events[0].time);
                         break;
@@ -174,7 +191,8 @@ namespace Lodis.Gameplay
                     if (!_currentClip)
                         _currentClip = _animator.GetNextAnimatorClipInfo(0)[0].clip;
 
-                    if ((_currentClipActiveTime <= 0 || _movesetBehaviour.LastAbilityInUse != null && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 1) && _currentClip.events.Length >= 2)
+                    if ((_currentClipActiveTime <= 0 || _movesetBehaviour.LastAbilityInUse != null && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 1)
+                        && _currentClip.events.Length >= 2 && _animatingAbility)
                     {
                         _animator.playbackTime = _currentClip.events[1].time;
                         break;
@@ -345,6 +363,7 @@ namespace Lodis.Gameplay
 
                     //Play custom clip with appropriate speed
                     _animatingMotion = false;
+
                     _animationPhase = 0;
                     break;
             }
@@ -496,6 +515,24 @@ namespace Lodis.Gameplay
             _animatingMotion = true;
         }
 
+        public void PlayManualShuffleAnimation()
+        {
+            _animator.SetFloat("AnimationSpeedScale", 1);
+            _animationPhase = 0;
+
+            _animatingMotion = false;
+            _animatingAbility = false;
+
+            StopCurrentAnimation();
+            _currentClipStartUpTime = _manualShuffleStartTime;
+            _currentClipActiveTime = _manualShuffleActiveTime;
+            _currentClipRecoverTime = _manualShuffleRecoverTime;
+
+            _animator.ResetTrigger("Shuffle");
+            _animator.Update(Time.deltaTime);
+            _animator.SetTrigger("Shuffle");
+        }
+
         private void Update()
         {
             if (_characterStateManager.StateMachine.CurrentState != "Attacking" && AbilityAnimationRoutine != null)
@@ -516,6 +553,9 @@ namespace Lodis.Gameplay
         {
             if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT)
                 _animator.SetBool("OnRightSide", true);
+
+            _animatingAbility = _animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+
         }
     }
 }

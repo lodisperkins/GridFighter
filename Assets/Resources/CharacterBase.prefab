@@ -267,6 +267,13 @@ MonoBehaviour:
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _discardDeck: {fileID: 0}
+  _deckReloadTime: 6
+  _manualShuffleStartTime: {fileID: 11400000, guid: 0c367ef0ca043a54ba0b95e61339d657,
+    type: 2}
+  _manualShuffleActiveTime: {fileID: 11400000, guid: e0113aa2b9e6d7f42864c50ced5862d2,
+    type: 2}
+  _manualShuffleRecoverTime: {fileID: 11400000, guid: b9487f9e39fb93644ba533ef433a270e,
+    type: 2}
   _abilityInUse: 0
   _animationBehaviour: {fileID: 3406130847468409652}
   _projectileSpawner: {fileID: 9052227156851076075}
@@ -276,23 +283,21 @@ MonoBehaviour:
   _rightMeleeSpawns:
   - {fileID: 0}
   - {fileID: 0}
-  _deckReloadTime: 6
   _energy: 0
-  _burstEnergy: 0
   _maxEnergyRef: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
-  _maxBurstEnergyRef: {fileID: 11400000, guid: adf7850c118d0f04380b8ba33b419c43, type: 2}
   _energyRechargeValue: {fileID: 11400000, guid: 490d301c94c4e8a4ca55468f4f2ab3ed,
     type: 2}
   _startEnergy: {fileID: 11400000, guid: 8ceb9b65480e4e84698f453daf4031b5, type: 2}
-  _burstEnergyRechargeValue: {fileID: 11400000, guid: 2d6720c8921c0ee4d8a786a56d6977f0,
-    type: 2}
   _energyRechargeRate: {fileID: 11400000, guid: bcb306df5e8c18f499e8892c8bc5a618,
+    type: 2}
+  _energyChargeEnabled: 1
+  _burstEnergy: 0
+  _maxBurstEnergyRef: {fileID: 11400000, guid: adf7850c118d0f04380b8ba33b419c43, type: 2}
+  _burstEnergyRechargeValue: {fileID: 11400000, guid: 2d6720c8921c0ee4d8a786a56d6977f0,
     type: 2}
   _burstEnergyRechargeRate: {fileID: 11400000, guid: 21df2b2c687a9e64c8c28a803e703faf,
     type: 2}
-  _energyChargeEnabled: 1
   _canBurst: 0
-  _shuffleWaitTime: {fileID: 11400000, guid: b9487f9e39fb93644ba533ef433a270e, type: 2}
 --- !u!75 &6978705344430972743
 ConstantForce:
   m_ObjectHideFlags: 0
@@ -997,9 +1002,9 @@ MonoBehaviour:
       onEnterTransition:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2313499556558640970}
-            m_MethodName: SetTrigger
-            m_Mode: 5
+          - m_Target: {fileID: 3406130847468409652}
+            m_MethodName: PlayManualShuffleAnimation
+            m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1020,9 +1025,9 @@ MonoBehaviour:
       onEnterTransition:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2313499556558640970}
-            m_MethodName: SetTrigger
-            m_Mode: 5
+          - m_Target: {fileID: 3406130847468409652}
+            m_MethodName: PlayManualShuffleAnimation
+            m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1040,7 +1045,7 @@ MonoBehaviour:
       zoomSettings:
         zoomFactor: 1
       dragSettings:
-        dragOffset: {x: 237.43878, y: -114.3627}
+        dragOffset: {x: 130.43878, y: -152.3627}
       gridSettings:
         isEnabled: 1
       labelSettings:
@@ -1562,6 +1567,12 @@ MonoBehaviour:
     type: 3}
   _animationLayer: 0
   _moveAnimationHangTime: 0
+  _manualShuffleStartTime: {fileID: 11400000, guid: 0c367ef0ca043a54ba0b95e61339d657,
+    type: 2}
+  _manualShuffleActiveTime: {fileID: 11400000, guid: e0113aa2b9e6d7f42864c50ced5862d2,
+    type: 2}
+  _manualShuffleRecoverTime: {fileID: 11400000, guid: b9487f9e39fb93644ba533ef433a270e,
+    type: 2}
 --- !u!114 &6998622809068475899
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -30,6 +30,7 @@ namespace Lodis.Gameplay
 
     public class MovesetBehaviour : MonoBehaviour
     {
+        [Header("Deck Settings")]
         [Tooltip("The basic ability deck this character will be using.")]
         [SerializeField]
         private Deck _normalDeckRef;
@@ -41,6 +42,22 @@ namespace Lodis.Gameplay
         [Tooltip("The deck that stores used abilities")]
         [SerializeField]
         private Deck _discardDeck;
+        [Tooltip("The amount of time it will take for the special deck to reload once all abilities are used")]
+        [SerializeField]
+        private float _deckReloadTime;
+        [SerializeField]
+        [Tooltip("How long it will take to start manually shuffling.")]
+        private FloatVariable _manualShuffleStartTime;
+        [SerializeField]
+        [Tooltip("How long it will take to activate the manual shuffle.")]
+        private FloatVariable _manualShuffleActiveTime;
+        [SerializeField]
+        [Tooltip("How long it will take to move again after shuffling.")]
+        private FloatVariable _manualShuffleRecoverTime;
+        private FloatVariable _manualShuffleWaitTime;
+
+        
+
         [Tooltip("The slots that store the two loaded abilities from the special deck")]
         [SerializeField]
         private Ability[] _specialAbilitySlots = new Ability[2];
@@ -50,6 +67,9 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Ability _lastAbilityInUse;
         private float _lastAttackStrength;
+
+
+        [Header("Ability Casting")]
         [SerializeField]
         private bool _abilityInUse;
         [SerializeField]
@@ -63,44 +83,42 @@ namespace Lodis.Gameplay
         [Tooltip("This transforms where melee hit boxes will spawn for this object.")]
         [SerializeField]
         private Transform[] _rightMeleeSpawns;
-        [Tooltip("The amount of time it will take for the special deck to reload once all abilities are used")]
-        [SerializeField]
-        private float _deckReloadTime;
+
+        [Header("Energy Meter Settings")]
         [Tooltip("The amount of energy this character has")]
         [SerializeField]
         private float _energy;
-        [Tooltip("The amount of burst energy this character has")]
-        [SerializeField]
-        private float _burstEnergy;
         [Tooltip("The maximum amount of energy characters can have")]
         [SerializeField]
         private FloatVariable _maxEnergyRef;
-        [Tooltip("The maximum amount of burst energy characters can have")]
-        [SerializeField]
-        private FloatVariable _maxBurstEnergyRef;
         [Tooltip("The amount of energy regained passively")]
         [SerializeField]
         private FloatVariable _energyRechargeValue;
         [Tooltip("The amount of energy this character starts with")]
         [SerializeField]
         private FloatVariable _startEnergy;
-        [Tooltip("The amount of burst energy regained passively")]
-        [SerializeField]
-        private FloatVariable _burstEnergyRechargeValue;
         [Tooltip("The rate at which energy is regained")]
         [SerializeField]
         private FloatVariable _energyRechargeRate;
-        [Tooltip("The rate at which burst energy is regained")]
-        [SerializeField]
-        private FloatVariable _burstEnergyRechargeRate;
         [Tooltip("If true the character can charge energy passively")]
         [SerializeField]
         private bool _energyChargeEnabled = true;
+
+        [Header("Burst Energy Settings")]
+        [Tooltip("The amount of burst energy this character has")]
+        [SerializeField]
+        private float _burstEnergy;
+        [Tooltip("The maximum amount of burst energy characters can have")]
+        [SerializeField]
+        private FloatVariable _maxBurstEnergyRef;
+        [Tooltip("The amount of burst energy regained passively")]
+        [SerializeField]
+        private FloatVariable _burstEnergyRechargeValue;
+        [Tooltip("The rate at which burst energy is regained")]
+        [SerializeField]
+        private FloatVariable _burstEnergyRechargeRate;
         [SerializeField]
         private bool _canBurst = true;
-        [SerializeField]
-        [Tooltip("How long the player will wait before beginning a manual shuffle.")]
-        private FloatVariable _shuffleWaitTime;
         private UnityAction OnUpdateHand;
         private bool _loadingShuffle;
 
@@ -210,6 +228,8 @@ namespace Lodis.Gameplay
             if (!target) return;
 
             _opponentMoveset = target.GetComponent<MovesetBehaviour>();
+
+            _manualShuffleWaitTime = _manualShuffleStartTime + _manualShuffleActiveTime + _manualShuffleRecoverTime;
         }
 
         public void ResetAll()
@@ -480,7 +500,6 @@ namespace Lodis.Gameplay
             return _lastAbilityInUse;
         }
 
-        // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>
         /// Immediately cancels and ends the current ability in use
         /// </summary>
@@ -560,8 +579,15 @@ namespace Lodis.Gameplay
             {
                 _discardDeck.AddAbilities(_specialDeck);
                 _specialDeck.ClearDeck();
+                ResetSpecialDeck();
+            }, TimedActionCountType.SCALEDTIME, _manualShuffleStartTime + _manualShuffleActiveTime);
+            
+            RoutineBehaviour.Instance.StartNewTimedAction(args => 
+            {
                 _loadingShuffle = false;
-            }, TimedActionCountType.SCALEDTIME, _shuffleWaitTime.Value);
+            }, TimedActionCountType.SCALEDTIME, _manualShuffleWaitTime);
+
+
             _movementBehaviour.DisableMovement(condition => !_loadingShuffle, true, true);
         }
 
