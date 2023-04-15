@@ -27,6 +27,7 @@ namespace Lodis.Animation
 
         private bool _isBlinking;
         private TimedAction _currentAction;
+        private bool _canBlink;
 
         public Renderer Renderer { get => _renderer; set => _renderer = value; }
 
@@ -49,6 +50,15 @@ namespace Lodis.Animation
 
         }
 
+        public void ChangeEyesToClosed(float time = 0)
+        {
+            _canBlink = false;
+            RoutineBehaviour.Instance.StopAction(_currentAction);
+            _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canBlink = true, TimedActionCountType.SCALEDTIME, time);
+            _isBlinking = false;
+            Renderer.material.SetTexture(_textureName, _closed);
+        }
+
         public void ChangeEyesToHurt()
         {
             RoutineBehaviour.Instance.StopAction(_currentAction);
@@ -65,7 +75,7 @@ namespace Lodis.Animation
         // Update is called once per frame
         void Update()
         {
-            if ((_currentAction == null || !_currentAction.GetEnabled()) && !_isBlinking)
+            if ((_currentAction == null || !_currentAction.GetEnabled()) && !_isBlinking && _canBlink)
                 _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Blink(), TimedActionCountType.SCALEDTIME, _timeBetweenBlinks);
         }
         

@@ -77,6 +77,34 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.002050782
+        functionName: ChangeEyesToClosed
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0.5
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7792968
+        functionName: ChangeEyesToIdle
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.002050782
+        functionName: PlayEffect
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7792968
+        functionName: PlayEffect
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

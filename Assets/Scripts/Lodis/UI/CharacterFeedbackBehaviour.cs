@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         [SerializeField] private HealthBehaviour _health;
         [SerializeField] private ColorManagerBehaviour _colorManager;
         [SerializeField] private ParticleSystem _deathSparks;
+        [SerializeField] private ParticleSystem[] _additionalEffects;
         public ColorManagerBehaviour ColorManager { get => _colorManager; private set => _colorManager = value; }
 
         void Start()
@@ -43,6 +44,13 @@ namespace Lodis.Gameplay
             {
                 colorObject.ObjectRenderer.material.DOKill();
             }
+        }
+
+        public void PlayEffect(int index)
+        {
+            GameObject instance = ObjectPoolBehaviour.Instance.GetObject(_additionalEffects[index].gameObject, transform.position, Camera.main.transform.rotation);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(instance, _additionalEffects[index].duration);
+            
         }
 
         private void Update()
