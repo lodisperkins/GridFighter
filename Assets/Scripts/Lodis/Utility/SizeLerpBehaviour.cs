@@ -15,6 +15,8 @@ namespace Lodis.Utility
         [SerializeField]
         private bool _loopOnEnabled;
         [SerializeField]
+        private bool _loop;
+        [SerializeField]
         private float _scaleSpeed;
         private bool _started;
         [SerializeField]
@@ -29,6 +31,9 @@ namespace Lodis.Utility
 
         private void OnEnable()
         {
+            if (_loopOnEnabled)
+                GrowAndShrink();
+
             _onEnable?.Invoke();
         }
 
@@ -46,6 +51,7 @@ namespace Lodis.Utility
 
             _started = false;
             onResized?.Invoke();
+
         }
 
         private IEnumerator GrowRoutine()
@@ -62,6 +68,8 @@ namespace Lodis.Utility
 
             _started = false;
             onResized?.Invoke();
+            if (_loop)
+                GrowAndShrink();
         }
 
         private IEnumerator GrowAndShrinkRoutine()
@@ -88,6 +96,9 @@ namespace Lodis.Utility
 
             _started = false;
             onResized?.Invoke();
+
+            if (_loop)
+                Grow();
         }
 
         public void Shrink()
