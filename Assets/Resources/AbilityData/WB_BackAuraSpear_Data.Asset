@@ -28,16 +28,18 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 1
   CanCancelIntoNormal: 1
-  CanInputMovementWhileActive: 0
   CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 1697626822471647621, guid: 08c30329d97a6be479634e37e369e13c,
     type: 3}
-  DisplayIcon: {fileID: 0}
+  DisplayIcon: {fileID: 21300000, guid: 0ff4133a99691c34d9ad593323083285, type: 3}
   ActivateSound: {fileID: 8300000, guid: 143dbcaf8d4d81741948f077c9ae5904, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -78,3 +80,4 @@ MonoBehaviour:
     value: 1
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 6dcef57e9129714468043e17465ac152, type: 3}
+  _additionalAnimations: []

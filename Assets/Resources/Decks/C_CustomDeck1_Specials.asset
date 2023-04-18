@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
-  m_Name: CustomDeck1_Specials
+  m_Name: C_CustomDeck1_Specials
   m_EditorClassIdentifier: 
   _abilityData:
   - {fileID: 11400000, guid: cccc243dfbdae164e975ceb1d94d4f20, type: 2}

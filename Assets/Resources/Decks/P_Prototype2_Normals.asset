@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
-  m_Name: CustomDeck1_Normals
+  m_Name: P_Prototype2_Normals
   m_EditorClassIdentifier: 
   _abilityData:
-  - {fileID: 11400000, guid: 2fa6142ed29da744aa654d7ba40f67b4, type: 2}
+  - {fileID: 11400000, guid: c5a70a9603533884da50d1e10cca0487, type: 2}
   - {fileID: 11400000, guid: c72dd56e60c79f74380512e82d6638c3, type: 2}
-  - {fileID: 11400000, guid: d937fd305576b54478bd6b871dde2f47, type: 2}
+  - {fileID: 11400000, guid: 46d50cf238c11a34ab6c8192ebb7d7c0, type: 2}
   - {fileID: 11400000, guid: 6c2b33650991f814b94673cd72941c9d, type: 2}
-  - {fileID: 11400000, guid: 7483e953ed5d2844d964d9daa4da2cb0, type: 2}
-  - {fileID: 11400000, guid: 88c92e50bc6cde54b90596ed06471ba6, type: 2}
+  - {fileID: 11400000, guid: 097778a4345ae3c48811d42eaf66f252, type: 2}
+  - {fileID: 11400000, guid: 39e6e546fef89a542b17486e205867d8, type: 2}
   - {fileID: 11400000, guid: 83694c45527073742afe7ba3217138d1, type: 2}
   - {fileID: 11400000, guid: b94a14b988aa54f4b85c4b50bfdedf07, type: 2}
   - {fileID: 11400000, guid: f1eae4620d77a6e40a6d019234970f3d, type: 2}
-  _deckName: Custom1Normals
+  _deckName: Prototype2Normals
