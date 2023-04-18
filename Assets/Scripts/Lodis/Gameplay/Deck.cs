@@ -200,6 +200,27 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Gets the first ability in the deck that matches the type
+        /// </summary>
+        /// <param name="type">The type of ability to search for</param>
+        /// <returns></returns>
+        public AbilityData SetAbilityDataByType(AbilityType type, AbilityData data)
+        {
+            for (int i = 0; i < _abilityData.Count; i++)
+            {
+                if (_abilityData[i].AbilityType == type)
+                {
+                    _abilityData[i] = data;
+                    break;
+                }
+            }
+
+            Debug.LogError("Couldn't find ability data of type " + type.ToString() + " in deck " + DeckName);
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the first ability in the deck that matches the name
         /// </summary>
         /// <param name="name">The name of ability to search for</param>
