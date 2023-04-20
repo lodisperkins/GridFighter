@@ -29,10 +29,15 @@ namespace Lodis.UI
         [SerializeField]
         private AudioClip _clickSound;
 
+        private Image _image;
+
+        public Image Image { get => _image; private set => _image = value; }
+
         private void Awake()
         {
             _button = GetComponent<Button>();
             _button.onClick.AddListener(() => SoundManagerBehaviour.Instance.PlaySound(_clickSound));
+            Image = GetComponent<Image>();
         }
 
         public void OnSelect()
@@ -62,6 +67,11 @@ namespace Lodis.UI
         {
             SoundManagerBehaviour.Instance.PlaySound(_selectSound);
             _onSelect?.Invoke();
+        }
+
+        public void AddOnClickEvent(UnityAction action)
+        {
+            _button.onClick.AddListener(action);
         }
     }
 }

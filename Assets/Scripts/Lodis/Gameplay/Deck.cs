@@ -28,7 +28,7 @@ namespace Lodis.Gameplay
     {
         private List<Ability> _abilities = new List<Ability>();
         [SerializeField]
-        private List<AbilityData> _abilityData;
+        private List<AbilityData> _abilityData = new List<AbilityData>();
         [SerializeField]
         private string _deckName;
 
@@ -200,24 +200,40 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Gets the first ability in the deck that matches the name
+        /// </summary>
+        /// <param name="type">The type of ability to search for</param>
+        /// <returns></returns>
+        public AbilityData GetAbilityDataByName(string name)
+        {
+            foreach (AbilityData abilityData in _abilityData)
+            {
+                if (abilityData.abilityName == name)
+                    return abilityData;
+            }
+
+            Debug.LogError("Couldn't find ability data named" + name + " in deck " + DeckName);
+
+            return null;
+        }
+
+        /// <summary>
         /// Gets the first ability in the deck that matches the type
         /// </summary>
         /// <param name="type">The type of ability to search for</param>
         /// <returns></returns>
-        public AbilityData SetAbilityDataByType(AbilityType type, AbilityData data)
+        public void SetAbilityDataByType(AbilityType type, AbilityData data)
         {
             for (int i = 0; i < _abilityData.Count; i++)
             {
                 if (_abilityData[i].AbilityType == type)
                 {
                     _abilityData[i] = data;
-                    break;
+                    return;
                 }
             }
 
             Debug.LogError("Couldn't find ability data of type " + type.ToString() + " in deck " + DeckName);
-
-            return null;
         }
 
         /// <summary>

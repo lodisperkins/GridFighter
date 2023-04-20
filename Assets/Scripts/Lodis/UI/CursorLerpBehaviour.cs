@@ -38,7 +38,9 @@ namespace Lodis.UI
             if (_eventSystem.currentSelectedGameObject != _lastSelectedGameObject)
             {
                 _lastSelectedGameObject = _eventSystem.currentSelectedGameObject;
-                LerpToRect(_lastSelectedGameObject.GetComponent<RectTransform>());
+
+                if (_lastSelectedGameObject)
+                    LerpToRect(_lastSelectedGameObject.GetComponent<RectTransform>());
             }
         }
     }

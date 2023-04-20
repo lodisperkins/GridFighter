@@ -15,15 +15,18 @@ namespace Lodis.UI
         private Deck _specialDeck;
         private Deck[] _replacementNormalDecks;
         private Deck[] _replacementSpecialDecks;
+        private Deck _replacementAbilities;
         private string _deckName;
         private string _saveLoadPath;
         private JsonSerializerSettings _settings;
-        private int _currentNormalType;
-        private int _replacementDeckIndex;
+        private int _currentAbilityType;
+        private int _specialReplacementIndex;
 
         public string[] DeckOptions { get => _deckOptions; private set => _deckOptions = value; }
         public Deck SpecialDeck { get => _specialDeck; private set => _specialDeck = value; }
         public Deck NormalDeck { get => _normalDeck; private set => _normalDeck = value; }
+        public Deck ReplacementAbilities { get => _replacementAbilities; private set => _replacementAbilities = value; }
+        public int CurrentAbilityType { get => _currentAbilityType; set => _currentAbilityType = value; }
 
         private void Awake()
         {
@@ -33,8 +36,14 @@ namespace Lodis.UI
             _settings = new JsonSerializerSettings();
             _settings.TypeNameHandling = TypeNameHandling.All;
 
+            ReplacementAbilities = Deck.CreateInstance<Deck>();
             LoadDeckNames();
             LoadReplacementDecks();
+        }
+
+        public void SetSpecialReplacementIndex(int index)
+        {
+            _specialReplacementIndex = index;
         }
 
         public void LoadDeckNames()
@@ -54,8 +63,15 @@ namespace Lodis.UI
 
         private void LoadReplacementDecks()
         {
+            List<AbilityData> data = null;
             _replacementNormalDecks = Resources.LoadAll<Deck>("Decks/Normals");
             _replacementSpecialDecks = Resources.LoadAll<Deck>("Decks/Specials");
+
+            for (int i = 0; i < _replacementNormalDecks.Length; i++)
+            {
+                ReplacementAbilities.AbilityData.AddRange(_replacementNormalDecks[i].AbilityData);
+                ReplacementAbilities.AbilityData.AddRange(_replacementSpecialDecks[i].AbilityData);
+            }
         }
 
         public Deck GetNormalReplacementDeck(int index)
@@ -74,18 +90,27 @@ namespace Lodis.UI
             SpecialDeck = Instantiate(Resources.Load<Deck>("Decks/Specials/P_" + deckName + "_Specials"));
         }
 
-        public void ReplaceNormalAbility(int abilityType)
+        public void ReplaceAbility(string name)
         {
-            AbilityData data = _replacementNormalDecks[_replacementDeckIndex].GetAbilityDataByType((AbilityType)abilityType);
-            _normalDeck.SetAbilityDataByType((AbilityType)abilityType, data);
+            if (CurrentAbilityType < 0)
+                Debug.LogError("Invalid type for ability replacement.");
 
+            if (CurrentAbilityType <= 3 || CurrentAbilityType == 9)
+                ReplaceNormalAbility(name);
+            else 
+                ReplaceSpecialAbility(name);
         }
 
-        public void ReplaceSpecialAbility(int index)
+        private void ReplaceNormalAbility(string name)
         {
-            AbilityData data = _replacementSpecialDecks[_replacementDeckIndex].AbilityData[index];
-            _specialDeck.AbilityData[_replacementDeckIndex] = data;
+            AbilityData data = ReplacementAbilities.GetAbilityDataByName(name);
+            _normalDeck.SetAbilityDataByType((AbilityType)CurrentAbilityType, data);
+        }
 
+        private void ReplaceSpecialAbility(string name)
+        {
+            AbilityData data = ReplacementAbilities.GetAbilityDataByName(name);
+            _specialDeck.AbilityData[_specialReplacementIndex] = data;
         }
 
 
