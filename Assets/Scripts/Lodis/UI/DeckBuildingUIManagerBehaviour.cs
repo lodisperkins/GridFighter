@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Lodis.Utility;
+using System;
 
 namespace Lodis.UI
 {
@@ -36,12 +38,10 @@ namespace Lodis.UI
         private Image[] _specialIcons;
 
         [SerializeField]
-        private GameObject[] _abilitySections;
+        private AbilitySectionBehaviour[] _abilitySections;
 
         [SerializeField]
         private Text _abilityIconHeader;
-        [SerializeField]
-        private RectTransform _iconTransform;
         [SerializeField]
         private EventButtonBehaviour _abilityButton;
         [SerializeField]
@@ -82,54 +82,42 @@ namespace Lodis.UI
 
         public void FocusAbilitySection(string sectionName)
         {
-            foreach (GameObject section in _abilitySections)
+            foreach (AbilitySectionBehaviour section in _abilitySections)
             {
                 if (section.name == sectionName)
                 {
-                    section.SetActive(true);
+                    section.gameObject.SetActive(true);
                     continue;
                 }
 
-                section.SetActive(false);
+                section.gameObject.SetActive(false);
             }
         }
 
-        public void UpdateIconChoicesWithType(int type)
+        public void UpdateAllIconSections()
+        {
+            for (int i = 0; i < 4; i++)
+                UpdateIconChoicesWithType(i);
+
+            UpdateIconChoicesWithType(8);
+            UpdateIconChoicesWithType(9);
+
+            _eventSystem.SetSelectedGameObject(_abilitySections[0].IconHolder.GetChild(0).gameObject);
+        }
+
+        public void UpdateIconChoicesWithType(int type, bool setSelected = false)
         {
 
-            _buildManager.CurrentAbilityType = type;
+            Transform iconTransform = Array.Find(_abilitySections, section => section.AbilityType == (AbilityType)type).IconHolder;
 
-            switch (type)
+            for (int i = iconTransform.childCount - 1; i >= 0; i--)
             {
-                case 0:
-                    _abilityIconHeader.text = "Neutral";
-                    break;
-                case 1:
-                    _abilityIconHeader.text = "Up/Down";
-                    break;
-                case 2:
-                    _abilityIconHeader.text = "Forward";
-                    break;
-                case 3:
-                    _abilityIconHeader.text = "Backward";
-                    break;
-                case 8:
-                    _abilityIconHeader.text = "Special";
-                    break;
-                case 9:
-                    _abilityIconHeader.text = "Unblockable";
-                    break;
-            }
-
-
-            for (int i = _iconTransform.childCount - 1; i >= 0; i--)
-            {
-                Destroy(_iconTransform.GetChild(i).gameObject);
+                Destroy(iconTransform.GetChild(i).gameObject);
+                iconTransform.GetChild(i).SetParent(null);
             }
 
             List<AbilityData> data = _buildManager.ReplacementAbilities.AbilityData.FindAll(abilityData => abilityData.AbilityType == (AbilityType)type);
 
-            bool selectedSet = false;
 
             for (int i = 0;  i < data.Count; i++)
             {
@@ -138,23 +126,24 @@ namespace Lodis.UI
                 if (_buildManager.NormalDeck.AbilityData.Contains(currentData) || _buildManager.SpecialDeck.AbilityData.Contains(currentData))
                     continue;
 
-                EventButtonBehaviour abilityButtonInstance = Instantiate(_abilityButton, _iconTransform);
-
-                if (!selectedSet)
-                {
-                    _eventSystem.SetSelectedGameObject(abilityButtonInstance.gameObject);
-                    selectedSet = true;
-                }
+                EventButtonBehaviour abilityButtonInstance = Instantiate(_abilityButton, iconTransform);
 
                 abilityButtonInstance.Image.sprite = currentData.DisplayIcon;
                 abilityButtonInstance.Image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)currentData.EnergyCost];
                 abilityButtonInstance.name = currentData.abilityName;
 
+                if (setSelected)
+                    _eventSystem.SetSelectedGameObject(abilityButtonInstance.gameObject);
+
                 abilityButtonInstance.AddOnClickEvent(() =>
                 {
+                    _buildManager.CurrentAbilityType = type;
                     _buildManager.ReplaceAbility(currentData.abilityName);
                     UpdateDeck();
+                    UpdateIconChoicesWithType(type, true);
                 });
+
+                setSelected = false;
             }
         }
     }

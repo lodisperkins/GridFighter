@@ -29,7 +29,6 @@ namespace Lodis.UI
         // Update is called once per frame
         void Update()
         {
-            Canvas.ForceUpdateCanvases();
             if (_currentItem != _eventSystem.currentSelectedGameObject)
             {
                 _currentItem = _eventSystem.currentSelectedGameObject;

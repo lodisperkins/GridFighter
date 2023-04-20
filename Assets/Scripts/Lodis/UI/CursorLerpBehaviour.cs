@@ -27,21 +27,18 @@ namespace Lodis.UI
             BlackBoardBehaviour.Instance.Grid.CreateGrid();
         }
 
-        public void LerpToRect(RectTransform rect)
+        public void LerpToTransform(Transform rect)
         {
             _moveTween.Kill();
             _moveTween = _cursor.DOMove(rect.transform.position, _lerpDuration);
         }
 
         void Update()
-        {
-            if (_eventSystem.currentSelectedGameObject != _lastSelectedGameObject)
-            {
-                _lastSelectedGameObject = _eventSystem.currentSelectedGameObject;
+        { 
+            _lastSelectedGameObject = _eventSystem.currentSelectedGameObject;
 
-                if (_lastSelectedGameObject)
-                    LerpToRect(_lastSelectedGameObject.GetComponent<RectTransform>());
-            }
+            if (_lastSelectedGameObject)
+                LerpToTransform(_lastSelectedGameObject.transform);
         }
     }
 }
