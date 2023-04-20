@@ -34,23 +34,8 @@ namespace Lodis.UI
         [SerializeField]
         private Image[] _specialIcons;
 
-        [Header("Replace Deck Page")]
         [SerializeField]
-        private Text _replaceDeckName;
-
-        [SerializeField]
-        private Image _replaceUnblockableIconSlot;
-        [SerializeField]
-        private Image _replaceBackIconSlot;
-        [SerializeField]
-        private Image _replaceForwardIconSlot;
-        [SerializeField]
-        private Image _replaceNeutralIconSlot;
-        [SerializeField]
-        private Image _replaceUpDownIconSlot;
-
-        [SerializeField]
-        private Image[] _replaceSpecialIcons;
+        private GameObject[] _abilitySections;
 
         // Start is called before the first frame update
         void Start()
@@ -82,6 +67,20 @@ namespace Lodis.UI
                 AbilityData data = _buildManager.SpecialDeck.AbilityData[i];
                 _specialIcons[i].sprite = data.DisplayIcon;
                 _specialIcons[i].color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)data.EnergyCost];
+            }
+        }
+
+        public void FocusAbilitySection(string sectionName)
+        {
+            foreach (GameObject section in _abilitySections)
+            {
+                if (section.name == sectionName)
+                {
+                    section.SetActive(true);
+                    continue;
+                }
+
+                section.SetActive(false);
             }
         }
 
