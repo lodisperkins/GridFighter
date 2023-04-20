@@ -21,12 +21,14 @@ namespace Lodis.UI
         private JsonSerializerSettings _settings;
         private int _currentAbilityType;
         private int _specialReplacementIndex;
+        private string _replacementName;
 
         public string[] DeckOptions { get => _deckOptions; private set => _deckOptions = value; }
         public Deck SpecialDeck { get => _specialDeck; private set => _specialDeck = value; }
         public Deck NormalDeck { get => _normalDeck; private set => _normalDeck = value; }
         public Deck ReplacementAbilities { get => _replacementAbilities; private set => _replacementAbilities = value; }
         public int CurrentAbilityType { get => _currentAbilityType; set => _currentAbilityType = value; }
+        public string ReplacementName { get => _replacementName; set => _replacementName = value; }
 
         private void Awake()
         {
@@ -90,15 +92,27 @@ namespace Lodis.UI
             SpecialDeck = Instantiate(Resources.Load<Deck>("Decks/Specials/P_" + deckName + "_Specials"));
         }
 
-        public void ReplaceAbility(string name)
+        public void ReplaceAbility()
         {
             if (CurrentAbilityType < 0)
                 Debug.LogError("Invalid type for ability replacement.");
 
             if (CurrentAbilityType <= 3 || CurrentAbilityType == 9)
-                ReplaceNormalAbility(name);
-            else 
-                ReplaceSpecialAbility(name);
+                ReplaceNormalAbility(ReplacementName);
+            else
+                ReplaceSpecialAbility(ReplacementName);
+        }
+
+        public void ReplaceAbility(string name)
+        {
+            ReplacementName = name;
+            if (CurrentAbilityType < 0)
+                Debug.LogError("Invalid type for ability replacement.");
+
+            if (CurrentAbilityType <= 3 || CurrentAbilityType == 9)
+                ReplaceNormalAbility(ReplacementName);
+            else
+                ReplaceSpecialAbility(ReplacementName);
         }
 
         private void ReplaceNormalAbility(string name)

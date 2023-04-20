@@ -35,7 +35,7 @@ namespace Lodis.UI
         private Image _upDownIconSlot;
 
         [SerializeField]
-        private Image[] _specialIcons;
+        private EventButtonBehaviour[] _specialIcons;
 
         [SerializeField]
         private AbilitySectionBehaviour[] _abilitySections;
@@ -46,7 +46,19 @@ namespace Lodis.UI
         private EventButtonBehaviour _abilityButton;
         [SerializeField]
         private EventSystem _eventSystem;
+        private GameObject _lastSelectedSpecial;
+        private GameObject _lastSelected;
 
+
+        public GameObject Selected
+        {
+            get { return _eventSystem.currentSelectedGameObject; }
+            set
+            {
+                _eventSystem.SetSelectedGameObject(value);
+                _lastSelected = value;
+            }
+        }
         // Start is called before the first frame update
         void Start()
         {
@@ -64,6 +76,19 @@ namespace Lodis.UI
             }
         }
 
+        public void ToggleAllSpecialsInDeck(bool enabled)
+        {
+            foreach (EventButtonBehaviour button in _specialIcons)
+            {
+                button.UIButton.interactable = enabled;
+            }
+        }
+
+        public void SetSelectedToLast()
+        {
+            Selected = _lastSelected;
+        }
+
         public void UpdateDeck()
         {
             _unblockableIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.UNBLOCKABLE).DisplayIcon;
@@ -75,8 +100,8 @@ namespace Lodis.UI
             for (int i = 0; i < _buildManager.SpecialDeck.AbilityData.Count; i++)
             {
                 AbilityData data = _buildManager.SpecialDeck.AbilityData[i];
-                _specialIcons[i].sprite = data.DisplayIcon;
-                _specialIcons[i].color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)data.EnergyCost];
+                _specialIcons[i].UIButton.image.sprite = data.DisplayIcon;
+                _specialIcons[i].UIButton.image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)data.EnergyCost];
             }
         }
 
@@ -102,7 +127,7 @@ namespace Lodis.UI
             UpdateIconChoicesWithType(8);
             UpdateIconChoicesWithType(9);
 
-            _eventSystem.SetSelectedGameObject(_abilitySections[0].IconHolder.GetChild(0).gameObject);
+            Selected = _abilitySections[0].IconHolder.GetChild(0).gameObject;
         }
 
         public void UpdateIconChoicesWithType(int type, bool setSelected = false)
@@ -119,7 +144,7 @@ namespace Lodis.UI
             List<AbilityData> data = _buildManager.ReplacementAbilities.AbilityData.FindAll(abilityData => abilityData.AbilityType == (AbilityType)type);
 
 
-            for (int i = 0;  i < data.Count; i++)
+            for (int i = 0; i < data.Count; i++)
             {
                 AbilityData currentData = data[i];
 
@@ -133,15 +158,29 @@ namespace Lodis.UI
                 abilityButtonInstance.name = currentData.abilityName;
 
                 if (setSelected)
-                    _eventSystem.SetSelectedGameObject(abilityButtonInstance.gameObject);
+                    Selected = abilityButtonInstance.gameObject;
 
-                abilityButtonInstance.AddOnClickEvent(() =>
+
+                if ((AbilityType)type == AbilityType.SPECIAL)
                 {
-                    _buildManager.CurrentAbilityType = type;
-                    _buildManager.ReplaceAbility(currentData.abilityName);
-                    UpdateDeck();
-                    UpdateIconChoicesWithType(type, true);
-                });
+                    abilityButtonInstance.AddOnClickEvent(() =>
+                    {
+                        _buildManager.CurrentAbilityType = type;
+                        _buildManager.ReplacementName = currentData.abilityName;
+                        ToggleAllSpecialsInDeck(true);
+                        Selected = _specialIcons[0].gameObject;
+                    });
+                }
+                else
+                {
+                    abilityButtonInstance.AddOnClickEvent(() =>
+                    {
+                        _buildManager.CurrentAbilityType = type;
+                        _buildManager.ReplaceAbility(currentData.abilityName);
+                        UpdateDeck();
+                        UpdateIconChoicesWithType(type, true);
+                    });
+                }
 
                 setSelected = false;
             }

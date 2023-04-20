@@ -12,18 +12,20 @@ namespace Lodis.UI
         [SerializeField]
         private RectTransform _view;
         [SerializeField]
-        private float _scrollAmount;
+        private float _distanceToScroll;
         [SerializeField]
         private EventSystem _eventSystem;
+        [SerializeField]
+        private RectTransform _content;
         private float _scrollAmountNormalized;
-        private GameObject _currentItem;
+        private RectTransform _currentItem;
         private float _currentItemPos;
 
         // Start is called before the first frame update
         void Awake()
         {
             _scroll = GetComponent<ScrollRect>();
-            _scrollAmountNormalized = _scrollAmount / _view.rect.height;
+            _currentItemPos = _content.anchoredPosition.x;
         }
 
         // Update is called once per frame
@@ -31,14 +33,15 @@ namespace Lodis.UI
         {
             if (_currentItem != _eventSystem.currentSelectedGameObject)
             {
-                _currentItem = _eventSystem.currentSelectedGameObject;
+                _currentItem = _eventSystem.currentSelectedGameObject.GetComponent<RectTransform>();
             }
-            _currentItemPos = _currentItem.transform.position.y;
 
-            if (_currentItemPos >= _view.transform.position.y +_view.rect.height / 2)
-                _scroll.verticalNormalizedPosition += _scrollAmountNormalized;
-            else if (_currentItemPos <= _view.transform.position.y - _view.rect.height / 2)
-                _scroll.verticalNormalizedPosition -= _scrollAmountNormalized;
+            Vector2 position = (Vector2)_scroll.transform.InverseTransformPoint(_content.position) - (Vector2)_scroll.transform.InverseTransformPoint(_currentItem.position);
+
+            float distance = Vector2.Distance(position, _content.anchoredPosition);
+
+            if (distance >= _distanceToScroll)
+                _content.anchoredPosition = new Vector2(_currentItemPos, position.y);
         }
     }
 }

@@ -32,20 +32,21 @@ namespace Lodis.UI
         private Image _image;
 
         public Image Image { get => _image; private set => _image = value; }
+        public Button UIButton { get => _button; set => _button = value; }
 
         private void Awake()
         {
-            _button = GetComponent<Button>();
-            _button.onClick.AddListener(() => SoundManagerBehaviour.Instance.PlaySound(_clickSound));
+            UIButton = GetComponent<Button>();
+            UIButton.onClick.AddListener(() => SoundManagerBehaviour.Instance.PlaySound(_clickSound));
             Image = GetComponent<Image>();
         }
 
         public void OnSelect()
         {
-            if (!_button)
-                _button = GetComponent<Button>();
+            if (!UIButton)
+                UIButton = GetComponent<Button>();
 
-            _button.OnSelect(null);
+            UIButton.OnSelect(null);
         }
 
         public void OnDeselect(BaseEventData eventData)
@@ -71,7 +72,7 @@ namespace Lodis.UI
 
         public void AddOnClickEvent(UnityAction action)
         {
-            _button.onClick.AddListener(action);
+            UIButton.onClick.AddListener(action);
         }
     }
 }
