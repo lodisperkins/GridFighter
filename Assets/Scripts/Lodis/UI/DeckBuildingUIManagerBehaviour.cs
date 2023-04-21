@@ -72,7 +72,11 @@ namespace Lodis.UI
 
             foreach (string optionName in _buildManager.DeckOptions)
             {
-                Instantiate(_loadoutButton, _loadoutOptions.transform);
+                if (optionName == null)
+                    continue;
+
+                Button buttonInstance = Instantiate(_loadoutButton, _loadoutOptions.transform);
+                buttonInstance.GetComponentInChildren<Text>().text = optionName;
             }
         }
 

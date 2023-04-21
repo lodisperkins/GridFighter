@@ -37,7 +37,13 @@ namespace Lodis.Utility
         public static bool Contains(this System.Array array, object item)
         {
             for (int i = 0; i < array.Length; i++)
-                if (array.GetValue(i) == item) return true;
+            {
+                var value = array.GetValue(i);
+                if (value != item)
+                    continue;
+
+                return true;
+            }
 
             return false;
         }

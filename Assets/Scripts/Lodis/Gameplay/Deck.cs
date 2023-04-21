@@ -38,6 +38,10 @@ namespace Lodis.Gameplay
             {
                 return _deckName;
             }
+            set
+            {
+                _deckName = value;
+            }
         }
 
         public List<AbilityData> AbilityData

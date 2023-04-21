@@ -5,6 +5,8 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using Lodis.ScriptableObjects;
+using Lodis.Utility;
+using System;
 
 namespace Lodis.UI
 {
@@ -36,7 +38,6 @@ namespace Lodis.UI
             Directory.CreateDirectory(_saveLoadPath);
 
             _settings = new JsonSerializerSettings();
-            _settings.TypeNameHandling = TypeNameHandling.All;
 
             ReplacementAbilities = Deck.CreateInstance<Deck>();
             LoadDeckNames();
@@ -50,7 +51,7 @@ namespace Lodis.UI
 
         public void LoadDeckNames()
         {
-            string[] files = Directory.GetFiles("Assets/Resources/Decks", "*.txt");
+            string[] files = Directory.GetFiles(_saveLoadPath);
 
             if (files.Length == 0)
                 return;
@@ -59,7 +60,13 @@ namespace Lodis.UI
 
             for (int i = 0; i < files.Length; i++)
             {
-                DeckOptions[i] = files[i].Split('.')[0];
+                files[i] = Path.GetFileName(files[i]);
+                string deckName = files[i].Split('_')[0];
+
+                string[] duplicates = Array.FindAll<string>(DeckOptions, word => string.Compare(word, deckName) == 0);
+
+                if (duplicates.Length == 0)
+                    DeckOptions[i] = deckName;
             }
         }
 
@@ -89,7 +96,9 @@ namespace Lodis.UI
         public void LoadPresetDeck(string deckName)
         {
             NormalDeck = Instantiate(Resources.Load<Deck>("Decks/Normals/P_" + deckName + "_Normals"));
+            NormalDeck.DeckName = "Custom_Normals";
             SpecialDeck = Instantiate(Resources.Load<Deck>("Decks/Specials/P_" + deckName + "_Specials"));
+            SpecialDeck.DeckName = "Custom_Specials";
         }
 
         public void ReplaceAbility()
@@ -127,22 +136,28 @@ namespace Lodis.UI
             _specialDeck.AbilityData[_specialReplacementIndex] = data;
         }
 
+        public void SaveDecks()
+        {
+            SaveDeck(NormalDeck);
+            SaveDeck(SpecialDeck);
+        }
 
-        public void SaveDeck(Deck deck)
+        private void SaveDeck(Deck deck)
         {
             if (deck == null)
                 return;
             
-            if (!File.Exists(_saveLoadPath + deck.DeckName + ".txt"))
+            if (!File.Exists(_saveLoadPath + "/" + deck.DeckName + ".txt"))
             {
-                FileStream stream = File.Create(_saveLoadPath + deck.DeckName + ".txt");
+                FileStream stream = File.Create(_saveLoadPath + "/" + deck.DeckName + ".txt");
                 stream.Close();
             }
 
-            StreamWriter writer = new StreamWriter(_saveLoadPath + deck.DeckName + ".txt");
-            string json = JsonConvert.SerializeObject(deck, _settings);
+            StreamWriter writer = new StreamWriter(_saveLoadPath + "/" + deck.DeckName + ".txt");
 
-            writer.Write(json);
+            foreach (AbilityData data in deck.AbilityData)
+                writer.WriteLine(data.abilityName);
+
             writer.Close();
         }
     }
