@@ -79,6 +79,7 @@ namespace Lodis.UI
                 buttonInstance.GetComponentInChildren<Text>().text = optionName;
                 buttonInstance.AddOnClickEvent(() =>
                 {
+                    _buildManager.LoadCustomDeck("Custom");
                     _eventSystem.GetComponent<PageManagerBehaviour>().GoToNextPage();
                 });
             }
@@ -156,7 +157,7 @@ namespace Lodis.UI
             {
                 AbilityData currentData = data[i];
 
-                if (_buildManager.NormalDeck.AbilityData.Contains(currentData) || _buildManager.SpecialDeck.AbilityData.Contains(currentData))
+                if (_buildManager.NormalDeck.Contains(currentData) || _buildManager.SpecialDeck.Contains(currentData))
                     continue;
 
                 EventButtonBehaviour abilityButtonInstance = Instantiate(_abilityButton, iconTransform);

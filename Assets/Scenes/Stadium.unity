@@ -22824,6 +22824,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
+      propertyPath: _p1IsCustom
+      value: 
+      objectReference: {fileID: 11400000, guid: c8d4b0853a99c454d9994f642a156b18,
+        type: 2}
+    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _p2IsCustom
+      value: 
+      objectReference: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976,
+        type: 2}
+    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
       propertyPath: _player1Data
       value: 
       objectReference: {fileID: 11400000, guid: 9e61dee5c98e8fe4ab94070dfc1b05b4,

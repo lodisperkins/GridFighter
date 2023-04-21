@@ -203,6 +203,8 @@ namespace Lodis.Gameplay
         public FloatVariable MaxBurstEnergy { get => _maxBurstEnergyRef; }
         public float LastAttackStrength { get => _lastAttackStrength; private set => _lastAttackStrength = value; }
         public CharacterAnimationBehaviour AnimationBehaviour { get => _animationBehaviour; set => _animationBehaviour = value; }
+        public Deck NormalDeckRef { get => _normalDeckRef; set => _normalDeckRef = value; }
+        public Deck SpecialDeckRef { get => _specialDeckRef; set => _specialDeckRef = value; }
 
         private void Awake()
         {
@@ -216,9 +218,9 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         private void Start()
         {
-            _normalDeck = Instantiate(_normalDeckRef);
+            _normalDeck = Instantiate(NormalDeckRef);
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_EnergyBurst_Data"));
-            _specialDeck = Instantiate(_specialDeckRef);
+            _specialDeck = Instantiate(SpecialDeckRef);
 
             _normalDeck.InitAbilities(gameObject);
             _specialDeck.InitAbilities(gameObject);

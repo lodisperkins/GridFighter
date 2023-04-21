@@ -199,7 +199,7 @@ namespace Lodis.UI
 
         public void StartMatch()
         {
-            SceneManagerBehaviour.Instance.LoadScene(3);
+            SceneManagerBehaviour.Instance.LoadScene(4);
         }
 
         void Update()

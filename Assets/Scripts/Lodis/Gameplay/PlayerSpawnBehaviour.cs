@@ -2,6 +2,8 @@
 using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.Movement;
+using Lodis.ScriptableObjects;
+using Lodis.UI;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,6 +24,7 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _p1Knockback;
         private CharacterStateMachineBehaviour _p2StateManager;
         private KnockbackBehaviour _p2Knockback;
+        private MovesetBehaviour _p2Moveset;
         private GameMode _mode;
         [SerializeField]
         private AI.AttackDummyBehaviour _dummy;
@@ -39,6 +42,10 @@ namespace Lodis.Gameplay
         [SerializeField()]
         [Tooltip("The data of the character to use when spawning player 2.")]
         private CharacterData _player2Data;
+        [SerializeField]
+        private BoolVariable _p1IsCustom;
+        [SerializeField]
+        private BoolVariable _p2IsCustom;
         private IControllable _p1Input;
         private IControllable _p2Input;
         private RingBarrierBehaviour _ringBarrierR;
@@ -48,6 +55,8 @@ namespace Lodis.Gameplay
         private PanelBehaviour _rhsSpawnPanel;
         private bool _suddenDeathActive;
         private SceneManagerBehaviour _sceneManager;
+        private MovesetBehaviour _p1Moveset;
+
         public Vector2 RHSSpawnLocation { get => _RHSSpawnLocation; private set => _RHSSpawnLocation = value; }
         public Vector2 LHSSpawnLocation { get => _LHSSpawnLocation; private set => _LHSSpawnLocation = value; }
 
@@ -110,6 +119,14 @@ namespace Lodis.Gameplay
             _p2Movement = _p2Input.Character.GetComponent<Movement.GridMovementBehaviour>();
             _p2StateManager = _p2Input.Character.GetComponent<CharacterStateMachineBehaviour>();
             _p2Knockback = _p2Input.Character.GetComponent<KnockbackBehaviour>();
+            _p2Moveset = _p2Input.Character.GetComponent<MovesetBehaviour>();
+
+            if (_p2IsCustom.Value)
+            {
+                _p2Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck("Custom");
+                _p2Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck("Custom");
+            }
+
             _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
             _p2Input.Enabled = true;
             BlackBoardBehaviour.Instance.Player2Controller = _p2Input;
@@ -146,7 +163,14 @@ namespace Lodis.Gameplay
             _p1StateManager = _p1Input.Character.GetComponent<CharacterStateMachineBehaviour>();
             _p1Knockback = _p1Input.Character.GetComponent<KnockbackBehaviour>();
             _p1Input.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
-            
+
+            _p1Moveset = _p1Input.Character.GetComponent<MovesetBehaviour>();
+
+            if (_p2IsCustom)
+            {
+                _p1Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck("Custom");
+                _p1Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck("Custom");
+            }
 
             BlackBoardBehaviour.Instance.Player1Controller = _p1Input;
 

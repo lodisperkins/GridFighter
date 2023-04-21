@@ -6343,7 +6343,8 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   _eventSystem: {fileID: 505377981}
-  _loadPreviousSceneOnFirstPage: 1
+  _loadSceneOnFirstPage: 1
+  _sceneIndex: 1
 --- !u!1 &505808901
 GameObject:
   m_ObjectHideFlags: 0

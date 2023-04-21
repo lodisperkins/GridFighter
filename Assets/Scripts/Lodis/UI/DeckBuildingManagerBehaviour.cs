@@ -19,7 +19,7 @@ namespace Lodis.UI
         private Deck[] _replacementSpecialDecks;
         private Deck _replacementAbilities;
         private string _deckName;
-        private string _saveLoadPath;
+        private static string _saveLoadPath;
         private JsonSerializerSettings _settings;
         private int _currentAbilityType;
         private int _specialReplacementIndex;
@@ -60,7 +60,7 @@ namespace Lodis.UI
                 return;
 
             DeckOptions = new string[files.Length];
-            _deckFilePaths = DeckOptions;
+            _deckFilePaths = files;
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -107,18 +107,75 @@ namespace Lodis.UI
 
         public void LoadCustomDeck(string deckName)
         {
-            int index = Array.IndexOf(DeckOptions, deckName);
-            string normalPath = _deckFilePaths[index];
+
+            string normalPath = _saveLoadPath + "/" + deckName + "_Normals.txt";
+            string specialPath = _saveLoadPath + "/" + deckName + "_Specials.txt";
+
             StreamReader reader = new StreamReader(normalPath);
 
+            NormalDeck = Deck.CreateInstance<Deck>();
             for (int i = 0; i < 9; i++)
             {
                 string abilityName = reader.ReadLine();
-                NormalDeck = Instantiate(Resources.Load<Deck>("Decks/Normals/P_" + deckName + "_Normals"));
-                NormalDeck.DeckName = "Custom_Normals";
+                NormalDeck.AbilityData.Add(Instantiate(Resources.Load<AbilityData>("AbilityData/" + abilityName)));
             }
-            SpecialDeck = Instantiate(Resources.Load<Deck>("Decks/Specials/P_" + deckName + "_Specials"));
+            NormalDeck.DeckName = "Custom_Normals";
+
+            reader.Close();
+
+            reader = new StreamReader(specialPath);
+            SpecialDeck = Deck.CreateInstance<Deck>();
+
+            for (int i = 0; i < 8; i++)
+            {
+                string abilityName = reader.ReadLine();
+                SpecialDeck.AbilityData.Add(Instantiate(Resources.Load<AbilityData>("AbilityData/" + abilityName)));
+            }
+
+            reader.Close();
             SpecialDeck.DeckName = "Custom_Specials";
+        }
+        
+        public static Deck LoadCustomNormalDeck(string deckName)
+        {
+            _saveLoadPath = Application.persistentDataPath + "/CustomDecks";
+            Directory.CreateDirectory(_saveLoadPath);
+            string normalPath = _saveLoadPath + "/" + deckName + "_Normals.txt";
+
+            StreamReader reader = new StreamReader(normalPath);
+
+            Deck normalDeck = Deck.CreateInstance<Deck>();
+            for (int i = 0; i < 9; i++)
+            {
+                string abilityName = reader.ReadLine();
+                normalDeck.AbilityData.Add(Instantiate(Resources.Load<AbilityData>("AbilityData/" + abilityName)));
+            }
+            normalDeck.DeckName = "Custom_Normals";
+
+            reader.Close();
+
+            return normalDeck;
+        }
+
+        public static Deck LoadCustomSpecialDeck(string deckName)
+        {
+            _saveLoadPath = Application.persistentDataPath + "/CustomDecks";
+            Directory.CreateDirectory(_saveLoadPath);
+            string specialPath = _saveLoadPath + "/" + deckName + "_Specials.txt";
+
+            StreamReader reader = new StreamReader(specialPath);
+
+            Deck specialDeck = Deck.CreateInstance<Deck>();
+            for (int i = 0; i < 9; i++)
+            {
+                string abilityName = reader.ReadLine();
+                specialDeck.AbilityData.Add(Instantiate(Resources.Load<AbilityData>("AbilityData/" + abilityName)));
+            }
+            specialDeck.DeckName = "Custom_Specials";
+
+            reader.Close();
+
+            return specialDeck;
         }
 
         public void ReplaceAbility()
@@ -148,6 +205,15 @@ namespace Lodis.UI
         {
             AbilityData data = ReplacementAbilities.GetAbilityDataByName(name);
             _normalDeck.SetAbilityDataByType((AbilityType)CurrentAbilityType, data);
+
+            if (CurrentAbilityType < (int)AbilityType.UNBLOCKABLE)
+            {
+                string abilityName = data.name;
+                abilityName.Remove(0);
+                abilityName.Insert(0, "S");
+                AbilityData strongData = Resources.Load<AbilityData>("AbilityData/" + abilityName);
+                _normalDeck.SetAbilityDataByType((AbilityType)(CurrentAbilityType + 4), strongData); 
+            }
         }
 
         private void ReplaceSpecialAbility(string name)

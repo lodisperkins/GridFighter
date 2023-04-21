@@ -23,7 +23,9 @@ namespace Lodis.UI
         [SerializeField]
         private EventSystem _eventSystem;
         [SerializeField]
-        private bool _loadPreviousSceneOnFirstPage;
+        private bool _loadSceneOnFirstPage;
+        [SerializeField]
+        private int _sceneIndex = -1;
         private int _currentPage;
         private PlayerControls _controls;
 
@@ -62,9 +64,13 @@ namespace Lodis.UI
 
             _currentPage--;
 
-            if (_currentPage < 0 && _loadPreviousSceneOnFirstPage)
+            if (_currentPage < 0 && _loadSceneOnFirstPage)
             {
-                SceneManagerBehaviour.Instance.LoadPreviousScene();
+                if (_sceneIndex == -1)
+                    SceneManagerBehaviour.Instance.LoadPreviousScene();
+                else
+                    SceneManagerBehaviour.Instance.LoadScene(_sceneIndex);
+
                 return;
             }
 
