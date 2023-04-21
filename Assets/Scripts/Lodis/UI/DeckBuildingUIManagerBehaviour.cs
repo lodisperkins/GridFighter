@@ -17,7 +17,7 @@ namespace Lodis.UI
 
         [Header("Current Deck Page")]
         [SerializeField]
-        private Button _loadoutButton;
+        private EventButtonBehaviour _loadoutButton;
         [SerializeField]
         private GameObject _loadoutOptions;
         [SerializeField]
@@ -75,8 +75,12 @@ namespace Lodis.UI
                 if (optionName == null)
                     continue;
 
-                Button buttonInstance = Instantiate(_loadoutButton, _loadoutOptions.transform);
+                EventButtonBehaviour buttonInstance = Instantiate(_loadoutButton, _loadoutOptions.transform);
                 buttonInstance.GetComponentInChildren<Text>().text = optionName;
+                buttonInstance.AddOnClickEvent(() =>
+                {
+                    _eventSystem.GetComponent<PageManagerBehaviour>().GoToNextPage();
+                });
             }
         }
 

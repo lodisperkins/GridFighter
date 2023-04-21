@@ -6191,6 +6191,28 @@ MonoBehaviour:
             m_StringArgument: Choose A Load Out To Customize
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1255703518}
+          m_MethodName: LoadDeckNames
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2033525663}
+          m_MethodName: UpdateLoadoutOptions
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
     OnInactive:
       m_PersistentCalls:
         m_Calls: []
@@ -18386,7 +18408,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _onSelect.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 2492379211295133931, guid: 82da5e43af5424e41a62f3895cee0c84,
+      objectReference: {fileID: 1658872878371820837, guid: 0deca2693db47cd47afd6232df25058f,
         type: 3}
     - target: {fileID: 1251192488738103914, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -22511,7 +22533,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 505377984}
+      objectReference: {fileID: 1255703518}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -22550,7 +22572,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: GoToNextPage
+      value: SaveDecks
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -22575,7 +22597,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -24352,7 +24374,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _buildManager: {fileID: 1255703518}
-  _loadoutButton: {fileID: 2064447565}
+  _loadoutButton: {fileID: 5331721923459415289, guid: 8d1aae1124315874e9cf8c759695f04a,
+    type: 3}
   _loadoutOptions: {fileID: 869482621}
   _infoTextBox: {fileID: 0}
   _unblockableIconSlot: {fileID: 1393117268}
@@ -24430,18 +24453,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1492288149}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2064447565 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
-    type: 3}
-  m_PrefabInstance: {fileID: 1492288149}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2064447562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2109660674 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7997891042039204573, guid: cd44e3f1f47b4e844bb56c12bc030286,

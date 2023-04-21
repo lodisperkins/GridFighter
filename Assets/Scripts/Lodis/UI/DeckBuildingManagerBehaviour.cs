@@ -26,6 +26,9 @@ namespace Lodis.UI
         private string _replacementName;
 
         public string[] DeckOptions { get => _deckOptions; private set => _deckOptions = value; }
+
+        private string[] _deckFilePaths;
+
         public Deck SpecialDeck { get => _specialDeck; private set => _specialDeck = value; }
         public Deck NormalDeck { get => _normalDeck; private set => _normalDeck = value; }
         public Deck ReplacementAbilities { get => _replacementAbilities; private set => _replacementAbilities = value; }
@@ -56,7 +59,8 @@ namespace Lodis.UI
             if (files.Length == 0)
                 return;
 
-            DeckOptions = new string[files.Length];    
+            DeckOptions = new string[files.Length];
+            _deckFilePaths = DeckOptions;
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -97,6 +101,22 @@ namespace Lodis.UI
         {
             NormalDeck = Instantiate(Resources.Load<Deck>("Decks/Normals/P_" + deckName + "_Normals"));
             NormalDeck.DeckName = "Custom_Normals";
+            SpecialDeck = Instantiate(Resources.Load<Deck>("Decks/Specials/P_" + deckName + "_Specials"));
+            SpecialDeck.DeckName = "Custom_Specials";
+        }
+
+        public void LoadCustomDeck(string deckName)
+        {
+            int index = Array.IndexOf(DeckOptions, deckName);
+            string normalPath = _deckFilePaths[index];
+            StreamReader reader = new StreamReader(normalPath);
+
+            for (int i = 0; i < 9; i++)
+            {
+                string abilityName = reader.ReadLine();
+                NormalDeck = Instantiate(Resources.Load<Deck>("Decks/Normals/P_" + deckName + "_Normals"));
+                NormalDeck.DeckName = "Custom_Normals";
+            }
             SpecialDeck = Instantiate(Resources.Load<Deck>("Decks/Specials/P_" + deckName + "_Specials"));
             SpecialDeck.DeckName = "Custom_Specials";
         }
@@ -156,7 +176,7 @@ namespace Lodis.UI
             StreamWriter writer = new StreamWriter(_saveLoadPath + "/" + deck.DeckName + ".txt");
 
             foreach (AbilityData data in deck.AbilityData)
-                writer.WriteLine(data.abilityName);
+                writer.WriteLine(data.name);
 
             writer.Close();
         }
