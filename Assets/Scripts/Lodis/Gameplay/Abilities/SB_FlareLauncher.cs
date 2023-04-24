@@ -8,7 +8,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class SB_ChargeFlareLauncher : ProjectileAbility
+    public class SB_FlareLauncher : ProjectileAbility
     {
 	    //Called when ability is created
         public override void Init(GameObject newOwner)

@@ -117,7 +117,7 @@ namespace Lodis.UI
             for (int i = 0; i < 9; i++)
             {
                 string abilityName = reader.ReadLine();
-                NormalDeck.AbilityData.Add(Instantiate(Resources.Load<AbilityData>("AbilityData/" + abilityName)));
+                NormalDeck.AbilityData.Add(Resources.Load<AbilityData>("AbilityData/" + abilityName));
             }
             NormalDeck.DeckName = "Custom_Normals";
 
@@ -129,7 +129,7 @@ namespace Lodis.UI
             for (int i = 0; i < 8; i++)
             {
                 string abilityName = reader.ReadLine();
-                SpecialDeck.AbilityData.Add(Instantiate(Resources.Load<AbilityData>("AbilityData/" + abilityName)));
+                SpecialDeck.AbilityData.Add(Resources.Load<AbilityData>("AbilityData/" + abilityName));
             }
 
             reader.Close();
@@ -148,7 +148,8 @@ namespace Lodis.UI
             for (int i = 0; i < 9; i++)
             {
                 string abilityName = reader.ReadLine();
-                normalDeck.AbilityData.Add(Instantiate(Resources.Load<AbilityData>("AbilityData/" + abilityName)));
+                normalDeck.AbilityData.Add(Resources.Load<AbilityData>("AbilityData/" + abilityName));
+                normalDeck.AbilityData[i].name = abilityName;
             }
             normalDeck.DeckName = "Custom_Normals";
 
@@ -166,10 +167,11 @@ namespace Lodis.UI
             StreamReader reader = new StreamReader(specialPath);
 
             Deck specialDeck = Deck.CreateInstance<Deck>();
-            for (int i = 0; i < 9; i++)
+            for (int i = 0; i < 8; i++)
             {
                 string abilityName = reader.ReadLine();
-                specialDeck.AbilityData.Add(Instantiate(Resources.Load<AbilityData>("AbilityData/" + abilityName)));
+                specialDeck.AbilityData.Add(Resources.Load<AbilityData>("AbilityData/" + abilityName));
+                specialDeck.AbilityData[i].name = abilityName;
             }
             specialDeck.DeckName = "Custom_Specials";
 
@@ -209,8 +211,8 @@ namespace Lodis.UI
             if (CurrentAbilityType < (int)AbilityType.UNBLOCKABLE)
             {
                 string abilityName = data.name;
-                abilityName.Remove(0);
-                abilityName.Insert(0, "S");
+                abilityName = abilityName.Remove(0, 1);
+                abilityName = abilityName.Insert(0, "S");
                 AbilityData strongData = Resources.Load<AbilityData>("AbilityData/" + abilityName);
                 _normalDeck.SetAbilityDataByType((AbilityType)(CurrentAbilityType + 4), strongData); 
             }

@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
-  m_Name: SF_DoublePunch_Data
-  m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
-  abilityName: Double Punch
+  m_Name: SS_AxeKick_Data
+  m_EditorClassIdentifier: 
+  abilityName: Electric Axe Kick
   abilityDescription: None
-  AbilityType: 6
-  timeActive: 0.2
-  recoverTime: 0.1
-  startUpTime: 0.3
+  AbilityType: 5
+  timeActive: 0.3
+  recoverTime: 0.4
+  startUpTime: 0.2
   chargeTime: 0
-  maxActivationAmount: 0
+  maxActivationAmount: 1
   EnergyCost: 0
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 1
+  CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 1
+  CanOnlyCancelOnOpponentHit: 0
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -37,47 +37,43 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 428546948933386335, guid: 409ab1e1fc762a649827660709ffdb1d,
+  visualPrefab: {fileID: 3213832195720607860, guid: 4581ff6148150ec42aaee82c75d0d558,
     type: 3}
-  DisplayIcon: {fileID: 21300000, guid: f3f1dfe50a3c67b4aaf58fc4ac90de66, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 2f22d2f088384ed49aea26f1a05da79f, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
-  - Name: 
+  - Name: ElectricAxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 2.5
-    DestroyOnHit: 1
+    TimeActive: 0.25
+    DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 16542007
+      m_Bits: 4057399
     MultiHitWaitTime: 0
-    Damage: 8
+    Damage: 6
     BaseKnockBack: 2
-    KnockBackScale: 0.5
-    HitAngle: 1.3
+    KnockBackScale: 1
+    HitAngle: 1.35
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.3
-    Priority: 2
+    HitStunTime: 0.6
+    Priority: 0
     OwnerAlignement: 0
-    AbilityType: 6
-    SpawnEffect: {fileID: 6814929850833701180, guid: 0693a339a1c2f284695c43e038a8b3a8,
-      type: 3}
-    HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
+    AbilityType: 5
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 1.5
+    HitStopTimeModifier: 1.6
     ShakesCamera: 0
-    SpawnSound: {fileID: 8300000, guid: 5e7471077dd4eba46b4f16152e376577, type: 3}
+    SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
-  _customStats:
-  - name: Speed
-    value: 2
-  - name: MaxInstances
-    value: 2
+  _customStats: []
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: 3043140f1aa56d04a918b5ea2b6bc559, type: 3}
+  _customAnimation: {fileID: 5180280961208456968, guid: 9e0bca4775cbb194d9ff91a5b8690fce,
+    type: 3}
   _additionalAnimations: []

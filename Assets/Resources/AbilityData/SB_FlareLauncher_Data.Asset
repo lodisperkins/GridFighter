@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
-  m_Name: SB_ChargeFlareLauncher_Data
+  m_Name: SB_FlareLauncher_Data
   m_EditorClassIdentifier: 
-  abilityName: ChargeFlareLauncher
+  abilityName: Flare Wheel
   abilityDescription: None
   AbilityType: 7
   timeActive: 0.4

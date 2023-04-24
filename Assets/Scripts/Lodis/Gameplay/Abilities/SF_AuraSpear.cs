@@ -8,7 +8,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class SF_ChargeAuraSpear : ProjectileAbility
+    public class SF_AuraSpear : ProjectileAbility
     {
         //Called when ability is created
         public override void Init(GameObject newOwner)

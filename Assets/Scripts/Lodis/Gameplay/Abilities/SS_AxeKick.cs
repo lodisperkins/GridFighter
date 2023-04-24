@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class SS_ElectricAxeKick : Ability
+    public class SS_AxeKick : Ability
     {
         private HitColliderBehaviour _hitColliderBehaviour;
 

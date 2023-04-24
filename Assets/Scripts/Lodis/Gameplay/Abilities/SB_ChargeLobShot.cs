@@ -34,7 +34,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SB_ChargeLobShot_Data"));
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SB_LobShot_Data"));
             owner = newOwner;
 
             //Load the projectile prefab

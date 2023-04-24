@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
-  m_Name: SS_ElectricAxeKick_Data
+  m_Name: SS_DoubleShot_Data
   m_EditorClassIdentifier: 
-  abilityName: Electric Axe Kick
+  abilityName: ChargeDoubleShot
   abilityDescription: None
   AbilityType: 5
-  timeActive: 0.3
-  recoverTime: 0.4
-  startUpTime: 0.2
+  timeActive: 0.1
+  recoverTime: 0.2
+  startUpTime: 0.1
   chargeTime: 0
-  maxActivationAmount: 1
+  maxActivationAmount: 0
   EnergyCost: 0
   canCancelStartUp: 0
   canCancelActive: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
   CanCancelIntoSelf: 0
   CanCancelIntoSpecial: 0
   CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 0
+  CanOnlyCancelOnOpponentHit: 1
   cancelOnHit: 0
   cancelOnFlinch: 1
   cancelOnKnockback: 1
@@ -37,43 +37,49 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 3213832195720607860, guid: 4581ff6148150ec42aaee82c75d0d558,
+  visualPrefab: {fileID: 428546948933386335, guid: 1f747bc727574ad4489540defe5382d7,
     type: 3}
-  DisplayIcon: {fileID: 21300000, guid: 2f22d2f088384ed49aea26f1a05da79f, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 916ee4382be4e3e43b79b1d5c25364ae, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
-  - Name: ElectricAxeKickCollider
+  - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.25
-    DestroyOnHit: 0
+    TimeActive: 0.3
+    DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 4057399
+      m_Bits: 0
     MultiHitWaitTime: 0
-    Damage: 6
-    BaseKnockBack: 2
-    KnockBackScale: 1
-    HitAngle: 1.35
+    Damage: 5
+    BaseKnockBack: 1.2
+    KnockBackScale: 0.8
+    HitAngle: 0.4
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.6
-    Priority: 0
+    HitStunTime: 0.5
+    Priority: 2
     OwnerAlignement: 0
     AbilityType: 5
-    SpawnEffect: {fileID: 0}
-    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
+    SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
+      type: 3}
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 1.6
+    HitStopTimeModifier: 1.1
     ShakesCamera: 0
-    SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
+    SpawnSound: {fileID: 8300000, guid: 4515abd4739dbba468266fe210cc8e37, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
-  _customStats: []
+  _customStats:
+  - name: Speed
+    value: 5.5
+  - name: MaxInstances
+    value: 2
+  - name: TimeBetweenShots
+    value: 0
   animationType: 3
-  _customAnimation: {fileID: 5180280961208456968, guid: 9e0bca4775cbb194d9ff91a5b8690fce,
-    type: 3}
+  _customAnimation: {fileID: 7400000, guid: b5fb9fa7a3e19744292c7a51adbb8560, type: 3}
   _additionalAnimations: []

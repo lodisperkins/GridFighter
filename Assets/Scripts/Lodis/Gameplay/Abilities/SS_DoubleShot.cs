@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// Shoots two shots: one shot travels down the row the character was previously,
     /// and the other travels down the panel character moved towards
     /// </summary>
-    public class SS_ChargeDoubleShot : ProjectileAbility
+    public class SS_DoubleShot : ProjectileAbility
     {
         //Usd to store a reference to the laser prefab
         private GameObject _projectile;
@@ -22,7 +22,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //initialize default stats
-            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SS_ChargeDoubleShot_Data"));
+            abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SS_DoubleShot_Data"));
             owner = newOwner;
 
             //Load the projectile prefab
