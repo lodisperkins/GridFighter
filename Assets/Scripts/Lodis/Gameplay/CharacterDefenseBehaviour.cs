@@ -436,7 +436,11 @@ namespace Lodis.Gameplay
 
         private void BreakFall(GameObject other)
         {
-            if (!IsBraced || !other.CompareTag("Structure") || other.CompareTag("CollisionPlane") || BreakingFall)
+            float direction = transform.position.x - other.transform.position.x;
+            direction /= Mathf.Abs(direction);
+
+
+            if (_controller.AttackDirection.x != direction || !other.CompareTag("Structure") || other.CompareTag("CollisionPlane") || BreakingFall)
                 return;
 
 
@@ -451,26 +455,10 @@ namespace Lodis.Gameplay
             if (_disableFallBreakAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_disableFallBreakAction);
 
-
-            float direction = transform.position.x - other.transform.position.x;
-            direction /= Mathf.Abs(direction);
-
-            if (!other.CompareTag("Structure"))
-                return;
-
             transform.rotation = Quaternion.Euler(0, direction * 90, 0);
 
-            if (_controller.AttackDirection.x == direction)
-            {
-                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 2.0f);
-                _knockBack.Physics.Jump(_wallTechJumpHeight, _wallTechJumpDistance, _wallTechJumpDuration, true, true);
-            }
-            else
-            {
-                _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 2.0f);
-                _knockBack.Physics.Jump(_wallTechJumpHeight / 2, (_wallTechJumpDistance / 2), _wallTechJumpDuration, true, true);
-            }
-
+            _disableFallBreakAction = RoutineBehaviour.Instance.StartNewTimedAction(DisableFallBreaking, TimedActionCountType.SCALEDTIME, _wallTechJumpDuration / 2.0f);
+            _knockBack.Physics.Jump(_wallTechJumpHeight, _wallTechJumpDistance, _wallTechJumpDuration, true, true);
             onFallBroken?.Invoke(false);
         }
 

@@ -134,18 +134,6 @@ public class DefendAction : GOAction
                 //Set the counter attacking parameter to be true so that the dummy attacks during the next iteration
                 _dummy.Executor.blackboard.boolParams[3] = true;
                 break;
-            case DefenseDecisionType.PARRY:
-                RoutineBehaviour.Instance.StartNewConditionAction(args => _dummy.Defense.BeginParry(), condition => _dummy.StateMachine.CurrentState == "Idle");
-                break;
-            case DefenseDecisionType.PHASESHIFT:
-                //Gets a direction for the dummy to run to
-                Vector3 phaseDirection = (_decision.AveragePosition + _decision.AverageVelocity) - _dummy.Character.transform.position;
-                phaseDirection.Normalize();
-
-                if (_dummy.StateMachine.CurrentState == "Idle" || _dummy.StateMachine.CurrentState == "Moving")
-                    _dummy.Defense.ActivatePhaseShift(new Vector2(phaseDirection.x, phaseDirection.z));
-
-                break;
         }
 
         return choice;
@@ -177,16 +165,6 @@ public class DefendAction : GOAction
                 //Update attack direction and brace for impact so the dummy can jump away from the barrer
                 jumpDirection *= _dummy.Character.transform.forward.x;
                 _dummy.AttackDirection = new Vector2(jumpDirection, 0);
-                _dummy.Defense.Brace();
-                break;
-            case DefenseDecisionType.BREAKFALLNEUTRAL:
-
-                if (!_dummy.TouchingOpponentBarrier && !_dummy.TouchingBarrier)
-                {
-                    choice = DefenseDecisionType.NONE;
-                    break;
-                }
-
                 _dummy.Defense.Brace();
                 break;
         }

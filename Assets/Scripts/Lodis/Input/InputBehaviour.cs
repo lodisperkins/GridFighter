@@ -167,17 +167,8 @@ namespace Lodis.Input
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable();};
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 }); };
             _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 }); };
-            _playerControls.Player.UnblockableAttack.started += BufferUnblockableAbility;
             _playerControls.Player.Burst.started += BufferBurst;
             _playerControls.Player.Shuffle.started += BufferShuffle;
-
-            //Defense input
-            _playerControls.Player.Parry.started += context => { BufferShield(); _defense.Brace();};
-            _playerControls.Player.Parry.performed += context => {RemoveShieldFromBuffer(); _defense.DeactivateBrace(); };
-            _playerControls.Player.PhaseShiftUp.started += context => BufferPhaseShift(context, Vector2.up);
-            _playerControls.Player.PhaseShiftDown.started += context => BufferPhaseShift(context, Vector2.down);
-            _playerControls.Player.PhaseShiftRight.started += context => BufferPhaseShift(context, Vector2.right);
-            _playerControls.Player.PhaseShiftLeft.started += context => BufferPhaseShift(context, Vector2.left);
 
             _playerControls.Player.Pause.started += context => MatchManagerBehaviour.Instance.TogglePauseMenu();
         }
