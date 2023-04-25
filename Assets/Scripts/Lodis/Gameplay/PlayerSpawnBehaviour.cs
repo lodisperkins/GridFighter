@@ -166,7 +166,7 @@ namespace Lodis.Gameplay
 
             _p1Moveset = _p1Input.Character.GetComponent<MovesetBehaviour>();
 
-            if (_p2IsCustom)
+            if (_p1IsCustom.Value)
             {
                 _p1Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck("Custom");
                 _p1Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck("Custom");
