@@ -58,7 +58,7 @@ namespace Lodis.Gameplay
             if (other == _collider.Owner) return;
 
             //Only stun if this object has a health component and isn't already stunned
-            HealthBehaviour healthBehaviour = other.GetComponent<HealthBehaviour>();
+            HealthBehaviour healthBehaviour = other.GetComponentInChildren<HealthBehaviour>();
             if (!healthBehaviour)
                 return;
             if (healthBehaviour.Stunned) return;

@@ -63,6 +63,8 @@ MonoBehaviour:
   RingBarrierLHS: {fileID: 0}
   BlockEffect: {fileID: 7681821613543600163, guid: f00585eb1d3761e4eb76dcce81aa6162,
     type: 3}
+  ReflectEffect: {fileID: 7409581658833189768, guid: a9dcc21970704594da68247eb68728cf,
+    type: 3}
   HitEffects:
   - {fileID: 8567834841006214752, guid: 7cd867e25d9d97044bb08948940288c8, type: 3}
   - {fileID: 2069248774462545479, guid: 993c029921b80a448b71f49a670a3271, type: 3}

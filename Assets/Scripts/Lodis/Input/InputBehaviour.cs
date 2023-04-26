@@ -548,12 +548,6 @@ namespace Lodis.Input
 
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
-
-            if (PlayerID.Value == 1)
-            {
-                Debug.Log("Special 1 is " + _special1Down);
-                Debug.Log("Special 2 is " + _special2Down);
-            }
         }
     }
 }
