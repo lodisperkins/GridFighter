@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// An unblockable ability that drops a shot onto the opponents head if they are on the same row.
     /// </summary>
-    public class U_LightningStrike : Ability
+    public class DK_LightningStrike : Ability
     {
         private Transform _visualPrefabInstanceTransform;
 
@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
 
             PanelBehaviour targetPanel;
-            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.y == _ownerMoveScript.Position.y)
+            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.y == OwnerMoveScript.Position.y)
                 transform = targetPanel.transform;
 
 

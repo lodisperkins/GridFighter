@@ -31,8 +31,6 @@ namespace Lodis.Gameplay
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WB_LobShot_Data"));
             owner = newOwner;
-            
-            _ownerMoveScript = owner.GetComponent<Movement.GridMovementBehaviour>();
             _distance = abilityData.GetCustomStatValue("PanelDistance");
             _angle = abilityData.GetCustomStatValue("Angle");
             _gravity = abilityData.GetCustomStatValue("Gravity");

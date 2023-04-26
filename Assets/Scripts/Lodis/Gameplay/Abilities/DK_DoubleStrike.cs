@@ -49,7 +49,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            _ownerAnimationScript.PlayAbilityAnimation();
+            OwnerAnimationScript.PlayAbilityAnimation();
             //Create collider for attack
             _fistCollider = GetColliderData(0);
 
@@ -68,7 +68,7 @@ namespace Lodis.Gameplay
                 _attackDirection = (Vector2)(owner.transform.forward);
 
             //Get the panel position based on the direction of attack and distance given
-            attackPosition = _ownerMoveScript.Position + (_attackDirection * abilityData.GetCustomStatValue("TravelDistance"));
+            attackPosition = OwnerMoveScript.Position + (_attackDirection * abilityData.GetCustomStatValue("TravelDistance"));
 
             //Clamp to be sure the player doesn't go off grid
             attackPosition.x = Mathf.Clamp(attackPosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
@@ -76,16 +76,16 @@ namespace Lodis.Gameplay
 
             //Equation to calculate speed of attack given the active time
             float distance = abilityData.GetCustomStatValue("TravelDistance") + (abilityData.GetCustomStatValue("TravelDistance") * BlackBoardBehaviour.Instance.Grid.PanelSpacingX);
-            _ownerMoveScript.Speed = (distance * 2/ abilityData.timeActive) * BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
+            OwnerMoveScript.Speed = (distance * 2/ abilityData.timeActive) * BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             //Change move traits to allow for free movement on the other side of the grid
-            _ownerMoveScript.CanCancelMovement = true;
+            OwnerMoveScript.CanCancelMovement = true;
 
             //Change rotation to the direction of movement
             owner.transform.forward = new Vector3(_attackDirection.x, 0, _attackDirection.y);
 
             //Move towards panel
-            _ownerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
+            OwnerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance, abilityData.timeActive + abilityData.timeActive / 3);
         }
 
@@ -123,9 +123,9 @@ namespace Lodis.Gameplay
         private void ChangeMoveAttributes()
         {
             //Store initial move speed
-            _ownerMoveSpeed = _ownerMoveScript.Speed;
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
-            _ownerMoveScript.AlwaysLookAtOpposingSide = false;
+            _ownerMoveSpeed = OwnerMoveScript.Speed;
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
+            OwnerMoveScript.AlwaysLookAtOpposingSide = false;
         }
 
         /// <summary>
@@ -134,12 +134,12 @@ namespace Lodis.Gameplay
         private void ResetMoveAttributes()
         {
             //Reset the movement traits
-            if (_ownerMoveScript.IsMoving)
-                _ownerMoveScript.CancelMovement();
+            if (OwnerMoveScript.IsMoving)
+                OwnerMoveScript.CancelMovement();
 
-            _ownerMoveScript.CanCancelMovement = false;
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
-            _ownerMoveScript.AlwaysLookAtOpposingSide = true;
+            OwnerMoveScript.CanCancelMovement = false;
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
+            OwnerMoveScript.AlwaysLookAtOpposingSide = true;
 
         }
 

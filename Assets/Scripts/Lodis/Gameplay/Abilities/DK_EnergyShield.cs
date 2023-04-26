@@ -1,0 +1,86 @@
+﻿using Lodis.Input;
+using Lodis.Utility;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace Lodis.Gameplay
+{
+
+    /// <summary>
+    /// Enter ability description here
+    /// </summary>
+    public class DK_EnergyShield : Ability
+    {
+        private GameObject _shield;
+        private ColliderBehaviour _shieldCollider;
+        private float _shieldDrainValue;
+
+        protected override void OnStart(params object[] args)
+        {
+            base.OnStart(args);
+            _shieldDrainValue = abilityData.GetCustomStatValue("EnergyDrainAmount");
+        }
+
+        //Called when ability is used
+        protected override void OnActivate(params object[] args)
+        {
+            _shield = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
+            _shieldCollider = _shield.GetComponent<ColliderBehaviour>();
+            _shieldCollider.Owner = owner;
+
+            _shieldCollider.AddCollisionEvent(parameters =>
+            {
+                if (parameters.Length < 2)
+                    return;
+
+                HitColliderBehaviour other = parameters[1] as HitColliderBehaviour;
+
+                if (!other)
+                    return;
+
+                //Spawns particles after block for player feedback
+                if (BlackBoardBehaviour.Instance.BlockEffect)
+                    ObjectPoolBehaviour.Instance.GetObject(BlackBoardBehaviour.Instance.BlockEffect.gameObject, other.transform.position + Vector3.up, owner.transform.rotation);
+            }
+           );
+
+            OwnerKnockBackScript.SetInvincibilityByCondition(condition => !InUse || CurrentAbilityPhase == AbilityPhase.RECOVER);
+            PauseAbilityTimer();
+        }
+
+        protected override void OnDeactivate()
+        {
+            base.OnDeactivate();
+
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_shield);
+
+            OwnerMoveset.EnergyChargeEnabled = true;
+        }
+
+        public override void EndAbility()
+        {
+            base.EndAbility();
+
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_shield);
+
+            OwnerMoveset.EnergyChargeEnabled = true;
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            if (CurrentAbilityPhase != AbilityPhase.ACTIVE)
+            {
+                OwnerMoveset.EnergyChargeEnabled = true;
+                return;
+            }
+
+            OwnerMoveset.EnergyChargeEnabled = false;
+            int index = OwnerMoveset.GetSpecialAbilityIndex(this);
+
+            if (!OwnerMoveset.TryUseEnergy(_shieldDrainValue * Time.deltaTime) || OwnerInput?.GetSpecialButton(index + 1) == false)
+                UnpauseAbilityTimer();
+        }
+    }
+}

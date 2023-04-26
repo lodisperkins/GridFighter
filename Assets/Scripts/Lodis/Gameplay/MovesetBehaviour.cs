@@ -373,6 +373,16 @@ namespace Lodis.Gameplay
             return ability;
         }
 
+        public int GetSpecialAbilityIndex(Ability ability)
+        {
+            if (_specialAbilitySlots[0] == ability)
+                return 0;
+            else if (_specialAbilitySlots[1] == ability)
+                return 1;
+
+            return -1;
+        }
+
         /// <summary>
         /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
         /// the ability to use will be activated if the current ability in use can be canceled.

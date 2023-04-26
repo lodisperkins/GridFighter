@@ -71,10 +71,10 @@ namespace Lodis.Gameplay
 
             //Unlike normal projectiles the black hole needs to stay in place for a short while. So grid movement is used instead of projectile physics.
             GridMovementBehaviour gridMovementBehaviour = Projectile.GetComponent<GridMovementBehaviour>();
-            gridMovementBehaviour.Position = _ownerMoveScript.Position;
+            gridMovementBehaviour.Position = OwnerMoveScript.Position;
             gridMovementBehaviour.Speed = abilityData.GetCustomStatValue("Speed");
 
-            gridMovementBehaviour.MoveToPanel(_ownerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
+            gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
             ActiveProjectiles.Add(Projectile);
             gridMovementBehaviour.AddOnMoveEndTempAction(SpawnBlackHole);
         }

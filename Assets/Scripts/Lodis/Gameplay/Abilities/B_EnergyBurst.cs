@@ -30,20 +30,20 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
 
-            _makeFreeFall = _ownerKnockBackScript.CurrentAirState != AirState.NONE;
+            _makeFreeFall = OwnerKnockBackScript.CurrentAirState != AirState.NONE;
 
             //Freezes all forces in the knockback and physics components
-            _ownerKnockBackScript.Physics.CancelFreeze();
-            _ownerKnockBackScript.Physics.IgnoreForces = true;
-            _ownerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-            _ownerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
-            _ownerKnockBackScript.CancelHitStun();
-            _ownerKnockBackScript.CancelStun();
+            OwnerKnockBackScript.Physics.CancelFreeze();
+            OwnerKnockBackScript.Physics.IgnoreForces = true;
+            OwnerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
+            OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
+            OwnerKnockBackScript.CancelHitStun();
+            OwnerKnockBackScript.CancelStun();
 
             //Disable ability benefits if the player is hit out of burst
             OnHit += arguments =>
             {
-                if (_ownerKnockBackScript.CurrentAirState == AirState.NONE)
+                if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
 
                 GameObject objectHit = (GameObject)arguments[0];
@@ -51,8 +51,8 @@ namespace Lodis.Gameplay
                 if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
                     return;
 
-                _ownerKnockBackScript.DisableInvincibility();
-                _ownerKnockBackScript.Physics.CancelFreeze();
+                OwnerKnockBackScript.DisableInvincibility();
+                OwnerKnockBackScript.Physics.CancelFreeze();
 
                 PanelBehaviour panel;
 
@@ -60,10 +60,10 @@ namespace Lodis.Gameplay
 
                 if (validPanel)
                 {
-                    _ownerMoveScript.TeleportToPanel(panel);
-                    _ownerMoveScript.EnableMovement();
-                    _ownerKnockBackScript.Physics.RB.isKinematic = true;
-                    _ownerKnockBackScript.CurrentAirState = AirState.NONE;
+                    OwnerMoveScript.TeleportToPanel(panel);
+                    OwnerMoveScript.EnableMovement();
+                    OwnerKnockBackScript.Physics.RB.isKinematic = true;
+                    OwnerKnockBackScript.CurrentAirState = AirState.NONE;
                 }
             };
         }
@@ -90,20 +90,20 @@ namespace Lodis.Gameplay
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
 
             //If the player isn't resting on the ground...
-            if (_ownerKnockBackScript.CurrentAirState != AirState.NONE)
+            if (OwnerKnockBackScript.CurrentAirState != AirState.NONE)
                 //...put them in freefall
-                _ownerKnockBackScript.CurrentAirState = AirState.FREEFALL;
+                OwnerKnockBackScript.CurrentAirState = AirState.FREEFALL;
 
-            _ownerKnockBackScript.Physics.IgnoreForces = false;
+            OwnerKnockBackScript.Physics.IgnoreForces = false;
         }
 
         private void ResetState()
         {
-            if (_ownerKnockBackScript.Physics.IsGrounded)
-                _ownerMoveScript.EnableMovement();
+            if (OwnerKnockBackScript.Physics.IsGrounded)
+                OwnerMoveScript.EnableMovement();
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
-            _ownerKnockBackScript.DisableInvincibility();
+            OwnerKnockBackScript.DisableInvincibility();
         }
 
         protected override void OnDeactivate()
@@ -127,7 +127,7 @@ namespace Lodis.Gameplay
         public override void Update()
         {
             base.Update();
-            if (CurrentAbilityPhase == AbilityPhase.RECOVER && !_ownerKnockBackScript.Physics.IsGrounded && InUse)
+            if (CurrentAbilityPhase == AbilityPhase.RECOVER && !OwnerKnockBackScript.Physics.IsGrounded && InUse)
                 EndAbility();
         }
     }

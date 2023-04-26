@@ -55,10 +55,10 @@ namespace Lodis.Gameplay
                 //Bomb using grid movement to find the panel it should stay on. 
                 //Unlike normal projectiles the bomb needs to stay in place for a short while.
                 GridMovementBehaviour gridMovementBehaviour = Projectile.GetComponent<GridMovementBehaviour>();
-                gridMovementBehaviour.Position = _ownerMoveScript.CurrentPanel.Position;
+                gridMovementBehaviour.Position = OwnerMoveScript.CurrentPanel.Position;
                 gridMovementBehaviour.Speed = abilityData.GetCustomStatValue("Speed");
 
-                gridMovementBehaviour.MoveToPanel(_ownerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
+                gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
                 ActiveProjectiles.Add(Projectile);
 
                 //Sets a new timer to explode the bomb by default.

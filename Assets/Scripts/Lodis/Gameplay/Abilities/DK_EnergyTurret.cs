@@ -36,7 +36,7 @@ namespace Lodis.Gameplay
             _shotCount = (int)abilityData.GetCustomStatValue("ShotCount");
             _shotDelay = abilityData.GetCustomStatValue("ShotDelay");
             PanelBehaviour panel;
-            BlackBoardBehaviour.Instance.Grid.GetPanel(_ownerMoveScript.Position + Vector2.right * _ownerMoveScript.GetAlignmentX(), out panel);
+            BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + Vector2.right * OwnerMoveScript.GetAlignmentX(), out panel);
 
             _spawnPosition = panel.transform.position + Vector3.up;
             _spawn = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, owner.transform.rotation);

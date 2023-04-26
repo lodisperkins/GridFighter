@@ -10,6 +10,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Movement;
 using Lodis.Utility;
 using Lodis.Sound;
+using Lodis.Input;
 
 namespace Lodis.Gameplay
 {
@@ -39,9 +40,10 @@ namespace Lodis.Gameplay
         private bool _canPlayAnimation;
         private List<HitColliderData> _colliderInfo;
         private TimedAction _currentTimer;
-        protected KnockbackBehaviour _ownerKnockBackScript;
-        protected Movement.GridMovementBehaviour _ownerMoveScript;
-        protected CharacterAnimationBehaviour _ownerAnimationScript;
+        private KnockbackBehaviour _ownerKnockBackScript;
+        private Movement.GridMovementBehaviour _ownerMoveScript;
+        private CharacterAnimationBehaviour _ownerAnimationScript;
+        private InputBehaviour _ownerInput;
         //The object that is using the ability
         public GameObject owner = null;
         public MovesetBehaviour OwnerMoveset = null;
@@ -114,6 +116,11 @@ namespace Lodis.Gameplay
             get { return _currentTimer; }
         }
 
+        public InputBehaviour OwnerInput { get => _ownerInput; private set => _ownerInput = value; }
+        protected KnockbackBehaviour OwnerKnockBackScript { get => _ownerKnockBackScript; private set => _ownerKnockBackScript = value; }
+        protected GridMovementBehaviour OwnerMoveScript { get => _ownerMoveScript; private set => _ownerMoveScript = value; }
+        protected CharacterAnimationBehaviour OwnerAnimationScript { get => _ownerAnimationScript; private set => _ownerAnimationScript = value; }
+
         /// <summary>
         /// The phase before an the ability is activated. This is where the character is building up
         /// to the ability's activation
@@ -125,8 +132,8 @@ namespace Lodis.Gameplay
             onBegin?.Invoke();
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActivateSound);
-            Start(args);
             _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => ActivePhase(args), TimedActionCountType.SCALEDTIME, abilityData.startUpTime);
+            Start(args);
         }
 
         /// <summary>
@@ -138,8 +145,8 @@ namespace Lodis.Gameplay
             onActivateStart?.Invoke();
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
-            Activate(args);
             _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => RecoverPhase(args), TimedActionCountType.SCALEDTIME, abilityData.timeActive);
+            Activate(args);
         }
 
         /// <summary>
@@ -289,10 +296,11 @@ namespace Lodis.Gameplay
         {
             owner = newOwner;
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/" + GetType().Name + "_Data"));
-            _ownerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
+            OwnerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
             OwnerMoveset = newOwner.GetComponent<MovesetBehaviour>();
-            _ownerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
-            _ownerAnimationScript = newOwner.GetComponentInChildren<CharacterAnimationBehaviour>();
+            OwnerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
+            OwnerAnimationScript = newOwner.GetComponentInChildren<CharacterAnimationBehaviour>();
+            _ownerInput = newOwner.GetComponentInParent<InputBehaviour>();
 
             _canPlayAnimation = !abilityData.playAnimationManually;
 
@@ -307,7 +315,7 @@ namespace Lodis.Gameplay
                 else
                     info.LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
 
-                info.OwnerAlignement = _ownerMoveScript.Alignment;
+                info.OwnerAlignement = OwnerMoveScript.Alignment;
                 _colliderInfo.Add(info);
             }
 
@@ -335,15 +343,15 @@ namespace Lodis.Gameplay
 
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             _opponentHit = false;
-            if (!_ownerKnockBackScript)
+            if (!OwnerKnockBackScript)
                 return;
 
             if (abilityData.cancelOnHit)
-                _ownerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
+                OwnerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
             else if (abilityData.cancelOnFlinch)
-                _ownerKnockBackScript.AddOnHitStunTempAction(EndAbility);
+                OwnerKnockBackScript.AddOnHitStunTempAction(EndAbility);
             else if (abilityData.cancelOnKnockback)
-                _ownerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
+                OwnerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
 
             OnStart();
         }
@@ -368,14 +376,14 @@ namespace Lodis.Gameplay
 
             Vector2 attackDirection = (Vector2)args[1];
 
-            if (_ownerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
+            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
                 attackDirection.x *= -1;
 
             if (attackDirection.magnitude > 0 && (int)abilityData.AbilityType < 8)
             {
-                _ownerMoveScript.CanCancelMovement = true;
-                _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + attackDirection);
-                _ownerMoveScript.CanCancelMovement = false;
+                OwnerMoveScript.CanCancelMovement = true;
+                OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + attackDirection);
+                OwnerMoveScript.CanCancelMovement = false;
             }
 
             OnActivate(args);
@@ -405,8 +413,8 @@ namespace Lodis.Gameplay
         {
 
             currentActivationAmount = 0;
-            if (_ownerKnockBackScript.CurrentAirState != AirState.TUMBLING)
-                _ownerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
+            if (OwnerKnockBackScript.CurrentAirState != AirState.TUMBLING)
+                OwnerKnockBackScript.RemoveOnKnockBackStartTempAction(EndAbility);
 
             for (int i = 0; i < _colliderInfo.Count; i++)
             {

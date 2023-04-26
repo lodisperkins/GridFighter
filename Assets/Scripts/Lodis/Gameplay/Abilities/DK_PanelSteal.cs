@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             //Call row stealing func
-            BlackBoardBehaviour.Instance.Grid.ExchangeRowsByTimer((int)abilityData.GetCustomStatValue("AmountOfRows"), _ownerMoveScript.Alignment, abilityData.GetCustomStatValue("OwnershipTime"));
+            BlackBoardBehaviour.Instance.Grid.ExchangeRowsByTimer((int)abilityData.GetCustomStatValue("AmountOfRows"), OwnerMoveScript.Alignment, abilityData.GetCustomStatValue("OwnershipTime"));
         }
 
         public override void StopAbility()

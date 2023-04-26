@@ -203,7 +203,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Marker: 3
+  Marker: 1
   _markPanelsBasedOnCollision: 0
 --- !u!114 &302157762881201409
 MonoBehaviour:

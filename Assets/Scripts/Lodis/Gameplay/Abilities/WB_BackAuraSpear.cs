@@ -27,10 +27,10 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
 
-            int posY = (int)_ownerMoveScript.Position.y;
+            int posY = (int)OwnerMoveScript.Position.y;
             int posX = 0;
 
-            if (_ownerMoveScript.Alignment == GridAlignment.LEFT)
+            if (OwnerMoveScript.Alignment == GridAlignment.LEFT)
                 posX = (int)(BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
 
             PanelBehaviour panel = null;
@@ -55,9 +55,9 @@ namespace Lodis.Gameplay
 
             Quaternion rotation = Quaternion.identity;
 
-            if (_ownerMoveScript.Alignment == GridAlignment.LEFT)
+            if (OwnerMoveScript.Alignment == GridAlignment.LEFT)
                 rotation = Quaternion.Euler(0, -90, 0);
-            else if (_ownerMoveScript.Alignment == GridAlignment.RIGHT)
+            else if (OwnerMoveScript.Alignment == GridAlignment.RIGHT)
                 rotation = Quaternion.Euler(0, 90, 0);
 
             _projectileSpawner = Object.Instantiate(OwnerMoveset.ProjectileSpawner, SpawnTransform.position + Vector3.up, rotation);

@@ -35,7 +35,7 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.Physics.Jump(2, 0, abilityData.startUpTime, false, true, GridScripts.GridAlignment.ANY, default, DG.Tweening.Ease.InSine);
 
             //Disable movement to prevent the ability being interrupted
-            _ownerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
+            OwnerMoveScript.DisableMovement(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
         }
 
 
@@ -51,7 +51,7 @@ namespace Lodis.Gameplay
             movementBehaviour.CanBeWalkedThrough = true;
 
             //Set default traits for shockwave
-            movementBehaviour.Position = _ownerMoveScript.Position;
+            movementBehaviour.Position = OwnerMoveScript.Position;
             movementBehaviour.CanCancelMovement = true;
             movementBehaviour.MoveOnStart = false;
             movementBehaviour.Speed = abilityData.GetCustomStatValue("ShockwaveTravelSpeed");
@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
             //Caluclate move position based on the travel distance and character facing
             int travelDistance = (int)abilityData.GetCustomStatValue("ShockwaveTravelDistance");
             Vector2 offset = direction * travelDistance;
-            Vector2 movePosition = _ownerMoveScript.Position + offset;
+            Vector2 movePosition = OwnerMoveScript.Position + offset;
 
             //Clamp the position to be within the grid dimensions
             movePosition.x = Mathf.Clamp(movePosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
@@ -85,7 +85,7 @@ namespace Lodis.Gameplay
             HitColliderBehaviour hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             hitScript.ColliderInfo = _shockWaveCollider;
             hitScript.Owner = owner;
-            hitScript.ColliderInfo.OwnerAlignement = _ownerMoveScript.Alignment;
+            hitScript.ColliderInfo.OwnerAlignement = OwnerMoveScript.Alignment;
             
             //Move first shockwave
             MoveHitBox(_visualPrefabInstance, owner.transform.forward);
@@ -97,7 +97,7 @@ namespace Lodis.Gameplay
             hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             hitScript.ColliderInfo = _shockWaveCollider;
             hitScript.Owner = owner;
-            hitScript.ColliderInfo.OwnerAlignement = _ownerMoveScript.Alignment;
+            hitScript.ColliderInfo.OwnerAlignement = OwnerMoveScript.Alignment;
 
             //Move second shockwave
             MoveHitBox(_visualPrefabInstance, -owner.transform.forward);
@@ -113,9 +113,9 @@ namespace Lodis.Gameplay
 
             //Stop shockwaves from moving
             if (_visualPrefabCoroutines.Item1 != null)
-                _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item1);
+                OwnerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item1);
             if (_visualPrefabCoroutines.Item2 != null)
-                _ownerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
+                OwnerMoveScript.StopCoroutine(_visualPrefabCoroutines.Item2);
 
             _knockBackBehaviour.Physics.RB.isKinematic = true;
         }

@@ -37,9 +37,9 @@ namespace Lodis.Gameplay
                 return;
 
             //Play animation now that the character has reached the target panel
-            _ownerAnimationScript.PlayAbilityAnimation();
+            OwnerAnimationScript.PlayAbilityAnimation();
 
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
 
             //Mark that the target position has been reached
             _inPosition = true;
@@ -51,7 +51,7 @@ namespace Lodis.Gameplay
 
             
 
-            Transform spawnTransform = _ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[0] : OwnerMoveset.LeftMeleeSpawns[0];
+            Transform spawnTransform = OwnerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[0] : OwnerMoveset.LeftMeleeSpawns[0];
 
             //Spawn a game object with the collider attached
             _hitCollider = HitColliderSpawner.SpawnBoxCollider(spawnTransform, _hitBoxScale, hitColliderRef, owner);
@@ -72,21 +72,21 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             //Spawn a hit box when the destination has been reached
-            _ownerMoveScript.AddOnMoveEndTempAction(SpawnHitBox);
+            OwnerMoveScript.AddOnMoveEndTempAction(SpawnHitBox);
             _panelTravelDistance = abilityData.GetCustomStatValue("PanelTravelDistance");
 
             //Makes the character move until it runs into an obstacle
             for (int i = (int)_panelTravelDistance; i >= 0; i--)
             {
                 Vector2 moveOffset = new Vector2(i, 0);
-                if (_ownerMoveScript.MoveToPanel(_ownerMoveScript.CurrentPanel.Position + moveOffset * Mathf.RoundToInt(owner.transform.forward.x), false, GridScripts.GridAlignment.ANY, false, false))
+                if (OwnerMoveScript.MoveToPanel(OwnerMoveScript.CurrentPanel.Position + moveOffset * Mathf.RoundToInt(owner.transform.forward.x), false, GridScripts.GridAlignment.ANY, false, false))
                     break;
             }
         }
 
         public override void Update()
         {
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
         }
 
         protected override void OnDeactivate()
@@ -104,17 +104,17 @@ namespace Lodis.Gameplay
         {
             base.EndAbility();
             //Stop the user from dashing 
-            if (_ownerMoveScript.IsMoving)
-                _ownerMoveScript.CancelMovement();
+            if (OwnerMoveScript.IsMoving)
+                OwnerMoveScript.CancelMovement();
 
 
-            _ownerMoveScript.StopAllCoroutines();
+            OwnerMoveScript.StopAllCoroutines();
         }
 
         protected override void OnEnd()
         {
             base.OnEnd();
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
         }
     }
 }

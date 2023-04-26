@@ -59,14 +59,14 @@ namespace Lodis.Gameplay
             _distance = abilityData.GetCustomStatValue("TravelDistance");
             _jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
             _chargeEffectRef = (GameObject)Resources.Load("Effects/RisingChargeEffect");
-            _spawnTransform = _ownerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
+            _spawnTransform = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
         }
 
         protected override void OnStart(params object[] args)
         {
             base.OnStart();
             //Disable character movement so the jump isn't interrupted
-            _ownerMoveScript.DisableMovement(condition => !InUse, false, true);
+            OwnerMoveScript.DisableMovement(condition => !InUse, false, true);
 
             //Calculate the time it takes to reache the peak height
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");

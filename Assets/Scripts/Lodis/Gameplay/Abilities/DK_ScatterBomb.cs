@@ -59,13 +59,13 @@ namespace Lodis.Gameplay
             PanelBehaviour panel = null;
 
             //Gets the panels in front of the character to form a "v" shape with the bombs
-            if (BlackBoardBehaviour.Instance.Grid.GetPanel(_ownerMoveScript.Position + Vector2.right * _ownerMoveScript.transform.forward.x, out panel))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + Vector2.right * OwnerMoveScript.transform.forward.x, out panel))
                 _targetPanels.Add(panel);
-            if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.up, out panel))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel((OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x) + Vector2.up, out panel))
                 _targetPanels.Add(panel);
-            if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 2 * _ownerMoveScript.transform.forward.x) + Vector2.down, out panel))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel((OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x) + Vector2.down, out panel))
                 _targetPanels.Add(panel);
-            if (BlackBoardBehaviour.Instance.Grid.GetPanel((_ownerMoveScript.Position + Vector2.right * 3 * _ownerMoveScript.transform.forward.x), out panel))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel((OwnerMoveScript.Position + Vector2.right * 3 * OwnerMoveScript.transform.forward.x), out panel))
                 _targetPanels.Add(panel);
 
             //Spawn each bomb and move them into position

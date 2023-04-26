@@ -77,10 +77,10 @@ namespace Lodis.Gameplay
             {
                 Transform transform = null;
                 float travelDistance = abilityData.GetCustomStatValue("TravelDistance") + i;
-                float direction = _ownerMoveScript.Alignment == GridAlignment.LEFT ? 1 : -1;
+                float direction = OwnerMoveScript.Alignment == GridAlignment.LEFT ? 1 : -1;
 
                 PanelBehaviour targetPanel;
-                if (BlackBoardBehaviour.Instance.Grid.GetPanel(_ownerMoveScript.Position + Vector2.right * direction * travelDistance, out targetPanel))
+                if (BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + Vector2.right * direction * travelDistance, out targetPanel))
                     transform = targetPanel.transform;
 
                 _spawnTransforms[i] = transform;
@@ -101,14 +101,14 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            _spawnRoutine = _ownerMoveScript.StartCoroutine(SpawnRoutine());
+            _spawnRoutine = OwnerMoveScript.StartCoroutine(SpawnRoutine());
         }
 
         public override void StopAbility()
         {
             base.StopAbility();
             if (_spawnRoutine != null)
-                _ownerMoveScript.StopCoroutine(_spawnRoutine);
+                OwnerMoveScript.StopCoroutine(_spawnRoutine);
         }
     }
 }

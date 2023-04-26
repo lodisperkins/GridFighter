@@ -40,7 +40,7 @@ namespace Lodis.Gameplay
 
             Transform spawnTransform = null;
 
-            if (_ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT)
+            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.LEFT)
                 spawnTransform = OwnerMoveset.RightMeleeSpawns[1];
             else
                 spawnTransform = OwnerMoveset.LeftMeleeSpawns[1];

@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class U_AuraHold : Ability
+    public class DK_AuraHold : Ability
     {
         private Vector3 _spawnPosition;
         private Transform _opponentTransform;
@@ -79,7 +79,7 @@ namespace Lodis.Gameplay
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
 
             PanelBehaviour targetPanel;
-            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.y == _ownerMoveScript.Position.y)
+            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.y == OwnerMoveScript.Position.y)
                 transform = targetPanel.transform;
 
 

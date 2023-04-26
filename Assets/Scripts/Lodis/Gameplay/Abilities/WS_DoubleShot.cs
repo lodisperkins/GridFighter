@@ -68,10 +68,10 @@ namespace Lodis.Gameplay
             direction.x = 0;
             SpawnProjectile();
 
-            if (_ownerMoveScript.IsMoving)
+            if (OwnerMoveScript.IsMoving)
             {
                 //Move when the player moves in position or just fire the shot if they can't move
-                _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+                OwnerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
             }
         }
     }

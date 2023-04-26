@@ -50,9 +50,9 @@ namespace Lodis.Gameplay
             float jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
             Vector3 position = owner.transform.position + Vector3.up * jumpHeight;
 
-            _ownerMoveScript.CancelMovement();
-            _ownerMoveScript.DisableMovement(condition => !InUse);
-            _ownerMoveScript.TeleportToLocation(position, 0.1f, false);
+            OwnerMoveScript.CancelMovement();
+            OwnerMoveScript.DisableMovement(condition => !InUse);
+            OwnerMoveScript.TeleportToLocation(position, 0.1f, false);
 
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, OwnerMoveset.LeftMeleeSpawns[1], true);

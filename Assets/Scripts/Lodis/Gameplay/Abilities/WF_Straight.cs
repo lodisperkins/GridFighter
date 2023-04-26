@@ -59,8 +59,8 @@ namespace Lodis.Gameplay
             //Only fire if there aren't two many instances of this object active
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {
-                if (_ownerMoveScript.IsMoving)
-                    _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+                if (OwnerMoveScript.IsMoving)
+                    OwnerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
                 else
                     SpawnProjectile();
             }

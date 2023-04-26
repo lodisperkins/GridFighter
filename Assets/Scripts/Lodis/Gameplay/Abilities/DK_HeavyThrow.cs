@@ -50,16 +50,16 @@ namespace Lodis.Gameplay
 
             _opponentCaptured = true;
             
-            _ownerKnockBackScript.Physics.UseGravity = false;
+            OwnerKnockBackScript.Physics.UseGravity = false;
             _opponentPhysics.IgnoreForces = true;
             _oldZ = _opponentPhysics.transform.position.z;
 
             float throwHeight = abilityData.GetCustomStatValue("ThrowHeight");
             Vector3 position = owner.transform.position + Vector3.up * throwHeight;
 
-            _ownerMoveScript.CancelMovement();
-            _ownerMoveScript.DisableMovement(condition => !InUse);
-            _ownerMoveScript.TeleportToLocation(position);
+            OwnerMoveScript.CancelMovement();
+            OwnerMoveScript.DisableMovement(condition => !InUse);
+            OwnerMoveScript.TeleportToLocation(position);
 
             _throwAction = RoutineBehaviour.Instance.StartNewTimedAction(info => ThrowOpponent(),TimedActionCountType.SCALEDTIME, 0.1f);
         }
@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
                 Debug.LogError("Additional throw animations missing from " + abilityData.abilityName + "ability.");
 
             float throwDelay = abilityData.GetCustomStatValue("ThrowDelay");
-            _ownerAnimationScript.PlayAnimation(clip);
+            OwnerAnimationScript.PlayAnimation(clip);
 
             GameObject whirlInstance = MonoBehaviour.Instantiate(_whirlEffect, owner.transform.position, owner.transform.rotation);
             MonoBehaviour.Destroy(whirlInstance, throwDelay);
@@ -91,7 +91,7 @@ namespace Lodis.Gameplay
                     if (!abilityData.GetAdditionalAnimation(1, out clip))
                         Debug.LogError("Throw release animation missing from " + abilityData.abilityName + " ability.");
 
-                    _ownerAnimationScript.PlayAnimation(abilityData.recoverTime + throwDelay, clip);
+                    OwnerAnimationScript.PlayAnimation(abilityData.recoverTime + throwDelay, clip);
 
                     MonoBehaviour.Instantiate(_releaseEffect, owner.transform.position, owner.transform.rotation);
 
@@ -139,7 +139,7 @@ namespace Lodis.Gameplay
             if (!abilityData.GetCustomAnimation(out clip))
                 Debug.LogError("Heavy throw ability missing starting custom animation.");
 
-            _ownerAnimationScript.PlayAnimation(abilityData.startUpTime, clip);
+            OwnerAnimationScript.PlayAnimation(abilityData.startUpTime, clip);
             OnHit += PrepareThrow;
         }
 
@@ -147,10 +147,10 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             _opponentCaptured = false;
-            float direction = _ownerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? 1 : -1;
+            float direction = OwnerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? 1 : -1;
             Vector2 offset = Vector2.right * abilityData.GetCustomStatValue("TravelDistance") * direction;
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = false;
-            _ownerMoveScript.MoveToPanel(_ownerMoveScript.Position + offset, false, GridScripts.GridAlignment.ANY, true, false, true);
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
+            OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + offset, false, GridScripts.GridAlignment.ANY, true, false, true);
 
             _collider = HitColliderSpawner.SpawnBoxCollider(owner.transform, Vector3.one, GetColliderData(0), owner);
         }
@@ -159,8 +159,8 @@ namespace Lodis.Gameplay
         {
             base.OnDeactivate();
 
-            _ownerKnockBackScript.Physics.UseGravity = true;
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
+            OwnerKnockBackScript.Physics.UseGravity = true;
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
 
             if (_collider)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_collider.gameObject);
@@ -173,8 +173,8 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StopAction(_throwAction);
 
 
-            _ownerKnockBackScript.Physics.UseGravity = true;
-            _ownerMoveScript.MoveToAlignedSideWhenStuck = true;
+            OwnerKnockBackScript.Physics.UseGravity = true;
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
 
             if (_collider)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_collider.gameObject);

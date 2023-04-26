@@ -58,8 +58,8 @@ namespace Lodis.Gameplay
             //If the maximum amount of instances has been reached for this owner, don't spawn a new one
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {
-                if (_ownerMoveScript.IsMoving)
-                    _ownerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
+                if (OwnerMoveScript.IsMoving)
+                    OwnerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
                 else
                     SpawnProjectile();
             }
