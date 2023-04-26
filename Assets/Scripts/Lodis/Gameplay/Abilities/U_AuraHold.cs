@@ -55,9 +55,6 @@ namespace Lodis.Gameplay
             _opponentTransform = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform;
             _opponentKnockback = _opponentTransform.GetComponent<KnockbackBehaviour>();
 
-            if (!_opponentKnockback.MovementBehaviour.CanMove)
-                return;
-
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, Camera.main.transform.rotation);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect, 1);
@@ -135,7 +132,7 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             //The opponent should only be captured if they are allowed to move at a valid location.
-            if (!_panelTransform || (!_opponentKnockback.MovementBehaviour.CanMove && !_opponentKnockback.Stunned))
+            if (!_panelTransform)
             {
                 DespawnSphere();
                 return;
