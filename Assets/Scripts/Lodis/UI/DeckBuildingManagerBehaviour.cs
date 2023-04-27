@@ -149,7 +149,7 @@ namespace Lodis.UI
                 normalDeck.AbilityData.Add(Resources.Load<AbilityData>("AbilityData/" + abilityName));
                 normalDeck.AbilityData[i].name = abilityName;
             }
-            normalDeck.DeckName = "Custom_Normals";
+            normalDeck.DeckName = deckName + "_Normals";
 
             reader.Close();
 
@@ -171,7 +171,7 @@ namespace Lodis.UI
                 specialDeck.AbilityData.Add(Resources.Load<AbilityData>("AbilityData/" + abilityName));
                 specialDeck.AbilityData[i].name = abilityName;
             }
-            specialDeck.DeckName = "Custom_Specials";
+            specialDeck.DeckName = deckName + "_Specials";
 
             reader.Close();
 
@@ -220,6 +220,12 @@ namespace Lodis.UI
         {
             AbilityData data = ReplacementAbilities.GetAbilityDataByName(name);
             _specialDeck.AbilityData[_specialReplacementIndex] = data;
+        }
+
+        public void SetDeckNames(string newName)
+        {
+            SpecialDeck.DeckName = newName + "_Specials";
+            NormalDeck.DeckName = newName + "_Normals";
         }
 
         public void SaveDecks()

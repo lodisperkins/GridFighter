@@ -7,6 +7,7 @@
 */
 
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class KeyboardFunction : MonoBehaviour {
@@ -21,23 +22,18 @@ public class KeyboardFunction : MonoBehaviour {
     
     private float m_TimeStamp;
     private bool cursor = false;
-    private string cursorChar = "";    
+    private string cursorChar = "";
+    [SerializeField]
+    private UnityEvent _onConfirm;
 
+    public UnityEvent OnConfirm { get => _onConfirm; private set => _onConfirm = value; }
 
     private void Update()
     {
         //If word index lower than 0 then Caps & Backspace button should be DISABLED.
-        if (wordIndex <= 0)
-        {
-            backSpaceBtn.interactable = false;
-            capsBtn.interactable = false;
-        }
-        else
-        {
-            backSpaceBtn.interactable = true;
-            capsBtn.interactable = true;
+        if (wordIndex > 0)
             InputTextUI.text = inputText+ cursorChar;
-        }
+
         //*****************************************
         //In this font style gets change if wordindex is equal to 0
         if (wordIndex == 0)
@@ -47,7 +43,7 @@ public class KeyboardFunction : MonoBehaviour {
             InputTextUI.text = "type here ";
         }
         //If character doesnt more than 3 then confirm button should be disabled. You can change this as per your requirements.
-        if (wordIndex < 3)
+        if (wordIndex < 1)
         {
             //Debug.Log("Please type atlest 3 characters");
             confirmBtn.interactable = false;
@@ -102,6 +98,9 @@ public class KeyboardFunction : MonoBehaviour {
     //delete last input text
     public void BackSpaceFunction()
     {
+        if (inputText == null || inputText.Length <= 0)
+            return;
+
         inputText = inputText.Substring(0, inputText.Length-1);
         InputTextUI.text = inputText;
         wordIndex--;        
@@ -117,7 +116,6 @@ public class KeyboardFunction : MonoBehaviour {
     //Here you can parse any function or method or load scene by clickcing on confirm button
     public void ConfirmButtonFunction()
     {
-        //Put your functionality here 
-        print("Print here");
+        OnConfirm?.Invoke();
     }
 }

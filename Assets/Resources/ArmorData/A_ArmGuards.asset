@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339a0f94a0445ff4d857534cad04dbb9, type: 3}
+  m_Name: A_ArmGuards
+  m_EditorClassIdentifier: 
+  _armorPieces:
+  - m_armorMesh: {fileID: 2601040746556760542, guid: dc49d54e3eba6a446941613a3fc2efde,
+      type: 3}
+    _bodyPart: 4
+  - m_armorMesh: {fileID: -7081995089917099332, guid: dc49d54e3eba6a446941613a3fc2efde,
+      type: 3}
+    _bodyPart: 10
+  _armorMaterial: {fileID: 2100000, guid: de2e2258403916142a08706cbf1934ee, type: 2}
+  _displayIcon: {fileID: 21300000, guid: fdde697a268941b4b95926e8082c1a85, type: 3}

@@ -1626,7 +1626,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3fbad4649343a249a9ce80876927b28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentMesh: {fileID: 919132149155446097, guid: 08fe41f0845dc0d42bd78a4561531681,
+  _currentMesh: {fileID: 919132149155446097, guid: dc49d54e3eba6a446941613a3fc2efde,
     type: 3}
 --- !u!114 &8767532388978379680
 MonoBehaviour:

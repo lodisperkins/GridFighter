@@ -37,6 +37,8 @@ namespace Lodis.UI
         [SerializeField]
         private AbilitySectionBehaviour[] _abilitySections;
 
+        private List<EventButtonBehaviour> _deckChoices = new List<EventButtonBehaviour>();
+
         [SerializeField]
         private Text _abilityIconHeader;
         [SerializeField]
@@ -67,6 +69,14 @@ namespace Lodis.UI
             if (_buildManager.DeckOptions == null)
                 return;
 
+            for (int i = _deckChoices.Count - 1; i >= 0; i--)
+            {
+                Destroy(_deckChoices[i].gameObject);
+                _deckChoices[i].transform.SetParent(null);
+            }
+
+            _deckChoices.Clear();
+
             foreach (string optionName in _buildManager.DeckOptions)
             {
                 if (optionName == null)
@@ -76,9 +86,10 @@ namespace Lodis.UI
                 buttonInstance.GetComponentInChildren<Text>().text = optionName;
                 buttonInstance.AddOnClickEvent(() =>
                 {
-                    _buildManager.LoadCustomDeck("Custom");
+                    _buildManager.LoadCustomDeck(optionName);
                     _eventSystem.GetComponent<PageManagerBehaviour>().GoToNextPage();
                 });
+                _deckChoices.Add(buttonInstance);
             }
         }
 
@@ -188,6 +199,11 @@ namespace Lodis.UI
 
                 setSelected = false;
             }
+        }
+
+        public void SetDeckNames(Text inputText)
+        {
+            _buildManager.SetDeckNames(inputText.text);
         }
     }
 }
