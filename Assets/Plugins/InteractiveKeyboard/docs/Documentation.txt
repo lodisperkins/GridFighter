@@ -1,0 +1,18 @@
+==============================================================================
+
+- It is a very easy and simple way to use this package in your project.
+- Simply import prefab into the project and you are done.
+- Their is ability to change canvas UI simply making keyboard sprite canvas.
+- In this project we have included PSD files to edit colors and texture of UI.
+- Also you can add keyboard buttons as per user requirements. 
+- You can simply change keyboard layout using interactable buttons.
+
+In Scripting reference following are the instructions-
+
+- "AlphabetFunction" this function has ability to store alphabate for each button.
+- "BackSpaceFunction" this helps to erase current alphabate same as backspace functionality.
+- "ShiftButtonFunction" function help to convert characters lower to upper.
+- "ConfirmButtonFunction" Simillar working as all confirm button do.
+==============================================================================
+
+Contact address  - saashainteractive@gmail.com
