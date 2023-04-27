@@ -12,38 +12,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_PhaseDash_Data
   m_EditorClassIdentifier: 
-  abilityName: Unassigned
-  abilityDescription: None
-  AbilityType: 0
-  timeActive: 0
-  recoverTime: 0
-  startUpTime: 0
+  abilityName: Phase Dash
+  abilityDescription: Become temporarily intangible and dash through enemy attacks.
+  AbilityType: 8
+  timeActive: 0.2
+  recoverTime: 0.1
+  startUpTime: 0.1
   chargeTime: 0
   maxActivationAmount: 1
-  EnergyCost: 0
+  EnergyCost: 1
   canCancelStartUp: 0
   canCancelActive: 0
   canCancelRecover: 0
   CanCancelOnMove: 0
   CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
-  CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 1
+  CanCancelIntoSpecial: 1
+  CanCancelIntoNormal: 1
+  CanOnlyCancelOnOpponentHit: 0
   cancelOnHit: 0
-  cancelOnFlinch: 0
+  cancelOnFlinch: 1
   cancelOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 0
-  playAnimationManually: 0
+  playAnimationManually: 1
   visualPrefab: {fileID: 0}
-  DisplayIcon: {fileID: 0}
+  DisplayIcon: {fileID: 21300000, guid: 2a6b7494cacb49846acd128deecbae07, type: 3}
   ActivateSound: {fileID: 0}
-  ActiveSound: {fileID: 0}
+  ActiveSound: {fileID: 8300000, guid: 8bb04fc919c802f4086b18d250bc1dc9, type: 3}
   DeactivateSound: {fileID: 0}
   ColliderData: []
-  _customStats: []
+  _customStats:
+  - name: TravelDistance
+    value: 2
   animationType: 0
   _customAnimation: {fileID: 0}
   _additionalAnimations: []
