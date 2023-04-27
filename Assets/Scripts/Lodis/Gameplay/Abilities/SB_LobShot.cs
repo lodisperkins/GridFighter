@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
     /// On impact, four smaller lob shots spawn and travel to the nearest
     /// panel in all cardinal directions.
     /// </summary>
-    public class SB_ChargeLobShot : ProjectileAbility
+    public class SB_LobShot : ProjectileAbility
     {
         //Usd to store a reference to the laser prefab
         private GameObject _strongProjectileRef;

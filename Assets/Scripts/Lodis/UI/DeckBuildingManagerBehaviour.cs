@@ -79,12 +79,10 @@ namespace Lodis.UI
             List<AbilityData> data = null;
             _replacementNormalDecks = Resources.LoadAll<Deck>("Decks/Normals");
             _replacementSpecialDecks = Resources.LoadAll<Deck>("Decks/Specials");
+            AbilityData[] abilities = Resources.LoadAll<AbilityData>("AbilityData");
 
-            for (int i = 0; i < _replacementNormalDecks.Length; i++)
-            {
-                ReplacementAbilities.AbilityData.AddRange(_replacementNormalDecks[i].AbilityData);
-                ReplacementAbilities.AbilityData.AddRange(_replacementSpecialDecks[i].AbilityData);
-            }
+            ReplacementAbilities.AbilityData.AddRange(abilities);
+            ReplacementAbilities.AbilityData.RemoveAt(0);
         }
 
         public Deck GetNormalReplacementDeck(int index)

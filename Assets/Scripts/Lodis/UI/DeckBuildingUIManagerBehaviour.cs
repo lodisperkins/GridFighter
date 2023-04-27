@@ -22,9 +22,6 @@ namespace Lodis.UI
         private GameObject _loadoutOptions;
         [SerializeField]
         private Text _infoTextBox;
-
-        [SerializeField]
-        private Image _unblockableIconSlot;
         [SerializeField]
         private Image _backIconSlot;
         [SerializeField]
@@ -100,7 +97,6 @@ namespace Lodis.UI
 
         public void UpdateDeck()
         {
-            _unblockableIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.UNBLOCKABLE).DisplayIcon;
             _backIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKBACKWARD).DisplayIcon;
             _forwardIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKFORWARD).DisplayIcon;
             _neautralIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKNEUTRAL).DisplayIcon;
@@ -134,7 +130,6 @@ namespace Lodis.UI
                 UpdateIconChoicesWithType(i);
 
             UpdateIconChoicesWithType(8);
-            UpdateIconChoicesWithType(9);
 
             Selected = _abilitySections[0].IconHolder.GetChild(0).gameObject;
         }
