@@ -12,7 +12,7 @@ using UnityEngine.UI;
 
 public class KeyboardFunction : MonoBehaviour {
 
-    string inputText = null;
+    public string inputText = null;
     int wordIndex = 0;    
     public Text InputTextUI = null;
     public Button backSpaceBtn;
@@ -116,6 +116,7 @@ public class KeyboardFunction : MonoBehaviour {
     //Here you can parse any function or method or load scene by clickcing on confirm button
     public void ConfirmButtonFunction()
     {
+        InputTextUI.text = inputText;
         OnConfirm?.Invoke();
     }
 }

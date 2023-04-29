@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: B_Briefs
   m_EditorClassIdentifier: 
   _armorPieces:
-  - m_armorMesh: {fileID: 324104216678760872, guid: dc49d54e3eba6a446941613a3fc2efde,
+  - ArmorMesh: {fileID: 324104216678760872, guid: dc49d54e3eba6a446941613a3fc2efde,
       type: 3}
-    _bodyPart: 0
-  - m_armorMesh: {fileID: 9177480530244735187, guid: dc49d54e3eba6a446941613a3fc2efde,
+    BodyPart: 1
+  - ArmorMesh: {fileID: 9177480530244735187, guid: dc49d54e3eba6a446941613a3fc2efde,
       type: 3}
-    _bodyPart: 8
+    BodyPart: 9
   _armorMaterial: {fileID: 2100000, guid: de2e2258403916142a08706cbf1934ee, type: 2}
+  _bodySection: 4
+  _armorSetName: Briefs
   _displayIcon: {fileID: 21300000, guid: a69ff3b5bfdc32c40a2633a10afda922, type: 3}

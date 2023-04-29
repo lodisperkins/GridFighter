@@ -6,10 +6,13 @@ using UnityEngine;
 
 namespace Lodis.Utility
 {
+
     public class CharacterMeshManagerBehaviour : MonoBehaviour
     {
+
         [SerializeField]
         private GameObject _currentMesh;
+
 
         private KnockbackBehaviour _knockback;
         private MovesetBehaviour _moveset;
@@ -18,6 +21,14 @@ namespace Lodis.Utility
         private ColorManagerBehaviour _colorManager;
         private CharacterAnimationBehaviour _characterAnimation;
         private EyeAnimationBehaviour _eyeAnimator;
+
+        private void Awake()
+        {
+            Animator animator = GetComponentInChildren<Animator>();
+            Avatar avatar = animator.avatar;
+            SkinnedMeshRenderer renderer = GetComponentInChildren<SkinnedMeshRenderer>();
+            Mesh mesh = renderer.sharedMesh;
+        }
 
         private SkinnedMeshRenderer GetRenderer(string name)
         {

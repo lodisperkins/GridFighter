@@ -25,25 +25,44 @@ namespace Lodis.ScriptableObjects
         HAIR
     }
 
+    public enum BodySection
+    {
+        HEAD,
+        FACE,
+        CHEST,
+        ARMS,
+        WAIST,
+        LEGS
+    }
+
     [System.Serializable]
     public class ArmorPiece
     {
-        public Mesh m_armorMesh;
-        public BodyPartSlot _bodyPart;
+        public Mesh ArmorMesh;
+        public BodyPartSlot BodyPart;
     }
 
     [CreateAssetMenu(menuName = "Armor Data")]
     public class ArmorData : ScriptableObject
     {
+        [Header("Armor Details")]
         [SerializeField]
         private ArmorPiece[] _armorPieces;
         [SerializeField]
         private Material _armorMaterial;
+        [SerializeField]
+        private BodySection _bodySection;
+
+        [Header("Display Settings")]
+        [SerializeField]
+        private string _armorSetName;
         [SerializeField]
         private Sprite _displayIcon;
 
         public Material ArmorMaterial { get => _armorMaterial; set => _armorMaterial = value; }
         public Sprite DisplayIcon { get => _displayIcon; set => _displayIcon = value; }
         public ArmorPiece[] ArmorPieces { get => _armorPieces; set => _armorPieces = value; }
+        public BodySection BodySection { get => _bodySection; }
+        public string ArmorSetName { get => _armorSetName; }
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Lodis.Utility;
 using System;
+using Lodis.CharacterCreation;
 
 namespace Lodis.UI
 {
@@ -14,6 +15,8 @@ namespace Lodis.UI
     {
         [SerializeField]
         private DeckBuildingManagerBehaviour _buildManager;
+        [SerializeField]
+        private CustomCharacterManagerBehaviour _customCharacterManager;
 
         [Header("Current Deck Page")]
         [SerializeField]
@@ -38,9 +41,6 @@ namespace Lodis.UI
         private AbilitySectionBehaviour[] _abilitySections;
 
         private List<EventButtonBehaviour> _deckChoices = new List<EventButtonBehaviour>();
-
-        [SerializeField]
-        private Text _abilityIconHeader;
         [SerializeField]
         private EventButtonBehaviour _abilityButton;
         [SerializeField]
@@ -84,6 +84,12 @@ namespace Lodis.UI
 
                 EventButtonBehaviour buttonInstance = Instantiate(_loadoutButton, _loadoutOptions.transform);
                 buttonInstance.GetComponentInChildren<Text>().text = optionName;
+
+                buttonInstance.AddOnSelectEvent(() =>
+                {
+                    _customCharacterManager.LoadCustomCharacter(optionName);
+                });
+
                 buttonInstance.AddOnClickEvent(() =>
                 {
                     _buildManager.LoadCustomDeck(optionName);

@@ -98,9 +98,9 @@ namespace Lodis.UI
         public void LoadPresetDeck(string deckName)
         {
             NormalDeck = Instantiate(Resources.Load<Deck>("Decks/Normals/P_" + deckName + "_Normals"));
-            NormalDeck.DeckName = "Custom_Normals";
+            NormalDeck.DeckName = deckName + "_Normals";
             SpecialDeck = Instantiate(Resources.Load<Deck>("Decks/Specials/P_" + deckName + "_Specials"));
-            SpecialDeck.DeckName = "Custom_Specials";
+            SpecialDeck.DeckName = deckName + "_Specials";
         }
 
         public void LoadCustomDeck(string deckName)
@@ -117,7 +117,7 @@ namespace Lodis.UI
                 string abilityName = reader.ReadLine();
                 NormalDeck.AbilityData.Add(Resources.Load<AbilityData>("AbilityData/" + abilityName));
             }
-            NormalDeck.DeckName = "Custom_Normals";
+            NormalDeck.DeckName = deckName + "_Normals";
 
             reader.Close();
 
@@ -131,7 +131,7 @@ namespace Lodis.UI
             }
 
             reader.Close();
-            SpecialDeck.DeckName = "Custom_Specials";
+            SpecialDeck.DeckName = deckName + "_Specials";
         }
         
         public static Deck LoadCustomNormalDeck(string deckName)

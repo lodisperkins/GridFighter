@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339a0f94a0445ff4d857534cad04dbb9, type: 3}
+  m_Name: F_Visor
+  m_EditorClassIdentifier: 
+  _armorPieces:
+  - ArmorMesh: {fileID: -7909600629690569951, guid: 08fe41f0845dc0d42bd78a4561531681,
+      type: 3}
+    BodyPart: 15
+  - ArmorMesh: {fileID: 6775758115927178145, guid: 08fe41f0845dc0d42bd78a4561531681,
+      type: 3}
+    BodyPart: 8
+  - ArmorMesh: {fileID: -1328944102590501216, guid: 08fe41f0845dc0d42bd78a4561531681,
+      type: 3}
+    BodyPart: 14
+  _armorMaterial: {fileID: 2100000, guid: 43650db022a050743b1618e010847bcf, type: 2}
+  _bodySection: 1
+  _armorSetName: Visor
+  _displayIcon: {fileID: 21300000, guid: 28faa36e4805a0a48948e2517dde390d, type: 3}

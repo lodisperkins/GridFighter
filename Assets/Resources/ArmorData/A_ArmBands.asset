@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 339a0f94a0445ff4d857534cad04dbb9, type: 3}
-  m_Name: A_ArmGuards
+  m_Name: A_ArmBands
   m_EditorClassIdentifier: 
   _armorPieces:
-  - ArmorMesh: {fileID: 2601040746556760542, guid: dc49d54e3eba6a446941613a3fc2efde,
+  - ArmorMesh: {fileID: 2053535876778535009, guid: 08fe41f0845dc0d42bd78a4561531681,
       type: 3}
     BodyPart: 4
-  - ArmorMesh: {fileID: -7081995089917099332, guid: dc49d54e3eba6a446941613a3fc2efde,
+  - ArmorMesh: {fileID: 7487824534099355526, guid: 08fe41f0845dc0d42bd78a4561531681,
       type: 3}
     BodyPart: 10
-  _armorMaterial: {fileID: 2100000, guid: de2e2258403916142a08706cbf1934ee, type: 2}
+  _armorMaterial: {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
   _bodySection: 3
-  _armorSetName: Arm Guards
-  _displayIcon: {fileID: 21300000, guid: fdde697a268941b4b95926e8082c1a85, type: 3}
+  _armorSetName: Arm Bands
+  _displayIcon: {fileID: 21300000, guid: ecb47a731153cea498b01aea0a909911, type: 3}
