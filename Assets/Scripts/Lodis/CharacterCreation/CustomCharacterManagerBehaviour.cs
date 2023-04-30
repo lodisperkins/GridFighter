@@ -41,7 +41,7 @@ namespace Lodis.CharacterCreation
             if (!_customCharacter)
                 _customCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
 
-            _customCharacter.ArmorReplacements = _defaultSets;
+            _customCharacter.ReplaceMeshes(_defaultSets);
         }
 
         public void LoadReplacementArmor()

@@ -18,7 +18,7 @@ public class MeshReplacementBehaviour : MonoBehaviour
     [SerializeField]
     private List<ArmorData> _armorReplacements = new List<ArmorData>();
 
-    public List<ArmorData> ArmorReplacements { get => _armorReplacements; set => _armorReplacements = value; }
+    public List<ArmorData> ArmorReplacements { get => _armorReplacements; private set => _armorReplacements = value; }
 
     public void ReplaceMeshes()
     {
@@ -34,8 +34,6 @@ public class MeshReplacementBehaviour : MonoBehaviour
         {
             ReplaceMesh(data);
         }
-
-        ArmorReplacements = armorData;
     }
 
     public void RemoveMeshes(List<ArmorData> armorData)
@@ -66,7 +64,13 @@ public class MeshReplacementBehaviour : MonoBehaviour
             mesh.MeshRenderer.enabled = true;
             mesh.MeshRenderer.material = data.ArmorMaterial;
         }
-        ArmorReplacements.Add(data);
+
+        int index = ArmorReplacements.FindIndex(set => set.BodySection == data.BodySection);
+
+        if (index == -1)
+            ArmorReplacements.Add(data);
+        else
+            ArmorReplacements[index] = data;
     }
 
     public void RemoveMesh(ArmorData data)
