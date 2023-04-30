@@ -138,6 +138,7 @@ namespace Lodis.UI
         {
             _saveLoadPath = Application.persistentDataPath + "/CustomDecks";
             Directory.CreateDirectory(_saveLoadPath);
+
             string normalPath = _saveLoadPath + "/" + deckName + "_Normals.txt";
 
             StreamReader reader = new StreamReader(normalPath);
@@ -224,6 +225,16 @@ namespace Lodis.UI
 
         public void SetDeckNames(string newName)
         {
+            string path = _saveLoadPath + "/" + NormalDeck.DeckName + ".txt";
+
+            if (File.Exists(path))
+                File.Move(path, _saveLoadPath + "/" + newName + "_Normals.txt");
+
+            path = _saveLoadPath + "/" + SpecialDeck.DeckName + ".txt";
+
+            if (File.Exists(path))
+                File.Move(path, _saveLoadPath + "/" + newName + "_Specials.txt");
+
             SpecialDeck.DeckName = newName + "_Specials";
             NormalDeck.DeckName = newName + "_Normals";
         }

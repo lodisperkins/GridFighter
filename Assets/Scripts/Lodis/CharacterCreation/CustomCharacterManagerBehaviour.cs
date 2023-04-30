@@ -51,8 +51,19 @@ namespace Lodis.CharacterCreation
             ReplacementArmorData.AddRange(armors);
         }
 
+        public void SetCharacterName(string name)
+        {
+            _characterName = name;
+        }
+
         public void SetCharacterName(Text text)
         {
+            string newName = text.text;
+            string path = _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
+
+            if (File.Exists(path))
+                File.Move(path, _saveLoadPath + "/" + newName + "_ArmorSet.txt");
+
             CharacterName = text.text;
         }
 
