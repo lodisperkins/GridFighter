@@ -16,10 +16,10 @@ MonoBehaviour:
   - ArmorMesh: {fileID: 7247546917797058619, guid: dc49d54e3eba6a446941613a3fc2efde,
       type: 3}
     BodyPart: 15
-  - ArmorMesh: {fileID: 8937747232611575276, guid: dc49d54e3eba6a446941613a3fc2efde,
+  - ArmorMesh: {fileID: 6240284693135719538, guid: dc49d54e3eba6a446941613a3fc2efde,
       type: 3}
     BodyPart: 8
-  - ArmorMesh: {fileID: -3023989438401493839, guid: dc49d54e3eba6a446941613a3fc2efde,
+  - ArmorMesh: {fileID: 3042573723365891237, guid: dc49d54e3eba6a446941613a3fc2efde,
       type: 3}
     BodyPart: 14
   _armorMaterial: {fileID: 2100000, guid: 0ed1f541f276f9e4a830e2760d7a5437, type: 2}
