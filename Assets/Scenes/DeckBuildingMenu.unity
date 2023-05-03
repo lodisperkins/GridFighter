@@ -28037,6 +28037,7 @@ MonoBehaviour:
   _abilityButton: {fileID: 2709057944431183419, guid: f5f955fcb327bbf43978d391eb6e8cc3,
     type: 3}
   _eventSystem: {fileID: 505377981}
+  _pageManager: {fileID: 505377984}
 --- !u!4 &2033525664
 Transform:
   m_ObjectHideFlags: 0

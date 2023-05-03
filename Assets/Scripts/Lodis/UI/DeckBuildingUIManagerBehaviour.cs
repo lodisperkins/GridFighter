@@ -45,19 +45,25 @@ namespace Lodis.UI
         private EventButtonBehaviour _abilityButton;
         [SerializeField]
         private EventSystem _eventSystem;
+        [SerializeField]
+        private PageManagerBehaviour _pageManager;
         private GameObject _lastSelectedSpecial;
         private GameObject _lastSelected;
 
 
         public GameObject Selected
         {
-            get { return _eventSystem.currentSelectedGameObject; }
+            get { return EventManager.currentSelectedGameObject; }
             set
             {
-                _eventSystem.SetSelectedGameObject(value);
+                EventManager.SetSelectedGameObject(value);
                 _lastSelected = value;
             }
         }
+
+        public PageManagerBehaviour PageManager { get => _pageManager; }
+        public EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -93,7 +99,7 @@ namespace Lodis.UI
                 buttonInstance.AddOnClickEvent(() =>
                 {
                     _buildManager.LoadCustomDeck(optionName);
-                    _eventSystem.GetComponent<PageManagerBehaviour>().GoToNextPage();
+                    PageManager.GoToNextPage();
                 });
                 _deckChoices.Add(buttonInstance);
             }

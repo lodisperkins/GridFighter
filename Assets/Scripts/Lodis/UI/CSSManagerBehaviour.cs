@@ -10,20 +10,20 @@ using UnityEngine.SceneManagement;
 
 namespace Lodis.UI
 {
-    public class CSUIManagerBehaviour : MonoBehaviour
+    public class CSSManagerBehaviour : MonoBehaviour
     {
         [SerializeField]
         private GameObject _player1Root;
         [SerializeField]
-        private Button _player1FirstSelected;
-        [SerializeField]
         private Text _player1JoinInstruction;
+        [SerializeField]
+        private DeckBuildingUIManagerBehaviour _p1DeckBuilder;
         [SerializeField]
         private GameObject _player2Root;
         [SerializeField]
-        private Button _player2FirstSelected;
-        [SerializeField]
         private Text _player2JoinInstruction;
+        [SerializeField]
+        private DeckBuildingUIManagerBehaviour _p2DeckBuilder;
         [SerializeField]
         private CharacterData _p1Data;
         [SerializeField]
@@ -85,11 +85,11 @@ namespace Lodis.UI
             {
                 eventSystem.playerRoot = _player1Root;
                 _player1Root.SetActive(true);
-
-                eventSystem.SetSelectedGameObject(_player1FirstSelected.gameObject);
-                _player1FirstSelected.OnSelect(null);
                 _p1CharacterSelected = false;
                 _player1JoinInstruction.gameObject.SetActive(false);
+
+                _p1DeckBuilder.EventManager = eventSystem;
+                _p1DeckBuilder.PageManager.EventManager = eventSystem;
 
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
@@ -98,11 +98,11 @@ namespace Lodis.UI
             {
                 eventSystem.playerRoot = _player2Root;
                 _player2Root.SetActive(true); 
-
-                eventSystem.SetSelectedGameObject(_player2FirstSelected.gameObject);
-                _player2FirstSelected.OnSelect(null);
                 _p2CharacterSelected = false;
                 _player2JoinInstruction.gameObject.SetActive(false);
+
+                _p2DeckBuilder.EventManager = eventSystem;
+                _p2DeckBuilder.PageManager.EventManager = eventSystem;
 
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();

@@ -29,6 +29,8 @@ namespace Lodis.UI
         private int _currentPage;
         private PlayerControls _controls;
 
+        public EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
+
         public void Awake()
         {
             _controls = new PlayerControls();
@@ -53,7 +55,7 @@ namespace Lodis.UI
             _currentPage++;
 
             _pages[_currentPage].PageParent.SetActive(true);
-            _eventSystem.SetSelectedGameObject(_pages[_currentPage].FirstSelected);
+            EventManager.SetSelectedGameObject(_pages[_currentPage].FirstSelected);
             _pages[_currentPage].OnActive?.Invoke();
         }
 
@@ -75,7 +77,7 @@ namespace Lodis.UI
             }
 
             _pages[_currentPage].PageParent.SetActive(true);
-            _eventSystem.SetSelectedGameObject(_pages[_currentPage].FirstSelected);
+            EventManager.SetSelectedGameObject(_pages[_currentPage].FirstSelected);
             _pages[_currentPage].OnActive?.Invoke();
         }
     }
