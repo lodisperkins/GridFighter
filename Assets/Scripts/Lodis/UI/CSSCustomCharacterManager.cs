@@ -15,7 +15,11 @@ namespace Lodis.UI
         [SerializeField]
         private CustomCharacterManagerBehaviour _customCharacterManager;
         [SerializeField]
+        private PageManagerBehaviour _pageManager;
+        [SerializeField]
         private AutoScrollBehaviour _customMenuScrollBehaviour;
+        [SerializeField]
+        private AutoScrollBehaviour _defaultMenuScrollBehaviour;
         [SerializeField]
         private DisplayCharacterSpawnBehaviour _characterSpawner;
         [SerializeField]
@@ -52,6 +56,7 @@ namespace Lodis.UI
             }
         }
         public EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
+        public PageManagerBehaviour PageManager { get => _pageManager; set => _pageManager = value; }
 
         // Start is called before the first frame update
         void Start()
@@ -85,6 +90,7 @@ namespace Lodis.UI
 
             _deckChoices.Clear();
 
+            EventButtonBehaviour previousInstance = null;
 
             for (int i = 0; i < _buildManager.DeckOptions.Length; i++)
             {
@@ -104,7 +110,11 @@ namespace Lodis.UI
                         _characterSpawner.SpawnEntity(_characterDisplayModel); 
                 });
 
-                buttonInstance.AddOnSelectEvent(() => _customCharacterManager.LoadCustomCharacter(optionName));
+                buttonInstance.AddOnSelectEvent(() =>
+                {
+                    _customCharacterManager.LoadCustomCharacter(optionName);
+                    _characterSelectManager.UpdateColor(_playerNum);
+                });
 
                 buttonInstance.AddOnClickEvent(() =>
                 {
@@ -112,6 +122,21 @@ namespace Lodis.UI
                     _characterSelectManager.SetData(_playerNum, _customCharacterData);
                 });
                 _deckChoices.Add(buttonInstance);
+
+                Navigation navigationRules = new Navigation();
+                navigationRules.mode = Navigation.Mode.Explicit;
+
+                if (previousInstance)
+                {
+                    navigationRules.selectOnUp = previousInstance.UIButton;
+                    Navigation previousNavigation = previousInstance.UIButton.navigation;
+
+                    previousNavigation.selectOnDown = buttonInstance.UIButton;
+                    previousInstance.UIButton.navigation = previousNavigation;
+                }
+
+                buttonInstance.UIButton.navigation = navigationRules;
+                previousInstance = buttonInstance;
             }
         }
 
@@ -119,6 +144,8 @@ namespace Lodis.UI
         {
             _eventSystem = eventSystem;
             _customMenuScrollBehaviour.EventSystem = eventSystem;
+            _defaultMenuScrollBehaviour.EventSystem = eventSystem;
+            PageManager.EventManager = eventSystem;    
         }
 
         public void SetSelectedToLast()

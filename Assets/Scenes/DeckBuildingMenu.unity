@@ -7482,6 +7482,7 @@ MonoBehaviour:
           m_CallState: 2
   _eventSystem: {fileID: 505377981}
   _loadSceneOnFirstPage: 1
+  _previousPageOnCancel: 1
   _sceneIndex: 1
 --- !u!1 &505808901
 GameObject:
@@ -15898,6 +15899,9 @@ MonoBehaviour:
   _entitySpawnPoint: {x: 0, y: 0}
   _alignment: 1
   _setAlignmentRotation: 1
+  _onEntitySpawn:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1167600951
 Transform:
   m_ObjectHideFlags: 0
@@ -28014,6 +28018,7 @@ MonoBehaviour:
   _loadoutButton: {fileID: 5331721923459415289, guid: 8d1aae1124315874e9cf8c759695f04a,
     type: 3}
   _loadoutOptions: {fileID: 869482621}
+  _setSelectedToFirstLoadout: 0
   _infoTextBox: {fileID: 0}
   _backIconSlot: {fileID: 1075964898}
   _forwardIconSlot: {fileID: 1555674713}

@@ -109,6 +109,23 @@ namespace Lodis.UI
             }
         }
 
+        public void UpdateColor(int playerNum)
+        {
+            if (!_colorManager)
+                return;
+
+            if (playerNum == 1)
+            {
+                _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
+                _backgroundImage.SetPrimaryColor(_colorManager.P1Color.Value / 2);
+            }
+            else if (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER)
+            {
+                _colorManager.SetPlayerColor(playerNum, _p2ColorIndex);
+                _backgroundImage.SetSecondaryColor(_colorManager.P2Color.Value / 2);
+            }
+        }
+
         private void SetColor(int playerNum)
         {
             if (!_colorManager)
@@ -144,6 +161,23 @@ namespace Lodis.UI
             return _p2CharacterSelected;
         }
 
+        private void GoToPage(InputAction.CallbackContext context, int playerNum)
+        {
+            Vector2 direction = context.ReadValue<Vector2>();
+
+            PageManagerBehaviour manager = null;
+
+            if (playerNum == 1)
+                manager = _p1CustomManager.PageManager;
+            else if (playerNum == 2)
+                manager = _p2CustomManager.PageManager;
+
+            if (direction == Vector2.right)
+                manager.GoToNextPage();
+            else if (direction == Vector2.left)
+                manager.GoToPreviousPage();
+        }
+
         public void UpdateEventSystem(PlayerInput playerInput)
         {
             if (!_gridCreated)
@@ -153,6 +187,7 @@ namespace Lodis.UI
             }
             int num = _currentPlayer;
             playerInput.actions.actionMaps[1].FindAction("Cancel").started += context => ActivateMenu(playerInput, num);
+            playerInput.actions.actionMaps[1].FindAction("Navigate").started += context => GoToPage(context, num);
 
             playerInput.actions.actionMaps[1].FindAction("MiddleClick").started += context =>
             {

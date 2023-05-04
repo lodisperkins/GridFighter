@@ -25,6 +25,8 @@ namespace Lodis.UI
         [SerializeField]
         private bool _loadSceneOnFirstPage;
         [SerializeField]
+        private bool _previousPageOnCancel = true;
+        [SerializeField]
         private int _sceneIndex = -1;
         private int _currentPage;
         private PlayerControls _controls;
@@ -33,26 +35,35 @@ namespace Lodis.UI
 
         public void Awake()
         {
+            if (!_previousPageOnCancel)
+                return;
+
             _controls = new PlayerControls();
             _controls.UI.Cancel.started += context => GoToPreviousPage();
         }
 
         public void OnEnable()
         {
-            _controls.Enable();
+            _controls?.Enable();
         }
 
         public void OnDisable()
         {
-            _controls.Disable();
+            _controls?.Disable();
         }
 
         public void GoToNextPage()
         {
-            _pages[_currentPage].PageParent.SetActive(false);
-            _pages[_currentPage].OnInactive?.Invoke();
+            if (_currentPage < _pages.Length - 1)
+            {
+                _pages[_currentPage].PageParent.SetActive(false);
+                _pages[_currentPage].OnInactive?.Invoke();
+            }
 
             _currentPage++;
+
+            if (_currentPage >= _pages.Length)
+                _currentPage = _pages.Length - 1;
 
             _pages[_currentPage].PageParent.SetActive(true);
             EventManager.SetSelectedGameObject(_pages[_currentPage].FirstSelected);
@@ -61,8 +72,11 @@ namespace Lodis.UI
 
         public void GoToPreviousPage()
         {
-            _pages[_currentPage].PageParent.SetActive(false);
-            _pages[_currentPage].OnInactive?.Invoke();
+            if (_currentPage > 0)
+            {
+                _pages[_currentPage].PageParent.SetActive(false);
+                _pages[_currentPage].OnInactive?.Invoke();
+            }
 
             _currentPage--;
 
@@ -75,6 +89,9 @@ namespace Lodis.UI
 
                 return;
             }
+
+            if (_currentPage < 0)
+                _currentPage = 0;
 
             _pages[_currentPage].PageParent.SetActive(true);
             EventManager.SetSelectedGameObject(_pages[_currentPage].FirstSelected);
