@@ -10,7 +10,8 @@ namespace Lodis.CharacterCreation
     public class CustomCharacterManagerBehaviour : MonoBehaviour
     {
         [SerializeField]
-        private List<ArmorData> _defaultSets;
+        private List<ArmorData> _defaultSetsReference;
+        private static List<ArmorData> _defaultSets;
         private List<ArmorData> _characterArmorPieces;
         private MeshReplacementBehaviour _customCharacter;
         private List<ArmorData> _replacementArmorData;
@@ -32,6 +33,8 @@ namespace Lodis.CharacterCreation
             _saveLoadPath = Application.persistentDataPath + "/CustomCharacters";
             Directory.CreateDirectory(_saveLoadPath);
 
+            _defaultSets = _defaultSetsReference;
+
             _characterArmorPieces = new List<ArmorData>();
             ReplacementArmorData = new List<ArmorData>();
             LoadReplacementArmor();
@@ -42,7 +45,7 @@ namespace Lodis.CharacterCreation
             if (!CustomCharacter)
                 CustomCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
 
-            CustomCharacter.ReplaceMeshes(_defaultSets);
+            CustomCharacter.ReplaceMeshes(_defaultSetsReference);
         }
 
         public void LoadReplacementArmor()
@@ -86,15 +89,40 @@ namespace Lodis.CharacterCreation
                 replacements.Add(Resources.Load<ArmorData>("ArmorData/" + armorName));
             }
 
+            for (int i = 0; i < _defaultSetsReference.Count && replacements.Count != _defaultSetsReference.Count; i++)
+            {
+                if (!replacements.Find(set => set.BodySection == _defaultSetsReference[i].BodySection))
+                    replacements.Add(_defaultSetsReference[i]);
+            }
+
+            CustomCharacter.ReplaceMeshes(replacements);
+
+            reader.Close();
+        }
+
+        public static List<ArmorData> LoadCustomCharacterArmor(string characterName)
+        {
+
+            string armorPath = _saveLoadPath + "/" + characterName + "_ArmorSet.txt";
+
+            StreamReader reader = new StreamReader(armorPath);
+            List<ArmorData> replacements = new List<ArmorData>();
+
+            while (!reader.EndOfStream)
+            {
+                string armorName = reader.ReadLine();
+                replacements.Add(Resources.Load<ArmorData>("ArmorData/" + armorName));
+            }
+
             for (int i = 0; i < _defaultSets.Count && replacements.Count != _defaultSets.Count; i++)
             {
                 if (!replacements.Find(set => set.BodySection == _defaultSets[i].BodySection))
                     replacements.Add(_defaultSets[i]);
             }
 
-            CustomCharacter.ReplaceMeshes(replacements);
-
             reader.Close();
+
+            return replacements;
         }
 
         public void ReplaceArmorPiece(ArmorData data)

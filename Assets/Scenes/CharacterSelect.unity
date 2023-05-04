@@ -1816,8 +1816,9 @@ MonoBehaviour:
   _characterDisplayModel: {fileID: 2492379211295133931, guid: 36d23348bbac6b84a921dfebb9dbbddc,
     type: 3}
   _customMenu: {fileID: 1054734003}
-  _customCharacterData: {fileID: 11400000, guid: 7b75bb827431b65418c0eabe089531e8,
+  _customCharacterData: {fileID: 11400000, guid: 074de5183118db9478f030fd610443bb,
     type: 2}
+  _customFlag: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976, type: 2}
   _characterSelectManager: {fileID: 1040787902}
   _playerNum: 2
   _loadoutButton: {fileID: 5331721923459415289, guid: a756377d81010fb4ea69f6e106e95d3b,
@@ -2993,12 +2994,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08b4295337e11b488208fa24d397216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultSets:
-  - {fileID: 11400000, guid: 5a2383469bde5b5459bc975fc81e7122, type: 2}
-  - {fileID: 11400000, guid: 1dda4a386c9415144b772489c88e054e, type: 2}
-  - {fileID: 11400000, guid: 12be4bf357f8985429b8a3b6cbb7b581, type: 2}
-  - {fileID: 11400000, guid: db1faa1e1fe75884d95037fdb6d93fb6, type: 2}
-  - {fileID: 11400000, guid: cb8a4b373b9fec2458cc0d8acb2ade8f, type: 2}
+  _defaultSetsReference: []
 --- !u!4 &953452599
 Transform:
   m_ObjectHideFlags: 0
@@ -5610,6 +5606,7 @@ MonoBehaviour:
   _customMenu: {fileID: 8659810685908444849}
   _customCharacterData: {fileID: 11400000, guid: 7b75bb827431b65418c0eabe089531e8,
     type: 2}
+  _customFlag: {fileID: 11400000, guid: c8d4b0853a99c454d9994f642a156b18, type: 2}
   _characterSelectManager: {fileID: 1040787902}
   _playerNum: 1
   _loadoutButton: {fileID: 5331721923459415289, guid: 8d1aae1124315874e9cf8c759695f04a,
@@ -6516,12 +6513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08b4295337e11b488208fa24d397216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultSets:
-  - {fileID: 11400000, guid: 5a2383469bde5b5459bc975fc81e7122, type: 2}
-  - {fileID: 11400000, guid: 1dda4a386c9415144b772489c88e054e, type: 2}
-  - {fileID: 11400000, guid: 12be4bf357f8985429b8a3b6cbb7b581, type: 2}
-  - {fileID: 11400000, guid: db1faa1e1fe75884d95037fdb6d93fb6, type: 2}
-  - {fileID: 11400000, guid: cb8a4b373b9fec2458cc0d8acb2ade8f, type: 2}
+  _defaultSetsReference: []
 --- !u!4 &2058874124
 Transform:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using Lodis.AI;
+using Lodis.CharacterCreation;
 using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.Movement;
@@ -123,8 +124,13 @@ namespace Lodis.Gameplay
 
             if (_p2IsCustom.Value)
             {
-                _p2Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck("Custom");
-                _p2Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck("Custom");
+                _p2Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck(Player2Data.DisplayName);
+                _p2Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(Player2Data.DisplayName);
+                MeshReplacementBehaviour meshManager = _p2Input.Character.GetComponentInChildren<MeshReplacementBehaviour>();
+
+                List<ArmorData> armorSet = CustomCharacterManagerBehaviour.LoadCustomCharacterArmor(Player2Data.DisplayName);
+
+                meshManager.ReplaceMeshes(armorSet);
             }
 
             _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
@@ -168,8 +174,13 @@ namespace Lodis.Gameplay
 
             if (_p1IsCustom.Value)
             {
-                _p1Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck("Custom");
-                _p1Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck("Custom");
+                _p1Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck(Player1Data.DisplayName);
+                _p1Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(Player1Data.DisplayName);
+                MeshReplacementBehaviour meshManager = _p1Input.Character.GetComponentInChildren<MeshReplacementBehaviour>();
+
+                List<ArmorData> armorSet = CustomCharacterManagerBehaviour.LoadCustomCharacterArmor(Player1Data.DisplayName);
+
+                meshManager.ReplaceMeshes(armorSet);
             }
 
             BlackBoardBehaviour.Instance.Player1Controller = _p1Input;

@@ -1,5 +1,6 @@
 ﻿
 using Lodis.CharacterCreation;
+using Lodis.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,6 +29,8 @@ namespace Lodis.UI
         private GameObject _customMenu;
         [SerializeField]
         private CharacterData _customCharacterData;
+        [SerializeField]
+        private BoolVariable _customFlag;
         [SerializeField]
         private CSSManagerBehaviour _characterSelectManager;
         [SerializeField]
@@ -119,7 +122,9 @@ namespace Lodis.UI
                 buttonInstance.AddOnClickEvent(() =>
                 {
                     _buildManager.LoadCustomDeck(optionName);
+                    _customCharacterData.DisplayName = optionName;
                     _characterSelectManager.SetData(_playerNum, _customCharacterData);
+                    _customFlag.Value = true;
                 });
                 _deckChoices.Add(buttonInstance);
 
