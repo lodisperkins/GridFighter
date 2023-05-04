@@ -10,6 +10,8 @@ namespace Lodis.UI
     {
         private ScrollRect _scroll;
         [SerializeField]
+        private bool _scrollHorizontal;
+        [SerializeField]
         private RectTransform _view;
         [SerializeField]
         private float _distanceToScroll;
@@ -41,6 +43,9 @@ namespace Lodis.UI
             Vector2 position = (Vector2)_scroll.transform.InverseTransformPoint(_content.position) - (Vector2)_scroll.transform.InverseTransformPoint(_currentItem.position);
 
             float distance = Vector2.Distance(position, _content.anchoredPosition);
+
+            if (!_scrollHorizontal)
+                position = new Vector2(_content.anchoredPosition.x, position.y);
 
             if (distance >= _distanceToScroll)
                 _content.anchoredPosition = position;

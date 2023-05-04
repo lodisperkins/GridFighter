@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b88585b4e7aeb0b48a524233a38d8f63, type: 3}
   m_Name: CustomData1
   m_EditorClassIdentifier: 
-  _displayName: Custom
-  _headShot: {fileID: 5206546527178385945, guid: 689e28adc5233904f9314ac991a12188,
+  _displayName: Lodis2
+  _headShot: {fileID: 6370303588712990288, guid: 64a04c944e929be4faad39f520c38892,
     type: 3}
   _characterReference: {fileID: 2492379211295133931, guid: 0ce92fdcc8bc2bc4ca5943c9379aa06e,
     type: 3}
