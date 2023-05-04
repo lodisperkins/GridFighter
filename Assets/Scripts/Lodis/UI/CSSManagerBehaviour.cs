@@ -17,13 +17,13 @@ namespace Lodis.UI
         [SerializeField]
         private Text _player1JoinInstruction;
         [SerializeField]
-        private DeckBuildingUIManagerBehaviour _p1DeckBuilder;
+        private CSSCustomCharacterManager _p1CustomManager;
         [SerializeField]
         private GameObject _player2Root;
         [SerializeField]
         private Text _player2JoinInstruction;
         [SerializeField]
-        private DeckBuildingUIManagerBehaviour _p2DeckBuilder;
+        private CSSCustomCharacterManager _p2CustomManager;
         [SerializeField]
         private CharacterData _p1Data;
         [SerializeField]
@@ -88,8 +88,8 @@ namespace Lodis.UI
                 _p1CharacterSelected = false;
                 _player1JoinInstruction.gameObject.SetActive(false);
 
-                _p1DeckBuilder.EventManager = eventSystem;
-                _p1DeckBuilder.PageManager.EventManager = eventSystem;
+                _p1CustomManager.SetEventSystems(eventSystem);
+                _p1CustomManager.SetSelectedToFirstOption();
 
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
@@ -101,8 +101,8 @@ namespace Lodis.UI
                 _p2CharacterSelected = false;
                 _player2JoinInstruction.gameObject.SetActive(false);
 
-                _p2DeckBuilder.EventManager = eventSystem;
-                _p2DeckBuilder.PageManager.EventManager = eventSystem;
+                _p2CustomManager.SetEventSystems(eventSystem);
+                _p2CustomManager.SetSelectedToFirstOption();
 
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();
@@ -166,6 +166,14 @@ namespace Lodis.UI
             playerInput.actions.actionMaps[1].FindAction("Cancel").performed += context => TryGoingToMainMenu(_currentPlayer);
 
             _currentPlayer = 2;
+        }
+
+        public void SetData(int player, CharacterData data)
+        {
+            if (player == 1)
+                SetDataP1(data);
+            else if (player == 2)
+                SetDataP2(data);
         }
 
         public void SetDataP1(CharacterData data)

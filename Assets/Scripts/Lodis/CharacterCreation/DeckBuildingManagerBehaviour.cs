@@ -54,7 +54,7 @@ namespace Lodis.UI
 
         public void LoadDeckNames()
         {
-            string[] files = Directory.GetFiles(_saveLoadPath);
+            string[] files = Directory.GetFiles(Application.persistentDataPath + "/CustomCharacters");
 
             if (files.Length == 0)
                 return;
@@ -67,10 +67,7 @@ namespace Lodis.UI
                 files[i] = Path.GetFileName(files[i]);
                 string deckName = files[i].Split('_')[0];
 
-                string[] duplicates = Array.FindAll<string>(DeckOptions, word => string.Compare(word, deckName) == 0);
-
-                if (duplicates.Length == 0)
-                    DeckOptions[i] = deckName;
+                DeckOptions[i] = deckName;
             }
         }
 

@@ -36,6 +36,11 @@ namespace Lodis.UI
 
         private void Awake()
         {
+            Init();
+        }
+
+        public void Init()
+        {
             UIButton = GetComponent<Button>();
             UIButton.onClick.AddListener(() => SoundManagerBehaviour.Instance.PlaySound(_clickSound));
             Image = GetComponent<Image>();

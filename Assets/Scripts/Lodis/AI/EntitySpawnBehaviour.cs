@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using Lodis.Gameplay;
+using UnityEngine.Events;
 
 namespace Lodis.AI
 {
@@ -22,6 +23,8 @@ namespace Lodis.AI
         [Tooltip("Will rotate the entity to face opponent side if enabled. Rotation in the grid movement behaviour for the entity will override this.")]
         [SerializeField]
         private bool _setAlignmentRotation;
+        [SerializeField]
+        private UnityEvent _onEntitySpawn = new UnityEvent();
         private static EntitySpawnBehaviour _instance;
 
         public  bool SetAlignmentRotation { get => _setAlignmentRotation; set => _setAlignmentRotation = value; }
@@ -47,7 +50,12 @@ namespace Lodis.AI
         }
 
         public GridAlignment Alignment { get => _alignment; set => _alignment = value; }
+        protected UnityEvent OnEntitySpawn { get => _onEntitySpawn; }
 
+        public void AddOnSpawnEvent(UnityAction action)
+        {
+            OnEntitySpawn.AddListener(action);
+        }
         /// <summary>
         /// Creates a new instance of the entity and places it on the grid
         /// </summary>
@@ -74,6 +82,8 @@ namespace Lodis.AI
                 moveScript.transform.rotation = Quaternion.Euler(0, -90, 0);
             else if (SetAlignmentRotation && moveScript.Alignment == GridAlignment.LEFT)
                 moveScript.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+            OnEntitySpawn?.Invoke();
         }
 
         /// <summary>

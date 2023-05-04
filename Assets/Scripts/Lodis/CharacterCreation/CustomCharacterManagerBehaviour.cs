@@ -24,6 +24,7 @@ namespace Lodis.CharacterCreation
         public string ReplacementName { get => _replacementName; set => _replacementName = value; }
         public string CharacterName { get => _characterName; set => _characterName = value; }
         public List<ArmorData> ReplacementArmorData { get => _replacementArmorData; set => _replacementArmorData = value; }
+        public MeshReplacementBehaviour CustomCharacter { get => _customCharacter; set => _customCharacter = value; }
 
         // Start is called before the first frame update
         void Awake()
@@ -38,10 +39,10 @@ namespace Lodis.CharacterCreation
 
         public void SetArmorListToDefault()
         {
-            if (!_customCharacter)
-                _customCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
+            if (!CustomCharacter)
+                CustomCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
 
-            _customCharacter.ReplaceMeshes(_defaultSets);
+            CustomCharacter.ReplaceMeshes(_defaultSets);
         }
 
         public void LoadReplacementArmor()
@@ -73,7 +74,9 @@ namespace Lodis.CharacterCreation
             string armorPath = _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
 
             StreamReader reader = new StreamReader(armorPath);
-            _customCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
+
+            if (!CustomCharacter)
+                CustomCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
 
             List<ArmorData> replacements = new List<ArmorData>();
 
@@ -89,7 +92,7 @@ namespace Lodis.CharacterCreation
                     replacements.Add(_defaultSets[i]);
             }
 
-            _customCharacter.ReplaceMeshes(replacements);
+            CustomCharacter.ReplaceMeshes(replacements);
 
             reader.Close();
         }
@@ -99,15 +102,15 @@ namespace Lodis.CharacterCreation
             if (CurrentArmorType < 0)
                 Debug.LogError("Invalid type for armor replacement.");
 
-            if (!_customCharacter)
-                _customCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
+            if (!CustomCharacter)
+                CustomCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
 
-            _customCharacter.ReplaceMesh(data);
+            CustomCharacter.ReplaceMesh(data);
         }
 
         public void SaveCharacter()
         {
-            if (_customCharacter.ArmorReplacements == null)
+            if (CustomCharacter.ArmorReplacements == null)
                 return;
 
             string path = _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
@@ -119,7 +122,7 @@ namespace Lodis.CharacterCreation
 
             StreamWriter writer = new StreamWriter(path);
 
-            foreach (ArmorData data in _customCharacter.ArmorReplacements)
+            foreach (ArmorData data in CustomCharacter.ArmorReplacements)
                 writer.WriteLine(data.name);
 
             writer.Close();

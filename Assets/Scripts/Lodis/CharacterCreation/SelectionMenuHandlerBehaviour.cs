@@ -25,6 +25,9 @@ namespace Lodis.CharacterCreation
 
         private bool _cardSelectionActive;
 
+        public DeckBuildingUIManagerBehaviour DeckBuildingUIManager { get => _deckBuildingUIManager; }
+        public CustomCharacterUIManagerBehaviour CustomCharacterUIManager { get => _customCharacterUIManager; }
+
         public void SetCardMenuActive(bool isActive)
         {
             _cardSelectionActive = isActive;    
@@ -50,7 +53,7 @@ namespace Lodis.CharacterCreation
             _currentDeckCanvas.SetActive(false);
             _armorSelection.SetActive(true);
 
-            _customCharacterUIManager.UpdateAllIconSections();
+            CustomCharacterUIManager.UpdateAllIconSections();
 
             _instructionText.text = "Select armor set";
         }
@@ -59,13 +62,13 @@ namespace Lodis.CharacterCreation
         {
             _cardSelectionActive = true;
 
-            _deckBuildingUIManager.UpdateAllIconSections();
+            DeckBuildingUIManager.UpdateAllIconSections();
 
             _armorSelection.SetActive(false);
             _currentDeckCanvas.SetActive(true);
             _cardSelection.SetActive(true);
 
-            _deckBuildingUIManager.UpdateDeck();
+            DeckBuildingUIManager.UpdateDeck();
             _instructionText.text = "Select an ability";
         }
     }

@@ -24,6 +24,8 @@ namespace Lodis.UI
         [SerializeField]
         private GameObject _loadoutOptions;
         [SerializeField]
+        private bool _setSelectedToFirstLoadout;
+        [SerializeField]
         private Text _infoTextBox;
         [SerializeField]
         private Image _backIconSlot;
