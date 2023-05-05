@@ -943,6 +943,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ac73931e154314983ab38f80f25c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scrollHorizontal: 0
   _view: {fileID: 1008564527}
   _distanceToScroll: 100
   _eventSystem: {fileID: 0}
@@ -3250,6 +3251,7 @@ MonoBehaviour:
   _backgroundImage: {fileID: 458338553}
   _defaultAICharacter: {fileID: 11400000, guid: d8bcb9ee48e4a9a498847d811eb5e674,
     type: 2}
+  _p2IsCustom: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976, type: 2}
   _currentPlayer: 1
 --- !u!1 &1047616432
 GameObject:
@@ -3393,6 +3395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ac73931e154314983ab38f80f25c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scrollHorizontal: 0
   _view: {fileID: 810967782}
   _distanceToScroll: 100
   _eventSystem: {fileID: 0}
@@ -4944,7 +4947,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetDataP1
+      value: SetDataP2
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -5866,7 +5869,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetDataP1
+      value: SetDataP2
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -7811,6 +7814,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ac73931e154314983ab38f80f25c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scrollHorizontal: 0
   _view: {fileID: 1483522249}
   _distanceToScroll: 100
   _eventSystem: {fileID: 0}
@@ -7895,6 +7899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 38ac73931e154314983ab38f80f25c94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _scrollHorizontal: 0
   _view: {fileID: 84155219}
   _distanceToScroll: 100
   _eventSystem: {fileID: 0}

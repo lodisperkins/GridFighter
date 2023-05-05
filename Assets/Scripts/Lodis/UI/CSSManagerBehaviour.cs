@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.UI
 {
@@ -40,6 +41,8 @@ namespace Lodis.UI
         private BackgroundColorBehaviour _backgroundImage;
         [SerializeField]
         private CharacterData _defaultAICharacter;
+        [SerializeField]
+        private BoolVariable _p2IsCustom;
         private PlayerInputManager _inputManager;
         private bool _canStart;
         private bool _p1CharacterSelected;
@@ -62,6 +65,7 @@ namespace Lodis.UI
             {
                 SetDataP2(_defaultAICharacter);
                 _player2JoinInstruction.enabled = false;
+                _p2IsCustom.Value = false;
             }
         }
 

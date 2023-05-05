@@ -39,6 +39,7 @@ namespace Lodis.UI
         {
             _saveLoadPath = Application.persistentDataPath + "/CustomDecks";
             Directory.CreateDirectory(_saveLoadPath);
+            Directory.CreateDirectory(Application.persistentDataPath + "/CustomCharacters");
 
             _settings = new JsonSerializerSettings();
 
