@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 namespace Lodis.ScriptableObjects
 {
@@ -37,6 +38,7 @@ namespace Lodis.ScriptableObjects
         public string abilityName = "Unassigned";
         [TextArea]
         public string abilityDescription = "None";
+        public VideoClip exampleClip;
         [Tooltip("The type describes the strength and input value for the ability")]
         public AbilityType AbilityType;
 

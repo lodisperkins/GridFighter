@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SF_Straight_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
   abilityName: Double Punch
-  abilityDescription: None
+  abilityDescription: Spawns a slow moving projectile thats good for applying pressure.
   AbilityType: 6
   timeActive: 0.2
   recoverTime: 0.1

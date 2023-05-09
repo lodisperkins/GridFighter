@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: EnergyTurret
   abilityDescription: Creates a turret that fires a rapid barrage of lasers.
+  exampleClip: {fileID: 32900000, guid: 4ee315abfd485104f89db8a3bc154782, type: 3}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.2

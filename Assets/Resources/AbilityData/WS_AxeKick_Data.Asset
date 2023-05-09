@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WS_AxeKick_Data
   m_EditorClassIdentifier: 
   abilityName: Axe Kick
-  abilityDescription: None
+  abilityDescription: A quick spinning kick that has a wide range.
   AbilityType: 1
   timeActive: 0.2
   recoverTime: 0.2

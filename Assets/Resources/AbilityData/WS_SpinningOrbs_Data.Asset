@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: WS_SpinningOrbs_Data
   m_EditorClassIdentifier: 
   abilityName: SpinningOrbs
-  abilityDescription: None
+  abilityDescription: Spawns two energy orbs that orbit and damages anything in range.
   AbilityType: 1
   timeActive: 0.08
   recoverTime: 0.3

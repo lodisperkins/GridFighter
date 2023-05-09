@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SF_AuraSpear_Data
   m_EditorClassIdentifier: 
   abilityName: ChargeAuraSpear
-  abilityDescription: None
+  abilityDescription: Spawns a strong projetile in front that deals high knockback.
   AbilityType: 6
   timeActive: 0.1
   recoverTime: 0.4

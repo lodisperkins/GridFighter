@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: WB_LobShot_Data
   m_EditorClassIdentifier: 
   abilityName: LobShot
-  abilityDescription: None
+  abilityDescription: Fires an arching shot that knocks the opponent towards you
+    for a follow up attack.
   AbilityType: 3
   timeActive: 0.05
   recoverTime: 0.3

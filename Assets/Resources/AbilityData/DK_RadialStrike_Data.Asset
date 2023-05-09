@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: RadialStrike
   abilityDescription: Dash forward at high speed before delivering an ultra-hot sweep
     kick!
+  exampleClip: {fileID: 32900000, guid: 8e541586a4f46f4448fda10ffc2ff470, type: 3}
   AbilityType: 8
   timeActive: 0.3
   recoverTime: 0.6

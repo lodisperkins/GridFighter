@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SB_FlareLauncher_Data
   m_EditorClassIdentifier: 
   abilityName: Flare Wheel
-  abilityDescription: None
+  abilityDescription: Spawns a giant flame blade that deals massive damage.
   AbilityType: 7
   timeActive: 0.4
   recoverTime: 0.3

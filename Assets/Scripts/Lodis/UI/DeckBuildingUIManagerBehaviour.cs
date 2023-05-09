@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Lodis.Utility;
 using System;
 using Lodis.CharacterCreation;
+using UnityEngine.Video;
 
 namespace Lodis.UI
 {
@@ -27,6 +28,8 @@ namespace Lodis.UI
         private bool _setSelectedToFirstLoadout;
         [SerializeField]
         private Text _infoTextBox;
+        [SerializeField]
+        private VideoPlayer _infoPlayer;
         [SerializeField]
         private Image _backIconSlot;
         [SerializeField]
@@ -210,6 +213,12 @@ namespace Lodis.UI
                         UpdateIconChoicesWithType(type, true);
                     });
                 }
+
+                abilityButtonInstance.AddOnSelectEvent(() =>
+                {
+                    _infoTextBox.text = currentData.abilityDescription;
+                    _infoPlayer.clip = currentData.exampleClip;
+                });
 
                 setSelected = false;
             }

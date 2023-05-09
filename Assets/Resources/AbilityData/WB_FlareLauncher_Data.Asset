@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: WB_FlareLauncher_Data
   m_EditorClassIdentifier: 
   abilityName: FlareLauncher
-  abilityDescription: None
+  abilityDescription: Perform a flaming backflip that launches your opponent in the
+    air.
   AbilityType: 3
   timeActive: 0.2
   recoverTime: 0.2

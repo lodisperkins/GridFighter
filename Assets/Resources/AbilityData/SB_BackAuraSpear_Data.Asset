@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: SB_BackAuraSpear_Data
   m_EditorClassIdentifier: 
   abilityName: ChargeBackAuraSpear
-  abilityDescription: None
+  abilityDescription: Spawns a strong projectile behind the enemy to catch them by
+    surprise.
   AbilityType: 7
   timeActive: 0.1
   recoverTime: 0.4
