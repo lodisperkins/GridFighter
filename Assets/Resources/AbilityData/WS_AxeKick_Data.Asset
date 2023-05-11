@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Axe Kick
   abilityDescription: A quick spinning kick that has a wide range.
+  exampleClip: {fileID: 0}
   AbilityType: 1
   timeActive: 0.2
   recoverTime: 0.2

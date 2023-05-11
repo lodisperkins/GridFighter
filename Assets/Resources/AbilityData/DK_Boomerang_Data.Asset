@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: Throws a spinning blade forward that will change direction
     after hitting an enemy. Catch it on the way back to throw it again! Can be thrown
     3 times before despawning.
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.3

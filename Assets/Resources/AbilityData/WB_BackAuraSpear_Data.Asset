@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: BackAuraSpear
   abilityDescription: Spawns a projectile behind the enemy to catch them by surprise.
+  exampleClip: {fileID: 0}
   AbilityType: 3
   timeActive: 0.1
   recoverTime: 0.1

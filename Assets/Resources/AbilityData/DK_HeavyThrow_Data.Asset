@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: HeavyThrow
   abilityDescription: Dash towards the oppponent to carry them up high before throwing
     them down to the ground.
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 1
   recoverTime: 1.2

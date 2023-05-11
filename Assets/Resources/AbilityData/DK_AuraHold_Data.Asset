@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: AuraHold
   abilityDescription: Capture the opponent in a bubble of energy to set up follow
     up attacks.
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.6

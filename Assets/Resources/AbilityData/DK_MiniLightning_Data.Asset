@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: LightingBarrage
   abilityDescription: Summon multiple lightning strikes in a straight line a few
     panels away.
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.3

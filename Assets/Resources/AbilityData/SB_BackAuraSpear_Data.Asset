@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: ChargeBackAuraSpear
   abilityDescription: Spawns a strong projectile behind the enemy to catch them by
     surprise.
+  exampleClip: {fileID: 0}
   AbilityType: 7
   timeActive: 0.1
   recoverTime: 0.4

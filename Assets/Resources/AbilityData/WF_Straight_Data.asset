@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: Straight
   abilityDescription: "Fires a quick flame punch. Doesn\u2019t travel far, but does
     a little knockback to the opponent when it lands.\r\n"
+  exampleClip: {fileID: 0}
   AbilityType: 2
   timeActive: 0.1
   recoverTime: 0.1
