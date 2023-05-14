@@ -11,6 +11,8 @@ namespace Lodis.Utility
         private float _speed;
         [SerializeField]
         private Vector3 _positionOffset;
+        [SerializeField]
+        private bool _useWorldPosition;
         private Vector3 _startPosition;
         private Vector3 _target;
         private float _time;
@@ -18,13 +20,24 @@ namespace Lodis.Utility
         // Start is called before the first frame update
         void Start()
         {
-            _startPosition = transform.localPosition;
-            _target = transform.localPosition + _positionOffset;
+            if (!_useWorldPosition)
+            {
+                _startPosition = transform.localPosition;
+                _target = transform.localPosition + _positionOffset;
+                return;
+            }
+
+            _startPosition = transform.position;
+            _target = transform.position + _positionOffset;
         }
 
         void Update()
         {
-            transform.localPosition = Vector3.LerpUnclamped(_startPosition, _target, Mathf.Cos(_time += Time.deltaTime) * _speed);
+            if (!_useWorldPosition)
+                transform.localPosition = Vector3.LerpUnclamped(_startPosition, _target, Mathf.Cos(_time += Time.deltaTime * _speed) );
+            else
+                transform.position = Vector3.LerpUnclamped(_startPosition, _target, Mathf.Cos(_time += Time.deltaTime * _speed));
+
         }
 
     }
