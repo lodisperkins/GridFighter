@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: DeckRebooter
   abilityDescription: Fires a projectile that forces the opponent to reshuffle their
     deck.
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.3
@@ -54,13 +55,13 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 4025655
     MultiHitWaitTime: 0
-    Damage: 0
+    Damage: 2
     BaseKnockBack: 0
     KnockBackScale: 0
     HitAngle: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0.5
+    HitStunTime: 0.7
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8

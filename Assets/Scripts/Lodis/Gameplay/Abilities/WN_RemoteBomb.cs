@@ -33,23 +33,20 @@ namespace Lodis.Gameplay
             _explosionColliderData = GetColliderData(0);
         }
 
-        private void SpawnExplosion()
-        {
-
-            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position + Vector3.up * 0.5f, Vector3.one, _explosionColliderData, owner);
-
-            ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
-        }
-
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
             //The base activate func fires a single instance of the projectile when called
-
+            
             //Spawn remote bomb if none are out.
-            if (ActiveProjectiles.Count == 0)
+            if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {
                 Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
+
+                HitColliderBehaviour collider = Projectile.GetComponent<HitColliderBehaviour>();
+
+                collider.ColliderInfo = _explosionColliderData;
+                collider.Owner = owner;
 
                 Vector2 direction = owner.transform.forward;
                 //Bomb using grid movement to find the panel it should stay on. 
@@ -60,15 +57,6 @@ namespace Lodis.Gameplay
 
                 gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
                 ActiveProjectiles.Add(Projectile);
-
-                //Sets a new timer to explode the bomb by default.
-                _despawnAction = RoutineBehaviour.Instance.StartNewTimedAction(parameters => SpawnExplosion(), TimedActionCountType.SCALEDTIME, _despawnTime);
-            }
-            //Otherwise the bomb is activated.
-            else
-            {
-                RoutineBehaviour.Instance.StopAction(_despawnAction);
-                SpawnExplosion();
             }
 
         }
