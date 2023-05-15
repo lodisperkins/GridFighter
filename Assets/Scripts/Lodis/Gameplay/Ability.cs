@@ -44,6 +44,9 @@ namespace Lodis.Gameplay
         private Movement.GridMovementBehaviour _ownerMoveScript;
         private CharacterAnimationBehaviour _ownerAnimationScript;
         private InputBehaviour _ownerInput;
+        private Vector3 _accessoryStartPosition;
+        private Quaternion _accessoryStartRotation;
+        private GameObject _accessoryInstance;
         //The object that is using the ability
         public GameObject owner = null;
         public MovesetBehaviour OwnerMoveset = null;
@@ -120,6 +123,7 @@ namespace Lodis.Gameplay
         protected KnockbackBehaviour OwnerKnockBackScript { get => _ownerKnockBackScript; private set => _ownerKnockBackScript = value; }
         protected GridMovementBehaviour OwnerMoveScript { get => _ownerMoveScript; private set => _ownerMoveScript = value; }
         protected CharacterAnimationBehaviour OwnerAnimationScript { get => _ownerAnimationScript; private set => _ownerAnimationScript = value; }
+        public GameObject AccessoryInstance { get => _accessoryInstance; private set => _accessoryInstance = value; }
 
         /// <summary>
         /// The phase before an the ability is activated. This is where the character is building up
@@ -319,6 +323,27 @@ namespace Lodis.Gameplay
                 _colliderInfo.Add(info);
             }
 
+            InitializeAccessory();
+        }
+
+        private void InitializeAccessory()
+        {
+            if (!abilityData.Accessory)
+                return;
+
+
+            for (int i = 0; i < owner.transform.childCount; i++)
+            {
+                Transform child = owner.transform.GetChild(i);
+
+                if (child.CompareTag("Accessory"))
+                {
+                    _accessoryInstance = child.gameObject;
+                    _accessoryStartPosition = _accessoryInstance.transform.localPosition;
+                    _accessoryStartRotation = _accessoryInstance.transform.localRotation;
+                    break;
+                }
+            }
         }
 
         private void Start(params object[] args)
@@ -460,6 +485,37 @@ namespace Lodis.Gameplay
         public HitColliderData GetColliderData(string name)
         {
             return _colliderInfo.Find(info => info.Name == name);
+        }
+
+        /// <summary>
+        /// Make the accessory appear and play the spawn effect.
+        /// </summary>
+        public void EnableAccessory()
+        {
+            if (!abilityData.Accessory)
+                return;
+
+            GameObject spawnEffect = abilityData.Accessory.SpawnEffect;
+
+            ObjectPoolBehaviour.Instance.GetObject(spawnEffect, _accessoryInstance.transform.position, _accessoryInstance.transform.rotation);
+
+            _accessoryInstance.SetActive(true);
+        }
+
+
+        /// <summary>
+        /// Make the accessory disappear and play the despawn effect.
+        /// </summary>
+        public void DisableAccessory()
+        {
+            if (!abilityData.Accessory)
+                return;
+
+            GameObject despawnEffect = abilityData.Accessory.DespawnEffect;
+
+            ObjectPoolBehaviour.Instance.GetObject(despawnEffect, _accessoryInstance.transform.position, _accessoryInstance.transform.rotation);
+
+            _accessoryInstance.SetActive(false);
         }
     }
 

@@ -12,6 +12,7 @@ TagManager:
   - Panel
   - Reflector
   - WinCollider
+  - Accessory
   layers:
   - Default
   - TransparentFX

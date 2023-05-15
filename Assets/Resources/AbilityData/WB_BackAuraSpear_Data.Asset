@@ -40,6 +40,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 1697626822471647621, guid: 08c30329d97a6be479634e37e369e13c,
     type: 3}
+  Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   DisplayIcon: {fileID: 21300000, guid: 0ff4133a99691c34d9ad593323083285, type: 3}
   ActivateSound: {fileID: 8300000, guid: 143dbcaf8d4d81741948f077c9ae5904, type: 3}
   ActiveSound: {fileID: 0}
@@ -66,7 +67,7 @@ MonoBehaviour:
     AbilityType: 3
     SpawnEffect: {fileID: 3641247538292551802, guid: 80bad1f38225a3a44bf688233774dbb0,
       type: 3}
-    HitSpark: {fileID: 5803877790521241106, guid: 9699fdb12d707aa4f8ef7a924c76132d,
+    HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
     HitStopTimeModifier: 1.3

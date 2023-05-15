@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a130120a0a75b4681e7a8abe493a0d, type: 3}
+  m_Name: Zyra_Thalamus
+  m_EditorClassIdentifier: 
+  _name: Thalamus
+  _visual: {fileID: 2177577569625369960, guid: 3cea411d339b90b45b77f2bc1c0eab4c, type: 3}
+  _spawnEffect: {fileID: 6002612636095783793, guid: 278762b1b2ec95445b398e191c409631,
+    type: 3}
+  _despawnEffect: {fileID: 6002612636095783793, guid: 278762b1b2ec95445b398e191c409631,
+    type: 3}

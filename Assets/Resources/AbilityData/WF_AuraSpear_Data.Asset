@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: AuraSpear
   abilityDescription: Fires a quick mid range projectile that does moderate knockback
     on hit.
+  exampleClip: {fileID: 0}
   AbilityType: 2
   timeActive: 0.1
   recoverTime: 0.3
@@ -40,6 +41,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 1697626822471647621, guid: 08c30329d97a6be479634e37e369e13c,
     type: 3}
+  Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   DisplayIcon: {fileID: 21300000, guid: 32b94a03036da1d4f82083160aaf0b70, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}

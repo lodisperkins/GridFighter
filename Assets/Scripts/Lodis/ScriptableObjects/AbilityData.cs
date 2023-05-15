@@ -97,6 +97,8 @@ namespace Lodis.ScriptableObjects
         public bool playAnimationManually = false;
         [Tooltip("The prefab that holds the visual this ability will be using.")]
         public GameObject visualPrefab;
+        [Tooltip("The data for the accessory that this ability needs to reference.")]
+        public AccessoryData Accessory;
         [Tooltip("The icon thatv will display when this ability is on screen")]
         public Sprite DisplayIcon;
         public AudioClip ActivateSound;
