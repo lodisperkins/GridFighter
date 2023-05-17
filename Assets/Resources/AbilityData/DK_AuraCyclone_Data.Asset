@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Aura Cyclone
   abilityDescription: Spawns a massive tornado that launches enemies into the air!
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.2
   recoverTime: 0.4
@@ -39,6 +40,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 7196514569071348718, guid: f4de0ad4164afdc4681915a7beae823f,
     type: 3}
+  Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   DisplayIcon: {fileID: 21300000, guid: 7613c1a5cca8d794486c3e93ced5dd16, type: 3}
   ActivateSound: {fileID: 8300000, guid: c70d041ebb56ad9478519facc92b9307, type: 3}
   ActiveSound: {fileID: 0}

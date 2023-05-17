@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: GroundPound
   abilityDescription: Performs a high jump before smashing into the ground. The traveling
     shockwave can knock enemies toward you. Great for extending combos!
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.5
   recoverTime: 0.2
@@ -40,6 +41,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 3279573249412428936, guid: 639a7f10eedc0bb4ca0934e82c591cd3,
     type: 3}
+  Accessory: {fileID: 0}
   DisplayIcon: {fileID: 21300000, guid: 04885d24989cd9f4ba28522fb6809ec2, type: 3}
   ActivateSound: {fileID: 8300000, guid: a6e80f4644431c74ba15232e360f8382, type: 3}
   ActiveSound: {fileID: 0}

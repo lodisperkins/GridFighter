@@ -41,6 +41,7 @@ MonoBehaviour:
   playAnimationManually: 1
   visualPrefab: {fileID: 7598562225367582983, guid: 78a1c3c790b52ab418e331bbb9c12aff,
     type: 3}
+  Accessory: {fileID: 0}
   DisplayIcon: {fileID: 21300000, guid: a5b20bfd986023340a9b09e3118a41a9, type: 3}
   ActivateSound: {fileID: 8300000, guid: 30be62bbf4aceee449850dbe76565062, type: 3}
   ActiveSound: {fileID: 0}

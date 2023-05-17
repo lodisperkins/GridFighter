@@ -15,10 +15,11 @@ MonoBehaviour:
   abilityName: ElectroBomb
   abilityDescription: Unleashes a devastating ball of energy that does massive damage
     and knockback.
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 1
   recoverTime: 1.5
-  startUpTime: 1.25
+  startUpTime: 0.7
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 5
@@ -40,6 +41,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 120879900363717271, guid: 3744f3d4f0443be4485c61a30c15069e,
     type: 3}
+  Accessory: {fileID: 0}
   DisplayIcon: {fileID: 21300000, guid: ed1328bebb7a1f7498608426e301efc9, type: 3}
   ActivateSound: {fileID: 8300000, guid: 96862131907dbd34783bda7432ae5baf, type: 3}
   ActiveSound: {fileID: 0}
