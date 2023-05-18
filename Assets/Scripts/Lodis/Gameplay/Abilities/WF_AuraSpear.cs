@@ -11,17 +11,45 @@ namespace Lodis.Gameplay
     /// </summary>
     public class WF_AuraSpear : ProjectileAbility
     {
-	    //Called when ability is created
+        private HitColliderData _swordCollider;
+        private GameObject _flurryRef;
+        private GameObject _flurry;
+        private ConditionAction _spawnAccessoryAction;
+
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
+            _flurryRef = Resources.Load<GameObject>("Projectiles/Prototype2/SwordFlurry");
+        }
+
+        protected override void OnStart(params object[] args)
+        {
+            base.OnStart(args);
+            _swordCollider = GetColliderData(0);
+        }
+
+        private void SpawnFlurry(params object[] args)
+        {
+            _flurry = ObjectPoolBehaviour.Instance.GetObject(_flurryRef, Projectile.transform.position, Projectile.transform.rotation);
+            HitColliderBehaviour flurryCollider = _flurry.GetComponent<HitColliderBehaviour>();
+
+            flurryCollider.ColliderInfo = GetColliderData(1);
+            flurryCollider.Owner = owner;
+
+            DisableAccessory();
+            RoutineBehaviour.Instance.StopAction(_spawnAccessoryAction);
+
+            _spawnAccessoryAction = RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !_flurry.activeInHierarchy);
+
+            ActiveProjectiles.Add(_flurry);
         }
 
         private void SpawnSword()
         {
             DisableAccessory();
 
-            RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
+            _spawnAccessoryAction =  RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
         }
 
 	    //Called when ability is used
@@ -32,6 +60,8 @@ namespace Lodis.Gameplay
             //Only fire if there aren't two many instances of this object active
             if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
                 return;
+
+            ProjectileColliderData.OnHit += SpawnFlurry;
 
             if (OwnerMoveScript.IsMoving)
             {
@@ -46,6 +76,7 @@ namespace Lodis.Gameplay
                 base.OnActivate(args);
                 SpawnSword();
             }
+            
             
 
         }
