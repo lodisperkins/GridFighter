@@ -19,7 +19,7 @@ MonoBehaviour:
   AbilityType: 2
   timeActive: 0.1
   recoverTime: 0.3
-  startUpTime: 0.2
+  startUpTime: 0.07
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 0
@@ -81,6 +81,7 @@ MonoBehaviour:
     value: 12
   - name: MaxInstances
     value: 1
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  animationType: 3
+  _customAnimation: {fileID: -1411638731736582281, guid: f6cd47805ff66084483c78007c7f59c4,
+    type: 3}
   _additionalAnimations: []

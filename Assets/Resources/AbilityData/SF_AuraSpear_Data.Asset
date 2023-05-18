@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: ChargeAuraSpear
   abilityDescription: Spawns a strong projetile in front that deals high knockback.
+  exampleClip: {fileID: 0}
   AbilityType: 6
   timeActive: 0.1
   recoverTime: 0.4
@@ -39,6 +40,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 1697626822471647621, guid: 3f3be6fac60b20641a97a584fcfed1bb,
     type: 3}
+  Accessory: {fileID: 0}
   DisplayIcon: {fileID: 21300000, guid: 32b94a03036da1d4f82083160aaf0b70, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
@@ -78,6 +80,7 @@ MonoBehaviour:
     value: 10
   - name: MaxInstances
     value: 1
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  animationType: 3
+  _customAnimation: {fileID: -1411638731736582281, guid: f6cd47805ff66084483c78007c7f59c4,
+    type: 3}
   _additionalAnimations: []

@@ -58,7 +58,7 @@ namespace Lodis.Gameplay
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, Camera.main.transform.rotation);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect, 1);
-            _chargeEffect.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.UNBLOCKABLE;
+            _chargeEffect.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.DANGER;
 
             //Cache stat values to avoid repetitive calls.
             _riseSpeed = abilityData.GetCustomStatValue("RiseSpeed");
