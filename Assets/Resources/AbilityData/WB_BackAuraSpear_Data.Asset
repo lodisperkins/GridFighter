@@ -81,5 +81,6 @@ MonoBehaviour:
   - name: MaxInstances
     value: 1
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: 6dcef57e9129714468043e17465ac152, type: 3}
+  _customAnimation: {fileID: 7623476096177806632, guid: d009465e92390b842a9d41c99033afb1,
+    type: 3}
   _additionalAnimations: []

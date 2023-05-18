@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: 'Dash through enemies with this quick melee attack! The direction
     of the dash changes based on the input held. Press a different direction after
     the first dash to perform another. '
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.2
   recoverTime: 0.5
@@ -41,6 +42,7 @@ MonoBehaviour:
   playAnimationManually: 1
   visualPrefab: {fileID: 2687681970527639378, guid: ca4f72983901ab345bd9ed830c3c6d5f,
     type: 3}
+  Accessory: {fileID: 0}
   DisplayIcon: {fileID: 21300000, guid: 03f6af0b5e869c6408d27c5e7aebbc6c, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 8300000, guid: 30be62bbf4aceee449850dbe76565062, type: 3}
