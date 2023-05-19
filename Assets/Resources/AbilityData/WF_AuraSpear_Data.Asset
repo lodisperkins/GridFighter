@@ -85,10 +85,10 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 3991863
     MultiHitWaitTime: 0.08
-    Damage: 2
-    BaseKnockBack: 1
+    Damage: 0.5
+    BaseKnockBack: 0.2
     KnockBackScale: 0.7
-    HitAngle: 1.5
+    HitAngle: 1.4
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.7

@@ -54,7 +54,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4155703
-    MultiHitWaitTime: 0.03
+    MultiHitWaitTime: 0.1
     Damage: 1
     BaseKnockBack: 1
     KnockBackScale: 1
