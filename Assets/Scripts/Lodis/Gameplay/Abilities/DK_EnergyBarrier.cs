@@ -21,9 +21,6 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            //Player should only be able to cancel attack on hit
-            abilityData.canCancelActive = false;
-            abilityData.canCancelRecover = false;
             //Get owner health
             _ownerHealth = owner.GetComponent<HealthBehaviour>();
         }
@@ -33,8 +30,6 @@ namespace Lodis.Gameplay
         {
             //Create barrier collider
             _barrierCollider = GetColliderData(0);
-            //Allow canceling on hit
-            _barrierCollider.OnHit += arguments => { abilityData.canCancelActive = true; abilityData.canCancelRecover = true; EndAbility(); };
 
             //Set the position of the barrier in relation to the character
             Vector3 offset = new Vector3(abilityData.GetCustomStatValue("XOffset") * owner.transform.forward.x, abilityData.GetCustomStatValue("YOffset"), 0);

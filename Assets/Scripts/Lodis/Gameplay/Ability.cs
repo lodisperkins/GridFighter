@@ -193,29 +193,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public bool CheckIfAbilityCanBeCanceledInPhase()
         {
-            switch (CurrentAbilityPhase)
-            {
-                case AbilityPhase.STARTUP:
-                    if (abilityData.canCancelStartUp)
-                    {
-                        return true;
-                    }
-                    break;
-                case AbilityPhase.ACTIVE:
-                    if (abilityData.canCancelActive)
-                    {
-                        return true;
-                    }
-                    break;
-                case AbilityPhase.RECOVER:
-                    if (abilityData.canCancelRecover)
-                    {
-                        return true;
-                    }
-                    break;
-            }
-
-            return false;
+            return GetCurrentCancelRule().ComparePhase(CurrentAbilityPhase);
         }
 
         /// <summary>
@@ -233,16 +211,16 @@ namespace Lodis.Gameplay
             if (!CheckIfAbilityCanBeCanceledInPhase())
                 return false;
 
-            if (abilityData.CanOnlyCancelOnOpponentHit && !_opponentHit)
+            if (GetCurrentCancelRule().CanOnlyCancelOnOpponentHit && !_opponentHit)
                 return false;
 
             if (nextAbility != null)
             {
-                if (nextAbility == this && !abilityData.CanCancelIntoSelf)
+                if (nextAbility == this && !GetCurrentCancelRule().CanCancelIntoSelf)
                     return false;
-                else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && !abilityData.CanCancelIntoSpecial)
+                else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && !GetCurrentCancelRule().CanCancelIntoSpecial)
                     return false;
-                else if ((int)nextAbility.abilityData.AbilityType < 8 && !abilityData.CanCancelIntoNormal)
+                else if ((int)nextAbility.abilityData.AbilityType < 8 && !GetCurrentCancelRule().CanCancelIntoNormal)
                     return false;
             }
 
@@ -350,7 +328,7 @@ namespace Lodis.Gameplay
         {
             for (int i = 0; i < _colliderInfo.Count; i++)
             {
-                if (abilityData.CanOnlyCancelOnOpponentHit)
+                if (GetCurrentCancelRule().CanOnlyCancelOnOpponentHit)
                     OnHit += arguments =>
                     {
                         if ((GameObject)arguments[0] != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner) && CheckIfAbilityCanBeCanceledInPhase())
@@ -371,11 +349,11 @@ namespace Lodis.Gameplay
             if (!OwnerKnockBackScript)
                 return;
 
-            if (abilityData.cancelOnHit)
+            if (GetCurrentCancelRule().cancelOnHit)
                 OwnerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
-            else if (abilityData.cancelOnFlinch)
+            else if (GetCurrentCancelRule().cancelOnFlinch)
                 OwnerKnockBackScript.AddOnHitStunTempAction(EndAbility);
-            else if (abilityData.cancelOnKnockback)
+            else if (GetCurrentCancelRule().cancelOnKnockback)
                 OwnerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
 
             OnStart();
@@ -502,6 +480,10 @@ namespace Lodis.Gameplay
             _accessoryInstance.SetActive(true);
         }
 
+        public CancellationRule GetCurrentCancelRule()
+        {
+            return abilityData.GetCancellationRule(CurrentAbilityPhase);
+        }
 
         /// <summary>
         /// Make the accessory disappear and play the despawn effect.

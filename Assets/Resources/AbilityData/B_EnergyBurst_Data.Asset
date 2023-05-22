@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: EnergyBurst
   abilityDescription: None
+  exampleClip: {fileID: 0}
   AbilityType: 10
   timeActive: 0.6
   recoverTime: 0.8
@@ -21,22 +22,24 @@ MonoBehaviour:
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
-  canCancelStartUp: 1
-  canCancelActive: 1
-  canCancelRecover: 1
-  CanCancelOnMove: 1
-  CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 1
+  CancellationRules:
+  - Phase: 3
+    CanOnlyCancelOnOpponentHit: 1
+    CanCancelOnMove: 1
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 1
+    cancelOnHit: 0
+    cancelOnFlinch: 1
+    cancelOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
-  CanOnlyCancelOnOpponentHit: 1
-  cancelOnHit: 0
-  cancelOnFlinch: 0
-  cancelOnKnockback: 1
+  CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 0
   playAnimationManually: 0
   visualPrefab: {fileID: 7042668201603800225, guid: 2617db3ae35c0744699c7d5528743ca5,
     type: 3}
+  Accessory: {fileID: 0}
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 8300000, guid: 1603af129889a3a4da9ad43ab4d4dee4, type: 3}
   ActiveSound: {fileID: 0}
@@ -73,3 +76,4 @@ MonoBehaviour:
   _customStats: []
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: f2d2ab98b82d0af4894a75927c4cea8e, type: 3}
+  _additionalAnimations: []

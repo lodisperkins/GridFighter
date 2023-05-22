@@ -406,7 +406,7 @@ namespace Lodis.Input
             {
                 DisableMovementBasedOnCondition(condition => !_moveset.AbilityInUse);
             }
-            else if (_lastAbilityUsed.abilityData.CanCancelOnMove)
+            else if (_lastAbilityUsed.GetCurrentCancelRule().CanCancelOnMove)
             {
 
 

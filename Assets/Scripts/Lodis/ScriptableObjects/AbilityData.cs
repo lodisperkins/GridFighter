@@ -19,22 +19,23 @@ namespace Lodis.ScriptableObjects
         CUSTOM
     }
 
-    [System.Serializable]
-    public class Stat
-    {
-        public Stat(string newName, float newValue)
-        {
-            name = newName;
-            value = newValue;
-        }
-        public string name;
-        public float value;
-    }
 
     [CreateAssetMenu(menuName = "AbilityData/Default")]
     public class AbilityData : ScriptableObject
     {
         
+        [System.Serializable]
+        public class Stat
+        {
+            public Stat(string newName, float newValue)
+            {
+                name = newName;
+                value = newValue;
+            }
+            public string name;
+            public float value;
+        }
+
         public string abilityName = "Unassigned";
         [TextArea]
         public string abilityDescription = "None";
@@ -59,28 +60,7 @@ namespace Lodis.ScriptableObjects
         public float EnergyCost = 0;
 
         [Header("Cancellation Rules")]
-        [Tooltip("If true, this ability can be canceled into others in the start up phase")]
-        public bool canCancelStartUp = false;
-        [Tooltip("If true, this ability can be canceled into others in the active phase")]
-        public bool canCancelActive = false;
-        [Tooltip("If true, this ability can be canceled into others in the recover phase")]
-        public bool canCancelRecover = false;
-        [Tooltip("If true, this ability can be canceled when the player inputs movement")]
-        public bool CanCancelOnMove = false;
-        [Tooltip("If true, this ability can be canceled if it is used again")]
-        public bool CanCancelIntoSelf = false;
-        [Tooltip("If true, this ability can be canceled if a special move is used")]
-        public bool CanCancelIntoSpecial = false;
-        [Tooltip("If true, this ability can be canceled if a normal move is used")]
-        public bool CanCancelIntoNormal = false;
-        [Tooltip("If true, this ability can be ")]
-        public bool CanOnlyCancelOnOpponentHit = true;
-        [Tooltip("If true, this ability will be canceled when the user is hit")]
-        public bool cancelOnHit = false;
-        [Tooltip("If true, this ability will be canceled when the user is flinching")]
-        public bool cancelOnFlinch = false;
-        [Tooltip("If true, this ability will be canceled when the user is in knockback")]
-        public bool cancelOnKnockback = true;
+        public CancellationRule[] CancellationRules;
 
         [Header("Movement Rules")]
         [Tooltip("If false, the user of this ability can't move while it's winding up")]
@@ -192,6 +172,22 @@ namespace Lodis.ScriptableObjects
             {
                 return ColliderData.Length;
             }
+        }
+
+        /// <summary>
+        /// Gets the first cancellation rule that matches the given phase.
+        /// </summary>
+        /// <param name="phase">The phase that will be compared to each cancellation rule phase.</param>
+        /// <returns>The cancellation rule or null if none matched the phase.</returns>
+        public CancellationRule GetCancellationRule(AbilityPhase phase)
+        {
+            foreach (CancellationRule rule in CancellationRules)
+            {
+                if (rule.ComparePhase(phase))
+                    return rule;
+            }
+
+            return null;
         }
     }
 

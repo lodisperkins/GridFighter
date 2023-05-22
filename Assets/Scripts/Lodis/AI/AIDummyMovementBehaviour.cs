@@ -78,7 +78,7 @@ namespace Lodis.AI
         {
             PanelBehaviour start = _movementBehaviour.CurrentPanel;
 
-            if (_needPath && (StateMachine.CurrentState == "Idle" || (StateMachine.CurrentState == "Attack" && _moveset.LastAbilityInUse.abilityData.CanCancelOnMove)))
+            if (_needPath && (StateMachine.CurrentState == "Idle" || (StateMachine.CurrentState == "Attack" && _moveset.LastAbilityInUse.GetCurrentCancelRule().CanCancelOnMove)))
             {
                 _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment);
                 _needPath = false;

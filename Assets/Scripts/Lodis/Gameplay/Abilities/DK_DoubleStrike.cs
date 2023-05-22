@@ -166,15 +166,11 @@ namespace Lodis.Gameplay
                 currentActivationAmount = activationAmount;
                 string[] slots = OwnerMoveset.GetAbilityNamesInCurrentSlots();
 
-                abilityData.canCancelRecover = true;
-
                 //Check slots to be sure only doublestrike is activated again
                 if (slots[0] == abilityData.abilityName)
                     OwnerMoveset.UseSpecialAbility(0, _ownerInput.AttackDirection);
                 else
                     OwnerMoveset.UseSpecialAbility(1, _ownerInput.AttackDirection);
-
-                abilityData.canCancelRecover = false;
             }
         }
     }
