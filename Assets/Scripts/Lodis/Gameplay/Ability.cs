@@ -193,7 +193,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public bool CheckIfAbilityCanBeCanceledInPhase()
         {
-            return GetCurrentCancelRule().ComparePhase(CurrentAbilityPhase);
+            return GetCurrentCancelRule()?.ComparePhase(CurrentAbilityPhase) == true;
         }
 
         /// <summary>
@@ -211,16 +211,16 @@ namespace Lodis.Gameplay
             if (!CheckIfAbilityCanBeCanceledInPhase())
                 return false;
 
-            if (GetCurrentCancelRule().CanOnlyCancelOnOpponentHit && !_opponentHit)
+            if (GetCurrentCancelRule()?.CanOnlyCancelOnOpponentHit == true && !_opponentHit)
                 return false;
 
             if (nextAbility != null)
             {
-                if (nextAbility == this && !GetCurrentCancelRule().CanCancelIntoSelf)
+                if (nextAbility == this && GetCurrentCancelRule()?.CanCancelIntoSelf == false)
                     return false;
-                else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && !GetCurrentCancelRule().CanCancelIntoSpecial)
+                else if (nextAbility.abilityData.AbilityType == AbilityType.SPECIAL && GetCurrentCancelRule()?.CanCancelIntoSpecial == false)
                     return false;
-                else if ((int)nextAbility.abilityData.AbilityType < 8 && !GetCurrentCancelRule().CanCancelIntoNormal)
+                else if ((int)nextAbility.abilityData.AbilityType < 8 && GetCurrentCancelRule()?.CanCancelIntoNormal == false)
                     return false;
             }
 
@@ -328,14 +328,11 @@ namespace Lodis.Gameplay
         {
             for (int i = 0; i < _colliderInfo.Count; i++)
             {
-                if (GetCurrentCancelRule().CanOnlyCancelOnOpponentHit)
-                    OnHit += arguments =>
-                    {
-                        if ((GameObject)arguments[0] != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner) && CheckIfAbilityCanBeCanceledInPhase())
-                            return;
-
-                        _opponentHit = true;
-                    };
+                OnHitTemp += arguments =>
+                {
+                    if ((GameObject)arguments[0] == BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner) && GetCurrentCancelRule()?.CanOnlyCancelOnOpponentHit == true)
+                         _opponentHit = true;
+                };
 
                 HitColliderData data = _colliderInfo[i];
                 data.AddOnHitEvent(arguments =>
@@ -349,14 +346,21 @@ namespace Lodis.Gameplay
             if (!OwnerKnockBackScript)
                 return;
 
-            if (GetCurrentCancelRule().cancelOnHit)
-                OwnerKnockBackScript.AddOnTakeDamageTempAction(EndAbility);
-            else if (GetCurrentCancelRule().cancelOnFlinch)
-                OwnerKnockBackScript.AddOnHitStunTempAction(EndAbility);
-            else if (GetCurrentCancelRule().cancelOnKnockback)
-                OwnerKnockBackScript.AddOnKnockBackStartTempAction(EndAbility);
+            OwnerKnockBackScript.AddOnTakeDamageTempAction(() => TryDamageCancel(0));
+            OwnerKnockBackScript.AddOnHitStunTempAction(() => TryDamageCancel(1));
+            OwnerKnockBackScript.AddOnKnockBackStartTempAction(() => TryDamageCancel(2));
 
             OnStart();
+        }
+
+        private void TryDamageCancel(int damageType)
+        {
+            if (damageType == 0 && (GetCurrentCancelRule()?.cancelOnHit == true || abilityData.CancelAllOnHit))
+                EndAbility();
+            else if (damageType == 1 && (GetCurrentCancelRule()?.cancelOnFlinch == true || abilityData.CancelAllOnFlinch))
+                EndAbility();
+            else if (damageType == 2 && (GetCurrentCancelRule()?.cancelOnKnockback == true || abilityData.CancelAllOnKnockback))
+                EndAbility();
         }
 
         /// <summary>

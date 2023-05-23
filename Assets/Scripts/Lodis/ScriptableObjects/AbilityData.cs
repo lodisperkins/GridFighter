@@ -61,6 +61,12 @@ namespace Lodis.ScriptableObjects
 
         [Header("Cancellation Rules")]
         public CancellationRule[] CancellationRules;
+        [Tooltip("If true, this ability will be canceled when the user is takes damage in any ability phase.")]
+        public bool CancelAllOnHit;
+        [Tooltip("If true, this ability will be canceled when the user is flinching in any ability phase.")]
+        public bool CancelAllOnFlinch = true;
+        [Tooltip("If true, this ability will be canceled when the user is in knockback in any phase.")]
+        public bool CancelAllOnKnockback = true;
 
         [Header("Movement Rules")]
         [Tooltip("If false, the user of this ability can't move while it's winding up")]
@@ -181,6 +187,9 @@ namespace Lodis.ScriptableObjects
         /// <returns>The cancellation rule or null if none matched the phase.</returns>
         public CancellationRule GetCancellationRule(AbilityPhase phase)
         {
+            if (CancellationRules == null)
+                return null;
+
             foreach (CancellationRule rule in CancellationRules)
             {
                 if (rule.ComparePhase(phase))
