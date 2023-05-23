@@ -18,22 +18,24 @@ MonoBehaviour:
   exampleClip: {fileID: 0}
   AbilityType: 3
   timeActive: 0.2
-  recoverTime: 0.2
-  startUpTime: 0.15
+  recoverTime: 0.22
+  startUpTime: 0.2
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
-  canCancelStartUp: 0
-  canCancelActive: 0
-  canCancelRecover: 1
-  CanCancelOnMove: 0
-  CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 1
-  CanOnlyCancelOnOpponentHit: 1
-  cancelOnHit: 0
-  cancelOnFlinch: 1
-  cancelOnKnockback: 1
+  CancellationRules:
+  - Phase: 5
+    CanOnlyCancelOnOpponentHit: 1
+    CanCancelOnMove: 0
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 1
+    cancelOnHit: 0
+    cancelOnFlinch: 0
+    cancelOnKnockback: 0
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0

@@ -884,7 +884,10 @@ namespace Lodis.Movement
             _currentPanel.Occupied = false;
             _currentPanel = PreviousPanel;
             _targetPanel = null;
-            _currentPanel.Occupied = !CanBeWalkedThrough;
+
+            if (_currentPanel)
+                _currentPanel.Occupied = !CanBeWalkedThrough;
+
             _isMoving = false;
             _targetPosition = Vector3.zero;
         }

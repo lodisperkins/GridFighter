@@ -18,22 +18,15 @@ MonoBehaviour:
   exampleClip: {fileID: 0}
   AbilityType: 0
   timeActive: 0.05
-  recoverTime: 0.2
+  recoverTime: 0.15
   startUpTime: 0.2
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 0
-  canCancelStartUp: 0
-  canCancelActive: 1
-  canCancelRecover: 1
-  CanCancelOnMove: 0
-  CanCancelIntoSelf: 1
-  CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 1
-  CanOnlyCancelOnOpponentHit: 0
-  cancelOnHit: 0
-  cancelOnFlinch: 1
-  cancelOnKnockback: 0
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 0
@@ -41,6 +34,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 8229971569440717597, guid: 2c4414b85b8930e4eb3100229c798e7b,
     type: 3}
+  Accessory: {fileID: 0}
   DisplayIcon: {fileID: 21300000, guid: e1ad5027f3b05a74288aaa9b76b0054c, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 8300000, guid: 18539e1bad355b64e82686604e42f44c, type: 3}
@@ -58,7 +52,7 @@ MonoBehaviour:
     Damage: 7
     BaseKnockBack: 0.6
     KnockBackScale: 0
-    HitAngle: 2.2
+    HitAngle: 1.2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.5

@@ -15,30 +15,34 @@ MonoBehaviour:
   abilityName: PanelSteal
   abilityDescription: Temporarily takes a row of the opponent panels. Good for applying
     extra pressure and removing movement options!
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.01
   recoverTime: 0.05
-  startUpTime: 0.1
+  startUpTime: 0
   chargeTime: 1
   maxActivationAmount: 1
   EnergyCost: 1
-  canCancelStartUp: 0
-  canCancelActive: 0
-  canCancelRecover: 1
-  CanCancelOnMove: 1
-  CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
-  CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 1
-  cancelOnHit: 0
-  cancelOnFlinch: 0
-  cancelOnKnockback: 1
+  CancellationRules:
+  - Phase: 6
+    CanOnlyCancelOnOpponentHit: 0
+    CanCancelOnMove: 1
+    CanCancelIntoSelf: 1
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 1
+    cancelOnHit: 0
+    cancelOnFlinch: 0
+    cancelOnKnockback: 0
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 0}
+  Accessory: {fileID: 0}
   DisplayIcon: {fileID: 21300000, guid: 6debc8c8ef534be438d7864907223333, type: 3}
   ActivateSound: {fileID: 8300000, guid: 9d9bcff4b6c870642a2329d3406aac92, type: 3}
   ActiveSound: {fileID: 0}
