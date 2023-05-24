@@ -17,8 +17,8 @@ MonoBehaviour:
     on hit.
   exampleClip: {fileID: 0}
   AbilityType: 2
-  timeActive: 0.5
-  recoverTime: 0.3
+  timeActive: 0.3
+  recoverTime: 0.1
   startUpTime: 0.07
   chargeTime: 0
   maxActivationAmount: 1

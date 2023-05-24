@@ -16,23 +16,16 @@ MonoBehaviour:
   abilityDescription: Spawns a strong projetile in front that deals high knockback.
   exampleClip: {fileID: 0}
   AbilityType: 6
-  timeActive: 0.1
-  recoverTime: 0.4
+  timeActive: 0.3
+  recoverTime: 0.25
   startUpTime: 0.3
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 0
-  canCancelStartUp: 0
-  canCancelActive: 0
-  canCancelRecover: 0
-  CanCancelOnMove: 0
-  CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 1
-  cancelOnHit: 0
-  cancelOnFlinch: 1
-  cancelOnKnockback: 1
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0

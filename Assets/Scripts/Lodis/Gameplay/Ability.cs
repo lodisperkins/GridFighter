@@ -328,7 +328,7 @@ namespace Lodis.Gameplay
         {
             for (int i = 0; i < _colliderInfo.Count; i++)
             {
-                OnHitTemp += arguments =>
+                OnHit += arguments =>
                 {
                     if ((GameObject)arguments[0] == BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner) && GetCurrentCancelRule()?.CanOnlyCancelOnOpponentHit == true)
                          _opponentHit = true;
@@ -392,6 +392,13 @@ namespace Lodis.Gameplay
                 OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + attackDirection);
                 OwnerMoveScript.CanCancelMovement = false;
             }
+
+
+            OwnerMoveScript.AddOnMoveBeginTempAction(() =>
+            {
+                if (GetCurrentCancelRule()?.CanCancelOnMove == true)
+                    EndAbility();
+            });
 
             OnActivate(args);
         }

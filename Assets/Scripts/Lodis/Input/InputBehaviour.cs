@@ -402,18 +402,25 @@ namespace Lodis.Input
             if (_lastAbilityUsed == null)
                 return;
 
-            if (!_lastAbilityUsed.abilityData.CanInputMovementWhileActive)
-            {
-                DisableMovementBasedOnCondition(condition => !_moveset.AbilityInUse);
-            }
-            else if (_lastAbilityUsed.GetCurrentCancelRule()?.CanCancelOnMove == true)
-            {
-
-
-                _gridMovement.DisableMovement(condition => _moveset.GetCanUseAbility());
-            }
+            _canMove = false;
+            RoutineBehaviour.Instance.StartNewConditionAction(context => _canMove = true, condition => CheckInputAllowedInAbilityPhase() || _stateMachineBehaviour.StateMachine.CurrentState != "Attacking");
         }
 
+        private bool CheckInputAllowedInAbilityPhase()
+        {
+            if (_lastAbilityUsed == null)
+                return true;
+
+            if (_lastAbilityUsed.CurrentAbilityPhase == AbilityPhase.STARTUP && _lastAbilityUsed.abilityData.CanInputMovementDuringStartUp)
+                return true;
+            else if (_lastAbilityUsed.CurrentAbilityPhase == AbilityPhase.ACTIVE && _lastAbilityUsed.abilityData.CanInputMovementWhileActive)
+                return true;
+            else if (_lastAbilityUsed.CurrentAbilityPhase == AbilityPhase.RECOVER && _lastAbilityUsed.abilityData.CanInputMovementWhileRecovering)
+                return true;
+
+            return false;
+
+        }
         /// <summary>
         /// Disable player movement on grid
         /// </summary>
