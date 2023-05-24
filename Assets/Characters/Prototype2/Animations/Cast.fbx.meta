@@ -15,6 +15,9 @@ ModelImporter:
   - first:
       74: 4110643206957675837
     second: rig|ForwardCast (1)
+  - first:
+      74: 3374748389425109202
+    second: Cast
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -30,11 +33,10 @@ ModelImporter:
     rigImportErrors: 
     rigImportWarnings: 
     animationImportErrors: 
-    animationImportWarnings: "\nClip 'rig|ForwardCast' has import animation warnings
+    animationImportWarnings: "\nClip 'rig|rigAction' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
       to improve retargeting quality.\n\t'DEF-spine.004' is inbetween humanoid transforms
-      and has rotation animation that will be discarded.\n\t'DEF-upper_arm.L' has
-      translation animation that will be discarded.\n"
+      and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -48,11 +50,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: rig|ForwardCast (1)
-      takeName: rig|ForwardCast
+      name: Cast
+      takeName: rig|rigAction
       internalID: 0
       firstFrame: 0
-      lastFrame: 14
+      lastFrame: 16
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -72,14 +74,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.465
+      - time: 0.50124735
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.49921563
+      - time: 0.58663565
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
