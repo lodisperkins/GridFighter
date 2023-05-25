@@ -326,6 +326,15 @@ namespace Lodis.Gameplay
             }
         }
 
+        public void ResetAccessory()
+        {
+            _accessoryInstance.transform.parent = owner.transform;
+            _accessoryInstance.transform.localPosition = _accessoryStartPosition;
+            _accessoryInstance.transform.localRotation = _accessoryStartRotation;
+            EnableAccessory();
+
+        }
+
         private void Start(params object[] args)
         {
             for (int i = 0; i < _colliderInfo.Count; i++)

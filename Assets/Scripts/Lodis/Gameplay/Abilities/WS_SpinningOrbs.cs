@@ -19,9 +19,15 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
         }
 
+        protected override void OnStart(params object[] args)
+        {
+            base.OnStart(args);
+        }
+
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            DisableAccessory();
             _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
             _orbs.transform.position = new Vector3( _orbs.transform.position.x, abilityData.GetCustomStatValue("OrbHeight"), _orbs.transform.position.z);
 
@@ -47,6 +53,12 @@ namespace Lodis.Gameplay
             abilityData.GetAdditionalAnimation(0, out clip);
 
             OwnerAnimationScript.PlayAnimation(clip);
+            EnableAccessory();
+        }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
         }
 
         public override void StopAbility()
