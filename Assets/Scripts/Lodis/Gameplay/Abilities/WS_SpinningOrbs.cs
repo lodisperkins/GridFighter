@@ -19,7 +19,7 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
         }
 
-	    //Called when ability is used
+        //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
             _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
@@ -34,18 +34,27 @@ namespace Lodis.Gameplay
 
             rotation.RotateOnSelf = true;
             rotation.Speed = abilityData.GetCustomStatValue("RotationSpeed");
+
+            OwnerAnimationScript.gameObject.SetActive(false);
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
+            OwnerAnimationScript.gameObject.SetActive(true);
+            AnimationClip clip = null;
+            abilityData.GetAdditionalAnimation(0, out clip);
+
+            OwnerAnimationScript.PlayAnimation(clip);
         }
 
         public override void StopAbility()
         {
             base.StopAbility();
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
+
+            OwnerAnimationScript.gameObject.SetActive(true);
 
         }
     }

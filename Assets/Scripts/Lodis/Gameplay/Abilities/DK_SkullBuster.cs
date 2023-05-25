@@ -125,9 +125,9 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce(); _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded || opponentState != "Tumbling");
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
 
             if (_hitScript)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);

@@ -173,9 +173,9 @@ namespace Lodis.Gameplay
                 _auraSphere.transform.position += Vector3.up * _riseSpeed * Time.deltaTime;
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
             _shouldRise = false;
 
             if (!_opponentCaptured || _originalChildCount == _auraSphere.transform.childCount)

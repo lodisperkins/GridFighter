@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
 
         protected override void OnEnd()
         {
-            base.OnDeactivate();
+            base.OnRecover(null);
 
             if (_hitColliderBehaviour)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitColliderBehaviour.gameObject);

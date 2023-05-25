@@ -76,9 +76,9 @@ namespace Lodis.Gameplay
             ActiveProjectiles.Add(Projectile);
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
             if (_projectileSpawner)
                 Object.Destroy(_projectileSpawner.gameObject);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);

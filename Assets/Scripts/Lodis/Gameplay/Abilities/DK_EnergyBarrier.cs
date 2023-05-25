@@ -91,9 +91,9 @@ namespace Lodis.Gameplay
                 
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
             //Destroy the barrier
             Object.Destroy(_visualPrefabInstance);
         }

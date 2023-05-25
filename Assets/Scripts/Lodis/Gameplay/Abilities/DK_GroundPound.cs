@@ -107,9 +107,9 @@ namespace Lodis.Gameplay
             _wavesSpawned = true;
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
 
             //Stop shockwaves from moving
             if (_visualPrefabCoroutines.Item1 != null)

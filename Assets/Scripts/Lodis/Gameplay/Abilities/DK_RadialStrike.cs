@@ -89,9 +89,9 @@ namespace Lodis.Gameplay
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
             _deactivated = true;
 
             if (_visualPrefabInstance)

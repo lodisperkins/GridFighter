@@ -16,7 +16,7 @@ MonoBehaviour:
   abilityDescription: Spawns two energy orbs that orbit and damages anything in range.
   exampleClip: {fileID: 0}
   AbilityType: 1
-  timeActive: 0.08
+  timeActive: 0.3
   recoverTime: 0.3
   startUpTime: 0.1
   chargeTime: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 0
-  useAbilityTimingForAnimation: 1
+  useAbilityTimingForAnimation: 0
   playAnimationManually: 0
   visualPrefab: {fileID: 4418831361922760892, guid: 380dea3bddb8c654e9350bcf040e3464,
     type: 3}
@@ -81,5 +81,7 @@ MonoBehaviour:
   - name: RotationSpeed
     value: 20
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: d89f4ea713a48de4d8aee38ec0202058, type: 3}
-  _additionalAnimations: []
+  _customAnimation: {fileID: 880133236554766610, guid: 17a9e4acdf966b4489c6c6fcded75f65,
+    type: 3}
+  _additionalAnimations:
+  - {fileID: 880133236554766610, guid: 54251cafd513016478a32ab9ffdada8a, type: 3}

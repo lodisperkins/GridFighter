@@ -38,9 +38,9 @@ namespace Lodis.Gameplay
             rotation.Speed = abilityData.GetCustomStatValue("RotationSpeed");
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
         }
 

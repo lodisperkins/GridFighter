@@ -49,9 +49,9 @@ namespace Lodis.Gameplay
             PauseAbilityTimer();
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_shield);
 

@@ -21,7 +21,7 @@ MonoBehaviour:
   recoverTime: 0.1
   startUpTime: 0.07
   chargeTime: 0
-  maxActivationAmount: 1
+  maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
   - Phase: 5

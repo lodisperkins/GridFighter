@@ -89,9 +89,9 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_visualPrefabInstance, abilityData.timeActive + abilityData.timeActive / 3);
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
             //Despawn particles and hit box
             ResetMoveAttributes();
             owner.transform.rotation = _rotation;
@@ -157,7 +157,7 @@ namespace Lodis.Gameplay
                 _attackDirection = _ownerInput.AttackDirection;
 
                 _secondStrikeActivated = true;
-                OnDeactivate();
+                OnRecover(null);
                 int activationAmount = currentActivationAmount;
                 StopAbility();
 

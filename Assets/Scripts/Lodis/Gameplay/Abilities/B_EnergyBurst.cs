@@ -106,9 +106,9 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.DisableInvincibility();
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
             ResetState();
         }
         public override void StopAbility()

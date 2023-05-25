@@ -66,7 +66,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Called when the ability is used and before the character has recovered
         /// </summary>
-        public UnityAction onDeactivate = null;
+        public UnityAction onRecover = null;
         public int currentActivationAmount;
         /// <summary>
         /// Called when the ability's collider hits an object
@@ -166,7 +166,9 @@ namespace Lodis.Gameplay
             if (MaxActivationAmountReached)
                 _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
             else
-                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => { _inUse = false; Deactivate(); }, TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
+                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _inUse = false, TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
+
+            Recover(args);
         }
 
         /// <summary>
@@ -263,8 +265,8 @@ namespace Lodis.Gameplay
         public virtual void EndAbility()
         {
             RoutineBehaviour.Instance.StopAction(_currentTimer);
-            onDeactivate?.Invoke();
-            OnDeactivate();
+            onRecover?.Invoke();
+            OnRecover(null);
             onEnd?.Invoke();
             End();
             _inUse = false;
@@ -413,15 +415,15 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Called when the ability is entering its recovering phase after use
         /// </summary>
-        private void Deactivate()
+        private void Recover(params object[] args)
         {
-            OnDeactivate();
+            OnRecover(args);
         }
 
         /// <summary>
         /// Called when the ability is entering its recovering phase after use
         /// </summary>
-        protected virtual void OnDeactivate() { }
+        protected virtual void OnRecover(params object[] args) { }
 
         private void End()
         {
@@ -439,7 +441,7 @@ namespace Lodis.Gameplay
             onEnd = null;
             onActivateStart = null;
             onBegin = null;
-            onDeactivate = null;
+            onRecover = null;
             OnHit = null;
             OnHitTemp = null;
 

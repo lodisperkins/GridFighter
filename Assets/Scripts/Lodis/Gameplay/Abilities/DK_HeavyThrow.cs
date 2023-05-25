@@ -155,9 +155,9 @@ namespace Lodis.Gameplay
             _collider = HitColliderSpawner.SpawnBoxCollider(owner.transform, Vector3.one, GetColliderData(0), owner);
         }
 
-        protected override void OnDeactivate()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnDeactivate();
+            base.OnRecover(args);
 
             OwnerKnockBackScript.Physics.UseGravity = true;
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
