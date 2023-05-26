@@ -85,6 +85,8 @@ namespace Lodis.ScriptableObjects
         public GameObject visualPrefab;
         [Tooltip("The data for the accessory that this ability needs to reference.")]
         public AccessoryData Accessory;
+        [Tooltip("Additional effects for this ability to play.")]
+        public GameObject[] Effects;
         [Tooltip("The icon thatv will display when this ability is on screen")]
         public Sprite DisplayIcon;
         public AudioClip ActivateSound;

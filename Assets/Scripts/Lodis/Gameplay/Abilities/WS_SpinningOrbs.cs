@@ -12,6 +12,7 @@ namespace Lodis.Gameplay
     public class WS_SpinningOrbs : Ability
     {
         private GameObject _orbs;
+        private GameObject _effectInstance;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -53,6 +54,7 @@ namespace Lodis.Gameplay
             abilityData.GetAdditionalAnimation(0, out clip);
 
             OwnerAnimationScript.PlayAnimation(clip);
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], owner.transform.position, Quaternion.identity);
             EnableAccessory();
         }
 
@@ -65,6 +67,7 @@ namespace Lodis.Gameplay
         {
             base.StopAbility();
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
 
             OwnerAnimationScript.gameObject.SetActive(true);
 
