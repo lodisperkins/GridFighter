@@ -31,7 +31,7 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 7196514569071348718, guid: f4de0ad4164afdc4681915a7beae823f,
+  visualPrefab: {fileID: 7196514569071348718, guid: 894ec6782ba2ea348956f4eb4c6b39b4,
     type: 3}
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   DisplayIcon: {fileID: 21300000, guid: 7613c1a5cca8d794486c3e93ced5dd16, type: 3}
