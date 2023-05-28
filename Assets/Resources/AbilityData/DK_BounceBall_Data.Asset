@@ -43,6 +43,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 7844720829176789605, guid: bd2a17b3d597cc6458463f8f4efeafcd,
     type: 3}
   Accessory: {fileID: 0}
+  Effects: []
   DisplayIcon: {fileID: 21300000, guid: b0fc5e52668aa5447b2520b40aa43088, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}

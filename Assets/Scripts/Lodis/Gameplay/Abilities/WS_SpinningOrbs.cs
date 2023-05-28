@@ -58,9 +58,11 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
+
             OwnerAnimationScript.gameObject.SetActive(true);
-            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position, Quaternion.identity);
             EnableAccessory();
         }
 
@@ -72,6 +74,7 @@ namespace Lodis.Gameplay
 
             OwnerAnimationScript.gameObject.SetActive(true);
 
+            EnableAccessory();
         }
     }
 }

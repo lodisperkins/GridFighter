@@ -32,6 +32,48 @@ namespace Lodis.ScriptableObjects
             data.Init(value);
             return data;
         }
+
+        public static bool operator > (IntVariable lhs, int rhs)
+        {
+            return lhs.Value > rhs;
+        }
+
+        public static bool operator < (IntVariable lhs, int rhs)
+        {
+            return lhs.Value < rhs;
+        }
+
+        public static bool operator == (IntVariable lhs, int rhs)
+        {
+            return lhs.Value == rhs;
+        }
+
+        public static bool operator != (IntVariable lhs, int rhs)
+        {
+            return lhs.Value != rhs;
+        }
+
+        public static IntVariable operator -- (IntVariable lhs)
+        {
+            lhs.Value--;
+            return lhs;
+        }
+
+        public static IntVariable operator ++ (IntVariable lhs)
+        {
+            lhs.Value++;
+            return lhs;
+        }
+
+        public static implicit operator string(IntVariable lhs)
+        {
+            return lhs.Value.ToString();
+        }
+
+        public static implicit operator int(IntVariable lhs)
+        {
+            return lhs.Value;
+        }
     }
 }
 

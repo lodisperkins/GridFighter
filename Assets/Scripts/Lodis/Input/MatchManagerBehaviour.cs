@@ -268,6 +268,12 @@ namespace Lodis.Gameplay
             args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
         }
 
+        public void LoadCharacterSelect()
+        {
+            Time.timeScale = 1;
+            SceneManagerBehaviour.Instance.LoadScene("CharacterSelect");
+        }
+
         public void ReturnToMainMenu()
         {
             Time.timeScale = 1;

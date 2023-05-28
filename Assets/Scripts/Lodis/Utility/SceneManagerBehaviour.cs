@@ -27,7 +27,9 @@ namespace Lodis.Utility
         private string _p2ControlScheme;
         private InputDevice[] _p1Devices;
         private InputDevice[] _p2Device;
-        private int _currentIndex;
+        private IntVariable _currentIndex;
+        private int _previousScene;
+
 
         public static SceneManagerBehaviour Instance
         {
@@ -55,6 +57,7 @@ namespace Lodis.Utility
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
+            _currentIndex = Resources.Load<IntVariable>("ScriptableObjects/CurrentScene");
         }
 
         public void SetGameMode(int mode)
@@ -66,21 +69,27 @@ namespace Lodis.Utility
         {
             SetGameMode(mode);
             LoadScene(1);
-            _currentIndex = 1;
+            _previousScene = _currentIndex;
+            _currentIndex.Value = 1;
         }
 
         public void LoadScene(int index)
         {
             SceneManager.LoadScene(index);
-            _currentIndex = index;
+            _previousScene = _currentIndex;
+            _currentIndex.Value = index;
+        }
+
+        public void LoadScene(string name)
+        {
+            SceneManager.LoadScene(name);
+            _previousScene = _currentIndex;
+            _currentIndex.Value = SceneManager.GetActiveScene().buildIndex;
         }
 
         public void LoadPreviousScene()
         {
-            if (_currentIndex > 0)
-                SceneManager.LoadScene(_currentIndex--);
-            else
-                Debug.Log("Cannot load previous scene as the current scene is at index 0.");
+            SceneManager.LoadScene(_previousScene);
         }
 
         public void QuitApplication()
