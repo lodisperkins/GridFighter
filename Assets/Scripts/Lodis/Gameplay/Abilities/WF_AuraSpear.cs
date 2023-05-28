@@ -31,7 +31,11 @@ namespace Lodis.Gameplay
 
         private void SpawnFlurry(params object[] args)
         {
-            _flurry = ObjectPoolBehaviour.Instance.GetObject(_flurryRef, Projectile.transform.position, Projectile.transform.rotation);
+            GameObject target = (GameObject)args[0];
+            if (!target.CompareTag("Player"))
+                return;
+
+            _flurry = ObjectPoolBehaviour.Instance.GetObject(_flurryRef, target.transform.position, Projectile.transform.rotation);
             HitColliderBehaviour flurryCollider = _flurry.GetComponent<HitColliderBehaviour>();
 
             flurryCollider.ColliderInfo = GetColliderData(1);
