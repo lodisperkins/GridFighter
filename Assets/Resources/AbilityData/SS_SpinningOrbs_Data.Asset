@@ -16,31 +16,27 @@ MonoBehaviour:
   abilityDescription: None
   exampleClip: {fileID: 0}
   AbilityType: 5
-  timeActive: 0.1
-  recoverTime: 0.6
-  startUpTime: 0.6
+  timeActive: 0.6
+  recoverTime: 0.3
+  startUpTime: 0.5
   chargeTime: 0
-  maxActivationAmount: 1
+  maxActivationAmount: 0
   EnergyCost: 0
-  canCancelStartUp: 0
-  canCancelActive: 0
-  canCancelRecover: 0
-  CanCancelOnMove: 0
-  CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
-  CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 1
-  cancelOnHit: 0
-  cancelOnFlinch: 0
-  cancelOnKnockback: 1
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 4418831361922760892, guid: d581097eabb7c0a4baebc14a69546078,
+  visualPrefab: {fileID: 7196514569071348718, guid: eea0f5ba425a329489b6632023993b0f,
     type: 3}
-  Accessory: {fileID: 0}
+  Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
+  Effects:
+  - {fileID: 114004161566773944, guid: d1ea8786f246b004d862eff8225c561b, type: 3}
+  - {fileID: 962401135209959635, guid: b61b9f2ad9438834c97bf701fe47d415, type: 3}
   DisplayIcon: {fileID: 21300000, guid: c25969bd3557b9e4589c81f5056b02f3, type: 3}
   ActivateSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
   ActiveSound: {fileID: 0}
@@ -56,8 +52,8 @@ MonoBehaviour:
       m_Bits: 4057399
     MultiHitWaitTime: 0.2
     Damage: 4
-    BaseKnockBack: 0.5
-    KnockBackScale: 0.7
+    BaseKnockBack: 0.3
+    KnockBackScale: 0.6
     HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
@@ -66,7 +62,8 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 5
     SpawnEffect: {fileID: 0}
-    HitSpark: {fileID: 0}
+    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
+      type: 3}
     HitEffectLevel: 2
     HitStopTimeModifier: 1.5
     ShakesCamera: 0
@@ -79,5 +76,7 @@ MonoBehaviour:
   - name: RotationSpeed
     value: 13
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: d89f4ea713a48de4d8aee38ec0202058, type: 3}
-  _additionalAnimations: []
+  _customAnimation: {fileID: 880133236554766610, guid: 17a9e4acdf966b4489c6c6fcded75f65,
+    type: 3}
+  _additionalAnimations:
+  - {fileID: 880133236554766610, guid: 54251cafd513016478a32ab9ffdada8a, type: 3}

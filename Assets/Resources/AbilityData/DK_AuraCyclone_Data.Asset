@@ -34,6 +34,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 7196514569071348718, guid: 894ec6782ba2ea348956f4eb4c6b39b4,
     type: 3}
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
+  Effects: []
   DisplayIcon: {fileID: 21300000, guid: 7613c1a5cca8d794486c3e93ced5dd16, type: 3}
   ActivateSound: {fileID: 8300000, guid: c70d041ebb56ad9478519facc92b9307, type: 3}
   ActiveSound: {fileID: 0}
@@ -58,7 +59,7 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
-    SpawnEffect: {fileID: 962401135209959635, guid: b61b9f2ad9438834c97bf701fe47d415,
+    SpawnEffect: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}

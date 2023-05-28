@@ -82,6 +82,17 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
         }
 
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+
+            if (_projectileSpawner)
+                Object.Destroy(_projectileSpawner.gameObject);
+
+            ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
+        }
+
         public override void StopAbility()
         {
             base.StopAbility();

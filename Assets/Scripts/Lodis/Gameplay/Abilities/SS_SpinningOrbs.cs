@@ -12,6 +12,7 @@ namespace Lodis.Gameplay
     public class SS_SpinningOrbs : Ability
     {
         private GameObject _orbs;
+        private GameObject _effectInstance;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -19,35 +20,57 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
         }
 
+        protected override void OnStart(params object[] args)
+        {
+            base.OnStart(args);
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], owner.transform.position, Quaternion.identity);
+        }
+
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
+            DisableAccessory();
             _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
             _orbs.transform.position = new Vector3(_orbs.transform.position.x, abilityData.GetCustomStatValue("OrbHeight"), _orbs.transform.position.z);
 
             HitColliderBehaviour hitColliderBehaviour = _orbs.GetComponent<HitColliderBehaviour>();
 
-            HitColliderData data = GetColliderData(0).ScaleStats((float)args[0]);
-
-            hitColliderBehaviour.ColliderInfo = data;
+            hitColliderBehaviour.ColliderInfo = GetColliderData(0);
             hitColliderBehaviour.Owner = owner;
 
-            RotationBehaviour rotation = _orbs.GetComponent<RotationBehaviour>();
-
-            rotation.RotateOnSelf = true;
-            rotation.Speed = abilityData.GetCustomStatValue("RotationSpeed");
+            OwnerAnimationScript.gameObject.SetActive(false);
         }
 
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
+            OwnerAnimationScript.gameObject.SetActive(true);
+            AnimationClip clip = null;
+            abilityData.GetAdditionalAnimation(0, out clip);
+
+            OwnerAnimationScript.PlayAnimation(clip);
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position, Quaternion.identity);
+            EnableAccessory();
+        }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
+
+            OwnerAnimationScript.gameObject.SetActive(true);
         }
 
         public override void StopAbility()
         {
             base.StopAbility();
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
+
+            OwnerAnimationScript.gameObject.SetActive(true);
 
         }
     }

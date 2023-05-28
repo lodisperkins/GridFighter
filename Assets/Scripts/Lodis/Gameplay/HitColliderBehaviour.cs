@@ -267,6 +267,11 @@ namespace Lodis.Gameplay
 
             if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
 
+            Vector3 hitEffectPosition = transform.position;
+
+            if (otherGameObject.CompareTag("Player"))
+                hitEffectPosition = otherGameObject.transform.position;
+
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
             {
@@ -292,7 +297,7 @@ namespace Lodis.Gameplay
             }
 
             if (ColliderInfo.HitSpark)
-                Instantiate(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+                Instantiate(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
 
             float newHitAngle = ColliderInfo.HitAngle;
             float defaultAngle = newHitAngle;
@@ -370,6 +375,11 @@ namespace Lodis.Gameplay
             ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
             if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
 
+            Vector3 hitEffectPosition = transform.position;
+
+            if (otherGameObject.CompareTag("Player"))
+                hitEffectPosition = otherGameObject.transform.position;
+
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
             {
@@ -390,7 +400,7 @@ namespace Lodis.Gameplay
             }
 
             if (ColliderInfo.HitSpark)
-                Instantiate(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+                Instantiate(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
 
             float newHitAngle = ColliderInfo.HitAngle;
             float defaultAngle = newHitAngle;
@@ -466,6 +476,12 @@ namespace Lodis.Gameplay
             ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
             if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
 
+
+            Vector3 hitEffectPosition = transform.position;
+
+            if (otherGameObject.CompareTag("Player"))
+                hitEffectPosition = otherGameObject.transform.position;
+
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
             {
@@ -486,7 +502,7 @@ namespace Lodis.Gameplay
             }
 
             if (ColliderInfo.HitSpark)
-                Instantiate(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+                Instantiate(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
 
             float newHitAngle = ColliderInfo.HitAngle;
             float defaultAngle = newHitAngle;

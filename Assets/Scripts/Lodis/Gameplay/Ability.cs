@@ -265,8 +265,6 @@ namespace Lodis.Gameplay
         public virtual void EndAbility()
         {
             RoutineBehaviour.Instance.StopAction(_currentTimer);
-            onRecover?.Invoke();
-            OnRecover(null);
             onEnd?.Invoke();
             End();
             _inUse = false;
@@ -366,6 +364,9 @@ namespace Lodis.Gameplay
 
         private void TryDamageCancel(int damageType)
         {
+            if (!InUse)
+                return;
+
             if (damageType == 0 && (GetCurrentCancelRule()?.cancelOnHit == true || abilityData.CancelAllOnHit))
                 EndAbility();
             else if (damageType == 1 && (GetCurrentCancelRule()?.cancelOnFlinch == true || abilityData.CancelAllOnFlinch))

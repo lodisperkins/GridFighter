@@ -23,11 +23,13 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], owner.transform.position, Quaternion.identity);
         }
 
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
             DisableAccessory();
             _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
             _orbs.transform.position = new Vector3( _orbs.transform.position.x, abilityData.GetCustomStatValue("OrbHeight"), _orbs.transform.position.z);
@@ -36,11 +38,6 @@ namespace Lodis.Gameplay
 
             hitColliderBehaviour.ColliderInfo = GetColliderData(0);
             hitColliderBehaviour.Owner = owner;
-
-            RotationBehaviour rotation = _orbs.GetComponent<RotationBehaviour>();
-
-            rotation.RotateOnSelf = true;
-            rotation.Speed = abilityData.GetCustomStatValue("RotationSpeed");
 
             OwnerAnimationScript.gameObject.SetActive(false);
         }
@@ -54,13 +51,17 @@ namespace Lodis.Gameplay
             abilityData.GetAdditionalAnimation(0, out clip);
 
             OwnerAnimationScript.PlayAnimation(clip);
-            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], owner.transform.position, Quaternion.identity);
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position, Quaternion.identity);
             EnableAccessory();
         }
 
         protected override void OnEnd()
         {
             base.OnEnd();
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
+            OwnerAnimationScript.gameObject.SetActive(true);
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position, Quaternion.identity);
+            EnableAccessory();
         }
 
         public override void StopAbility()
