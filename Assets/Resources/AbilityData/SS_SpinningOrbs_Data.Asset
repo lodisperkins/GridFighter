@@ -17,8 +17,8 @@ MonoBehaviour:
   exampleClip: {fileID: 0}
   AbilityType: 5
   timeActive: 0.6
-  recoverTime: 0.3
-  startUpTime: 0.5
+  recoverTime: 0.5
+  startUpTime: 0.23
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0

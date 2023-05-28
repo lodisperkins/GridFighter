@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            _chargeEffectRef = Resources.Load<GameObject>("Effects/Charge_Darkness");
+            _chargeEffectRef = abilityData.Effects[0];
         }
 
         protected override void OnStart(params object[] args)
@@ -38,7 +38,7 @@ namespace Lodis.Gameplay
             SpawnTransform = panel.transform;
 
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, SpawnTransform.position + Vector3.up, SpawnTransform.rotation);
-            _chargeEffect.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.WARNING;
+            _chargeEffect.AddComponent<GridTrackerBehaviour>().Marker = MarkerType.WARNING;
         }
 
         //Called when ability is used

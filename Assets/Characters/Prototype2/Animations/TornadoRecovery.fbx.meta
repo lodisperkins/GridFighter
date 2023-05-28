@@ -50,7 +50,7 @@ ModelImporter:
       name: TornadoRecovery
       takeName: rig|WindUp
       internalID: 0
-      firstFrame: 0
+      firstFrame: 3.04
       lastFrame: 4
       wrapMode: 0
       orientationOffsetY: 0

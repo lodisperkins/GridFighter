@@ -13,6 +13,7 @@ namespace Lodis.Gameplay
     {
         private GameObject _orbs;
         private GameObject _effectInstance;
+        private GameObject _thalamusInstance;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -45,23 +46,30 @@ namespace Lodis.Gameplay
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
+
+            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, OwnerMoveset.HeldItemSpawnLeft, true);
+            _thalamusInstance.transform.localRotation = Quaternion.identity;
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             OwnerAnimationScript.gameObject.SetActive(true);
             AnimationClip clip = null;
             abilityData.GetAdditionalAnimation(0, out clip);
 
             OwnerAnimationScript.PlayAnimation(clip);
-            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position, Quaternion.identity);
-            EnableAccessory();
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position + Vector3.up, Quaternion.identity);
+
         }
 
         protected override void OnEnd()
         {
             base.OnEnd();
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
 
             OwnerAnimationScript.gameObject.SetActive(true);
+            EnableAccessory();
         }
 
         public override void StopAbility()
@@ -69,9 +77,11 @@ namespace Lodis.Gameplay
             base.StopAbility();
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
 
             OwnerAnimationScript.gameObject.SetActive(true);
 
+            EnableAccessory();
         }
     }
 }

@@ -83,6 +83,10 @@ namespace Lodis.Gameplay
         [Tooltip("This transforms where melee hit boxes will spawn for this object.")]
         [SerializeField]
         private Transform[] _rightMeleeSpawns;
+        [SerializeField]
+        private Transform _heldItemSpawnLeft;
+        [SerializeField]
+        private Transform _heldItemSpawnRight;
 
         [Header("Energy Meter Settings")]
         [Tooltip("The amount of energy this character has")]
@@ -205,6 +209,8 @@ namespace Lodis.Gameplay
         public CharacterAnimationBehaviour AnimationBehaviour { get => _animationBehaviour; set => _animationBehaviour = value; }
         public Deck NormalDeckRef { get => _normalDeckRef; set => _normalDeckRef = value; }
         public Deck SpecialDeckRef { get => _specialDeckRef; set => _specialDeckRef = value; }
+        public Transform HeldItemSpawnLeft { get => _heldItemSpawnLeft; private set => _heldItemSpawnLeft = value; }
+        public Transform HeldItemSpawnRight { get => _heldItemSpawnRight; private set => _heldItemSpawnRight = value; }
 
         private void Awake()
         {

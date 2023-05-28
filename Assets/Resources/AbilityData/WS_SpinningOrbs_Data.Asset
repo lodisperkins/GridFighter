@@ -20,7 +20,7 @@ MonoBehaviour:
   recoverTime: 0.5
   startUpTime: 0.1
   chargeTime: 0
-  maxActivationAmount: 1
+  maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
   - Phase: 5
@@ -44,8 +44,8 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects:
-  - {fileID: 6628179705914152145, guid: 7c032630d2a3c2447a3b19d61faed0a1, type: 3}
-  - {fileID: 2045574407781853788, guid: 4b613d4fb55c06540905d5bbc1211903, type: 3}
+  - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
+  - {fileID: 873882979434857194, guid: 709bd4e03aa280b4f9fc10d0ab528252, type: 3}
   DisplayIcon: {fileID: 21300000, guid: c25969bd3557b9e4589c81f5056b02f3, type: 3}
   ActivateSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
   ActiveSound: {fileID: 0}
@@ -71,7 +71,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 1
     SpawnEffect: {fileID: 0}
-    HitSpark: {fileID: 6017019445347752382, guid: 6985e73a336888e4eae65baa727db325,
+    HitSpark: {fileID: 168380961112235169, guid: e420048addf42694c911fc7ac19ea7bc,
       type: 3}
     HitEffectLevel: 1
     HitStopTimeModifier: 1.3
