@@ -16,7 +16,7 @@ MonoBehaviour:
   abilityDescription: None
   exampleClip: {fileID: 0}
   AbilityType: 5
-  timeActive: 0.6
+  timeActive: 0.5
   recoverTime: 0.5
   startUpTime: 0.23
   chargeTime: 0
@@ -29,7 +29,7 @@ MonoBehaviour:
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
-  useAbilityTimingForAnimation: 1
+  useAbilityTimingForAnimation: 0
   playAnimationManually: 0
   visualPrefab: {fileID: 7196514569071348718, guid: eea0f5ba425a329489b6632023993b0f,
     type: 3}

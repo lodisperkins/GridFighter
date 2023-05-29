@@ -401,9 +401,6 @@ namespace Lodis.Input
 
             if (_lastAbilityUsed == null)
                 return;
-
-            _canMove = false;
-            RoutineBehaviour.Instance.StartNewConditionAction(context => _canMove = true, condition => CheckInputAllowedInAbilityPhase() || _stateMachineBehaviour.StateMachine.CurrentState != "Attacking");
         }
 
         private bool CheckInputAllowedInAbilityPhase()
@@ -501,6 +498,10 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
+            if (_moveset.AbilityInUse)
+                _canMove = CheckInputAllowedInAbilityPhase() || _stateMachineBehaviour.StateMachine.CurrentState != "Attacking";
+            else if (_stateMachineBehaviour.StateMachine.CurrentState == "Idle")
+                _canMove = true;
 
             //Checks to see if input can be enabled 
             if (_inputEnableCondition != null)

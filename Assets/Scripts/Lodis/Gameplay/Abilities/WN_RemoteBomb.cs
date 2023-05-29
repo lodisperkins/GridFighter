@@ -43,10 +43,12 @@ namespace Lodis.Gameplay
             {
                 Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
 
-                HitColliderBehaviour collider = Projectile.GetComponent<HitColliderBehaviour>();
+                HitColliderBehaviour colliderBehaviour = Projectile.GetComponent<HitColliderBehaviour>();
+                Collider collider = Projectile.GetComponentInChildren<Collider>();
+                collider.enabled = false;
 
-                collider.ColliderInfo = _explosionColliderData;
-                collider.Owner = owner;
+                colliderBehaviour.ColliderInfo = _explosionColliderData;
+                colliderBehaviour.Owner = owner;
 
                 Vector2 direction = owner.transform.forward;
                 //Bomb using grid movement to find the panel it should stay on. 
@@ -54,6 +56,8 @@ namespace Lodis.Gameplay
                 GridMovementBehaviour gridMovementBehaviour = Projectile.GetComponent<GridMovementBehaviour>();
                 gridMovementBehaviour.Position = OwnerMoveScript.CurrentPanel.Position;
                 gridMovementBehaviour.Speed = abilityData.GetCustomStatValue("Speed");
+
+                gridMovementBehaviour.AddOnMoveEndTempAction(() => collider.enabled = true);
 
                 gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
                 ActiveProjectiles.Add(Projectile);

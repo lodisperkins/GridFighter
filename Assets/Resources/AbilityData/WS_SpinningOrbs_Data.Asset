@@ -16,14 +16,23 @@ MonoBehaviour:
   abilityDescription: Spawns two energy orbs that orbit and damages anything in range.
   exampleClip: {fileID: 0}
   AbilityType: 1
-  timeActive: 0.3
-  recoverTime: 0.5
+  timeActive: 0.2
+  recoverTime: 0.3
   startUpTime: 0.1
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
-  - Phase: 5
+  - Phase: 1
+    CanOnlyCancelOnOpponentHit: 1
+    CanCancelOnMove: 0
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 0
+    cancelOnHit: 0
+    cancelOnFlinch: 0
+    cancelOnKnockback: 0
+  - Phase: 2
     CanOnlyCancelOnOpponentHit: 1
     CanCancelOnMove: 0
     CanCancelIntoSelf: 0

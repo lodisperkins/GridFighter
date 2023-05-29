@@ -64,7 +64,6 @@ namespace Lodis.Gameplay
         {
             base.OnEnd();
 
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
 

@@ -35,7 +35,7 @@ namespace Lodis.Gameplay
             if (!target.CompareTag("Player"))
                 return;
 
-            _flurry = ObjectPoolBehaviour.Instance.GetObject(_flurryRef, target.transform.position, Projectile.transform.rotation);
+            _flurry = ObjectPoolBehaviour.Instance.GetObject(_flurryRef, target.transform.position + Vector3.up, Projectile.transform.rotation);
             HitColliderBehaviour flurryCollider = _flurry.GetComponent<HitColliderBehaviour>();
 
             flurryCollider.ColliderInfo = GetColliderData(1);

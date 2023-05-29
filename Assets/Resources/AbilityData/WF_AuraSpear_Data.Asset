@@ -17,14 +17,23 @@ MonoBehaviour:
     on hit.
   exampleClip: {fileID: 0}
   AbilityType: 2
-  timeActive: 0.3
-  recoverTime: 0.1
+  timeActive: 0.2
+  recoverTime: 0.2
   startUpTime: 0.07
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
-  - Phase: 5
+  - Phase: 1
+    CanOnlyCancelOnOpponentHit: 1
+    CanCancelOnMove: 0
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 0
+    cancelOnHit: 0
+    cancelOnFlinch: 0
+    cancelOnKnockback: 0
+  - Phase: 2
     CanOnlyCancelOnOpponentHit: 1
     CanCancelOnMove: 0
     CanCancelIntoSelf: 0
@@ -44,6 +53,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 1697626822471647621, guid: 08c30329d97a6be479634e37e369e13c,
     type: 3}
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
+  Effects: []
   DisplayIcon: {fileID: 21300000, guid: 32b94a03036da1d4f82083160aaf0b70, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}

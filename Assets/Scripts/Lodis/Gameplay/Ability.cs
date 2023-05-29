@@ -368,11 +368,11 @@ namespace Lodis.Gameplay
                 return;
 
             if (damageType == 0 && (GetCurrentCancelRule()?.cancelOnHit == true || abilityData.CancelAllOnHit))
-                EndAbility();
+                StopAbility();
             else if (damageType == 1 && (GetCurrentCancelRule()?.cancelOnFlinch == true || abilityData.CancelAllOnFlinch))
-                EndAbility();
+                StopAbility();
             else if (damageType == 2 && (GetCurrentCancelRule()?.cancelOnKnockback == true || abilityData.CancelAllOnKnockback))
-                EndAbility();
+                StopAbility();
         }
 
         /// <summary>
