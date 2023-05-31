@@ -82,17 +82,17 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - LightingCutoff: 0.2
-    - Smoothness: 0.5
+    - LightingCutoff: 0.15
+    - Smoothness: 0
     - USENORMAL: 1
     - _AlphaClip: 0
-    - _AmbientStrength: 0.06
+    - _AmbientStrength: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
-    - _EmissionStrength: 10.43
+    - _EmissionStrength: 4.15
     - _EnvironmentReflections: 1
     - _FalloffAmount: 0
     - _FresnelSize: 0
@@ -117,7 +117,7 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.31132078, g: 0.15731506, b: 0, a: 1}
+    - _Color: {r: 1, g: 0.5058824, b: 0, a: 1}
     - _EmissionColor: {r: 0.003921569, g: 0.003921569, b: 0.003921569, a: 0}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
@@ -126,5 +126,5 @@ Material:
     - _SecondaryColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
-    - _TertiaryColor: {r: 0.103773594, g: 0.103773594, b: 0.103773594, a: 1}
+    - _TertiaryColor: {r: 1, g: 1, b: 1, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
