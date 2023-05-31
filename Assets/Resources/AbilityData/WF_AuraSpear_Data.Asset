@@ -19,7 +19,7 @@ MonoBehaviour:
   AbilityType: 2
   timeActive: 0.2
   recoverTime: 0.2
-  startUpTime: 0.07
+  startUpTime: 0.15
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
@@ -96,14 +96,14 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3991863
-    MultiHitWaitTime: 0.08
+    MultiHitWaitTime: 0.1
     Damage: 0.5
-    BaseKnockBack: 0.2
-    KnockBackScale: 0.7
-    HitAngle: 1.4
+    BaseKnockBack: 0.01
+    KnockBackScale: 0
+    HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.7
+    HitStunTime: 0.3
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 2
@@ -112,7 +112,7 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopTimeModifier: 0.2
+    HitStopTimeModifier: 1.7
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 63fac2f884da3d54497e643db5ca0f25, type: 3}
     HitSound: {fileID: 0}

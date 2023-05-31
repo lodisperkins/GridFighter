@@ -270,7 +270,7 @@ namespace Lodis.Gameplay
             Vector3 hitEffectPosition = transform.position;
 
             if (otherGameObject.CompareTag("Player"))
-                hitEffectPosition = otherGameObject.transform.position;
+                hitEffectPosition = otherGameObject.transform.position + (.5f * Vector3.up);
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
@@ -378,7 +378,7 @@ namespace Lodis.Gameplay
             Vector3 hitEffectPosition = transform.position;
 
             if (otherGameObject.CompareTag("Player"))
-                hitEffectPosition = otherGameObject.transform.position;
+                hitEffectPosition = otherGameObject.transform.position + (.5f * Vector3.up);
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
@@ -480,7 +480,7 @@ namespace Lodis.Gameplay
             Vector3 hitEffectPosition = transform.position;
 
             if (otherGameObject.CompareTag("Player"))
-                hitEffectPosition = otherGameObject.transform.position;
+                hitEffectPosition = otherGameObject.transform.position + (.5f * Vector3.up);
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
