@@ -11,10 +11,12 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_DeckRebooter : ProjectileAbility
     {
+        private float _stunTime;
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
+            _stunTime = abilityData.GetCustomStatValue("Stun Time");
         }
 
         private void RebootDeck(params object[] args)
@@ -29,6 +31,7 @@ namespace Lodis.Gameplay
             if (knockback.IsInvincible || knockback.IsIntangible)
                 return;
 
+            knockback.Stun(_stunTime);
             MovesetBehaviour moveset = other.GetComponent<MovesetBehaviour>();
 
             moveset.ManualShuffle(true);

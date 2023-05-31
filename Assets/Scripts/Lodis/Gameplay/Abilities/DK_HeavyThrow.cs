@@ -166,6 +166,12 @@ namespace Lodis.Gameplay
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_collider.gameObject);
         }
 
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
+        }
+
         public override void StopAbility()
         {
             base.StopAbility();

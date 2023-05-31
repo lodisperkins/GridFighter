@@ -29,12 +29,12 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Toggles whether or not the children that contain the hitboxes are active in the hierarchy
         /// </summary>
-        private void ToggleChildren(int index)
+        private void SetChildrenActive(int index, bool active)
         {
             for (int i = 0; i < _visualPrefabInstanceTransforms[index].childCount; i++)
             {
                 Transform child = _visualPrefabInstanceTransforms[index].GetChild(i);
-                child.gameObject.SetActive(!child.gameObject.activeInHierarchy);
+                child.gameObject.SetActive(active);
             }
         }
 
@@ -60,8 +60,8 @@ namespace Lodis.Gameplay
                 if (i > 0)
                     _collider.ColliderInfo.TimeActive += _delay;
 
-                //Activate hitboxes attached to lighting object
-                ToggleChildren(i);
+                //Make all hit boxes inactive by default
+                SetChildrenActive(i, false);
             }
         }
 
@@ -92,7 +92,7 @@ namespace Lodis.Gameplay
         {
             for (int i = 0; i < _visualPrefabInstanceTransforms.Length; i++)
             {
-                ToggleChildren(i);
+                SetChildrenActive(i, true);
 
                 yield return new WaitForSeconds(_delay);
             }
@@ -101,14 +101,14 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            _spawnRoutine = OwnerMoveScript.StartCoroutine(SpawnRoutine());
+            _spawnRoutine = OwnerMoveset.StartCoroutine(SpawnRoutine());
         }
 
         public override void StopAbility()
         {
             base.StopAbility();
             if (_spawnRoutine != null)
-                OwnerMoveScript.StopCoroutine(_spawnRoutine);
+                OwnerMoveset.StopCoroutine(_spawnRoutine);
         }
     }
 }

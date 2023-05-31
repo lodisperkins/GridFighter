@@ -238,6 +238,7 @@ namespace Lodis.Gameplay
             if (!_inUse)
                 return;
 
+            onEnd?.Invoke();
             RoutineBehaviour.Instance.StopAction(_currentTimer);
             _inUse = false;
             currentActivationAmount = 0;

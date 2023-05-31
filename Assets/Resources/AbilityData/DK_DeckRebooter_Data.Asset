@@ -42,6 +42,9 @@ MonoBehaviour:
     cancelOnHit: 0
     cancelOnFlinch: 1
     cancelOnKnockback: 1
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -50,6 +53,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 6451543368093396670, guid: 55a2d03e2d4f5cf449c33719ce01d75b,
     type: 3}
   Accessory: {fileID: 0}
+  Effects: []
   DisplayIcon: {fileID: 21300000, guid: e9957a41eae6e0042b1d1c032093b2a2, type: 3}
   ActivateSound: {fileID: 8300000, guid: 9d9bcff4b6c870642a2329d3406aac92, type: 3}
   ActiveSound: {fileID: 0}
@@ -87,6 +91,8 @@ MonoBehaviour:
   _customStats:
   - name: Speed
     value: 5
+  - name: Stun Time
+    value: 2
   animationType: 0
   _customAnimation: {fileID: 0}
   _additionalAnimations: []
