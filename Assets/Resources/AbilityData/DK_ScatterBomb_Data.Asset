@@ -36,6 +36,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 5820520729088480805, guid: 6d683c945f17ecc4eabd73a8cfa5e6e3,
     type: 3}
   Accessory: {fileID: 0}
+  Effects: []
   DisplayIcon: {fileID: 21300000, guid: c23ed55da2c2ccb4da2bd179a61d2396, type: 3}
   ActivateSound: {fileID: 8300000, guid: ac68129427fe7154fbe40d25bd39c505, type: 3}
   ActiveSound: {fileID: 0}
@@ -70,10 +71,12 @@ MonoBehaviour:
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:
-  - name: BombMoveDuration
-    value: 0.2
+  - name: Speed
+    value: 10
   - name: BombTimer
     value: 3
+  - name: EntityCount
+    value: 4
   animationType: 0
   _customAnimation: {fileID: 0}
   _additionalAnimations: []

@@ -64,22 +64,11 @@ namespace Lodis.Gameplay
         {
             base.OnEnd();
 
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
-
-            OwnerAnimationScript.gameObject.SetActive(true);
-            EnableAccessory();
-        }
-
-        public override void StopAbility()
-        {
-            base.StopAbility();
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
 
             OwnerAnimationScript.gameObject.SetActive(true);
-
             EnableAccessory();
         }
     }

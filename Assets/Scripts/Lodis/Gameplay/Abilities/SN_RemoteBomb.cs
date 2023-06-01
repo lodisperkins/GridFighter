@@ -76,11 +76,6 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
-        }
-
-        public override void StopAbility()
-        {
-            base.StopAbility();
             RoutineBehaviour.Instance.StopAction(_despawnAction);
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
         }

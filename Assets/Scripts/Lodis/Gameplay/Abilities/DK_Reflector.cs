@@ -55,10 +55,8 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_shield);
         }
 
-        public override void EndAbility()
+        protected override void OnEnd()
         {
-            base.EndAbility();
-
             ObjectPoolBehaviour.Instance.ReturnGameObject(_shield);
         }
     }

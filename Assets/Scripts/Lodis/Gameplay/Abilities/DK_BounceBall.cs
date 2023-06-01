@@ -45,9 +45,8 @@ namespace Lodis.Gameplay
             physics.ApplyImpulseForce(force);
         }
 
-        public override void StopAbility()
+        protected override void OnMatchRestart()
         {
-            base.StopAbility();
             ObjectPoolBehaviour.Instance.ReturnGameObject(_ball);
         }
     }

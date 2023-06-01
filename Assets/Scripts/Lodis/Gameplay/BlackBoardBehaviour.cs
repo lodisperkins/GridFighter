@@ -58,7 +58,7 @@ namespace Lodis.Gameplay
         /// <returns>The list of in game entities</returns>
         public List<GameObject> GetEntitiesInGame()
         {
-            _entitiesInGame.RemoveAll(entity => entity == null);
+            _entitiesInGame.RemoveAll(entity => entity == null || !entity.activeInHierarchy);
             return _entitiesInGame;
         }
 
@@ -68,19 +68,19 @@ namespace Lodis.Gameplay
         public void ClearGrid()
         {
             DisableAllAbilityColliders();
-            DestroyAllNonPlayerEntities();
+            DisableAllNonPlayerEntities();
             Grid.CancelRowExchange();
         }
 
         /// <summary>
         /// Destroys all entities currently in the scene with the exception of the players
         /// </summary>
-        public void DestroyAllNonPlayerEntities()
+        public void DisableAllNonPlayerEntities()
         {
             foreach (GameObject entity in _entitiesInGame)
             {
                 if (!entity.CompareTag("Player"))
-                    Destroy(entity);
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(entity);
             }
         }
 
@@ -226,13 +226,14 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Adds the game object to the list of significant characters on the screen
+        /// Adds the game object to the list of significant actors on the screen
         /// </summary>
         /// <param name="entity"></param>
         public void AddEntityToList(GameObject entity)
         {
             _entitiesInGame.Add(entity);
         }
+
 
         /// <summary>
         /// Gets the opponent of the given player.

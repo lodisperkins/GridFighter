@@ -168,14 +168,6 @@ namespace Lodis.Gameplay
 
         protected override void OnEnd()
         {
-            base.OnEnd();
-            OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
-        }
-
-        public override void StopAbility()
-        {
-            base.StopAbility();
-
             RoutineBehaviour.Instance.StopAction(_throwAction);
 
 

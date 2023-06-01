@@ -165,13 +165,6 @@ namespace Lodis.Gameplay
             _collider.ColliderInfo.OnHit += LiftOpponent;
         }
 
-        public override void Update()
-        {
-            base.Update();
-
-            if (_shouldRise)
-                _auraSphere.transform.position += Vector3.up * _riseSpeed * Time.deltaTime;
-        }
 
         protected override void OnRecover(params object[] args)
         {
@@ -182,9 +175,8 @@ namespace Lodis.Gameplay
                 DespawnSphere();
         }
 
-        public override void StopAbility()
+        protected override void OnMatchRestart()
         {
-            base.StopAbility();
             DespawnSphere();
         }
     }

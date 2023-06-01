@@ -17,29 +17,29 @@ MonoBehaviour:
     up attacks.
   exampleClip: {fileID: 0}
   AbilityType: 8
-  timeActive: 0.3
+  timeActive: 1
   recoverTime: 0.2
   startUpTime: 0.2
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 2
   CancellationRules:
-  - Phase: 6
+  - Phase: 5
     CanOnlyCancelOnOpponentHit: 0
-    CanCancelOnMove: 0
+    CanCancelOnMove: 1
     CanCancelIntoSelf: 0
-    CanCancelIntoSpecial: 0
-    CanCancelIntoNormal: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 1
     cancelOnHit: 0
-    cancelOnFlinch: 1
-    cancelOnKnockback: 1
+    cancelOnFlinch: 0
+    cancelOnKnockback: 0
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
-  CanInputMovementWhileActive: 0
-  CanInputMovementWhileRecovering: 0
-  useAbilityTimingForAnimation: 1
+  CanInputMovementWhileActive: 1
+  CanInputMovementWhileRecovering: 1
+  useAbilityTimingForAnimation: 0
   playAnimationManually: 0
   visualPrefab: {fileID: 3437269764972176412, guid: a1575d5dcb7821a45a26b89e4543681c,
     type: 3}
@@ -79,11 +79,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 8300000, guid: be3c38e5fdd93f547aa359b4fa7acd0e, type: 3}
   _customStats:
   - name: RiseSpeed
-    value: 2
+    value: 0.2
   - name: KnockbackThreshold
     value: 1
   - name: LiftTime
-    value: 2
+    value: 1
   animationType: 0
   _customAnimation: {fileID: 0}
   _additionalAnimations: []

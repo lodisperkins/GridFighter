@@ -79,14 +79,8 @@ namespace Lodis.Gameplay
             gridMovementBehaviour.AddOnMoveEndTempAction(SpawnBlackHole);
         }
 
-        protected override void OnEnd()
+        protected override void OnMatchRestart()
         {
-            base.OnEnd();
-        }
-
-        public override void StopAbility()
-        {
-            base.StopAbility();
             RoutineBehaviour.Instance.StopAction(_despawnAction);
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_blackHoleInstance);

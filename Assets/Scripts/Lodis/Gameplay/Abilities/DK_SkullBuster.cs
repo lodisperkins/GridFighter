@@ -144,29 +144,9 @@ namespace Lodis.Gameplay
             if (_visualPrefabInstance)
                 Object.Destroy(_visualPrefabInstance);
 
-        }
-
-        public override void EndAbility()
-        {
-            base.EndAbility();
-            //Destroy particles and hit box
-            if (_visualPrefabInstance)
-                Object.Destroy(_visualPrefabInstance);
-
             if (_chargeEffect)
                 Object.Destroy(_chargeEffect);
-        }
 
-        public override void StopAbility()
-        {
-            base.StopAbility();
-
-            //Destroy particles and hit box
-            if (_visualPrefabInstance)
-                Object.Destroy(_visualPrefabInstance);
-
-            if (_chargeEffect)
-                Object.Destroy(_chargeEffect);
         }
     }
 }

@@ -22,11 +22,5 @@ namespace Lodis.Gameplay
             //Call row stealing func
             BlackBoardBehaviour.Instance.Grid.ExchangeRowsByTimer((int)abilityData.GetCustomStatValue("AmountOfRows"), OwnerMoveScript.Alignment, abilityData.GetCustomStatValue("OwnershipTime"));
         }
-
-        public override void StopAbility()
-        {
-            base.StopAbility();
-            BlackBoardBehaviour.Instance.Grid.CancelRowExchange();
-        }
     }
 }

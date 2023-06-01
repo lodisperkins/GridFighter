@@ -252,7 +252,7 @@ namespace Lodis.Gameplay
         public void ResetAll()
         {
             enabled = true;
-            LastAbilityInUse?.StopAbility();
+            LastAbilityInUse?.EndAbility();
             ManualShuffle(true);
 
             if (!MatchManagerBehaviour.InfiniteEnergy)
@@ -563,14 +563,14 @@ namespace Lodis.Gameplay
             if (!_discardDeck.Contains(_specialAbilitySlots[0]) && _specialAbilitySlots[0] != null)
             {
                 if (!_specialAbilitySlots[0].MaxActivationAmountReached)
-                    _specialAbilitySlots[0].StopAbility();
+                    _specialAbilitySlots[0].EndAbility();
 
                 _discardDeck.AddAbility(_specialAbilitySlots[0]);
             }
             if (!_discardDeck.Contains(_specialAbilitySlots[1]) && _specialAbilitySlots[1] != null)
             {
                 if (!_specialAbilitySlots[1].MaxActivationAmountReached)
-                    _specialAbilitySlots[1].StopAbility();
+                    _specialAbilitySlots[1].EndAbility();
 
                 _discardDeck.AddAbility(_specialAbilitySlots[1]);
             }

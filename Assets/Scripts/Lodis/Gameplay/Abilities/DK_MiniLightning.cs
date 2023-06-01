@@ -104,9 +104,8 @@ namespace Lodis.Gameplay
             _spawnRoutine = OwnerMoveset.StartCoroutine(SpawnRoutine());
         }
 
-        public override void StopAbility()
+        protected override void OnEnd()
         {
-            base.StopAbility();
             if (_spawnRoutine != null)
                 OwnerMoveset.StopCoroutine(_spawnRoutine);
         }

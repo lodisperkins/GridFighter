@@ -89,14 +89,11 @@ namespace Lodis.Gameplay
             _projectileSpawner.StartCoroutine(FireShots());
         }
 
-        public override void StopAbility()
+        protected override void OnMatchRestart()
         {
-            base.StopAbility();
             if (_projectileSpawner)
                 _projectileSpawner.StopAllCoroutines();
-
             ObjectPoolBehaviour.Instance.ReturnGameObject(_spawn);
-
         }
     }
 }

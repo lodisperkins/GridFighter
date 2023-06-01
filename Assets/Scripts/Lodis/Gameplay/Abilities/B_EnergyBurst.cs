@@ -111,16 +111,9 @@ namespace Lodis.Gameplay
             base.OnRecover(args);
             ResetState();
         }
-        public override void StopAbility()
-        {
-            base.StopAbility();
 
-            ResetState();
-        }
-
-        public override void EndAbility()
+        protected override void OnEnd()
         {
-            base.EndAbility();
             ResetState();
         }
 

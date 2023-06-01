@@ -58,12 +58,9 @@ namespace Lodis.Gameplay
             OwnerMoveset.EnergyChargeEnabled = true;
         }
 
-        public override void EndAbility()
+        protected override void OnEnd()
         {
-            base.EndAbility();
-
             ObjectPoolBehaviour.Instance.ReturnGameObject(_shield);
-
             OwnerMoveset.EnergyChargeEnabled = true;
         }
 

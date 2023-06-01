@@ -230,19 +230,6 @@ namespace Lodis.Gameplay
             return true;
         }
 
-        /// <summary>
-        /// Stops ability immedialtely without calling any ending events
-        /// </summary>
-        public virtual void StopAbility()
-        {
-            if (!_inUse)
-                return;
-
-            onEnd?.Invoke();
-            RoutineBehaviour.Instance.StopAction(_currentTimer);
-            _inUse = false;
-            currentActivationAmount = 0;
-        }
 
         /// <summary>
         /// Stops the ability from moving to the next phase
@@ -263,7 +250,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Stops ability, calls ending events, and removes the ability from the current ability slot
         /// </summary>
-        public virtual void EndAbility()
+        public void EndAbility()
         {
             RoutineBehaviour.Instance.StopAction(_currentTimer);
             onEnd?.Invoke();
@@ -303,6 +290,7 @@ namespace Lodis.Gameplay
             }
 
             InitializeAccessory();
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(OnMatchRestart);
         }
 
         private void InitializeAccessory()
@@ -369,11 +357,11 @@ namespace Lodis.Gameplay
                 return;
 
             if (damageType == 0 && (GetCurrentCancelRule()?.cancelOnHit == true || abilityData.CancelAllOnHit))
-                StopAbility();
+                EndAbility();
             else if (damageType == 1 && (GetCurrentCancelRule()?.cancelOnFlinch == true || abilityData.CancelAllOnFlinch))
-                StopAbility();
+                EndAbility();
             else if (damageType == 2 && (GetCurrentCancelRule()?.cancelOnKnockback == true || abilityData.CancelAllOnKnockback))
-                StopAbility();
+                EndAbility();
         }
 
         /// <summary>
@@ -463,6 +451,8 @@ namespace Lodis.Gameplay
         /// Called after the ability has reach max activation limit or is canceled and just before the user goes back to idle
         /// </summary>
         protected virtual void OnEnd(){ }
+
+        protected virtual void OnMatchRestart(){ }
 
         /// <summary>
         /// Called in every update for the ability owner

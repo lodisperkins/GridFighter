@@ -100,20 +100,14 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_hitCollider?.gameObject);
         }
 
-        public override void EndAbility()
+        protected override void OnEnd()
         {
-            base.EndAbility();
-            //Stop the user from dashing 
+            base.OnEnd();
             if (OwnerMoveScript.IsMoving)
                 OwnerMoveScript.CancelMovement();
 
 
             OwnerMoveScript.StopAllCoroutines();
-        }
-
-        protected override void OnEnd()
-        {
-            base.OnEnd();
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
         }
     }

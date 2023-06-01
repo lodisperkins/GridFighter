@@ -99,7 +99,7 @@ namespace Lodis.Gameplay
 
             if (!_secondStrikeActivated)
             {
-                StopAbility();
+                EndAbility();
                 onEnd?.Invoke();
                 OnEnd();
             }
@@ -108,12 +108,6 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
-            ResetMoveAttributes();
-        }
-
-        public override void StopAbility()
-        {
-            base.StopAbility();
             ResetMoveAttributes();
         }
 
@@ -159,7 +153,7 @@ namespace Lodis.Gameplay
                 _secondStrikeActivated = true;
                 OnRecover(null);
                 int activationAmount = currentActivationAmount;
-                StopAbility();
+                EndAbility();
 
                 //Disable movement feeatures to allow free movement on opponent side
                 ChangeMoveAttributes();
