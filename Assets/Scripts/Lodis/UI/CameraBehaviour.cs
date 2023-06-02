@@ -63,7 +63,7 @@ namespace Lodis
         public Vector3 GetNewPosition()
         {
             Vector3 averagePosition = new Vector3();
-            List<GameObject> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
+            List<GameObject> entities = new List<GameObject> { BlackBoardBehaviour.Instance.Player1, BlackBoardBehaviour.Instance.Player2 };
             int characterCount = 0;
 
             foreach (GameObject character in entities)

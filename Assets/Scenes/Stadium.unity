@@ -8020,7 +8020,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _cameraMoveSpeed: {x: 0.2, y: 0.25, z: 0}
-  _moveSensitivity: {x: 1, y: 2, z: 7}
+  _moveSensitivity: {x: 1, y: 1.5, z: 7}
   _minX: 0.1
   _maxX: 0.1
   _maxY: 1

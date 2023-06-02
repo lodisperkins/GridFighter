@@ -43,6 +43,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 7042668201603800225, guid: 2617db3ae35c0744699c7d5528743ca5,
     type: 3}
   Accessory: {fileID: 0}
+  Effects: []
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 8300000, guid: 1603af129889a3a4da9ad43ab4d4dee4, type: 3}
   ActiveSound: {fileID: 0}
@@ -58,20 +59,20 @@ MonoBehaviour:
       m_Bits: 1606656
     MultiHitWaitTime: 0
     Damage: 5
-    BaseKnockBack: 35
+    BaseKnockBack: 5
     KnockBackScale: 0
-    HitAngle: 1.5
+    HitAngle: -0.5
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.5
+    HitStunTime: 1
     Priority: 4
     OwnerAlignement: 0
     AbilityType: 10
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
-    HitEffectLevel: 2
-    HitStopTimeModifier: 3
+    HitEffectLevel: 3
+    HitStopTimeModifier: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}
