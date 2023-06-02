@@ -5,6 +5,7 @@ using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Lodis.Gameplay
 {
@@ -20,10 +21,9 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _opponentKnockback;
         private GameObject _auraSphere;
         private HitColliderBehaviour _collider;
-        private float _riseSpeed;
         private float _knockbackThreshold;
         private float _liftTime;
-        private bool _shouldRise;
+        private float _holdTime;
         private bool _opponentCaptured;
         private TimedAction _despawnTimer;
         private GameObject _chargeEffectRef;
@@ -31,6 +31,7 @@ namespace Lodis.Gameplay
         private Transform _opponentParent;
         private int _originalChildCount;
         private GameEventListener _returnToPool;
+        private float _liftHeight;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -61,9 +62,10 @@ namespace Lodis.Gameplay
             _chargeEffect.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.DANGER;
 
             //Cache stat values to avoid repetitive calls.
-            _riseSpeed = abilityData.GetCustomStatValue("RiseSpeed");
+            _liftHeight = abilityData.GetCustomStatValue("LiftHeight");
             _knockbackThreshold = abilityData.GetCustomStatValue("KnockbackThreshold");
             _liftTime = abilityData.GetCustomStatValue("LiftTime");
+            _holdTime = abilityData.GetCustomStatValue("HoldTime");
             _returnToPool?.ClearActions();
         }
 
@@ -85,6 +87,7 @@ namespace Lodis.Gameplay
 
             return transform;
         }
+
         private void LiftOpponent(params object[] args)
         {
             //Only check knockback if a player was hit.
@@ -99,12 +102,13 @@ namespace Lodis.Gameplay
             _opponentKnockback.Physics.StopAllForces();
 
             _opponentTransform.localPosition = Vector3.zero;
-            _shouldRise = true;
             _opponentCaptured = true;
+
+            _auraSphere.transform.DOMoveY(_liftHeight, _liftTime);
 
             //Check if the opponent should be let go 
             _opponentKnockback.AddOnKnockBackStartAction(DespawnSphere);
-            _despawnTimer = RoutineBehaviour.Instance.StartNewTimedAction(info => DespawnSphere(), TimedActionCountType.SCALEDTIME, _liftTime);
+            _despawnTimer = RoutineBehaviour.Instance.StartNewTimedAction(info => DespawnSphere(), TimedActionCountType.SCALEDTIME, _holdTime);
         }
 
         private void DespawnSphere()
@@ -120,12 +124,12 @@ namespace Lodis.Gameplay
             _opponentTransform.parent = _opponentParent;
             _opponentKnockback.Physics.IgnoreForces = false;
             _opponentKnockback.Physics.UseGravity = true;
-            _shouldRise = false;
             _opponentCaptured = false;
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_auraSphere);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             _collider.ColliderInfo.OnHit -= LiftOpponent;
+            _auraSphere.transform.DOKill();
         }
 
         //Called when ability is used
@@ -169,8 +173,6 @@ namespace Lodis.Gameplay
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
-            _shouldRise = false;
-
             if (!_opponentCaptured || _originalChildCount == _auraSphere.transform.childCount)
                 DespawnSphere();
         }

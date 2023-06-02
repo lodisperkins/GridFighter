@@ -37,19 +37,14 @@ namespace Lodis.Gameplay
             _targetPanels?.Clear();
 
             SmoothMovement = true;
-
-            PanelPositions[0] = OwnerMoveScript.Position + Vector2.right * OwnerMoveScript.transform.forward.x;
-            PanelPositions[1] = OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x;
-            PanelPositions[2] = OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x;
-            PanelPositions[3] = OwnerMoveScript.Position + Vector2.right * 3 * OwnerMoveScript.transform.forward.x;
+            _hitColliderData = GetColliderData(0);
         }
 
         private void DetonateBombs()
         {
             foreach (GridMovementBehaviour entity in ActiveEntities)
             {
-                if (!entity.TryGetComponent<Collider>(out _))
-                    HitColliderSpawner.SpawnBoxCollider(entity.transform, Vector3.one, _hitColliderData, owner);
+                HitColliderSpawner.SpawnBoxCollider(entity.transform, Vector3.one, _hitColliderData, owner);
 
                 Object.Instantiate(_explosionEffect, entity.transform.position, Camera.main.transform.rotation);
                 ObjectPoolBehaviour.Instance.ReturnGameObject(entity.gameObject, _hitColliderData.TimeActive + 0.1f);
@@ -62,6 +57,11 @@ namespace Lodis.Gameplay
 	    //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            PanelPositions[0] = OwnerMoveScript.Position + Vector2.right * OwnerMoveScript.transform.forward.x;
+            PanelPositions[1] = (OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x) + Vector2.up;
+            PanelPositions[2] = (OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x) + Vector2.down;
+            PanelPositions[3] = OwnerMoveScript.Position + Vector2.right * 3 * OwnerMoveScript.transform.forward.x;
+
             base.OnActivate(args);
 
             //Starts the bomb countdown

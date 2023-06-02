@@ -78,6 +78,8 @@ namespace Lodis.Gameplay
 
                 moveBehaviour.Position = OwnerMoveScript.CurrentPanel.Position;
                 moveBehaviour.Speed = _moveSpeed;
+                moveBehaviour.CanBeWalkedThrough = true;
+                moveBehaviour.CanMoveDiagonally = true;
 
                 ActiveEntities.Add(moveBehaviour);
                 moveBehaviour.MoveToPanel(_panelPositions[i], !SmoothMovement, GridAlignment.ANY, true, false, true);

@@ -88,6 +88,7 @@ namespace Lodis.Gameplay
                 collider.ColliderInfo = _stunCollider;
             }
 
+            DestroyLinks(1);
         }
 
         /// <summary>
