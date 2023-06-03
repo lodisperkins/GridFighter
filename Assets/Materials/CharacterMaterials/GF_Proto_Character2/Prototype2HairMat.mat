@@ -75,7 +75,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
-    - _EmissionStrength: 13.24
+    - _EmissionStrength: 7
     - _EnvironmentReflections: 1
     - _FalloffAmount: 0
     - _FresnelSize: 0
