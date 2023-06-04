@@ -82,7 +82,6 @@ namespace Lodis.Gameplay
             GameObject whirlInstance = MonoBehaviour.Instantiate(_whirlEffect, owner.transform.position, owner.transform.rotation);
             MonoBehaviour.Destroy(whirlInstance, throwDelay);
 
-            EnableBounce();
 
             _throwAction = RoutineBehaviour.Instance.StartNewTimedAction(
                 info =>
@@ -181,7 +180,6 @@ namespace Lodis.Gameplay
                 return;
 
             _opponentPhysics.UseGravity = true;
-            _opponentPhysics.DisablePanelBounce();
             _opponentPhysics.transform.parent = _oldOpponentParent;
         }
     }

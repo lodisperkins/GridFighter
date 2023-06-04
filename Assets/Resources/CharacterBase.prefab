@@ -1290,7 +1290,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 12582912
+    m_Bits: 29360128
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -1369,26 +1369,35 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.997826
-      outSlope: -0.997826
+      inSlope: -6.470265
+      outSlope: -6.470265
       tangentMode: 34
       weightedMode: 0
       inWeight: 0
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.50035536
-      value: 0.5007324
-      inSlope: 0.0007096827
-      outSlope: 0.0007096827
-      tangentMode: 34
+      time: 0.07716811
+      value: 0.5007019
+      inSlope: -0.12825039
+      outSlope: -0.12825039
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.063965626
+    - serializedVersion: 3
+      time: 0.81676245
+      value: 0.6107688
+      inSlope: 0.7972204
+      outSlope: 0.7972204
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0.99924535
-      outSlope: 0.99924535
+      time: 0.8977051
+      value: 1.0023613
+      inSlope: 4.837902
+      outSlope: 4.837902
       tangentMode: 34
       weightedMode: 0
       inWeight: 0.33333334

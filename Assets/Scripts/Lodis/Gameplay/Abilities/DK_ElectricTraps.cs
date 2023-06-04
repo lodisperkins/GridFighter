@@ -34,7 +34,11 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
-            OwnerKnockBackScript.AddOnKnockBackTempAction(() => DestroyLinks(1));
+            OwnerKnockBackScript.AddOnKnockBackTempAction(() =>
+            {
+                DestroyLinks(1);
+                EndAbility();
+            });
             if (currentActivationAmount == 0)
                 _linkMoveScripts.Clear();
         }

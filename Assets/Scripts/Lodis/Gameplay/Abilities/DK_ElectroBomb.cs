@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            _chargeEffectRef = Resources.Load<GameObject>("Effects/Charge_Darkness");
+            _chargeEffectRef = abilityData.Effects[0];
             UseGravity = true;
             TimeCountType = TimedActionCountType.UNSCALEDTIME;
         }
@@ -59,9 +59,8 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StartNewTimedAction(args => FXManagerBehaviour.Instance.StartSuperMoveVisual(OwnerInput.PlayerID, abilityData.startUpTime), TimedActionCountType.SCALEDTIME, 0.1f);
 
             //Spawn the the holding effect.
-            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, OwnerMoveset.LeftMeleeSpawns[1], true);
-            _chargeEffect.transform.parent = null;
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect, 0.25f);
+            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, OwnerMoveset.HeldItemSpawnLeft, true);
+            RoutineBehaviour.Instance.StartNewConditionAction(args => ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect), condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
         }
 
         //Called when ability is used

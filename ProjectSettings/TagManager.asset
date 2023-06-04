@@ -35,10 +35,10 @@ TagManager:
   - GlowPostProcess
   - MainStage
   - WinCollider
-  - OverlayEffect
+  - UIOverlayEffect
   - LHSMesh
   - RHSMesh
-  - 
+  - BattleOverlayEffect
   - 
   - 
   - 
