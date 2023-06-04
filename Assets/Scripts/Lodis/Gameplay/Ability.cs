@@ -138,8 +138,8 @@ namespace Lodis.Gameplay
             onBegin?.Invoke();
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActivateSound);
-            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => ActivePhase(args), TimeCountType, abilityData.startUpTime);
             Start(args);
+            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => ActivePhase(args), TimeCountType, abilityData.startUpTime);
         }
 
         /// <summary>
@@ -151,8 +151,8 @@ namespace Lodis.Gameplay
             onActivateStart?.Invoke();
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
-            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => RecoverPhase(args), TimeCountType, abilityData.timeActive);
             Activate(args);
+            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => RecoverPhase(args), TimeCountType, abilityData.timeActive);
         }
 
         /// <summary>
@@ -165,12 +165,12 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.RECOVER;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.DeactivateSound);
 
+            Recover(args);
             if (MaxActivationAmountReached)
                 _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => EndAbility(), TimeCountType, abilityData.recoverTime);
             else
                 _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _inUse = false, TimeCountType, abilityData.recoverTime);
 
-            Recover(args);
         }
 
         /// <summary>

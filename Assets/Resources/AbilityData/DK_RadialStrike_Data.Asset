@@ -23,17 +23,10 @@ MonoBehaviour:
   chargeTime: 5
   maxActivationAmount: 1
   EnergyCost: 4
-  canCancelStartUp: 0
-  canCancelActive: 1
-  canCancelRecover: 1
-  CanCancelOnMove: 0
-  CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 1
-  cancelOnHit: 1
-  cancelOnFlinch: 1
-  cancelOnKnockback: 1
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -41,6 +34,8 @@ MonoBehaviour:
   playAnimationManually: 1
   visualPrefab: {fileID: 1262993906260531779, guid: a9d9a52861a5d6f418f1e5c207d8c19f,
     type: 3}
+  Accessory: {fileID: 0}
+  Effects: []
   DisplayIcon: {fileID: 21300000, guid: e60fb0c998d180e4198842718312accc, type: 3}
   ActivateSound: {fileID: 8300000, guid: 30be62bbf4aceee449850dbe76565062, type: 3}
   ActiveSound: {fileID: 0}

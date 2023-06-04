@@ -15,6 +15,9 @@ namespace Lodis.FX
         private Light[] _environmentLights;
         [SerializeField]
         private Camera _mainCamera;
+        [SerializeField]
+        private float _onScreenDistance = 2.5f;
+        private bool _superMoveActive;
 
         private static FXManagerBehaviour _instance;
 
@@ -35,17 +38,22 @@ namespace Lodis.FX
             }
         }
 
+        public bool SuperMoveEffectActive { get => _superMoveActive; private set => _superMoveActive = value; }
+
         // Start is called before the first frame update
         void Start()
         {
             _player1Camera = BlackBoardBehaviour.Instance.Player1.GetComponentInChildren<CharacterCameraBehaviour>();
             _player1Animator = BlackBoardBehaviour.Instance.Player1.GetComponentInChildren<Animator>();
             _player1Camera.AddOnLerpCompleteAction(StopAllSuperMoveVisuals);
+            _player1Camera.CullingMask |= (1 << LayerMask.NameToLayer("LHSMesh"));
 
             _player2Camera = BlackBoardBehaviour.Instance.Player2.GetComponentInChildren<CharacterCameraBehaviour>();
-            _player2Animator = BlackBoardBehaviour.Instance.Player1.GetComponentInChildren<Animator>();
+            _player2Animator = BlackBoardBehaviour.Instance.Player2.GetComponentInChildren<Animator>();
             _player2Camera.AddOnLerpCompleteAction(StopAllSuperMoveVisuals);
             _player2Camera.transform.parent.localRotation = Quaternion.Euler(0, 180, 0);
+            _player2Camera.FlipStartEndTransforms();
+            _player2Camera.CullingMask |= (1 << LayerMask.NameToLayer("RHSMesh"));
         }
 
         public void SetEnvironmentLightsEnabled(bool enabled)
@@ -76,21 +84,26 @@ namespace Lodis.FX
 
             CharacterCameraBehaviour currentCamera = null;
             Animator currentAnimator = null;
+            Vector3 direction;
+
             if (player == 1)
             {
                 currentCamera = _player1Camera;
                 currentAnimator = _player1Animator;
+                direction = Vector3.back;
             }
             else
             {
                 currentCamera = _player2Camera;
                 currentAnimator = _player2Animator;
+                direction = Vector3.forward;
             }
-
             SetEnvironmentLightsEnabled(false);
             currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
             MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, duration);
-            currentCamera.LerpCamera(duration);
+            currentCamera.PunchCamera(direction * _onScreenDistance, duration);
+
+            SuperMoveEffectActive = true;
         }
 
         public void StartSuperMoveVisual(int player)
@@ -100,21 +113,27 @@ namespace Lodis.FX
 
             CharacterCameraBehaviour currentCamera = null;
             Animator currentAnimator = null;
+            Vector3 direction;
+
             if (player == 1)
             {
                 currentCamera = _player1Camera;
                 currentAnimator = _player1Animator;
+                direction = Vector3.right;
             }
             else
             {
                 currentCamera = _player2Camera;
                 currentAnimator = _player2Animator;
+                direction = Vector3.left;
             }
 
             SetEnvironmentLightsEnabled(false);
             currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
             MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, currentCamera.LerpDuration);
-            currentCamera.LerpCamera();
+            currentCamera.PunchCamera(direction * _onScreenDistance, currentCamera.LerpDuration);
+
+            SuperMoveEffectActive = true;
         }
 
         public void StopAllSuperMoveVisuals()
@@ -124,10 +143,14 @@ namespace Lodis.FX
             MatchManagerBehaviour.Instance.ResetTimeScale();
 
             _player1Camera.StopLerpCamera();
+            _player1Camera.SetCameraEnabled(false);
             _player1Animator.updateMode = AnimatorUpdateMode.Normal;
 
             _player2Camera.StopLerpCamera();
             _player2Animator.updateMode = AnimatorUpdateMode.Normal;
+            _player2Camera.SetCameraEnabled(false);
+
+            SuperMoveEffectActive = false;
         }
     }
 }

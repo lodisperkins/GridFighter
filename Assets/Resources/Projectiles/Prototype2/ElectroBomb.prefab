@@ -139,7 +139,7 @@ Transform:
   m_GameObject: {fileID: 7754603298825524821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.4317973, y: 2.7823696, z: 0.8383787}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children: []
   m_Father: {fileID: 1571598193419968429}
   m_RootOrder: 1
@@ -211,6 +211,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1571598193419968429}
     m_Modifications:
+    - target: {fileID: 2916224811726146691, guid: 2c45530c620be89409ff084a3f98aa5e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.5498
+      objectReference: {fileID: 0}
+    - target: {fileID: 2916224811726146691, guid: 2c45530c620be89409ff084a3f98aa5e,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.5498
+      objectReference: {fileID: 0}
+    - target: {fileID: 2916224811726146691, guid: 2c45530c620be89409ff084a3f98aa5e,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.5498
+      objectReference: {fileID: 0}
     - target: {fileID: 7906351823773504847, guid: 2c45530c620be89409ff084a3f98aa5e,
         type: 3}
       propertyPath: m_RootOrder
@@ -270,6 +285,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Projectile_Lightning_Ball_Lv3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7906351824257335159, guid: 2c45530c620be89409ff084a3f98aa5e,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 6.2191
+      objectReference: {fileID: 0}
+    - target: {fileID: 7906351824257335159, guid: 2c45530c620be89409ff084a3f98aa5e,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 6.2191
+      objectReference: {fileID: 0}
+    - target: {fileID: 7906351824257335159, guid: 2c45530c620be89409ff084a3f98aa5e,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 6.2191
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2c45530c620be89409ff084a3f98aa5e, type: 3}

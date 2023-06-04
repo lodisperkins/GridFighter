@@ -118,6 +118,7 @@ namespace Lodis.Gameplay
         public bool InvincibleBarriers { get => _invincibleBarriers; set => _invincibleBarriers = value; }
         public bool SuddenDeathActive { get => _suddenDeathActive; private set => _suddenDeathActive = value; }
         public PlayerSpawnBehaviour PlayerSpawner { get => _playerSpawner; private set => _playerSpawner = value; }
+        public bool SuperInUse { get; internal set; }
 
         private void Awake()
         {

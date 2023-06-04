@@ -12,6 +12,7 @@ using Lodis.Utility;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 using Lodis.ScriptableObjects;
+using Lodis.FX;
 
 namespace Lodis.Input
 {
@@ -273,7 +274,15 @@ namespace Lodis.Input
                 float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
                 args[0] = powerScale;
-                _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); }, condition => _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"), 0.2f);
+
+                _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); },
+                condition =>
+                _moveset.GetCanUseAbility() && 
+                (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" ||
+                _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" ||
+                _stateMachineBehaviour.StateMachine.CurrentState == "Moving")
+                && !FXManagerBehaviour.Instance.SuperMoveEffectActive, 0.2f);
+
                 _abilityBuffered = true;
                 return;
             }
@@ -313,7 +322,11 @@ namespace Lodis.Input
             args[1] = _attackDirection;
 
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition =>
+            { 
+                _abilityBuffered = false;
+                return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
+            }, 0.2f);
             _abilityBuffered = true;
         }
 
