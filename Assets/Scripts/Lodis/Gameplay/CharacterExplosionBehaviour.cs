@@ -6,6 +6,7 @@ using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using Lodis.Sound;
+using Lodis.FX;
 
 namespace Lodis.Gameplay
 {
@@ -52,6 +53,8 @@ namespace Lodis.Gameplay
             _characterFeedback.EmissionStrength = _maxEmission;
             _characterFeedback.FlashAllRenderers(BlackBoardBehaviour.Instance.GetPlayerColorByID(playerID));
             _characterFeedback.TimeBetweenFlashes = _explosionChargeTime;
+
+            FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(false);
             SoundManagerBehaviour.Instance.PlaySound(_chargeSound);
             SoundManagerBehaviour.Instance.TogglePauseMusic();
             MatchManagerBehaviour.Instance.ChangeTimeScale(0.2f, ExplosionChargeTime, ExplosionChargeTime);
@@ -67,6 +70,7 @@ namespace Lodis.Gameplay
                 SoundManagerBehaviour.Instance.PlaySound(_explosionSound);
                 SoundManagerBehaviour.Instance.TogglePauseMusic();
                 _onCharacterExplosion.Raise();
+                FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
 
             }, TimedActionCountType.UNSCALEDTIME, ExplosionChargeTime);
 
@@ -74,6 +78,7 @@ namespace Lodis.Gameplay
             {
                 _characterFeedback.EmissionStrength = strength;
                 _characterFeedback.TimeBetweenFlashes = oldTime;
+                FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
             };
         }
 

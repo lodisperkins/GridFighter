@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using Lodis.FX;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,7 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
             _chargeEffectRef = Resources.Load<GameObject>("Effects/Charge_Darkness");
             UseGravity = true;
+            TimeCountType = TimedActionCountType.UNSCALEDTIME;
         }
 
         protected override void OnStart(params object[] args)
@@ -54,6 +56,8 @@ namespace Lodis.Gameplay
             OwnerMoveScript.DisableMovement(condition => !InUse);
             OwnerMoveScript.TeleportToLocation(position, 0.1f, false);
 
+            RoutineBehaviour.Instance.StartNewTimedAction(args => FXManagerBehaviour.Instance.StartSuperMoveVisual(OwnerInput.PlayerID, abilityData.startUpTime), TimedActionCountType.SCALEDTIME, 0.1f);
+
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, OwnerMoveset.LeftMeleeSpawns[1], true);
             _chargeEffect.transform.parent = null;
@@ -65,6 +69,18 @@ namespace Lodis.Gameplay
         {
             //The base activate func fires a single instance of the projectile when called
             base.OnActivate(args);
+        }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+        }
+
+        protected override void OnMatchRestart()
+        {
+            base.OnMatchRestart();
+            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
         }
     }
 }

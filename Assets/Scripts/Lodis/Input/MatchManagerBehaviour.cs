@@ -10,6 +10,8 @@ using Lodis.UI;
 using Lodis.ScriptableObjects;
 using Lodis.Sound;
 using UnityEngine.UI;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 namespace Lodis.Gameplay
 {
@@ -79,6 +81,8 @@ namespace Lodis.Gameplay
         private bool _canPause = true;
         private bool _suddenDeathActive;
         private bool _matchStarted;
+        private TweenerCore<float, float, FloatOptions> _timeScaleTween;
+        private TimedAction _timeScaleAction;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -193,8 +197,15 @@ namespace Lodis.Gameplay
         /// <param name="duration">How long the timescale will be this speed.</param>
         public void ChangeTimeScale(float newTimeScale, float speed, float duration)
         {
-            DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
-            RoutineBehaviour.Instance.StartNewTimedAction(args => Time.timeScale = 1, TimedActionCountType.UNSCALEDTIME, duration);
+            _timeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
+            _timeScaleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Time.timeScale = 1, TimedActionCountType.UNSCALEDTIME, duration);
+        }
+
+        public void ResetTimeScale()
+        {
+            Time.timeScale = 1;
+            _timeScaleTween.Kill();
+            RoutineBehaviour.Instance.StopAction(_timeScaleAction);
         }
 
         public void SetPlayerControlsActive(bool value)

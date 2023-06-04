@@ -4970,7 +4970,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -4075491594224063008, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -5042,21 +5042,6 @@ Transform:
   m_Father: {fileID: 3034640515334675470}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &735736406173050629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 546082765350311811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20c3b6c640c6f5448a3a59cb9c88d346, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 2
-  _positionOffset: {x: 0, y: 0.2, z: 0}
-  _useWorldPosition: 0
 --- !u!1 &631161395280253929
 GameObject:
   m_ObjectHideFlags: 0
@@ -10494,6 +10479,17 @@ Transform:
   m_Father: {fileID: 220974973120694855}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!210 &2777416262451029045
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1658872878371820837}
+  m_Enabled: 1
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
 --- !u!1 &1222186836642356654
 GameObject:
   m_ObjectHideFlags: 0
@@ -10680,7 +10676,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -3948046509626965604, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -10838,17 +10834,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.1581642, y: 0.05546139, z: 0.14173158}
     m_Extent: {x: 0.06569809, y: 0.051382765, z: 0.02758284}
   m_DirtyAABB: 0
---- !u!210 &2777416262451029045
-SortingGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1658872878371820837}
-  m_Enabled: 1
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
 --- !u!1 &1748397963880223111
 GameObject:
   m_ObjectHideFlags: 0
@@ -10921,7 +10906,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -9167049055827555267, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -11029,6 +11014,21 @@ Transform:
   m_Father: {fileID: 8408258821974686489}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &735736406173050629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546082765350311811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c3b6c640c6f5448a3a59cb9c88d346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2
+  _positionOffset: {x: 0, y: 0.2, z: 0}
+  _useWorldPosition: 0
 --- !u!1 &2091624155356348069
 GameObject:
   m_ObjectHideFlags: 0
@@ -16120,7 +16120,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 816472441436090757, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -16203,7 +16203,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -3280648745377510879, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -16286,7 +16286,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 5917519771979101270, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -21255,7 +21255,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -2495726400976204885, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -51329,7 +51329,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -5759966522048253594, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -56921,7 +56921,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -8300338249106174788, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -66860,7 +66860,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: -4233993383225501912, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -67702,7 +67702,7 @@ SkinnedMeshRenderer:
   m_SortingOrder: 0
   serializedVersion: 2
   m_Quality: 0
-  m_UpdateWhenOffscreen: 0
+  m_UpdateWhenOffscreen: 1
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 5736416875116088638, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
@@ -68637,7 +68637,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _specialDeckRef
       value: 
-      objectReference: {fileID: 11400000, guid: 89f0a9e7868f0a1488579645e925ef03,
+      objectReference: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab,
         type: 2}
     - target: {fileID: 8801745021231139587, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68669,6 +68669,11 @@ PrefabInstance:
       propertyPath: _rightMeleeSpawns.Array.data[1]
       value: 
       objectReference: {fileID: 5521709778626495316}
+    - target: {fileID: 8881714891450283555, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 9056967475098163082, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_Layer

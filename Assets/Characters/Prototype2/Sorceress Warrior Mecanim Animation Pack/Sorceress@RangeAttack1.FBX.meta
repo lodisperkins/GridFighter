@@ -467,7 +467,7 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.342803
+      - time: 0.29816014
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}

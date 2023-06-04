@@ -17,9 +17,9 @@ MonoBehaviour:
     and knockback.
   exampleClip: {fileID: 0}
   AbilityType: 8
-  timeActive: 1
-  recoverTime: 1.5
-  startUpTime: 0.4
+  timeActive: 0.1
+  recoverTime: 1
+  startUpTime: 2
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 5
