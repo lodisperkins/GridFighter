@@ -3,6 +3,7 @@ using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 namespace Lodis.GridScripts
 {
@@ -17,6 +18,8 @@ namespace Lodis.GridScripts
         private Color _neutralColor;
         [SerializeField]
         private float _emissionStrength;
+        [SerializeField]
+        private float _emissionFadeDuration;
         private Color _positionLHSColor;
         private Color _positionRHSColor;
         [SerializeField]
@@ -150,24 +153,29 @@ namespace Lodis.GridScripts
                     {
                         _mesh.material.ChangeHue(_positionLHSColor, "_Color");
                         _mesh.material.SetColor("_EmissionColor", _positionLHSColor * _emissionStrength);
+                        _mesh.material.DOFloat(_emissionStrength, "_EmissionStrength", _emissionFadeDuration);
                     }
                     else if (_markerMovement.Alignment == GridAlignment.RIGHT)
                     {
                         _mesh.material.ChangeHue(_positionRHSColor, "_Color");
                         _mesh.material.SetColor("_EmissionColor", _positionRHSColor * _emissionStrength);
+                        _mesh.material.DOFloat(_emissionStrength, "_EmissionStrength", _emissionFadeDuration);
                     }
                     break;
                 case MarkerType.WARNING:
                     _mesh.material.ChangeHue(_warningColor, "_Color");
                     _mesh.material.SetColor("_EmissionColor", _warningColor * _emissionStrength);
+                    _mesh.material.DOFloat(_emissionStrength, "_EmissionStrength", _emissionFadeDuration);
                     break;
                 case MarkerType.DANGER:
                     _mesh.material.ChangeHue(_dangerColor, "_Color");
                     _mesh.material.SetColor("_EmissionColor", _dangerColor * _emissionStrength);
+                    _mesh.material.DOFloat(_emissionStrength, "_EmissionStrength", _emissionFadeDuration);
                     break;
                 case MarkerType.UNBLOCKABLE:
                     _mesh.material.ChangeHue(_unblockableColor, "_Color");
                     _mesh.material.SetColor("_EmissionColor", _unblockableColor * _emissionStrength);
+                    _mesh.material.DOFloat(_emissionStrength, "_EmissionStrength", _emissionFadeDuration);
                     break;
             }
 
@@ -180,8 +188,8 @@ namespace Lodis.GridScripts
             if (!_mesh)
                 return;
 
-            _mesh?.material.SetInt("_UseEmission", 0);
             _mesh?.material.ChangeHue(_defaultColor, "_Color");
+            _mesh.material.DOFloat(0, "_EmissionStrength", _emissionFadeDuration);
             CurrentMarker = MarkerType.NONE;
         }
 

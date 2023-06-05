@@ -5042,21 +5042,6 @@ Transform:
   m_Father: {fileID: 3034640515334675470}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &735736406173050629
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 546082765350311811}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 20c3b6c640c6f5448a3a59cb9c88d346, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speed: 2
-  _positionOffset: {x: 0, y: 0.2, z: 0}
-  _useWorldPosition: 0
 --- !u!1 &631161395280253929
 GameObject:
   m_ObjectHideFlags: 0
@@ -11018,6 +11003,21 @@ Transform:
   m_Father: {fileID: 8408258821974686489}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &735736406173050629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 546082765350311811}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c3b6c640c6f5448a3a59cb9c88d346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 2
+  _positionOffset: {x: 0, y: 0.2, z: 0}
+  _useWorldPosition: 0
 --- !u!1 &2091624155356348069
 GameObject:
   m_ObjectHideFlags: 0
@@ -67863,7 +67863,7 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.size
-      value: 24
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -67997,6 +67997,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[24].OnlyChangeHue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[2].ObjectRenderer
       value: 
       objectReference: {fileID: 7692506028044951760}
@@ -68105,6 +68110,11 @@ PrefabInstance:
       propertyPath: _objectsToColor.Array.data[23].ObjectRenderer
       value: 
       objectReference: {fileID: 560389748066020747}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[24].ObjectRenderer
+      value: 
+      objectReference: {fileID: 7031198123262661881}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.size
@@ -68223,6 +68233,11 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[23].ShaderProperties.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[24].ShaderProperties.Array.size
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
@@ -68523,6 +68538,16 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[23].ShaderProperties.Array.data[1]
+      value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[24].ShaderProperties.Array.data[0]
+      value: _Color
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[24].ShaderProperties.Array.data[1]
       value: _EmissionColor
       objectReference: {fileID: 0}
     - target: {fileID: 2313499556558640970, guid: c600a5779f55f8e44a90699633fe29a7,

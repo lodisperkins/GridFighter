@@ -122,7 +122,7 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EmissionStrength: 10.9
+    - _EmissionStrength: 0
     - _EnvironmentReflections: 1
     - _FalloffAmount: 0
     - _FresnelSize: 0
@@ -141,7 +141,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _UVSec: 0
-    - _UseEmission: 1
+    - _UseEmission: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:

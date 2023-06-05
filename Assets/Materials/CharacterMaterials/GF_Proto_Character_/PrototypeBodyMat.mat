@@ -23,7 +23,7 @@ Material:
   m_Name: PrototypeBodyMat
   m_Shader: {fileID: -6465566751694194690, guid: e600931dd59f31f4ab721a565cf62d6e,
     type: 3}
-  m_ShaderKeywords: 
+  m_ShaderKeywords: USENORMAL_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -84,15 +84,15 @@ Material:
     m_Floats:
     - LightingCutoff: 0.2
     - Smoothness: 0
-    - USENORMAL: 0
+    - USENORMAL: 1
     - _AlphaClip: 0
-    - _AmbientStrength: 0.1
+    - _AmbientStrength: 0
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
-    - _EmissionStrength: 0
+    - _EmissionStrength: 3.28
     - _EnvironmentReflections: 1
     - _FalloffAmount: 0
     - _FresnelSize: 0
@@ -112,12 +112,12 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
-    - _UseEmission: 1
+    - _UseEmission: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 1, g: 0.85882354, b: 0.6745098, a: 1}
+    - _Color: {r: 0.7764706, g: 0.5254902, b: 0.25882354, a: 1}
     - _EmissionColor: {r: 0.3490566, g: 0.22133574, b: 0.051041294, a: 0}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
@@ -126,5 +126,5 @@ Material:
     - _SecondaryColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
-    - _TertiaryColor: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
+    - _TertiaryColor: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}

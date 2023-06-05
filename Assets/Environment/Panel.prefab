@@ -109,7 +109,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
-  _emissionStrength: 15
+  _emissionStrength: 6
+  _emissionFadeDuration: 0.1
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}

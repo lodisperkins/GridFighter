@@ -75,7 +75,7 @@ Material:
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
-    - _EmissionStrength: 7
+    - _EmissionStrength: 4.75
     - _EnvironmentReflections: 1
     - _FalloffAmount: 0
     - _FresnelSize: 0
@@ -97,8 +97,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
-    - _Color: {r: 0.1792453, g: 0.1792453, b: 0.1792453, a: 1}
-    - _EmissionColor: {r: 0.0754717, g: 0.021039605, b: 0, a: 1}
+    - _Color: {r: 0.05660379, g: 0.0327946, b: 0.00080099556, a: 1}
+    - _EmissionColor: {r: 0, g: 0.9308512, b: 1, a: 1}
     - _EmissionTiling: {r: 1, g: 1, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}

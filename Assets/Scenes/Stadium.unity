@@ -942,6 +942,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -2037,6 +2038,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -2746,6 +2748,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -2892,6 +2895,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -3712,6 +3716,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -5691,6 +5696,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -6024,6 +6030,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -7719,6 +7726,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -8264,6 +8272,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -8687,6 +8696,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -9182,6 +9192,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -9407,6 +9418,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -9521,6 +9533,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -10341,6 +10354,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -11673,6 +11687,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -14057,6 +14072,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -15763,6 +15779,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -16049,6 +16066,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -16241,6 +16259,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -16876,6 +16895,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -17153,6 +17173,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -18037,7 +18058,7 @@ PrefabInstance:
     - target: {fileID: 2492379211295133930, guid: 9c0f26416408c3249a6ca0462ece9f65,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.94
+      value: 0.47
       objectReference: {fileID: 0}
     - target: {fileID: 2492379211295133930, guid: 9c0f26416408c3249a6ca0462ece9f65,
         type: 3}
@@ -19472,6 +19493,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -19897,6 +19919,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
@@ -20220,6 +20243,7 @@ MonoBehaviour:
   _occupied: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
+  _emissionFadeDuration: 0
   _warningColor: {r: 1, g: 0.9525722, b: 0.3254717, a: 0}
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
