@@ -189,7 +189,8 @@ namespace Lodis.GridScripts
                 return;
 
             _mesh?.material.ChangeHue(_defaultColor, "_Color");
-            _mesh.material.DOFloat(0, "_EmissionStrength", _emissionFadeDuration);
+            _mesh?.material.SetFloat("_EmissionStrength", _emissionStrength / 2);
+            _mesh?.material.DOFloat(0, "_EmissionStrength", _emissionFadeDuration);
             CurrentMarker = MarkerType.NONE;
         }
 
