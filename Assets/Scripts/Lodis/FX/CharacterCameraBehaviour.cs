@@ -86,7 +86,18 @@ namespace Lodis.FX
             tween.onComplete += () => _onLerpComplete?.Invoke();
         }
 
-        public void LerpCamera(float duration, bool flipped = false)
+        public void PunchCamera(Vector3 punch, float duration, AnimationCurve curve)
+        {
+            SetCameraEnabled(true);
+            transform.DOKill();
+
+            transform.position = _lerpStart.position;
+
+            var tween = transform.DOPunchPosition(punch, duration,0,0).SetUpdate(true).SetEase(curve);
+            tween.onComplete += () => _onLerpComplete?.Invoke();
+        }
+
+        public void LerpCamera(float duration,AnimationCurve curve)
         {
             SetCameraEnabled(true);
             transform.DOKill();
@@ -94,11 +105,8 @@ namespace Lodis.FX
             transform.position = _lerpStart.position;
 
 
-            var tween = transform.DOMove(_lerpEnd.position, duration).SetUpdate(true).SetEase(_lerpCurve);
+            var tween = transform.DOMove(_lerpEnd.position, duration).SetUpdate(true).SetEase(curve);
             tween.onComplete += () => _onLerpComplete?.Invoke();
-
-            if (flipped)
-                tween.Flip();
         }
 
         public void StopLerpCamera()

@@ -17,6 +17,8 @@ namespace Lodis.FX
         private Camera _mainCamera;
         [SerializeField]
         private float _onScreenDistance = 2.5f;
+        [SerializeField]
+        private AnimationCurve _superMoveCurve;
         private bool _superMoveActive;
 
         private static FXManagerBehaviour _instance;
@@ -101,7 +103,7 @@ namespace Lodis.FX
             SetEnvironmentLightsEnabled(false);
             currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
             MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, duration);
-            currentCamera.PunchCamera(direction * _onScreenDistance, duration);
+            currentCamera.LerpCamera(duration, _superMoveCurve);
 
             SuperMoveEffectActive = true;
         }
@@ -131,7 +133,7 @@ namespace Lodis.FX
             SetEnvironmentLightsEnabled(false);
             currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
             MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, currentCamera.LerpDuration);
-            currentCamera.PunchCamera(direction * _onScreenDistance, currentCamera.LerpDuration);
+            currentCamera.LerpCamera(currentCamera.LerpDuration, _superMoveCurve);
 
             SuperMoveEffectActive = true;
         }

@@ -6661,6 +6661,48 @@ MonoBehaviour:
   - {fileID: 1166588173}
   _mainCamera: {fileID: 934786774}
   _onScreenDistance: 2.5
+  _superMoveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.10021163
+      value: 0.5001176
+      inSlope: 0.66304845
+      outSlope: 0.66304845
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.037201844
+    - serializedVersion: 3
+      time: 0.9483637
+      value: 0.49859136
+      inSlope: -0.49216032
+      outSlope: -0.49216032
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.04551287
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1.0007324
+      value: 0.009353638
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!4 &793981809
 Transform:
   m_ObjectHideFlags: 0
@@ -22282,7 +22324,7 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _infiniteEnergy
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
