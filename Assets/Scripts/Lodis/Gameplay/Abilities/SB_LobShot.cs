@@ -52,7 +52,7 @@ namespace Lodis.Gameplay
         /// <param name="axis"></param>
         private GameObject SpawnStrongShot(Vector3 axis, float distance, float angle, GameObject projectile, HitColliderData hitColliderData, Vector3 position, float gravity)
         {
-            OwnerMoveset.ProjectileSpawner.projectile = projectile;
+            OwnerMoveset.ProjectileSpawner.Projectile = projectile;
 
             Vector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(distance, angle);
             launchForce.z += axis.z * launchForce.magnitude;

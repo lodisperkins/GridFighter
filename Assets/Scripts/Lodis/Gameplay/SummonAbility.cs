@@ -14,7 +14,6 @@ namespace Lodis.Gameplay
         private bool _smoothMovement;
         private int _entityCount;
         private float _moveSpeed;
-        private bool _hasMovementComponent;
         private Vector2[] _panelPositions;
 
         public Vector2[] PanelPositions { get => _panelPositions; set => _panelPositions = value; }
@@ -57,7 +56,6 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
             CleanEntityList();
-            _hasMovementComponent = _entityRef.TryGetComponent<GridMovementBehaviour>(out _);
         }
 
         protected override void OnActivate(params object[] args)
@@ -71,12 +69,14 @@ namespace Lodis.Gameplay
                 GameObject instance = ObjectPoolBehaviour.Instance.GetObject(_entityRef, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
                 BlackBoardBehaviour.Instance.AddEntityToList(instance);
 
-                if (_hasMovementComponent)
-                    moveBehaviour = instance.GetComponent<GridMovementBehaviour>();
-                else
+                moveBehaviour = instance.GetComponent<GridMovementBehaviour>();
+
+                if (!moveBehaviour)
                     moveBehaviour = instance.AddComponent<GridMovementBehaviour>();
 
-                moveBehaviour.Position = OwnerMoveScript.CurrentPanel.Position;
+                if (SmoothMovement)
+                    moveBehaviour.Position = OwnerMoveScript.CurrentPanel.Position;
+
                 moveBehaviour.Speed = _moveSpeed;
                 moveBehaviour.CanBeWalkedThrough = true;
                 moveBehaviour.CanMoveDiagonally = true;

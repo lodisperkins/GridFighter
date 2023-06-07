@@ -275,6 +275,12 @@ namespace Lodis.Movement
             _targetPosition = transform.position;
             _meshFilter = GetComponent<MeshFilter>();
 
+
+            //Adding the height ensures the gameObject is not placed inside the panel.
+            if (!_meshFilter)
+                _heightOffset = transform.localScale.y / 2;
+            else
+                _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
         }
 
         private void Start()
@@ -290,11 +296,6 @@ namespace Lodis.Movement
             //else
             //    Debug.LogError(name + " could not find starting panel");
 
-            //Adding the height ensures the gameObject is not placed inside the panel.
-            if (!_meshFilter)
-                _heightOffset = transform.localScale.y / 2;
-            else
-                _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
             if (CompareTag("Player") || CompareTag("Entity"))
                 BlackBoardBehaviour.Instance.AddEntityToList(gameObject);

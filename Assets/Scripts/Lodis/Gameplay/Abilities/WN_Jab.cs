@@ -45,7 +45,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            OwnerMoveset.ProjectileSpawner.projectile = _projectile;
+            OwnerMoveset.ProjectileSpawner.Projectile = _projectile;
 
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {

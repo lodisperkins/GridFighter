@@ -74,7 +74,7 @@ namespace Lodis.Gameplay
             _projectileCollider = _projectileCollider.ScaleStats(powerScale);
 
             //Initialize and attach spawn script
-            OwnerMoveset.ProjectileSpawner.projectile = _projectile;
+            OwnerMoveset.ProjectileSpawner.Projectile = _projectile;
 
             //Fire laser
             ActiveProjectiles.Add(OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider));

@@ -8,7 +8,7 @@ namespace Lodis.Gameplay
 {
     public class ProjectileSpawnerBehaviour : MonoBehaviour
     {
-        public GameObject projectile = null;
+        public GameObject Projectile = null;
         public GameObject Owner = null;
 
         /// <summary>
@@ -19,10 +19,10 @@ namespace Lodis.Gameplay
         /// <param name="useGravity"></param>
         public GameObject FireProjectile(Vector3 force, bool useGravity = false)
         {
-            if (!projectile)
+            if (!Projectile)
                 return null;
 
-            GameObject temp = Instantiate(projectile, transform.position, transform.rotation, null);
+            GameObject temp = Instantiate(Projectile, transform.position, transform.rotation, null);
             Debug.Log(transform.position);
             Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
             rigidbody.useGravity = useGravity;
@@ -42,10 +42,10 @@ namespace Lodis.Gameplay
         /// <param name="useGravity"></param>
         public GameObject FireProjectile(float forceScale, bool useGravity = false)
         {
-            if (!projectile)
+            if (!Projectile)
                 return null;
 
-            GameObject temp = Instantiate(projectile, transform.position, transform.rotation, null);
+            GameObject temp = Instantiate(Projectile, transform.position, transform.rotation, null);
             Debug.Log(transform.position);
             Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
             rigidbody.useGravity = useGravity;
@@ -66,10 +66,10 @@ namespace Lodis.Gameplay
         /// <param name="useGravity"></param>
         public GameObject FireProjectile(Vector3 force, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
         {
-            if (!projectile)
+            if (!Projectile)
                 return null;
 
-            GameObject temp = ObjectPoolBehaviour.Instance.GetObject(projectile, transform.position, transform.rotation);
+            GameObject temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, transform.position, transform.rotation);
 
             HitColliderBehaviour collider;
             if (!temp.TryGetComponent(out collider))
@@ -105,10 +105,10 @@ namespace Lodis.Gameplay
         /// <param name="useGravity"></param>
         public GameObject FireProjectile(float forceScale, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
         {
-            if (!projectile)
+            if (!Projectile)
                 return null;
 
-            GameObject temp = ObjectPoolBehaviour.Instance.GetObject(projectile, transform.position, transform.rotation);
+            GameObject temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, transform.position, transform.rotation);
 
             HitColliderBehaviour collider;
             if (!temp.TryGetComponent(out collider))

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using DG.Tweening;
 
 namespace Lodis.Utility
 {
@@ -9,19 +10,22 @@ namespace Lodis.Utility
     {
         private Vector3 _startScale;
         [SerializeField]
-        private Vector3 _minScale;
-        [SerializeField]
-        private Vector3 _maxScale;
+        private Vector3 _targetScale;
         [SerializeField]
         private bool _loopOnEnabled;
+        [Tooltip("Makes the object constantly resize. Lerps size to target size and lerps back to original when the target size is reached.")]
         [SerializeField]
-        private bool _loop;
+        private bool _loopYoYo;
+
+        [Tooltip("Makes the object constantly resize. Lerps size to target size and snaps back to original when the target size is reached.")]
         [SerializeField]
-        private float _scaleSpeed;
-        private bool _started;
+        private bool _loopReset;
+        [SerializeField]
+        private float _scaleDuration;
         [SerializeField]
         private UnityEvent _onEnable;
-        public UnityAction onResized;
+        [SerializeField]
+        private UnityEvent _onResizeComplete;
 
         // Start is called before the first frame update
         void Start()
@@ -32,91 +36,30 @@ namespace Lodis.Utility
         private void OnEnable()
         {
             if (_loopOnEnabled)
-                GrowAndShrink();
+                StartResize();
 
             _onEnable?.Invoke();
         }
 
-        private IEnumerator ShrinkRoutine()
+        private void OnDisable()
         {
-            _started = true;
-            float lerpVal = 0;
-
-            while (transform.localScale.magnitude > _minScale.magnitude)
-            {
-                transform.localScale = Vector3.Lerp(_startScale, _minScale, lerpVal);
-                lerpVal += Time.deltaTime * _scaleSpeed;
-                yield return new WaitForEndOfFrame();
-            }
-
-            _started = false;
-            onResized?.Invoke();
-
+            transform.DOKill();
+            ResetScale();
         }
 
-        private IEnumerator GrowRoutine()
+        public void StartResize()
         {
-            _started = true;
-            float lerpVal = 0;
-
-            while (transform.localScale.magnitude < _maxScale.magnitude)
-            {
-                transform.localScale = Vector3.Lerp(_startScale, _maxScale, lerpVal);
-                lerpVal += Time.deltaTime * _scaleSpeed;
-                yield return new WaitForEndOfFrame();
-            }
-
-            _started = false;
-            onResized?.Invoke();
-            if (_loop)
-                GrowAndShrink();
+            if (_loopYoYo)
+                transform.DOScale(_targetScale, _scaleDuration).SetLoops(-1, LoopType.Yoyo).onComplete += () => _onResizeComplete?.Invoke();
+            else if (_loopReset)
+                transform.DOScale(_targetScale, _scaleDuration).SetLoops(-1, LoopType.Restart).onComplete += () => _onResizeComplete?.Invoke();
+            else
+                transform.DOScale(_targetScale, _scaleDuration).onComplete += () => _onResizeComplete?.Invoke();
         }
 
-        private IEnumerator GrowAndShrinkRoutine()
+        public void ResetScale()
         {
-            _started = true;
-            float lerpVal = 0;
-
-            while (transform.localScale.magnitude < _maxScale.magnitude)
-            {
-                transform.localScale = Vector3.Lerp(_startScale, _maxScale, lerpVal);
-                lerpVal += Time.deltaTime * _scaleSpeed;
-                yield return new WaitForEndOfFrame();
-            }
-
-            lerpVal = 0;
-            Vector3 tempStartScale = transform.localScale;
-
-            while (transform.localScale.magnitude > _minScale.magnitude)
-            {
-                transform.localScale = Vector3.Lerp(tempStartScale, _minScale, lerpVal);
-                lerpVal += Time.deltaTime * _scaleSpeed;
-                yield return new WaitForEndOfFrame();
-            }
-
-            _started = false;
-            onResized?.Invoke();
-
-            if (_loop)
-                Grow();
-        }
-
-        public void Shrink()
-        {
-            if (!_started)
-                StartCoroutine(ShrinkRoutine());
-        }
-
-        public void Grow()
-        {
-            if (!_started)
-                StartCoroutine(GrowRoutine());
-        }
-
-        public void GrowAndShrink()
-        {
-            if (!_started)
-                StartCoroutine(GrowAndShrinkRoutine());
+            transform.localScale = _startScale;
         }
     }
 }

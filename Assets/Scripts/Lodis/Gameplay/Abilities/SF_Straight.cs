@@ -40,7 +40,7 @@ namespace Lodis.Gameplay
             }
 
             //Fire laser
-            OwnerMoveset.ProjectileSpawner.projectile = _projectile;
+            OwnerMoveset.ProjectileSpawner.Projectile = _projectile;
             GameObject newProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
             newProjectile.transform.localScale = _defaultScale * 2;
             ActiveProjectiles.Add(newProjectile);

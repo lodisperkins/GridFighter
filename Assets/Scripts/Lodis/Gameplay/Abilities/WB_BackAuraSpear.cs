@@ -62,7 +62,7 @@ namespace Lodis.Gameplay
 
             _projectileSpawner = Object.Instantiate(OwnerMoveset.ProjectileSpawner, SpawnTransform.position + Vector3.up, rotation);
 
-            _projectileSpawner.projectile = ProjectileRef;
+            _projectileSpawner.Projectile = ProjectileRef;
 
             ShotDirection = _projectileSpawner.transform.forward;
 

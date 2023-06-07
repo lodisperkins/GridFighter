@@ -61,7 +61,7 @@ namespace Lodis.Gameplay
         {
             //Create a "gun" to fire the shot from
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
-            projectileSpawner.projectile = _projectile;
+            projectileSpawner.Projectile = _projectile;
 
             //Calculate the force needed to make the lobshot travel the given distance
             Vector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle);

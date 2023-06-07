@@ -31,10 +31,12 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 4767874893531218292, guid: 2b38541aaca66e541b75a5af70f2e55c,
+  visualPrefab: {fileID: 3112932191834645029, guid: bae43c874fabe5e4b8a428a6b77a7d5b,
     type: 3}
   Accessory: {fileID: 0}
-  Effects: []
+  Effects:
+  - {fileID: 4767874893531218292, guid: 2b38541aaca66e541b75a5af70f2e55c, type: 3}
+  - {fileID: 6169251239810443288, guid: 4c30520c3888afb4dbab9fc727387b42, type: 3}
   DisplayIcon: {fileID: 21300000, guid: 87dc657afdc74ff41900816975f07c85, type: 3}
   ActivateSound: {fileID: 8300000, guid: 7072720a80127014fb59a4416cfa9c5c, type: 3}
   ActiveSound: {fileID: 0}
@@ -103,6 +105,8 @@ MonoBehaviour:
     value: 0.1
   - name: Speed
     value: 20
+  - name: EntityCount
+    value: 1
   animationType: 0
   _customAnimation: {fileID: 0}
   _additionalAnimations: []

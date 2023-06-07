@@ -68,7 +68,7 @@ namespace Lodis.Gameplay
             }
 
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
-            projectileSpawner.projectile = ProjectileRef;
+            projectileSpawner.Projectile = ProjectileRef;
             SpawnTransform = projectileSpawner.transform;
             ShotDirection = projectileSpawner.transform.forward;
 

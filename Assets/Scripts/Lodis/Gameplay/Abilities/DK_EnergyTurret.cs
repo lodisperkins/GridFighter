@@ -10,23 +10,24 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class DK_EnergyTurret : ProjectileAbility
+    public class DK_EnergyTurret : SummonAbility
     {
         private GameObject _spawn;
         private GameObject _chargeEffectRef;
         private Vector3 _spawnPosition;
         private ProjectileSpawnerBehaviour _projectileSpawner;
         private GameObject _largeLaserRef;
+        private GameObject _laserRef;
         private int _shotCount;
         private float _shotDelay;
+        private float _shotSpeed;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            _chargeEffectRef = Resources.Load<GameObject>("Effects/Charge_Darkness");
-            _largeLaserRef = Resources.Load<GameObject>("Projectiles/Prototype2/LargeBlueLaser");
-            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(() => ObjectPoolBehaviour.Instance.ReturnGameObject(_spawn));
+            _laserRef = abilityData.Effects[0];
+            _largeLaserRef = abilityData.Effects[1];
         }
 
         protected override void OnStart(params object[] args)
@@ -35,56 +36,50 @@ namespace Lodis.Gameplay
 
             _shotCount = (int)abilityData.GetCustomStatValue("ShotCount");
             _shotDelay = abilityData.GetCustomStatValue("ShotDelay");
+            _shotSpeed = abilityData.GetCustomStatValue("Speed");
+
             PanelBehaviour panel;
             BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + Vector2.right * OwnerMoveScript.GetAlignmentX(), out panel);
 
-            _spawnPosition = panel.transform.position + Vector3.up;
-            _spawn = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, owner.transform.rotation);
-            _spawn.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.WARNING;
+            _spawnPosition = panel.Position;
+
+            PanelPositions[0] = _spawnPosition;
         }
 
         private IEnumerator FireShots()
         {
 
-                _projectileSpawner.Owner = owner;
+            _projectileSpawner.Owner = owner;
+            GameObject Projectile = null;
+            _projectileSpawner.Projectile = _laserRef;
+
             for (int i = 0; i < _shotCount; i++)
             {
-                Projectile = _projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), GetColliderData(0), UseGravity);
+                Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.transform.forward * _shotSpeed, GetColliderData(0));
 
                 //Fire projectile
                 Projectile.name += "(" + abilityData.name + i + ")";
-                ActiveProjectiles.Add(Projectile);
 
                 yield return new WaitForSeconds(_shotDelay);
             }
 
-            _projectileSpawner.projectile = _largeLaserRef;
-            Projectile = _projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), GetColliderData(1), UseGravity);
+            _projectileSpawner.Projectile = _largeLaserRef;
+            Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.transform.forward * _shotSpeed, GetColliderData(1));
 
             //Fire projectile
             Projectile.name += "(" + abilityData.name + "Large" + ")";
-            ActiveProjectiles.Add(Projectile);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_spawn);
         }
 
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            //Log if a projectile couldn't be found
-            if (!ProjectileRef)
-            {
-                Debug.LogError("Projectile for " + abilityData.abilityName + " could not be found.");
-                return;
-            }
+            base.OnActivate(args);
 
-            _projectileSpawner = _spawn.GetComponent<ProjectileSpawnerBehaviour>();
+            _spawn = ActiveEntities[0].gameObject;
 
-            if (!_projectileSpawner)
-                _projectileSpawner = _spawn.AddComponent<ProjectileSpawnerBehaviour>();
-
-            _projectileSpawner.projectile = ProjectileRef;
-            SpawnTransform = _projectileSpawner.transform;
-            ShotDirection = _projectileSpawner.transform.forward;
+            _projectileSpawner = _spawn.GetComponentInChildren<ProjectileSpawnerBehaviour>();
+            _projectileSpawner.Owner = owner;
 
             _projectileSpawner.StartCoroutine(FireShots());
         }
@@ -93,6 +88,7 @@ namespace Lodis.Gameplay
         {
             if (_projectileSpawner)
                 _projectileSpawner.StopAllCoroutines();
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_spawn);
         }
     }
