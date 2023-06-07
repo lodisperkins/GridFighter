@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         private int _entityCount;
         private float _moveSpeed;
         private Vector2[] _panelPositions;
+        private string _id;
 
         public Vector2[] PanelPositions { get => _panelPositions; set => _panelPositions = value; }
         public int EntityCount { get => _entityCount; private set => _entityCount = value; }
@@ -30,13 +31,15 @@ namespace Lodis.Gameplay
             ActiveEntities = new List<GridMovementBehaviour>();
             PanelPositions = new Vector2[EntityCount];
             _entityRef = abilityData.visualPrefab;
+
+            _id = _entityRef.name + "(" + owner.name + ")";
         }
 
         public void CleanEntityList(bool useName = false)
         {
             for (int i = 0; i < ActiveEntities.Count; i++)
             {
-                if (!ActiveEntities[i].gameObject.activeInHierarchy || (ActiveEntities[i].gameObject.name != _entityRef.name + "(" + abilityData.name + ")" && useName))
+                if (!ActiveEntities[i].gameObject.activeInHierarchy || (ActiveEntities[i].gameObject.name != _id && useName))
                 {
                     ActiveEntities.RemoveAt(i);
                     i--;
@@ -55,7 +58,7 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
-            CleanEntityList();
+            CleanEntityList(true);
         }
 
         protected override void OnActivate(params object[] args)
@@ -66,6 +69,7 @@ namespace Lodis.Gameplay
 
             for (int i = 0; i < EntityCount; i++)
             {
+                _entityRef.name = _id;
                 GameObject instance = ObjectPoolBehaviour.Instance.GetObject(_entityRef, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
                 BlackBoardBehaviour.Instance.AddEntityToList(instance);
 
