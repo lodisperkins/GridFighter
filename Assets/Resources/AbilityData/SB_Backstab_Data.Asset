@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
-  m_Name: SB_BackAuraSpear_Data
+  m_Name: SB_Backstab_Data
   m_EditorClassIdentifier: 
-  abilityName: ChargeBackAuraSpear
-  abilityDescription: Spawns a strong projectile behind the enemy to catch them by
-    surprise.
+  abilityName: Charged Backstab
+  abilityDescription: Spawns a blade behind the enemy to catch them by surprise.
   exampleClip: {fileID: 0}
   AbilityType: 7
   timeActive: 0.1

@@ -7,9 +7,9 @@ namespace Lodis.Gameplay
 {
 
     /// <summary>
-    ///  Two energy orbs orbits around the character damaging anything in range. 
+    /// Spin at high speeds with a blade in hand to generate a large tornado that can hit multiple times.
     /// </summary>
-    public class WS_SpinningOrbs : Ability
+    public class SS_TTornado : Ability
     {
         private GameObject _orbs;
         private GameObject _effectInstance;
@@ -18,7 +18,7 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
-			base.Init(newOwner);
+            base.Init(newOwner);
         }
 
         protected override void OnStart(params object[] args)
@@ -33,7 +33,7 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
             DisableAccessory();
             _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
-            _orbs.transform.position = new Vector3( _orbs.transform.position.x, abilityData.GetCustomStatValue("OrbHeight"), _orbs.transform.position.z);
+            _orbs.transform.position = new Vector3(_orbs.transform.position.x, abilityData.GetCustomStatValue("OrbHeight"), _orbs.transform.position.z);
 
             HitColliderBehaviour hitColliderBehaviour = _orbs.GetComponent<HitColliderBehaviour>();
 
@@ -57,7 +57,7 @@ namespace Lodis.Gameplay
 
             OwnerAnimationScript.PlayAnimation(clip);
             _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position + Vector3.up, Quaternion.identity);
-            
+
         }
 
         protected override void OnEnd()

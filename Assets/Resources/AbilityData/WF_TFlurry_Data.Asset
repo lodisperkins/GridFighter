@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
-  m_Name: WF_AuraSpear_Data
+  m_Name: WF_TFlurry_Data
   m_EditorClassIdentifier: 
-  abilityName: AuraSpear
-  abilityDescription: Fires a quick mid range projectile that does moderate knockback
-    on hit.
+  abilityName: T-Flurry
+  abilityDescription: Calls a blade forward that unleashes a flurry of strikes on
+    the opponent on contact.
   exampleClip: {fileID: 0}
   AbilityType: 2
   timeActive: 0.2

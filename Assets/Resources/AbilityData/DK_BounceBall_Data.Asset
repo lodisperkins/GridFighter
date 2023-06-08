@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: DK_BounceBall_Data
   m_EditorClassIdentifier: 
-  abilityName: AuraBall
+  abilityName: B-Ball
   abilityDescription: Spawns a ball of energy that slowly bounces towards the opponent.
   exampleClip: {fileID: 0}
   AbilityType: 8

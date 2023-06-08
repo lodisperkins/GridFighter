@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class SN_RemoteBomb : ProjectileAbility
+    public class SN_EnergyMine : ProjectileAbility
     {
         private HitColliderData _explosionColliderData;
         private float _travelDistance;

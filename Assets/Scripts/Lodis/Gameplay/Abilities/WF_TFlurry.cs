@@ -9,7 +9,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class SF_AuraSpear : ProjectileAbility
+    public class WF_TFlurry : ProjectileAbility
     {
         private HitColliderData _swordCollider;
         private GameObject _flurryRef;
@@ -19,8 +19,8 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
-            base.Init(newOwner);
-            _flurryRef = Resources.Load<GameObject>("Projectiles/Prototype2/ChargeSwordFlurry");
+			base.Init(newOwner);
+            _flurryRef = Resources.Load<GameObject>("Projectiles/Prototype2/SwordFlurry");
         }
 
         protected override void OnStart(params object[] args)
@@ -53,10 +53,10 @@ namespace Lodis.Gameplay
         {
             DisableAccessory();
 
-            _spawnAccessoryAction = RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
+            _spawnAccessoryAction =  RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
         }
 
-        //Called when ability is used
+	    //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
             CleanProjectileList();
@@ -80,8 +80,8 @@ namespace Lodis.Gameplay
                 base.OnActivate(args);
                 SpawnSword();
             }
-
-
+            
+            
 
         }
     }

@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class WN_RemoteBomb : SummonAbility
+    public class WN_EnergyMine : SummonAbility
     {
         private HitColliderData _explosionColliderData;
         private float _travelDistance;

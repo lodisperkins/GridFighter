@@ -13,7 +13,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class DK_AuraHold : Ability
+    public class DK_PlasmaSnare : Ability
     {
         private Vector3 _spawnPosition;
         private Transform _opponentTransform;

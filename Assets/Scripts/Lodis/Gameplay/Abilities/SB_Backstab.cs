@@ -10,7 +10,7 @@ namespace Lodis.Gameplay
     /// <summary>
     /// Enter ability description here
     /// </summary>
-    public class SB_BackAuraSpear : ProjectileAbility
+    public class SB_Backstab : ProjectileAbility
     {
         private ProjectileSpawnerBehaviour _projectileSpawner;
         private GameObject _chargeEffectRef;
