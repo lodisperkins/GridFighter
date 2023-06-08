@@ -69,9 +69,9 @@ MonoBehaviour:
       m_Bits: 16641335
     MultiHitWaitTime: 0
     Damage: 3
-    BaseKnockBack: 0.7
-    KnockBackScale: 1.5
-    HitAngle: 1.8
+    BaseKnockBack: 1
+    KnockBackScale: 1
+    HitAngle: 2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.3

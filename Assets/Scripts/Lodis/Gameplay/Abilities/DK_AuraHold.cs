@@ -26,12 +26,15 @@ namespace Lodis.Gameplay
         private float _holdTime;
         private bool _opponentCaptured;
         private TimedAction _despawnTimer;
+        private ConditionAction _despawnCondition;
         private GameObject _chargeEffectRef;
         private GameObject _chargeEffect;
         private Transform _opponentParent;
         private int _originalChildCount;
         private GameEventListener _returnToPool;
         private float _liftHeight;
+        private float _moveSpeed;
+        private float _maxX;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -66,7 +69,10 @@ namespace Lodis.Gameplay
             _knockbackThreshold = abilityData.GetCustomStatValue("KnockbackThreshold");
             _liftTime = abilityData.GetCustomStatValue("LiftTime");
             _holdTime = abilityData.GetCustomStatValue("HoldTime");
+            _moveSpeed = abilityData.GetCustomStatValue("MoveSpeed");
             _returnToPool?.ClearActions();
+
+            _maxX = BlackBoardBehaviour.Instance.Grid.Width - BlackBoardBehaviour.Instance.Grid.PanelScale.x;
         }
 
 
@@ -103,12 +109,13 @@ namespace Lodis.Gameplay
 
             _opponentTransform.localPosition = Vector3.zero;
             _opponentCaptured = true;
-
-            _auraSphere.transform.DOMoveY(_liftHeight, _liftTime);
+            
+            PauseAbilityTimer();
 
             //Check if the opponent should be let go 
             _opponentKnockback.AddOnKnockBackStartAction(DespawnSphere);
             _despawnTimer = RoutineBehaviour.Instance.StartNewTimedAction(info => DespawnSphere(), TimedActionCountType.SCALEDTIME, _holdTime);
+            _despawnCondition = RoutineBehaviour.Instance.StartNewConditionAction(info => DespawnSphere(), condition => !_opponentCaptured || _auraSphere.transform.childCount <= 2 || _opponentKnockback.CurrentAirState != AirState.TUMBLING || _opponentKnockback.IsInvincible);
         }
 
         private void DespawnSphere()
@@ -117,6 +124,7 @@ namespace Lodis.Gameplay
                 return;
 
             RoutineBehaviour.Instance.StopAction(_despawnTimer);
+            UnpauseAbilityTimer();
 
             _opponentKnockback.RemoveOnKnockBackStartAction(DespawnSphere);
 
@@ -180,6 +188,26 @@ namespace Lodis.Gameplay
         protected override void OnMatchRestart()
         {
             DespawnSphere();
+        }
+
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+
+            int index = OwnerMoveset.GetSpecialAbilityIndex(this);
+
+            if (OwnerInput?.GetSpecialButton(index + 1) == false)
+            {
+                UnpauseAbilityTimer();
+                DespawnSphere();
+            }
+            else if (_auraSphere)
+            {
+                Vector3 position = _auraSphere.transform.position + (Vector3)OwnerInput.AttackDirection * Time.deltaTime * _moveSpeed;
+                position.x = Mathf.Clamp(position.x, 0, _maxX);
+
+                _auraSphere.transform.position = position;
+            }
         }
     }
 }

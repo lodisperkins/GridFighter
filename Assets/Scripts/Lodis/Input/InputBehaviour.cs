@@ -152,7 +152,7 @@ namespace Lodis.Input
 
         public GameObject Character { get => _character; set => _character = value; }
         public bool Enabled { get => _inputEnabled; set => _inputEnabled = value; }
-        public bool AttackButtonDown { get => _attackButtonDown; private set => _attackButtonDown = value; }
+        public bool NormalAttackButtonDown { get => _attackButtonDown; private set => _attackButtonDown = value; }
 
         private void Awake()
         {
@@ -168,8 +168,8 @@ namespace Lodis.Input
             }
 
             //Ability input
-            _playerControls.Player.Attack.started += context => { AttackButtonDown = true; TryChargeAttack(); };
-            _playerControls.Player.Attack.canceled += context => AttackButtonDown = false;
+            _playerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
+            _playerControls.Player.Attack.canceled += context => NormalAttackButtonDown = false;
             _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable();};
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 });  _special1Down = true; };
             _playerControls.Player.Special1.canceled += context => { _special1Down = false; };
@@ -224,7 +224,7 @@ namespace Lodis.Input
             _canBufferAbility = false;
             _onChargeEnded?.Raise(Character);
             _chargeAction?.Disable();
-            AttackButtonDown = false;
+            NormalAttackButtonDown = false;
             _abilityBuffered = false;
         }
 
@@ -359,7 +359,7 @@ namespace Lodis.Input
         /// <param name="context"></param>
         public void BufferShield()
         {
-            if (AttackButtonDown || _defense.IsPhaseShifting || _playerControls.Player.Move.ReadValue<Vector2>().magnitude != 0)
+            if (NormalAttackButtonDown || _defense.IsPhaseShifting || _playerControls.Player.Move.ReadValue<Vector2>().magnitude != 0)
                 return;
             else if (_bufferedAction == null && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"))
                 _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle", 0.2f);
@@ -542,7 +542,7 @@ namespace Lodis.Input
                 }
             }
             //If player isn't doing anything, enable movement
-            else if (!AttackButtonDown && !_canMove && !_moveset.AbilityInUse && _bufferedAction != null)
+            else if (!NormalAttackButtonDown && !_canMove && !_moveset.AbilityInUse && _bufferedAction != null)
             {
                 if (!_bufferedAction.HasAction())
                     EnableMovement();

@@ -1,4 +1,5 @@
 ﻿using Lodis.FX;
+using Lodis.Input;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -68,7 +69,9 @@ namespace Lodis.Gameplay
             OwnerMoveScript.DisableMovement(condition => !InUse);
             OwnerMoveScript.TeleportToLocation(position, 0, false);
             MatchManagerBehaviour.Instance.SuperInUse = true;
-            FXManagerBehaviour.Instance.StartSuperMoveVisual(OwnerInput.PlayerID, abilityData.startUpTime);
+            IControllable controller = owner.GetComponentInParent<IControllable>();
+
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, abilityData.startUpTime);
 
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, OwnerMoveset.HeldItemSpawnLeft, true);
