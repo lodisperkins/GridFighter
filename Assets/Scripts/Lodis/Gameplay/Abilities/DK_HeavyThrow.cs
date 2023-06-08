@@ -139,7 +139,6 @@ namespace Lodis.Gameplay
                 Debug.LogError("Heavy throw ability missing starting custom animation.");
 
             OwnerAnimationScript.PlayAnimation(abilityData.startUpTime, clip);
-            OnHit += PrepareThrow;
         }
 
         //Called when ability is used
@@ -151,7 +150,10 @@ namespace Lodis.Gameplay
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
             OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + offset, false, GridScripts.GridAlignment.ANY, true, false, true);
 
-            _collider = HitColliderSpawner.SpawnBoxCollider(owner.transform, Vector3.one, GetColliderData(0), owner);
+            HitColliderData data = GetColliderData(0);
+            data.OnHit += PrepareThrow;
+
+            _collider = HitColliderSpawner.SpawnBoxCollider(owner.transform, Vector3.one, data, owner);
         }
 
         protected override void OnRecover(params object[] args)
