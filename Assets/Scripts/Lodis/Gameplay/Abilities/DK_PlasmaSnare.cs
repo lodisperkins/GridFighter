@@ -203,7 +203,7 @@ namespace Lodis.Gameplay
             }
             else if (_auraSphere)
             {
-                Vector3 position = _auraSphere.transform.position + (Vector3)OwnerInput.AttackDirection * Time.deltaTime * _moveSpeed;
+                Vector3 position = _auraSphere.transform.position + (Vector3)OwnerInput?.AttackDirection * Time.deltaTime * _moveSpeed;
                 position.x = Mathf.Clamp(position.x, 0, _maxX);
 
                 _auraSphere.transform.position = position;

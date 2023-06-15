@@ -55,12 +55,12 @@ namespace Lodis.Gameplay
             colliderBehaviour.ColliderInfo = _explosionColliderData;
             colliderBehaviour.Owner = owner;
 
-            Collider collider = ActiveEntities[0].GetComponentInChildren<Collider>();
-            collider.enabled = false;
-            ActiveEntities[0].AddOnMoveEndTempAction(() =>
-            {
-                collider.enabled = true;
-            });
+            //Collider collider = ActiveEntities[0].GetComponentInChildren<Collider>();
+            //collider.enabled = false;
+            //ActiveEntities[0].AddOnMoveEndTempAction(() =>
+            //{
+            //    collider.enabled = true;
+            //});
 
             _despawnAction = RoutineBehaviour.Instance.StartNewTimedAction(context => DisableAllEntities(), TimedActionCountType.SCALEDTIME, _despawnTime);
         }

@@ -46,6 +46,7 @@ namespace Lodis.Gameplay
                 return;
 
             _opponentPhysics.MovementBehaviour.CancelMovement();
+            _opponentPhysics.MovementBehaviour.DisableMovement(condition => !InUse, false, true);
             _opponentPhysics.StopAllForces();
 
             _opponentCaptured = true;
@@ -58,7 +59,7 @@ namespace Lodis.Gameplay
             Vector3 position = owner.transform.position + Vector3.up * throwHeight;
 
             OwnerMoveScript.CancelMovement();
-            OwnerMoveScript.DisableMovement(condition => !InUse);
+            OwnerMoveScript.DisableMovement(condition => !InUse, false, true);
             OwnerMoveScript.TeleportToLocation(position);
 
             _throwAction = RoutineBehaviour.Instance.StartNewTimedAction(info => ThrowOpponent(),TimedActionCountType.SCALEDTIME, 0.1f);

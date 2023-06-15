@@ -385,17 +385,19 @@ namespace Lodis.Movement
             if (!_canMove && !overridesMoveCondition)
                 return;
 
+            bool removed = false;
+
             if (_moveEnabledAction?.GetEnabled() == true)
-                RoutineBehaviour.Instance.StopAction(_moveEnabledAction);
+                removed = RoutineBehaviour.Instance.StopAction(_moveEnabledAction);
 
             if (IsMoving && waitForEndOfMovement)
             { 
-                AddOnMoveEndTempAction(() => { _canMove = false; StopAllCoroutines(); _isMoving = false; });
+                AddOnMoveEndTempAction(() => { _canMove = false; _moveTween.Kill(); _isMoving = false; });
             }
             else
             {
                 _canMove = false;
-                StopAllCoroutines();
+                _moveTween.Kill();
                 _isMoving = false;
             }
 
