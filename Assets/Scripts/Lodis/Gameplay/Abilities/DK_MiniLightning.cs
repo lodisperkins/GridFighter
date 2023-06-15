@@ -36,6 +36,7 @@ namespace Lodis.Gameplay
                 Transform child = _visualPrefabInstanceTransforms[index].GetChild(i);
                 child.gameObject.SetActive(active);
             }
+
         }
 
         protected override void OnStart(params object[] args)
@@ -51,7 +52,6 @@ namespace Lodis.Gameplay
             {
                 Transform target = _spawnTransforms[i];
                 _visualPrefabInstanceTransforms[i] = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, target.transform.position, new Quaternion()).transform;
-
                 //Initialize hit collider
                 _collider = _visualPrefabInstanceTransforms[i].GetComponent<HitColliderBehaviour>();
                 _collider.ColliderInfo = GetColliderData(i);
@@ -93,6 +93,7 @@ namespace Lodis.Gameplay
             for (int i = 0; i < _visualPrefabInstanceTransforms.Length; i++)
             {
                 SetChildrenActive(i, true);
+                ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], _visualPrefabInstanceTransforms[i].position, new Quaternion());
 
                 yield return new WaitForSeconds(_delay);
             }

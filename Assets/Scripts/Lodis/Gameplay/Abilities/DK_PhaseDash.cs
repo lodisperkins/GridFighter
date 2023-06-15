@@ -11,7 +11,9 @@ namespace Lodis.Gameplay
     public class DK_PhaseDash : Ability
     {
         private float _travleDistance;
-	    //Called when ability is created
+        private Vector2 _moveDirection;
+
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
@@ -26,14 +28,19 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            Vector2 moveDirection = OwnerInput.AttackDirection;
 
             OwnerMoveScript.CancelMovement();
             OwnerMoveScript.Position = OwnerMoveScript.CurrentPanel.Position;
 
             OwnerKnockBackScript.SetIntagibilityByCondition(condition => !InUse || CurrentAbilityPhase != AbilityPhase.ACTIVE);
-            OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + (moveDirection * _travleDistance), false, OwnerMoveScript.Alignment, false, true, true);
+            OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + (_moveDirection * _travleDistance), false, OwnerMoveScript.Alignment, false, true, true);
             OwnerAnimationScript.PlayMovementAnimation();
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            _moveDirection = OwnerInput.AttackDirection;
         }
     }
 }

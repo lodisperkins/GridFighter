@@ -325,7 +325,7 @@ namespace Lodis.Input
             _bufferedAction = new BufferedInput(action => UseAbility(abilityType, args), condition =>
             { 
                 _abilityBuffered = false;
-                return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
+                return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
             }, 0.2f);
             _abilityBuffered = true;
         }

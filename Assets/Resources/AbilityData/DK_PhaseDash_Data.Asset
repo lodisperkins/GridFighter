@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Phase Dash
   abilityDescription: Become temporarily intangible and dash through enemy attacks.
+  exampleClip: {fileID: 0}
   AbilityType: 8
   timeActive: 0.2
   recoverTime: 0.1
@@ -21,23 +22,18 @@ MonoBehaviour:
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 1
-  canCancelStartUp: 0
-  canCancelActive: 0
-  canCancelRecover: 0
-  CanCancelOnMove: 0
-  CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 1
-  CanCancelIntoNormal: 1
-  CanOnlyCancelOnOpponentHit: 0
-  cancelOnHit: 0
-  cancelOnFlinch: 1
-  cancelOnKnockback: 1
-  CanInputMovementDuringStartUp: 0
-  CanInputMovementWhileActive: 0
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
+  CanInputMovementDuringStartUp: 1
+  CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 0
   playAnimationManually: 1
   visualPrefab: {fileID: 0}
+  Accessory: {fileID: 0}
+  Effects: []
   DisplayIcon: {fileID: 21300000, guid: 2a6b7494cacb49846acd128deecbae07, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 8300000, guid: 8bb04fc919c802f4086b18d250bc1dc9, type: 3}
