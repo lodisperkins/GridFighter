@@ -18,7 +18,7 @@ MonoBehaviour:
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.2
-  startUpTime: 0.1
+  startUpTime: 0.2
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 1
@@ -84,5 +84,6 @@ MonoBehaviour:
   - name: ShotForce
     value: 5
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}
+  _customAnimation: {fileID: 7868792775198909166, guid: b14b28c9e40d0bf48b7aad9b70fb544f,
+    type: 3}
   _additionalAnimations: []
