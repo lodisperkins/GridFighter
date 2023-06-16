@@ -40,7 +40,7 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            _chargeEffectRef = Resources.Load<GameObject>("Effects/Charge_Darkness");
+            _chargeEffectRef = abilityData.Effects[0];
             _opponentParent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform.parent;
         }
 
@@ -61,8 +61,18 @@ namespace Lodis.Gameplay
 
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, Camera.main.transform.rotation);
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect, 1);
-            _chargeEffect.GetComponent<GridTrackerBehaviour>().Marker = MarkerType.DANGER;
+            //ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect, 1);
+
+            GridTrackerBehaviour tracker = _chargeEffect.GetComponent<GridTrackerBehaviour>();
+            GridMovementBehaviour movement = _chargeEffect.GetComponent<GridMovementBehaviour>();
+
+            if (!movement)
+                _chargeEffect.AddComponent<GridMovementBehaviour>();
+
+            if (!tracker)
+                _chargeEffect.AddComponent<GridTrackerBehaviour>();
+
+            tracker.Marker = MarkerType.DANGER;
 
             //Cache stat values to avoid repetitive calls.
             _liftHeight = abilityData.GetCustomStatValue("LiftHeight");
@@ -138,6 +148,8 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             _collider.ColliderInfo.OnHit -= LiftOpponent;
             _auraSphere.transform.DOKill();
+
+            EnableAccessory();
         }
 
         //Called when ability is used
@@ -172,9 +184,12 @@ namespace Lodis.Gameplay
 
             //Initialize new collider for this attack.
             _collider = _auraSphere.GetComponent<HitColliderBehaviour>();
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             _collider.ColliderInfo = GetColliderData(0);
             _collider.Owner = owner;
             _collider.ColliderInfo.OnHit += LiftOpponent;
+            
+            DisableAccessory();
         }
 
 
