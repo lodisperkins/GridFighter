@@ -21,8 +21,6 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _opponentKnockback;
         private GameObject _auraSphere;
         private HitColliderBehaviour _collider;
-        private float _knockbackThreshold;
-        private float _liftTime;
         private float _holdTime;
         private bool _opponentCaptured;
         private TimedAction _despawnTimer;
@@ -31,10 +29,13 @@ namespace Lodis.Gameplay
         private GameObject _chargeEffect;
         private Transform _opponentParent;
         private int _originalChildCount;
+        private Rigidbody _rigidBody;
         private GameEventListener _returnToPool;
         private float _liftHeight;
         private float _moveSpeed;
         private float _maxX;
+        private float _ySpeed;
+        private float _spawnDistance;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -47,40 +48,34 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
+            _spawnDistance = abilityData.GetCustomStatValue("SpawnDistance");
+            _opponentTransform = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform;
+            _opponentKnockback = _opponentTransform.GetComponent<KnockbackBehaviour>();
 
             _panelTransform = GetTarget();
-
-            if (!_panelTransform)
-                return;
 
             _spawnPosition = _panelTransform.position + Vector3.up * 0.5f;
 
             //Get component info from opponent to use later.
-            _opponentTransform = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform;
-            _opponentKnockback = _opponentTransform.GetComponent<KnockbackBehaviour>();
 
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, _spawnPosition, Camera.main.transform.rotation);
             //ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect, 1);
 
             GridTrackerBehaviour tracker = _chargeEffect.GetComponent<GridTrackerBehaviour>();
-            GridMovementBehaviour movement = _chargeEffect.GetComponent<GridMovementBehaviour>();
-
-            if (!movement)
-                _chargeEffect.AddComponent<GridMovementBehaviour>();
 
             if (!tracker)
-                _chargeEffect.AddComponent<GridTrackerBehaviour>();
+                tracker = _chargeEffect.AddComponent<GridTrackerBehaviour>();
 
             tracker.Marker = MarkerType.DANGER;
+            
 
             //Cache stat values to avoid repetitive calls.
             _liftHeight = abilityData.GetCustomStatValue("LiftHeight");
-            _knockbackThreshold = abilityData.GetCustomStatValue("KnockbackThreshold");
-            _liftTime = abilityData.GetCustomStatValue("LiftTime");
             _holdTime = abilityData.GetCustomStatValue("HoldTime");
             _moveSpeed = abilityData.GetCustomStatValue("MoveSpeed");
             _returnToPool?.ClearActions();
+            _ySpeed = abilityData.GetCustomStatValue("ProjectileSpeed");
 
             _maxX = BlackBoardBehaviour.Instance.Grid.Width - BlackBoardBehaviour.Instance.Grid.PanelScale.x;
         }
@@ -93,13 +88,20 @@ namespace Lodis.Gameplay
         private Transform GetTarget()
         {
             Transform transform = null;
-
-            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
-
             PanelBehaviour targetPanel;
-            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.y == OwnerMoveScript.Position.y)
-                transform = targetPanel.transform;
+            Vector2 position = Vector2.zero;
 
+            if (OwnerMoveScript.Position.y == _opponentKnockback.MovementBehaviour.Position.y)
+            {
+                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_opponentKnockback.transform.position, out targetPanel);
+            }
+            else
+            {
+                position = OwnerMoveScript.Position + (Vector2.right * OwnerMoveScript.GetAlignmentX()) * _spawnDistance;
+                BlackBoardBehaviour.Instance.Grid.GetPanel(position, out targetPanel);
+            }
+
+            transform = targetPanel.transform;
 
             return transform;
         }
@@ -111,7 +113,11 @@ namespace Lodis.Gameplay
             if (!other.CompareTag("Player"))
                 return;
 
+            _rigidBody.velocity = Vector3.zero;
+
             _auraSphere.transform.GetChild(0).gameObject.SetActive(true);
+            _auraSphere.transform.position += Vector3.up * _liftHeight;
+
             //Attaches opponent to sphere and activate lifting. 
             _opponentTransform.parent = _auraSphere.transform;
             _opponentKnockback.Physics.IgnoreForces = true;
@@ -130,7 +136,7 @@ namespace Lodis.Gameplay
 
         private void DespawnSphere()
         {
-            if (!_auraSphere || !_auraSphere.activeInHierarchy || (_opponentKnockback.LastTotalKnockBack < _knockbackThreshold && _opponentCaptured))
+            if (!_auraSphere || !_auraSphere.activeInHierarchy)
                 return;
 
             RoutineBehaviour.Instance.StopAction(_despawnTimer);
@@ -162,10 +168,6 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            //Despawn the old sphere if there is one.
-            if (_auraSphere)
-                DespawnSphere();
-
             //Spawn the new sphere and set its effect to inactive by default. The effect should only appear when the opponent is lifted.
             _auraSphere = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, _spawnPosition, new Quaternion());
             _auraSphere.transform.GetChild(0).gameObject.SetActive(false);
@@ -181,6 +183,10 @@ namespace Lodis.Gameplay
             _returnToPool.IntendedSender = _auraSphere;
 
             _originalChildCount = _auraSphere.transform.childCount;
+
+            _rigidBody = _auraSphere.GetComponent<Rigidbody>();
+
+            _rigidBody.velocity = Vector3.up * _ySpeed;
 
             //Initialize new collider for this attack.
             _collider = _auraSphere.GetComponent<HitColliderBehaviour>();
@@ -200,6 +206,12 @@ namespace Lodis.Gameplay
                 DespawnSphere();
         }
 
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            DespawnSphere();
+        }
+
         protected override void OnMatchRestart()
         {
             DespawnSphere();
@@ -209,12 +221,14 @@ namespace Lodis.Gameplay
         {
             base.FixedUpdate();
 
+            if (!_opponentCaptured)
+                return;
+
             int index = OwnerMoveset.GetSpecialAbilityIndex(this);
 
             if (OwnerInput?.GetSpecialButton(index + 1) == false)
             {
                 UnpauseAbilityTimer();
-                DespawnSphere();
             }
             else if (_auraSphere)
             {

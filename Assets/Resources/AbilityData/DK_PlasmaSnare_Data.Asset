@@ -18,9 +18,9 @@ MonoBehaviour:
     ability is acitve to move your opponent.
   exampleClip: {fileID: 0}
   AbilityType: 8
-  timeActive: 1
+  timeActive: 0.6
   recoverTime: 0.2
-  startUpTime: 0.2
+  startUpTime: 0.1
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 2
@@ -87,9 +87,13 @@ MonoBehaviour:
   - name: LiftTime
     value: 0.5
   - name: HoldTime
-    value: 2
+    value: 3
   - name: MoveSpeed
     value: 3.5
+  - name: SpawnDistance
+    value: 3
+  - name: ProjectileSpeed
+    value: 20
   animationType: 0
   _customAnimation: {fileID: 0}
   _additionalAnimations: []
