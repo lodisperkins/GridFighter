@@ -87,13 +87,14 @@ MonoBehaviour:
   - name: LiftTime
     value: 0.5
   - name: HoldTime
-    value: 10
+    value: 3
   - name: MoveSpeed
     value: 3.5
   - name: SpawnDistance
     value: 3
   - name: ProjectileSpeed
     value: 20
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  animationType: 3
+  _customAnimation: {fileID: 3374748389425109202, guid: c6a5725ac7061d94e8ca3c7a9b6ec7b4,
+    type: 3}
   _additionalAnimations: []
