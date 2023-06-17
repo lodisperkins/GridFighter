@@ -4,6 +4,7 @@ using Lodis.Utility;
 using UnityEngine;
 using Ilumisoft.VisualStateMachine;
 using Lodis.Movement;
+using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
@@ -18,9 +19,16 @@ namespace Lodis.Gameplay
         private CharacterDefenseBehaviour _characterDefense;
         [SerializeField]
         private string _currentState;
+        private string _lastState;
+        private UnityEvent _onStateChanged;
 
         public StateMachine StateMachine { get => _stateMachine; }
 
+
+        private void Awake()
+        {
+            _onStateChanged = new UnityEvent();
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -47,12 +55,25 @@ namespace Lodis.Gameplay
             _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall &&
             !_characterDefense.IsDefending && !_characterDefense.IsResting && !_moveset.AbilityInUse && !_moveset.LoadingShuffle);
         }
+
+        public void AddOnStateChangedAction(UnityAction action)
+        {
+            _onStateChanged.AddListener(action);
+        }
+
         private void Update()
         {
             //if (_currentState != _stateMachine.CurrentState)
             //    Debug.Log(_stateMachine.CurrentState);d
 
+
             _currentState = _stateMachine.CurrentState;
+
+            if (_currentState != _lastState)
+            {
+                _lastState = _currentState;
+                _onStateChanged?.Invoke();
+            }
         }
     }
 }

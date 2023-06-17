@@ -81,11 +81,11 @@ MonoBehaviour:
     MultiHitWaitTime: 0.1
     Damage: 25
     BaseKnockBack: 15
-    KnockBackScale: 0
+    KnockBackScale: 1
     HitAngle: 0.1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 1.5
+    HitStunTime: 3
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
@@ -93,7 +93,7 @@ MonoBehaviour:
       type: 3}
     HitSpark: {fileID: 0}
     HitEffectLevel: 3
-    HitStopTimeModifier: 2
+    HitStopTimeModifier: 3
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: 408bb1bb65309df4c9fda578b2f27a34, type: 3}
     HitSound: {fileID: 0}

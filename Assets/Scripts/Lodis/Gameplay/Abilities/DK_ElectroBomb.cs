@@ -87,14 +87,14 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
-            TimeCountType = TimedActionCountType.SCALEDTIME;
+            TimeCountType = TimedActionCountType.CHARACTERSCALEDTIME;
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
         }
 
         protected override void OnMatchRestart()
         {
             base.OnMatchRestart();
-            TimeCountType = TimedActionCountType.SCALEDTIME;
+            TimeCountType = TimedActionCountType.CHARACTERSCALEDTIME;
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
             MatchManagerBehaviour.Instance.SuperInUse = false;
         }

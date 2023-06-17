@@ -87,7 +87,7 @@ MonoBehaviour:
   - name: LiftTime
     value: 0.5
   - name: HoldTime
-    value: 3
+    value: 10
   - name: MoveSpeed
     value: 3.5
   - name: SpawnDistance

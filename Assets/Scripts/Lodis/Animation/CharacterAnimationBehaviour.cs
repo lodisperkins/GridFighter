@@ -79,6 +79,7 @@ namespace Lodis.Gameplay
         [Tooltip("How long it will take to move again after shuffling.")]
         private FloatVariable _manualShuffleRecoverTime;
         private bool _animatingAbility;
+        private float _targetSpeed = 1;
 
         // Start is called before the first frame update
         void Start()
@@ -87,6 +88,14 @@ namespace Lodis.Gameplay
             _animator.runtimeAnimatorController = _overrideController;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
+
+            _characterStateManager.AddOnStateChangedAction(() =>
+            {
+                if (_characterStateMachine.CurrentState == "Attacking")
+                    return;
+
+                _targetSpeed = 1;
+            });
             _knockbackBehaviour.AddOnTakeDamageAction(PlayDamageAnimation);
 
             _movesetBehaviour.OnUseAbility += () =>
@@ -236,7 +245,9 @@ namespace Lodis.Gameplay
                     break;
             }
 
-            _animator.SetFloat("AnimationSpeedScale", newSpeed);
+            _targetSpeed = newSpeed;
+            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+            _animator.Update(Time.deltaTime);
         }
         
         bool SetCurrentAnimationClip(string name)
@@ -273,7 +284,8 @@ namespace Lodis.Gameplay
             if (stopCurrentAnimation)
                 StopCurrentAnimation();
 
-            _animator.SetFloat("AnimationSpeedScale", speed);
+            _targetSpeed = speed;
+            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
             _overrideController["rig|rigAction"] = clip;
 
             _animator.SetTrigger("ActivateCustom");
@@ -294,7 +306,6 @@ namespace Lodis.Gameplay
             Ability ability = _movesetBehaviour.LastAbilityInUse;
 
             _currentAbilityAnimating = ability;
-            _animator.SetFloat("AnimationSpeedScale", 1);
             _animationPhase = 0;
 
             StopCurrentAnimation();
@@ -398,8 +409,6 @@ namespace Lodis.Gameplay
         /// </summary>
         public void PlayMovementAnimation()
         {
-
-            _animator.SetFloat("AnimationSpeedScale", 1);
             _animatingMotion = true;
             _animationPhase = 0;
 
@@ -434,7 +443,7 @@ namespace Lodis.Gameplay
 
             if (info.Length == 0)
                 return;
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / (_knockbackBehaviour.LandingScript.KnockDownRecoverTime - 0.1f));
+            _targetSpeed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / (_knockbackBehaviour.LandingScript.KnockDownRecoverTime - 0.1f);
         }
 
         public void PlayHardLandingAnimation()
@@ -446,7 +455,7 @@ namespace Lodis.Gameplay
             if (info.Length == 0)
                 return;
 
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingScript.KnockDownLandingTime);
+            _targetSpeed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingScript.KnockDownLandingTime;
         }
 
         public void PlaySoftLandingAnimation()
@@ -457,7 +466,7 @@ namespace Lodis.Gameplay
 
             if (info.Length == 0)
                 return;
-            _animator.SetFloat("AnimationSpeedScale", _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingScript.LandingTime);
+            _targetSpeed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingScript.LandingTime;
         }
 
         public void PlayDamageAnimation()
@@ -510,14 +519,13 @@ namespace Lodis.Gameplay
             AnimatorClipInfo[] clipInfo = _animator.GetCurrentAnimatorClipInfo(0);
             if (clipInfo.Length <= 0) return;
 
-            _animator.SetFloat("AnimationSpeedScale", clipInfo[0].clip.length / techLength);
+            _targetSpeed = clipInfo[0].clip.length / techLength;
             _animator.SetTrigger(animationName);
             _animatingMotion = true;
         }
 
         public void PlayManualShuffleAnimation()
         {
-            _animator.SetFloat("AnimationSpeedScale", 1);
             _animationPhase = 0;
 
             _animatingMotion = false;
@@ -544,6 +552,8 @@ namespace Lodis.Gameplay
             if (_lastTransitionInfo.nameHash != currentInfo.nameHash && currentInfo.nameHash != 0)
                 _lastTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
 
+            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+
             if (!_knockbackBehaviour.Physics.IsGrounded)
                 UpdateInAirMoveDirection();
         }
@@ -555,7 +565,6 @@ namespace Lodis.Gameplay
                 _animator.SetBool("OnRightSide", true);
 
             _animatingAbility = _animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
-
         }
     }
 }

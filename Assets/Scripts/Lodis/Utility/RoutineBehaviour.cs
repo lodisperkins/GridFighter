@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Dynamic;
 using System;
+using Lodis.ScriptableObjects;
 
 namespace Lodis.Utility
 {
@@ -10,7 +11,8 @@ namespace Lodis.Utility
     {
         SCALEDTIME,
         UNSCALEDTIME,
-        FRAME
+        FRAME,
+        CHARACTERSCALEDTIME
     }
 
     public delegate void DelayedEvent(params object[] args);
@@ -18,6 +20,8 @@ namespace Lodis.Utility
     public class RoutineBehaviour : MonoBehaviour
     {
         private List<DelayedAction> _delayedActions = new List<DelayedAction>();
+        private FloatVariable _characterTimeScale;
+        private float _characterTime;
 
         private static RoutineBehaviour _instance;
 
@@ -36,6 +40,15 @@ namespace Lodis.Utility
 
                 return _instance;
             }
+        }
+
+        public float CharacterTimeScale { get => _characterTimeScale; set => _characterTimeScale.Value = value; }
+        public float CharacterTime { get => _characterTime; private set => _characterTime = value; }
+
+        private void Awake()
+        {
+            _characterTimeScale = Resources.Load<FloatVariable>("ScriptableObjects/CharacterTimeScale");
+            _characterTime = Time.time;
         }
 
         /// <summary>
@@ -60,6 +73,9 @@ namespace Lodis.Utility
                     break;
                 case TimedActionCountType.FRAME:
                     action.TimeStarted = Time.frameCount;
+                    break;
+                case TimedActionCountType.CHARACTERSCALEDTIME:
+                    action.TimeStarted = CharacterTime;
                     break;
             }    
             
@@ -104,6 +120,8 @@ namespace Lodis.Utility
         // Update is called once per frame
         void Update()
         {
+            _characterTime += Time.deltaTime * CharacterTimeScale * Time.timeScale;
+
             _delayedActions.RemoveAll(action => !action.GetEnabled());
 
             //Iterate through all actions to try to invoke their events

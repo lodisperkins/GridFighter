@@ -95,18 +95,15 @@ namespace Lodis.Gameplay
             //Calls for the physics component to freexe the object in place so it doesn't keep moving in air.
             _physics.FreezeInPlaceByTimer(time, true, true, waitForForceApplied, true);
             //The animator should be disabled only after the animation stop delay time has passed.
-            _stopAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _animator.enabled = false,
-                TimedActionCountType.SCALEDTIME, animationStopDelay);
+
 
             _enableAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
-                _animator.enabled = true;
-                if (_moveset.AbilityInUse)
-                    _moveset.LastAbilityInUse.UnpauseAbilityTimer();
+
+                RoutineBehaviour.Instance.CharacterTimeScale = 1;
             }, TimedActionCountType.SCALEDTIME, time);
 
-            if (_moveset.AbilityInUse)
-                _moveset.LastAbilityInUse.PauseAbilityTimer();
+            RoutineBehaviour.Instance.CharacterTimeScale = 0;
         }
     }
 }

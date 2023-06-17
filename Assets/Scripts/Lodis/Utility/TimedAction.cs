@@ -36,6 +36,9 @@ namespace Lodis.Utility
                 case TimedActionCountType.FRAME:
                     TimeStarted = Time.frameCount;
                     break;
+                case TimedActionCountType.CHARACTERSCALEDTIME:
+                    TimeStarted = RoutineBehaviour.Instance.CharacterTime;
+                    break;
             }
 
             Duration = _timeLeft;
@@ -59,6 +62,9 @@ namespace Lodis.Utility
                     break;
                 case TimedActionCountType.FRAME:
                     time = Time.frameCount;
+                    break;
+                case TimedActionCountType.CHARACTERSCALEDTIME:
+                    time = RoutineBehaviour.Instance.CharacterTime;
                     break;
             }
 

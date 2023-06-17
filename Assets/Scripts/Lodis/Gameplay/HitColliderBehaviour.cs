@@ -226,13 +226,13 @@ namespace Lodis.Gameplay
             float lastHitTime = 0;
             if (!Collisions.TryGetValue(gameObject, out lastHitTime))
             {
-                Collisions.Add(gameObject, Time.time);
+                Collisions.Add(gameObject, Time.time * RoutineBehaviour.Instance.CharacterTimeScale);
                 return true;
             }
 
-            if (Time.time - lastHitTime >= ColliderInfo.MultiHitWaitTime)
+            if (Time.time * RoutineBehaviour.Instance.CharacterTimeScale - lastHitTime >= ColliderInfo.MultiHitWaitTime)
             {
-                Collisions[gameObject] = Time.time;
+                Collisions[gameObject] = Time.time * RoutineBehaviour.Instance.CharacterTimeScale;
                 return true;
             }
 
@@ -592,7 +592,7 @@ namespace Lodis.Gameplay
 
             _addedToActiveList = true;
             //Update the amount of current frames
-            CurrentTimeActive = Time.time - StartTime;
+            CurrentTimeActive = Time.time * RoutineBehaviour.Instance.CharacterTimeScale - StartTime;
 
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)

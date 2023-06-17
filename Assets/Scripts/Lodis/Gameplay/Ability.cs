@@ -127,6 +127,8 @@ namespace Lodis.Gameplay
         public GameObject AccessoryInstance { get => _accessoryInstance; private set => _accessoryInstance = value; }
         public TimedActionCountType TimeCountType { get => _timeCountType; set => _timeCountType = value; }
 
+        public bool AbilityPaused { get => _currentTimer?.IsPaused == true; }
+
         /// <summary>
         /// The phase before an the ability is activated. This is where the character is building up
         /// to the ability's activation
