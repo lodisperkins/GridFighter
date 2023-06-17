@@ -11,4 +11,11 @@ public class AnimationSpeedBehaviour : StateMachineBehaviour
         CharacterAnimationBehaviour animationBehaviour = animator.gameObject.GetComponent<CharacterAnimationBehaviour>();
         animationBehaviour.CalculateAnimationSpeed();
     }
+
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    {
+        CharacterAnimationBehaviour animationBehaviour = animator.gameObject.GetComponent<CharacterAnimationBehaviour>();
+        animationBehaviour.ResetTargetSpeed();
+
+    }
 }

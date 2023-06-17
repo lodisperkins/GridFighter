@@ -216,7 +216,7 @@ namespace Lodis.Gameplay
             knockbackBehaviour.Physics.StopVelocity();
 
             //Creates a new hit collider to attack the character
-            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = _knockBackDistance, KnockBackScale = 1.2f, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopTimeModifier = 1, };
+            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = _knockBackDistance, KnockBackScale = 1.2f, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopShakeStrength = 1, };
             HitColliderBehaviour hitCollider = new HitColliderBehaviour();
             hitCollider.ColliderInfo = info;
 

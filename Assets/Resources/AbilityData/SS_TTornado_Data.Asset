@@ -53,12 +53,12 @@ MonoBehaviour:
       m_Bits: 4057399
     MultiHitWaitTime: 0.2
     Damage: 4
-    BaseKnockBack: 0.3
+    BaseKnockBack: 0.5
     KnockBackScale: 0.6
     HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.7
+    HitStunTime: 0.1
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 5
@@ -66,7 +66,7 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 1.5
+    HitStopShakeStrength: 1
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 03ac7b0c6287a7c498c7ab4d7b5bc9c0, type: 3}
     HitSound: {fileID: 0}

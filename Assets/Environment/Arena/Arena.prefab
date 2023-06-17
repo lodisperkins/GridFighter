@@ -3848,6 +3848,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8744172618015234546, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _hitStunOnCollision
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 8744172618015234547, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_Name
@@ -4089,17 +4094,17 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: b5e711b0b3181754aa70352f20bd6116, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 3340707822704788680, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ad60c45bc8fb3764b936e1e3bcd4daa7, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 3340707822704788680, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: b5e711b0b3181754aa70352f20bd6116, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 3354557969132034522, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_RootOrder
@@ -4144,12 +4149,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: ad60c45bc8fb3764b936e1e3bcd4daa7, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 4911058991569425468, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: b5e711b0b3181754aa70352f20bd6116, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 5079541082680455700, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_IsActive
@@ -4305,11 +4310,6 @@ PrefabInstance:
       propertyPath: _shieldController
       value: 
       objectReference: {fileID: 1563883508}
-    - target: {fileID: 8744172618015234546, guid: e447331d04560874e8eb89a06a5e656c,
-        type: 3}
-      propertyPath: _hitStunOnCollision
-      value: 0.5
-      objectReference: {fileID: 0}
     - target: {fileID: 8744172618015234547, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_Name

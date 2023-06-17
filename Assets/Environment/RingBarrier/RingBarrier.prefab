@@ -403,7 +403,7 @@ MonoBehaviour:
   _meshRenderer: {fileID: 0}
   OnTakeDamageEvent: {fileID: 11400000, guid: 10f9f40be0a70ab46bfc978f49c67086, type: 2}
   _owner: {fileID: 0}
-  _hitStunOnCollision: 0
+  _hitStunOnCollision: 0.1
   _collider: {fileID: 3504853025319885305}
   _shatterSpeed: {fileID: 11400000, guid: c9b54bbac29f6dc49ba93a55dc3a53e5, type: 2}
   _minimumDamageSpeed: 5

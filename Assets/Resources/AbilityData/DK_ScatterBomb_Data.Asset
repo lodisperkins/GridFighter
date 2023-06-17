@@ -57,7 +57,7 @@ MonoBehaviour:
     HitAngle: 1.3
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.2
+    HitStunTime: 0.15
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
@@ -65,7 +65,7 @@ MonoBehaviour:
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 2
+    HitStopShakeStrength: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
     HitSound: {fileID: 0}

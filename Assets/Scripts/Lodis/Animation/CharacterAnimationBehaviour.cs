@@ -105,6 +105,12 @@ namespace Lodis.Gameplay
             };
         }
 
+        public void ResetTargetSpeed()
+        {
+            _targetSpeed = 1;
+            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+        }
+
         /// <summary>
         /// Switches to the next animation phase and calculates the new speed for animations
         /// </summary>
@@ -247,7 +253,6 @@ namespace Lodis.Gameplay
 
             _targetSpeed = newSpeed;
             _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
-            _animator.Update(Time.deltaTime);
         }
         
         bool SetCurrentAnimationClip(string name)
@@ -471,6 +476,8 @@ namespace Lodis.Gameplay
 
         public void PlayDamageAnimation()
         {
+
+            _targetSpeed = 1;
             if (_knockbackBehaviour.TimeInCurrentHitStun <= 0)
                 return;
 

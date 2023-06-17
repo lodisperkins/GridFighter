@@ -15,6 +15,7 @@ MonoBehaviour:
   abilityName: Charge Lob Shot
   abilityDescription: Fires an arcing blast that eplodes into smaller projectiles
     on hit.
+  exampleClip: {fileID: 0}
   AbilityType: 7
   timeActive: 0.1
   recoverTime: 0.3
@@ -22,17 +23,10 @@ MonoBehaviour:
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
-  canCancelStartUp: 0
-  canCancelActive: 0
-  canCancelRecover: 0
-  CanCancelOnMove: 0
-  CanCancelIntoSelf: 0
-  CanCancelIntoSpecial: 0
-  CanCancelIntoNormal: 0
-  CanOnlyCancelOnOpponentHit: 1
-  cancelOnHit: 0
-  cancelOnFlinch: 1
-  cancelOnKnockback: 1
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -40,6 +34,8 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 151366202753034390, guid: c6f18bf7381957749a039c8b5cba9319,
     type: 3}
+  Accessory: {fileID: 0}
+  Effects: []
   DisplayIcon: {fileID: 21300000, guid: 96542bb06dcea2247870a791bb2dd888, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
@@ -60,7 +56,7 @@ MonoBehaviour:
     HitAngle: 2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.5
+    HitStunTime: 0.07
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 7
@@ -69,7 +65,7 @@ MonoBehaviour:
     HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
     HitEffectLevel: 2
-    HitStopTimeModifier: 1.5
+    HitStopShakeStrength: 1.6
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 074a589fcabe2794fa4daa4a303d5518, type: 3}
     HitSound: {fileID: 0}
@@ -96,7 +92,7 @@ MonoBehaviour:
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopTimeModifier: 0
+    HitStopShakeStrength: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: dc82c298b95f37448912cd57810ebb90, type: 3}
     HitSound: {fileID: 0}

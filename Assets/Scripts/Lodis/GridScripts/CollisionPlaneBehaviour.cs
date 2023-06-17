@@ -56,6 +56,8 @@ namespace Lodis.GridScripts
                 SoundManagerBehaviour.Instance.PlaySound(_softLandingClip, 0.8f);
             else
             {
+                physics.RB.isKinematic = false;
+
                 SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 0.8f);
                 if (physics.LastVelocity.magnitude >= _shakeSpeed)
                     CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
@@ -76,6 +78,7 @@ namespace Lodis.GridScripts
             //Return if the object doesn't have one or is invincible
             if (!physics)
                 return;
+
 
             //Don't add a force if the object is traveling at a low speed
             float dotProduct = Vector3.Dot(physics.LastVelocity, Vector3.up);

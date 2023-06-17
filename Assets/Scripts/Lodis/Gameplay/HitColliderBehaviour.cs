@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
         [Range(0,3)]
         public int HitEffectLevel;
         [Tooltip("How long the hit stop will be scaled on hit.")]
-        public float HitStopTimeModifier;
+        public float HitStopShakeStrength;
         [Tooltip("If true, the camera will shake when this collider hits.")]
         public bool ShakesCamera;
         [Tooltip("Event called when this collider htis a valid object.")]

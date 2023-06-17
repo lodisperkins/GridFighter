@@ -418,8 +418,8 @@ MonoBehaviour:
               m_StringArgument: Stunned
               m_BoolArgument: 0
             m_CallState: 2
-          - m_Target: {fileID: 0}
-            m_MethodName: ChangeEyesToHurt
+          - m_Target: {fileID: 3406130847468409652}
+            m_MethodName: ResetTargetSpeed
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -539,8 +539,8 @@ MonoBehaviour:
               m_StringArgument: Tumbling
               m_BoolArgument: 0
             m_CallState: 2
-          - m_Target: {fileID: 0}
-            m_MethodName: ChangeEyesToHurt
+          - m_Target: {fileID: 3406130847468409652}
+            m_MethodName: ResetTargetSpeed
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -638,8 +638,8 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 0
             m_CallState: 2
-          - m_Target: {fileID: 0}
-            m_MethodName: ChangeEyesToHurt
+          - m_Target: {fileID: 3406130847468409652}
+            m_MethodName: ResetTargetSpeed
             m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -1050,7 +1050,7 @@ MonoBehaviour:
       zoomSettings:
         zoomFactor: 1
       dragSettings:
-        dragOffset: {x: 130.43878, y: -152.3627}
+        dragOffset: {x: 319.43878, y: -67.3627}
       gridSettings:
         isEnabled: 1
       labelSettings:
@@ -1587,7 +1587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d87d969c35e242a4eb02c9c756070b23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectile: {fileID: 0}
+  Projectile: {fileID: 0}
   Owner: {fileID: 561307191668043433}
 --- !u!1 &6044519984764932484
 GameObject:

@@ -57,7 +57,7 @@ MonoBehaviour:
     HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.5
+    HitStunTime: 0.055
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
@@ -65,7 +65,7 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopTimeModifier: 1.2
+    HitStopShakeStrength: 0.8
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
     HitSound: {fileID: 0}
@@ -85,7 +85,7 @@ MonoBehaviour:
     HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.5
+    HitStunTime: 0.055
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
@@ -93,7 +93,7 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopTimeModifier: 1.2
+    HitStopShakeStrength: 0.8
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
     HitSound: {fileID: 0}
@@ -113,7 +113,7 @@ MonoBehaviour:
     HitAngle: 1.8
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.5
+    HitStunTime: 0.07
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
@@ -121,7 +121,7 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopTimeModifier: 1.4
+    HitStopShakeStrength: 0.8
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
     HitSound: {fileID: 0}

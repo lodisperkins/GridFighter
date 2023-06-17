@@ -57,7 +57,7 @@ MonoBehaviour:
     HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.7
+    HitStunTime: 0.5
     Priority: 1
     OwnerAlignement: 0
     AbilityType: 8
@@ -65,7 +65,7 @@ MonoBehaviour:
       type: 3}
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopTimeModifier: 1.2
+    HitStopShakeStrength: 1
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 8c7f6259c913f6d4aa79713d465a3042, type: 3}
     HitSound: {fileID: 0}
@@ -85,7 +85,7 @@ MonoBehaviour:
     HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.7
+    HitStunTime: 0.1
     Priority: 2
     OwnerAlignement: 0
     AbilityType: 8
@@ -93,7 +93,7 @@ MonoBehaviour:
       type: 3}
     HitSpark: {fileID: 0}
     HitEffectLevel: 2
-    HitStopTimeModifier: 1.2
+    HitStopShakeStrength: 1
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: dc82c298b95f37448912cd57810ebb90, type: 3}
     HitSound: {fileID: 0}
