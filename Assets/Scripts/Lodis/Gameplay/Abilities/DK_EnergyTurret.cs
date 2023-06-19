@@ -55,6 +55,10 @@ namespace Lodis.Gameplay
 
             for (int i = 0; i < _shotCount; i++)
             {
+                Transform effect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[2], _projectileSpawner.transform.position, Camera.main.transform.rotation).transform;
+
+                effect.localScale /= 2;
+
                 Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.transform.forward * _shotSpeed, GetColliderData(0));
 
                 //Fire projectile
@@ -76,6 +80,7 @@ namespace Lodis.Gameplay
         {
             base.OnActivate(args);
 
+            ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[2], OwnerMoveset.ProjectileSpawner.transform.position, Camera.main.transform.rotation);
             _spawn = ActiveEntities[0].gameObject;
 
             _projectileSpawner = _spawn.GetComponentInChildren<ProjectileSpawnerBehaviour>();

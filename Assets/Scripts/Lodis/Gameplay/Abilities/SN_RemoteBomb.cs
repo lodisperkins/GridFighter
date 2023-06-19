@@ -49,6 +49,8 @@ namespace Lodis.Gameplay
         {
             _damage = (float)args[0];
 
+            ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], OwnerMoveset.ProjectileSpawner.transform.position, Camera.main.transform.rotation);
+
             //The base activate func fires a single instance of the projectile when called
 
             //Spawn remote bomb if none are out.

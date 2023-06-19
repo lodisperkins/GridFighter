@@ -52,7 +52,7 @@ MonoBehaviour:
     MultiHitWaitTime: 0
     Damage: 8
     BaseKnockBack: 3
-    KnockBackScale: 1
+    KnockBackScale: 0.5
     HitAngle: 2.1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
