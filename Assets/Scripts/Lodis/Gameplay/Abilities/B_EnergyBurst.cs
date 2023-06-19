@@ -90,7 +90,7 @@ namespace Lodis.Gameplay
             Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
 
             //If the player isn't resting on the ground...
-            if (OwnerKnockBackScript.CurrentAirState != AirState.NONE)
+            if (OwnerKnockBackScript.CurrentAirState != AirState.NONE && !OwnerKnockBackScript.Physics.IsGrounded)
                 //...put them in freefall
                 OwnerKnockBackScript.CurrentAirState = AirState.FREEFALL;
 
