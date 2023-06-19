@@ -11,18 +11,29 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_AuraCyclone : ProjectileAbility
     {
+        private GameObject _thalamusInstance;
+
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
             base.Init(newOwner);
         }
 
+        protected override void OnStart(params object[] args)
+        {
+            base.OnStart(args);
+            DisableAccessory();
+            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, OwnerMoveset.HeldItemSpawnLeft, true);
+            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, OwnerMoveset.HeldItemSpawnLeft, true);
+            _thalamusInstance.transform.localRotation = Quaternion.identity;
+        }
+
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            DisableAccessory();
             base.OnActivate(args);
 
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
             RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
         }
     }

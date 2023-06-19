@@ -53,7 +53,7 @@ MonoBehaviour:
     Damage: 8
     BaseKnockBack: 3
     KnockBackScale: 1
-    HitAngle: 1.8
+    HitAngle: 2.1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.1
