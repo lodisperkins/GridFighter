@@ -77,7 +77,7 @@ namespace Lodis.Movement
         private bool _isBehindBarrier;
 
         private Tweener _moveTween;
-        private FloatVariable _maxYPosition;
+        private static FloatVariable _maxYPosition;
         private Vector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
         private PanelBehaviour _currentPanel;
@@ -245,10 +245,11 @@ namespace Lodis.Movement
         public float HeightOffset { get => _heightOffset; private set => _heightOffset = value; }
         public bool CanMoveDiagonally { get => _canMoveDiagonally; set => _canMoveDiagonally = value; }
         public bool CanCancelMovement { get => _canCancelMovement; set => _canCancelMovement = value; }
+        public static FloatVariable MaxYPosition { get => _maxYPosition; private set => _maxYPosition = value; }
 
         private void Awake()
         {
-            _maxYPosition = (FloatVariable)Resources.Load("ScriptableObjects/MaxYPosition");
+            MaxYPosition = (FloatVariable)Resources.Load("ScriptableObjects/MaxYPosition");
             _returnEffect = ((GameObject)Resources.Load("Effects/Teleport")).GetComponent<ParticleSystem>();
             //initialize events
             _moveEnabledEventListener = gameObject.AddComponent<GridGame.GameEventListener>();
@@ -919,10 +920,10 @@ namespace Lodis.Movement
         private void FixedUpdate()
         {
             //If the character is above the max y position...
-            if (transform.position.y > _maxYPosition.Value)
+            if (transform.position.y > MaxYPosition.Value)
             {
                 //...clamp their height.
-                Vector3 newPostion = new Vector3(transform.position.x, _maxYPosition.Value, transform.position.z);
+                Vector3 newPostion = new Vector3(transform.position.x, MaxYPosition.Value, transform.position.z);
                 transform.position = newPostion;
             }
 

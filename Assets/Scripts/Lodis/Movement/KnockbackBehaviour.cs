@@ -153,7 +153,7 @@ namespace Lodis.Movement
                 _movementBehaviour.CurrentPanel.Occupied = false;
 
                 //Disables object movement on the grid
-                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+                _movementBehaviour.DisableMovement(condition => CheckIfIdle(), true, true);
             };
 
             _onTakeDamage += () =>
