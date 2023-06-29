@@ -19030,7 +19030,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetScale: {x: 0.4, y: 0.4, z: 0.4}
-  _loopOnEnabled: 1
+  _resizeOnEnabled: 1
   _loopYoYo: 1
   _loopReset: 0
   _scaleDuration: 0.1

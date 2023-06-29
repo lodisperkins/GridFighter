@@ -45,7 +45,7 @@ namespace Lodis.UI
 
         private List<EventButtonBehaviour> _deckChoices = new List<EventButtonBehaviour>();
         [SerializeField]
-        private EventSystem _eventSystem;
+        private UnityEngine.EventSystems.EventSystem _eventSystem;
         private GameObject _lastSelected;
 
 
@@ -58,7 +58,7 @@ namespace Lodis.UI
                 _lastSelected = value;
             }
         }
-        public EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
+        public UnityEngine.EventSystems.EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
         public PageManagerBehaviour PageManager { get => _pageManager; set => _pageManager = value; }
 
         // Start is called before the first frame update
@@ -145,7 +145,7 @@ namespace Lodis.UI
             }
         }
 
-        public void SetEventSystems(EventSystem eventSystem)
+        public void SetEventSystems(UnityEngine.EventSystems.EventSystem eventSystem)
         {
             _eventSystem = eventSystem;
             _customMenuScrollBehaviour.EventSystem = eventSystem;

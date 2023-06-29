@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
-            _stompEffectRef = Resources.Load<GameObject>("Effects/LightningStomp");
+            _stompEffectRef = abilityData.Effects[0];
         }
 
         /// <summary>

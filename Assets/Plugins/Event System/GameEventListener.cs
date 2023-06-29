@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-namespace GridGame
+namespace CustomEventSystem
 {
     delegate void Actions();
     public class GameEventListener:MonoBehaviour,IListener
@@ -12,7 +12,7 @@ namespace GridGame
         UnityEvent actions = new UnityEvent();
         //the event the gameobject should be listening for
 
-        public GridGame.Event Event;
+        public CustomEventSystem.Event Event;
         //The sender the gameobject is waiting for the event to be raiased by
         public GameObject IntendedSender;
         public bool AcceptTagAsSender;

@@ -49,7 +49,7 @@ namespace Lodis.UI
         [SerializeField]
         private EventButtonBehaviour _abilityButton;
         [SerializeField]
-        private EventSystem _eventSystem;
+        private UnityEngine.EventSystems.EventSystem _eventSystem;
         [SerializeField]
         private PageManagerBehaviour _pageManager;
         private GameObject _lastSelectedSpecial;
@@ -67,7 +67,7 @@ namespace Lodis.UI
         }
 
         public PageManagerBehaviour PageManager { get => _pageManager; }
-        public EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
+        public UnityEngine.EventSystems.EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
 
         // Start is called before the first frame update
         void Start()

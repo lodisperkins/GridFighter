@@ -1,4 +1,5 @@
-﻿using Lodis.Movement;
+﻿using Lodis.GridScripts;
+using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections;
@@ -68,13 +69,29 @@ namespace Lodis.Gameplay
             }
         }
 
+        private void TrySetAlignment()
+        {
+            GridMovementBehaviour gridMovementBehaviour = transform.root.GetComponentInChildren<GridMovementBehaviour>();
+
+            if (gridMovementBehaviour)
+            {
+                _alignment = gridMovementBehaviour.Alignment;
+                return;
+            }
+            PanelBehaviour panel = null;
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.root.position, out panel))
+                return;
+
+            _alignment = panel.Alignment;
+        }
+
         /// <summary>
         /// Sets all objects and their color properties to match the alignment.
         /// </summary>
         public void SetColors()
         {
             if (_autoDetectAlignment)
-                _alignment = GetComponent<GridMovementBehaviour>().Alignment;
+                TrySetAlignment();
 
             _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(_alignment);
 

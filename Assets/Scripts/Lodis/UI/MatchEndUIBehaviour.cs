@@ -17,7 +17,7 @@ namespace Lodis.UI
         [SerializeField]
         private float _endTextDisplayDuration;
         [SerializeField]
-        private EventSystem _eventSystem;
+        private UnityEngine.EventSystems.EventSystem _eventSystem;
         [SerializeField]
         private Button _firstGameMenuButton;
 

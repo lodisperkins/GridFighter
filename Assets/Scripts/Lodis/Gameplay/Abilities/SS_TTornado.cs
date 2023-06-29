@@ -25,6 +25,7 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
             _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], owner.transform.position, Quaternion.identity);
+            _effectInstance.transform.parent = null;
         }
 
         //Called when ability is used

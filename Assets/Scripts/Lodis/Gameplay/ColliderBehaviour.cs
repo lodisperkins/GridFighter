@@ -19,10 +19,10 @@ namespace Lodis.Gameplay
     public class ColliderBehaviour : MonoBehaviour
     {
         protected Dictionary<GameObject, float> Collisions;
-        protected GridGame.GameEventListener ReturnToPoolListener;
+        protected CustomEventSystem.GameEventListener ReturnToPoolListener;
         private CollisionEvent _onHit;
         [SerializeField]
-        private GridGame.Event _onHitObject;
+        private CustomEventSystem.Event _onHitObject;
         protected float _lastHitFrame;
         [Tooltip("The game object spawned this collider.")]
         public GameObject Owner;
@@ -35,7 +35,7 @@ namespace Lodis.Gameplay
 
         protected virtual void Awake()
         {
-            ReturnToPoolListener = gameObject.AddComponent<GridGame.GameEventListener>();
+            ReturnToPoolListener = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
             ReturnToPoolListener.Init(ObjectPoolBehaviour.Instance.OnReturnToPool, gameObject);
             Collisions = new Dictionary<GameObject, float>();
             RB = transform.root.GetComponentInChildren<Rigidbody>();

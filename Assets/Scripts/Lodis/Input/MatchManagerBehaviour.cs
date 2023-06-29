@@ -69,11 +69,11 @@ namespace Lodis.Gameplay
         private UnityEvent _onMatchOver;
 
         [SerializeField]
-        private GridGame.Event _matchRestartEvent;
+        private CustomEventSystem.Event _matchRestartEvent;
         [SerializeField]
-        private GridGame.Event _matchStartEvent;
+        private CustomEventSystem.Event _matchStartEvent;
         [SerializeField]
-        private GridGame.Event _matchOverEvent;
+        private CustomEventSystem.Event _matchOverEvent;
 
         private PlayerSpawnBehaviour _playerSpawner;
         private bool _isPaused;

@@ -21,7 +21,7 @@ namespace Lodis.UI
         [SerializeField]
         private Page[] _pages;
         [SerializeField]
-        private EventSystem _eventSystem;
+        private UnityEngine.EventSystems.EventSystem _eventSystem;
         [SerializeField]
         private bool _loadSceneOnFirstPage;
         [SerializeField]
@@ -31,7 +31,7 @@ namespace Lodis.UI
         private int _currentPage;
         private PlayerControls _controls;
 
-        public EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
+        public UnityEngine.EventSystems.EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
 
         public void Awake()
         {

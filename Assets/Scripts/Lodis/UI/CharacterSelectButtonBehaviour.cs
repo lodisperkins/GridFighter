@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using GridGame;
+using CustomEventSystem;
 
 namespace Lodis.UI
 {
     public class CharacterSelectButtonBehaviour : Button, ISelectHandler
     {
         [SerializeField]
-        private GridGame.Event _onSelectCharacter;
+        private CustomEventSystem.Event _onSelectCharacter;
 
         protected override void Awake()
         {
-            _onSelectCharacter = Resources.Load<GridGame.Event>("Events/OnSelectCharacter");
+            _onSelectCharacter = Resources.Load<CustomEventSystem.Event>("Events/OnSelectCharacter");
         }
 
         public override void OnSelect(BaseEventData eventData)

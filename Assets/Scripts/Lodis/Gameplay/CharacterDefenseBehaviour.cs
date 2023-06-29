@@ -91,11 +91,11 @@ namespace Lodis.Gameplay
         private TimedAction _shieldTimer;
         private bool _canPhaseShift;
         [SerializeField]
-        private GridGame.Event _phaseShiftEvent;
+        private CustomEventSystem.Event _phaseShiftEvent;
         [SerializeField]
-        private GridGame.Event _phaseShiftSuccessEvent;
+        private CustomEventSystem.Event _phaseShiftSuccessEvent;
         [SerializeField]
-        private GridGame.Event _onParryEvent;
+        private CustomEventSystem.Event _onParryEvent;
         private UnityAction _onPhaseShift;
         [SerializeField]
         [Tooltip("The speed of the game after a phase shift passes through an attack.")]

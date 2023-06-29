@@ -1,11 +1,17 @@
 fileFormatVersion: 2
-guid: e0a72ace05346f347954b87d8bb3f445
+guid: b4421d34354a10e4fbc8a02e6217192a
 ModelImporter:
   serializedVersion: 19301
   internalIDToNameTable:
   - first:
+      74: 4358703180778511629
+    second: rig|CubeAction
+  - first:
       74: -6543209201303009733
     second: rig|Reshuffle
+  - first:
+      74: -5732328080415620677
+    second: Reshuffle
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -23,9 +29,8 @@ ModelImporter:
     animationImportErrors: 
     animationImportWarnings: "\nClip 'rig|Reshuffle' has import animation warnings
       that might lower retargeting quality:\nNote: Activate translation DOF on avatar
-      to improve retargeting quality.\n\t'DEF-upper_arm.L' has translation animation
-      that will be discarded.\n\t'DEF-upper_arm.R' has translation animation that
-      will be discarded.\n"
+      to improve retargeting quality.\n\t'DEF-spine.004' is inbetween humanoid transforms
+      and has rotation animation that will be discarded.\n"
     animationRetargetingWarnings: 
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
@@ -39,11 +44,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: rig|Reshuffle
+      name: Reshuffle
       takeName: rig|Reshuffle
       internalID: 0
-      firstFrame: 0
-      lastFrame: 100
+      firstFrame: 32
+      lastFrame: 80
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -63,50 +68,57 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.740332
+      - time: 0.010928961
+        functionName: PlayEffectFromEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: c88535c8d2a593343b71b862e0760be8,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5832657
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.824414
+      - time: 0.79551107
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.002050782
-        functionName: ChangeEyesToClosed
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0.5
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.7792968
-        functionName: ChangeEyesToIdle
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.002050782
-        functionName: PlayEffectFromEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: d2ba9364234490842aa433e00c89258a,
-          type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.7792968
-        functionName: PlayEffectFromEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: da60c907079cd7e409ac2fa66c81d212,
-          type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: rig|Reshuffle
+      takeName: rig|Reshuffle
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 80
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -244,19 +256,19 @@ ModelImporter:
     - boneName: DEF-shoulder.L
       humanName: LeftShoulder
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: 0, y: -30, z: -100}
+        max: {x: 0, y: 30, z: 100}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: DEF-shoulder.R
       humanName: RightShoulder
       limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
+        min: {x: 0, y: -30, z: -100}
+        max: {x: 0, y: 30, z: 100}
         value: {x: 0, y: 0, z: 0}
         length: 0
-        modified: 0
+        modified: 1
     - boneName: DEF-upper_arm.L
       humanName: LeftUpperArm
       limit:

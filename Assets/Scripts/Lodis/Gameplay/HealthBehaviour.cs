@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
         protected Condition AliveCondition;
         protected UnityAction _onTakeDamage;
         [FormerlySerializedAs("OnTakeDamage")] [SerializeField]
-        protected GridGame.Event OnTakeDamageEvent;
+        protected CustomEventSystem.Event OnTakeDamageEvent;
         private CharacterDefenseBehaviour _defenseBehaviour;
 
 

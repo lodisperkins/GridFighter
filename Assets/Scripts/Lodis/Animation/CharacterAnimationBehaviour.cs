@@ -91,7 +91,7 @@ namespace Lodis.Gameplay
 
             _characterStateManager.AddOnStateChangedAction(() =>
             {
-                if (_characterStateMachine.CurrentState == "Attacking")
+                if (_characterStateMachine.CurrentState == "Attacking" || _characterStateMachine.CurrentState == "Shuffling")
                     return;
 
                 _targetSpeed = 1;

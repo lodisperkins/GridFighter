@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 namespace Lodis.Utility
 {
@@ -12,7 +13,8 @@ namespace Lodis.Utility
         [SerializeField]
         private Vector3 _targetScale;
         [SerializeField]
-        private bool _loopOnEnabled;
+        [FormerlySerializedAs("_loopOnEnabled")]
+        private bool _resizeOnEnabled;
         [Tooltip("Makes the object constantly resize. Lerps size to target size and lerps back to original when the target size is reached.")]
         [SerializeField]
         private bool _loopYoYo;
@@ -35,7 +37,7 @@ namespace Lodis.Utility
 
         private void OnEnable()
         {
-            if (_loopOnEnabled)
+            if (_resizeOnEnabled)
                 StartResize();
 
             _onEnable?.Invoke();

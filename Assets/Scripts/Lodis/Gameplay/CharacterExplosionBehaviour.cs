@@ -18,7 +18,7 @@ namespace Lodis.Gameplay
         [SerializeField] private float _maxEmission;
         [SerializeField] private AudioClip _chargeSound;
         [SerializeField] private AudioClip _explosionSound;
-        [SerializeField] private GridGame.Event _onCharacterExplosion;
+        [SerializeField] private CustomEventSystem.Event _onCharacterExplosion;
         private float[] _emissionStrengthValues = { 0, 0 };
         private TimedAction _chargeAction;
         private IntVariable _lastLoserID;

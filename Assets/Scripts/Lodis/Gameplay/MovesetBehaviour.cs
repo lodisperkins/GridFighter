@@ -28,6 +28,14 @@ namespace Lodis.Gameplay
         BURST  
     }
 
+    public enum LimbType
+    {
+        L_LEG,
+        L_HAND,
+        R_LEG,
+        R_HAND
+    }
+
     public class MovesetBehaviour : MonoBehaviour
     {
         [Header("Deck Settings")]
@@ -291,7 +299,29 @@ namespace Lodis.Gameplay
 
             return _lastAbilityInUse.CheckIfAbilityCanBeCanceledInPhase();
         }
-        
+
+        public Transform GetSpawnTransform(LimbType limb)
+        {
+            Transform limbTransform = null;
+            switch (limb)
+            {
+                case LimbType.L_HAND:
+                    limbTransform = LeftMeleeSpawns[1];
+                    break;
+                case LimbType.L_LEG:
+                    limbTransform = LeftMeleeSpawns[0];
+                    break;
+                case LimbType.R_HAND:
+                    limbTransform = RightMeleeSpawns[1];
+                    break;
+                case LimbType.R_LEG:
+                    limbTransform = RightMeleeSpawns[0];
+                    break;
+            }
+
+            return limbTransform;
+        }
+
         /// <summary>
         /// Checks if the normal deck has an ability that matches the name
         /// </summary>
@@ -750,5 +780,3 @@ namespace Lodis.Gameplay
         }
     }
 }
-
-

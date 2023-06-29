@@ -24,7 +24,7 @@ namespace Lodis.CharacterCreation
         [SerializeField]
         private EventButtonBehaviour _buttonReference;
         [SerializeField]
-        private EventSystem _eventSystem;
+        private UnityEngine.EventSystems.EventSystem _eventSystem;
         private GameObject _lastSelectedSpecial;
         private GameObject _lastSelected;
 

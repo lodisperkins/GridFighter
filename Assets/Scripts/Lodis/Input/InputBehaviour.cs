@@ -102,9 +102,9 @@ namespace Lodis.Input
         [SerializeField]
         private bool _abilityBuffered;
         [SerializeField]
-        private GridGame.Event _onChargeStarted;
+        private CustomEventSystem.Event _onChargeStarted;
         [SerializeField]
-        private GridGame.Event _onChargeEnded;
+        private CustomEventSystem.Event _onChargeEnded;
         private bool _isPaused;
         private InputDevice[] _devices;
         private bool _canBufferDefense;

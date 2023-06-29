@@ -18,7 +18,7 @@ namespace Lodis.UI
         [SerializeField]
         private float _timeSinceRoundStart;
         [SerializeField]
-        private GridGame.Event _onTimerUp;
+        private CustomEventSystem.Event _onTimerUp;
         private bool _timeUp;
         private bool _isInfinite;
         private bool _isActive;

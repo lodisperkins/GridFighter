@@ -18,7 +18,7 @@ namespace Lodis.UI
         private float _lerpDuration;
         private TweenerCore<Vector3, Vector3, VectorOptions> _moveTween;
         [SerializeField]
-        private EventSystem _eventSystem;
+        private UnityEngine.EventSystems.EventSystem _eventSystem;
         private GameObject _lastSelectedGameObject;
 
         public void Awake()

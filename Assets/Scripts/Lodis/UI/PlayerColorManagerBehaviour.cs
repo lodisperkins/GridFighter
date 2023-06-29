@@ -16,7 +16,7 @@ namespace Lodis.UI
         [SerializeField]
         private Color[] _possibleColors;
         [SerializeField]
-        private GridGame.Event _setColorEvent;
+        private CustomEventSystem.Event _setColorEvent;
         [SerializeField]
         private UnityEvent _onSetColor;
 

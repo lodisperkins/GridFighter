@@ -11,12 +11,12 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using DG.Tweening;
 using Lodis.Sound;
-using GridGame;
+using CustomEventSystem;
 
 namespace Lodis.Movement
 {
 
-    [RequireComponent(typeof(GridGame.GameEventListener))]
+    [RequireComponent(typeof(CustomEventSystem.GameEventListener))]
     public class GridMovementBehaviour : MonoBehaviour
     {
         [SerializeField]
@@ -53,9 +53,9 @@ namespace Lodis.Movement
         [SerializeField]
         private AudioClip _moveSound;
         [SerializeField]
-        private GridGame.Event _onTeleportStart;
+        private CustomEventSystem.Event _onTeleportStart;
         [SerializeField]
-        private GridGame.Event _onTeleportEnd;
+        private CustomEventSystem.Event _onTeleportEnd;
 
         [Tooltip("Whether or not this object should always rotate to face the opposite side")]
         [SerializeField]
@@ -82,11 +82,11 @@ namespace Lodis.Movement
         private PanelBehaviour _targetPanel = null;
         private PanelBehaviour _currentPanel;
         private GameEventListener _moveEnabledEventListener;
-        private GridGame.GameEventListener _moveDisabledEventListener;
-        private GridGame.GameEventListener _onMoveBegin;
-        private GridGame.GameEventListener _onMoveBeginTemp;
-        private GridGame.GameEventListener _onMoveEnd;
-        private GridGame.GameEventListener _onMoveEndTemp;
+        private CustomEventSystem.GameEventListener _moveDisabledEventListener;
+        private CustomEventSystem.GameEventListener _onMoveBegin;
+        private CustomEventSystem.GameEventListener _onMoveBeginTemp;
+        private CustomEventSystem.GameEventListener _onMoveEnd;
+        private CustomEventSystem.GameEventListener _onMoveEndTemp;
         private PanelBehaviour _previousPanel;
         private float _heightOffset;
         private MeshFilter _meshFilter;
@@ -252,23 +252,23 @@ namespace Lodis.Movement
             MaxYPosition = (FloatVariable)Resources.Load("ScriptableObjects/MaxYPosition");
             _returnEffect = ((GameObject)Resources.Load("Effects/Teleport")).GetComponent<ParticleSystem>();
             //initialize events
-            _moveEnabledEventListener = gameObject.AddComponent<GridGame.GameEventListener>();
-            _moveEnabledEventListener.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
-            _moveDisabledEventListener = gameObject.AddComponent<GridGame.GameEventListener>();
-            _moveDisabledEventListener.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+            _moveEnabledEventListener = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
+            _moveEnabledEventListener.Init(ScriptableObject.CreateInstance<CustomEventSystem.Event>(), gameObject);
+            _moveDisabledEventListener = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
+            _moveDisabledEventListener.Init(ScriptableObject.CreateInstance<CustomEventSystem.Event>(), gameObject);
 
-            _onMoveBegin = gameObject.AddComponent<GridGame.GameEventListener>();
-            _onMoveBegin.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+            _onMoveBegin = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
+            _onMoveBegin.Init(ScriptableObject.CreateInstance<CustomEventSystem.Event>(), gameObject);
             _onMoveBegin.AddAction(() => SoundManagerBehaviour.Instance.PlaySound(_moveSound, 0.2f));
 
-            _onMoveBeginTemp = gameObject.AddComponent<GridGame.GameEventListener>();
-            _onMoveBeginTemp.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+            _onMoveBeginTemp = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
+            _onMoveBeginTemp.Init(ScriptableObject.CreateInstance<CustomEventSystem.Event>(), gameObject);
 
-            _onMoveEnd = gameObject.AddComponent<GridGame.GameEventListener>();
-            _onMoveEnd.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+            _onMoveEnd = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
+            _onMoveEnd.Init(ScriptableObject.CreateInstance<CustomEventSystem.Event>(), gameObject);
 
-            _onMoveEndTemp = gameObject.AddComponent<GridGame.GameEventListener>();
-            _onMoveEndTemp.Init(ScriptableObject.CreateInstance<GridGame.Event>(), gameObject);
+            _onMoveEndTemp = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
+            _onMoveEndTemp.Init(ScriptableObject.CreateInstance<CustomEventSystem.Event>(), gameObject);
 
             _renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
@@ -415,7 +415,7 @@ namespace Lodis.Movement
         /// <param name="waitForEndOfMovement">If the object is moving, its movement will be disabled once its reached
         /// its destination. If false, movement is stopped immediately.</param>
         /// <param name="overridesMoveCondition">This condition to enable movement will override the move condition from an earlier call.</param>
-        public void DisableMovement(GridGame.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true)
+        public void DisableMovement(CustomEventSystem.Event moveEvent, GameObject intendedSender = null, bool waitForEndOfMovement = true)
         {
             if (!_canMove)
                 return;

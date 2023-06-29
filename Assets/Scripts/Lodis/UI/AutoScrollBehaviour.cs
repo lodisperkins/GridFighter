@@ -16,14 +16,14 @@ namespace Lodis.UI
         [SerializeField]
         private float _distanceToScroll;
         [SerializeField]
-        private EventSystem _eventSystem;
+        private UnityEngine.EventSystems.EventSystem _eventSystem;
         [SerializeField]
         private RectTransform _content;
         private float _scrollAmountNormalized;
         private RectTransform _currentItem;
         private float _currentItemPos;
 
-        public EventSystem EventSystem { get => _eventSystem; set => _eventSystem = value; }
+        public UnityEngine.EventSystems.EventSystem EventSystem { get => _eventSystem; set => _eventSystem = value; }
 
         // Start is called before the first frame update
         void Awake()
