@@ -47,7 +47,7 @@ ModelImporter:
       name: Reshuffle
       takeName: rig|Reshuffle
       internalID: 0
-      firstFrame: 32
+      firstFrame: 0
       lastFrame: 80
       wrapMode: 0
       orientationOffsetY: 0
@@ -68,22 +68,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.010928961
-        functionName: PlayEffectFromEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: c88535c8d2a593343b71b862e0760be8,
-          type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.5832657
+      - time: 0.20028901
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.79551107
+      - time: 0.56141615
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
