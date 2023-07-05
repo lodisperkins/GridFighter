@@ -12,6 +12,9 @@ ModelImporter:
   - first:
       74: -5732328080415620677
     second: Reshuffle
+  - first:
+      74: -5732328080415620677
+    second: rig|Reshuffle (1)
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -44,11 +47,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Reshuffle
+      name: rig|Reshuffle (1)
       takeName: rig|Reshuffle
       internalID: 0
       firstFrame: 0
-      lastFrame: 80
+      lastFrame: 38
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -68,17 +71,49 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.20028901
+      - time: 0.43126726
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.56141615
+      - time: 0.5806221
         functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.38530028
+        functionName: PlayEffectOnLimb
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 63973f8e2ed95a14da314782eadc30f5,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.49120167
+        functionName: PlayEffectOnLimb
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 63973f8e2ed95a14da314782eadc30f5,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6263948
+        functionName: PlayEffectOnLimb
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 63973f8e2ed95a14da314782eadc30f5,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.84946346
+        functionName: PlayEffectOnLimb
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: 63973f8e2ed95a14da314782eadc30f5,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0

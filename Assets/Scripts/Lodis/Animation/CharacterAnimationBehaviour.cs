@@ -204,7 +204,10 @@ namespace Lodis.Gameplay
 
                 case AnimationPhase.ACTIVE:
                     if (!_currentClip)
-                        _currentClip = _animator.GetNextAnimatorClipInfo(0)[0].clip;
+                        _currentClip = _animator.GetNextAnimatorClipInfo(0).Length > 0 ? _animator.GetNextAnimatorClipInfo(0)[0].clip : null;
+
+                    if (!_currentClip)
+                        break;
 
                     if ((_currentClipActiveTime <= 0 || _movesetBehaviour.LastAbilityInUse != null && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 1)
                         && _currentClip.events.Length >= 2 && _animatingAbility)
@@ -235,6 +238,9 @@ namespace Lodis.Gameplay
                     newSpeed = (nextTimeStamp - _currentClip.events[eventIndex].time) / _currentClipActiveTime;
                     break;
                 case AnimationPhase.INACTIVE:
+
+                    if (!_currentClip)
+                        break;
 
                     if (_currentClip.events.Length < 2)
                         break;
