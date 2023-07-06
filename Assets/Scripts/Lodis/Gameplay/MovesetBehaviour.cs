@@ -220,10 +220,14 @@ namespace Lodis.Gameplay
         public Transform HeldItemSpawnLeft { get => _heldItemSpawnLeft; private set => _heldItemSpawnLeft = value; }
         public Transform HeldItemSpawnRight { get => _heldItemSpawnRight; private set => _heldItemSpawnRight = value; }
 
+        public static float DeckReloadTime { get; private set; }
+
         private void Awake()
         {
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
+
+            DeckReloadTime = _deckReloadTime;
 
             if (MatchManagerBehaviour.InfiniteEnergy)
                 _energy = _maxEnergyRef.Value;

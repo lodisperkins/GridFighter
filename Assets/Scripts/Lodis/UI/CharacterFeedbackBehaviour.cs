@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using DG.Tweening;
 using CustomEventSystem;
 using Lodis.Movement;
+using Lodis.Accessories;
 
 namespace Lodis.Gameplay
 {
@@ -20,6 +21,8 @@ namespace Lodis.Gameplay
         [SerializeField] private ColorManagerBehaviour _colorManager;
         [SerializeField] private ParticleSystem _deathSparks;
         [SerializeField] private ParticleSystem[] _additionalEffects;
+        [SerializeField] private AccessoryEffectBehaviour _accessory;
+
         public ColorManagerBehaviour ColorManager { get => _colorManager; private set => _colorManager = value; }
 
         void Start()
@@ -90,6 +93,17 @@ namespace Lodis.Gameplay
             
         }
 
+        public void PlayAccessoryEffect()
+        {
+            if (_accessory)
+                _accessory.PlayEffect();
+        }
+
+        public void StopAccessoryEffect()
+        {
+            if (_accessory)
+                _accessory.StopEffect();
+        }
 
         private void Update()
         {
