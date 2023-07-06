@@ -9,7 +9,6 @@ namespace Lodis.Accessories
 {
     public class ThalamusEffectBehaviour : AccessoryEffectBehaviour
     {
-        private RotationBehaviour _rotationScript;
         private HoverBehaviour _hoverScipt;
         private HealthBehaviour _health;
         private Quaternion _rotation;
@@ -19,7 +18,6 @@ namespace Lodis.Accessories
 
         private void Start()
         {
-            _rotationScript = GetComponent<RotationBehaviour>();
             _hoverScipt = GetComponent<HoverBehaviour>();
             _health = Owner.GetComponentInChildren<HealthBehaviour>();
 
@@ -27,7 +25,6 @@ namespace Lodis.Accessories
 
             _rotation = transform.rotation;
             _position = transform.localPosition;
-            _rotationScript.enabled = false;
         }
 
         private void OnDisable()
@@ -39,7 +36,6 @@ namespace Lodis.Accessories
         {
             base.PlayEffect();
             
-            //_rotationScript.enabled = true;
 
             if (_hoverScipt)
                 _hoverScipt.enabled = false;
@@ -55,7 +51,6 @@ namespace Lodis.Accessories
             transform.rotation = _rotation;
             transform.DOKill();
 
-            //_rotationScript.enabled = false;
             if (_hoverScipt)
                 _hoverScipt.enabled = true;
         }

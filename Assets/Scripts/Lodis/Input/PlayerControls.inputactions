@@ -405,6 +405,17 @@
                     "isPartOfComposite": false
                 },
                 {
+                    "name": "",
+                    "id": "6b9bc40d-0370-490d-853d-67b09fca44c5",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
                     "name": "WASD",
                     "id": "1482424c-507d-46ff-9b10-a0a5a24e05f7",
                     "path": "2DVector(mode=1)",

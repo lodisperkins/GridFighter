@@ -68838,6 +68838,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3556137913490995458, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3556137913490995458, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
+        type: 3}
       propertyPath: _moveCurve.m_Curve.Array.size
       value: 5
       objectReference: {fileID: 0}

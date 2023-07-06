@@ -7,27 +7,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2177577569625369960}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da0dfb7eed89f1648a522fb38e42c289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5599473840676534888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2177577569625369960}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c52846ec6a717c347ab6d490fc6b81c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _axis: {x: 1, y: 0, z: 0}
-  _speed: 0.5
-  _rotateOnSelf: 0
-  _resetOnDisable: 0
+  _moveCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &2179301796350579982
 PrefabInstance:
   m_ObjectHideFlags: 0
