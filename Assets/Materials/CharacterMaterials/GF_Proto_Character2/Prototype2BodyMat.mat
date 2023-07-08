@@ -23,7 +23,7 @@ Material:
   m_Name: Prototype2BodyMat
   m_Shader: {fileID: -6465566751694194690, guid: e600931dd59f31f4ab721a565cf62d6e,
     type: 3}
-  m_ShaderKeywords: USENORMAL_ON
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -77,22 +77,28 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ShadowPattern:
+        m_Texture: {fileID: 2800000, guid: 7b6239b0055d37e419782d910a5d3761, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - LightingCutoff: 0.15
+    - LightingCutoff: 0.5
     - Smoothness: 0
-    - USENORMAL: 1
+    - USENORMAL: 0
+    - Vector1_3F86A467: 0.78
+    - Vector1_64D9F5C: 0.74
     - _AlphaClip: 0
-    - _AmbientStrength: 0
+    - _AmbientStrength: 0.17
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
-    - _EmissionStrength: -6.5
+    - _EmissionStrength: 0.2
     - _EnvironmentReflections: 1
     - _FalloffAmount: 0
     - _FresnelSize: 0
@@ -100,8 +106,10 @@ Material:
     - _Glossiness: 0
     - _GlossinessSource: 0
     - _GlossyReflections: 0
+    - _MaxLightStrength: 0.066
     - _Metallic: 0
     - _OcclusionStrength: 1
+    - _PatternDensity: 3.36
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Shininess: 0
@@ -116,9 +124,11 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
+    - Color_48A44265: {r: 0, g: 0, b: 0, a: 1}
+    - Color_DC0A6678: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.4433962, g: 0.22430633, b: 0, a: 1}
-    - _EmissionColor: {r: 0.003921569, g: 0.003921569, b: 0.003921569, a: 0}
+    - _EmissionColor: {r: 0.03773582, g: 0.03773582, b: 0.03773582, a: 0}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
@@ -126,5 +136,5 @@ Material:
     - _SecondaryColor: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
-    - _TertiaryColor: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}
+    - _TertiaryColor: {r: 0, g: 0, b: 0, a: 1}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
