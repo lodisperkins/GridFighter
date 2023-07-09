@@ -488,7 +488,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void EnableAccessory()
         {
-            if (!abilityData.Accessory || !_accessoryInstance)
+            if (!abilityData.Accessory || !_accessoryInstance || _accessoryInstance.activeInHierarchy)
                 return;
 
             GameObject spawnEffect = abilityData.Accessory.SpawnEffect;
@@ -508,7 +508,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void DisableAccessory()
         {
-            if (!abilityData.Accessory || !_accessoryInstance)
+            if (!abilityData.Accessory || !_accessoryInstance || !_accessoryInstance.activeInHierarchy)
                 return;
 
             GameObject despawnEffect = abilityData.Accessory.DespawnEffect;

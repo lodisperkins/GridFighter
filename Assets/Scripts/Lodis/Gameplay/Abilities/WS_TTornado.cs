@@ -47,7 +47,6 @@ namespace Lodis.Gameplay
         {
             base.OnRecover(args);
 
-            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, OwnerMoveset.HeldItemSpawnLeft, true);
             _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, OwnerMoveset.HeldItemSpawnLeft, true);
             _thalamusInstance.transform.localRotation = Quaternion.identity;
 
