@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Lodis.FX;
+using Lodis.GridScripts;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +16,8 @@ namespace Lodis.Gameplay
         private bool _comboStarted;
         private Movement.GridMovementBehaviour _opponentMovement;
         private AnimationClip _comboClip;
+        private float _slowMotionTimeScale;
+        private float _slowMotionTime;
 
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -21,6 +25,26 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
             _distance = abilityData.GetCustomStatValue("Distance");
             abilityData.GetAdditionalAnimation(0, out _comboClip);
+
+
+            OwnerAnimationScript.AddEventListener("Punch1", () => SpawnCollider(0));
+            OwnerAnimationScript.AddEventListener("Punch2", () => SpawnCollider(0));
+            OwnerAnimationScript.AddEventListener("Punch3", () => SpawnCollider(1));
+
+            _slowMotionTimeScale = abilityData.GetCustomStatValue("SlowMotionTimeScale");
+            _slowMotionTime = abilityData.GetCustomStatValue("SlowMotionTime");
+
+            OwnerAnimationScript.AddEventListener("SlowMotionStart", () =>
+            { 
+                MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, 0.01f, _slowMotionTime);
+            });
+
+
+            OwnerAnimationScript.AddEventListener("Punch4", () =>
+            {
+                SpawnCollider(2);
+                UnpauseAbilityTimer();
+            });
         }
 
         protected override void OnStart(params object[] args)
@@ -31,6 +55,10 @@ namespace Lodis.Gameplay
 
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
             OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + _distance * Vector2.right * OwnerMoveScript.GetAlignmentX(), false, GridScripts.GridAlignment.ANY, true, false, true);
+
+            OwnerMoveScript.AddOnMoveEndTempAction(EndAbility);
+
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(BlackBoardBehaviour.Instance.GetIDFromPlayer(owner), abilityData.startUpTime);
         }
 
         private void StartCombo()
@@ -42,21 +70,39 @@ namespace Lodis.Gameplay
             OwnerAnimationScript.PlayAnimation(_comboClip, 1, true);
         }
 
-        //Called when ability is used
-        protected override void OnActivate(params object[] args)
+        public void SpawnCollider(int colliderIndex)
         {
-
+            Vector3 spawnPosition = owner.transform.position + (Vector3.right * OwnerMoveScript.GetAlignmentX());
+            HitColliderSpawner.SpawnBoxCollider(spawnPosition, Vector3.one, GetColliderData(colliderIndex), owner);
         }
 
-        public override void Update()
+        public override void FixedUpdate()
         {
-            base.Update();
 
-            if (OwnerMoveScript.Position + Vector2.right * -OwnerMoveScript.GetAlignmentX() == _opponentMovement.Position && !_comboStarted)
+            float distance = Vector3.Distance(owner.transform.position, _opponentMovement.transform.position);
+
+            if (distance <= 1 && !_comboStarted)
             {
                 StartCombo();
                 _comboStarted = true;
             }
+        }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
+            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+        }
+
+        protected override void OnMatchRestart()
+        {
+            base.OnMatchRestart();
+
+            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+            MatchManagerBehaviour.Instance.SuperInUse = false;
+            OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
         }
     }
 }

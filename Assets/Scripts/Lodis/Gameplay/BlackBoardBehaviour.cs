@@ -197,6 +197,16 @@ namespace Lodis.Gameplay
             return null;
         }
 
+        public int GetIDFromPlayer(GameObject player)
+        {
+            if (Player1 == gameObject)
+                return Player1ID;
+            else if (Player2 == gameObject)
+                return Player2ID;
+
+            return 0;
+        }
+
         /// <summary>
         /// Gets a reference to the player that is aligned with the given side
         /// </summary>

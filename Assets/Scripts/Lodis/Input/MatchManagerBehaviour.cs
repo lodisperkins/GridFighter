@@ -82,7 +82,7 @@ namespace Lodis.Gameplay
         private bool _suddenDeathActive;
         private bool _matchStarted;
         private TweenerCore<float, float, FloatOptions> _timeScaleTween;
-        private TimedAction _timeScaleAction;
+        private DelayedAction _timeScaleAction;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -200,6 +200,18 @@ namespace Lodis.Gameplay
         {
             _timeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
             _timeScaleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Time.timeScale = 1, TimedActionCountType.UNSCALEDTIME, duration);
+        }
+
+        /// <summary>
+        /// Temporarily changes the speed of time for the game.
+        /// </summary>
+        /// <param name="newTimeScale">The new time scale. 0 being no time passes and 1 being the normal speed.</param>
+        /// <param name="speed">How long it takes to transition into the new time scale.</param>
+        /// <param name="duration">How long the timescale will be this speed.</param>
+        public void ChangeTimeScale(float newTimeScale, float speed, Condition condition)
+        {
+            _timeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
+            _timeScaleAction = RoutineBehaviour.Instance.StartNewConditionAction(args => Time.timeScale = 1, condition);
         }
 
         public void ResetTimeScale()

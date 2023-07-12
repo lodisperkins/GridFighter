@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_MegatonPunch_Data
   m_EditorClassIdentifier: 
-  abilityName: Unassigned
+  abilityName: MegatonPunch
   abilityDescription: None
   exampleClip: {fileID: 0}
-  AbilityType: 0
-  timeActive: 0
-  recoverTime: 0
-  startUpTime: 0
+  AbilityType: 8
+  timeActive: 5
+  recoverTime: 0.5
+  startUpTime: 1
   chargeTime: 0
   maxActivationAmount: 1
-  EnergyCost: 0
+  EnergyCost: 5
   CancellationRules: []
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
@@ -34,12 +34,104 @@ MonoBehaviour:
   visualPrefab: {fileID: 0}
   Accessory: {fileID: 0}
   Effects: []
-  DisplayIcon: {fileID: 0}
-  ActivateSound: {fileID: 0}
+  DisplayIcon: {fileID: 21300000, guid: f3f1dfe50a3c67b4aaf58fc4ac90de66, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 01c08847c76ca824a8e5d91e96021da9, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
-  ColliderData: []
-  _customStats: []
+  ColliderData:
+  - Name: HookCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    MultiHitWaitTime: 0
+    Damage: 10
+    BaseKnockBack: 0
+    KnockBackScale: 0
+    HitAngle: 0
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime: 5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 2783980465707459881, guid: 46f55cb942f845346a06e4d0562283c2,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength: 2
+    ShakesCamera: 1
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+    DespawnSound: {fileID: 0}
+  - Name: UpperCutCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    MultiHitWaitTime: 0
+    Damage: 12
+    BaseKnockBack: 0
+    KnockBackScale: 0
+    HitAngle: 0
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime: 5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 8796043290497693099, guid: 946b15e227b4de04da7a6199a52563a3,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength: 2
+    ShakesCamera: 1
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+    DespawnSound: {fileID: 0}
+  - Name: MegatonPunchCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 0
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    MultiHitWaitTime: 0
+    Damage: 15
+    BaseKnockBack: 0
+    KnockBackScale: 0
+    HitAngle: 0
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime: 5.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength: 3
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: Distance
+    value: 10
+  - name: SlowMotionTimeScale
+    value: 0.1
+  - name: SlowMotionTime
+    value: 1.5
   animationType: 0
-  _customAnimation: {fileID: 0}
-  _additionalAnimations: []
+  _customAnimation: {fileID: 5180280961208456968, guid: 25b35b330c85c834c934e3100e227351,
+    type: 3}
+  _additionalAnimations:
+  - {fileID: 5180280961208456968, guid: f567c071368fcd948b1149bbfb046b1d, type: 3}

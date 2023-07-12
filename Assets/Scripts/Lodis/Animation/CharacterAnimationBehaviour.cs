@@ -11,6 +11,18 @@ using UnityEngine.Playables;
 
 namespace Lodis.Gameplay
 {
+    public struct CustomAnimationEvent
+    {
+        public CustomAnimationEvent(string eventName, UnityAction action)
+        {
+            EventName = eventName;
+            Action = action;
+        }
+
+        public string EventName;
+        public UnityAction Action;
+    }
+
     enum AnimationPhase
     {
         STARTUP,
@@ -83,7 +95,7 @@ namespace Lodis.Gameplay
         private bool _animatingAbility;
         private float _targetSpeed = 1;
 
-        private List<UnityAction<EventArguments>> _animationEvents;
+        private List<CustomAnimationEvent> _animationEvents = new List<CustomAnimationEvent>();
 
         // Start is called before the first frame update
         void Start()
@@ -556,6 +568,23 @@ namespace Lodis.Gameplay
             _animator.ResetTrigger("Shuffle");
             _animator.Update(Time.deltaTime);
             _animator.SetTrigger("Shuffle");
+        }
+
+        /// <summary>
+        /// Adds a listener to a custom animationn event that's attached to the animation clip.
+        /// </summary>
+        /// <param name="eventName">The name of the event that matches the string parameter in the clip event arguments.</param>
+        /// <param name="action">The action to perform when called.</param>
+        public void AddEventListener(string eventName, UnityAction action)
+        {
+            _animationEvents.Add(new CustomAnimationEvent(eventName, action));
+        }
+
+        public void RaiseCustomEvent(string eventName)
+        {
+            CustomAnimationEvent targetEvent = _animationEvents.Find(custEvent => custEvent.EventName == eventName);
+            if (targetEvent.Equals(default(CustomAnimationEvent)))
+                targetEvent.Action.Invoke();
         }
 
         private void Update()
