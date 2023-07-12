@@ -1,10 +1,12 @@
-﻿using Ilumisoft.VisualStateMachine;
+﻿using CustomEventSystem;
+using Ilumisoft.VisualStateMachine;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.Events;
 using UnityEngine.Playables;
 
 namespace Lodis.Gameplay
@@ -80,6 +82,8 @@ namespace Lodis.Gameplay
         private FloatVariable _manualShuffleRecoverTime;
         private bool _animatingAbility;
         private float _targetSpeed = 1;
+
+        private List<UnityAction<EventArguments>> _animationEvents;
 
         // Start is called before the first frame update
         void Start()
