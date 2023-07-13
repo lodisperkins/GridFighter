@@ -51,6 +51,8 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
 
+            _comboStarted = false;
+
             _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<Movement.GridMovementBehaviour>();
 
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
@@ -65,14 +67,14 @@ namespace Lodis.Gameplay
         {
             PauseAbilityTimer();
 
-            OwnerMoveScript.CancelMovement();
+            OwnerMoveScript.DisableMovement(condition => !InUse, false);
 
             OwnerAnimationScript.PlayAnimation(_comboClip, 1, true);
         }
 
         public void SpawnCollider(int colliderIndex)
         {
-            Vector3 spawnPosition = owner.transform.position + (Vector3.right * OwnerMoveScript.GetAlignmentX());
+            Vector3 spawnPosition = owner.transform.position + (Vector3.right * OwnerMoveScript.GetAlignmentX()) + Vector3.up;
             HitColliderSpawner.SpawnBoxCollider(spawnPosition, Vector3.one, GetColliderData(colliderIndex), owner);
         }
 
@@ -81,7 +83,7 @@ namespace Lodis.Gameplay
 
             float distance = Vector3.Distance(owner.transform.position, _opponentMovement.transform.position);
 
-            if (distance <= 1 && !_comboStarted)
+            if (distance <= 1.5f && !_comboStarted)
             {
                 StartCombo();
                 _comboStarted = true;

@@ -46,15 +46,15 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 33549623
     MultiHitWaitTime: 0
     Damage: 10
-    BaseKnockBack: 0
+    BaseKnockBack: 0.1
     KnockBackScale: 0
     HitAngle: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 5
+    HitStunTime: 0.7
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
@@ -62,7 +62,7 @@ MonoBehaviour:
     HitSpark: {fileID: 2783980465707459881, guid: 46f55cb942f845346a06e4d0562283c2,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 2
+    HitStopShakeStrength: 0.5
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
@@ -74,15 +74,15 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 33549623
     MultiHitWaitTime: 0
     Damage: 12
-    BaseKnockBack: 0
+    BaseKnockBack: 35
     KnockBackScale: 0
-    HitAngle: 0
+    HitAngle: 1.5
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 5
+    HitStunTime: 0.7
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
@@ -90,7 +90,7 @@ MonoBehaviour:
     HitSpark: {fileID: 8796043290497693099, guid: 946b15e227b4de04da7a6199a52563a3,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 2
+    HitStopShakeStrength: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
@@ -102,15 +102,15 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 33549623
     MultiHitWaitTime: 0
     Damage: 15
-    BaseKnockBack: 0
+    BaseKnockBack: 10
     KnockBackScale: 0
-    HitAngle: 0
+    HitAngle: 0.2
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 5.5
+    HitStunTime: 1
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
@@ -118,8 +118,8 @@ MonoBehaviour:
     HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 3
-    ShakesCamera: 0
+    HitStopShakeStrength: 1
+    ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
     DespawnSound: {fileID: 0}

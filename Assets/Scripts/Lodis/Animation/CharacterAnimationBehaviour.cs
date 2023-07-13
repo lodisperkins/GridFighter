@@ -583,7 +583,7 @@ namespace Lodis.Gameplay
         public void RaiseCustomEvent(string eventName)
         {
             CustomAnimationEvent targetEvent = _animationEvents.Find(custEvent => custEvent.EventName == eventName);
-            if (targetEvent.Equals(default(CustomAnimationEvent)))
+            if (!targetEvent.Equals(default(CustomAnimationEvent)))
                 targetEvent.Action.Invoke();
         }
 
