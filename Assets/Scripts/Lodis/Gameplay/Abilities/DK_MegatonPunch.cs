@@ -1,5 +1,6 @@
 ﻿using Lodis.FX;
 using Lodis.GridScripts;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,8 +19,9 @@ namespace Lodis.Gameplay
         private AnimationClip _comboClip;
         private float _slowMotionTimeScale;
         private float _slowMotionTime;
+        private TimedAction _endTimer;
 
-	    //Called when ability is created
+        //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
@@ -43,7 +45,7 @@ namespace Lodis.Gameplay
             OwnerAnimationScript.AddEventListener("Punch4", () =>
             {
                 SpawnCollider(2);
-                UnpauseAbilityTimer();
+                _endTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
             });
         }
 
@@ -67,7 +69,8 @@ namespace Lodis.Gameplay
         {
             PauseAbilityTimer();
 
-            OwnerMoveScript.DisableMovement(condition => !InUse, false);
+            _comboStarted = true;
+            OwnerMoveScript.DisableMovement(condition => !_comboStarted, false, true);
 
             OwnerAnimationScript.PlayAnimation(_comboClip, 1, true);
         }
@@ -86,7 +89,6 @@ namespace Lodis.Gameplay
             if (distance <= 1.5f && !_comboStarted)
             {
                 StartCombo();
-                _comboStarted = true;
             }
         }
 
@@ -94,13 +96,17 @@ namespace Lodis.Gameplay
         {
             base.OnEnd();
 
+            _comboStarted = false;
+            OwnerMoveScript.EnableMovement();
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+            RoutineBehaviour.Instance.StopAction(_endTimer);
         }
 
         protected override void OnMatchRestart()
         {
             base.OnMatchRestart();
+            RoutineBehaviour.Instance.StopAction(_endTimer);
 
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
             MatchManagerBehaviour.Instance.SuperInUse = false;

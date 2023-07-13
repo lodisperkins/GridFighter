@@ -16,8 +16,8 @@ MonoBehaviour:
   abilityDescription: None
   exampleClip: {fileID: 0}
   AbilityType: 8
-  timeActive: 5
-  recoverTime: 0.5
+  timeActive: 0.1
+  recoverTime: 0.7
   startUpTime: 1
   chargeTime: 0
   maxActivationAmount: 1
