@@ -34,7 +34,7 @@ namespace Lodis.Gameplay
             //Adds the hitstop event to the appropriate event based on the health scrip type
             KnockbackBehaviour knockBack = (KnockbackBehaviour)_health;
             if (knockBack != null)
-                knockBack.AddOnTakeDamageAction(StartHitStop);
+                knockBack.AddOnKnockBackStartAction(StartHitStop);
             else
                 _health.AddOnTakeDamageAction(StartHitStop);
         }

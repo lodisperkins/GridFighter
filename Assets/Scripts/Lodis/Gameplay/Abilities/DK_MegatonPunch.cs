@@ -84,6 +84,7 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             base.OnActivate(args);
+            _chargeEffect.transform.parent = null;
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
             OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + _distance * Vector2.right * OwnerMoveScript.GetAlignmentX(), false, GridScripts.GridAlignment.ANY, true, false, true);
@@ -148,6 +149,7 @@ namespace Lodis.Gameplay
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
+            _chargeEffect.transform.parent = null;
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
         }
 
@@ -160,6 +162,7 @@ namespace Lodis.Gameplay
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
             RoutineBehaviour.Instance.StopAction(_endTimer);
+            _chargeEffect.transform.parent = null;
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             TimeCountType = TimedActionCountType.CHARACTERSCALEDTIME;
             DestroyAllColliders();
@@ -174,6 +177,7 @@ namespace Lodis.Gameplay
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
             MatchManagerBehaviour.Instance.SuperInUse = false;
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
+            _chargeEffect.transform.parent = null;
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             DestroyAllColliders();
         }
