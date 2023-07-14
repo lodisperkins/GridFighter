@@ -88,7 +88,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.43448275
+      - time: 0.53834033
         functionName: RaiseCustomEvent
         data: SlowMotionStart
         objectReferenceParameter: {instanceID: 0}
