@@ -199,9 +199,9 @@ namespace Lodis.Gameplay
 
         public int GetIDFromPlayer(GameObject player)
         {
-            if (Player1 == gameObject)
+            if (Player1 == player)
                 return Player1ID;
-            else if (Player2 == gameObject)
+            else if (Player2 == player)
                 return Player2ID;
 
             return 0;

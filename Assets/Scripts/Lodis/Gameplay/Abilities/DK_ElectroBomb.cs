@@ -60,6 +60,14 @@ namespace Lodis.Gameplay
             HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position + Vector3.up, new Vector3(explosionColliderWidth, explosionColliderHeight, 1), GetColliderData(1), owner);
         }
 
+        private void StartSuperEffect(params object[] args)
+        {
+
+            IControllable controller = owner.GetComponentInParent<IControllable>();
+
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, abilityData.startUpTime);
+        }
+
         private void PrepareBlast()
         {
             float jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
@@ -68,11 +76,8 @@ namespace Lodis.Gameplay
             OwnerMoveScript.CancelMovement();
             OwnerMoveScript.DisableMovement(condition => !InUse);
             OwnerMoveScript.TeleportToLocation(position, 0, false);
-            MatchManagerBehaviour.Instance.SuperInUse = true;
-            IControllable controller = owner.GetComponentInParent<IControllable>();
-
-            FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, abilityData.startUpTime);
-
+            //MatchManagerBehaviour.Instance.SuperInUse = true;
+            RoutineBehaviour.Instance.StartNewTimedAction(StartSuperEffect, TimedActionCountType.FRAME, 2);
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, OwnerMoveset.HeldItemSpawnLeft, true);
             RoutineBehaviour.Instance.StartNewConditionAction(args => ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect), condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
@@ -81,7 +86,7 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             base.OnActivate(args); 
-            MatchManagerBehaviour.Instance.SuperInUse = false;
+            //MatchManagerBehaviour.Instance.SuperInUse = false;
         }
 
         protected override void OnEnd()

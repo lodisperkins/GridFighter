@@ -79,7 +79,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - LightingCutoff: 0.05
-    - Smoothness: 0.5
+    - Smoothness: 0
     - USENORMAL: 1
     - _AlphaClip: 0
     - _AmbientStrength: 0.06
