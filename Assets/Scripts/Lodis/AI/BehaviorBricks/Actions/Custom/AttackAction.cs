@@ -144,6 +144,10 @@ public class AttackAction : GOAction
             _dummy.StartCoroutine(_dummy.ChargeRoutine(timeHeld, attackType));
         }
 
+        if (attackType == AbilityType.UNBLOCKABLE)
+            attackType = AbilityType.SPECIAL;
+
+
         ability = _dummy.Moveset.GetAbilityByType(attackType);
 
         if (ability == null) return;

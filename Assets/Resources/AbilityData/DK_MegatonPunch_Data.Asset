@@ -36,6 +36,8 @@ MonoBehaviour:
   Effects:
   - {fileID: 4592643921774826832, guid: e4ed04b1417b2d2478388f5b80ae8212, type: 3}
   - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
+  Sounds:
+  - {fileID: 8300000, guid: 8843d6cc097dd544da54836c69ac67c5, type: 3}
   DisplayIcon: {fileID: 21300000, guid: f3f1dfe50a3c67b4aaf58fc4ac90de66, type: 3}
   ActivateSound: {fileID: 8300000, guid: 01c08847c76ca824a8e5d91e96021da9, type: 3}
   ActiveSound: {fileID: 0}
@@ -61,7 +63,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     SpawnEffect: {fileID: 0}
-    HitSpark: {fileID: 2783980465707459881, guid: 46f55cb942f845346a06e4d0562283c2,
+    HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength: 0.5
@@ -79,7 +81,7 @@ MonoBehaviour:
       m_Bits: 33549623
     MultiHitWaitTime: 0
     Damage: 12
-    BaseKnockBack: 35
+    BaseKnockBack: 40
     KnockBackScale: 0
     HitAngle: 1.5
     AdjustAngleBasedOnAlignment: 0
@@ -89,7 +91,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     SpawnEffect: {fileID: 0}
-    HitSpark: {fileID: 8796043290497693099, guid: 946b15e227b4de04da7a6199a52563a3,
+    HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength: 1
@@ -116,8 +118,9 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
-    SpawnEffect: {fileID: 0}
-    HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
+    SpawnEffect: {fileID: 1493204891009420812, guid: 67bf52d6da49f564e8176f83473f4340,
+      type: 3}
+    HitSpark: {fileID: 8796043290497693099, guid: 946b15e227b4de04da7a6199a52563a3,
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength: 1

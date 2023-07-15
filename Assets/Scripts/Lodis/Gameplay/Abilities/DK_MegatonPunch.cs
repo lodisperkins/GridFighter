@@ -1,6 +1,7 @@
 ﻿using Lodis.FX;
 using Lodis.GridScripts;
 using Lodis.Movement;
+using Lodis.Sound;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,6 +53,8 @@ namespace Lodis.Gameplay
 
             OwnerAnimationScript.AddEventListener("SlowMotionStart", () =>
             {
+                FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(false);
+                SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[0], 3);
                 _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], OwnerMoveset.RightMeleeSpawns[1], true);
                 MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, 0.01f, _slowMotionTime);
             });
@@ -60,6 +63,7 @@ namespace Lodis.Gameplay
             OwnerAnimationScript.AddEventListener("Punch4", () =>
             {
                 SpawnCollider(2);
+                FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
                 _endTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
             });
         }
@@ -77,7 +81,10 @@ namespace Lodis.Gameplay
 
             FXManagerBehaviour.Instance.StartSuperMoveVisual(BlackBoardBehaviour.Instance.GetIDFromPlayer(owner), abilityData.startUpTime);
             //Spawn the the holding effect.
-            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, OwnerMoveset.RightMeleeSpawns[1], true);
+
+            Transform effectSpawn = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
+
+            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, effectSpawn, true);
             //RoutineBehaviour.Instance.StartNewConditionAction(args => ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect), condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
         }
 
@@ -118,6 +125,14 @@ namespace Lodis.Gameplay
                 if (!health.IsInvincible && !health.IsIntangible)
                     _landedFirstHit = true;
             };
+
+            if (colliderIndex == 2)
+            {
+                hitColliderBehaviour.ColliderInfo.OnHit += args =>
+                {
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
+                };
+            }
 
             _colliders.Add(hitColliderBehaviour);
         }
@@ -162,7 +177,10 @@ namespace Lodis.Gameplay
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
             RoutineBehaviour.Instance.StopAction(_endTimer);
-            _chargeEffect.transform.parent = null;
+
+            if (_chargeEffect)
+                _chargeEffect.transform.parent = null;
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             TimeCountType = TimedActionCountType.CHARACTERSCALEDTIME;
             DestroyAllColliders();
@@ -177,7 +195,10 @@ namespace Lodis.Gameplay
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
             MatchManagerBehaviour.Instance.SuperInUse = false;
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
-            _chargeEffect.transform.parent = null;
+
+            if (_chargeEffect)
+                _chargeEffect.transform.parent = null;
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             DestroyAllColliders();
         }

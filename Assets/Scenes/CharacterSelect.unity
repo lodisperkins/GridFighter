@@ -3250,7 +3250,7 @@ MonoBehaviour:
   _readyP2Text: {fileID: 2074725601}
   _colorManager: {fileID: 1409404535}
   _backgroundImage: {fileID: 458338553}
-  _defaultAICharacter: {fileID: 11400000, guid: 567c30f40491a064f90f02a5a10582ab,
+  _defaultAICharacter: {fileID: 11400000, guid: d8bcb9ee48e4a9a498847d811eb5e674,
     type: 2}
   _p2IsCustom: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976, type: 2}
   _currentPlayer: 1

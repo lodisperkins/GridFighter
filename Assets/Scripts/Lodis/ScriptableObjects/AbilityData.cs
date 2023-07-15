@@ -87,6 +87,8 @@ namespace Lodis.ScriptableObjects
         public AccessoryData Accessory;
         [Tooltip("Additional effects for this ability to play.")]
         public GameObject[] Effects;
+        [Tooltip("Additional sounds for this ability to play.")]
+        public AudioClip[] Sounds;
         [Tooltip("The icon thatv will display when this ability is on screen")]
         public Sprite DisplayIcon;
         public AudioClip ActivateSound;
