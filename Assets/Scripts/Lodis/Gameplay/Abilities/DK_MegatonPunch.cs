@@ -38,15 +38,29 @@ namespace Lodis.Gameplay
 
 
             _chargeEffectRef = abilityData.Effects[0];
-            OwnerAnimationScript.AddEventListener("Punch1", () => SpawnCollider(0));
+            OwnerAnimationScript.AddEventListener("Punch1", () => 
+            {
+                SpawnCollider(0);
+                SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[1], 3);
+
+            });
+
             OwnerAnimationScript.AddEventListener("Punch2", () => 
             {
                 if (_landedFirstHit)
+                {
                     SpawnCollider(0);
+                    SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[2], 3);
+                }
                 else
                     EndAbility();
             });
-            OwnerAnimationScript.AddEventListener("Punch3", () => SpawnCollider(1));
+            OwnerAnimationScript.AddEventListener("Punch3", () =>
+            {
+                SpawnCollider(1);
+                SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[3], 3);
+
+            });
 
             _slowMotionTimeScale = abilityData.GetCustomStatValue("SlowMotionTimeScale");
             _slowMotionTime = abilityData.GetCustomStatValue("SlowMotionTime");
@@ -65,6 +79,7 @@ namespace Lodis.Gameplay
                 SpawnCollider(2);
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
                 _endTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
+                SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[4], 3);
             });
         }
 

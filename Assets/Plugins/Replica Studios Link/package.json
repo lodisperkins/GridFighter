@@ -1,0 +1,14 @@
+{
+  "name": "com.replicastudios.link",
+  "version": "2023.6.16",
+  "displayName": "Replica Studios Link",
+  "description": "Importer Link for working with the Replica Studios Voice Studio Desktop App",
+  "unity": "2019.1",
+  "dependencies": {},
+  "keywords": [],
+  "author": {
+    "name": "Replica Studios",
+    "email": "team@replicastudios.com",
+    "url": "https://replicastudios.com"
+  }
+}
