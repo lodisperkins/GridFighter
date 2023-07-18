@@ -16,6 +16,7 @@ namespace Lodis.UI
         public int CountRequirement;
         public Color MessageColor;
         public string Message;
+        public AudioClip AnnouncerClip;
     }
 
     public class ComboCounterBehaviour : MonoBehaviour
@@ -26,6 +27,7 @@ namespace Lodis.UI
         [SerializeField] private Text _comboText;
         [SerializeField] private float _effectScale;
         [SerializeField] private float _effectDuration;
+        [SerializeField] private AudioSource _announcer;
         private int _minHitCount;
         private bool _canCount;
         private TimedAction _disableTextAction;
@@ -34,6 +36,7 @@ namespace Lodis.UI
         private int _hitCount;
         private string _currentComboMessage;
         private Color _currentColor;
+        private AudioClip _currentClip;
 
         // Start is called before the first frame update
         void Awake()
@@ -64,11 +67,14 @@ namespace Lodis.UI
 
             _comboText.enabled = true;
 
+
             if (_nextComboMessageIndex < _comboMessages.Length && _hitCount >= _comboMessages[_nextComboMessageIndex].CountRequirement)
             {
                 _currentComboMessage = _comboMessages[_nextComboMessageIndex].Message;
                 _currentColor = _comboMessages[_nextComboMessageIndex].MessageColor;
+                _currentClip = _comboMessages[_nextComboMessageIndex].AnnouncerClip;
                 _nextComboMessageIndex++;
+                _announcer.Stop();
             }
 
             _comboText.color = _currentColor;
@@ -78,8 +84,13 @@ namespace Lodis.UI
 
         public void ResetComboMessage()
         {
+            if (!_comboText.enabled)
+                return;
+
             _canCount = false;
             StartSpawnEffect();
+            _announcer.Stop();
+            _announcer.PlayOneShot(_currentClip);
             _comboText.text = _currentComboMessage;
             _disableTextAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {

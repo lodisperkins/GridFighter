@@ -5247,6 +5247,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 919132149155446097, guid: dc49d54e3eba6a446941613a3fc2efde,
         type: 3}
+    - target: {fileID: 6432807319471925545, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _voicePack
+      value: 
+      objectReference: {fileID: 11400000, guid: fd79fdc23cb3d0849829e7d84c67c4a5,
+        type: 2}
     - target: {fileID: 7771075552791449285, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_Lightmapping

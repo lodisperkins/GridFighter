@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae427968357f8949932dc4169433a0f, type: 3}
+  m_Name: ZyraVoicePack
+  m_EditorClassIdentifier: 
+  _hurt1: {fileID: 8300000, guid: a81ad8cee57134aedbee0458642f43b2, type: 3}
+  _hurt2: {fileID: 8300000, guid: c8fc458a5219d4c06956e1f102af0feb, type: 3}
+  _hurt3: {fileID: 8300000, guid: 96a0a4780c7be4b5f8b793089ffe2473, type: 3}
+  _lightAttack1: {fileID: 8300000, guid: fb11d41a03a9d4ffd88e2ea6e256fec4, type: 3}
+  _lightAttack2: {fileID: 8300000, guid: b7d4a5a2e58f44e2d8ab4589fa7621f1, type: 3}
+  _lightAttack3: {fileID: 8300000, guid: fa5eeaf5b2f0b4b33886a273a5068b83, type: 3}
+  _heavyAttack1: {fileID: 8300000, guid: 3aa99ae49ac504caea4fa16795244065, type: 3}
+  _heavyAttack2: {fileID: 8300000, guid: c5ddd586c9ac04ccb8f3875461668e15, type: 3}
+  _heavyAttack3: {fileID: 8300000, guid: a7229ae3c8ef04c7e987471ba38a1d1d, type: 3}
+  _superAttack: {fileID: 8300000, guid: c5ddd586c9ac04ccb8f3875461668e15, type: 3}
+  _death: {fileID: 8300000, guid: 32c1a4074f71d442aa76cf37df80a14e, type: 3}
+  _burst: {fileID: 8300000, guid: 66ff7f49f70e24470b8212c975a71000, type: 3}

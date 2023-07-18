@@ -68626,6 +68626,12 @@ PrefabInstance:
       propertyPath: _currentMesh
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6432807319471925545, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _voicePack
+      value: 
+      objectReference: {fileID: 11400000, guid: 73081ecf317f03b4d9cd62ef03332a54,
+        type: 2}
     - target: {fileID: 7352755145141035481, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_RootOrder
@@ -68731,7 +68737,7 @@ PrefabInstance:
     - target: {fileID: 8881714891450283555, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_RootOrder
-      value: 9
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 9056967475098163082, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}

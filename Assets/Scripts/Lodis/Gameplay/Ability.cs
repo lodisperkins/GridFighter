@@ -43,6 +43,7 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _ownerKnockBackScript;
         private Movement.GridMovementBehaviour _ownerMoveScript;
         private CharacterAnimationBehaviour _ownerAnimationScript;
+        private CharacterVoiceBehaviour _ownerVoiceScript;
         private InputBehaviour _ownerInput;
         private Vector3 _accessoryStartPosition;
         private Quaternion _accessoryStartRotation;
@@ -128,6 +129,7 @@ namespace Lodis.Gameplay
         public TimedActionCountType TimeCountType { get => _timeCountType; set => _timeCountType = value; }
 
         public bool AbilityPaused { get => _currentTimer?.IsPaused == true; }
+        public CharacterVoiceBehaviour OwnerVoiceScript { get => _ownerVoiceScript; private set => _ownerVoiceScript = value; }
 
         /// <summary>
         /// The phase before an the ability is activated. This is where the character is building up
@@ -275,6 +277,7 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript = newOwner.GetComponent<KnockbackBehaviour>();
             OwnerAnimationScript = newOwner.GetComponentInChildren<CharacterAnimationBehaviour>();
             _ownerInput = newOwner.GetComponentInParent<InputBehaviour>();
+            _ownerVoiceScript = newOwner.GetComponentInChildren<CharacterVoiceBehaviour>();
 
             _canPlayAnimation = !abilityData.playAnimationManually;
 
@@ -345,6 +348,9 @@ namespace Lodis.Gameplay
 
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             _opponentHit = false;
+
+            PlayVoiceSound();
+
             if (!OwnerKnockBackScript)
                 return;
 
@@ -366,6 +372,18 @@ namespace Lodis.Gameplay
                 EndAbility();
             else if (damageType == 2 && (GetCurrentCancelRule()?.cancelOnKnockback == true || abilityData.CancelAllOnKnockback))
                 EndAbility();
+        }
+
+        private void PlayVoiceSound()
+        {
+            int type = (int)abilityData.AbilityType;
+
+            if (type <= 3)
+                _ownerVoiceScript.PlayLightAttackSound();
+            else if (type <= 8)
+                _ownerVoiceScript.PlayHeavyAttackSound();
+            else if (type == 10)
+                _ownerVoiceScript.PlayBurstSound();
         }
 
         /// <summary>

@@ -38,6 +38,7 @@ MonoBehaviour:
   - {fileID: 4767874893531218292, guid: 2b38541aaca66e541b75a5af70f2e55c, type: 3}
   - {fileID: 6169251239810443288, guid: 4c30520c3888afb4dbab9fc727387b42, type: 3}
   - {fileID: 8867112169225384458, guid: 247021d2ec9bf654ba6875163715662c, type: 3}
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 87dc657afdc74ff41900816975f07c85, type: 3}
   ActivateSound: {fileID: 8300000, guid: 7072720a80127014fb59a4416cfa9c5c, type: 3}
   ActiveSound: {fileID: 0}

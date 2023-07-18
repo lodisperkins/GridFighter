@@ -15,6 +15,12 @@ namespace Lodis.UI
         [SerializeField]
         private GameObject _gameMenu;
         [SerializeField]
+        private AudioSource _announcer;
+        [SerializeField]
+        private AudioClip _tieClip;
+        [SerializeField]
+        private AudioClip _winnerClip;
+        [SerializeField]
         private float _endTextDisplayDuration;
         [SerializeField]
         private UnityEngine.EventSystems.EventSystem _eventSystem;
@@ -29,6 +35,8 @@ namespace Lodis.UI
             {
                 case MatchResult.DRAW:
                     _endText.text = "Draw!";
+                    _announcer.Stop();
+                    _announcer.PlayOneShot(_tieClip);
                     break;
                 case MatchResult.P1WINS:
                     _endText.text = "Player 1 Wins!";
@@ -39,9 +47,13 @@ namespace Lodis.UI
                         _eventSystem.SetSelectedGameObject(_firstGameMenuButton.gameObject);
                         _firstGameMenuButton.OnSelect(null);
                     }, TimedActionCountType.SCALEDTIME, _endTextDisplayDuration);
+                    _announcer.Stop();
+                    _announcer.PlayOneShot(_winnerClip);
                     break;
                 case MatchResult.P2WINS:
                     _endText.text = "Player 2 Wins!";
+                    _announcer.Stop();
+                    _announcer.PlayOneShot(_winnerClip);
                     RoutineBehaviour.Instance.StartNewTimedAction(args =>
                     {
                         _endText.gameObject.SetActive(false);

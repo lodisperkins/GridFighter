@@ -19,6 +19,7 @@ namespace Lodis.Gameplay
         [SerializeField] private AudioClip _chargeSound;
         [SerializeField] private AudioClip _explosionSound;
         [SerializeField] private CustomEventSystem.Event _onCharacterExplosion;
+        private CharacterVoiceBehaviour _characterVoice;
         private float[] _emissionStrengthValues = { 0, 0 };
         private TimedAction _chargeAction;
         private IntVariable _lastLoserID;
@@ -46,7 +47,7 @@ namespace Lodis.Gameplay
             knockback.OutOfBounds = true;
 
             _characterFeedback = playerCharacter.GetComponentInChildren<CharacterFeedbackBehaviour>();
-
+            _characterVoice = playerCharacter.GetComponentInChildren<CharacterVoiceBehaviour>();
             float strength = _characterFeedback.EmissionStrength;
             float oldTime = _characterFeedback.TimeBetweenFlashes;
 
@@ -58,6 +59,7 @@ namespace Lodis.Gameplay
             SoundManagerBehaviour.Instance.PlaySound(_chargeSound);
             SoundManagerBehaviour.Instance.TogglePauseMusic();
             MatchManagerBehaviour.Instance.ChangeTimeScale(0.2f, ExplosionChargeTime, ExplosionChargeTime);
+            _characterVoice.PlayDeathSound();
 
             ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args =>
             {

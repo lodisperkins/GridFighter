@@ -7,6 +7,7 @@ using DG.Tweening;
 using CustomEventSystem;
 using Lodis.Movement;
 using Lodis.Accessories;
+using Lodis.Sound;
 
 namespace Lodis.Gameplay
 {

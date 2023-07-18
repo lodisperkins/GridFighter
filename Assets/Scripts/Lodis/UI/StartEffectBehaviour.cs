@@ -49,6 +49,14 @@ namespace Lodis.UI
         private string _readyUpText;
         [SerializeField]
         private string _matchStartText;
+        [SerializeField]
+        private AudioSource _announcer;
+        [SerializeField]
+        private AudioClip _readyClip;
+        [SerializeField]
+        private AudioClip _suddenDeathReadyClip;
+        [SerializeField]
+        private AudioClip _startClip;
         private Rect _defaultRect;
         private Outline _textOutline;
         private TimedAction _currentAction;
@@ -85,12 +93,14 @@ namespace Lodis.UI
         private void BeginReadyUpEffect()
         {
             _startTextBox.rectTransform.rect.Set(_defaultRect.x, _defaultRect.y, _defaultRect.width, _defaultRect.height);
+            AudioClip currentClip = null;
             if (MatchManagerBehaviour.Instance.SuddenDeathActive)
             {
                 _suddenDeathSecondaryStartEffect.gameObject.SetActive(false);
                 _suddenDeathStartEffect.gameObject.SetActive(true);
                 _textOutline.effectColor = _suddenDeathTextOutlineColor;
                 _startTextBox.color = _suddenDeathTextColor;
+                currentClip = _suddenDeathReadyClip;
             }
             else
             {
@@ -98,6 +108,7 @@ namespace Lodis.UI
                 _startEffect.gameObject.SetActive(true);
                 _textOutline.effectColor = _startTextOutlineColor;
                 _startTextBox.color = _startTextColor;
+                currentClip = _readyClip;
             }
 
             _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
@@ -105,6 +116,8 @@ namespace Lodis.UI
                 _startTextBox.text = MatchManagerBehaviour.Instance.SuddenDeathActive ? _suddentDeathReadyUpText : _readyUpText;
                 _startTextBox.enabled = true;
                 _startTextBox.rectTransform.DOPunchScale(_scaleEffectStrength, _textEffectDuration).onComplete = BeginMatchStartEffect;
+                _announcer.Stop();
+                _announcer.PlayOneShot(_readyClip);
 
             }, TimedActionCountType.SCALEDTIME, _textEnableDelay);
         }
@@ -128,6 +141,8 @@ namespace Lodis.UI
                 _startTextBox.text = MatchManagerBehaviour.Instance.SuddenDeathActive ? _suddenDeathMatchStartText : _matchStartText;
                 _startTextBox.enabled = true;
                 _startTextBox.rectTransform.DOPunchScale(_scaleEffectStrength, _textEffectDuration);
+                _announcer.Stop();
+                _announcer.PlayOneShot(_startClip);
 
             }, TimedActionCountType.SCALEDTIME, currentDelay);
         }

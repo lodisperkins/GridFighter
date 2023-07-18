@@ -46,6 +46,7 @@ MonoBehaviour:
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects:
   - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 130891e34eea14f43adc29d9f7c2db54, type: 3}
   ActivateSound: {fileID: 8300000, guid: 006e8658d3c9180448481354485967b5, type: 3}
   ActiveSound: {fileID: 0}

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae427968357f8949932dc4169433a0f, type: 3}
+  m_Name: AxtonVoicePack
+  m_EditorClassIdentifier: 
+  _hurt1: {fileID: 8300000, guid: af9d3ca4a732143f7a7d062bee8e6ddf, type: 3}
+  _hurt2: {fileID: 8300000, guid: 3140b145d7d8f40c9b91a0c5d03c9af7, type: 3}
+  _hurt3: {fileID: 8300000, guid: 98651b63336a642b3b616528fa214a54, type: 3}
+  _lightAttack1: {fileID: 8300000, guid: 856e8e80593384258bb01db696f8f45f, type: 3}
+  _lightAttack2: {fileID: 8300000, guid: 3d60a32c33526425d83cbdbcd36f4e01, type: 3}
+  _lightAttack3: {fileID: 8300000, guid: c4a12656102244647ac657997a0cb762, type: 3}
+  _heavyAttack1: {fileID: 8300000, guid: 0c6d9b48a694b4cf5b188fd2fae7f669, type: 3}
+  _heavyAttack2: {fileID: 8300000, guid: b51026e9aa17247218a6ccfe7a53ea4a, type: 3}
+  _heavyAttack3: {fileID: 8300000, guid: 930bcc7b736c14e60b85038f2244d677, type: 3}
+  _superAttack: {fileID: 8300000, guid: b51026e9aa17247218a6ccfe7a53ea4a, type: 3}
+  _death: {fileID: 8300000, guid: d1fc4a516142a40729a898045c7aa619, type: 3}
+  _burst: {fileID: 8300000, guid: 7cffe7e794a9c4a1fb401fd46bd37f46, type: 3}
