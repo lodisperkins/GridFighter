@@ -109,22 +109,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerID: {fileID: 11400000, guid: 3cc64ad6d1cac594bbf636a0233d9ac0, type: 2}
   _comboMessages:
-  - CountRequirement: 5
+  - CountRequirement: 7
     MessageColor: {r: 0, g: 0.8463618, b: 0.9150943, a: 1}
-    Message: Nice!
-  - CountRequirement: 10
+    Message: Combo!
+    AnnouncerClip: {fileID: 8300000, guid: 44957a698157f4685892b8288acdd254, type: 3}
+  - CountRequirement: 15
     MessageColor: {r: 0, g: 1, b: 0.06795335, a: 1}
-    Message: Cool!
-  - CountRequirement: 20
-    MessageColor: {r: 1, g: 0.8780921, b: 0, a: 1}
-    Message: Stylish!
+    Message: Nice!
+    AnnouncerClip: {fileID: 8300000, guid: 59dde9ccc001e426f99c879de552ffba, type: 3}
   - CountRequirement: 25
+    MessageColor: {r: 1, g: 0.8780921, b: 0, a: 1}
+    Message: Awesome!
+    AnnouncerClip: {fileID: 8300000, guid: 3a6b143d51f694c0e8b7f294b4f2a661, type: 3}
+  - CountRequirement: 35
     MessageColor: {r: 1, g: 0.039559267, b: 0, a: 1}
-    Message: Insane!
-  - CountRequirement: 30
+    Message: God Like!
+    AnnouncerClip: {fileID: 8300000, guid: 730d3592b25eb4b5dbc1302561697f17, type: 3}
+  - CountRequirement: 50
     MessageColor: {r: 1, g: 0, b: 0.99501085, a: 1}
-    Message: Ultra!
+    Message: Flawless!
+    AnnouncerClip: {fileID: 8300000, guid: 28d1ab6dc18eb4294abf813484eb7535, type: 3}
   _messageDespawnDelay: 2
   _comboText: {fileID: 643524680384907170}
   _effectScale: 0.2
   _effectDuration: 0.3
+  _announcer: {fileID: 0}

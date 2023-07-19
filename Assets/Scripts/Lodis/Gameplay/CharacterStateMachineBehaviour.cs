@@ -23,7 +23,7 @@ namespace Lodis.Gameplay
         private UnityEvent _onStateChanged;
 
         public StateMachine StateMachine { get => _stateMachine; }
-
+        public string LastState { get => _lastState; private set => _lastState = value; }
 
         private void Awake()
         {
@@ -69,10 +69,10 @@ namespace Lodis.Gameplay
 
             _currentState = _stateMachine.CurrentState;
 
-            if (_currentState != _lastState)
+            if (_currentState != LastState)
             {
-                _lastState = _currentState;
                 _onStateChanged?.Invoke();
+                LastState = _currentState;
             }
         }
     }

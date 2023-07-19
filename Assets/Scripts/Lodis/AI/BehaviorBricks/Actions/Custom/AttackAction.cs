@@ -114,6 +114,9 @@ public class AttackAction : GOAction
 
         Ability ability = null;
 
+        if (attackType == AbilityType.UNBLOCKABLE)
+            attackType = AbilityType.SPECIAL;
+
         //Picks an ability in the current hand at random if it is special
         if (attackType == AbilityType.SPECIAL)
         {
@@ -144,8 +147,6 @@ public class AttackAction : GOAction
             _dummy.StartCoroutine(_dummy.ChargeRoutine(timeHeld, attackType));
         }
 
-        if (attackType == AbilityType.UNBLOCKABLE)
-            attackType = AbilityType.SPECIAL;
 
 
         ability = _dummy.Moveset.GetAbilityByType(attackType);

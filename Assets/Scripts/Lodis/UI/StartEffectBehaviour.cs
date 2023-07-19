@@ -117,8 +117,7 @@ namespace Lodis.UI
                 _startTextBox.enabled = true;
                 _startTextBox.rectTransform.DOPunchScale(_scaleEffectStrength, _textEffectDuration).onComplete = BeginMatchStartEffect;
                 _announcer.Stop();
-                _announcer.PlayOneShot(_readyClip);
-
+                _announcer.PlayOneShot(currentClip);
             }, TimedActionCountType.SCALEDTIME, _textEnableDelay);
         }
 

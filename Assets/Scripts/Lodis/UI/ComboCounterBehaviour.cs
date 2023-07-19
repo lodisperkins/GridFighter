@@ -37,6 +37,7 @@ namespace Lodis.UI
         private string _currentComboMessage;
         private Color _currentColor;
         private AudioClip _currentClip;
+        private CharacterStateMachineBehaviour _opponentStateMachine;
 
         // Start is called before the first frame update
         void Awake()
@@ -48,9 +49,18 @@ namespace Lodis.UI
         private void Start()
         {
             _ownerOpponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(_playerID).GetComponent<KnockbackBehaviour>();
-            _ownerOpponent.AddOnKnockBackAction(() => _canCount = true);
+            _opponentStateMachine = _ownerOpponent.GetComponent<CharacterStateMachineBehaviour>();
+
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(() =>
+            {
+                ResetComboMessage();
+                _hitCount = 0;
+                _nextComboMessageIndex = 0;
+            });
+
+            _ownerOpponent.AddOnTakeDamageAction(() => _canCount = true);
             _ownerOpponent.AddOnTakeDamageAction(UpdateComboMessage);
-            _ownerOpponent.LandingScript.AddOnLandAction(ResetComboMessage);
+            _opponentStateMachine.AddOnStateChangedAction(DisplayComboMessage);
         }
 
         private void StartSpawnEffect()
@@ -65,8 +75,13 @@ namespace Lodis.UI
             if (!_canCount || _hitCount < _minHitCount)
                 return;
 
-            _comboText.enabled = true;
+            if (_disableTextAction?.GetEnabled() == true)
+            {
+                RoutineBehaviour.Instance.StopAction(_disableTextAction);
+                ResetComboMessage();
+            }
 
+            _comboText.enabled = true;
 
             if (_nextComboMessageIndex < _comboMessages.Length && _hitCount >= _comboMessages[_nextComboMessageIndex].CountRequirement)
             {
@@ -82,9 +97,10 @@ namespace Lodis.UI
             StartSpawnEffect();
         }
 
-        public void ResetComboMessage()
+        public void DisplayComboMessage()
         {
-            if (!_comboText.enabled)
+            string currentState = _opponentStateMachine.LastState;
+            if (!_comboText.enabled || currentState != "Idle" || _disableTextAction?.GetEnabled() == true)
                 return;
 
             _canCount = false;
@@ -92,16 +108,20 @@ namespace Lodis.UI
             _announcer.Stop();
             _announcer.PlayOneShot(_currentClip);
             _comboText.text = _currentComboMessage;
-            _disableTextAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
-            {
-                _comboText.enabled = false;
-                _currentComboMessage = _comboMessages[0].Message;
-                _currentColor = _comboMessages[0].MessageColor;
 
-            }, TimedActionCountType.SCALEDTIME, _messageDespawnDelay);
+            RoutineBehaviour.Instance.StopAction(_disableTextAction);
+            _disableTextAction = RoutineBehaviour.Instance.StartNewTimedAction(args => ResetComboMessage(), TimedActionCountType.SCALEDTIME, _messageDespawnDelay);
 
             _hitCount = 0;
             _nextComboMessageIndex = 0;
+        }
+
+        private void ResetComboMessage()
+        {
+            _comboText.enabled = false;
+            _announcer.Stop();
+            _currentComboMessage = _comboMessages[0].Message;
+            _currentColor = _comboMessages[0].MessageColor;
         }
     }
 }

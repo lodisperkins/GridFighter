@@ -36,5 +36,17 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
             RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
         }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            EnableAccessory();
+        }
+
+        protected override void OnMatchRestart()
+        {
+            base.OnMatchRestart();
+            EnableAccessory();
+        }
     }
 }

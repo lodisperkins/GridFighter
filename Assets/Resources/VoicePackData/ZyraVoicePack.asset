@@ -22,5 +22,5 @@ MonoBehaviour:
   _heavyAttack2: {fileID: 8300000, guid: c5ddd586c9ac04ccb8f3875461668e15, type: 3}
   _heavyAttack3: {fileID: 8300000, guid: a7229ae3c8ef04c7e987471ba38a1d1d, type: 3}
   _superAttack: {fileID: 8300000, guid: c5ddd586c9ac04ccb8f3875461668e15, type: 3}
-  _death: {fileID: 8300000, guid: 32c1a4074f71d442aa76cf37df80a14e, type: 3}
+  _death: {fileID: 8300000, guid: bb599b71912c5410aa6c4a99aef8055e, type: 3}
   _burst: {fileID: 8300000, guid: 66ff7f49f70e24470b8212c975a71000, type: 3}

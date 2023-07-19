@@ -44,7 +44,7 @@ namespace Lodis.Gameplay
         {
             foreach (GridMovementBehaviour entity in ActiveEntities)
             {
-                HitColliderSpawner.SpawnBoxCollider(entity.transform, Vector3.one, _hitColliderData, owner);
+                HitColliderSpawner.SpawnBoxCollider(entity.transform.position + Vector3.up / 2, Vector3.one, _hitColliderData, owner);
 
                 Object.Instantiate(_explosionEffect, entity.transform.position, Camera.main.transform.rotation);
                 ObjectPoolBehaviour.Instance.ReturnGameObject(entity.gameObject, _hitColliderData.TimeActive + 0.1f);

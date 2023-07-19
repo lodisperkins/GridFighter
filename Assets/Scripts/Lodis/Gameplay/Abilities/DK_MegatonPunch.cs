@@ -41,7 +41,7 @@ namespace Lodis.Gameplay
             OwnerAnimationScript.AddEventListener("Punch1", () => 
             {
                 SpawnCollider(0);
-                SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[1], 3);
+                OwnerVoiceScript.PlayLightAttackSound();
 
             });
 
@@ -50,7 +50,7 @@ namespace Lodis.Gameplay
                 if (_landedFirstHit)
                 {
                     SpawnCollider(0);
-                    SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[2], 3);
+                    OwnerVoiceScript.PlayLightAttackSound();
                 }
                 else
                     EndAbility();
@@ -58,7 +58,7 @@ namespace Lodis.Gameplay
             OwnerAnimationScript.AddEventListener("Punch3", () =>
             {
                 SpawnCollider(1);
-                SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[3], 3);
+                OwnerVoiceScript.PlayLightAttackSound();
 
             });
 
@@ -79,7 +79,7 @@ namespace Lodis.Gameplay
                 SpawnCollider(2);
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
                 _endTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
-                SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[4], 3);
+                OwnerVoiceScript.PlayHeavyAttackSound();
             });
         }
 

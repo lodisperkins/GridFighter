@@ -123,7 +123,7 @@ namespace Lodis.Gameplay
             _opponentKnockback.Physics.IgnoreForces = true;
             _opponentKnockback.Physics.StopAllForces();
 
-            _opponentTransform.localPosition = Vector3.zero;
+           _opponentTransform.localPosition = Vector3.zero;
             _opponentCaptured = true;
             
             PauseAbilityTimer();
@@ -169,7 +169,7 @@ namespace Lodis.Gameplay
             }
 
             //Spawn the new sphere and set its effect to inactive by default. The effect should only appear when the opponent is lifted.
-            _auraSphere = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, _spawnPosition, new Quaternion());
+            _auraSphere = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, _spawnPosition, owner.transform.rotation);
             _auraSphere.transform.GetChild(0).gameObject.SetActive(false);
             _returnToPool = _auraSphere.GetComponent<GameEventListener>();
             _returnToPool.AddAction(() =>
@@ -210,11 +210,13 @@ namespace Lodis.Gameplay
         {
             base.OnEnd();
             DespawnSphere();
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
         }
 
         protected override void OnMatchRestart()
         {
             DespawnSphere();
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
         }
 
         public override void FixedUpdate()
@@ -230,9 +232,9 @@ namespace Lodis.Gameplay
             {
                 UnpauseAbilityTimer();
             }
-            else if (_auraSphere)
+            else if (_auraSphere && OwnerInput)
             {
-                Vector3 position = _auraSphere.transform.position + (Vector3)OwnerInput?.AttackDirection * Time.deltaTime * _moveSpeed;
+                Vector3 position = _auraSphere.transform.position + (Vector3)OwnerInput.AttackDirection * Time.deltaTime * _moveSpeed;
                 position.x = Mathf.Clamp(position.x, 0, _maxX);
                 position.y = Mathf.Clamp(position.y, 1, GridMovementBehaviour.MaxYPosition);
                 _auraSphere.transform.position = position;
