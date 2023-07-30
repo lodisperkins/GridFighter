@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_PlasmaSnare_Data
   m_EditorClassIdentifier: 
-  abilityName: PlasmaSnare
-  abilityDescription: Hold the attack button on while on the same row to impale your
-    opponent and trap them. Hold the button down while active to move your opponent.
-  exampleClip: {fileID: 0}
+  abilityName: T-Snare
+  abilityDescription: If the opponent is on the same row, impale them and trap them.
+    Hold the button down while active to move your opponent.
+  exampleClip: {fileID: 32900000, guid: 7d893dea71cc0dc4aba95aee517c1b6b, type: 3}
   AbilityType: 8
   timeActive: 0.6
   recoverTime: 0.2

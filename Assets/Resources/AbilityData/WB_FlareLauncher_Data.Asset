@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: WB_FlareLauncher_Data
   m_EditorClassIdentifier: 
-  abilityName: FlareLauncher
+  abilityName: Flare Launcher
   abilityDescription: Perform a flaming backflip that launches your opponent in the
     air.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: 169d2058448ebfe48af093a272ebeb56, type: 3}
   AbilityType: 3
   timeActive: 0.2
   recoverTime: 0.22

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: DK_ElectroBomb_Data
   m_EditorClassIdentifier: 
-  abilityName: ElectroBomb
+  abilityName: Electro-Bomb
   abilityDescription: Unleashes a devastating ball of energy that does massive damage
     and knockback.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: 14c3b69b6cfcf3b42b436ab7f04a1226, type: 3}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 1

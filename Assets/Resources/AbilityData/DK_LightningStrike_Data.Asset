@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: LightingStrike
   abilityDescription: Summon a strong bolt of lighting that zaps the panel the opponent
     is on.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: aab21fb6fdfcbe44b91dd0c166b91a73, type: 3}
   AbilityType: 8
   timeActive: 0.2
   recoverTime: 0.5

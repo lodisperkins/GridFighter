@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_MegatonPunch_Data
   m_EditorClassIdentifier: 
-  abilityName: MegatonPunch
-  abilityDescription: None
-  exampleClip: {fileID: 0}
+  abilityName: Megaton Punch
+  abilityDescription: Dash forward and unleash and explosive combo.
+  exampleClip: {fileID: 32900000, guid: fec76a0f87f446a478655e14690d54e7, type: 3}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.7

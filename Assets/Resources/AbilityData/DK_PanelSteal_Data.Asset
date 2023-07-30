@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_PanelSteal_Data
   m_EditorClassIdentifier: 
-  abilityName: PanelSteal
-  abilityDescription: Temporarily takes a row of the opponent panels. Good for applying
-    extra pressure and removing movement options!
-  exampleClip: {fileID: 0}
+  abilityName: Advance
+  abilityDescription: 'Temporarily takes a row of the opponent tiles. '
+  exampleClip: {fileID: 32900000, guid: 0e620e65399a6564ab7e89b989d0e3e4, type: 3}
   AbilityType: 8
   timeActive: 0.01
   recoverTime: 0.05
@@ -44,6 +43,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 0}
   Accessory: {fileID: 0}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 6debc8c8ef534be438d7864907223333, type: 3}
   ActivateSound: {fileID: 8300000, guid: 9d9bcff4b6c870642a2329d3406aac92, type: 3}
   ActiveSound: {fileID: 0}

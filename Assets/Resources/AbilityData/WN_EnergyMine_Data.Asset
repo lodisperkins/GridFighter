@@ -13,9 +13,8 @@ MonoBehaviour:
   m_Name: WN_EnergyMine_Data
   m_EditorClassIdentifier: 
   abilityName: Energy Mine
-  abilityDescription: Spawns a projectile that detonates on command. The farther
-    it travels, the stronger the blast is.
-  exampleClip: {fileID: 0}
+  abilityDescription: Spawns a projectile that detonates on when touched.
+  exampleClip: {fileID: 32900000, guid: da44f3a7202dffd46b751b36d682c68b, type: 3}
   AbilityType: 0
   timeActive: 0.2
   recoverTime: 0.15
@@ -54,6 +53,7 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: e1ad5027f3b05a74288aaa9b76b0054c, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 8300000, guid: 18539e1bad355b64e82686604e42f44c, type: 3}

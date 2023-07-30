@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: DK_SkullBuster_Data
   m_EditorClassIdentifier: 
   abilityName: Skull Buster
-  abilityDescription: Leap forward two panels before crashing down on your enemies!
-    Does great damage and can make airborne enemies bounce when they hit the ground.
+  abilityDescription: Leap forward two panels before crashing down on your enemies
   exampleClip: {fileID: 32900000, guid: 9921d4512403aa24386c542e43f37815, type: 3}
   AbilityType: 8
   timeActive: 0.1

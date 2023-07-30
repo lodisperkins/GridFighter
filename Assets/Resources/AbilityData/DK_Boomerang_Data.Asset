@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: DK_Boomerang_Data
   m_EditorClassIdentifier: 
   abilityName: Boomerang
-  abilityDescription: Throws a spinning blade forward that will change direction
-    after hitting an enemy. Catch it on the way back to throw it again! Can be thrown
-    3 times before despawning.
-  exampleClip: {fileID: 0}
+  abilityDescription: Throws a spinning blade forward. Catch it on the way back to
+    throw it again.
+  exampleClip: {fileID: 32900000, guid: 3bf87ce6cd0a2b746a937cd8ca509380, type: 3}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.3
@@ -45,6 +44,7 @@ MonoBehaviour:
   visualPrefab: {fileID: 0}
   Accessory: {fileID: 0}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 1841dba128fa5974d8ba7db16eabd7e5, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}

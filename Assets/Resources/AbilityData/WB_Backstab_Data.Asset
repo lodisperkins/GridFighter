@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Backstab
   abilityDescription: Spawns a blade behind the enemy to catch them by surprise.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: 5daaf49a393b58841a15e3c7ae1acf3c, type: 3}
   AbilityType: 3
   timeActive: 0.2
   recoverTime: 0.1
@@ -54,6 +54,7 @@ MonoBehaviour:
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects:
   - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 0ff4133a99691c34d9ad593323083285, type: 3}
   ActivateSound: {fileID: 8300000, guid: 143dbcaf8d4d81741948f077c9ae5904, type: 3}
   ActiveSound: {fileID: 0}

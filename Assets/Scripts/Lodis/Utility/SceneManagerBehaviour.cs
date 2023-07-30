@@ -54,6 +54,8 @@ namespace Lodis.Utility
         public InputDevice[] P1Devices { get => _p1Devices; set => _p1Devices = value; }
         public InputDevice[] P2Devices { get => _p2Device; set => _p2Device = value; }
 
+        public int SceneIndex { get { return SceneManager.GetActiveScene().buildIndex; } }
+
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);

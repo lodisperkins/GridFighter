@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: T-Tornado
   abilityDescription: Spin at high speeds with a blade in hand to generate a tornado
     that can hit multiple times.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: fb72f6e31919d304c88262c60df24973, type: 3}
   AbilityType: 1
   timeActive: 0.5
   recoverTime: 0.3

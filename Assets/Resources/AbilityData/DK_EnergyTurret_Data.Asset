@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: DK_EnergyTurret_Data
   m_EditorClassIdentifier: 
-  abilityName: EnergyTurret
+  abilityName: Energy Turret
   abilityDescription: Creates a turret that fires a rapid barrage of lasers.
   exampleClip: {fileID: 32900000, guid: 4ee315abfd485104f89db8a3bc154782, type: 3}
   AbilityType: 8

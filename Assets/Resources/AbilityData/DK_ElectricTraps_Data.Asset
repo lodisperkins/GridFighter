@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_ElectricTraps_Data
   m_EditorClassIdentifier: Assembly-CSharp:Lodis.ScriptableObjects:ProjectileAbilityData
-  abilityName: ElectricTraps
-  abilityDescription: Throws out two electric pylons upon the first activation. Activate
-    it again to create an electric path that can stun enemies. You can change where
-    the pylons are placed by holding a direction.
+  abilityName: Electric Traps
+  abilityDescription: 'Throws out two electric pylons upon the first activation.
+    Activate it again to create an electric path that can stun enemies. '
   exampleClip: {fileID: 32900000, guid: 7abc38ae74332c74187e560720d10f1f, type: 3}
   AbilityType: 8
   timeActive: 0.05
@@ -37,6 +36,7 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 692a19217d2adeb48beac7ef754c5878, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
@@ -65,7 +65,7 @@ MonoBehaviour:
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopTimeModifier: 1.25
+    HitStopShakeStrength: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}

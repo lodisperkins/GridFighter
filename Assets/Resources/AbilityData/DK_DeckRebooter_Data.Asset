@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: DK_DeckRebooter_Data
   m_EditorClassIdentifier: 
-  abilityName: DeckRebooter
+  abilityName: Deck Rebooter
   abilityDescription: Fires a projectile that forces the opponent to reshuffle their
     deck.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: 51a3a5e6d8428614b87c334bc60c1852, type: 3}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.3

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_GroundPound_Data
   m_EditorClassIdentifier: 
-  abilityName: GroundPound
+  abilityName: Ground-Pound
   abilityDescription: Performs a high jump before smashing into the ground. The traveling
-    shockwave can knock enemies toward you. Great for extending combos!
-  exampleClip: {fileID: 0}
+    shockwave can knock enemies toward you.
+  exampleClip: {fileID: 32900000, guid: 7bf223eb1ff5e3849850ca369b8470d8, type: 3}
   AbilityType: 8
   timeActive: 0.5
   recoverTime: 0.2
@@ -36,6 +36,7 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 04885d24989cd9f4ba28522fb6809ec2, type: 3}
   ActivateSound: {fileID: 8300000, guid: a6e80f4644431c74ba15232e360f8382, type: 3}
   ActiveSound: {fileID: 0}

@@ -16,6 +16,12 @@ namespace Lodis.UI
 
         public GridMovementBehaviour PreviousCharacterInstance { get => _previousCharacterInstance; private set => _previousCharacterInstance = value; }
 
+        public void Awake()
+        {
+            BlackBoardBehaviour.Instance.InitializeGrid();
+            BlackBoardBehaviour.Instance.Grid.CreateGrid();
+        }
+
         /// <summary>
         /// Creates a new instance of the entity and places it on the grid
         /// </summary>

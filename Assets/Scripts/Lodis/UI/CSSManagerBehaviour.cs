@@ -235,6 +235,9 @@ namespace Lodis.UI
 
         public void TryGoingToMainMenu(int playerNum)
         {
+            if (SceneManagerBehaviour.Instance.SceneIndex == 4)
+                return;
+
             if (_p1CharacterSelected && playerNum == 1)
                 return;
 

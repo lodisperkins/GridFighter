@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
   m_Name: DK_MiniLightning_Data
   m_EditorClassIdentifier: 
-  abilityName: LightingBarrage
-  abilityDescription: Summon multiple lightning strikes in a straight line a few
-    panels away.
-  exampleClip: {fileID: 0}
+  abilityName: Laser Barrage
+  abilityDescription: Summon multiple beams of energy in a straight line a few panels
+    away.
+  exampleClip: {fileID: 32900000, guid: 2e21e9c62da077743985b007d7fb42c7, type: 3}
   AbilityType: 8
   timeActive: 0.1
   recoverTime: 0.3

@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Reflector
   abilityDescription: Spawns a barrier that can reflect one projectile back at the
     opponent.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: 321e54a97ccb4c945b010fb5921cef20, type: 3}
   AbilityType: 8
   timeActive: 0.5
   recoverTime: 0.25
@@ -36,6 +36,7 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 0dd14e81a22f4d346996f6f7c0e78153, type: 3}
   ActivateSound: {fileID: 8300000, guid: 1d469d8ec02ba81449d077f568155dc3, type: 3}
   ActiveSound: {fileID: 0}

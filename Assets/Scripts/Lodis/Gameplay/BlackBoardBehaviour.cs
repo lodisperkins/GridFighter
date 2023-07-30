@@ -165,6 +165,24 @@ namespace Lodis.Gameplay
 
             return null;
         }
+
+        /// <summary>
+        /// Gets the state of the player that matches the ID
+        /// </summary>
+        /// <param name="id">The player's ID</param>
+        /// <returns></returns>
+        public IControllable GetPlayerControllerFromID(IntVariable id)
+        {
+            if (!id) return null;
+
+            if (id.Value == 1)
+                return Player1Controller;
+            else if(id.Value == 2)
+                return Player2Controller;
+
+            return null;
+        }
+
         /// <summary>
         /// Gets the state of the player that matches the ID
         /// </summary>

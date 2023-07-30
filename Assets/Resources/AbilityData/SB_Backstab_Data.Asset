@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Charged Backstab
   abilityDescription: Spawns a blade behind the enemy to catch them by surprise.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: 5daaf49a393b58841a15e3c7ae1acf3c, type: 3}
   AbilityType: 7
   timeActive: 0.1
   recoverTime: 0.4
@@ -36,6 +36,7 @@ MonoBehaviour:
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects:
   - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 0ff4133a99691c34d9ad593323083285, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}

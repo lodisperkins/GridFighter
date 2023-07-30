@@ -65,6 +65,9 @@ namespace Lodis.UI
             if (_currentPage >= _pages.Length)
                 _currentPage = _pages.Length - 1;
 
+            if (!_pages[_currentPage].PageParent)
+                return;
+
             _pages[_currentPage].PageParent.SetActive(true);
             EventManager.SetSelectedGameObject(_pages[_currentPage].FirstSelected);
             _pages[_currentPage].OnActive?.Invoke();
@@ -72,6 +75,9 @@ namespace Lodis.UI
 
         public void GoToPreviousPage()
         {
+            if (!_pages[_currentPage].PageParent)
+                return;
+
             if (_currentPage > 0)
             {
                 _pages[_currentPage].PageParent.SetActive(false);

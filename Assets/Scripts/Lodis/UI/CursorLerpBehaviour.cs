@@ -21,21 +21,20 @@ namespace Lodis.UI
         private UnityEngine.EventSystems.EventSystem _eventSystem;
         private GameObject _lastSelectedGameObject;
 
-        public void Awake()
-        {
-            BlackBoardBehaviour.Instance.InitializeGrid();
-            BlackBoardBehaviour.Instance.Grid.CreateGrid();
-        }
+        public EventSystem EventSystem { get => _eventSystem; set => _eventSystem = value; }
 
         public void LerpToTransform(Transform rect)
         {
             _moveTween.Kill();
-            _moveTween = _cursor.DOMove(rect.transform.position, _lerpDuration);
+            _moveTween = _cursor.DOMove(rect.transform.position, _lerpDuration).SetUpdate(true);
         }
 
         void Update()
-        { 
-            _lastSelectedGameObject = _eventSystem.currentSelectedGameObject;
+        {
+            if (!EventSystem)
+                return;
+
+            _lastSelectedGameObject = EventSystem.currentSelectedGameObject;
 
             if (_lastSelectedGameObject)
                 LerpToTransform(_lastSelectedGameObject.transform);

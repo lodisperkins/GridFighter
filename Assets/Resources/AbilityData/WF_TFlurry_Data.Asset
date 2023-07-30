@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: T-Flurry
   abilityDescription: Calls a blade forward that unleashes a flurry of strikes on
     the opponent on contact.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: 88f32a0612dc9fc45a122d89269a367a, type: 3}
   AbilityType: 2
   timeActive: 0.2
   recoverTime: 0.2
@@ -54,6 +54,7 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 32b94a03036da1d4f82083160aaf0b70, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
