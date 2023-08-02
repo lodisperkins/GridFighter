@@ -40,6 +40,7 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
             EnableAccessory();
         }
 

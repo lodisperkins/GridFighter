@@ -1733,6 +1733,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _voicePack: {fileID: 0}
   _source: {fileID: 8953241627578327529}
+  _knockback: {fileID: 0}
 --- !u!1 &6044519984764932484
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
-﻿using Lodis.ScriptableObjects;
+﻿using Lodis.Movement;
+using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System;
 using System.Collections;
@@ -146,6 +147,7 @@ namespace Lodis.Gameplay
         private CharacterStateMachineBehaviour _stateMachineScript;
         private bool _deckReloading;
         private Movement.GridMovementBehaviour _movementBehaviour;
+        private KnockbackBehaviour _knockbackBehaviour;
         private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
         private TimedAction _rechargeAction;
@@ -226,6 +228,7 @@ namespace Lodis.Gameplay
         {
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
+            _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
 
             DeckReloadTime = _deckReloadTime;
 
@@ -259,6 +262,7 @@ namespace Lodis.Gameplay
             _opponentMoveset = target.GetComponent<MovesetBehaviour>();
 
             _manualShuffleWaitTime = _manualShuffleStartTime + _manualShuffleActiveTime + _manualShuffleRecoverTime;
+            OnUseAbility += _knockbackBehaviour.DisableInvincibility;
         }
 
         public void ResetAll()

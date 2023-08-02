@@ -37,7 +37,7 @@ namespace Lodis.FX
         private void OnEnable()
         {
             var camData = Camera.main.GetUniversalAdditionalCameraData();
-            camData.cameraStack.Add(_attachedCamera);
+            camData?.cameraStack.Add(_attachedCamera);
         }
 
         private void OnDisable()
@@ -47,7 +47,7 @@ namespace Lodis.FX
             if (camData == null)
                 return;
 
-            camData.cameraStack.Remove(_attachedCamera);
+            camData?.cameraStack.Remove(_attachedCamera);
         }
 
         public void FlipStartEndTransforms()
