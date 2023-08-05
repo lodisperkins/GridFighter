@@ -722,12 +722,12 @@ namespace Lodis.Gameplay
 
             if (hitCollider.Owner != gameObject || invincible.GetValueOrDefault()) return;
 
-            Energy += hitCollider.ColliderInfo.Damage / 100;
+            Energy += hitCollider.ColliderInfo.Damage / 50;
 
             if (_opponentMoveset)
             {
                 _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
-                _opponentMoveset.BurstEnergy += hitCollider.ColliderInfo.Damage / 10;
+                _opponentMoveset.BurstEnergy += hitCollider.ColliderInfo.Damage / 5;
             }
         }
 

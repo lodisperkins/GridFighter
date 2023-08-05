@@ -415,7 +415,7 @@ namespace Lodis.Movement
             _lastTotalKnockBack = totalKnockback;
 
             //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
+            Vector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, hitAngle, _startGravity, Physics.Mass);
 
             if (hitStun > 0)
                 _isFlinching = true;
@@ -465,7 +465,7 @@ namespace Lodis.Movement
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, info.HitAngle);
+            Vector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass);
             if (info.HitStunTime > 0)
                 _isFlinching = true;
 
@@ -554,9 +554,9 @@ namespace Lodis.Movement
             //Calculate knockback value based on the current health and scale of the attack
             float totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
             _lastTotalKnockBack = totalKnockback;
-            
+
             //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, info.HitAngle);
+            Vector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass);
             if (info.HitStunTime > 0)
                 _isFlinching = true;
 
@@ -621,9 +621,9 @@ namespace Lodis.Movement
             //Calculate knockback value based on the current health and scale of the attack
             float totalKnockback = GetTotalKnockback(baseKnockBack, knockBackScale, Health);
             _lastTotalKnockBack = totalKnockback;
-            
+
             //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, hitAngle);
+            Vector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, hitAngle, _startGravity, Physics.Mass);
             if (hitStun > 0)
                 _isFlinching = true;
 

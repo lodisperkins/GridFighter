@@ -115,6 +115,7 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             ResetState();
+            OwnerKnockBackScript.Physics.IgnoreForces = false;
         }
 
         public override void Update()
