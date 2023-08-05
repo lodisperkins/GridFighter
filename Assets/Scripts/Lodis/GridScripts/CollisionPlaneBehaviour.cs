@@ -28,6 +28,8 @@ namespace Lodis.GridScripts
         [SerializeField]
         private ParticleSystem _groundDustParticlesRef;
         [SerializeField]
+        private ParticleSystem _debris;
+        [SerializeField]
         private AudioClip _softLandingClip;
         [SerializeField]
         private AudioClip _hardLandingClip;
@@ -52,6 +54,7 @@ namespace Lodis.GridScripts
             if (physics.LastVelocity.y >= 0)
                 return;
 
+            Vector3 particleSpawnPosition = new Vector3(other.transform.position.x, 0, other.transform.position.z);
             if (knockback.CurrentAirState != AirState.TUMBLING)
                 SoundManagerBehaviour.Instance.PlaySound(_softLandingClip, 0.8f);
             else
@@ -60,10 +63,12 @@ namespace Lodis.GridScripts
 
                 SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 0.8f);
                 if (physics.LastVelocity.magnitude >= _shakeSpeed)
+                {
                     CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
+                    ObjectPoolBehaviour.Instance.GetObject(_debris.gameObject, particleSpawnPosition, Camera.main.transform.rotation);
+                }
             }
 
-            Vector3 particleSpawnPosition = new Vector3(other.transform.position.x, 0, other.transform.position.z);
 
             _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, particleSpawnPosition, Camera.main.transform.rotation);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_groundDustParticles, _groundDustParticlesRef.main.duration);

@@ -35,7 +35,7 @@ namespace Lodis.GridScripts
         private Movement.GridMovementBehaviour _markerMovement;
         private Vector2 _lastMarkPosition;
         private MarkerType _currentMarker;
-        
+        private FlashBehaviour _flashBehaviour;
 
         /// <summary>
         /// The position of this panel on the grid.
@@ -80,8 +80,12 @@ namespace Lodis.GridScripts
             }
             set
             {
+                bool flashAlignment = _alignment != value;
+                    
                 _alignment = value;
                 UpdateMaterial();
+                if (flashAlignment)
+                    FlashAlignment();
             }
         }
 
@@ -89,6 +93,7 @@ namespace Lodis.GridScripts
         {
             _positionLHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.LEFT);
             _positionRHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.RIGHT);
+            _flashBehaviour = GetComponent<FlashBehaviour>();
         }
 
         /// <summary>
@@ -195,6 +200,12 @@ namespace Lodis.GridScripts
                 
             _mesh?.material.DOFloat(0, "_EmissionStrength", _emissionFadeDuration);
             CurrentMarker = MarkerType.NONE;
+        }
+
+        public void FlashAlignment()
+        {
+            Color color = _alignment == GridAlignment.LEFT ? _positionLHSColor : _positionRHSColor;
+            _flashBehaviour.Flash(color, 5, 1, true, 5);
         }
 
         private void Update()

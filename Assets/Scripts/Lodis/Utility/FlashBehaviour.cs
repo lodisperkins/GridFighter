@@ -18,6 +18,8 @@ namespace Lodis.Utility
         private float _emissionStrength;
         [SerializeField]
         private int _loopAmount = -1;
+        [SerializeField]
+        private bool _flashOnAwake = true;
 
         private MeshRenderer _mesh;
 
@@ -25,10 +27,12 @@ namespace Lodis.Utility
         public float TimeBetweenFlashes { get => _timeBetweenFlashes; set => _timeBetweenFlashes = value; }
 
         // Start is called before the first frame update
-        void Start()
+        void Awake()
         {
             _mesh = GetComponent<MeshRenderer>();
-            Flash();
+
+            if (_flashOnAwake)
+                Flash();
         }
 
         public static void Flash(Renderer renderer, Color color, float timeBetweenFlashes, int loopAmount, bool useEmission = false, float emissionStrength = 0)
@@ -150,21 +154,21 @@ namespace Lodis.Utility
         {
             Color defaultColor;
 
-            if (_useEmission)
+            if (useEmission)
             {
                 float defaultStrength = _mesh.material.GetFloat("_EmissionStrength");
-                _mesh.materials[0].DOFloat(EmissionStrength, "_EmissionStrength", TimeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                _mesh.materials[0].DOFloat(emissionStrength, "_EmissionStrength", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
                     () => _mesh.material.SetFloat("_EmissionStrength", defaultStrength);
 
                 defaultColor = _mesh.material.GetColor("_EmissionColor");
-                _mesh.materials[0].DOVector(color, "_EmissionColor", TimeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+                _mesh.materials[0].DOVector(color, "_EmissionColor", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
                     () => _mesh.material.SetColor("_EmissionColor", defaultColor);
 
                 return;
             }
 
             defaultColor = _mesh.material.GetColor("_Color");
-            _mesh.materials[0].DOVector(color, "_Color", TimeBetweenFlashes).SetLoops(_loopAmount).onKill +=
+            _mesh.materials[0].DOVector(color, "_Color", timeBetweenFlashes).SetLoops(loopAmount).onKill +=
                     () => _mesh.material.SetColor("_Color", defaultColor);
         }
 

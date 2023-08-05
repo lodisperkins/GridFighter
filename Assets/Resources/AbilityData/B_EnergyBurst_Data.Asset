@@ -18,7 +18,7 @@ MonoBehaviour:
   AbilityType: 10
   timeActive: 0.6
   recoverTime: 0.8
-  startUpTime: 0.1
+  startUpTime: 0
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
@@ -44,6 +44,7 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 0}
   ActivateSound: {fileID: 8300000, guid: 1603af129889a3a4da9ad43ab4d4dee4, type: 3}
   ActiveSound: {fileID: 0}

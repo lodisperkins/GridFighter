@@ -97,6 +97,7 @@ MonoBehaviour:
   _useEmission: 1
   _emissionStrength: 2
   _loopAmount: -1
+  _flashOnAwake: 1
 --- !u!1 &5820520729088480805
 GameObject:
   m_ObjectHideFlags: 0

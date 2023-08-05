@@ -313,6 +313,7 @@ namespace Lodis.GridScripts
                 {
                     panel.Alignment = GridAlignment.RIGHT;
                 }
+
             }
         }
 

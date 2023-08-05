@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1442744205116622914}
   - component: {fileID: 1775448569543004365}
   - component: {fileID: 102267683996853085}
+  - component: {fileID: -3608957577974642946}
   - component: {fileID: -7809005986806037405}
   m_Layer: 8
   m_Name: Panel
@@ -95,6 +96,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1.5, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-3608957577974642946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3853593270357521993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09de44df22b7cd540bfcf19fe977a215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeBetweenFlashes: 0
+  _color: {r: 0, g: 0, b: 0, a: 0}
+  _useEmission: 0
+  _emissionStrength: 0
+  _loopAmount: -1
+  _flashOnAwake: 1
 --- !u!114 &-7809005986806037405
 MonoBehaviour:
   m_ObjectHideFlags: 0
