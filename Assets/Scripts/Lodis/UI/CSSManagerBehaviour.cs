@@ -135,22 +135,29 @@ namespace Lodis.UI
             if (!_colorManager)
                 return;
 
-            if (playerNum == 1)
+            if (playerNum == 1 && !_p1CharacterSelected)
             {
                 _p1ColorIndex++;
 
                 if (_p1ColorIndex >= _colorManager.PossibleColors.Length)
                     _p1ColorIndex = 0;
 
+                if (_p1ColorIndex == _p2ColorIndex && _p2CharacterSelected)
+                    _p1ColorIndex++;
+
                 _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
                 _backgroundImage.SetPrimaryColor(_colorManager.P1Color.Value / 2);
             }
-            else if (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER)
+            else if (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER && !_p2CharacterSelected)
             {
                 _p2ColorIndex++;
 
                 if (_p2ColorIndex >= _colorManager.PossibleColors.Length)
                     _p2ColorIndex = 0;
+
+
+                if (_p2ColorIndex == _p1ColorIndex && _p1CharacterSelected)
+                    _p2ColorIndex++;
 
                 _colorManager.SetPlayerColor(playerNum, _p2ColorIndex);
                 _backgroundImage.SetSecondaryColor(_colorManager.P2Color.Value / 2);
@@ -222,6 +229,9 @@ namespace Lodis.UI
             _p1Data.HeadShot = data.HeadShot;
             _p1CharacterSelected = true;
             _player1Root.SetActive(false);
+
+            if (_p1ColorIndex == _p2ColorIndex && !_p2CharacterSelected)
+                SetColor(2);
         }
 
         public void SetDataP2(CharacterData data)
@@ -231,6 +241,10 @@ namespace Lodis.UI
             _p2Data.HeadShot = data.HeadShot;
             _p2CharacterSelected = true;
             _player2Root.SetActive(false);
+
+
+            if (_p2ColorIndex == _p1ColorIndex && !_p1CharacterSelected)
+                SetColor(1);
         }
 
         public void TryGoingToMainMenu(int playerNum)
