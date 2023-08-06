@@ -465,7 +465,7 @@ namespace Lodis.Movement
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass);
+            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass, info.ClampForceWithinRing);
             if (info.HitStunTime > 0)
                 _isFlinching = true;
 
@@ -481,7 +481,7 @@ namespace Lodis.Movement
                 Physics.RB.isKinematic = false;
 
                 //Add force to objectd
-                Physics.ApplyImpulseForce(_launchForce);
+                Physics.ApplyImpulseForce(_launchForce, false, info.IgnoreMomentum);
 
                 if (_launchForce.magnitude > 0)
                 {
@@ -506,7 +506,7 @@ namespace Lodis.Movement
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
 
                 //Add force to objectd
-                Physics.ApplyImpulseForce(_launchForce);
+                Physics.ApplyImpulseForce(_launchForce, false, info.IgnoreMomentum);
 
                 if (_launchForce.magnitude > 0)
                 {

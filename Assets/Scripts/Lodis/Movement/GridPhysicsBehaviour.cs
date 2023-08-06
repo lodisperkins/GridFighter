@@ -357,13 +357,39 @@ namespace Lodis.Movement
                 _movementBehaviour.Position = panel.Position;
         }
 
+        private float ClampForceMagnitude(float forceMagnitude, float launchAngle)
+        {
+            float newX = forceMagnitude;
+
+            if (!_movementBehaviour)
+                return forceMagnitude;
+
+            //Do nothing if the angle makes it impossible to be out of the ring.
+            if (Math.Abs(launchAngle) > 1.5f && _movementBehaviour.Alignment == GridAlignment.RIGHT)
+                return newX;
+            else if (Math.Abs(launchAngle) < 1.5f && _movementBehaviour.Alignment == GridAlignment.LEFT)
+                return newX;
+
+            //Find the position of the panel they would be on if the current force was applied.
+            newX = _movementBehaviour.Position.x + forceMagnitude * -_movementBehaviour.GetAlignmentX();
+
+            //Subtract from the force magnitude to clamp it based on alignement.
+            if (_movementBehaviour.Alignment == GridAlignment.LEFT && newX < 0)
+                forceMagnitude -= 0 - newX;
+            else if (_movementBehaviour.Alignment == GridAlignment.RIGHT && newX > BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1)
+                forceMagnitude -= newX - BlackBoardBehaviour.Instance.Grid.Dimensions.x;
+
+            return forceMagnitude;
+        }
+
         /// <summary>
         /// Finds the force needed to move the game object the given number of panels
         /// </summary>
         /// <param name="forceMagnitude">How many panels will the object move assuming its mass is 1</param>
         /// <param name="launchAngle">The angle to launch the object</param>
+        /// <param name="clampForceWithinRing">Whether or not the grid force could push the object out of the ring.</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public Vector3 CalculatGridForce(float forceMagnitude, float launchAngle)
+        public Vector3 CalculatGridForce(float forceMagnitude, float launchAngle, bool clampForceWithinRing = false)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
@@ -372,6 +398,11 @@ namespace Lodis.Movement
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
                 return new Vector3();
+
+            if (clampForceWithinRing)
+            {
+                forceMagnitude = ClampForceMagnitude(forceMagnitude, launchAngle);
+            }
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
@@ -417,6 +448,48 @@ namespace Lodis.Movement
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
                 return new Vector3();
+
+            //If the angle is within a certain range, ignore the angle and apply an upward force
+            if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= 0.2f)
+                return Vector3.up * Mathf.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
+
+            //Clamps hit angle to prevent completely horizontal movement
+            //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
+
+            //Uses the total knockback and panel distance to find how far the object is travelling
+            float displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
+            //Finds the magnitude of the force vector to be applied 
+            float val1 = displacement * gravity;
+            float val2 = Mathf.Sin(2 * launchAngle);
+            float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
+            float magnitude = val3;
+
+            //If the magnitude is not a number the attack must be too weak. Return an empty vector
+            if (float.IsNaN(magnitude))
+                return new Vector3();
+
+            //Return the knockback force
+            return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * (magnitude * mass);
+        }
+
+        /// <summary>
+        /// Finds the force needed to move the game object the given number of panels
+        /// </summary>
+        /// <param name="forceMagnitude">How many panels will the object move assuming its mass is 1</param>
+        /// <param name="launchAngle">The angle to launch the object</param>
+        /// <returns>The force needed to move the object to the panel destination</returns>
+        public Vector3 CalculatGridForce(float forceMagnitude, float launchAngle, float gravity = 9.81f, float mass = 1, bool clampForceWithinRing = false)
+        {
+            //Find the space between each panel and the panels size to use to find the total displacement
+            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
+
+            //If the knockback was too weak return an empty vector
+            if (forceMagnitude <= 0)
+                return new Vector3();
+
+            if (clampForceWithinRing)
+                forceMagnitude = ClampForceMagnitude(forceMagnitude, launchAngle);
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= 0.2f)
@@ -555,17 +628,20 @@ namespace Lodis.Movement
             }
 
             //Apply ricochet force
-            gridPhysicsBehaviour.ApplyVelocityChange(CalculatGridForce(baseKnockBack * bounce, hitAngle));
+            gridPhysicsBehaviour.ApplyVelocityChange(CalculatGridForce(baseKnockBack * bounce, hitAngle, true));
         }
 
         /// <summary>
         /// Adds an instant change in velocity to the object ignoring mass.
         /// </summary>
         /// <param name="velocity">The new velocity for the object.</param>
-        public void ApplyVelocityChange(Vector3 force, bool disableMovement = false)
+        public void ApplyVelocityChange(Vector3 force, bool disableMovement = false, bool ignoreMomentum = false)
         {
             if (IgnoreForces)
                 return;
+
+            if (ignoreMomentum)
+                StopVelocity();
 
             RB.isKinematic = false;
 
@@ -602,10 +678,13 @@ namespace Lodis.Movement
         /// Adds an instant change in velocity to the object ignoring mass.
         /// </summary>
         /// <param name="velocity">The new velocity for the object.</param>
-        public void ApplyForce(Vector3 force, bool disableMovement = false)
+        public void ApplyForce(Vector3 force, bool disableMovement = false, bool ignoreMomentum = false)
         {
             if (IgnoreForces)
                 return;
+
+            if (ignoreMomentum)
+                StopVelocity();
 
             RB.isKinematic = false;
 
@@ -650,10 +729,14 @@ namespace Lodis.Movement
         /// Disables movement if not in hitstun.
         /// </summary>
         /// <param name="force">The force to apply to the object.</param>
-        public void ApplyImpulseForce(Vector3 force, bool disableMovement = false)
+        public void ApplyImpulseForce(Vector3 force, bool disableMovement = false, bool ignoreMomentum = false)
         {
             if (IgnoreForces)
                 return;
+
+
+            if (ignoreMomentum)
+                StopVelocity();
 
             if (_movementBehaviour?.IsMoving == true)
             {

@@ -185,6 +185,26 @@ namespace Lodis.Gameplay
             return null;
         }
 
+        public Ability GetBurstAbility(string state)
+        {
+            string burstType = "";
+
+            if (state == "Attacking")
+                burstType = "Offensive Burst";
+            else
+                burstType = "Defensive Burst";
+
+            foreach (Ability ability in _abilities)
+            {
+                if (ability.abilityData.abilityName == burstType)
+                    return ability;
+            }
+
+            Debug.LogError("Couldn't find burst ability of type " + burstType + " in deck " + DeckName);
+
+            return null;
+        }
+
         /// <summary>
         /// Gets the first ability in the deck that matches the type
         /// </summary>

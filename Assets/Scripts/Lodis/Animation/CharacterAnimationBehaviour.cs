@@ -521,7 +521,8 @@ namespace Lodis.Gameplay
 
         public void UpdateInAirMoveDirection()
         {
-            _animator.SetFloat("MoveDirectionInAirY", _knockbackBehaviour.Physics.LastVelocity.normalized.y);
+            _animator.SetFloat("VelocityInAirY", _knockbackBehaviour.Physics.LastVelocity.y);
+            _animator.SetFloat("VelocityInAirX", _knockbackBehaviour.Physics.LastVelocity.x * _moveBehaviour.GetAlignmentX());
         }
 
         /// <summary>

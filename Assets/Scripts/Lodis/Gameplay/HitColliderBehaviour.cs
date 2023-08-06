@@ -35,6 +35,10 @@ namespace Lodis.Gameplay
         public float BaseKnockBack;
         [Tooltip("How much the knock back of this ability will scale based on the health of the object hit.")]
         public float KnockBackScale;
+        [Tooltip("Whether or not this move can knock opponents out of the ring.")]
+        public bool ClampForceWithinRing;
+        [Tooltip("Whether or not the force added will override the velocity of the object.")]
+        public bool IgnoreMomentum;
         [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
         public float HitAngle;
         [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
@@ -338,7 +342,7 @@ namespace Lodis.Gameplay
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
                     float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
-                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle);
+                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, true);
                     knockback.Physics.ApplyImpulseForce(force);
                 }
 
@@ -440,7 +444,7 @@ namespace Lodis.Gameplay
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
                     float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
-                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle);
+                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, true);
                     knockback.Physics.ApplyImpulseForce(force);
                 }
 
@@ -543,7 +547,7 @@ namespace Lodis.Gameplay
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
                     float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
-                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle);
+                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, ColliderInfo.ClampForceWithinRing);
                     knockback.Physics.ApplyImpulseForce(force);
                 }
 

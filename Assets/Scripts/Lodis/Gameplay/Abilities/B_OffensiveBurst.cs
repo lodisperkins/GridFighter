@@ -1,17 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Lodis.GridScripts;
+﻿using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lodis.Gameplay
 {
 
     /// <summary>
-    /// An ability shared by all that can be used to break combos.
+    /// Enter ability description here
     /// </summary>
-    public class B_EnergyBurst : Ability
+    public class B_OffensiveBurst : Ability
     {
         private GameObject _barrier;
         private GameObject _burstEffect;
@@ -21,8 +21,8 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
-			base.Init(newOwner);
-            if (!_burstEffect) _burstEffect = Resources.Load<GameObject>("Effects/EnergyBurst");
+            base.Init(newOwner);
+            if (!_burstEffect) _burstEffect = abilityData.visualPrefab;
             _defaultRestTime = abilityData.recoverTime;
         }
 
@@ -81,13 +81,13 @@ namespace Lodis.Gameplay
             //Add a hitcollider if there isn't one attached in order to deal damage
             if (!_barrier.TryGetComponent(out instantiatedCollider))
                 instantiatedCollider = _barrier.AddComponent<HitColliderBehaviour>();
-           
+
             //Update the new colliders data
             instantiatedCollider.ColliderInfo = hitColliderData;
             instantiatedCollider.Owner = owner;
 
             //Spawns a new particle effect at this player's position
-            Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
+            //Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
 
             //If the player isn't resting on the ground...
             if (OwnerKnockBackScript.CurrentAirState != AirState.NONE && !OwnerKnockBackScript.Physics.IsGrounded)

@@ -240,7 +240,8 @@ namespace Lodis.Gameplay
         private void Start()
         {
             _normalDeck = Instantiate(NormalDeckRef);
-            _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_EnergyBurst_Data"));
+            _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_DefensiveBurst_Data"));
+            _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_OffensiveBurst_Data"));
             _specialDeck = Instantiate(SpecialDeckRef);
 
             _normalDeck.InitAbilities(gameObject);
@@ -263,6 +264,11 @@ namespace Lodis.Gameplay
 
             _manualShuffleWaitTime = _manualShuffleStartTime + _manualShuffleActiveTime + _manualShuffleRecoverTime;
             OnUseAbility += _knockbackBehaviour.DisableInvincibility;
+        }
+
+        private void OnDisable()
+        {
+            Debug.Log(gameObject.name + " moveset was disabled.");
         }
 
         public void ResetAll()
@@ -444,7 +450,13 @@ namespace Lodis.Gameplay
                 return null;
 
             //Find the ability in the deck abd use it
-            Ability currentAbility = _normalDeck.GetAbilityByType(abilityType);
+            Ability currentAbility = null;
+
+            if (abilityType == AbilityType.BURST)
+                currentAbility = _normalDeck.GetBurstAbility(_stateMachineScript.StateMachine.CurrentState);
+            else
+                currentAbility = _normalDeck.GetAbilityByType(abilityType);
+
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
