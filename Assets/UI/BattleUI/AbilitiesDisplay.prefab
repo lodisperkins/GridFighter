@@ -54,7 +54,10 @@ MonoBehaviour:
   _playerID: {fileID: 0}
   _abilitySlot1Image: {fileID: 135320570004013533}
   _abilitySlot2Image: {fileID: 6416842809219940614}
-  _updateAbilityColors: 1
+  _updateAbilityColors: 0
+  _displayNext: 0
+  _costText1: {fileID: 0}
+  _costText2: {fileID: 0}
 --- !u!1 &7641144697382121311
 GameObject:
   m_ObjectHideFlags: 0

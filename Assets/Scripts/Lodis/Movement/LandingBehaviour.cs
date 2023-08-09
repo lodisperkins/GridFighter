@@ -23,6 +23,7 @@ namespace Lodis.Movement
         private UnityAction _onLand;
         private int _groundedHitCounter;
         private KnockbackBehaviour _knockback;
+        private CharacterAnimationBehaviour _characterAnimator;
         private bool _canCheckLanding;
 
         public float LandingTime { get => _landingTime;}
@@ -44,6 +45,7 @@ namespace Lodis.Movement
         private void Awake()
         {
             _knockback = GetComponent<KnockbackBehaviour>();
+            _characterAnimator = GetComponentInChildren<CharacterAnimationBehaviour>();
             _knockback.AddOnStunAction(CancelLanding);
             _knockback.Physics.AddOnForceAddedEvent(args => TryCancelLanding());
         }
@@ -193,6 +195,9 @@ namespace Lodis.Movement
 
             if (Landing && !_knockback.Physics.IsGrounded)
                 CancelLanding();
+
+            if (Landing && !RecoveringFromFall && !_characterAnimator.CompareStateName("HardLanding"))
+                _characterAnimator.PlayHardLandingAnimation();
         }
     }
 }

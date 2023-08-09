@@ -38,7 +38,7 @@ MonoBehaviour:
   - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
   Sounds:
   - {fileID: 8300000, guid: 8843d6cc097dd544da54836c69ac67c5, type: 3}
-  DisplayIcon: {fileID: 21300000, guid: f3f1dfe50a3c67b4aaf58fc4ac90de66, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 5d46e3fb16f68e640a1a7395d39faaeb, type: 3}
   ActivateSound: {fileID: 8300000, guid: 01c08847c76ca824a8e5d91e96021da9, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -55,6 +55,8 @@ MonoBehaviour:
     Damage: 10
     BaseKnockBack: 5
     KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 1.6
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
@@ -83,6 +85,8 @@ MonoBehaviour:
     Damage: 12
     BaseKnockBack: 60
     KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 1.5
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
@@ -111,6 +115,8 @@ MonoBehaviour:
     Damage: 15
     BaseKnockBack: 10
     KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 0.2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0

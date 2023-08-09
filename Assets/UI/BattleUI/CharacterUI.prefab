@@ -15,7 +15,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3339862813663625876
 RectTransform:
   m_ObjectHideFlags: 0
@@ -505,7 +505,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3826656900716763936
 RectTransform:
   m_ObjectHideFlags: 0
@@ -681,6 +681,11 @@ PrefabInstance:
       propertyPath: _costText2
       value: 
       objectReference: {fileID: 3572735569476010028}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _updateAbilityColors
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7641144697237450340, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_Name
@@ -794,12 +799,12 @@ PrefabInstance:
     - target: {fileID: 7641144697382121308, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 40
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7641144697382121308, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7641144697382121308, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
@@ -814,12 +819,12 @@ PrefabInstance:
     - target: {fileID: 7641144697459592408, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 40
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7641144697459592408, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 40
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 7641144697459592408, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}

@@ -2028,6 +2028,7 @@ MonoBehaviour:
   _useEmission: 1
   _emissionStrength: 0.3
   _loopAmount: -1
+  _flashOnAwake: 0
   _invincibleColor: {r: 0.3207547, g: 0.28595585, b: 0.28595585, a: 1}
   _intangibleColor: {r: 0.8962264, g: 0.8962264, b: 0.8962264, a: 1}
   _stunParticles: {fileID: 755719142905574260}

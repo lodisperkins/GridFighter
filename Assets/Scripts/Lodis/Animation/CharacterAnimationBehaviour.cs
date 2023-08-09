@@ -525,6 +525,11 @@ namespace Lodis.Gameplay
             _animator.SetFloat("VelocityInAirX", _knockbackBehaviour.Physics.LastVelocity.x * _moveBehaviour.GetAlignmentX());
         }
 
+        public bool CompareStateName(string name)
+        {
+            return _animator.GetCurrentAnimatorStateInfo(0).IsName(name);
+        }
+
         /// <summary>
         /// Plays the animation to break a fall based on the 
         /// direction the structure is to the character
