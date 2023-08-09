@@ -212,6 +212,12 @@ namespace Lodis.Gameplay
             movement.MoveToPanel(LHSSpawnLocation, true);
             movement.CanMoveDiagonally = false;
 
+            KnockbackBehaviour knockback = _p1Input.Character.GetComponent<KnockbackBehaviour>();
+            knockback.CancelHitStun();
+            knockback.CancelStun();
+            knockback.Physics.StopVelocity();
+            knockback.Physics.RB.isKinematic = true;
+
             InputBehaviour input = _player1.GetComponent<InputBehaviour>();
             if (input)
                 input.ClearBuffer();
@@ -223,6 +229,12 @@ namespace Lodis.Gameplay
             movement.CanMoveDiagonally = true;
             movement.MoveToPanel(RHSSpawnLocation, true);
             movement.CanMoveDiagonally = false;
+
+            knockback = _p2Input.Character.GetComponent<KnockbackBehaviour>();
+            knockback.CancelHitStun();
+            knockback.CancelStun();
+            knockback.Physics.StopVelocity();
+            knockback.Physics.RB.isKinematic = true;
 
             input = _player2.GetComponent<InputBehaviour>();
             if (input)

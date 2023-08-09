@@ -96,6 +96,7 @@ namespace Lodis.Gameplay
         private float _targetSpeed = 1;
 
         private List<CustomAnimationEvent> _animationEvents = new List<CustomAnimationEvent>();
+        private ConditionAction _winAnimCondition;
 
         // Start is called before the first frame update
         void Start()
@@ -119,6 +120,23 @@ namespace Lodis.Gameplay
                 if (!_movesetBehaviour.LastAbilityInUse.abilityData.playAnimationManually)
                     PlayAbilityAnimation();
             };
+
+            MatchManagerBehaviour.Instance.AddOnMatchCountdownStartAction(() =>
+            {
+                RoutineBehaviour.Instance.StopAction(_winAnimCondition);
+                StopCurrentAnimation();
+                RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Intro"), condition => _characterStateMachine.CurrentState == "Idle");
+            });
+
+            _animator.SetTrigger("Intro");
+
+            MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
+            {
+                if (!gameObject.activeInHierarchy || MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.DRAW)
+                    return;
+
+                _winAnimCondition = RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Win"), condition => _characterStateMachine.CurrentState == "Idle");
+            });
         }
 
         public void ResetTargetSpeed()

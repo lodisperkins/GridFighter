@@ -48,6 +48,7 @@ namespace Lodis.Movement
             _characterAnimator = GetComponentInChildren<CharacterAnimationBehaviour>();
             _knockback.AddOnStunAction(CancelLanding);
             _knockback.Physics.AddOnForceAddedEvent(args => TryCancelLanding());
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(CancelLanding);
         }
 
         private bool TryCancelLanding()

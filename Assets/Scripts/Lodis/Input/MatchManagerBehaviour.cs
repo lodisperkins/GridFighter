@@ -60,6 +60,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private UnityEvent _onMatchStart;
         [SerializeField]
+        private UnityEvent _onMatchCountdownStart;
+        [SerializeField]
         private UnityEvent _onMatchPause;
         [SerializeField]
         private UnityEvent _onMatchUnpause;
@@ -166,6 +168,8 @@ namespace Lodis.Gameplay
             SetPlayerControlsActive(false);
             _canPause = false;
 
+            _onMatchCountdownStart?.Invoke();
+
             RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
                 _canPause = true;
@@ -269,6 +273,8 @@ namespace Lodis.Gameplay
 
             SetPlayerControlsActive(false);
             _canPause = false;
+
+            _onMatchCountdownStart?.Invoke();
             RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
 
@@ -328,6 +334,11 @@ namespace Lodis.Gameplay
         public void AddOnMatchStartAction(UnityAction action)
         {
             _onMatchStart.AddListener(action);
+        }
+
+        public void AddOnMatchCountdownStartAction(UnityAction action)
+        {
+            _onMatchCountdownStart.AddListener(action);
         }
 
         public void AddOnMatchPauseAction(UnityAction action)
