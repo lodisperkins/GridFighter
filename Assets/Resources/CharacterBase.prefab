@@ -2037,6 +2037,10 @@ MonoBehaviour:
   _deathSparks: {fileID: 0}
   _additionalEffects: []
   _accessory: {fileID: 0}
+  _spawnEffect: {fileID: 846684148593713024, guid: 867fe347926f2784ea587d8cfbc4e14c,
+    type: 3}
+  _spawnSound: {fileID: 8300000, guid: dc6389869d48eb74a842e55a984c284b, type: 3}
+  _characterVoice: {fileID: 6432807319471925545}
 --- !u!114 &6183443034730705748
 MonoBehaviour:
   m_ObjectHideFlags: 0

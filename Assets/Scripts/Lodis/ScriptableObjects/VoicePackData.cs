@@ -30,6 +30,8 @@ public class VoicePackData : ScriptableObject
     private AudioClip _death;
     [SerializeField]
     private AudioClip _burst;
+    [SerializeField]
+    private AudioClip _spawn;
     private int _lastHurt;
     private int _lastLight;
     private int _lastHeavy;
@@ -46,6 +48,7 @@ public class VoicePackData : ScriptableObject
     public AudioClip SuperAttack { get => _superAttack; private set => _superAttack = value; }
     public AudioClip Death { get => _death; private set => _death = value; }
     public AudioClip Burst { get => _burst; private set => _burst = value; }
+    public AudioClip Spawn { get => _spawn; private set => _spawn = value; }
 
     public AudioClip GetRandomHurtClip()
     {

@@ -23,6 +23,9 @@ namespace Lodis.Gameplay
         [SerializeField] private ParticleSystem _deathSparks;
         [SerializeField] private ParticleSystem[] _additionalEffects;
         [SerializeField] private AccessoryEffectBehaviour _accessory;
+        [SerializeField] private ParticleSystem _spawnEffect;
+        [SerializeField] private AudioClip _spawnSound;
+        [SerializeField] private CharacterVoiceBehaviour _characterVoice;
 
         public ColorManagerBehaviour ColorManager { get => _colorManager; private set => _colorManager = value; }
 
@@ -38,6 +41,22 @@ namespace Lodis.Gameplay
             _health.AddOnStunDisabledAction(() => _stunParticles.gameObject.SetActive(false));
             _moveSet = GetComponentInParent<MovesetBehaviour>();
             _movement = GetComponentInParent<GridMovementBehaviour>();
+
+            if (SceneManagerBehaviour.Instance.SceneIndex == 4)
+            {
+                MatchManagerBehaviour.Instance.AddOnMatchCountdownStartAction(() =>
+                {
+                    PlaySpawnEffect();
+                });
+                PlaySpawnEffect();
+            }
+        }
+
+        public void PlaySpawnEffect()
+        {
+            Instantiate(_spawnEffect, transform.position, Camera.main.transform.rotation);
+            SoundManagerBehaviour.Instance.PlaySound(_spawnSound);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _characterVoice.PlaySpawnSound(), TimedActionCountType.SCALEDTIME, 0.1f);
         }
 
         public void FlashAllRenderers(Color color)

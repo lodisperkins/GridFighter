@@ -72,6 +72,8 @@ MonoBehaviour:
     Damage: 3
     BaseKnockBack: 1
     KnockBackScale: 1
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0

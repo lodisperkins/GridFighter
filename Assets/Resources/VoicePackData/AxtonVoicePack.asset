@@ -24,3 +24,4 @@ MonoBehaviour:
   _superAttack: {fileID: 8300000, guid: b51026e9aa17247218a6ccfe7a53ea4a, type: 3}
   _death: {fileID: 8300000, guid: d1fc4a516142a40729a898045c7aa619, type: 3}
   _burst: {fileID: 8300000, guid: 7cffe7e794a9c4a1fb401fd46bd37f46, type: 3}
+  _spawn: {fileID: 8300000, guid: 57d85b2b069f74d18a2faaaa2c958b5e, type: 3}

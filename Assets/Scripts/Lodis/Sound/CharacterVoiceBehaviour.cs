@@ -64,5 +64,11 @@ namespace Lodis.Sound
             _source.Stop();
             _source.PlayOneShot(_voicePack.Burst);
         }
+
+        public void PlaySpawnSound()
+        {
+            _source.Stop();
+            _source.PlayOneShot(_voicePack.Spawn);
+        }
     }
 }

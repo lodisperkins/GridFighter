@@ -299,7 +299,11 @@ namespace Lodis.Movement
 
 
             if (CompareTag("Player") || CompareTag("Entity"))
+            {
                 BlackBoardBehaviour.Instance.AddEntityToList(gameObject);
+
+                
+            }
         }
 
         /// <summary>

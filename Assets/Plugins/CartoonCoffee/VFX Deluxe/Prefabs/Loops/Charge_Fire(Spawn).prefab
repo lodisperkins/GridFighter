@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 836127974581356175}
   - component: {fileID: 3888044793396303899}
   - component: {fileID: 1358681355132774804}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Burst_Glow_Delay_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1467006347798736552}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -49,7 +49,7 @@ ParticleSystem:
   looping: 0
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -4823,7 +4823,7 @@ GameObject:
   - component: {fileID: 1493981195687608936}
   - component: {fileID: 1493981195687608918}
   - component: {fileID: 1493981195687608937}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Glow_Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4838,7 +4838,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1493981195687608939}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -4861,7 +4861,7 @@ ParticleSystem:
   looping: 0
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -9635,7 +9635,7 @@ GameObject:
   - component: {fileID: 1885604528475119344}
   - component: {fileID: 1885604528475119346}
   - component: {fileID: 1885604528475119347}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Charge_Lines_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9650,7 +9650,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885604528475119345}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -9673,7 +9673,7 @@ ParticleSystem:
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -14447,7 +14447,7 @@ GameObject:
   - component: {fileID: 1885604528493350094}
   - component: {fileID: 1885604528493350080}
   - component: {fileID: 1885604528493350081}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Burst_Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14462,7 +14462,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885604528493350095}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -14485,7 +14485,7 @@ ParticleSystem:
   looping: 0
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -19259,7 +19259,7 @@ GameObject:
   - component: {fileID: 1885604528528044312}
   - component: {fileID: 1885604528528044314}
   - component: {fileID: 1885604528528044315}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Impact_Loop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19274,7 +19274,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885604528528044313}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -19297,7 +19297,7 @@ ParticleSystem:
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -24071,7 +24071,7 @@ GameObject:
   - component: {fileID: 1885604529115972325}
   - component: {fileID: 1885604529115972327}
   - component: {fileID: 1885604529115972324}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Burst_Glow_Delay_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24086,7 +24086,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885604529115972322}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -24109,7 +24109,7 @@ ParticleSystem:
   looping: 0
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -28883,7 +28883,7 @@ GameObject:
   - component: {fileID: 1885604529221242429}
   - component: {fileID: 1885604529221242431}
   - component: {fileID: 1885604529221242428}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Glow_Loop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28898,7 +28898,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885604529221242426}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -28921,7 +28921,7 @@ ParticleSystem:
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -33803,7 +33803,7 @@ GameObject:
   - component: {fileID: 1885604529827188180}
   - component: {fileID: 1885604529827188182}
   - component: {fileID: 1885604529827188183}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Fire_Burst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33818,7 +33818,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885604529827188181}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -33841,7 +33841,7 @@ ParticleSystem:
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -34392,7 +34392,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     randomizeRotationDirection: 0
-    maxNumParticles: 100
+    maxNumParticles: 3
     size3D: 0
     rotation3D: 0
     gravityModifier:
@@ -38615,7 +38615,7 @@ GameObject:
   - component: {fileID: 1885604529898282050}
   - component: {fileID: 1885604529898282052}
   - component: {fileID: 1885604529898282053}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Charge_Lines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38630,8 +38630,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885604529898282051}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
+  m_LocalScale: {x: 0.2105, y: 0.2105, z: 0.2105}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
   m_RootOrder: 3
@@ -38653,7 +38653,7 @@ ParticleSystem:
   looping: 1
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -43369,7 +43369,7 @@ GameObject:
   - component: {fileID: 1885604529924874498}
   - component: {fileID: 1885604529924874500}
   - component: {fileID: 1885604529924874501}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Burst_Glow_Delay_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43384,7 +43384,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1885604529924874499}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.2, z: -1.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8719786074536755382}
@@ -43407,7 +43407,7 @@ ParticleSystem:
   looping: 0
   prewarm: 0
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
@@ -48181,8 +48181,8 @@ GameObject:
   - component: {fileID: 8719786074536755382}
   - component: {fileID: 2478679206272589010}
   - component: {fileID: 5888331479560280120}
-  m_Layer: 24
-  m_Name: Charge_Fire(Unscaled)
+  m_Layer: 0
+  m_Name: Charge_Fire(Spawn)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48196,8 +48196,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4592643921774826832}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.5}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 1885604529827188180}
   - {fileID: 1493981195687608936}
@@ -48229,7 +48229,7 @@ ParticleSystem:
   looping: 1
   prewarm: 1
   playOnAwake: 1
-  useUnscaledTime: 1
+  useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
   startDelay:
