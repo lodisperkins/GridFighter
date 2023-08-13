@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Lodis.Gameplay
 {
@@ -40,7 +41,7 @@ namespace Lodis.Gameplay
         void Update()
         {
             if (_healthComponent != null)
-                _slider.value = _healthComponent.Health;
+                _slider.DOValue(_healthComponent.Health, 0.1f);
 
             _slider.maxValue = MaxValue;
 

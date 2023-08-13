@@ -86,12 +86,12 @@ namespace Lodis
             if (_moveSet.Energy >= _ability1Cost)
                 _abilitySlot1Image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_ability1Cost];
             else
-                _abilitySlot1Image.color = Color.white;
+                _abilitySlot1Image.color = Color.grey;
 
             if (_moveSet.Energy >= _ability2Cost)
                 _abilitySlot2Image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_ability2Cost];
             else
-                _abilitySlot2Image.color = Color.white;
+                _abilitySlot2Image.color = Color.grey;
 
             if (_abilitySlot1Image.enabled)
             {

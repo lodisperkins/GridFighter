@@ -7,6 +7,7 @@ using DG.Tweening.Plugins.Options;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using Lodis.Gameplay;
+using UnityEngine.Events;
 
 namespace Lodis.UI
 {
@@ -20,8 +21,14 @@ namespace Lodis.UI
         [SerializeField]
         private UnityEngine.EventSystems.EventSystem _eventSystem;
         private GameObject _lastSelectedGameObject;
+        private UnityEvent _onSelectionUpdated = new UnityEvent();
 
         public EventSystem EventSystem { get => _eventSystem; set => _eventSystem = value; }
+
+        public void AddOnSelectionUpdatedAction(UnityAction action)
+        {
+            _onSelectionUpdated.AddListener(action);
+        }
 
         public void LerpToTransform(Transform rect)
         {
@@ -33,6 +40,9 @@ namespace Lodis.UI
         {
             if (!EventSystem)
                 return;
+
+            if (_lastSelectedGameObject != EventSystem.currentSelectedGameObject)
+                _onSelectionUpdated?.Invoke();
 
             _lastSelectedGameObject = EventSystem.currentSelectedGameObject;
 

@@ -5,6 +5,7 @@ using Lodis.Gameplay;
 using UnityEngine.UI;
 using Lodis.Utility;
 using UnityEngine.Events;
+using DG.Tweening;
 
 public class BurstMeterBehaviour : MonoBehaviour
 {
@@ -33,7 +34,7 @@ public class BurstMeterBehaviour : MonoBehaviour
     void Update()
     {
         if (!Target) return;
-        _slider.value = Target.BurstEnergy;
+        _slider.DOValue(Target.BurstEnergy, 0.1f);
 
         if (_slider.IsFilled())
         {

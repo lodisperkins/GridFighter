@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class EnergyBarBehaviour : MonoBehaviour
 {
@@ -91,7 +92,7 @@ public class EnergyBarBehaviour : MonoBehaviour
     void Update()
     {
         if (_target != null)
-            _slider.value = _target.Energy;
+            _slider.DOValue(_target.Energy, 0.1f);
         else return;
 
         _energyTextCounter.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_target.Energy];
