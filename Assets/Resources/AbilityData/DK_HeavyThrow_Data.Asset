@@ -36,6 +36,7 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: a5b20bfd986023340a9b09e3118a41a9, type: 3}
   ActivateSound: {fileID: 8300000, guid: 30be62bbf4aceee449850dbe76565062, type: 3}
   ActiveSound: {fileID: 0}
@@ -53,6 +54,8 @@ MonoBehaviour:
     Damage: 1
     BaseKnockBack: 30
     KnockBackScale: 1
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 1.5
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
@@ -63,7 +66,7 @@ MonoBehaviour:
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopTimeModifier: 0
+    HitStopShakeStrength: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}

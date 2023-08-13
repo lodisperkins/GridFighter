@@ -5757,7 +5757,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!82 &402693612
 AudioSource:
   m_ObjectHideFlags: 0
@@ -27426,6 +27426,11 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5928271887490505920, guid: 9cf07e279aee8874e96966403e44d392,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6611131498167266987, guid: 9cf07e279aee8874e96966403e44d392,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -27434,7 +27439,7 @@ PrefabInstance:
     - target: {fileID: 6611131498167266987, guid: 9cf07e279aee8874e96966403e44d392,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 65.9
+      value: 65.899994
       objectReference: {fileID: 0}
     - target: {fileID: 7961645670665850245, guid: 9cf07e279aee8874e96966403e44d392,
         type: 3}
@@ -27471,7 +27476,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 68.2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 9221897168538515231, guid: 9cf07e279aee8874e96966403e44d392,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5936680445020108065, guid: 9cf07e279aee8874e96966403e44d392, type: 3}
+    - {fileID: 9213487612177358590, guid: 9cf07e279aee8874e96966403e44d392, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9cf07e279aee8874e96966403e44d392, type: 3}
 --- !u!222 &2674422428262179456
 CanvasRenderer:
