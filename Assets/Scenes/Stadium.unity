@@ -10565,7 +10565,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _duration: 0.1
   _strength: 3
-  _frequency: 1
+  _frequency: 2
 --- !u!1 &946163700
 GameObject:
   m_ObjectHideFlags: 0
@@ -27262,6 +27262,11 @@ PrefabInstance:
       propertyPath: IntendedSender
       value: 
       objectReference: {fileID: 2002827554}
+    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
+      propertyPath: _explosion
+      value: 
+      objectReference: {fileID: 1245706752387870896, guid: 4c6c95d842f6bf7429c5615143bf438b,
+        type: 3}
     - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
       propertyPath: _chargeSound
       value: 

@@ -67,7 +67,7 @@ MonoBehaviour:
     HitAngle: 1.5
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0.13
+    HitStunTime: 0.7
     Priority: 4
     OwnerAlignement: 0
     AbilityType: 10
@@ -78,7 +78,7 @@ MonoBehaviour:
     HitStopShakeStrength: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
-    HitSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: 683e10cbe668444e9a47aeb76b05b041, type: 3}
     DespawnSound: {fileID: 0}
   _customStats: []
   animationType: 3

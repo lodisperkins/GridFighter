@@ -67,10 +67,17 @@ namespace Lodis.Gameplay
                 _characterFeedback.EmissionStrength = strength;
                _characterFeedback.TimeBetweenFlashes = oldTime;
                 playerCharacter.SetActive(false);
-                Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
-                CameraBehaviour.ShakeBehaviour.ShakeRotation();
-                SoundManagerBehaviour.Instance.PlaySound(_explosionSound);
+
+                GameObject explosion = Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
+                ParticleColorManagerBehaviour colorManager = explosion.GetComponent<ParticleColorManagerBehaviour>();
+                colorManager.Alignment = playerID == 1 ? GridScripts.GridAlignment.LEFT : GridScripts.GridAlignment.RIGHT;
+                colorManager.SetColors();
+
+                CameraBehaviour.ShakeBehaviour.ShakeRotation(1, 4, 90);
+
+                SoundManagerBehaviour.Instance.PlaySound(_explosionSound, 2);
                 SoundManagerBehaviour.Instance.TogglePauseMusic();
+
                 _onCharacterExplosion.Raise();
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
 

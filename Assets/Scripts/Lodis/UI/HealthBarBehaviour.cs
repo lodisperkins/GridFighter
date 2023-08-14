@@ -6,6 +6,7 @@ using DG.Tweening;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using Lodis.UI;
+using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
@@ -29,6 +30,10 @@ namespace Lodis.Gameplay
         private Color _damageCounterDefaultColor;
         [SerializeField]
         private Color _damageCounterMaxColor;
+        [SerializeField]
+        private UnityEvent _onDangerModeActive;
+        [SerializeField]
+        private AudioClip _dangerVoiceClip;
         private ShakeBehaviour _damageCounterShake;
         private float _maxValue = 1;
         private float _lastHealth;
@@ -71,6 +76,8 @@ namespace Lodis.Gameplay
                 _damageFlash.BaseColor = _damageCounterMaxColor;
                 _damageFlash.StartFlash();    
                 _dangerModeActive = true;
+                _onDangerModeActive?.Invoke();
+                Sound.SoundManagerBehaviour.Instance.PlaySound(_dangerVoiceClip, 2);
             }
             else if (_healthComponent.Health < _healthComponent.MaxHealth)
             {

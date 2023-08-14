@@ -877,6 +877,10 @@ MonoBehaviour:
   _damageCounter: {fileID: 4290014089013895491}
   _damageCounterDefaultColor: {r: 1, g: 1, b: 1, a: 1}
   _damageCounterMaxColor: {r: 1, g: 0.91517913, b: 0, a: 1}
+  _onDangerModeActive:
+    m_PersistentCalls:
+      m_Calls: []
+  _dangerVoiceClip: {fileID: 8300000, guid: c6fafe2c6e65e413195fcfedbc0a9259, type: 3}
 --- !u!114 &4290014089331699702
 MonoBehaviour:
   m_ObjectHideFlags: 0
