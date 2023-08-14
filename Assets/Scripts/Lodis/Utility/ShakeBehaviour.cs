@@ -12,6 +12,7 @@ public class ShakeBehaviour : MonoBehaviour
     private float _strength;
     [SerializeField]
     private int _frequency;
+    private RectTransform _rectTransform;
     private Tweener _tweener;
     private Quaternion _startRotation;
     private Vector3 _startPosition;
@@ -44,6 +45,17 @@ public class ShakeBehaviour : MonoBehaviour
     {
         _tweener = transform.DOShakePosition(_duration, _strength, _frequency, 90);
         _tweener.onComplete += () => transform.position = _startPosition;
+    }
+
+    public void ShakeAnchoredPosition()
+    {
+        if (!_rectTransform)
+            _rectTransform = GetComponent<RectTransform>();
+
+        if (_tweener == null || !_tweener.IsPlaying())
+            _tweener = _rectTransform.DOShakeAnchorPos(_duration, _strength, _frequency, 90);
+        else
+            _tweener.Restart();
     }
 
     public void ShakePosition(float duration, float strength, int frequency)

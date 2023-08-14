@@ -23,12 +23,13 @@ namespace Lodis.UI
         private Text _text;
 
         public bool FlashActive { get => _flashActive; private set => _flashActive = value; }
+        public Color BaseColor { get => _baseColor; set => _baseColor = value; }
 
         // Start is called before the first frame update
         void Awake()
         {
             _text = GetComponent<Text>();
-            _baseColor = _text.color;
+            BaseColor = _text.color;
         }
 
         private void Start()
@@ -61,7 +62,7 @@ namespace Lodis.UI
             {
                 _text.color = _flashColor;
                 yield return new WaitForSeconds(_flashActiveTime);
-                _text.color = _baseColor;
+                _text.color = BaseColor;
                 yield return new WaitForSeconds(_flashInactiveTime);
             }
         }

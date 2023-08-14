@@ -81,12 +81,19 @@ namespace Lodis.UI
             {
                 MatchTimeRemaining -= Time.deltaTime;
                 _timeUp = MatchTimeRemaining <= 0;
-                timeText = Mathf.Ceil(MatchTimeRemaining).ToString();
+
+                int minutes = Mathf.FloorToInt(MatchTimeRemaining / 60f);
+                int seconds = Mathf.FloorToInt(MatchTimeRemaining - minutes * 60f);
+
+                string formattedTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+
+                timeText = formattedTime;
             }
             else
             {
                 MatchTimeRemaining = float.PositiveInfinity;
                 _timeUp = false;
+
                 timeText = MatchTimeRemaining.ToString();
             }
 
