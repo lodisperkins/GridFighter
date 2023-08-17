@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: DK_RadialStrike_Data
+  m_EditorClassIdentifier: 
+  abilityName: RadialStrike
+  abilityDescription: Dash forward at high speed before delivering an ultra-hot sweep
+    kick!
+  exampleClip: {fileID: 32900000, guid: 8e541586a4f46f4448fda10ffc2ff470, type: 3}
+  AbilityType: 8
+  timeActive: 0.3
+  recoverTime: 0.6
+  startUpTime: 0.2
+  chargeTime: 5
+  maxActivationAmount: 1
+  EnergyCost: 4
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
+  useAbilityTimingForAnimation: 0
+  playAnimationManually: 1
+  visualPrefab: {fileID: 1262993906260531779, guid: a9d9a52861a5d6f418f1e5c207d8c19f,
+    type: 3}
+  Accessory: {fileID: 0}
+  Effects: []
+  Sounds: []
+  DisplayIcon: {fileID: 21300000, guid: e60fb0c998d180e4198842718312accc, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 30be62bbf4aceee449850dbe76565062, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: RadialStrikeCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 65536
+    MultiHitWaitTime: 0
+    Damage: 15
+    BaseKnockBack: 5
+    KnockBackScale: 1.5
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 0.3
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.15
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength: 1.6
+    ShakesCamera: 1
+    SpawnSound: {fileID: 8300000, guid: b77ff69dcd63b164fad980e19406c7ba, type: 3}
+    HitSound: {fileID: 8300000, guid: 144018904077bdc4ca123a40935af801, type: 3}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: HitBoxScaleX
+    value: 2
+  - name: HitBoxScaleY
+    value: 1
+  - name: HitBoxScaleZ
+    value: 3
+  - name: RotationSpeed
+    value: 650
+  - name: PanelTravelDistance
+    value: 3
+  - name: HitBoxDistanceX
+    value: 1
+  - name: HitBoxDistanceZ
+    value: 0
+  animationType: 3
+  _customAnimation: {fileID: 7400000, guid: a1122af4932a8554db88a3464df8b93c, type: 3}
+  _additionalAnimations: []

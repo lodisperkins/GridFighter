@@ -78,7 +78,7 @@ MonoBehaviour:
     HitStopShakeStrength: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
-    HitSound: {fileID: 8300000, guid: 8f03eb1f22d8b42cba2d0ffb939b818c, type: 3}
+    HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats: []
   animationType: 3

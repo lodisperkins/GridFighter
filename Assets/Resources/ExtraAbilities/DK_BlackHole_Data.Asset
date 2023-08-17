@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
+  m_Name: DK_BlackHole_Data
+  m_EditorClassIdentifier: 
+  abilityName: Black Hole
+  abilityDescription: Creates a large black hole that pushes opponents towards its
+    center.
+  exampleClip: {fileID: 0}
+  AbilityType: 8
+  timeActive: 0.1
+  recoverTime: 0.2
+  startUpTime: 0.1
+  chargeTime: 0
+  maxActivationAmount: 1
+  EnergyCost: 2
+  CancellationRules:
+  - Phase: 6
+    CanOnlyCancelOnOpponentHit: 0
+    CanCancelOnMove: 0
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 0
+    CanCancelIntoNormal: 0
+    cancelOnHit: 0
+    cancelOnFlinch: 1
+    cancelOnKnockback: 1
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 8502064466816610340, guid: 36fe61a463c34094b8f27ff52fa3ef9c,
+    type: 3}
+  Accessory: {fileID: 0}
+  Effects: []
+  Sounds: []
+  DisplayIcon: {fileID: 21300000, guid: 05b0189d9d5926942bfa97e15eb0e92e, type: 3}
+  ActivateSound: {fileID: 8300000, guid: d20e3b6d9f1185d4c834f8bc42ac9b39, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: LeftCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 5
+    DestroyOnHit: 0
+    IsMultiHit: 1
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4062519
+    MultiHitWaitTime: 0.1
+    Damage: 0
+    BaseKnockBack: 0.3
+    KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 1
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime: 0.05
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 0
+    HitStopShakeStrength: 0.4
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 074a589fcabe2794fa4daa4a303d5518, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  - Name: MidCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 5
+    DestroyOnHit: 0
+    IsMultiHit: 1
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4062519
+    MultiHitWaitTime: 0.05
+    Damage: 0
+    BaseKnockBack: 2
+    KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 1.5
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 5803877790521241106, guid: 9699fdb12d707aa4f8ef7a924c76132d,
+      type: 3}
+    HitEffectLevel: 0
+    HitStopShakeStrength: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: ee5134cd9ebaa094fb9e1c7b4d118ed0, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  - Name: RightCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive: 5
+    DestroyOnHit: 0
+    IsMultiHit: 1
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4062519
+    MultiHitWaitTime: 0.1
+    Damage: 0
+    BaseKnockBack: 0.3
+    KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 2
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 0
+    HitStopShakeStrength: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  - Name: LaunchCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 3
+    DestroyOnHit: 0
+    IsMultiHit: 1
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4062519
+    MultiHitWaitTime: 1
+    Damage: 1
+    BaseKnockBack: 3
+    KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 1.5
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopShakeStrength: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: TravelDistance
+    value: 3
+  - name: DespawnTime
+    value: 2.5
+  - name: Speed
+    value: 5
+  animationType: 0
+  _customAnimation: {fileID: 0}
+  _additionalAnimations: []

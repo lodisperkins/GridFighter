@@ -10,6 +10,7 @@ namespace Lodis.Sound
         private static SoundManagerBehaviour _instance;
         [SerializeField] private AudioSource _soundEffectSource;
         [SerializeField] private AudioSource _musicSource;
+        [SerializeField] private AudioSource _announcer;
         [SerializeField] private AudioClip[] _hitSounds;
         private AudioClip _lastClip;
         private bool _canPlaySameSFX;
@@ -88,6 +89,14 @@ namespace Lodis.Sound
 
             RoutineBehaviour.Instance.StopAction(_enableSameSFXAction);
             _enableSameSFXAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canPlaySameSFX = true, TimedActionCountType.SCALEDTIME, _sameSoundDelay);
+        }
+
+        public void PlayerAnnouncerSound(AudioClip voiceClip)
+        {
+            if (_announcer.isPlaying)
+                _announcer.Stop();
+
+            _announcer.PlayOneShot(voiceClip);
         }
 
         /// <summary>

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 1
+  m_UseShadowmask: 0
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -648,6 +648,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8243468117474896385, guid: faf89ceb12b13cb4dbaadd776c920628,
         type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4a53c4036c96be44c9d602e0cd5f7ccc, type: 3}
+    - target: {fileID: 8243468117474896385, guid: faf89ceb12b13cb4dbaadd776c920628,
+        type: 3}
       propertyPath: m_PlayOnAwake
       value: 1
       objectReference: {fileID: 0}
@@ -711,6 +716,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8243468118614089681, guid: faf89ceb12b13cb4dbaadd776c920628,
+        type: 3}
+      propertyPath: _announcer
+      value: 
+      objectReference: {fileID: 233688955}
     - target: {fileID: 8243468118614089686, guid: faf89ceb12b13cb4dbaadd776c920628,
         type: 3}
       propertyPath: m_Name
@@ -718,6 +728,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: faf89ceb12b13cb4dbaadd776c920628, type: 3}
+--- !u!114 &85989383 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8243468118614089681, guid: faf89ceb12b13cb4dbaadd776c920628,
+    type: 3}
+  m_PrefabInstance: {fileID: 85989382}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6d0e72a50b33754cb98af6d7ce0f54b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &158141723
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1187,6 +1209,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &164044882 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6983262583683829302, guid: e07f9430fa55a7a41aaf98461377f925,
@@ -1267,6 +1300,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 170096326}
   m_CullTransparentMesh: 0
+--- !u!1001 &233688954
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560513, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794674715085560519, guid: 514cf2bb977e9ca448cea43a425af18d,
+        type: 3}
+      propertyPath: m_Name
+      value: Announcer
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 514cf2bb977e9ca448cea43a425af18d, type: 3}
+--- !u!82 &233688955 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 5794674715085560512, guid: 514cf2bb977e9ca448cea43a425af18d,
+    type: 3}
+  m_PrefabInstance: {fileID: 233688954}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &297134775
 GameObject:
   m_ObjectHideFlags: 0
@@ -3041,6 +3149,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: StartBattleTransition
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 85989383}
+        m_MethodName: PlayerAnnouncerSound
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 8300000, guid: 3986304958a3e401a99073e433009499,
+            type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1250450189 stripped

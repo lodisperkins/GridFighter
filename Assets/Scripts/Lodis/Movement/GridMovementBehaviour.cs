@@ -95,6 +95,7 @@ namespace Lodis.Movement
         private SkinnedMeshRenderer _renderer;
         private DelayedAction _moveEnabledAction;
         private TimedAction _teleportAction;
+        private HealthBehaviour _health;
 
         /// <summary>
         /// Whether or not this object should move to its current panel when spawned
@@ -276,6 +277,7 @@ namespace Lodis.Movement
             _targetPosition = transform.position;
             _meshFilter = GetComponent<MeshFilter>();
 
+            _health = GetComponent<HealthBehaviour>();
 
             //Adding the height ensures the gameObject is not placed inside the panel.
             if (!_meshFilter)
@@ -515,7 +517,7 @@ namespace Lodis.Movement
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
 
-            if (IsMoving && !CanCancelMovement || !_canMove)
+            if (IsMoving && !CanCancelMovement || !_canMove || _health?.Stunned == true)
                 return false;
             else if (CanCancelMovement && IsMoving)
                 CancelMovement();
@@ -582,7 +584,7 @@ namespace Lodis.Movement
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
 
-            if (IsMoving && !CanCancelMovement ||!_canMove)
+            if (IsMoving && !CanCancelMovement ||!_canMove || _health?.Stunned == true)
                 return false;
 
             if (!CanMoveDiagonally && x != _position.x && y != _position.y)
@@ -645,7 +647,7 @@ namespace Lodis.Movement
             if (!targetPanel)
                 return false;
 
-            if (IsMoving && !CanCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove)
+            if (IsMoving && !CanCancelMovement || targetPanel.Alignment != tempAlignment && tempAlignment != GridAlignment.ANY || !_canMove || _health?.Stunned == true)
                 return false;
 
             //To Do: This section should make this function prevent diagonal movement based on the "_canMoveDiagonally" boolean

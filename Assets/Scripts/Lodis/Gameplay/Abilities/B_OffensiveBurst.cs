@@ -1,5 +1,6 @@
 ﻿using Lodis.GridScripts;
 using Lodis.Movement;
+using Lodis.Sound;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -36,19 +37,21 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.Physics.CancelFreeze();
             OwnerKnockBackScript.Physics.IgnoreForces = true;
             OwnerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-            OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
+            //OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
             OwnerKnockBackScript.CancelHitStun();
             OwnerKnockBackScript.CancelStun();
 
             //Disable ability benefits if the player is hit out of burst
             OnHit += arguments =>
             {
-                if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
-                    return;
 
                 GameObject objectHit = (GameObject)arguments[0];
 
                 if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
+                    return;
+
+                AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(owner), "Burst Drive");
+                if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
 
                 OwnerKnockBackScript.DisableInvincibility();

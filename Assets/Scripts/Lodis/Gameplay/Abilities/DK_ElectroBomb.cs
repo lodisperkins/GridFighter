@@ -40,17 +40,11 @@ namespace Lodis.Gameplay
             TimeCountType = TimedActionCountType.UNSCALEDTIME;
 
             PrepareBlast();
-            OnHit += SpawnExplosion;
             _explosionSpawned = false;
         }
 
         private void SpawnExplosion(params object[] args)
         {
-            //Only check knockback if a player was hit.
-            GameObject other = (GameObject)args[0];
-            if (!other.CompareTag("Panel") || _explosionSpawned)
-                return;
-
             _explosionSpawned = true;
             Projectile.SetActive(false);
             float explosionColliderHeight = abilityData.GetCustomStatValue("ExplosionColliderHeight");
@@ -85,7 +79,9 @@ namespace Lodis.Gameplay
 
         protected override void OnActivate(params object[] args)
         {
-            base.OnActivate(args); 
+            base.OnActivate(args);
+            DelayedAction action = RoutineBehaviour.Instance.StartNewConditionAction(SpawnExplosion, condition => Projectile.transform.position.y <= 0 && !_explosionSpawned);
+            RoutineBehaviour.Instance.StartNewConditionAction(parameters => RoutineBehaviour.Instance.StopAction(action), condition => !Projectile.activeInHierarchy);
             //MatchManagerBehaviour.Instance.SuperInUse = false;
         }
 

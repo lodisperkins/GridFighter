@@ -336,6 +336,18 @@ namespace Lodis.Gameplay
             _animator.SetTrigger("ActivateCustom");
         }
 
+        public void PlayAnimation(AnimationClip clip, float speed = 1, bool stopCurrentAnimation = false, bool shouldMirror = true)
+        {
+            if (stopCurrentAnimation)
+                StopCurrentAnimation();
+
+            _targetSpeed = speed;
+            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+            _overrideController["rig|rigAction"] = clip;
+            _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT && shouldMirror);
+            _animator.SetTrigger("ActivateCustom");
+        }
+
         public void PlayAnimation(float time, AnimationClip clip)
         {
             if (time <= 0)
@@ -343,17 +355,20 @@ namespace Lodis.Gameplay
 
             float newSpeed = (clip.length / time );
 
-            PlayAnimation(clip, newSpeed);
+            PlayAnimation(clip, newSpeed, false, true);
         }
 
         public void PlayAbilityAnimation()
         {
+
             Ability ability = _movesetBehaviour.LastAbilityInUse;
 
             _currentAbilityAnimating = ability;
             _animationPhase = 0;
 
             StopCurrentAnimation();
+
+            _animator.Update(Time.deltaTime);
 
             ///Play animation based on type
             switch (_currentAbilityAnimating.abilityData.animationType)
@@ -433,6 +448,7 @@ namespace Lodis.Gameplay
             else
                 _animationPhase = 3;
 
+            _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT && ability.abilityData.ShouldMirror);
             _animator.ResetTrigger("Attack");
             _animator.Update(Time.deltaTime);
             _animator.SetTrigger("Attack");
@@ -447,6 +463,7 @@ namespace Lodis.Gameplay
             _animator.StopPlayback();
             _overrideController["Cast"] = _runtimeController.animationClips[0];
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
+            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
         }
 
         /// <summary>

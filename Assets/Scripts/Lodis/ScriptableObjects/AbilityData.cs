@@ -111,6 +111,10 @@ namespace Lodis.ScriptableObjects
         [SerializeField]
         private AnimationClip _customAnimation;
 
+        [Tooltip("Whether or not this animation should be mirrored when on the right side.")]
+        [SerializeField]
+        private bool _shouldMirror = true;
+
         [Tooltip("Any animations that will be used in the ability script.")]
         [SerializeField]
         private AnimationClip[] _additionalAnimations;
@@ -183,6 +187,8 @@ namespace Lodis.ScriptableObjects
                 return ColliderData.Length;
             }
         }
+
+        public bool ShouldMirror { get => _shouldMirror; set => _shouldMirror = value; }
 
         /// <summary>
         /// Gets the first cancellation rule that matches the given phase.

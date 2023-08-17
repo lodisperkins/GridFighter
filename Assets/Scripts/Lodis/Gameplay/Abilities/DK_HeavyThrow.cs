@@ -78,7 +78,7 @@ namespace Lodis.Gameplay
                 Debug.LogError("Additional throw animations missing from " + abilityData.abilityName + "ability.");
 
             float throwDelay = abilityData.GetCustomStatValue("ThrowDelay");
-            OwnerAnimationScript.PlayAnimation(clip);
+            OwnerAnimationScript.PlayAnimation(clip, 1, true);
 
             GameObject whirlInstance = MonoBehaviour.Instantiate(_whirlEffect, owner.transform.position, owner.transform.rotation);
             MonoBehaviour.Destroy(whirlInstance, throwDelay);

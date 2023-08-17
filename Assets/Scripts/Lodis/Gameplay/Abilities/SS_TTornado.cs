@@ -14,6 +14,7 @@ namespace Lodis.Gameplay
         private GameObject _orbs;
         private GameObject _effectInstance;
         private GameObject _thalamusInstance;
+        private Transform _heldItemSpawn;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -47,9 +48,12 @@ namespace Lodis.Gameplay
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
+            _heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
+            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
+                _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
 
-            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, OwnerMoveset.HeldItemSpawnLeft, true);
-            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, OwnerMoveset.HeldItemSpawnLeft, true);
+            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
+            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true);
             _thalamusInstance.transform.localRotation = Quaternion.identity;
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
@@ -57,7 +61,7 @@ namespace Lodis.Gameplay
             AnimationClip clip = null;
             abilityData.GetAdditionalAnimation(0, out clip);
 
-            OwnerAnimationScript.PlayAnimation(clip);
+            OwnerAnimationScript.PlayAnimation(clip, 1, false, true);
             _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position + Vector3.up, Quaternion.identity);
 
         }
@@ -69,7 +73,7 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
-            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.DespawnEffect, OwnerMoveset.HeldItemSpawnLeft, true);
+            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.DespawnEffect, _heldItemSpawn, true);
 
             OwnerAnimationScript.gameObject.SetActive(true);
             EnableAccessory();

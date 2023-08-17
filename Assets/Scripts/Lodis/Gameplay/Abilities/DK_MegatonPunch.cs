@@ -69,7 +69,9 @@ namespace Lodis.Gameplay
             {
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(false);
                 SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[0], 3);
-                _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], OwnerMoveset.RightMeleeSpawns[1], true);
+                Transform effectSpawn = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
+
+                _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], effectSpawn, true);
                 MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, 0.01f, _slowMotionTime);
             });
 
@@ -121,7 +123,7 @@ namespace Lodis.Gameplay
             _comboStarted = true;
             OwnerMoveScript.DisableMovement(condition => !_comboStarted, false, true);
 
-            OwnerAnimationScript.PlayAnimation(_comboClip, 1, true);
+            OwnerAnimationScript.PlayAnimation(_comboClip, 1, true, true);
 
             _opponentKnockback.CancelHitStun();
             _opponentKnockback.Physics.StopVelocity();

@@ -1,4 +1,5 @@
 ﻿using Lodis.Gameplay;
+using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace Lodis.UI
         private bool _setColorsOnStart = true;
 
         public ColorObject[] ObjectsToColor { get => _objectsToColor; private set => _objectsToColor = value; }
+        public GridAlignment Alignment { get => _alignment; set => _alignment = value; }
 
         private void SetHue(ColorObject objectToColor)
         {
@@ -60,7 +62,7 @@ namespace Lodis.UI
         /// </summary>
         public void SetColors()
         {
-            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(_alignment);
+            _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(Alignment);
 
             foreach (ColorObject colorObject in ObjectsToColor)
             {

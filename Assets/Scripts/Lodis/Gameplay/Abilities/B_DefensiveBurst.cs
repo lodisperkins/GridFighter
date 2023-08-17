@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Lodis.GridScripts;
 using Lodis.Movement;
+using Lodis.Sound;
 using Lodis.Utility;
 using UnityEngine;
 
@@ -43,17 +44,18 @@ namespace Lodis.Gameplay
             //Disable ability benefits if the player is hit out of burst
             OnHit += arguments =>
             {
-                if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
-                    return;
-
                 GameObject objectHit = (GameObject)arguments[0];
 
                 if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
                     return;
 
+                AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(owner), "Burst Counter");
+                if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
+                    return;
+
+
                 OwnerKnockBackScript.DisableInvincibility();
                 OwnerKnockBackScript.Physics.CancelFreeze();
-
                 PanelBehaviour panel;
 
                 bool validPanel = BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(owner.transform.position, out panel);
