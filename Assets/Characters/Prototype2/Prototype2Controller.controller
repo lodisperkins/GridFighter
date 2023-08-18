@@ -764,14 +764,14 @@ AnimatorState:
   m_WriteDefaultValues: 1
   m_Mirror: 0
   m_SpeedParameterActive: 0
-  m_MirrorParameterActive: 0
+  m_MirrorParameterActive: 1
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
   m_Motion: {fileID: 3374748389425109202, guid: 860d5ace0b2c1d448b45a6e794cc7753,
     type: 3}
   m_Tag: 
   m_SpeedParameter: AnimationSpeedScale
-  m_MirrorParameter: 
+  m_MirrorParameter: OnRightSide
   m_CycleOffsetParameter: 
   m_TimeParameter: 
 --- !u!91 &9100000
