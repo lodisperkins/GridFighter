@@ -711,7 +711,7 @@ namespace Lodis.Movement
         /// <returns>Returns false if the panel is null.</returns>
         public bool TeleportToPanel(PanelBehaviour panel, float travelTime = 0.05f)
         {
-            if (!panel)
+            if (!panel || _health?.Stunned == true)
                 return false;
 
             RoutineBehaviour.Instance.StopAction(_teleportAction);
@@ -739,6 +739,8 @@ namespace Lodis.Movement
         /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
         public void TeleportToLocation(Vector3 position, float travelTime = 0.05f, bool setInactive = true)
         {
+            if (_health?.Stunned == true)
+                return;
 
             RoutineBehaviour.Instance.StopAction(_teleportAction);
 
@@ -941,7 +943,7 @@ namespace Lodis.Movement
 
         private void Update()
         {
-            if (!_canMove)
+            if (!_canMove || _health?.Stunned == true)
                 return;
 
             MoveToClosestAlignedPanelOnRow();

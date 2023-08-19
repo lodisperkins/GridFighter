@@ -16,11 +16,15 @@ namespace Lodis.UI
         [SerializeField]
         private GameObject _player1Root;
         [SerializeField]
+        private GameObject _p1FirstSelected;
+        [SerializeField]
         private Text _player1JoinInstruction;
         [SerializeField]
         private CSSCustomCharacterManager _p1CustomManager;
         [SerializeField]
         private GameObject _player2Root;
+        [SerializeField]
+        private GameObject _p2FirstSelected;
         [SerializeField]
         private Text _player2JoinInstruction;
         [SerializeField]
@@ -93,7 +97,7 @@ namespace Lodis.UI
                 _player1JoinInstruction.gameObject.SetActive(false);
 
                 _p1CustomManager.SetEventSystems(eventSystem);
-                _p1CustomManager.SetSelectedToFirstOption();
+                _p1CustomManager.EventManager.SetSelectedGameObject(_p1FirstSelected);
 
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
@@ -106,7 +110,7 @@ namespace Lodis.UI
                 _player2JoinInstruction.gameObject.SetActive(false);
 
                 _p2CustomManager.SetEventSystems(eventSystem);
-                _p2CustomManager.SetSelectedToFirstOption();
+                _p2CustomManager.EventManager.SetSelectedGameObject(_p2FirstSelected);
 
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();
@@ -198,7 +202,7 @@ namespace Lodis.UI
             }
             int num = _currentPlayer;
             playerInput.actions.actionMaps[1].FindAction("Cancel").started += context => ActivateMenu(playerInput, num);
-            playerInput.actions.actionMaps[1].FindAction("Navigate").started += context => GoToPage(context, num);
+            //playerInput.actions.actionMaps[1].FindAction("Navigate").started += context => GoToPage(context, num);
 
             playerInput.actions.actionMaps[1].FindAction("MiddleClick").started += context =>
             {
