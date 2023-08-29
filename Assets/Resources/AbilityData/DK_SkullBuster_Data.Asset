@@ -59,23 +59,24 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 65536
     MultiHitWaitTime: 0
-    Damage: 20
-    BaseKnockBack: 4
-    KnockBackScale: 2
+    Damage: 30
+    BaseKnockBack: 10
+    KnockBackScale: 3
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle: -1.2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.25
+    HitStunTime: 0.5
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
-    SpawnEffect: {fileID: 0}
+    SpawnEffect: {fileID: 1493204891009420812, guid: 67bf52d6da49f564e8176f83473f4340,
+      type: 3}
     HitSpark: {fileID: 8482821253585752479, guid: b2d1a7e3c779c334183600eee56341df,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 2
+    HitStopShakeStrength: 4
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: 1ed3567acb1fa504f8f026962164e2f1, type: 3}
@@ -96,4 +97,5 @@ MonoBehaviour:
   animationType: 3
   _customAnimation: {fileID: 5180280961208456968, guid: bc6b2460239e4494cb656ac7084942c1,
     type: 3}
+  _shouldMirror: 1
   _additionalAnimations: []

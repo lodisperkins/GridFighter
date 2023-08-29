@@ -18,6 +18,7 @@ namespace Lodis.Gameplay
         private GameObject _burstEffect;
         private float _defaultRestTime;
         private bool _makeFreeFall;
+        private TimedAction _zoomAction;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -49,6 +50,8 @@ namespace Lodis.Gameplay
                 if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
                     return;
 
+                CameraBehaviour.Instance.ZoomAmount = 3;
+                _zoomAction = RoutineBehaviour.Instance.StartNewTimedAction(parameter => CameraBehaviour.Instance.ZoomAmount = 0, TimedActionCountType.SCALEDTIME, 0.7f);
                 AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(owner), "Burst Counter");
                 if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
@@ -67,6 +70,7 @@ namespace Lodis.Gameplay
                     OwnerKnockBackScript.Physics.RB.isKinematic = true;
                     OwnerKnockBackScript.CurrentAirState = AirState.NONE;
                 }
+
             };
         }
 
@@ -118,6 +122,8 @@ namespace Lodis.Gameplay
         {
             ResetState();
             OwnerKnockBackScript.Physics.IgnoreForces = false;
+            CameraBehaviour.Instance.ZoomAmount = 0;
+            RoutineBehaviour.Instance.StopAction(_zoomAction);
         }
 
         public override void Update()

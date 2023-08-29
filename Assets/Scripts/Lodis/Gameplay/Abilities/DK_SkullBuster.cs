@@ -36,6 +36,7 @@ namespace Lodis.Gameplay
         private GameObject _fistTrail;
         private Transform _spawnTransform;
         private HitColliderBehaviour _hitScript;
+        private TimedAction _zoomAction;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -76,6 +77,20 @@ namespace Lodis.Gameplay
             _knockBackBehaviour.Physics.DisablePanelBounce();
 
             _chargeEffect = Object.Instantiate(_chargeEffectRef, _spawnTransform);
+
+            //Disable ability benefits if the player is hit out of burst
+            OnHit += arguments =>
+            {
+
+                GameObject objectHit = (GameObject)arguments[0];
+
+                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
+                    return;
+
+                CameraBehaviour.Instance.ZoomAmount = 1;
+                CameraBehaviour.ShakeBehaviour.ShakeRotation(1, 2, 90);
+                _zoomAction = RoutineBehaviour.Instance.StartNewTimedAction(parameter => CameraBehaviour.Instance.ZoomAmount = 0, TimedActionCountType.SCALEDTIME, 0.7f);
+            };
 
         }
 
@@ -147,6 +162,8 @@ namespace Lodis.Gameplay
             if (_chargeEffect)
                 Object.Destroy(_chargeEffect);
 
+
+            CameraBehaviour.Instance.ZoomAmount = 0;
         }
     }
 }

@@ -140,4 +140,5 @@ MonoBehaviour:
     value: 0.15
   animationType: 0
   _customAnimation: {fileID: 0}
+  _shouldMirror: 1
   _additionalAnimations: []

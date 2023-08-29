@@ -81,4 +81,5 @@ MonoBehaviour:
   animationType: 3
   _customAnimation: {fileID: 7623476096177806632, guid: d009465e92390b842a9d41c99033afb1,
     type: 3}
+  _shouldMirror: 1
   _additionalAnimations: []

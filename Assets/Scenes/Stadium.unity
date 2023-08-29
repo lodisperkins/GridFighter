@@ -10608,9 +10608,7 @@ MonoBehaviour:
   _minX: 0.1
   _maxX: 0.1
   _maxY: 1
-  _minZ: -4.7
-  _midZ: -4.7
-  _maxZ: -3.3
+  _zoomAmount: 0
   _averagePosition: {x: 0, y: 0, z: 0}
   _curve:
     serializedVersion: 2

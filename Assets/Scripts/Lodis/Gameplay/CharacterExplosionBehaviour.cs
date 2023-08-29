@@ -61,6 +61,9 @@ namespace Lodis.Gameplay
             MatchManagerBehaviour.Instance.ChangeTimeScale(0.2f, ExplosionChargeTime, ExplosionChargeTime);
             _characterVoice.PlayDeathSound();
 
+            CameraBehaviour.Instance.ClampX = false;
+            CameraBehaviour.Instance.ZoomAmount = 2;
+
             ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args =>
             {
                 knockback.HasExploded = true;
@@ -88,12 +91,16 @@ namespace Lodis.Gameplay
                 _characterFeedback.EmissionStrength = strength;
                 _characterFeedback.TimeBetweenFlashes = oldTime;
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
+                CameraBehaviour.Instance.ClampX = true;
+                CameraBehaviour.Instance.ZoomAmount = 0;
             };
         }
 
         public void ResetEmission(IntVariable playerID)
         {
             _characterFeedback?.ResetAllRenderers();
+            CameraBehaviour.Instance.ClampX = true;
+            CameraBehaviour.Instance.ZoomAmount = 0;
         }
     }
 }

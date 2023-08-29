@@ -42,6 +42,9 @@ namespace Lodis.Gameplay
             {
                 SpawnCollider(0);
                 OwnerVoiceScript.PlayLightAttackSound();
+                CameraBehaviour.Instance.AlignmentFocus = OwnerMoveScript.Alignment;
+                CameraBehaviour.Instance.ZoomAmount = 2;
+                CameraBehaviour.Instance.ClampX = false;
 
             });
 
@@ -51,6 +54,7 @@ namespace Lodis.Gameplay
                 {
                     SpawnCollider(0);
                     OwnerVoiceScript.PlayLightAttackSound();
+                    CameraBehaviour.Instance.ZoomAmount = 3;
                 }
                 else
                     EndAbility();
@@ -59,6 +63,7 @@ namespace Lodis.Gameplay
             {
                 SpawnCollider(1);
                 OwnerVoiceScript.PlayLightAttackSound();
+                CameraBehaviour.Instance.ZoomAmount = 4;
 
             });
 
@@ -73,6 +78,8 @@ namespace Lodis.Gameplay
 
                 _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], effectSpawn, true);
                 MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, 0.01f, _slowMotionTime);
+
+                CameraBehaviour.Instance.ZoomAmount = 4.2f;
             });
 
 
@@ -82,6 +89,9 @@ namespace Lodis.Gameplay
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
                 _endTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
                 OwnerVoiceScript.PlayHeavyAttackSound();
+
+                CameraBehaviour.Instance.ZoomAmount = 1;
+                CameraBehaviour.ShakeBehaviour.ShakeRotation(1, 2, 90);
             });
         }
 
@@ -201,6 +211,10 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             TimeCountType = TimedActionCountType.CHARACTERSCALEDTIME;
             DestroyAllColliders();
+
+            CameraBehaviour.Instance.ZoomAmount = 0;
+            CameraBehaviour.Instance.AlignmentFocus = GridAlignment.ANY;
+            CameraBehaviour.Instance.ClampX = true;
         }
 
         protected override void OnMatchRestart()

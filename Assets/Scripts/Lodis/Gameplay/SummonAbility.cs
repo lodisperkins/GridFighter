@@ -71,10 +71,10 @@ namespace Lodis.Gameplay
             {
                 _entityRef.name = _id;
                 GameObject instance = ObjectPoolBehaviour.Instance.GetObject(_entityRef, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
-                BlackBoardBehaviour.Instance.AddEntityToList(instance);
+                
 
                 moveBehaviour = instance.GetComponent<GridMovementBehaviour>();
-
+                BlackBoardBehaviour.Instance.AddEntityToList(moveBehaviour);
                 if (!moveBehaviour)
                     moveBehaviour = instance.AddComponent<GridMovementBehaviour>();
 

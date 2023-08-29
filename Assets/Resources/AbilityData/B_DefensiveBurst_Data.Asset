@@ -23,18 +23,18 @@ MonoBehaviour:
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
-  - Phase: 6
+  - Phase: 5
     CanOnlyCancelOnOpponentHit: 1
     CanCancelOnMove: 1
     CanCancelIntoSelf: 1
     CanCancelIntoSpecial: 1
     CanCancelIntoNormal: 1
     cancelOnHit: 0
-    cancelOnFlinch: 0
-    cancelOnKnockback: 0
+    cancelOnFlinch: 1
+    cancelOnKnockback: 1
   CancelAllOnHit: 0
-  CancelAllOnFlinch: 1
-  CancelAllOnKnockback: 1
+  CancelAllOnFlinch: 0
+  CancelAllOnKnockback: 0
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 1
@@ -83,4 +83,5 @@ MonoBehaviour:
   _customStats: []
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: f2d2ab98b82d0af4894a75927c4cea8e, type: 3}
+  _shouldMirror: 1
   _additionalAnimations: []

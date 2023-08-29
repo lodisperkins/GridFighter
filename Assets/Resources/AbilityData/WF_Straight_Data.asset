@@ -98,4 +98,5 @@ MonoBehaviour:
     value: 1
   animationType: 2
   _customAnimation: {fileID: 0}
+  _shouldMirror: 1
   _additionalAnimations: []

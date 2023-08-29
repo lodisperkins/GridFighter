@@ -138,11 +138,12 @@ MonoBehaviour:
   - name: Distance
     value: 10
   - name: SlowMotionTimeScale
-    value: 0.1
+    value: 0.05
   - name: SlowMotionTime
-    value: 1.5
+    value: 1.2
   animationType: 3
   _customAnimation: {fileID: 5180280961208456968, guid: 25b35b330c85c834c934e3100e227351,
     type: 3}
+  _shouldMirror: 1
   _additionalAnimations:
   - {fileID: 5180280961208456968, guid: f567c071368fcd948b1149bbfb046b1d, type: 3}

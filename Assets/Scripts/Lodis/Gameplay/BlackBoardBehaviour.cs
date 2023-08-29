@@ -1,4 +1,5 @@
 ﻿using Lodis.Input;
+using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections.Generic;
@@ -27,7 +28,7 @@ namespace Lodis.Gameplay
         public ParticleSystem BlockEffect;
         public ParticleSystem ReflectEffect;
         public ParticleSystem[] HitEffects;
-        private List<GameObject> _entitiesInGame = new List<GameObject>();
+        private List<GridMovementBehaviour> _entitiesInGame = new List<GridMovementBehaviour>();
         private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
         private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();
         private static BlackBoardBehaviour _instance;
@@ -56,9 +57,9 @@ namespace Lodis.Gameplay
         /// Removes all null enemies from the entities list and returns the new list
         /// </summary>
         /// <returns>The list of in game entities</returns>
-        public List<GameObject> GetEntitiesInGame()
+        public List<GridMovementBehaviour> GetEntitiesInGame()
         {
-            _entitiesInGame.RemoveAll(entity => entity == null || !entity.activeInHierarchy);
+            _entitiesInGame.RemoveAll(entity => entity == null || !entity.gameObject.activeInHierarchy);
             return _entitiesInGame;
         }
 
@@ -77,10 +78,10 @@ namespace Lodis.Gameplay
         /// </summary>
         public void DisableAllNonPlayerEntities()
         {
-            foreach (GameObject entity in _entitiesInGame)
+            foreach (GridMovementBehaviour entity in _entitiesInGame)
             {
                 if (!entity.CompareTag("Player"))
-                    ObjectPoolBehaviour.Instance.ReturnGameObject(entity);
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(entity.gameObject);
             }
         }
 
@@ -257,7 +258,7 @@ namespace Lodis.Gameplay
         /// Adds the game object to the list of significant actors on the screen
         /// </summary>
         /// <param name="entity"></param>
-        public void AddEntityToList(GameObject entity)
+        public void AddEntityToList(Movement.GridMovementBehaviour entity)
         {
             _entitiesInGame.Add(entity);
         }
