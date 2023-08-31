@@ -28,6 +28,7 @@ namespace Lodis.Gameplay
         private List<HitColliderBehaviour> _colliders = new List<HitColliderBehaviour>();
         private GameObject _chargeEffect;
         private GameObject _chargeEffectRef;
+        private MovesetBehaviour _opponentMoveset;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -38,6 +39,7 @@ namespace Lodis.Gameplay
 
 
             _chargeEffectRef = abilityData.Effects[0];
+            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<MovesetBehaviour>();
             OwnerAnimationScript.AddEventListener("Punch1", () => 
             {
                 SpawnCollider(0);
@@ -151,6 +153,9 @@ namespace Lodis.Gameplay
 
                 if (!health.IsInvincible && !health.IsIntangible)
                     _landedFirstHit = true;
+
+
+                MatchManagerBehaviour.Instance.SuperInUse = true;
             };
 
             if (colliderIndex == 2)
@@ -215,6 +220,7 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.ZoomAmount = 0;
             CameraBehaviour.Instance.AlignmentFocus = GridAlignment.ANY;
             CameraBehaviour.Instance.ClampX = true;
+            MatchManagerBehaviour.Instance.SuperInUse = false;
         }
 
         protected override void OnMatchRestart()

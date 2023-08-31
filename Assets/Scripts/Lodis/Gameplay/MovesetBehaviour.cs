@@ -797,6 +797,9 @@ namespace Lodis.Gameplay
 
             if (!CanBurst)
                 CanBurst = BurstEnergy == _maxBurstEnergyRef.Value;
+
+            if (MatchManagerBehaviour.Instance.SuperInUse)
+                CanBurst = false;
         }
     }
 }
