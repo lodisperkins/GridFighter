@@ -467,16 +467,16 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.29816014
-        functionName: IncrementAnimationPhase
-        data: 
+      - time: 0.15031579
+        functionName: RaiseCustomEvent
+        data: StartElectroBombSlowMotion
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5017482
-        functionName: IncrementAnimationPhase
-        data: 
+      - time: 0.3116842
+        functionName: RaiseCustomEvent
+        data: ThrowElectroBomb
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0

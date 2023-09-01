@@ -8,6 +8,7 @@ using UnityEditor;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 using UnityEngine.Video;
+using Lodis.Utility;
 
 namespace Lodis.ScriptableObjects
 {
@@ -168,6 +169,11 @@ namespace Lodis.ScriptableObjects
             throw new Exception(
                 "Couldn't find stat. Either the stat doesn't exist or the name is misspelled. Attempted stat name was " +
                 statName);
+        }
+
+        public bool HasCustomStatValue(string statName)
+        {
+            return _customStats.Contains(statName);
         }
 
         public HitColliderData GetColliderInfo(int index)

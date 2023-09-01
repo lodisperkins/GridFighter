@@ -32,11 +32,13 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 120879900363717271, guid: 3744f3d4f0443be4485c61a30c15069e,
+  visualPrefab: {fileID: 1697626822471647621, guid: 08c30329d97a6be479634e37e369e13c,
     type: 3}
-  Accessory: {fileID: 0}
+  Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects:
   - {fileID: 114004161566773944, guid: cf2a7c30bf210b64bab405077f1cbc34, type: 3}
+  - {fileID: 2168324044689623625, guid: b05b3558544da3b4f993a6326d86d6d1, type: 3}
+  - {fileID: 120879900363717271, guid: 3744f3d4f0443be4485c61a30c15069e, type: 3}
   Sounds: []
   DisplayIcon: {fileID: 21300000, guid: b6bded65c2f89f348bc1baf94701f5e8, type: 3}
   ActivateSound: {fileID: 8300000, guid: 88455f47dc5daa44d8ae95d6d9fcc124, type: 3}
@@ -104,16 +106,87 @@ MonoBehaviour:
     SpawnSound: {fileID: 8300000, guid: 408bb1bb65309df4c9fda578b2f27a34, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
+  - Name: SwordCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 1
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057399
+    MultiHitWaitTime: 0.1
+    Damage: 5
+    BaseKnockBack: 0
+    KnockBackScale: 2
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 1
+    HitAngle: 0
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 1
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 6002612636095783793, guid: 278762b1b2ec95445b398e191c409631,
+      type: 3}
+    HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
+      type: 3}
+    HitEffectLevel: 1
+    HitStopShakeStrength: 0.5
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  - Name: KickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057399
+    MultiHitWaitTime: 0
+    Damage: 5
+    BaseKnockBack: 5
+    KnockBackScale: 0.1
+    ClampForceWithinRing: 1
+    IgnoreMomentum: 1
+    HitAngle: 1.8
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.5
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    SpawnEffect: {fileID: 3198923806287051063, guid: 442486026d7ae68428087e1cf03543fe,
+      type: 3}
+    HitSpark: {fileID: 6571386925041405448, guid: c16776485042c6a4893bcea9f1d39446,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength: 1
+    ShakesCamera: 1
+    SpawnSound: {fileID: 8300000, guid: 53a543d7c16e1c147b7302d17cba3f9e, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
   _customStats:
   - name: ExplosionColliderHeight
     value: 5
   - name: ExplosionColliderWidth
     value: 4
   - name: JumpHeight
-    value: 3
+    value: 1.5
   - name: Speed
+    value: 10
+  - name: SlowMotionTimeScale
+    value: 0.05
+  - name: SlowMotionTime
+    value: 1.2
+  - name: OrbSpeed
     value: 2
   animationType: 3
-  _customAnimation: {fileID: 7400000, guid: 84b5ee8f967ca9e498147fc69cff8d83, type: 3}
+  _customAnimation: {fileID: 8428997266680308731, guid: 04029a85c507f584184975795be6d392,
+    type: 3}
   _shouldMirror: 1
-  _additionalAnimations: []
+  _additionalAnimations:
+  - {fileID: -783464908041811055, guid: 3adc3e3f7ce41864f8835a54a48db78e, type: 3}
+  - {fileID: 7400000, guid: 84b5ee8f967ca9e498147fc69cff8d83, type: 3}

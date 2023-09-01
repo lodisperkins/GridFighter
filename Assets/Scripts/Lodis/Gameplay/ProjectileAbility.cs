@@ -26,6 +26,8 @@ namespace Lodis.Gameplay
         public bool UseGravity;
         public bool despawnAfterTimeLimit { get; private set; }
 
+        public float Speed;
+
         public bool ScaleStats { get; set; }
         public override void Init(GameObject newOwner)
         {

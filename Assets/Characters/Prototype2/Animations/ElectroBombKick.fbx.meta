@@ -9,6 +9,9 @@ ModelImporter:
   - first:
       74: -5089787159503579606
     second: rig|WindUp
+  - first:
+      74: -783464908041811055
+    second: rig|WindUp (1)
   externalObjects: {}
   materials:
     materialImportMode: 1
@@ -44,11 +47,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: WindUp
-      takeName: WindUp
+      name: rig|WindUp (1)
+      takeName: rig|WindUp
       internalID: 0
       firstFrame: 0
-      lastFrame: 6
+      lastFrame: 58
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -57,17 +60,38 @@ ModelImporter:
       hasAdditiveReferencePose: 0
       loopTime: 0
       loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      loopBlendOrientation: 1
+      loopBlendPositionY: 1
+      loopBlendPositionXZ: 1
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.40452632
+        functionName: RaiseCustomEvent
+        data: ElectroKickWindUp
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.43326315
+        functionName: RaiseCustomEvent
+        data: ElectroKick
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.44094735
+        functionName: RaiseCustomEvent
+        data: ChargeElectroBomb
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
