@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
         [SerializeField] private ParticleSystem _spawnEffect;
         [SerializeField] private AudioClip _spawnSound;
         [SerializeField] private CharacterVoiceBehaviour _characterVoice;
+        [SerializeField] private GameObject _characterUI;
 
         public ColorManagerBehaviour ColorManager { get => _colorManager; private set => _colorManager = value; }
 
@@ -65,6 +66,11 @@ namespace Lodis.Gameplay
             {
                 Flash(colorObject, color);
             }
+        }
+
+        public void SetCharacterUIEnabled(bool value)
+        {
+            _characterUI.SetActive(value);
         }
 
         public void ResetAllRenderers()

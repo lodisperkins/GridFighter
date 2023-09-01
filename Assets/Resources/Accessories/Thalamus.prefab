@@ -30,6 +30,10 @@ PrefabInstance:
       value: Thalamus
       objectReference: {fileID: 0}
     - target: {fileID: 1724226729424998, guid: 837b69c41a8880a43ac3434cbbadb285, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724226729424998, guid: 837b69c41a8880a43ac3434cbbadb285, type: 3}
       propertyPath: m_TagString
       value: Accessory
       objectReference: {fileID: 0}

@@ -71,6 +71,8 @@ MonoBehaviour:
     Damage: 7
     BaseKnockBack: 0
     KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 1.3
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
@@ -101,4 +103,5 @@ MonoBehaviour:
     value: 1
   animationType: 0
   _customAnimation: {fileID: 0}
+  _shouldMirror: 1
   _additionalAnimations: []

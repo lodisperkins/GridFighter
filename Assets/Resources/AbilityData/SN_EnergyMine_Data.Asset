@@ -36,6 +36,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects:
   - {fileID: 8867112169225384458, guid: 247021d2ec9bf654ba6875163715662c, type: 3}
+  Sounds: []
   DisplayIcon: {fileID: 21300000, guid: e1ad5027f3b05a74288aaa9b76b0054c, type: 3}
   ActivateSound: {fileID: 8300000, guid: 7f7ce279c0f71f349bd1fd267747889d, type: 3}
   ActiveSound: {fileID: 0}
@@ -53,6 +54,8 @@ MonoBehaviour:
     Damage: 10
     BaseKnockBack: 1.5
     KnockBackScale: 1.7
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 1.35
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
@@ -81,4 +84,5 @@ MonoBehaviour:
     value: 1
   animationType: 0
   _customAnimation: {fileID: 0}
+  _shouldMirror: 1
   _additionalAnimations: []

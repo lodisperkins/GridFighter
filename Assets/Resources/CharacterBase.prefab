@@ -2041,6 +2041,7 @@ MonoBehaviour:
     type: 3}
   _spawnSound: {fileID: 8300000, guid: dc6389869d48eb74a842e55a984c284b, type: 3}
   _characterVoice: {fileID: 6432807319471925545}
+  _characterUI: {fileID: 9005602729061462553}
 --- !u!114 &6183443034730705748
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2451,6 +2452,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: CharacterUI
       objectReference: {fileID: 0}
+    - target: {fileID: 2892365619138594966, guid: 7a2efd575c69b274c968d7856168638b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3145003144209708604, guid: 7a2efd575c69b274c968d7856168638b,
         type: 3}
       propertyPath: m_IsActive
@@ -2571,6 +2577,12 @@ PrefabInstance:
 --- !u!224 &580271814038316065 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6689084462440701614, guid: 7a2efd575c69b274c968d7856168638b,
+    type: 3}
+  m_PrefabInstance: {fileID: 6114178292144683663}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9005602729061462553 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2892365619138594966, guid: 7a2efd575c69b274c968d7856168638b,
     type: 3}
   m_PrefabInstance: {fileID: 6114178292144683663}
   m_PrefabAsset: {fileID: 0}

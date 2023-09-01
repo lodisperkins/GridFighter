@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5128395196212250462}
   - component: {fileID: 2039944698610719546}
   - component: {fileID: 8043096015979716560}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Charge_ElectroBomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4775,7 +4775,7 @@ GameObject:
   - component: {fileID: 2594737670793397517}
   - component: {fileID: 2594737670793397519}
   - component: {fileID: 2594737670793397516}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Burst_Glow_Delay_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9587,7 +9587,7 @@ GameObject:
   - component: {fileID: 2594737670898698709}
   - component: {fileID: 2594737670898698711}
   - component: {fileID: 2594737670898698708}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Glow_Loop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14507,7 +14507,7 @@ GameObject:
   - component: {fileID: 2594737671758993688}
   - component: {fileID: 2594737671758993690}
   - component: {fileID: 2594737671758993691}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Charge_Lines_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19319,7 +19319,7 @@ GameObject:
   - component: {fileID: 2594737671776668454}
   - component: {fileID: 2594737671776668456}
   - component: {fileID: 2594737671776668457}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Burst_Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24131,7 +24131,7 @@ GameObject:
   - component: {fileID: 2594737671816115952}
   - component: {fileID: 2594737671816115954}
   - component: {fileID: 2594737671816115955}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Impact_Loop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28943,7 +28943,7 @@ GameObject:
   - component: {fileID: 2594737672139204330}
   - component: {fileID: 2594737672139204332}
   - component: {fileID: 2594737672139204333}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Burst_Glow_Delay_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33755,7 +33755,7 @@ GameObject:
   - component: {fileID: 2594737672573667900}
   - component: {fileID: 2594737672573667902}
   - component: {fileID: 2594737672573667903}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Lightning_Burst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38567,7 +38567,7 @@ GameObject:
   - component: {fileID: 2594737672644729770}
   - component: {fileID: 2594737672644729772}
   - component: {fileID: 2594737672644729773}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Charge_Lines
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43321,7 +43321,7 @@ GameObject:
   - component: {fileID: 3067778751660459392}
   - component: {fileID: 3067778751660459454}
   - component: {fileID: 3067778751660459393}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Glow_Start
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -48133,7 +48133,7 @@ GameObject:
   - component: {fileID: 2375082382954536520}
   - component: {fileID: 3839086587360757660}
   - component: {fileID: 2487840481247196922}
-  m_Layer: 24
+  m_Layer: 0
   m_Name: Burst_Glow_Delay_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

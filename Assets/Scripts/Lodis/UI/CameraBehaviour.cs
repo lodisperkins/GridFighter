@@ -36,6 +36,7 @@ namespace Lodis
         private Vector3 _startPosition;
         private Vector3 _startPositionYZ;
         private bool _clampX = true;
+        private bool _clampY = true;
         private float _currentTimeY;
         private GridAlignment _alignmentFocus = GridAlignment.ANY;
         private static CameraBehaviour _instance;
@@ -116,6 +117,8 @@ namespace Lodis
 
         public GridAlignment AlignmentFocus { get => _alignmentFocus; set => _alignmentFocus = value; }
         public bool ClampX { get => _clampX; set => _clampX = value; }
+        public Vector3 CameraMoveSpeed { get => _cameraMoveSpeed; set => _cameraMoveSpeed = value; }
+        public bool ClampY { get => _clampY; set => _clampY = value; }
 
         public float GetAverageDistance(Vector3 center)
         {
@@ -174,6 +177,9 @@ namespace Lodis
 
         private float GetYAxisPositionByAvg(float min, float mid, float max, float averagePositionOnAxis, float moveSensitivity)
         {
+            if (!ClampY)
+                return averagePositionOnAxis;
+
             if (averagePositionOnAxis >= moveSensitivity)
             {
                 return _startPosition.y + max;
@@ -207,8 +213,8 @@ namespace Lodis
             if (_cameraPosition.y != _lastCameraPosition.y)
                 _currentTimeY = 0;
 
-            _currentTimeX = Mathf.MoveTowards(_currentTimeX, 1, _cameraMoveSpeed.x * Time.deltaTime);
-            _currentTimeY = Mathf.MoveTowards(_currentTimeY, 1, _cameraMoveSpeed.y * Time.deltaTime);
+            _currentTimeX = Mathf.MoveTowards(_currentTimeX, 1, CameraMoveSpeed.x * Time.deltaTime);
+            _currentTimeY = Mathf.MoveTowards(_currentTimeY, 1, CameraMoveSpeed.y * Time.deltaTime);
             //_currentTimeZ = Mathf.MoveTowards(_currentTimeZ, 1, _cameraMoveSpeed.z * Time.deltaTime);
 
             float newX = 0;
