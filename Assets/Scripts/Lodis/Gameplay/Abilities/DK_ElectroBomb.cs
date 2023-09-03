@@ -2,6 +2,7 @@
 using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.Movement;
+using Lodis.Sound;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -59,6 +60,8 @@ namespace Lodis.Gameplay
                 GameObject effect = abilityData.Effects[1];
                 CameraBehaviour.Instance.CameraMoveSpeed *= 600;
 
+                OwnerVoiceScript.PlayLightAttackSound();
+
                 _axeKick = ObjectPoolBehaviour.Instance.GetObject(effect, owner.transform.position, Quaternion.Euler(owner.transform.rotation.x, -owner.transform.rotation.y, owner.transform.rotation.z));
             });
 
@@ -75,7 +78,7 @@ namespace Lodis.Gameplay
             {
                 MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, 0.01f, _slowMotionTime);
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(false);
-                CameraBehaviour.Instance.ZoomAmount = 0;
+                SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[0], 3);
             });
 
             OwnerAnimationScript.AddEventListener("ThrowElectroBomb", () =>
@@ -85,6 +88,8 @@ namespace Lodis.Gameplay
                 UseGravity = true;
 
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
+
+                OwnerVoiceScript.PlayHeavyAttackSound();
 
                 ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
                 projectileSpawner.Projectile = abilityData.Effects[2];
@@ -97,6 +102,9 @@ namespace Lodis.Gameplay
 
                 //Fire projectile
                 Projectile.name += "(" + abilityData.name + ")";
+
+                Projectile.transform.position += owner.transform.forward;
+
                 ActiveProjectiles.Add(Projectile);
 
                 DelayedAction action = RoutineBehaviour.Instance.StartNewConditionAction(SpawnExplosion, condition => Projectile.transform.position.y <= 0 && !_explosionSpawned);
@@ -185,13 +193,16 @@ namespace Lodis.Gameplay
             OwnerMoveScript.CancelMovement();
             OwnerMoveScript.DisableMovement(condition => !InUse);
             OwnerMoveScript.TeleportToLocation(position, 0, false);
+            CameraBehaviour.Instance.ZoomAmount = 0;
             //MatchManagerBehaviour.Instance.SuperInUse = true;
             //Spawn the the holding effect.
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, OwnerMoveset.HeldItemSpawnLeft, true);
-
+            CameraBehaviour.Instance.ClampY = false;
             AnimationClip throwClip = null;
             abilityData.GetAdditionalAnimation(1, out throwClip);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_axeKick);
+
+            OwnerVoiceScript.PlayLightAttackSound();
 
             RoutineBehaviour.Instance.StartNewTimedAction(args => OwnerAnimationScript.PlayAnimation(throwClip, 1, true), TimedActionCountType.FRAME, 1);
         }
@@ -210,6 +221,8 @@ namespace Lodis.Gameplay
 
             MatchManagerBehaviour.Instance.SuperInUse = true;
             PauseAbilityTimer();
+
+            OwnerKnockBackScript.SetIntagibilityByCondition(condition => !InUse);
 
             PanelBehaviour opponentPanel = null;
             if (_opponentMovement.Position.x == BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1 || _opponentMovement.Position.x == 0)
@@ -245,7 +258,7 @@ namespace Lodis.Gameplay
             _thalamusInstance.transform.localRotation = Quaternion.identity;
             _thalamusInstance.layer = LayerMask.NameToLayer("Default");
 
-            CameraBehaviour.Instance.ZoomAmount = 3;
+            CameraBehaviour.Instance.ZoomAmount = 4;
             CameraBehaviour.Instance.ClampX = false;
 
             AnimationClip kickClip;
@@ -254,6 +267,7 @@ namespace Lodis.Gameplay
 
             RoutineBehaviour.Instance.StartNewTimedAction(arguments => OwnerAnimationScript.PlayAnimation(kickClip, 1, true), TimedActionCountType.FRAME, 1);
 
+            CameraBehaviour.Instance.AlignmentFocus = OwnerMoveScript.Alignment;
 
         }
 
@@ -272,9 +286,14 @@ namespace Lodis.Gameplay
         {
             base.OnEnd();
             TimeCountType = TimedActionCountType.CHARACTERSCALEDTIME;
-            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
-            CameraBehaviour.Instance.ZoomAmount = 0;
-            CameraBehaviour.Instance.AlignmentFocus = GridAlignment.ANY;
+
+            if (!MatchManagerBehaviour.Instance.PlayerOutOfRing)
+            {
+                FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+                CameraBehaviour.Instance.ZoomAmount = 0;
+                CameraBehaviour.Instance.AlignmentFocus = GridAlignment.ANY;
+            }
+
             MatchManagerBehaviour.Instance.SuperInUse = false;
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
@@ -284,6 +303,7 @@ namespace Lodis.Gameplay
 
             OwnerKnockBackScript.Physics.IgnoreForces = false;
             CameraBehaviour.Instance.ClampX = true;
+            CameraBehaviour.Instance.ClampY = true;
 
             CameraBehaviour.Instance.CameraMoveSpeed = _defaultCameraMoveSpeed;
             _characterFeedback.SetCharacterUIEnabled(true);
@@ -307,6 +327,7 @@ namespace Lodis.Gameplay
 
             OwnerKnockBackScript.Physics.IgnoreForces = false;
             CameraBehaviour.Instance.ClampX = true;
+            CameraBehaviour.Instance.ClampY = true;
             CameraBehaviour.Instance.CameraMoveSpeed = _defaultCameraMoveSpeed;
             _characterFeedback.SetCharacterUIEnabled(true);
             _opponentFeedback.SetCharacterUIEnabled(true);

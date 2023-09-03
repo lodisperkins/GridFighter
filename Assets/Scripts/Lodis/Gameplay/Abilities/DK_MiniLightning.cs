@@ -72,6 +72,7 @@ namespace Lodis.Gameplay
         private void GetTargets()
         {
             _spawnTransforms = new Transform[3];
+            Transform lastSpawnTransform = null;
 
             for (int i = 0; i < _spawnTransforms.Length; i++)
             {
@@ -82,6 +83,8 @@ namespace Lodis.Gameplay
                 PanelBehaviour targetPanel;
                 if (BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + Vector2.right * direction * travelDistance, out targetPanel))
                     transform = targetPanel.transform;
+                else
+                    transform = lastSpawnTransform;
 
                 _spawnTransforms[i] = transform;
             }

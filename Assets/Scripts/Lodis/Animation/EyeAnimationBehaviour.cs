@@ -24,12 +24,31 @@ namespace Lodis.Animation
         private Texture2D _closed;
         [SerializeField]
         private Texture2D _hurt;
+        [SerializeField]
+        private Texture2D _angry;
+        [SerializeField] 
+        private CharacterStateMachineBehaviour _stateMachine;
+        [SerializeField] 
+        private HealthBehaviour _health;
+
+        private Texture2D _currentOpenEye;
 
         private bool _isBlinking;
         private TimedAction _currentAction;
-        private bool _canBlink;
+        private bool _canBlink = true;
 
         public Renderer Renderer { get => _renderer; set => _renderer = value; }
+
+
+        private void Awake()
+        {
+            _canBlink = true;
+            _currentOpenEye = _idle;
+            _stateMachine.AddOnStateChangedAction(SetEyes);
+            _health.AddOnTakeDamageAction(ChangeEyesToHurt);
+            _health.AddOnStunAction(() => SetStunEffects(true));
+            _health.AddOnStunDisabledAction(() => SetStunEffects(false));
+        }
 
         private void Blink()
         {
@@ -44,10 +63,26 @@ namespace Lodis.Animation
                 if (!Renderer)
                     return;
 
-                Renderer.material.SetTexture(_textureName, _idle);
+                Renderer.material.SetTexture(_textureName, _currentOpenEye);
                 _isBlinking = false;
             }, TimedActionCountType.SCALEDTIME, _blinkDuration);
 
+        }
+
+        private void SetStunEffects(bool enabled)
+        {
+            if (enabled)
+                ChangeEyesToHurt();
+            else
+                ChangeEyesToIdle();
+        }
+
+        private void SetEyes()
+        {
+            if (_stateMachine.StateMachine.CurrentState == "Idle")
+                ChangeEyesToIdle();
+            else if (_stateMachine.StateMachine.CurrentState == "Attacking")
+                ChangeEyesToAngry();
         }
 
         public void ChangeEyesToClosed(float time = 0)
@@ -69,7 +104,15 @@ namespace Lodis.Animation
         public void ChangeEyesToIdle()
         {
             _isBlinking = false;
+            _currentOpenEye = _idle;
             Renderer.material.SetTexture(_textureName, _idle);
+        }
+
+        public void ChangeEyesToAngry()
+        {
+            _isBlinking = false;
+            _currentOpenEye = _angry;
+            Renderer.material.SetTexture(_textureName, _angry);
         }
 
         // Update is called once per frame

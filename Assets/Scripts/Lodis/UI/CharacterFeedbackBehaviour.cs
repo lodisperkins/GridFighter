@@ -33,10 +33,10 @@ namespace Lodis.Gameplay
         void Start()
         {
             _health.AddOnInvincibilityActiveAction(() => FlashAllRenderers(_invincibleColor));
-            _health.AddOnIntangibilityActiveAction(() => FlashAllRenderers(_intangibleColor));
+            //_health.AddOnIntangibilityActiveAction(() => FlashAllRenderers(_intangibleColor));
 
             _health.AddOnInvincibilityInactiveAction(ResetAllRenderers);
-            _health.AddOnIntangibilityInactiveAction(ResetAllRenderers);
+            //_health.AddOnIntangibilityInactiveAction(ResetAllRenderers);
 
             _health.AddOnStunAction(() => _stunParticles.gameObject.SetActive(true));
             _health.AddOnStunDisabledAction(() => _stunParticles.gameObject.SetActive(false));

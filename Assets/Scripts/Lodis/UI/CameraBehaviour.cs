@@ -178,7 +178,7 @@ namespace Lodis
         private float GetYAxisPositionByAvg(float min, float mid, float max, float averagePositionOnAxis, float moveSensitivity)
         {
             if (!ClampY)
-                return averagePositionOnAxis;
+                return averagePositionOnAxis + _startPosition.y;
 
             if (averagePositionOnAxis >= moveSensitivity)
             {

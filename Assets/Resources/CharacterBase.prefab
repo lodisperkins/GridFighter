@@ -2075,6 +2075,9 @@ MonoBehaviour:
   _idle: {fileID: 2800000, guid: 3f74eb4cc89643247b3764720cfa1c99, type: 3}
   _closed: {fileID: 2800000, guid: eaf980e32583a724591102ca021daf79, type: 3}
   _hurt: {fileID: 2800000, guid: d5f172795a8aa3c4e8db4999431ca191, type: 3}
+  _angry: {fileID: 2800000, guid: 2598cc228c45ab8488cf69f23712693c, type: 3}
+  _stateMachine: {fileID: 3205124130663625092}
+  _health: {fileID: 624667988152981373}
 --- !u!114 &7545342906704344223
 MonoBehaviour:
   m_ObjectHideFlags: 0

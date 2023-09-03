@@ -12,6 +12,7 @@ using Lodis.Sound;
 using UnityEngine.UI;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
+using CustomEventSystem;
 
 namespace Lodis.Gameplay
 {
@@ -69,6 +70,10 @@ namespace Lodis.Gameplay
         private UnityEvent _onMatchRestart;
         [SerializeField]
         private UnityEvent _onMatchOver;
+        [SerializeField]
+        private GameEventListener _onP1RingOut;
+        [SerializeField]
+        private GameEventListener _onP2RingOut;
 
         [SerializeField]
         private CustomEventSystem.Event _matchRestartEvent;
@@ -83,6 +88,7 @@ namespace Lodis.Gameplay
         private bool _canPause = true;
         private bool _suddenDeathActive;
         private bool _matchStarted;
+        private bool _playerOutOfRing;
         private TweenerCore<float, float, FloatOptions> _timeScaleTween;
         private DelayedAction _timeScaleAction;
 
@@ -121,6 +127,7 @@ namespace Lodis.Gameplay
         public bool SuddenDeathActive { get => _suddenDeathActive; private set => _suddenDeathActive = value; }
         public PlayerSpawnBehaviour PlayerSpawner { get => _playerSpawner; private set => _playerSpawner = value; }
         public bool SuperInUse { get; internal set; }
+        public bool PlayerOutOfRing { get => _playerOutOfRing; private set => _playerOutOfRing = value; }
 
         private void Awake()
         {
@@ -156,6 +163,8 @@ namespace Lodis.Gameplay
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
             },
             args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
+
+            AddOnRingoutAction(() => PlayerOutOfRing = true);
 
             Application.targetFrameRate = _targetFrameRate;
 
@@ -260,7 +269,7 @@ namespace Lodis.Gameplay
             _onMatchRestart?.Invoke();
             _matchRestartEvent.Raise(gameObject);
             _matchStarted = false;
-
+            PlayerOutOfRing = false;
 
             if (suddenDeathActive)
             {
@@ -349,6 +358,23 @@ namespace Lodis.Gameplay
         public void AddOnMatchUnpauseAction(UnityAction action)
         {
             _onMatchUnpause.AddListener(action);
+        }
+
+        public void AddOnP1RingoutAction(UnityAction action)
+        {
+            _onP1RingOut.AddAction(action);
+        }
+
+        public void AddOnP2RingoutAction(UnityAction action)
+        {
+            _onP2RingOut.AddAction(action);
+        }
+
+
+        public void AddOnRingoutAction(UnityAction action)
+        {
+            _onP1RingOut.AddAction(action);
+            _onP2RingOut.AddAction(action);
         }
     }
 

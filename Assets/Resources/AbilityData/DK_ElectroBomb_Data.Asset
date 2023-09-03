@@ -37,9 +37,10 @@ MonoBehaviour:
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects:
   - {fileID: 114004161566773944, guid: cf2a7c30bf210b64bab405077f1cbc34, type: 3}
-  - {fileID: 2168324044689623625, guid: b05b3558544da3b4f993a6326d86d6d1, type: 3}
+  - {fileID: 4345000112811740201, guid: c2c75e2031ce06145862504169be96b8, type: 3}
   - {fileID: 120879900363717271, guid: 3744f3d4f0443be4485c61a30c15069e, type: 3}
-  Sounds: []
+  Sounds:
+  - {fileID: 8300000, guid: 8843d6cc097dd544da54836c69ac67c5, type: 3}
   DisplayIcon: {fileID: 21300000, guid: b6bded65c2f89f348bc1baf94701f5e8, type: 3}
   ActivateSound: {fileID: 8300000, guid: 88455f47dc5daa44d8ae95d6d9fcc124, type: 3}
   ActiveSound: {fileID: 8300000, guid: bf502be5c6f84e7478d223d651347d69, type: 3}
@@ -117,7 +118,7 @@ MonoBehaviour:
     MultiHitWaitTime: 0.1
     Damage: 5
     BaseKnockBack: 0
-    KnockBackScale: 2
+    KnockBackScale: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 1
     HitAngle: 0
@@ -141,25 +142,24 @@ MonoBehaviour:
     DespawnAfterTimeLimit: 1
     TimeActive: 0.2
     DestroyOnHit: 1
-    IsMultiHit: 0
+    IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 4057399
-    MultiHitWaitTime: 0
+      m_Bits: 4058423
+    MultiHitWaitTime: 1
     Damage: 5
-    BaseKnockBack: 5
+    BaseKnockBack: 6
     KnockBackScale: 0.1
     ClampForceWithinRing: 1
     IgnoreMomentum: 1
-    HitAngle: 1.8
+    HitAngle: 1.78
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.5
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
-    SpawnEffect: {fileID: 3198923806287051063, guid: 442486026d7ae68428087e1cf03543fe,
-      type: 3}
+    SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 6571386925041405448, guid: c16776485042c6a4893bcea9f1d39446,
       type: 3}
     HitEffectLevel: 3

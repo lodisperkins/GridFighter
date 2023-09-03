@@ -4915,7 +4915,7 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.size
-      value: 17
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -5096,7 +5096,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[17].ObjectRenderer
       value: 
-      objectReference: {fileID: 9161987744411430145}
+      objectReference: {fileID: 8436353343081100233}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.size
@@ -5185,7 +5185,7 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[17].ShaderProperties.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -5360,7 +5360,7 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[17].ShaderProperties.Array.data[0]
-      value: _Color
+      value: _EmissionColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}

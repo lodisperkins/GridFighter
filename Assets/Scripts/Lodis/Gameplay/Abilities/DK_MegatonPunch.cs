@@ -155,6 +155,7 @@ namespace Lodis.Gameplay
                     _landedFirstHit = true;
 
 
+                OwnerKnockBackScript.SetIntagibilityByCondition(condition => !InUse);
                 MatchManagerBehaviour.Instance.SuperInUse = true;
             };
 

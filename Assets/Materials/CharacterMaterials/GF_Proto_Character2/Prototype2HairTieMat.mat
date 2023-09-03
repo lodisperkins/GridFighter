@@ -98,7 +98,7 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0, g: 0.29836133, b: 0.6132076, a: 1}
-    - _EmissionColor: {r: 0, g: 0.9374716, b: 1, a: 1}
+    - _EmissionColor: {r: 0.1745283, g: 0.9482057, b: 1, a: 1}
     - _EmissionTiling: {r: 1, g: 1, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 1}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
