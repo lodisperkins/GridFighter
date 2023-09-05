@@ -77,6 +77,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ShadowTexture:
+        m_Texture: {fileID: 2800000, guid: 2e8041af957f6ce40aa3988f08c6ee80, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -124,6 +128,10 @@ Material:
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _PrimaryColor: {r: 1, g: 0.37222314, b: 0, a: 1}
     - _SecondaryColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ShadowColor: {r: 0.03137255, g: 0.60784316, b: 0.48235294, a: 1}
+    - _ShadowPatternColor: {r: 0.002428216, g: 0.002428216, b: 0.06480328, a: 1}
+    - _ShadowTextureOffset: {r: 0, g: 0, b: 0, a: 0}
+    - _ShadowTextureTiling: {r: 4, g: 3.5, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _TertiaryColor: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}

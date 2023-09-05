@@ -28,7 +28,13 @@ namespace Lodis.Gameplay
             DefaultColors = new Color[ShaderProperties.Length];
 
             for (int i = 0; i < ShaderProperties.Length; i++)
-                DefaultColors[i] = ObjectRenderer.material.GetColor(ShaderProperties[i]);
+            {
+                for (int j = 0; j < ObjectRenderer.materials.Length; j++)
+                {
+                    if (ObjectRenderer.materials[j].HasProperty(ShaderProperties[i]))
+                        DefaultColors[i] = ObjectRenderer.materials[j].GetColor(ShaderProperties[i]);
+                }
+            }
         }
 
         /// <summary>
@@ -37,7 +43,13 @@ namespace Lodis.Gameplay
         public void SetColorsToCache()
         {
             for (int i = 0; i < ShaderProperties.Length; i++)
-                ObjectRenderer.material.SetColor(ShaderProperties[i], DefaultColors[i]);
+            {
+                for (int j = 0; j < ObjectRenderer.materials.Length; j++)
+                {
+                    if (ObjectRenderer.materials[j].HasProperty(ShaderProperties[i]))
+                        ObjectRenderer.materials[j].SetColor(ShaderProperties[i], DefaultColors[i]);
+                }
+            }
         }
     }
 
@@ -55,17 +67,25 @@ namespace Lodis.Gameplay
 
         private void SetHue(ColorObject objectToColor)
         {
-            foreach (string property in objectToColor.ShaderProperties)
+            for (int i = 0; i < objectToColor.ShaderProperties.Length; i++)
             {
-                objectToColor.ObjectRenderer.material.ChangeHue(_ownerColor, property);
+                for (int j = 0; j < objectToColor.ObjectRenderer.materials.Length; j++)
+                {
+                    if (objectToColor.ObjectRenderer.materials[j].HasProperty(objectToColor.ShaderProperties[i]))
+                        objectToColor.ObjectRenderer.materials[j].ChangeHue(_ownerColor, objectToColor.ShaderProperties[i]);
+                }
             }
         }
 
         private void SetColor(ColorObject objectToColor)
         {
-            foreach (string property in objectToColor.ShaderProperties)
+            for (int i = 0; i < objectToColor.ShaderProperties.Length; i++)
             {
-                objectToColor.ObjectRenderer.material.SetColor(property, _ownerColor);
+                for (int j = 0; j < objectToColor.ObjectRenderer.materials.Length; j++)
+                {
+                    if (objectToColor.ObjectRenderer.materials[j].HasProperty(objectToColor.ShaderProperties[i]))
+                        objectToColor.ObjectRenderer.materials[j].SetColor(objectToColor.ShaderProperties[i], _ownerColor);
+                }
             }
         }
 
