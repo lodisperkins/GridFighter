@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 7479475982542795920}
   - component: {fileID: 574057155854110738}
   - component: {fileID: 6574688031877637604}
+  - component: {fileID: 2360037796445581758}
   - component: {fileID: 1988483426190075038}
   - component: {fileID: 9214871793191098141}
   m_Layer: 9
@@ -1182,6 +1183,22 @@ MonoBehaviour:
   Event: {fileID: 11400000, guid: 5ef561623c994e44a91f274065867cf4, type: 2}
   IntendedSender: {fileID: 561307191668043433}
   AcceptTagAsSender: 0
+--- !u!114 &2360037796445581758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561307191668043433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 175a917a76c06ae4db3c2d61f22bcb13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gridMovementScript: {fileID: 561307191668043444}
+  _lhsLight: {fileID: 7771075552791449285}
+  _rhsLight: {fileID: 1116720594787510076}
+  _colorManager: {fileID: 1988483426190075038}
 --- !u!114 &1988483426190075038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1918,7 +1935,6 @@ GameObject:
   - component: {fileID: 8172829524244689262}
   - component: {fileID: 6183443034730705748}
   - component: {fileID: 8767532388978379680}
-  - component: {fileID: 7545342906704344223}
   m_Layer: 9
   m_Name: Mesh
   m_TagString: Untagged
@@ -2078,21 +2094,6 @@ MonoBehaviour:
   _angry: {fileID: 2800000, guid: 2598cc228c45ab8488cf69f23712693c, type: 3}
   _stateMachine: {fileID: 3205124130663625092}
   _health: {fileID: 624667988152981373}
---- !u!114 &7545342906704344223
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9056967475098163082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 175a917a76c06ae4db3c2d61f22bcb13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gridMovementScript: {fileID: 561307191668043444}
-  _lhsLight: {fileID: 7771075552791449285}
-  _rhsLight: {fileID: 1116720594787510076}
 --- !u!1001 &2483878375527390179
 PrefabInstance:
   m_ObjectHideFlags: 0

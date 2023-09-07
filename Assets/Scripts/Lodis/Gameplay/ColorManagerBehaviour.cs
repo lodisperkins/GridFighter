@@ -61,9 +61,12 @@ namespace Lodis.Gameplay
         [SerializeField] private bool _autoDetectAlignment;
         [Tooltip("The objects that will have their colors changed to match the alignment.")]
         [SerializeField] private ColorObject[] _objectsToColor;
+        private Light _specularLight;
+
         private Color _ownerColor;
 
         public ColorObject[] ObjectsToColor { get => _objectsToColor; private set => _objectsToColor = value; }
+        public Light SpecularLight { get => _specularLight; set => _specularLight = value; }
 
         private void SetHue(ColorObject objectToColor)
         {
@@ -117,6 +120,12 @@ namespace Lodis.Gameplay
 
             foreach (ColorObject colorObject in ObjectsToColor)
             {
+                if (SpecularLight)
+                {
+                    colorObject.ObjectRenderer.material.SetInt("_UseCustomLight", 1);
+                    colorObject.ObjectRenderer.material.SetVector("_CustomLightDirection", SpecularLight.transform.forward);
+                }
+
                 if (colorObject.OnlyChangeHue)
                     SetHue(colorObject);
                 else

@@ -29,7 +29,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_B0106467:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 712d7fe314ce271488422acbe760e2a7, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -74,7 +74,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - LightingCutoff: 0.2
-    - Smoothness: 9.05
+    - Smoothness: 100.2
     - USENORMAL: 1
     - _AlphaClip: 0
     - _AmbientStrength: 0.03
@@ -91,6 +91,7 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _MetallicEnabled: 1
     - _OcclusionStrength: 1
     - _OutlineScale: 0
     - _QueueOffset: 0
