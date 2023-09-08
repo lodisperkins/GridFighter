@@ -15,6 +15,8 @@ namespace Lodis.Gameplay
         private Light _rhsLight;
         [SerializeField]
         private ColorManagerBehaviour _colorManager;
+        [SerializeField]
+        private GameObject _mesh;
 
         // Start is called before the first frame update
         void Start()
@@ -25,7 +27,7 @@ namespace Lodis.Gameplay
                 _rhsLight.gameObject.SetActive(false);
 
                 _lhsLight.cullingMask = LayerMask.GetMask("LHSMesh");
-                ChangeLayer(gameObject, LayerMask.NameToLayer("LHSMesh"));
+                ChangeLayer(_mesh, LayerMask.NameToLayer("LHSMesh"));
                 _colorManager.SpecularLight = _lhsLight;
             }
             else if (_gridMovementScript.Alignment == GridScripts.GridAlignment.RIGHT)
@@ -35,7 +37,7 @@ namespace Lodis.Gameplay
 
                 _colorManager.SpecularLight = _rhsLight;
                 _rhsLight.cullingMask = LayerMask.GetMask("RHSMesh");
-                ChangeLayer(gameObject, LayerMask.NameToLayer("RHSMesh"));
+                ChangeLayer(_mesh, LayerMask.NameToLayer("RHSMesh"));
             }
         }
 

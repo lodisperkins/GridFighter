@@ -1199,6 +1199,7 @@ MonoBehaviour:
   _lhsLight: {fileID: 7771075552791449285}
   _rhsLight: {fileID: 1116720594787510076}
   _colorManager: {fileID: 1988483426190075038}
+  _mesh: {fileID: 9056967475098163082}
 --- !u!114 &1988483426190075038
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2230,7 +2231,7 @@ PrefabInstance:
     - target: {fileID: 1108451635469348776, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1108451635469348776, guid: 3750288d4cc41f440964731ec1982842,
         type: 3}
@@ -2942,11 +2943,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: BounceCollider
-      objectReference: {fileID: 0}
-    - target: {fileID: 1045777155629274974, guid: d7de0d22c7760ef43b78925612f0ca09,
-        type: 3}
-      propertyPath: m_Layer
-      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1682131405051683244, guid: d7de0d22c7760ef43b78925612f0ca09,
         type: 3}
