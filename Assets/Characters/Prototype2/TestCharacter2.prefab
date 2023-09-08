@@ -50,6 +50,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4948,6 +4949,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5092,6 +5094,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5206,6 +5209,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5320,6 +5324,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10529,6 +10534,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10643,6 +10649,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10790,6 +10797,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 43650db022a050743b1618e010847bcf, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10873,6 +10881,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11098,6 +11107,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -11212,6 +11222,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16087,6 +16098,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16170,6 +16182,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -16253,6 +16266,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f6f9c9552d7f01441ae535c62240c704, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21222,6 +21236,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21502,6 +21517,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21585,6 +21601,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 398e4dbf80fcf394a8ec3948d63daf44, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -21668,6 +21685,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 398e4dbf80fcf394a8ec3948d63daf44, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31302,6 +31320,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 43650db022a050743b1618e010847bcf, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -31385,6 +31404,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -36314,6 +36334,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -41313,6 +41334,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -46186,6 +46208,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 43650db022a050743b1618e010847bcf, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -51148,6 +51171,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 398e4dbf80fcf394a8ec3948d63daf44, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -51296,6 +51320,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -51472,6 +51497,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -51660,6 +51686,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -56805,6 +56832,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -56888,6 +56916,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -66519,6 +66548,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 31f60460c9162e643acf241bb49e2ffe, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -66671,6 +66701,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -66827,6 +66858,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67099,6 +67131,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67213,6 +67246,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: c6c11de70c745084abd6b3660a732641, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67296,6 +67330,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f1705fe9839e5834eb51048f3cc93f04, type: 2}
+  - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67379,6 +67414,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 398e4dbf80fcf394a8ec3948d63daf44, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67586,6 +67622,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 9e33ad11d1055f84a9f9ef04f647e305, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67669,6 +67706,7 @@ SkinnedMeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: d6a7757f0a99a784d91022ba84c19437, type: 2}
+  - {fileID: 2100000, guid: a1ef1484cc545ec48a980f8fa8850d75, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -67863,7 +67901,7 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.size
-      value: 25
+      value: 26
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68002,6 +68040,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[25].OnlyChangeHue
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[2].ObjectRenderer
       value: 
       objectReference: {fileID: 7692506028044951760}
@@ -68117,128 +68160,138 @@ PrefabInstance:
       objectReference: {fileID: 6039602993413332472}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[25].ObjectRenderer
+      value: 
+      objectReference: {fileID: 213481573212677398}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.size
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[1].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[2].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[3].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[4].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[5].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[6].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[7].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[8].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[9].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[10].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[11].ShaderProperties.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[12].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[13].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[14].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[15].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[16].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[17].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[18].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[19].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[20].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[21].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[22].ShaderProperties.Array.size
-      value: 2
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[23].ShaderProperties.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[24].ShaderProperties.Array.size
-      value: 1
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[25].ShaderProperties.Array.size
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68249,6 +68302,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[1]
       value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[2]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[3]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[4]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68267,6 +68335,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[1].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[1].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[1].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[2].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68279,6 +68362,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[2].ShaderProperties.Array.data[2]
       value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[2].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[2].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[2].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68297,6 +68395,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[3].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[3].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[3].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[4].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68309,6 +68422,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[4].ShaderProperties.Array.data[2]
       value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[4].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[4].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[4].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68327,6 +68455,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[5].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[5].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[5].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[6].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68339,6 +68482,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[6].ShaderProperties.Array.data[2]
       value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[6].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[6].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[6].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68357,6 +68515,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[7].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[7].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[7].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[8].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68369,6 +68542,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[8].ShaderProperties.Array.data[2]
       value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[8].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[8].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[8].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68387,6 +68575,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[9].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[9].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[9].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[10].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68399,6 +68602,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[10].ShaderProperties.Array.data[2]
       value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[10].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[10].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[10].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68417,6 +68635,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[11].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[11].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[11].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[12].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68432,6 +68665,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[12].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[12].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[12].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[13].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68442,12 +68690,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[13].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[13].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[13].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[13].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[14].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[14].ShaderProperties.Array.data[1]
+      value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[14].ShaderProperties.Array.data[2]
+      value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[14].ShaderProperties.Array.data[3]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[14].ShaderProperties.Array.data[4]
+      value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[14].ShaderProperties.Array.data[5]
       value: _EmissionColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
@@ -68462,6 +68750,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[15].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[15].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[15].ShaderProperties.Array.data[4]
+      value: _ShadoPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[15].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[16].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68469,6 +68777,26 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[16].ShaderProperties.Array.data[1]
       value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[16].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[16].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[16].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[16].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68482,6 +68810,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[17].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[17].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[17].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[17].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[18].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68489,6 +68837,26 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[18].ShaderProperties.Array.data[1]
       value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[18].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[18].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[18].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[18].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68502,6 +68870,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[19].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[19].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[19].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[19].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[20].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68509,6 +68897,26 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[20].ShaderProperties.Array.data[1]
       value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[20].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[20].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[20].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[20].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68522,6 +68930,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[21].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[21].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[21].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[21].ShaderProperties.Array.data[5]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[22].ShaderProperties.Array.data[0]
       value: _Color
       objectReference: {fileID: 0}
@@ -68529,6 +68957,26 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[22].ShaderProperties.Array.data[1]
       value: _EmissionColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[22].ShaderProperties.Array.data[2]
+      value: _SecondaryColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[22].ShaderProperties.Array.data[3]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[22].ShaderProperties.Array.data[4]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[22].ShaderProperties.Array.data[5]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68542,13 +68990,48 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[23].ShaderProperties.Array.data[2]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[24].ShaderProperties.Array.data[0]
       value: _EmissionColor
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[24].ShaderProperties.Array.data[1]
-      value: _EmissionColor
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[24].ShaderProperties.Array.data[2]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[24].ShaderProperties.Array.data[3]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[25].ShaderProperties.Array.data[0]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[25].ShaderProperties.Array.data[1]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[25].ShaderProperties.Array.data[2]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[25].ShaderProperties.Array.data[3]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 2313499556558640970, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -68837,6 +69320,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Thalamus
       objectReference: {fileID: 0}
+    - target: {fileID: 2191770478093604704, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2191770478093604704, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
     - target: {fileID: 3556137913490995458, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
         type: 3}
       propertyPath: m_Enabled
