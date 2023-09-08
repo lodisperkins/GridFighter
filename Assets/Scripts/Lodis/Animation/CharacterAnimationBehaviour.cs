@@ -101,6 +101,7 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
+            //Test
             _overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
             _animator.runtimeAnimatorController = _overrideController;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);

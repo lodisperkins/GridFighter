@@ -58,7 +58,7 @@ namespace Lodis.Gameplay
 
         public void AddOnStateChangedAction(UnityAction action)
         {
-            _onStateChanged.AddListener(action);
+            _onStateChanged?.AddListener(action);
         }
 
         private void Update()

@@ -347,16 +347,16 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -1478466699932668291}
-    m_Position: {x: 430, y: 220, z: 0}
+    m_Position: {x: 410, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2330535115750816926}
     m_Position: {x: 200, y: 220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3252606123330024870}
-    m_Position: {x: -20, y: 20, z: 0}
+    m_Position: {x: -20, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5623920097997009593}
-    m_Position: {x: -20, y: 70, z: 0}
+    m_Position: {x: -20, y: 60, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4901685746222246159}
     m_Position: {x: 780, y: 220, z: 0}
@@ -380,13 +380,13 @@ AnimatorStateMachine:
     m_Position: {x: -20, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1579835614135604820}
-    m_Position: {x: 750, y: 30, z: 0}
+    m_Position: {x: 410, y: 10, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4843786202452869722}
-    m_Position: {x: 430, y: -80, z: 0}
+    m_Position: {x: 410, y: -90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5711968250193457630}
-    m_Position: {x: 440, y: -10, z: 0}
+    m_Position: {x: 410, y: -40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8530773362807673131}
     m_Position: {x: -20, y: -40, z: 0}
@@ -395,13 +395,13 @@ AnimatorStateMachine:
     m_Position: {x: 200, y: 310, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -724624287857951255}
-    m_Position: {x: -30, y: 120, z: 0}
+    m_Position: {x: -20, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 3083433837115072141}
     m_Position: {x: 410, y: 150, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -2984343736225204490}
-    m_Position: {x: 630, y: 100, z: 0}
+    m_Position: {x: 410, y: 100, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 617923927693067058}
@@ -1588,7 +1588,7 @@ AnimatorStateTransition:
   m_HasExitTime: 0
   m_HasFixedDuration: 0
   m_InterruptionSource: 3
-  m_OrderedInterruption: 1
+  m_OrderedInterruption: 0
   m_CanTransitionToSelf: 1
 --- !u!206 &4806578098926088179
 BlendTree:
