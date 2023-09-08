@@ -297,6 +297,7 @@ namespace Lodis.Gameplay
             MatchManagerBehaviour.Instance.SuperInUse = false;
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
 
             if (_thalamusInstance)
                 _thalamusInstance.layer = _thalamusLayer;
@@ -321,6 +322,7 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.AlignmentFocus = GridAlignment.ANY;
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
 
             if (_thalamusInstance)
                 _thalamusInstance.layer = _thalamusLayer;

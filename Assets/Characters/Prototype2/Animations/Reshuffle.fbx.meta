@@ -133,6 +133,38 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.38530028
+        functionName: PlaySoundFromEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.49120167
+        functionName: PlaySoundFromEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6263948
+        functionName: PlaySoundFromEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.84946346
+        functionName: PlaySoundFromEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}

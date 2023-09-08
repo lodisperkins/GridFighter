@@ -152,6 +152,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainStage
       objectReference: {fileID: 0}
+    - target: {fileID: 2082920774451549274, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082920774451549274, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
     - target: {fileID: 2330196140463689245, guid: c21f89c3d5be7514795c75594b77d7a2,
         type: 3}
       propertyPath: m_Layer
@@ -257,6 +267,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 5794046585145610576, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794046585145610576, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
     - target: {fileID: 6501815171904802717, guid: c21f89c3d5be7514795c75594b77d7a2,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -286,6 +306,36 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.76803
+      objectReference: {fileID: 0}
+    - target: {fileID: 6757559669860867909, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _alignment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6757559669860867909, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ObjectRenderer
+      value: 
+      objectReference: {fileID: 3819369963559012879}
+    - target: {fileID: 6757559669860867909, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6757559669860867909, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[1]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6757559669860867909, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[2]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 6757559669860867909, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[3]
+      value: _OutlineColor
       objectReference: {fileID: 0}
     - target: {fileID: 6778941305983303982, guid: c21f89c3d5be7514795c75594b77d7a2,
         type: 3}
@@ -367,6 +417,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 8636348238855782567, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636348238855782567, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[1]
+      value: _ShadowColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636348238855782567, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[2]
+      value: _ShadowPatternColor
+      objectReference: {fileID: 0}
+    - target: {fileID: 8636348238855782567, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].ShaderProperties.Array.data[3]
+      value: _OutlineColor
+      objectReference: {fileID: 0}
     - target: {fileID: 8976899257723146327, guid: c21f89c3d5be7514795c75594b77d7a2,
         type: 3}
       propertyPath: m_Layer
@@ -377,6 +447,12 @@ PrefabInstance:
 --- !u!4 &4562885733847766210 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6501815171904802717, guid: c21f89c3d5be7514795c75594b77d7a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7307572072502270815}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &3819369963559012879 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 5794046585145610576, guid: c21f89c3d5be7514795c75594b77d7a2,
     type: 3}
   m_PrefabInstance: {fileID: 7307572072502270815}
   m_PrefabAsset: {fileID: 0}

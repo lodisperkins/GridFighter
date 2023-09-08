@@ -112,6 +112,30 @@ namespace Lodis.Gameplay
 
         }
 
+        public void PlaySoundFromEvent(EventArguments args)
+        {
+            for (int i = 0; i < args.UnityObjectArgs.Length; i++)
+            {
+                SoundManagerBehaviour.Instance.PlaySound(args.UnityObjectArgs[i] as AudioClip);
+            }
+        }
+
+        public void PlayVoiceSound(int clipType)
+        {
+            switch (clipType)
+            {
+                case 0:
+                    _characterVoice.PlayLightAttackSound();
+                    break;
+                case 1:
+                    _characterVoice.PlayHeavyAttackSound();
+                    break;
+                case 3:
+                    _characterVoice.PlayHurtSound();
+                    break;
+            }
+        }
+
         public void PlayEffect(int index)
         {
             GameObject instance = ObjectPoolBehaviour.Instance.GetObject(_additionalEffects[index].gameObject, transform.position, Camera.main.transform.rotation);
