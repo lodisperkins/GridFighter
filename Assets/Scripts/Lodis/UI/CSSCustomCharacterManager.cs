@@ -46,6 +46,8 @@ namespace Lodis.UI
         private List<EventButtonBehaviour> _deckChoices = new List<EventButtonBehaviour>();
         [SerializeField]
         private UnityEngine.EventSystems.EventSystem _eventSystem;
+        [SerializeField]
+        private GameObject _firstDefaultOption;
         private GameObject _lastSelected;
 
 
@@ -60,6 +62,10 @@ namespace Lodis.UI
         }
         public UnityEngine.EventSystems.EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
         public PageManagerBehaviour PageManager { get => _pageManager; set => _pageManager = value; }
+        public bool HasCustomDecks
+        {
+            get { return _deckChoices.Count > 0; }
+        }
 
         // Start is called before the first frame update
         void Start()
@@ -77,7 +83,16 @@ namespace Lodis.UI
 
         public void SetSelectedToFirstOption()
         {
-            Selected = _deckChoices[0].gameObject;
+            if (_deckChoices.Count > 0)
+                Selected = _deckChoices[0].gameObject;
+            else
+            {
+                Selected = _firstDefaultOption;
+                _pageManager.GoToNextPage();
+                EventButtonBehaviour buttonBehaviour = _firstDefaultOption.GetComponent<EventButtonBehaviour>();
+                buttonBehaviour.OnSelect(null);
+                buttonBehaviour.OnSelect();
+            }
         }
 
         public void UpdateLoadoutOptions()

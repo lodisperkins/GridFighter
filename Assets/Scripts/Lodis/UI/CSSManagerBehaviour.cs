@@ -150,13 +150,21 @@ namespace Lodis.UI
         {
             Vector2 direction = context.ReadValue<Vector2>();
             PageManagerBehaviour manager = null;
+            CSSCustomCharacterManager charManager = null;
+
             if (playerNum == 1)
+            {
                 manager = _p1CustomManager.PageManager;
+                charManager = _p1CustomManager;
+            }
             else if (playerNum == 2)
+            {
                 manager = _p2CustomManager.PageManager;
+                charManager = _p2CustomManager;
+            }
             if (direction == Vector2.right)
                 manager.GoToNextPage();
-            else if (direction == Vector2.left)
+            else if (direction == Vector2.left && charManager.HasCustomDecks)
                 manager.GoToPreviousPage();
         }
         public void UpdateEventSystem(PlayerInput playerInput)
