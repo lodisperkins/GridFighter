@@ -11,19 +11,25 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_PanelSteal : SummonAbility
     {
-        private List<PanelBehaviour> _targetPanels;
+        private List<PanelBehaviour> _targetPanels = new List<PanelBehaviour>();
 
 	    //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
+            OnMoveEndAction += DisableAllEntities;
+            SmoothMovement = true;
         }
 
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
-
-
+            Alignement = OwnerMoveScript.Alignment;
+            GridBehaviour grid = BlackBoardBehaviour.Instance.Grid;
+            for (int i = 0; i < grid.Dimensions.y; i++)
+            {
+                PanelPositions[i] = new Vector2(grid.TempMaxColumns + OwnerMoveScript.GetAlignmentX(), i);
+            }
         }
 
         //Called when ability is used
@@ -31,6 +37,7 @@ namespace Lodis.Gameplay
         {
             //Call row stealing func
             BlackBoardBehaviour.Instance.Grid.ExchangeRowsByTimer((int)abilityData.GetCustomStatValue("AmountOfRows"), OwnerMoveScript.Alignment, abilityData.GetCustomStatValue("OwnershipTime"));
+            base.OnActivate();
         }
     }
 }

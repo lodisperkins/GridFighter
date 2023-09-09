@@ -35,12 +35,13 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
-  CanInputMovementDuringStartUp: 0
+  CanInputMovementDuringStartUp: 1
   CanInputMovementWhileActive: 1
-  CanInputMovementWhileRecovering: 0
+  CanInputMovementWhileRecovering: 1
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 0}
+  visualPrefab: {fileID: 5648933950176139840, guid: 3761b0c1feff8f748baad190031b27e9,
+    type: 3}
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
@@ -54,6 +55,10 @@ MonoBehaviour:
     value: 10
   - name: AmountOfRows
     value: 1
+  - name: EntityCount
+    value: 3
+  - name: Speed
+    value: 5
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

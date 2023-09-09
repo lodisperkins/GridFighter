@@ -4,6 +4,7 @@ using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
@@ -16,12 +17,16 @@ namespace Lodis.Gameplay
         private float _moveSpeed;
         private Vector2[] _panelPositions;
         private string _id;
+        private UnityAction _onMoveEndAction;
+        private GridAlignment _alignement = GridAlignment.ANY;
 
         public Vector2[] PanelPositions { get => _panelPositions; set => _panelPositions = value; }
         public int EntityCount { get => _entityCount; private set => _entityCount = value; }
         public float MoveSpeed { get => _moveSpeed; private set => _moveSpeed = value; }
         public bool SmoothMovement { get => _smoothMovement; set => _smoothMovement = value; }
         public List<GridMovementBehaviour> ActiveEntities { get => _activeEntities; private set => _activeEntities = value; }
+        public UnityAction OnMoveEndAction { get => _onMoveEndAction; set => _onMoveEndAction = value; }
+        public GridAlignment Alignement { get => _alignement; set => _alignement = value; }
 
         public override void Init(GameObject newOwner)
         {
@@ -69,9 +74,9 @@ namespace Lodis.Gameplay
 
             for (int i = 0; i < EntityCount; i++)
             {
-                _entityRef.name = _id;
                 GameObject instance = ObjectPoolBehaviour.Instance.GetObject(_entityRef, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
                 
+                instance.name = _id;
 
                 moveBehaviour = instance.GetComponent<GridMovementBehaviour>();
                 BlackBoardBehaviour.Instance.AddEntityToList(moveBehaviour);
@@ -84,9 +89,13 @@ namespace Lodis.Gameplay
                 moveBehaviour.Speed = _moveSpeed;
                 moveBehaviour.CanBeWalkedThrough = true;
                 moveBehaviour.CanMoveDiagonally = true;
+                moveBehaviour.Alignment = Alignement;
 
                 ActiveEntities.Add(moveBehaviour);
-                moveBehaviour.MoveToPanel(_panelPositions[i], !SmoothMovement, GridAlignment.ANY, true, false, true);
+                moveBehaviour.MoveToPanel(_panelPositions[i], !SmoothMovement, Alignement, true, false, true);
+
+                if (OnMoveEndAction != null)
+                    moveBehaviour.AddOnMoveEndTempAction(OnMoveEndAction);
             }
         }
     }

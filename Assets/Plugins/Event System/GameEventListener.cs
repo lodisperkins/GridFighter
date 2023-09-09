@@ -53,9 +53,9 @@ namespace CustomEventSystem
         //Invokes the actions delegate
         public void Invoke(GameObject Sender)
         {
-            if((IntendedSender == null || IntendedSender == Sender) || (AcceptTagAsSender && Sender.CompareTag(IntendedSender?.tag)) && actions != null)
+            if((IntendedSender == null || IntendedSender == Sender) || (AcceptTagAsSender && Sender.CompareTag(IntendedSender?.tag)) && actions != null && actions.GetPersistentEventCount() > 0)
             {
-                actions.Invoke();
+                actions?.Invoke();
                 return;
             }
         }

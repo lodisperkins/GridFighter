@@ -113,6 +113,8 @@ namespace Lodis.Gameplay
 
             Transform effectSpawn = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
 
+            OwnerKnockBackScript.SetIntagibilityByCondition(condition => CurrentAbilityPhase != AbilityPhase.STARTUP);
+
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, effectSpawn, true);
             //RoutineBehaviour.Instance.StartNewConditionAction(args => ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect), condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
         }
@@ -206,6 +208,10 @@ namespace Lodis.Gameplay
             base.OnEnd();
 
             _comboStarted = false;
+            PanelBehaviour panel;
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(owner.transform.position, out panel);
+
+            OwnerMoveScript.Position = panel.Position;
             OwnerMoveScript.EnableMovement();
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();

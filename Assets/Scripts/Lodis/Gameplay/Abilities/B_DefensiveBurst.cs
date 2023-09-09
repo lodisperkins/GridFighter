@@ -116,6 +116,13 @@ namespace Lodis.Gameplay
         {
             base.OnRecover(args);
             ResetState();
+
+            //If the player isn't resting on the ground...
+            if (OwnerKnockBackScript.CurrentAirState != AirState.NONE && !OwnerKnockBackScript.Physics.IsGrounded)
+                //...put them in freefall
+                OwnerKnockBackScript.CurrentAirState = AirState.FREEFALL;
+            else
+                OwnerKnockBackScript.CurrentAirState = AirState.NONE;
         }
 
         protected override void OnEnd()

@@ -23,19 +23,10 @@ MonoBehaviour:
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 5
-  CancellationRules:
-  - Phase: 0
-    CanOnlyCancelOnOpponentHit: 0
-    CanCancelOnMove: 0
-    CanCancelIntoSelf: 0
-    CanCancelIntoSpecial: 0
-    CanCancelIntoNormal: 0
-    cancelOnHit: 0
-    cancelOnFlinch: 1
-    cancelOnKnockback: 1
+  CancellationRules: []
   CancelAllOnHit: 0
-  CancelAllOnFlinch: 0
-  CancelAllOnKnockback: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
