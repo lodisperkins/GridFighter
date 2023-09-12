@@ -59,6 +59,7 @@ namespace Lodis.Gameplay
 
                 OwnerKnockBackScript.DisableInvincibility();
                 OwnerKnockBackScript.Physics.CancelFreeze();
+                OwnerKnockBackScript.LandingScript.CancelLanding();
 
                 PanelBehaviour panel;
 

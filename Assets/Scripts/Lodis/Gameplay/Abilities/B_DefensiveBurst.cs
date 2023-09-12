@@ -56,6 +56,7 @@ namespace Lodis.Gameplay
                 if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
 
+                OwnerKnockBackScript.LandingScript.CancelLanding();
 
                 OwnerKnockBackScript.DisableInvincibility();
                 OwnerKnockBackScript.Physics.CancelFreeze();

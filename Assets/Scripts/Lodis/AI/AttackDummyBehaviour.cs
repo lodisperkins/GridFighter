@@ -9,6 +9,10 @@ using BBUnity;
 using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.ScriptableObjects;
+using Lodis.FX;
+using UnityEngine.InputSystem;
+using UnityEngine.Events;
+using System.Runtime.Remoting.Messaging;
 
 namespace Lodis.AI
 {
@@ -71,12 +75,14 @@ namespace Lodis.AI
         private float _timeNeededToBurst;
         private GridPhysicsBehaviour _gridPhysics;
         private IntVariable _playerID;
+        private BufferedInput _bufferedAction;
         public DefenseNode LastDefenseDecision;
 
         public Vector2 MovePosition;
         public bool EnableBehaviourTree;
         [SerializeField]
         private bool _copyAttacks;
+        private bool _abilityBuffered;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -114,6 +120,7 @@ namespace Lodis.AI
         public bool TouchingOpponentBarrier { get => _touchingOpponentBarrier; set => _touchingOpponentBarrier = value; }
         public bool CopyAttacks { get => _copyAttacks; set => _copyAttacks = value; }
 
+        public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
 
         public void LoadDecisions()
         {
@@ -205,11 +212,47 @@ namespace Lodis.AI
                 _chargingAttack = false;
         }
 
+        private void UseAbility(Ability ability, float attackStrength, Vector2 attackDirection)
+        {
+            //Uses the ability based on its type
+            if (Moveset.GetAbilityNamesInCurrentSlots()[0] == ability.abilityData.name)
+                Moveset.UseSpecialAbility(0, attackStrength, attackDirection);
+            else if (Moveset.GetAbilityNamesInCurrentSlots()[1] == ability.abilityData.name)
+                Moveset.UseSpecialAbility(1, attackStrength, attackDirection);
+            else if (ability.abilityData.AbilityType != AbilityType.SPECIAL)
+                Moveset.UseBasicAbility(ability.abilityData.abilityName, attackStrength, attackDirection);
+            else return;
+        }
+
+        /// <summary>
+        /// Decides which ability to use based on the input context and activates it
+        /// </summary>
+        /// <param name="context">The input callback context</param>
+        /// <param name="args">Any additional arguments to give to the ability. 
+        public void BufferAction(Ability ability, float attackStrength, Vector2 attackDirection)
+        {
+            AbilityType abilityType = AbilityType.SPECIAL;
+            _attackDirection.x *= Mathf.Round(transform.forward.x);
+
+            //Use a normal ability if it was not held long enough
+            _bufferedAction = new BufferedInput(action => UseAbility(ability, attackStrength, attackDirection), condition =>
+            {
+                _abilityBuffered = false;
+                return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
+            }, 0.2f);
+            _abilityBuffered = true;
+        }
+
         public void Update()
         {
             _executor.enabled = EnableBehaviourTree;
 
             _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
+
+            if (_bufferedAction?.HasAction() == true)
+                _bufferedAction.UseAction();
+            else
+                _abilityBuffered = false;
 
             if (_executor.enabled) return;
 

@@ -43,6 +43,11 @@ public class AttackAction : GOAction
         else if (_dummy.StateMachine.CurrentState == "Attack" && !_dummy.Moveset.GetCanUseAbility())
             return;
 
+
+        if (_dummy.HasBuffered)
+            return;
+
+
         //Gather information about the environment
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
         float targetHealth = _dummy.OpponentKnockback.Health;
@@ -85,13 +90,7 @@ public class AttackAction : GOAction
     void UseDecisionAbility(Ability ability)
     {
         //Uses the ability based on its type
-        if (_dummy.Moveset.GetAbilityNamesInCurrentSlots()[0] == ability.abilityData.name)
-            _dummy.Moveset.UseSpecialAbility(0, _decision.AttackStrength, _decision.AttackDirection);
-        else if (_dummy.Moveset.GetAbilityNamesInCurrentSlots()[1] == ability.abilityData.name)
-            _dummy.Moveset.UseSpecialAbility(1, _decision.AttackStrength, _decision.AttackDirection);
-        else if (ability.abilityData.AbilityType != AbilityType.SPECIAL)
-            _dummy.Moveset.UseBasicAbility(_decision.AbilityName, _decision.AttackStrength, _decision.AttackDirection);
-        else return;
+        _dummy.BufferAction(ability, _decision.AttackStrength, _decision.AttackDirection);
 
         //Decrease the wins by default. Wins only have a net positive on hit
         _decision.Wins--;

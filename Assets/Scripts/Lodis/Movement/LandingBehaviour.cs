@@ -83,7 +83,7 @@ namespace Lodis.Movement
             }
         }
 
-        private void CancelLanding()
+        public void CancelLanding()
         {
             if (!Landing) return;
 
