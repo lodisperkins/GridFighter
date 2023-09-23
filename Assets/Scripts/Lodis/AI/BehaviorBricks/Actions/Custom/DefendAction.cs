@@ -41,11 +41,11 @@ public class DefendAction : GOAction
         _situation = new DefenseNode(attacks, null, null);
 
         //The dummy doesn't make a new decision of this situation is the same as the last and if it can't defend.
-        if (_situation.Compare(_dummy.LastDefenseDecision) == 1f && _dummy.StateMachine.CurrentState != "Idle")
+        if (_situation.Compare(_dummy.LastDefenseDecision) == 1f || (_dummy.StateMachine.CurrentState != "Idle" && !_dummy.Moveset.CanBurst))
             return;
 
         //if the decision isn't null then it must be set to the last decision made
-        if (_dummy.LastDefenseDecision != null)
+        if (_dummy.LastDefenseDecision != null && _dummy.LastDefenseDecision.GetCountOfActiveHitBoxes() == 0)
         {
             //Increment the win count for the decision
             _canMakeNewDecision = true;
@@ -180,6 +180,7 @@ public class DefendAction : GOAction
         if (_dummy.LastDefenseDecision != null)
         {
             _dummy.LastDefenseDecision.Wins -= 2;
+            //_dummy.DefenseDecisions.RemoveDecision(_dummy.LastDefenseDecision);
             _dummy.LastDefenseDecision = null;
         }
         _canMakeNewDecision = true;

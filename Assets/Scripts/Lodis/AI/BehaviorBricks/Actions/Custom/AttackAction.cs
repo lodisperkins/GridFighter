@@ -57,7 +57,7 @@ public class AttackAction : GOAction
         _decision = (AttackNode)_dummy.AttackDecisions.GetDecision(_situation, _dummy.OpponentMove, _dummy.OpponentDefense.IsDefending, targetHealth, _dummy);
         
         //If the decision has failed too many times remove it
-        if (_decision?.Wins <= -1)
+        if (_decision?.Wins < -1)
         {
             _dummy.AttackDecisions.RemoveDecision(_decision);
             _decision = null;

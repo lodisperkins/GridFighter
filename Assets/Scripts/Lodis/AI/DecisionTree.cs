@@ -23,6 +23,8 @@ namespace Lodis.AI
         public SaveLoadEvent OnSave;
         public SaveLoadEvent OnLoad;
         public int MaxDecisionsCount = 400;
+        public List<TreeNode> _decisionsToRemove = new List<TreeNode>();
+        public int LoseThreshold;
 
         /// <param name="root">The root decision of the tree</param>
         /// <param name="compareThreshold">How similar nodes have to be to a sitation to be choosen as the right answer</param>
@@ -55,19 +57,40 @@ namespace Lodis.AI
                 float leftWeight = 0;
                 float rightWeight = 0;
                 if (decision.Left != null)
+                {
+                    if (decision.Left.Wins < LoseThreshold)
+                        _decisionsToRemove.Add(decision.Left);
+
                     leftWeight = decision.Left.GetTotalWeight(_root, args) + decision.Left.Compare(similarNode);
+                }
 
                 if (decision.Right != null)
+                {
+                    if (decision.Right.Wins < LoseThreshold)
+                        _decisionsToRemove.Add(decision.Right);
+
                     rightWeight = decision.Right.GetTotalWeight(_root, args) + decision.Right.Compare(similarNode);
+                }
 
                 //Go to the child with the larger weight.
                 if (rightWeight > leftWeight || float.IsNaN(rightWeight))
                     decision = decision.Right;
                 else
                     decision = decision.Left;
+
+
+                if (decision?.Wins < LoseThreshold)
+                    _decisionsToRemove.Add(decision);
             }
 
-            return decision;
+            foreach (TreeNode badDecision in _decisionsToRemove)
+                RemoveDecision(badDecision);
+
+            if (decision?.Wins >= LoseThreshold)
+                return decision;
+
+
+            return null;
         }
 
         /// <summary>
@@ -173,6 +196,8 @@ namespace Lodis.AI
                 iter1.Parent = null;
                 iter1.Right = null;
                 iter1.Left = null;
+
+                Debug.Log("Removed decision from cache" + _nodeCache.Count);
             }
             else
             {
@@ -206,6 +231,7 @@ namespace Lodis.AI
                 node.Right = null;
                 node.Left = null;
                 _nodeCache.Remove(node);
+                Debug.Log("Removed decision from cache" + _nodeCache.Count);
             }
         }
 

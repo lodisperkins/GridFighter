@@ -71,6 +71,14 @@ namespace Lodis.AI
             return averagePosition /= _attacksInRange.Count;
         }
 
+        public int GetCountOfActiveHitBoxes()
+        {
+            if (_attacksInRange == null)
+                return -1;
+
+            return _attacksInRange.Count;
+        }
+
         public override TreeNode CopyData(TreeNode other)
         {
             DefenseNode otherNode = (DefenseNode)other;

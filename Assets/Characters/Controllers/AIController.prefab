@@ -179,7 +179,7 @@ MonoBehaviour:
   _enableRandomBehaviour: 0
   _senseCollider: {fileID: 2917431262450575549}
   _canAttack: 1
-  _maxDecisionCount: 10000
+  _maxDecisionCount: 20000
   _timeNeededToBurst: 0
   LastDefenseDecision:
     VisitCount: 0
@@ -191,7 +191,7 @@ MonoBehaviour:
     AverageVelocity: {x: 0, y: 0, z: 0}
   MovePosition: {x: 0, y: 0}
   EnableBehaviourTree: 1
-  _copyAttacks: 0
+  _copyAttacks: 1
 --- !u!114 &7025333189879560728
 MonoBehaviour:
   m_ObjectHideFlags: 0

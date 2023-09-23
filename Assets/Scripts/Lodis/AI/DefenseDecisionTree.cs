@@ -15,6 +15,7 @@ namespace Lodis.AI
         {
             SaveLoadPath = Application.persistentDataPath + "/DefenseDecisionData";
             _nodeCache = new List<TreeNode>();
+            LoseThreshold = -2;
         }
 
         public override void Save(string ownerName)
