@@ -13,6 +13,8 @@ namespace Lodis.Gameplay
         public List<Color> AbilityCostColors;
         public ColorVariable Player1Color;
         public ColorVariable Player2Color;
+        public float LHSTotalDamage;
+        public float RHSTotalDamage;
         public GridScripts.GridBehaviour Grid { get; private set; }
         public string Player1State = null;
         public string Player2State = null;

@@ -338,7 +338,13 @@ namespace Lodis.Gameplay
                 KnockbackBehaviour knockback;
 
                 if (ColliderInfo.Damage > 0)
+                {
                     damageScript.TakeDamage(ColliderInfo, Owner);
+                    if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
+                        BlackBoardBehaviour.Instance.LHSTotalDamage += ColliderInfo.Damage;
+                    else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+                        BlackBoardBehaviour.Instance.RHSTotalDamage += ColliderInfo.Damage;
+                }
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
                     float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
@@ -440,7 +446,13 @@ namespace Lodis.Gameplay
                 KnockbackBehaviour knockback;
 
                 if (ColliderInfo.Damage > 0)
+                {
                     damageScript.TakeDamage(ColliderInfo, Owner);
+                    if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
+                        BlackBoardBehaviour.Instance.LHSTotalDamage += ColliderInfo.Damage;
+                    else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+                        BlackBoardBehaviour.Instance.RHSTotalDamage += ColliderInfo.Damage;
+                }
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
                     float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
@@ -543,7 +555,14 @@ namespace Lodis.Gameplay
                 KnockbackBehaviour knockback;
 
                 if (ColliderInfo.Damage > 0)
+                {
                     damageScript.TakeDamage(ColliderInfo, Owner);
+
+                    if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
+                        BlackBoardBehaviour.Instance.LHSTotalDamage += ColliderInfo.Damage;
+                    else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+                        BlackBoardBehaviour.Instance.RHSTotalDamage += ColliderInfo.Damage;
+                }
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
                     float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);

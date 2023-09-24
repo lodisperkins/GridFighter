@@ -91,6 +91,8 @@ namespace Lodis.Gameplay
         private bool _playerOutOfRing;
         private TweenerCore<float, float, FloatOptions> _timeScaleTween;
         private DelayedAction _timeScaleAction;
+        private int _lhsWins;
+        private int _rhsWins;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -128,6 +130,8 @@ namespace Lodis.Gameplay
         public PlayerSpawnBehaviour PlayerSpawner { get => _playerSpawner; private set => _playerSpawner = value; }
         public bool SuperInUse { get; internal set; }
         public bool PlayerOutOfRing { get => _playerOutOfRing; private set => _playerOutOfRing = value; }
+        public int LhsWins { get => _lhsWins; private set => _lhsWins = value; }
+        public int RhsWins { get => _rhsWins; private set => _rhsWins = value; }
 
         private void Awake()
         {
@@ -192,15 +196,29 @@ namespace Lodis.Gameplay
         private void SetMatchResult()
         {
             if (PlayerSpawner.P2HealthScript.HasExploded)
+            {
                 _matchResult = MatchResult.P1WINS;
+                _lhsWins++;
+            }
             else if (PlayerSpawner.P1HealthScript.HasExploded)
+            {
                 _matchResult = MatchResult.P2WINS;
+                _rhsWins++;
+            }
             else if (_ringBarrierL.IsAlive == _ringBarrierR.IsAlive && !_suddenDeathActive)
+            {
                 _matchResult = MatchResult.DRAW;
+            }
             else if (!_ringBarrierR.IsAlive)
+            {
                 _matchResult = MatchResult.P1WINS;
+                _lhsWins++;
+            }
             else if (!_ringBarrierL.IsAlive)
+            {
                 _matchResult = MatchResult.P2WINS;
+                _rhsWins++;
+            }
         }
 
         /// <summary>

@@ -38,6 +38,8 @@ namespace Lodis.UI
         private Color _currentColor;
         private AudioClip _currentClip;
         private CharacterStateMachineBehaviour _opponentStateMachine;
+        [SerializeField]
+        private StadiumMonitorBehaviour _stadiumMonitor;
 
         // Start is called before the first frame update
         void Awake()
@@ -92,6 +94,8 @@ namespace Lodis.UI
                 _announcer.Stop();
             }
 
+            _stadiumMonitor?.SetComboScreenActive();
+
             _comboText.color = _currentColor;
             _comboText.text = _hitCount + " Hits";
             StartSpawnEffect();
@@ -118,6 +122,9 @@ namespace Lodis.UI
 
         private void ResetComboMessage()
         {
+            if (_stadiumMonitor?.CurrentScreenActive == MonitorScreen.COMBOSCREEN)
+                _stadiumMonitor.SetVSPanelActive();
+
             _comboText.enabled = false;
             _announcer.Stop();
             _currentComboMessage = _comboMessages[0].Message;

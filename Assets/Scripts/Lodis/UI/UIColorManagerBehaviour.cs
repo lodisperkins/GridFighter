@@ -34,18 +34,48 @@ namespace Lodis.UI
             ObjectImage.color = _defaultColor;
         }
     }
+
+    /// <summary>
+    /// An object that stores a renderer and th color properties to adjust on that renderer.
+    /// </summary>
+    [System.Serializable]
+    public class TextColorObject
+    {
+        public Text ObjectText;
+        private Color _defaultColor;
+        public bool OnlyChangeHue = true;
+
+        /// <summary>
+        /// Store the current colors that are on this object.
+        /// </summary>
+        public virtual void CacheColor()
+        {
+            _defaultColor = ObjectText.color;
+        }
+
+        /// <summary>
+        /// Override the current colors on this object with the colors currently cached.
+        /// </summary>
+        public virtual void SetColorToCache()
+        {
+            ObjectText.color = _defaultColor;
+        }
+    }
     public class UIColorManagerBehaviour : MonoBehaviour
     {
         [Tooltip("The character alignment that these objects will match the color of.")]
         [SerializeField] private GridScripts.GridAlignment _alignment;
         [Tooltip("The objects that will have their colors changed to match the alignment.")]
         [SerializeField] private ColorObject[] _objectsToColor;
+        [Tooltip("The objects that will have their colors changed to match the alignment.")]
+        [SerializeField] private TextColorObject[] _textToColor;
         private Color _ownerColor;
         [SerializeField]
         private bool _setColorsOnStart = true;
 
         public ColorObject[] ObjectsToColor { get => _objectsToColor; private set => _objectsToColor = value; }
         public GridAlignment Alignment { get => _alignment; set => _alignment = value; }
+        public TextColorObject[] TextToColor { get => _textToColor; set => _textToColor = value; }
 
         private void SetHue(ColorObject objectToColor)
         {
@@ -57,6 +87,16 @@ namespace Lodis.UI
             objectToColor.ObjectImage.color = _ownerColor;
         }
 
+        private void SetHue(TextColorObject objectToColor)
+        {
+            objectToColor.ObjectText.ChangeHue(_ownerColor);
+        }
+
+        private void SetColor(TextColorObject objectToColor)
+        {
+            objectToColor.ObjectText.color = _ownerColor;
+        }
+
         /// <summary>
         /// Sets all objects and their color properties to match the alignment.
         /// </summary>
@@ -65,6 +105,19 @@ namespace Lodis.UI
             _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(Alignment);
 
             foreach (ColorObject colorObject in ObjectsToColor)
+            {
+                if (colorObject.OnlyChangeHue)
+                    SetHue(colorObject);
+                else
+                    SetColor(colorObject);
+
+                colorObject.CacheColor();
+            }
+
+            if (TextToColor == null || TextToColor.Length == 0)
+                return;
+
+            foreach (TextColorObject colorObject in TextToColor)
             {
                 if (colorObject.OnlyChangeHue)
                     SetHue(colorObject);
@@ -93,6 +146,19 @@ namespace Lodis.UI
 
                 colorObject.CacheColor();
             }
+
+            if (TextToColor == null || TextToColor.Length == 0)
+                return;
+
+            foreach (TextColorObject colorObject in TextToColor)
+            {
+                if (colorObject.OnlyChangeHue)
+                    SetHue(colorObject);
+                else
+                    SetColor(colorObject);
+
+                colorObject.CacheColor();
+            }
         }
 
         /// <summary>
@@ -109,6 +175,19 @@ namespace Lodis.UI
             _ownerColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(alignment);
 
             foreach (ColorObject colorObject in ObjectsToColor)
+            {
+                if (colorObject.OnlyChangeHue)
+                    SetHue(colorObject);
+                else
+                    SetColor(colorObject);
+
+                colorObject.CacheColor();
+            }
+
+            if (TextToColor == null || TextToColor.Length == 0)
+                return;
+
+            foreach (TextColorObject colorObject in TextToColor)
             {
                 if (colorObject.OnlyChangeHue)
                     SetHue(colorObject);

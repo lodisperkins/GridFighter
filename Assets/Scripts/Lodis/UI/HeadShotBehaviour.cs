@@ -34,7 +34,6 @@ namespace Lodis.UI
             }
 
             headShot = Instantiate(headShot, _mask.transform);
-
             headShot.GetComponent<UIColorManagerBehaviour>().SetColors(_playerID.Value);
         }
     }

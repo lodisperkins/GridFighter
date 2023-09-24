@@ -51,7 +51,7 @@ namespace Lodis
             get
             {
                 if (!_instance)
-                    _instance = FindObjectOfType<CameraBehaviour>();
+                    _instance = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraBehaviour>();
 
                 if (!_instance)
                 {
