@@ -61,7 +61,7 @@ namespace Lodis.Gameplay
         /// <returns>The list of in game entities</returns>
         public List<GridMovementBehaviour> GetEntitiesInGame()
         {
-            _entitiesInGame.RemoveAll(entity => entity == null || !entity.gameObject.activeInHierarchy);
+            _entitiesInGame.RemoveAll(entity => entity == null || (!entity.gameObject.activeInHierarchy && !entity.CompareTag("Player")));
             return _entitiesInGame;
         }
 

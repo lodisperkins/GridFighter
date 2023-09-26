@@ -267,7 +267,6 @@ namespace Lodis.Gameplay
 
             RoutineBehaviour.Instance.StartNewTimedAction(arguments => OwnerAnimationScript.PlayAnimation(kickClip, 1, true), TimedActionCountType.FRAME, 1);
 
-            CameraBehaviour.Instance.AlignmentFocus = OwnerMoveScript.Alignment;
 
         }
 

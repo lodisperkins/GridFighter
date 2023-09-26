@@ -86,14 +86,17 @@ namespace Lodis
         public Vector3 GetNewPosition()
         {
             Vector3 averagePosition = new Vector3();
-            List<GameObject> entities = new List<GameObject> { BlackBoardBehaviour.Instance.Player1, BlackBoardBehaviour.Instance.Player2 };
+            List<GridMovementBehaviour> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
             int characterCount = 0;
 
-            foreach (GameObject character in entities)
+            foreach (GridMovementBehaviour character in entities)
             {
                 Vector3 characterPos = character.transform.position;
 
                 if (characterPos.x < -5 || characterPos.x > BlackBoardBehaviour.Instance.Grid.Width + 5 || characterPos.y < -5)
+                    continue;
+
+                if (character.Alignment != _alignmentFocus && _alignmentFocus != GridAlignment.ANY)
                     continue;
 
                 //Makes camera have move more towards players

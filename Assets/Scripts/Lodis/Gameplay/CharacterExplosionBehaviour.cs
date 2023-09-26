@@ -63,6 +63,8 @@ namespace Lodis.Gameplay
 
             CameraBehaviour.Instance.ClampX = false;
             CameraBehaviour.Instance.ZoomAmount = 2;
+            CameraBehaviour.Instance.AlignmentFocus = GridScripts.GridAlignment.ANY;
+            BlackBoardBehaviour.Instance.DisableAllAbilityColliders();
 
             ChargeAction = RoutineBehaviour.Instance.StartNewTimedAction( args =>
             {
