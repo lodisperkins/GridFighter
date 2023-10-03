@@ -46,6 +46,14 @@
                     "interactions": "Press(behavior=1)"
                 },
                 {
+                    "name": "ChargeAttack",
+                    "type": "Button",
+                    "id": "bfd5caec-85fc-4260-a8e9-c4207de62200",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)"
+                },
+                {
                     "name": "AttackDirection",
                     "type": "Value",
                     "id": "598d27b6-e9e6-474f-8b35-b9db0ea692ca",
@@ -396,7 +404,7 @@
                 {
                     "name": "",
                     "id": "65134b81-1bbe-478b-99c1-ce60dfe4b1c9",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1490,6 +1498,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "44ccfacc-2eba-4ecb-9d74-fa9cfdf1491e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChargeAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "20f9e858-c28d-4941-9495-b62c2f8bd5e9",
+                    "path": "<Joystick>/trigger",
+                    "interactions": "Press(pressPoint=0.1,behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChargeAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4ae4ca4b-847c-4875-a42b-2b02ddcbad7f",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChargeAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d8a84eb9-63db-4545-b4ea-6c917940a30a",
+                    "path": "<Keyboard>/o",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ChargeAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

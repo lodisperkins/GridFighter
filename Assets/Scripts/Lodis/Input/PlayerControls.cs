@@ -59,6 +59,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""interactions"": ""Press(behavior=1)""
                 },
                 {
+                    ""name"": ""ChargeAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""bfd5caec-85fc-4260-a8e9-c4207de62200"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)""
+                },
+                {
                     ""name"": ""AttackDirection"",
                     ""type"": ""Value"",
                     ""id"": ""598d27b6-e9e6-474f-8b35-b9db0ea692ca"",
@@ -409,7 +417,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""65134b81-1bbe-478b-99c1-ce60dfe4b1c9"",
-                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1505,6 +1513,50 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""44ccfacc-2eba-4ecb-9d74-fa9cfdf1491e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChargeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""20f9e858-c28d-4941-9495-b62c2f8bd5e9"",
+                    ""path"": ""<Joystick>/trigger"",
+                    ""interactions"": ""Press(pressPoint=0.1,behavior=1)"",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChargeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ae4ca4b-847c-4875-a42b-2b02ddcbad7f"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChargeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d8a84eb9-63db-4545-b4ea-6c917940a30a"",
+                    ""path"": ""<Keyboard>/o"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChargeAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -2096,6 +2148,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Player_MoveLeft = m_Player.FindAction("MoveLeft", throwIfNotFound: true);
         m_Player_MoveRight = m_Player.FindAction("MoveRight", throwIfNotFound: true);
         m_Player_Attack = m_Player.FindAction("Attack", throwIfNotFound: true);
+        m_Player_ChargeAttack = m_Player.FindAction("ChargeAttack", throwIfNotFound: true);
         m_Player_AttackDirection = m_Player.FindAction("AttackDirection", throwIfNotFound: true);
         m_Player_Parry = m_Player.FindAction("Parry", throwIfNotFound: true);
         m_Player_Special1 = m_Player.FindAction("Special1", throwIfNotFound: true);
@@ -2175,6 +2228,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_MoveLeft;
     private readonly InputAction m_Player_MoveRight;
     private readonly InputAction m_Player_Attack;
+    private readonly InputAction m_Player_ChargeAttack;
     private readonly InputAction m_Player_AttackDirection;
     private readonly InputAction m_Player_Parry;
     private readonly InputAction m_Player_Special1;
@@ -2197,6 +2251,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @MoveLeft => m_Wrapper.m_Player_MoveLeft;
         public InputAction @MoveRight => m_Wrapper.m_Player_MoveRight;
         public InputAction @Attack => m_Wrapper.m_Player_Attack;
+        public InputAction @ChargeAttack => m_Wrapper.m_Player_ChargeAttack;
         public InputAction @AttackDirection => m_Wrapper.m_Player_AttackDirection;
         public InputAction @Parry => m_Wrapper.m_Player_Parry;
         public InputAction @Special1 => m_Wrapper.m_Player_Special1;
@@ -2234,6 +2289,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Attack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
                 @Attack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttack;
+                @ChargeAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChargeAttack;
+                @ChargeAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChargeAttack;
+                @ChargeAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChargeAttack;
                 @AttackDirection.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackDirection;
                 @AttackDirection.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackDirection;
                 @AttackDirection.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAttackDirection;
@@ -2292,6 +2350,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Attack.started += instance.OnAttack;
                 @Attack.performed += instance.OnAttack;
                 @Attack.canceled += instance.OnAttack;
+                @ChargeAttack.started += instance.OnChargeAttack;
+                @ChargeAttack.performed += instance.OnChargeAttack;
+                @ChargeAttack.canceled += instance.OnChargeAttack;
                 @AttackDirection.started += instance.OnAttackDirection;
                 @AttackDirection.performed += instance.OnAttackDirection;
                 @AttackDirection.canceled += instance.OnAttackDirection;
@@ -2465,6 +2526,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnMoveLeft(InputAction.CallbackContext context);
         void OnMoveRight(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
+        void OnChargeAttack(InputAction.CallbackContext context);
         void OnAttackDirection(InputAction.CallbackContext context);
         void OnParry(InputAction.CallbackContext context);
         void OnSpecial1(InputAction.CallbackContext context);

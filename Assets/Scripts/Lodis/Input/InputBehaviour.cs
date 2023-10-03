@@ -111,7 +111,7 @@ namespace Lodis.Input
         private KnockbackBehaviour _knockbackBehaviour;
         private float _defaultSpeed;
         private CharacterStateMachineBehaviour _stateMachineBehaviour;
-        private bool _canBufferAbility;
+        private bool _canBufferAbility = true;
         private TimedAction _chargeAction;
 
         public InputDevice[] Devices 
@@ -168,9 +168,11 @@ namespace Lodis.Input
             }
 
             //Ability input
-            _playerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
+            _playerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; };
             _playerControls.Player.Attack.canceled += context => NormalAttackButtonDown = false;
-            _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable();};
+            _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
+            _playerControls.Player.ChargeAttack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
+            _playerControls.Player.ChargeAttack.performed += context => { BufferChargeNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable(); };
             _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 });  _special1Down = true; };
             _playerControls.Player.Special1.canceled += context => { _special1Down = false; };
 
@@ -179,7 +181,7 @@ namespace Lodis.Input
             _playerControls.Player.Burst.started += BufferBurst;
             _playerControls.Player.Shuffle.started += BufferShuffle;
 
-            _playerControls.Player.Pause.started += context => MatchManagerBehaviour.Instance.TogglePauseMenu();
+            _playerControls.Player.Pause.started += context => { MatchManagerBehaviour.Instance.TogglePauseMenu(); ClearBuffer(); };
         }
 
         // Start is called before the first frame update
@@ -247,6 +249,42 @@ namespace Lodis.Input
         /// index 1 is always the direction of input.</param>
         public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
         {
+            if (_stateMachineBehaviour.StateMachine.CurrentState != "Idle" && _stateMachineBehaviour.StateMachine.CurrentState != "Moving" && _stateMachineBehaviour.StateMachine.CurrentState != "Attacking")
+                return;
+
+            AbilityType abilityType;
+            _attackDirection.x *= Mathf.Round(transform.forward.x);
+
+            //Decide which ability type to use based on the input
+            if (_attackDirection.y != 0)
+                abilityType = AbilityType.WEAKSIDE;
+            else if (_attackDirection.x < 0)
+                abilityType = AbilityType.WEAKBACKWARD;
+            else if (_attackDirection.x > 0)
+                abilityType = AbilityType.WEAKFORWARD;
+            else
+                abilityType = AbilityType.WEAKNEUTRAL;
+
+            //Assign the arguments for the ability
+            args[1] = _attackDirection;
+            args[0] = 0.0f;
+
+            //Use a normal ability if it was not held long enough
+            _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); }, 
+                condition =>
+                { return _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"); }, 0.2f);
+            _abilityBuffered = true;
+        }
+
+        /// <summary>
+        /// Decides which ability to use based on the input context and activates it
+        /// </summary>
+        /// <param name="context">The input callback context</param>
+        /// <param name="args">Any additional arguments to give to the ability. 
+        /// Index 0 is always the power scale.
+        /// index 1 is always the direction of input.</param>
+        public void BufferChargeNormalAbility(InputAction.CallbackContext context, params object[] args)
+        {
             if (!_canBufferAbility)
                 return;
 
@@ -266,31 +304,26 @@ namespace Lodis.Input
             //Assign the arguments for the ability
             args[1] = _attackDirection;
             args[0] = 0.0f;
+            abilityType += 4;
+            float powerScale = _minChargeLimit * 0.1f + 1;
+
             //Find the power scale based on the time the button was held to use a charge ability
             float timeHeld = Mathf.Clamp((float)context.duration, 0, _maxChargeTime);
-            if (timeHeld > _minChargeLimit && (int)abilityType < 4)
+            if (timeHeld > _minChargeLimit)
             {
-                abilityType += 4;
-                float powerScale = 0;
                 powerScale = timeHeld * 0.1f + 1;
-                args[0] = powerScale;
-
-                _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); },
-                condition =>
-                _moveset.GetCanUseAbility() && 
-                (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" ||
-                _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" ||
-                _stateMachineBehaviour.StateMachine.CurrentState == "Moving")
-                && !FXManagerBehaviour.Instance.SuperMoveEffectActive, 0.2f);
-
-                _abilityBuffered = true;
-                return;
             }
 
-            //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); }, 
-                condition =>
-                { return _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"); }, 0.2f);
+            args[0] = powerScale;
+
+            _bufferedAction = new BufferedInput(action => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); },
+            condition =>
+            _moveset.GetCanUseAbility() &&
+            (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" ||
+            _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" ||
+            _stateMachineBehaviour.StateMachine.CurrentState == "Moving")
+            && !FXManagerBehaviour.Instance.SuperMoveEffectActive, 0.2f);
+
             _abilityBuffered = true;
         }
 
@@ -526,7 +559,10 @@ namespace Lodis.Input
                 }
 
             if (!_inputEnabled)
+            {
+                ClearBuffer();
                 return;
+            }
 
             if (_holdToMove && !_abilityBuffered)
                 CheckMoveInput();

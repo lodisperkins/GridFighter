@@ -18,7 +18,7 @@ MonoBehaviour:
   AbilityType: 4
   timeActive: 0.1
   recoverTime: 0.5
-  startUpTime: 0.65
+  startUpTime: 0.7
   chargeTime: 0
   maxActivationAmount: 0
   EnergyCost: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
     KnockBackScale: 1.5
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.25
+    HitAngle: 0.2
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.2
