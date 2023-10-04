@@ -51,7 +51,11 @@ public class AttackAction : GOAction
         //Gather information about the environment
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
         float targetHealth = _dummy.OpponentKnockback.Health;
-        _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.OpponentKnockback.Physics.LastVelocity, null, null);
+
+        if (_dummy.CurrentPrediction == null)
+            _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.OpponentKnockback.Physics.LastVelocity, null, null);
+        else
+            _situation = _dummy.CurrentPrediction.FutureSituation as AttackNode;
 
         //Get a decision based on the current situation
         _decision = (AttackNode)_dummy.AttackDecisions.GetDecision(_situation, _dummy.OpponentMove, _dummy.OpponentDefense.IsDefending, targetHealth, _dummy);

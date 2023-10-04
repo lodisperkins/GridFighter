@@ -45,7 +45,12 @@ public class IsSafeCondition : GOCondition
     /// <returns></returns>
     public override bool Check()
     {
-        List<HitColliderBehaviour> attacks = _dummy.GetAttacksInRange();
+        List<HitColliderBehaviour> attacks = null;
+
+        if (_dummy.CurrentPrediction != null)
+            attacks = _dummy.CurrentPrediction.AttacksInRange;
+        else
+            attacks = _dummy.GetAttacksInRange();
 
         if (attacks.Count > 0 || _dummy.Knockback.CurrentAirState == AirState.TUMBLING)
             return false;

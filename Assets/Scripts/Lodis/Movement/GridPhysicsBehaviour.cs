@@ -935,15 +935,20 @@ namespace Lodis.Movement
         {
             _acceleration = (RB.velocity - LastVelocity) / Time.fixedDeltaTime;
 
-            _lastVelocity = RB.velocity;
-            _lastVelocity = RB.velocity;
 
             if (UseGravity && !IgnoreForces)
                 _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
             else
                 _constantForceBehaviour.force = Vector3.zero;
 
+
             _isGrounded = CheckIsGrounded();
+
+            if (_rigidbody.isKinematic && _movementBehaviour?.IsMoving == true)
+                _lastVelocity = _movementBehaviour.MoveDirection;
+            else
+                _lastVelocity = RB.velocity;
+
             _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude <= 0.01f;
             ForceToApply = Vector3.zero;
         }

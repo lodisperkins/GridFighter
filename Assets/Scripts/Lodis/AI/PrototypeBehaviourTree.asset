@@ -87,26 +87,26 @@ MonoBehaviour:
     />\r\n          <ConditionEvalNode id=\"50\" />\r\n          <ActionNode id=\"51\"
     />\r\n          <ConditionNode id=\"57\" />\r\n        </nodes>\r\n      </_nodes>\r\n   
     </BehaviorTree>\r\n    <SelectorNode id=\"54\">\r\n      <_data>\r\n        <data
-    breakpoint=\"0\" selected=\"False\" position=\"715.9319 56.76185\" name=\"Selector\"
+    breakpoint=\"0\" selected=\"False\" position=\"686.6819 32.26184\" name=\"Selector\"
     description=\"Executes all its children until one of them is successful\" cardinality=\"-1\"
     hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n          <SelectorNode
     id=\"54\" />\r\n        </data>\r\n      </_data>\r\n    </SelectorNode>\r\n   
     <SequenceNode id=\"56\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"565.321 262.2067\" name=\"Sequence\" description=\"Executes all its
+    position=\"536.071 237.7067\" name=\"Sequence\" description=\"Executes all its
     children in sequence until all of them are successful\" cardinality=\"-1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"0\" />\r\n          <SequenceNode id=\"56\" />\r\n         
     <SelectorNode id=\"54\" />\r\n        </data>\r\n      </_data>\r\n    </SequenceNode>\r\n   
     <ActionNode id=\"60\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"882.8226 296.7066\" name=\"CustomAction/ChooseBestDefense\" description=\"\"
+    position=\"853.5726 272.2066\" name=\"CustomAction/ChooseBestDefense\" description=\"\"
     cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n         
     <ActionNode id=\"60\" />\r\n          <SelectorNode id=\"54\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n    <ConditionNode id=\"57\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"451.3214 398.2065\" name=\"CustomConditions/IsSafe\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"422.0714 373.7065\" name=\"CustomConditions/IsSafe\"
     description=\"\" cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionNode id=\"57\" />\r\n          <SequenceNode
     id=\"56\" />\r\n        </data>\r\n      </_data>\r\n    </ConditionNode>\r\n   
     <SelectorNode id=\"58\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"646.3209 409.2064\" name=\"Selector\" description=\"Executes all its
+    position=\"617.0709 384.7064\" name=\"Selector\" description=\"Executes all its
     children until one of them is successful\" cardinality=\"-1\" hasParent=\"True\">\r\n         
     <BehaviorTree id=\"0\" />\r\n          <SelectorNode id=\"58\" />\r\n         
     <SequenceNode id=\"56\" />\r\n        </data>\r\n      </_data>\r\n    </SelectorNode>\r\n   
@@ -115,20 +115,20 @@ MonoBehaviour:
     cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree id=\"0\" />\r\n       
     </data>\r\n      </_data>\r\n    </ConditionEvalNode>\r\n    <DecoratorGuard
     id=\"49\">\r\n      <_data>\r\n        <data breakpoint=\"0\" selected=\"False\"
-    position=\"451.5662 568.7891\" name=\"Guard\" description=\"Guard\" cardinality=\"1\"
+    position=\"422.3162 544.2891\" name=\"Guard\" description=\"Guard\" cardinality=\"1\"
     hasParent=\"True\">\r\n          <BehaviorTree id=\"0\" />\r\n          <DecoratorGuard
     id=\"49\" />\r\n          <SelectorNode id=\"58\" />\r\n        </data>\r\n     
     </_data>\r\n    </DecoratorGuard>\r\n    <ActionNode id=\"59\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"727.8209 581.7053\" name=\"CustomAction/ChooseBestAttack\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"698.5709 557.2053\" name=\"CustomAction/ChooseBestAttack\"
     description=\"\" cardinality=\"0\" hasParent=\"True\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ActionNode id=\"59\" />\r\n          <SelectorNode
     id=\"58\" />\r\n        </data>\r\n      </_data>\r\n    </ActionNode>\r\n   
     <ConditionEvalNode id=\"50\">\r\n      <_data>\r\n        <data breakpoint=\"0\"
-    selected=\"False\" position=\"451.5662 568.7891\" name=\"CustomConditions/OutOfRange\"
+    selected=\"False\" position=\"422.3162 544.2891\" name=\"CustomConditions/OutOfRange\"
     description=\"Eval\" cardinality=\"1\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ConditionEvalNode id=\"50\" />\r\n        </data>\r\n     
     </_data>\r\n    </ConditionEvalNode>\r\n    <ActionNode id=\"51\">\r\n      <_data>\r\n       
-    <data breakpoint=\"0\" selected=\"False\" position=\"451.5662 568.7891\" name=\"CustomAction/MoveTowardsEnemy\"
+    <data breakpoint=\"0\" selected=\"False\" position=\"422.3162 544.2891\" name=\"CustomAction/MoveTowardsEnemy\"
     description=\"\" cardinality=\"0\" hasParent=\"False\">\r\n          <BehaviorTree
     id=\"0\" />\r\n          <ActionNode id=\"51\" />\r\n        </data>\r\n     
     </_data>\r\n    </ActionNode>\r\n  </editorInfo>\r\n</BehaviorBricks>"

@@ -13,6 +13,7 @@ using Lodis.FX;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using System.Runtime.Remoting.Messaging;
+using Lodis.Utility;
 
 namespace Lodis.AI
 {
@@ -82,7 +83,18 @@ namespace Lodis.AI
         public bool EnableBehaviourTree;
         [SerializeField]
         private bool _copyAttacks;
+        [SerializeField]
+        [Tooltip("The amount of time the AI will wait before saving information about the current situation.")]
+        private float _saveStateDelay;
         private bool _abilityBuffered;
+
+        private Vector3 _opponentVelocity;
+        private Vector3 _opponentDisplacement;
+        private float _opponentHealth;
+        private List<HitColliderBehaviour> _lastAttacksInRange;
+        private TimedAction _saveStateTimer;
+        private DecisionTree _predictionTree;
+        private PredictionNode _currentPrediction;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -121,6 +133,7 @@ namespace Lodis.AI
         public bool CopyAttacks { get => _copyAttacks; set => _copyAttacks = value; }
 
         public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
+        public PredictionNode CurrentPrediction { get => _currentPrediction; private set => _currentPrediction = value; }
 
         public void LoadDecisions()
         {
@@ -144,6 +157,7 @@ namespace Lodis.AI
         {
             _executor = GetComponent<BehaviorExecutor>();
             _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
+            _predictionTree = new DecisionTree();
         }
 
         private void Start()
@@ -161,6 +175,11 @@ namespace Lodis.AI
 
             _senseCollider.transform.SetParent(Character.transform);
             _senseCollider.transform.localPosition = Vector3.zero;
+
+            _knockbackBehaviour.AddOnTakeDamageAction(() => CreateNewPredictNode(false));
+            _opponentKnocback.AddOnTakeDamageAction(() => CreateNewPredictNode(true));
+
+
         }
 
         private void OnEnable()
@@ -243,6 +262,28 @@ namespace Lodis.AI
             _abilityBuffered = true;
         }
 
+        private void UpdateGameState(params object[] args)
+        {
+            _opponentDisplacement = _opponent.transform.position - transform.position;
+            _opponentHealth = _opponentKnocback.Health;
+            _opponentVelocity = _opponentKnocback.Physics.LastVelocity;
+            _lastAttacksInRange = GetAttacksInRange();
+        }
+
+        private void CreateNewPredictNode(bool isAttackNode)
+        {
+            TreeNode node = null;
+
+            if (isAttackNode)
+                node = new AttackNode(_opponent.transform.position - transform.position, _opponentKnocback.Health, 0, 0, "", 0, _opponentKnocback.Physics.LastVelocity, null, null);
+            else
+                node = new DefenseNode(GetAttacksInRange(), null, null);
+
+            PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, node);
+
+            _predictionTree.AddDecision(predictNode);
+        }
+
         public void Update()
         {
             _executor.enabled = EnableBehaviourTree;
@@ -253,6 +294,19 @@ namespace Lodis.AI
                 _bufferedAction.UseAction();
             else
                 _abilityBuffered = false;
+
+            PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
+            _currentPrediction = (PredictionNode)_predictionTree.GetDecision(predictNode);
+
+            if (_currentPrediction != null && !_executor.paused)
+            {
+                _executor.paused = true;
+                RoutineBehaviour.Instance.StartNewTimedAction(args => _executor.paused = false, TimedActionCountType.SCALEDTIME, _saveStateDelay);
+                return;
+            }
+
+            if (_saveStateTimer?.GetEnabled() == false)
+                _saveStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(UpdateGameState, TimedActionCountType.SCALEDTIME, _saveStateDelay);
 
             if (_executor.enabled) return;
 

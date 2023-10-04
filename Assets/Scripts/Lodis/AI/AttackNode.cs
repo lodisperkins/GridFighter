@@ -10,7 +10,7 @@ namespace Lodis.AI
     public class AttackNode : TreeNode
     {
         private MovesetBehaviour _moveset;
-        public Vector3 TargetDisplacement;
+        public Vector3 OwnerToTarget;
         public Vector3 TargetVelocity;
         public float TargetHealth;
         public int ShieldEffectiveness;
@@ -30,7 +30,7 @@ namespace Lodis.AI
                           TreeNode left,
                           TreeNode right) : base(left, right)
         {
-            TargetDisplacement = targetDisplacement;
+            OwnerToTarget = targetDisplacement;
             TargetHealth = targetHealth;
             ShieldEffectiveness = barrierEffectiveness;
             AttackStartTime = attackStartTime;
@@ -43,11 +43,11 @@ namespace Lodis.AI
         {
             float weight = base.GetTotalWeight(root, args);
 
-            bool behindBarrier = (bool)args[1];
+            //bool behindBarrier = (bool)args[1];
             float opponentHealth = (float)args[2];
             AttackDummyBehaviour owner = (AttackDummyBehaviour)args[3];
 
-            if (behindBarrier) weight += ShieldEffectiveness;
+           //if (behindBarrier) weight += ShieldEffectiveness;
 
             if (owner.Moveset.SpecialDeckContains(AbilityName))
                 if (owner.Moveset.Energy < owner.Moveset.GetAbilityByName(AbilityName).abilityData.EnergyCost)
@@ -78,12 +78,13 @@ namespace Lodis.AI
         {
             AttackNode attackNode = node as AttackNode;
 
-            if (attackNode == null) return 0;
+            if (attackNode == null || (attackNode.AbilityName != AbilityName && attackNode.AbilityName != ""))
+                return 0;
 
-            float directionAccuracy = Vector3.Dot(attackNode.TargetDisplacement.normalized, TargetDisplacement.normalized);
+            float directionAccuracy = Vector3.Dot(attackNode.OwnerToTarget.normalized, OwnerToTarget.normalized);
             float velocityAccuracy = Vector3.Dot(attackNode.TargetVelocity.normalized, TargetVelocity.normalized);
             float attackDirectionAccuracy = Vector3.Dot(attackNode.AttackDirection.normalized, AttackDirection.normalized);
-            float distanceAccuracy = TargetDisplacement.magnitude / attackNode.TargetDisplacement.magnitude;
+            float distanceAccuracy = OwnerToTarget.magnitude / attackNode.OwnerToTarget.magnitude;
             float attackStrengthAccuracy = 0;
 
             if (attackNode.AttackStrength > 0) 
