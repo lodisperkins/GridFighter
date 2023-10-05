@@ -133,6 +133,10 @@ namespace Lodis.AI
                     parent = current;
                     current = current.Left;
                 }
+                else
+                {
+                    throw new System.Exception("Could not find proper spot for new decision.");
+                }
             }
 
             //Make the decision a child of the parent based on how similar they are

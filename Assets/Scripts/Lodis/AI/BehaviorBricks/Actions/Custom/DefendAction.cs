@@ -38,7 +38,7 @@ public class DefendAction : GOAction
         int currentAttackCount = attacks.Count;
 
         //Store the current environment data
-        if (_dummy.CurrentPrediction != null)
+        if (_dummy.CurrentPrediction == null)
             _situation = new DefenseNode(attacks, null, null);
         else
             _situation = _dummy.CurrentPrediction.FutureSituation as DefenseNode;

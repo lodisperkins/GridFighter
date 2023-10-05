@@ -72,18 +72,39 @@ namespace Lodis.AI
             if (predictNode == null)
                 return 0;
 
-            float directionAccuracy = Vector3.Dot(predictNode._ownerToTarget.normalized, _ownerToTarget.normalized);
-            float velocityAccuracy = Vector3.Dot(predictNode._opponentVelocity.normalized, _opponentVelocity.normalized);
+            float directionAccuracy = 1;
+            if (predictNode._ownerToTarget.magnitude != 0 || _ownerToTarget.magnitude != 0)
+            {
+               directionAccuracy = Vector3.Dot(predictNode._ownerToTarget.normalized, _ownerToTarget.normalized);
+            }
+
+            float velocityAccuracy = 1;
+            if (predictNode._opponentVelocity.magnitude != 0 || _opponentVelocity.magnitude != 0)
+            {
+               velocityAccuracy = Vector3.Dot(predictNode._opponentVelocity.normalized, _opponentVelocity.normalized);
+            }
+
             float distanceAccuracy = _ownerToTarget.magnitude / predictNode._ownerToTarget.magnitude;
 
             Vector3 averagePosition = GetAveragePosition();
             Vector3 averageVelocity = GetAverageVelocity();
 
-            float positionAccuracy = Vector3.Dot(predictNode.GetAveragePosition().normalized, averagePosition.normalized);
+            float positionAccuracy = 1;
+            if (predictNode.GetAveragePosition().magnitude != 0 || averagePosition.magnitude != 0)
+            {
+               positionAccuracy = Vector3.Dot(predictNode.GetAveragePosition().normalized, averagePosition.normalized);
+            }
+
             if (float.IsNaN(positionAccuracy))
                 positionAccuracy = 0;
 
-            float attackVelocityAccuracy = Vector3.Dot(predictNode.GetAveragePosition().normalized, averageVelocity.normalized);
+            float attackVelocityAccuracy = 1;
+            
+            if (predictNode.GetAverageVelocity().magnitude != 0 || averageVelocity.magnitude != 0)
+            {
+               attackVelocityAccuracy =  Vector3.Dot(predictNode.GetAverageVelocity().normalized, averageVelocity.normalized);
+            }
+
             if (float.IsNaN(attackVelocityAccuracy))
                 attackVelocityAccuracy = 0;
 
@@ -96,7 +117,7 @@ namespace Lodis.AI
             if (distanceAccuracy > 1)
                 distanceAccuracy -= distanceAccuracy - 1;
 
-            float totalAccuracy = (directionAccuracy + distanceAccuracy + velocityAccuracy + positionAccuracy + velocityAccuracy) / 5;
+            float totalAccuracy = (directionAccuracy + distanceAccuracy + velocityAccuracy + positionAccuracy + attackVelocityAccuracy) / 5;
 
             return totalAccuracy;
         }
