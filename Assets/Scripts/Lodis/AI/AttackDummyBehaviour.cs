@@ -160,6 +160,7 @@ namespace Lodis.AI
             _executor = GetComponent<BehaviorExecutor>();
             _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
             _predictionTree = new DecisionTree();
+            _predictionTree.LoseThreshold = -2;
         }
 
         private void Start()
@@ -326,6 +327,9 @@ namespace Lodis.AI
                 _bufferedAction.UseAction();
             else
                 _abilityBuffered = false;
+
+
+            if (_executor.enabled) return;
 
             PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
             _currentPrediction = (PredictionNode)_predictionTree.GetDecision(predictNode);
