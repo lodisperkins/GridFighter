@@ -30,6 +30,8 @@ namespace Lodis.AI
         public DefenseNode(List<HitColliderBehaviour> attacksInRange, TreeNode left, TreeNode right) : base(left, right)
         {
             _attacksInRange = attacksInRange;
+            GetAveragePosition();
+            GetAverageVelocity();
         }
 
         private Vector3 GetAverageVelocity()

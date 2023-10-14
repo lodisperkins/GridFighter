@@ -28,9 +28,19 @@ public class MoveAction : GOAction
         ///Stores if the x position is less than the opponents based on the direction their facing. 
         ///This is to have the dummy continue combos when the enemy falls behind them.
         bool isInFrontOpponent = xDirection * panel.Position.x < xDirection * _dummy.OpponentMove.Position.x;
+        if (_dummy.CurrentPrediction == null)
+        {
+            //Returns the distance between the dummy and its target and whether or not it's in front
+            return Mathf.Abs(panel.Position.x - _dummy.OpponentMove.Position.x) < _dummy.MaxRange && panel.Position.y == _dummy.OpponentMove.Position.y && isInFrontOpponent;
+        }
+        else
+        {
+            PanelBehaviour opponentPanel;
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_dummy.CurrentPrediction.FuturePosition, out opponentPanel);
 
-        //Returns the distance between the dummy and its target and whether or not it's in front
-        return Mathf.Abs(panel.Position.x - _dummy.OpponentMove.Position.x) < _dummy.MaxRange && panel.Position.y == _dummy.OpponentMove.Position.y && isInFrontOpponent;
+            //Returns the distance between the dummy and its target and whether or not it's in front
+            return Mathf.Abs(panel.Position.x - opponentPanel.Position.x) < _dummy.MaxRange && panel.Position.y == opponentPanel.Position.y && isInFrontOpponent;
+        }
     }
 
     public override TaskStatus OnUpdate()

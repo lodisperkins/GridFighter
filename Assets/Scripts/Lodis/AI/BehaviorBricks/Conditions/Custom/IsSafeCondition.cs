@@ -52,8 +52,11 @@ public class IsSafeCondition : GOCondition
         else
             attacks = _dummy.GetAttacksInRange();
 
-        if (attacks.Count > 0 || _dummy.Knockback.CurrentAirState == AirState.TUMBLING)
-            return false;
+        if (_dummy.CurrentPrediction == null || !(_dummy.CurrentPrediction.FutureSituation is AttackNode))
+        {
+            if (attacks.Count > 0 || _dummy.Knockback.CurrentAirState == AirState.TUMBLING)
+                return false;
+        }
 
         _dummy.Defense.DeactivateShield();
 

@@ -12,9 +12,11 @@ namespace Lodis.AI
         private float _opponentHealth;
         private List<HitColliderBehaviour> _attacksInRange;
         private TreeNode _futureSituation;
+        private Vector3 _futurePosition;
 
         public List<HitColliderBehaviour> AttacksInRange { get => _attacksInRange; private set => _attacksInRange = value; }
         public TreeNode FutureSituation { get => _futureSituation; private set => _futureSituation = value; }
+        public Vector3 FuturePosition { get => _futurePosition; set => _futurePosition = value; }
 
         public PredictionNode(TreeNode left, TreeNode right, Vector3 opponentVelocity,
             Vector3 ownerToOpponent, float opponentHealth, List<HitColliderBehaviour> attacksInRange, TreeNode futureSituation) : base(left, right)

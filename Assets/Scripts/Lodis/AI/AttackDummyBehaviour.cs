@@ -97,6 +97,7 @@ namespace Lodis.AI
         private DecisionTree _predictionTree;
         private PredictionNode _currentPrediction;
         private PredictionNode _lastPrediction;
+        private TimedAction _checkStateTimer;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -182,7 +183,7 @@ namespace Lodis.AI
             _knockbackBehaviour.AddOnTakeDamageAction(() => CreateNewPredictNode(false));
             _opponentKnocback.AddOnTakeDamageAction(() => CreateNewPredictNode(true));
 
-
+            _saveStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(UpdateGameState, TimedActionCountType.SCALEDTIME, _saveStateDelay);
         }
 
         private void OnEnable()
@@ -300,21 +301,22 @@ namespace Lodis.AI
             List<HitColliderBehaviour> attacks = new List<HitColliderBehaviour>(_lastAttacksInRange);
             PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, attacks, node);
 
+            predictNode.FuturePosition = _opponent.transform.position;
+
             _predictionTree.AddDecision(predictNode);
         }
 
         private void CheckState()
         {
             PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
-            if (_lastPrediction.Compare(predictNode) < 0.95f)
+            if (_lastPrediction.Compare(predictNode) < 0.80f)
             {
                 _lastPrediction.Wins--;
-                _currentPrediction = null;
             }
             else
                 _lastPrediction.Wins++;
 
-            _executor.paused = false;
+            _currentPrediction = null;
         }
 
         public void Update()
@@ -328,18 +330,18 @@ namespace Lodis.AI
             else
                 _abilityBuffered = false;
 
+            if (StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Tumbling")
+            {
+                PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
+                _currentPrediction = (PredictionNode)_predictionTree.GetDecision(predictNode);
+            }
 
-            if (_executor.enabled) return;
-
-            PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
-            _currentPrediction = (PredictionNode)_predictionTree.GetDecision(predictNode);
-
-            if (_currentPrediction != null && !_executor.paused)
+            if (_currentPrediction != null)
             {
                 _lastPrediction = _currentPrediction;
-                _executor.paused = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(args => CheckState(), TimedActionCountType.SCALEDTIME, _saveStateDelay);
-                return;
+
+                if (_checkStateTimer == null || _checkStateTimer.GetEnabled() == false)
+                    _checkStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => CheckState(), TimedActionCountType.SCALEDTIME, _saveStateDelay);
             }
 
             if (_saveStateTimer == null || _saveStateTimer.GetEnabled() == false)
