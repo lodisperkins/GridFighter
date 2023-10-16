@@ -12,7 +12,7 @@ namespace Lodis.AI
 {
     public class AIDummyMovementBehaviour : MonoBehaviour
     {
-        private AttackDummyBehaviour _dummyBehaviour;
+        private AIAgentBehaviour _dummyBehaviour;
         private Coroutine _moveRoutine;
         private PanelBehaviour _moveTarget;
         private bool _needPath;
@@ -24,13 +24,17 @@ namespace Lodis.AI
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
         public StateMachine StateMachine { get => _stateMachine; }
 
+        private void Awake()
+        {
+            _dummyBehaviour = GetComponent<AIAgentBehaviour>();
+            _movementBehaviour = _dummyBehaviour.Character.GetComponent<Movement.GridMovementBehaviour>();
+        }
 
         // Start is called before the first frame update
         void Start()
         {
-            _dummyBehaviour = GetComponent<AttackDummyBehaviour>();
             _stateMachine = _dummyBehaviour.Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
-            _movementBehaviour = _dummyBehaviour.Character.GetComponent<Movement.GridMovementBehaviour>();
+            
             _movementBehaviour.AddOnMoveEndAction(MoveToNextPanel);
             _currentPath = new List<PanelBehaviour>();
             _moveset = _dummyBehaviour.Character.GetComponent<MovesetBehaviour>();

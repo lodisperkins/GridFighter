@@ -1,0 +1,30 @@
+Attack
+	Don't Attack
+	Use Weak
+	Use Strong
+	Special 1
+	Special 2
+	Reshuffle
+
+Movement
+	Don't move
+	Move Up
+	Move Down
+	Move Left
+	Move Right
+
+Defense
+	Don't Wall Jump
+	Wall Jump
+
+
+Attack Direction
+	Up
+	Down
+	Left
+	Right
+
+Burst
+	Don't Burst
+	Burst
+	

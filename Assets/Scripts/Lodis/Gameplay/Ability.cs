@@ -102,6 +102,18 @@ namespace Lodis.Gameplay
             }
         }
 
+        public static AbilityType GetNormalType(Vector2 direction, bool isStrong = false)
+        {
+            int strengthMod = isStrong? 4 : 0;
+
+            if (direction == Vector2.up || direction == Vector2.down)
+                return AbilityType.WEAKSIDE + strengthMod;
+            else if (direction == Vector2.right)
+                return AbilityType.WEAKFORWARD + strengthMod;
+            else 
+                return AbilityType.WEAKBACKWARD + strengthMod;
+        }
+
         /// <summary>
         /// Returns false at the end of the ability's recover time
         /// </summary>

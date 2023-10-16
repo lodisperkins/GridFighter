@@ -37,6 +37,8 @@ namespace Lodis.ScriptableObjects
             public float value;
         }
 
+        private int _id;
+
         public string abilityName = "Unassigned";
         [TextArea]
         public string abilityDescription = "None";
@@ -120,6 +122,19 @@ namespace Lodis.ScriptableObjects
         [SerializeField]
         private AnimationClip[] _additionalAnimations;
 
+        public bool ShouldMirror { get => _shouldMirror; set => _shouldMirror = value; }
+        public int ID 
+        {
+            get => _id;
+            private set
+            {
+                if (_id == 0)
+                    _id = abilityName.GetHashCode();
+
+                _id = value;
+            }
+        }
+
         /// <summary>
         /// Gets the custom animation attached this data
         /// </summary>
@@ -194,7 +209,6 @@ namespace Lodis.ScriptableObjects
             }
         }
 
-        public bool ShouldMirror { get => _shouldMirror; set => _shouldMirror = value; }
 
         /// <summary>
         /// Gets the first cancellation rule that matches the given phase.

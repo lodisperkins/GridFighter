@@ -1,4 +1,5 @@
-﻿using Lodis.Input;
+﻿using Lodis.GridScripts;
+using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
@@ -121,6 +122,16 @@ namespace Lodis.Gameplay
                 });
 
             return _rhsActiveColliders;
+        }
+
+        public List<HitColliderBehaviour> GetOpponentActiveColliders(GridAlignment alignement)
+        {
+            if (alignement == GridAlignment.LEFT)
+                return GetRHSActiveColliders();
+            else if (alignement == GridAlignment.RIGHT)
+                return GetLHSActiveColliders();
+
+            return null;
         }
 
         /// <summary>
@@ -292,6 +303,16 @@ namespace Lodis.Gameplay
                 return Player1;
 
             return null;
+        }
+
+        public float GetBarrierHealthByAlignment(GridAlignment alignment)
+        {
+            if (alignment == GridAlignment.LEFT)
+                return RingBarrierLHS.Health;
+            else if (alignment == GridAlignment.RIGHT)
+                return RingBarrierRHS.Health;
+
+            return -1;
         }
 
         /// <summary>

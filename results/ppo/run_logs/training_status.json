@@ -1,0 +1,29 @@
+{
+    "Battle": {
+        "checkpoints": [
+            {
+                "steps": 1056,
+                "file_path": "results\\ppo\\Battle\\Battle-1056.onnx",
+                "reward": 111.32857511724744,
+                "creation_time": 1697428649.0763514,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Battle\\Battle-1056.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1056,
+            "file_path": "results\\ppo\\Battle.onnx",
+            "reward": 111.32857511724744,
+            "creation_time": 1697428649.0763514,
+            "auxillary_file_paths": [
+                "results\\ppo\\Battle\\Battle-1056.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.7.0+cu110"
+    }
+}
