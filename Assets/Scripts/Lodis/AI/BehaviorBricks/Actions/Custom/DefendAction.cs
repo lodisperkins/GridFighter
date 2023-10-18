@@ -121,8 +121,12 @@ public class DefendAction : GOAction
         switch (choice)
         {
             case DefenseDecisionType.EVADE:
-                //Gets a direction for the dummy to run to
-                Vector3 fleeDirection = _dummy.Character.transform.position - (_decision.AveragePosition + _decision.AverageVelocity);
+
+                if (!_dummy.AIMovement.MovementBehaviour)
+                    break;
+
+                    //Gets a direction for the dummy to run to
+                    Vector3 fleeDirection = _dummy.Character.transform.position - (_decision.AveragePosition + _decision.AverageVelocity);
                 fleeDirection.Normalize();
                 fleeDirection.Scale(new Vector3(_grid.PanelScale.x + _grid.PanelSpacingX, 0, _grid.PanelScale.z + _grid.PanelSpacingZ));
                 fleeDirection = new Vector3(fleeDirection.z, 0, -fleeDirection.x);

@@ -170,6 +170,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
   _character: {fileID: 0}
   _attackType: 4
   _attackDelay: 1
@@ -273,7 +277,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e867bf7b20b1ca4dbd0e6c6ca45a4f6, type: 3}
   m_Name: 

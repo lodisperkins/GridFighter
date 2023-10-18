@@ -10,8 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5787507730015743068}
   - component: {fileID: 1011660742388530594}
-  - component: {fileID: -473326306033233245}
-  - component: {fileID: -8889959383695235467}
+  - component: {fileID: 7632776497259912495}
+  - component: {fileID: 8212243000369969698}
+  - component: {fileID: -4403697709066265486}
+  - component: {fileID: 2162813750258498544}
   m_Layer: 9
   m_Name: AIAgentController
   m_TagString: Player
@@ -47,17 +49,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BrainParameters:
     VectorObservationSize: 120
-    NumStackedVectorObservations: 1
-    VectorActionSize: 0600000005000000020000000400000002000000
+    NumStackedVectorObservations: 3
+    VectorActionSize: 02000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: Battle
+  m_BehaviorName: Axton_Battle
   TeamId: 0
   m_UseChildSensors: 1
---- !u!114 &-473326306033233245
+--- !u!114 &7632776497259912495
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -66,18 +68,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 5787507730015743069}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0a22e9edcaf34c429f9517afea66155, type: 3}
+  m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 1000
+  MaxStep: 0
   _character: {fileID: 0}
+  _attackType: 0
+  _attackDelay: 0
   _attackStrength: 0
+  _maxRange: 0
   _attackDirection: {x: 0, y: 0}
+  _enableRandomBehaviour: 0
+  _senseCollider: {fileID: 0}
+  _canAttack: 1
+  _maxDecisionCount: 10000
+  _timeNeededToBurst: 0
+  LastDefenseDecision:
+    VisitCount: 0
+    Wins: 0
+    BaseWeight: 0
+    DefenseDecision: 0
+    CounterAbilityName: 
+    AveragePosition: {x: 0, y: 0, z: 0}
+    AverageVelocity: {x: 0, y: 0, z: 0}
   MovePosition: {x: 0, y: 0}
---- !u!114 &-8889959383695235467
+  EnableBehaviourTree: 1
+  _copyAttacks: 0
+  _saveStateDelay: 0
+--- !u!114 &8212243000369969698
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,3 +112,88 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
+--- !u!114 &-4403697709066265486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5787507730015743069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 422fb6956201c7944ae2113a1a53b0b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTasksPerTick: 1000
+  behavior: {fileID: 11400000, guid: 9aaa7bb72180ef0479a7bb47efa52cb6, type: 2}
+  paused: 0
+  restartWhenFinished: 1
+  blackboard:
+    intParams: 00000000
+    intParamsNames:
+    - LastAttackCount
+    intParamsLostDefaultValue: 
+    boolParams: 000000000001
+    boolParamsNames:
+    - InDanger
+    - IsGrounded
+    - CanParry
+    - CounterAttacking
+    - RandomDecisionChosen
+    - CanMakeNewDecision
+    boolParamsLostDefaultValue: 
+    floatParams: []
+    floatParamsNames: []
+    floatParamsLostDefaultValue: 
+    stringParams: []
+    stringParamsNames: []
+    stringParamsLostDefaultValue: 
+    colorParams: []
+    colorParamsNames: []
+    colorParamsLostDefaultValue: 
+    objectParams:
+    - {fileID: 7632776497259912495}
+    objectParamsNames:
+    - Owner
+    objectParamsLostDefaultValue: 
+    layerMaskParams: []
+    layerMaskParamsNames: []
+    layerMaskParamsLostDefaultValue: 
+    enumParamsNames: []
+    enumParamsLostDefaultValue: 
+    vector2Params: []
+    vector2ParamsNames: []
+    vector2ParamsLostDefaultValue: 
+    vector3Params: []
+    vector3ParamsNames: []
+    vector3ParamsLostDefaultValue: 
+    vector4Params: []
+    vector4ParamsNames: []
+    vector4ParamsLostDefaultValue: 
+    rectParams: []
+    rectParamsNames: []
+    rectParamsLostDefaultValue: 
+    animationCurveParams: []
+    animationCurveParamsNames: []
+    animationCurveParamsLostDefaultValue: 
+    boundsParams: []
+    boundsParamsNames: []
+    boundsParamsLostDefaultValue: 
+    gradientParams: []
+    gradientParamsNames: []
+    gradientParamsLostDefaultValue: 
+    quaternionParams: []
+    quaternionParamsNames: []
+    quaternionParamsLostDefaultValue: 
+--- !u!114 &2162813750258498544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5787507730015743069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e867bf7b20b1ca4dbd0e6c6ca45a4f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

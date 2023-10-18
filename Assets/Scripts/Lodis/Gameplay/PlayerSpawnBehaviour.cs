@@ -28,7 +28,7 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _p2Moveset;
         private GameMode _mode;
         [SerializeField]
-        private AI.AIAgentBehaviour _dummy;
+        private AI.AttackDummyBehaviour _dummy;
         [SerializeField]
         private Vector2 _RHSSpawnLocation;
         [SerializeField]
@@ -91,7 +91,7 @@ namespace Lodis.Gameplay
             {
                 SpawnPlayer2();
                 BlackBoardBehaviour.Instance.Grid.AssignOwners(_player1.name, _player2.name);
-                //LoadAIDecisions();
+                LoadAIDecisions();
             }
             else
                 BlackBoardBehaviour.Instance.Grid.AssignOwners(_player1.name);

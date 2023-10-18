@@ -14,10 +14,13 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using System.Runtime.Remoting.Messaging;
 using Lodis.Utility;
+using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Policies;
 
 namespace Lodis.AI
 {
-    public class AttackDummyBehaviour : MonoBehaviour, IControllable
+    public class AttackDummyBehaviour : Agent, IControllable
     {
         [SerializeField]
         private GameObject _character;
@@ -62,7 +65,7 @@ namespace Lodis.AI
         private CharacterDefenseBehaviour _opponentDefense;
 
         private CharacterDefenseBehaviour _defense;
-        private AIDummyMovementBehaviour _movementBehaviour;
+        private AIDummyMovementBehaviour _aiMovementBehaviour;
         private AttackDecisionTree _attackDecisions;
         private DefenseDecisionTree _defenseDecisions;
 
@@ -98,11 +101,15 @@ namespace Lodis.AI
         private PredictionNode _currentPrediction;
         private PredictionNode _lastPrediction;
         private TimedAction _checkStateTimer;
+        private GridMovementBehaviour _movementBehaviour;
+        private MovesetBehaviour _opponentMoveset;
+        private bool _initialized;
+        private bool _shouldAttack;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
         public MovesetBehaviour Moveset { get => _moveset; set => _moveset = value; }
-        public AIDummyMovementBehaviour AIMovement { get => _movementBehaviour; }
+        public AIDummyMovementBehaviour AIMovement { get => _aiMovementBehaviour; }
         public AttackDecisionTree AttackDecisions { get => _attackDecisions; }
         public GridPhysicsBehaviour GridPhysics { get => _gridPhysics; }
         public BehaviorExecutor Executor { get => _executor; }
@@ -137,6 +144,7 @@ namespace Lodis.AI
 
         public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
         public PredictionNode CurrentPrediction { get => _currentPrediction; private set => _currentPrediction = value; }
+        public bool ShouldAttack { get => _shouldAttack; private set => _shouldAttack = value; }
 
         public void LoadDecisions()
         {
@@ -159,9 +167,7 @@ namespace Lodis.AI
         private void Awake()
         {
             _executor = GetComponent<BehaviorExecutor>();
-            _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
-            _predictionTree = new DecisionTree();
-            _predictionTree.LoseThreshold = -2;
+            _aiMovementBehaviour = GetComponent<AIDummyMovementBehaviour>();
         }
 
         private void Start()
@@ -177,28 +183,27 @@ namespace Lodis.AI
             OpponentKnockback = _opponent.GetComponent<KnockbackBehaviour>();
             OpponentDefense = _opponent.GetComponent<CharacterDefenseBehaviour>();
 
-            _senseCollider.transform.SetParent(Character.transform);
-            _senseCollider.transform.localPosition = Vector3.zero;
-
-            _knockbackBehaviour.AddOnTakeDamageAction(() => CreateNewPredictNode(false));
-            _opponentKnocback.AddOnTakeDamageAction(() => CreateNewPredictNode(true));
-
-            _saveStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(UpdateGameState, TimedActionCountType.SCALEDTIME, _saveStateDelay);
+            //_senseCollider.transform.SetParent(Character.transform);
+            //_senseCollider.transform.localPosition = Vector3.zero;
+            
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             if (_executor && EnableBehaviourTree)
                 _executor.enabled = true;
 
             if (_movementBehaviour)
-                _movementBehaviour.enabled = true;
+                _aiMovementBehaviour.enabled = true;
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
+
             _executor.enabled = false;
-            _movementBehaviour.enabled = false;
+            _aiMovementBehaviour.enabled = false;
         }
 
         private void OnDestroy()
@@ -207,6 +212,149 @@ namespace Lodis.AI
 
             _attackDecisions?.Save(Character.name);
             _defenseDecisions?.Save(Character.name);
+        }
+
+        private void Init()
+        {
+            _movementBehaviour = Character.GetComponent<GridMovementBehaviour>();
+
+            Defense = Character.GetComponent<CharacterDefenseBehaviour>();
+            Moveset = Character.GetComponent<Gameplay.MovesetBehaviour>();
+            _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
+            Knockback = Character.GetComponent<Movement.KnockbackBehaviour>();
+            _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
+
+            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(PlayerID);
+            OpponentMove = _opponent.GetComponent<GridMovementBehaviour>();
+            OpponentKnockback = _opponent.GetComponent<KnockbackBehaviour>();
+            OpponentDefense = _opponent.GetComponent<CharacterDefenseBehaviour>();
+
+
+            OpponentKnockback.AddOnTakeDamageAction(() => AddReward(0.1f));
+            OpponentKnockback.AddOnKnockBackAction(() => AddReward(0.2f));
+            RingBarrierBehaviour opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
+
+            RingBarrierBehaviour aiBarrier = OpponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
+
+            opponentBarrier.AddOnTakeDamageAction(() => AddReward(0.5f));
+            aiBarrier.AddOnTakeDamageAction(() => AddReward(-0.5f));
+
+            _knockbackBehaviour.AddOnTakeDamageAction(() => AddReward(-0.1f));
+            _knockbackBehaviour.AddOnKnockBackAction(() => AddReward(-0.2f));
+
+            _knockbackBehaviour.AddOnDeathAction(() => AddReward(-1));
+            OpponentKnockback.AddOnDeathAction(() => AddReward(1));
+
+            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Character).GetComponent<MovesetBehaviour>();
+
+            MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
+            {
+                EndEpisode();
+            });
+            _initialized = true;
+
+            GetComponent<BehaviorParameters>().TeamId = _movementBehaviour.Alignment == GridAlignment.LEFT ? 0 : 1;
+        }
+        public override void CollectObservations(VectorSensor sensor)
+        {
+            if (Character == null)
+                return;
+
+            if (!_initialized)
+                Init();
+
+            //Ai sensor items
+
+            //Movement and position observations
+            //Space size: 14
+            sensor.AddObservation(_character.transform.position);
+            sensor.AddObservation(_movementBehaviour.Position);
+            sensor.AddObservation(_movementBehaviour.IsMoving);
+            sensor.AddObservation(_movementBehaviour.CanMove);
+            sensor.AddObservation(_movementBehaviour.CanCancelMovement);
+            sensor.AddObservation(_movementBehaviour.Speed);
+            sensor.AddObservation(_movementBehaviour.MoveDirection);
+            sensor.AddObservation((int)_movementBehaviour.Alignment);
+
+
+
+            //Ability observations
+            //Space size: 7
+            sensor.AddObservation(_moveset.AbilityInUse);
+            sensor.AddObservation(_moveset.Energy);
+            sensor.AddObservation(_moveset.CanBurst);
+            sensor.AddObservation(_moveset.GetCanUseAbility());
+
+            Ability special1 = _moveset.GetAbilityInCurrentSlot(0);
+            Ability special2 = _moveset.GetAbilityInCurrentSlot(1);
+
+            if (special1 != null)
+                sensor.AddObservation(special1.abilityData.ID);
+
+            if (special2 != null)
+                sensor.AddObservation(special2.abilityData.ID);
+
+            int nextAbilityID = _moveset.NextAbilitySlot == null ? 0 : _moveset.NextAbilitySlot.abilityData.ID;
+            sensor.AddObservation(nextAbilityID);
+
+            //Arena observations
+            //Space size: 79
+            sensor.AddObservation(_knockbackBehaviour.Health);
+            sensor.AddObservation(BlackBoardBehaviour.Instance.GetBarrierHealthByAlignment(_movementBehaviour.Alignment));
+
+            sensor.AddObservation(_opponentKnocback.Health);
+            sensor.AddObservation(BlackBoardBehaviour.Instance.GetBarrierHealthByAlignment(_opponentMove.Alignment));
+            sensor.AddObservation(TouchingBarrier);
+            sensor.AddObservation(TouchingOpponentBarrier);
+
+            sensor.AddObservation(StateMachine.CurrentState.GetHashCode());
+
+            //Space size must be estimate. Take max hitbox detection and multiply by amount of vector values. 
+            //Estimated space size increase: +72
+            foreach (HitColliderBehaviour collider in BlackBoardBehaviour.Instance.GetOpponentActiveColliders(_movementBehaviour.Alignment))
+            {
+                sensor.AddObservation(collider.transform.position);
+
+                if (collider.RB)
+                    sensor.AddObservation(collider.RB.velocity);
+            }
+
+            //Opponent sensor items
+            //Space size: 20
+            //Movement and position observations
+            sensor.AddObservation(_opponent.transform.position);
+            sensor.AddObservation(_opponentMove.Position);
+            sensor.AddObservation(_opponentMove.IsMoving);
+            sensor.AddObservation(_movementBehaviour.MoveDirection);
+            sensor.AddObservation(_opponentKnocback.Physics.LastVelocity);
+
+            //Ability observations
+            sensor.AddObservation(_opponentMoveset.AbilityInUse);
+            sensor.AddObservation(_opponentMoveset.Energy);
+            sensor.AddObservation(_opponentMoveset.CanBurst);
+            sensor.AddObservation(_opponentMoveset.GetCanUseAbility());
+
+            special1 = _opponentMoveset.GetAbilityInCurrentSlot(0);
+            special2 = _opponentMoveset.GetAbilityInCurrentSlot(1);
+
+            if (special1 != null)
+                sensor.AddObservation(special1.abilityData.ID);
+
+            if (special2 != null)
+                sensor.AddObservation(special2.abilityData.ID);
+
+            int opponentNextAbilityID = _opponentMoveset.NextAbilitySlot == null ? 0 : _opponentMoveset.NextAbilitySlot.abilityData.ID;
+            sensor.AddObservation(opponentNextAbilityID);
+        }
+
+        public override void OnActionReceived(float[] vectorAction)
+        {
+                _shouldAttack = vectorAction[0] == 1;
+            Debug.Log(vectorAction[0]);
+            if (_bufferedAction?.HasAction() != true)
+            {
+                Debug.Log("Should Attack: " + _shouldAttack);
+            }
         }
 
         public List<HitColliderBehaviour> GetAttacksInRange()
@@ -266,59 +414,6 @@ namespace Lodis.AI
             _abilityBuffered = true;
         }
 
-        private void UpdateGameState(params object[] args)
-        {
-            _hasUpdatedGameState = true;
-            _opponentDisplacement = _opponent.transform.position - Character.transform.position;
-            _opponentHealth = _opponentKnocback.Health;
-            _opponentVelocity = _opponentKnocback.Physics.LastVelocity;
-            _lastAttacksInRange = GetAttacksInRange();
-        }
-
-        private void CreateNewPredictNode(bool isAttackNode)
-        {
-            if (!_hasUpdatedGameState)
-                return;
-
-            TreeNode node = null;
-
-            if (isAttackNode)
-            {
-                if (_opponentKnocback.LastCollider != null && _opponentKnocback.LastCollider.CompareTag("Structure"))
-                    return;
-
-                node = new AttackNode(_opponent.transform.position - Character.transform.position, _opponentKnocback.Health, 0, 0, "", 0, _opponentKnocback.Physics.LastVelocity, null, null);
-            }
-            else
-            {
-                if (_knockbackBehaviour.LastCollider != null && _knockbackBehaviour.LastCollider.CompareTag("Structure"))
-                    return;
-
-                List<HitColliderBehaviour> defenseAttacks = new List<HitColliderBehaviour>(_attacksInRange);
-                node = new DefenseNode(defenseAttacks, null, null);
-            }
-
-            List<HitColliderBehaviour> attacks = new List<HitColliderBehaviour>(_lastAttacksInRange);
-            PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, attacks, node);
-
-            predictNode.FuturePosition = _opponent.transform.position;
-
-            _predictionTree.AddDecision(predictNode);
-        }
-
-        private void CheckState()
-        {
-            PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
-            if (_lastPrediction.Compare(predictNode) < 0.80f)
-            {
-                _lastPrediction.Wins--;
-            }
-            else
-                _lastPrediction.Wins++;
-
-            _currentPrediction = null;
-        }
-
         public void Update()
         {
             _executor.enabled = EnableBehaviourTree;
@@ -329,23 +424,6 @@ namespace Lodis.AI
                 _bufferedAction.UseAction();
             else
                 _abilityBuffered = false;
-
-            if (StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Tumbling")
-            {
-                PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
-                _currentPrediction = (PredictionNode)_predictionTree.GetDecision(predictNode);
-            }
-
-            if (_currentPrediction != null)
-            {
-                _lastPrediction = _currentPrediction;
-
-                if (_checkStateTimer == null || _checkStateTimer.GetEnabled() == false)
-                    _checkStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => CheckState(), TimedActionCountType.SCALEDTIME, _saveStateDelay);
-            }
-
-            if (_saveStateTimer == null || _saveStateTimer.GetEnabled() == false)
-                _saveStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(UpdateGameState, TimedActionCountType.SCALEDTIME, _saveStateDelay);
 
             if (_executor.enabled) return;
 

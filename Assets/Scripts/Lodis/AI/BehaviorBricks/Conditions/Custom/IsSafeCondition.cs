@@ -45,6 +45,8 @@ public class IsSafeCondition : GOCondition
     /// <returns></returns>
     public override bool Check()
     {
+        return _dummy.ShouldAttack;
+
         List<HitColliderBehaviour> attacks = null;
 
         if (_dummy.CurrentPrediction != null)
