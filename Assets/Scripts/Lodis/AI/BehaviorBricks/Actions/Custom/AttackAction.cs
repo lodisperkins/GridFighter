@@ -17,6 +17,7 @@ public class AttackAction : GOAction
     private AttackDummyBehaviour _dummy;
     private AttackNode _decision;
     private AttackNode _situation;
+    private AttackNode _lastAbilityDecision;
 
     public override void OnStart()
     {
@@ -73,6 +74,16 @@ public class AttackAction : GOAction
             return;
         }
 
+        if (_decision.AbilityName == _dummy.LastAttack && _dummy.StaleMoves)
+        {
+            _decision.ConsecutiveUses++;
+
+            if (_decision.ConsecutiveUses >= _dummy.StaleMovePunishThreshold)
+            {
+                _decision.Wins -= _dummy.StaleMovePunishAmount;
+                _decision.ConsecutiveUses -= _dummy.StaleMovePunishAmount / 2;
+            }
+        }
 
         //Mark it as visited
         _decision.VisitCount++;
@@ -84,7 +95,8 @@ public class AttackAction : GOAction
         //Use the ability and mark it as visited
         UseDecisionAbility(_dummy.Moveset.GetAbilityByName(_decision.AbilityName));
         _decision.VisitCount++;
-        
+
+        _dummy.LastAttack = _decision.AbilityName;
     }
 
     /// <summary>

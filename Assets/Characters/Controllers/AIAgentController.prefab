@@ -49,8 +49,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BrainParameters:
     VectorObservationSize: 120
-    NumStackedVectorObservations: 3
-    VectorActionSize: 02000000
+    NumStackedVectorObservations: 24
+    VectorActionSize: 03000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
   m_Model: {fileID: 0}
@@ -59,6 +59,8 @@ MonoBehaviour:
   m_BehaviorName: Axton_Battle
   TeamId: 0
   m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!114 &7632776497259912495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,7 +81,10 @@ MonoBehaviour:
   _attackType: 0
   _attackDelay: 0
   _attackStrength: 0
-  _maxRange: 0
+  _maxRange: 5
+  _staleMoves: 1
+  _staleMovePunishThreshold: 10
+  _staleMovePunishAmount: 5
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
   _senseCollider: {fileID: 0}

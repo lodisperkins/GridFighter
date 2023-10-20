@@ -22,6 +22,8 @@ namespace Lodis.AI
 {
     public class AttackDummyBehaviour : Agent, IControllable
     {
+        private static int _teamID;
+
         [SerializeField]
         private GameObject _character;
         private Gameplay.MovesetBehaviour _moveset;
@@ -37,6 +39,12 @@ namespace Lodis.AI
         private float _attackStrength;
         [SerializeField]
         private float _maxRange;
+        [SerializeField]
+        private bool _staleMoves;
+        [SerializeField]
+        private int _staleMovePunishThreshold;
+        [SerializeField]
+        private int _staleMovePunishAmount;
 
         [Tooltip("The direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
         [SerializeField]
@@ -105,6 +113,7 @@ namespace Lodis.AI
         private MovesetBehaviour _opponentMoveset;
         private bool _initialized;
         private bool _shouldAttack;
+        private string _lastAttack;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -145,6 +154,10 @@ namespace Lodis.AI
         public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
         public PredictionNode CurrentPrediction { get => _currentPrediction; private set => _currentPrediction = value; }
         public bool ShouldAttack { get => _shouldAttack; private set => _shouldAttack = value; }
+        public bool StaleMoves { get => _staleMoves; private set => _staleMoves = value; }
+        public int StaleMovePunishThreshold { get => _staleMovePunishThreshold; private set => _staleMovePunishThreshold = value; }
+        public int StaleMovePunishAmount { get => _staleMovePunishAmount; private set => _staleMovePunishAmount = value; }
+        public string LastAttack { get => _lastAttack; set => _lastAttack = value; }
 
         public void LoadDecisions()
         {
@@ -166,6 +179,8 @@ namespace Lodis.AI
 
         private void Awake()
         {
+            GetComponent<BehaviorParameters>().TeamId = _teamID;
+            _teamID++;
             _executor = GetComponent<BehaviorExecutor>();
             _aiMovementBehaviour = GetComponent<AIDummyMovementBehaviour>();
         }
@@ -250,6 +265,7 @@ namespace Lodis.AI
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
             {
                 EndEpisode();
+                MatchManagerBehaviour.Instance.Restart();
             });
             _initialized = true;
 
@@ -349,7 +365,7 @@ namespace Lodis.AI
 
         public override void OnActionReceived(float[] vectorAction)
         {
-                _shouldAttack = vectorAction[0] == 1;
+                _shouldAttack = vectorAction[0] == 1 || vectorAction[0] == 2;
             Debug.Log(vectorAction[0]);
             if (_bufferedAction?.HasAction() != true)
             {
@@ -424,6 +440,8 @@ namespace Lodis.AI
                 _bufferedAction.UseAction();
             else
                 _abilityBuffered = false;
+
+            AddReward(-1f * Time.deltaTime);
 
             if (_executor.enabled) return;
 

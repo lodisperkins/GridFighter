@@ -1,23 +1,33 @@
 {
     "Axton_Battle": {
+        "elo": 1196.0528027070393,
         "checkpoints": [
             {
-                "steps": 533,
-                "file_path": "results\\ppo\\Axton_Battle\\Axton_Battle-533.onnx",
-                "reward": 14.699999272823334,
-                "creation_time": 1697597694.8329256,
+                "steps": 5527,
+                "file_path": "results\\ppo\\Axton_Battle\\Axton_Battle-5527.onnx",
+                "reward": null,
+                "creation_time": 1697763864.6956067,
                 "auxillary_file_paths": [
-                    "results\\ppo\\Axton_Battle\\Axton_Battle-533.pt"
+                    "results\\ppo\\Axton_Battle\\Axton_Battle-5527.pt"
+                ]
+            },
+            {
+                "steps": 6167,
+                "file_path": "results\\ppo\\Axton_Battle\\Axton_Battle-6167.onnx",
+                "reward": null,
+                "creation_time": 1697770409.657413,
+                "auxillary_file_paths": [
+                    "results\\ppo\\Axton_Battle\\Axton_Battle-6167.pt"
                 ]
             }
         ],
         "final_checkpoint": {
-            "steps": 533,
+            "steps": 6167,
             "file_path": "results\\ppo\\Axton_Battle.onnx",
-            "reward": 14.699999272823334,
-            "creation_time": 1697597694.8329256,
+            "reward": null,
+            "creation_time": 1697770409.657413,
             "auxillary_file_paths": [
-                "results\\ppo\\Axton_Battle\\Axton_Battle-533.pt"
+                "results\\ppo\\Axton_Battle\\Axton_Battle-6167.pt"
             ]
         }
     },

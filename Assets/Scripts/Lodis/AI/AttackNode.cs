@@ -19,6 +19,7 @@ namespace Lodis.AI
         public float AttackStrength;
         public float KnockBackDealt;
         public Vector2 AttackDirection;
+        public int ConsecutiveUses;
 
         public AttackNode(Vector3 targetDisplacement,
                           float targetHealth,

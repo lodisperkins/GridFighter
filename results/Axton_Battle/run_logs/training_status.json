@@ -1,0 +1,29 @@
+{
+    "Axton_Battle": {
+        "checkpoints": [
+            {
+                "steps": 1621,
+                "file_path": "results\\Axton_Battle\\Axton_Battle\\Axton_Battle-1621.onnx",
+                "reward": -489.9000759124756,
+                "creation_time": 1697771011.0434427,
+                "auxillary_file_paths": [
+                    "results\\Axton_Battle\\Axton_Battle\\Axton_Battle-1621.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 1621,
+            "file_path": "results\\Axton_Battle\\Axton_Battle.onnx",
+            "reward": -489.9000759124756,
+            "creation_time": 1697771011.0434427,
+            "auxillary_file_paths": [
+                "results\\Axton_Battle\\Axton_Battle\\Axton_Battle-1621.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.7.0+cu110"
+    }
+}

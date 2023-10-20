@@ -1,0 +1,57 @@
+{
+    "Axton_Battle": {
+        "elo": 1181.2977357981968,
+        "checkpoints": [
+            {
+                "steps": 7293,
+                "file_path": "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-7293.onnx",
+                "reward": -428.18974471092224,
+                "creation_time": 1697766165.4469876,
+                "auxillary_file_paths": [
+                    "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-7293.pt"
+                ]
+            },
+            {
+                "steps": 9324,
+                "file_path": "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-9324.onnx",
+                "reward": -93.87624409794807,
+                "creation_time": 1697771475.9100997,
+                "auxillary_file_paths": [
+                    "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-9324.pt"
+                ]
+            },
+            {
+                "steps": 12613,
+                "file_path": "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-12613.onnx",
+                "reward": -472.05521392822266,
+                "creation_time": 1697772111.6948473,
+                "auxillary_file_paths": [
+                    "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-12613.pt"
+                ]
+            },
+            {
+                "steps": 12965,
+                "file_path": "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-12965.onnx",
+                "reward": null,
+                "creation_time": 1697772373.5107164,
+                "auxillary_file_paths": [
+                    "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-12965.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 12965,
+            "file_path": "results\\AxtonBattle\\Axton_Battle.onnx",
+            "reward": null,
+            "creation_time": 1697772373.5107164,
+            "auxillary_file_paths": [
+                "results\\AxtonBattle\\Axton_Battle\\Axton_Battle-12965.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.29.0",
+        "torch_version": "1.7.0+cu110"
+    }
+}
