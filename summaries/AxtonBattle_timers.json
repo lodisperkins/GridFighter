@@ -1,0 +1,36 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1697859344",
+        "python_version": "3.7.9 (tags/v3.7.9:13c94747c7, Aug 17 2020, 18:58:18) [MSC v.1900 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\lodis.perkins\\Documents\\GitHub\\GridFighter\\venv\\Scripts\\mlagents-learn Axton_Battle.yaml --run-id=AxtonBattle --force",
+        "mlagents_version": "0.16.1",
+        "mlagents_envs_version": "0.16.1",
+        "communication_protocol_version": "1.0.0",
+        "tensorflow_version": "2.11.0",
+        "end_time_seconds": "1697859367"
+    },
+    "total": 22.9841974,
+    "count": 1,
+    "self": 0.337033899999998,
+    "children": {
+        "run_training.setup": {
+            "total": 0.01013160000000024,
+            "count": 1,
+            "self": 0.01013160000000024
+        },
+        "TrainerController.start_learning": {
+            "total": 22.6370319,
+            "count": 1,
+            "self": 2.2287631999999995,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 20.4082687,
+                    "count": 1,
+                    "self": 20.4082687
+                }
+            }
+        }
+    }
+}

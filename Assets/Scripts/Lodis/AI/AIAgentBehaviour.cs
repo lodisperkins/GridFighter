@@ -17,6 +17,7 @@ namespace Lodis.AI
 {
     public class AIAgentBehaviour : Agent, IControllable
     {
+        private static int _teamID;
         [SerializeField]
         private GameObject _character;
         private Gameplay.MovesetBehaviour _moveset;
@@ -83,6 +84,13 @@ namespace Lodis.AI
 
         public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
 
+        private void Awake()
+        {
+            GetComponent<BehaviorParameters>().TeamId = _teamID;
+            _teamID++;
+            Initialize();
+        }
+
         private void Init()
         {
             _movementBehaviour = Character.GetComponent<GridMovementBehaviour>();
@@ -117,8 +125,9 @@ namespace Lodis.AI
             _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Character).GetComponent<MovesetBehaviour>();
 
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
-            { 
+            {
                 EndEpisode();
+                MatchManagerBehaviour.Instance.Restart();
             });
             _initialized = true;
 

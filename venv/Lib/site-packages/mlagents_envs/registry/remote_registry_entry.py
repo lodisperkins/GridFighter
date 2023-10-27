@@ -16,7 +16,6 @@ class RemoteRegistryEntry(BaseRegistryEntry):
         darwin_url: Optional[str],
         win_url: Optional[str],
         additional_args: Optional[List[str]] = None,
-        tmp_dir: Optional[str] = None,
     ):
         """
         A RemoteRegistryEntry is an implementation of BaseRegistryEntry that uses a
@@ -40,7 +39,6 @@ class RemoteRegistryEntry(BaseRegistryEntry):
         self._darwin_url = darwin_url
         self._win_url = win_url
         self._add_args = additional_args
-        self._tmp_dir_override = tmp_dir
 
     def make(self, **kwargs: Any) -> BaseEnv:
         """
@@ -60,9 +58,7 @@ class RemoteRegistryEntry(BaseRegistryEntry):
                 f"The entry {self.identifier} does not contain a valid url for this "
                 "platform"
             )
-        path = get_local_binary_path(
-            self.identifier, url, tmp_dir=self._tmp_dir_override
-        )
+        path = get_local_binary_path(self.identifier, url)
         if "file_name" in kwargs:
             kwargs.pop("file_name")
         args: List[str] = []
