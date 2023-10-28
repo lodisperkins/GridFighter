@@ -52,6 +52,9 @@ namespace Lodis.AI
         private Vector2 _storedMoveInput;
         private bool _initialized;
         private BufferedInput _bufferedMoveAction;
+        private int _consecutiveAttackMax = 5;
+        private int _consecutiveAttackCounter;
+        private int _lastAbilityID;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -91,10 +94,10 @@ namespace Lodis.AI
             Initialize();
         }
 
-        private void Init()
+        public void Init()
         {
             _movementBehaviour = Character.GetComponent<GridMovementBehaviour>();
-
+            _movementBehaviour.CanMoveDiagonally = false;
             Defense = Character.GetComponent<CharacterDefenseBehaviour>();
             Moveset = Character.GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
@@ -132,6 +135,19 @@ namespace Lodis.AI
             _initialized = true;
 
             GetComponent<BehaviorParameters>().TeamId = _movementBehaviour.Alignment == GridAlignment.LEFT ? 0 : 1;
+
+            BlackBoardBehaviour.Instance.OnColliderDespawn += ApplyDespawnReward;
+        }
+
+        private void ApplyDespawnReward(HitColliderBehaviour collider)
+        {
+            if (collider.HitOpponent)
+                return;
+
+            if (collider.Owner == Character)
+                AddReward(-0.2f);
+            else if (collider.Owner == Opponent)
+                AddReward(0.2f);
         }
 
         public override void CollectObservations(VectorSensor sensor)
@@ -236,13 +252,15 @@ namespace Lodis.AI
             //Store attack direction first to be used to decide which abiity to use
             AttackDirection = GetAttackDirection(vectorAction);
 
-            Debug.Log("Attack Direction: " + vectorAction[3]);
+            if(_movementBehaviour.Alignment == GridAlignment.LEFT)
+                Debug.Log("Attack Direction: " + vectorAction[3]);
 
             //Deciding to wall jump
             if (vectorAction[2] == 1 && _knockbackBehaviour.CurrentAirState == AirState.TUMBLING)
                 AttackDirection = Character.transform.forward;
 
-            Debug.Log("Wall Jump: " + vectorAction[2]);
+            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+                Debug.Log("Wall Jump: " + vectorAction[2]);
 
             //Using the values to choose a move direction
             if (vectorAction[1] == 1)
@@ -254,18 +272,29 @@ namespace Lodis.AI
             else if (vectorAction[1] == 4)
                 BufferMovement(Vector2.right);
 
-            Debug.Log("Move Direction: " + vectorAction[1]);
+            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+                Debug.Log("Move Direction: " + vectorAction[1]);
             //Deciding to burst
             if (vectorAction[4] == 1 && _moveset.CanBurst)
                 BufferBurst();
 
-            Debug.Log("Burst: " + vectorAction[4]);
+            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+                Debug.Log("Burst: " + vectorAction[4]);
 
             if (_abilityBuffered)
                 return;
 
+            if (_lastAbilityID == Moveset.LastAbilityInUse.abilityData.ID)
+                _consecutiveAttackCounter++;
 
-            Debug.Log("Attack: " + vectorAction[0]);
+            if (_consecutiveAttackCounter >= _consecutiveAttackMax)
+            {
+                AddReward(-10);
+                _consecutiveAttackCounter = 0;
+            }
+
+            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+                Debug.Log("Attack: " + vectorAction[0]);
 
             //Deciding to use weak attack
             if (vectorAction[0] == 1)
@@ -376,11 +405,14 @@ namespace Lodis.AI
 
             AbilityType abilityType = Ability.GetNormalType(attackDirection, isStrong);
 
+            _lastAbilityID = Moveset.LastAbilityInUse.abilityData.ID;
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action =>
-                Moveset.UseBasicAbility(abilityType, attackStrength, attackDirection), condition =>
             {
                 _abilityBuffered = false;
+                Moveset.UseBasicAbility(abilityType, attackStrength, attackDirection);
+            }, condition =>
+            {
                 return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
             }, 0.2f);
             _abilityBuffered = true;
@@ -395,12 +427,15 @@ namespace Lodis.AI
         {
             float attackStrength = 0.15f * 0.1f + 1;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
+            _lastAbilityID = Moveset.LastAbilityInUse.abilityData.ID;
 
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action =>
-                Moveset.UseSpecialAbility(slotIndex, attackStrength, attackDirection), condition =>
             {
+                Moveset.UseSpecialAbility(slotIndex, attackStrength, attackDirection);
                 _abilityBuffered = false;
+            }, condition =>
+            {
                 return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
             }, 0.2f);
             _abilityBuffered = true;
@@ -414,7 +449,7 @@ namespace Lodis.AI
             else
                 _abilityBuffered = false;
 
-            if (_bufferedMoveAction?.HasAction() == true)
+            if (_bufferedMoveAction?.HasAction() == true && !_abilityBuffered)
                 _bufferedMoveAction.UseAction();
         }
     }

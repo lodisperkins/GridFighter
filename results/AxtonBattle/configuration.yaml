@@ -1,4 +1,3 @@
-default_settings: null
 behaviors:
   Axton_Battle:
     trainer_type: ppo
@@ -11,28 +10,16 @@ behaviors:
       lambd: 0.99
       num_epoch: 7
       learning_rate_schedule: constant
-      beta_schedule: constant
-      epsilon_schedule: constant
     network_settings:
       normalize: false
       hidden_units: 64
       num_layers: 2
       vis_encode_type: simple
       memory: null
-      goal_conditioning_type: hyper
-      deterministic: false
     reward_signals:
       extrinsic:
         gamma: 0.99
         strength: 1.0
-        network_settings:
-          normalize: false
-          hidden_units: 128
-          num_layers: 2
-          vis_encode_type: simple
-          memory: null
-          goal_conditioning_type: hyper
-          deterministic: false
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
@@ -53,11 +40,7 @@ env_settings:
   env_args: null
   base_port: 5005
   num_envs: 1
-  num_areas: 1
   seed: -1
-  max_lifetime_restarts: 10
-  restarts_rate_limit_n: 1
-  restarts_rate_limit_period_s: 60
 engine_settings:
   width: 84
   height: 84
@@ -66,16 +49,14 @@ engine_settings:
   target_frame_rate: -1
   capture_frame_rate: 60
   no_graphics: false
-environment_parameters: null
+parameter_randomization: null
+curriculum: null
 checkpoint_settings:
   run_id: AxtonBattle
   initialize_from: null
   load_model: false
-  resume: true
-  force: false
+  resume: false
+  force: true
   train_model: false
   inference: false
-  results_dir: results
-torch_settings:
-  device: null
 debug: false

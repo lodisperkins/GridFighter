@@ -114,9 +114,11 @@ namespace Lodis.Gameplay
         public HitColliderData ColliderInfo;
         private bool _addedToActiveList;
         private bool _playedSpawnEffects;
+        private bool _hitOpponent;
 
         public float StartTime { get; private set; }
         public float CurrentTimeActive { get; private set; }
+        public bool HitOpponent { get => _hitOpponent; private set => _hitOpponent = value; }
 
         public HitColliderBehaviour(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
            : base()
@@ -170,6 +172,12 @@ namespace Lodis.Gameplay
             AddToActiveList();
             ResetActiveTime();
             Collisions.Clear();
+            _hitOpponent = false;
+        }
+
+        private void OnDisable()
+        {
+            BlackBoardBehaviour.Instance.OnColliderDespawn?.Invoke(this);
         }
 
         private void AddToActiveList()
@@ -358,6 +366,7 @@ namespace Lodis.Gameplay
                     SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
                 }
 
+                _hitOpponent = true;
             }
             SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
             
@@ -465,6 +474,7 @@ namespace Lodis.Gameplay
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
                     SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
                 }
+                _hitOpponent = true;
             }
 
             ColliderInfo.HitAngle = defaultAngle;
@@ -575,6 +585,7 @@ namespace Lodis.Gameplay
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
                     SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
                 }
+                _hitOpponent = true;
             }
 
 

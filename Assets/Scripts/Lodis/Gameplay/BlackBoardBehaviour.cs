@@ -5,6 +5,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
@@ -31,6 +32,7 @@ namespace Lodis.Gameplay
         public ParticleSystem BlockEffect;
         public ParticleSystem ReflectEffect;
         public ParticleSystem[] HitEffects;
+        public UnityAction<HitColliderBehaviour> OnColliderDespawn;
         private List<GridMovementBehaviour> _entitiesInGame = new List<GridMovementBehaviour>();
         private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
         private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();
