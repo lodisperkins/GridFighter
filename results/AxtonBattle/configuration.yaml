@@ -19,7 +19,15 @@ behaviors:
     reward_signals:
       extrinsic:
         gamma: 0.99
-        strength: 1.0
+        strength: 0.8
+      gail:
+        gamma: 0.99
+        strength: 0.6
+        encoding_size: 64
+        learning_rate: 0.0003
+        use_actions: false
+        use_vail: false
+        demo_path: Demos/AxtonBattleDemo_1.demo
     init_path: null
     keep_checkpoints: 5
     checkpoint_interval: 500000
@@ -55,8 +63,8 @@ checkpoint_settings:
   run_id: AxtonBattle
   initialize_from: null
   load_model: false
-  resume: false
-  force: true
+  resume: true
+  force: false
   train_model: false
   inference: false
 debug: false

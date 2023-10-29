@@ -51,10 +51,14 @@ namespace Lodis.AI
         private MovesetBehaviour _opponentMoveset;
         private Vector2 _storedMoveInput;
         private bool _initialized;
+        private bool _movementBuffered;
         private BufferedInput _bufferedMoveAction;
+        [SerializeField]
         private int _consecutiveAttackMax = 5;
         private int _consecutiveAttackCounter;
         private int _lastAbilityID;
+        private float[] _actions;
+        private AIInputBehaviour _aiInputBehaviour;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -86,6 +90,7 @@ namespace Lodis.AI
         public bool TouchingOpponentBarrier { get => _touchingOpponentBarrier; set => _touchingOpponentBarrier = value; }
 
         public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
+        public float[] Actions { get => _actions; private set => _actions = value; }
 
         private void Awake()
         {
@@ -144,9 +149,7 @@ namespace Lodis.AI
             if (collider.HitOpponent)
                 return;
 
-            if (collider.Owner == Character)
-                AddReward(-0.2f);
-            else if (collider.Owner == Opponent)
+            if (collider.Owner == Opponent)
                 AddReward(0.2f);
         }
 
@@ -244,22 +247,18 @@ namespace Lodis.AI
 
         public override void OnActionReceived(float[] vectorAction)
         {
-            base.OnActionReceived(vectorAction);
-
-            if (Character == null || _bufferedAction?.HasAction() == true)
+            if (Character == null)
                 return;
 
-            //Store attack direction first to be used to decide which abiity to use
-            AttackDirection = GetAttackDirection(vectorAction);
 
-            if(_movementBehaviour.Alignment == GridAlignment.LEFT)
+            if(_movementBehaviour.Alignment == GridAlignment.RIGHT)
                 Debug.Log("Attack Direction: " + vectorAction[3]);
 
             //Deciding to wall jump
             if (vectorAction[2] == 1 && _knockbackBehaviour.CurrentAirState == AirState.TUMBLING)
                 AttackDirection = Character.transform.forward;
 
-            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+            if (_movementBehaviour.Alignment == GridAlignment.RIGHT)
                 Debug.Log("Wall Jump: " + vectorAction[2]);
 
             //Using the values to choose a move direction
@@ -272,28 +271,28 @@ namespace Lodis.AI
             else if (vectorAction[1] == 4)
                 BufferMovement(Vector2.right);
 
-            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+            if (_movementBehaviour.Alignment == GridAlignment.RIGHT)
                 Debug.Log("Move Direction: " + vectorAction[1]);
             //Deciding to burst
             if (vectorAction[4] == 1 && _moveset.CanBurst)
                 BufferBurst();
 
-            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+            if (_movementBehaviour.Alignment == GridAlignment.RIGHT)
                 Debug.Log("Burst: " + vectorAction[4]);
 
             if (_abilityBuffered)
                 return;
 
-            if (_lastAbilityID == Moveset.LastAbilityInUse.abilityData.ID)
-                _consecutiveAttackCounter++;
+            //if (_lastAbilityID == Moveset.LastAbilityInUse?.abilityData.ID)
+            //    _consecutiveAttackCounter++;
 
-            if (_consecutiveAttackCounter >= _consecutiveAttackMax)
-            {
-                AddReward(-10);
-                _consecutiveAttackCounter = 0;
-            }
+            //if (_consecutiveAttackCounter >= _consecutiveAttackMax)
+            //{
+            //    AddReward(-1);
+            //    _consecutiveAttackCounter = 0;
+            //}
 
-            if (_movementBehaviour.Alignment == GridAlignment.LEFT)
+            if (_movementBehaviour.Alignment == GridAlignment.RIGHT)
                 Debug.Log("Attack: " + vectorAction[0]);
 
             //Deciding to use weak attack
@@ -318,14 +317,16 @@ namespace Lodis.AI
         {
             Vector2 attackDirection = Vector2.zero;
 
-            if (vectorAction[3] == 0)
+            if (vectorAction[3] == 1)
                 attackDirection = Vector2.up;
-            else if (vectorAction[3] == 1)
-                attackDirection = Vector2.down;
             else if (vectorAction[3] == 2)
-                attackDirection = Vector2.left;
+                attackDirection = Vector2.down;
             else if (vectorAction[3] == 3)
+                attackDirection = Vector2.left;
+            else if (vectorAction[3] == 4)
                 attackDirection = Vector2.right;
+
+            attackDirection.x *= _movementBehaviour.GetAlignmentX();
 
             return attackDirection;
         }
@@ -368,6 +369,8 @@ namespace Lodis.AI
 
         public void BufferBurst()
         {
+            if (Actions != null)
+                Actions[4] = 0;
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => _moveset.UseBasicAbility(AbilityType.BURST, null), condition => { _abilityBuffered = false; return true; }, 0.2f);
             _abilityBuffered = true;
@@ -378,6 +381,8 @@ namespace Lodis.AI
             if (_moveset.LoadingShuffle || _moveset.DeckReloading)
                 return;
 
+            if (Actions != null)
+                Actions[0] = 0;
             _bufferedAction = new BufferedInput(action => _moveset.ManualShuffle(), condition => StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Moving", 0.2f);
         }
 
@@ -387,10 +392,18 @@ namespace Lodis.AI
         /// <param name="y"></param>
         public void BufferMovement(Vector2 direction)
         {
-            if (_movementBehaviour.CanMove)
+            if (_movementBehaviour.CanMove && (_stateMachine.CurrentState == "Idle" || _stateMachine.CurrentState == "Moving"))
                 _storedMoveInput = direction;
 
-            _bufferedMoveAction = new BufferedInput(action => _movementBehaviour.MoveToPanel(_storedMoveInput + _movementBehaviour.Position), condition => _storedMoveInput.magnitude > 0 && !_movementBehaviour.IsMoving && _movementBehaviour.CanMove, 0.2f);
+            if (Actions != null)
+                Actions[1] = 0;
+
+            _movementBuffered = true;
+            _bufferedMoveAction = new BufferedInput(action =>
+            {
+                _movementBehaviour.MoveToPanel(_storedMoveInput + _movementBehaviour.Position);
+                _movementBuffered = false;
+            }, condition => _storedMoveInput.magnitude > 0 && !_movementBehaviour.IsMoving && _movementBehaviour.CanMove, 0.2f);
         }
 
         /// <summary>
@@ -401,16 +414,20 @@ namespace Lodis.AI
         public void BufferNormalAbility(bool isStrong, Vector2 attackDirection)
         {
             float attackStrength = 0.15f * 0.1f + 1;
-            _attackDirection.x *= Mathf.Round(transform.forward.x);
 
             AbilityType abilityType = Ability.GetNormalType(attackDirection, isStrong);
 
-            _lastAbilityID = Moveset.LastAbilityInUse.abilityData.ID;
+
+            if (Moveset.LastAbilityInUse != null)
+                _lastAbilityID = Moveset.LastAbilityInUse.abilityData.ID;
+            if (Actions != null)
+                    Actions[0] = 0;
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action =>
             {
                 _abilityBuffered = false;
                 Moveset.UseBasicAbility(abilityType, attackStrength, attackDirection);
+
             }, condition =>
             {
                 return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
@@ -426,9 +443,12 @@ namespace Lodis.AI
         public void BufferSpecialAbility(int slotIndex, Vector2 attackDirection)
         {
             float attackStrength = 0.15f * 0.1f + 1;
-            _attackDirection.x *= Mathf.Round(transform.forward.x);
-            _lastAbilityID = Moveset.LastAbilityInUse.abilityData.ID;
 
+            if (Moveset.LastAbilityInUse != null)
+                _lastAbilityID = Moveset.LastAbilityInUse.abilityData.ID;
+
+            if (Actions != null)
+                Actions[0] = 0;
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action =>
             {
@@ -441,9 +461,26 @@ namespace Lodis.AI
             _abilityBuffered = true;
         }
 
+        public override void Heuristic(float[] actionsOut)
+        {
+            if (!_aiInputBehaviour)
+            {
+                _aiInputBehaviour = gameObject.AddComponent<AIInputBehaviour>();
+                _aiInputBehaviour.Devices = SceneManagerBehaviour.Instance.P2Devices;
+            }
+
+
+            if (Actions == null)
+                Actions = new float[5];
+
+            for (int i = 0; i < actionsOut.Length; i++)
+                actionsOut[i] = Actions[i];
+        }
+
         private void Update()
         {
 
+            AddReward(-0.5f * Time.deltaTime);
             if (_bufferedAction?.HasAction() == true)
                 _bufferedAction.UseAction();
             else
@@ -451,6 +488,12 @@ namespace Lodis.AI
 
             if (_bufferedMoveAction?.HasAction() == true && !_abilityBuffered)
                 _bufferedMoveAction.UseAction();
+
+            if (Actions == null)
+                return;
+            Vector2 facing = new Vector2(Character.transform.forward.x, Character.transform.forward.z);
+
+            Actions[2] = AttackDirection == facing ? 1 : 0;
         }
     }
 }

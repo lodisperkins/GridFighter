@@ -110,8 +110,10 @@ namespace Lodis.Gameplay
                 return AbilityType.WEAKSIDE + strengthMod;
             else if (direction == Vector2.right)
                 return AbilityType.WEAKFORWARD + strengthMod;
-            else 
+            else if (direction == Vector2.left)
                 return AbilityType.WEAKBACKWARD + strengthMod;
+            else
+                return AbilityType.WEAKNEUTRAL + strengthMod;
         }
 
         /// <summary>

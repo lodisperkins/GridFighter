@@ -17,7 +17,10 @@ behaviors:
     reward_signals:
       extrinsic:
         gamma: 0.99
-        strength: 1.0
+        strength: 0.8
+      gail:
+        strength: 0.6
+        demo_path: Demos/AxtonBattleDemo_1.demo
     keep_checkpoints: 5
     max_steps: 10000000
     time_horizon: 32
@@ -30,3 +33,4 @@ behaviors:
       window: 200
       play_against_latest_model_ratio: 0.5
       initial_elo: 1200.0
+    

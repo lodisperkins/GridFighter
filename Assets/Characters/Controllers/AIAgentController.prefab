@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1011660742388530594}
   - component: {fileID: -2320794262503087641}
   - component: {fileID: 4706194541981916513}
+  - component: {fileID: 3077087516246831525}
   m_Layer: 9
   m_Name: AIAgentController
   m_TagString: Player
@@ -48,7 +49,7 @@ MonoBehaviour:
   m_BrainParameters:
     VectorObservationSize: 120
     NumStackedVectorObservations: 4
-    VectorActionSize: 0600000005000000020000000400000002000000
+    VectorActionSize: 0600000005000000020000000500000002000000
     VectorActionDescriptions: []
     VectorActionSpaceType: 0
   m_Model: {fileID: 0}
@@ -77,6 +78,7 @@ MonoBehaviour:
   _attackStrength: 0
   _attackDirection: {x: 0, y: 0}
   MovePosition: {x: 0, y: 0}
+  _consecutiveAttackMax: 5
 --- !u!114 &4706194541981916513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,5 +91,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DecisionPeriod: 5
-  TakeActionsBetweenDecisions: 1
+  DecisionPeriod: 1
+  TakeActionsBetweenDecisions: 0
+--- !u!114 &3077087516246831525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5787507730015743069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2902496c0120472b90269f94a0aec7e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Record: 1
+  DemonstrationName: AxtonBattleDemo
+  DemonstrationDirectory: Demos
