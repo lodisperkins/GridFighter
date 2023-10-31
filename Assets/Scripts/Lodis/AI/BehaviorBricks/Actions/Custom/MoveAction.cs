@@ -30,7 +30,7 @@ public class MoveAction : GOAction
         bool isInFrontOpponent = xDirection * panel.Position.x < xDirection * _dummy.OpponentMove.Position.x;
 
         //Returns the distance between the dummy and its target and whether or not it's in front
-        return Mathf.Abs(panel.Position.x - _dummy.OpponentMove.Position.x) < _dummy.MaxRange && panel.Position.y == _dummy.OpponentMove.Position.y && isInFrontOpponent;
+        return Mathf.Abs(panel.Position.x - _dummy.OpponentMove.Position.x) < _dummy.MaxRange && panel.Position.y == _dummy.TargetY && isInFrontOpponent;
     }
 
     public override TaskStatus OnUpdate()

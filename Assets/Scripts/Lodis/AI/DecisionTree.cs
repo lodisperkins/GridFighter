@@ -159,7 +159,7 @@ namespace Lodis.AI
 
         public void RemoveDecision(TreeNode node)
         {
-            if (node == null) return;
+            if (node == null || _root == null) return;
             //Initialize two iterators to find the data that will be copied and the node's parent
             TreeNode iter1 = node;
             TreeNode iter2 = node;
@@ -239,10 +239,25 @@ namespace Lodis.AI
             }
         }
 
+        public void AddRewardToDecisions(int reward)
+        {
+            foreach (TreeNode node in _nodeCache)
+                node.Wins += reward;
+        }
+
         public virtual void Save(string ownerName)
         {
-            StreamWriter writer = new StreamWriter("Decisions/DecisionData" + ownerName + ".txt");
-            string json = JsonConvert.SerializeObject(_nodeCache);
+            if (_nodeCache.Count == 0) return;
+
+            if (!File.Exists(SaveLoadPath + ownerName + ".txt"))
+            {
+                FileStream stream = File.Create(SaveLoadPath + ownerName + ".txt");
+                stream.Close();
+            }
+
+            StreamWriter writer = new StreamWriter(SaveLoadPath + ownerName + ".txt");
+            string json = JsonConvert.SerializeObject(_nodeCache, _settings);
+
             writer.Write(json);
             writer.Close();
 
@@ -251,17 +266,28 @@ namespace Lodis.AI
 
         public virtual bool Load(string ownerName)
         {
-            if (!File.Exists("Decisions/DecisionData" + ownerName + ".txt"))
+            if (!File.Exists(SaveLoadPath + ownerName + ".txt"))
                 return false;
 
-            StreamReader reader = new StreamReader("Decisions/DecisionData" + ownerName + ".txt");
-            _nodeCache = JsonConvert.DeserializeObject<List<TreeNode>>(reader.ReadToEnd());
+            _nodeCache = new List<TreeNode>();
+
+            StreamReader reader = new StreamReader(SaveLoadPath + ownerName + ".txt");
+
+            List<TreeNode> temp = new List<TreeNode>(); 
+
+            temp = JsonConvert.DeserializeObject<List<TreeNode>>(reader.ReadToEnd(), _settings);
+
+            Debug.Log("Loaded " + temp.Count + "decision for " + GetType().ToString());
             reader.Close();
 
-            for (int i = 0; i < _nodeCache.Count; i++)
-                AddDecision(_nodeCache[i]);
-
+            if (_nodeCache.Count == 0)
+            {
+                return false;
+            }
             OnLoad?.Invoke();
+
+            foreach (TreeNode node in temp)
+                AddDecision(node);
 
             return true;
         }

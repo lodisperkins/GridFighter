@@ -25,6 +25,6 @@ public class OutOfRangeCondition : GOCondition
         Vector3 directionToOpponent = (enemyPos - dummyPos);
         float dot = Vector3.Dot(_dummy.Character.transform.forward, directionToOpponent);
 
-        return Mathf.Abs(dummyPos.x - enemyPos.x) > _dummy.MaxRange || dot < 0 || dummyPos.y != enemyPos.y;
+        return Mathf.Abs(dummyPos.x - enemyPos.x) > _dummy.MaxRange || dot < 0 || dummyPos.y != _dummy.TargetY;
     }
 }

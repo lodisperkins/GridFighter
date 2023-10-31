@@ -86,6 +86,12 @@ namespace Lodis.AI
         [SerializeField]
         [Tooltip("The amount of time the AI will wait before saving information about the current situation.")]
         private float _saveStateDelay;
+        [SerializeField]
+        [Tooltip("How much to subtract from the win count for every decision made.")]
+        private int _losePenalty;
+        [SerializeField]
+        [Tooltip("How much to add to the win count for every decision made.")]
+        private int _winReward;
         private bool _abilityBuffered;
 
         private Vector3 _opponentVelocity;
@@ -94,7 +100,7 @@ namespace Lodis.AI
         private float _opponentHealth;
         private List<HitColliderBehaviour> _lastAttacksInRange;
         private TimedAction _saveStateTimer;
-        private DecisionTree _predictionTree;
+        private PredictionDecisionTree _predictionDecisions;
         private PredictionNode _currentPrediction;
         private PredictionNode _lastPrediction;
 
@@ -137,6 +143,17 @@ namespace Lodis.AI
         public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
         public PredictionNode CurrentPrediction { get => _currentPrediction; private set => _currentPrediction = value; }
 
+        public float TargetY
+        {
+            get
+            {
+                if (CurrentPrediction == null)
+                    return OpponentMove.Position.y;
+
+                return CurrentPrediction.TargetY;
+            }
+        }
+
         public void LoadDecisions()
         {
             if (!EnableBehaviourTree)
@@ -148,7 +165,7 @@ namespace Lodis.AI
             _defenseDecisions = new DefenseDecisionTree();
             _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
             _defenseDecisions.Load(Character.name);
-
+            _predictionDecisions.Load(Character.name);
             if (Application.isEditor) return;
 
             MatchManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _attackDecisions?.Save(Character.name));
@@ -159,8 +176,7 @@ namespace Lodis.AI
         {
             _executor = GetComponent<BehaviorExecutor>();
             _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
-            _predictionTree = new DecisionTree();
-            _predictionTree.LoseThreshold = -2;
+            _predictionDecisions = new PredictionDecisionTree();
         }
 
         private void Start()
@@ -182,7 +198,7 @@ namespace Lodis.AI
             _knockbackBehaviour.AddOnTakeDamageAction(() => CreateNewPredictNode(false));
             _opponentKnocback.AddOnTakeDamageAction(() => CreateNewPredictNode(true));
 
-
+            MatchManagerBehaviour.Instance.AddOnMatchOverAction(AddMatchReward);
         }
 
         private void OnEnable()
@@ -206,6 +222,26 @@ namespace Lodis.AI
 
             _attackDecisions?.Save(Character.name);
             _defenseDecisions?.Save(Character.name);
+            _predictionDecisions?.Save(Character.name);
+        }
+
+        private void AddMatchReward()
+        {
+            GridAlignment alignment = _movementBehaviour.MovementBehaviour.Alignment;
+
+            if (MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.P1WINS && alignment == GridAlignment.LEFT 
+                || MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.P2WINS && alignment == GridAlignment.RIGHT)
+            {
+                _attackDecisions.AddRewardToDecisions(_winReward);
+                _defenseDecisions.AddRewardToDecisions(_winReward);
+                _predictionDecisions.AddRewardToDecisions(_winReward);
+            }
+            else if (MatchManagerBehaviour.Instance.LastMatchResult != MatchResult.DRAW)
+            {
+                _attackDecisions.AddRewardToDecisions(_losePenalty);
+                _defenseDecisions.AddRewardToDecisions(_losePenalty);
+                _predictionDecisions.AddRewardToDecisions(_losePenalty);
+            }
         }
 
         public List<HitColliderBehaviour> GetAttacksInRange()
@@ -300,13 +336,13 @@ namespace Lodis.AI
             List<HitColliderBehaviour> attacks = new List<HitColliderBehaviour>(_lastAttacksInRange);
             PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, attacks, node);
 
-            _predictionTree.AddDecision(predictNode);
+            _predictionDecisions.AddDecision(predictNode);
         }
 
         private void CheckState()
         {
             PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
-            if (_lastPrediction.Compare(predictNode) < 0.95f)
+            if (_lastPrediction.Compare(predictNode) < 0.70f)
             {
                 _lastPrediction.Wins--;
                 _currentPrediction = null;
@@ -324,15 +360,16 @@ namespace Lodis.AI
             _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
 
             if (_bufferedAction?.HasAction() == true)
+            {
                 _bufferedAction.UseAction();
+            }
             else
                 _abilityBuffered = false;
 
-
-            if (_executor.enabled) return;
+            if (StateMachine.CurrentState != "Idle" && StateMachine.CurrentState != "Moving") return;
 
             PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
-            _currentPrediction = (PredictionNode)_predictionTree.GetDecision(predictNode);
+            _currentPrediction = (PredictionNode)_predictionDecisions.GetDecision(predictNode);
 
             if (_currentPrediction != null && !_executor.paused)
             {

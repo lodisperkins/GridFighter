@@ -193,6 +193,8 @@ MonoBehaviour:
   EnableBehaviourTree: 1
   _copyAttacks: 0
   _saveStateDelay: 1
+  _losePenalty: -2
+  _winReward: 4
 --- !u!114 &7025333189879560728
 MonoBehaviour:
   m_ObjectHideFlags: 0

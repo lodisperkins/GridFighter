@@ -210,7 +210,7 @@ public class AttackAction : GOAction
             _decision.ShieldEffectiveness ++;
 
         //Increment the decision by two to give the attack a net positive
-        if (!_dummy.OpponentKnockback.IsInvincible) _decision.Wins += 2;
+        if (!_dummy.OpponentKnockback.IsInvincible) _decision.Wins += (2 + (int)_dummy.OpponentKnockback.LastTotalKnockBack / 2);
 
         _decision.KnockBackDealt = _dummy.OpponentKnockback.LastTotalKnockBack;
     }
