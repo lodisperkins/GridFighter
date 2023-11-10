@@ -192,7 +192,7 @@ MonoBehaviour:
   MovePosition: {x: 0, y: 0}
   EnableBehaviourTree: 1
   _copyAttacks: 0
-  _saveStateDelay: 1
+  _saveStateDelay: 0.5
   _losePenalty: -2
   _winReward: 4
 --- !u!114 &7025333189879560728

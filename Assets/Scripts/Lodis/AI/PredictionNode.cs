@@ -1,4 +1,5 @@
 ﻿using Lodis.Gameplay;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,13 +11,17 @@ namespace Lodis.AI
         private Vector3 _opponentVelocity;
         private Vector3 _ownerToTarget;
         private float _opponentHealth;
+        [JsonIgnore]
         private List<HitColliderBehaviour> _attacksInRange;
+        private Vector3 _averagePosition;
+        private Vector3 _averageVelocity;
         private TreeNode _futureSituation;
         private float _targetY;
 
+        [JsonIgnore]
         public List<HitColliderBehaviour> AttacksInRange { get => _attacksInRange; private set => _attacksInRange = value; }
         public TreeNode FutureSituation { get => _futureSituation; private set => _futureSituation = value; }
-        public float TargetY { get => _targetY;  }
+        public float TargetY { get => _targetY; set => _targetY = value; }
 
         public PredictionNode(TreeNode left, TreeNode right, Vector3 opponentVelocity,
             Vector3 ownerToOpponent, float opponentHealth, List<HitColliderBehaviour> attacksInRange, TreeNode futureSituation) : base(left, right)
@@ -30,7 +35,7 @@ namespace Lodis.AI
 
         private Vector3 GetAverageVelocity()
         {
-            Vector3 averageVelocity = Vector3.zero;
+            _averageVelocity = Vector3.zero;
 
             if (AttacksInRange == null) return Vector3.zero;
 
@@ -39,14 +44,14 @@ namespace Lodis.AI
 
             for (int i = 0; i < AttacksInRange.Count; i++)
                 if (AttacksInRange[i].RB)
-                    averageVelocity += AttacksInRange[i].RB.velocity;
+                    _averageVelocity += AttacksInRange[i].RB.velocity;
 
-            return averageVelocity /= AttacksInRange.Count;
+            return _averageVelocity /= AttacksInRange.Count;
         }
 
         private Vector3 GetAveragePosition()
         {
-            Vector3 averagePosition = Vector3.zero;
+            _averagePosition = Vector3.zero;
 
             if (AttacksInRange == null) return Vector3.zero;
 
@@ -62,9 +67,9 @@ namespace Lodis.AI
             });
 
             for (int i = 0; i < AttacksInRange.Count; i++)
-                averagePosition += AttacksInRange[i].gameObject.transform.position;
+                _averagePosition += AttacksInRange[i].gameObject.transform.position;
 
-            return averagePosition /= AttacksInRange.Count;
+            return _averagePosition /= AttacksInRange.Count;
         }
 
         public override float Compare(TreeNode node)

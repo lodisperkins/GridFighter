@@ -1,4 +1,5 @@
 ﻿using Lodis.Utility;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,9 +26,11 @@ namespace Lodis.Gameplay
         private CustomEventSystem.Event _onHitObject;
         protected float _lastHitFrame;
         [Tooltip("The game object spawned this collider.")]
+        [JsonIgnore]
         public GameObject Owner;
         [SerializeField]
         private LayerMask _layersToIgnore;
+        [JsonIgnore]
         private Rigidbody _rigidbody;
 
         public LayerMask LayersToIgnore { get => _layersToIgnore; set => _layersToIgnore = value; }

@@ -99,10 +99,12 @@ namespace Lodis.AI
         private Vector3 _opponentDisplacement;
         private float _opponentHealth;
         private List<HitColliderBehaviour> _lastAttacksInRange;
+        private float _targetY;
         private TimedAction _saveStateTimer;
         private PredictionDecisionTree _predictionDecisions;
         private PredictionNode _currentPrediction;
         private PredictionNode _lastPrediction;
+        private TimedAction _checkStateTimer;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -165,7 +167,7 @@ namespace Lodis.AI
             _defenseDecisions = new DefenseDecisionTree();
             _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
             _defenseDecisions.Load(Character.name);
-            _predictionDecisions.Load(Character.name);
+            //_predictionDecisions.Load(Character.name);
             if (Application.isEditor) return;
 
             MatchManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _attackDecisions?.Save(Character.name));
@@ -222,7 +224,7 @@ namespace Lodis.AI
 
             _attackDecisions?.Save(Character.name);
             _defenseDecisions?.Save(Character.name);
-            _predictionDecisions?.Save(Character.name);
+            //_predictionDecisions?.Save(Character.name);
         }
 
         private void AddMatchReward()
@@ -308,6 +310,7 @@ namespace Lodis.AI
             _opponentHealth = _opponentKnocback.Health;
             _opponentVelocity = _opponentKnocback.Physics.LastVelocity;
             _lastAttacksInRange = GetAttacksInRange();
+            _targetY = _opponentMove.Position.y;
         }
 
         private void CreateNewPredictNode(bool isAttackNode)
@@ -335,22 +338,21 @@ namespace Lodis.AI
 
             List<HitColliderBehaviour> attacks = new List<HitColliderBehaviour>(_lastAttacksInRange);
             PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, attacks, node);
-
+            predictNode.TargetY = _targetY;
             _predictionDecisions.AddDecision(predictNode);
         }
 
         private void CheckState()
         {
-            PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
-            if (_lastPrediction.Compare(predictNode) < 0.70f)
+            PredictionNode predictNode = new PredictionNode(null, null, _opponentKnocback.Physics.LastVelocity, _opponent.transform.position - Character.transform.position, _opponentKnocback.Health, _attacksInRange, null);
+            if (_lastPrediction.Compare(predictNode) < 0.95f)
             {
                 _lastPrediction.Wins--;
-                _currentPrediction = null;
             }
             else
                 _lastPrediction.Wins++;
 
-            _executor.paused = false;
+            _currentPrediction = (PredictionNode)_predictionDecisions.GetDecision(predictNode);
         }
 
         public void Update()
@@ -366,21 +368,15 @@ namespace Lodis.AI
             else
                 _abilityBuffered = false;
 
-            if (StateMachine.CurrentState != "Idle" && StateMachine.CurrentState != "Moving") return;
+            //if ( (_checkStateTimer == null || _checkStateTimer.GetEnabled() == false))
+            //{
+            //    _lastPrediction = _currentPrediction;
+            //    _checkStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => CheckState(), TimedActionCountType.SCALEDTIME, _saveStateDelay);
+            //    return;
+            //}
 
-            PredictionNode predictNode = new PredictionNode(null, null, _opponentVelocity, _opponentDisplacement, _opponentHealth, _attacksInRange, null);
-            _currentPrediction = (PredictionNode)_predictionDecisions.GetDecision(predictNode);
-
-            if (_currentPrediction != null && !_executor.paused)
-            {
-                _lastPrediction = _currentPrediction;
-                _executor.paused = true;
-                RoutineBehaviour.Instance.StartNewTimedAction(args => CheckState(), TimedActionCountType.SCALEDTIME, _saveStateDelay);
-                return;
-            }
-
-            if (_saveStateTimer == null || _saveStateTimer.GetEnabled() == false)
-                _saveStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(UpdateGameState, TimedActionCountType.SCALEDTIME, _saveStateDelay);
+            //if (_saveStateTimer == null || _saveStateTimer.GetEnabled() == false)
+            //    _saveStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(UpdateGameState, TimedActionCountType.SCALEDTIME, _saveStateDelay);
 
             if (_executor.enabled) return;
 

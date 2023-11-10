@@ -37,6 +37,7 @@ namespace Lodis.ScriptableObjects
             public float value;
         }
 
+        private int _id;
         public string abilityName = "Unassigned";
         [TextArea]
         public string abilityDescription = "None";
@@ -119,6 +120,16 @@ namespace Lodis.ScriptableObjects
         [Tooltip("Any animations that will be used in the ability script.")]
         [SerializeField]
         private AnimationClip[] _additionalAnimations;
+        public int ID
+        {
+            get 
+            {
+                if (_id == 0)
+                    _id = abilityName.GetHashCode();
+
+                return _id;
+            }
+        }
 
         /// <summary>
         /// Gets the custom animation attached this data

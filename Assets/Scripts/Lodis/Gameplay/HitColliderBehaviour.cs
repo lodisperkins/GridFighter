@@ -8,6 +8,7 @@ using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using Lodis.Sound;
+using Newtonsoft.Json;
 
 namespace Lodis.Gameplay
 {
@@ -56,20 +57,29 @@ namespace Lodis.Gameplay
 
         [Header("Collision Effects")]
         [Tooltip("The effect that will spawn when the hit box is spawned.")]
+        [JsonIgnore]
         public GameObject SpawnEffect;
         [Tooltip("The spark effect that will spawn on hit.")]
+        [JsonIgnore]
         public GameObject HitSpark;
         [Tooltip("The size of the effect that will play on successful hit")]
         [Range(0,3)]
+        [JsonIgnore]
         public int HitEffectLevel;
         [Tooltip("How long the hit stop will be scaled on hit.")]
+        [JsonIgnore]
         public float HitStopShakeStrength;
         [Tooltip("If true, the camera will shake when this collider hits.")]
+        [JsonIgnore]
         public bool ShakesCamera;
         [Tooltip("Event called when this collider htis a valid object.")]
+        [JsonIgnore]
         public CollisionEvent OnHit;
+        [JsonIgnore]
         public AudioClip SpawnSound;
+        [JsonIgnore]
         public AudioClip HitSound;
+        [JsonIgnore]
         public AudioClip DespawnSound;
         public void AddOnHitEvent(CollisionEvent collisionEvent)
         {

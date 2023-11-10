@@ -14,7 +14,7 @@ namespace Lodis.AI
     {
         [SerializeField]
         protected List<TreeNode> _nodeCache;
-        protected string SaveLoadPath;
+        public string SaveLoadPath;
         protected JsonSerializerSettings _settings;
         [SerializeField]
         private TreeNode _root;
