@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 74591016415453549}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 1}
-  m_LocalScale: {x: 5, y: 5, z: 8}
+  m_LocalScale: {x: 10, y: 10, z: 16}
   m_Children: []
   m_Father: {fileID: 5680485170780137522}
   m_RootOrder: 0
@@ -174,7 +174,7 @@ MonoBehaviour:
   _attackType: 4
   _attackDelay: 1
   _attackStrength: 1.5
-  _maxRange: 5
+  _maxRange: 10
   _attackDirection: {x: 0, y: 0}
   _enableRandomBehaviour: 0
   _senseCollider: {fileID: 2917431262450575549}
@@ -195,6 +195,8 @@ MonoBehaviour:
   _saveStateDelay: 0.5
   _losePenalty: -2
   _winReward: 4
+  _recordingName: Axton
+  _useRecording: 1
 --- !u!114 &7025333189879560728
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.Events;
 using System.Runtime.Remoting.Messaging;
 using Lodis.Utility;
+using Assets.Scripts.Lodis.AI;
 
 namespace Lodis.AI
 {
@@ -62,9 +63,11 @@ namespace Lodis.AI
         private CharacterDefenseBehaviour _opponentDefense;
 
         private CharacterDefenseBehaviour _defense;
-        private AIDummyMovementBehaviour _movementBehaviour;
+        private AIDummyMovementBehaviour _aiMovementBehaviour;
         private AttackDecisionTree _attackDecisions;
         private DefenseDecisionTree _defenseDecisions;
+        private RingBarrierBehaviour _ownerBarrier;
+        private RingBarrierBehaviour _opponentBarrier;
 
         private bool _touchingBarrier;
         private bool _touchingOpponentBarrier;
@@ -105,11 +108,19 @@ namespace Lodis.AI
         private PredictionNode _currentPrediction;
         private PredictionNode _lastPrediction;
         private TimedAction _checkStateTimer;
+        private MovesetBehaviour _opponentMoveset;
+        private GridMovementBehaviour _movementBehaviour;
+
+        [SerializeField]
+        private string _recordingName;
+        [SerializeField]
+        private bool _useRecording;
+        private DecisionTree _actionTree;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
         public MovesetBehaviour Moveset { get => _moveset; set => _moveset = value; }
-        public AIDummyMovementBehaviour AIMovement { get => _movementBehaviour; }
+        public AIDummyMovementBehaviour AIMovement { get => _aiMovementBehaviour; }
         public AttackDecisionTree AttackDecisions { get => _attackDecisions; }
         public GridPhysicsBehaviour GridPhysics { get => _gridPhysics; }
         public BehaviorExecutor Executor { get => _executor; }
@@ -124,6 +135,9 @@ namespace Lodis.AI
         public KnockbackBehaviour Knockback { get => _knockbackBehaviour; private set => _knockbackBehaviour = value; }
         public CharacterDefenseBehaviour Defense { get => _defense; private set => _defense = value; }
         public CharacterDefenseBehaviour OpponentDefense { get => _opponentDefense; private set => _opponentDefense = value; }
+
+        private GridPhysicsBehaviour _opponentGridPhysics;
+
         public bool CanAttack { get => _canAttack; private set => _canAttack = value; }
 
         public Vector2 AttackDirection
@@ -161,6 +175,15 @@ namespace Lodis.AI
             if (!EnableBehaviourTree)
                 return;
 
+            if (_useRecording)
+            {
+                _actionTree = new DecisionTree(0.97f);
+                _actionTree.SaveLoadPath = Application.persistentDataPath + "/RecordedDecisionData";
+                _actionTree.Load("_" + _recordingName);
+                _executor.enabled = false;
+                EnableBehaviourTree = false;
+            }
+
             _attackDecisions = new AttackDecisionTree();
             _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
             _attackDecisions.Load(Character.name);
@@ -177,7 +200,7 @@ namespace Lodis.AI
         private void Awake()
         {
             _executor = GetComponent<BehaviorExecutor>();
-            _movementBehaviour = GetComponent<AIDummyMovementBehaviour>();
+            _aiMovementBehaviour = GetComponent<AIDummyMovementBehaviour>();
             _predictionDecisions = new PredictionDecisionTree();
         }
 
@@ -188,11 +211,14 @@ namespace Lodis.AI
             _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             Knockback = Character.GetComponent<Movement.KnockbackBehaviour>();
             _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
+            _movementBehaviour = Character.GetComponent<GridMovementBehaviour>();
 
             _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(PlayerID);
             OpponentMove = _opponent.GetComponent<GridMovementBehaviour>();
             OpponentKnockback = _opponent.GetComponent<KnockbackBehaviour>();
             OpponentDefense = _opponent.GetComponent<CharacterDefenseBehaviour>();
+            _opponentGridPhysics = _opponent.GetComponent<GridPhysicsBehaviour>();
+            _opponentMoveset = _opponent.GetComponent<MovesetBehaviour>();
 
             _senseCollider.transform.SetParent(Character.transform);
             _senseCollider.transform.localPosition = Vector3.zero;
@@ -201,21 +227,29 @@ namespace Lodis.AI
             _opponentKnocback.AddOnTakeDamageAction(() => CreateNewPredictNode(true));
 
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(AddMatchReward);
+            //MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
+            //{
+            //    if (MatchManagerBehaviour.Instance.LastMatchResult != MatchResult.DRAW)
+            //        MatchManagerBehaviour.Instance.Restart();
+            //});
+
+            _opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
+            _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
         }
 
         private void OnEnable()
         {
-            if (_executor && EnableBehaviourTree)
+            if (_executor && EnableBehaviourTree && !_useRecording)
                 _executor.enabled = true;
 
-            if (_movementBehaviour)
-                _movementBehaviour.enabled = true;
+            if (_aiMovementBehaviour)
+                _aiMovementBehaviour.enabled = true;
         }
 
         private void OnDisable()
         {
             _executor.enabled = false;
-            _movementBehaviour.enabled = false;
+            _aiMovementBehaviour.enabled = false;
         }
 
         private void OnDestroy()
@@ -229,7 +263,7 @@ namespace Lodis.AI
 
         private void AddMatchReward()
         {
-            GridAlignment alignment = _movementBehaviour.MovementBehaviour.Alignment;
+            GridAlignment alignment = _aiMovementBehaviour.MovementBehaviour.Alignment;
 
             if (MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.P1WINS && alignment == GridAlignment.LEFT 
                 || MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.P2WINS && alignment == GridAlignment.RIGHT)
@@ -303,6 +337,43 @@ namespace Lodis.AI
             _abilityBuffered = true;
         }
 
+
+        /// <summary>
+        /// Decides which ability to use based on the input context and activates it
+        /// </summary>
+        /// <param name="context">The input callback context</param>
+        /// <param name="args">Any additional arguments to give to the ability. 
+        public void BufferMovement(Vector2 moveDirection)
+        {
+            moveDirection.x *= Mathf.Round(transform.forward.x);
+
+            GridMovementBehaviour movement = _aiMovementBehaviour.MovementBehaviour;
+                
+            //Use a normal ability if it was not held long enough
+            _bufferedAction = new BufferedInput(action => movement.MoveToPanel(movement.Position + moveDirection), condition =>
+            {
+                return !movement.IsMoving && movement.CanMove;
+            }, 0.2f);
+        }
+
+        /// <summary>
+        /// Decides which ability to use based on the input context and activates it
+        /// </summary>
+        /// <param name="context">The input callback context</param>
+        /// <param name="args">Any additional arguments to give to the ability. 
+        public void BufferAction(int id, float attackStrength, Vector2 attackDirection)
+        {
+            _attackDirection.x *= Mathf.Round(transform.forward.x);
+
+            //Use a normal ability if it was not held long enough
+            _bufferedAction = new BufferedInput(action => _moveset.UseAbility(id, attackStrength, attackDirection), condition =>
+            {
+                _abilityBuffered = false;
+                return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
+            }, 0.2f);
+            _abilityBuffered = true;
+        }
+
         private void UpdateGameState(params object[] args)
         {
             _hasUpdatedGameState = true;
@@ -355,11 +426,96 @@ namespace Lodis.AI
             _currentPrediction = (PredictionNode)_predictionDecisions.GetDecision(predictNode);
         }
 
+        private Vector3 GetAverageVelocity()
+        {
+            Vector3 averageVelocity = Vector3.zero;
+
+            if (_attacksInRange == null) return Vector3.zero;
+
+            if (_attacksInRange.Count == 0)
+                return Vector3.zero;
+
+            for (int i = 0; i < _attacksInRange.Count; i++)
+                if (_attacksInRange[i].RB)
+                    averageVelocity += _attacksInRange[i].RB.velocity;
+
+            return averageVelocity /= _attacksInRange.Count;
+        }
+
+        private Vector3 GetAveragePosition()
+        {
+            Vector3 averagePosition = Vector3.zero;
+
+            if (_attacksInRange == null) return Vector3.zero;
+
+            if (_attacksInRange.Count == 0)
+                return Vector3.zero;
+
+            _attacksInRange.RemoveAll(physics =>
+            {
+                if ((object)physics != null)
+                    return physics == null;
+
+                return true;
+            });
+
+            for (int i = 0; i < _attacksInRange.Count; i++)
+                averagePosition += _attacksInRange[i].gameObject.transform.position;
+
+            return averagePosition /= _attacksInRange.Count;
+        }
+
+        private ActionNode GetNewAction()
+        {
+            ActionNode action = new ActionNode(null, null);
+
+            action.CurrentState = _stateMachine.CurrentState;
+
+            action.AlignmentX = (int)_aiMovementBehaviour.MovementBehaviour.GetAlignmentX();
+            action.AveragePosition = GetAveragePosition();
+            action.AverageVelocity = GetAverageVelocity();
+            action.MoveDirection = _aiMovementBehaviour.MovementBehaviour.MoveDirection;
+            action.IsGrounded = _gridPhysics.IsGrounded;
+
+            if (_moveset.AbilityInUse)
+            {
+                action.Energy = _moveset.Energy;
+                action.CurrentAbilityID = _moveset.LastAbilityInUse.abilityData.ID;
+            }
+            else
+            {
+                action.CurrentAbilityID = -1;
+            }
+
+            action.IsAttacking = _moveset.AbilityInUse;
+
+            action.Health = _knockbackBehaviour.Health;
+            action.BarrierHealth = _ownerBarrier.Health;
+
+            action.OwnerToTarget = _opponent.transform.position - _character.transform.position;
+
+            action.OpponentVelocity = _opponentGridPhysics.LastVelocity;
+            action.OpponentEnergy = _opponentMoveset.Energy;
+            action.OpponentMoveDirection = _opponentMove.MoveDirection;
+            action.OpponentHealth = _opponentKnocback.Health;
+            action.OpponentBarrierHealth = _opponentBarrier.Health;
+
+            return (ActionNode)_actionTree.GetDecision(action);
+        }
+
+        private void PerformAction(ActionNode action)
+        {
+            if (!action.IsAttacking)
+            {
+                BufferMovement(action.MoveDirection);
+                return;
+            }
+
+            BufferAction(action.CurrentAbilityID, 1.6f, action.AttackDirection);
+        }
+
         public void Update()
         {
-            _executor.enabled = EnableBehaviourTree;
-
-            _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
 
             if (_bufferedAction?.HasAction() == true)
             {
@@ -367,6 +523,21 @@ namespace Lodis.AI
             }
             else
                 _abilityBuffered = false;
+
+            if (_useRecording)
+            {
+                ActionNode node = GetNewAction();
+                if (node != null)
+                {
+                    PerformAction(node);
+                    _executor.enabled = false;
+                }
+                //else
+                //    _executor.enabled = true;
+            }
+                    return;
+
+            _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
 
             //if ( (_checkStateTimer == null || _checkStateTimer.GetEnabled() == false))
             //{

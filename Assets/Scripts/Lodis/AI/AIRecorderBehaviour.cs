@@ -51,7 +51,8 @@ namespace Lodis.AI
         // Start is called before the first frame update
         void Start()
         {
-            _actionTree = new DecisionTree();
+            _actionTree = new DecisionTree(0.98f);
+            _actionTree.MaxDecisionsCount = _maxDecisionCount;
             _actionTree.SaveLoadPath = Application.persistentDataPath + "/RecordedDecisionData";
             _actionTree.Load("_" + _recordingName);
 
@@ -137,10 +138,10 @@ namespace Lodis.AI
             action.AverageVelocity = GetAverageVelocity();
             action.MoveDirection = _movementBehaviour.MoveDirection;
             action.IsGrounded = _gridPhysics.IsGrounded;
+            action.Energy = _moveset.Energy;
 
             if (isAttacking)
             {
-                action.Energy = _moveset.Energy;
                 action.CurrentAbilityID = _moveset.LastAbilityInUse.abilityData.ID;
             }
             else

@@ -45,12 +45,15 @@ namespace Lodis.AI
         public TreeNode GetDecision(TreeNode similarNode, params object[] args)
         {
             TreeNode decision = _root;
+            float highestScore = 0;
+            float currentScore = 0;
+
             //Loop until the decision is assigned or a dead end is reached
             while (decision != null)
             {
                 /// Return the decision if it's similar enough to the current situation.
                 /// Subtracts it by a random value to add mix ups
-                if (decision.Compare(similarNode) >= _compareThreshold - Random.Range(0, TreeNode.RandomDecisionConstant * 0.1f))
+                if ((currentScore = decision.Compare(similarNode)) >= _compareThreshold - Random.Range(0, TreeNode.RandomDecisionConstant * 0.1f))
                     return decision;
 
                 //Calculate the weight for both children
@@ -81,6 +84,9 @@ namespace Lodis.AI
 
                 if (decision?.Wins < LoseThreshold)
                     _decisionsToRemove.Add(decision);
+
+                if (currentScore > highestScore)
+                    highestScore = currentScore;
             }
 
             foreach (TreeNode badDecision in _decisionsToRemove)
@@ -89,7 +95,7 @@ namespace Lodis.AI
             if (decision?.Wins >= LoseThreshold)
                 return decision;
 
-
+           Debug.Log("HighestScore: " + highestScore);
             return null;
         }
 
@@ -104,7 +110,7 @@ namespace Lodis.AI
             if (_root == null)
             {
                 _root = decision;
-                Debug.Log("Added decision to cache" + _nodeCache.Count);
+                //Debug.Log("Added decision to cache" + _nodeCache.Count);
                 _nodeCache.Add(_root);
                 return _root;
             }
@@ -152,7 +158,7 @@ namespace Lodis.AI
             }
 
             _nodeCache.Add(decision);
-            Debug.Log("Added decision to cache" + _nodeCache.Count);
+            //Debug.Log("Added decision to cache" + _nodeCache.Count);
 
             return decision;
         }
@@ -201,7 +207,7 @@ namespace Lodis.AI
                 iter1.Right = null;
                 iter1.Left = null;
 
-                Debug.Log("Removed decision from cache" + _nodeCache.Count);
+                //Debug.Log("Removed decision from cache" + _nodeCache.Count);
             }
             else
             {
@@ -235,7 +241,7 @@ namespace Lodis.AI
                 node.Right = null;
                 node.Left = null;
                 _nodeCache.Remove(node);
-                Debug.Log("Removed decision from cache" + _nodeCache.Count);
+                //Debug.Log("Removed decision from cache" + _nodeCache.Count);
             }
         }
 
@@ -280,7 +286,7 @@ namespace Lodis.AI
             Debug.Log("Loaded " + temp.Count + "decision for " + GetType().ToString());
             reader.Close();
 
-            if (_nodeCache.Count == 0)
+            if (temp.Count == 0)
             {
                 return false;
             }

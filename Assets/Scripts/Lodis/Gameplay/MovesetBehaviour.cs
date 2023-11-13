@@ -154,6 +154,7 @@ namespace Lodis.Gameplay
         private TimedAction _deckShuffleAction;
         private TimedAction _burstAction;
 
+        private Vector2 _lastAttackDirection;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -223,6 +224,7 @@ namespace Lodis.Gameplay
         public Transform HeldItemSpawnRight { get => _heldItemSpawnRight; private set => _heldItemSpawnRight = value; }
 
         public static float DeckReloadTime { get; private set; }
+        public Vector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
 
         private void Awake()
         {
@@ -440,6 +442,74 @@ namespace Lodis.Gameplay
         /// <param name="abilityType">The type of basic ability to use</param>
         /// <param name="args">Additional arguments to be given to the basic ability</param>
         /// <returns>The ability used.</returns>
+        public Ability UseAbility(int id, params object[] args)
+        {
+            //Find the ability in the deck abd use it
+            Ability currentAbility;
+
+            if (_normalDeck.TryGetAbilityByID(id, out currentAbility))
+                UseBasicAbility(currentAbility, args);
+
+            if (_specialAbilitySlots[0]?.abilityData.ID == id)
+                return UseSpecialAbility(0, args);
+            else if (_specialAbilitySlots[1]?.abilityData.ID == id)
+                return UseSpecialAbility(1, args);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
+        /// the ability to use will be activated if the current ability in use can be canceled.
+        /// </summary>
+        /// <param name="ability">The type of basic ability to use</param>
+        /// <param name="args">Additional arguments to be given to the basic ability</param>
+        /// <returns>The ability used.</returns>
+        public Ability UseBasicAbility(Ability ability, params object[] args)
+        {
+
+            //Ignore player input if they aren't in a state that can attack
+            if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && _stateMachineScript.StateMachine.CurrentState != "Moving" && ability.abilityData.AbilityType != AbilityType.BURST)
+                return null;
+            else if (ability.abilityData.AbilityType == AbilityType.BURST && !_canBurst)
+                return null;
+
+            //Return if there is an ability in use that can't be canceled
+            if (_lastAbilityInUse != null)
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(ability))
+                    return _lastAbilityInUse;
+
+            if (ability == null)
+                return null;
+
+            ability.OnHitTemp += IncreaseEnergyFromDamage;
+
+            ability.UseAbility(args);
+            _lastAbilityInUse = ability;
+            LastAttackDirection = (Vector2)args[1];
+            if (args?.Length > 0)
+                _lastAttackStrength = (float)args[0];
+
+            OnUseAbility?.Invoke();
+
+            if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
+            {
+                OnBurst?.Invoke();
+                _canBurst = false;
+                BurstEnergy = 0;
+            }
+
+            //Return new ability
+            return _lastAbilityInUse;
+        }
+
+        /// <summary>
+        /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
+        /// the ability to use will be activated if the current ability in use can be canceled.
+        /// </summary>
+        /// <param name="ability">The type of basic ability to use</param>
+        /// <param name="args">Additional arguments to be given to the basic ability</param>
+        /// <returns>The ability used.</returns>
         public Ability UseBasicAbility(AbilityType abilityType, params object[] args)
         {
 
@@ -468,7 +538,10 @@ namespace Lodis.Gameplay
             currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
 
             currentAbility.UseAbility(args);
+
             _lastAbilityInUse = currentAbility;
+            LastAttackDirection = (Vector2)args[1];
+            
             if (args?.Length > 0)
                 _lastAttackStrength = (float)args[0];
 
@@ -514,6 +587,7 @@ namespace Lodis.Gameplay
 
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
+            LastAttackDirection = (Vector2)args[1];
             if (args?.Length > 0)
                 _lastAttackStrength = (float)args[0];
 
@@ -562,6 +636,7 @@ namespace Lodis.Gameplay
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
 
+            LastAttackDirection = (Vector2)args[1];
             currentAbility.currentActivationAmount++;
 
             if (currentAbility.MaxActivationAmountReached)

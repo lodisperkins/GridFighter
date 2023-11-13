@@ -26,6 +26,8 @@ namespace Lodis.Gameplay
     [CreateAssetMenu(menuName = "Deck")]
     public class Deck : ScriptableObject
     {
+        private static int _seed = -1;
+
         private List<Ability> _abilities = new List<Ability>();
         [SerializeField]
         private List<AbilityData> _abilityData = new List<AbilityData>();
@@ -59,6 +61,9 @@ namespace Lodis.Gameplay
                 return _abilities.Count;
             }
         }
+
+        public static int Seed { get => _seed; set => _seed = value; }
+
 
         private void InitDeck()
         {
@@ -183,6 +188,45 @@ namespace Lodis.Gameplay
             Debug.LogError("Couldn't find ability of type " + type.ToString() + " in deck " + DeckName);
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the first ability in the deck that matches the type
+        /// </summary>
+        /// <param name="id">The type of ability to search for</param>
+        /// <returns></returns>
+        public Ability GetAbilityByID(int id)
+        {
+            foreach (Ability ability in _abilities)
+            {
+                if (ability.abilityData.ID == id)
+                    return ability;
+            }
+
+            Debug.LogError("Couldn't find ability of ID " + id.ToString() + " in deck " + DeckName);
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the first ability in the deck that matches the type
+        /// </summary>
+        /// <param name="id">The type of ability to search for</param>
+        /// <returns></returns>
+        public bool TryGetAbilityByID(int id, out Ability ability)
+        {
+            ability = null;
+
+            foreach (Ability currentAbility in _abilities)
+            {
+                if (currentAbility.abilityData.ID == id)
+                {
+                    ability = currentAbility;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public Ability GetBurstAbility(string state)
@@ -335,10 +379,20 @@ namespace Lodis.Gameplay
         /// </summary>
         public void Shuffle()
         {
+            System.Random random;
+
+            if (Seed == -1)
+            {
+                System.Random rand = new System.Random();
+                Seed = rand.Next(-int.MaxValue, int.MaxValue);
+            }
+
+            random = new System.Random(Seed);
+
             //Yates shuffle algorithm
             for (int i = _abilities.Count - 1; i > 0; i--)
             {
-                int j = UnityEngine.Random.Range(0, i);
+                int j = random.Next(0, i);
 
                 Ability temp = _abilities[j];
                 _abilities[j] = _abilities[i];

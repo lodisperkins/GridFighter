@@ -10,6 +10,20 @@ namespace Assets.Scripts.Lodis.AI
 {
     class ActionNode : TreeNode
     {
+        private static float _directionWeight = 1;
+        private static float _attackDirectionWeight = 1;
+        private static float _moveDirectionWeight = 1;
+        private static float _opponentVelocityWeight = 1;
+        private static float _energyWeight = 1;
+        private static float _opponentEnergyWeight = 1;
+        private static float _distanceWeight = 1;
+        private static float _avgPositionWeight = 1;
+        private static float _avgVelocityWeight = 1;
+        private static float _healthWeight = 1;
+        private static float _barrierHealthWeight = 1;
+        private static float _opponentHealthWeight = 1;
+        private static float _opponentBarrierHealthWeight = 1;
+
         public Vector3 OwnerToTarget;
         public bool CanMove;
         public bool CanCancelMovement;
@@ -22,6 +36,7 @@ namespace Assets.Scripts.Lodis.AI
         public float Energy;
         public bool CanBurst;
         public bool CanUseAbility;
+        public Vector2 AttackDirection;
 
         public int CurrentAbilityID = -1;
         public int Ability1ID = -1;
@@ -54,6 +69,21 @@ namespace Assets.Scripts.Lodis.AI
 
         public ActionNode(TreeNode left, TreeNode right) : base(left, right) { }
 
+        private float GetPercentage(float a, float b)
+        {
+            if (a == b)
+                return 1;
+
+            float result = Mathf.Abs(a - b) / ((a + b) / 2);
+
+            if (result > 1)
+                result -= Mathf.Abs(result - 1);
+
+            result = Mathf.Clamp(result, 0, 1);
+
+            return result;
+        }
+
         public override float Compare(TreeNode node)
         {
             ActionNode actionNode = node as ActionNode;
@@ -74,56 +104,74 @@ namespace Assets.Scripts.Lodis.AI
             float directionAccuracy = 1;
             if (actionNode.OwnerToTarget.magnitude != 0 || OwnerToTarget.magnitude != 0)
             {
-                OwnerToTarget.x *= AlignmentX;
-                actionNode.OwnerToTarget.x *= AlignmentX;
+                OwnerToTarget.x *= actionNode.AlignmentX;
 
                 directionAccuracy = Vector3.Dot(actionNode.OwnerToTarget.normalized, OwnerToTarget.normalized);
+
+                if (directionAccuracy < 0)
+                    directionAccuracy = 0;
+            }
+
+            //Check direction to enemy accuracy
+            float attackDirectionAccuracy = 1;
+            if (actionNode.AttackDirection.magnitude != 0 || AttackDirection.magnitude != 0)
+            {
+                AttackDirection.x *= actionNode.AlignmentX; 
+
+                attackDirectionAccuracy = Vector3.Dot(actionNode.AttackDirection.normalized, AttackDirection.normalized);
+
+                if (attackDirectionAccuracy < 0)
+                    attackDirectionAccuracy = 0;
             }
 
             //Check owner move direction
             float moveDirectionAccuracy = 1;
             if (actionNode.MoveDirection.magnitude != 0 || MoveDirection.magnitude != 0)
             {
-                MoveDirection.x *= AlignmentX;
-                actionNode.MoveDirection.x *= AlignmentX;
+                MoveDirection.x *= actionNode.AlignmentX;
 
                 moveDirectionAccuracy = Vector3.Dot(actionNode.MoveDirection.normalized, MoveDirection.normalized);
+
+                if (moveDirectionAccuracy < 0)
+                    moveDirectionAccuracy = 0;
             }
 
             //Check opponent velocity
             float velocityAccuracy = 1;
             if (actionNode.OpponentVelocity.magnitude != 0 || OpponentVelocity.magnitude != 0)
             {
-                OpponentVelocity.x *= AlignmentX;
-                actionNode.OpponentVelocity.x *= AlignmentX;
+                OpponentVelocity.x *= actionNode.AlignmentX;
 
                 velocityAccuracy = Vector3.Dot(actionNode.OpponentVelocity.normalized, OpponentVelocity.normalized);
+                if (velocityAccuracy < 0)
+                    velocityAccuracy = 0;
             }
 
             //Check energy
-            float oppEnergy = actionNode.Energy;
-            if (oppEnergy == 0)
-                oppEnergy = 1;
+            float energy = actionNode.Energy;
+            if (energy == 0)
+                energy = 1;
 
-            float energyAccuracy = Energy / oppEnergy;
-            float opponentEnergyAccuracy = OpponentEnergy / actionNode.OpponentEnergy;
-
+            float energyAccuracy = GetPercentage(energy, Energy);
+            float opponentEnergyAccuracy = GetPercentage(OpponentEnergy, actionNode.OpponentEnergy);
             //Check distance to opponent
-            float distanceAccuracy = OwnerToTarget.magnitude / actionNode.OwnerToTarget.magnitude;
+            float distanceAccuracy = GetPercentage(OwnerToTarget.magnitude, actionNode.OwnerToTarget.magnitude);
 
             //Check hit box distance
             float positionAccuracy = 1;
             if (actionNode.AveragePosition.magnitude != 0 || AveragePosition.magnitude != 0)
             {
                 positionAccuracy = Vector3.Dot(actionNode.AveragePosition.normalized, AveragePosition.normalized);
+                if (positionAccuracy < 0)
+                    positionAccuracy = 0;
             }
 
             //Check health
 
-            float healthAccuracy = Health / (actionNode.Health + 1);
-            float barrierHealthAccuracy = BarrierHealth / (actionNode.BarrierHealth + 1);
-            float opponentHealthAccuracy = OpponentHealth / (actionNode.OpponentHealth + 1);
-            float opponentBarrierHealthAccuracy = OpponentBarrierHealth / (actionNode.OpponentBarrierHealth + 1);
+            float healthAccuracy = GetPercentage(Health, actionNode.Health);
+            float barrierHealthAccuracy = GetPercentage(BarrierHealth, actionNode.BarrierHealth);
+            float opponentHealthAccuracy = GetPercentage(OpponentHealth, actionNode.OpponentHealth);
+            float opponentBarrierHealthAccuracy = GetPercentage(OpponentBarrierHealth, actionNode.OpponentBarrierHealth + 1);
 
             if (float.IsNaN(positionAccuracy))
                 positionAccuracy = 0;
@@ -132,8 +180,7 @@ namespace Assets.Scripts.Lodis.AI
 
             if (actionNode.AverageVelocity.magnitude != 0 || AverageVelocity.magnitude != 0)
             {
-                AverageVelocity.x *= AlignmentX;
-                actionNode.AverageVelocity.x *= AlignmentX;
+                AverageVelocity.x *= actionNode.AlignmentX;
 
                 attackVelocityAccuracy = Vector3.Dot(actionNode.AverageVelocity.normalized, AverageVelocity.normalized);
             }
@@ -151,9 +198,13 @@ namespace Assets.Scripts.Lodis.AI
                 distanceAccuracy -= distanceAccuracy - 1;
 
             //Calculate average value from comparision
-            float totalAccuracy = (directionAccuracy + distanceAccuracy + velocityAccuracy + positionAccuracy + attackVelocityAccuracy
-                + moveDirectionAccuracy + energyAccuracy + opponentEnergyAccuracy + healthAccuracy + barrierHealthAccuracy + opponentHealthAccuracy
-                + opponentBarrierHealthAccuracy) / 12;
+            float totalAccuracy = 
+                (directionAccuracy *_directionWeight + distanceAccuracy * _distanceWeight +
+                velocityAccuracy * _opponentVelocityWeight + positionAccuracy * _avgPositionWeight
+                + attackVelocityAccuracy * _avgVelocityWeight + moveDirectionAccuracy * _moveDirectionWeight
+                + energyAccuracy * _energyWeight + opponentEnergyAccuracy * _opponentEnergyWeight
+                + healthAccuracy * _healthWeight + barrierHealthAccuracy * _barrierHealthWeight + opponentHealthAccuracy * _opponentHealthWeight
+                + opponentBarrierHealthAccuracy * _opponentBarrierHealthWeight + attackDirectionAccuracy * _attackDirectionWeight) / 13;
 
             return totalAccuracy;
         }

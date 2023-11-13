@@ -1338,6 +1338,65 @@ Transform:
   m_Father: {fileID: 2268383368609081626}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4351463325655695078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492379211295133931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db6b635b68191fa4684179a72aea7a3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _recordingName: Axton
+--- !u!114 &4668140496638751478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492379211295133931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e8e045b513fab941a6e714be77bd535, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _replacementSlots:
+  - MeshRenderer: {fileID: 8911890729606560068}
+    Part: 1
+  - MeshRenderer: {fileID: 4482341551354517005}
+    Part: 2
+  - MeshRenderer: {fileID: 7300407254104664728}
+    Part: 3
+  - MeshRenderer: {fileID: 320300976096234059}
+    Part: 4
+  - MeshRenderer: {fileID: 7851065364412479209}
+    Part: 5
+  - MeshRenderer: {fileID: 2130534065323872630}
+    Part: 6
+  - MeshRenderer: {fileID: 7520466271281776435}
+    Part: 7
+  - MeshRenderer: {fileID: 4256201455692485994}
+    Part: 9
+  - MeshRenderer: {fileID: 8903896389616974528}
+    Part: 10
+  - MeshRenderer: {fileID: 4873575298430117348}
+    Part: 11
+  - MeshRenderer: {fileID: 5639729683860063675}
+    Part: 12
+  - MeshRenderer: {fileID: 8573532411825379869}
+    Part: 13
+  - MeshRenderer: {fileID: 3236440977008588969}
+    Part: 8
+  - MeshRenderer: {fileID: 9161987744411430145}
+    Part: 14
+  - MeshRenderer: {fileID: 6662000259811167972}
+    Part: 15
+  - MeshRenderer: {fileID: 8436353343081100233}
+    Part: 16
+  _armorReplacements: []
 --- !u!1 &2566013362704995265
 GameObject:
   m_ObjectHideFlags: 0
@@ -1452,69 +1511,6 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.0037471056, y: 0.051382482, z: -0.00432986}
     m_Extent: {x: 0.07478559, y: 0.053430498, z: 0.0839355}
   m_DirtyAABB: 0
---- !u!114 &4668140496638751478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2492379211295133931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e8e045b513fab941a6e714be77bd535, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _replacementSlots:
-  - MeshRenderer: {fileID: 8911890729606560068}
-    Part: 1
-  - MeshRenderer: {fileID: 4482341551354517005}
-    Part: 2
-  - MeshRenderer: {fileID: 7300407254104664728}
-    Part: 3
-  - MeshRenderer: {fileID: 320300976096234059}
-    Part: 4
-  - MeshRenderer: {fileID: 7851065364412479209}
-    Part: 5
-  - MeshRenderer: {fileID: 2130534065323872630}
-    Part: 6
-  - MeshRenderer: {fileID: 7520466271281776435}
-    Part: 7
-  - MeshRenderer: {fileID: 4256201455692485994}
-    Part: 9
-  - MeshRenderer: {fileID: 8903896389616974528}
-    Part: 10
-  - MeshRenderer: {fileID: 4873575298430117348}
-    Part: 11
-  - MeshRenderer: {fileID: 5639729683860063675}
-    Part: 12
-  - MeshRenderer: {fileID: 8573532411825379869}
-    Part: 13
-  - MeshRenderer: {fileID: 3236440977008588969}
-    Part: 8
-  - MeshRenderer: {fileID: 9161987744411430145}
-    Part: 14
-  - MeshRenderer: {fileID: 6662000259811167972}
-    Part: 15
-  - MeshRenderer: {fileID: 8436353343081100233}
-    Part: 16
-  _armorReplacements: []
---- !u!114 &6950542918942414048
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2492379211295133931}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dad6cf1b42ec87d49b509d132a196c81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _character: {fileID: 2492379211295133931}
-  _recordingName: Axton
-  _attackDirection: {x: 0, y: 0}
-  _maxDecisionCount: 0
-  MovePosition: {x: 0, y: 0}
 --- !u!1 &2802486055510626186
 GameObject:
   m_ObjectHideFlags: 0
