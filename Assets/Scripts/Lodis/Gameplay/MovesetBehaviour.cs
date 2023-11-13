@@ -486,7 +486,8 @@ namespace Lodis.Gameplay
 
             ability.UseAbility(args);
             _lastAbilityInUse = ability;
-            LastAttackDirection = (Vector2)args[1];
+            if (args?.Length > 1)
+                LastAttackDirection = (Vector2)args[1];
             if (args?.Length > 0)
                 _lastAttackStrength = (float)args[0];
 
@@ -540,8 +541,9 @@ namespace Lodis.Gameplay
             currentAbility.UseAbility(args);
 
             _lastAbilityInUse = currentAbility;
-            LastAttackDirection = (Vector2)args[1];
-            
+            if (args?.Length > 1)
+                LastAttackDirection = (Vector2)args[1];
+
             if (args?.Length > 0)
                 _lastAttackStrength = (float)args[0];
 
@@ -587,7 +589,8 @@ namespace Lodis.Gameplay
 
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
-            LastAttackDirection = (Vector2)args[1];
+            if (args?.Length > 1)
+                LastAttackDirection = (Vector2)args[1];
             if (args?.Length > 0)
                 _lastAttackStrength = (float)args[0];
 
@@ -636,7 +639,8 @@ namespace Lodis.Gameplay
             currentAbility.UseAbility(args);
             _lastAbilityInUse = currentAbility;
 
-            LastAttackDirection = (Vector2)args[1];
+            if (args?.Length > 1)
+                LastAttackDirection = (Vector2)args[1];
             currentAbility.currentActivationAmount++;
 
             if (currentAbility.MaxActivationAmountReached)

@@ -66,6 +66,8 @@ namespace Assets.Scripts.Lodis.AI
         public int OpponentNextAbilityID = -1;
 
         public bool IsAttacking;
+        public float TimeStamp;
+
 
         public ActionNode(TreeNode left, TreeNode right) : base(left, right) { }
 

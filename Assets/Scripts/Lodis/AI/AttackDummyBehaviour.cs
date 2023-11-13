@@ -110,6 +110,7 @@ namespace Lodis.AI
         private TimedAction _checkStateTimer;
         private MovesetBehaviour _opponentMoveset;
         private GridMovementBehaviour _movementBehaviour;
+        private RecordingPlaybackBehaviour _playbackBehaviour;
 
         [SerializeField]
         private string _recordingName;
@@ -202,6 +203,7 @@ namespace Lodis.AI
             _executor = GetComponent<BehaviorExecutor>();
             _aiMovementBehaviour = GetComponent<AIDummyMovementBehaviour>();
             _predictionDecisions = new PredictionDecisionTree();
+            _playbackBehaviour = GetComponent<RecordingPlaybackBehaviour>();
         }
 
         private void Start()
@@ -233,6 +235,9 @@ namespace Lodis.AI
             //        MatchManagerBehaviour.Instance.Restart();
             //});
 
+            _playbackBehaviour.enabled = true;
+            _playbackBehaviour.OwnerMoveset = _moveset;
+            _playbackBehaviour.OwnerMovement = _movementBehaviour;
             _opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
         }
@@ -505,13 +510,7 @@ namespace Lodis.AI
 
         private void PerformAction(ActionNode action)
         {
-            if (!action.IsAttacking)
-            {
-                BufferMovement(action.MoveDirection);
-                return;
-            }
-
-            BufferAction(action.CurrentAbilityID, 1.6f, action.AttackDirection);
+            _playbackBehaviour.SetPlaybackTime(action.TimeStamp);
         }
 
         public void Update()
@@ -535,7 +534,6 @@ namespace Lodis.AI
                 //else
                 //    _executor.enabled = true;
             }
-                    return;
 
             _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
 

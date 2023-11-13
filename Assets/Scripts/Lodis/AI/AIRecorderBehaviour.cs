@@ -2,31 +2,25 @@
 using Ilumisoft.VisualStateMachine;
 using Lodis.Gameplay;
 using Lodis.GridScripts;
+using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
+using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Lodis.AI
 {
-    public class AIRecorderBehaviour : MonoBehaviour
+    public class AIRecorderBehaviour : ActionRecorderBehaviour
     {
-        [SerializeField]
-        private GameObject _character;
-        [SerializeField]
-        private string _recordingName;
         private DecisionTree _actionTree;
-        
-        private Gameplay.MovesetBehaviour _moveset;
 
         [Tooltip("The direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
         [SerializeField]
         private Vector2 _attackDirection;
-        private StateMachine _stateMachine;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
-        private GridMovementBehaviour _movementBehaviour;
 
         private GameObject _opponent;
         private GridMovementBehaviour _opponentMove;
@@ -51,34 +45,41 @@ namespace Lodis.AI
         // Start is called before the first frame update
         void Start()
         {
+            Settings = new JsonSerializerSettings();
+            Settings.TypeNameHandling = TypeNameHandling.All;
+
             _actionTree = new DecisionTree(0.98f);
             _actionTree.MaxDecisionsCount = _maxDecisionCount;
             _actionTree.SaveLoadPath = Application.persistentDataPath + "/RecordedDecisionData";
-            _actionTree.Load("_" + _recordingName);
+            _actionTree.Load("_" + RecordingName);
 
-            _movementBehaviour = _character.GetComponent<GridMovementBehaviour>();
-            _moveset = _character.GetComponent<MovesetBehaviour>();
-            _stateMachine = _character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
-            _knockbackBehaviour = _character.GetComponent<KnockbackBehaviour>();
-            _gridPhysics = _character.GetComponent<GridPhysicsBehaviour>();
+            OwnerMovement = GetComponent<GridMovementBehaviour>();
+            OwnerMoveset = GetComponent<MovesetBehaviour>();
+            StateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>();
+            _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
+            _gridPhysics = GetComponent<GridPhysicsBehaviour>();
 
-            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(_character);
+            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             _opponentMove = _opponent.GetComponent<GridMovementBehaviour>();
             _opponentKnocback = _opponent.GetComponent<KnockbackBehaviour>();
             _opponentGridPhysics = _opponent.GetComponent<GridPhysicsBehaviour>();
             _opponentMoveset = _opponent.GetComponent<MovesetBehaviour>();
 
-            _moveset.OnUseAbility += () => CreateNewAction(true);
-            _movementBehaviour.AddOnMoveBeginAction(() =>
+            OwnerMoveset.OnUseAbility += () => RecordNewAction(OwnerMoveset.LastAbilityInUse.abilityData.ID);
+
+            OwnerMovement.AddOnMoveBeginAction(() =>
             {
-                if (_stateMachine.CurrentState != "Attacking")
+                string lastState = StateMachine.LastState;
+                string currentState = StateMachine.StateMachine.CurrentState;
+
+                if (currentState != "Attacking" && (lastState == "Idle" || lastState == "Moving"))
                 {
-                    CreateNewAction(false);
+                    RecordNewAction(-1);
                 };
             }
             );
 
-            _opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
+            _opponentBarrier = OwnerMovement.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
         }
 
@@ -124,43 +125,43 @@ namespace Lodis.AI
         private void OnDestroy()
         {
             if (!Application.isEditor) return;
-            _actionTree?.Save("_" + _recordingName);
+            _actionTree?.Save("_" + RecordingName);
         }
 
-        private void CreateNewAction(bool isAttacking)
+        protected override void RecordNewAction(int id)
+        {
+            base.RecordNewAction(id);
+            CreateNewAction(id);
+        }
+
+        private void CreateNewAction(int id)
         {
             ActionNode action = new ActionNode(null, null);
 
-            action.CurrentState = _stateMachine.CurrentState;
+            action.CurrentState = StateMachine.StateMachine.CurrentState;
 
-            action.AlignmentX = (int)_movementBehaviour.GetAlignmentX();
+            action.AlignmentX = (int)OwnerMovement.GetAlignmentX();
             action.AveragePosition = GetAveragePosition();
             action.AverageVelocity = GetAverageVelocity();
-            action.MoveDirection = _movementBehaviour.MoveDirection;
+            action.MoveDirection = OwnerMovement.MoveDirection;
             action.IsGrounded = _gridPhysics.IsGrounded;
-            action.Energy = _moveset.Energy;
+            action.Energy = OwnerMoveset.Energy;
 
-            if (isAttacking)
-            {
-                action.CurrentAbilityID = _moveset.LastAbilityInUse.abilityData.ID;
-            }
-            else
-            {
-                action.CurrentAbilityID = -1;
-            }
-
-            action.IsAttacking = isAttacking;
+            action.CurrentAbilityID = id;
+            action.IsAttacking = id != -1;
 
             action.Health = _knockbackBehaviour.Health;
             action.BarrierHealth = _ownerBarrier.Health;
 
-            action.OwnerToTarget = _opponent.transform.position - _character.transform.position;
+            action.OwnerToTarget = _opponent.transform.position - transform.position;
 
             action.OpponentVelocity = _opponentGridPhysics.LastVelocity;
             action.OpponentEnergy = _opponentMoveset.Energy;
             action.OpponentMoveDirection = _opponentMove.MoveDirection;
             action.OpponentHealth = _opponentKnocback.Health;
             action.OpponentBarrierHealth = _opponentBarrier.Health;
+
+            action.TimeStamp = CurrentTime;
 
             _actionTree.AddDecision(action);
         }

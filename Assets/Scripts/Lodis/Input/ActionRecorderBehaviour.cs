@@ -36,20 +36,27 @@ namespace Lodis.Input
         [SerializeField]
         private string _recordingName;
 
+        public string RecordingName { get => _recordingName; }
+        public GridMovementBehaviour OwnerMovement { get => _ownerMovement; set => _ownerMovement = value; }
+        public MovesetBehaviour OwnerMoveset { get => _ownerMoveset; set => _ownerMoveset = value; }
+        public CharacterStateMachineBehaviour StateMachine { get => _stateMachine; set => _stateMachine = value; }
+        public static JsonSerializerSettings Settings { get => _settings; set => _settings = value; }
+        public float CurrentTime { get => _currentTime; private set => _currentTime = value; }
+
         // Start is called before the first frame update
         void Start()
         {
-            _settings = new JsonSerializerSettings();
-            _settings.TypeNameHandling = TypeNameHandling.All;
-            _ownerMovement = GetComponent<GridMovementBehaviour>();
-            _ownerMoveset = GetComponent<MovesetBehaviour>();
-            _stateMachine = GetComponent<CharacterStateMachineBehaviour>();
-            _ownerMoveset.OnUseAbility += () => RecordNewAction(_ownerMoveset.LastAbilityInUse.abilityData.ID);
+            Settings = new JsonSerializerSettings();
+            Settings.TypeNameHandling = TypeNameHandling.All;
+            OwnerMovement = GetComponent<GridMovementBehaviour>();
+            OwnerMoveset = GetComponent<MovesetBehaviour>();
+            StateMachine = GetComponent<CharacterStateMachineBehaviour>();
+            OwnerMoveset.OnUseAbility += () => RecordNewAction(OwnerMoveset.LastAbilityInUse.abilityData.ID);
 
-            _ownerMovement.AddOnMoveBeginAction(() =>
+            OwnerMovement.AddOnMoveBeginAction(() =>
             {
-                string lastState = _stateMachine.LastState;
-                string currentState = _stateMachine.StateMachine.CurrentState;
+                string lastState = StateMachine.LastState;
+                string currentState = StateMachine.StateMachine.CurrentState;
 
                 if (currentState != "Attacking" && (lastState == "Idle" || lastState == "Moving"))
                 {
@@ -59,16 +66,16 @@ namespace Lodis.Input
             );
         }
 
-        private void RecordNewAction(int id)
+        protected virtual void RecordNewAction(int id)
         {
             Vector2 direction = Vector2.zero;
 
             if (id == -1)
-                direction = _ownerMovement.MoveDirection;
+                direction = OwnerMovement.MoveDirection;
             else
-                direction = _ownerMoveset.LastAttackDirection;
+                direction = OwnerMoveset.LastAttackDirection;
 
-            ActionRecording recording = new ActionRecording(_currentTimeDelay, _currentTime, id, direction);
+            ActionRecording recording = new ActionRecording(_currentTimeDelay, CurrentTime, id, direction);
             _currentTimeDelay = 0;
             _recordedActions.Add(recording);
         }
@@ -77,7 +84,7 @@ namespace Lodis.Input
         {
             if (_recordedActions.Count == 0) return;
 
-            string recordingPath = Application.persistentDataPath +"/Recordings/"+ _recordingName + ".txt";
+            string recordingPath = Application.persistentDataPath +"/Recordings/"+ RecordingName + ".txt";
             if (!File.Exists(recordingPath))
             {
                 FileStream stream = File.Create(recordingPath);
@@ -85,11 +92,11 @@ namespace Lodis.Input
             }
 
             StreamWriter writer = new StreamWriter(recordingPath);
-            string json = JsonConvert.SerializeObject(Deck.Seed, _settings);
+            string json = JsonConvert.SerializeObject(Deck.Seed, Settings);
 
             writer.WriteLine(json);
 
-            json = JsonConvert.SerializeObject(_recordedActions, _settings);
+            json = JsonConvert.SerializeObject(_recordedActions, Settings);
 
             writer.Write(json);
             writer.Close();
@@ -111,9 +118,9 @@ namespace Lodis.Input
 
             StreamReader reader = new StreamReader(recordingPath);
 
-            Deck.Seed = JsonConvert.DeserializeObject<int>(reader.ReadLine(), _settings);
+            Deck.Seed = JsonConvert.DeserializeObject<int>(reader.ReadLine(), Settings);
 
-            recordedActions = JsonConvert.DeserializeObject<List<ActionRecording>>(reader.ReadLine(), _settings);
+            recordedActions = JsonConvert.DeserializeObject<List<ActionRecording>>(reader.ReadLine(), Settings);
 
             reader.Close();
 
@@ -134,7 +141,7 @@ namespace Lodis.Input
 
             StreamReader reader = new StreamReader(recordingPath);
 
-            recordedActions = JsonConvert.DeserializeObject<List<ActionRecording>>(reader.ReadToEnd(), _settings);
+            recordedActions = JsonConvert.DeserializeObject<List<ActionRecording>>(reader.ReadToEnd(), Settings);
 
             reader.Close();
 
@@ -152,7 +159,7 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
-            _currentTime += Time.deltaTime;
+            CurrentTime += Time.deltaTime;
             _currentTimeDelay += Time.deltaTime;
         }
     }
