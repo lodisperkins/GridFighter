@@ -151,8 +151,6 @@ namespace Assets.Scripts.Lodis.AI
 
             //Check energy
             float energy = actionNode.Energy;
-            if (energy == 0)
-                energy = 1;
 
             float energyAccuracy = GetPercentage(energy, Energy);
             float opponentEnergyAccuracy = GetPercentage(OpponentEnergy, actionNode.OpponentEnergy);
@@ -204,9 +202,9 @@ namespace Assets.Scripts.Lodis.AI
                 (directionAccuracy *_directionWeight + distanceAccuracy * _distanceWeight +
                 velocityAccuracy * _opponentVelocityWeight + positionAccuracy * _avgPositionWeight
                 + attackVelocityAccuracy * _avgVelocityWeight + moveDirectionAccuracy * _moveDirectionWeight
-                + energyAccuracy * _energyWeight + opponentEnergyAccuracy * _opponentEnergyWeight
-                + healthAccuracy * _healthWeight + barrierHealthAccuracy * _barrierHealthWeight + opponentHealthAccuracy * _opponentHealthWeight
-                + opponentBarrierHealthAccuracy * _opponentBarrierHealthWeight + attackDirectionAccuracy * _attackDirectionWeight) / 13;
+                //+ energyAccuracy * _energyWeight + opponentEnergyAccuracy * _opponentEnergyWeight
+                //+ healthAccuracy * _healthWeight + barrierHealthAccuracy * _barrierHealthWeight + opponentHealthAccuracy * _opponentHealthWeight
+                /*+ opponentBarrierHealthAccuracy * _opponentBarrierHealthWeight */+ attackDirectionAccuracy * _attackDirectionWeight) / 7;
 
             return totalAccuracy;
         }

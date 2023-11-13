@@ -173,17 +173,17 @@ namespace Lodis.AI
 
         public void LoadDecisions()
         {
-            if (!EnableBehaviourTree)
-                return;
-
+            
             if (_useRecording)
             {
-                _actionTree = new DecisionTree(0.97f);
+                _actionTree = new DecisionTree(0.7f);
                 _actionTree.SaveLoadPath = Application.persistentDataPath + "/RecordedDecisionData";
                 _actionTree.Load("_" + _recordingName);
                 _executor.enabled = false;
                 EnableBehaviourTree = false;
             }
+if (!EnableBehaviourTree)
+                return;
 
             _attackDecisions = new AttackDecisionTree();
             _attackDecisions.MaxDecisionsCount = _maxDecisionCount;
@@ -228,14 +228,13 @@ namespace Lodis.AI
             _knockbackBehaviour.AddOnTakeDamageAction(() => CreateNewPredictNode(false));
             _opponentKnocback.AddOnTakeDamageAction(() => CreateNewPredictNode(true));
 
-            MatchManagerBehaviour.Instance.AddOnMatchOverAction(AddMatchReward);
+            //MatchManagerBehaviour.Instance.AddOnMatchOverAction(AddMatchReward);
             //MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
             //{
             //    if (MatchManagerBehaviour.Instance.LastMatchResult != MatchResult.DRAW)
             //        MatchManagerBehaviour.Instance.Restart();
             //});
-
-            _playbackBehaviour.enabled = true;
+            _playbackBehaviour.enabled = _useRecording;
             _playbackBehaviour.OwnerMoveset = _moveset;
             _playbackBehaviour.OwnerMovement = _movementBehaviour;
             _opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
@@ -244,7 +243,10 @@ namespace Lodis.AI
 
         private void OnEnable()
         {
-            if (_executor && EnableBehaviourTree && !_useRecording)
+            if (_useRecording)
+                return;
+
+            if (_executor && EnableBehaviourTree)
                 _executor.enabled = true;
 
             if (_aiMovementBehaviour)
@@ -476,10 +478,10 @@ namespace Lodis.AI
 
             action.CurrentState = _stateMachine.CurrentState;
 
-            action.AlignmentX = (int)_aiMovementBehaviour.MovementBehaviour.GetAlignmentX();
+            action.AlignmentX = (int)_movementBehaviour.GetAlignmentX();
             action.AveragePosition = GetAveragePosition();
             action.AverageVelocity = GetAverageVelocity();
-            action.MoveDirection = _aiMovementBehaviour.MovementBehaviour.MoveDirection;
+            action.MoveDirection = _movementBehaviour.MoveDirection;
             action.IsGrounded = _gridPhysics.IsGrounded;
 
             if (_moveset.AbilityInUse)
@@ -532,7 +534,10 @@ namespace Lodis.AI
                     _executor.enabled = false;
                 }
                 //else
+                //{
                 //    _executor.enabled = true;
+                //    _playbackBehaviour.PausePlayback();
+                //}
             }
 
             _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
@@ -547,7 +552,7 @@ namespace Lodis.AI
             //if (_saveStateTimer == null || _saveStateTimer.GetEnabled() == false)
             //    _saveStateTimer = RoutineBehaviour.Instance.StartNewTimedAction(UpdateGameState, TimedActionCountType.SCALEDTIME, _saveStateDelay);
 
-            if (_executor.enabled) return;
+            if (_executor.enabled || _useRecording) return;
 
             //Only attack if the dummy is grounded and delay timer is up
             if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking") && Time.time - _timeOfLastAttack >= _attackDelay && !_knockbackBehaviour.LandingScript.RecoveringFromFall && !_chargingAttack)

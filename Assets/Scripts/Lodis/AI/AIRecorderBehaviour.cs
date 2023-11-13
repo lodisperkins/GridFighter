@@ -165,11 +165,5 @@ namespace Lodis.AI
 
             _actionTree.AddDecision(action);
         }
-
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
     }
 }

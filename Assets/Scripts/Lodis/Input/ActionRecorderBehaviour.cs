@@ -75,7 +75,10 @@ namespace Lodis.Input
             else
                 direction = OwnerMoveset.LastAttackDirection;
 
-            ActionRecording recording = new ActionRecording(_currentTimeDelay, CurrentTime, id, direction);
+            float delay = _currentTimeDelay;
+            float stamp = _currentTime;
+
+            ActionRecording recording = new ActionRecording(delay, stamp, id, direction);
             _currentTimeDelay = 0;
             _recordedActions.Add(recording);
         }

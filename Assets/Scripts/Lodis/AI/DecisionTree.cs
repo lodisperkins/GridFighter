@@ -95,7 +95,7 @@ namespace Lodis.AI
             if (decision?.Wins >= LoseThreshold)
                 return decision;
 
-           //Debug.Log("HighestScore: " + highestScore);
+           Debug.Log("HighestScore: " + highestScore);
             return null;
         }
 
