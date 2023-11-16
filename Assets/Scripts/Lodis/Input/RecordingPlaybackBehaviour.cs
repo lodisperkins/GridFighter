@@ -20,9 +20,13 @@ namespace Lodis.Input
         private int _currentActionIndex;
         private int _startIndex;
         private bool _isPaused;
+        [SerializeField]
+        private bool _autoPlayback = true;
+        private float _currentDelay;
 
         public MovesetBehaviour OwnerMoveset { get => _ownerMoveset; set => _ownerMoveset = value; }
         public GridMovementBehaviour OwnerMovement { get => _ownerMovement; set => _ownerMovement = value; }
+        public float CurrentDelay { get => _currentDelay; private set => _currentDelay = value; }
 
         // Start is called before the first frame update
         void Awake()
@@ -34,10 +38,21 @@ namespace Lodis.Input
 
         public void SetPlaybackTime(float timeStamp)
         {
-            RoutineBehaviour.Instance.StopAction(_playbackRoutine);
-            ActionRecording recording = _actions.Find(action => action.TimeStamp == timeStamp);
+            //RoutineBehaviour.Instance.StopAction(_playbackRoutine);
+            ActionRecording recording = null;
+
+            for (int i = 0; i < _actions.Count; i++)
+            {
+                if (_actions[i].TimeStamp == timeStamp)
+                {
+                    recording = _actions[i];
+                    break;
+                }
+            }
 
             _currentActionIndex = _actions.IndexOf(recording);
+            if (_currentActionIndex == -1)
+                _currentActionIndex = 0;
             StartPlayback(_currentActionIndex);
         }
 
@@ -54,6 +69,7 @@ namespace Lodis.Input
 
         private void StartPlayback(int index)
         {
+            _currentDelay = _actions[_currentActionIndex].TimeDelay;
             _playbackRoutine = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
                 PerformAction(_actions[index]);
@@ -76,7 +92,7 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
-            if (_isPaused)
+            if (_isPaused || !_autoPlayback)
                 return;
 
             if (_playbackRoutine == null || !_playbackRoutine.GetEnabled())

@@ -8,6 +8,7 @@ using Lodis.ScriptableObjects;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Lodis.AI
@@ -21,6 +22,7 @@ namespace Lodis.AI
         private Vector2 _attackDirection;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
+        private List<ActionNode>[] _recordings; 
 
         private GameObject _opponent;
         private GridMovementBehaviour _opponentMove;
@@ -42,20 +44,17 @@ namespace Lodis.AI
         private RingBarrierBehaviour _opponentBarrier;
         private MovesetBehaviour _opponentMoveset;
 
+       
         // Start is called before the first frame update
-        void Start()
+        protected override void Start()
         {
-            Settings = new JsonSerializerSettings();
-            Settings.TypeNameHandling = TypeNameHandling.All;
-
+            base.Start();
             _actionTree = new DecisionTree(0.98f);
             _actionTree.MaxDecisionsCount = _maxDecisionCount;
             _actionTree.SaveLoadPath = Application.persistentDataPath + "/RecordedDecisionData";
             _actionTree.Load("_" + RecordingName);
+            _recordings = Load(RecordingName);
 
-            OwnerMovement = GetComponent<GridMovementBehaviour>();
-            OwnerMoveset = GetComponent<MovesetBehaviour>();
-            StateMachine = GetComponent<Gameplay.CharacterStateMachineBehaviour>();
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
             _gridPhysics = GetComponent<GridPhysicsBehaviour>();
 
@@ -65,22 +64,26 @@ namespace Lodis.AI
             _opponentGridPhysics = _opponent.GetComponent<GridPhysicsBehaviour>();
             _opponentMoveset = _opponent.GetComponent<MovesetBehaviour>();
 
-            OwnerMoveset.OnUseAbility += () => RecordNewAction(OwnerMoveset.LastAbilityInUse.abilityData.ID);
-
-            OwnerMovement.AddOnMoveBeginAction(() =>
-            {
-                string lastState = StateMachine.LastState;
-                string currentState = StateMachine.StateMachine.CurrentState;
-
-                if (currentState != "Attacking" && (lastState == "Idle" || lastState == "Moving"))
-                {
-                    RecordNewAction(-1);
-                };
-            }
-            );
+            MatchManagerBehaviour.Instance.AddOnMatchStartAction(AddNewRecording);
 
             _opponentBarrier = OwnerMovement.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
+        }
+
+        private void AddNewRecording()
+        {
+            if (_recordings == null)
+                _recordings = new List<ActionNode>[0];
+
+            List<ActionNode>[] temp = new List<ActionNode>[_recordings.Length + 1];
+
+            for (int i = 0; i < _recordings.Length; i++)
+            {
+                temp[i] = _recordings[i];
+            }
+
+            temp[_recordings.Length] = new List<ActionNode>();
+            _recordings = temp;
         }
 
         private Vector3 GetAverageVelocity()
@@ -128,13 +131,39 @@ namespace Lodis.AI
             _actionTree?.Save("_" + RecordingName);
         }
 
-        protected override void RecordNewAction(int id)
+        protected override void Save()
         {
-            base.RecordNewAction(id);
-            CreateNewAction(id);
+            if (_recordings.Length == 0) return;
+
+            string recordingPath = Application.persistentDataPath + "/AIRecordings/" + RecordingName + ".txt";
+            if (!File.Exists(recordingPath))
+            {
+                FileStream stream = File.Create(recordingPath);
+                stream.Close();
+            }
+
+            StreamWriter writer = new StreamWriter(recordingPath);
+            string json = JsonConvert.SerializeObject(_recordings, Settings);
+
+            writer.Write(json);
+            writer.Close();
         }
 
-        private void CreateNewAction(int id)
+        public static List<ActionNode>[] Load(string recordingName)
+        {
+            if (!File.Exists(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt"))
+                return null;
+
+            StreamReader reader = new StreamReader(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt");
+            List<ActionNode>[] recordings = JsonConvert.DeserializeObject<List<ActionNode>[]>(reader.ReadToEnd(), Settings);
+
+            Debug.Log("Loaded " + recordings.Length + "recordings");
+            reader.Close();
+
+            return recordings;
+        }
+
+        protected override void RecordNewAction(int id)
         {
             ActionNode action = new ActionNode(null, null);
 
@@ -162,8 +191,10 @@ namespace Lodis.AI
             action.OpponentBarrierHealth = _opponentBarrier.Health;
 
             action.TimeStamp = CurrentTime;
-
+            action.TimeDelay = CurrentTimeDelay;
+            CurrentTimeDelay = 0;
             _actionTree.AddDecision(action);
+            _recordings[_recordings.Length - 1].Add(action);
         }
     }
 }

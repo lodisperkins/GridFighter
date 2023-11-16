@@ -54,7 +54,11 @@ namespace Lodis.AI
                 /// Return the decision if it's similar enough to the current situation.
                 /// Subtracts it by a random value to add mix ups
                 if ((currentScore = decision.Compare(similarNode)) >= _compareThreshold - Random.Range(0, TreeNode.RandomDecisionConstant * 0.1f))
+                {
+
+                    Debug.Log("HighestScore: " + highestScore);
                     return decision;
+                }
 
                 //Calculate the weight for both children
                 float leftWeight = 0;
@@ -94,8 +98,6 @@ namespace Lodis.AI
 
             if (decision?.Wins >= LoseThreshold)
                 return decision;
-
-           Debug.Log("HighestScore: " + highestScore);
             return null;
         }
 

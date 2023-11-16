@@ -136,7 +136,6 @@ GameObject:
   - component: {fileID: 6183915638186026948}
   - component: {fileID: 7025333189879560728}
   - component: {fileID: 1303132085147626082}
-  - component: {fileID: -4611639356156839476}
   m_Layer: 9
   m_Name: AIController
   m_TagString: Player
@@ -283,16 +282,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e867bf7b20b1ca4dbd0e6c6ca45a4f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-4611639356156839476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5680485170780137523}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db6b635b68191fa4684179a72aea7a3b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _recordingName: Axton

@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace Assets.Scripts.Lodis.AI
 {
-    class ActionNode : TreeNode
+    public class ActionNode : TreeNode
     {
-        private static float _directionWeight = 1;
+        private static float _directionWeight = 1f;
         private static float _attackDirectionWeight = 1;
         private static float _moveDirectionWeight = 1;
         private static float _opponentVelocityWeight = 1;
         private static float _energyWeight = 1;
         private static float _opponentEnergyWeight = 1;
-        private static float _distanceWeight = 1;
+        private static float _distanceWeight = 1f;
         private static float _avgPositionWeight = 1;
         private static float _avgVelocityWeight = 1;
         private static float _healthWeight = 1;
@@ -67,6 +67,7 @@ namespace Assets.Scripts.Lodis.AI
 
         public bool IsAttacking;
         public float TimeStamp;
+        public float TimeDelay;
 
 
         public ActionNode(TreeNode left, TreeNode right) : base(left, right) { }
@@ -99,8 +100,8 @@ namespace Assets.Scripts.Lodis.AI
             if ((CurrentState == "Flinching" && actionNode.CurrentState != "Flinching") || (CurrentState == "Tumbling" && actionNode.CurrentState != "Tumbling"))
                 return 0;
 
-            if (CurrentAbilityID != -1 && CurrentAbilityID != actionNode.CurrentAbilityID)
-                return 0;
+            //if (CurrentAbilityID != actionNode.CurrentAbilityID)
+            //    return 0;
 
             //Check direction to enemy accuracy
             float directionAccuracy = 1;
@@ -201,10 +202,10 @@ namespace Assets.Scripts.Lodis.AI
             float totalAccuracy = 
                 (directionAccuracy *_directionWeight + distanceAccuracy * _distanceWeight +
                 velocityAccuracy * _opponentVelocityWeight + positionAccuracy * _avgPositionWeight
-                + attackVelocityAccuracy * _avgVelocityWeight + moveDirectionAccuracy * _moveDirectionWeight
+                + attackVelocityAccuracy * _avgVelocityWeight /*+ moveDirectionAccuracy * _moveDirectionWeight*/
                 //+ energyAccuracy * _energyWeight + opponentEnergyAccuracy * _opponentEnergyWeight
                 //+ healthAccuracy * _healthWeight + barrierHealthAccuracy * _barrierHealthWeight + opponentHealthAccuracy * _opponentHealthWeight
-                /*+ opponentBarrierHealthAccuracy * _opponentBarrierHealthWeight */+ attackDirectionAccuracy * _attackDirectionWeight) / 7;
+                /*+ opponentBarrierHealthAccuracy * _opponentBarrierHealthWeight *//*+ attackDirectionAccuracy * _attackDirectionWeight*/) / 5;
 
             return totalAccuracy;
         }

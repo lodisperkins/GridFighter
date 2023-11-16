@@ -111,6 +111,11 @@ namespace Lodis.AI
         private MovesetBehaviour _opponentMoveset;
         private GridMovementBehaviour _movementBehaviour;
         private RecordingPlaybackBehaviour _playbackBehaviour;
+        private float _decisionDelay = 0.5f;
+        private List<ActionNode>[] _recordings;
+        private List<ActionNode> _currentRecording;
+        private int _currentActionIndex;
+        private ActionNode _currentSituation;
 
         [SerializeField]
         private string _recordingName;
@@ -138,6 +143,10 @@ namespace Lodis.AI
         public CharacterDefenseBehaviour OpponentDefense { get => _opponentDefense; private set => _opponentDefense = value; }
 
         private GridPhysicsBehaviour _opponentGridPhysics;
+        private bool _canMakeDecision = true;
+        private TimedAction _decisionTimer;
+        private bool _isPaused;
+        private TimedAction _playbackRoutine;
 
         public bool CanAttack { get => _canAttack; private set => _canAttack = value; }
 
@@ -176,13 +185,14 @@ namespace Lodis.AI
             
             if (_useRecording)
             {
-                _actionTree = new DecisionTree(0.7f);
+                _actionTree = new DecisionTree(0.5f);
                 _actionTree.SaveLoadPath = Application.persistentDataPath + "/RecordedDecisionData";
                 _actionTree.Load("_" + _recordingName);
                 _executor.enabled = false;
                 EnableBehaviourTree = false;
+                _recordings = AIRecorderBehaviour.Load(_recordingName);
             }
-if (!EnableBehaviourTree)
+            if (!EnableBehaviourTree)
                 return;
 
             _attackDecisions = new AttackDecisionTree();
@@ -234,11 +244,10 @@ if (!EnableBehaviourTree)
             //    if (MatchManagerBehaviour.Instance.LastMatchResult != MatchResult.DRAW)
             //        MatchManagerBehaviour.Instance.Restart();
             //});
-            _playbackBehaviour.enabled = _useRecording;
-            _playbackBehaviour.OwnerMoveset = _moveset;
-            _playbackBehaviour.OwnerMovement = _movementBehaviour;
             _opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
+
+            _currentRecording = _recordings[0];
         }
 
         private void OnEnable()
@@ -472,47 +481,94 @@ if (!EnableBehaviourTree)
             return averagePosition /= _attacksInRange.Count;
         }
 
-        private ActionNode GetNewAction()
+        private void PerformAction(ActionNode action)
         {
-            ActionNode action = new ActionNode(null, null);
+            if (action.CurrentAbilityID == -1)
+            {
+                Vector2 direction = action.MoveDirection;
+                direction.x *= _movementBehaviour.GetAlignmentX();
+                _movementBehaviour.Move(direction);
+                return;
+            }
 
-            action.CurrentState = _stateMachine.CurrentState;
+            _moveset.UseAbility(action.CurrentAbilityID, 1.6f, action.AttackDirection);
+        }
 
-            action.AlignmentX = (int)_movementBehaviour.GetAlignmentX();
-            action.AveragePosition = GetAveragePosition();
-            action.AverageVelocity = GetAverageVelocity();
-            action.MoveDirection = _movementBehaviour.MoveDirection;
-            action.IsGrounded = _gridPhysics.IsGrounded;
+        private void StartPlayback(int index)
+        {
+            _playbackRoutine = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            {
+                PerformAction(_currentRecording[index]);
+
+            }, TimedActionCountType.SCALEDTIME, _currentRecording[_currentActionIndex].TimeDelay);
+
+        }
+
+        public void PausePlayback()
+        {
+            RoutineBehaviour.Instance.StopAction(_playbackRoutine);
+            _isPaused = true;
+        }
+
+        public void UnpausePlayback()
+        {
+            _isPaused = false;
+        }
+
+        private void UpdateSituationNode()
+        {
+            _currentSituation = new ActionNode(null, null);
+
+            _currentSituation.CurrentState = _stateMachine.CurrentState;
+
+            _currentSituation.AlignmentX = (int)_movementBehaviour.GetAlignmentX();
+            _currentSituation.AveragePosition = GetAveragePosition();
+            _currentSituation.AverageVelocity = GetAverageVelocity();
+            _currentSituation.MoveDirection = _movementBehaviour.MoveDirection;
+            _currentSituation.IsGrounded = _gridPhysics.IsGrounded;
 
             if (_moveset.AbilityInUse)
             {
-                action.Energy = _moveset.Energy;
-                action.CurrentAbilityID = _moveset.LastAbilityInUse.abilityData.ID;
+                _currentSituation.Energy = _moveset.Energy;
+                _currentSituation.CurrentAbilityID = _moveset.LastAbilityInUse.abilityData.ID;
             }
             else
             {
-                action.CurrentAbilityID = -1;
+                _currentSituation.CurrentAbilityID = -1;
             }
 
-            action.IsAttacking = _moveset.AbilityInUse;
+            _currentSituation.IsAttacking = _moveset.AbilityInUse;
 
-            action.Health = _knockbackBehaviour.Health;
-            action.BarrierHealth = _ownerBarrier.Health;
+            _currentSituation.Health = _knockbackBehaviour.Health;
+            _currentSituation.BarrierHealth = _ownerBarrier.Health;
 
-            action.OwnerToTarget = _opponent.transform.position - _character.transform.position;
+            _currentSituation.OwnerToTarget = _opponent.transform.position - _character.transform.position;
 
-            action.OpponentVelocity = _opponentGridPhysics.LastVelocity;
-            action.OpponentEnergy = _opponentMoveset.Energy;
-            action.OpponentMoveDirection = _opponentMove.MoveDirection;
-            action.OpponentHealth = _opponentKnocback.Health;
-            action.OpponentBarrierHealth = _opponentBarrier.Health;
+            _currentSituation.OpponentVelocity = _opponentGridPhysics.LastVelocity;
+            _currentSituation.OpponentEnergy = _opponentMoveset.Energy;
+            _currentSituation.OpponentMoveDirection = _opponentMove.MoveDirection;
+            _currentSituation.OpponentHealth = _opponentKnocback.Health;
+            _currentSituation.OpponentBarrierHealth = _opponentBarrier.Health;
 
-            return (ActionNode)_actionTree.GetDecision(action);
         }
 
-        private void PerformAction(ActionNode action)
+        private void StartNewAction()
         {
-            _playbackBehaviour.SetPlaybackTime(action.TimeStamp);
+            foreach (List<ActionNode> recording in _recordings)
+            {
+                for (int i = 0; i < recording.Count; i++)
+                {
+                    if (recording[i].Compare(_currentSituation) >= 0.7f)
+                    {
+                        _currentRecording = recording;
+                        _currentActionIndex = i;
+                        RoutineBehaviour.Instance.StopAction(_playbackRoutine);
+                        StartPlayback(_currentActionIndex);
+                        return;
+                    }
+                }
+            }
+
         }
 
         public void Update()
@@ -527,17 +583,37 @@ if (!EnableBehaviourTree)
 
             if (_useRecording)
             {
-                ActionNode node = GetNewAction();
-                if (node != null)
+
+                if (_isPaused)
+                    return;
+
+               
+
+
+                if (_playbackRoutine == null || !_playbackRoutine.GetEnabled())
                 {
-                    PerformAction(node);
-                    _executor.enabled = false;
+                    UpdateSituationNode();
+
+                    float score = _currentRecording[_currentActionIndex].Compare(_currentSituation);
+
+                    Debug.Log(score);
+
+                    if (score < 0.6f)
+                        StartNewAction();
+                    else
+                        StartPlayback(_currentActionIndex);
+
+                    _currentActionIndex++;
+
+                    if (_currentActionIndex >= _currentRecording.Count)
+                        _currentActionIndex = 0;
                 }
                 //else
                 //{
                 //    _executor.enabled = true;
                 //    _playbackBehaviour.PausePlayback();
                 //}
+
             }
 
             _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;

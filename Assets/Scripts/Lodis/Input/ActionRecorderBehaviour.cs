@@ -35,6 +35,7 @@ namespace Lodis.Input
         private static JsonSerializerSettings _settings;
         [SerializeField]
         private string _recordingName;
+        private bool _canRecordTime;
 
         public string RecordingName { get => _recordingName; }
         public GridMovementBehaviour OwnerMovement { get => _ownerMovement; set => _ownerMovement = value; }
@@ -42,9 +43,10 @@ namespace Lodis.Input
         public CharacterStateMachineBehaviour StateMachine { get => _stateMachine; set => _stateMachine = value; }
         public static JsonSerializerSettings Settings { get => _settings; set => _settings = value; }
         public float CurrentTime { get => _currentTime; private set => _currentTime = value; }
+        public float CurrentTimeDelay { get => _currentTimeDelay; protected set => _currentTimeDelay = value; }
 
         // Start is called before the first frame update
-        void Start()
+        protected virtual void Start()
         {
             Settings = new JsonSerializerSettings();
             Settings.TypeNameHandling = TypeNameHandling.All;
@@ -64,6 +66,9 @@ namespace Lodis.Input
                 };
             }
             );
+
+            MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => _canRecordTime = true);
+            MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => _canRecordTime = false);
         }
 
         protected virtual void RecordNewAction(int id)
@@ -75,15 +80,15 @@ namespace Lodis.Input
             else
                 direction = OwnerMoveset.LastAttackDirection;
 
-            float delay = _currentTimeDelay;
+            float delay = CurrentTimeDelay;
             float stamp = _currentTime;
 
             ActionRecording recording = new ActionRecording(delay, stamp, id, direction);
-            _currentTimeDelay = 0;
+            CurrentTimeDelay = 0;
             _recordedActions.Add(recording);
         }
 
-        private void Save()
+        protected virtual void Save()
         {
             if (_recordedActions.Count == 0) return;
 
@@ -105,7 +110,7 @@ namespace Lodis.Input
             writer.Close();
         }
 
-        private void OnApplicationQuit()
+        protected virtual void OnApplicationQuit()
         {
             Save();
         }
@@ -162,8 +167,11 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
+            if (!_canRecordTime)
+                return;
+
             CurrentTime += Time.deltaTime;
-            _currentTimeDelay += Time.deltaTime;
+            CurrentTimeDelay += Time.deltaTime;
         }
     }
 }
