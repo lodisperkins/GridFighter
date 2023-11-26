@@ -35,15 +35,16 @@ namespace Lodis.Input
         private static JsonSerializerSettings _settings;
         [SerializeField]
         private string _recordingName;
-        private bool _canRecordTime;
+        private bool _canRecord;
 
         public string RecordingName { get => _recordingName; }
         public GridMovementBehaviour OwnerMovement { get => _ownerMovement; set => _ownerMovement = value; }
         public MovesetBehaviour OwnerMoveset { get => _ownerMoveset; set => _ownerMoveset = value; }
         public CharacterStateMachineBehaviour StateMachine { get => _stateMachine; set => _stateMachine = value; }
         public static JsonSerializerSettings Settings { get => _settings; set => _settings = value; }
-        public float CurrentTime { get => _currentTime; private set => _currentTime = value; }
+        public float CurrentTime { get => _currentTime; protected set => _currentTime = value; }
         public float CurrentTimeDelay { get => _currentTimeDelay; protected set => _currentTimeDelay = value; }
+        public bool CanRecord { get => _canRecord; private set => _canRecord = value; }
 
         // Start is called before the first frame update
         protected virtual void Start()
@@ -54,6 +55,8 @@ namespace Lodis.Input
             OwnerMoveset = GetComponent<MovesetBehaviour>();
             StateMachine = GetComponent<CharacterStateMachineBehaviour>();
             OwnerMoveset.OnUseAbility += () => RecordNewAction(OwnerMoveset.LastAbilityInUse.abilityData.ID);
+
+            OwnerMoveset.AddOnManualShuffleAction(() => RecordNewAction(-2));
 
             OwnerMovement.AddOnMoveBeginAction(() =>
             {
@@ -67,8 +70,8 @@ namespace Lodis.Input
             }
             );
 
-            MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => _canRecordTime = true);
-            MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => _canRecordTime = false);
+            MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => CanRecord = true);
+            MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => CanRecord = false);
         }
 
         protected virtual void RecordNewAction(int id)
@@ -165,9 +168,9 @@ namespace Lodis.Input
         }
 
         // Update is called once per frame
-        void Update()
+        protected virtual void Update()
         {
-            if (!_canRecordTime)
+            if (!CanRecord)
                 return;
 
             CurrentTime += Time.deltaTime;

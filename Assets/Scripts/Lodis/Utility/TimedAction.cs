@@ -14,6 +14,7 @@ namespace Lodis.Utility
         public TimedAction() { }
 
         public bool IsPaused { get => _isPaused; }
+        public float TimeLeft { get => _timeLeft; private set => _timeLeft = value; }
 
         public void Pause()
         {
@@ -41,7 +42,7 @@ namespace Lodis.Utility
                     break;
             }
 
-            Duration = _timeLeft;
+            Duration = TimeLeft;
         }
             
         public override bool TryInvokeEvent()
@@ -75,7 +76,7 @@ namespace Lodis.Utility
                 return true;
             }
 
-            _timeLeft = Duration - (time - TimeStarted);
+            TimeLeft = Duration - (time - TimeStarted);
             return false;
         }
             

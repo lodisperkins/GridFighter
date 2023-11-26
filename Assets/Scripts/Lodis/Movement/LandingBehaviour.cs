@@ -21,6 +21,7 @@ namespace Lodis.Movement
         [SerializeField] private IntVariable _groundedHitMax;
         private UnityAction _onLandingStart;
         private UnityAction _onLand;
+        private UnityAction _onRecover;
         private int _groundedHitCounter;
         private KnockbackBehaviour _knockback;
         private CharacterAnimationBehaviour _characterAnimator;
@@ -75,6 +76,11 @@ namespace Lodis.Movement
             _onLand += action;
         }
 
+        public void AddOnRecoverAction(UnityAction action)
+        {
+            _onRecover += action;
+        }
+
         private void OnTriggerStay(Collider other)
         {
             if (_knockback.CurrentAirState != AirState.NONE && other.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen && _knockback.Physics.ObjectAtRest)
@@ -120,6 +126,7 @@ namespace Lodis.Movement
                 CanCheckLanding = false;
                 Landing = false;
                 _knockback.CurrentAirState = AirState.NONE;
+                _onRecover?.Invoke();
             },
             TimedActionCountType.SCALEDTIME, KnockDownRecoverTime);
         }

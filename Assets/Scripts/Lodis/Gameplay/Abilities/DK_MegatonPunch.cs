@@ -228,6 +228,7 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.AlignmentFocus = GridAlignment.ANY;
             CameraBehaviour.Instance.ClampX = true;
             MatchManagerBehaviour.Instance.SuperInUse = false;
+            OwnerKnockBackScript.IsIntangible = false;
         }
 
         protected override void OnMatchRestart()

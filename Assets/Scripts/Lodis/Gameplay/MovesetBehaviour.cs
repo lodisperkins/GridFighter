@@ -142,6 +142,7 @@ namespace Lodis.Gameplay
         private AudioClip _shuffleEnd;
 
         private UnityAction OnUpdateHand;
+        private UnityAction OnManualShuffle;
         private bool _loadingShuffle;
 
         private CharacterStateMachineBehaviour _stateMachineScript;
@@ -348,6 +349,15 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
+        /// Checks if the normal deck has an ability that matches the name
+        /// </summary>
+        /// <param name="abilityName">The name of the ability to search for. Do not use the file name.</param>
+        public bool NormalDeckContains(int ID)
+        {
+            return _normalDeck.Contains(ID);
+        }
+
+        /// <summary>
         /// Checks if the special deck has an ability that matches the name
         /// </summary>
         /// <param name="abilityName">The name of the ability to search for. Do not use the file name.</param>
@@ -390,6 +400,11 @@ namespace Lodis.Gameplay
         public void AddOnUpdateHandAction(UnityAction action)
         {
             OnUpdateHand += action;
+        }
+
+        public void AddOnManualShuffleAction(UnityAction action)
+        {
+            OnManualShuffle += action;
         }
 
         /// <summary>
@@ -731,6 +746,7 @@ namespace Lodis.Gameplay
 
             _loadingShuffle = true;
             OnUpdateHand?.Invoke();
+            OnManualShuffle?.Invoke();
 
             _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => 
             {

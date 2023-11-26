@@ -54,6 +54,9 @@ namespace Lodis.UI
 
         public void GoToNextPage()
         {
+            if (_pages == null)
+                return;
+
             if (_currentPage < _pages.Length - 1)
             {
                 _pages[_currentPage].PageParent.SetActive(false);
@@ -75,6 +78,9 @@ namespace Lodis.UI
 
         public void GoToPreviousPage()
         {
+            if (_pages == null)
+                return;
+
             if (!_pages[_currentPage].PageParent)
                 return;
 

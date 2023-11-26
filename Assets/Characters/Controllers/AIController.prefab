@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7639739936438293685
 Transform:
   m_ObjectHideFlags: 0
@@ -197,6 +197,16 @@ MonoBehaviour:
   _winReward: 4
   _recordingName: Axton
   _useRecording: 1
+  _actionScoreMax: 6
+  _lastScore: 0
+  _directionWeight: 1.5
+  _opponentVelocityWeight: 1
+  _distanceWeight: 2
+  _avgHitBoxOffsetWeight: 1.5
+  _avgVelocityWeight: 1
+  _matchTimeRemainingWeight: 0
+  _opponentStateWeight: 0.5
+  _opponentHealthWeight: 1.2
 --- !u!114 &7025333189879560728
 MonoBehaviour:
   m_ObjectHideFlags: 0

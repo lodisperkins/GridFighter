@@ -1353,6 +1353,7 @@ MonoBehaviour:
   _recordingName: Axton
   _attackDirection: {x: 0, y: 0}
   _maxDecisionCount: 10000
+  _timeDelayMax: -1
   MovePosition: {x: 0, y: 0}
 --- !u!114 &4668140496638751478
 MonoBehaviour:

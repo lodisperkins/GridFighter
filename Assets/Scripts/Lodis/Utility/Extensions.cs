@@ -10,6 +10,8 @@ namespace Lodis.Utility
 {
     public static class Extensions
     {
+        public delegate bool ArrCondition<T>(T item);
+
         public static int GetCombinedMask(this LayerMask[] masks)
         {
             int total = 0;
@@ -43,6 +45,19 @@ namespace Lodis.Utility
                     continue;
 
                 return true;
+            }
+
+            return false;
+        }
+
+
+        public static bool Contains<T>(this System.Array array, ArrCondition<T> condition)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                T value = (T)array.GetValue(i);
+                if (condition(value))
+                    return true;
             }
 
             return false;

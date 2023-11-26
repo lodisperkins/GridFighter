@@ -63,6 +63,11 @@ namespace Lodis.Input
                 OwnerMovement.Move(action.ActionDirection);
                 return;
             }
+            else if (action.ActionID == -2)
+            {
+                OwnerMoveset.ManualShuffle();
+                return;
+            }
 
             OwnerMoveset.UseAbility(action.ActionID, 1.6f, action.ActionDirection);
         }

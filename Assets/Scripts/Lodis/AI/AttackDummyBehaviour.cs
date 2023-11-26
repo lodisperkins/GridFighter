@@ -115,6 +115,7 @@ namespace Lodis.AI
         private List<ActionNode>[] _recordings;
         private List<ActionNode> _currentRecording;
         private int _currentActionIndex;
+        private int _currentRecordingIndex;
         private ActionNode _currentSituation;
 
         [SerializeField]
@@ -147,6 +148,27 @@ namespace Lodis.AI
         private TimedAction _decisionTimer;
         private bool _isPaused;
         private TimedAction _playbackRoutine;
+        [SerializeField]
+        private float _actionScoreMax;
+        [SerializeField]
+        private float _lastScore;
+        [Header("Weights")]
+        [SerializeField]
+        private float _directionWeight = 0.5f;
+        [SerializeField]
+        private float _opponentVelocityWeight = 0.8f;
+        [SerializeField]
+        private float _distanceWeight = 0.7f;
+        [SerializeField]
+        private float _avgHitBoxOffsetWeight = 1.5f;
+        [SerializeField]
+        private float _avgVelocityWeight = 1.5f;
+        [SerializeField]
+        private float _matchTimeRemainingWeight = 1;
+        [SerializeField]
+        private float _opponentStateWeight = 1;
+        [SerializeField]
+        private float _opponentHealthWeight = 1;
 
         public bool CanAttack { get => _canAttack; private set => _canAttack = value; }
 
@@ -182,7 +204,10 @@ namespace Lodis.AI
 
         public void LoadDecisions()
         {
-            
+            //_useRecording = PlayerID == 1;
+            //EnableBehaviourTree = PlayerID != 1;
+            //_executor.enabled = PlayerID != 1;
+            //_aiMovementBehaviour.enabled = PlayerID != 1;
             if (_useRecording)
             {
                 _actionTree = new DecisionTree(0.5f);
@@ -247,7 +272,15 @@ namespace Lodis.AI
             _opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
 
-            _currentRecording = _recordings[0];
+            if (_useRecording)
+            {
+                _currentRecording = _recordings[0];
+                _knockbackBehaviour.AddOnTakeDamageAction(() =>
+                {
+                    UpdateSituationNode();
+                    StartNewAction();
+                });
+            }
         }
 
         private void OnEnable()
@@ -444,9 +477,15 @@ namespace Lodis.AI
 
         private Vector3 GetAverageVelocity()
         {
+            _attacksInRange = BlackBoardBehaviour.Instance.GetActiveColliders(_opponentMove.Alignment);
             Vector3 averageVelocity = Vector3.zero;
 
             if (_attacksInRange == null) return Vector3.zero;
+
+            _attacksInRange.RemoveAll(physics =>
+            {
+                return (object)physics == null || !physics.gameObject.activeInHierarchy;
+            });
 
             if (_attacksInRange.Count == 0)
                 return Vector3.zero;
@@ -455,12 +494,13 @@ namespace Lodis.AI
                 if (_attacksInRange[i].RB)
                     averageVelocity += _attacksInRange[i].RB.velocity;
 
-            return averageVelocity /= _attacksInRange.Count;
+            return averageVelocity;
         }
 
         private Vector3 GetAveragePosition()
         {
-            Vector3 averagePosition = Vector3.zero;
+            _attacksInRange = BlackBoardBehaviour.Instance.GetActiveColliders(_opponentMove.Alignment);
+            Vector3 averageDirection = Vector3.zero;
 
             if (_attacksInRange == null) return Vector3.zero;
 
@@ -469,38 +509,43 @@ namespace Lodis.AI
 
             _attacksInRange.RemoveAll(physics =>
             {
-                if ((object)physics != null)
-                    return physics == null;
-
-                return true;
+                return (object)physics == null || !physics.gameObject.activeInHierarchy;
             });
 
             for (int i = 0; i < _attacksInRange.Count; i++)
-                averagePosition += _attacksInRange[i].gameObject.transform.position;
+                averageDirection += _attacksInRange[i].gameObject.transform.position - Character.transform.position;
 
-            return averagePosition /= _attacksInRange.Count;
+            return averageDirection;
         }
 
         private void PerformAction(ActionNode action)
         {
-            if (action.CurrentAbilityID == -1)
+            Vector2 direction = action.MoveDirection;
+            if (action.CurrentAbilityID == -1 && !_movementBehaviour.IsMoving && _movementBehaviour.CanMove && (StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Moving"))
             {
-                Vector2 direction = action.MoveDirection;
+               
                 direction.x *= _movementBehaviour.GetAlignmentX();
                 _movementBehaviour.Move(direction);
                 return;
             }
+            else if (action.CurrentAbilityID == -2)
+            {
+                _moveset.ManualShuffle();
+                return;
+            }
 
-            _moveset.UseAbility(action.CurrentAbilityID, 1.6f, action.AttackDirection);
+            direction = action.AttackDirection;
+
+            _moveset.UseAbility(action.CurrentAbilityID, 1.6f, direction);
         }
 
-        private void StartPlayback(int index)
+        private void StartPlayback(int index, float delayOffset = 0)
         {
             _playbackRoutine = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
                 PerformAction(_currentRecording[index]);
 
-            }, TimedActionCountType.SCALEDTIME, _currentRecording[_currentActionIndex].TimeDelay);
+            }, TimedActionCountType.SCALEDTIME, _currentRecording[_currentActionIndex].TimeDelay - delayOffset);
 
         }
 
@@ -522,7 +567,7 @@ namespace Lodis.AI
             _currentSituation.CurrentState = _stateMachine.CurrentState;
 
             _currentSituation.AlignmentX = (int)_movementBehaviour.GetAlignmentX();
-            _currentSituation.AveragePosition = GetAveragePosition();
+            _currentSituation.AverageHitBoxOffset = GetAveragePosition();
             _currentSituation.AverageVelocity = GetAverageVelocity();
             _currentSituation.MoveDirection = _movementBehaviour.MoveDirection;
             _currentSituation.IsGrounded = _gridPhysics.IsGrounded;
@@ -537,7 +582,7 @@ namespace Lodis.AI
                 _currentSituation.CurrentAbilityID = -1;
             }
 
-            _currentSituation.IsAttacking = _moveset.AbilityInUse;
+            _currentSituation.OpponentState = BlackBoardBehaviour.Instance.GetPlayerState(Opponent);
 
             _currentSituation.Health = _knockbackBehaviour.Health;
             _currentSituation.BarrierHealth = _ownerBarrier.Health;
@@ -549,30 +594,70 @@ namespace Lodis.AI
             _currentSituation.OpponentMoveDirection = _opponentMove.MoveDirection;
             _currentSituation.OpponentHealth = _opponentKnocback.Health;
             _currentSituation.OpponentBarrierHealth = _opponentBarrier.Health;
+            _currentSituation.PanelPosition = _movementBehaviour.Position;
 
+        }
+
+        private void SetBehaviourTreeEnabled(bool enabled)
+        {
+            EnableBehaviourTree = enabled;
+            _executor.enabled = enabled;
+
+            _aiMovementBehaviour.enabled = enabled;
+        }
+
+        private bool ValidateAction(int ID)
+        {
+            if (ID == -1 || ID == -2)
+                return true;
+
+            return _moveset.SpecialAbilitySlots.Contains<Ability>(ability => ability.abilityData.ID == ID) || _moveset.NormalDeckContains(ID);
         }
 
         private void StartNewAction()
         {
-            foreach (List<ActionNode> recording in _recordings)
+            bool actionFound = false;
+            float currentLowest = _actionScoreMax;
+
+            for (int i = 0; i < _recordings.Length; i++)
             {
-                for (int i = 0; i < recording.Count; i++)
+                List<ActionNode> recording = _recordings[i];
+
+                for (int j = 0; j < recording.Count; j++)
                 {
-                    if (recording[i].Compare(_currentSituation) >= 0.7f)
+                    float compareVal = recording[j].Compare(_currentSituation);
+
+                    if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + 1) < currentLowest && ValidateAction(recording[j].CurrentAbilityID))
                     {
                         _currentRecording = recording;
-                        _currentActionIndex = i;
-                        RoutineBehaviour.Instance.StopAction(_playbackRoutine);
-                        StartPlayback(_currentActionIndex);
-                        return;
+                        _currentActionIndex = j;
+                        _currentRecordingIndex = i;
+                        currentLowest = compareVal;
+                        actionFound = true;
                     }
                 }
             }
 
+            if (!actionFound)
+                Debug.Log("Couldn't find recording that matched situation.");
+
+            float time = _playbackRoutine == null ? 0 : _playbackRoutine.TimeLeft;
+
+            RoutineBehaviour.Instance.StopAction(_playbackRoutine);
+            StartPlayback(_currentActionIndex, time);
         }
 
         public void Update()
         {
+
+            ActionNode.DirectionWeight = _directionWeight;
+            ActionNode.OpponentVelocityWeight = _opponentVelocityWeight;
+            ActionNode.DistanceWeight = _distanceWeight;
+            ActionNode.AvgHitBoxOffsetWeight = _avgHitBoxOffsetWeight;
+            ActionNode.AvgVelocityWeight = _avgVelocityWeight;
+            ActionNode.MatchTimeRemainingWeight = _matchTimeRemainingWeight;
+            ActionNode.OpponentStateWeight = _opponentStateWeight;
+            ActionNode.OpponentHealthWeight = _opponentHealthWeight;
 
             if (_bufferedAction?.HasAction() == true)
             {
@@ -587,26 +672,38 @@ namespace Lodis.AI
                 if (_isPaused)
                     return;
 
-               
+               UpdateSituationNode();
+
+                    _lastScore = _currentRecording[_currentActionIndex].Compare(_currentSituation);
+
+                    //Debug.Log(score);
+
+                    if (_lastScore >= _actionScoreMax || !ValidateAction(_currentRecording[_currentActionIndex].CurrentAbilityID))
+                    {
+                        StartNewAction();
+                    }
 
 
                 if (_playbackRoutine == null || !_playbackRoutine.GetEnabled())
                 {
-                    UpdateSituationNode();
-
-                    float score = _currentRecording[_currentActionIndex].Compare(_currentSituation);
-
-                    Debug.Log(score);
-
-                    if (score < 0.6f)
-                        StartNewAction();
-                    else
-                        StartPlayback(_currentActionIndex);
+                    
+                    
+                    StartPlayback(_currentActionIndex);
 
                     _currentActionIndex++;
 
                     if (_currentActionIndex >= _currentRecording.Count)
+                    {
                         _currentActionIndex = 0;
+                        //_currentRecordingIndex++;
+
+                        //_currentRecording = _recordings[_currentRecordingIndex];
+                    }
+
+                    //if (_currentRecordingIndex >= _recordings.Length)
+                    //{
+                    //    _currentRecordingIndex = 0;
+                    //}
                 }
                 //else
                 //{
@@ -616,7 +713,8 @@ namespace Lodis.AI
 
             }
 
-            _executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
+
+            //_executor.blackboard.boolParams[1] = GridPhysics.IsGrounded;
 
             //if ( (_checkStateTimer == null || _checkStateTimer.GetEnabled() == false))
             //{

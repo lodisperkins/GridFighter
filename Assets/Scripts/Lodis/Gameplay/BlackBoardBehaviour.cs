@@ -123,6 +123,16 @@ namespace Lodis.Gameplay
             return _rhsActiveColliders;
         }
 
+        public List<HitColliderBehaviour> GetActiveColliders(GridScripts.GridAlignment alignment)
+        {
+            if (alignment == GridScripts.GridAlignment.LEFT)
+                return GetLHSActiveColliders();
+            else if (alignment == GridScripts.GridAlignment.RIGHT)
+                return GetRHSActiveColliders();
+
+            return null;
+        }
+
         /// <summary>
         /// Returns all ability colliders to the object pool
         /// </summary>

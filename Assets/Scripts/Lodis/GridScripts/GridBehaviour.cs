@@ -317,6 +317,11 @@ namespace Lodis.GridScripts
             }
         }
 
+        public bool CheckIfPositionInRange(Vector2 position)
+        {
+            return position.x >= 0 && position.x < Dimensions.x && position.y >= 0 && position.y < Dimensions.y;
+        }
+
         /// <summary>
         /// Spawns barriers at the given barrier positions for both sides.
         /// </summary>

@@ -5,6 +5,7 @@ using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
+using Lodis.UI;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,6 +31,8 @@ namespace Lodis.AI
 
         [SerializeField]
         private int _maxDecisionCount;
+        [SerializeField]
+        private float _timeDelayMax;
         private GridPhysicsBehaviour _gridPhysics;
         private GridPhysicsBehaviour _opponentGridPhysics;
         private IntVariable _playerID;
@@ -43,31 +46,52 @@ namespace Lodis.AI
         private RingBarrierBehaviour _ownerBarrier;
         private RingBarrierBehaviour _opponentBarrier;
         private MovesetBehaviour _opponentMoveset;
+        private ActionNode _currentSituation;
+        private InputBehaviour _input;
+        private CharacterStateMachineBehaviour _opponentStateMachine;
 
-       
         // Start is called before the first frame update
         protected override void Start()
         {
             base.Start();
             _actionTree = new DecisionTree(0.98f);
             _actionTree.MaxDecisionsCount = _maxDecisionCount;
-            _actionTree.SaveLoadPath = Application.persistentDataPath + "/RecordedDecisionData";
-            _actionTree.Load("_" + RecordingName);
             _recordings = Load(RecordingName);
+            UpdateDecisions();
 
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
             _gridPhysics = GetComponent<GridPhysicsBehaviour>();
-
+            _input = GetComponentInParent<InputBehaviour>();
             _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             _opponentMove = _opponent.GetComponent<GridMovementBehaviour>();
             _opponentKnocback = _opponent.GetComponent<KnockbackBehaviour>();
             _opponentGridPhysics = _opponent.GetComponent<GridPhysicsBehaviour>();
             _opponentMoveset = _opponent.GetComponent<MovesetBehaviour>();
+            _opponentStateMachine = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject).GetComponent<CharacterStateMachineBehaviour>();
 
             MatchManagerBehaviour.Instance.AddOnMatchStartAction(AddNewRecording);
+            _knockbackBehaviour.LandingScript.AddOnRecoverAction(AddNewRecording);
 
             _opponentBarrier = OwnerMovement.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
+
+            _opponentMoveset.OnUseAbility += () => CurrentTimeDelay = 0;
+
+            UpdateSituationNode();
+        }
+
+        private void UpdateDecisions()
+        {
+            if (_recordings == null || _recordings.Length == 0)
+                return;
+
+            foreach (List<ActionNode> recording in _recordings)
+            {
+                for (int i = 0; i < recording.Count; i++)
+                {
+                    _actionTree.AddDecision(recording[i]);
+                }
+            }
         }
 
         private void AddNewRecording()
@@ -84,51 +108,40 @@ namespace Lodis.AI
 
             temp[_recordings.Length] = new List<ActionNode>();
             _recordings = temp;
+
+            CurrentTimeDelay = 0;
+            CurrentTime = 0;
         }
 
         private Vector3 GetAverageVelocity()
         {
             Vector3 averageVelocity = Vector3.zero;
 
-            if (_attacksInRange == null) return Vector3.zero;
+            _attacksInRange = BlackBoardBehaviour.Instance.GetActiveColliders(_opponentMove.Alignment);
 
-            if (_attacksInRange.Count == 0)
+            if (_attacksInRange == null || _attacksInRange.Count == 0)
                 return Vector3.zero;
 
             for (int i = 0; i < _attacksInRange.Count; i++)
                 if (_attacksInRange[i].RB)
                     averageVelocity += _attacksInRange[i].RB.velocity;
 
-            return averageVelocity /= _attacksInRange.Count;
+            return averageVelocity;
         }
 
         private Vector3 GetAveragePosition()
         {
             Vector3 averagePosition = Vector3.zero;
 
-            if (_attacksInRange == null) return Vector3.zero;
+            _attacksInRange = BlackBoardBehaviour.Instance.GetActiveColliders(_opponentMove.Alignment);
 
-            if (_attacksInRange.Count == 0)
+            if (_attacksInRange == null || _attacksInRange.Count == 0)
                 return Vector3.zero;
 
-            _attacksInRange.RemoveAll(physics =>
-            {
-                if ((object)physics != null)
-                    return physics == null;
-
-                return true;
-            });
-
             for (int i = 0; i < _attacksInRange.Count; i++)
-                averagePosition += _attacksInRange[i].gameObject.transform.position;
+                averagePosition += _attacksInRange[i].gameObject.transform.position - transform.position;
 
-            return averagePosition /= _attacksInRange.Count;
-        }
-
-        private void OnDestroy()
-        {
-            if (!Application.isEditor) return;
-            _actionTree?.Save("_" + RecordingName);
+            return averagePosition;
         }
 
         protected override void Save()
@@ -163,38 +176,69 @@ namespace Lodis.AI
             return recordings;
         }
 
+        private void UpdateSituationNode()
+        {
+            _currentSituation = new ActionNode(null, null);
+
+            _currentSituation.CurrentState = StateMachine.StateMachine.CurrentState;
+
+            _currentSituation.AlignmentX = (int)OwnerMovement.GetAlignmentX();
+            _currentSituation.AverageHitBoxOffset = GetAveragePosition();
+            _currentSituation.AverageVelocity = GetAverageVelocity();
+            _currentSituation.MoveDirection = OwnerMovement.MoveDirection;
+            _currentSituation.IsGrounded = _gridPhysics.IsGrounded;
+
+            if (OwnerMoveset.AbilityInUse)
+            {
+                _currentSituation.AttackDirection = OwnerMoveset.LastAttackDirection;
+                _currentSituation.Energy = OwnerMoveset.Energy;
+                _currentSituation.CurrentAbilityID = OwnerMoveset.LastAbilityInUse.abilityData.ID;
+            }
+            else
+            {
+                _currentSituation.CurrentAbilityID = -1;
+            }
+
+            _currentSituation.OpponentState = _opponentStateMachine.StateMachine.CurrentState;
+
+            _currentSituation.Health = _knockbackBehaviour.Health;
+            _currentSituation.BarrierHealth = _ownerBarrier.Health;
+
+            _currentSituation.PanelPosition = OwnerMovement.Position;
+            _currentSituation.OwnerToTarget = _opponent.transform.position - transform.position;
+
+            _currentSituation.OpponentVelocity = _opponentGridPhysics.LastVelocity;
+            _currentSituation.OpponentEnergy = _opponentMoveset.Energy;
+            _currentSituation.OpponentMoveDirection = _opponentMove.MoveDirection;
+            _currentSituation.OpponentHealth = _opponentKnocback.Health;
+            _currentSituation.OpponentBarrierHealth = _opponentBarrier.Health;
+            _currentSituation.MatchTimeRemaining = MatchTimerBehaviour.Instance.MatchTimeRemaining;
+        }
+
         protected override void RecordNewAction(int id)
         {
-            ActionNode action = new ActionNode(null, null);
+            if (!CanRecord)
+                return;
 
-            action.CurrentState = StateMachine.StateMachine.CurrentState;
-
-            action.AlignmentX = (int)OwnerMovement.GetAlignmentX();
-            action.AveragePosition = GetAveragePosition();
-            action.AverageVelocity = GetAverageVelocity();
-            action.MoveDirection = OwnerMovement.MoveDirection;
-            action.IsGrounded = _gridPhysics.IsGrounded;
-            action.Energy = OwnerMoveset.Energy;
-
-            action.CurrentAbilityID = id;
-            action.IsAttacking = id != -1;
-
-            action.Health = _knockbackBehaviour.Health;
-            action.BarrierHealth = _ownerBarrier.Health;
-
-            action.OwnerToTarget = _opponent.transform.position - transform.position;
-
-            action.OpponentVelocity = _opponentGridPhysics.LastVelocity;
-            action.OpponentEnergy = _opponentMoveset.Energy;
-            action.OpponentMoveDirection = _opponentMove.MoveDirection;
-            action.OpponentHealth = _opponentKnocback.Health;
-            action.OpponentBarrierHealth = _opponentBarrier.Health;
+            UpdateSituationNode();
+            ActionNode action = _currentSituation.GetShallowCopy();
 
             action.TimeStamp = CurrentTime;
             action.TimeDelay = CurrentTimeDelay;
+
             CurrentTimeDelay = 0;
-            _actionTree.AddDecision(action);
+            //_actionTree.AddDecision(action);
             _recordings[_recordings.Length - 1].Add(action);
+
+        }
+
+        protected override void Update()
+        {
+            base.Update();
+            if (CurrentTimeDelay >= _timeDelayMax && _timeDelayMax > 0 && CanRecord)
+            {
+                CurrentTimeDelay = 0;
+            }
         }
     }
 }

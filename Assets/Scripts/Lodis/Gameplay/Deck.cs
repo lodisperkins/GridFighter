@@ -343,6 +343,19 @@ namespace Lodis.Gameplay
             return false;
         }
 
+        public bool Contains(int ID)
+        {
+            if (name == null)
+                return false;
+
+            for(int i = 0; i < _abilities.Count; i++)
+            {
+                if (_abilities[i].abilityData.ID == ID)
+                    return true;
+            }
+            return false;
+        }
+
         public bool Contains(Ability ability)
         {
             if (ability == null)
