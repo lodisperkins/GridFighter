@@ -63,6 +63,22 @@ namespace Lodis.Utility
             return false;
         }
 
+        public static void Add<T>(this System.Array array, T item)
+        {
+            if (array == null)
+                array = new T[0];
+
+            T[] temp = new T[array.Length + 1];
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                temp[i] = (T)array.GetValue(i);
+            }
+
+            temp[array.Length] = item;
+            array = temp;
+        }
+
         public static bool IsFilled(this UnityEngine.UI.Slider slider)
         {
             return slider.value == slider.maxValue;

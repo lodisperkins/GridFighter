@@ -6,6 +6,7 @@ using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.UI;
+using Lodis.Utility;
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
@@ -174,6 +175,47 @@ namespace Lodis.AI
             reader.Close();
 
             return recordings;
+        }
+
+        public static List<ActionNode>[] Load(string recordingName, MovesetBehaviour ownerMoveset)
+        {
+            if (!File.Exists(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt"))
+                return null;
+
+            StreamReader reader = new StreamReader(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt");
+            List<ActionNode>[] recordingData = JsonConvert.DeserializeObject<List<ActionNode>[]>(reader.ReadToEnd(), Settings);
+
+            List<ActionNode>[] recordings = new List<ActionNode>[0];
+
+            bool recordingValid = false;
+
+            for (int i = 0; i < recordingData.Length; i++)
+            {
+                recordingValid = false;
+
+                List<ActionNode> recording = new List<ActionNode>();
+
+                List<ActionNode> currentData = recordingData[i];
+
+                for (int j = 0; j < currentData.Count; j++)
+                {
+                    int currentAction = currentData[j].CurrentAbilityID;
+
+                    if (currentAction > 0 && !ownerMoveset.SpecialDeckRef.Contains(currentAction) && !ownerMoveset.NormalDeckRef.Contains(currentAction))
+                        break;
+
+                    recording.Add(currentData[j]);
+                    recordingValid = true;
+                }
+
+                if (recordingValid)
+                    recordings.Add(recording);
+            }
+
+            Debug.Log("Loaded " + recordingData.Length + "recordings");
+            reader.Close();
+
+            return recordingData;
         }
 
         private void UpdateSituationNode()

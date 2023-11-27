@@ -208,6 +208,7 @@ namespace Lodis.AI
             //EnableBehaviourTree = PlayerID != 1;
             //_executor.enabled = PlayerID != 1;
             //_aiMovementBehaviour.enabled = PlayerID != 1;
+            Moveset = Character.GetComponent<Gameplay.MovesetBehaviour>();
             if (_useRecording)
             {
                 _actionTree = new DecisionTree(0.5f);
@@ -215,7 +216,7 @@ namespace Lodis.AI
                 _actionTree.Load("_" + _recordingName);
                 _executor.enabled = false;
                 EnableBehaviourTree = false;
-                _recordings = AIRecorderBehaviour.Load(_recordingName);
+                _recordings = AIRecorderBehaviour.Load(_recordingName, _moveset);
             }
             if (!EnableBehaviourTree)
                 return;
@@ -244,7 +245,6 @@ namespace Lodis.AI
         private void Start()
         {
             Defense = Character.GetComponent<CharacterDefenseBehaviour>();
-            Moveset = Character.GetComponent<Gameplay.MovesetBehaviour>();
             _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
             Knockback = Character.GetComponent<Movement.KnockbackBehaviour>();
             _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
@@ -523,7 +523,6 @@ namespace Lodis.AI
             Vector2 direction = action.MoveDirection;
             if (action.CurrentAbilityID == -1 && !_movementBehaviour.IsMoving && _movementBehaviour.CanMove && (StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Moving"))
             {
-               
                 direction.x *= _movementBehaviour.GetAlignmentX();
                 _movementBehaviour.Move(direction);
                 return;
