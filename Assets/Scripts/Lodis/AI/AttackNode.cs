@@ -45,7 +45,7 @@ namespace Lodis.AI
 
             //bool behindBarrier = (bool)args[1];
             float opponentHealth = (float)args[2];
-            AttackDummyBehaviour owner = (AttackDummyBehaviour)args[3];
+            AIControllerBehaviour owner = (AIControllerBehaviour)args[3];
 
            //if (behindBarrier) weight += ShieldEffectiveness;
 

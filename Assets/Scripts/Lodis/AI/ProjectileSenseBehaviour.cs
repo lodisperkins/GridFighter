@@ -8,7 +8,7 @@ namespace Lodis.AI
 {
     public class ProjectileSenseBehaviour : MonoBehaviour
     {
-        [SerializeField] private AttackDummyBehaviour _owner;
+        [SerializeField] private AIControllerBehaviour _owner;
 
         private void OnTriggerEnter(Collider other)
         {

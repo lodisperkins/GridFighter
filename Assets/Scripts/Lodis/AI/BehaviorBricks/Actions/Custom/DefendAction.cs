@@ -17,7 +17,7 @@ using Lodis.ScriptableObjects;
 public class DefendAction : GOAction
 {
     [InParam("Owner")]
-    private AttackDummyBehaviour _dummy;
+    private AIControllerBehaviour _dummy;
     private DefenseNode _decision;
     private DefenseNode _situation;
     private GridMovementBehaviour _opponentMoveBehaviour;
@@ -38,10 +38,7 @@ public class DefendAction : GOAction
         int currentAttackCount = attacks.Count;
 
         //Store the current environment data
-        if (_dummy.CurrentPrediction == null)
-            _situation = new DefenseNode(attacks, null, null);
-        else
-            _situation = _dummy.CurrentPrediction.FutureSituation as DefenseNode;
+        _situation = new DefenseNode(attacks, null, null);
 
         //The dummy doesn't make a new decision of this situation is the same as the last and if it can't defend.
         if (_situation.Compare(_dummy.LastDefenseDecision) == 1f || (_dummy.StateMachine.CurrentState != "Idle" && !_dummy.Moveset.CanBurst))

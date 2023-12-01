@@ -13,7 +13,7 @@ public class IsSafeCondition : GOCondition
 {
     private GameObject _opponent = null;
     [InParam("Owner")]
-    private AttackDummyBehaviour _dummy;
+    private AIControllerBehaviour _dummy;
 
     /// <summary>
     /// Gets a list of physics components from all attacks in range
@@ -47,10 +47,7 @@ public class IsSafeCondition : GOCondition
     {
         List<HitColliderBehaviour> attacks = null;
 
-        if (_dummy.CurrentPrediction != null)
-            attacks = _dummy.CurrentPrediction.AttacksInRange;
-        else
-            attacks = _dummy.GetAttacksInRange();
+        attacks = _dummy.GetAttacksInRange();
 
         if (attacks.Count > 0 || _dummy.Knockback.CurrentAirState == AirState.TUMBLING)
             return false;

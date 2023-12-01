@@ -10,7 +10,7 @@ using UnityEngine;
 public class OutOfRangeCondition : GOCondition
 {
     [InParam("Owner")]
-    private AttackDummyBehaviour _dummy;
+    private AIControllerBehaviour _dummy;
     private GridMovementBehaviour _opponentMovement;
 
     /// <summary>
@@ -25,6 +25,6 @@ public class OutOfRangeCondition : GOCondition
         Vector3 directionToOpponent = (enemyPos - dummyPos);
         float dot = Vector3.Dot(_dummy.Character.transform.forward, directionToOpponent);
 
-        return Mathf.Abs(dummyPos.x - enemyPos.x) > _dummy.MaxRange || dot < 0 || dummyPos.y != _dummy.TargetY;
+        return Mathf.Abs(dummyPos.x - enemyPos.x) > _dummy.MaxRange || dot < 0 || dummyPos.y != _opponentMovement.Position.y + _opponentMovement.MoveDirection.y;
     }
 }

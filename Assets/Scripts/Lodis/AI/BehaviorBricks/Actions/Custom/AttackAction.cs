@@ -14,7 +14,7 @@ using Pada1.BBCore.Tasks;
 public class AttackAction : GOAction
 {
     [InParam("Owner")]
-    private AttackDummyBehaviour _dummy;
+    private AIControllerBehaviour _dummy;
     private AttackNode _decision;
     private AttackNode _situation;
 
@@ -52,10 +52,7 @@ public class AttackAction : GOAction
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
         float targetHealth = _dummy.OpponentKnockback.Health;
 
-        if (_dummy.CurrentPrediction == null)
-            _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.OpponentKnockback.Physics.LastVelocity, null, null);
-        else
-            _situation = _dummy.CurrentPrediction.FutureSituation as AttackNode;
+         _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.OpponentKnockback.Physics.LastVelocity, null, null);
 
         //Get a decision based on the current situation
         _decision = (AttackNode)_dummy.AttackDecisions.GetDecision(_situation, _dummy.OpponentMove, _dummy.OpponentDefense.IsDefending, targetHealth, _dummy);

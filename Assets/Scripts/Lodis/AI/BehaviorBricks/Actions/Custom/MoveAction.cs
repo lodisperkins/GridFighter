@@ -13,7 +13,7 @@ using Lodis.GridScripts;
 public class MoveAction : GOAction
 {
     [InParam("Owner")]
-    private AttackDummyBehaviour _dummy;
+    private AIControllerBehaviour _dummy;
 
     public override void OnStart()
     {

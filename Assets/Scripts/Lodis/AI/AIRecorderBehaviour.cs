@@ -177,7 +177,7 @@ namespace Lodis.AI
             return recordings;
         }
 
-        public static List<ActionNode>[] Load(string recordingName, MovesetBehaviour ownerMoveset)
+        public static List<ActionNode>[] Load(string recordingName, MovesetBehaviour ownerMoveset, int limit = -1)
         {
             if (!File.Exists(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt"))
                 return null;
@@ -189,7 +189,9 @@ namespace Lodis.AI
 
             bool recordingValid = false;
 
-            for (int i = 0; i < recordingData.Length; i++)
+            int recordingMax = limit == -1.0f ? recordingData.Length : limit;
+
+            for (int i = 0; i < recordingMax; i++)
             {
                 recordingValid = false;
 

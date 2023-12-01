@@ -28,7 +28,7 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _p2Moveset;
         private GameMode _mode;
         [SerializeField]
-        private AI.AttackDummyBehaviour _dummy;
+        private AI.AIControllerBehaviour _dummy;
         [SerializeField]
         private Vector2 _RHSSpawnLocation;
         [SerializeField]
@@ -256,12 +256,12 @@ namespace Lodis.Gameplay
             if (_mode != GameMode.PRACTICE && _mode != GameMode.SIMULATE)
                 return;
 
-            AttackDummyBehaviour dummyController = BlackBoardBehaviour.Instance.Player2Controller as AttackDummyBehaviour;
+            AIControllerBehaviour dummyController = BlackBoardBehaviour.Instance.Player2Controller as AIControllerBehaviour;
             dummyController.LoadDecisions();
 
             if (_mode == GameMode.SIMULATE)
             {
-                dummyController = BlackBoardBehaviour.Instance.Player1Controller as AttackDummyBehaviour;
+                dummyController = BlackBoardBehaviour.Instance.Player1Controller as AIControllerBehaviour;
                 dummyController.LoadDecisions();
             }
         }
