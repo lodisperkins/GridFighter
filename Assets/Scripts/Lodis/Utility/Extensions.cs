@@ -50,6 +50,11 @@ namespace Lodis.Utility
             return false;
         }
 
+        public static bool ContainsIndex(this System.Array array, int index)
+        {
+            return index >= 0 && index < array.Length;
+        }
+
 
         public static bool Contains<T>(this System.Array array, ArrCondition<T> condition)
         {

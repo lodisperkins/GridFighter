@@ -41,7 +41,6 @@ namespace Lodis.UI
             _controls = new PlayerControls();
             _controls.UI.Cancel.started += context => GoToPreviousPage();
         }
-
         public void OnEnable()
         {
             _controls?.Enable();
@@ -52,6 +51,21 @@ namespace Lodis.UI
             _controls?.Disable();
         }
 
+        public void GoToPage(int index)
+        {
+            if (_pages == null || !_pages.ContainsIndex(index))
+                return;
+
+            _pages[_currentPage].PageParent?.SetActive(false);
+            _pages[_currentPage].OnInactive?.Invoke();
+
+            _currentPage = index;
+
+            _pages[_currentPage].PageParent.SetActive(true);
+            EventManager.SetSelectedGameObject(_pages[_currentPage].FirstSelected);
+            _pages[_currentPage].OnActive?.Invoke();
+        }
+
         public void GoToNextPage()
         {
             if (_pages == null)
@@ -59,7 +73,7 @@ namespace Lodis.UI
 
             if (_currentPage < _pages.Length - 1)
             {
-                _pages[_currentPage].PageParent.SetActive(false);
+                _pages[_currentPage].PageParent?.SetActive(false);
                 _pages[_currentPage].OnInactive?.Invoke();
             }
 
@@ -86,7 +100,7 @@ namespace Lodis.UI
 
             if (_currentPage > 0)
             {
-                _pages[_currentPage].PageParent.SetActive(false);
+                _pages[_currentPage].PageParent?.SetActive(false);
                 _pages[_currentPage].OnInactive?.Invoke();
             }
 

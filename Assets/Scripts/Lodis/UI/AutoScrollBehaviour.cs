@@ -35,6 +35,9 @@ namespace Lodis.UI
         // Update is called once per frame
         void Update()
         {
+            if (!EventSystem)
+                return;
+
             if (_currentItem != EventSystem.currentSelectedGameObject)
             {
                 _currentItem = EventSystem.currentSelectedGameObject.GetComponent<RectTransform>();

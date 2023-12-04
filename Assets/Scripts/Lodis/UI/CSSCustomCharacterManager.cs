@@ -36,6 +36,8 @@ namespace Lodis.UI
         [SerializeField]
         [Range(1,2)]
         private int _playerNum;
+        [SerializeField]
+        private GameObject _arrows;
 
         [Header("Current Deck Page")]
         [SerializeField]
@@ -158,6 +160,8 @@ namespace Lodis.UI
                 buttonInstance.UIButton.navigation = navigationRules;
                 previousInstance = buttonInstance;
             }
+
+            _arrows.SetActive(_buildManager.DeckOptions.Length != 0);
         }
 
         public void SetEventSystems(UnityEngine.EventSystems.EventSystem eventSystem)
