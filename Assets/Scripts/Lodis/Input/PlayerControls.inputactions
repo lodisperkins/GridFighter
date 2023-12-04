@@ -415,7 +415,7 @@
                 {
                     "name": "",
                     "id": "6b9bc40d-0370-490d-853d-67b09fca44c5",
-                    "path": "<Keyboard>/i",
+                    "path": "<Keyboard>/k",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -734,7 +734,7 @@
                 {
                     "name": "",
                     "id": "2954790e-2b7a-4c8e-a73d-1bb277bd3ac0",
-                    "path": "<Keyboard>/k",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -767,7 +767,7 @@
                 {
                     "name": "",
                     "id": "5d65c825-aafe-4501-991f-3f7769b67fa9",
-                    "path": "<Keyboard>/l",
+                    "path": "<Keyboard>/o",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1548,7 +1548,7 @@
                 {
                     "name": "",
                     "id": "d8a84eb9-63db-4545-b4ea-6c917940a30a",
-                    "path": "<Keyboard>/o",
+                    "path": "<Keyboard>/l",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1622,6 +1622,14 @@
                     "name": "RightClick",
                     "type": "Button",
                     "id": "9a3d1f1c-5cf2-4b4f-a3c5-c72339d81456",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": ""
+                },
+                {
+                    "name": "Toggle",
+                    "type": "Button",
+                    "id": "67af46ad-fbc6-4843-954a-71a8619a5e9d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
@@ -2109,6 +2117,28 @@
                     "processors": "",
                     "groups": "Gamepad",
                     "action": "MiddleClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f5de8909-2579-4b53-97b9-312434e64534",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Toggle",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "33c7db18-3e2d-4e3a-a3b9-3dfca430497f",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "KeyboardMouse",
+                    "action": "Toggle",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

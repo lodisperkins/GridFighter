@@ -101,6 +101,23 @@ namespace Lodis.UI
             SpecialDeck.DeckName = deckName + "_Specials";
         }
 
+
+        public static Deck LoadPresetNormalDeck(string deckName)
+        {
+            Deck NormalDeck = Instantiate(Resources.Load<Deck>("Decks/Normals/P_" + deckName + "_Normals"));
+            NormalDeck.DeckName = deckName + "_Normals";
+
+            return NormalDeck;
+        }
+
+        public static Deck LoadPresetSpecialDeck(string deckName)
+        {
+            Deck SpecialDeck = Instantiate(Resources.Load<Deck>("Decks/Specials/P_" + deckName + "_Specials"));
+            SpecialDeck.DeckName = deckName + "_Specials";
+
+            return SpecialDeck;
+        }
+
         public void LoadCustomDeck(string deckName)
         {
 

@@ -121,7 +121,7 @@ MonoBehaviour:
     m_ActionName: PlayerMovement/MoveRight[/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
+  m_DefaultActionMap: 5adf0340-e11d-445e-84f1-f349046b4fec
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!114 &4773042636645881726

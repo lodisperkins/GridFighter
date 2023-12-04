@@ -134,6 +134,7 @@ namespace Lodis.UI
                 {
                     _customCharacterManager.LoadCustomCharacter(optionName);
                     _characterSelectManager.UpdateColor(_playerNum);
+                    _characterSelectManager.UpdateCustomSelectedName(_playerNum, optionName);
                 });
 
                 buttonInstance.AddOnClickEvent(() =>

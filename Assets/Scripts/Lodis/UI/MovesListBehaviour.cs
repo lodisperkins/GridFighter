@@ -30,9 +30,14 @@ namespace Lodis.UI
         private VideoPlayer _videoPlayer;
         [SerializeField]
         private CursorLerpBehaviour _cursor;
+        [SerializeField]
+        private bool _manuallySetDeckRefs;
 
         private void Awake()
         {
+            if (_manuallySetDeckRefs)
+                return;
+
             _player = BlackBoardBehaviour.Instance.GetPlayerControllerFromID(_playerID);
             MovesetBehaviour moveset = _player.Character.GetComponent<MovesetBehaviour>();
             _normalDeck = moveset.NormalDeckRef;
@@ -42,22 +47,28 @@ namespace Lodis.UI
         // Start is called before the first frame update
         void Start()
         {
-           foreach (MoveDescriptionBehaviour normalMove in _normalMoveSlots)
-           {
-                AbilityData data = _normalDeck.GetAbilityDataByType(normalMove.AbilityType);
+            if (!_manuallySetDeckRefs)
+                UpdateUI(_normalDeck, _specialDeck, _eventSystem);
+        }
+
+        public void UpdateUI(Deck normalDeckRef, Deck specialDeckRef, MultiplayerEventSystem eventSystem)
+        {
+            if (!eventSystem)
+                return;
+
+            _eventSystem = eventSystem;
+
+            foreach (MoveDescriptionBehaviour normalMove in _normalMoveSlots)
+            {
+                AbilityData data = normalDeckRef.GetAbilityDataByType(normalMove.AbilityType);
 
                 normalMove.Init(_description, _videoPlayer, data);
-           }
+            }
 
-           for (int i = 0; i < _specialDeck.AbilityData.Count; i++)
-           {
-                _specialMoveSlots[i].Init(_description, _videoPlayer, _specialDeck.AbilityData[i]);
-           }
-
-            _eventSystem = _player.Character.GetComponentInParent<MultiplayerEventSystem>();
-
-            if (!_eventSystem)
-                return;
+            for (int i = 0; i < specialDeckRef.AbilityData.Count; i++)
+            {
+                _specialMoveSlots[i].Init(_description, _videoPlayer, specialDeckRef.AbilityData[i]);
+            }
 
             _eventSystem.playerRoot = gameObject;
             _eventSystem.firstSelectedGameObject = _firstSelected;

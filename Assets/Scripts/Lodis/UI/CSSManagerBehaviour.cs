@@ -21,6 +21,10 @@ namespace Lodis.UI
         [SerializeField]
         private PageManagerBehaviour _p1PageManager;
         [SerializeField]
+        private MovesListBehaviour _player1MovesList;
+        [SerializeField]
+        private MovesListBehaviour _player2MovesList;
+        [SerializeField]
         private GameObject _player2Root;
         [SerializeField]
         private Text _player2JoinInstruction;
@@ -55,6 +59,13 @@ namespace Lodis.UI
         private int _p2ColorIndex = -1;
         [SerializeField]
         private int _currentPlayer = 1;
+        private string _player1SelectedCharacter;
+        private string _player2SelectedCharacter;
+        private bool _player1HasCustomSelected;
+        private bool _player2HasCustomSelected;
+        private MultiplayerEventSystem _player1EventSystem;
+        private MultiplayerEventSystem _player2EventSystem;
+
         private void Start()
         {
             SetColor(1);
@@ -85,14 +96,14 @@ namespace Lodis.UI
             if (!playerInput)
                 return;
 
-            MultiplayerEventSystem eventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
             if (playerNum == 1)
             {
-                eventSystem.playerRoot = _player1Root;
+                _player1EventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
+                _player1EventSystem.playerRoot = _player1Root;
                 _player1Root.SetActive(true);
                 _p1CharacterSelected = false;
                 _player1JoinInstruction.gameObject.SetActive(false);
-                _p1CustomManager.SetEventSystems(eventSystem);
+                _p1CustomManager.SetEventSystems(_player1EventSystem);
                 _p1CustomManager.SetSelectedToFirstOption();
                 _p1PageManager.GoToPage(0);
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
@@ -100,11 +111,12 @@ namespace Lodis.UI
             }
             else if (playerNum == 2)
             {
-                eventSystem.playerRoot = _player2Root;
+                _player2EventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
+                _player2EventSystem.playerRoot = _player2Root;
                 _player2Root.SetActive(true);
                 _p2CharacterSelected = false;
                 _player2JoinInstruction.gameObject.SetActive(false);
-                _p2CustomManager.SetEventSystems(eventSystem);
+                _p2CustomManager.SetEventSystems(_player2EventSystem);
                 _p2CustomManager.SetSelectedToFirstOption();
                 _p2PageManager.GoToPage(0);
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
@@ -160,6 +172,9 @@ namespace Lodis.UI
         }
         private void GoToPage(InputAction.CallbackContext context, int playerNum)
         {
+            if (GetPlayerSelected(playerNum) || !CheckMenuActive(playerNum) && GetMovesListOpen(playerNum))
+                return;
+
             Vector2 direction = context.ReadValue<Vector2>();
             PageManagerBehaviour manager = null;
             CSSCustomCharacterManager charManager = null;
@@ -199,7 +214,7 @@ namespace Lodis.UI
 
             playerInput.onActionTriggered += context =>
             {
-                if (!GetPlayerSelected(num) && !CheckMenuActive(num))
+                if (!GetPlayerSelected(num) && !CheckMenuActive(num) && !GetMovesListOpen(num))
                     RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateMenu(playerInput, num), TimedActionCountType.FRAME, 1);
             };
 
@@ -219,10 +234,13 @@ namespace Lodis.UI
             };
             playerInput.actions.actionMaps[1].FindAction("Cancel").started += context =>
             {
-                if (GetPlayerReady(num))
+                if (GetPlayerReady(num) || GetMovesListOpen(num))
                     ActivateMenu(playerInput, num);
+
+                CloseMovesList(num);
             };
             playerInput.actions.actionMaps[1].FindAction("Cancel").performed += context => TryGoingToMainMenu(_currentPlayer);
+            playerInput.actions.actionMaps[1].FindAction("Toggle").performed += context => OpenMoveList(num);
             _currentPlayer = 2;
         }
         public void SetData(int player, CharacterData data)
@@ -253,14 +271,94 @@ namespace Lodis.UI
                 SetColor(1);
         }
 
-        public bool GetPlayerSelected(int num)
+        public void UpdateP1SelectedName(CharacterData data)
         {
-            if (num == 1)
+            _player1HasCustomSelected = false;
+
+            _player1SelectedCharacter = data.DisplayName;
+        }
+
+        public void UpdateP2SelectedName(CharacterData data)
+        {
+            _player2HasCustomSelected = false;
+            _player2SelectedCharacter = data.DisplayName;
+        }
+
+        public void UpdateCustomSelectedName(int playerNum, string name)
+        {
+            if (playerNum == 1)
+            {
+                _player1SelectedCharacter = name;
+                _player1HasCustomSelected = true;
+            }
+            else if (playerNum == 2)
+            {
+                _player2SelectedCharacter = name;
+                _player2HasCustomSelected = true;
+            }
+        }
+
+        public bool GetPlayerSelected(int playerNum)
+        {
+            if (playerNum == 1)
                 return _p1CharacterSelected;
-            else if (num == 2)
+            else if (playerNum == 2)
                 return _p2CharacterSelected;
 
             return false;
+        }
+
+        private void LoadMovesListDecks(out Deck normal, out Deck special, string selectedCharacter, bool isCustom)
+        {
+            if (isCustom)
+            {
+                normal = DeckBuildingManagerBehaviour.LoadCustomNormalDeck(selectedCharacter);
+                special = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(selectedCharacter);
+            }
+            else
+            {
+                normal = DeckBuildingManagerBehaviour.LoadPresetNormalDeck(selectedCharacter);
+                special = DeckBuildingManagerBehaviour.LoadPresetSpecialDeck(selectedCharacter);
+            }
+        }
+
+        private bool GetMovesListOpen(int playerNum)
+        {
+            if (playerNum == 1)
+                return _player1MovesList.gameObject.activeInHierarchy;
+            else if (playerNum == 2)
+                return _player2MovesList.gameObject.activeInHierarchy;
+
+            return false;
+        }
+
+        private void CloseMovesList(int playerNum)
+        {
+            if (playerNum == 1)
+                _player1MovesList.gameObject.SetActive(false);
+            else if (playerNum == 2)
+                _player2MovesList.gameObject.SetActive(false);
+        }
+
+        public void OpenMoveList(int playerNum)
+        {
+            Deck normal = null;
+            Deck special = null;
+
+            if (playerNum == 1)
+            {
+                _player1MovesList.gameObject.SetActive(true);
+                _player1Root.SetActive(false);
+                LoadMovesListDecks(out normal, out special, _player1SelectedCharacter, _player1HasCustomSelected);
+                _player1MovesList.UpdateUI(normal, special, _player1EventSystem);
+            }
+            else if (playerNum == 2)
+            {
+                _player2Root.SetActive(false);
+                _player2MovesList.gameObject.SetActive(true);
+                LoadMovesListDecks(out normal, out special, _player2SelectedCharacter, _player2HasCustomSelected);
+                _player2MovesList.UpdateUI(normal, special, _player2EventSystem);
+            }
         }
 
         public void TryGoingToMainMenu(int playerNum)
