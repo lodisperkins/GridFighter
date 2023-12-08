@@ -125,7 +125,17 @@ namespace Lodis.GridScripts
             }
 
 
-            _mesh.material.ChangeHue(_defaultColor, "_Color");
+                _defaultColor /= 10;
+                _mesh.material.SetColor("_Color", _defaultColor);
+            //Vector3 propertyHSV;
+
+            //Color.RGBToHSV(_defaultColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
+
+            //if (propertyHSV.y > 0.1f)
+            //    _mesh.material.ChangeHue(_defaultColor, "_Color");
+            //else
+            //{
+            //}
         }
 
         public void Mark(Lodis.GridScripts.MarkerType markerType, GameObject markObject)

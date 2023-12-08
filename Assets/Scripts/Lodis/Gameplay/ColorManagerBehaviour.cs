@@ -126,7 +126,11 @@ namespace Lodis.Gameplay
                     colorObject.ObjectRenderer.material.SetVector("_CustomLightDirection", SpecularLight.transform.forward);
                 }
 
-                if (colorObject.OnlyChangeHue)
+                Vector3 propertyHSV;
+
+                Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
+
+                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -150,7 +154,11 @@ namespace Lodis.Gameplay
 
             foreach (ColorObject colorObject in ObjectsToColor)
             {
-                if (colorObject.OnlyChangeHue)
+                Vector3 propertyHSV;
+
+                Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
+
+                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);

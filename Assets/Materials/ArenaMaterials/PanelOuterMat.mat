@@ -144,7 +144,7 @@ Material:
     - Color_205411B7: {r: 1, g: 1, b: 1, a: 0}
     - Color_D72C77CE: {r: 1, g: 1, b: 1, a: 0}
     - _BaseColor: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 1}
-    - _Color: {r: 0.066037714, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.07058824, g: 0, b: 0, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 0}
     - _EmissionTiling: {r: 0, g: 0, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
