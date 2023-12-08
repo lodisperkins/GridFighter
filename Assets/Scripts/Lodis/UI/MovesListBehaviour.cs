@@ -48,7 +48,9 @@ namespace Lodis.UI
         void Start()
         {
             if (!_manuallySetDeckRefs)
-                UpdateUI(_normalDeck, _specialDeck, _eventSystem);
+            {
+                UpdateUI(_normalDeck, _specialDeck, _player.Character.GetComponentInParent<MultiplayerEventSystem>());
+            }
         }
 
         public void UpdateUI(Deck normalDeckRef, Deck specialDeckRef, MultiplayerEventSystem eventSystem)

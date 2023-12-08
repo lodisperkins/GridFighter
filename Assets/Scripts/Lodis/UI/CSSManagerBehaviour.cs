@@ -342,6 +342,9 @@ namespace Lodis.UI
 
         public void OpenMoveList(int playerNum)
         {
+            if (!CheckMenuActive(playerNum))
+                return;
+
             Deck normal = null;
             Deck special = null;
 
