@@ -106,7 +106,11 @@ namespace Lodis.UI
 
             foreach (ColorObject colorObject in ObjectsToColor)
             {
-                if (colorObject.OnlyChangeHue)
+                Vector3 propertyHSV;
+
+                Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
+
+                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -123,7 +127,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 20)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -147,7 +151,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 20)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -164,7 +168,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 20)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -192,7 +196,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 20)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -209,7 +213,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 20)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
