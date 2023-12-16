@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using Newtonsoft.Json;
+using Lodis.Utility;
 
 namespace Lodis.CharacterCreation
 {
@@ -82,11 +84,12 @@ namespace Lodis.CharacterCreation
                 CustomCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
 
             List<ArmorData> replacements = new List<ArmorData>();
+            string armorName = reader.ReadLine();
 
-            while (!reader.EndOfStream)
+            while (armorName != "EndArmor")
             {
-                string armorName = reader.ReadLine();
                 replacements.Add(Resources.Load<ArmorData>("ArmorData/" + armorName));
+                armorName = reader.ReadLine();
             }
 
             for (int i = 0; i < _defaultSetsReference.Count && replacements.Count != _defaultSetsReference.Count; i++)
@@ -96,6 +99,11 @@ namespace Lodis.CharacterCreation
             }
 
             CustomCharacter.ReplaceMeshes(replacements);
+            Vector4 hairValue = JsonConvert.DeserializeObject<Vector4>(reader.ReadLine());
+            Vector4 faceValue = (Vector4)JsonConvert.DeserializeObject<Vector4>(reader.ReadLine());
+
+            CustomCharacter.HairColor = hairValue.ToColor();
+            CustomCharacter.FaceColor = faceValue.ToColor();
 
             reader.Close();
         }
@@ -107,11 +115,12 @@ namespace Lodis.CharacterCreation
 
             StreamReader reader = new StreamReader(armorPath);
             List<ArmorData> replacements = new List<ArmorData>();
+            string armorName = reader.ReadLine();
 
-            while (!reader.EndOfStream)
+            while (armorName != "EndArmor")
             {
-                string armorName = reader.ReadLine();
                 replacements.Add(Resources.Load<ArmorData>("ArmorData/" + armorName));
+                armorName = reader.ReadLine();
             }
 
             for (int i = 0; i < _defaultSets.Count && replacements.Count != _defaultSets.Count; i++)
@@ -168,6 +177,16 @@ namespace Lodis.CharacterCreation
 
             foreach (ArmorData data in CustomCharacter.ArmorReplacements)
                 writer.WriteLine(data.name);
+
+            writer.WriteLine("EndArmor");
+
+            string colorJson = JsonConvert.SerializeObject((Vector4)CustomCharacter.HairColor);
+
+            writer.WriteLine(colorJson);
+
+            colorJson = JsonConvert.SerializeObject((Vector4)CustomCharacter.FaceColor);
+
+            writer.WriteLine(colorJson);
 
             writer.Close();
         }

@@ -1287,6 +1287,8 @@ MonoBehaviour:
   - MeshRenderer: {fileID: 8079246318765290197}
     Part: 16
   _armorReplacements: []
+  _bodyRenderer: {fileID: 6218263879540804730}
+  _hairRenderer: {fileID: 8079246318765290197}
 --- !u!1 &2799733767679425040
 GameObject:
   m_ObjectHideFlags: 0

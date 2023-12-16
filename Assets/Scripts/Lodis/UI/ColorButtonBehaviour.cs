@@ -17,12 +17,12 @@ namespace Lodis.UI
 
         [SerializeField]
         private CustColorType _colorType;
-        [SerializeField]
         private CustomCharacterManagerBehaviour _custManager;
 
         // Start is called before the first frame update
         void Start()
         {
+            _custManager = FindObjectOfType<CustomCharacterManagerBehaviour>();
             AddOnClickEvent(UpdateColor);
         }
 

@@ -50,6 +50,16 @@ namespace Lodis.Utility
             return false;
         }
 
+        public static Color ToColor(this Vector4 value)
+        {
+            return new Color(value.x, value.y, value.z, value.w);
+        }
+
+        public static Vector4 ToVector(this Color value)
+        {
+            return new Vector4(value.r, value.g, value.b, value.a);
+        }
+
         public static bool ContainsIndex(this System.Array array, int index)
         {
             return index >= 0 && index < array.Length;

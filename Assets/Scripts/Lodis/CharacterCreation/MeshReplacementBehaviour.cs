@@ -25,8 +25,8 @@ public class MeshReplacementBehaviour : MonoBehaviour
     public List<ArmorData> ArmorReplacements { get => _armorReplacements; private set => _armorReplacements = value; }
     public Color FaceColor 
     {
-        get => _bodyRenderer.materials[1].GetColor("_Color");
-        set => _bodyRenderer.materials[1].SetColor("_Color", value);
+        get => _bodyRenderer.material.GetColor("_Color");
+        set => _bodyRenderer.material.SetColor("_Color", value);
     }
     public Color HairColor
     {
