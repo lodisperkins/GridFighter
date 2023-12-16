@@ -5466,6 +5466,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
   - ObjectImage: {fileID: 0}
     OnlyChangeHue: 1
+  _textToColor: []
   _setColorsOnStart: 1
 --- !u!4 &598902719
 Transform:
@@ -7650,6 +7651,19 @@ MonoBehaviour:
     OnlyChangeHue: 1
   - ObjectImage: {fileID: 1094276877}
     OnlyChangeHue: 1
+  - ObjectImage: {fileID: 1426216350}
+    OnlyChangeHue: 1
+  - ObjectImage: {fileID: 1183959271}
+    OnlyChangeHue: 1
+  - ObjectImage: {fileID: 1556952033}
+    OnlyChangeHue: 1
+  - ObjectImage: {fileID: 1174094197}
+    OnlyChangeHue: 1
+  - ObjectImage: {fileID: 604143467}
+    OnlyChangeHue: 1
+  - ObjectImage: {fileID: 432617885}
+    OnlyChangeHue: 1
+  _textToColor: []
   _setColorsOnStart: 1
 --- !u!4 &743233165
 Transform:
@@ -14277,7 +14291,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.36842, y: -265.5}
+  m_AnchoredPosition: {x: 140.36841, y: -265.5}
   m_SizeDelta: {x: 260, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1380186492
@@ -14829,10 +14843,11 @@ MonoBehaviour:
   _p2Color: {fileID: 11400000, guid: db5801176aa0d1143aabbc9690c96374, type: 2}
   _possibleColors:
   - {r: 0, g: 0.54509807, b: 1, a: 1}
-  - {r: 0.8679245, g: 0.11177525, b: 0.012281928, a: 1}
-  - {r: 0.8207547, g: 0.50659376, b: 0.019357419, a: 1}
-  - {r: 0.062032763, g: 0.7735849, b: 0.08886044, a: 1}
-  - {r: 0.5966864, g: 0.06274509, b: 0.69803923, a: 1}
+  - {r: 0.85882354, g: 0.14901961, b: 0.019607844, a: 1}
+  - {r: 0.6320754, g: 0.5056604, b: 0, a: 1}
+  - {r: 0.04719339, g: 0.667, b: 0.07116386, a: 1}
+  - {r: 0.5208989, g: 0.05483145, b: 0.61, a: 1}
+  - {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
   _setColorEvent: {fileID: 11400000, guid: 6a501130d64215d439c23c05b59a6425, type: 2}
   _onSetColor:
     m_PersistentCalls:
@@ -16878,6 +16893,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _soundEffectSource: {fileID: 855454086}
   _musicSource: {fileID: 402693612}
+  _announcer: {fileID: 0}
   _hitSounds:
   - {fileID: 8300000, guid: bff4f9b7bbfd677488908428d1a79775, type: 3}
   - {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}

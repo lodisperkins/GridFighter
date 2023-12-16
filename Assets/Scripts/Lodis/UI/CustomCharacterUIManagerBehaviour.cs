@@ -75,7 +75,7 @@ namespace Lodis.CharacterCreation
 
                 EventButtonBehaviour abilityButtonInstance = Instantiate(_buttonReference, iconTransform);
 
-                abilityButtonInstance.Image.sprite = currentData.DisplayIcon;
+                abilityButtonInstance.ButtonImage.sprite = currentData.DisplayIcon;
                 abilityButtonInstance.name = currentData.ArmorSetName;
 
                 if (setSelected)

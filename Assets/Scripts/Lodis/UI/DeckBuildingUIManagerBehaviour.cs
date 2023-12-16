@@ -185,8 +185,8 @@ namespace Lodis.UI
 
                 EventButtonBehaviour abilityButtonInstance = Instantiate(_abilityButton, iconTransform);
 
-                abilityButtonInstance.Image.sprite = currentData.DisplayIcon;
-                abilityButtonInstance.Image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)currentData.EnergyCost];
+                abilityButtonInstance.ButtonImage.sprite = currentData.DisplayIcon;
+                abilityButtonInstance.ButtonImage.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)currentData.EnergyCost];
                 abilityButtonInstance.name = currentData.abilityName;
 
                 if (setSelected)

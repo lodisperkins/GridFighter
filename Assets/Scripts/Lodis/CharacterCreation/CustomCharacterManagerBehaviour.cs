@@ -136,6 +136,22 @@ namespace Lodis.CharacterCreation
             CustomCharacter.ReplaceMesh(data);
         }
 
+        public void ReplaceFaceColor(Color color)
+        {
+            if (!CustomCharacter)
+                CustomCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
+
+            CustomCharacter.FaceColor = color;
+        }
+
+        public void ReplaceHairColor(Color color)
+        {
+            if (!CustomCharacter)
+                CustomCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
+
+            CustomCharacter.HairColor = color;
+        }
+
         public void SaveCharacter()
         {
             if (CustomCharacter.ArmorReplacements == null)

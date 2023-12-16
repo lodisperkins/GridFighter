@@ -17,8 +17,22 @@ public class MeshReplacementBehaviour : MonoBehaviour
     private ReplaceMesh[] _replacementSlots = new ReplaceMesh[16];
     [SerializeField]
     private List<ArmorData> _armorReplacements = new List<ArmorData>();
+    [SerializeField]
+    private SkinnedMeshRenderer _bodyRenderer;
+    [SerializeField]
+    private SkinnedMeshRenderer _hairRenderer;
 
     public List<ArmorData> ArmorReplacements { get => _armorReplacements; private set => _armorReplacements = value; }
+    public Color FaceColor 
+    {
+        get => _bodyRenderer.materials[1].GetColor("_Color");
+        set => _bodyRenderer.materials[1].SetColor("_Color", value);
+    }
+    public Color HairColor
+    {
+        get => _hairRenderer.material.GetColor("_Color");
+        set => _hairRenderer.material.SetColor("_Color", value);
+    }
 
     public void ReplaceMeshes()
     {
@@ -27,6 +41,7 @@ public class MeshReplacementBehaviour : MonoBehaviour
             ReplaceMesh(data);
         }
     }
+
 
     public void ReplaceMeshes(List<ArmorData> armorData)
     {

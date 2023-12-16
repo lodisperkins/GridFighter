@@ -31,7 +31,7 @@ namespace Lodis.UI
 
         private Image _image;
 
-        public Image Image { get => _image; private set => _image = value; }
+        public Image ButtonImage { get => _image; private set => _image = value; }
         public Button UIButton { get => _button; set => _button = value; }
 
         private void Awake()
@@ -43,7 +43,7 @@ namespace Lodis.UI
         {
             UIButton = GetComponent<Button>();
             UIButton.onClick.AddListener(() => SoundManagerBehaviour.Instance.PlaySound(_clickSound));
-            Image = GetComponent<Image>();
+            ButtonImage = GetComponent<Image>();
         }
 
         public void OnSelect()
