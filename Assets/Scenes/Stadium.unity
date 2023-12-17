@@ -5340,17 +5340,20 @@ MonoBehaviour:
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
-    OnlyChangeHue: 0
+    OnlyChangeHue: 1
+    SaturationThreshold: 10
   - ObjectRenderer: {fileID: 2056573883}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
-    OnlyChangeHue: 0
+    OnlyChangeHue: 1
+    SaturationThreshold: 10
   - ObjectRenderer: {fileID: 1169880455}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
-    OnlyChangeHue: 0
+    OnlyChangeHue: 1
+    SaturationThreshold: 10
 --- !u!1 &469655793
 GameObject:
   m_ObjectHideFlags: 0
@@ -11313,6 +11316,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1633531263, guid: 1075e2639ce6cca49b7216bf0359c8e5, type: 3}
+      propertyPath: _objectsToColor.Array.data[0].SaturationThreshold
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2079974076, guid: 1075e2639ce6cca49b7216bf0359c8e5, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -11679,6 +11686,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2737216618059848974, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
+      propertyPath: _objectsToColor.Array.data[0].SaturationThreshold
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737216618059848974, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[1].SaturationThreshold
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737216618059848974, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[2].SaturationThreshold
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737216618059848974, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[3].SaturationThreshold
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737216618059848974, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[4].SaturationThreshold
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2737216618059848974, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
       propertyPath: _objectsToColor.Array.data[2].ShaderProperties.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -11801,6 +11833,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[0].OnlyChangeHue
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4117457228637710526, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].SaturationThreshold
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4330149411218386628, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
@@ -12136,6 +12173,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _objectsToColor.Array.data[0].OnlyChangeHue
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9222724936293841580, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _objectsToColor.Array.data[0].SaturationThreshold
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1563883508, guid: 1075e2639ce6cca49b7216bf0359c8e5, type: 3}
@@ -14513,6 +14555,7 @@ MonoBehaviour:
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 0
+    SaturationThreshold: 10
 --- !u!23 &1378456149
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15945,17 +15988,20 @@ MonoBehaviour:
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
-    OnlyChangeHue: 0
+    OnlyChangeHue: 1
+    SaturationThreshold: 10
   - ObjectRenderer: {fileID: 1533228706}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
-    OnlyChangeHue: 0
+    OnlyChangeHue: 1
+    SaturationThreshold: 10
   - ObjectRenderer: {fileID: 802207341}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
-    OnlyChangeHue: 0
+    OnlyChangeHue: 1
+    SaturationThreshold: 10
 --- !u!224 &1591226344 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 643524680384907173, guid: 4aebaf1929f274a4abe10801b9cffd07,
@@ -20437,6 +20483,7 @@ MonoBehaviour:
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 0
+    SaturationThreshold: 10
 --- !u!23 &2039207449
 MeshRenderer:
   m_ObjectHideFlags: 0

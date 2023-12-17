@@ -453,40 +453,47 @@ MonoBehaviour:
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 1711813854374387425}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 3340707822704788680}
     DefaultColors: []
     ShaderProperties:
     - _ColorInside
     - _ColorEdges
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 4582392575205966884}
     DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 65040120360851734}
     DefaultColors: []
     ShaderProperties:
     - _Color
     - _EmissionColor
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 2844560268254500083}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 7372052565088100730}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
     - _Color
     OnlyChangeHue: 1
+    SaturationThreshold: 0
 --- !u!114 &8764218841854632973
 MonoBehaviour:
   m_ObjectHideFlags: 0

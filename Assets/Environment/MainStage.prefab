@@ -211,17 +211,23 @@ MonoBehaviour:
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
+    - _Color
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 105436183619379664}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
+    - _Color
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 3239049198044663949}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
+    - _Color
     OnlyChangeHue: 1
+    SaturationThreshold: 0
 --- !u!1 &2863036294153621774
 GameObject:
   m_ObjectHideFlags: 0
@@ -731,6 +737,7 @@ MonoBehaviour:
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
+    SaturationThreshold: 10
 --- !u!1 &3866122990567341911
 GameObject:
   m_ObjectHideFlags: 0
@@ -895,17 +902,23 @@ MonoBehaviour:
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
+    - _Color
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 1598735488720388094}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
+    - _Color
     OnlyChangeHue: 1
+    SaturationThreshold: 0
   - ObjectRenderer: {fileID: 4928427630959127098}
     DefaultColors: []
     ShaderProperties:
     - _EmissionColor
+    - _Color
     OnlyChangeHue: 1
+    SaturationThreshold: 0
 --- !u!1 &7507511389173073324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,6 +1055,7 @@ MonoBehaviour:
     ShaderProperties:
     - _EmissionColor
     OnlyChangeHue: 1
+    SaturationThreshold: 10
 --- !u!1 &8454690312814522099
 GameObject:
   m_ObjectHideFlags: 0
