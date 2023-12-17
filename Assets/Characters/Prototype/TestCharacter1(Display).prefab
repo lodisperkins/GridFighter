@@ -4702,52 +4702,52 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[0].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[1].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[2].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[3].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[4].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[5].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[6].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[7].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[8].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[9].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -4757,37 +4757,37 @@ PrefabInstance:
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[10].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[11].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[12].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[13].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[14].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[15].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.data[16].OnlyChangeHue
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}

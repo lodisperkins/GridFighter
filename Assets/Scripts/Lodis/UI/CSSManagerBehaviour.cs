@@ -224,6 +224,7 @@ namespace Lodis.UI
 
             PlayerControls controls = new PlayerControls();
             controls.Enable();
+            controls.devices = playerInput.devices;
 
             playerInput.onActionTriggered += context =>
             {

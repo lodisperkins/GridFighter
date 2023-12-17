@@ -16,7 +16,8 @@ MonoBehaviour:
   - ArmorMesh: {fileID: -7287630029415824813, guid: dc49d54e3eba6a446941613a3fc2efde,
       type: 3}
     BodyPart: 2
-  - ArmorMesh: {fileID: 0}
+  - ArmorMesh: {fileID: 6300576773835200607, guid: 08fe41f0845dc0d42bd78a4561531681,
+      type: 3}
     BodyPart: 3
   - ArmorMesh: {fileID: 5437200294847528833, guid: 08fe41f0845dc0d42bd78a4561531681,
       type: 3}
