@@ -8,6 +8,8 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Lodis.ScriptableObjects;
+using UnityEngine.Events;
+
 namespace Lodis.UI
 {
     public class CSSManagerBehaviour : MonoBehaviour
@@ -65,6 +67,7 @@ namespace Lodis.UI
         private bool _player2HasCustomSelected;
         private MultiplayerEventSystem _player1EventSystem;
         private MultiplayerEventSystem _player2EventSystem;
+        private UnityAction _onDisable;
 
         private void Start()
         {
@@ -83,6 +86,13 @@ namespace Lodis.UI
             }
 
         }
+
+        private void OnDisable()
+        {
+            _onDisable.Invoke();
+            _onDisable = null;
+        }
+
         private void ResetValues(Scene arg0, LoadSceneMode arg1)
         {
             SetColor(1);
@@ -212,14 +222,17 @@ namespace Lodis.UI
             }
             int num = _currentPlayer;
 
+            PlayerControls controls = new PlayerControls();
+            controls.Enable();
+
             playerInput.onActionTriggered += context =>
             {
                 if (!GetPlayerSelected(num) && !CheckMenuActive(num) && !GetMovesListOpen(num))
                     RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateMenu(playerInput, num), TimedActionCountType.FRAME, 1);
             };
 
-            playerInput.actions.actionMaps[1].FindAction("Navigate").started += context => GoToPage(context, num);
-            playerInput.actions.actionMaps[1].FindAction("MiddleClick").started += context =>
+            controls.UI.Navigate.started += context => GoToPage(context, num);
+            controls.UI.MiddleClick.started += context =>
             {
                 if (_canStart)
                     StartMatch();
@@ -227,20 +240,22 @@ namespace Lodis.UI
                     ActivateMenu(playerInput, num);
             };
 
-            playerInput.actions.actionMaps[1].FindAction("RightClick").started += context =>
+            controls.UI.RightClick.started += context =>
             {
                 if (CheckMenuActive(num))
                     SetColor(num);
             };
-            playerInput.actions.actionMaps[1].FindAction("Cancel").started += context =>
+            controls.UI.Cancel.started += context =>
             {
                 if (GetPlayerReady(num) || GetMovesListOpen(num))
                     ActivateMenu(playerInput, num);
 
                 CloseMovesList(num);
             };
-            playerInput.actions.actionMaps[1].FindAction("Cancel").performed += context => TryGoingToMainMenu(_currentPlayer);
-            playerInput.actions.actionMaps[1].FindAction("Toggle").performed += context => OpenMoveList(num);
+            controls.UI.Cancel.performed += context => TryGoingToMainMenu(_currentPlayer);
+            controls.UI.Toggle.performed += context => OpenMoveList(num);
+
+            _onDisable += controls.Disable;
             _currentPlayer = 2;
         }
         public void SetData(int player, CharacterData data)

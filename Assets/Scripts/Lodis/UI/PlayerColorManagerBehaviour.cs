@@ -50,5 +50,11 @@ namespace Lodis.UI
             _setColorEvent?.Raise(gameObject);
             _onSetColor?.Invoke();
         }
+
+        public void Recolor()
+        {
+            _setColorEvent?.Raise(gameObject);
+            _onSetColor?.Invoke();
+        }
     }
 }

@@ -52,6 +52,8 @@ namespace Lodis.UI
         private UnityEngine.EventSystems.EventSystem _eventSystem;
         [SerializeField]
         private PageManagerBehaviour _pageManager;
+        [SerializeField]
+        private PlayerColorManagerBehaviour _colorManager;
         private GameObject _lastSelectedSpecial;
         private GameObject _lastSelected;
 
@@ -99,6 +101,7 @@ namespace Lodis.UI
                 buttonInstance.AddOnSelectEvent(() =>
                 {
                     _customCharacterManager.LoadCustomCharacter(optionName);
+                    _colorManager?.Recolor();
                 });
 
                 buttonInstance.AddOnClickEvent(() =>

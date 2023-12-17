@@ -20,13 +20,25 @@ public class MeshReplacementBehaviour : MonoBehaviour
     [SerializeField]
     private SkinnedMeshRenderer _bodyRenderer;
     [SerializeField]
+    private SkinnedMeshRenderer _noseRenderer;
+    [SerializeField]
+    private SkinnedMeshRenderer _lEarRenderer;
+    [SerializeField]
+    private SkinnedMeshRenderer _rEarRenderer;
+    [SerializeField]
     private SkinnedMeshRenderer _hairRenderer;
 
     public List<ArmorData> ArmorReplacements { get => _armorReplacements; private set => _armorReplacements = value; }
     public Color FaceColor 
     {
         get => _bodyRenderer.material.GetColor("_Color");
-        set => _bodyRenderer.material.SetColor("_Color", value);
+        set
+        { 
+            _bodyRenderer.material.SetColor("_Color", value);
+            _noseRenderer.material.SetVector("_Color", value);
+            _lEarRenderer.material.SetVector("_Color", value);
+            _rEarRenderer.material.SetVector("_Color", value);
+        }
     }
     public Color HairColor
     {

@@ -10,17 +10,19 @@ namespace Lodis.UI
         [SerializeField]
         private PlayerInput _playerInput;
         private PlayerColorManagerBehaviour _playerColorManager;
+        private InputAction _action;
         private int _currentIndex;
+        private bool _canChangeColor;
 
         // Start is called before the first frame update
         void Start()
         {
             _playerColorManager = GetComponent<PlayerColorManagerBehaviour>();
             _playerColorManager.SetPlayerColor(1, 0);
-            _playerInput.actions.actionMaps[1].FindAction("RightClick").started += SetColor;
+            _action = _playerInput.actions.actionMaps[1].FindAction("RightClick");
         }
 
-        private void SetColor(InputAction.CallbackContext context)
+        private void SetColor()
         {
             _currentIndex++;
 
@@ -30,9 +32,18 @@ namespace Lodis.UI
             _playerColorManager.SetPlayerColor(1, _currentIndex);
         }
 
-        private void OnDisable()
+        private void Update()
         {
-            _playerInput.actions.actionMaps[1].FindAction("RightClick").started -= SetColor;
+            bool buttonDown = _action.ReadValue<float>() == 1;
+
+            if (buttonDown && _canChangeColor)
+            {
+                SetColor();
+                _canChangeColor = false;
+            }
+
+            if (!buttonDown)
+                _canChangeColor = true;
         }
     }
 }

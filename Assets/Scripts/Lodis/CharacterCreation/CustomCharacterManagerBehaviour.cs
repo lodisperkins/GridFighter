@@ -100,7 +100,7 @@ namespace Lodis.CharacterCreation
 
             CustomCharacter.ReplaceMeshes(replacements);
             Vector4 hairValue = JsonConvert.DeserializeObject<Vector4>(reader.ReadLine());
-            Vector4 faceValue = (Vector4)JsonConvert.DeserializeObject<Vector4>(reader.ReadLine());
+            Vector4 faceValue = JsonConvert.DeserializeObject<Vector4>(reader.ReadLine());
 
             CustomCharacter.HairColor = hairValue.ToColor();
             CustomCharacter.FaceColor = faceValue.ToColor();
@@ -108,13 +108,13 @@ namespace Lodis.CharacterCreation
             reader.Close();
         }
 
-        public static List<ArmorData> LoadCustomCharacterArmor(string characterName)
+        public static void LoadCustomCharacter(string characterName, out List<ArmorData> replacements, out Color hairColor, out Color faceColor)
         {
 
             string armorPath = _saveLoadPath + "/" + characterName + "_ArmorSet.txt";
 
             StreamReader reader = new StreamReader(armorPath);
-            List<ArmorData> replacements = new List<ArmorData>();
+            replacements = new List<ArmorData>();
             string armorName = reader.ReadLine();
 
             while (armorName != "EndArmor")
@@ -129,9 +129,13 @@ namespace Lodis.CharacterCreation
                     replacements.Add(_defaultSets[i]);
             }
 
-            reader.Close();
+            Vector4 hairValue = JsonConvert.DeserializeObject<Vector4>(reader.ReadLine());
+            Vector4 faceValue = JsonConvert.DeserializeObject<Vector4>(reader.ReadLine());
 
-            return replacements;
+            hairColor = hairValue.ToColor();
+            faceColor = faceValue.ToColor();
+
+            reader.Close();
         }
 
         public void ReplaceArmorPiece(ArmorData data)

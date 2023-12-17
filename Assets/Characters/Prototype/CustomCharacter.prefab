@@ -1499,6 +1499,9 @@ MonoBehaviour:
     Part: 16
   _armorReplacements: []
   _bodyRenderer: {fileID: 445682474800350874}
+  _noseRenderer: {fileID: 680128867802068530}
+  _lEarRenderer: {fileID: 4135488061659540506}
+  _rEarRenderer: {fileID: 7936768742294066356}
   _hairRenderer: {fileID: 8436353343081100233}
 --- !u!1 &2802486055510626186
 GameObject:

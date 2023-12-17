@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 339a0f94a0445ff4d857534cad04dbb9, type: 3}
+  m_Name: L_ShinGuards
+  m_EditorClassIdentifier: 
+  _armorPieces:
+  - ArmorMesh: {fileID: -3405580897607577483, guid: dc49d54e3eba6a446941613a3fc2efde,
+      type: 3}
+    BodyPart: 5
+  - ArmorMesh: {fileID: -6987547435067959357, guid: dc49d54e3eba6a446941613a3fc2efde,
+      type: 3}
+    BodyPart: 11
+  - ArmorMesh: {fileID: 6527654189549270266, guid: dc49d54e3eba6a446941613a3fc2efde,
+      type: 3}
+    BodyPart: 6
+  - ArmorMesh: {fileID: -8092056421866890078, guid: dc49d54e3eba6a446941613a3fc2efde,
+      type: 3}
+    BodyPart: 12
+  _armorMaterial: {fileID: 2100000, guid: de2e2258403916142a08706cbf1934ee, type: 2}
+  _bodySection: 5
+  _armorSetName: Shin Guards
+  _displayIcon: {fileID: 21300000, guid: 2b2e03907d6188448bc19ac5fbc0d964, type: 3}

@@ -128,9 +128,15 @@ namespace Lodis.Gameplay
                 _p2Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(Player2Data.DisplayName);
                 MeshReplacementBehaviour meshManager = _p2Input.Character.GetComponentInChildren<MeshReplacementBehaviour>();
 
-                List<ArmorData> armorSet = CustomCharacterManagerBehaviour.LoadCustomCharacterArmor(Player2Data.DisplayName);
+                List<ArmorData> armorSet;
+                Color hairColor;
+                Color faceColor;
+
+                CustomCharacterManagerBehaviour.LoadCustomCharacter(Player2Data.DisplayName, out armorSet, out hairColor, out faceColor);
 
                 meshManager.ReplaceMeshes(armorSet);
+                meshManager.HairColor = hairColor;
+                meshManager.FaceColor = faceColor;
             }
 
             _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
@@ -178,9 +184,15 @@ namespace Lodis.Gameplay
                 _p1Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(Player1Data.DisplayName);
                 MeshReplacementBehaviour meshManager = _p1Input.Character.GetComponentInChildren<MeshReplacementBehaviour>();
 
-                List<ArmorData> armorSet = CustomCharacterManagerBehaviour.LoadCustomCharacterArmor(Player1Data.DisplayName);
+                List<ArmorData> armorSet;
+                Color hairColor;
+                Color faceColor;
+
+                CustomCharacterManagerBehaviour.LoadCustomCharacter(Player1Data.DisplayName, out armorSet, out hairColor, out faceColor);
 
                 meshManager.ReplaceMeshes(armorSet);
+                meshManager.HairColor = hairColor;
+                meshManager.FaceColor = faceColor;
             }
 
             BlackBoardBehaviour.Instance.Player1Controller = _p1Input;
