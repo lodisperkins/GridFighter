@@ -4297,6 +4297,7 @@ MonoBehaviour:
   _backgroundImage: {fileID: 458338553}
   _defaultAICharacter: {fileID: 11400000, guid: 567c30f40491a064f90f02a5a10582ab,
     type: 2}
+  _dummyCharacter: {fileID: 11400000, guid: c973a395d8ab6054db15a9916181506d, type: 2}
   _p2IsCustom: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976, type: 2}
   _currentPlayer: 1
 --- !u!1 &1047616432

@@ -20,6 +20,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Stadium.unity
     guid: 446e494dc8ef2e645b3ff92e72925035
+  - enabled: 1
+    path: Assets/Scenes/TrainingArea.unity
+    guid: fe73b00fb58e97c49801a6bb2bcf6a4d
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 21520ada83f28544b99552ef15443e04,
       type: 2}

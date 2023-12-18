@@ -23336,9 +23336,7 @@ MonoBehaviour:
   _backgroundImage: {fileID: 2146222946}
   _primaryColorImages: []
   _secondaryColorImages: []
-  _blendColorImages:
-  - {fileID: 0}
-  - {fileID: 0}
+  _blendColorImages: []
   _displayBorder: {fileID: 0}
 --- !u!114 &2146222946
 MonoBehaviour:

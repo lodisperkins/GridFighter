@@ -13,6 +13,7 @@ namespace Lodis.Utility
     public enum GameMode
     {
         SINGLEPLAYER,
+        PlayerVSCPU,
         PRACTICE,
         MULTIPLAYER,
         SIMULATE

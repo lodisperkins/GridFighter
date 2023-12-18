@@ -51,6 +51,8 @@ namespace Lodis.UI
         [SerializeField]
         private CharacterData _defaultAICharacter;
         [SerializeField]
+        private CharacterData _dummyCharacter;
+        [SerializeField]
         private BoolVariable _p2IsCustom;
         private PlayerInputManager _inputManager;
         private bool _canStart;
@@ -72,18 +74,25 @@ namespace Lodis.UI
         private void Start()
         {
             SetColor(1);
-            SetColor(2);
             SceneManager.sceneLoaded += ResetValues;
             SceneManagerBehaviour.Instance.P1Devices = new InputDevice[0];
             SceneManagerBehaviour.Instance.P2Devices = new InputDevice[0];
             
             _inputManager = GetComponent<PlayerInputManager>();
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
             {
                 SetDataP2(_defaultAICharacter);
                 _player2JoinInstruction.enabled = false;
                 _p2IsCustom.Value = false;
             }
+            else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
+            {
+                _colorManager.SetPlayerColor(2, 5);
+                SetDataP2(_dummyCharacter);
+                _player2JoinInstruction.enabled = false;
+                _p2IsCustom.Value = false;
+            }
+            SetColor(2);
 
         }
 
@@ -392,7 +401,10 @@ namespace Lodis.UI
         }
         public void StartMatch()
         {
-            SceneManagerBehaviour.Instance.LoadScene(4);
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
+                SceneManagerBehaviour.Instance.LoadScene(4);
+            else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
+                SceneManagerBehaviour.Instance.LoadScene(5);
         }
         void Update()
         {
