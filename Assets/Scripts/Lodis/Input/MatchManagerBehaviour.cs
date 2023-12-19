@@ -258,6 +258,22 @@ namespace Lodis.Gameplay
             BlackBoardBehaviour.Instance.Player2Controller.Enabled = value;
         }
 
+        public void ToggleInfiniteEnergy()
+        {
+            InfiniteEnergy = !InfiniteEnergy;
+        }
+
+        public void ToggleInvincibleBarriers()
+        {
+            InvincibleBarriers = !InvincibleBarriers;
+
+            if (InvincibleBarriers)
+            {
+                _ringBarrierL.SetInvincibilityByCondition(condition => !InvincibleBarriers);
+                _ringBarrierR.SetInvincibilityByCondition(condition => !InvincibleBarriers);
+            }
+        }
+
         public void TogglePauseMenu()
         {
             if (!_canPause)

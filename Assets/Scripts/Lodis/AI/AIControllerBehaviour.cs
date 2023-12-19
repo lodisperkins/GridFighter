@@ -261,6 +261,7 @@ namespace Lodis.AI
         {
             _executor.enabled = false;
             _aiMovementBehaviour.enabled = false;
+            RoutineBehaviour.Instance.StopAction(_playbackRoutine);
         }
 
         private void OnDestroy()
@@ -418,6 +419,7 @@ namespace Lodis.AI
 
         }
 
+
         /// <summary>
         /// Stops whatever action the AI is doing and prevents playing a new action.
         /// </summary>
@@ -567,6 +569,7 @@ namespace Lodis.AI
             {
                 //...find a new action in the recording list.
                 StartNewAction();
+                return;
             }
 
             //If the AI is current performing an action return.

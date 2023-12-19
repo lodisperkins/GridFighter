@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae427968357f8949932dc4169433a0f, type: 3}
+  m_Name: EmptyVoicePack
+  m_EditorClassIdentifier: 
+  _hurt1: {fileID: 0}
+  _hurt2: {fileID: 0}
+  _hurt3: {fileID: 0}
+  _lightAttack1: {fileID: 0}
+  _lightAttack2: {fileID: 0}
+  _lightAttack3: {fileID: 0}
+  _heavyAttack1: {fileID: 0}
+  _heavyAttack2: {fileID: 0}
+  _heavyAttack3: {fileID: 0}
+  _superAttack: {fileID: 0}
+  _death: {fileID: 0}
+  _burst: {fileID: 0}
+  _spawn: {fileID: 0}

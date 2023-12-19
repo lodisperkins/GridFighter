@@ -19,8 +19,9 @@ namespace Lodis.UI
         private float _timeSinceRoundStart;
         [SerializeField]
         private CustomEventSystem.Event _onTimerUp;
-        private bool _timeUp;
+        [SerializeField]
         private bool _isInfinite;
+        private bool _timeUp;
         private bool _isActive;
         private bool _eventRaised;
 

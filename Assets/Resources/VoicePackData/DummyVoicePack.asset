@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ae427968357f8949932dc4169433a0f, type: 3}
+  m_Name: DummyVoicePack
+  m_EditorClassIdentifier: 
+  _hurt1: {fileID: 8300000, guid: 16dbab367c7c2428cae34b835327e11d, type: 3}
+  _hurt2: {fileID: 8300000, guid: d426c730e602b4417a336dd856277dc5, type: 3}
+  _hurt3: {fileID: 8300000, guid: ca1ffa606626747deb8b59acb311493f, type: 3}
+  _lightAttack1: {fileID: 8300000, guid: 9a8238f946d384f4bb9273a1c29c88e0, type: 3}
+  _lightAttack2: {fileID: 8300000, guid: 3708c357bad77451f914a3332c3e754c, type: 3}
+  _lightAttack3: {fileID: 8300000, guid: 5789bba600e484a618ad379ed97c839d, type: 3}
+  _heavyAttack1: {fileID: 8300000, guid: 2c4f7761589904cbb9feacc49edf284a, type: 3}
+  _heavyAttack2: {fileID: 8300000, guid: 200d476c6b4d349c9b5add7b69921933, type: 3}
+  _heavyAttack3: {fileID: 8300000, guid: 9f11711c73d6642d1bac23020dfb80f1, type: 3}
+  _superAttack: {fileID: 8300000, guid: 392f0e32b2f514ec4923a10c0931ea6d, type: 3}
+  _death: {fileID: 8300000, guid: 0c901bd3899de46e2aadb0a3dc94d1f3, type: 3}
+  _burst: {fileID: 8300000, guid: ac78c3d65c0ab4d75945620fdb0aa021, type: 3}
+  _spawn: {fileID: 8300000, guid: 71a0790b2ca7744bb96601a642c7417a, type: 3}
