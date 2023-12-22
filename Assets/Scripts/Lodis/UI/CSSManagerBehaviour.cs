@@ -401,7 +401,7 @@ namespace Lodis.UI
         }
         public void StartMatch()
         {
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.MULTIPLAYER)
                 SceneManagerBehaviour.Instance.LoadScene(4);
             else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
                 SceneManagerBehaviour.Instance.LoadScene(5);
