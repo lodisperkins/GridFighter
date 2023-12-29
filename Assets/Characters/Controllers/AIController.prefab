@@ -171,8 +171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _character: {fileID: 0}
-  _attackType: 4
-  _attackDelay: 1
   _attackStrength: 1.5
   _maxRange: 10
   _attackDirection: {x: 0, y: 0}
@@ -181,32 +179,21 @@ MonoBehaviour:
   _canAttack: 1
   _maxDecisionCount: 20000
   _timeNeededToBurst: 0
-  LastDefenseDecision:
-    VisitCount: 0
-    Wins: 0
-    BaseWeight: 0
-    DefenseDecision: 0
-    CounterAbilityName: 
-    AveragePosition: {x: 0, y: 0, z: 0}
-    AverageVelocity: {x: 0, y: 0, z: 0}
-  MovePosition: {x: 0, y: 0}
-  EnableBehaviourTree: 0
   _copyAttacks: 0
   _saveStateDelay: 0.5
   _losePenalty: -2
   _winReward: 4
-  _recordingName: Axton
   _useRecording: 1
-  _actionScoreMax: 6
-  _lastScore: 0
+  _actionScoreMax: 5
+  _lastScore: 3.9716568
   _directionWeight: 1.5
   _opponentVelocityWeight: 1
-  _distanceWeight: 2
+  _distanceWeight: 3
   _avgHitBoxOffsetWeight: 1.5
   _avgVelocityWeight: 1
   _matchTimeRemainingWeight: 0
-  _opponentStateWeight: 0.5
-  _opponentHealthWeight: 1.2
+  _opponentStateWeight: 0.7
+  _opponentHealthWeight: 1
 --- !u!114 &7025333189879560728
 MonoBehaviour:
   m_ObjectHideFlags: 0

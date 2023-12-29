@@ -109,12 +109,17 @@ namespace Lodis.Utility
         /// <returns>False if the action is not in the list of actions</returns>
         public bool StopAction(DelayedAction action)
         {
-            if (action == null)
+            if (action == null || !_delayedActions.Contains(action))
                 return false;
 
             action.Disable();
             action.OnCancel?.Invoke();
             return _delayedActions.Remove(action);
+        }
+
+        public bool ContainsActions(DelayedAction action)
+        {
+            return _delayedActions.Contains(action);
         }
 
         // Update is called once per frame

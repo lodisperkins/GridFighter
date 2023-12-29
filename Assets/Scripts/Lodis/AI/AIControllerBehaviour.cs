@@ -487,7 +487,12 @@ namespace Lodis.AI
             if (ID == -1 || ID == -2)
                 return true;
 
-            return _moveset.SpecialAbilitySlots.Contains<Ability>(ability => ability.abilityData.ID == ID) || _moveset.NormalDeckContains(ID);
+            Ability special = _moveset.GetAbilityInCurrentSlot(ID);
+
+            if (special != null && special.abilityData.EnergyCost > _moveset.Energy)
+                return false;
+
+            return special != null || _moveset.NormalDeckContains(ID);
         }
 
         /// <summary>
@@ -497,32 +502,44 @@ namespace Lodis.AI
         {
             bool actionFound = false;
             float currentLowest = _actionScoreMax;
+            float modifier = 0;
 
-            //Iterate through recording list.
-            for (int i = 0; i < _recordings.Length; i++)
+            while (!actionFound)
             {
-                List<ActionNode> recording = _recordings[i];
-
-                //Iterate through current recording actions.
-                for (int j = 0; j < recording.Count; j++)
+                //Iterate through recording list.
+                for (int i = 0; i < _recordings.Length; i++)
                 {
-                    float compareVal = recording[j].Compare(_currentSituation);
+                    List<ActionNode> recording = _recordings[i];
 
-                    //If the current action is valid and matches our situation more closely than the last action...
-                    if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + 1) < currentLowest && ValidateAction(recording[j].CurrentAbilityID))
+                    //Iterate through current recording actions.
+                    for (int j = 0; j < recording.Count; j++)
                     {
-                        //...update the current action.
-                        _currentRecording = recording;
-                        _currentActionIndex = j;
-                        _currentRecordingIndex = i;
-                        currentLowest = compareVal;
-                        actionFound = true;
+                        float compareVal = recording[j].Compare(_currentSituation);
+                        compareVal -= modifier;
+
+                        //If the current action is valid and matches our situation more closely than the last action...
+                        if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + 1) < currentLowest && ValidateAction(recording[j].CurrentAbilityID))
+                        {
+                            //...update the current action.
+                            _currentRecording = recording;
+                            _currentActionIndex = j;
+                            _currentRecordingIndex = i;
+                            currentLowest = compareVal;
+                            actionFound = true;
+                        }
                     }
                 }
-            }
 
+                modifier++;
+
+                if (modifier >= 3)
+                    break;
+            }
             if (!actionFound)
                 Debug.Log("Couldn't find recording that matched situation.");
+
+            if (!RoutineBehaviour.Instance.ContainsActions(_playbackRoutine) && _playbackRoutine != null && _playbackRoutine.GetEnabled())
+                Debug.Log("Doesn't contain action");
 
             //Play the the action at the current index after storing  the amount of time it took to act in the previous action.
             //This is to be sure the last actions delay doesn't effect the next.

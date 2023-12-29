@@ -397,6 +397,19 @@ namespace Lodis.Gameplay
             return _specialAbilitySlots[index];
         }
 
+        /// <summary>
+        /// Gets the special ability at the given index in the active ability slots.
+        /// </summary>
+        public Ability GetAbilityInCurrentSlotByID(int ID)
+        {
+            if (_specialAbilitySlots[0].abilityData.ID == ID)
+                return _specialAbilitySlots[0];
+            else if (_specialAbilitySlots[1].abilityData.ID == ID)
+                return _specialAbilitySlots[1];
+
+            return null;
+        }
+
         public void AddOnUpdateHandAction(UnityAction action)
         {
             OnUpdateHand += action;

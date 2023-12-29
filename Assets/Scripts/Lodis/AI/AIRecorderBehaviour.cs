@@ -149,7 +149,14 @@ namespace Lodis.AI
         {
             if (_recordings.Length == 0) return;
 
-            string recordingPath = Application.persistentDataPath + "/AIRecordings/" + RecordingName + ".txt";
+
+            string recordingPath = "";
+
+            if (Application.isEditor)
+                recordingPath = Application.dataPath +"/StreamingAssets/" + "/AIRecordings/" + RecordingName + ".txt";
+            else
+                recordingPath = Application.streamingAssetsPath + "/AIRecordings/" + RecordingName + ".txt";
+
             if (!File.Exists(recordingPath))
             {
                 FileStream stream = File.Create(recordingPath);
@@ -165,10 +172,18 @@ namespace Lodis.AI
 
         public static List<ActionNode>[] Load(string recordingName)
         {
-            if (!File.Exists(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt"))
+
+            string recordingPath = "";
+
+            if (Application.isEditor)
+                recordingPath = Application.dataPath + "/StreamingAssets/" + "/AIRecordings/" + recordingName + ".txt";
+            else
+                recordingPath = Application.streamingAssetsPath + "/AIRecordings/" + recordingName + ".txt";
+
+            if (!File.Exists(recordingPath))
                 return null;
 
-            StreamReader reader = new StreamReader(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt");
+            StreamReader reader = new StreamReader(recordingPath);
             List<ActionNode>[] recordings = JsonConvert.DeserializeObject<List<ActionNode>[]>(reader.ReadToEnd(), Settings);
 
             Debug.Log("Loaded " + recordings.Length + "recordings");
@@ -179,10 +194,18 @@ namespace Lodis.AI
 
         public static List<ActionNode>[] Load(string recordingName, MovesetBehaviour ownerMoveset, int limit = -1)
         {
-            if (!File.Exists(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt"))
+
+            string recordingPath = "";
+
+            if (Application.isEditor)
+                recordingPath = Application.dataPath + "/StreamingAssets" + "/AIRecordings/" + recordingName + ".txt";
+            else
+                recordingPath = Application.streamingAssetsPath + "/AIRecordings/" + recordingName + ".txt";
+
+            if (!File.Exists(recordingPath))
                 return null;
 
-            StreamReader reader = new StreamReader(Application.persistentDataPath + "/AIRecordings/" + recordingName + ".txt");
+            StreamReader reader = new StreamReader(recordingPath);
             List<ActionNode>[] recordingData = JsonConvert.DeserializeObject<List<ActionNode>[]>(reader.ReadToEnd(), Settings);
 
             List<ActionNode>[] recordings = new List<ActionNode>[0];
