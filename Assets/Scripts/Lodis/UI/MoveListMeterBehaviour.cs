@@ -34,7 +34,10 @@ namespace Lodis.UI
 
         private void UpdateMeterValue()
         {
-            AbilityData data = _playerCursor.EventSystem.currentSelectedGameObject.GetComponent<MoveDescriptionBehaviour>().Data;
+            if (_playerCursor.EventSystem.currentSelectedGameObject == null)
+                return;
+
+            AbilityData data = _playerCursor.EventSystem.currentSelectedGameObject.GetComponent<MoveDescriptionBehaviour>()?.Data;
             if (data != null)
                 _slider.DOValue(data.EnergyCost, _lerpDuration).SetUpdate(true);
             else return;

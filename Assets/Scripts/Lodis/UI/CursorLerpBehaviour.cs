@@ -38,7 +38,7 @@ namespace Lodis.UI
 
         void Update()
         {
-            if (!EventSystem)
+            if (!EventSystem || !_cursor.gameObject.activeInHierarchy)
                 return;
 
             if (_lastSelectedGameObject != EventSystem.currentSelectedGameObject)

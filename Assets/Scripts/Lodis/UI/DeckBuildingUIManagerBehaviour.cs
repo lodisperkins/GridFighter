@@ -21,6 +21,8 @@ namespace Lodis.UI
 
         [Header("Current Deck Page")]
         [SerializeField]
+        private MovesListBehaviour _movesList;
+        [SerializeField]
         private EventButtonBehaviour _loadoutButton;
         [SerializeField]
         private GameObject _loadoutOptions;
@@ -31,13 +33,13 @@ namespace Lodis.UI
         [SerializeField]
         private VideoPlayer _infoPlayer;
         [SerializeField]
-        private Image _backIconSlot;
+        private EventButtonBehaviour _backIconSlot;
         [SerializeField]
-        private Image _forwardIconSlot;
+        private EventButtonBehaviour _forwardIconSlot;
         [SerializeField]
-        private Image _neautralIconSlot;
+        private EventButtonBehaviour _neutralIconSlot;
         [SerializeField]
-        private Image _upDownIconSlot;
+        private EventButtonBehaviour _upDownIconSlot;
 
         [SerializeField]
         private EventButtonBehaviour[] _specialIcons;
@@ -107,18 +109,22 @@ namespace Lodis.UI
                 buttonInstance.AddOnClickEvent(() =>
                 {
                     _buildManager.LoadCustomDeck(optionName);
-                    PageManager.GoToNextPage();
+                    PageManager.GoToPageChild(0);
                 });
                 _deckChoices.Add(buttonInstance);
             }
         }
 
-        public void ToggleAllSpecialsInDeck(bool enabled)
+        public void ToggleAllItemsInDeck(bool enabled)
         {
             foreach (EventButtonBehaviour button in _specialIcons)
             {
                 button.UIButton.interactable = enabled;
             }
+            _upDownIconSlot.UIButton.interactable = enabled;
+            _neutralIconSlot.UIButton.interactable = enabled;
+            _backIconSlot.UIButton.interactable = enabled;
+            _forwardIconSlot.UIButton.interactable = enabled;
         }
 
         public void SetSelectedToLast()
@@ -128,17 +134,19 @@ namespace Lodis.UI
 
         public void UpdateDeck()
         {
-            _backIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKBACKWARD).DisplayIcon;
-            _forwardIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKFORWARD).DisplayIcon;
-            _neautralIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKNEUTRAL).DisplayIcon;
-            _upDownIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKSIDE).DisplayIcon;
+            //_backIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKBACKWARD).DisplayIcon;
+            //_forwardIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKFORWARD).DisplayIcon;
+            //_neautralIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKNEUTRAL).DisplayIcon;
+            //_upDownIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKSIDE).DisplayIcon;
 
-            for (int i = 0; i < _buildManager.SpecialDeck.AbilityData.Count; i++)
-            {
-                AbilityData data = _buildManager.SpecialDeck.AbilityData[i];
-                _specialIcons[i].UIButton.image.sprite = data.DisplayIcon;
-                _specialIcons[i].UIButton.image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)data.EnergyCost];
-            }
+            //for (int i = 0; i < _buildManager.SpecialDeck.AbilityData.Count; i++)
+            //{
+            //    AbilityData data = _buildManager.SpecialDeck.AbilityData[i];
+            //    _specialIcons[i].UIButton.image.sprite = data.DisplayIcon;
+            //    _specialIcons[i].UIButton.image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)data.EnergyCost];
+            //}
+
+            _movesList.UpdateUI(_buildManager.NormalDeck, _buildManager.SpecialDeck);
         }
 
         public void FocusAbilitySection(string sectionName)
@@ -148,6 +156,22 @@ namespace Lodis.UI
                 if (section.name == sectionName)
                 {
                     section.gameObject.SetActive(true);
+                    UpdateIconChoicesWithType((int)section.AbilityType, true);
+                    continue;
+                }
+
+                section.gameObject.SetActive(false);
+            }
+        }
+
+        public void FocusAbilitySection(int sectionType)
+        {
+            foreach (AbilitySectionBehaviour section in _abilitySections)
+            {
+                if ((int)section.AbilityType == sectionType)
+                {
+                    section.gameObject.SetActive(true);
+                    UpdateIconChoicesWithType((int)section.AbilityType, true);
                     continue;
                 }
 
@@ -188,12 +212,11 @@ namespace Lodis.UI
 
                 EventButtonBehaviour abilityButtonInstance = Instantiate(_abilityButton, iconTransform);
 
+                abilityButtonInstance.Init();
                 abilityButtonInstance.ButtonImage.sprite = currentData.DisplayIcon;
                 abilityButtonInstance.ButtonImage.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)currentData.EnergyCost];
                 abilityButtonInstance.name = currentData.abilityName;
 
-                if (setSelected)
-                    Selected = abilityButtonInstance.gameObject;
 
 
                 if ((AbilityType)type == AbilityType.SPECIAL)
@@ -201,9 +224,9 @@ namespace Lodis.UI
                     abilityButtonInstance.AddOnClickEvent(() =>
                     {
                         _buildManager.CurrentAbilityType = type;
-                        _buildManager.ReplacementName = currentData.abilityName;
-                        ToggleAllSpecialsInDeck(true);
-                        Selected = _specialIcons[0].gameObject;
+                        _buildManager.ReplaceAbility(currentData.abilityName);
+                        UpdateDeck();
+                        UpdateIconChoicesWithType(type, true);
                     });
                 }
                 else
@@ -223,6 +246,12 @@ namespace Lodis.UI
                     _infoPlayer.clip = currentData.exampleClip;
                 });
 
+                if (setSelected)
+                {
+                    Selected = abilityButtonInstance.gameObject;
+                    abilityButtonInstance.OnSelect();
+                    _eventSystem.UpdateModules();
+                }
                 setSelected = false;
             }
         }

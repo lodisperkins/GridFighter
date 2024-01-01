@@ -78,6 +78,21 @@ namespace Lodis.UI
             _cursor.EventSystem = _eventSystem;
         }
 
+        public void UpdateUI(Deck normalDeckRef, Deck specialDeckRef)
+        {
+            foreach (MoveDescriptionBehaviour normalMove in _normalMoveSlots)
+            {
+                AbilityData data = normalDeckRef.GetAbilityDataByType(normalMove.AbilityType);
+
+                normalMove.Init(_description, _videoPlayer, data);
+            }
+
+            for (int i = 0; i < specialDeckRef.AbilityData.Count; i++)
+            {
+                _specialMoveSlots[i].Init(_description, _videoPlayer, specialDeckRef.AbilityData[i]);
+            }
+        }
+
         private void OnEnable()
         {
             _eventSystem?.SetSelectedGameObject(_firstSelected);

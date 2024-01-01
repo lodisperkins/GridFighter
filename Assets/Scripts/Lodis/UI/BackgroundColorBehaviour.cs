@@ -20,7 +20,9 @@ namespace Lodis.UI
         [SerializeField]
         private Image[] _blendColorImages;
         [SerializeField]
-        private Image _displayBorder;
+        private Image _videoDisplayBorder;
+        [SerializeField]
+        private Image _infoDisplayBorder;
 
         private void Awake()
         {
@@ -83,7 +85,8 @@ namespace Lodis.UI
         {
             Color color;
             ColorUtility.TryParseHtmlString("#" + hex, out color);
-            _displayBorder.color = color;
+            _videoDisplayBorder.color = color;
+            _infoDisplayBorder.color = color;
         }
 
         public void SetPrimaryColor(Color color)
@@ -104,7 +107,7 @@ namespace Lodis.UI
 
         public void SetDisplayBorderColor(Color color)
         {
-            _displayBorder.color = color;
+            _videoDisplayBorder.color = color;
         }
     }
 }

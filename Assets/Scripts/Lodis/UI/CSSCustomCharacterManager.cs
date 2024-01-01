@@ -90,7 +90,7 @@ namespace Lodis.UI
             else
             {
                 Selected = _firstDefaultOption;
-                _pageManager.GoToNextPage();
+                _pageManager.GoToPageChild(0);
                 EventButtonBehaviour buttonBehaviour = _firstDefaultOption.GetComponent<EventButtonBehaviour>();
                 buttonBehaviour.OnSelect(null);
                 buttonBehaviour.OnSelect();

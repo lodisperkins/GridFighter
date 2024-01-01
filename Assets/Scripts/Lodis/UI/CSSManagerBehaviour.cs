@@ -124,7 +124,7 @@ namespace Lodis.UI
                 _player1JoinInstruction.gameObject.SetActive(false);
                 _p1CustomManager.SetEventSystems(_player1EventSystem);
                 _p1CustomManager.SetSelectedToFirstOption();
-                _p1PageManager.GoToPage(0);
+                _p1PageManager.GoToRootPage();
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
             }
@@ -137,7 +137,7 @@ namespace Lodis.UI
                 _player2JoinInstruction.gameObject.SetActive(false);
                 _p2CustomManager.SetEventSystems(_player2EventSystem);
                 _p2CustomManager.SetSelectedToFirstOption();
-                _p2PageManager.GoToPage(0);
+                _p2PageManager.GoToRootPage();
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();
             }
@@ -209,9 +209,9 @@ namespace Lodis.UI
                 charManager = _p2CustomManager;
             }
             if (direction == Vector2.right)
-                manager.GoToNextPage();
+                manager.GoToPageChild(0);
             else if (direction == Vector2.left && charManager.HasCustomDecks)
-                manager.GoToPreviousPage();
+                manager.GoToPageParent();
         }
 
         private bool CheckMenuActive(int playerNum)
