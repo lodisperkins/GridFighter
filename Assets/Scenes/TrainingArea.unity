@@ -1975,12 +1975,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1802234851}
-        m_MethodName: GoToNextPage
-        m_Mode: 1
+        m_MethodName: GoToPageChild
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -7109,41 +7109,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1179234155}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1841244415}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 127878316}
-        m_MethodName: SetSelectedGameObject
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1095333758}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 127878316}
-        m_MethodName: UpdateModules
+      - m_Target: {fileID: 1802234851}
+        m_MethodName: GoToPageParent
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7151,7 +7118,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &549573185
 GameObject:
@@ -11467,42 +11434,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1841244415}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1179234155}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 127878316}
-        m_MethodName: SetSelectedGameObject
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 366229765}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 127878316}
-        m_MethodName: UpdateModules
-        m_Mode: 1
+      - m_Target: {fileID: 1802234851}
+        m_MethodName: GoToPageChild
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -19438,28 +19372,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63eb3837c3ac446459976ae5daf3a86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pages:
-  - PageParent: {fileID: 1841244415}
+  _rootPage:
+    PageRoot: {fileID: 1841244415}
     FirstSelected: {fileID: 1095333758}
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6895064}
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls: []
-  - PageParent: {fileID: 94023307}
-    FirstSelected: {fileID: 0}
+    KeepRootVisible: 0
+    _children:
+    - PageRoot: {fileID: 1179234155}
+      FirstSelected: {fileID: 366229765}
+      KeepRootVisible: 0
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
+    - PageRoot: {fileID: 94023307}
+      FirstSelected: {fileID: 0}
+      KeepRootVisible: 0
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
+    - PageRoot: {fileID: 6895064}
+      FirstSelected: {fileID: 0}
+      KeepRootVisible: 0
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
     OnActive:
       m_PersistentCalls:
         m_Calls: []
@@ -21063,50 +21010,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1948094885}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1948094888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948094887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63eb3837c3ac446459976ae5daf3a86b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pages:
-  - PageParent: {fileID: 1841244415}
-    FirstSelected: {fileID: 1095333758}
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6895064}
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls: []
-  - PageParent: {fileID: 6895064}
-    FirstSelected: {fileID: 0}
-    OnActive:
-      m_PersistentCalls:
-        m_Calls: []
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls: []
-  _eventSystem: {fileID: 127878316}
-  _loadSceneOnFirstPage: 0
-  _previousPageOnCancel: 1
-  _sceneIndex: -1
 --- !u!114 &1948094889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21150,13 +21053,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1948094888}
-        m_MethodName: GoToNextPage
-        m_Mode: 1
+      - m_Target: {fileID: 1802234851}
+        m_MethodName: GoToPageChild
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -23809,7 +23712,8 @@ MonoBehaviour:
   _primaryColorImages: []
   _secondaryColorImages: []
   _blendColorImages: []
-  _displayBorder: {fileID: 0}
+  _videoDisplayBorder: {fileID: 0}
+  _infoDisplayBorder: {fileID: 0}
 --- !u!114 &2146222946
 MonoBehaviour:
   m_ObjectHideFlags: 0

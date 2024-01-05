@@ -1653,8 +1653,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1802234851}
-        m_MethodName: GoToNextPage
-        m_Mode: 1
+        m_MethodName: GoToPageChild
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12937,6 +12937,7 @@ MonoBehaviour:
   _matchTimeRemaining: 0
   _timeSinceRoundStart: 0
   _onTimerUp: {fileID: 11400000, guid: acaf75c9202905d46aa9744f5386428e, type: 2}
+  _isInfinite: 0
 --- !u!4 &1233098218
 Transform:
   m_ObjectHideFlags: 0
@@ -18204,28 +18205,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63eb3837c3ac446459976ae5daf3a86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pages:
-  - PageParent: {fileID: 1841244415}
+  _rootPage:
+    PageRoot: {fileID: 704078041}
     FirstSelected: {fileID: 1095333758}
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6895064}
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls: []
-  - PageParent: {fileID: 94023307}
-    FirstSelected: {fileID: 0}
+    KeepRootVisible: 0
+    _children:
+    - PageRoot: {fileID: 94023307}
+      FirstSelected: {fileID: 0}
+      KeepRootVisible: 0
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
+    - PageRoot: {fileID: 6895064}
+      FirstSelected: {fileID: 0}
+      KeepRootVisible: 0
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
     OnActive:
       m_PersistentCalls:
         m_Calls: []
@@ -19643,50 +19647,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1948094885}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1948094888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1948094887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 63eb3837c3ac446459976ae5daf3a86b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _pages:
-  - PageParent: {fileID: 1841244415}
-    FirstSelected: {fileID: 1095333758}
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 6895064}
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls: []
-  - PageParent: {fileID: 6895064}
-    FirstSelected: {fileID: 0}
-    OnActive:
-      m_PersistentCalls:
-        m_Calls: []
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls: []
-  _eventSystem: {fileID: 127878316}
-  _loadSceneOnFirstPage: 0
-  _previousPageOnCancel: 1
-  _sceneIndex: -1
 --- !u!114 &1948094889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19730,13 +19690,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1948094888}
-        m_MethodName: GoToNextPage
-        m_Mode: 1
+      - m_Target: {fileID: 1802234851}
+        m_MethodName: GoToPageChild
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1

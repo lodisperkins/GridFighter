@@ -85,15 +85,17 @@ namespace Lodis.UI
 
         public void SetSelectedToFirstOption()
         {
+            _pageManager.GoToRootPage();
             if (_deckChoices.Count > 0)
                 Selected = _deckChoices[0].gameObject;
             else
             {
                 Selected = _firstDefaultOption;
-                _pageManager.GoToPageChild(0);
+                _pageManager.GoToPageChild(1);
                 EventButtonBehaviour buttonBehaviour = _firstDefaultOption.GetComponent<EventButtonBehaviour>();
                 buttonBehaviour.OnSelect(null);
                 buttonBehaviour.OnSelect();
+                EventManager.UpdateModules();
             }
         }
 
@@ -144,6 +146,10 @@ namespace Lodis.UI
                     _characterSelectManager.SetData(_playerNum, _customCharacterData);
                     _customFlag.Value = true;
                 });
+
+                if (PageManager.RootPage.FirstSelected == null)
+                    PageManager.RootPage.FirstSelected = buttonInstance.gameObject;
+
                 _deckChoices.Add(buttonInstance);
 
                 Navigation navigationRules = new Navigation();

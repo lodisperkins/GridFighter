@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace Lodis.UI
 {
@@ -13,6 +14,7 @@ namespace Lodis.UI
         public GameObject PageRoot;
         public GameObject FirstSelected;
         public bool KeepRootVisible;
+        public string PageName = "None";
         [SerializeField]
         private Page[] _children;
         private bool _childrenInitialized;
@@ -20,6 +22,17 @@ namespace Lodis.UI
         public Page PageParent;
         public UnityEvent OnActive;
         public UnityEvent OnInactive;
+
+        public Page GetChildByName(string name)
+        {
+            foreach (Page child in Children)
+            {
+                if (child.PageName == name)
+                    return child;
+            }
+
+            return null;
+        }
 
         public Page[] Children
         {
@@ -54,8 +67,11 @@ namespace Lodis.UI
         private int _sceneIndex = -1;
         private int _currentChildIndex;
         private PlayerControls _controls;
+        private PlayerInput _playerInput;
 
         public UnityEngine.EventSystems.EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
+        public Page RootPage { get => _rootPage; private set => _rootPage = value; }
+        public Page CurrentPage { get => _currentPage; private set => _currentPage = value; }
 
         public void Awake()
         {
@@ -63,9 +79,16 @@ namespace Lodis.UI
                 return;
 
             _controls = new PlayerControls();
-            _controls.UI.Cancel.started += context => GoToPageParent();
+            _controls.UI.Cancel.started += context =>
+            {
+                GoToPageParent();
+            };
 
-            _currentPage = _rootPage;
+            //_playerInput = GetComponent<PlayerInput>();
+
+            //_playerInput.actions.FindActionMap("UI").FindAction("Cancel").started += context => GoToPageParent();
+
+            CurrentPage = RootPage;
         }
         public void OnEnable()
         {
@@ -77,45 +100,103 @@ namespace Lodis.UI
             _controls?.Disable();
         }
 
-        public void GoToRootPage()
+        private Page FindPage(Page current, string name)
         {
-            if (_rootPage == null || _currentPage.PageParent == null)
+            if (current.PageName == name)
+                return current;
+
+            Page target = current.GetChildByName(name);
+
+            if (target != null)
+                return target;
+
+            foreach (Page child in current.Children)
+            {
+                target = FindPage(child, name);
+
+                if (target != null)
+                    break;
+            }
+
+
+            return target;
+        }
+
+        public void GoToPage(string name)
+        {
+            Page targetPage = FindPage(RootPage, name);
+
+            if (CurrentPage == null || targetPage == null)
                 return;
 
-            _currentPage.PageRoot.SetActive(false);
-            _currentPage.OnInactive?.Invoke();
+            if (!CurrentPage.KeepRootVisible)
+                CurrentPage.PageRoot?.SetActive(false);
 
-            _currentPage = _rootPage;
+            CurrentPage.OnInactive?.Invoke();
 
-            _currentPage.PageRoot.SetActive(true);
-            EventManager.SetSelectedGameObject(_currentPage.FirstSelected);
-            _currentPage.OnActive?.Invoke();
+            CurrentPage = targetPage;
+
+            CurrentPage.PageRoot.SetActive(true);
+
+            if (EventManager)
+            {
+                EventManager.SetSelectedGameObject(CurrentPage.FirstSelected);
+                EventManager.UpdateModules();
+            }
+
+            CurrentPage.OnActive?.Invoke();
+        }
+
+        public void GoToRootPage()
+        {
+            if (RootPage == null || CurrentPage == RootPage)
+                return;
+
+            if (CurrentPage != null)
+            {
+                CurrentPage.PageRoot.SetActive(false);
+                CurrentPage.OnInactive?.Invoke();
+            }
+
+            CurrentPage = RootPage;
+
+            CurrentPage.PageRoot.SetActive(true);
+            if (EventManager)
+            {
+                EventManager.SetSelectedGameObject(CurrentPage.FirstSelected);
+                EventManager.UpdateModules();
+            }
+            CurrentPage.OnActive?.Invoke();
         }
 
         public void GoToPageChild(int index)
         {
-            if (_currentPage == null || !_currentPage.Children.ContainsIndex(index))
+            if (CurrentPage == null || !CurrentPage.Children.ContainsIndex(index))
                 return;
 
-            if (!_currentPage.KeepRootVisible)
-                _currentPage.PageRoot?.SetActive(false);
+            if (!CurrentPage.KeepRootVisible)
+                CurrentPage.PageRoot?.SetActive(false);
 
-            _currentPage.OnInactive?.Invoke();
+            CurrentPage.OnInactive?.Invoke();
 
             _currentChildIndex = index;
-            _currentPage = _currentPage.Children[_currentChildIndex];
+            CurrentPage = CurrentPage.Children[_currentChildIndex];
 
-            _currentPage.PageRoot.SetActive(true);
-            EventManager.SetSelectedGameObject(_currentPage.FirstSelected);
-            _currentPage.OnActive?.Invoke();
+            CurrentPage.PageRoot.SetActive(true);
+            if (EventManager)
+            {
+                EventManager.SetSelectedGameObject(CurrentPage.FirstSelected);
+                EventManager.UpdateModules();
+            }
+            CurrentPage.OnActive?.Invoke();
         }
 
         public void GoToPageParent()
         {
-            if (_rootPage == null)
+            if (RootPage == null || (CurrentPage?.PageParent == null && CurrentPage != RootPage))
                 return;
 
-            if (_currentPage == _rootPage && _loadSceneOnFirstPage)
+            if (CurrentPage == RootPage && _loadSceneOnFirstPage)
             {
                 if (_sceneIndex == -1)
                     SceneManagerBehaviour.Instance.LoadPreviousScene();
@@ -124,15 +205,27 @@ namespace Lodis.UI
 
                 return;
             }
+            else if (CurrentPage == _rootPage)
+                return;
 
-            _currentPage.PageRoot.SetActive(false);
-            _currentPage.OnInactive?.Invoke();
+            CurrentPage.PageRoot.SetActive(false);
+            CurrentPage.OnInactive?.Invoke();
 
-            _currentPage = _currentPage.PageParent;
+            CurrentPage = CurrentPage.PageParent;
 
-            _currentPage.PageRoot.SetActive(true);
-            EventManager.SetSelectedGameObject(_currentPage.FirstSelected);
-            _currentPage.OnActive?.Invoke();
+            CurrentPage.PageRoot.SetActive(true);
+
+            if (EventManager)
+            {
+                EventManager.SetSelectedGameObject(CurrentPage.FirstSelected);
+                EventManager.UpdateModules();
+            }
+            CurrentPage.OnActive?.Invoke();
+        }
+
+        private void Update()
+        {
+            //Debug.Log(_controls.UI.enabled);    
         }
     }
 }

@@ -70,6 +70,8 @@ namespace Lodis.UI
         private MultiplayerEventSystem _player1EventSystem;
         private MultiplayerEventSystem _player2EventSystem;
         private UnityAction _onDisable;
+        private bool _canSelectCharP1;
+        private bool _canSelectCharP2;
 
         private void Start()
         {
@@ -81,16 +83,23 @@ namespace Lodis.UI
             _inputManager = GetComponent<PlayerInputManager>();
             if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
             {
+                _colorManager.SetPlayerColor(2, 5);
+                _p2ColorIndex = 5;
+                _canSelectCharP2 = true;
                 SetDataP2(_defaultAICharacter);
                 _player2JoinInstruction.enabled = false;
+                _player2Root.SetActive(false);
                 _p2IsCustom.Value = false;
             }
             else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
             {
                 _colorManager.SetPlayerColor(2, 5);
+                _p2ColorIndex = 5;
+                _canSelectCharP2 = true;
                 SetDataP2(_dummyCharacter);
                 _player2JoinInstruction.enabled = false;
                 _p2IsCustom.Value = false;
+                _player2Root.SetActive(false);
             }
             SetColor(2);
 
@@ -124,7 +133,6 @@ namespace Lodis.UI
                 _player1JoinInstruction.gameObject.SetActive(false);
                 _p1CustomManager.SetEventSystems(_player1EventSystem);
                 _p1CustomManager.SetSelectedToFirstOption();
-                _p1PageManager.GoToRootPage();
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
             }
@@ -137,7 +145,6 @@ namespace Lodis.UI
                 _player2JoinInstruction.gameObject.SetActive(false);
                 _p2CustomManager.SetEventSystems(_player2EventSystem);
                 _p2CustomManager.SetSelectedToFirstOption();
-                _p2PageManager.GoToRootPage();
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();
             }
@@ -191,7 +198,7 @@ namespace Lodis.UI
         }
         private void GoToPage(InputAction.CallbackContext context, int playerNum)
         {
-            if (GetPlayerSelected(playerNum) || !CheckMenuActive(playerNum) && GetMovesListOpen(playerNum))
+            if (GetPlayerSelected(playerNum) || !CheckMenuActive(playerNum) || GetMovesListOpen(playerNum))
                 return;
 
             Vector2 direction = context.ReadValue<Vector2>();
@@ -209,7 +216,7 @@ namespace Lodis.UI
                 charManager = _p2CustomManager;
             }
             if (direction == Vector2.right)
-                manager.GoToPageChild(0);
+                manager.GoToPageChild(1);
             else if (direction == Vector2.left && charManager.HasCustomDecks)
                 manager.GoToPageParent();
         }
@@ -238,7 +245,10 @@ namespace Lodis.UI
             playerInput.onActionTriggered += context =>
             {
                 if (!GetPlayerSelected(num) && !CheckMenuActive(num) && !GetMovesListOpen(num))
+                {
                     RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateMenu(playerInput, num), TimedActionCountType.FRAME, 1);
+                    RoutineBehaviour.Instance.StartNewTimedAction(args => SetCanSelectChar(num), TimedActionCountType.FRAME, 2);
+                }
             };
 
             controls.UI.Navigate.started += context => GoToPage(context, num);
@@ -257,22 +267,55 @@ namespace Lodis.UI
             };
             controls.UI.Cancel.started += context =>
             {
-                if (GetPlayerReady(num) || GetMovesListOpen(num))
+                if (GetPlayerReady(num))
                     ActivateMenu(playerInput, num);
-
-                CloseMovesList(num);
+                else
+                    GoToPreviousPage(num);
             };
-            controls.UI.Cancel.performed += context => TryGoingToMainMenu(_currentPlayer);
+            controls.UI.Cancel.performed += context => TryGoingToMainMenu(num);
             controls.UI.Toggle.performed += context => OpenMoveList(num);
 
             _onDisable += controls.Disable;
             _currentPlayer = 2;
         }
+
+        private void GoToPreviousPage(int playerNum)
+        {
+            PageManagerBehaviour pageManager = null;
+            CSSCustomCharacterManager custManager = null;
+
+            if (playerNum == 1)
+            {
+                pageManager = _p1PageManager;
+                custManager = _p1CustomManager;
+            }
+            else if (playerNum == 2)
+            {
+                pageManager = _p2PageManager;
+                custManager = _p2CustomManager;
+            }
+
+            if (pageManager.CurrentPage?.PageParent.PageName == "custom" && !custManager.HasCustomDecks)
+                pageManager.GoToPage("default");
+            else if (pageManager.CurrentPage.PageName == "default" && !custManager.HasCustomDecks)
+                return;
+            else
+                pageManager.GoToPageParent();
+        }
+
+        private void SetCanSelectChar(int playerNum)
+        {
+            if (playerNum == 1)
+                _canSelectCharP1 = true;
+            else if (playerNum == 2)
+                _canSelectCharP2 = true;
+        }
+
         public void SetData(int player, CharacterData data)
         {
-            if (player == 1)
+            if (player == 1 && _canSelectCharP1)
                 SetDataP1(data);
-            else if (player == 2)
+            else if (player == 2 && _canSelectCharP2)
                 SetDataP2(data);
         }
         public void SetDataP1(CharacterData data)
@@ -281,17 +324,20 @@ namespace Lodis.UI
             _p1Data.CharacterReference = data.CharacterReference;
             _p1Data.HeadShot = data.HeadShot;
             _p1CharacterSelected = true;
-            _player1Root.SetActive(false);
-            if (_p1ColorIndex == _p2ColorIndex && !_p2CharacterSelected)
+            _p1PageManager.GoToPage("ready");
+
+            if (_p1ColorIndex == _p2ColorIndex && (!_p2CharacterSelected || SceneManagerBehaviour.Instance.GameMode != (int)GameMode.MULTIPLAYER))
                 SetColor(2);
         }
         public void SetDataP2(CharacterData data)
         {
+
             _p2Data.DisplayName = data.DisplayName;
             _p2Data.CharacterReference = data.CharacterReference;
             _p2Data.HeadShot = data.HeadShot;
             _p2CharacterSelected = true;
-            _player2Root.SetActive(false);
+            _p2PageManager.GoToPage("ready");
+
             if (_p2ColorIndex == _p1ColorIndex && !_p1CharacterSelected)
                 SetColor(1);
         }
@@ -375,17 +421,15 @@ namespace Lodis.UI
 
             if (playerNum == 1)
             {
-                _player1MovesList.gameObject.SetActive(true);
-                _player1Root.SetActive(false);
                 LoadMovesListDecks(out normal, out special, _player1SelectedCharacter, _player1HasCustomSelected);
                 _player1MovesList.UpdateUI(normal, special, _player1EventSystem);
+                _p1PageManager.GoToPageChild(0);
             }
             else if (playerNum == 2)
             {
-                _player2Root.SetActive(false);
-                _player2MovesList.gameObject.SetActive(true);
                 LoadMovesListDecks(out normal, out special, _player2SelectedCharacter, _player2HasCustomSelected);
                 _player2MovesList.UpdateUI(normal, special, _player2EventSystem);
+                _p2PageManager.GoToPageChild(0);
             }
         }
 
@@ -410,8 +454,6 @@ namespace Lodis.UI
         {
             if (_currentPlayer <= 1)
                 return;
-            _readyP1Text.SetActive(_p1CharacterSelected);
-            _readyP2Text.SetActive(_p2CharacterSelected);
             _canStart = _p1CharacterSelected && _p2CharacterSelected;
             _startText.SetActive(_canStart);
         }

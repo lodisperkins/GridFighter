@@ -962,7 +962,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Custom
+  m_Text: Custom gladiators
 --- !u!222 &222329014
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2229,7 +2229,8 @@ MonoBehaviour:
   _primaryColorImages: []
   _secondaryColorImages: []
   _blendColorImages: []
-  _displayBorder: {fileID: 0}
+  _videoDisplayBorder: {fileID: 0}
+  _infoDisplayBorder: {fileID: 0}
 --- !u!114 &458338554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4736,15 +4737,307 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63eb3837c3ac446459976ae5daf3a86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pages:
-  - PageParent: {fileID: 1054734003}
+  _rootPage:
+    PageRoot: {fileID: 1054734003}
     FirstSelected: {fileID: 0}
+    KeepRootVisible: 0
+    PageName: custom
+    _children:
+    - PageRoot: {fileID: 1226740682}
+      FirstSelected: {fileID: 1226740691}
+      KeepRootVisible: 0
+      PageName: None
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1768786558}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1507118330}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
+    - PageRoot: {fileID: 228399795}
+      FirstSelected: {fileID: 1609924787}
+      KeepRootVisible: 0
+      PageName: default
+      _children:
+      - PageRoot: {fileID: 1226740682}
+        FirstSelected: {fileID: 1226740691}
+        KeepRootVisible: 0
+        PageName: None
+        _children: []
+        OnActive:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 1768786558}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+            - m_Target: {fileID: 1507118330}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+        OnInactive:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 1768786558}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 1
+              m_CallState: 2
+            - m_Target: {fileID: 1507118330}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 1
+              m_CallState: 2
+      OnActive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 251162989}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 1525133490}
+            m_MethodName: set_text
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: original gladiators
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 1768786558}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 1507118330}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 251162989}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - PageRoot: {fileID: 2074725601}
+      FirstSelected: {fileID: 0}
+      KeepRootVisible: 0
+      PageName: ready
+      _children:
+      - PageRoot: {fileID: 1226740682}
+        FirstSelected: {fileID: 1226740691}
+        KeepRootVisible: 0
+        PageName: None
+        _children: []
+        OnActive:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 1768786558}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+            - m_Target: {fileID: 1507118330}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+        OnInactive:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 1768786558}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 1
+              m_CallState: 2
+            - m_Target: {fileID: 1507118330}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 1
+              m_CallState: 2
+      OnActive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1507118330}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1768786558}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
     OnActive:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 593728230}
-          m_MethodName: SetSelectedToFirstOption
-          m_Mode: 1
+        - m_Target: {fileID: 326553252}
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 1525133490}
+          m_MethodName: set_text
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: custom gladiators
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 1768786558}
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 1507118330}
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    OnInactive:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 326553252}
+          m_MethodName: SetActive
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4753,39 +5046,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-        - m_Target: {fileID: 1525133490}
-          m_MethodName: set_text
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Custom >
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls: []
-  - PageParent: {fileID: 228399795}
-    FirstSelected: {fileID: 1609924787}
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1525133490}
-          m_MethodName: set_text
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: < Default
-            m_BoolArgument: 0
-          m_CallState: 2
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls: []
   _eventSystem: {fileID: 0}
   _loadSceneOnFirstPage: 0
   _previousPageOnCancel: 0
@@ -5075,6 +5335,16 @@ PrefabInstance:
       propertyPath: m_OverrideSorting
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 47886006039331716, guid: 01804290d64117b45b82200e7826d547,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 47886006039331719, guid: 01804290d64117b45b82200e7826d547,
+        type: 3}
+      propertyPath: m_Text
+      value: Current Deck
+      objectReference: {fileID: 0}
     - target: {fileID: 47886006329465440, guid: 01804290d64117b45b82200e7826d547,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -5124,6 +5394,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 254
+      objectReference: {fileID: 0}
+    - target: {fileID: 47886007292271069, guid: 01804290d64117b45b82200e7826d547,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 47886007292271070, guid: 01804290d64117b45b82200e7826d547,
+        type: 3}
+      propertyPath: m_Text
+      value: Current Deck
       objectReference: {fileID: 0}
     - target: {fileID: 47886007360063509, guid: 01804290d64117b45b82200e7826d547,
         type: 3}
@@ -6072,6 +6352,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ebd73fc8513b9d34b84680c80a02ae51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1226740690 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7950005177686477186, guid: 01804290d64117b45b82200e7826d547,
+    type: 3}
+  m_PrefabInstance: {fileID: 1226740681}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1226740691 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7950005179245728731, guid: 01804290d64117b45b82200e7826d547,
+    type: 3}
+  m_PrefabInstance: {fileID: 1226740681}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1252877012
 GameObject:
   m_ObjectHideFlags: 0
@@ -7962,7 +8254,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Custom >
+  m_Text: Custom gladiators
 --- !u!1 &1525264678
 GameObject:
   m_ObjectHideFlags: 0
@@ -8465,22 +8757,267 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63eb3837c3ac446459976ae5daf3a86b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pages:
-  - PageParent: {fileID: 8659810685908444849}
+  _rootPage:
+    PageRoot: {fileID: 8659810685908444849}
     FirstSelected: {fileID: 0}
+    KeepRootVisible: 0
+    PageName: custom
+    _children:
+    - PageRoot: {fileID: 1226740684}
+      FirstSelected: {fileID: 1226740690}
+      KeepRootVisible: 0
+      PageName: None
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 521469782}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 253979233}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 521469782}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 253979233}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+    - PageRoot: {fileID: 8659810685307706582}
+      FirstSelected: {fileID: 2064447562}
+      KeepRootVisible: 0
+      PageName: default
+      _children:
+      - PageRoot: {fileID: 1226740684}
+        FirstSelected: {fileID: 1226740690}
+        KeepRootVisible: 0
+        PageName: None
+        _children: []
+        OnActive:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 521469782}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+            - m_Target: {fileID: 253979233}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+        OnInactive:
+          m_PersistentCalls:
+            m_Calls: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 983401277}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 222329013}
+            m_MethodName: set_text
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: original gladiators
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 521469782}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 253979233}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 983401277}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - PageRoot: {fileID: 635565907}
+      FirstSelected: {fileID: 0}
+      KeepRootVisible: 0
+      PageName: ready
+      _children:
+      - PageRoot: {fileID: 1226740684}
+        FirstSelected: {fileID: 1226740690}
+        KeepRootVisible: 0
+        PageName: None
+        _children: []
+        OnActive:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 521469782}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+            - m_Target: {fileID: 253979233}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
+        OnInactive:
+          m_PersistentCalls:
+            m_Calls:
+            - m_Target: {fileID: 521469782}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 1
+              m_CallState: 2
+            - m_Target: {fileID: 253979233}
+              m_MethodName: SetActive
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 1
+              m_CallState: 2
+      OnActive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 521469782}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 253979233}
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
     OnActive:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1588787978}
-          m_MethodName: SetSelectedToFirstOption
-          m_Mode: 1
+        - m_Target: {fileID: 240632020}
+          m_MethodName: SetActive
+          m_Mode: 6
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
             m_StringArgument: 
-            m_BoolArgument: 0
+            m_BoolArgument: 1
           m_CallState: 2
         - m_Target: {fileID: 222329013}
           m_MethodName: set_text
@@ -8490,10 +9027,21 @@ MonoBehaviour:
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
             m_IntArgument: 0
             m_FloatArgument: 0
-            m_StringArgument: Custom
-            m_BoolArgument: 0
+            m_StringArgument: custom gladiators
+            m_BoolArgument: 1
           m_CallState: 2
-        - m_Target: {fileID: 240632020}
+        - m_Target: {fileID: 253979233}
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+        - m_Target: {fileID: 521469782}
           m_MethodName: SetActive
           m_Mode: 6
           m_Arguments:
@@ -8508,47 +9056,6 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 240632020}
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - PageParent: {fileID: 8659810685307706582}
-    FirstSelected: {fileID: 2064447562}
-    OnActive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 222329013}
-          m_MethodName: set_text
-          m_Mode: 5
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: Default
-            m_BoolArgument: 0
-          m_CallState: 2
-        - m_Target: {fileID: 983401277}
-          m_MethodName: SetActive
-          m_Mode: 6
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 1
-          m_CallState: 2
-    OnInactive:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 983401277}
           m_MethodName: SetActive
           m_Mode: 6
           m_Arguments:
