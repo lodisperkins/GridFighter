@@ -93,6 +93,21 @@ namespace Lodis.Utility
             temp[array.Length] = item;
             array = temp;
         }
+        public delegate bool ValueCondition<T>(T value);
+
+        public static T FindValue<T>(this System.Array array, ValueCondition<T> condition)
+        {
+            T value = default;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                value = (T)array.GetValue(i);
+                if (condition.Invoke(value))
+                    return value;
+            }
+
+            return default;
+        }
 
         public static bool IsFilled(this UnityEngine.UI.Slider slider)
         {
