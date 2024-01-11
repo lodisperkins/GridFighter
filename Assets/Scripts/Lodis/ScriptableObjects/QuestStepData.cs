@@ -10,6 +10,9 @@ public class QuestStepData
 {
     [SerializeField]
     private string _stepName;
+    [SerializeField]
+    [TextArea]
+    private string _description;
     private Condition _completionCondition;
     [SerializeField]
     private UnityEvent _onStepComplete;

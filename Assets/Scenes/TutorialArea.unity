@@ -2061,12 +2061,12 @@ PrefabInstance:
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 403.89
+      value: 937.8
       objectReference: {fileID: 0}
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 121.918
+      value: 190.3
       objectReference: {fileID: 0}
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
@@ -2111,7 +2111,7 @@ PrefabInstance:
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -87.7
+      value: -165.1
       objectReference: {fileID: 0}
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
@@ -2156,12 +2156,12 @@ PrefabInstance:
     - target: {fileID: 4206009939327731083, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 404
+      value: 832.5
       objectReference: {fileID: 0}
     - target: {fileID: 4206009939327731083, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 122
+      value: 138.7
       objectReference: {fileID: 0}
     - target: {fileID: 4932854466585271794, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
@@ -2186,12 +2186,32 @@ PrefabInstance:
     - target: {fileID: 4932854466585271794, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 370
+      value: 864.65
       objectReference: {fileID: 0}
     - target: {fileID: 4932854466585271794, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 105.8
+      value: 167.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460797318553004757, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
+        type: 3}
+      propertyPath: m_FontData.m_BestFit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460797318553004757, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
+        type: 3}
+      propertyPath: m_FontData.m_MaxSize
+      value: 29
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460797318553004757, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
+        type: 3}
+      propertyPath: m_FontData.m_MinSize
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5460797318553004757, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 25
       objectReference: {fileID: 0}
     - target: {fileID: 9198048724496377503, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
@@ -2224,12 +2244,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14183bfafded58b45a1810aa56d0eb03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _textToType: Welcome to Gridlock Gladiators tutorial.
+  _textToType: 
   _typeDelay: 0.1
   _typeOnEnable: 1
   _onTypeComplete:
     m_PersistentCalls:
       m_Calls: []
+  _onSectionComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  _onSectionStart:
+    m_PersistentCalls:
+      m_Calls: []
+  _waitForInputOnEnd: 0
+  _forceCompleteOnSubmit: 0
 --- !u!1 &106994931
 GameObject:
   m_ObjectHideFlags: 0
@@ -9296,6 +9324,63 @@ Transform:
   m_Father: {fileID: 934786775}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 24.344002, y: 0, z: 0}
+--- !u!1 &840563188
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 840563189}
+  - component: {fileID: 840563190}
+  m_Layer: 5
+  m_Name: Continue Prompt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &840563189
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840563188}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.4165, y: 0.4165, z: 0.4165}
+  m_Children:
+  - {fileID: 1916687668}
+  m_Father: {fileID: 106206611}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -67, y: 36}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &840563190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 840563188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51110cce7f1d7ec4e8dca3bea7e7706d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerID: 1
+  _getPlayerIDFromAlignment: 0
+  _actions:
+  - KeyboardButton: {fileID: 21300000, guid: 0fe725e07091cc940a4d377dc5218eb8, type: 3}
+    XBoxButton: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+    PlaystationButton: {fileID: 21300000, guid: f36dc5d5c4f3fd94899f92cc412cbd21,
+      type: 3}
+    ImageToUpdate: {fileID: 1916687670}
 --- !u!1 &842408707
 GameObject:
   m_ObjectHideFlags: 0
@@ -12158,12 +12243,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
+  m_ScaleFactor: 2.5
   m_ReferenceResolution: {x: 800, y: 600}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -20921,56 +21006,77 @@ MonoBehaviour:
   _currentQuest:
     _steps:
     - _stepName: movement
+      _description: 'Welcome to the Gridlock Gladiators tutorial.
+
+
+        First
+        let''s try moving! You can freely move to any panel that matches your character
+        color. Try it out!
+
+
+        Move to the highlighted panels.'
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: normals
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: directionalNormals
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: chargeNormals
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: chargeDirectionalNormals
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: knockouts
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: instantShatter
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: specials
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: shuffling
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: burst
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: burstDrive
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     - _stepName: wallJump
+      _description: 
       _onStepComplete:
         m_PersistentCalls:
           m_Calls: []
     _onQuestComplete:
       m_PersistentCalls:
         m_Calls: []
+  _textTyper: {fileID: 0}
 --- !u!4 &1858940568
 Transform:
   m_ObjectHideFlags: 0
@@ -21517,6 +21623,104 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1916141410}
   m_Mesh: {fileID: -2228417370725966487, guid: 7906e05a470c7ae4c96b3678168a6de0, type: 3}
+--- !u!1 &1916687667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1916687668}
+  - component: {fileID: 1916687671}
+  - component: {fileID: 1916687670}
+  - component: {fileID: 1916687669}
+  m_Layer: 5
+  m_Name: ContinueButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1916687668
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916687667}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 840563189}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1916687669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916687667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.5, y: 1.5, z: 0}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.5
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1916687670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916687667}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1916687671
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916687667}
+  m_CullTransparentMesh: 0
 --- !u!1 &1926453363
 GameObject:
   m_ObjectHideFlags: 0
