@@ -85,6 +85,7 @@ namespace Lodis.Gameplay
         {
             _grid = BlackBoardBehaviour.Instance.Grid;
             _mode = gameMode;
+
             SpawnPlayer1();
 
             if (_mode != GameMode.SINGLEPLAYER)

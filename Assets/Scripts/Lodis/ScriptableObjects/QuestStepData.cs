@@ -20,4 +20,5 @@ public class QuestStepData
     public Condition CompletionCondition { get => _completionCondition; set => _completionCondition = value; }
     public UnityEvent OnStepComplete { get => _onStepComplete; set => _onStepComplete = value; }
     public string StepName { get => _stepName; set => _stepName = value; }
+    public string Description { get => _description; set => _description = value; }
 }

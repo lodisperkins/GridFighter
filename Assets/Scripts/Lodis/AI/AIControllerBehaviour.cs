@@ -225,7 +225,7 @@ namespace Lodis.AI
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
 
 
-            if (_useRecording)
+            if (_useRecording && _recordings != null)
             {
                 _currentRecording = _recordings[0];
                 _knockbackBehaviour.AddOnTakeDamageAction(() =>

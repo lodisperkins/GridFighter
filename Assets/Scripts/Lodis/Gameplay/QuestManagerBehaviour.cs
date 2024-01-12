@@ -7,6 +7,9 @@ public class QuestManagerBehaviour : MonoBehaviour
     [SerializeField]
     private QuestData _currentQuest;
 
+    public QuestData CurrentQuest { get => _currentQuest; private set => _currentQuest = value; }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +24,6 @@ public class QuestManagerBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _currentQuest.CheckCurrentStepComplete();    
+        CurrentQuest.CheckCurrentStepComplete();    
     }
 }

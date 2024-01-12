@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -6173,7 +6173,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 6
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -6184,7 +6184,19 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 2
+          m_IntArgument: 5
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 508945631}
+        m_MethodName: UpdateDeviceP1
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 834067888}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.InputSystem.UI.InputSystemUIInputModule,
+            Unity.InputSystem
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -7761,6 +7773,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: TextPanel
       objectReference: {fileID: 0}
+    - target: {fileID: 3125849134066478145, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68cd49be7c08f0c40ba78bc78c401ecc, type: 3}
 --- !u!224 &3153826264014176671 stripped
@@ -7830,6 +7847,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5041198097818951598, guid: 3894fc90b29666c40ab707beec511c27,
+        type: 3}
+      propertyPath: _module
+      value: 
+      objectReference: {fileID: 834067888}
+    - target: {fileID: 5041198097818951598, guid: 3894fc90b29666c40ab707beec511c27,
+        type: 3}
+      propertyPath: _updateDeviceBasedOnUI
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5041198097818951599, guid: 3894fc90b29666c40ab707beec511c27,
         type: 3}

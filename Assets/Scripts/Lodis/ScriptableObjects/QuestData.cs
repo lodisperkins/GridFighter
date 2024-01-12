@@ -25,7 +25,13 @@ public class QuestData
 
     public bool CheckCurrentStepComplete(params object[] args)
     {
-        bool stepComplete = Steps[CurrentStep].CompletionCondition(args);
+
+        QuestStepData currentStep = Steps[CurrentStep];
+
+        if (currentStep == null || currentStep.CompletionCondition == null)
+            return false;
+
+        bool stepComplete = currentStep.CompletionCondition(args);
 
         if (stepComplete)
         {

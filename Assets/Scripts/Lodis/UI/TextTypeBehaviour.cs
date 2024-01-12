@@ -1,4 +1,5 @@
 using Lodis.Input;
+using Lodis.Sound;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,10 @@ public class TextTypeBehaviour : MonoBehaviour
     [SerializeField]
     private bool _typeOnEnable;
     [SerializeField]
+    private AudioClip _typeSound;
+    [SerializeField]
+    private float _typeSoundVolume;
+    [SerializeField]
     private UnityEvent _onTypeComplete;
     [SerializeField]
     private UnityEvent _onSectionComplete;
@@ -25,10 +30,14 @@ public class TextTypeBehaviour : MonoBehaviour
     [SerializeField]
     private bool _forceCompleteOnSubmit;
     private bool _canContinue;
+    private bool _isTyping;
+    private int _lastSectionIndex;
 
     private Text _text;
     private PlayerControls _controls;
     private Coroutine _typeRoutine;
+
+    public bool IsTyping { get => _isTyping; private set => _isTyping = value; }
 
     // Start is called before the first frame update
     void Awake()
@@ -38,18 +47,13 @@ public class TextTypeBehaviour : MonoBehaviour
 
         if (_waitForInputOnEnd)
         {
-            _controls.UI.Submit.started += context =>
-            {
-                _canContinue = true;
-            };
+            InputBehaviour.OnActionDown(() => _canContinue = true);
         }
 
         if (_forceCompleteOnSubmit)
         {
-            _controls.UI.Submit.started += context =>
-            {
-                ForceComplete();
-            };
+            InputBehaviour.OnActionDown(ForceComplete);
+
         }
     }
 
@@ -84,16 +88,24 @@ public class TextTypeBehaviour : MonoBehaviour
         string currentText = "";
         for (int i = 0; i < _textToType.Length; i++)
         {
+            IsTyping = true;
+
             if (_textToType[i] == '\n' && _waitForInputOnEnd)
             {
+                IsTyping = false;
                 _onSectionComplete?.Invoke();
                 yield return new WaitUntil(() => _canContinue);
+                i++;
+                _lastSectionIndex = i;
+                currentText = "";
                 _onSectionStart?.Invoke();
                 _canContinue = false;
             }
 
             currentText += _textToType[i];
             _text.text = currentText;
+            SoundManagerBehaviour.Instance.PlaySound(_typeSound, _typeSoundVolume);
+
             yield return new WaitForSeconds(_typeDelay);
         }
 
@@ -102,9 +114,13 @@ public class TextTypeBehaviour : MonoBehaviour
 
     public void ForceComplete()
     {
-        StopCoroutine(_typeRoutine);
+        if (!IsTyping)
+            return;
 
-        _text.text = _textToType;
+        StopCoroutine(_typeRoutine);
+        string remainingText = _textToType.Substring(_lastSectionIndex);
+
+        _text.text = remainingText;
 
         if (_waitForInputOnEnd)
             _onSectionComplete?.Invoke();

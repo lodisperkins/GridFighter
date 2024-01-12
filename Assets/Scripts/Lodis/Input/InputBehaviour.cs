@@ -65,6 +65,10 @@ namespace Lodis.Input
         private CharacterDefenseBehaviour _defense;
         private MovesetBehaviour _moveset;
         private Condition _moveInputEnableCondition;
+
+        private static bool _playerActionButtonDown;
+        private static UnityAction _onActionButtonDown;
+
         public static UnityAction OnApplicationQuit;
         [SerializeField]
         private GameObject _character;
@@ -153,6 +157,7 @@ namespace Lodis.Input
         public GameObject Character { get => _character; set => _character = value; }
         public bool Enabled { get => _inputEnabled; set => _inputEnabled = value; }
         public bool NormalAttackButtonDown { get => _attackButtonDown; private set => _attackButtonDown = value; }
+        public static bool PlayerActionButtonDown { get => _playerActionButtonDown; private set => _playerActionButtonDown = value; }
 
         private void Awake()
         {
@@ -541,9 +546,21 @@ namespace Lodis.Input
             //Debug.Log(_gridMovement.Speed);
         }
 
+        public static void OnActionDown(UnityAction action)
+        {
+            _onActionButtonDown += action;
+        }
+
         // Update is called once per frame
         void Update()
         {
+            if (!PlayerActionButtonDown && _attackButtonDown)
+            {
+                _onActionButtonDown?.Invoke();
+            }
+
+            PlayerActionButtonDown = _attackButtonDown;
+
             if (_moveset.AbilityInUse)
                 _canMove = CheckInputAllowedInAbilityPhase() || _stateMachineBehaviour.StateMachine.CurrentState != "Attacking";
             else if (_stateMachineBehaviour.StateMachine.CurrentState == "Idle")
