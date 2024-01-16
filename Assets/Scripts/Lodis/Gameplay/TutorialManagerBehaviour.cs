@@ -1,6 +1,7 @@
 ﻿using Lodis.AI;
 using Lodis.Gameplay;
 using Lodis.Quest;
+using Lodis.ScriptableObjects;
 using Lodis.Sound;
 using Lodis.UI;
 using System.Collections;
@@ -19,13 +20,20 @@ public class TutorialManagerBehaviour : QuestManagerBehaviour
     private ComboCounterBehaviour _comboCounter;
     [SerializeField]
     private AITrainingBehaviour _trainingBehaviour;
+    [SerializeField]
+    private FloatVariable _trainingStartTime;
 
     public override void Start()
     {
         base.Start();
+
+        MatchManagerBehaviour.Instance.AddOnMatchStartAction(TryDisableControls);
+
         CurrentQuest.AddOnStepBeginAction(UpdateText);
         CurrentQuest.AddOnStepCompleteAction(GenerateRandomCompliment);
         CurrentQuest.AddOnStepCompleteAction(step => MatchManagerBehaviour.Instance.SetPlayerControlsActive(false));
+
+        OnQuestComplete.AddListener(() => MatchManagerBehaviour.Instance.MatchStartTime = _trainingStartTime);
     }
 
     public void EnableTextCanvas(float delay)
@@ -38,6 +46,12 @@ public class TutorialManagerBehaviour : QuestManagerBehaviour
         yield return new WaitForSeconds(delay);
 
         _textCanvas.SetActive(true);
+    }
+
+    private void TryDisableControls()
+    {
+        if (!QuestComplete)
+            MatchManagerBehaviour.Instance.SetPlayerControlsActive(false);
     }
 
     public override void InitQuest()
@@ -57,7 +71,7 @@ public class TutorialManagerBehaviour : QuestManagerBehaviour
 
     public void TryEnableAI()
     {
-        if (CurrentQuest.GetCurrentStep().StepData.StepName == "burst")
+        if (CurrentQuest.GetCurrentStep()?.StepData.StepName == "burst")
             _trainingBehaviour.SetAIState(1);
     }
 

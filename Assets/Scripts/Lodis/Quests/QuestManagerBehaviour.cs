@@ -17,12 +17,13 @@ namespace Lodis.Quest
         public QuestData CurrentQuest { get => _currentQuest; private set => _currentQuest = value; }
         public QuestStepData[] StepData { get => _stepData; set => _stepData = value; }
         public bool QuestComplete { get => _questComplete; private set => _questComplete = value; }
+        public UnityEvent OnQuestComplete { get => _onQuestComplete; set => _onQuestComplete = value; }
 
 
         // Start is called before the first frame update
         public virtual void Start()
         {
-            CurrentQuest.OnQuestComplete = _onQuestComplete;
+            CurrentQuest.OnQuestComplete = OnQuestComplete;
             CurrentQuest.OnQuestComplete.AddListener(() => QuestComplete = true);
 
             InitQuest();

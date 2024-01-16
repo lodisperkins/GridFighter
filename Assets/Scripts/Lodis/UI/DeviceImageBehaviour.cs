@@ -71,10 +71,18 @@ namespace Lodis.UI
                 deviceName = SceneManagerBehaviour.Instance.P2Devices[0].name;
                 manufacturer = SceneManagerBehaviour.Instance.P2Devices[0].description.manufacturer;
             }
-            else return;
+            else
+            {
+                foreach (ButtonData button in _actions)
+                {
+                    button.ImageToUpdate.enabled = false;
+                }
+                return;
+            }
 
             foreach (ButtonData button in _actions)
             {
+                button.ImageToUpdate.enabled = true;
                 button.UpdateButtonImage(deviceName, manufacturer);
             }
 

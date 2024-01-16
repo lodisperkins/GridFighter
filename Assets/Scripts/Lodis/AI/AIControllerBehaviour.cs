@@ -229,11 +229,6 @@ namespace Lodis.AI
             if (_useRecording && _recordings != null)
             {
                 _currentRecording = _recordings[0];
-                _knockbackBehaviour.AddOnTakeDamageAction(() =>
-                {
-                    UpdateSituationNode();
-                    StartNewAction();
-                });
             }
             else
                 MatchManagerBehaviour.Instance.AddOnMatchOverAction(AddMatchReward);

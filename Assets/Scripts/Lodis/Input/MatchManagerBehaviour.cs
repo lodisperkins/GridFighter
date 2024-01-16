@@ -132,6 +132,7 @@ namespace Lodis.Gameplay
         public bool PlayerOutOfRing { get => _playerOutOfRing; private set => _playerOutOfRing = value; }
         public int LhsWins { get => _lhsWins; private set => _lhsWins = value; }
         public int RhsWins { get => _rhsWins; private set => _rhsWins = value; }
+        public FloatVariable MatchStartTime { get => _matchStartTime; set => _matchStartTime = value; }
 
         private void Awake()
         {
@@ -190,7 +191,7 @@ namespace Lodis.Gameplay
                 _matchStarted = true;
                 _onMatchStart?.Invoke();
                 _matchStartEvent.Raise();
-            }, TimedActionCountType.SCALEDTIME, _matchStartTime.Value);
+            }, TimedActionCountType.SCALEDTIME, MatchStartTime.Value);
         }
 
         private void SetMatchResult()
@@ -332,7 +333,7 @@ namespace Lodis.Gameplay
                 _matchStarted = true;
                 _onMatchStart?.Invoke();
                 _matchStartEvent.Raise();
-            }, TimedActionCountType.SCALEDTIME, _matchStartTime.Value);
+            }, TimedActionCountType.SCALEDTIME, MatchStartTime.Value);
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
             {

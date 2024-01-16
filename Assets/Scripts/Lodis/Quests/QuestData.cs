@@ -29,6 +29,9 @@ namespace Lodis.Quest
 
         public QuestStep GetCurrentStep()
         {
+            if (CurrentStepIndex < 0 || CurrentStepIndex >= _steps.Count)
+                return null;
+
             return _steps[CurrentStepIndex];
         }
 
