@@ -841,6 +841,104 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 50871734}
   m_Mesh: {fileID: -2228417370725966487, guid: 7906e05a470c7ae4c96b3678168a6de0, type: 3}
+--- !u!1 &52024570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 52024571}
+  - component: {fileID: 52024574}
+  - component: {fileID: 52024573}
+  - component: {fileID: 52024572}
+  m_Layer: 5
+  m_Name: Strong
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &52024571
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52024570}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 149171659}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &52024572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52024570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.5, y: 1.5, z: 0}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.5
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &52024573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52024570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &52024574
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52024570}
+  m_CullTransparentMesh: 0
 --- !u!1 &57167078
 GameObject:
   m_ObjectHideFlags: 0
@@ -2299,6 +2397,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 1858940567}
+        m_MethodName: TryEnableAI
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _onSectionComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -2399,6 +2508,104 @@ Transform:
   m_Father: {fileID: 300781130945283778}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 39.67, y: 0, z: 0}
+--- !u!1 &107003387
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 107003388}
+  - component: {fileID: 107003391}
+  - component: {fileID: 107003390}
+  - component: {fileID: 107003389}
+  m_Layer: 5
+  m_Name: Special1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &107003388
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107003387}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 149171659}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &107003389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107003387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.5, y: 1.5, z: 0}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.5
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &107003390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107003387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &107003391
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 107003387}
+  m_CullTransparentMesh: 0
 --- !u!1 &108763899
 GameObject:
   m_ObjectHideFlags: 0
@@ -2878,6 +3085,113 @@ Transform:
   m_Father: {fileID: 226367047}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &149171658
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 149171659}
+  - component: {fileID: 149171660}
+  - component: {fileID: 149171661}
+  m_Layer: 5
+  m_Name: Action Prompt
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &149171659
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149171658}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.4165, y: 0.4165, z: 0.4165}
+  m_Children:
+  - {fileID: 1632344799}
+  - {fileID: 52024571}
+  - {fileID: 107003388}
+  - {fileID: 2076801783}
+  - {fileID: 309324878}
+  - {fileID: 408053531}
+  m_Father: {fileID: 106206611}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -45.07, y: 27.9}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &149171660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149171658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51110cce7f1d7ec4e8dca3bea7e7706d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerID: 1
+  _getPlayerIDFromAlignment: 0
+  _actions:
+  - KeyboardButton: {fileID: 21300000, guid: cb089b2d83b647241af79ab250d9a7ec, type: 3}
+    XBoxButton: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+    PlaystationButton: {fileID: 21300000, guid: f36dc5d5c4f3fd94899f92cc412cbd21,
+      type: 3}
+    ImageToUpdate: {fileID: 1632344801}
+  - KeyboardButton: {fileID: 21300000, guid: 5461c3e9f1855c245b4ef2fd3755449e, type: 3}
+    XBoxButton: {fileID: 21300000, guid: a2c061aa925fb324c976f7c762972482, type: 3}
+    PlaystationButton: {fileID: 21300000, guid: 7c481d8f62c3750479c373d5df6505c5,
+      type: 3}
+    ImageToUpdate: {fileID: 52024573}
+  - KeyboardButton: {fileID: 21300000, guid: 73a64cfd4eb4a0d4cb5c333c9e360593, type: 3}
+    XBoxButton: {fileID: 21300000, guid: 8594c778e6d6afc489e8e81d3e8bde9d, type: 3}
+    PlaystationButton: {fileID: 21300000, guid: 8c5df93e3dc0ff04cbe9496f952721b1,
+      type: 3}
+    ImageToUpdate: {fileID: 107003390}
+  - KeyboardButton: {fileID: 21300000, guid: e65b00bc85a21964ba624fbb0b627d28, type: 3}
+    XBoxButton: {fileID: 21300000, guid: a3dcbf5cb932def409f7e39f7feb380b, type: 3}
+    PlaystationButton: {fileID: 21300000, guid: 32b10b9ba89c1dc4685961c30ad5886a,
+      type: 3}
+    ImageToUpdate: {fileID: 2076801785}
+  - KeyboardButton: {fileID: 21300000, guid: 7448d0f9d2dc9e44b88d1035a425898b, type: 3}
+    XBoxButton: {fileID: 21300000, guid: ce547e4556c4c2b4b98ceae818ff461f, type: 3}
+    PlaystationButton: {fileID: 21300000, guid: e251771bd3155c9408009b1817093bc2,
+      type: 3}
+    ImageToUpdate: {fileID: 309324880}
+  - KeyboardButton: {fileID: 21300000, guid: a04cf7c1deab2b5458e83d5434624ca0, type: 3}
+    XBoxButton: {fileID: 21300000, guid: 1a18fc98bc3d1984787dbff10553fd3c, type: 3}
+    PlaystationButton: {fileID: 21300000, guid: a054ed3eeeff97e4d9f36c740f0bd680,
+      type: 3}
+    ImageToUpdate: {fileID: 408053533}
+--- !u!114 &149171661
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 149171658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d48d099dab952a4c9e8c5cdfe3fa5e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _images:
+  - {fileID: 1632344798}
+  - {fileID: 52024570}
+  - {fileID: 107003387}
+  - {fileID: 2076801782}
+  - {fileID: 309324877}
+  - {fileID: 408053530}
 --- !u!1 &165781972
 GameObject:
   m_ObjectHideFlags: 0
@@ -4380,6 +4694,104 @@ RectTransform:
   m_AnchoredPosition: {x: -219, y: 26.5}
   m_SizeDelta: {x: -448, y: -175}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &309324877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 309324878}
+  - component: {fileID: 309324881}
+  - component: {fileID: 309324880}
+  - component: {fileID: 309324879}
+  m_Layer: 5
+  m_Name: Burst
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &309324878
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309324877}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 149171659}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &309324879
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309324877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.5, y: 1.5, z: 0}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.5
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &309324880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309324877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &309324881
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 309324877}
+  m_CullTransparentMesh: 0
 --- !u!1 &312731640
 GameObject:
   m_ObjectHideFlags: 0
@@ -5977,6 +6389,104 @@ Transform:
   m_Father: {fileID: 1545201725}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &408053530
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 408053531}
+  - component: {fileID: 408053534}
+  - component: {fileID: 408053533}
+  - component: {fileID: 408053532}
+  m_Layer: 5
+  m_Name: Shuffle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &408053531
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408053530}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 149171659}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &408053532
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408053530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.5, y: 1.5, z: 0}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.5
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &408053533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408053530}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &408053534
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 408053530}
+  m_CullTransparentMesh: 0
 --- !u!1001 &428590913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6222,6 +6732,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 428590913}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &428590915 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5553018274893877775, guid: f1af0158e8143c444ad7751a963d8218,
+    type: 3}
+  m_PrefabInstance: {fileID: 428590913}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2a47394386473f4f9c794c5e9aa3ee1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &434600511 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7235865360595225558, guid: 95cbabe1b74e1d842aeddec490bc6625,
@@ -9674,6 +10196,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6b487626caf39e4bbbd373e94e6ef81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &714839855 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4290014089331699595, guid: 2cc7350bb9cbb4d4cb791f6c20029b5d,
+    type: 3}
+  m_PrefabInstance: {fileID: 714839852}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &714839856
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 714839855}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.1, y: 1.1, z: 0}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.5
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &729415656
 GameObject:
   m_ObjectHideFlags: 0
@@ -19967,6 +20518,104 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3cea411d339b90b45b77f2bc1c0eab4c, type: 3}
+--- !u!1 &1632344798
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1632344799}
+  - component: {fileID: 1632344802}
+  - component: {fileID: 1632344801}
+  - component: {fileID: 1632344800}
+  m_Layer: 5
+  m_Name: Weak
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1632344799
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632344798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 149171659}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1632344800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632344798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.5, y: 1.5, z: 0}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.5
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1632344801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632344798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1632344802
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1632344798}
+  m_CullTransparentMesh: 0
 --- !u!1 &1637068567
 GameObject:
   m_ObjectHideFlags: 0
@@ -20981,6 +21630,16 @@ PrefabInstance:
       propertyPath: RingBarrierRHS
       value: 
       objectReference: {fileID: 355939083}
+    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
+        type: 3}
+      propertyPath: Player1ComboCounter
+      value: 
+      objectReference: {fileID: 471390151}
+    - target: {fileID: 1376129663109718756, guid: 407b5359e688b5d48a5845409378e7f8,
+        type: 3}
+      propertyPath: Player2ComboCounter
+      value: 
+      objectReference: {fileID: 24032145}
     - target: {fileID: 1376129663109718757, guid: 407b5359e688b5d48a5845409378e7f8,
         type: 3}
       propertyPath: m_Name
@@ -22535,92 +23194,376 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95103d55cbc1398478004bf1a894f379, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _currentQuest:
-    _steps:
-    - _stepName: movement
-      _description: 'Welcome to the Gridlock Gladiators tutorial.
+  _stepData:
+  - _stepName: movement
+    _description: 'Welcome to the Gridlock Gladiators tutorial.
 
+      Let''s start
+      with movement.
 
-        First
-        let''s try moving. You can freely move to any panel that matches your character
-        color. Try it out.
+      You can freely move on the side that matches your character
+      color.
 
-
-        Move to the highlighted panels.'
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls:
-          - m_Target: {fileID: 999576671}
-            m_MethodName: SetTrigger
-            m_Mode: 5
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: Maximize
-              m_BoolArgument: 0
-            m_CallState: 2
-    - _stepName: normals
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: directionalNormals
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: chargeNormals
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: chargeDirectionalNormals
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: knockouts
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: instantShatter
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: specials
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: shuffling
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: burst
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: burstDrive
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    - _stepName: wallJump
-      _description: 
-      _onStepComplete:
-        m_PersistentCalls:
-          m_Calls: []
-    _onQuestComplete:
+      Move to the highlighted panels.'
+    _onStepBegin:
       m_PersistentCalls:
         m_Calls: []
+    _onStepComplete:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 999576671}
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Maximize
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _stepName: normal
+    _description: 'Now let''s try attacking.
+
+      Attacking your opponent builds
+      their damage meter at the top. The higher the opponents damage meter is, the
+      easier it is to send them flying.
+
+      Try using a normal attack by pressing
+      the attack button.'
+    _onStepBegin:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 149171661}
+          m_MethodName: SetImageActive
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Weak
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 714839856}
+          m_MethodName: set_enabled
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    _onStepComplete:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 999576671}
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Maximize
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 714839856}
+          m_MethodName: set_enabled
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _stepName: combos
+    _description: 'Great attack!
+
+      Each gladiator has 4 of these normal attacks.
+      You can perform different normal attacks by holding a move direction while
+      attacking.
+
+      Try using different normal attacks to get a 10 hit combo.'
+    _onStepBegin:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 149171661}
+          m_MethodName: SetImageActive
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Weak
+            m_BoolArgument: 0
+          m_CallState: 2
+    _onStepComplete:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 999576671}
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Maximize
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _stepName: strong
+    _description: 'Practicing to discover longer combos will allow you to rack up
+      damage on your enemies quickly and keep you at an advantage.
+
+      Each normal
+      attack has a stronger variation that can be used to send your opponent flying
+      into their barrier.
+
+      If the opponent is hit into their barrier enough,
+      it will shatter and give you the chance to ring them out.
+
+      Try using
+      a strong attack to knockout the test dummy.'
+    _onStepBegin:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 149171661}
+          m_MethodName: SetImageActive
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Strong
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1359032533}
+          m_MethodName: ToggleInvincibleBarriers
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 428590915}
+          m_MethodName: set_enabled
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _onStepComplete:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 999576671}
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Maximize
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1359032533}
+          m_MethodName: ToggleInvincibleBarriers
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _stepName: specials
+    _description: "Nice knockout!\nIn addition to your normal moves, you also have
+      special moves that can be used in battle.\nYour special moves are contained
+      in a deck and randomized at the start of each match. \nOnly two special moves
+      can be used at any time. You can tell which ones are available by looking at
+      the icons over your character's head. \nIn order to perform a special move,
+      you need to have enough energy stored.\nYou can tell how much energy you have
+      stored by looking at the energy meter in the bottom of the screen. The meter
+      will charge automatically, but it will charge faster if you attack your opponent.\nThe
+      amount of energy required to perform a special move can be determined from
+      the icon color, shape, and the number attached to it.\nTry using all 8 special
+      moves."
+    _onStepBegin:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 52024570}
+          m_MethodName: SetActive
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    _onStepComplete:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 999576671}
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Maximize
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _stepName: reload
+    _description: 'Once you run out of abilities you''ll have to wait a short while
+      for your deck to reload.
+
+      You can manually reload your deck anytime you''d
+      like if you want a different pair of abilities to use. You''ll be completely
+      immobile while initiating the reload so use this carefully.
+
+      Try reloading
+      your deck.'
+    _onStepBegin:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 149171661}
+          m_MethodName: SetImageActive
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Shuffle
+            m_BoolArgument: 0
+          m_CallState: 2
+    _onStepComplete:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 999576671}
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Maximize
+            m_BoolArgument: 0
+          m_CallState: 2
+  - _stepName: burst
+    _description: 'Next we''ll cover defense.
+
+      If you ever find yourself in
+      trouble you can use a burst counter.
+
+      A burst counter is a defensive
+      ability that can stop your momentum, destroy projectiles in range, and knock
+      your opponent away from you. It''s really useful for breaking out of combos
+      and putting you back in the fight.
+
+      Try using a burst counter to prevent
+      yourself from hitting the ring barrier after being hit.'
+    _onStepBegin:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 149171661}
+          m_MethodName: SetImageActive
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Burst
+            m_BoolArgument: 0
+          m_CallState: 2
+    _onStepComplete:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 999576671}
+          m_MethodName: SetTrigger
+          m_Mode: 5
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: Maximize
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 2122683686}
+          m_MethodName: SetAIState
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  _onQuestComplete:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 999576666}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 106206613}
+        m_MethodName: SetTextToType
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: That concludes the basic tutorial. From here you can
+            continue to practice your skills with the test dummy, or return to the
+            main menu from the pause menu.
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 106206613}
+        m_MethodName: BeginTyping
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   _textTyper: {fileID: 106206613}
   _textCanvas: {fileID: 999576666}
+  _completeSound: {fileID: 8300000, guid: 7ff9ca16109f3284eaeab6951ad14b90, type: 3}
+  _comboCounter: {fileID: 471390151}
+  _trainingBehaviour: {fileID: 2122683686}
 --- !u!4 &1858940568
 Transform:
   m_ObjectHideFlags: 0
@@ -24559,6 +25502,104 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2056573880}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &2076801782
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2076801783}
+  - component: {fileID: 2076801786}
+  - component: {fileID: 2076801785}
+  - component: {fileID: 2076801784}
+  m_Layer: 5
+  m_Name: Special2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &2076801783
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076801782}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 149171659}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2076801784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076801782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.5, y: 1.5, z: 0}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.5
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2076801785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076801782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 05581e97e41fa9948a08fba252ef922e, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &2076801786
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2076801782}
+  m_CullTransparentMesh: 0
 --- !u!1 &2083267716
 GameObject:
   m_ObjectHideFlags: 0
@@ -26303,7 +27344,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -3.8874512}
+  m_AnchoredPosition: {x: 0, y: -3.8873901}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2146222945
@@ -30065,7 +31106,7 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
@@ -30150,12 +31191,12 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
@@ -30291,7 +31332,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 1858940567}
+      objectReference: {fileID: 1359032533}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[3].m_Target
@@ -30615,12 +31656,12 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: InitQuest
+      value: EnableTextCanvas
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: EnableTextCanvas
+      value: SetPlayerControlsActive
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
@@ -30904,8 +31945,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
-      propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
+      propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_FloatArgument
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _onMatchStart.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_FloatArgument
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}

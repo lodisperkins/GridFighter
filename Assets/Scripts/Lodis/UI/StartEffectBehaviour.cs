@@ -92,6 +92,9 @@ namespace Lodis.UI
 
         private void BeginReadyUpEffect()
         {
+            if (!enabled)
+                return;
+
             _startTextBox.rectTransform.rect.Set(_defaultRect.x, _defaultRect.y, _defaultRect.width, _defaultRect.height);
             AudioClip currentClip = null;
             if (MatchManagerBehaviour.Instance.SuddenDeathActive)

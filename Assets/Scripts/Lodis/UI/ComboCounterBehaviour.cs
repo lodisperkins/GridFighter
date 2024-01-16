@@ -41,6 +41,8 @@ namespace Lodis.UI
         [SerializeField]
         private StadiumMonitorBehaviour _stadiumMonitor;
 
+        public int HitCount { get => _hitCount; private set => _hitCount = value; }
+
         // Start is called before the first frame update
         void Awake()
         {
@@ -56,7 +58,7 @@ namespace Lodis.UI
             MatchManagerBehaviour.Instance.AddOnMatchRestartAction(() =>
             {
                 ResetComboMessage();
-                _hitCount = 0;
+                HitCount = 0;
                 _nextComboMessageIndex = 0;
             });
 
@@ -73,8 +75,8 @@ namespace Lodis.UI
 
         private void UpdateComboMessage()
         {
-            _hitCount++;
-            if (!_canCount || _hitCount < _minHitCount)
+            HitCount++;
+            if (!_canCount || HitCount < _minHitCount)
                 return;
 
             if (_disableTextAction?.GetEnabled() == true)
@@ -85,7 +87,7 @@ namespace Lodis.UI
 
             _comboText.enabled = true;
 
-            if (_nextComboMessageIndex < _comboMessages.Length && _hitCount >= _comboMessages[_nextComboMessageIndex].CountRequirement)
+            if (_nextComboMessageIndex < _comboMessages.Length && HitCount >= _comboMessages[_nextComboMessageIndex].CountRequirement)
             {
                 _currentComboMessage = _comboMessages[_nextComboMessageIndex].Message;
                 _currentColor = _comboMessages[_nextComboMessageIndex].MessageColor;
@@ -97,7 +99,7 @@ namespace Lodis.UI
             _stadiumMonitor?.SetComboScreenActive();
 
             _comboText.color = _currentColor;
-            _comboText.text = _hitCount + " Hits";
+            _comboText.text = HitCount + " Hits";
             StartSpawnEffect();
         }
 
@@ -116,7 +118,29 @@ namespace Lodis.UI
             RoutineBehaviour.Instance.StopAction(_disableTextAction);
             _disableTextAction = RoutineBehaviour.Instance.StartNewTimedAction(args => ResetComboMessage(), TimedActionCountType.SCALEDTIME, _messageDespawnDelay);
 
-            _hitCount = 0;
+            HitCount = 0;
+            _nextComboMessageIndex = 0;
+        }
+
+        public void DisplayComboMessage(int index)
+        {
+            _currentColor = _comboMessages[index].MessageColor;
+            _currentClip = _comboMessages[index].AnnouncerClip;
+            _currentComboMessage = _comboMessages[index].Message;
+
+            _comboText.enabled = true;
+
+            _canCount = false;
+            StartSpawnEffect();
+            _announcer.Stop();
+            _announcer.PlayOneShot(_currentClip);
+            _comboText.text = _currentComboMessage;
+            _comboText.color = _currentColor;
+
+            RoutineBehaviour.Instance.StopAction(_disableTextAction);
+            _disableTextAction = RoutineBehaviour.Instance.StartNewTimedAction(args => ResetComboMessage(), TimedActionCountType.SCALEDTIME, _messageDespawnDelay);
+
+            HitCount = 0;
             _nextComboMessageIndex = 0;
         }
 

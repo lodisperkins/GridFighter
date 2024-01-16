@@ -221,6 +221,12 @@ namespace Lodis.Gameplay
             }
         }
 
+        public void SetMatchResult(int resultID)
+        {
+            _matchResult = (MatchResult)resultID;
+            SetMatchResult();
+        }
+
         /// <summary>
         /// Temporarily changes the speed of time for the game.
         /// </summary>

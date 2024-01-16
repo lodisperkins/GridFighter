@@ -1,6 +1,7 @@
 ﻿using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
+using Lodis.UI;
 using Lodis.Utility;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +31,8 @@ namespace Lodis.Gameplay
         public ParticleSystem BlockEffect;
         public ParticleSystem ReflectEffect;
         public ParticleSystem[] HitEffects;
+        public ComboCounterBehaviour Player1ComboCounter;
+        public ComboCounterBehaviour Player2ComboCounter;
         private List<GridMovementBehaviour> _entitiesInGame = new List<GridMovementBehaviour>();
         private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
         private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();

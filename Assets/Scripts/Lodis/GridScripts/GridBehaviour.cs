@@ -559,7 +559,7 @@ namespace Lodis.GridScripts
         /// <param name="canBeOccupied">Whether or not to ignore panels that are ooccupied</param>
         /// <param name="alignment">The side of the grid to look for neighbors. Panels found on the other side will be ignored</param>
         /// <returns></returns>
-        public List<PanelBehaviour> GetPanelNeighbors(Vector2 position, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
+        public List<PanelBehaviour> GetPanelNeighbors(Vector2 position, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, bool includeDiagonals = true)
         {
             List<PanelBehaviour> neighbors = new List<PanelBehaviour>();
 
@@ -568,12 +568,16 @@ namespace Lodis.GridScripts
                 for (int y = -1; y <= 1; y++)
                 {
                     Vector2 offset = new Vector2(x, y);
+                    Vector2 target = offset + position;
 
-                    if (offset + position == position)
+                    if (target == position)
+                        continue;
+
+                    if (offset.magnitude > 1 && !includeDiagonals)
                         continue;
 
                     PanelBehaviour panel = null;
-                    if (GetPanel((position + offset), out panel, canBeOccupied, alignment))
+                    if (GetPanel(target, out panel, canBeOccupied, alignment))
                         neighbors.Add(panel);
                 }
             }

@@ -63,6 +63,11 @@ namespace Lodis.AI
                 _currentState = 0;
         }
 
+        public void SetAIState(int currentState)
+        {
+            _currentState = currentState;
+        }
+
         private void SetAIState()
         {
             if (_currentState == 0)

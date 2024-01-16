@@ -37,6 +37,16 @@ namespace Lodis.Gameplay
         R_HAND
     }
 
+    /// <summary>
+    /// Event used when an ability hits an entity. 
+    /// arg[0] = The game object collided with.
+    /// arg[1] = The collision script for the object that was collided with
+    /// arg[2] = The collider object that was collided with. Is type Collider if trigger and type Collision if not.
+    /// arg[3] = The collider behaviour of the object that raised this event. 
+    /// arg[4] = The health script of the object that was collided with.
+    /// </summary>
+    public delegate void AbilityHitEvent(Ability abilityUsed, params object[] collisionArgs);
+
     public class MovesetBehaviour : MonoBehaviour
     {
         [Header("Deck Settings")]
@@ -143,6 +153,7 @@ namespace Lodis.Gameplay
 
         private UnityAction OnUpdateHand;
         private UnityAction OnManualShuffle;
+        private UnityAction _onAutoShuffle;
         private bool _loadingShuffle;
 
         private CharacterStateMachineBehaviour _stateMachineScript;
@@ -151,6 +162,8 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _knockbackBehaviour;
         private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
+        private AbilityHitEvent _onHit;
+        private AbilityHitEvent _onHitTemp;
         private TimedAction _rechargeAction;
         private TimedAction _deckShuffleAction;
         private TimedAction _burstAction;
@@ -420,6 +433,21 @@ namespace Lodis.Gameplay
             OnManualShuffle += action;
         }
 
+        public void AddOnAutoShuffleAction(UnityAction action)
+        {
+            _onAutoShuffle += action;
+        }
+
+        public void AddOnHitAction(AbilityHitEvent action)
+        {
+            _onHit += action;
+        }
+
+        public void AddOnHitTempAction(AbilityHitEvent action)
+        {
+            _onHitTemp += action;
+        }
+
         /// <summary>
         /// Gets the ability from the moveset deck based on the type passed in.
         /// </summary>
@@ -511,6 +539,11 @@ namespace Lodis.Gameplay
                 return null;
 
             ability.OnHitTemp += IncreaseEnergyFromDamage;
+            ability.OnHitTemp += collisionArgs =>
+            {
+                _onHit?.Invoke(ability, collisionArgs);
+                _onHitTemp?.Invoke(ability, collisionArgs);
+            };
 
             ability.UseAbility(args);
             _lastAbilityInUse = ability;
@@ -566,6 +599,12 @@ namespace Lodis.Gameplay
 
             currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
 
+            currentAbility.OnHitTemp += collisionArgs =>
+            {
+                _onHit?.Invoke(currentAbility, collisionArgs);
+                _onHitTemp?.Invoke(currentAbility, collisionArgs);
+            };
+
             currentAbility.UseAbility(args);
 
             _lastAbilityInUse = currentAbility;
@@ -605,18 +644,24 @@ namespace Lodis.Gameplay
                 return null;
 
             //Find the ability in the deck and use it
-            Ability currentAbility = _normalDeck.GetAbilityByName(abilityName);
-            if (currentAbility == null)
+            Ability ability = _normalDeck.GetAbilityByName(abilityName);
+            if (ability == null)
                 return null;
-            currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
-            
+            ability.OnHitTemp += IncreaseEnergyFromDamage;
+
+            ability.OnHitTemp += collisionArgs =>
+            {
+                _onHit?.Invoke(ability, collisionArgs);
+                _onHitTemp?.Invoke(ability, collisionArgs);
+            };
+
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(ability))
                     return _lastAbilityInUse;
 
-            currentAbility.UseAbility(args);
-            _lastAbilityInUse = currentAbility;
+            ability.UseAbility(args);
+            _lastAbilityInUse = ability;
             if (args?.Length > 1)
                 LastAttackDirection = (Vector2)args[1];
             if (args?.Length > 0)
@@ -647,36 +692,42 @@ namespace Lodis.Gameplay
                 return null;
 
             //Find the ability in the deck and use it
-            Ability currentAbility = _specialAbilitySlots[abilitySlot];
+            Ability ability = _specialAbilitySlots[abilitySlot];
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(ability))
                     return _lastAbilityInUse;
 
-            if (currentAbility == null)
+            if (ability == null)
                 return null;
-            else if (currentAbility.MaxActivationAmountReached)
+            else if (ability.MaxActivationAmountReached)
                 return null;
-            else if (currentAbility.abilityData.EnergyCost > _energy && currentAbility.currentActivationAmount == 0)
+            else if (ability.abilityData.EnergyCost > _energy && ability.currentActivationAmount == 0)
                 return null;
 
-            if (currentAbility.currentActivationAmount == 0 && !MatchManagerBehaviour.InfiniteEnergy)
-                _energy -= currentAbility.abilityData.EnergyCost;
+            if (ability.currentActivationAmount == 0 && !MatchManagerBehaviour.InfiniteEnergy)
+                _energy -= ability.abilityData.EnergyCost;
 
-            currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
-            currentAbility.UseAbility(args);
-            _lastAbilityInUse = currentAbility;
+            ability.OnHitTemp += IncreaseEnergyFromDamage;
+            ability.OnHitTemp += collisionArgs =>
+            {
+                _onHit?.Invoke(ability, collisionArgs);
+                _onHitTemp?.Invoke(ability, collisionArgs);
+            };
+
+            ability.UseAbility(args);
+            _lastAbilityInUse = ability;
 
             if (args?.Length > 1)
                 LastAttackDirection = (Vector2)args[1];
-            currentAbility.currentActivationAmount++;
+            ability.currentActivationAmount++;
 
-            if (currentAbility.MaxActivationAmountReached)
+            if (ability.MaxActivationAmountReached)
                 _discardDeck.AddAbility(_lastAbilityInUse);
 
 
             if (!_deckReloading)
-                currentAbility.onEnd += () => { if (_specialAbilitySlots[abilitySlot] == currentAbility) UpdateHand(abilitySlot); };
+                ability.onEnd += () => { if (_specialAbilitySlots[abilitySlot] == ability) UpdateHand(abilitySlot); };
 
             OnUseAbility?.Invoke();
 
@@ -896,6 +947,7 @@ namespace Lodis.Gameplay
                 _deckReloading = true;
                 Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleStart);
                 DiscardActiveSlots();
+                _onAutoShuffle?.Invoke();
                 _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent =>
                 {
                     ResetSpecialDeck();

@@ -31,6 +31,7 @@ public class TextTypeBehaviour : MonoBehaviour
     private bool _forceCompleteOnSubmit;
     private bool _canContinue;
     private bool _isTyping;
+    private bool _shouldSkipDelay;
     private int _lastSectionIndex;
 
     private Text _text;
@@ -100,13 +101,15 @@ public class TextTypeBehaviour : MonoBehaviour
                 currentText = "";
                 _onSectionStart?.Invoke();
                 _canContinue = false;
+                _shouldSkipDelay = false;
             }
 
             currentText += _textToType[i];
             _text.text = currentText;
             SoundManagerBehaviour.Instance.PlaySound(_typeSound, _typeSoundVolume);
 
-            yield return new WaitForSeconds(_typeDelay);
+            if (!_shouldSkipDelay)
+                yield return new WaitForSeconds(_typeDelay);
         }
 
         _onTypeComplete?.Invoke();
@@ -117,19 +120,15 @@ public class TextTypeBehaviour : MonoBehaviour
         if (!IsTyping)
             return;
 
-        StopCoroutine(_typeRoutine);
-        string remainingText = _textToType.Substring(_lastSectionIndex);
-
-        _text.text = remainingText;
-
-        if (_waitForInputOnEnd)
-            _onSectionComplete?.Invoke();
-
-        _onTypeComplete?.Invoke();
+        _shouldSkipDelay = true;
+        _canContinue = false;
     }
 
     public void BeginTyping(float delay)
     {
+        if (_textToType == "")
+            return;
+
         _typeRoutine = StartCoroutine(TypeText(delay));
     }
 }

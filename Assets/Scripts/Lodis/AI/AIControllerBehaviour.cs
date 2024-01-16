@@ -210,6 +210,7 @@ namespace Lodis.AI
             Knockback = Character.GetComponent<Movement.KnockbackBehaviour>();
             _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
             _movementBehaviour = Character.GetComponent<GridMovementBehaviour>();
+            _moveset = Character.GetComponent<MovesetBehaviour>();
 
             _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(PlayerID);
             OpponentMove = _opponent.GetComponent<GridMovementBehaviour>();
@@ -274,6 +275,9 @@ namespace Lodis.AI
 
         private void AddMatchReward()
         {
+            if (_useRecording)
+                return;
+
             GridAlignment alignment = _aiMovementBehaviour.MovementBehaviour.Alignment;
 
             if (MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.P1WINS && alignment == GridAlignment.LEFT 

@@ -64,7 +64,9 @@ namespace Lodis.UI
 
         public void ResetTimer()
         {
-            MatchTimeRemaining = _matchTime.Value;
+            if (IsInfinite)
+                MatchTimeRemaining = _matchTime.Value;
+
             _eventRaised = false;
             _timeUp = false;
             TimeSinceRoundStart = 0;
