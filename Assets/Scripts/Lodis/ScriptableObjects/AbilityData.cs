@@ -193,6 +193,7 @@ namespace Lodis.ScriptableObjects
             {
                 return new HitColliderData();
             }
+            ColliderData[index].AbilityID = ID;
             ColliderData[index].AbilityType = AbilityType;
             return ColliderData[index];
         }

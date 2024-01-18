@@ -87,6 +87,7 @@ namespace Lodis.Gameplay
                     transform = lastSpawnTransform;
 
                 _spawnTransforms[i] = transform;
+                lastSpawnTransform = transform;
             }
 
         }

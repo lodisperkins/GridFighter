@@ -88,14 +88,15 @@ namespace Lodis.Gameplay
         private Transform GetTarget()
         {
             Transform transform = null;
-            PanelBehaviour targetPanel;
+            PanelBehaviour targetPanel = null;
             Vector2 position = Vector2.zero;
 
             if (OwnerMoveScript.Position.y == _opponentKnockback.MovementBehaviour.Position.y)
             {
                 BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_opponentKnockback.transform.position, out targetPanel);
             }
-            else
+
+            if (!targetPanel)
             {
                 position = OwnerMoveScript.Position + (Vector2.right * OwnerMoveScript.GetAlignmentX()) * _spawnDistance;
                 BlackBoardBehaviour.Instance.Grid.GetPanel(position, out targetPanel);

@@ -108,17 +108,12 @@ namespace Assets.Scripts.Lodis.AI
 
         public override float Compare(TreeNode node)
         {
-            ActionNode situationNode = (node as ActionNode).GetShallowCopy();
+            ActionNode situationNode = (node as ActionNode);
+
+            float alignmentModifier = 1;
 
             if (AlignmentX != situationNode.AlignmentX)
-            {
-                situationNode.OwnerToTarget.x *= -1;
-                situationNode.AttackDirection.x *= -1;
-                situationNode.MoveDirection.x *= -1;
-                situationNode.OpponentVelocity.x *= -1;
-                situationNode.AverageVelocity.x *= -1;
-                situationNode.AverageHitBoxOffset.x *= -1;
-            }
+                alignmentModifier = -1;
 
             if (situationNode == null)
                 return 400;
@@ -158,7 +153,7 @@ namespace Assets.Scripts.Lodis.AI
             {
                 Vector3 ownerToTarget = OwnerToTarget;
 
-                directionAccuracy = Vector3.Dot(situationNode.OwnerToTarget.normalized, ownerToTarget.normalized);
+                directionAccuracy = Vector3.Dot(situationNode.OwnerToTarget.normalized * alignmentModifier, ownerToTarget.normalized);
 
                 if (directionAccuracy < 0)
                     directionAccuracy = 0;
@@ -167,18 +162,18 @@ namespace Assets.Scripts.Lodis.AI
             directionAccuracy = 1 - directionAccuracy;
 
             //Check direction to enemy accuracy
-            float attackDirectionAccuracy = 1;
-            if (situationNode.AttackDirection.magnitude != 0 || AttackDirection.magnitude != 0)
-            {
-                //AttackDirection.x = Mathf.Abs(AttackDirection.x);
-                attackDirectionAccuracy = 1 - Vector3.Dot(situationNode.AttackDirection.normalized, AttackDirection.normalized);
+            //float attackDirectionAccuracy = 1;
+            //if (situationNode.AttackDirection.magnitude != 0 || AttackDirection.magnitude != 0)
+            //{
+            //    //AttackDirection.x = Mathf.Abs(AttackDirection.x);
+            //    attackDirectionAccuracy = 1 - Vector3.Dot(situationNode.AttackDirection.normalized *alignmentModifier, AttackDirection.normalized);
 
-                if (attackDirectionAccuracy < 0)
-                    attackDirectionAccuracy = 0;
-            }
+            //    if (attackDirectionAccuracy < 0)
+            //        attackDirectionAccuracy = 0;
+            //}
 
             //Check owner move direction
-            float moveDirectionAccuracy = 1;
+            //float moveDirectionAccuracy = 1;
             //if (actionNode.MoveDirection.magnitude != 0 || MoveDirection.magnitude != 0)
             //{
 
@@ -198,7 +193,7 @@ namespace Assets.Scripts.Lodis.AI
             {
                 Vector3 opponentVelocity = OpponentVelocity;
 
-                velocityAccuracy = Vector3.Dot(situationNode.OpponentVelocity.normalized, opponentVelocity.normalized);
+                velocityAccuracy = Vector3.Dot(situationNode.OpponentVelocity.normalized * alignmentModifier, opponentVelocity.normalized);
                 if (velocityAccuracy < 0)
                     velocityAccuracy = 0;
             }
@@ -206,10 +201,10 @@ namespace Assets.Scripts.Lodis.AI
             velocityAccuracy = 1 - velocityAccuracy;
 
             //Check energy
-            float energy = situationNode.Energy;
+            //float energy = situationNode.Energy;
 
-            float energyAccuracy = GetPercentage(energy, Energy);
-            float opponentEnergyAccuracy = GetPercentage(OpponentEnergy, situationNode.OpponentEnergy);
+            //float energyAccuracy = GetPercentage(energy, Energy);
+            //float opponentEnergyAccuracy = GetPercentage(OpponentEnergy, situationNode.OpponentEnergy);
             //Check distance to opponent
             float distanceAccuracy = Mathf.Abs(OwnerToTarget.magnitude - situationNode.OwnerToTarget.magnitude);
 
@@ -217,33 +212,33 @@ namespace Assets.Scripts.Lodis.AI
             float hitBoxPositionAccuracy = 1;
             if (situationNode.AverageHitBoxOffset.magnitude != 0 && AverageHitBoxOffset.magnitude != 0)
             {
-                hitBoxPositionAccuracy = 1 - Vector3.Dot(situationNode.AverageHitBoxOffset.normalized, AverageHitBoxOffset.normalized);
+                hitBoxPositionAccuracy = 1 - Vector3.Dot(situationNode.AverageHitBoxOffset.normalized * alignmentModifier, AverageHitBoxOffset.normalized);
                 if (hitBoxPositionAccuracy < 0)
                     hitBoxPositionAccuracy = 0;
             }
 
             //Check health
 
-            float healthAccuracy = GetPercentage(Health, situationNode.Health);
-            float barrierHealthAccuracy = GetPercentage(BarrierHealth, situationNode.BarrierHealth);
+            //float healthAccuracy = GetPercentage(Health, situationNode.Health);
+            //float barrierHealthAccuracy = GetPercentage(BarrierHealth, situationNode.BarrierHealth);
             float opponentHealthAccuracy = GetPercentage(OpponentHealth, situationNode.OpponentHealth);
-            float opponentBarrierHealthAccuracy = GetPercentage(OpponentBarrierHealth, situationNode.OpponentBarrierHealth + 1);
+            //float opponentBarrierHealthAccuracy = GetPercentage(OpponentBarrierHealth, situationNode.OpponentBarrierHealth + 1);
             float matchTimeAccuracy = GetPercentage(MatchTimeRemaining, situationNode.MatchTimeRemaining);
             float opponentState = OpponentState == situationNode.OpponentState ? 0 : 1;
 
-            if (float.IsNaN(hitBoxPositionAccuracy))
-                hitBoxPositionAccuracy = 0;
+            //if (float.IsNaN(hitBoxPositionAccuracy))
+            //    hitBoxPositionAccuracy = 0;
 
             float attackVelocityAccuracy = 1;
 
             if (situationNode.AverageVelocity.magnitude != 0 && AverageVelocity.magnitude != 0)
             {
 
-                attackVelocityAccuracy = Vector3.Dot(situationNode.AverageVelocity.normalized, AverageVelocity.normalized);
+                attackVelocityAccuracy = Vector3.Dot(situationNode.AverageVelocity.normalized * alignmentModifier, AverageVelocity.normalized);
             }
 
-            if (float.IsNaN(attackVelocityAccuracy))
-                attackVelocityAccuracy = 0;
+            //if (float.IsNaN(attackVelocityAccuracy))
+            //    attackVelocityAccuracy = 0;
 
             attackVelocityAccuracy = 1 - attackVelocityAccuracy;
 

@@ -172,20 +172,23 @@ namespace Lodis.UI
             if (playerNum == 1 && !_p1CharacterSelected)
             {
                 _p1ColorIndex++;
-                if (_p1ColorIndex >= _colorManager.PossibleColors.Length)
-                    _p1ColorIndex = 0;
+
                 if (_p1ColorIndex == _p2ColorIndex && _p2CharacterSelected)
                     _p1ColorIndex++;
+
+                if (_p1ColorIndex >= _colorManager.PossibleColors.Length)
+                    _p1ColorIndex = 0;
+
                 _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
                 _backgroundImage.SetPrimaryColor(_colorManager.P1Color.Value / 2);
             }
             else if (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER && !_p2CharacterSelected)
             {
                 _p2ColorIndex++;
-                if (_p2ColorIndex >= _colorManager.PossibleColors.Length)
-                    _p2ColorIndex = 0;
                 if (_p2ColorIndex == _p1ColorIndex && _p1CharacterSelected)
                     _p2ColorIndex++;
+                if (_p2ColorIndex >= _colorManager.PossibleColors.Length)
+                    _p2ColorIndex = 0;
                 _colorManager.SetPlayerColor(playerNum, _p2ColorIndex);
                 _backgroundImage.SetSecondaryColor(_colorManager.P2Color.Value / 2);
             }

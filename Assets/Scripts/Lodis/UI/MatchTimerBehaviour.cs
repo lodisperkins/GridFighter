@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lodis.ScriptableObjects;
 using UnityEngine.UI;
+using Lodis.Utility;
 
 namespace Lodis.UI
 {
@@ -64,8 +65,13 @@ namespace Lodis.UI
 
         public void ResetTimer()
         {
-            if (IsInfinite)
+            if (SceneManagerBehaviour.Instance.GameMode == (int)GameMode.TUTORIAL || SceneManagerBehaviour.Instance.GameMode == (int)GameMode.PRACTICE)
+                return;
+
+            if (!IsInfinite)
                 MatchTimeRemaining = _matchTime.Value;
+            else
+                MatchTimeRemaining = float.PositiveInfinity;
 
             _eventRaised = false;
             _timeUp = false;

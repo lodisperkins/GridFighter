@@ -81,6 +81,7 @@ MonoBehaviour:
     Priority: 1
     OwnerAlignement: 0
     AbilityType: 0
+    AbilityID: 696030700
     SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
       type: 3}
     HitSpark: {fileID: 1493204891009420812, guid: 4fd7b1505062b0d4983e510a086c28ba,

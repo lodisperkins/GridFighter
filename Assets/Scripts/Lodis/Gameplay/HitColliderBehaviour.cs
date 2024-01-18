@@ -54,6 +54,8 @@ namespace Lodis.Gameplay
         public GridAlignment OwnerAlignement;
         [HideInInspector]
         public AbilityType AbilityType;
+        [HideInInspector]
+        public float AbilityID;
 
         [Header("Collision Effects")]
         [Tooltip("The effect that will spawn when the hit box is spawned.")]

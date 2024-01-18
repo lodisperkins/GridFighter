@@ -89,7 +89,7 @@ namespace Lodis.AI
         private List<ActionNode> _currentRecording;
         private int _currentActionIndex;
         private int _currentRecordingIndex;
-        private ActionNode _currentSituation;
+        private ActionNode _currentSituation = new ActionNode(null, null);
 
         private string _recordingName = "AI";
         [SerializeField]
@@ -98,6 +98,8 @@ namespace Lodis.AI
         private GridPhysicsBehaviour _opponentGridPhysics;
         private bool _isPaused;
         private TimedAction _playbackRoutine;
+        [SerializeField]
+        private float _accuracyMinimum;
         [SerializeField]
         [Tooltip("Recorded actions that have a score above this value when compared are considered cannot be used.")]
         private float _actionScoreMax;
@@ -438,8 +440,6 @@ namespace Lodis.AI
 
         private void UpdateSituationNode()
         {
-            _currentSituation = new ActionNode(null, null);
-
             _currentSituation.CurrentState = _stateMachine.CurrentState;
 
             //Update grid state
@@ -499,46 +499,32 @@ namespace Lodis.AI
         /// </summary>
         private void StartNewAction()
         {
-            bool actionFound = false;
             float currentLowest = _actionScoreMax;
-            float modifier = 0;
 
-            while (!actionFound)
+            //Iterate through recording list.
+            for (int i = 0; i < _recordings.Length; i++)
             {
-                //Iterate through recording list.
-                for (int i = 0; i < _recordings.Length; i++)
+                List<ActionNode> recording = _recordings[i];
+
+                //Iterate through current recording actions.
+                for (int j = 0; j < recording.Count; j++)
                 {
-                    List<ActionNode> recording = _recordings[i];
+                    float compareVal = recording[j].Compare(_currentSituation);
 
-                    //Iterate through current recording actions.
-                    for (int j = 0; j < recording.Count; j++)
+                    //If the current action is valid and matches our situation more closely than the last action...
+                    if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + 1) < currentLowest && ValidateAction(recording[j].CurrentAbilityID))
                     {
-                        float compareVal = recording[j].Compare(_currentSituation);
-                        compareVal -= modifier;
-
-                        //If the current action is valid and matches our situation more closely than the last action...
-                        if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + 1) < currentLowest && ValidateAction(recording[j].CurrentAbilityID))
-                        {
-                            //...update the current action.
-                            _currentRecording = recording;
-                            _currentActionIndex = j;
-                            _currentRecordingIndex = i;
-                            currentLowest = compareVal;
-                            actionFound = true;
-                        }
+                        //...update the current action.
+                        _currentRecording = recording;
+                        _currentActionIndex = j;
+                        _currentRecordingIndex = i;
+                        currentLowest = compareVal;
                     }
+
+                    if (currentLowest <= _accuracyMinimum)
+                        break;
                 }
-
-                modifier++;
-
-                if (modifier >= 3)
-                    break;
             }
-            if (!actionFound)
-                Debug.Log("Couldn't find recording that matched situation.");
-
-            if (!RoutineBehaviour.Instance.ContainsActions(_playbackRoutine) && _playbackRoutine != null && _playbackRoutine.GetEnabled())
-                Debug.Log("Doesn't contain action");
 
             //Play the the action at the current index after storing  the amount of time it took to act in the previous action.
             //This is to be sure the last actions delay doesn't effect the next.
