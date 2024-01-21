@@ -32,9 +32,9 @@ MonoBehaviour:
     cancelOnHit: 0
     cancelOnFlinch: 1
     cancelOnKnockback: 1
-  CancelAllOnHit: 0
-  CancelAllOnFlinch: 0
-  CancelAllOnKnockback: 0
+  CancelAllOnHit: 1
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -50,7 +50,7 @@ MonoBehaviour:
   ActiveSound: {fileID: 8300000, guid: 144018904077bdc4ca123a40935af801, type: 3}
   DeactivateSound: {fileID: 0}
   ColliderData:
-  - Name: FootDiveCollider
+  - Name: SkullBusterCollider
     DespawnAfterTimeLimit: 0
     TimeActive: 0
     DestroyOnHit: 1
@@ -64,13 +64,14 @@ MonoBehaviour:
     KnockBackScale: 3
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: -1.2
+    HitAngle: -1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.5
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 8
+    AbilityID: -1.202016e+9
     SpawnEffect: {fileID: 1493204891009420812, guid: 67bf52d6da49f564e8176f83473f4340,
       type: 3}
     HitSpark: {fileID: 8482821253585752479, guid: b2d1a7e3c779c334183600eee56341df,

@@ -21,6 +21,7 @@ namespace Lodis.Gameplay
         private DelayedAction _stopAction;
         private TimedAction _enableAction;
         private float _hitStopScale = 0.15f;
+        private bool _hitStopActive;
 
         public Animator Animator { get => _animator; set => _animator = value; }
 
@@ -77,6 +78,7 @@ namespace Lodis.Gameplay
         /// <param name="shakeCamera">Whether or not the camera should shake during the hitstop effect.</param>
         public void StartHitStop(float time, float strength, bool waitForForceApplied, bool shakeCharacter, bool shakeCamera)
         {
+            _hitStopActive = true;
             //If there is already a timer to make the object stop, cancel it.
             if (_stopAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_stopAction);
@@ -91,7 +93,7 @@ namespace Lodis.Gameplay
                 CameraBehaviour.ShakeBehaviour.ShakeRotation(0.05f, 0.5f, 1);
 
             //Calls for the physics component to freexe the object in place so it doesn't keep moving in air.
-            _physics.FreezeInPlaceByTimer(time, true, true, waitForForceApplied, true);
+            _physics.FreezeInPlaceByCondition(args => !_hitStopActive, true, true, waitForForceApplied, true);
             //The animator should be disabled only after the animation stop delay time has passed.
 
 
@@ -99,6 +101,7 @@ namespace Lodis.Gameplay
             {
 
                 RoutineBehaviour.Instance.CharacterTimeScale = 1;
+                _hitStopActive = false;
             }, TimedActionCountType.SCALEDTIME, time);
 
             RoutineBehaviour.Instance.CharacterTimeScale = 0;
@@ -109,8 +112,8 @@ namespace Lodis.Gameplay
             if (_moveset.LastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
                 return;
 
+            _hitStopActive = false;
             _shakeBehaviour.StopShaking();
-            _physics.CancelFreeze();
             RoutineBehaviour.Instance.StopAction(_enableAction);
             RoutineBehaviour.Instance.CharacterTimeScale = 1;
         }

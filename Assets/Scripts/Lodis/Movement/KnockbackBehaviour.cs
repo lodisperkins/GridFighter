@@ -138,7 +138,6 @@ namespace Lodis.Movement
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
             Physics = GetComponent<GridPhysicsBehaviour>();
 
-            _startGravity = Physics.Gravity;
 
             AddOnTakeDamageAction(IncreaseKnockbackGravity);
             AddOnTakeDamageAction(_movementBehaviour.SnapToTarget);
@@ -175,6 +174,9 @@ namespace Lodis.Movement
                 _movementBehaviour.MoveToPanel(panel);
                 _movementBehaviour.CanCancelMovement = false;
             };
+
+            _startGravity = Physics.Gravity;
+            _adjustedGravity = _startGravity;
         }
 
         /// <summary>

@@ -330,7 +330,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 4
-  _gravity: 39.24
+  _gravity: 50
   _bounceDampen: 5
   _bounceCollider: {fileID: 7228149465337761564}
   _isGrounded: 0

@@ -339,36 +339,40 @@ namespace Lodis.Gameplay
                 return;
 
             ColliderInfo.HitAngle = newHitAngle;
+
+            bool damageDealt = false;
+
             //If the damage script wasn't null damage the object
             if (damageScript != null && !damageScript.IsInvincible)
             {
                 damageScript.LastCollider = this;
                 KnockbackBehaviour knockback;
 
-                if (ColliderInfo.Damage > 0)
+                if (ColliderInfo.Damage > 0 && damageScript.TakeDamage(ColliderInfo, Owner) > 0)
                 {
-                    damageScript.TakeDamage(ColliderInfo, Owner);
                     if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
                         BlackBoardBehaviour.Instance.LHSTotalDamage += ColliderInfo.Damage;
                     else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
                         BlackBoardBehaviour.Instance.RHSTotalDamage += ColliderInfo.Damage;
+
+                    damageDealt = true;
                 }
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
                     float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
                     Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, true);
                     knockback.Physics.ApplyImpulseForce(force);
+                    damageDealt = true;
                 }
 
-                if (ColliderInfo.HitEffectLevel > 0)
+                if (ColliderInfo.HitEffectLevel > 0 && damageDealt)
                 {
                     Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], attachedGameObject.transform.position + (.5f * Vector3.up), transform.rotation);
                     SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
                 }
-
             }
-            SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
 
+            SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
             ColliderInfo.OnHit?.Invoke(attachedGameObject.gameObject, otherCollider, attachedGameObject, this, damageScript);
 
             ColliderInfo.HitAngle = defaultAngle;
