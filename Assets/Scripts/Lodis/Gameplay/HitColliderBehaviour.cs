@@ -265,28 +265,18 @@ namespace Lodis.Gameplay
             StartTime = Time.time;
         }
 
-
-        private void OnTriggerEnter(Collider other)
+        private void ResolveCollision(GameObject attachedGameObject, GameObject collisionObject)
         {
-            //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
-                return;
+            if (CheckIfLayerShouldBeIgnored(collisionObject.layer)) return;
 
-            if (CheckIfLayerShouldBeIgnored(other.gameObject.layer)) return;
+            ColliderBehaviour otherCollider = attachedGameObject.GetComponent<ColliderBehaviour>();
 
-            if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
-
-            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
-            GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
-
-            ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
-
-            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
+            if (CheckIfLayerShouldBeIgnored(attachedGameObject.layer)) return;
 
             Vector3 hitEffectPosition = transform.position;
 
-            if (otherGameObject.CompareTag("Player"))
-                hitEffectPosition = otherGameObject.transform.position + (.5f * Vector3.up);
+            if (attachedGameObject.CompareTag("Player"))
+                hitEffectPosition = attachedGameObject.transform.position + (.5f * Vector3.up);
 
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
@@ -301,7 +291,7 @@ namespace Lodis.Gameplay
                     //...destroy it if it has a lower priority
                     if (ColliderInfo.Priority >= hitCollider.ColliderInfo.Priority)
                     {
-                        ObjectPoolBehaviour.Instance.ReturnGameObject(otherGameObject);
+                        ObjectPoolBehaviour.Instance.ReturnGameObject(attachedGameObject);
                         if (hitCollider.ColliderInfo.HitSpark)
                             Instantiate(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
                     }
@@ -338,11 +328,17 @@ namespace Lodis.Gameplay
             }
 
             //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(other.gameObject, Time.frameCount);
-            ColliderInfo.HitAngle = newHitAngle;
+            if (!Collisions.ContainsKey(attachedGameObject))
+                Collisions.Add(attachedGameObject, Time.frameCount);
+
 
             //Grab whatever health script is attached to this object
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
+            HealthBehaviour damageScript = attachedGameObject.GetComponent<HealthBehaviour>();
+
+            if (damageScript?.DamageableAbilityID != ColliderInfo.AbilityID && damageScript?.DamageableAbilityID != -1)
+                return;
+
+            ColliderInfo.HitAngle = newHitAngle;
             //If the damage script wasn't null damage the object
             if (damageScript != null && !damageScript.IsInvincible)
             {
@@ -366,234 +362,58 @@ namespace Lodis.Gameplay
 
                 if (ColliderInfo.HitEffectLevel > 0)
                 {
-                    Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
+                    Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], attachedGameObject.transform.position + (.5f * Vector3.up), transform.rotation);
                     SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
                 }
 
             }
             SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
-            
-            ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
+
+            ColliderInfo.OnHit?.Invoke(attachedGameObject.gameObject, otherCollider, attachedGameObject, this, damageScript);
 
             ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
+            GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
+            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || otherGameObject.gameObject == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+                return;
+
+            if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
+            ResolveCollision(otherGameObject, other.gameObject);
         }
 
         private void OnTriggerStay(Collider other)
         {
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!ColliderInfo.IsMultiHit || other.gameObject == Owner || !CheckHitTime(other.gameObject) || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (!ColliderInfo.IsMultiHit || !CheckHitTime(other.gameObject))
                 return;
 
-            if (CheckIfLayerShouldBeIgnored(other.gameObject.layer)) return;
-
-            if (!Collisions.ContainsKey(other.gameObject))
-                Collisions.Add(other.gameObject, Time.time);
 
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
 
-            ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
-            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
+            if (otherGameObject.gameObject == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+                return;
 
-            Vector3 hitEffectPosition = transform.position;
-
-            if (otherGameObject.CompareTag("Player"))
-                hitEffectPosition = otherGameObject.transform.position + (.5f * Vector3.up);
-
-            //Return if its attached to this object or this object wants to ignore collider
-            if (otherCollider)
-            {
-                //Return if either objects want to ignore the other.
-                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
-                    return;
-
-                //If it is a hit collider...
-                if (otherCollider is HitColliderBehaviour hitCollider)
-                {
-                    //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                        ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
-
-                    //Ignore the collider otherwise
-                    return;
-                }
-            }
-
-            if (ColliderInfo.HitSpark)
-                Instantiate(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
-
-            float newHitAngle = ColliderInfo.HitAngle;
-            float defaultAngle = newHitAngle;
-
-            //Calculates new angle if this object should change trajectory based on direction of hit
-            if (ColliderInfo.AdjustAngleBasedOnAlignment)
-            {
-                //Find the direction this collider was going to apply force originally
-                Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-
-                //Find a new direction based the alignment
-                int direction = ColliderInfo.OwnerAlignement == GridAlignment.LEFT ? 1 : -1;
-                currentForceDirection.x *= direction;
-
-                //Find the new angle based on the direction of the attack on the x axis
-                float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
-                newHitAngle = Mathf.Acos(dotProduct);
-
-                //Find if the angle should be negative or positive
-                if (Vector3.Dot(currentForceDirection, Vector3.up) < 0)
-                    newHitAngle *= -1;
-            }
-
-            //Add the game object to the list of collisions so it is not collided with again
-            ColliderInfo.HitAngle = newHitAngle;
-
-            //Grab whatever health script is attached to this object
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
-            //If the damage script wasn't null damage the object
-            if (damageScript != null && !damageScript.IsInvincible)
-            {
-                damageScript.LastCollider = this;
-                KnockbackBehaviour knockback;
-
-                if (ColliderInfo.Damage > 0)
-                {
-                    damageScript.TakeDamage(ColliderInfo, Owner);
-                    if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
-                        BlackBoardBehaviour.Instance.LHSTotalDamage += ColliderInfo.Damage;
-                    else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
-                        BlackBoardBehaviour.Instance.RHSTotalDamage += ColliderInfo.Damage;
-                }
-                else if (knockback = damageScript as KnockbackBehaviour)
-                {
-                    float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
-                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, true);
-                    knockback.Physics.ApplyImpulseForce(force);
-                }
-
-                if (ColliderInfo.HitEffectLevel > 0)
-                {
-                    Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
-                    SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
-                }
-            }
-
-            ColliderInfo.HitAngle = defaultAngle;
-            ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
-
-            if (ColliderInfo.DestroyOnHit)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+            ResolveCollision(otherGameObject, other.gameObject);
         }
 
         private void OnCollisionEnter(Collision collision)
         {
-            GameObject other = collision.gameObject;
+            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
+            GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : collision.gameObject;
 
-            //If the object has already been hit or if the collider is multihit return
-            if (Collisions.ContainsKey(other.gameObject) || ColliderInfo.IsMultiHit || other.gameObject == Owner || (other.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || otherGameObject.gameObject == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
-
-            if (CheckIfLayerShouldBeIgnored(other.gameObject.layer)) return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
 
-            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
-            GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : other.gameObject;
-
-            ColliderBehaviour otherCollider = otherGameObject.GetComponent<ColliderBehaviour>();
-            if (CheckIfLayerShouldBeIgnored(otherGameObject.layer)) return;
-
-
-            Vector3 hitEffectPosition = transform.position;
-
-            if (otherGameObject.CompareTag("Player"))
-                hitEffectPosition = otherGameObject.transform.position + (.5f * Vector3.up);
-
-            //Return if its attached to this object or this object wants to ignore collider
-            if (otherCollider)
-            {
-                //Return if either objects want to ignore the other.
-                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
-                    return;
-
-                //If it is a hit collider...
-                if (otherCollider is HitColliderBehaviour hitCollider)
-                {
-                    //...destroy it if it has a lower priority
-                    if (hitCollider.ColliderInfo.Priority >= ColliderInfo.Priority)
-                        ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
-
-                    //Ignore the collider otherwise
-                    return;
-                }
-            }
-
-            if (ColliderInfo.HitSpark)
-                Instantiate(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
-
-            float newHitAngle = ColliderInfo.HitAngle;
-            float defaultAngle = newHitAngle;
-
-            //Calculates new angle if this object should change trajectory based on direction of hit
-            if (ColliderInfo.AdjustAngleBasedOnAlignment)
-            {
-                //Find the direction this collider was going to apply force originally
-                Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
-
-                //Find a new direction based the alignment
-                int direction = ColliderInfo.OwnerAlignement == GridAlignment.LEFT ? 1 : -1;
-                currentForceDirection.x *= direction;
-
-                //Find the new angle based on the direction of the attack on the x axis
-                float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
-                newHitAngle = Mathf.Acos(dotProduct);
-
-                //Find if the angle should be negative or positive
-                if (Vector3.Dot(currentForceDirection, Vector3.up) < 0)
-                    newHitAngle *= -1;
-            }
-
-            //Add the game object to the list of collisions so it is not collided with again
-            Collisions.Add(other.gameObject, Time.frameCount);
-            ColliderInfo.HitAngle = newHitAngle;
-
-            //Grab whatever health script is attached to this object
-            HealthBehaviour damageScript = other.GetComponent<HealthBehaviour>();
-            //If the damage script wasn't null damage the object
-            if (damageScript != null && !damageScript.IsInvincible)
-            {
-                damageScript.LastCollider = this;
-                KnockbackBehaviour knockback;
-
-                if (ColliderInfo.Damage > 0)
-                {
-                    damageScript.TakeDamage(ColliderInfo, Owner);
-
-                    if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
-                        BlackBoardBehaviour.Instance.LHSTotalDamage += ColliderInfo.Damage;
-                    else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
-                        BlackBoardBehaviour.Instance.RHSTotalDamage += ColliderInfo.Damage;
-                }
-                else if (knockback = damageScript as KnockbackBehaviour)
-                {
-                    float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
-                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, ColliderInfo.ClampForceWithinRing);
-                    knockback.Physics.ApplyImpulseForce(force);
-                }
-
-                if (ColliderInfo.HitEffectLevel > 0)
-                {
-                    Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], other.transform.position + (.5f * Vector3.up), transform.rotation);
-                    SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
-                }
-            }
-
-
-            ColliderInfo.OnHit?.Invoke(other.gameObject, otherCollider, other, this, damageScript);
-            ColliderInfo.HitAngle = defaultAngle;
-            if (ColliderInfo.DestroyOnHit)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+            ResolveCollision(otherGameObject, collision.collider.gameObject);
         }
 
 

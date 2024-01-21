@@ -53,6 +53,7 @@ namespace Lodis.Gameplay
         private UnityAction _onIntagibilityDeactivated;
         private UnityAction _onStunEnabled;
         private UnityAction _onStunDisabled;
+        private int _damageableAbilityID = -1;
         private string _defaultLayer;
         private HitColliderBehaviour _lastCollider;
         protected GridMovementBehaviour Movement;
@@ -141,6 +142,7 @@ namespace Lodis.Gameplay
 
         public CharacterDefenseBehaviour DefenseBehaviour { get => _defenseBehaviour; private set => _defenseBehaviour = value; }
         public Renderer MeshRenderer { get => _meshRenderer; set => _meshRenderer = value; }
+        public int DamageableAbilityID { get => _damageableAbilityID; private set => _damageableAbilityID = value; }
 
         protected virtual void Awake()
         {
@@ -163,6 +165,18 @@ namespace Lodis.Gameplay
                 _defaultColor = _material.color;
             }
 
+        }
+
+        /// <summary>
+        /// Only hitboxes that come from an ability with this ID can collide with this object.
+        /// </summary>
+        /// <param name="abilityID">The ability ID of the hit colliders.</param>
+        /// <param name="condition">When to allow this object to be hit by any collider again.</param>
+        public void SetDamageableAbilityID(int abilityID, Condition condition)
+        {
+            _damageableAbilityID = abilityID;
+
+            RoutineBehaviour.Instance.StartNewConditionAction(args => DamageableAbilityID = -1, condition);
         }
 
         /// <summary>

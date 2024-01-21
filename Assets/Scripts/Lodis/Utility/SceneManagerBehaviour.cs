@@ -71,6 +71,8 @@ namespace Lodis.Utility
 
             if (_updateDeviceBasedOnUI)
                 _module.submit.action.started += UpdateDeviceP1;
+
+            Application.targetFrameRate = 60;
         }
 
         public void UpdateDevices(int playerID)

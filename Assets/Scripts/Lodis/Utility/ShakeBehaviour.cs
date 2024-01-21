@@ -67,4 +67,9 @@ public class ShakeBehaviour : MonoBehaviour
         _tweener.onComplete += () => transform.localPosition = _startPosition;
     }
 
+    public void StopShaking()
+    {
+        _tweener.Complete();
+    }
+
 }

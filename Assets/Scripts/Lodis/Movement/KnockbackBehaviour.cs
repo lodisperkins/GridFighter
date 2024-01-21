@@ -70,6 +70,7 @@ namespace Lodis.Movement
         
         private float _lastTotalKnockBack;
         private float _lastTimeInKnockBack;
+        private float _adjustedGravity;
 
         public float LastTimeInKnockBack
         {
@@ -130,12 +131,19 @@ namespace Lodis.Movement
         protected override void Awake()
         {
             base.Awake();
+
             _velocityDecayRate = Resources.Load<FloatVariable>("ScriptableObjects/VelocityDecayRate");
+
             _landingBehaviour = GetComponent<LandingBehaviour>();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
             Physics = GetComponent<GridPhysicsBehaviour>();
+
             _startGravity = Physics.Gravity;
+
             AddOnTakeDamageAction(IncreaseKnockbackGravity);
+            AddOnTakeDamageAction(_movementBehaviour.SnapToTarget);
+            
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(() => Physics.Gravity = _startGravity);
         }
 
         // Start is called before the first frame update
@@ -267,6 +275,14 @@ namespace Lodis.Movement
         {
             if (CurrentAirState != AirState.TUMBLING) return;
             Physics.Gravity += _gravityIncreaseValue.Value;
+            _adjustedGravity = Physics.Gravity;
+        }
+
+        public void IgnoreAdjustedGravity(Condition resetCondition)
+        {
+            Physics.Gravity = _startGravity;
+
+            RoutineBehaviour.Instance.StartNewConditionAction(args => Physics.Gravity = _adjustedGravity, resetCondition);
         }
 
         protected override IEnumerator ActivateStun(float time)

@@ -116,6 +116,8 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.SetIntagibilityByCondition(condition => CurrentAbilityPhase != AbilityPhase.STARTUP);
 
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, effectSpawn, true);
+            OwnerKnockBackScript.IgnoreAdjustedGravity(arguments => !InUse);
+            _opponentKnockback.SetDamageableAbilityID(abilityData.ID, arguments => !InUse);
             //RoutineBehaviour.Instance.StartNewConditionAction(args => ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect), condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
         }
 

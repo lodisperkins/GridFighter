@@ -37,6 +37,8 @@ namespace Lodis.Gameplay
                 knockBack.AddOnKnockBackStartAction(StartHitStop);
             else
                 _health.AddOnTakeDamageAction(StartHitStop);
+
+            _moveset.OnUseAbility += CancelHitStop;
         }
         
         /// <summary>
@@ -100,6 +102,17 @@ namespace Lodis.Gameplay
             }, TimedActionCountType.SCALEDTIME, time);
 
             RoutineBehaviour.Instance.CharacterTimeScale = 0;
+        }
+
+        public void CancelHitStop()
+        {
+            if (_moveset.LastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
+                return;
+
+            _shakeBehaviour.StopShaking();
+            _physics.CancelFreeze();
+            RoutineBehaviour.Instance.StopAction(_enableAction);
+            RoutineBehaviour.Instance.CharacterTimeScale = 1;
         }
     }
 }

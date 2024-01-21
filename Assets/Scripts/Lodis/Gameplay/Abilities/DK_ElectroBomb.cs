@@ -28,6 +28,7 @@ namespace Lodis.Gameplay
         private ConditionAction _spawnAccessoryAction;
         private GridMovementBehaviour _opponentMovement;
         private MovesetBehaviour _opponentMoveset;
+        private KnockbackBehaviour _opponentKnockback;
         private CharacterFeedbackBehaviour _characterFeedback;
         private CharacterFeedbackBehaviour _opponentFeedback;
         private float _slowMotionTimeScale;
@@ -48,6 +49,7 @@ namespace Lodis.Gameplay
             _slowMotionTime = abilityData.GetCustomStatValue("SlowMotionTime");
             _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<GridMovementBehaviour>();
             _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<MovesetBehaviour>();
+            _opponentKnockback = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<KnockbackBehaviour>();
 
             _characterFeedback = owner.GetComponentInChildren<CharacterFeedbackBehaviour>();
             _opponentFeedback = _opponentMovement.gameObject.GetComponentInChildren<CharacterFeedbackBehaviour>();
@@ -155,6 +157,8 @@ namespace Lodis.Gameplay
 
             _explosionSpawned = false;
             UseGravity = false;
+            OwnerKnockBackScript.IgnoreAdjustedGravity(arguments => !InUse);
+            _opponentKnockback.SetDamageableAbilityID(abilityData.ID, arguments => !InUse);
         }
 
         private void SpawnExplosion(params object[] args)

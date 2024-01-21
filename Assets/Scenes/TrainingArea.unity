@@ -7177,10 +7177,10 @@ Transform:
   - {fileID: 1802234848}
   - {fileID: 852555336}
   - {fileID: 7248806519019410667}
-  - {fileID: 621159492}
   - {fileID: 882793828}
-  - {fileID: 94023308}
+  - {fileID: 621159492}
   - {fileID: 1890731783}
+  - {fileID: 94023308}
   - {fileID: 659844279}
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -8594,7 +8594,7 @@ RectTransform:
   - {fileID: 714839853}
   - {fileID: 497684800}
   m_Father: {fileID: 684903806}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -18146,7 +18146,7 @@ RectTransform:
   m_Children:
   - {fileID: 2146222944}
   m_Father: {fileID: 684903806}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -23996,11 +23996,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b7aae6264cec3df49b2b07233f9ab6d2,
         type: 2}
-    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _targetFrameRate
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _suddenDeathMusic

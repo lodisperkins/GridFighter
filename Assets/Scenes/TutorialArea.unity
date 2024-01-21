@@ -28900,11 +28900,6 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
-      propertyPath: _targetFrameRate
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
       propertyPath: _suddenDeathMusic
       value: 
       objectReference: {fileID: 8300000, guid: ef09843f8d36a8244944a14a02142aef, type: 3}

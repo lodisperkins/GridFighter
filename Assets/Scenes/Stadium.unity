@@ -18209,10 +18209,12 @@ MonoBehaviour:
     PageRoot: {fileID: 704078041}
     FirstSelected: {fileID: 1095333758}
     KeepRootVisible: 0
+    PageName: None
     _children:
     - PageRoot: {fileID: 94023307}
       FirstSelected: {fileID: 0}
       KeepRootVisible: 0
+      PageName: None
       _children: []
       OnActive:
         m_PersistentCalls:
@@ -18223,6 +18225,7 @@ MonoBehaviour:
     - PageRoot: {fileID: 6895064}
       FirstSelected: {fileID: 0}
       KeepRootVisible: 0
+      PageName: None
       _children: []
       OnActive:
         m_PersistentCalls:
@@ -24204,11 +24207,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: b7aae6264cec3df49b2b07233f9ab6d2,
         type: 2}
-    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _targetFrameRate
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _suddenDeathMusic

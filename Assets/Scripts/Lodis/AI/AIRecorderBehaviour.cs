@@ -147,7 +147,7 @@ namespace Lodis.AI
 
         protected override void Save()
         {
-            if (_recordings.Length == 0) return;
+            if (_recordings?.Length == 0) return;
 
 
             string recordingPath = "";

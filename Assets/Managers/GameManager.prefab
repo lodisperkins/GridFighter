@@ -96,7 +96,8 @@ MonoBehaviour:
   _grid: {fileID: 0}
   _ringBarrierL: {fileID: 0}
   _ringBarrierR: {fileID: 0}
-  _targetFrameRate: 0
+  _firstSelectedPauseButton: {fileID: 0}
+  _targetFrameRate: 60
   _matchStartTime: {fileID: 0}
   _invincibleBarriers: 0
   _infiniteEnergy: 0
@@ -107,6 +108,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _onMatchStart:
+    m_PersistentCalls:
+      m_Calls: []
+  _onMatchCountdownStart:
     m_PersistentCalls:
       m_Calls: []
   _onMatchPause:
@@ -121,6 +125,8 @@ MonoBehaviour:
   _onMatchOver:
     m_PersistentCalls:
       m_Calls: []
+  _onP1RingOut: {fileID: 0}
+  _onP2RingOut: {fileID: 0}
   _matchRestartEvent: {fileID: 0}
   _matchStartEvent: {fileID: 0}
   _matchOverEvent: {fileID: 0}
@@ -144,6 +150,8 @@ MonoBehaviour:
     type: 3}
   _player1Data: {fileID: 11400000, guid: 9e61dee5c98e8fe4ab94070dfc1b05b4, type: 2}
   _player2Data: {fileID: 11400000, guid: e58f4edf10230094aabb53e76bd1dc76, type: 2}
+  _p1IsCustom: {fileID: 0}
+  _p2IsCustom: {fileID: 0}
 --- !u!114 &3714706006734652315
 MonoBehaviour:
   m_ObjectHideFlags: 0

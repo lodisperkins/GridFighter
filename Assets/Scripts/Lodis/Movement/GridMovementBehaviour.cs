@@ -80,6 +80,7 @@ namespace Lodis.Movement
         private static FloatVariable _maxYPosition;
         private Vector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
+        private PanelBehaviour _lastPanel;
         private PanelBehaviour _currentPanel;
         private GameEventListener _moveEnabledEventListener;
         private CustomEventSystem.GameEventListener _moveDisabledEventListener;
@@ -566,6 +567,7 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
+            _lastPanel = _currentPanel;
             _currentPanel = _targetPanel;
             if (reservePanel)
                 _currentPanel.Occupied = !CanBeWalkedThrough;
@@ -636,6 +638,7 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
+            _lastPanel = _currentPanel;
             _currentPanel = _targetPanel;
             if (reservePanel)
                 _currentPanel.Occupied = !CanBeWalkedThrough;
@@ -699,6 +702,7 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
+            _lastPanel = _currentPanel;
             _currentPanel = _targetPanel;
             _currentPanel.Occupied = !CanBeWalkedThrough;
             _position = _currentPanel.Position;
@@ -767,6 +771,7 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
+            _lastPanel = _currentPanel;
             _currentPanel = _targetPanel;
             _currentPanel.Occupied = !CanBeWalkedThrough;
             _position = _currentPanel.Position;
@@ -890,6 +895,20 @@ namespace Lodis.Movement
 
             //Spawns the effect and makes it face the camera
             Instantiate(_returnEffect, transform.position + offset, Camera.main.transform.rotation);
+        }
+
+        public void SnapToTarget()
+        {
+            if (!IsMoving || _lastPanel == null)
+                return;
+
+            float currentDistance = Vector3.Distance(_lastPanel.transform.position, transform.position);
+            float targetDistance = Vector3.Distance(_targetPanel.transform.position, transform.position);
+
+            if (currentDistance < targetDistance)
+                MoveToPanel(CurrentPanel, true);
+            else
+                MoveToPanel(TargetPanel, true);
         }
 
 
