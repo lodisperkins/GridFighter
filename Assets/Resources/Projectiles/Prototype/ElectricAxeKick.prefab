@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7527028636961861053}
   - component: {fileID: 2577629943666022020}
   - component: {fileID: 2520548195756639875}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ElectricAxeKick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,6 +83,8 @@ MonoBehaviour:
     Damage: 0
     BaseKnockBack: 0
     KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
@@ -90,10 +92,11 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 0
+    AbilityID: 0
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopTimeModifier: 0
+    HitStopShakeStrength: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}
@@ -124,7 +127,7 @@ GameObject:
   - component: {fileID: 3474920669209439856}
   - component: {fileID: 2672562188254717686}
   - component: {fileID: 552774484318064131}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: BottomHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5242704320685843914}
   - component: {fileID: 7209480612923240205}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: PivotPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -259,6 +262,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6419067872639421340}
     m_Modifications:
+    - target: {fileID: 597069227654067162, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 597069227955438797, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 597069228351227908, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 1328807213355427376, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 2753802828734506385, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_Name
@@ -266,8 +289,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2753802828734506385, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2753802828734506385, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6421412666216566721, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 6854741447289174012, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7996118506275265940, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}

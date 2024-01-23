@@ -293,7 +293,17 @@ namespace Lodis.Gameplay
                     {
                         ObjectPoolBehaviour.Instance.ReturnGameObject(attachedGameObject);
                         if (hitCollider.ColliderInfo.HitSpark)
+                        {
                             Instantiate(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+                        }
+
+                        if (ColliderInfo.Priority == hitCollider.ColliderInfo.Priority)
+                        {
+                            Instantiate(BlackBoardBehaviour.Instance.ClashEffect, transform.position, Camera.main.transform.rotation);
+                            SoundManagerBehaviour.Instance.PlayClashSound();
+                            //MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0.2f, 0.1f);
+                            CameraBehaviour.ShakeBehaviour.ShakeRotation();
+                        }
                     }
 
 

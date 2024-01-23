@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2608350015986547173}
   - component: {fileID: 4445511125840914920}
   - component: {fileID: 9046630372321854497}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ChargeSwordFlurry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96,6 +96,8 @@ MonoBehaviour:
     Damage: 0
     BaseKnockBack: 0
     KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
@@ -103,10 +105,11 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 0
+    AbilityID: 0
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopTimeModifier: 0
+    HitStopShakeStrength: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}
@@ -123,7 +126,7 @@ GameObject:
   - component: {fileID: 5368282315021093925}
   - component: {fileID: 5170650948342291649}
   - component: {fileID: 6697491273784480331}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,12 +272,12 @@ PrefabInstance:
     - target: {fileID: 511780310184402606, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 511780310272607431, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 511780310272607432, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
@@ -314,7 +317,7 @@ PrefabInstance:
     - target: {fileID: 511780310436290208, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 511780310436290210, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
@@ -354,7 +357,7 @@ PrefabInstance:
     - target: {fileID: 511780310538198098, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 511780310538198100, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
@@ -399,7 +402,7 @@ PrefabInstance:
     - target: {fileID: 1529823263968206395, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1740932503126277559, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
@@ -424,17 +427,17 @@ PrefabInstance:
     - target: {fileID: 2207763512789262217, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 3569544687378587326, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4721097751654623793, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4721097751654623799, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
@@ -494,7 +497,7 @@ PrefabInstance:
     - target: {fileID: 4721097752077589251, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4721097752077589251, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}

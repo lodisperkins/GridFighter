@@ -12,6 +12,7 @@ namespace Lodis.Sound
         [SerializeField] private AudioSource _musicSource;
         [SerializeField] private AudioSource _announcer;
         [SerializeField] private AudioClip[] _hitSounds;
+        [SerializeField] private AudioClip _clashSound;
         private AudioClip _lastClip;
         private bool _canPlaySameSFX;
         private TimedAction _enableSameSFXAction;
@@ -115,6 +116,11 @@ namespace Lodis.Sound
 
             _lastClip = _hitSounds[strength];
             _soundEffectSource.PlayOneShot(_hitSounds[strength]);
+        }
+
+        public void PlayClashSound()
+        {
+            PlaySound(_clashSound);
         }
 
         public void SetMusic(AudioClip music)

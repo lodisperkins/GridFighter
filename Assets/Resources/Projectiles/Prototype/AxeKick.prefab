@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6556076443116756864}
   - component: {fileID: 1246134418055472313}
   - component: {fileID: 1185701633583592638}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: AxeKick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,6 +83,8 @@ MonoBehaviour:
     Damage: 0
     BaseKnockBack: 0
     KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
     HitAngle: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
@@ -90,10 +92,11 @@ MonoBehaviour:
     Priority: 0
     OwnerAlignement: 0
     AbilityType: 0
+    AbilityID: 0
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopTimeModifier: 0
+    HitStopShakeStrength: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}
@@ -122,7 +125,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8813385785562142711}
   - component: {fileID: 6233971495284038960}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: PivotPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +174,7 @@ GameObject:
   - component: {fileID: 195864322636651597}
   - component: {fileID: 1700220211713152203}
   - component: {fileID: 3829578206443715646}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: BottomHitBox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -318,6 +321,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Blue Slash v1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1462283702018711274, guid: a977d758164395145bb01826d494a9be,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 4220577942622551241, guid: a977d758164395145bb01826d494a9be,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5442852780768904584, guid: a977d758164395145bb01826d494a9be,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a977d758164395145bb01826d494a9be, type: 3}

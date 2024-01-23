@@ -52,6 +52,8 @@ MonoBehaviour:
   - {r: 0.776201, g: 0, b: 0.85882354, a: 1}
   Player1Color: {fileID: 11400000, guid: 746d9f473f4780140b1becbef066dfce, type: 2}
   Player2Color: {fileID: 11400000, guid: db5801176aa0d1143aabbc9690c96374, type: 2}
+  LHSTotalDamage: 0
+  RHSTotalDamage: 0
   Player1State: 
   Player2State: 
   MaxKnockBackHealth: {fileID: 11400000, guid: a850879eb5579a94c8611fe9609619f4, type: 2}
@@ -65,7 +67,11 @@ MonoBehaviour:
     type: 3}
   ReflectEffect: {fileID: 7409581658833189768, guid: a9dcc21970704594da68247eb68728cf,
     type: 3}
+  ClashEffect: {fileID: 9092976673035006398, guid: 244e543b0539ff74ebf31234385c33cf,
+    type: 3}
   HitEffects:
   - {fileID: 8567834841006214752, guid: 7cd867e25d9d97044bb08948940288c8, type: 3}
   - {fileID: 2069248774462545479, guid: 993c029921b80a448b71f49a670a3271, type: 3}
   - {fileID: 2050967202763056131, guid: b80407ae74dc7e9499a6d2a7553d0eef, type: 3}
+  Player1ComboCounter: {fileID: 0}
+  Player2ComboCounter: {fileID: 0}

@@ -189,10 +189,12 @@ namespace Lodis.Gameplay
 
         public override void FixedUpdate()
         {
+            if (CurrentAbilityPhase != AbilityPhase.ACTIVE)
+                return;
 
             float distance = Vector3.Distance(owner.transform.position, _opponentMovement.transform.position);
 
-            if (distance <= 1.5f && !_comboStarted && !_opponentKnockback.IsInvincible && !_opponentKnockback.IsIntangible)
+            if (distance <= 1f && !_comboStarted && !_opponentKnockback.IsInvincible && !_opponentKnockback.IsIntangible)
             {
                 StartCombo();
             }

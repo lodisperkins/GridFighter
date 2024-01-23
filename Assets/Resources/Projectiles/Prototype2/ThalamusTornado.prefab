@@ -25,7 +25,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 327398904443894642}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: SparksRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ GameObject:
   - component: {fileID: 3253865031845722218}
   - component: {fileID: 5930561686816020727}
   - component: {fileID: 2889205764424892884}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: HitCollider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,7 +156,7 @@ GameObject:
   - component: {fileID: 2728582578077181541}
   - component: {fileID: 8099448186485314671}
   - component: {fileID: 993021546125675772}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ThalamusTornado
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -277,6 +277,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
         type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
@@ -360,6 +365,16 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7677707995430107797, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971933611508474438, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a9f2765b8e1cc4db8c3442c41a1748, type: 3}
 --- !u!4 &8037671117972182781 stripped
@@ -435,6 +450,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Thalamus
       objectReference: {fileID: 0}
+    - target: {fileID: 2177577569625369960, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 32440981608730284, guid: 3cea411d339b90b45b77f2bc1c0eab4c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 3cea411d339b90b45b77f2bc1c0eab4c, type: 3}
@@ -457,6 +477,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2728582578077181541}
     m_Modifications:
+    - target: {fileID: 368927846658194596, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 854059110342224452, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 1823192474496556284, guid: 5c2da631bdd3a8d47a88b106317d5492,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -487,6 +517,11 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.7615306
       objectReference: {fileID: 0}
+    - target: {fileID: 2244861592635724432, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 2244861592635724435, guid: 5c2da631bdd3a8d47a88b106317d5492,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -501,6 +536,11 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244861593027386969, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2244861593027386972, guid: 5c2da631bdd3a8d47a88b106317d5492,
         type: 3}
@@ -522,6 +562,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lightning Slash v2 - Spin
       objectReference: {fileID: 0}
+    - target: {fileID: 3555899632244948741, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4324601842071311100, guid: 5c2da631bdd3a8d47a88b106317d5492,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -536,6 +581,16 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.4608111
+      objectReference: {fileID: 0}
+    - target: {fileID: 5210244697311161704, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5652895187555390805, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7239343338645118776, guid: 5c2da631bdd3a8d47a88b106317d5492,
         type: 3}
@@ -637,6 +692,11 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.6497941
       objectReference: {fileID: 0}
+    - target: {fileID: 8264685228003540365, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 8297969010235418470, guid: 5c2da631bdd3a8d47a88b106317d5492,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -651,6 +711,11 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762181471004755712, guid: 5c2da631bdd3a8d47a88b106317d5492,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c2da631bdd3a8d47a88b106317d5492, type: 3}
@@ -721,6 +786,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RingBarrierSparks (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
         type: 3}
@@ -807,6 +877,16 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7677707995430107797, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971933611508474438, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a9f2765b8e1cc4db8c3442c41a1748, type: 3}
 --- !u!4 &3816990809991396914 stripped
@@ -822,6 +902,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2728582578077181541}
     m_Modifications:
+    - target: {fileID: 368927846658194596, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244861592635724432, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2244861593027386969, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3555899632244948741, guid: 91891cf5a113d994c901e94f6c405ced,
         type: 3}
       propertyPath: m_Name
@@ -829,8 +924,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3555899632244948741, guid: 91891cf5a113d994c901e94f6c405ced,
         type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3555899632244948741, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3563377959876412067, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5210244697311161704, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 5652895187555390805, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7239343338645118776, guid: 91891cf5a113d994c901e94f6c405ced,
         type: 3}
@@ -886,6 +1001,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8264685228003540365, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8762181471004755712, guid: 91891cf5a113d994c901e94f6c405ced,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91891cf5a113d994c901e94f6c405ced, type: 3}
@@ -956,6 +1081,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RingBarrierSparks (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
         type: 3}
@@ -1042,6 +1172,16 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7677707995430107797, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971933611508474438, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a9f2765b8e1cc4db8c3442c41a1748, type: 3}
 --- !u!4 &132363466241655788 stripped
@@ -1111,6 +1251,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RingBarrierSparks (9)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
         type: 3}
@@ -1197,6 +1342,16 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7677707995430107797, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971933611508474438, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a9f2765b8e1cc4db8c3442c41a1748, type: 3}
 --- !u!4 &685596363279481896 stripped
@@ -1266,6 +1421,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RingBarrierSparks (4)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
         type: 3}
@@ -1351,6 +1511,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RenderMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7677707995430107797, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971933611508474438, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a9f2765b8e1cc4db8c3442c41a1748, type: 3}
@@ -1444,6 +1614,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 32033610114601931, guid: 0646c1ca8c07a3343b01fc35925e9267,
         type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 32033610114601931, guid: 0646c1ca8c07a3343b01fc35925e9267,
+        type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1462,6 +1637,11 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.6037736
       objectReference: {fileID: 0}
+    - target: {fileID: 420694427520427219, guid: 0646c1ca8c07a3343b01fc35925e9267,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3512628334664381630, guid: 0646c1ca8c07a3343b01fc35925e9267,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -1477,6 +1657,11 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.67058825
       objectReference: {fileID: 0}
+    - target: {fileID: 4724121163023901538, guid: 0646c1ca8c07a3343b01fc35925e9267,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 4724121163023901543, guid: 0646c1ca8c07a3343b01fc35925e9267,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -1491,6 +1676,16 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.54662603
+      objectReference: {fileID: 0}
+    - target: {fileID: 6078044140508450735, guid: 0646c1ca8c07a3343b01fc35925e9267,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7349231600730775652, guid: 0646c1ca8c07a3343b01fc35925e9267,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0646c1ca8c07a3343b01fc35925e9267, type: 3}
@@ -1561,6 +1756,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RingBarrierSparks (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7423242019387987104, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
         type: 3}
@@ -1646,6 +1846,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RenderMode
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7677707995430107797, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8971933611508474438, guid: 76a9f2765b8e1cc4db8c3442c41a1748,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76a9f2765b8e1cc4db8c3442c41a1748, type: 3}

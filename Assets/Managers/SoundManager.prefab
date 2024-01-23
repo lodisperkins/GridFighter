@@ -301,8 +301,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _soundEffectSource: {fileID: 8243468116775192171}
   _musicSource: {fileID: 8243468117474896385}
+  _announcer: {fileID: 0}
   _hitSounds:
   - {fileID: 8300000, guid: bff4f9b7bbfd677488908428d1a79775, type: 3}
   - {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
   - {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+  _clashSound: {fileID: 8300000, guid: f0ed882f4e2d81d469f1b8da33dedaf1, type: 3}
   _sameSoundDelay: 0.01

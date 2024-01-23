@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 6169788590666967437}
   - component: {fileID: 7133958188659458458}
   m_Layer: 0
-  m_Name: Burst
+  m_Name: DefensiveBurst
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -199,6 +199,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7597119628329795497}
     m_Modifications:
+    - target: {fileID: 3099923472321763889, guid: 01dd90f53e6c372409c87d16e515c69c,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 0.6
+      objectReference: {fileID: 0}
     - target: {fileID: 3712874761384511374, guid: 01dd90f53e6c372409c87d16e515c69c,
         type: 3}
       propertyPath: m_RootOrder

@@ -30,6 +30,7 @@ namespace Lodis.Gameplay
         public RingBarrierBehaviour RingBarrierLHS;
         public ParticleSystem BlockEffect;
         public ParticleSystem ReflectEffect;
+        public ParticleSystem ClashEffect;
         public ParticleSystem[] HitEffects;
         public ComboCounterBehaviour Player1ComboCounter;
         public ComboCounterBehaviour Player2ComboCounter;
