@@ -48,7 +48,7 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 65536
+      m_Bits: 0
     MultiHitWaitTime: 0
     Damage: 15
     BaseKnockBack: 3
@@ -59,9 +59,10 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.15
-    Priority: 0
+    Priority: -1
     OwnerAlignement: 0
     AbilityType: 8
+    AbilityID: -1.5995386e+9
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}

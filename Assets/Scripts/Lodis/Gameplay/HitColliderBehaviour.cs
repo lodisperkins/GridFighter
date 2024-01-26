@@ -289,22 +289,7 @@ namespace Lodis.Gameplay
                 if (otherCollider is HitColliderBehaviour hitCollider)
                 {
                     //...destroy it if it has a lower priority
-                    if (ColliderInfo.Priority >= hitCollider.ColliderInfo.Priority)
-                    {
-                        ObjectPoolBehaviour.Instance.ReturnGameObject(attachedGameObject);
-                        if (hitCollider.ColliderInfo.HitSpark)
-                        {
-                            Instantiate(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
-                        }
-
-                        if (ColliderInfo.Priority == hitCollider.ColliderInfo.Priority)
-                        {
-                            Instantiate(BlackBoardBehaviour.Instance.ClashEffect, transform.position, Camera.main.transform.rotation);
-                            SoundManagerBehaviour.Instance.PlayClashSound();
-                            //MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0.2f, 0.1f);
-                            CameraBehaviour.ShakeBehaviour.ShakeRotation();
-                        }
-                    }
+                    ResolvePriority(attachedGameObject, hitCollider);
 
 
                     //Ignore the collider otherwise
@@ -388,6 +373,27 @@ namespace Lodis.Gameplay
             ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+        }
+
+        private void ResolvePriority(GameObject attachedGameObject, HitColliderBehaviour hitCollider)
+        {
+            if ((ColliderInfo.Priority >= hitCollider.ColliderInfo.Priority && hitCollider.ColliderInfo.Priority != -1)
+                || ColliderInfo.AbilityType == AbilityType.BURST)
+            {
+                ObjectPoolBehaviour.Instance.ReturnGameObject(attachedGameObject);
+                if (hitCollider.ColliderInfo.HitSpark)
+                {
+                    Instantiate(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+                }
+
+                if (ColliderInfo.Priority == hitCollider.ColliderInfo.Priority)
+                {
+                    Instantiate(BlackBoardBehaviour.Instance.ClashEffect, transform.position, Camera.main.transform.rotation);
+                    SoundManagerBehaviour.Instance.PlayClashSound();
+                    //MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0.2f, 0.1f);
+                    CameraBehaviour.ShakeBehaviour.ShakeRotation();
+                }
+            }
         }
 
         private void OnTriggerEnter(Collider other)

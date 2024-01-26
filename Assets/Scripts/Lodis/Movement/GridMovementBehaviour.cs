@@ -899,7 +899,7 @@ namespace Lodis.Movement
 
         public void SnapToTarget()
         {
-            if (!IsMoving || _lastPanel == null)
+            if (!IsMoving || _lastPanel == null || _targetPanel == null)
                 return;
 
             float currentDistance = Vector3.Distance(_lastPanel.transform.position, transform.position);

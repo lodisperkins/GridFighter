@@ -48,7 +48,7 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 4057399
+      m_Bits: 3991863
     MultiHitWaitTime: 0
     Damage: 6
     BaseKnockBack: 2
@@ -59,7 +59,7 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.1
-    Priority: 0
+    Priority: -1
     OwnerAlignement: 0
     AbilityType: 5
     AbilityID: 246938960

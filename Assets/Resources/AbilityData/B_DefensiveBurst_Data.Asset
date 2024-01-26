@@ -68,9 +68,10 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.7
-    Priority: 4
+    Priority: 10
     OwnerAlignement: 0
     AbilityType: 10
+    AbilityID: -655053760
     SpawnEffect: {fileID: 0}
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}

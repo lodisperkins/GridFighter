@@ -328,7 +328,7 @@ namespace Lodis.Movement
         /// Canceled the current freeze operation by stopping the timer and enabling gravity.
         /// Does not keep momentum or apply stored forces.
         /// </summary>
-        public void CancelFreeze()
+        public void CancelFreeze(bool keepMomentum = false, bool applyStoredForce = false)
         {
             if (_freezeAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_freezeAction);
@@ -341,6 +341,13 @@ namespace Lodis.Movement
 
             UseGravity = true;
             _isFrozen = false;
+
+            if (keepMomentum && _frozenVelocity.magnitude > 1)
+                ApplyVelocityChange(_frozenVelocity);
+
+            if (applyStoredForce && _frozenStoredForce.magnitude > 0)
+                ApplyImpulseForce(_frozenStoredForce);
+
             _frozenStoredForce = Vector3.zero;
             _frozenVelocity = Vector3.zero;
         }

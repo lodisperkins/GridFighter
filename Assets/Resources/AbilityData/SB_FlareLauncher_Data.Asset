@@ -59,7 +59,7 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.07
-    Priority: 0
+    Priority: -1
     OwnerAlignement: 0
     AbilityType: 7
     AbilityID: -944582500
