@@ -22,6 +22,7 @@ namespace Lodis.Gameplay
         private TimedAction _enableAction;
         private float _hitStopScale = 0.15f;
         private bool _hitStopActive;
+        private (Vector3, Vector3) _frozenMoveVectors;
 
         public Animator Animator { get => _animator; set => _animator = value; }
 
@@ -47,7 +48,6 @@ namespace Lodis.Gameplay
         /// </summary>
         private void StartHitStop()
         {
-            //_physics.CancelFreeze(true, true);
 
             //Gets the data for the last collider to hit this object to determine the length of the hit stun
             HitColliderData lastColliderInfo = _health.LastCollider.ColliderInfo;
@@ -58,6 +58,10 @@ namespace Lodis.Gameplay
 
             if (time == 0)
                 return;
+
+            _physics.CancelFreeze(out _frozenMoveVectors, true, true);
+            if (_hitStopActive)
+                CancelHitStop();
 
             if (_health.LastCollider.Owner)
             { 
@@ -94,6 +98,7 @@ namespace Lodis.Gameplay
 
             //Calls for the physics component to freexe the object in place so it doesn't keep moving in air.
             _physics.FreezeInPlaceByCondition(args => !_hitStopActive, true, true, waitForForceApplied, true);
+
             //The animator should be disabled only after the animation stop delay time has passed.
 
 
@@ -109,7 +114,7 @@ namespace Lodis.Gameplay
 
         public void CancelHitStop()
         {
-            if (_moveset.LastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
+            if (_moveset?.LastAbilityInUse?.abilityData.AbilityType == AbilityType.BURST)
                 return;
 
             _hitStopActive = false;

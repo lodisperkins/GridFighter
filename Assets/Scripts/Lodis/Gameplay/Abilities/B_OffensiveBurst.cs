@@ -19,6 +19,7 @@ namespace Lodis.Gameplay
         private float _defaultRestTime;
         private bool _makeFreeFall;
         private TimedAction _zoomAction;
+        private HitStopBehaviour _ownerHitStop;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -26,6 +27,7 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
             if (!_burstEffect) _burstEffect = abilityData.visualPrefab;
             _defaultRestTime = abilityData.recoverTime;
+            _ownerHitStop = owner.GetComponent<HitStopBehaviour>();
         }
 
         protected override void OnStart(params object[] args)
@@ -38,7 +40,7 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.Physics.CancelFreeze();
             OwnerKnockBackScript.Physics.IgnoreForces = true;
             OwnerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-            //OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
+            OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
             OwnerKnockBackScript.CancelHitStun();
             OwnerKnockBackScript.CancelStun();
 
@@ -107,7 +109,11 @@ namespace Lodis.Gameplay
         private void ResetState()
         {
             if (OwnerKnockBackScript.Physics.IsGrounded)
+            {
                 OwnerMoveScript.EnableMovement();
+                OwnerKnockBackScript.LandingScript.CancelLanding();
+                OwnerKnockBackScript.CurrentAirState = AirState.NONE;
+            }
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_barrier);
             OwnerKnockBackScript.DisableInvincibility();

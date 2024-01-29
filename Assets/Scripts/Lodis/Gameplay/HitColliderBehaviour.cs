@@ -377,23 +377,30 @@ namespace Lodis.Gameplay
 
         private void ResolvePriority(GameObject attachedGameObject, HitColliderBehaviour hitCollider)
         {
-            if ((ColliderInfo.Priority >= hitCollider.ColliderInfo.Priority && hitCollider.ColliderInfo.Priority != -1)
-                || ColliderInfo.AbilityType == AbilityType.BURST)
+            if (ComparePriority(hitCollider))
             {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(attachedGameObject);
-                if (hitCollider.ColliderInfo.HitSpark)
-                {
-                    Instantiate(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
-                }
-
-                if (ColliderInfo.Priority == hitCollider.ColliderInfo.Priority)
-                {
-                    Instantiate(BlackBoardBehaviour.Instance.ClashEffect, transform.position, Camera.main.transform.rotation);
-                    SoundManagerBehaviour.Instance.PlayClashSound();
-                    //MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0.2f, 0.1f);
-                    CameraBehaviour.ShakeBehaviour.ShakeRotation();
-                }
+                return;
             }
+
+            if (ColliderInfo.Priority >= hitCollider.ColliderInfo.Priority)
+                ObjectPoolBehaviour.Instance.ReturnGameObject(attachedGameObject);
+
+            if (hitCollider.ColliderInfo.HitSpark)
+                Instantiate(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+
+            if (ColliderInfo.Priority == hitCollider.ColliderInfo.Priority)
+            {
+                Instantiate(BlackBoardBehaviour.Instance.ClashEffect, transform.position, Camera.main.transform.rotation);
+                SoundManagerBehaviour.Instance.PlayClashSound();
+                //MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0.2f, 0.1f);
+                CameraBehaviour.ShakeBehaviour.ShakeRotation();
+            }
+        }
+
+        private bool ComparePriority(HitColliderBehaviour hitCollider)
+        {
+            return (ColliderInfo.Priority < hitCollider.ColliderInfo.Priority || hitCollider.ColliderInfo.Priority == -1
+                            || ColliderInfo.Priority == -1) && ColliderInfo.AbilityType != AbilityType.BURST;
         }
 
         private void OnTriggerEnter(Collider other)

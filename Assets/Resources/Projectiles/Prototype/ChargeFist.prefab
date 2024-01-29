@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6532894703450611539}
   - component: {fileID: 8411398596607670622}
   - component: {fileID: 3377279939266685762}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -197,7 +197,7 @@ GameObject:
   - component: {fileID: 1060968803567983333}
   - component: {fileID: 3321150375158842755}
   - component: {fileID: 5398745584673351793}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: ChargeFist
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -263,7 +263,7 @@ GameObject:
   - component: {fileID: 8207183048028596778}
   - component: {fileID: 4658105735327883532}
   - component: {fileID: 5727523483522316540}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: Collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -351,6 +351,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1060968803567983333}
     m_Modifications:
+    - target: {fileID: 249851150696239302, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 690075338669767720, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 2147236610059942541, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -371,6 +381,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Projectile_Fire_Ball_Lv1
       objectReference: {fileID: 0}
+    - target: {fileID: 2177619107234995740, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 2679094135555073756, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 3449214062633256714, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -385,6 +405,11 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.7921569
+      objectReference: {fileID: 0}
+    - target: {fileID: 3784089240217206097, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 4181897643872257502, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
@@ -416,6 +441,11 @@ PrefabInstance:
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.7921569
       objectReference: {fileID: 0}
+    - target: {fileID: 5659427373372741256, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
+      objectReference: {fileID: 0}
     - target: {fileID: 5761091399034184110, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -425,6 +455,11 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
       value: 0.33333337
+      objectReference: {fileID: 0}
+    - target: {fileID: 6029696994660234965, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 6379009563274759162, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
@@ -495,6 +530,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6965076409294909242, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      propertyPath: m_Layer
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 7071945183084201533, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}

@@ -145,7 +145,7 @@ MonoBehaviour:
     DespawnAfterTimeLimit: 1
     TimeActive: 0.2
     DestroyOnHit: 1
-    IsMultiHit: 1
+    IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4058423
@@ -154,7 +154,7 @@ MonoBehaviour:
     BaseKnockBack: 6
     KnockBackScale: 0.1
     ClampForceWithinRing: 1
-    IgnoreMomentum: 1
+    IgnoreMomentum: 0
     HitAngle: 1.78
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0

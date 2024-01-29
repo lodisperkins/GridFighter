@@ -48,6 +48,9 @@ namespace Lodis.Gameplay
         [SerializeField] private GameObject _winCollider;
         private GridAlignment _alignment;
         private RingBarrierFeedbackBehaviour _ringBarrierFeedbackBehaviour;
+        [SerializeField]
+        private float _timeUntilNextHit = 0.01f;
+        private bool _canHit = true;
 
         /// <summary>
         /// The character that owns this ring barrier.
@@ -196,7 +199,7 @@ namespace Lodis.Gameplay
         {
             KnockbackBehaviour knockbackBehaviour = collision.gameObject.GetComponent<KnockbackBehaviour>();
 
-            if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed)
+            if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed || !_canHit)
                 return;
 
             if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
@@ -223,6 +226,9 @@ namespace Lodis.Gameplay
             //Deal damage to the character.
             knockbackBehaviour.LastCollider = hitCollider;
             knockbackBehaviour.TakeDamage(info,gameObject);
+
+            _canHit = false;
+            RoutineBehaviour.Instance.StartNewTimedAction(args => _canHit = true, TimedActionCountType.SCALEDTIME, _timeUntilNextHit);
 
             //Display the appropriate particle effect.
             Instantiate(_hitEffect.gameObject, collision.contacts[0].point, new Quaternion());

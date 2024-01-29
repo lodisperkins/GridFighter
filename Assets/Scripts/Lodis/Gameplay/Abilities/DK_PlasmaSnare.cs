@@ -229,11 +229,11 @@ namespace Lodis.Gameplay
 
             int index = OwnerMoveset.GetSpecialAbilityIndex(this);
 
-            if (OwnerInput?.GetSpecialButton(index + 1) == false)
-            {
-                UnpauseAbilityTimer();
-            }
-            else if (_auraSphere && OwnerInput)
+            //if (OwnerInput?.GetSpecialButton(index + 1) == false)
+            //{
+            //    UnpauseAbilityTimer();
+            //}
+            /*else */if (_auraSphere && OwnerInput)
             {
                 Vector3 position = _auraSphere.transform.position + (Vector3)OwnerInput.AttackDirection * Time.deltaTime * _moveSpeed;
                 position.x = Mathf.Clamp(position.x, 0, _maxX);

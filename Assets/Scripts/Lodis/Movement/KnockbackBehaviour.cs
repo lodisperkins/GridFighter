@@ -140,7 +140,7 @@ namespace Lodis.Movement
 
 
             AddOnTakeDamageAction(IncreaseKnockbackGravity);
-            AddOnTakeDamageAction(_movementBehaviour.SnapToTarget);
+            //AddOnTakeDamageAction(_movementBehaviour.SnapToTarget);
             
             MatchManagerBehaviour.Instance.AddOnMatchRestartAction(() => Physics.Gravity = _startGravity);
         }
