@@ -72,7 +72,7 @@ namespace Lodis.UI
             }
         }
 
-        private void LoadReplacementDecks()
+        public void LoadReplacementDecks()
         {
             List<AbilityData> data = null;
             _replacementNormalDecks = Resources.LoadAll<Deck>("Decks/Normals");

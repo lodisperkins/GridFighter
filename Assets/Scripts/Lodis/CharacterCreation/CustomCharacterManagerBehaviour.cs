@@ -108,6 +108,21 @@ namespace Lodis.CharacterCreation
             reader.Close();
         }
 
+        public void DeleteCustomCharacter()
+        {
+            string armorPath = _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
+
+            File.Delete(armorPath);
+
+            string normalPath = Application.persistentDataPath + "/CustomDecks/" + CharacterName + "_Normals.txt";
+
+            File.Delete(normalPath);
+
+            string specialPath = Application.persistentDataPath + "/CustomDecks/" + CharacterName + "_Specials.txt";
+
+            File.Delete(specialPath);
+        }
+
         public static void LoadCustomCharacter(string characterName, out List<ArmorData> replacements, out Color hairColor, out Color faceColor)
         {
 
