@@ -7863,11 +7863,6 @@ PrefabInstance:
       propertyPath: _module
       value: 
       objectReference: {fileID: 834067888}
-    - target: {fileID: 5041198097818951598, guid: 3894fc90b29666c40ab707beec511c27,
-        type: 3}
-      propertyPath: _updateDeviceBasedOnUI
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5041198097818951599, guid: 3894fc90b29666c40ab707beec511c27,
         type: 3}
       propertyPath: m_Name

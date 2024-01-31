@@ -33,8 +33,10 @@ namespace Lodis.Utility
         private bool _updateDeviceBasedOnUI;
         private string _p1ControlScheme;
         private string _p2ControlScheme;
-        private InputDevice[] _p1Devices;
-        private InputDevice[] _p2Devices;
+        [SerializeField]
+        private InputDeviceData _p1Devices;
+        [SerializeField]
+        private InputDeviceData _p2Devices;
         private IntVariable _currentIndex;
         private int _previousScene;
 
@@ -50,6 +52,7 @@ namespace Lodis.Utility
                 {
                     GameObject manager = new GameObject("SceneManager");
                     _instance = manager.AddComponent<SceneManagerBehaviour>();
+                    DontDestroyOnLoad(_instance.gameObject);
                 }
 
                 return _instance;
@@ -59,8 +62,8 @@ namespace Lodis.Utility
         public IntVariable GameMode { get => _gameMode; set => _gameMode = value; }
         public string P1ControlScheme { get => _p1ControlScheme; set => _p1ControlScheme = value; }
         public string P2ControlScheme { get => _p2ControlScheme; set => _p2ControlScheme = value; }
-        public InputDevice[] P1Devices { get => _p1Devices; set => _p1Devices = value; }
-        public InputDevice[] P2Devices { get => _p2Devices; set => _p2Devices = value; }
+        public InputDeviceData P1Devices { get => _p1Devices; set => _p1Devices = value; }
+        public InputDeviceData P2Devices { get => _p2Devices; set => _p2Devices = value; }
 
         public int SceneIndex { get { return SceneManager.GetActiveScene().buildIndex; } }
 
@@ -69,7 +72,7 @@ namespace Lodis.Utility
             DontDestroyOnLoad(gameObject);
             _currentIndex = Resources.Load<IntVariable>("ScriptableObjects/CurrentScene");
 
-            if (_updateDeviceBasedOnUI)
+            if (_updateDeviceBasedOnUI && _module)
                 _module.submit.action.started += UpdateDeviceP1;
 
             Application.targetFrameRate = 60;
@@ -80,19 +83,20 @@ namespace Lodis.Utility
             ReadOnlyArray<InputDevice> pairedDevices = InputUser.all[playerID - 1].pairedDevices;
 
             if (playerID == 1)
-                _p1Devices = pairedDevices.ToArray();
+                _p1Devices.Value = pairedDevices.ToArray();
             else if (playerID == 2)
-                _p2Devices = pairedDevices.ToArray();
+                _p2Devices.Value = pairedDevices.ToArray();
         }
 
         public void UpdateDeviceP1(InputAction.CallbackContext context)
         {
-            P1Devices = new InputDevice[1];
+            P1Devices.Value = new InputDevice[1];
             P1Devices[0] = context.control.device;
         }
 
         public void UpdateDeviceP2(InputAction.CallbackContext context)
         {
+            P2Devices.Value = new InputDevice[1];
             _p2Devices[0] = context.control.device;
         }
 

@@ -77,8 +77,8 @@ namespace Lodis.UI
         {
             SetColor(1);
             SceneManager.sceneLoaded += ResetValues;
-            SceneManagerBehaviour.Instance.P1Devices = new InputDevice[0];
-            SceneManagerBehaviour.Instance.P2Devices = new InputDevice[0];
+            SceneManagerBehaviour.Instance.P1Devices.Value = new InputDevice[0];
+            SceneManagerBehaviour.Instance.P2Devices.Value = new InputDevice[0];
             
             _inputManager = GetComponent<PlayerInputManager>();
             if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
@@ -134,7 +134,7 @@ namespace Lodis.UI
                 _p1CustomManager.SetEventSystems(_player1EventSystem);
                 _p1CustomManager.SetSelectedToFirstOption();
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
-                SceneManagerBehaviour.Instance.P1Devices = playerInput.devices.ToArray();
+                SceneManagerBehaviour.Instance.P1Devices.Value = playerInput.devices.ToArray();
             }
             else if (playerNum == 2)
             {
@@ -146,7 +146,7 @@ namespace Lodis.UI
                 _p2CustomManager.SetEventSystems(_player2EventSystem);
                 _p2CustomManager.SetSelectedToFirstOption();
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
-                SceneManagerBehaviour.Instance.P2Devices = playerInput.devices.ToArray();
+                SceneManagerBehaviour.Instance.P2Devices.Value = playerInput.devices.ToArray();
             }
         }
         public void UpdateColor(int playerNum)
