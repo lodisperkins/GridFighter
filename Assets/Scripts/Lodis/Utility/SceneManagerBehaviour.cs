@@ -87,8 +87,8 @@ namespace Lodis.Utility
 
         public void UpdateDeviceP1(InputAction.CallbackContext context)
         {
-            _p1Devices = new InputDevice[1];
-            _p1Devices[0] = context.control.device;
+            P1Devices = new InputDevice[1];
+            P1Devices[0] = context.control.device;
         }
 
         public void UpdateDeviceP2(InputAction.CallbackContext context)

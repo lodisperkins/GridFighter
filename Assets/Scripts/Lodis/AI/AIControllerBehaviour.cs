@@ -214,7 +214,7 @@ namespace Lodis.AI
             _movementBehaviour = Character.GetComponent<GridMovementBehaviour>();
             _moveset = Character.GetComponent<MovesetBehaviour>();
 
-            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(PlayerID);
+            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Character);
             OpponentMove = _opponent.GetComponent<GridMovementBehaviour>();
             OpponentKnockback = _opponent.GetComponent<KnockbackBehaviour>();
             OpponentDefense = _opponent.GetComponent<CharacterDefenseBehaviour>();

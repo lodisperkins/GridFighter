@@ -34,6 +34,8 @@ public class TutorialManagerBehaviour : QuestManagerBehaviour
         CurrentQuest.AddOnStepCompleteAction(step => MatchManagerBehaviour.Instance.SetPlayerControlsActive(false));
 
         OnQuestComplete.AddListener(() => MatchManagerBehaviour.Instance.MatchStartTime = _trainingStartTime);
+
+        _trainingBehaviour.SetAIState(0);
     }
 
     public void EnableTextCanvas(float delay)

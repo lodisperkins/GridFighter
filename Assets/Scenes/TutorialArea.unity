@@ -18787,6 +18787,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bff4f9b7bbfd677488908428d1a79775, type: 3}
   - {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
   - {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+  _clashSound: {fileID: 0}
   _sameSoundDelay: 0.01
 --- !u!4 &1545201725
 Transform:
