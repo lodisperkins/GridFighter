@@ -24,6 +24,7 @@ namespace Lodis.UI
         private int _currentAbilityType;
         private int _specialReplacementIndex;
         private string _replacementName;
+        private bool _creatngNewDeck;
 
         public string[] DeckOptions { get => _deckOptions; private set => _deckOptions = value; }
 
@@ -34,7 +35,7 @@ namespace Lodis.UI
         public Deck ReplacementAbilities { get => _replacementAbilities; private set => _replacementAbilities = value; }
         public int CurrentAbilityType { get => _currentAbilityType; set => _currentAbilityType = value; }
         public string ReplacementName { get => _replacementName; set => _replacementName = value; }
-
+       
         private void Awake()
         {
             _saveLoadPath = Application.persistentDataPath + "/CustomDecks";
@@ -70,6 +71,11 @@ namespace Lodis.UI
 
                 DeckOptions[i] = deckName;
             }
+        }
+
+        public void SetCreatingNewDeck(bool value)
+        {
+            _creatngNewDeck = value;
         }
 
         public void LoadReplacementDecks()
@@ -238,8 +244,9 @@ namespace Lodis.UI
             _specialDeck.AbilityData[_specialReplacementIndex] = data;
         }
 
-        public void SetDeckNames(string newName)
+        public void Rename(string newName)
         {
+
             string path = _saveLoadPath + "/" + NormalDeck.DeckName + ".txt";
 
             if (File.Exists(path))
@@ -249,6 +256,21 @@ namespace Lodis.UI
 
             if (File.Exists(path))
                 File.Move(path, _saveLoadPath + "/" + newName + "_Specials.txt");
+        }
+
+        public void SetDeckNames(string newName)
+        {
+            string uniquePath = _saveLoadPath + "/" + newName + "_Normals" + ".txt";
+            int num = 0;
+            string name = newName;
+
+            while (File.Exists(uniquePath))
+            {
+                num++;
+                newName = name + " " + num.ToString();
+                uniquePath = _saveLoadPath + "/" + newName + "_Normals" + ".txt";
+
+            }
 
             SpecialDeck.DeckName = newName + "_Specials";
             NormalDeck.DeckName = newName + "_Normals";
@@ -260,18 +282,31 @@ namespace Lodis.UI
             SaveDeck(SpecialDeck);
         }
 
+        private string CreateUniqueDeckPath(string deckName)
+        {
+            string uniquePath = _saveLoadPath + "/" + deckName + ".txt";
+            int num = 0;
+
+            while (File.Exists(uniquePath))
+            {
+                num++;
+                uniquePath = _saveLoadPath + "/" + deckName + " " + num.ToString() + ".txt";
+            }
+
+            FileStream stream = File.Create(uniquePath);
+            stream.Close();
+
+            return uniquePath;
+        }
+
         private void SaveDeck(Deck deck)
         {
             if (deck == null)
                 return;
-            
-            if (!File.Exists(_saveLoadPath + "/" + deck.DeckName + ".txt"))
-            {
-                FileStream stream = File.Create(_saveLoadPath + "/" + deck.DeckName + ".txt");
-                stream.Close();
-            }
 
-            StreamWriter writer = new StreamWriter(_saveLoadPath + "/" + deck.DeckName + ".txt");
+            string path = _saveLoadPath + "/" + deck.DeckName + ".txt";
+
+            StreamWriter writer = new StreamWriter(path);
 
             foreach (AbilityData data in deck.AbilityData)
                 writer.WriteLine(data.name);

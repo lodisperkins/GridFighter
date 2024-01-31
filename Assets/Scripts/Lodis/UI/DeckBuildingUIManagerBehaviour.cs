@@ -258,6 +258,7 @@ namespace Lodis.UI
 
         public void SetDeckNames(Text inputText)
         {
+            _buildManager.Rename(inputText.text);
             _buildManager.SetDeckNames(inputText.text);
         }
     }

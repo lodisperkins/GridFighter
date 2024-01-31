@@ -21,6 +21,7 @@ namespace Lodis.CharacterCreation
         private static string _saveLoadPath;
         private int _currentArmorType;
         private string _replacementName;
+        private bool _creatingNewCharacter;
 
         public List<ArmorData> CharacterArmorPieces { get => _characterArmorPieces; private set => _characterArmorPieces = value; }
         public int CurrentArmorType { get => _currentArmorType; set => _currentArmorType = value; }
@@ -28,11 +29,20 @@ namespace Lodis.CharacterCreation
         public string CharacterName { get => _characterName; set => _characterName = value; }
         public List<ArmorData> ReplacementArmorData { get => _replacementArmorData; set => _replacementArmorData = value; }
         public MeshReplacementBehaviour CustomCharacter { get => _customCharacter; set => _customCharacter = value; }
+        public string ArmorPath
+        {
+            get
+            {
+                return _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
+            }
+        }
+
 
         // Start is called before the first frame update
         void Awake()
         {
             _saveLoadPath = Application.persistentDataPath + "/CustomCharacters";
+
             Directory.CreateDirectory(_saveLoadPath);
 
             _defaultSets = _defaultSetsReference;
@@ -57,15 +67,27 @@ namespace Lodis.CharacterCreation
             ReplacementArmorData.AddRange(armors);
         }
 
+        public void SetCreatingNewCharacter(bool value)
+        {
+            _creatingNewCharacter = value;
+        }
+
         public void SetCharacterName(string name)
         {
+            if (name == "")
+                name = "Gladiator";
+
             _characterName = name;
         }
 
         public void SetCharacterName(Text text)
         {
             string newName = text.text;
-            string path = _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
+
+            if (newName == "")
+                newName = "Gladiator";
+
+            string path = ArmorPath;
 
             if (File.Exists(path))
                 File.Move(path, _saveLoadPath + "/" + newName + "_ArmorSet.txt");
@@ -76,7 +98,7 @@ namespace Lodis.CharacterCreation
         public void LoadCustomCharacter(string characterName)
         {
             CharacterName = characterName;
-            string armorPath = _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
+            string armorPath = ArmorPath;
 
             StreamReader reader = new StreamReader(armorPath);
 
@@ -110,7 +132,7 @@ namespace Lodis.CharacterCreation
 
         public void DeleteCustomCharacter()
         {
-            string armorPath = _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
+            string armorPath = ArmorPath;
 
             File.Delete(armorPath);
 
@@ -180,17 +202,29 @@ namespace Lodis.CharacterCreation
             CustomCharacter.HairColor = color;
         }
 
+        private string CreateUniqueArmorPath()
+        {
+            string uniquePath = ArmorPath;
+            int num = 0;
+
+            while (File.Exists(uniquePath))
+            {
+                num++;
+                uniquePath = _saveLoadPath + "/" + CharacterName + " " + num.ToString() + "_ArmorSet.txt";
+            }
+
+            FileStream stream = File.Create(uniquePath);
+            stream.Close();
+
+            return uniquePath;
+        }
+
         public void SaveCharacter()
         {
             if (CustomCharacter.ArmorReplacements == null)
                 return;
 
-            string path = _saveLoadPath + "/" + CharacterName + "_ArmorSet.txt";
-            if (!File.Exists(path))
-            {
-                FileStream stream = File.Create(path);
-                stream.Close();
-            }
+            string path = _creatingNewCharacter ? CreateUniqueArmorPath() : ArmorPath;
 
             StreamWriter writer = new StreamWriter(path);
 
