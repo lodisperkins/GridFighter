@@ -136,13 +136,7 @@ namespace Lodis.CharacterCreation
 
             File.Delete(armorPath);
 
-            string normalPath = Application.persistentDataPath + "/CustomDecks/" + CharacterName + "_Normals.txt";
-
-            File.Delete(normalPath);
-
-            string specialPath = Application.persistentDataPath + "/CustomDecks/" + CharacterName + "_Specials.txt";
-
-            File.Delete(specialPath);
+            CustomCharacter = null;
         }
 
         public static void LoadCustomCharacter(string characterName, out List<ArmorData> replacements, out Color hairColor, out Color faceColor)
@@ -221,7 +215,7 @@ namespace Lodis.CharacterCreation
 
         public void SaveCharacter()
         {
-            if (CustomCharacter.ArmorReplacements == null)
+            if (CustomCharacter?.ArmorReplacements == null)
                 return;
 
             string path = _creatingNewCharacter ? CreateUniqueArmorPath() : ArmorPath;

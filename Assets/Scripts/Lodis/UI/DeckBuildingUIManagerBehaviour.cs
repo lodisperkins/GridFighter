@@ -227,6 +227,7 @@ namespace Lodis.UI
                         _buildManager.ReplaceAbility(currentData.abilityName);
                         UpdateDeck();
                         UpdateIconChoicesWithType(type, true);
+                        _pageManager.GoToPageParent();
                     });
                 }
                 else

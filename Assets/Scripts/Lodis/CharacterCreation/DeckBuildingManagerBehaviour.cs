@@ -86,7 +86,7 @@ namespace Lodis.UI
             AbilityData[] abilities = Resources.LoadAll<AbilityData>("AbilityData");
 
             ReplacementAbilities.AbilityData.AddRange(abilities);
-            ReplacementAbilities.AbilityData.RemoveAt(0);
+            //ReplacementAbilities.AbilityData.RemoveAt(0);
         }
 
         public Deck GetNormalReplacementDeck(int index)
@@ -280,6 +280,20 @@ namespace Lodis.UI
         {
             SaveDeck(NormalDeck);
             SaveDeck(SpecialDeck);
+        }
+
+        public void DeleteDecks()
+        {
+            string normalPath = Application.persistentDataPath + "/CustomDecks/" + NormalDeck.DeckName + ".txt";
+
+            File.Delete(normalPath);
+
+            string specialPath = Application.persistentDataPath + "/CustomDecks/" + SpecialDeck.DeckName + ".txt";
+
+            File.Delete(specialPath);
+
+            NormalDeck = null;
+            SpecialDeck = null;
         }
 
         private string CreateUniqueDeckPath(string deckName)
