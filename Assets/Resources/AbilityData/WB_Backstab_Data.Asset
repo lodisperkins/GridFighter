@@ -94,7 +94,7 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 12
+    value: 15
   - name: MaxInstances
     value: 1
   animationType: 3

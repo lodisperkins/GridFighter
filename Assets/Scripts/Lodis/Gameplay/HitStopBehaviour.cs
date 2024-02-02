@@ -59,9 +59,15 @@ namespace Lodis.Gameplay
             if (time == 0)
                 return;
 
-            _physics.CancelFreeze(out _frozenMoveVectors, true, true);
             if (_hitStopActive)
                 CancelHitStop();
+
+            (Vector3, Vector3) frozenVectors;
+
+            _physics.CancelFreeze(out frozenVectors, true, true);
+
+            _frozenMoveVectors.Item1 += frozenVectors.Item1;
+            _frozenMoveVectors.Item2 += frozenVectors.Item2;
 
             if (_health.LastCollider.Owner)
             { 
@@ -107,6 +113,9 @@ namespace Lodis.Gameplay
 
                 RoutineBehaviour.Instance.CharacterTimeScale = 1;
                 _hitStopActive = false;
+
+                _frozenMoveVectors.Item1 = Vector3.zero;
+                _frozenMoveVectors.Item2 = Vector3.zero;
             }, TimedActionCountType.SCALEDTIME, time);
 
             RoutineBehaviour.Instance.CharacterTimeScale = 0;
