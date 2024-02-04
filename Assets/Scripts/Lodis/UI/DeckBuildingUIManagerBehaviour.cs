@@ -217,29 +217,14 @@ namespace Lodis.UI
                 abilityButtonInstance.ButtonImage.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)currentData.EnergyCost];
                 abilityButtonInstance.name = currentData.abilityName;
 
-
-
-                if ((AbilityType)type == AbilityType.SPECIAL)
+                abilityButtonInstance.AddOnClickEvent(() =>
                 {
-                    abilityButtonInstance.AddOnClickEvent(() =>
-                    {
-                        _buildManager.CurrentAbilityType = type;
-                        _buildManager.ReplaceAbility(currentData.abilityName);
-                        UpdateDeck();
-                        UpdateIconChoicesWithType(type, true);
-                        _pageManager.GoToPageParent();
-                    });
-                }
-                else
-                {
-                    abilityButtonInstance.AddOnClickEvent(() =>
-                    {
-                        _buildManager.CurrentAbilityType = type;
-                        _buildManager.ReplaceAbility(currentData.abilityName);
-                        UpdateDeck();
-                        UpdateIconChoicesWithType(type, true);
-                    });
-                }
+                    _buildManager.CurrentAbilityType = type;
+                    _buildManager.ReplaceAbility(currentData.abilityName);
+                    UpdateDeck();
+                    UpdateIconChoicesWithType(type, true);
+                    _pageManager.GoToPageParent();
+                });
 
                 abilityButtonInstance.AddOnSelectEvent(() =>
                 {

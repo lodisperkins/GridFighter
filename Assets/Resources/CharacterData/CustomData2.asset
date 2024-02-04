@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CustomData2
   m_EditorClassIdentifier: 
   _displayName: Lodis3
-  _headShot: {fileID: 6370303588712990288, guid: 64a04c944e929be4faad39f520c38892,
+  _headShot: {fileID: 6370303588712990288, guid: 303be0027f1f6c045b74b15bdc15cc16,
     type: 3}
   _characterReference: {fileID: 2492379211295133931, guid: 0ce92fdcc8bc2bc4ca5943c9379aa06e,
     type: 3}

@@ -66,7 +66,7 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 4057399
+      m_Bits: 4057143
     MultiHitWaitTime: 0
     Damage: 3
     BaseKnockBack: 0.7
@@ -85,6 +85,9 @@ MonoBehaviour:
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
     HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
     HitSound: {fileID: 0}

@@ -88,6 +88,9 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 1
     HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: 4a5ff4f44ff152a4096f848ce7e4620f, type: 3}

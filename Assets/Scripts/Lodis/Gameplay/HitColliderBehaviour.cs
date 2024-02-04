@@ -68,9 +68,18 @@ namespace Lodis.Gameplay
         [Range(0,3)]
         [JsonIgnore]
         public int HitEffectLevel;
-        [Tooltip("How long the hit stop will be scaled on hit.")]
+        [Tooltip("The strength of the shake on the character being hit.")]
         [JsonIgnore]
         public float HitStopShakeStrength;
+        [Tooltip("The strength of the camera shake after hitting opponent.")]
+        [JsonIgnore]
+        public float CameraShakeStrength;
+        [Tooltip("The duration of the camera shake after hitting opponent.")]
+        [JsonIgnore]
+        public float CameraShakeDuration;
+        [Tooltip("The frequency of the camera shake after hitting opponent.")]
+        [JsonIgnore]
+        public int CameraShakeFrequency;
         [Tooltip("If true, the camera will shake when this collider hits.")]
         [JsonIgnore]
         public bool ShakesCamera;

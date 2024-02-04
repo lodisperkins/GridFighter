@@ -137,6 +137,8 @@ namespace Lodis.Movement
 
         public bool FaceHeading { get => _faceHeading; set => _faceHeading = value; }
         public Vector3 ForceToApply { get => _forceToApply; private set => _forceToApply = value; }
+        public Vector3 FrozenStoredForce { get => _frozenStoredForce; private set => _frozenStoredForce = value; }
+        public Vector3 FrozenVelocity { get => _frozenVelocity; private set => _frozenVelocity = value; }
 
         private void Awake()
         {
@@ -222,7 +224,7 @@ namespace Lodis.Movement
                 _onForceAddedTemp +=
                     args =>
                     {
-                        _frozenStoredForce = (Vector3)args[0];
+                        FrozenStoredForce = (Vector3)args[0];
                         FreezeInPlaceByTimer(time, keepMomentum, makeKinematic, false, storeForceApplied);
                     };
 
@@ -238,7 +240,7 @@ namespace Lodis.Movement
                 _jumpSequence?.TogglePause();
 
             bool gravityEnabled = UseGravity;
-            _frozenVelocity = _rigidbody.velocity;
+            FrozenVelocity = _rigidbody.velocity;
 
             if (makeKinematic && _rigidbody.isKinematic)
                 makeKinematic = false;
@@ -265,7 +267,7 @@ namespace Lodis.Movement
                 _onForceAddedTemp +=
                     args =>
                     {
-                        _frozenStoredForce = (Vector3)args[0];
+                        FrozenStoredForce = (Vector3)args[0];
                         FreezeInPlaceByCondition(condition, keepMomentum, makeKinematic, false, storeForceApplied);
                     };
 
@@ -277,7 +279,7 @@ namespace Lodis.Movement
 
             _isFrozen = true;
             bool gravityEnabled = UseGravity;
-            _frozenVelocity = _rigidbody.velocity;
+            FrozenVelocity = _rigidbody.velocity;
 
             if (_jumpSequence?.active == true)
                 _jumpSequence?.TogglePause();
@@ -294,8 +296,8 @@ namespace Lodis.Movement
 
         public void SetFrozenMoveVectors(Vector3 frozenVelocity, Vector3 frozenForce)
         {
-            _frozenVelocity = frozenVelocity;
-            _frozenStoredForce = frozenForce;
+            FrozenVelocity = frozenVelocity;
+            FrozenStoredForce = frozenForce;
         }
 
         /// <summary>
@@ -316,26 +318,26 @@ namespace Lodis.Movement
             {
                 StopVelocity();
                 _jumpSequence?.TogglePause();
-                _frozenStoredForce = Vector3.zero;
-                _frozenVelocity = Vector3.zero;
+                FrozenStoredForce = Vector3.zero;
+                FrozenVelocity = Vector3.zero;
                 return;
             }
 
-            if (keepMomentum && _frozenVelocity.magnitude > 1)
-                ApplyVelocityChange(_frozenVelocity);
+            if (keepMomentum && FrozenVelocity.magnitude > 0)
+                ApplyVelocityChange(FrozenVelocity);
 
-            if (storeForceApplied && _frozenStoredForce.magnitude > 0)
-                ApplyImpulseForce(_frozenStoredForce);
+            if (storeForceApplied && FrozenStoredForce.magnitude > 0)
+                ApplyImpulseForce(FrozenStoredForce);
 
-            _frozenStoredForce = Vector3.zero;
-            _frozenVelocity = Vector3.zero;
+            FrozenStoredForce = Vector3.zero;
+            FrozenVelocity = Vector3.zero;
         }
 
         /// <summary>
         /// Canceled the current freeze operation by stopping the timer and enabling gravity.
         /// Does not keep momentum or apply stored forces.
         /// </summary>
-        public void CancelFreeze(out (Vector3,Vector3) moveVectors, bool keepMomentum = false, bool applyStoredForce = false)
+        public void CancelFreeze(out (Vector3,Vector3) moveVectors, bool keepMomentum = false, bool applyStoredForce = false, bool keepStoredForce = false)
         {
             if (_freezeAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_freezeAction);
@@ -349,19 +351,22 @@ namespace Lodis.Movement
             UseGravity = true;
             _isFrozen = false;
 
-            if (keepMomentum && _frozenVelocity.magnitude > 1)
-                ApplyVelocityChange(_frozenVelocity);
+            if (keepMomentum && FrozenVelocity.magnitude > 0)
+                ApplyVelocityChange(FrozenVelocity);
 
-            if (applyStoredForce && _frozenStoredForce.magnitude > 0)
-                ApplyImpulseForce(_frozenStoredForce);
+            if (applyStoredForce && FrozenStoredForce.magnitude > 0)
+                ApplyImpulseForce(FrozenStoredForce);
 
-            Vector3 frozenVelocity = _frozenVelocity;
-            Vector3 frozenForce = _frozenStoredForce;
-
-            _frozenStoredForce = Vector3.zero;
-            _frozenVelocity = Vector3.zero;
+            Vector3 frozenVelocity = FrozenVelocity;
+            Vector3 frozenForce = FrozenStoredForce;
 
             moveVectors = (frozenVelocity, frozenForce);
+
+            if (keepStoredForce)
+                return;
+
+            FrozenStoredForce = Vector3.zero;
+            FrozenVelocity = Vector3.zero;
         }
 
         /// <summary>
@@ -382,17 +387,17 @@ namespace Lodis.Movement
             UseGravity = true;
             _isFrozen = false;
 
-            if (keepMomentum && _frozenVelocity.magnitude > 1)
-                ApplyVelocityChange(_frozenVelocity);
+            if (keepMomentum && FrozenVelocity.magnitude > 1)
+                ApplyVelocityChange(FrozenVelocity);
 
-            if (applyStoredForce && _frozenStoredForce.magnitude > 0)
-                ApplyImpulseForce(_frozenStoredForce);
+            if (applyStoredForce && FrozenStoredForce.magnitude > 0)
+                ApplyImpulseForce(FrozenStoredForce);
 
-            Vector3 frozenVelocity = _frozenVelocity;
-            Vector3 frozenForce = _frozenStoredForce;
+            Vector3 frozenVelocity = FrozenVelocity;
+            Vector3 frozenForce = FrozenStoredForce;
 
-            _frozenStoredForce = Vector3.zero;
-            _frozenVelocity = Vector3.zero;
+            FrozenStoredForce = Vector3.zero;
+            FrozenVelocity = Vector3.zero;
         }
 
         /// <summary>
@@ -713,7 +718,7 @@ namespace Lodis.Movement
                 force.y *= -1;
 
             if (IsFrozen)
-                _frozenVelocity = _lastForceAdded;
+                FrozenVelocity = _lastForceAdded;
             else
                 RB.AddForce(force, ForceMode.VelocityChange);
 
@@ -763,7 +768,7 @@ namespace Lodis.Movement
                 force.y *= -1;
 
             if (IsFrozen)
-                _frozenVelocity = _lastForceAdded;
+                FrozenVelocity = _lastForceAdded;
             else
                 RB.AddForce(force / Mass, ForceMode.Force);
 
@@ -817,13 +822,13 @@ namespace Lodis.Movement
             ForceToApply = _lastForceAdded;
 
             if (IsFrozen)
-                _frozenVelocity = _lastForceAdded;
+                FrozenVelocity = _lastForceAdded;
             else
                 RB.AddForce(force / Mass, ForceMode.Impulse);
             
 
             if (IsFrozen)
-                _frozenStoredForce = _lastForceAdded;
+                FrozenStoredForce = _lastForceAdded;
 
             _onForceAdded?.Invoke(force / Mass);
             _onForceAddedTemp?.Invoke(force);

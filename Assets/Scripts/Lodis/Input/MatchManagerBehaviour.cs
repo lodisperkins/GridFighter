@@ -206,20 +206,20 @@ namespace Lodis.Gameplay
                 _matchResult = MatchResult.P2WINS;
                 _rhsWins++;
             }
-            else if (_ringBarrierL.IsAlive == _ringBarrierR.IsAlive && !_suddenDeathActive)
+            else if (!_suddenDeathActive)
             {
                 _matchResult = MatchResult.DRAW;
             }
-            else if (!_ringBarrierR.IsAlive)
-            {
-                _matchResult = MatchResult.P1WINS;
-                _lhsWins++;
-            }
-            else if (!_ringBarrierL.IsAlive)
-            {
-                _matchResult = MatchResult.P2WINS;
-                _rhsWins++;
-            }
+            //else if (!_ringBarrierR.IsAlive)
+            //{
+            //    _matchResult = MatchResult.P1WINS;
+            //    _lhsWins++;
+            //}
+            //else if (!_ringBarrierL.IsAlive)
+            //{
+            //    _matchResult = MatchResult.P2WINS;
+            //    _rhsWins++;
+            //}
         }
 
         public void SetMatchResult(int resultID)

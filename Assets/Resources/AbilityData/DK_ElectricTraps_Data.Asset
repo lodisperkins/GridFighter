@@ -69,6 +69,9 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 1
     HitStopShakeStrength: 0
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}

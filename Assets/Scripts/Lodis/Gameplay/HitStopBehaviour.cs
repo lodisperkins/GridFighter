@@ -21,6 +21,7 @@ namespace Lodis.Gameplay
         private DelayedAction _stopAction;
         private TimedAction _enableAction;
         private float _hitStopScale = 0.15f;
+        [SerializeField]
         private bool _hitStopActive;
         private (Vector3, Vector3) _frozenMoveVectors;
 
@@ -40,7 +41,7 @@ namespace Lodis.Gameplay
             else
                 _health.AddOnTakeDamageAction(StartHitStop);
 
-            _moveset.OnUseAbility += CancelHitStop;
+            _moveset.OnUseAbility += () => CancelHitStop(false);
         }
         
         /// <summary>
@@ -60,22 +61,19 @@ namespace Lodis.Gameplay
                 return;
 
             if (_hitStopActive)
-                CancelHitStop();
-
-            (Vector3, Vector3) frozenVectors;
-
-            _physics.CancelFreeze(out frozenVectors, true, true);
-
-            _frozenMoveVectors.Item1 += frozenVectors.Item1;
-            _frozenMoveVectors.Item2 += frozenVectors.Item2;
+            {
+                CancelHitStop(true);
+            }
+            //_frozenMoveVectors.Item1 += frozenVectors.Item1;
+            //_frozenMoveVectors.Item2 += frozenVectors.Item2;
 
             if (_health.LastCollider.Owner)
             { 
                 //Starts the hit stop for the attacker
-                _health.LastCollider.Owner.GetComponent<HitStopBehaviour>().StartHitStop(time * 1.5f, animationStopDelay, false, false, false);
+                _health.LastCollider.Owner.GetComponent<HitStopBehaviour>().StartHitStop(time * 1.5f, animationStopDelay, false, false, false,0,0,0);
             }
             //Call the same function with the new parameters found
-            StartHitStop(time, lastColliderInfo.HitStopShakeStrength, true, true, lastColliderInfo.ShakesCamera);
+            StartHitStop(time, lastColliderInfo.HitStopShakeStrength, true, true, lastColliderInfo.ShakesCamera, lastColliderInfo.CameraShakeStrength, lastColliderInfo.CameraShakeDuration, lastColliderInfo.CameraShakeFrequency);
         }
 
         /// <summary>
@@ -86,7 +84,7 @@ namespace Lodis.Gameplay
         /// <param name="waitForForceApplied">Whether or not we should wait until a force is applied before the hit stop is active.</param>
         /// <param name="shakeCharacter">Whether or not the character model should shake during the hitstop.</param>
         /// <param name="shakeCamera">Whether or not the camera should shake during the hitstop effect.</param>
-        public void StartHitStop(float time, float strength, bool waitForForceApplied, bool shakeCharacter, bool shakeCamera)
+        public void StartHitStop(float time, float strength, bool waitForForceApplied, bool shakeCharacter, bool shakeCamera, float cameraShakeStrength, float cameraShakeDuration, int cameraShakeFrequency)
         {
             _hitStopActive = true;
             //If there is already a timer to make the object stop, cancel it.
@@ -100,10 +98,10 @@ namespace Lodis.Gameplay
             if (shakeCharacter)
                 _shakeBehaviour.ShakePosition(time, strength, 1000);
             if (shakeCamera)
-                CameraBehaviour.ShakeBehaviour.ShakeRotation(0.05f, 0.5f, 1);
+                CameraBehaviour.ShakeBehaviour.ShakeRotation(cameraShakeStrength, cameraShakeDuration, cameraShakeFrequency);
 
             //Calls for the physics component to freexe the object in place so it doesn't keep moving in air.
-            _physics.FreezeInPlaceByCondition(args => !_hitStopActive, true, true, waitForForceApplied, true);
+            _physics.FreezeInPlaceByTimer(time, true, true, waitForForceApplied, true);
 
             //The animator should be disabled only after the animation stop delay time has passed.
 
@@ -114,6 +112,12 @@ namespace Lodis.Gameplay
                 RoutineBehaviour.Instance.CharacterTimeScale = 1;
                 _hitStopActive = false;
 
+                //if (_physics.FrozenStoredForce.magnitude == 0 && _physics.FrozenVelocity.magnitude == 0)
+                //{
+                //    _physics.ApplyVelocityChange(_frozenMoveVectors.Item1);
+                //    _physics.ApplyImpulseForce(_frozenMoveVectors.Item2);
+                //}
+
                 _frozenMoveVectors.Item1 = Vector3.zero;
                 _frozenMoveVectors.Item2 = Vector3.zero;
             }, TimedActionCountType.SCALEDTIME, time);
@@ -121,10 +125,14 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.CharacterTimeScale = 0;
         }
 
-        public void CancelHitStop()
+        public void CancelHitStop(bool cancelFreeze)
         {
             if (_moveset?.LastAbilityInUse?.abilityData.AbilityType == AbilityType.BURST)
                 return;
+
+
+            if (cancelFreeze)
+                _physics.CancelFreeze(true, true);
 
             _hitStopActive = false;
             _shakeBehaviour.StopShaking();

@@ -43,7 +43,8 @@ MonoBehaviour:
   visualPrefab: {fileID: 4584720517663278102, guid: 525e6a7282ad1a2468d433466a490abe,
     type: 3}
   Accessory: {fileID: 0}
-  Effects: []
+  Effects:
+  - {fileID: 4592643921774826832, guid: 0b38492e6e2b5064e9fb764d8b7447a5, type: 3}
   Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 1473eceabb6ad734a992c49097e40eff, type: 3}
   ActivateSound: {fileID: 8300000, guid: 2e1ac049c58669245bc0b168b05324a7, type: 3}
@@ -67,7 +68,7 @@ MonoBehaviour:
     HitAngle: -1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.5
+    HitStunTime: 0.7
     Priority: 4
     OwnerAlignement: 0
     AbilityType: 8
@@ -78,6 +79,9 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength: 4
+    CameraShakeStrength: 1
+    CameraShakeDuration: 2
+    CameraShakeFrequency: 45
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: 1ed3567acb1fa504f8f026962164e2f1, type: 3}
@@ -95,6 +99,8 @@ MonoBehaviour:
     value: 8
   - name: OpponentBounciness
     value: 3
+  - name: ColliderScale
+    value: 1.5
   animationType: 3
   _customAnimation: {fileID: 5180280961208456968, guid: bc6b2460239e4494cb656ac7084942c1,
     type: 3}

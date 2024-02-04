@@ -79,6 +79,9 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength: 0.5
+    CameraShakeStrength: 1
+    CameraShakeDuration: 0.5
+    CameraShakeFrequency: 50
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
@@ -110,6 +113,9 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength: 1
+    CameraShakeStrength: 1
+    CameraShakeDuration: 0.5
+    CameraShakeFrequency: 50
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
@@ -142,6 +148,9 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength: 1
+    CameraShakeStrength: 1
+    CameraShakeDuration: 1
+    CameraShakeFrequency: 90
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}

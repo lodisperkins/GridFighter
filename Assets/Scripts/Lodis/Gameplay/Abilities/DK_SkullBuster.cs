@@ -37,6 +37,10 @@ namespace Lodis.Gameplay
         private Transform _spawnTransform;
         private HitColliderBehaviour _hitScript;
         private TimedAction _zoomAction;
+        private float _colliderScale;
+        private GameObject _hitEffectLoopRef;
+        private GameObject _hitEffectLoopInstance;
+        private TimedAction _hitLoopDespawnAction;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -51,6 +55,7 @@ namespace Lodis.Gameplay
 
             _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
             _grid = BlackBoardBehaviour.Instance.Grid;
+            _hitEffectLoopRef = abilityData.Effects[0];
 
             //Stores the opponents physics script to make them bounce later
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
@@ -59,6 +64,7 @@ namespace Lodis.Gameplay
             //Initialize default values
             _distance = abilityData.GetCustomStatValue("TravelDistance");
             _jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
+            _colliderScale = abilityData.GetCustomStatValue("ColliderScale");
             _chargeEffectRef = (GameObject)Resources.Load("Effects/RisingChargeEffect");
             _spawnTransform = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
         }
@@ -88,7 +94,9 @@ namespace Lodis.Gameplay
                     return;
 
                 CameraBehaviour.Instance.ZoomAmount = 1;
-                CameraBehaviour.ShakeBehaviour.ShakeRotation(1, 2, 90);
+                EnableBounce();
+                TryDestroyVisual(objectHit);
+
                 _zoomAction = RoutineBehaviour.Instance.StartNewTimedAction(parameter => CameraBehaviour.Instance.ZoomAmount = 0, TimedActionCountType.SCALEDTIME, 0.7f);
             };
 
@@ -106,10 +114,9 @@ namespace Lodis.Gameplay
             _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, _spawnTransform);
             _visualPrefabInstance.transform.localPosition += Vector3.back * 0.3f;
             //Spawn a game object with the collider attached
-            _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one, _fistCollider, owner);
+            _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one * _colliderScale, _fistCollider, owner);
             _hitScript.transform.localPosition = Vector3.zero;
-            _hitScript.AddCollisionEvent(EnableBounce);
-            _hitScript.AddCollisionEvent(context => Object.Destroy(_visualPrefabInstance));
+            _hitScript.ColliderInfo.OnHit = OnHit;
 
             GridTrackerBehaviour tracker;
             if (!_hitScript.GetComponent<GridTrackerBehaviour>())
@@ -140,6 +147,21 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StartNewConditionAction(parameters => { _opponentPhysics.DisablePanelBounce(); _opponentPhysics.Bounciness = _oldBounciness; }, condition => _opponentPhysics.IsGrounded || opponentState != "Tumbling");
         }
 
+        private void TryDestroyVisual(params object[] args)
+        {
+            GameObject other = (GameObject)args[0];
+
+            if (other != _opponentPhysics.gameObject && !other.CompareTag("Panel"))
+                return;
+
+            if (other == _opponentPhysics.gameObject)
+                _hitEffectLoopInstance = ObjectPoolBehaviour.Instance.GetObject(_hitEffectLoopRef, other.transform.position, CameraBehaviour.Instance.transform.rotation);
+
+            _hitLoopDespawnAction = RoutineBehaviour.Instance.StartNewTimedAction(arguments => ObjectPoolBehaviour.Instance.ReturnGameObject(_hitEffectLoopInstance), TimedActionCountType.UNSCALEDTIME, _hitScript.ColliderInfo.HitStunTime);
+
+            Object.Destroy(_visualPrefabInstance);
+        }
+
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
@@ -162,7 +184,11 @@ namespace Lodis.Gameplay
             if (_chargeEffect)
                 Object.Destroy(_chargeEffect);
 
+            RoutineBehaviour.Instance.StopAction(_hitLoopDespawnAction);
 
+
+            if (_hitEffectLoopInstance)
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitEffectLoopInstance);
             CameraBehaviour.Instance.ZoomAmount = 0;
         }
     }
