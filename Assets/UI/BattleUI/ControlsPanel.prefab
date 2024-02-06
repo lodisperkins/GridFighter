@@ -599,7 +599,7 @@ MonoBehaviour:
     XBoxButton: {fileID: 21300000, guid: 120aba4dd92bd4546b522328cb2287fe, type: 3}
     PlaystationButton: {fileID: 21300000, guid: 146fb99515c182b45bf0956d1703c88e,
       type: 3}
-    ImageToUpdate: {fileID: 1194088161042900653}
+    ImageToUpdate: {fileID: 3654138751227133203}
   - KeyboardButton: {fileID: 21300000, guid: dbc18ce5aa3cf2840a7a3ffc0d562c65, type: 3}
     XBoxButton: {fileID: 21300000, guid: f4b0889542501454ca0df24fd2094825, type: 3}
     PlaystationButton: {fileID: 21300000, guid: 36e133fee4e30364282f9e98ef87eb2f,

@@ -21,6 +21,8 @@ namespace Lodis.AI
         private Text _energyButtonText;
         [SerializeField]
         private Text _invincibleText;
+        [SerializeField]
+        private Text _burstText;
         private int _currentState = -1;
         private bool _initialized;
 
@@ -43,7 +45,7 @@ namespace Lodis.AI
         {
             if (!MatchManagerBehaviour.InfiniteEnergy)
                 _energyButtonText.text = "Infinite Energy : Off";
-            else if (MatchManagerBehaviour.InfiniteEnergy)
+            else 
                 _energyButtonText.text = "Infinite Energy : On";
         }
 
@@ -51,8 +53,16 @@ namespace Lodis.AI
         {
             if (!MatchManagerBehaviour.Instance.InvincibleBarriers)
                 _invincibleText.text = "Invincible Barriers : Off";
-            else if (MatchManagerBehaviour.Instance.InvincibleBarriers)
+            else 
                 _invincibleText.text = "Invincible Barriers : On";
+        }
+
+        public void ToggleBurstText()
+        {
+            if (!MatchManagerBehaviour.Instance.InfiniteBurst)
+                _burstText.text = "Infinite Burst : Off";
+            else
+                _burstText.text = "Infinite Burst : On";
         }
 
         public void NextAIState()

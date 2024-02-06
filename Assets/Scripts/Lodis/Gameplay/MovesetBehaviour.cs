@@ -931,6 +931,13 @@ namespace Lodis.Gameplay
                 }
             }
 
+            float burstEnergyRechargeRate = _burstEnergyRechargeRate;
+
+            if (MatchManagerBehaviour.Instance.InfiniteBurst)
+            {
+                burstEnergyRechargeRate /= 100;
+            }
+
             bool timerActive = (_rechargeAction?.GetEnabled()).GetValueOrDefault();
 
             if (!timerActive && EnergyChargeEnabled)
@@ -939,7 +946,7 @@ namespace Lodis.Gameplay
             timerActive = (_burstAction?.GetEnabled()).GetValueOrDefault();
 
             if (!timerActive)
-                _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => BurstEnergy += _burstEnergyRechargeValue.Value, TimedActionCountType.SCALEDTIME, _burstEnergyRechargeRate.Value);
+                _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => BurstEnergy += _burstEnergyRechargeValue.Value, TimedActionCountType.SCALEDTIME, burstEnergyRechargeRate);
 
             //Reload the deck if there are no cards in the hands or the deck
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading && NextAbilitySlot == null && !_loadingShuffle)
@@ -957,6 +964,8 @@ namespace Lodis.Gameplay
 
             if (!CanBurst)
                 CanBurst = BurstEnergy == _maxBurstEnergyRef.Value;
+
+            
 
             if (MatchManagerBehaviour.Instance.SuperInUse)
                 CanBurst = false;

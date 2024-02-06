@@ -125,9 +125,9 @@ Material:
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 0, g: 0, b: 0, a: 0}
     - _SecondaryColor: {r: 0, g: 0.25314817, b: 0.7176471, a: 0}
-    - _ShadowColor: {r: 0.035015285, g: 0, b: 0.5283019, a: 0}
+    - _ShadowColor: {r: 1, g: 1, b: 1, a: 0}
     - _ShadowOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _ShadowPatternColor: {r: 0.0136169465, g: 0.018351855, b: 0.16981131, a: 0}
+    - _ShadowPatternColor: {r: 1, g: 1, b: 1, a: 0}
     - _ShadowTextureOffset: {r: 0, g: 0, b: 0, a: 0}
     - _ShadowTextureTiling: {r: 1, g: 1, b: 0, a: 0}
     - _ShadowTiling: {r: 1, g: 1, b: 0, a: 0}

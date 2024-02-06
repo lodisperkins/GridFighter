@@ -16,10 +16,18 @@ namespace Lodis.Quest
             _ownerMoveset.OnBurst += CheckComplete;
         }
 
+        public override void OnStart()
+        {
+            base.OnStart();
+            MatchManagerBehaviour.Instance.InfiniteBurst = true;
+        }
+
         private void CheckComplete()
         {
             if (Status == QuestStatus.ACTIVE && BlackBoardBehaviour.Instance.Player1State == "Tumbling")
                 Complete();
+
+            MatchManagerBehaviour.Instance.InfiniteBurst = false;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Lodis.Quest
         {
             base.OnUpdate();
 
-            if (BlackBoardBehaviour.Instance.Player1ComboCounter.HitCount >= 10)
+            if (BlackBoardBehaviour.Instance.Player1ComboCounter.HitCount >= 7)
                 Complete();
         }
     }

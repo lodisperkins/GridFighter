@@ -47,6 +47,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private bool _infiniteEnergy;
         [SerializeField]
+        private bool _infiniteBurst;
+        [SerializeField]
         private float _timeScale = 1;
 
         [Header("Music")]
@@ -133,6 +135,7 @@ namespace Lodis.Gameplay
         public int LhsWins { get => _lhsWins; private set => _lhsWins = value; }
         public int RhsWins { get => _rhsWins; private set => _rhsWins = value; }
         public FloatVariable MatchStartTime { get => _matchStartTime; set => _matchStartTime = value; }
+        public bool InfiniteBurst { get => _infiniteBurst; set => _infiniteBurst = value; }
 
         private void Awake()
         {
@@ -279,6 +282,10 @@ namespace Lodis.Gameplay
                 _ringBarrierL.SetInvincibilityByCondition(condition => !InvincibleBarriers);
                 _ringBarrierR.SetInvincibilityByCondition(condition => !InvincibleBarriers);
             }
+        }
+        public void ToggleInfiniteBurstEnergy()
+        {
+            InfiniteBurst = !InfiniteBurst;
         }
 
         public void TogglePauseMenu()

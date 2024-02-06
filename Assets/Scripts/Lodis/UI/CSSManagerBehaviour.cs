@@ -298,7 +298,7 @@ namespace Lodis.UI
                 custManager = _p2CustomManager;
             }
 
-            if (pageManager.CurrentPage?.PageParent.PageName == "custom" && !custManager.HasCustomDecks)
+            if (pageManager.CurrentPage?.PageParent?.PageName == "custom" && !custManager.HasCustomDecks)
                 pageManager.GoToPage("default");
             else if (pageManager.CurrentPage.PageName == "default" && !custManager.HasCustomDecks)
                 return;

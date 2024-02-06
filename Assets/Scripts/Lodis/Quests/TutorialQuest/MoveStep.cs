@@ -12,6 +12,7 @@ namespace Lodis.Quest
     {
         private List<Vector2> _moveLocations;
         private GridMovementBehaviour _ownerMovement;
+        private List<PanelBehaviour> _panels;
 
         public MoveStep(QuestStepData data, GameObject owner) : base(data, owner)
         {
@@ -28,12 +29,8 @@ namespace Lodis.Quest
         public override void OnStart()
         {
             base.OnStart();
-            List<PanelBehaviour> panels = BlackBoardBehaviour.Instance.Grid.GetPanelNeighbors(_ownerMovement.Position, true, GridAlignment.ANY, false);
+            _panels = BlackBoardBehaviour.Instance.Grid.GetPanelNeighbors(_ownerMovement.Position, true, GridAlignment.ANY, false);
 
-            foreach (PanelBehaviour panel in panels)
-            {
-                panel.Mark(MarkerType.POSITION, _ownerMovement.gameObject);
-            }
         }
 
         public override void OnUpdate()
@@ -42,6 +39,12 @@ namespace Lodis.Quest
 
             if (_moveLocations.Count == 0)
                 Complete();
+
+            foreach (PanelBehaviour panel in _panels)
+            {
+                if (_moveLocations.Contains(panel.Position))
+                    panel.Mark(MarkerType.POSITION, _ownerMovement.gameObject);
+            }
 
             if (_moveLocations.Contains(_ownerMovement.Position))
                 _moveLocations.Remove(_ownerMovement.Position);
