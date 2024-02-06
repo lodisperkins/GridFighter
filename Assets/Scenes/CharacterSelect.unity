@@ -521,8 +521,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.120000005}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0000038146973, y: 0.0000014305115}
-  m_SizeDelta: {x: 261.758, y: 314.2917}
+  m_AnchoredPosition: {x: 0.0000038146973, y: 18.8}
+  m_SizeDelta: {x: 261.758, y: 276.7071}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &84155220
 MonoBehaviour:
@@ -7214,8 +7214,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.120000005}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.0000071525574}
-  m_SizeDelta: {x: 261.758, y: 314.2917}
+  m_AnchoredPosition: {x: 0, y: 18.8}
+  m_SizeDelta: {x: 261.758, y: 276.71088}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1483522250
 MonoBehaviour:
@@ -8391,6 +8391,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bff4f9b7bbfd677488908428d1a79775, type: 3}
   - {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
   - {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+  _clashSound: {fileID: 0}
   _sameSoundDelay: 0.01
 --- !u!4 &1545201725
 Transform:
