@@ -65,6 +65,9 @@ namespace Lodis.UI
         private bool _previousPageOnCancel = true;
         [SerializeField]
         private int _sceneIndex = -1;
+        [SerializeField]
+        [Tooltip("If true pages will no longer turn on/off automatically. Use this if you are going to handle page visuals manually.")]
+        private bool _changePageManually;
         private int _currentChildIndex;
         private PlayerControls _controls;
         private PlayerInput _playerInput;
@@ -129,14 +132,15 @@ namespace Lodis.UI
             if (CurrentPage == null || targetPage == null)
                 return;
 
-            if (!CurrentPage.KeepRootVisible)
+            if (!CurrentPage.KeepRootVisible || _changePageManually)
                 CurrentPage.PageRoot?.SetActive(false);
 
             CurrentPage.OnInactive?.Invoke();
 
             CurrentPage = targetPage;
 
-            CurrentPage.PageRoot.SetActive(true);
+            if (!_changePageManually)
+                CurrentPage.PageRoot.SetActive(true);
 
             if (EventManager)
             {
@@ -154,13 +158,17 @@ namespace Lodis.UI
 
             if (CurrentPage != null)
             {
-                CurrentPage.PageRoot.SetActive(false);
+                if (!_changePageManually)
+                    CurrentPage.PageRoot.SetActive(false);
+
                 CurrentPage.OnInactive?.Invoke();
             }
 
             CurrentPage = RootPage;
 
-            CurrentPage.PageRoot.SetActive(true);
+            if (!_changePageManually)
+                CurrentPage.PageRoot.SetActive(true);
+
             if (EventManager)
             {
                 EventManager.SetSelectedGameObject(CurrentPage.FirstSelected);
@@ -174,7 +182,7 @@ namespace Lodis.UI
             if (CurrentPage == null || !CurrentPage.Children.ContainsIndex(index))
                 return;
 
-            if (!CurrentPage.KeepRootVisible)
+            if (!CurrentPage.KeepRootVisible && !_changePageManually)
                 CurrentPage.PageRoot?.SetActive(false);
 
             CurrentPage.OnInactive?.Invoke();
@@ -182,7 +190,9 @@ namespace Lodis.UI
             _currentChildIndex = index;
             CurrentPage = CurrentPage.Children[_currentChildIndex];
 
-            CurrentPage.PageRoot.SetActive(true);
+            if (!_changePageManually)
+                CurrentPage.PageRoot.SetActive(true);
+
             if (EventManager)
             {
                 EventManager.SetSelectedGameObject(CurrentPage.FirstSelected);
@@ -208,12 +218,15 @@ namespace Lodis.UI
             else if (CurrentPage == _rootPage)
                 return;
 
-            CurrentPage.PageRoot.SetActive(false);
+            if (!_changePageManually)
+                CurrentPage.PageRoot.SetActive(false);
+
             CurrentPage.OnInactive?.Invoke();
 
             CurrentPage = CurrentPage.PageParent;
 
-            CurrentPage.PageRoot.SetActive(true);
+            if (!_changePageManually)
+                CurrentPage.PageRoot.SetActive(true);
 
             if (EventManager)
             {

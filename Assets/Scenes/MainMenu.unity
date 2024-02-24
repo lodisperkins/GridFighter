@@ -4118,6 +4118,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 467236231}
   m_CullTransparentMesh: 0
+--- !u!1 &475971908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8659810684163384811, guid: e07f9430fa55a7a41aaf98461377f925,
+    type: 3}
+  m_PrefabInstance: {fileID: 863893679}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &508945630 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5041198097818951599, guid: 3894fc90b29666c40ab707beec511c27,
@@ -4896,6 +4902,12 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!1 &692135626 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2869594066073183003, guid: e07f9430fa55a7a41aaf98461377f925,
+    type: 3}
+  m_PrefabInstance: {fileID: 8659810685626718761}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &700128728
 GameObject:
   m_ObjectHideFlags: 0
@@ -5581,6 +5593,7 @@ GameObject:
   - component: {fileID: 834067890}
   - component: {fileID: 834067889}
   - component: {fileID: 834067888}
+  - component: {fileID: 834067891}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -5653,6 +5666,200 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &834067891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834067887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63eb3837c3ac446459976ae5daf3a86b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rootPage:
+    PageRoot: {fileID: 692135626}
+    FirstSelected: {fileID: 1250450186}
+    KeepRootVisible: 0
+    PageName: MainMenu
+    _children:
+    - PageRoot: {fileID: 1376326260}
+      FirstSelected: {fileID: 1649660009}
+      KeepRootVisible: 0
+      PageName: BattleOptions
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1796131875}
+            m_MethodName: Play
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: StartBattleReverseTransition
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1068591873}
+            m_MethodName: SetPrimaryColor
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 0200C3
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1068591873}
+            m_MethodName: SetSecondaryColor
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 03C522
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 834067889}
+            m_MethodName: SetSelectedGameObject
+            m_Mode: 2
+            m_Arguments:
+              m_ObjectArgument: {fileID: 1250450186}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+    - PageRoot: {fileID: 2001925159}
+      FirstSelected: {fileID: 1513512983}
+      KeepRootVisible: 0
+      PageName: TrainingOptions
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1796131875}
+            m_MethodName: Play
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: TrainingReverseTransition
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 834067889}
+            m_MethodName: SetSelectedGameObject
+            m_Mode: 2
+            m_Arguments:
+              m_ObjectArgument: {fileID: 1781054596}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1068591873}
+            m_MethodName: SetPrimaryColor
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 0200C3
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1068591873}
+            m_MethodName: SetSecondaryColor
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 03C522
+              m_BoolArgument: 0
+            m_CallState: 2
+    - PageRoot: {fileID: 475971908}
+      FirstSelected: {fileID: 582686927}
+      KeepRootVisible: 0
+      PageName: Settings
+      _children: []
+      OnActive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnInactive:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1796131875}
+            m_MethodName: Play
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: SettingsReverseTransition
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 834067889}
+            m_MethodName: SetSelectedGameObject
+            m_Mode: 2
+            m_Arguments:
+              m_ObjectArgument: {fileID: 1508005419}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1068591873}
+            m_MethodName: SetPrimaryColor
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 0200C3
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1068591873}
+            m_MethodName: SetSecondaryColor
+            m_Mode: 5
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 03C522
+              m_BoolArgument: 0
+            m_CallState: 2
+    OnActive:
+      m_PersistentCalls:
+        m_Calls: []
+    OnInactive:
+      m_PersistentCalls:
+        m_Calls: []
+  _eventSystem: {fileID: 0}
+  _loadSceneOnFirstPage: 0
+  _previousPageOnCancel: 1
+  _sceneIndex: -1
+  _changePageManually: 1
 --- !u!1 &859423906 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7997891042039204573, guid: cd44e3f1f47b4e844bb56c12bc030286,
@@ -6567,6 +6774,17 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 03C522
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 834067891}
+        m_MethodName: GoToPageParent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1017905410 stripped
@@ -7492,6 +7710,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 834067891}
+        m_MethodName: GoToPageChild
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1250450189 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7900096719161127845, guid: cd44e3f1f47b4e844bb56c12bc030286,
@@ -8145,6 +8374,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1376326260 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8659810684163384811, guid: e07f9430fa55a7a41aaf98461377f925,
+    type: 3}
+  m_PrefabInstance: {fileID: 1502545408}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1401006890
 GameObject:
   m_ObjectHideFlags: 0
@@ -8976,6 +9211,17 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Customize battle controls.
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 834067891}
+        m_MethodName: GoToPageChild
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1508005423 stripped
@@ -10046,6 +10292,17 @@ MonoBehaviour:
           m_StringArgument: 03C522
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 834067891}
+        m_MethodName: GoToPageParent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
 --- !u!114 &1772491128 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7900096719161127845, guid: cd44e3f1f47b4e844bb56c12bc030286,
@@ -10324,6 +10581,17 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 834067891}
+        m_MethodName: GoToPageChild
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
@@ -10675,6 +10943,17 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 03C522
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 834067891}
+        m_MethodName: GoToPageParent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &1852466241 stripped
@@ -11424,6 +11703,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1936582042}
   m_CullTransparentMesh: 0
+--- !u!1 &2001925159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8659810684163384811, guid: e07f9430fa55a7a41aaf98461377f925,
+    type: 3}
+  m_PrefabInstance: {fileID: 1079384929}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2025015009
 GameObject:
   m_ObjectHideFlags: 0
