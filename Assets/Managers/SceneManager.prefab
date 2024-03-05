@@ -141,8 +141,8 @@ MonoBehaviour:
   _gameMode: {fileID: 11400000, guid: be54028b10347ec4883b863e775d0703, type: 2}
   _module: {fileID: 0}
   _updateDeviceBasedOnUI: 1
-  _p1Devices: {fileID: 11400000, guid: f415e5c4a7cd36642a4ce2300885806e, type: 2}
-  _p2Devices: {fileID: 11400000, guid: d0c1c30560f9812479d749b7010c43b1, type: 2}
+  _p1InputProfile: {fileID: 11400000, guid: 31231b0004bc30f499e8cae95c7d9545, type: 2}
+  _p2InputProfile: {fileID: 11400000, guid: a260db81402082049ae9bf0659357276, type: 2}
 --- !u!1 &8960163372424484046
 GameObject:
   m_ObjectHideFlags: 0

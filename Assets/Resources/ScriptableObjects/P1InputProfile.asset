@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8460bf584821bf04d9893c033610547b, type: 3}
+  m_Name: P1InputProfile
+  m_EditorClassIdentifier: 
+  _val:
+  - Binding: 0
+    Path: 
+    DisplayName: 
+  - Binding: 1
+    Path: 
+    DisplayName: 
+  - Binding: 2
+    Path: 
+    DisplayName: 
+  - Binding: 3
+    Path: 
+    DisplayName: 
+  - Binding: 4
+    Path: /XInputControllerWindows/buttonSouth
+    DisplayName: A
+  - Binding: 5
+    Path: /XInputControllerWindows/buttonNorth
+    DisplayName: Y
+  - Binding: 6
+    Path: /XInputControllerWindows/buttonWest
+    DisplayName: X
+  - Binding: 7
+    Path: /XInputControllerWindows/buttonEast
+    DisplayName: B
+  - Binding: 8
+    Path: /XInputControllerWindows/rightShoulder
+    DisplayName: Right Bumper
+  - Binding: 9
+    Path: /XInputControllerWindows/leftShoulder
+    DisplayName: Left Bumper
+  _deviceData: {fileID: 11400000, guid: f415e5c4a7cd36642a4ce2300885806e, type: 2}

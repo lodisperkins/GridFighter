@@ -2,6 +2,7 @@
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -12,42 +13,73 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_BounceBall : ProjectileAbility
     {
-        private GameObject _ball;
+        private int _ballCount;
+        private float _ballSpawnDelay;
+        private Coroutine _spawnRoutine;
+        List<GameObject> _balls = new List<GameObject>();
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
+
+            _ballCount = (int)abilityData.GetCustomStatValue("BallCount");
+            _ballSpawnDelay = abilityData.GetCustomStatValue("BallSpawnDelay");
         }
 
 	    //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            //Instantiate ball.
-            _ball = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, abilityData.visualPrefab.transform.rotation);
+            _spawnRoutine = OwnerMoveset.StartCoroutine(SpawnBalls());
+        }
 
-            //Get the collider to update collision information.
-            HitColliderBehaviour hitCollider = _ball.GetComponent<HitColliderBehaviour>();
-            hitCollider.ColliderInfo = GetColliderData(0);
-            hitCollider.Owner = owner;
+        private IEnumerator SpawnBalls()
+        {
+            GameObject ballInstance = null;
 
-            GridPhysicsBehaviour physics = _ball.GetComponent<GridPhysicsBehaviour>();
+            for (int i = 0; i < _ballCount; i++)
+            {
+                //Instantiate ball.
+                ballInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, abilityData.visualPrefab.transform.rotation);
 
-            //Velocity is stopped to prevent momentum from previous use from carrying over.
-            physics.StopVelocity();
+                //Get the collider to update collision information.
+                HitColliderBehaviour hitCollider = ballInstance.GetComponent<HitColliderBehaviour>();
+                hitCollider.ColliderInfo = GetColliderData(0);
+                hitCollider.Owner = owner;
 
-            //Calculates the angle and magnitude of the force to be applied.
-            float radians = abilityData.GetCustomStatValue("ShotAngle");
-            float magnitude = abilityData.GetCustomStatValue("ShotForce");
-            Vector3 force = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians)) * magnitude;
-            force.x *= OwnerMoveScript.GetAlignmentX();
+                GridPhysicsBehaviour physics = ballInstance.GetComponent<GridPhysicsBehaviour>();
 
-            physics.ApplyImpulseForce(force);
+                //Velocity is stopped to prevent momentum from previous use from carrying over.
+                physics.StopVelocity();
+
+                //Calculates the angle and magnitude of the force to be applied.
+                float radians = abilityData.GetCustomStatValue("ShotAngle");
+                float magnitude = abilityData.GetCustomStatValue("ShotForce");
+                Vector3 force = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians)) * magnitude;
+                force.x *= OwnerMoveScript.GetAlignmentX();
+
+                physics.ApplyImpulseForce(force);
+
+                _balls.Add(ballInstance);
+
+                yield return new WaitForSeconds(_ballSpawnDelay);
+            }
+        }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            OwnerMoveset.StopCoroutine(SpawnBalls());
         }
 
         protected override void OnMatchRestart()
         {
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_ball);
+            OwnerMoveset.StopCoroutine(SpawnBalls());
+
+            foreach(GameObject ball in _balls)
+            {
+                ObjectPoolBehaviour.Instance.ReturnGameObject(ball);
+            }
         }
     }
 }

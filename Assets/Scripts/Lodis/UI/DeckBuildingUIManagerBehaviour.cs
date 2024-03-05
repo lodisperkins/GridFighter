@@ -134,18 +134,6 @@ namespace Lodis.UI
 
         public void UpdateDeck()
         {
-            //_backIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKBACKWARD).DisplayIcon;
-            //_forwardIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKFORWARD).DisplayIcon;
-            //_neautralIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKNEUTRAL).DisplayIcon;
-            //_upDownIconSlot.sprite = _buildManager.NormalDeck.GetAbilityDataByType(Gameplay.AbilityType.WEAKSIDE).DisplayIcon;
-
-            //for (int i = 0; i < _buildManager.SpecialDeck.AbilityData.Count; i++)
-            //{
-            //    AbilityData data = _buildManager.SpecialDeck.AbilityData[i];
-            //    _specialIcons[i].UIButton.image.sprite = data.DisplayIcon;
-            //    _specialIcons[i].UIButton.image.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)data.EnergyCost];
-            //}
-
             _movesList.UpdateUI(_buildManager.NormalDeck, _buildManager.SpecialDeck);
         }
 

@@ -61,6 +61,7 @@ namespace Lodis.Gameplay
             PanelPositions[1] = (OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x) + Vector2.up;
             PanelPositions[2] = (OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x) + Vector2.down;
             PanelPositions[3] = OwnerMoveScript.Position + Vector2.right * 3 * OwnerMoveScript.transform.forward.x;
+            PanelPositions[4] = OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x;
 
             base.OnActivate(args);
 

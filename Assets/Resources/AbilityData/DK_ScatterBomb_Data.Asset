@@ -81,7 +81,7 @@ MonoBehaviour:
   - name: BombTimer
     value: 3
   - name: EntityCount
-    value: 4
+    value: 5
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

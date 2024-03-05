@@ -81,12 +81,16 @@ MonoBehaviour:
     Priority: 1
     OwnerAlignement: 0
     AbilityType: 3
+    AbilityID: 2.0869576e+9
     SpawnEffect: {fileID: 6002612636095783793, guid: 278762b1b2ec95445b398e191c409631,
       type: 3}
     HitSpark: {fileID: 6002612636095783793, guid: 278762b1b2ec95445b398e191c409631,
       type: 3}
     HitEffectLevel: 1
     HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: dc82c298b95f37448912cd57810ebb90, type: 3}
     HitSound: {fileID: 0}
@@ -102,4 +106,5 @@ MonoBehaviour:
     value: 0.6
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 710027c6a4c1e5648952ae8a1a036949, type: 3}
+  _shouldMirror: 1
   _additionalAnimations: []

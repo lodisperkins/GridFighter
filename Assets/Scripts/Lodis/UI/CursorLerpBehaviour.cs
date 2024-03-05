@@ -30,6 +30,11 @@ namespace Lodis.UI
             _onSelectionUpdated.AddListener(action);
         }
 
+        public void SetCursor(RectTransform cursor)
+        {
+            _cursor = cursor;
+        }    
+
         public void LerpToTransform(Transform rect)
         {
             _moveTween.Kill();
@@ -43,6 +48,8 @@ namespace Lodis.UI
 
             if (_lastSelectedGameObject != EventSystem.currentSelectedGameObject)
                 _onSelectionUpdated?.Invoke();
+            else if (_moveTween.active)
+                return;
 
             _lastSelectedGameObject = EventSystem.currentSelectedGameObject;
 

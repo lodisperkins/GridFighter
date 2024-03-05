@@ -22,6 +22,8 @@ namespace Lodis.UI
         public Page PageParent;
         public UnityEvent OnActive;
         public UnityEvent OnInactive;
+        public UnityEvent OnGoToParent;
+        public UnityEvent OnGoToChild;
 
         public Page GetChildByName(string name)
         {
@@ -186,6 +188,7 @@ namespace Lodis.UI
                 CurrentPage.PageRoot?.SetActive(false);
 
             CurrentPage.OnInactive?.Invoke();
+            CurrentPage.OnGoToChild?.Invoke();
 
             _currentChildIndex = index;
             CurrentPage = CurrentPage.Children[_currentChildIndex];
@@ -222,6 +225,7 @@ namespace Lodis.UI
                 CurrentPage.PageRoot.SetActive(false);
 
             CurrentPage.OnInactive?.Invoke();
+            CurrentPage.OnGoToParent?.Invoke();
 
             CurrentPage = CurrentPage.PageParent;
 
