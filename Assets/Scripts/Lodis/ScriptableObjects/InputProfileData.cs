@@ -44,7 +44,10 @@ namespace Lodis.ScriptableObjects
 
         public void Init(RebindData[] value)
         {
-            _val = value;
+            for (int i = 0; i < value.Length; i++)
+            {
+                _val[i].Init(value[i]);
+            }
         }
 
         public static InputProfileData CreateInstance(RebindData[] value)

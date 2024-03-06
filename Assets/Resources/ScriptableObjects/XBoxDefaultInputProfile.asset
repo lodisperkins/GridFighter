@@ -27,19 +27,19 @@ MonoBehaviour:
     DisplayName: 
   - Binding: 4
     Path: /XInputControllerWindows/buttonNorth
-    DisplayName: Y
+    DisplayName: A
   - Binding: 5
     Path: /XInputControllerWindows/buttonWest
     DisplayName: X
   - Binding: 6
     Path: /XInputControllerWindows/buttonEast
-    DisplayName: B
+    DisplayName: Y
   - Binding: 7
     Path: /XInputControllerWindows/rightShoulder
-    DisplayName: Right Bumper
+    DisplayName: B
   - Binding: 8
     Path: /XInputControllerWindows/rightTrigger
-    DisplayName: Right Trigger
+    DisplayName: Right Bumper
   - Binding: 9
     Path: /XInputControllerWindows/leftShoulder
     DisplayName: Left Bumper

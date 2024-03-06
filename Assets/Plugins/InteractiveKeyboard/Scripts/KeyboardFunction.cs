@@ -8,6 +8,8 @@
 
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class KeyboardFunction : MonoBehaviour {
@@ -98,6 +100,7 @@ public class KeyboardFunction : MonoBehaviour {
     //delete last input text
     public void BackSpaceFunction()
     {
+
         if (inputText == null || inputText.Length <= 0)
             return;
 

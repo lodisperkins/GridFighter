@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _val:
   - Binding: 0
-    Path: 
+    Path: /Keyboard/upArrow
     DisplayName: W
   - Binding: 1
     Path: 
@@ -35,7 +35,7 @@ MonoBehaviour:
     Path: /XInputControllerWindows/buttonWest
     DisplayName: I
   - Binding: 7
-    Path: /XInputControllerWindows/buttonEast
+    Path: /Keyboard/9
     DisplayName: O
   - Binding: 8
     Path: /XInputControllerWindows/rightShoulder

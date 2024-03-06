@@ -71,7 +71,6 @@ namespace Lodis.UI
             }
 
             _profileChoices.Clear();
-            _backButton.parent = null;
 
             foreach (string optionName in _rebindHandler.ProfileOptions)
             {
@@ -86,11 +85,10 @@ namespace Lodis.UI
                     _rebindHandler.LoadProfile(optionName);
                     _pageManager.GoToPageChild(1);
                     _videoPanel.SetActive(false);
+                    _infoBoxText.text = optionName;
                 });
                 _profileChoices.Add(buttonInstance);
             }
-
-            _backButton.parent = _profileOptions.transform;
         }
     }
 }

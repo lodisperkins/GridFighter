@@ -14,6 +14,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using UnityEngine.InputSystem.Utilities;
 
 namespace Lodis.Input
 {
@@ -43,6 +44,13 @@ namespace Lodis.Input
             Binding = binding;
             Path = path;
             DisplayName = displayName;
+        }
+
+        public void Init(RebindData data)
+        {
+            Binding = data.Binding;
+            Path = data.Path;
+            DisplayName = data.DisplayName;
         }
     }
 
@@ -95,10 +103,8 @@ namespace Lodis.Input
         {
             _saveLoadPath = Application.persistentDataPath + "/InputProfiles";
             _anyAction = new InputAction(binding: "/*/<button>");
-            _anyAction.performed += StoreBinding;
+            //_anyAction.performed += StoreBinding;
             _anyAction.Enable();
-
-            Keyboard.current.onTextInput += StoreKeyPressed;
         }
 
         private void StoreKeyPressed(char  key)
@@ -132,12 +138,12 @@ namespace Lodis.Input
             _isListening = isListening;
         }
 
-        private void StoreBinding(InputAction.CallbackContext context)
+        private void StoreBinding(InputControl control)
         {
             if (SceneManagerBehaviour.Instance.P1Devices.Length == 0)
                 return;
 
-            if (context.control.device != SceneManagerBehaviour.Instance.P1Devices[0] || !_isListening)
+            if (control.device != SceneManagerBehaviour.Instance.P1Devices[0] || !_isListening)
                 return;
 
             //InputBinding? binding = context.action.GetBindingForControl(context.control);
@@ -145,10 +151,10 @@ namespace Lodis.Input
             //if (binding == null)
             //    return;
 
-            if (_profileData.DeviceData[0].name == "Keyboard")
-                return;
+            //if (_profileData.DeviceData[0].name == "Keyboard")
+            //    return;
 
-            _profileData.SetBinding(_currentBinding, context.control.path, context.control.displayName);
+            _profileData.SetBinding(_currentBinding, control.path, control.displayName);
             _onBindingSet?.Invoke();
             _isListening = false;
         }
@@ -341,5 +347,11 @@ namespace Lodis.Input
             _creatingNewProfile = value;
         }
 
+
+        private void Update()
+        {
+            if (_isListening)
+                InputSystem.onAnyButtonPress.CallOnce(StoreBinding);
+        }
     }
 }
