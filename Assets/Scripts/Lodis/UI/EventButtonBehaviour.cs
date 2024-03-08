@@ -79,6 +79,12 @@ namespace Lodis.UI
         {
             UIButton.onClick.AddListener(action);
         }
+
+        public void ClearOnClickEvent()
+        {
+            UIButton.onClick.RemoveAllListeners();
+        }
+
         public void AddOnSelectEvent(UnityAction action)
         {
             _onSelect.AddListener(action);

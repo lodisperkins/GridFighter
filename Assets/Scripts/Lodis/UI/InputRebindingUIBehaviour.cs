@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Lodis.UI
@@ -18,7 +19,7 @@ namespace Lodis.UI
         [SerializeField]
         private Transform _profileOptions;
         [SerializeField]
-        private Transform _backButton;
+        private EventButtonBehaviour _backButton;
         [SerializeField]
         private EventButtonBehaviour _profileButton;
         private List<EventButtonBehaviour> _profileChoices;
@@ -35,10 +36,17 @@ namespace Lodis.UI
         private PageManagerBehaviour _pageManager;
         [SerializeField]
         private GameObject _videoPanel;
+        [SerializeField]
+        private InputActionReference _deleteAction;
+        [SerializeField]
+        private string _deletionPrompt;
+        private bool _profileOptionSelected;
 
         public void Awake()
         {
-            _profileChoices = new List<EventButtonBehaviour>(); 
+            _profileChoices = new List<EventButtonBehaviour>();
+            _deleteAction.action.performed += AskDeleteOption;
+            _deleteAction.action.Enable();
         }
 
         public void UpdateInfoBoxName()
@@ -59,6 +67,38 @@ namespace Lodis.UI
                 _eventSystem.SetSelectedGameObject(_weakBinding.gameObject);
         }
 
+        public void SetProfileOptionSelected(bool selected)
+        {
+            _profileOptionSelected = selected;
+        }
+
+        private void AskDeleteOption(InputAction.CallbackContext callbackContext)
+        {
+            if (_pageManager.CurrentPage.PageName != "ControllerProfiles" || !_profileOptionSelected)
+                return;
+
+            _profileOptions.parent.gameObject.SetActive(false);
+            _pageManager.enabled = false;
+            string newPrompt = _deletionPrompt + " " + _rebindHandler.ProfileName + "?";
+
+            ConfirmationMenuSpawner.Spawn(DeleteOption, EnableProfileOptionsMenu, _eventSystem, newPrompt, _backButton.gameObject);
+        }
+
+        private void EnableProfileOptionsMenu()
+        {
+            _profileOptions.parent.gameObject.SetActive(true);
+            _pageManager.enabled = true;
+        }
+
+        private void DeleteOption()
+        {
+            EnableProfileOptionsMenu();
+
+            _rebindHandler.DeleteInputProfile();
+
+            UpdateProfileOptions();
+        }
+
         public void UpdateProfileOptions()
         {
             if (_rebindHandler.ProfileOptions == null)
@@ -68,6 +108,7 @@ namespace Lodis.UI
             {
                 Destroy(_profileChoices[i].gameObject);
                 _profileChoices[i].transform.SetParent(null);
+                _profileChoices[i].gameObject.SetActive(false);
             }
 
             _profileChoices.Clear();
@@ -80,12 +121,19 @@ namespace Lodis.UI
                 EventButtonBehaviour buttonInstance = Instantiate(_profileButton, _profileOptions.transform);
                 buttonInstance.GetComponentInChildren<Text>().text = optionName;
 
+                buttonInstance.AddOnSelectEvent(() =>
+                {
+                    _rebindHandler.ProfileName = optionName;
+                    _profileOptionSelected = true;
+                });
+
                 buttonInstance.AddOnClickEvent(() =>
                 {
                     _rebindHandler.LoadProfile(optionName);
                     _pageManager.GoToPageChild(1);
                     _videoPanel.SetActive(false);
                     _infoBoxText.text = optionName;
+                    _profileOptionSelected = true;
                 });
                 _profileChoices.Add(buttonInstance);
             }

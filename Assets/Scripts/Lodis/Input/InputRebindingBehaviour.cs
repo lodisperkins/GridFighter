@@ -213,33 +213,29 @@ namespace Lodis.Input
             _profileData.ClearBindings();
         }
 
-        //public void SaveCharacter()
-        //{
-        //    if (CustomCharacter?.ArmorReplacements == null)
-        //        return;
-
-        //    string path = _creatingNewCharacter ? CreateUniqueArmorPath() : ArmorPath;
-
-        //    StreamWriter writer = new StreamWriter(path);
-
-        //    foreach (ArmorData data in CustomCharacter.ArmorReplacements)
-        //        writer.WriteLine(data.name);
-
-        //    writer.WriteLine("EndArmor");
-
-        //    string colorJson = JsonConvert.SerializeObject((Vector4)CustomCharacter.HairColor);
-
-        //    writer.WriteLine(colorJson);
-
-        //    colorJson = JsonConvert.SerializeObject((Vector4)CustomCharacter.FaceColor);
-
-        //    writer.WriteLine(colorJson);
-
-        //    writer.Close();
-        //}
-
         public void DeleteInputProfile()
         {
+            if (ProfileName == "" || ProfileOptions.Length == 0)
+                return;
+
+            string[] temp = new string[ProfileOptions.Length - 1];
+
+            int j = 0;
+            for (int i = 0; i < ProfileOptions.Length; i++)
+            {
+                if (ProfileOptions[i] == ProfileName)
+                {
+                    continue;
+                }
+                else
+                {
+                    temp[j] = ProfileOptions[i];
+                    j++;
+                }
+            }
+
+            ProfileOptions = temp;  
+
             string armorPath = ProfilePath;
 
             File.Delete(armorPath);

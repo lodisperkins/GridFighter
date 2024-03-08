@@ -56,7 +56,7 @@ namespace Lodis.UI
             }
         }
 
-        private void UpdateButtons()
+        public void UpdateButtons()
         {
             string deviceName = ""; 
             string manufacturer = "";
