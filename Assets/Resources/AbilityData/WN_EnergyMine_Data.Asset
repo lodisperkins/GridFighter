@@ -70,11 +70,11 @@ MonoBehaviour:
     MultiHitWaitTime: 0
     Damage: 7
     BaseKnockBack: 0
-    KnockBackScale: 0.01
+    KnockBackScale: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.15
-    AdjustAngleBasedOnAlignment: 1
+    HitAngle: 0
+    AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
     HitStunTime: 0.5
     Priority: 1

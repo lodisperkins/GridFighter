@@ -6,6 +6,8 @@
 ======================================================================
 */
 
+using System.Diagnostics;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -27,6 +29,7 @@ public class KeyboardFunction : MonoBehaviour {
     private string cursorChar = "";
     [SerializeField]
     private UnityEvent _onConfirm;
+    private StackFrame stackFrame;
 
     public UnityEvent OnConfirm { get => _onConfirm; private set => _onConfirm = value; }
 
@@ -59,34 +62,64 @@ public class KeyboardFunction : MonoBehaviour {
             m_TimeStamp = Time.time;
             if (cursor == false)
             {
-                cursor = true;                
+                cursor = true;
                 cursorChar += "|";
                 if (wordIndex > textLimit && wordIndex < textLimit)
                 {
                     cursor = true;
                     inputText = inputText.Substring(0, inputText.Length - 1);
-                    wordIndex--;                    
+                    wordIndex--;
                 }
             }
             else
             {
                 cursor = false;
-                cursorChar = "";               
+                cursorChar = "";
             }
         }
-        
+
         if (wordIndex != 0 && inputText.StartsWith(" "))
         {
             //This is for to check is text filed blank or input is only feed with spacebar
             print("empty console");
         }
 
+        stackFrame = null;
     }
+
+    MethodBase method1 = null;
+    MethodBase method2 = null;
 
     //Here you can edit button input by typing custom symbol
     public void AlphabetFunction(string alphabet)
     {
+        //Used to see what object disabled movement
+
+        stackFrame = new StackFrame(5);
+
+        if (wordIndex == 0)
+        {
+            if (stackFrame != null)
+            {
+                method1 = stackFrame.GetMethod();
+            }
+        }
+
         wordIndex++;
+
+        if (wordIndex == 2)
+        {
+            if (stackFrame != null)
+            {
+                method2 = stackFrame.GetMethod();
+
+                if (method1 != null)
+                    UnityEngine.Debug.Log(method1.DeclaringType.FullName);
+                if (method2 != null)
+                    UnityEngine.Debug.Log(method2.DeclaringType.FullName);
+            }
+        }
+
         if (inputText != null)
         {
             alphabet = alphabet.ToLower();
@@ -121,5 +154,11 @@ public class KeyboardFunction : MonoBehaviour {
     {
         InputTextUI.text = inputText;
         OnConfirm?.Invoke();
+    }
+
+    public void ClearText()
+    {
+        inputText = "";
+        wordIndex = 0;
     }
 }

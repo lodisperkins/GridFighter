@@ -30,6 +30,8 @@ namespace Lodis.UI
         private AudioClip _clickSound;
 
         private Image _image;
+        private int _counter;
+        private bool _framePassed;
 
         public Image ButtonImage { get => _image; private set => _image = value; }
         public Button UIButton { get => _button; set => _button = value; }
@@ -37,6 +39,11 @@ namespace Lodis.UI
         private void Awake()
         {
             Init();
+        }
+
+        public void Update()
+        {
+            _counter = 0;
         }
 
         public void Init()
