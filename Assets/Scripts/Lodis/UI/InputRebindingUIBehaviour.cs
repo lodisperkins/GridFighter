@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -22,6 +23,8 @@ namespace Lodis.UI
         private EventButtonBehaviour _backButton;
         [SerializeField]
         private EventButtonBehaviour _profileButton;
+        [SerializeField]
+        private UnityEvent _onProfileButtonClicked;
         private List<EventButtonBehaviour> _profileChoices;
 
         [SerializeField]
@@ -42,6 +45,8 @@ namespace Lodis.UI
         private string _deletionPrompt;
         private bool _profileOptionSelected;
 
+        public InputRebindingBehaviour RebindHandler { get => _rebindHandler; private set => _rebindHandler = value; }
+
         public void Awake()
         {
             _profileChoices = new List<EventButtonBehaviour>();
@@ -51,7 +56,7 @@ namespace Lodis.UI
 
         public void UpdateInfoBoxName()
         {
-            _infoBoxText.text = _rebindHandler.ProfileName;
+            _infoBoxText.text = RebindHandler.ProfileName;
         }
 
         public void SetListeningPanelActive(bool active)
@@ -79,7 +84,7 @@ namespace Lodis.UI
 
             _profileOptions.parent.gameObject.SetActive(false);
             _pageManager.enabled = false;
-            string newPrompt = _deletionPrompt + " " + _rebindHandler.ProfileName + "?";
+            string newPrompt = _deletionPrompt + " " + RebindHandler.ProfileName + "?";
 
             ConfirmationMenuSpawner.Spawn(DeleteOption, EnableProfileOptionsMenu, _eventSystem, newPrompt, _backButton.gameObject);
         }
@@ -94,14 +99,14 @@ namespace Lodis.UI
         {
             EnableProfileOptionsMenu();
 
-            _rebindHandler.DeleteInputProfile();
+            RebindHandler.DeleteInputProfile();
 
             UpdateProfileOptions();
         }
 
-        public void UpdateProfileOptions()
+        public virtual void UpdateProfileOptions()
         {
-            if (_rebindHandler.ProfileOptions == null)
+            if (RebindHandler.ProfileOptions == null)
                 return;
 
             for (int i = _profileChoices.Count - 1; i >= 0; i--)
@@ -113,7 +118,7 @@ namespace Lodis.UI
 
             _profileChoices.Clear();
 
-            foreach (string optionName in _rebindHandler.ProfileOptions)
+            foreach (string optionName in RebindHandler.ProfileOptions)
             {
                 if (optionName == null)
                     continue;
@@ -123,17 +128,18 @@ namespace Lodis.UI
 
                 buttonInstance.AddOnSelectEvent(() =>
                 {
-                    _rebindHandler.ProfileName = optionName;
+                    RebindHandler.ProfileName = optionName;
                     _profileOptionSelected = true;
                 });
 
                 buttonInstance.AddOnClickEvent(() =>
                 {
-                    _rebindHandler.LoadProfile(optionName);
+                    RebindHandler.LoadProfile(optionName);
                     _pageManager.GoToPageChild(1);
-                    _videoPanel.SetActive(false);
+                    _videoPanel?.SetActive(false);
                     _infoBoxText.text = optionName;
                     _profileOptionSelected = true;
+                    _onProfileButtonClicked?.Invoke();
                 });
                 _profileChoices.Add(buttonInstance);
             }

@@ -22,6 +22,8 @@ namespace Lodis.UI
         [SerializeField]
         private AutoScrollBehaviour _defaultMenuScrollBehaviour;
         [SerializeField]
+        private AutoScrollBehaviour _inputProfileScrollBehaviour;
+        [SerializeField]
         private DisplayCharacterSpawnBehaviour _characterSpawner;
         [SerializeField]
         private GameObject _characterDisplayModel;
@@ -177,6 +179,7 @@ namespace Lodis.UI
             _customMenuScrollBehaviour.EventSystem = eventSystem;
             _defaultMenuScrollBehaviour.EventSystem = eventSystem;
             PageManager.EventManager = eventSystem;    
+            _inputProfileScrollBehaviour.EventSystem = eventSystem;
         }
 
         public void SetSelectedToLast()
