@@ -86,7 +86,8 @@ namespace Lodis.UI
             _controls = new PlayerControls();
             _controls.UI.Cancel.started += context =>
             {
-                GoToPageParent();
+                if (_previousPageOnCancel)
+                    GoToPageParent();
             };
 
             //_playerInput = GetComponent<PlayerInput>();
@@ -238,6 +239,11 @@ namespace Lodis.UI
                 EventManager.UpdateModules();
             }
             CurrentPage.OnActive?.Invoke();
+        }
+
+        public void SetPreviousOnCancel(bool val)
+        {
+            _previousPageOnCancel = val;
         }
 
         private void Update()

@@ -22,6 +22,10 @@ namespace Lodis.UI
         [SerializeField]
         private EventButtonBehaviour _backButton;
         [SerializeField]
+        private EventButtonBehaviour _connectionButton;
+        [SerializeField]
+        private bool _explicitConnections;
+        [SerializeField]
         private EventButtonBehaviour _profileButton;
         [SerializeField]
         private UnityEvent _onProfileButtonClicked;
@@ -79,7 +83,7 @@ namespace Lodis.UI
 
         private void AskDeleteOption(InputAction.CallbackContext callbackContext)
         {
-            if (_pageManager.CurrentPage.PageName != "ControllerProfiles" || !_profileOptionSelected)
+            if (_pageManager.CurrentPage?.PageName != "ControllerProfiles" || !_profileOptionSelected)
                 return;
 
             _profileOptions.parent.gameObject.SetActive(false);
@@ -118,31 +122,66 @@ namespace Lodis.UI
 
             _profileChoices.Clear();
 
+            EventButtonBehaviour previousInstance = _connectionButton;
+
             foreach (string optionName in RebindHandler.ProfileOptions)
             {
                 if (optionName == null)
                     continue;
+                EventButtonBehaviour buttonInstance = CreateNewOption(optionName);
 
-                EventButtonBehaviour buttonInstance = Instantiate(_profileButton, _profileOptions.transform);
-                buttonInstance.GetComponentInChildren<Text>().text = optionName;
-
-                buttonInstance.AddOnSelectEvent(() =>
-                {
-                    RebindHandler.ProfileName = optionName;
-                    _profileOptionSelected = true;
-                });
-
-                buttonInstance.AddOnClickEvent(() =>
-                {
-                    RebindHandler.LoadProfile(optionName);
-                    _pageManager.GoToPageChild(1);
-                    _videoPanel?.SetActive(false);
-                    _infoBoxText.text = optionName;
-                    _profileOptionSelected = true;
-                    _onProfileButtonClicked?.Invoke();
-                });
                 _profileChoices.Add(buttonInstance);
+
+                if (!_explicitConnections)
+                    return;
+
+                previousInstance = MakeExplicitConnections(previousInstance, buttonInstance);
             }
+        }
+
+        private EventButtonBehaviour CreateNewOption(string optionName)
+        {
+            EventButtonBehaviour buttonInstance = Instantiate(_profileButton, _profileOptions.transform);
+            buttonInstance.GetComponentInChildren<Text>().text = optionName;
+
+            buttonInstance.AddOnSelectEvent(() =>
+            {
+                RebindHandler.ProfileName = optionName;
+                _profileOptionSelected = true;
+            });
+
+            buttonInstance.AddOnClickEvent(() =>
+            {
+                RebindHandler.LoadProfile(optionName);
+                _pageManager.GoToPageChild(1);
+
+                if (_videoPanel)
+                    _videoPanel.SetActive(false);
+
+                _infoBoxText.text = optionName;
+                _profileOptionSelected = true;
+                _onProfileButtonClicked?.Invoke();
+            });
+            return buttonInstance;
+        }
+
+        private static EventButtonBehaviour MakeExplicitConnections(EventButtonBehaviour previousInstance, EventButtonBehaviour buttonInstance)
+        {
+            Navigation navigationRules = new Navigation();
+            navigationRules.mode = Navigation.Mode.Explicit;
+
+            if (previousInstance)
+            {
+                navigationRules.selectOnUp = previousInstance.UIButton;
+                Navigation previousNavigation = previousInstance.UIButton.navigation;
+
+                previousNavigation.selectOnDown = buttonInstance.UIButton;
+                previousInstance.UIButton.navigation = previousNavigation;
+            }
+
+            buttonInstance.UIButton.navigation = navigationRules;
+            previousInstance = buttonInstance;
+            return previousInstance;
         }
     }
 }

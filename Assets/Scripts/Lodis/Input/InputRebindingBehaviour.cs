@@ -63,8 +63,17 @@ namespace Lodis.Input
         private BindingType _currentBinding;
         [SerializeField]
         private bool _isListening;
+
+        [Header("Binding Events")]
+
+        [SerializeField]
+        private UnityEvent _onListen;
         [SerializeField]
         private UnityEvent _onBindingSet;
+        [SerializeField]
+        private UnityEvent _onStopListening;
+
+        [Header("Default Input Bindings")]
         [SerializeField]
         private InputProfileData _defaultKeyboard;
         [SerializeField]
@@ -75,6 +84,7 @@ namespace Lodis.Input
         private string _profileName;
         private bool _creatingNewProfile;
         private static string _saveLoadPath;
+        private TimedAction _timedAction;
 
         public string ProfileName { get => _profileName; set => _profileName = value; }
 
@@ -98,6 +108,19 @@ namespace Lodis.Input
         }
 
         public string[] ProfileOptions { get; private set; }
+        public bool IsListening
+        {
+            get => _isListening;
+            set
+            {
+                if (_isListening != value && value)
+                    _onListen?.Invoke();
+                else if (_isListening != value && !value)
+                    _onStopListening?.Invoke();
+
+                _isListening = value;
+            }
+        }
 
         private void Awake()
         {
@@ -112,7 +135,7 @@ namespace Lodis.Input
             if (SceneManagerBehaviour.Instance.P1Devices.Length == 0)
                 return;
 
-            if (DeviceID != "Keyboard" || !_isListening)
+            if (DeviceID != "Keyboard" || !IsListening)
                 return;
 
             string path = "Key:/Keyboard/";
@@ -120,7 +143,7 @@ namespace Lodis.Input
             
             _profileData.SetBinding(_currentBinding, path, char.ToUpper(key).ToString());
             _onBindingSet?.Invoke();
-            _isListening = false;
+            IsListening = false;
         }
 
         public void SetProfileName(Text text)
@@ -135,7 +158,7 @@ namespace Lodis.Input
 
         public void SetIsListening(bool isListening)
         {
-            _isListening = isListening;
+            IsListening = isListening;
         }
 
         private void StoreBinding(InputControl control)
@@ -143,7 +166,7 @@ namespace Lodis.Input
             if (SceneManagerBehaviour.Instance.P1Devices.Length == 0)
                 return;
 
-            if (control.device != SceneManagerBehaviour.Instance.P1Devices[0] || !_isListening)
+            if (control.device != SceneManagerBehaviour.Instance.P1Devices[0] || !IsListening)
                 return;
 
             //InputBinding? binding = context.action.GetBindingForControl(context.control);
@@ -156,7 +179,9 @@ namespace Lodis.Input
 
             _profileData.SetBinding(_currentBinding, control.path, control.displayName);
             _onBindingSet?.Invoke();
-            _isListening = false;
+
+            RoutineBehaviour.Instance.StopAction(_timedAction);
+            _timedAction = RoutineBehaviour.Instance.StartNewTimedAction(args => IsListening = false, TimedActionCountType.FRAME, 1);
         }
 
         public void ResetToDefault()
@@ -192,6 +217,8 @@ namespace Lodis.Input
 
             string uniquePath = ProfilePath;
             int num = 0;
+
+            ProfileName = string.Empty;
 
             while (File.Exists(uniquePath))
             {
@@ -346,7 +373,7 @@ namespace Lodis.Input
 
         private void Update()
         {
-            if (_isListening)
+            if (IsListening)
                 InputSystem.onAnyButtonPress.CallOnce(StoreBinding);
         }
     }

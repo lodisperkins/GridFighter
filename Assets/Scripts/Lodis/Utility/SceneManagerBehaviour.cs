@@ -62,10 +62,13 @@ namespace Lodis.Utility
         public IntVariable GameMode { get => _gameMode; set => _gameMode = value; }
         public string P1ControlScheme { get => _p1ControlScheme; set => _p1ControlScheme = value; }
         public string P2ControlScheme { get => _p2ControlScheme; set => _p2ControlScheme = value; }
-        public InputDeviceData P1Devices { get => _p1InputProfile.DeviceData; set => _p1InputProfile.DeviceData = value; }
-        public InputDeviceData P2Devices { get => _p2InputProfile.DeviceData; set => _p2InputProfile.DeviceData = value; }
+        public InputDeviceData P1Devices { get => P1InputProfile.DeviceData; set => P1InputProfile.DeviceData = value; }
+        public InputDeviceData P2Devices { get => P2InputProfile.DeviceData; set => P2InputProfile.DeviceData = value; }
 
         public int SceneIndex { get { return SceneManager.GetActiveScene().buildIndex; } }
+
+        public InputProfileData P1InputProfile { get => _p1InputProfile; private set => _p1InputProfile = value; }
+        public InputProfileData P2InputProfile { get => _p2InputProfile; private set => _p2InputProfile = value; }
 
         private void Awake()
         {
@@ -83,9 +86,9 @@ namespace Lodis.Utility
             ReadOnlyArray<InputDevice> pairedDevices = InputUser.all[playerID - 1].pairedDevices;
 
             if (playerID == 1)
-                _p1InputProfile.DeviceData.Value = pairedDevices.ToArray();
+                P1InputProfile.DeviceData.Value = pairedDevices.ToArray();
             else if (playerID == 2)
-                _p2InputProfile.DeviceData.Value = pairedDevices.ToArray();
+                P2InputProfile.DeviceData.Value = pairedDevices.ToArray();
         }
 
         public void UpdateDeviceP1(InputAction.CallbackContext context)
@@ -97,7 +100,7 @@ namespace Lodis.Utility
         public void UpdateDeviceP2(InputAction.CallbackContext context)
         {
             P2Devices.Value = new InputDevice[1];
-            _p2InputProfile.DeviceData[0] = context.control.device;
+            P2InputProfile.DeviceData[0] = context.control.device;
         }
 
         public void SetGameMode(int mode)

@@ -98,7 +98,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -8211,6 +8211,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+--- !u!114 &859423909 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1251192488738103914, guid: cd44e3f1f47b4e844bb56c12bc030286,
+    type: 3}
+  m_PrefabInstance: {fileID: 1801920749}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 859423906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52b8283a4231a64986370c8fa4a80ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &859423910 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7900096719161127845, guid: cd44e3f1f47b4e844bb56c12bc030286,
@@ -18935,6 +18947,36 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
         type: 3}
+      propertyPath: _onListen.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onBindingSet.m_PersistentCalls.m_Calls.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onStopListening.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onListen.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onListen.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 834067891}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onListen.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
       propertyPath: _onBindingSet.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 202884779}
@@ -18957,12 +18999,57 @@ PrefabInstance:
         type: 3}
       propertyPath: _onBindingSet.m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
-      objectReference: {fileID: 834067891}
+      objectReference: {fileID: 834067887}
     - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
         type: 3}
       propertyPath: _onBindingSet.m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
       objectReference: {fileID: 834067887}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onListen.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_enabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onStopListening.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onStopListening.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 834067891}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onBindingSet.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
+      value: SetActive
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onStopListening.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onStopListening.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: set_enabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onStopListening.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onListen.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _onStopListening.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5795629892998638726, guid: 40f3b1b6486225f4faa79ce4b763b52b,
         type: 3}
       propertyPath: _backButton
@@ -19003,6 +19090,11 @@ PrefabInstance:
       propertyPath: _profileOptions
       value: 
       objectReference: {fileID: 6983262584690211088}
+    - target: {fileID: 5795629892998638726, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _connectionButton
+      value: 
+      objectReference: {fileID: 859423909}
     - target: {fileID: 5795629892998638726, guid: 40f3b1b6486225f4faa79ce4b763b52b,
         type: 3}
       propertyPath: _moveBindings.Array.data[0]

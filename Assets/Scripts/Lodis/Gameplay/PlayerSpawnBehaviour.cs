@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
         private CharacterStateMachineBehaviour _p2StateManager;
         private KnockbackBehaviour _p2Knockback;
         private MovesetBehaviour _p2Moveset;
+        private InputBehaviour _p2Input;
         private GameMode _mode;
         [SerializeField]
         private AI.AIControllerBehaviour _dummy;
@@ -47,8 +48,8 @@ namespace Lodis.Gameplay
         private BoolVariable _p1IsCustom;
         [SerializeField]
         private BoolVariable _p2IsCustom;
-        private IControllable _p1Input;
-        private IControllable _p2Input;
+        private IControllable _p1InputController;
+        private IControllable _p2InputController;
         private RingBarrierBehaviour _ringBarrierR;
         private RingBarrierBehaviour _ringBarrierL;
         private GridBehaviour _grid;
@@ -57,6 +58,7 @@ namespace Lodis.Gameplay
         private bool _suddenDeathActive;
         private SceneManagerBehaviour _sceneManager;
         private MovesetBehaviour _p1Moveset;
+        private InputBehaviour _p1Input;
 
         public Vector2 RHSSpawnLocation { get => _RHSSpawnLocation; private set => _RHSSpawnLocation = value; }
         public Vector2 LHSSpawnLocation { get => _LHSSpawnLocation; private set => _LHSSpawnLocation = value; }
@@ -109,25 +111,51 @@ namespace Lodis.Gameplay
                 _player2.GetComponent<InputBehaviour>().Devices = _sceneManager.P2Devices;
             }
 
-            _p2Input = _player2.GetComponent<IControllable>();
+            _p2InputController = _player2.GetComponent<IControllable>();
 
-            _p2Input.Character = Instantiate(_player2Data.CharacterReference, _player2.transform);
+            _p2InputController.Character = Instantiate(_player2Data.CharacterReference, _player2.transform);
 
-            _p2Input.Character.name += "(P2)";
-            _ringBarrierR.Owner = _p2Input.Character;
+            _p2InputController.Character.name += "(P2)";
+            _ringBarrierR.Owner = _p2InputController.Character;
             _player2.transform.forward = Vector3.left;
-            BlackBoardBehaviour.Instance.Player2 = _p2Input.Character;
+            BlackBoardBehaviour.Instance.Player2 = _p2InputController.Character;
             //Get reference to player 2 components
-            _p2Movement = _p2Input.Character.GetComponent<Movement.GridMovementBehaviour>();
-            _p2StateManager = _p2Input.Character.GetComponent<CharacterStateMachineBehaviour>();
-            _p2Knockback = _p2Input.Character.GetComponent<KnockbackBehaviour>();
-            _p2Moveset = _p2Input.Character.GetComponent<MovesetBehaviour>();
+            _p2Movement = _p2InputController.Character.GetComponent<Movement.GridMovementBehaviour>();
+            _p2StateManager = _p2InputController.Character.GetComponent<CharacterStateMachineBehaviour>();
+            _p2Knockback = _p2InputController.Character.GetComponent<KnockbackBehaviour>();
+            _p2Moveset = _p2InputController.Character.GetComponent<MovesetBehaviour>();
+            _p2Input = _player2.GetComponent<InputBehaviour>();
+
+
+            SceneManagerBehaviour sceneManager = SceneManagerBehaviour.Instance;
+            string scheme = sceneManager.P2ControlScheme;
+
+            int index = _p2Input.PlayerControls.Player.Attack.GetBindingIndex(group: scheme);
+
+            InputProfileData p2InputProfile = SceneManagerBehaviour.Instance.P2InputProfile;
+
+            _p2Input.PlayerControls.Player.Attack.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.WeakAttack).Path);
+
+            index = _p2Input.PlayerControls.Player.ChargeAttack.GetBindingIndex(group: scheme);
+            _p2Input.PlayerControls.Player.ChargeAttack.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.StrongAttack).Path);
+
+            index = _p2Input.PlayerControls.Player.Special1.GetBindingIndex(group: scheme);
+            _p2Input.PlayerControls.Player.Special1.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.Special1).Path);
+
+            index = _p2Input.PlayerControls.Player.Special2.GetBindingIndex(group: scheme);
+            _p2Input.PlayerControls.Player.Special2.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.Special2).Path);
+
+            index = _p2Input.PlayerControls.Player.Burst.GetBindingIndex(scheme);
+            _p2Input.PlayerControls.Player.Burst.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.Burst).Path);
+
+            index = _p2Input.PlayerControls.Player.Shuffle.GetBindingIndex(scheme);
+            _p2Input.PlayerControls.Player.Shuffle.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.Shuffle).Path);
 
             if (_p2IsCustom.Value)
             {
                 _p2Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck(Player2Data.DisplayName);
                 _p2Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(Player2Data.DisplayName);
-                MeshReplacementBehaviour meshManager = _p2Input.Character.GetComponentInChildren<MeshReplacementBehaviour>();
+                MeshReplacementBehaviour meshManager = _p2InputController.Character.GetComponentInChildren<MeshReplacementBehaviour>();
 
                 List<ArmorData> armorSet;
                 Color hairColor;
@@ -140,9 +168,9 @@ namespace Lodis.Gameplay
                 meshManager.FaceColor = faceColor;
             }
 
-            _p2Input.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
-            _p2Input.Enabled = true;
-            BlackBoardBehaviour.Instance.Player2Controller = _p2Input;
+            _p2InputController.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
+            _p2InputController.Enabled = true;
+            BlackBoardBehaviour.Instance.Player2Controller = _p2InputController;
 
             if (_grid.GetPanel(RHSSpawnLocation, out _rhsSpawnPanel, false))
                 _p2Movement.MoveToPanel(_rhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
@@ -164,26 +192,52 @@ namespace Lodis.Gameplay
             }
 
 
-            _p1Input = _player1.GetComponent<IControllable>();
-            _p1Input.Character = Instantiate(_player1Data.CharacterReference, _player1.transform);
+            _p1InputController = _player1.GetComponent<IControllable>();
+            _p1InputController.Character = Instantiate(_player1Data.CharacterReference, _player1.transform);
 
-            _p1Input.Character.name += "(P1)";
-            _ringBarrierL.Owner = _p1Input.Character;
+            _p1InputController.Character.name += "(P1)";
+            _ringBarrierL.Owner = _p1InputController.Character;
             _player1.transform.forward = Vector3.right;
-            BlackBoardBehaviour.Instance.Player1 = _p1Input.Character;
+            BlackBoardBehaviour.Instance.Player1 = _p1InputController.Character;
             //Get reference to player 2 components
-            _p1Movement = _p1Input.Character.GetComponent<Movement.GridMovementBehaviour>();
-            _p1StateManager = _p1Input.Character.GetComponent<CharacterStateMachineBehaviour>();
-            _p1Knockback = _p1Input.Character.GetComponent<KnockbackBehaviour>();
-            _p1Input.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
+            _p1Movement = _p1InputController.Character.GetComponent<Movement.GridMovementBehaviour>();
+            _p1StateManager = _p1InputController.Character.GetComponent<CharacterStateMachineBehaviour>();
+            _p1Knockback = _p1InputController.Character.GetComponent<KnockbackBehaviour>();
+            _p1InputController.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
 
-            _p1Moveset = _p1Input.Character.GetComponent<MovesetBehaviour>();
+            _p1Moveset = _p1InputController.Character.GetComponent<MovesetBehaviour>();
+            _p1Input = _player1.GetComponent<InputBehaviour>();
+
+
+            SceneManagerBehaviour sceneManager = SceneManagerBehaviour.Instance;
+            string scheme = sceneManager.P1ControlScheme;
+
+            int index = _p1Input.PlayerControls.Player.Attack.GetBindingIndex(group: scheme);
+
+            InputProfileData p1InputProfile = SceneManagerBehaviour.Instance.P1InputProfile;
+
+            _p1Input.PlayerControls.Player.Attack.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.WeakAttack).Path);
+
+            index = _p1Input.PlayerControls.Player.ChargeAttack.GetBindingIndex(group: scheme);
+            _p1Input.PlayerControls.Player.ChargeAttack.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.StrongAttack).Path);
+
+            index = _p1Input.PlayerControls.Player.Special1.GetBindingIndex(group: scheme);
+            _p1Input.PlayerControls.Player.Special1.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.Special1).Path);
+
+            index = _p1Input.PlayerControls.Player.Special2.GetBindingIndex(group: scheme);
+            _p1Input.PlayerControls.Player.Special2.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.Special2).Path);
+
+            index = _p1Input.PlayerControls.Player.Burst.GetBindingIndex(scheme);
+            _p1Input.PlayerControls.Player.Burst.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.Burst).Path);
+
+            index = _p1Input.PlayerControls.Player.Shuffle.GetBindingIndex(scheme);
+            _p1Input.PlayerControls.Player.Shuffle.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.Shuffle).Path);
 
             if (_p1IsCustom.Value)
             {
                 _p1Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck(Player1Data.DisplayName);
                 _p1Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(Player1Data.DisplayName);
-                MeshReplacementBehaviour meshManager = _p1Input.Character.GetComponentInChildren<MeshReplacementBehaviour>();
+                MeshReplacementBehaviour meshManager = _p1InputController.Character.GetComponentInChildren<MeshReplacementBehaviour>();
 
                 List<ArmorData> armorSet;
                 Color hairColor;
@@ -196,7 +250,7 @@ namespace Lodis.Gameplay
                 meshManager.FaceColor = faceColor;
             }
 
-            BlackBoardBehaviour.Instance.Player1Controller = _p1Input;
+            BlackBoardBehaviour.Instance.Player1Controller = _p1InputController;
 
             if (_grid.GetPanel(LHSSpawnLocation, out _lhsSpawnPanel, false))
                 _p1Movement.MoveToPanel(_lhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
@@ -218,14 +272,14 @@ namespace Lodis.Gameplay
 
             //Reset the position for the players
             //Player 1
-            GridMovementBehaviour movement = _p1Input.Character.GetComponent<GridMovementBehaviour>();
+            GridMovementBehaviour movement = _p1InputController.Character.GetComponent<GridMovementBehaviour>();
             movement.CancelMovement();
             movement.EnableMovement();
             movement.CanMoveDiagonally = true;
             movement.MoveToPanel(LHSSpawnLocation, true);
             movement.CanMoveDiagonally = false;
 
-            KnockbackBehaviour knockback = _p1Input.Character.GetComponent<KnockbackBehaviour>();
+            KnockbackBehaviour knockback = _p1InputController.Character.GetComponent<KnockbackBehaviour>();
             knockback.CancelHitStun();
             knockback.CancelStun();
             knockback.Physics.StopVelocity();
@@ -236,14 +290,14 @@ namespace Lodis.Gameplay
                 input.ClearBuffer();
 
             //Player 2
-            movement = _p2Input.Character.GetComponent<GridMovementBehaviour>();
+            movement = _p2InputController.Character.GetComponent<GridMovementBehaviour>();
             movement.CancelMovement();
             movement.EnableMovement();
             movement.CanMoveDiagonally = true;
             movement.MoveToPanel(RHSSpawnLocation, true);
             movement.CanMoveDiagonally = false;
 
-            knockback = _p2Input.Character.GetComponent<KnockbackBehaviour>();
+            knockback = _p2InputController.Character.GetComponent<KnockbackBehaviour>();
             knockback.CancelHitStun();
             knockback.CancelStun();
             knockback.Physics.StopVelocity();
@@ -253,15 +307,15 @@ namespace Lodis.Gameplay
             if (input)
                 input.ClearBuffer();
 
-            MovesetBehaviour moveset = _p1Input.Character.GetComponent<MovesetBehaviour>();
+            MovesetBehaviour moveset = _p1InputController.Character.GetComponent<MovesetBehaviour>();
             moveset.ResetAll();
 
-            moveset = _p2Input.Character.GetComponent<MovesetBehaviour>();
+            moveset = _p2InputController.Character.GetComponent<MovesetBehaviour>();
             moveset.ResetAll();
 
             //Enable both players in case either are inactive
-            _p1Input.Character.SetActive(true);
-            _p2Input.Character.SetActive(true);
+            _p1InputController.Character.SetActive(true);
+            _p2InputController.Character.SetActive(true);
         }
 
         private void LoadAIDecisions()

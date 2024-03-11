@@ -1,4 +1,5 @@
-﻿using Lodis.ScriptableObjects;
+﻿using Lodis.Input;
+using Lodis.ScriptableObjects;
 using Lodis.UI;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,9 +13,5 @@ namespace Lodis.UI
         private InputProfileData _data;
 
 
-        public void SelectProfile()
-        {
-
-        }
     }
 }

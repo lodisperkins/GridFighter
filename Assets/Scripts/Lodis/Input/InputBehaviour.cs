@@ -124,7 +124,7 @@ namespace Lodis.Input
             set
             {
                 _devices = value;
-                _playerControls.devices = _devices;
+                PlayerControls.devices = _devices;
             }
         }
 
@@ -158,35 +158,36 @@ namespace Lodis.Input
         public bool Enabled { get => _inputEnabled; set => _inputEnabled = value; }
         public bool NormalAttackButtonDown { get => _attackButtonDown; private set => _attackButtonDown = value; }
         public static bool PlayerActionButtonDown { get => _playerActionButtonDown; private set => _playerActionButtonDown = value; }
+        public PlayerControls PlayerControls { get => _playerControls; private set => _playerControls = value; }
 
         private void Awake()
         {
-            _playerControls = new PlayerControls();
+            PlayerControls = new PlayerControls();
             //Initialize action delegates
             //Movement input
             if (!_holdToMove)
             {
-                _playerControls.Player.MoveUp.started += context => BufferMovement(Vector2.up);
-                _playerControls.Player.MoveDown.started += context => BufferMovement(Vector2.down);
-                _playerControls.Player.MoveLeft.started += context => BufferMovement(Vector2.left);
-                _playerControls.Player.MoveRight.started += context => BufferMovement(Vector2.right);
+                PlayerControls.Player.MoveUp.started += context => BufferMovement(Vector2.up);
+                PlayerControls.Player.MoveDown.started += context => BufferMovement(Vector2.down);
+                PlayerControls.Player.MoveLeft.started += context => BufferMovement(Vector2.left);
+                PlayerControls.Player.MoveRight.started += context => BufferMovement(Vector2.right);
             }
 
             //Ability input
-            _playerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; };
-            _playerControls.Player.Attack.canceled += context => NormalAttackButtonDown = false;
-            _playerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
-            _playerControls.Player.ChargeAttack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
-            _playerControls.Player.ChargeAttack.performed += context => { BufferChargeNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable(); };
-            _playerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 });  _special1Down = true; };
-            _playerControls.Player.Special1.canceled += context => { _special1Down = false; };
+            PlayerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; };
+            PlayerControls.Player.Attack.canceled += context => NormalAttackButtonDown = false;
+            PlayerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
+            PlayerControls.Player.ChargeAttack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
+            PlayerControls.Player.ChargeAttack.performed += context => { BufferChargeNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable(); };
+            PlayerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 });  _special1Down = true; };
+            PlayerControls.Player.Special1.canceled += context => { _special1Down = false; };
 
-            _playerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 });  _special2Down = true; };
-            _playerControls.Player.Special2.canceled += context => { _special2Down = false; };
-            _playerControls.Player.Burst.started += BufferBurst;
-            _playerControls.Player.Shuffle.started += BufferShuffle;
+            PlayerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 });  _special2Down = true; };
+            PlayerControls.Player.Special2.canceled += context => { _special2Down = false; };
+            PlayerControls.Player.Burst.started += BufferBurst;
+            PlayerControls.Player.Shuffle.started += BufferShuffle;
 
-            _playerControls.Player.Pause.started += context => { MatchManagerBehaviour.Instance.TogglePauseMenu(); ClearBuffer(); };
+            PlayerControls.Player.Pause.started += context => { MatchManagerBehaviour.Instance.TogglePauseMenu(); ClearBuffer(); };
         }
 
         // Start is called before the first frame update
@@ -206,13 +207,13 @@ namespace Lodis.Input
 
         private void OnEnable()
         {
-            _playerControls.Enable();
-            _playerControls.devices = _devices;
+            PlayerControls.Enable();
+            PlayerControls.devices = _devices;
         }
 
         private void OnDisable()
         {
-            _playerControls.Disable();
+            PlayerControls.Disable();
         }
 
         private void TryChargeAttack()
@@ -397,7 +398,7 @@ namespace Lodis.Input
         /// <param name="context"></param>
         public void BufferShield()
         {
-            if (NormalAttackButtonDown || _defense.IsPhaseShifting || _playerControls.Player.Move.ReadValue<Vector2>().magnitude != 0)
+            if (NormalAttackButtonDown || _defense.IsPhaseShifting || PlayerControls.Player.Move.ReadValue<Vector2>().magnitude != 0)
                 return;
             else if (_bufferedAction == null && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"))
                 _bufferedAction = new BufferedInput(action => _defense.BeginParry(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle", 0.2f);
@@ -504,7 +505,7 @@ namespace Lodis.Input
         public void DisableInput(Condition condition)
         {
             _inputEnabled = false;
-            _playerControls.Disable();
+            PlayerControls.Disable();
             _inputEnableCondition = condition;
         }
 
@@ -530,7 +531,7 @@ namespace Lodis.Input
 
         private void CheckMoveInput()
         {
-            Vector2 newMoveInput = _playerControls.Player.Move.ReadValue<Vector2>();
+            Vector2 newMoveInput = PlayerControls.Player.Move.ReadValue<Vector2>();
             if (newMoveInput == Vector2.zero)
                 return;
 
@@ -570,7 +571,7 @@ namespace Lodis.Input
             if (_inputEnableCondition != null)
                 if (_inputEnableCondition.Invoke())
                 {
-                    _playerControls.Player.Enable();
+                    PlayerControls.Player.Enable();
                     _inputEnabled = true;
                     _inputEnableCondition = null;
                 }
@@ -602,7 +603,7 @@ namespace Lodis.Input
             }
 
             //Stores the current attack direction input
-            Vector2 attackDirInput = _playerControls.Player.AttackDirection.ReadValue<Vector2>();
+            Vector2 attackDirInput = PlayerControls.Player.AttackDirection.ReadValue<Vector2>();
 
             //If there is a direction input, update the attack direction buffer and the time of input
             if (attackDirInput.magnitude > 0)

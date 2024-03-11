@@ -38,7 +38,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 106.26, y: 0}
-  m_SizeDelta: {x: 160, y: 40}
+  m_SizeDelta: {x: 236.74542, y: 40.12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7997891042039204569
 CanvasRenderer:
@@ -68,7 +68,7 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_NormalColor: {r: 0.49056602, g: 0.49056602, b: 0.49056602, a: 1}
     m_HighlightedColor: {r: 0, g: 1, b: 0.974314, a: 1}
     m_PressedColor: {r: 1, g: 0.9957261, b: 0, a: 1}
     m_SelectedColor: {r: 0, g: 1, b: 0.9023998, a: 1}
@@ -87,7 +87,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 2169613516981090674}
+  m_TargetGraphic: {fileID: 7900096719161127845}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []

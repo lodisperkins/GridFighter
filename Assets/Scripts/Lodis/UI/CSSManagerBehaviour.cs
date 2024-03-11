@@ -14,6 +14,19 @@ namespace Lodis.UI
 {
     public class CSSManagerBehaviour : MonoBehaviour
     {
+        [Header("CSS Menu Items")]
+
+        [SerializeField]
+        private int _currentPlayer = 1;
+        [SerializeField]
+        private GameObject _startText;
+        [SerializeField]
+        private PlayerColorManagerBehaviour _colorManager;
+        [SerializeField]
+        private BackgroundColorBehaviour _backgroundImage;
+
+        [Header("P1 Menu Items")]
+
         [SerializeField]
         private GameObject _player1Root;
         [SerializeField]
@@ -25,6 +38,15 @@ namespace Lodis.UI
         [SerializeField]
         private MovesListBehaviour _player1MovesList;
         [SerializeField]
+        private GameObject _p1InputProfileMenu;
+        [SerializeField]
+        private GameObject _readyP1Text;
+        [SerializeField]
+        private CharacterData _p1Data;
+
+        [Header("P2 Menu Items")]
+
+        [SerializeField]
         private MovesListBehaviour _player2MovesList;
         [SerializeField]
         private GameObject _player2Root;
@@ -35,41 +57,42 @@ namespace Lodis.UI
         [SerializeField]
         private PageManagerBehaviour _p2PageManager;
         [SerializeField]
-        private CharacterData _p1Data;
+        private GameObject _p2InputProfileMenu;
         [SerializeField]
         private CharacterData _p2Data;
         [SerializeField]
-        private GameObject _startText;
-        [SerializeField]
-        private GameObject _readyP1Text;
-        [SerializeField]
         private GameObject _readyP2Text;
         [SerializeField]
-        private PlayerColorManagerBehaviour _colorManager;
-        [SerializeField]
-        private BackgroundColorBehaviour _backgroundImage;
+        private BoolVariable _p2IsCustom;
+
+        [Header("AI")]
+
         [SerializeField]
         private CharacterData _defaultAICharacter;
         [SerializeField]
         private CharacterData _dummyCharacter;
-        [SerializeField]
-        private BoolVariable _p2IsCustom;
+
         private PlayerInputManager _inputManager;
+
         private bool _canStart;
         private bool _p1CharacterSelected;
         private bool _p2CharacterSelected;
+
         private bool _gridCreated;
         private int _p1ColorIndex = -1;
         private int _p2ColorIndex = -1;
-        [SerializeField]
-        private int _currentPlayer = 1;
+
         private string _player1SelectedCharacter;
         private string _player2SelectedCharacter;
+
         private bool _player1HasCustomSelected;
         private bool _player2HasCustomSelected;
+
         private MultiplayerEventSystem _player1EventSystem;
         private MultiplayerEventSystem _player2EventSystem;
+
         private UnityAction _onDisable;
+
         private bool _canSelectCharP1;
         private bool _canSelectCharP2;
 
@@ -208,6 +231,7 @@ namespace Lodis.UI
             PageManagerBehaviour manager = null;
             CSSCustomCharacterManager charManager = null;
 
+
             if (playerNum == 1)
             {
                 manager = _p1CustomManager.PageManager;
@@ -218,6 +242,10 @@ namespace Lodis.UI
                 manager = _p2CustomManager.PageManager;
                 charManager = _p2CustomManager;
             }
+
+            if (manager.CurrentPage.PageName == "InputProfile" + playerNum)
+                return;
+
             if (direction == Vector2.right)
                 manager.GoToPageChild(1);
             else if (direction == Vector2.left && charManager.HasCustomDecks)
@@ -277,6 +305,8 @@ namespace Lodis.UI
             };
             controls.UI.Cancel.performed += context => TryGoingToMainMenu(num);
             controls.UI.Toggle.performed += context => OpenMoveList(num);
+            controls.UI.Option1.Enable();
+            controls.UI.Option1.performed += context => OpenControlsMenu(num);
 
             _onDisable += controls.Disable;
             _currentPlayer = 2;
@@ -409,9 +439,15 @@ namespace Lodis.UI
         private void CloseMovesList(int playerNum)
         {
             if (playerNum == 1)
+            {
                 _player1MovesList.gameObject.SetActive(false);
+                _player1EventSystem.playerRoot = _player1Root;
+            }
             else if (playerNum == 2)
+            {
                 _player2MovesList.gameObject.SetActive(false);
+                _player2EventSystem.playerRoot = _player2Root;
+            }
         }
 
         public void OpenMoveList(int playerNum)
@@ -435,6 +471,23 @@ namespace Lodis.UI
                 _p2PageManager.GoToPageChild(0);
             }
         }
+
+        public void OpenControlsMenu(int playerNum)
+        {
+            if (!CheckMenuActive(playerNum))
+                return;
+
+            if (playerNum == 1)
+            {
+                _p1PageManager.GoToPageChild(3);
+            }
+            else if (playerNum == 2)
+            {
+                _p2PageManager.GoToPageChild(3);
+            }
+        }
+
+
 
         public void TryGoingToMainMenu(int playerNum)
         {
