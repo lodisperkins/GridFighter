@@ -5644,6 +5644,7 @@ MonoBehaviour:
   _p1InputProfileMenu: {fileID: 1032551287}
   _readyP1Text: {fileID: 635565907}
   _p1Data: {fileID: 11400000, guid: 9e61dee5c98e8fe4ab94070dfc1b05b4, type: 2}
+  _p1Rebinder: {fileID: 2131482881}
   _player2MovesList: {fileID: 1226740688}
   _player2Root: {fileID: 2033022403}
   _player2JoinInstruction: {fileID: 42006085}
@@ -5653,6 +5654,7 @@ MonoBehaviour:
   _p2Data: {fileID: 11400000, guid: e58f4edf10230094aabb53e76bd1dc76, type: 2}
   _readyP2Text: {fileID: 2074725601}
   _p2IsCustom: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976, type: 2}
+  _p2Rebinder: {fileID: 309456193}
   _defaultAICharacter: {fileID: 11400000, guid: d8bcb9ee48e4a9a498847d811eb5e674,
     type: 2}
   _dummyCharacter: {fileID: 11400000, guid: c973a395d8ab6054db15a9916181506d, type: 2}

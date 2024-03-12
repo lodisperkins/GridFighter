@@ -49,6 +49,26 @@ namespace Lodis.UI
         private InputProfileData _PCData;
         [SerializeField]
         private EventSystem _eventSystem;
+        [Tooltip("If true, will search for the move component and grab the data based on the alignement.")]
+        [SerializeField]
+        private bool _getDataFromAlignment;
+        [Tooltip("If true, will auto update the buttons during the first update.")]
+        [SerializeField]
+        private bool _updateButtonsAutomatically;
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            if (_getDataFromAlignment)
+            {
+                GridMovementBehaviour movement = GetComponentInParent<GridMovementBehaviour>();
+
+                if (movement.Alignment == GridScripts.GridAlignment.LEFT)
+                    _profileData = SceneManagerBehaviour.Instance.P1InputProfile;
+                else
+                    _profileData = SceneManagerBehaviour.Instance.P2InputProfile;
+            }
+        }
 
         public void UpdateButtons(bool setSelected = true)
         {
@@ -121,8 +141,8 @@ namespace Lodis.UI
         // Update is called once per frame
         void Update()
         {
-            //if (!_updatedButtons)
-            //    UpdateButtons();
+            if (!_updatedButtons && _updateButtonsAutomatically)
+                UpdateButtons(false);
         }
 
     }

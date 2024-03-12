@@ -5372,6 +5372,8 @@ MonoBehaviour:
   _playstationData: {fileID: 11400000, guid: b4f09112e481201498a73dbef0b5227c, type: 2}
   _PCData: {fileID: 11400000, guid: dc07b2f84d3e53a4f82de42b33de85e0, type: 2}
   _eventSystem: {fileID: 834067889}
+  _getDataFromAlignment: 0
+  _updateButtonsAutomatically: 0
 --- !u!222 &572049439
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18945,6 +18947,12 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
+        type: 3}
+      propertyPath: _profileData
+      value: 
+      objectReference: {fileID: 11400000, guid: 31231b0004bc30f499e8cae95c7d9545,
+        type: 2}
     - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
         type: 3}
       propertyPath: _onListen.m_PersistentCalls.m_Calls.Array.size

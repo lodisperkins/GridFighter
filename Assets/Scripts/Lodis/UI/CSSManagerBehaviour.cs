@@ -9,6 +9,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using Lodis.ScriptableObjects;
 using UnityEngine.Events;
+using Lodis.Input;
 
 namespace Lodis.UI
 {
@@ -43,6 +44,8 @@ namespace Lodis.UI
         private GameObject _readyP1Text;
         [SerializeField]
         private CharacterData _p1Data;
+        [SerializeField]
+        private InputRebindingBehaviour _p1Rebinder;
 
         [Header("P2 Menu Items")]
 
@@ -64,6 +67,8 @@ namespace Lodis.UI
         private GameObject _readyP2Text;
         [SerializeField]
         private BoolVariable _p2IsCustom;
+        [SerializeField]
+        private InputRebindingBehaviour _p2Rebinder;
 
         [Header("AI")]
 
@@ -158,6 +163,8 @@ namespace Lodis.UI
                 _p1CustomManager.SetSelectedToFirstOption();
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices.Value = playerInput.devices.ToArray();
+
+                _p1Rebinder.ResetToDefault();
             }
             else if (playerNum == 2)
             {
@@ -170,6 +177,8 @@ namespace Lodis.UI
                 _p2CustomManager.SetSelectedToFirstOption();
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices.Value = playerInput.devices.ToArray();
+
+                _p2Rebinder.ResetToDefault();
             }
         }
         public void UpdateColor(int playerNum)

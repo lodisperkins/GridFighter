@@ -125,8 +125,8 @@ namespace Lodis.Input
         private void Awake()
         {
             _saveLoadPath = Application.persistentDataPath + "/InputProfiles";
-            _anyAction = new InputAction(binding: "/*/<button>");
-            //_anyAction.performed += StoreBinding;
+            _anyAction = new InputAction(binding: "/*/<button>", type: InputActionType.Button);
+            _anyAction.performed += context => StoreBinding(context.control);
             _anyAction.Enable();
         }
 
@@ -158,7 +158,8 @@ namespace Lodis.Input
 
         public void SetIsListening(bool isListening)
         {
-            IsListening = isListening;
+            RoutineBehaviour.Instance.StopAction(_timedAction);
+            _timedAction = RoutineBehaviour.Instance.StartNewTimedAction(args => IsListening = isListening, TimedActionCountType.FRAME, 3);
         }
 
         private void StoreBinding(InputControl control)
@@ -180,8 +181,7 @@ namespace Lodis.Input
             _profileData.SetBinding(_currentBinding, control.path, control.displayName);
             _onBindingSet?.Invoke();
 
-            RoutineBehaviour.Instance.StopAction(_timedAction);
-            _timedAction = RoutineBehaviour.Instance.StartNewTimedAction(args => IsListening = false, TimedActionCountType.FRAME, 1);
+            SetIsListening(false);
         }
 
         public void ResetToDefault()
@@ -373,8 +373,8 @@ namespace Lodis.Input
 
         private void Update()
         {
-            if (IsListening)
-                InputSystem.onAnyButtonPress.CallOnce(StoreBinding);
+            //if (IsListening)
+            //    InputSystem.onAnyButtonPress.CallOnce(StoreBinding);
         }
     }
 }

@@ -132,10 +132,8 @@ namespace Lodis.UI
 
                 _profileChoices.Add(buttonInstance);
 
-                if (!_explicitConnections)
-                    return;
-
-                previousInstance = MakeExplicitConnections(previousInstance, buttonInstance);
+                if (_explicitConnections)
+                    previousInstance = MakeExplicitConnections(previousInstance, buttonInstance);
             }
         }
 

@@ -174,6 +174,30 @@ MonoBehaviour:
     PlaystationButton: {fileID: 21300000, guid: 32b10b9ba89c1dc4685961c30ad5886a,
       type: 3}
     ImageToUpdate: {fileID: 6174154783066182277}
+--- !u!114 &1272333925301704387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4432506967748626893}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c02b0d547272dbb4baed3f9760ea22e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _buttonImages:
+  - Binding: 6
+    ImageToUpdate: {fileID: 264389814550941419}
+  - Binding: 7
+    ImageToUpdate: {fileID: 6174154783066182277}
+  _profileData: {fileID: 0}
+  _xBoxData: {fileID: 11400000, guid: 4721d6e410e1b5e4b92676d2283c047c, type: 2}
+  _playstationData: {fileID: 11400000, guid: b4f09112e481201498a73dbef0b5227c, type: 2}
+  _PCData: {fileID: 11400000, guid: dc07b2f84d3e53a4f82de42b33de85e0, type: 2}
+  _eventSystem: {fileID: 0}
+  _getDataFromAlignment: 1
+  _updateButtonsAutomatically: 1
 --- !u!1 &9047458364337836940
 GameObject:
   m_ObjectHideFlags: 0

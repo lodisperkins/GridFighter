@@ -126,31 +126,8 @@ namespace Lodis.Gameplay
             _p2Moveset = _p2InputController.Character.GetComponent<MovesetBehaviour>();
             _p2Input = _player2.GetComponent<InputBehaviour>();
 
-
-            SceneManagerBehaviour sceneManager = SceneManagerBehaviour.Instance;
-            string scheme = sceneManager.P2ControlScheme;
-
-            int index = _p2Input.PlayerControls.Player.Attack.GetBindingIndex(group: scheme);
-
-            InputProfileData p2InputProfile = SceneManagerBehaviour.Instance.P2InputProfile;
-
-            _p2Input.PlayerControls.Player.Attack.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.WeakAttack).Path);
-
-            index = _p2Input.PlayerControls.Player.ChargeAttack.GetBindingIndex(group: scheme);
-            _p2Input.PlayerControls.Player.ChargeAttack.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.StrongAttack).Path);
-
-            index = _p2Input.PlayerControls.Player.Special1.GetBindingIndex(group: scheme);
-            _p2Input.PlayerControls.Player.Special1.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.Special1).Path);
-
-            index = _p2Input.PlayerControls.Player.Special2.GetBindingIndex(group: scheme);
-            _p2Input.PlayerControls.Player.Special2.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.Special2).Path);
-
-            index = _p2Input.PlayerControls.Player.Burst.GetBindingIndex(scheme);
-            _p2Input.PlayerControls.Player.Burst.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.Burst).Path);
-
-            index = _p2Input.PlayerControls.Player.Shuffle.GetBindingIndex(scheme);
-            _p2Input.PlayerControls.Player.Shuffle.ApplyBindingOverride(index, p2InputProfile.GetBinding(BindingType.Shuffle).Path);
-
+            ApplyBindingOverrides(_p2Input, SceneManagerBehaviour.Instance.P2ControlScheme);
+            
             if (_p2IsCustom.Value)
             {
                 _p2Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck(Player2Data.DisplayName);
@@ -208,30 +185,7 @@ namespace Lodis.Gameplay
             _p1Moveset = _p1InputController.Character.GetComponent<MovesetBehaviour>();
             _p1Input = _player1.GetComponent<InputBehaviour>();
 
-
-            SceneManagerBehaviour sceneManager = SceneManagerBehaviour.Instance;
-            string scheme = sceneManager.P1ControlScheme;
-
-            int index = _p1Input.PlayerControls.Player.Attack.GetBindingIndex(group: scheme);
-
-            InputProfileData p1InputProfile = SceneManagerBehaviour.Instance.P1InputProfile;
-
-            _p1Input.PlayerControls.Player.Attack.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.WeakAttack).Path);
-
-            index = _p1Input.PlayerControls.Player.ChargeAttack.GetBindingIndex(group: scheme);
-            _p1Input.PlayerControls.Player.ChargeAttack.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.StrongAttack).Path);
-
-            index = _p1Input.PlayerControls.Player.Special1.GetBindingIndex(group: scheme);
-            _p1Input.PlayerControls.Player.Special1.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.Special1).Path);
-
-            index = _p1Input.PlayerControls.Player.Special2.GetBindingIndex(group: scheme);
-            _p1Input.PlayerControls.Player.Special2.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.Special2).Path);
-
-            index = _p1Input.PlayerControls.Player.Burst.GetBindingIndex(scheme);
-            _p1Input.PlayerControls.Player.Burst.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.Burst).Path);
-
-            index = _p1Input.PlayerControls.Player.Shuffle.GetBindingIndex(scheme);
-            _p1Input.PlayerControls.Player.Shuffle.ApplyBindingOverride(index, p1InputProfile.GetBinding(BindingType.Shuffle).Path);
+            ApplyBindingOverrides(_p1Input, SceneManagerBehaviour.Instance.P1ControlScheme);
 
             if (_p1IsCustom.Value)
             {
@@ -258,6 +212,59 @@ namespace Lodis.Gameplay
                 Debug.LogError("Invalid spawn point for player 1. Spawn was " + LHSSpawnLocation);
 
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
+        }
+
+        private static void ApplyBindingOverrides(InputBehaviour playerInput, string scheme)
+        {
+            SceneManagerBehaviour sceneManager = SceneManagerBehaviour.Instance;
+
+            int index = playerInput.PlayerControls.Player.Attack.GetBindingIndex(group: scheme);
+
+            InputProfileData inputProfile = SceneManagerBehaviour.Instance.P1InputProfile;
+
+            if (scheme == "Keyboard")
+            {
+                ApplyCompositeOverrides(inputProfile, playerInput.PlayerControls.Player.Move);
+                ApplyCompositeOverrides(inputProfile, playerInput.PlayerControls.Player.AttackDirection);
+            }
+
+            playerInput.PlayerControls.Player.Attack.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.WeakAttack).Path);
+
+            index = playerInput.PlayerControls.Player.ChargeAttack.GetBindingIndex(group: scheme);
+            playerInput.PlayerControls.Player.ChargeAttack.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.StrongAttack).Path);
+
+            index = playerInput.PlayerControls.Player.Special1.GetBindingIndex(group: scheme);
+            playerInput.PlayerControls.Player.Special1.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.Special1).Path);
+
+            index = playerInput.PlayerControls.Player.Special2.GetBindingIndex(group: scheme);
+            playerInput.PlayerControls.Player.Special2.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.Special2).Path);
+
+            index = playerInput.PlayerControls.Player.Burst.GetBindingIndex(scheme);
+            playerInput.PlayerControls.Player.Burst.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.Burst).Path);
+
+            index = playerInput.PlayerControls.Player.Shuffle.GetBindingIndex(scheme);
+            playerInput.PlayerControls.Player.Shuffle.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.Shuffle).Path);
+        }
+
+        private static void ApplyCompositeOverrides(InputProfileData p1InputProfile, InputAction compositeAction)
+        {
+            InputActionSetupExtensions.BindingSyntax moveBinding = compositeAction.ChangeCompositeBinding("WASD");
+
+            InputActionSetupExtensions.BindingSyntax upBinding = moveBinding.NextPartBinding("Up");
+            InputActionSetupExtensions.BindingSyntax downBinding = moveBinding.NextPartBinding("Down");
+            InputActionSetupExtensions.BindingSyntax leftBinding = moveBinding.NextPartBinding("Left");
+            InputActionSetupExtensions.BindingSyntax rightBinding = moveBinding.NextPartBinding("Right");
+
+            compositeAction.ApplyBindingOverride(upBinding.bindingIndex, p1InputProfile.GetBinding(BindingType.MoveUp).Path);
+            compositeAction.ApplyBindingOverride(downBinding.bindingIndex, p1InputProfile.GetBinding(BindingType.MoveDown).Path);
+            compositeAction.ApplyBindingOverride(leftBinding.bindingIndex, p1InputProfile.GetBinding(BindingType.MoveLeft).Path);
+            compositeAction.ApplyBindingOverride(rightBinding.bindingIndex, p1InputProfile.GetBinding(BindingType.MoveRight).Path);
+        }
+
+        void OnDestroy()
+        {
+            _p1Input.PlayerControls.RemoveAllBindingOverrides();
+            _p2Input.PlayerControls.RemoveAllBindingOverrides();
         }
 
         public void ResetPlayers()
