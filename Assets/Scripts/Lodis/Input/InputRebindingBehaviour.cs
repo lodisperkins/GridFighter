@@ -186,13 +186,8 @@ namespace Lodis.Input
             if (control.device != SceneManagerBehaviour.Instance.P1Devices[0] || !IsListening)
                 return;
 
-            //InputBinding? binding = context.action.GetBindingForControl(context.control);
-
-            //if (binding == null)
-            //    return;
-
-            //if (_profileData.DeviceData[0].name == "Keyboard")
-            //    return;
+            if (control.displayName.ToLower() == "system" || control.displayName.ToLower() == "select"|| control.displayName.ToLower() == "start")
+                return;
 
             _profileData.SetBinding(_currentBinding, control.path, control.displayName);
             _profileData.RemoveDuplicates(_currentBinding);
