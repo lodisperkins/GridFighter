@@ -127,6 +127,8 @@ namespace Lodis.Gameplay
             _chargeEffect.transform.parent = null;
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
+            OwnerMoveScript.CanCancelMovement = true;
+
             OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + _distance * Vector2.right * OwnerMoveScript.GetAlignmentX(), false, GridScripts.GridAlignment.ANY, true, false, true);
 
             OwnerMoveScript.AddOnMoveEndTempAction(EndAbility);
@@ -233,6 +235,7 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.ClampX = true;
             MatchManagerBehaviour.Instance.SuperInUse = false;
             OwnerKnockBackScript.IsIntangible = false;
+            OwnerMoveScript.CanCancelMovement = false;
         }
 
         protected override void OnMatchRestart()
@@ -250,6 +253,7 @@ namespace Lodis.Gameplay
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             DestroyAllColliders();
+            OwnerMoveScript.CanCancelMovement = false;
         }
     }
 }
