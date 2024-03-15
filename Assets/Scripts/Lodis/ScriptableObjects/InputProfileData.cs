@@ -5,6 +5,7 @@ using Lodis.Input;
 using UnityEngine.UIElements;
 using Lodis.Utility;
 using Lodis.UI;
+using System;
 
 namespace Lodis.ScriptableObjects
 {
@@ -94,11 +95,25 @@ namespace Lodis.ScriptableObjects
             return _val.FindValue<RebindData>(data => data.Binding == bindingType);
         }
 
+        public void RemoveDuplicates(BindingType bindingToExclude)
+        {
+            RebindData exBinding = GetBinding(bindingToExclude);
+
+            RebindData duplicateData = _val.FindValue<RebindData>(data => data.Path == exBinding.Path && data != exBinding);
+
+            if (duplicateData != null)
+            {
+                duplicateData.Path = "";
+                duplicateData.DisplayName = "";
+            }
+        }
+
         public void ClearBindings()
         {
             for (int i = 0; i < _val.Length; i++)
             {
                 _val[i].DisplayName = "";
+                _val[i].Path = "";
             }
         }
     }

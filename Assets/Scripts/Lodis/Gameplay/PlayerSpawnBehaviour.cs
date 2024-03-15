@@ -126,7 +126,7 @@ namespace Lodis.Gameplay
             _p2Moveset = _p2InputController.Character.GetComponent<MovesetBehaviour>();
             _p2Input = _player2.GetComponent<InputBehaviour>();
 
-            ApplyBindingOverrides(_p2Input, SceneManagerBehaviour.Instance.P2ControlScheme);
+            ApplyBindingOverrides(_p2Input, SceneManagerBehaviour.Instance.P2InputProfile,SceneManagerBehaviour.Instance.P2ControlScheme);
             
             if (_p2IsCustom.Value)
             {
@@ -185,7 +185,7 @@ namespace Lodis.Gameplay
             _p1Moveset = _p1InputController.Character.GetComponent<MovesetBehaviour>();
             _p1Input = _player1.GetComponent<InputBehaviour>();
 
-            ApplyBindingOverrides(_p1Input, SceneManagerBehaviour.Instance.P1ControlScheme);
+            ApplyBindingOverrides(_p1Input, SceneManagerBehaviour.Instance.P1InputProfile, SceneManagerBehaviour.Instance.P1ControlScheme);
 
             if (_p1IsCustom.Value)
             {
@@ -214,13 +214,13 @@ namespace Lodis.Gameplay
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
         }
 
-        private static void ApplyBindingOverrides(InputBehaviour playerInput, string scheme)
+        private static void ApplyBindingOverrides(InputBehaviour playerInput, InputProfileData profile, string scheme)
         {
             SceneManagerBehaviour sceneManager = SceneManagerBehaviour.Instance;
 
             int index = playerInput.PlayerControls.Player.Attack.GetBindingIndex(group: scheme);
 
-            InputProfileData inputProfile = SceneManagerBehaviour.Instance.P1InputProfile;
+            InputProfileData inputProfile = profile;
 
             if (scheme == "Keyboard")
             {

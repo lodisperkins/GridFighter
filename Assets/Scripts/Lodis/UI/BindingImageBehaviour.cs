@@ -117,9 +117,13 @@ namespace Lodis.UI
                 RebindData data = _profileData.GetBinding(button.Binding);
 
                 if (data.DisplayName == "")
-                    data = GetDefaultData(deviceName, manufacturer, button.Binding);
-
-                button.UpdateButtonImage(deviceName, manufacturer, data.DisplayName);
+                {
+                    button.ImageToUpdate.enabled = false;
+                }
+                else
+                {
+                    button.UpdateButtonImage(deviceName, manufacturer, data.DisplayName);
+                }
             }
 
             _updatedButtons = true;

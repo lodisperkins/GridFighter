@@ -488,11 +488,11 @@ namespace Lodis.UI
 
             if (playerNum == 1)
             {
-                _p1PageManager.GoToPageChild(3);
+                _p1PageManager.GoToPage("InputProfile");
             }
             else if (playerNum == 2)
             {
-                _p2PageManager.GoToPageChild(3);
+                _p2PageManager.GoToPage("InputProfile");
             }
         }
 

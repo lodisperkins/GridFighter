@@ -88,11 +88,19 @@ namespace Lodis.Input
 
         public string ProfileName { get => _profileName; set => _profileName = value; }
 
+        public string ProfileFolderPath
+        {
+            get
+            {
+                return _saveLoadPath + "/" + ProfileName + "/";
+            }
+        }
+
         public string ProfilePath
         {
             get
             {
-                return _saveLoadPath + "/" + ProfileName + "_" + DeviceID + "_InputProfile.txt";
+                return ProfileFolderPath + ProfileName + "_" + DeviceID + "_InputProfile.txt";
             }
         }
 
@@ -100,6 +108,9 @@ namespace Lodis.Input
         {
             get
             {
+                if (_profileData.DeviceData.Length == 0)
+                    return "";
+
                 if (_profileData.DeviceData[0].description.manufacturer == "Sony Interactive Entertainment")
                     return _profileData.DeviceData[0].description.manufacturer;
 
@@ -126,7 +137,12 @@ namespace Lodis.Input
         {
             _saveLoadPath = Application.persistentDataPath + "/InputProfiles";
             _anyAction = new InputAction(binding: "/*/<button>", type: InputActionType.Button);
-            _anyAction.performed += context => StoreBinding(context.control);
+            _anyAction.performed += context =>
+            {
+                if (DeviceID != "Keyboard")
+                    StoreBinding(context.control);
+            };
+
             _anyAction.Enable();
         }
 
@@ -179,6 +195,8 @@ namespace Lodis.Input
             //    return;
 
             _profileData.SetBinding(_currentBinding, control.path, control.displayName);
+            _profileData.RemoveDuplicates(_currentBinding);
+
             _onBindingSet?.Invoke();
 
             SetIsListening(false);
@@ -212,22 +230,34 @@ namespace Lodis.Input
 
         private string CreateUniqueProfilePath()
         {
+            //Create the input profile folder if it doesn't exists.
             if (!Directory.Exists(_saveLoadPath))
                 Directory.CreateDirectory(_saveLoadPath);
 
-            string uniquePath = ProfilePath;
-            int num = 0;
 
-            ProfileName = string.Empty;
+            //Build complete path.
+            string uniquePath = ProfileFolderPath + ProfileName + "_" + DeviceID + "_InputProfile.txt";
 
-            while (File.Exists(uniquePath))
+            //Create the player profile folder if it doesn't exists.
+            if (!Directory.Exists(ProfileFolderPath))
             {
-                num++;
-                ProfileName = ProfileName + " " + num.ToString();
-                uniquePath = _saveLoadPath + "/" + ProfileName + "_" + DeviceID + "_InputProfile.txt";
+                Directory.CreateDirectory(ProfileFolderPath);
+                return uniquePath;
             }
 
-            ProfileName = uniquePath;
+            int num = 0;
+
+            //While there is still a folder with the name
+            while (Directory.Exists(ProfileFolderPath))
+            {
+                //..increment the name number.
+                num++;
+                ProfileName = ProfileName + " " + num.ToString();
+            }
+
+            Directory.CreateDirectory(ProfileFolderPath);
+
+            uniquePath = ProfileFolderPath + ProfileName + "_" + DeviceID + "_InputProfile.txt";
 
             FileStream stream = File.Create(uniquePath);
             stream.Close();
@@ -242,11 +272,16 @@ namespace Lodis.Input
 
         public void DeleteInputProfile()
         {
+            //Check if the name is valid before deleting.
             if (ProfileName == "" || ProfileOptions.Length == 0)
                 return;
 
+            //---Update profile options collection---
+
+            //Create a new string array thats one less.
             string[] temp = new string[ProfileOptions.Length - 1];
 
+            //Copy over all values except the one we don't want.
             int j = 0;
             for (int i = 0; i < ProfileOptions.Length; i++)
             {
@@ -263,22 +298,23 @@ namespace Lodis.Input
 
             ProfileOptions = temp;  
 
-            string armorPath = ProfilePath;
-
-            File.Delete(armorPath);
+            //Delete the entire folder and all of its contents.
+            Directory.Delete(ProfileFolderPath, true);
         }
 
         public static void LoadProfile(string profileName, string deviceID, out InputProfileData data)
         {
-            string[] files = Directory.GetFiles(Application.persistentDataPath + "/InputProfiles", profileName + "*");
+            string[] files = Directory.GetFiles(Application.persistentDataPath + "/InputProfiles/" + profileName + "/", profileName + "*");
 
             data = null;
 
+            //Leave if the folder didn't contain any files.
             if (files.Length == 0)
                 return;
 
             string fileName = "";
 
+            //Get the file for the specific device being used.
             for (int i = 0; i < files.Length; i++)
             {
                 files[i] = System.IO.Path.GetFileName(files[i]);
@@ -290,10 +326,13 @@ namespace Lodis.Input
                 }
             }
 
+            //Leave if the device file couldn't be found.
             if (fileName == "")
                 return;
 
-            string profilePath = _saveLoadPath + "/" + fileName;
+
+            //Load the profiles rebind data.
+            string profilePath = Application.persistentDataPath + "/InputProfiles/" + profileName + "/" + fileName;
 
             StreamReader reader = new StreamReader(profilePath);
 
@@ -307,13 +346,14 @@ namespace Lodis.Input
         public void LoadProfile(string profileName)
         {
 
-            string[] files = Directory.GetFiles(Application.persistentDataPath + "/InputProfiles", profileName + "*");
+            string[] files = Directory.GetFiles(Application.persistentDataPath + "/InputProfiles/" + profileName + "/", profileName + "*");
 
 
             if (files.Length == 0)
                 return;
 
             string fileName = "";
+            bool fileFound = false;
 
             for (int i = 0; i < files.Length; i++)
             {
@@ -322,17 +362,18 @@ namespace Lodis.Input
                 if (files[i].Contains(DeviceID))
                 {
                     fileName = files[i];
+                    fileFound = true;
                     break;
                 }
             }
 
-            if (fileName == "")
+            if (!fileFound)
             {
-                ClearBindings();
+                ResetToDefault();
                 return;
             }
 
-            string profilePath = _saveLoadPath + "/" + fileName;
+            string profilePath = Application.persistentDataPath + "/InputProfiles/" + profileName + "/" + fileName;
 
             StreamReader reader = new StreamReader(profilePath);
 
@@ -349,7 +390,7 @@ namespace Lodis.Input
             if (!Directory.Exists(Application.persistentDataPath + "/InputProfiles"))
                 return;
 
-            string[] files = Directory.GetFiles(Application.persistentDataPath + "/InputProfiles");
+            string[] files = Directory.GetDirectories(Application.persistentDataPath + "/InputProfiles").Select(System.IO.Path.GetFileName).ToArray();
 
             if (files.Length == 0)
                 return;
@@ -358,10 +399,7 @@ namespace Lodis.Input
 
             for (int i = 0; i < files.Length; i++)
             {
-                files[i] = System.IO.Path.GetFileName(files[i]);
-                string deckName = files[i].Split('_')[0];
-
-                ProfileOptions[i] = deckName;
+                ProfileOptions[i] = files[i];
             }
         }
 
@@ -373,8 +411,8 @@ namespace Lodis.Input
 
         private void Update()
         {
-            //if (IsListening)
-            //    InputSystem.onAnyButtonPress.CallOnce(StoreBinding);
+            if (IsListening && DeviceID == "Keyboard")
+                InputSystem.onAnyButtonPress.CallOnce(StoreBinding);
         }
     }
 }
