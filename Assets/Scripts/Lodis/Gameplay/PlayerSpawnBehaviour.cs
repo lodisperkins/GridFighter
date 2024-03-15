@@ -216,6 +216,9 @@ namespace Lodis.Gameplay
 
         private static void ApplyBindingOverrides(InputBehaviour playerInput, InputProfileData profile, string scheme)
         {
+            if (!playerInput)
+                return;
+
             SceneManagerBehaviour sceneManager = SceneManagerBehaviour.Instance;
 
             int index = playerInput.PlayerControls.Player.Attack.GetBindingIndex(group: scheme);
@@ -264,7 +267,9 @@ namespace Lodis.Gameplay
         void OnDestroy()
         {
             _p1Input.PlayerControls.RemoveAllBindingOverrides();
-            _p2Input.PlayerControls.RemoveAllBindingOverrides();
+
+            if (_p2Input)
+                _p2Input.PlayerControls.RemoveAllBindingOverrides();
         }
 
         public void ResetPlayers()

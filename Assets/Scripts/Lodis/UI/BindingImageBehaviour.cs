@@ -18,6 +18,7 @@ namespace Lodis.UI
         [System.Serializable]
         public class ButtonData
         {
+            [Tooltip("The action that goes along with this image.")]
             public BindingType Binding;
             public void UpdateButtonImage(string device, string manufacturer = "", string displayName = "")
             {
@@ -33,7 +34,15 @@ namespace Lodis.UI
                 ImageToUpdate.sprite = Resources.Load<Sprite>(path);
             }
 
+            public void SetImageToDefault()
+            {
+                ImageToUpdate.sprite = DefaultImage;
+            }
+
+            [Tooltip("The image to change into the correct binding image.")]
             public Image ImageToUpdate;
+            [Tooltip("The image to display in case this action doesn't have a binding.")]
+            public Sprite DefaultImage;
         }
 
         private bool _updatedButtons;
@@ -55,6 +64,9 @@ namespace Lodis.UI
         [Tooltip("If true, will auto update the buttons during the first update.")]
         [SerializeField]
         private bool _updateButtonsAutomatically;
+        [Tooltip("If true, will try to update images for movement on controllers.")]
+        [SerializeField]
+        private bool _dontIgnoreMove;
 
         // Start is called before the first frame update
         void Start()
@@ -97,7 +109,7 @@ namespace Lodis.UI
                 ButtonData button = _buttonImages[i];
 
                 //If the binding is for movement and the device isn't a keyboard...
-                if ((int)button.Binding < 4 && (deviceName != "Keyboard" && deviceName != "Mouse"))
+                if ((int)button.Binding < 4 && (deviceName != "Keyboard" && deviceName != "Mouse") && !_dontIgnoreMove)
                 {
                     //...disable it and continue.
                     button.ImageToUpdate.transform.parent.gameObject.SetActive(false);
@@ -116,9 +128,13 @@ namespace Lodis.UI
 
                 RebindData data = _profileData.GetBinding(button.Binding);
 
-                if (data.DisplayName == "")
+                if (data.DisplayName == "" && button.DefaultImage == null)
                 {
                     button.ImageToUpdate.enabled = false;
+                }
+                else if (data.DisplayName == "" && button.DefaultImage != null)
+                {
+                    button.SetImageToDefault();
                 }
                 else
                 {

@@ -3,7 +3,12 @@ guid: c02b0d547272dbb4baed3f9760ea22e6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - _profileData: {instanceID: 0}
+  - _xBoxData: {fileID: 11400000, guid: 4721d6e410e1b5e4b92676d2283c047c, type: 2}
+  - _playstationData: {fileID: 11400000, guid: b4f09112e481201498a73dbef0b5227c, type: 2}
+  - _PCData: {fileID: 11400000, guid: dc07b2f84d3e53a4f82de42b33de85e0, type: 2}
+  - _eventSystem: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
