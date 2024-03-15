@@ -57,6 +57,7 @@ namespace Lodis.Gameplay
         private string _defaultLayer;
         private HitColliderBehaviour _lastCollider;
         protected GridMovementBehaviour Movement;
+        private HitStopBehaviour _hitStop;
         protected Condition AliveCondition;
         protected UnityAction _onTakeDamage;
         [FormerlySerializedAs("OnTakeDamage")] [SerializeField]
@@ -151,6 +152,10 @@ namespace Lodis.Gameplay
             else
                 _health = _startingHealth;
             DefenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
+            _moveset = GetComponent<MovesetBehaviour>();
+            _input = GetComponent<Input.InputBehaviour>();
+            Movement = GetComponent<GridMovementBehaviour>();
+            _hitStop = GetComponent<HitStopBehaviour>();
         }
 
         protected virtual void Start()
@@ -272,9 +277,8 @@ namespace Lodis.Gameplay
         protected virtual IEnumerator ActivateStun(float time)
         {
             Stunned = true;
-            _moveset = GetComponent<MovesetBehaviour>();
-            _input = GetComponent<Input.InputBehaviour>();
-            Movement = GetComponent<GridMovementBehaviour>();
+
+            _hitStop.CancelHitStop(true);
 
             //Disable components if the object has them attached
             if (_moveset)

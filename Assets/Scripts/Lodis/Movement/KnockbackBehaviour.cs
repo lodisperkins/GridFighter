@@ -33,6 +33,7 @@ namespace Lodis.Movement
         private FloatVariable _maxMagnitude;
 
         private GridMovementBehaviour _movementBehaviour;
+        private HitStopBehaviour _hitstop;
         private GridPhysicsBehaviour _gridPhysicsBehaviour;
         private LandingBehaviour _landingBehaviour;
 
@@ -136,6 +137,7 @@ namespace Lodis.Movement
 
             _landingBehaviour = GetComponent<LandingBehaviour>();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
+            _hitstop = GetComponent<HitStopBehaviour>();
             Physics = GetComponent<GridPhysicsBehaviour>();
 
 
@@ -295,7 +297,7 @@ namespace Lodis.Movement
 
             Stunned = true;
             if (CurrentAirState == AirState.FREEFALL || CurrentAirState == AirState.TUMBLING)
-               Physics.FreezeInPlaceByCondition(condition =>!Stunned, false, true, false, true);
+               Physics.FreezeInPlaceByCondition(condition =>!Stunned && !_hitstop.HitStopActive, false, true, false, true);
 
             
             if (moveset)

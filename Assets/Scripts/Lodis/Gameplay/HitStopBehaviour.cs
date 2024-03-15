@@ -26,6 +26,7 @@ namespace Lodis.Gameplay
         private (Vector3, Vector3) _frozenMoveVectors;
 
         public Animator Animator { get => _animator; set => _animator = value; }
+        public bool HitStopActive { get => _hitStopActive; private set => _hitStopActive = value; }
 
         private void Awake()
         {
@@ -60,7 +61,7 @@ namespace Lodis.Gameplay
             if (time == 0)
                 return;
 
-            if (_hitStopActive)
+            if (HitStopActive)
             {
                 CancelHitStop(true);
             }
@@ -86,7 +87,7 @@ namespace Lodis.Gameplay
         /// <param name="shakeCamera">Whether or not the camera should shake during the hitstop effect.</param>
         public void StartHitStop(float time, float strength, bool waitForForceApplied, bool shakeCharacter, bool shakeCamera, float cameraShakeStrength, float cameraShakeDuration, int cameraShakeFrequency)
         {
-            _hitStopActive = true;
+            HitStopActive = true;
             //If there is already a timer to make the object stop, cancel it.
             if (_stopAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_stopAction);
@@ -110,7 +111,7 @@ namespace Lodis.Gameplay
             {
 
                 RoutineBehaviour.Instance.CharacterTimeScale = 1;
-                _hitStopActive = false;
+                HitStopActive = false;
 
                 //if (_physics.FrozenStoredForce.magnitude == 0 && _physics.FrozenVelocity.magnitude == 0)
                 //{
@@ -134,7 +135,7 @@ namespace Lodis.Gameplay
             if (cancelFreeze)
                 _physics.CancelFreeze(true, true);
 
-            _hitStopActive = false;
+            HitStopActive = false;
             _shakeBehaviour.StopShaking();
             RoutineBehaviour.Instance.StopAction(_enableAction);
             RoutineBehaviour.Instance.CharacterTimeScale = 1;
