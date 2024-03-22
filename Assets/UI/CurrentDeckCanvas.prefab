@@ -47,6 +47,7 @@ MonoBehaviour:
   _eventSystem: {fileID: 0}
   _getDataFromAlignment: 0
   _updateButtonsAutomatically: 1
+  _dontIgnoreMove: 0
 --- !u!1 &6293412362562568398
 GameObject:
   m_ObjectHideFlags: 0
@@ -882,7 +883,7 @@ PrefabInstance:
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -5215,7 +5216,7 @@ PrefabInstance:
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -5534,7 +5535,7 @@ PrefabInstance:
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -5862,7 +5863,7 @@ PrefabInstance:
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_FontData.m_FontSize
-      value: 15
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 2169613516981090674, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}

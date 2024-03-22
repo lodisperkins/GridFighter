@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 
 namespace Lodis.UI
 {
@@ -24,7 +26,9 @@ namespace Lodis.UI
         [Header("Scroll Options")]
         [SerializeField]
         private bool _scrollHorizontal;
-        [Tooltip("How far to move the options when the selected option is not in view.")]
+        [Tooltip("How far to move the options when the selected option is not in view." +
+            "If the scroll behaviour is rapidly moving up and down, you may have the scroll distance too large." +
+            "If the scroll behaviour is slowly moving towards its destination, you may have the scroll distance too small.")]
         [SerializeField]
         private float _distanceToScroll;
         [Tooltip("Whether or not the window will snap or smoothly lerp to the new position.")]
@@ -33,13 +37,17 @@ namespace Lodis.UI
         [Tooltip("The amount of time it takes to scroll to the new option smoothly.")]
         [SerializeField]
         private float _scrollSmoothDuration;
+        [Tooltip("Scroll using the transforms local position instead of the global position.")]
+        [SerializeField]
+        private bool _useLocalPosition;
         private RectTransform _currentItem;
+        private TweenerCore<Vector3, Vector3, VectorOptions> _moveTween;
 
         public EventSystem EventSystem { get => _eventSystem; set => _eventSystem = value; }
 
         private bool CheckInBoundsOfMask()
         {
-            Vector2 position = _currentItem.position;
+            Vector2 position =  _currentItem.position;
 
             //Gets position of the view area's corners in the world space.
             Vector3[] corners = new Vector3[4];
@@ -56,6 +64,23 @@ namespace Lodis.UI
         private void OnDisable()
         {
             _content.DOKill();
+        }
+
+        private void ScrollSmoothly(Vector3 direction)
+        {
+            if (_moveTween != null && _moveTween.active)
+                return;
+
+            if (_useLocalPosition)
+            {
+                Vector3 newPosition = _content.localPosition + direction * _distanceToScroll;
+                _moveTween = _content.DOLocalMove(newPosition, _scrollSmoothDuration);
+            }
+            else
+            {
+                Vector3 newPosition = _content.position + direction * _distanceToScroll;
+                _moveTween = _content.DOMove(newPosition, _scrollSmoothDuration);
+            }
         }
 
         // Update is called once per frame
@@ -76,6 +101,7 @@ namespace Lodis.UI
                 return;
 
             //Find the direction to scroll to.
+
             Vector3 direction = (_view.position - _currentItem.position).normalized;
             direction.z = 0f;
 
@@ -85,14 +111,15 @@ namespace Lodis.UI
 
             if (_scrollSmooth)
             {
-                _content.DOKill();
-                Vector3 newPosition = _content.position + direction * _distanceToScroll;
-                _content.DOMove(newPosition, _scrollSmoothDuration);
+                ScrollSmoothly(direction);
+                return;
             }
+
+            if (_useLocalPosition)
+                _content.localPosition += direction * _distanceToScroll;
             else
-            {
                 _content.position += direction * _distanceToScroll;
-            }
         }
+
     }
 }

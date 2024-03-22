@@ -109,7 +109,7 @@ namespace Lodis.UI
                 ButtonData button = _buttonImages[i];
 
                 //If the binding is for movement and the device isn't a keyboard...
-                if ((int)button.Binding < 4 && (deviceName != "Keyboard" && deviceName != "Mouse") && !_dontIgnoreMove)
+                if ((int)button.Binding < 4 && (deviceName != "Keyboard" && deviceName != "Mouse") && _dontIgnoreMove)
                 {
                     //...disable it and continue.
                     button.ImageToUpdate.transform.parent.gameObject.SetActive(false);

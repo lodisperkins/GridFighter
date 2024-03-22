@@ -96,5 +96,10 @@ namespace Lodis.UI
         {
             _onSelect.AddListener(action);
         }
+
+        public void AddOnDeselectEvent(UnityAction action)
+        {
+            _onDeselect.AddListener(action);
+        }
     }
 }

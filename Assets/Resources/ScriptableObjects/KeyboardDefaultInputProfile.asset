@@ -14,33 +14,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _val:
   - Binding: 0
-    Path: /Keyboard/upArrow
+    Path: /Keyboard/w
     DisplayName: W
   - Binding: 1
-    Path: 
+    Path: /Keyboard/s
     DisplayName: S
   - Binding: 2
-    Path: 
+    Path: /Keyboard/a
     DisplayName: A
   - Binding: 3
-    Path: 
+    Path: /Keyboard/d
     DisplayName: D
   - Binding: 4
-    Path: /XInputControllerWindows/buttonSouth
+    Path: /Keyboard/l
     DisplayName: L
   - Binding: 5
-    Path: /XInputControllerWindows/buttonNorth
+    Path: /Keyboard/k
     DisplayName: K
   - Binding: 6
-    Path: /XInputControllerWindows/buttonWest
+    Path: /Keyboard/i
     DisplayName: I
   - Binding: 7
-    Path: /Keyboard/9
+    Path: /Keyboard/o
     DisplayName: O
   - Binding: 8
-    Path: /XInputControllerWindows/rightShoulder
+    Path: /Keyboard/p
     DisplayName: P
   - Binding: 9
-    Path: /XInputControllerWindows/leftShoulder
+    Path: /Keyboard/u
     DisplayName: U
   _deviceData: {fileID: 11400000, guid: f415e5c4a7cd36642a4ce2300885806e, type: 2}

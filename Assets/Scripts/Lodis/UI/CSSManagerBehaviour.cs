@@ -135,6 +135,7 @@ namespace Lodis.UI
 
         private void OnDisable()
         {
+            
             _onDisable.Invoke();
             _onDisable = null;
         }
@@ -263,6 +264,9 @@ namespace Lodis.UI
 
         private bool CheckMenuActive(int playerNum)
         {
+            if (!_player1Root)
+                return false;
+
             if (playerNum == 1)
                 return _player1Root.activeInHierarchy;
 
@@ -317,7 +321,7 @@ namespace Lodis.UI
             controls.UI.Option1.Enable();
             controls.UI.Option1.performed += context => OpenControlsMenu(num);
 
-            _onDisable += controls.Disable;
+            _onDisable += controls.Dispose;
             _currentPlayer = 2;
         }
 
@@ -437,6 +441,9 @@ namespace Lodis.UI
 
         private bool GetMovesListOpen(int playerNum)
         {
+            if (!_player1MovesList)
+                return false;
+
             if (playerNum == 1)
                 return _player1MovesList.gameObject.activeInHierarchy;
             else if (playerNum == 2)
@@ -445,16 +452,16 @@ namespace Lodis.UI
             return false;
         }
 
-        private void CloseMovesList(int playerNum)
+        public void CloseMovesList(int playerNum)
         {
             if (playerNum == 1)
             {
-                _player1MovesList.gameObject.SetActive(false);
+                _player1MovesList.transform.parent.gameObject.SetActive(false);
                 _player1EventSystem.playerRoot = _player1Root;
             }
             else if (playerNum == 2)
             {
-                _player2MovesList.gameObject.SetActive(false);
+                _player2MovesList.transform.parent.gameObject.SetActive(false);
                 _player2EventSystem.playerRoot = _player2Root;
             }
         }

@@ -41,6 +41,11 @@ namespace Lodis.UI
             _moveTween = _cursor.DOMove(rect.transform.position, _lerpDuration).SetUpdate(true);
         }
 
+        private void OnDisable()
+        {
+            _moveTween.Complete();
+        }
+
         void Update()
         {
             if (!EventSystem || !_cursor.gameObject.activeInHierarchy)

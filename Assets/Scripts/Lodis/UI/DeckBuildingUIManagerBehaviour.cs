@@ -9,6 +9,7 @@ using Lodis.Utility;
 using System;
 using Lodis.CharacterCreation;
 using UnityEngine.Video;
+using DG.Tweening;
 
 namespace Lodis.UI
 {

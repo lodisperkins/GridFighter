@@ -5424,24 +5424,34 @@ MonoBehaviour:
   _buttonImages:
   - Binding: 0
     ImageToUpdate: {fileID: 1124186694}
+    DefaultImage: {fileID: 0}
   - Binding: 1
     ImageToUpdate: {fileID: 1329812741}
+    DefaultImage: {fileID: 0}
   - Binding: 2
     ImageToUpdate: {fileID: 1849924028}
+    DefaultImage: {fileID: 0}
   - Binding: 3
     ImageToUpdate: {fileID: 992963473}
+    DefaultImage: {fileID: 0}
   - Binding: 4
     ImageToUpdate: {fileID: 970170336}
+    DefaultImage: {fileID: 0}
   - Binding: 5
     ImageToUpdate: {fileID: 462320534}
+    DefaultImage: {fileID: 0}
   - Binding: 6
     ImageToUpdate: {fileID: 1140067619}
+    DefaultImage: {fileID: 0}
   - Binding: 7
     ImageToUpdate: {fileID: 1100118749}
+    DefaultImage: {fileID: 0}
   - Binding: 8
     ImageToUpdate: {fileID: 1257498387}
+    DefaultImage: {fileID: 0}
   - Binding: 9
     ImageToUpdate: {fileID: 1834814403}
+    DefaultImage: {fileID: 0}
   _profileData: {fileID: 11400000, guid: 31231b0004bc30f499e8cae95c7d9545, type: 2}
   _xBoxData: {fileID: 11400000, guid: 4721d6e410e1b5e4b92676d2283c047c, type: 2}
   _playstationData: {fileID: 11400000, guid: b4f09112e481201498a73dbef0b5227c, type: 2}
@@ -5449,6 +5459,7 @@ MonoBehaviour:
   _eventSystem: {fileID: 834067889}
   _getDataFromAlignment: 0
   _updateButtonsAutomatically: 0
+  _dontIgnoreMove: 0
 --- !u!222 &572049439
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -15891,6 +15902,7 @@ MonoBehaviour:
   _distanceToScroll: 19.5
   _scrollSmooth: 1
   _scrollSmoothDuration: 0.1
+  _useLocalPosition: 0
 --- !u!1001 &1884586695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19032,12 +19044,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
-        type: 3}
-      propertyPath: _profileData
-      value: 
-      objectReference: {fileID: 11400000, guid: 31231b0004bc30f499e8cae95c7d9545,
-        type: 2}
     - target: {fileID: 5795629892018615636, guid: 40f3b1b6486225f4faa79ce4b763b52b,
         type: 3}
       propertyPath: _onListen.m_PersistentCalls.m_Calls.Array.size

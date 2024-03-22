@@ -17,6 +17,8 @@ namespace Lodis.UI
         public Image ObjectImage;
         private Color _defaultColor;
         public bool OnlyChangeHue = true;
+        [Tooltip("When receiving new colors under this value, it will always override everything including the hue. Happens even if OnlyChangeHue is set to true.")]
+        public float SaturationThreshold = 10;
 
         /// <summary>
         /// Store the current colors that are on this object.
@@ -44,6 +46,8 @@ namespace Lodis.UI
         public Text ObjectText;
         private Color _defaultColor;
         public bool OnlyChangeHue = true;
+        [Tooltip("When receiving new colors under this value, it will always override everything including the hue. Happens even if OnlyChangeHue is set to true.")]
+        public float SaturationThreshold = 10;
 
         /// <summary>
         /// Store the current colors that are on this object.
@@ -110,7 +114,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > colorObject.SaturationThreshold)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -127,7 +131,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > colorObject.SaturationThreshold)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -151,7 +155,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > colorObject.SaturationThreshold)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -168,7 +172,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > colorObject.SaturationThreshold)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -196,7 +200,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > colorObject.SaturationThreshold)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
@@ -213,7 +217,7 @@ namespace Lodis.UI
 
                 Color.RGBToHSV(_ownerColor, out propertyHSV.x, out propertyHSV.y, out propertyHSV.z);
 
-                if (colorObject.OnlyChangeHue && propertyHSV.y > 10)
+                if (colorObject.OnlyChangeHue && propertyHSV.y > colorObject.SaturationThreshold)
                     SetHue(colorObject);
                 else
                     SetColor(colorObject);
