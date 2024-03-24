@@ -20,10 +20,13 @@ namespace Lodis.UI
         private TweenerCore<Vector3, Vector3, VectorOptions> _moveTween;
         [SerializeField]
         private UnityEngine.EventSystems.EventSystem _eventSystem;
+        [SerializeField]
+        private bool _setCursorManually;
         private GameObject _lastSelectedGameObject;
         private UnityEvent _onSelectionUpdated = new UnityEvent();
 
         public EventSystem EventSystem { get => _eventSystem; set => _eventSystem = value; }
+        public bool SetCursorManually { get => _setCursorManually; }
 
         public void AddOnSelectionUpdatedAction(UnityAction action)
         {
@@ -41,6 +44,17 @@ namespace Lodis.UI
             _moveTween = _cursor.DOMove(rect.transform.position, _lerpDuration).SetUpdate(true);
         }
 
+        public void SetCursorPosition(Transform target)
+        {
+            _setCursorManually = true;
+            LerpToTransform(target);
+        }
+
+        public void SetCursorManuallyEnabled(bool value)
+        {
+            _setCursorManually = value;
+        }
+
         private void OnDisable()
         {
             _moveTween.Complete();
@@ -48,7 +62,7 @@ namespace Lodis.UI
 
         void Update()
         {
-            if (!EventSystem || !_cursor.gameObject.activeInHierarchy)
+            if (!EventSystem || !_cursor.gameObject.activeInHierarchy || _setCursorManually)
                 return;
 
             if (_lastSelectedGameObject != EventSystem.currentSelectedGameObject)

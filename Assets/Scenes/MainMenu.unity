@@ -5459,7 +5459,7 @@ MonoBehaviour:
   _eventSystem: {fileID: 834067889}
   _getDataFromAlignment: 0
   _updateButtonsAutomatically: 0
-  _dontIgnoreMove: 0
+  _dontIgnoreMove: 1
 --- !u!222 &572049439
 CanvasRenderer:
   m_ObjectHideFlags: 0
