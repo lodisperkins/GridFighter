@@ -321,7 +321,12 @@ namespace Lodis.UI
             controls.UI.Option1.Enable();
             controls.UI.Option1.performed += context => OpenControlsMenu(num);
 
-            _onDisable += controls.Dispose;
+            _onDisable += () =>
+            {
+                controls.Dispose();
+                controls.Disable();
+            };
+
             _currentPlayer = 2;
         }
 

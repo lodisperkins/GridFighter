@@ -4740,7 +4740,8 @@ AudioSource:
   m_GameObject: {fileID: 402693611}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 213090869929638346, guid: 6dd25384fc364c5479b48017cbc82a3a,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: ad5cbf4a8382e444ba934b1a213d050b, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.35
@@ -6186,12 +6187,16 @@ MonoBehaviour:
   _textToColor:
   - ObjectText: {fileID: 236193263}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   - ObjectText: {fileID: 1260835599}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   - ObjectText: {fileID: 14612934}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   - ObjectText: {fileID: 1983401957}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   _setColorsOnStart: 1
 --- !u!114 &577861925
 MonoBehaviour:
@@ -7116,6 +7121,7 @@ MonoBehaviour:
   _objectsToColor:
   - ObjectImage: {fileID: 704078044}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   _textToColor: []
   _setColorsOnStart: 1
 --- !u!1001 &714839852
@@ -7977,7 +7983,8 @@ AudioSource:
   m_GameObject: {fileID: 855454085}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5164157840877826481, guid: 6dd25384fc364c5479b48017cbc82a3a,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.4
@@ -14973,6 +14980,7 @@ MonoBehaviour:
   _objectsToColor:
   - ObjectImage: {fileID: 1276346839}
     OnlyChangeHue: 1
+    SaturationThreshold: 10
   _textToColor: []
   _setColorsOnStart: 1
 --- !u!114 &1276346839
@@ -17223,6 +17231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _soundEffectSource: {fileID: 855454086}
+  _voiceSource: {fileID: 0}
   _musicSource: {fileID: 402693612}
   _announcer: {fileID: 479321164}
   _hitSounds:
@@ -21254,13 +21263,17 @@ MonoBehaviour:
   _objectsToColor:
   - ObjectImage: {fileID: 434600511}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   _textToColor:
   - ObjectText: {fileID: 1391360722}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   - ObjectText: {fileID: 1730195567}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   - ObjectText: {fileID: 267061525}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   _setColorsOnStart: 1
 --- !u!1 &1953149045
 GameObject:
@@ -21464,13 +21477,17 @@ MonoBehaviour:
   _objectsToColor:
   - ObjectImage: {fileID: 1008413209}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   _textToColor:
   - ObjectText: {fileID: 1970736361}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   - ObjectText: {fileID: 905774150}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   - ObjectText: {fileID: 1815694657}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   _setColorsOnStart: 1
 --- !u!1 &1983401954
 GameObject:

@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
                 _damageFlash.StartFlash();    
                 _dangerModeActive = true;
                 _onDangerModeActive?.Invoke();
-                Sound.SoundManagerBehaviour.Instance.PlaySound(_dangerVoiceClip, 2);
+                Sound.SoundManagerBehaviour.Instance.PlayerAnnouncerSound(_dangerVoiceClip);
             }
             else if (_healthComponent.Health < _healthComponent.MaxHealth)
             {

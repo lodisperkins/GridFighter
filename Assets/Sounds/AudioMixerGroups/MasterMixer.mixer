@@ -25,7 +25,7 @@ AudioMixerController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: BattleSceneMixer
+  m_Name: MasterMixer
   m_OutputGroup: {fileID: 0}
   m_MasterGroup: {fileID: 24300002}
   m_Snapshots:
@@ -34,7 +34,15 @@ AudioMixerController:
   m_SuspendThreshold: -80
   m_EnableSuspend: 1
   m_UpdateMode: 0
-  m_ExposedParameters: []
+  m_ExposedParameters:
+  - guid: bbba7cd5fd489f3478c3720e849c0aec
+    name: AnnouncerVolume
+  - guid: 6ce6017f352c05745946cc94029a3a06
+    name: MusicVolume
+  - guid: e3d8113a033da754bb80a2aa72390fbb
+    name: SFXVolume
+  - guid: f4ccd02f1e324694cbf796336893c935
+    name: VoicesVolume
   m_AudioMixerGroupViews:
   - guids:
     - 35533b2d8b21b914ca9dba095c018ddc

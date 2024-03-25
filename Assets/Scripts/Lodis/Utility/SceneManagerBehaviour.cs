@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.Users;
@@ -37,6 +38,9 @@ namespace Lodis.Utility
         private InputProfileData _p1InputProfile;
         [SerializeField]
         private InputProfileData _p2InputProfile;
+        [SerializeField]
+        [Tooltip("Event called when scene starts. Cleared when transistioning between scenes.")]
+        private UnityEvent _onStart;
         private IntVariable _currentIndex;
         private int _previousScene;
 
@@ -69,6 +73,7 @@ namespace Lodis.Utility
 
         public InputProfileData P1InputProfile { get => _p1InputProfile; private set => _p1InputProfile = value; }
         public InputProfileData P2InputProfile { get => _p2InputProfile; private set => _p2InputProfile = value; }
+        public UnityEvent OnStart { get => _onStart; set => _onStart = value; }
 
         private void Awake()
         {
@@ -79,6 +84,13 @@ namespace Lodis.Utility
                 _module.submit.action.started += UpdateDeviceP1;
 
             Application.targetFrameRate = 60;
+        }
+
+        private void Start()
+        {
+            _onStart?.Invoke();
+
+            SceneManager.sceneUnloaded += s => _onStart.RemoveAllListeners();
         }
 
         public void UpdateDevices(int playerID)

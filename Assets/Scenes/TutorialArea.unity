@@ -2793,6 +2793,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: d59f8d7fc4d50c84285c2c96c17bef0d,
     type: 3}
   m_PointAction: {fileID: -1654692200621890270, guid: d59f8d7fc4d50c84285c2c96c17bef0d,
@@ -2817,6 +2818,7 @@ MonoBehaviour:
     type: 3}
   m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
+  m_CursorLockBehavior: 0
 --- !u!114 &127878316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6011,7 +6013,8 @@ AudioSource:
   m_GameObject: {fileID: 402693611}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 213090869929638346, guid: 6dd25384fc364c5479b48017cbc82a3a,
+    type: 2}
   m_audioClip: {fileID: 8300000, guid: ad5cbf4a8382e444ba934b1a213d050b, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.35
@@ -9523,6 +9526,7 @@ MonoBehaviour:
   _objectsToColor:
   - ObjectImage: {fileID: 704078044}
     OnlyChangeHue: 0
+    SaturationThreshold: 10
   _textToColor: []
   _setColorsOnStart: 1
 --- !u!114 &704078047
@@ -10990,7 +10994,8 @@ AudioSource:
   m_GameObject: {fileID: 855454085}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5164157840877826481, guid: 6dd25384fc364c5479b48017cbc82a3a,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.4
@@ -17007,6 +17012,7 @@ MonoBehaviour:
   _objectsToColor:
   - ObjectImage: {fileID: 1276346839}
     OnlyChangeHue: 1
+    SaturationThreshold: 10
   _textToColor: []
   _setColorsOnStart: 1
 --- !u!114 &1276346839
@@ -19145,6 +19151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _soundEffectSource: {fileID: 855454086}
+  _voiceSource: {fileID: 0}
   _musicSource: {fileID: 402693612}
   _announcer: {fileID: 479321164}
   _hitSounds:
@@ -21360,6 +21367,12 @@ MonoBehaviour:
       OnInactive:
         m_PersistentCalls:
           m_Calls: []
+      OnGoToParent:
+        m_PersistentCalls:
+          m_Calls: []
+      OnGoToChild:
+        m_PersistentCalls:
+          m_Calls: []
     - PageRoot: {fileID: 94023307}
       FirstSelected: {fileID: 0}
       KeepRootVisible: 0
@@ -21371,6 +21384,12 @@ MonoBehaviour:
       OnInactive:
         m_PersistentCalls:
           m_Calls: []
+      OnGoToParent:
+        m_PersistentCalls:
+          m_Calls: []
+      OnGoToChild:
+        m_PersistentCalls:
+          m_Calls: []
     - PageRoot: {fileID: 6895064}
       FirstSelected: {fileID: 0}
       KeepRootVisible: 0
@@ -21380,6 +21399,12 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls: []
       OnInactive:
+        m_PersistentCalls:
+          m_Calls: []
+      OnGoToParent:
+        m_PersistentCalls:
+          m_Calls: []
+      OnGoToChild:
         m_PersistentCalls:
           m_Calls: []
     OnActive:
@@ -21410,10 +21435,17 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+    OnGoToParent:
+      m_PersistentCalls:
+        m_Calls: []
+    OnGoToChild:
+      m_PersistentCalls:
+        m_Calls: []
   _eventSystem: {fileID: 127878316}
   _loadSceneOnFirstPage: 0
   _previousPageOnCancel: 1
   _sceneIndex: -1
+  _changePageManually: 0
 --- !u!1 &1815533664
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,6 +9,7 @@ namespace Lodis.Sound
     {
         private static SoundManagerBehaviour _instance;
         [SerializeField] private AudioSource _soundEffectSource;
+        [SerializeField] private AudioSource _voiceSource;
         [SerializeField] private AudioSource _musicSource;
         [SerializeField] private AudioSource _announcer;
         [SerializeField] private AudioClip[] _hitSounds;
@@ -38,6 +39,12 @@ namespace Lodis.Sound
 
                     _instance._soundEffectSource = new GameObject("SoundEffectSource").AddComponent<AudioSource>();
                     _instance._soundEffectSource.transform.SetParent(_instance.transform);
+
+                    _instance._voiceSource = new GameObject("VoiceSource").AddComponent<AudioSource>();
+                    _instance._voiceSource.transform.SetParent(_instance.transform);
+
+                    _instance._announcer = new GameObject("AnnouncerSource").AddComponent<AudioSource>();
+                    _instance._announcer.transform.SetParent(_instance.transform);
                 }
 
                 return _instance;
@@ -90,6 +97,11 @@ namespace Lodis.Sound
 
             RoutineBehaviour.Instance.StopAction(_enableSameSFXAction);
             _enableSameSFXAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canPlaySameSFX = true, TimedActionCountType.SCALEDTIME, _sameSoundDelay);
+        }
+
+        public void PlayVoiceSound(AudioClip clip)
+        {
+            _voiceSource.PlayOneShot(clip);
         }
 
         public void PlayerAnnouncerSound(AudioClip voiceClip)
