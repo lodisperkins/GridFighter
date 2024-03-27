@@ -2,6 +2,7 @@
 using Lodis.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -41,6 +42,9 @@ namespace Lodis.Utility
         [SerializeField]
         [Tooltip("Event called when scene starts. Cleared when transistioning between scenes.")]
         private UnityEvent _onStart;
+        [SerializeField]
+        private GameObject _loadScreen;
+
         private IntVariable _currentIndex;
         private int _previousScene;
 
@@ -54,8 +58,10 @@ namespace Lodis.Utility
 
                 if (!_instance)
                 {
-                    GameObject manager = new GameObject("SceneManager");
-                    _instance = manager.AddComponent<SceneManagerBehaviour>();
+                    GameObject manager = Instantiate(Resources.Load<GameObject>("SceneManager"));
+                    manager.name = "SceneManager";
+
+                    _instance = manager.GetComponent<SceneManagerBehaviour>();
                     DontDestroyOnLoad(_instance.gameObject);
                 }
 
@@ -74,16 +80,25 @@ namespace Lodis.Utility
         public InputProfileData P1InputProfile { get => _p1InputProfile; private set => _p1InputProfile = value; }
         public InputProfileData P2InputProfile { get => _p2InputProfile; private set => _p2InputProfile = value; }
         public UnityEvent OnStart { get => _onStart; set => _onStart = value; }
+        public InputSystemUIInputModule Module { get => _module; set => _module = value; }
 
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
             _currentIndex = Resources.Load<IntVariable>("ScriptableObjects/CurrentScene");
 
-            if (_updateDeviceBasedOnUI && _module)
-                _module.submit.action.started += UpdateDeviceP1;
+            if (_updateDeviceBasedOnUI && Module)
+                Module.submit.action.started += UpdateDeviceP1;
+
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
 
             Application.targetFrameRate = 60;
+        }
+
+        private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
+        {
+            _loadScreen.SetActive(false);
         }
 
         private void Start()
@@ -130,21 +145,26 @@ namespace Lodis.Utility
 
         public void LoadScene(int index)
         {
-            SceneManager.LoadScene(index);
+            SceneManager.LoadSceneAsync(index);
+            _loadScreen.SetActive(true);
+
             _previousScene = _currentIndex;
             _currentIndex.Value = index;
         }
 
         public void LoadScene(string name)
         {
-            SceneManager.LoadScene(name);
+            SceneManager.LoadSceneAsync(name);
+            _loadScreen.SetActive(true);
+
             _previousScene = _currentIndex;
             _currentIndex.Value = SceneManager.GetActiveScene().buildIndex;
         }
 
         public void LoadPreviousScene()
         {
-            SceneManager.LoadScene(_previousScene);
+            SceneManager.LoadSceneAsync(_previousScene);
+            _loadScreen.SetActive(true);
         }
 
         public void QuitApplication()

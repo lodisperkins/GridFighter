@@ -136,7 +136,7 @@ namespace Lodis.UI
         private void OnDisable()
         {
             
-            _onDisable.Invoke();
+            _onDisable?.Invoke();
             _onDisable = null;
         }
 
