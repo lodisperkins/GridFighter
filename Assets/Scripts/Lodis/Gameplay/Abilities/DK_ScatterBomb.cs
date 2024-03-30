@@ -20,6 +20,7 @@ namespace Lodis.Gameplay
         private GameObject _explosionEffect;
         private TimedAction _explosionTimer;
         private HitColliderData _hitColliderData;
+        private int _startX = 1;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -33,46 +34,105 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
+
+            //Flip the starting x position based on the side of the grid.
+            if (OwnerMoveScript.Alignment == GridAlignment.LEFT)
+            {
+                _startX = (int)(GridBehaviour.Grid.Dimensions.x - 2);
+            }
+
             _bombs?.Clear();
             _targetPanels?.Clear();
 
-            SmoothMovement = true;
+            SmoothMovement = false;
             _hitColliderData = GetColliderData(0);
         }
 
+        /// <summary>
+        /// Despawns all bombs and spawns explosions.
+        /// </summary>
         private void DetonateBombs()
         {
+            CleanEntityList();
+
             foreach (GridMovementBehaviour entity in ActiveEntities)
             {
-                HitColliderSpawner.SpawnBoxCollider(entity.transform.position + Vector3.up / 2, Vector3.one, _hitColliderData, owner);
-
-                Object.Instantiate(_explosionEffect, entity.transform.position, Camera.main.transform.rotation);
-                ObjectPoolBehaviour.Instance.ReturnGameObject(entity.gameObject, _hitColliderData.TimeActive + 0.1f);
+                ExplodeBomb(entity);
             }
 
             _bombs.Clear();
+        }
+
+        /// <summary>
+        /// Spawns an explosion at returns the entity to the pool.
+        /// </summary>
+        private void ExplodeBomb(GridMovementBehaviour entity)
+        {
+            HitColliderSpawner.SpawnBoxCollider(entity.transform.position + Vector3.up / 2, Vector3.one, _hitColliderData, owner);
+
+            Object.Instantiate(_explosionEffect, entity.transform.position, Camera.main.transform.rotation);
+
+            ClearBombEvent(entity);
+
+            ObjectPoolBehaviour.Instance.ReturnGameObject(entity.gameObject, _hitColliderData.TimeActive + 0.1f);
+
             CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
         }
 
-	    //Called when ability is used
+        //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            PanelPositions[0] = OwnerMoveScript.Position + Vector2.right * OwnerMoveScript.transform.forward.x;
-            PanelPositions[1] = (OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x) + Vector2.up;
-            PanelPositions[2] = (OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x) + Vector2.down;
-            PanelPositions[3] = OwnerMoveScript.Position + Vector2.right * 3 * OwnerMoveScript.transform.forward.x;
-            PanelPositions[4] = OwnerMoveScript.Position + Vector2.right * 2 * OwnerMoveScript.transform.forward.x;
+            //Positioning bombs on the two back rows.
+            Vector2 spawnPos = new Vector2(_startX, 0);
+
+            PanelPositions[0] = spawnPos;
+            PanelPositions[1] = spawnPos + Vector2.up;
+            PanelPositions[2] = spawnPos + Vector2.up * 2;
+
+            //Move the x back 1 row.
+            spawnPos.x = _startX + OwnerMoveScript.GetAlignmentX();
+
+            PanelPositions[3] = spawnPos;
+            PanelPositions[4] = spawnPos + Vector2.up;
+            PanelPositions[5] = spawnPos + Vector2.up * 2;
 
             base.OnActivate(args);
 
+            //Making the bombs explode on touch.
+            foreach (GridMovementBehaviour entity in ActiveEntities)
+            {
+                ColliderBehaviour collider = entity.GetComponent<ColliderBehaviour>();
+
+                collider.AddCollisionEvent(collisionArgs => ExplodeBomb(entity));
+                collider.Owner = owner;
+            }
+
             //Starts the bomb countdown
             _explosionTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => DetonateBombs(), TimedActionCountType.SCALEDTIME, _bombTimer);
+        }
+
+        /// <summary>
+        /// Removes all collision events from bombs. Used during clean up.
+        /// </summary>
+        private void ClearBombEvents()
+        {
+            foreach (GridMovementBehaviour entity in ActiveEntities)
+            {
+                ClearBombEvent(entity);
+            }
+        }
+
+        private void ClearBombEvent(GridMovementBehaviour entity)
+        {
+            ColliderBehaviour collider = entity.GetComponent<ColliderBehaviour>();
+            collider.ClearCollisionEvent();
         }
 
         protected override void OnMatchRestart()
         {
             base.OnMatchRestart();
             RoutineBehaviour.Instance.StopAction(_explosionTimer);
+            ClearBombEvents();
         }
     }
 }

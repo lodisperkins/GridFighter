@@ -129,6 +129,8 @@ namespace Lodis.GridScripts
 
         public int TempMaxColumns => _tempMaxColumns;
 
+        public static GridBehaviour Grid { get; private set; }
+
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.
         /// </summary>
@@ -198,6 +200,8 @@ namespace Lodis.GridScripts
 
             collisionPlane.transform.localScale = new Vector3(_width / 10, collisionPlane.transform.localScale.y, _height / 10);
             collisionPlane.transform.position += new Vector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
+
+            Grid = this;
         }
 
         /// <summary>
