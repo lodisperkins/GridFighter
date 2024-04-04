@@ -1486,7 +1486,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _onSelect.m_PersistentCalls.m_Calls.Array.data[5].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 32900000, guid: 3ff2919cf7ab8b0439bdcbe45be0f55a,
+      objectReference: {fileID: 32900000, guid: afccbacffee99c744aa6a011060d993d,
         type: 3}
     - target: {fileID: 1251192488738103914, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -17266,7 +17266,7 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1734035113}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 3ff2919cf7ab8b0439bdcbe45be0f55a, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: afccbacffee99c744aa6a011060d993d, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 658079175}
