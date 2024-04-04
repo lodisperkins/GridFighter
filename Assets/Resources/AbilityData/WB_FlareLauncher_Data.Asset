@@ -15,7 +15,7 @@ MonoBehaviour:
   abilityName: Flare Launcher
   abilityDescription: Perform a flaming backflip that launches your opponent in the
     air.
-  exampleClip: {fileID: 32900000, guid: 169d2058448ebfe48af093a272ebeb56, type: 3}
+  exampleClip: {fileID: 32900000, guid: 4c99f08ab0a34484bb8d1c2241885ffa, type: 3}
   AbilityType: 3
   timeActive: 0.2
   recoverTime: 0.22

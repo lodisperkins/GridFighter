@@ -84,17 +84,17 @@ namespace Lodis.Gameplay
         {
             //Positioning bombs on the two back rows.
             Vector2 spawnPos = new Vector2(_startX, 0);
+            spawnPos.x = _startX + OwnerMoveScript.GetAlignmentX();
 
             PanelPositions[0] = spawnPos;
             PanelPositions[1] = spawnPos + Vector2.up;
             PanelPositions[2] = spawnPos + Vector2.up * 2;
 
             //Move the x back 1 row.
-            spawnPos.x = _startX + OwnerMoveScript.GetAlignmentX();
 
-            PanelPositions[3] = spawnPos;
-            PanelPositions[4] = spawnPos + Vector2.up;
-            PanelPositions[5] = spawnPos + Vector2.up * 2;
+            //PanelPositions[3] = spawnPos;
+            //PanelPositions[4] = spawnPos + Vector2.up;
+            //PanelPositions[5] = spawnPos + Vector2.up * 2;
 
             base.OnActivate(args);
 

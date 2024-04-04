@@ -47,6 +47,7 @@ namespace Lodis.Utility
 
         private IntVariable _currentIndex;
         private int _previousScene;
+        private bool _moduleEventAdded;
 
 
         public static SceneManagerBehaviour Instance
@@ -87,11 +88,10 @@ namespace Lodis.Utility
             DontDestroyOnLoad(gameObject);
             _currentIndex = Resources.Load<IntVariable>("ScriptableObjects/CurrentScene");
 
-            if (_updateDeviceBasedOnUI && Module)
-                Module.submit.action.started += UpdateDeviceP1;
-
 
             SceneManager.sceneLoaded += OnSceneLoaded;
+
+            Cursor.visible = false;
 
             Application.targetFrameRate = 60;
         }
@@ -121,7 +121,12 @@ namespace Lodis.Utility
         public void UpdateDeviceP1(InputAction.CallbackContext context)
         {
             P1Devices.Value = new InputDevice[1];
-            P1Devices[0] = context.control.device;
+
+            if (context.control.displayName == "Mouse")
+                P1Devices[0] = Keyboard.current.device;
+            else
+                P1Devices[0] = context.control.device;
+
         }
 
         public void UpdateDeviceP2(InputAction.CallbackContext context)
@@ -170,6 +175,18 @@ namespace Lodis.Utility
         public void QuitApplication()
         {
             Application.Quit();
+        }
+
+        private void Update()
+        {
+
+
+            if (_updateDeviceBasedOnUI && Module && !_moduleEventAdded)
+            {
+                Module.submit.action.started += UpdateDeviceP1;
+                Module.leftClick.action.started += UpdateDeviceP1;
+                _moduleEventAdded = true;
+            }
         }
     }
 }

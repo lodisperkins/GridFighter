@@ -72,9 +72,9 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID: 1.7165106e+9
-    SpawnEffect: {fileID: 6017019445347752382, guid: 6985e73a336888e4eae65baa727db325,
+    SpawnEffect: {fileID: 7495853581713593668, guid: 8316cbf2b44a4fa46b1fabcd4c2f1428,
       type: 3}
-    HitSpark: {fileID: 168380961112235169, guid: e420048addf42694c911fc7ac19ea7bc,
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2
     HitStopShakeStrength: 0.8

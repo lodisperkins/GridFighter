@@ -126,7 +126,7 @@ namespace Lodis.Gameplay
             _p2Moveset = _p2InputController.Character.GetComponent<MovesetBehaviour>();
             _p2Input = _player2.GetComponent<InputBehaviour>();
 
-            ApplyBindingOverrides(_p2Input, SceneManagerBehaviour.Instance.P2InputProfile,SceneManagerBehaviour.Instance.P2ControlScheme);
+            ApplyBindingOverrides(_p2Input, SceneManagerBehaviour.Instance.P2InputProfile,SceneManagerBehaviour.Instance.P2ControlScheme, true);
             
             if (_p2IsCustom.Value)
             {
@@ -214,7 +214,7 @@ namespace Lodis.Gameplay
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
         }
 
-        private static void ApplyBindingOverrides(InputBehaviour playerInput, InputProfileData profile, string scheme)
+        private static void ApplyBindingOverrides(InputBehaviour playerInput, InputProfileData profile, string scheme, bool invertHorizontal = false)
         {
             if (!playerInput)
                 return;
@@ -228,7 +228,7 @@ namespace Lodis.Gameplay
             if (scheme == "Keyboard")
             {
                 ApplyCompositeOverrides(inputProfile, playerInput.PlayerControls.Player.Move);
-                ApplyCompositeOverrides(inputProfile, playerInput.PlayerControls.Player.AttackDirection);
+                ApplyCompositeOverrides(inputProfile, playerInput.PlayerControls.Player.AttackDirection, invertHorizontal);
             }
 
             playerInput.PlayerControls.Player.Attack.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.WeakAttack).Path);
@@ -249,14 +249,27 @@ namespace Lodis.Gameplay
             playerInput.PlayerControls.Player.Shuffle.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.Shuffle).Path);
         }
 
-        private static void ApplyCompositeOverrides(InputProfileData p1InputProfile, InputAction compositeAction)
+        private static void ApplyCompositeOverrides(InputProfileData p1InputProfile, InputAction compositeAction, bool invertHorizontal = false)
         {
             InputActionSetupExtensions.BindingSyntax moveBinding = compositeAction.ChangeCompositeBinding("WASD");
 
             InputActionSetupExtensions.BindingSyntax upBinding = moveBinding.NextPartBinding("Up");
             InputActionSetupExtensions.BindingSyntax downBinding = moveBinding.NextPartBinding("Down");
-            InputActionSetupExtensions.BindingSyntax leftBinding = moveBinding.NextPartBinding("Left");
-            InputActionSetupExtensions.BindingSyntax rightBinding = moveBinding.NextPartBinding("Right");
+
+            InputActionSetupExtensions.BindingSyntax leftBinding;
+            InputActionSetupExtensions.BindingSyntax rightBinding;
+
+            if (!invertHorizontal)
+            {
+                leftBinding = moveBinding.NextPartBinding("Left");
+                rightBinding = moveBinding.NextPartBinding("Right");
+            }
+            else
+            {
+                leftBinding = moveBinding.NextPartBinding("Right");
+                rightBinding = moveBinding.NextPartBinding("Left");
+            }
+
 
             compositeAction.ApplyBindingOverride(upBinding.bindingIndex, p1InputProfile.GetBinding(BindingType.MoveUp).Path);
             compositeAction.ApplyBindingOverride(downBinding.bindingIndex, p1InputProfile.GetBinding(BindingType.MoveDown).Path);
@@ -270,6 +283,16 @@ namespace Lodis.Gameplay
 
             if (_p2Input)
                 _p2Input.PlayerControls.RemoveAllBindingOverrides();
+        }
+
+        void OnEnable()
+        {
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate;
+        }
+
+        void OnDisable()
+        {
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
         }
 
         public void ResetPlayers()

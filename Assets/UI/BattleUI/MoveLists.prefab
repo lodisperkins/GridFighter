@@ -240,6 +240,7 @@ MonoBehaviour:
   _cursor: {fileID: 686400704228516546}
   _lerpDuration: 0.1
   _eventSystem: {fileID: 0}
+  _setCursorManually: 0
 --- !u!114 &6340101954762857373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +256,7 @@ MonoBehaviour:
   _cursor: {fileID: 686400704692803910}
   _lerpDuration: 0.1
   _eventSystem: {fileID: 0}
+  _setCursorManually: 0
 --- !u!1 &1353666404589764301
 GameObject:
   m_ObjectHideFlags: 0

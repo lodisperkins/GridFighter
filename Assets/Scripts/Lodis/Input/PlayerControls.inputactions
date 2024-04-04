@@ -258,17 +258,6 @@
                 },
                 {
                     "name": "",
-                    "id": "a2e7c22c-98ff-4910-93ed-65247fd241e2",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "Attack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "65134b81-1bbe-478b-99c1-ce60dfe4b1c9",
                     "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
@@ -764,17 +753,6 @@
                 },
                 {
                     "name": "",
-                    "id": "44ccfacc-2eba-4ecb-9d74-fa9cfdf1491e",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "Press(behavior=1)",
-                    "processors": "",
-                    "groups": "Keyboard",
-                    "action": "ChargeAttack",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4ae4ca4b-847c-4875-a42b-2b02ddcbad7f",
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
@@ -1231,50 +1209,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Cancel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "043091e7-6f7d-4cf6-8055-6339e883aea1",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Point",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "582c204b-e9bb-4628-9479-83b04da5306a",
-                    "path": "<Pen>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Point",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "71243f7d-79a8-49c8-8d46-fea79c8c78a1",
-                    "path": "<Touchscreen>/touch*/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Touch",
-                    "action": "Point",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2ab86eea-698a-4805-a54e-d3fe205d1c54",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse;Keyboard",
-                    "action": "Click",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

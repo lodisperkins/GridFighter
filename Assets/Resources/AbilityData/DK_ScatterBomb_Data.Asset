@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: DK_ScatterBomb_Data
   m_EditorClassIdentifier: 
   abilityName: Scatter Bombs
-  abilityDescription: Deploys six bombs on the opponents two back rows. They explode
+  abilityDescription: Deploys three bombs on the opponents back row. They explode
     when they are touched.
   exampleClip: {fileID: 32900000, guid: 2b4490d45a425dc4891c31c7b43d068c, type: 3}
   AbilityType: 8
   timeActive: 0.05
   recoverTime: 0.1
-  startUpTime: 0.2
+  startUpTime: 0.5
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 2
@@ -82,7 +82,7 @@ MonoBehaviour:
   - name: BombTimer
     value: 20
   - name: EntityCount
-    value: 6
+    value: 3
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

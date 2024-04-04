@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: T-Snare
   abilityDescription: If the opponent is on the same row, impale them and trap them.
-    Hold the button down while active to move your opponent.
-  exampleClip: {fileID: 32900000, guid: 7d893dea71cc0dc4aba95aee517c1b6b, type: 3}
+    Move them around while they are in the air to set up for a follow up attack.
+  exampleClip: {fileID: 32900000, guid: 610d595b569bb6d4ea2024223ced08ef, type: 3}
   AbilityType: 8
   timeActive: 0.6
   recoverTime: 0.2

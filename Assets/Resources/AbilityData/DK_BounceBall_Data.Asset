@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: DK_BounceBall_Data
   m_EditorClassIdentifier: 
   abilityName: Bounce E-Ball
-  abilityDescription: Spawns a ball of energy that slowly bounces towards the opponent.
+  abilityDescription: Spawns two balls of energy that slowly bounces towards the
+    opponent.
   exampleClip: {fileID: 32900000, guid: 8ddb565b08899ee44857435b5a0c9485, type: 3}
   AbilityType: 8
   timeActive: 0.1

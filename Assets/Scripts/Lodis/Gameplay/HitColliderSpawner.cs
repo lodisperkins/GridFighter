@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using Lodis.GridScripts;
+using Lodis.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -138,6 +139,9 @@ namespace Lodis.Gameplay
             collider.size = size;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
+            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
+            tracker.Marker = MarkerType.DANGER;
+
             hitScript.ColliderInfo = hitCollider;
             hitScript.Owner = owner;
 
@@ -169,6 +173,8 @@ namespace Lodis.Gameplay
             collider.size = size;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
+            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
+            tracker.Marker = MarkerType.DANGER;
             hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner, false, false, true);
 
@@ -201,6 +207,8 @@ namespace Lodis.Gameplay
                 return hitScript;
 
             hitScript = hitObject.AddComponent<HitColliderBehaviour>();
+            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
+            tracker.Marker = MarkerType.DANGER;
             hitScript.ColliderInfo = hitCollider;
             hitScript.Owner = owner;
 
@@ -236,6 +244,8 @@ namespace Lodis.Gameplay
             hitObject.transform.rotation = rotation;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
+            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
+            tracker.Marker = MarkerType.DANGER;
             hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner, false, false, true);
 
@@ -270,6 +280,8 @@ namespace Lodis.Gameplay
             hitObject.transform.rotation = rotation;
 
             HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
+            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
+            tracker.Marker = MarkerType.DANGER;
             hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
                 owner, false, false, true);
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: DK_LightningStrike_Data
   m_EditorClassIdentifier: 
-  abilityName: LightingStrike
+  abilityName: Lighting Strike
   abilityDescription: Summon a strong bolt of lighting that zaps the panel the opponent
     is on.
   exampleClip: {fileID: 32900000, guid: aab21fb6fdfcbe44b91dd0c166b91a73, type: 3}

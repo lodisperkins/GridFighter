@@ -1,4 +1,5 @@
-﻿using Lodis.Movement;
+﻿
+using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,11 +22,13 @@ namespace Lodis.Gameplay
         private GameObject _visualPrefabInstance;
         private (Coroutine, Coroutine) _visualPrefabCoroutines;
         private bool _wavesSpawned;
+        private GameObject _explosionEffect;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
         {
 			base.Init(newOwner);
+            _explosionEffect = (GameObject)Resources.Load("Effects/MediumExplosion");
             _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
         }
 
@@ -82,11 +85,14 @@ namespace Lodis.Gameplay
             //Instantiate the first shockwave and attach a hit box to it
             _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
 
+
             HitColliderBehaviour hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             hitScript.ColliderInfo = _shockWaveCollider;
             hitScript.Owner = owner;
             hitScript.ColliderInfo.OwnerAlignement = OwnerMoveScript.Alignment;
-            
+
+            Object.Instantiate(_explosionEffect, OwnerMoveScript.CurrentPanel.transform.position, Camera.main.transform.rotation);
+
             //Move first shockwave
             MoveHitBox(_visualPrefabInstance, owner.transform.forward);
 

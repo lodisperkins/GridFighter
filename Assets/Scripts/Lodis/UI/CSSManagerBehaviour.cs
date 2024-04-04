@@ -348,7 +348,7 @@ namespace Lodis.UI
 
             if (pageManager.CurrentPage?.PageParent?.PageName == "custom" && !custManager.HasCustomDecks)
                 pageManager.GoToPage("default");
-            else if (pageManager.CurrentPage.PageName == "default" && !custManager.HasCustomDecks)
+            else if (pageManager.CurrentPage?.PageName == "default" && !custManager.HasCustomDecks)
                 return;
             else
                 pageManager.GoToPageParent();
@@ -457,6 +457,14 @@ namespace Lodis.UI
             return false;
         }
 
+        public void ResetRoot(int playerNum)
+        {
+            if (playerNum == 1)
+                _player1EventSystem.playerRoot = _player1Root;
+            else if (playerNum == 2)
+                _player2EventSystem.playerRoot = _player2Root;
+        }
+
         public void CloseMovesList(int playerNum)
         {
             if (playerNum == 1)
@@ -479,13 +487,13 @@ namespace Lodis.UI
             Deck normal = null;
             Deck special = null;
 
-            if (playerNum == 1)
+            if (playerNum == 1 && _p1PageManager.CurrentPage.PageName != "InputProfile")
             {
                 LoadMovesListDecks(out normal, out special, _player1SelectedCharacter, _player1HasCustomSelected);
                 _player1MovesList.UpdateUI(normal, special, _player1EventSystem);
                 _p1PageManager.GoToPageChild(0);
             }
-            else if (playerNum == 2)
+            else if (playerNum == 2 && _p2PageManager.CurrentPage.PageName != "InputProfile")
             {
                 LoadMovesListDecks(out normal, out special, _player2SelectedCharacter, _player2HasCustomSelected);
                 _player2MovesList.UpdateUI(normal, special, _player2EventSystem);

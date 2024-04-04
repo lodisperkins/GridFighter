@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.UI;
-using UnityEngine.XR.WSA.Input;
 
 public class MainMenuBehaviour : MonoBehaviour
 {
@@ -28,5 +27,10 @@ public class MainMenuBehaviour : MonoBehaviour
     public void SetGameMode(int mode)
     {
         SceneManagerBehaviour.Instance.SetGameMode(mode);
+    }
+
+    public void Quit()
+    {
+        Application.Quit();
     }
 }

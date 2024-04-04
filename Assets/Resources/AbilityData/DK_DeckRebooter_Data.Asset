@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Deck Rebooter
   abilityDescription: Fires a projectile that forces the opponent to reshuffle their
-    deck.
+    deck and temporarily stuns them.
   exampleClip: {fileID: 32900000, guid: 51a3a5e6d8428614b87c334bc60c1852, type: 3}
   AbilityType: 8
   timeActive: 0.1

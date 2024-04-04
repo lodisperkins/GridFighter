@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DK_AuraCyclone_Data
   m_EditorClassIdentifier: 
   abilityName: T-Saw
-  abilityDescription: Throw Thalamus forward to create a spinning blade to slice
+  abilityDescription: Throw Thalamus forward to create a spinning saw blade to slice
     through enemies.
   exampleClip: {fileID: 32900000, guid: f056bfbfb3fd6bc49a21290da043dd4b, type: 3}
   AbilityType: 8
