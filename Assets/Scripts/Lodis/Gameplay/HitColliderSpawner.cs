@@ -191,12 +191,14 @@ namespace Lodis.Gameplay
         /// <param name="owner"></param>
         public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderData hitCollider, GameObject owner)
         {
-            GameObject hitObject = ObjectPoolBehaviour.Instance.GetObject(owner.name + hitCollider.Name + " BoxCollider", parent, true, true);
+            GameObject hitObject = null;
+
+            bool colliderExisted = ObjectPoolBehaviour.Instance.GetObject(out hitObject, owner.name + hitCollider.Name + " BoxCollider", parent, true, true);
 
             HitColliderBehaviour hitScript;
 
             hitObject.name = owner.name + hitCollider.Name + " BoxCollider";
-            BoxCollider collider = hitObject.AddComponent<BoxCollider>();
+            BoxCollider collider = colliderExisted? hitObject.GetComponent<BoxCollider>() : hitObject.AddComponent<BoxCollider>();
             hitObject.transform.SetParent(parent);
             hitObject.transform.localPosition = Vector3.zero;
             hitObject.transform.localRotation = Quaternion.identity;
@@ -206,8 +208,8 @@ namespace Lodis.Gameplay
             if (hitObject.TryGetComponent(out hitScript))
                 return hitScript;
 
-            hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
+            hitScript = colliderExisted ? hitObject.GetComponent<HitColliderBehaviour>() : hitObject.AddComponent<HitColliderBehaviour>();
+            GridTrackerBehaviour tracker = colliderExisted ? hitObject.GetComponent<GridTrackerBehaviour>() : hitObject.AddComponent<GridTrackerBehaviour>();
             tracker.Marker = MarkerType.DANGER;
             hitScript.ColliderInfo = hitCollider;
             hitScript.Owner = owner;

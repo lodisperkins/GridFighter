@@ -162,6 +162,10 @@ MonoBehaviour:
     value: 0.05
   - name: SlowMotionTime
     value: 1.2
+  - name: DashHitBoxX
+    value: 2
+  - name: DashHitBoxY
+    value: 3
   animationType: 3
   _customAnimation: {fileID: 5180280961208456968, guid: 25b35b330c85c834c934e3100e227351,
     type: 3}

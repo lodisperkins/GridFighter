@@ -203,6 +203,46 @@ namespace Lodis.Utility
         }
 
         /// <summary>
+        /// Gets the first instance of the object found in the pool
+        /// </summary>
+        /// <param name="name">The name of the object to search for</param>
+        /// <param name="parent">The new parent of the object</param>
+        /// <param name="resetPosition">Whether or not to make this game object match the position and rotation of its parent</param>
+        /// <param name="createNew">Whether or not to make a new object if one can't be found</param>
+        /// <returns>The object instance if it is in the pool. Returns null otherwise</returns>
+        public bool GetObject(out GameObject objectInstance, string name, Transform parent, bool resetPosition = false, bool createNew = false)
+        {
+            objectInstance = null;
+
+            //If an object of this type has a queue in the dictionary...
+            if (_objectPool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
+            {
+                //...set the first instance found active and return the object
+                objectInstance = objectQueue.Dequeue();
+                objectInstance.SetActive(true);
+                objectInstance.transform.parent = parent;
+
+                if (resetPosition)
+                    objectInstance.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+                return true;
+            }
+            //...otherwise create a new instance of the object
+            else if (createNew)
+            {
+                objectInstance = new GameObject(name);
+                objectInstance.transform.parent = parent;
+
+                if (resetPosition)
+                    objectInstance.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+                return false;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Instantiates a new instance of the object and changes its name to match the prefab
         /// </summary>
         /// <param name="gameObject">A reference to the prefab to instantiate</param>

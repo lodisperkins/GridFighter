@@ -897,18 +897,27 @@ namespace Lodis.Movement
             Instantiate(_returnEffect, transform.position + offset, Camera.main.transform.rotation);
         }
 
+        /// <summary>
+        /// Snaps the character to the current panel they are moving towards.
+        /// </summary>
         public void SnapToTarget()
         {
             if (!IsMoving || _lastPanel == null || _targetPanel == null)
                 return;
 
+
             float currentDistance = Vector3.Distance(_lastPanel.transform.position, transform.position);
             float targetDistance = Vector3.Distance(_targetPanel.transform.position, transform.position);
+
+            CanCancelMovement = true;
 
             if (currentDistance < targetDistance)
                 MoveToPanel(CurrentPanel, true);
             else
                 MoveToPanel(TargetPanel, true);
+
+
+            CanCancelMovement = false;
         }
 
 

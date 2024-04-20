@@ -127,8 +127,8 @@ namespace Lodis.Gameplay
             _chargeEffect.transform.parent = null;
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
-            OwnerMoveScript.CanCancelMovement = true;
 
+            OwnerMoveScript.SnapToTarget();
             OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + _distance * Vector2.right * OwnerMoveScript.GetAlignmentX(), false, GridScripts.GridAlignment.ANY, true, false, true);
 
             OwnerMoveScript.AddOnMoveEndTempAction(EndAbility);
