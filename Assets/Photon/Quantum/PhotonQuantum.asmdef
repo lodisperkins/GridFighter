@@ -1,0 +1,49 @@
+{
+    "name": "PhotonQuantum",
+    "references": [
+        "PhotonRealtime",
+        "PhotonQuantumCode",
+        "Unity.Addressables",
+        "Unity.ResourceManager"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.addressables",
+            "expression": "1.0",
+            "define": "QUANTUM_ENABLE_ADDRESSABLES"
+        },
+        {
+            "name": "com.unity.addressables",
+            "expression": "1.17",
+            "define": "QUANTUM_ENABLE_ADDRESSABLES_WAIT_FOR_COMPLETION"
+        },
+        {
+            "name": "com.unity.modules.physics",
+            "expression": "1.0",
+            "define": "QUANTUM_ENABLE_PHYSICS3D"
+        },
+        {
+            "name": "com.unity.modules.physics2d",
+            "expression": "1.0",
+            "define": "QUANTUM_ENABLE_PHYSICS2D"
+        },
+        {
+            "name": "com.unity.modules.ai",
+            "expression": "1.0",
+            "define": "QUANTUM_ENABLE_AI"
+        },
+        {
+            "name": "com.unity.modules.terrain",
+            "expression": "1.0",
+            "define": "QUANTUM_ENABLE_TERRAIN"
+        }
+    ],
+    "noEngineReferences": false
+}

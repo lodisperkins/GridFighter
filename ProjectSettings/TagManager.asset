@@ -5,14 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Structure
-  - BouncePoint
-  - Entity
-  - ParryBox
-  - CollisionPlane
-  - Panel
-  - Reflector
   - WinCollider
+  - BouncePoint
+  - ParryBox
+  - Panel
   - Accessory
+  - CollisionPlane
+  - Reflector
+  - Entity
   layers:
   - Default
   - TransparentFX
@@ -48,14 +48,14 @@ TagManager:
   - 
   m_SortingLayers:
   - name: Audience
-    uniqueID: 1285746283
+    uniqueID: 4190314763
     locked: 0
   - name: 2DEffects
-    uniqueID: 3776528163
+    uniqueID: 1354894505
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: BattleHUD
-    uniqueID: 1489586247
+    uniqueID: 3998065075
     locked: 0
