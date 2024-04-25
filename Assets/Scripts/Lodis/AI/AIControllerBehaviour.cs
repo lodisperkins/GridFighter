@@ -90,7 +90,7 @@ namespace Lodis.AI
         private int _currentActionIndex;
         private int _currentRecordingIndex;
         private ActionNode _currentSituation = new ActionNode(null, null);
-
+        [SerializeField]
         private string _recordingName = "AI";
         [SerializeField]
         [Tooltip("Whether or not to use recording data for decision making.")]
@@ -99,9 +99,12 @@ namespace Lodis.AI
         private bool _isPaused;
         private TimedAction _playbackRoutine;
         [SerializeField]
+        private int _randomDecisionConstant = 1;
+        [SerializeField]
+        [Tooltip("Recorded actions must have a score that is at least this value in order to be used.")]
         private float _accuracyMinimum;
         [SerializeField]
-        [Tooltip("Recorded actions that have a score above this value when compared are considered cannot be used.")]
+        [Tooltip("Recorded actions that have a score above this value when compared  cannot be used.")]
         private float _actionScoreMax;
         [SerializeField]
         [Tooltip("The last score found after comparing the current action situation to the current game state.")]
@@ -512,7 +515,7 @@ namespace Lodis.AI
                     float compareVal = recording[j].Compare(_currentSituation);
 
                     //If the current action is valid and matches our situation more closely than the last action...
-                    if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + 1) < currentLowest && ValidateAction(recording[j].CurrentAbilityID))
+                    if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + _randomDecisionConstant) < currentLowest && ValidateAction(recording[j].CurrentAbilityID))
                     {
                         //...update the current action.
                         _currentRecording = recording;
