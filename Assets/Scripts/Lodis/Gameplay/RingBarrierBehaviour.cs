@@ -60,7 +60,7 @@ namespace Lodis.Gameplay
         protected override void Awake()
         {
             base.Awake();
-            _shieldController.maxHP = Health;
+            //_shieldController.maxHP = Health;
             _ringBarrierFeedbackBehaviour = GetComponent<RingBarrierFeedbackBehaviour>();
         }
 
@@ -109,7 +109,7 @@ namespace Lodis.Gameplay
             OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamage?.Invoke();
 
-            _shieldController.GetHit(attacker.transform.position - transform.forward, transform.forward, 4, damage);
+            //_shieldController.GetHit(attacker.transform.position - transform.forward, transform.forward, 4, damage);
             return damage;
         }
 

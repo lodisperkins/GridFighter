@@ -31,6 +31,7 @@ SpriteAtlas:
       m_CrunchedCompression: 0
       m_AllowsAlphaSplitting: 0
       m_Overridden: 0
+      m_IgnorePlatformSupport: 0
       m_AndroidETC2FallbackOverride: 0
       m_ForceMaximumCompressionQuality_BC6H_BC7: 0
     packingSettings:
@@ -40,12 +41,60 @@ SpriteAtlas:
       allowAlphaSplitting: 0
       enableRotation: 0
       enableTightPacking: 1
+      enableAlphaDilation: 0
+    secondaryTextureSettings: {}
     variantMultiplier: 1
     packables:
     - {fileID: 102900000, guid: 8c0a14c966b8aa04fbc71732e2f96814, type: 3}
     - {fileID: 102900000, guid: 0460c633dac38fb48902a27ade5ecb2e, type: 3}
     - {fileID: 102900000, guid: 34553afe742a1d44a8270e3ae8567ba1, type: 3}
     bindAsDefault: 1
+    isAtlasV2: 0
+    cachedData: {fileID: 0}
+    packedSpriteRenderDataKeys:
+    - 10fcf2503ef845248b8d7cf11cd38c62: 21300000
+    - 452ba87002638b744912cfbf092a4995: 21300000
+    - 1f28d301d9a02544aab4dc043159da92: 21300000
+    - f0edcc01ed9adb5479285e8c4267d960: 21300000
+    - d9a0694168ed48340b650a3a19fe55c2: 21300000
+    - 1eac0391819128942ad0dcaf01b4bfc8: 21300000
+    - c895c4128d1e08f449dc12ec054dd551: 21300000
+    - 40260022a98c2ee438a4908bd6262e3d: 21300000
+    - 8db0a422b9332f74c87b98312398376a: 21300000
+    - 4a86e0b29f8f62c44b074771a5e7d316: 21300000
+    - 8c59348333494bb4f86b89ac90a5d366: 21300000
+    - c53c7cc3bf6d30a49bb858da889b3b8e: 21300000
+    - b24b3b041a9765046908f88429b8156b: 21300000
+    - 2bbbe5247ba6c524ab1a4eaf0935e3db: 21300000
+    - 3cdfea74b899652478a0a0e658c261a4: 21300000
+    - ed5a9b74e4e018f49ab2e573b541a90d: 21300000
+    - b166e8a4acc8f1449abde68c3b378c7d: 21300000
+    - b33bd9d51c4fc1645b4c67f989fc326d: 21300000
+    - 88c241971dd1ae24e801a4ecec4d5193: 21300000
+    - 199fae9767abbf84d9cb0e74eabefe95: 21300000
+    - 6479a7b7f96f56d4dab1f75f414638bb: 21300000
+    - cd3c14e776aa88a46a801f5d08cf35bc: 21300000
+    - 351432287a241a4429c78510664434d2: 21300000
+    - 59972fa81a2209045907e3d31893393a: 21300000
+    - 074015c84d9d5da4cbd32b8ec6470e12: 21300000
+    - b4d078c871b18be44a1349ff10ff8c17: 21300000
+    - aec72e19114433c40be17b98a2aa95b0: 21300000
+    - 8a5beb79d636a924eb3379aa8a41dc6e: 21300000
+    - 6b2d348aa8ab3954d9bde0523deba78b: 21300000
+    - 2a91219a40f52b841822cb6d950c7a9b: 21300000
+    - b94f54aaa3947a943aaca0b13c084f09: 21300000
+    - 70070aca162882b4a8c0191a4d275894: 21300000
+    - fe7ee22b7a0439346a85859dd69f684c: 21300000
+    - 5bdd7abbc6ad6ee4cad48d52440fd250: 21300000
+    - 007cffdb08d1a16479d7680e8e660587: 21300000
+    - fd24121c78ed28f4c9ff31359800017b: 21300000
+    - 5314a09c720cb4d49b1bdf3f2f87f794: 21300000
+    - 9623cfbcde4ff814bba3257882d14dfe: 21300000
+    - bddd43de17865b24aa03bd3b3d57b3a8: 21300000
+    - 79f804ee8d0a5334d9b0579f9ecaec6d: 21300000
+    - 87d5793f644c27e4cb3e44bc0269c851: 21300000
+    - fa57c08f25e4c5648a8dd18d60fb8155: 21300000
+    - b3e977ffd24fc224cb296638cc5a72dc: 21300000
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
   - {fileID: 21300000, guid: 10fcf2503ef845248b8d7cf11cd38c62, type: 3}
@@ -135,5 +184,6 @@ SpriteAtlas:
   - CrowdAnim_B_sequence.0030
   - CrowdAnim_B_sequence.0040
   - CrowdAnim_C_sequence.0069
+  m_RenderDataMap: {}
   m_Tag: CrowdAnim_sequence_2048_master
   m_IsVariant: 0

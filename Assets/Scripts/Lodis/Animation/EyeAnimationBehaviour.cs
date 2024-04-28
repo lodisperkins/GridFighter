@@ -44,6 +44,10 @@ namespace Lodis.Animation
         {
             _canBlink = true;
             _currentOpenEye = _idle;
+
+            if (!_health || !_stateMachine)
+                return;
+
             _stateMachine.AddOnStateChangedAction(SetEyes);
             _health.AddOnTakeDamageAction(ChangeEyesToHurt);
             _health.AddOnStunAction(() => SetStunEffects(true));
