@@ -14,6 +14,7 @@ namespace Lodis.Animation
         private string _textureName;
 
         [SerializeField]
+        [Min(2)]
         private float _timeBetweenBlinks;
         [SerializeField]
         private float _blinkDuration;
@@ -123,7 +124,10 @@ namespace Lodis.Animation
         void Update()
         {
             if ((_currentAction == null || !_currentAction.GetEnabled()) && !_isBlinking && _canBlink)
-                _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Blink(), TimedActionCountType.SCALEDTIME, _timeBetweenBlinks);
+            {
+                float blinkTime = Random.Range(0.5f, _timeBetweenBlinks);
+                _currentAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Blink(), TimedActionCountType.SCALEDTIME, blinkTime);
+            }
         }
         
         

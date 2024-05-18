@@ -86,13 +86,13 @@ Material:
     - Smoothness: 0
     - USENORMAL: 0
     - _AlphaClip: 0
-    - _AmbientStrength: 10
+    - _AmbientStrength: 1
     - _Blend: 0
     - _BumpScale: 1
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 10
-    - _EmissionStrength: 0.15
+    - _EmissionStrength: 2
     - _EnvironmentReflections: 1
     - _FalloffAmount: 0
     - _FresnelSize: 0
@@ -110,7 +110,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _Surface: 1
-    - _UseEmission: 0
+    - _UseEmission: 1
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:

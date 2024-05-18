@@ -78,7 +78,7 @@ namespace Lodis.Utility
             return false;
         }
 
-        public static void Add<T>(this System.Array array, T item)
+        public static T[] Add<T>(this System.Array array, T item)
         {
             if (array == null)
                 array = new T[0];
@@ -92,6 +92,8 @@ namespace Lodis.Utility
 
             temp[array.Length] = item;
             array = temp;
+
+            return (T[])array;
         }
         public delegate bool ValueCondition<T>(T value);
 

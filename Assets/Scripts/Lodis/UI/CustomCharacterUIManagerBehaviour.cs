@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using Lodis.Utility;
 using System;
 using Lodis.UI;
+using System.Linq;
 
 namespace Lodis.CharacterCreation
 {
@@ -46,7 +47,7 @@ namespace Lodis.CharacterCreation
 
         public void UpdateAllIconSections()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
                 UpdateIconChoicesWithType(i);
 
             Selected = _armorSections[0].IconHolder.GetChild(0).gameObject;
@@ -63,33 +64,39 @@ namespace Lodis.CharacterCreation
                 iconTransform.GetChild(i).SetParent(null);
             }
 
-            List<ArmorData> data = _characterManager.ReplacementArmorData.FindAll(armorData => armorData.BodySection == (BodySection)type);
+            //Get all armor pieces for the desired type
+            List<Wearable> wearables = _characterManager.CustomCharacter.WearableDictionary.Values.ToList();
+            List<Wearable> data = wearables.FindAll(item => item.Section == (BodySection)type);
 
 
             for (int i = 0; i < data.Count; i++)
             {
-                ArmorData currentData = data[i];
+                Wearable currentData = data[i];
 
-                if (_characterManager.CharacterArmorPieces.Contains(currentData))
-                    continue;
+                //if (_characterManager.CustomCharacter.GetIsWearingItem(currentData))
+                //    continue;
 
-                EventButtonBehaviour abilityButtonInstance = Instantiate(_buttonReference, iconTransform);
-
-                abilityButtonInstance.ButtonImage.sprite = currentData.DisplayIcon;
-                abilityButtonInstance.name = currentData.ArmorSetName;
-
-                if (setSelected)
-                    Selected = abilityButtonInstance.gameObject;
-
-                abilityButtonInstance.AddOnClickEvent(() =>
-                {
-                    _characterManager.CurrentArmorType = type;
-                    _characterManager.ReplaceArmorPiece(currentData);
-                    _characterManager.ReplacementName = currentData.ArmorSetName;
-                });
-
+                SpawnButton(type, setSelected, iconTransform, currentData);
                 setSelected = false;
             }
+        }
+
+        private void SpawnButton(int type, bool setSelected, Transform sectionTransform, Wearable currentData)
+        {
+            EventButtonBehaviour abilityButtonInstance = Instantiate(_buttonReference, sectionTransform);
+
+            abilityButtonInstance.ButtonImage.sprite = currentData.DisplayIcon;
+            abilityButtonInstance.name = currentData.ID;
+
+            if (setSelected)
+                Selected = abilityButtonInstance.gameObject;
+
+            abilityButtonInstance.AddOnClickEvent(() =>
+            {
+                _characterManager.CurrentArmorType = type;
+                _characterManager.ReplaceWearable(currentData.ID);
+                _characterManager.ReplacementName = currentData.ID;
+            });
         }
 
         public void SetCharacterName(Text inputText)
