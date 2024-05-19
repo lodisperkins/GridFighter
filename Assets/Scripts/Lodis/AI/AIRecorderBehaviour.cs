@@ -186,7 +186,7 @@ namespace Lodis.AI
             StreamReader reader = new StreamReader(recordingPath);
             List<ActionNode>[] recordings = JsonConvert.DeserializeObject<List<ActionNode>[]>(reader.ReadToEnd(), Settings);
 
-            Debug.Log("Loaded " + recordings.Length + "recordings");
+            Debug.Log("Loaded " + recordings?.Length + "recordings");
             reader.Close();
 
             return recordings;

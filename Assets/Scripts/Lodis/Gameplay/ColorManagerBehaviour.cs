@@ -23,6 +23,16 @@ namespace Lodis.Gameplay
         [Tooltip("When receiving new colors under this value, it will always override everything including the hue. Happens even if OnlyChangeHue is set to true.")]
         public float SaturationThreshold = 10;
 
+        public ColorObject(Renderer objectRenderer, string[] shaderProperties, bool onlyChangeHue, float saturationThreshold)
+        {
+            ObjectRenderer = objectRenderer;
+            ShaderProperties = shaderProperties;
+            OnlyChangeHue = onlyChangeHue;
+            SaturationThreshold = saturationThreshold;
+        }
+
+
+
         /// <summary>
         /// Store the current colors that are on this object.
         /// </summary>
@@ -168,6 +178,19 @@ namespace Lodis.Gameplay
 
                 colorObject.CacheColors();
             }
+        }
+
+        public void AddObjectToColor(GameObject objectToColor, params string[] shaderProperties)
+        {
+            SkinnedMeshRenderer objectRenderer = objectToColor.GetComponentInChildren<SkinnedMeshRenderer>();
+            ColorObject colorObject = new ColorObject(objectRenderer, shaderProperties, false, 0);
+            
+            _objectsToColor = _objectsToColor.Add(colorObject);
+        }
+
+        public void EmptyColorArray()
+        {
+            ObjectsToColor = new ColorObject[0];
         }
 
         // Start is called before the first frame update

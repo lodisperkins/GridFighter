@@ -159,7 +159,7 @@ TextureImporter:
       213: 21300102
     second: Keyboard_Sprite 1_51
   externalObjects: {}
-  serializedVersion: 11
+  serializedVersion: 12
   mipmaps:
     mipMapMode: 0
     enableMipMap: 1
@@ -176,9 +176,12 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
+    flipGreenChannel: 0
   isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -187,12 +190,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: -1
+    filterMode: 1
     aniso: 16
-    mipBias: -100
-    wrapU: -1
-    wrapV: -1
-    wrapW: -1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -210,10 +213,15 @@ TextureImporter:
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  ignorePngGamma: 0
   applyGammaDecoding: 1
+  swizzle: 50462976
+  cookieLightType: 1
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -225,6 +233,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -237,6 +246,7 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   - serializedVersion: 3
@@ -249,6 +259,33 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
@@ -1356,9 +1393,61 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-  spritePackingTag: 
+    nameFileIdTable:
+      Keyboard_Sprite 1_0: 21300000
+      Keyboard_Sprite 1_1: 21300002
+      Keyboard_Sprite 1_10: 21300020
+      Keyboard_Sprite 1_11: 21300022
+      Keyboard_Sprite 1_12: 21300024
+      Keyboard_Sprite 1_13: 21300026
+      Keyboard_Sprite 1_14: 21300028
+      Keyboard_Sprite 1_15: 21300030
+      Keyboard_Sprite 1_16: 21300032
+      Keyboard_Sprite 1_17: 21300034
+      Keyboard_Sprite 1_18: 21300036
+      Keyboard_Sprite 1_19: 21300038
+      Keyboard_Sprite 1_2: 21300004
+      Keyboard_Sprite 1_20: 21300040
+      Keyboard_Sprite 1_21: 21300042
+      Keyboard_Sprite 1_22: 21300044
+      Keyboard_Sprite 1_23: 21300046
+      Keyboard_Sprite 1_24: 21300048
+      Keyboard_Sprite 1_25: 21300050
+      Keyboard_Sprite 1_26: 21300052
+      Keyboard_Sprite 1_27: 21300054
+      Keyboard_Sprite 1_28: 21300056
+      Keyboard_Sprite 1_29: 21300058
+      Keyboard_Sprite 1_3: 21300006
+      Keyboard_Sprite 1_30: 21300060
+      Keyboard_Sprite 1_31: 21300062
+      Keyboard_Sprite 1_32: 21300064
+      Keyboard_Sprite 1_33: 21300066
+      Keyboard_Sprite 1_34: 21300068
+      Keyboard_Sprite 1_35: 21300070
+      Keyboard_Sprite 1_36: 21300072
+      Keyboard_Sprite 1_37: 21300074
+      Keyboard_Sprite 1_38: 21300076
+      Keyboard_Sprite 1_39: 21300078
+      Keyboard_Sprite 1_4: 21300008
+      Keyboard_Sprite 1_40: 21300080
+      Keyboard_Sprite 1_41: 21300082
+      Keyboard_Sprite 1_42: 21300084
+      Keyboard_Sprite 1_43: 21300086
+      Keyboard_Sprite 1_44: 21300088
+      Keyboard_Sprite 1_45: 21300090
+      Keyboard_Sprite 1_46: 21300092
+      Keyboard_Sprite 1_47: 21300094
+      Keyboard_Sprite 1_48: 21300096
+      Keyboard_Sprite 1_49: 21300098
+      Keyboard_Sprite 1_5: 21300010
+      Keyboard_Sprite 1_50: 21300100
+      Keyboard_Sprite 1_51: 21300102
+      Keyboard_Sprite 1_6: 21300012
+      Keyboard_Sprite 1_7: 21300014
+      Keyboard_Sprite 1_8: 21300016
+      Keyboard_Sprite 1_9: 21300018
+  mipmapLimitGroupName: 
   pSDRemoveMatte: 0
-  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 

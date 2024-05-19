@@ -18,7 +18,7 @@ MonoBehaviour:
   AbilityType: 8
   timeActive: 0.01
   recoverTime: 0.05
-  startUpTime: 0
+  startUpTime: 0.01
   chargeTime: 1
   maxActivationAmount: 1
   EnergyCost: 1

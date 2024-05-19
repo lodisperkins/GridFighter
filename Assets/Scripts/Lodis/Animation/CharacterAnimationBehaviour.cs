@@ -212,16 +212,16 @@ namespace Lodis.Gameplay
             {
                 case AnimationPhase.STARTUP:
 
-                    if (_animator.GetNextAnimatorClipInfo(0).Length <= 0)
+                    if (_animator.GetCurrentAnimatorClipInfo(0).Length <= 0)
                         return;
 
-                    _currentClip = _animator.GetNextAnimatorClipInfo(0)[0].clip;
+                    _currentClip = _animator.GetCurrentAnimatorClipInfo(0)[0].clip;
                     //Return if this clip couldn't be found or if it doesn't have animation events
                     if (!_currentClip || _currentClip.events.Length <= 0)
                         return;
 
 
-                    stateInfo = _animator.GetNextAnimatorStateInfo(0);
+                    stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
                     if (_currentClipStartUpTime <= 0 || _movesetBehaviour.LastAbilityInUse != null
                         && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 0 && _animatingAbility)
@@ -239,7 +239,7 @@ namespace Lodis.Gameplay
 
                 case AnimationPhase.ACTIVE:
                     if (!_currentClip)
-                        _currentClip = _animator.GetNextAnimatorClipInfo(0).Length > 0 ? _animator.GetNextAnimatorClipInfo(0)[0].clip : null;
+                        _currentClip = _animator.GetCurrentAnimatorClipInfo(0).Length > 0 ? _animator.GetCurrentAnimatorClipInfo(0)[0].clip : null;
 
                     if (!_currentClip)
                         break;

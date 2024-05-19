@@ -35,6 +35,7 @@ namespace Lodis.Input
         private static JsonSerializerSettings _settings;
         [SerializeField]
         private string _recordingName;
+        [SerializeField]
         private bool _canRecord;
 
         public string RecordingName { get => _recordingName; }

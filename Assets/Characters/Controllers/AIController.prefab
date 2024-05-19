@@ -183,9 +183,11 @@ MonoBehaviour:
   _saveStateDelay: 0.5
   _losePenalty: -2
   _winReward: 4
+  _recordingName: AI
   _useRecording: 1
+  _randomDecisionConstant: 3
   _accuracyMinimum: 1
-  _actionScoreMax: 5
+  _actionScoreMax: 4
   _lastScore: 3.9716568
   _directionWeight: 1.5
   _opponentVelocityWeight: 1
