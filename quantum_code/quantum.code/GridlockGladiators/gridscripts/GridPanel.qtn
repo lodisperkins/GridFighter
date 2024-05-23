@@ -1,0 +1,17 @@
+enum MarkerType
+{
+    Position,
+    Warning,
+    Danger,
+    Unblockable,
+    None
+}
+
+component GridPanel
+{
+    int X;
+    int Y;
+
+    bool NeedsMarkUpdate;
+    MarkerType MarkType;
+}

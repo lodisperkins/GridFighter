@@ -1,0 +1,9 @@
+
+component GridPanel
+{
+    int X;
+    int Y;
+    
+    bool NeedsMarkUpdate;
+    int MarkType;
+}
