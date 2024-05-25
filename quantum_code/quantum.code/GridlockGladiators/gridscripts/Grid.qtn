@@ -1,0 +1,8 @@
+﻿
+singleton component Grid
+{
+    int Width;
+    int Height;
+
+    dictionary<FPVector2, GridPanel> Panels;
+}

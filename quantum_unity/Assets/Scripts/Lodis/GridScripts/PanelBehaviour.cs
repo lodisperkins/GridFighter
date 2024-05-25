@@ -4,14 +4,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using Quantum;
+using Quantum.Prototypes;
 
 namespace Lodis.GridScripts
 {
     public class PanelBehaviour : MonoBehaviour
     {
-        private Vector2 _position;
-        [SerializeField]
-        private bool _occupied;
+        //private Vector2 _position;
+        //[SerializeField]
+        //private bool _occupied;
         private GridAlignment _alignment;
         [Tooltip("The material to give this panel if it is not aligned with either side of the grid.")]
         [SerializeField]
@@ -34,8 +36,9 @@ namespace Lodis.GridScripts
         private GameObject _markObject;
         private Movement.GridMovementBehaviour _markerMovement;
         private Vector2 _lastMarkPosition;
-        private MarkerType _currentMarker;
+        //private MarkerType _currentMarker;
         private FlashBehaviour _flashBehaviour;
+        private EntityComponentGridPanel _gridPanelComponent;
 
         /// <summary>
         /// The position of this panel on the grid.
@@ -44,11 +47,12 @@ namespace Lodis.GridScripts
         {
             get
             {
-                return _position;
+                return new Vector2(_gridPanelComponent.Prototype.X, _gridPanelComponent.Prototype.Y);
             }
             set
             {
-                _position = value;
+                _gridPanelComponent.Prototype.X = (int)value.x;
+                _gridPanelComponent.Prototype.Y = (int)value.y;
             }
         }
 
@@ -59,15 +63,15 @@ namespace Lodis.GridScripts
         {
             get
             {
-                return _occupied;
+                return _gridPanelComponent.Prototype.Occupied;
             }
             set
             {
-                _occupied = value;
+                _gridPanelComponent.Prototype.Occupied = value;
             }
         }
 
-        public MarkerType CurrentMarker { get => _currentMarker; private set => _currentMarker = value; }
+        public MarkerType CurrentMarker { get => (MarkerType)_gridPanelComponent.Prototype.MarkType.Value; private set => _gridPanelComponent.Prototype.MarkType.Value = (int)value; }
 
         /// <summary>
         /// The side of the grid this panel this panel belongs to
@@ -93,6 +97,9 @@ namespace Lodis.GridScripts
         {
             _positionLHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.LEFT);
             _positionRHSColor = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(GridAlignment.RIGHT);
+
+            _gridPanelComponent = GetComponent<EntityComponentGridPanel>();
+
             _flashBehaviour = GetComponent<FlashBehaviour>();
         }
 

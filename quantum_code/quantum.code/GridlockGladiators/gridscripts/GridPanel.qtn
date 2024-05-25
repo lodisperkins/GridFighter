@@ -13,5 +13,7 @@ component GridPanel
     int Y;
 
     bool NeedsMarkUpdate;
+    bool Occupied;
+
     MarkerType MarkType;
 }

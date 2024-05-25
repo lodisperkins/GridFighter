@@ -80,6 +80,8 @@
     <Compile Include="Core\Core.cs" />
     <Compile Include="Frame.User.cs" />
     <Compile Include="FrameContext.User.cs" />
+    <None Include="GridlockGladiators\GridScripts\Grid.qtn" />
+    <Compile Include="GridlockGladiators\GridScripts\GridFunc.cs" />
     <Compile Include="GridlockGladiators\GridScripts\GridPanelFunc.cs" />
     <Compile Include="GridlockGladiators\TestMovementSystem.cs" />
     <Compile Include="RuntimeConfig.User.cs" />
