@@ -4,14 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Quantum.GridlockGladiators;
+using Quantum.GridlockGladiators.GridScripts;
 
 namespace Quantum {
   public static class SystemSetup {
     public static SystemBase[] CreateSystems(RuntimeConfig gameConfig, SimulationConfig simulationConfig) {
+            Log.Info("Test");
+            
             return new SystemBase[] {
         // pre-defined core systems
         //new Core.CullingSystem2D(),
-        //new Core.CullingSystem3D(),
+        new Core.CullingSystem3D(),
 
         //new Core.PhysicsSystem2D(),
         new Core.PhysicsSystem3D(),
@@ -23,7 +26,8 @@ namespace Quantum {
         new Core.PlayerConnectedSystem(),
 
         // user systems go here 
-        new TestMovementSystem()
+        new InputBufferSystem(),
+        new GridMovementSystem()
       };
     }
   }

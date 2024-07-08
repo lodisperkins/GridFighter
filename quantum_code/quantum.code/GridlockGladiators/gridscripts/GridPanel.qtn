@@ -12,8 +12,11 @@ component GridPanel
     int X;
     int Y;
 
+    FPVector3 WorldPosition;
+
     bool NeedsMarkUpdate;
     bool Occupied;
 
     MarkerType MarkType;
+    GridAlignment Alignment;
 }

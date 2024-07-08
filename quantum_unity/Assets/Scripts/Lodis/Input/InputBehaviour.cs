@@ -13,6 +13,8 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using Lodis.ScriptableObjects;
 using Lodis.FX;
+using Quantum;
+using Photon.Deterministic;
 
 namespace Lodis.Input
 {
@@ -117,6 +119,7 @@ namespace Lodis.Input
         private CharacterStateMachineBehaviour _stateMachineBehaviour;
         private bool _canBufferAbility = true;
         private TimedAction _chargeAction;
+        private EntityComponentQPlayerInput qInputComponent;
 
         public InputDevice[] Devices 
         {
@@ -163,29 +166,30 @@ namespace Lodis.Input
         private void Awake()
         {
             PlayerControls = new PlayerControls();
-            //Initialize action delegates
-            //Movement input
-            if (!_holdToMove)
-            {
-                PlayerControls.Player.MoveUp.started += context => BufferMovement(Vector2.up);
-                PlayerControls.Player.MoveDown.started += context => BufferMovement(Vector2.down);
-                PlayerControls.Player.MoveLeft.started += context => BufferMovement(Vector2.left);
-                PlayerControls.Player.MoveRight.started += context => BufferMovement(Vector2.right);
-            }
+            qInputComponent = GetComponent<EntityComponentQPlayerInput>();
+            ////Initialize action delegates
+            ////Movement input
+            //if (!_holdToMove)
+            //{
+            //    PlayerControls.Player.MoveUp.started += context => BufferMovement(Vector2.up);
+            //    PlayerControls.Player.MoveDown.started += context => BufferMovement(Vector2.down);
+            //    PlayerControls.Player.MoveLeft.started += context => BufferMovement(Vector2.left);
+            //    PlayerControls.Player.MoveRight.started += context => BufferMovement(Vector2.right);
+            //}
 
-            //Ability input
-            PlayerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; };
-            PlayerControls.Player.Attack.canceled += context => NormalAttackButtonDown = false;
-            PlayerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
-            PlayerControls.Player.ChargeAttack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
-            PlayerControls.Player.ChargeAttack.performed += context => { BufferChargeNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable(); };
-            PlayerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 });  _special1Down = true; };
-            PlayerControls.Player.Special1.canceled += context => { _special1Down = false; };
+            ////Ability input
+            //PlayerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; };
+            //PlayerControls.Player.Attack.canceled += context => NormalAttackButtonDown = false;
+            //PlayerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
+            //PlayerControls.Player.ChargeAttack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
+            //PlayerControls.Player.ChargeAttack.performed += context => { BufferChargeNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable(); };
+            //PlayerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 });  _special1Down = true; };
+            //PlayerControls.Player.Special1.canceled += context => { _special1Down = false; };
 
-            PlayerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 });  _special2Down = true; };
-            PlayerControls.Player.Special2.canceled += context => { _special2Down = false; };
-            PlayerControls.Player.Burst.started += BufferBurst;
-            PlayerControls.Player.Shuffle.started += BufferShuffle;
+            //PlayerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 });  _special2Down = true; };
+            //PlayerControls.Player.Special2.canceled += context => { _special2Down = false; };
+            //PlayerControls.Player.Burst.started += BufferBurst;
+            //PlayerControls.Player.Shuffle.started += BufferShuffle;
 
             PlayerControls.Player.Pause.started += context => { MatchManagerBehaviour.Instance.TogglePauseMenu(); ClearBuffer(); };
         }
@@ -203,6 +207,9 @@ namespace Lodis.Input
             _defaultSpeed = _gridMovement.Speed;
             MatchManagerBehaviour.Instance.AddOnMatchPauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate);
             MatchManagerBehaviour.Instance.AddOnMatchUnpauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate);
+
+            QuantumCallback.Subscribe(this, (CallbackPollInput callback) => PollInput(callback));
+            qInputComponent.Prototype.playerNum = PlayerID.Value - 1;
         }
 
         private void OnEnable()
@@ -555,75 +562,118 @@ namespace Lodis.Input
         // Update is called once per frame
         void Update()
         {
-            if (!PlayerActionButtonDown && _attackButtonDown)
-            {
-                _onActionButtonDown?.Invoke();
-            }
+            //if (!PlayerActionButtonDown && _attackButtonDown)
+            //{
+            //    _onActionButtonDown?.Invoke();
+            //}
 
-            PlayerActionButtonDown = _attackButtonDown;
+            //PlayerActionButtonDown = _attackButtonDown;
 
-            if (_moveset.AbilityInUse)
-                _canMove = CheckInputAllowedInAbilityPhase() || _stateMachineBehaviour.StateMachine.CurrentState != "Attacking";
-            else if (_stateMachineBehaviour.StateMachine.CurrentState == "Idle")
-                _canMove = true;
+            //if (_moveset.AbilityInUse)
+            //    _canMove = CheckInputAllowedInAbilityPhase() || _stateMachineBehaviour.StateMachine.CurrentState != "Attacking";
+            //else if (_stateMachineBehaviour.StateMachine.CurrentState == "Idle")
+            //    _canMove = true;
 
-            //Checks to see if input can be enabled 
-            if (_inputEnableCondition != null)
-                if (_inputEnableCondition.Invoke())
-                {
-                    PlayerControls.Player.Enable();
-                    _inputEnabled = true;
-                    _inputEnableCondition = null;
-                }
+            ////Checks to see if input can be enabled 
+            //if (_inputEnableCondition != null)
+            //    if (_inputEnableCondition.Invoke())
+            //    {
+            //        PlayerControls.Player.Enable();
+            //        _inputEnabled = true;
+            //        _inputEnableCondition = null;
+            //    }
 
-            if (!_inputEnabled)
-            {
-                ClearBuffer();
-                return;
-            }
+            //if (!_inputEnabled)
+            //{
+            //    ClearBuffer();
+            //    return;
+            //}
 
-            if (_holdToMove && !_abilityBuffered)
-                CheckMoveInput();
+            //if (_holdToMove && !_abilityBuffered)
+            //    CheckMoveInput();
 
-            //Checks to see if move input can be enabled 
+            ////Checks to see if move input can be enabled 
 
-            if (_moveInputEnableCondition != null)
-            {
-                if (_moveInputEnableCondition.Invoke())
-                {
-                    if (EnableMovement())
-                        _moveInputEnableCondition = null;
-                }
-            }
-            //If player isn't doing anything, enable movement
-            else if (!NormalAttackButtonDown && !_canMove && !_moveset.AbilityInUse && _bufferedAction != null)
-            {
-                if (!_bufferedAction.HasAction())
-                    EnableMovement();
-            }
+            //if (_moveInputEnableCondition != null)
+            //{
+            //    if (_moveInputEnableCondition.Invoke())
+            //    {
+            //        if (EnableMovement())
+            //            _moveInputEnableCondition = null;
+            //    }
+            //}
+            ////If player isn't doing anything, enable movement
+            //else if (!NormalAttackButtonDown && !_canMove && !_moveset.AbilityInUse && _bufferedAction != null)
+            //{
+            //    if (!_bufferedAction.HasAction())
+            //        EnableMovement();
+            //}
 
-            //Stores the current attack direction input
-            Vector2 attackDirInput = PlayerControls.Player.AttackDirection.ReadValue<Vector2>();
+            ////Stores the current attack direction input
+            //Vector2 attackDirInput = PlayerControls.Player.AttackDirection.ReadValue<Vector2>();
 
-            //If there is a direction input, update the attack direction buffer and the time of input
-            if (attackDirInput.magnitude > 0)
-            {
-                _attackDirection = new Vector2(Mathf.Round(attackDirInput.x), Mathf.Round(attackDirInput.y));
-                _timeOfLastDirectionInput = Time.time;
-            }
+            ////If there is a direction input, update the attack direction buffer and the time of input
+            //if (attackDirInput.magnitude > 0)
+            //{
+            //    _attackDirection = new Vector2(Mathf.Round(attackDirInput.x), Mathf.Round(attackDirInput.y));
+            //    _timeOfLastDirectionInput = Time.time;
+            //}
 
-            //Clear the buffer if its exceeded the alotted time
-            if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
-                _attackDirection = Vector2.zero;
+            ////Clear the buffer if its exceeded the alotted time
+            //if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
+            //    _attackDirection = Vector2.zero;
 
-            if (_bufferedAction?.HasAction() == true)
-                _bufferedAction.UseAction();
-            else
-                _abilityBuffered = false;
+            //if (_bufferedAction?.HasAction() == true)
+            //    _bufferedAction.UseAction();
+            //else
+            //    _abilityBuffered = false;
 
-            if (Keyboard.current.tabKey.isPressed)
-                DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
+            //if (Keyboard.current.tabKey.isPressed)
+            //    DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
+        }
+
+        public void PollInput(CallbackPollInput callback)
+        {
+            // Create a new input structure
+
+            Debug.Log("Polled");
+
+            Quantum.Input inputContext = callback.Input;
+
+            inputContext.inputFlag = GetInputFlags();
+
+            qInputComponent.Prototype.needsBuffer = inputContext.inputFlag != InputFlag.NONE;
+
+            // Set the input using the callback
+            callback.SetInput(inputContext, DeterministicInputFlags.Repeatable);
+        }
+
+        private InputFlag GetInputFlags()
+        {
+            InputFlag flags = InputFlag.NONE;
+
+            if (_playerControls.Player.MoveUp.ReadValue<float>() > 0)
+                flags |= InputFlag.Up;
+            if (_playerControls.Player.MoveDown.ReadValue<float>() > 0)
+                flags |= InputFlag.Down;
+            if (_playerControls.Player.MoveLeft.ReadValue<float>() > 0)
+                flags |= InputFlag.Left;
+            if (_playerControls.Player.MoveRight.ReadValue<float>() > 0)
+                flags |= InputFlag.Right;
+            if (_playerControls.Player.Attack.ReadValue<float>() > 0)
+                flags |= InputFlag.Weak;
+            if (_playerControls.Player.Special1.ReadValue<float>() > 0)
+                flags |= InputFlag.Special1;
+            if (_playerControls.Player.Special2.ReadValue<float>() > 0)
+                flags |= InputFlag.Special2;
+            if (_playerControls.Player.Burst.ReadValue<float>() > 0)
+                flags |= InputFlag.Burst;
+            if (_playerControls.Player.Shuffle.ReadValue<float>() > 0)
+                flags |= InputFlag.Shuffle;
+
+            return flags;
         }
     }
 }
+
 

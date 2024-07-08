@@ -20,9 +20,9 @@ MonoBehaviour:
     UserAsset:
       Id:
         Value: 0
-    Scene: Game
-    ScenePath: Assets/Photon/QuantumDemo/Game/Game.unity
-    SceneGuid: 03bd5ba32b9950244a08f22579187d8b
+    Scene: TrainingArea
+    ScenePath: Assets/Scenes/TrainingArea.unity
+    SceneGuid: fe73b00fb58e97c49801a6bb2bcf6a4d
     WorldSize: 256
     BucketsCount: 16
     BucketsSubdivisions: 8
@@ -41,51 +41,18 @@ MonoBehaviour:
     NavMeshLinks: []
     Regions: []
     StaticColliders2D: []
-    StaticColliders3D:
-    - Rotation:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 0
-        Z:
-          RawValue: 0
-        W:
-          RawValue: 65536
-      Position:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 0
-        Z:
-          RawValue: 0
-      PhysicsMaterial:
-        Id:
-          Value: 0
-      ShapeType: 2
-      SphereRadius:
-        RawValue: 0
-      BoxExtents:
-        X:
-          RawValue: 327680
-        Y:
-          RawValue: 32768
-        Z:
-          RawValue: 327680
-      SmoothSphereMeshCollisions: 0
-      StaticData:
-        Name: Floor
-        Tag: Untagged
-        Layer: 0
-        Asset:
-          Id:
-            Value: 0
-        IsTrigger: 0
-        ColliderIndex: 0
-        MutableMode: 0
-      MutableMode: 0
+    StaticColliders3D: []
     MapEntities: []
   Prototypes:
-  - GridPanel: []
+  - Grid:
+    - Width: 0
+      Height: 0
+      Panels: []
+    GridMovement: []
+    GridPanel: []
+    Lerp: []
+    PlayerLink: []
+    QPlayerInput: []
     CharacterController2D: []
     CharacterController3D: []
     NavMeshAvoidanceAgent: []
@@ -93,242 +60,21 @@ MonoBehaviour:
     NavMeshPathfinder: []
     NavMeshSteeringAgent: []
     PhysicsBody2D: []
-    PhysicsBody3D:
-    - Version: 2
-      Config:
-        Value: 58
-      Mass:
-        RawValue: 65536
-      Drag:
-        RawValue: 32768
-      AngularDrag:
-        RawValue: 32768
-      CenterOfMass:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 0
-        Z:
-          RawValue: 0
-      RotationFreeze:
-        Value: 0
-      GravityScale:
-        _hasValue: 0
-        _value:
-          RawValue: 65536
-    PhysicsCollider2D: []
-    PhysicsCollider3D:
-    - ShapeConfig:
-        ShapeType: 2
-        SphereRadius:
-          RawValue: 0
-        PositionOffset:
-          X:
-            RawValue: 0
-          Y:
-            RawValue: 0
-          Z:
-            RawValue: 0
-        BoxExtents:
-          X:
-            RawValue: 32768
-          Y:
-            RawValue: 32768
-          Z:
-            RawValue: 32768
-        RotationOffset:
-          X:
-            RawValue: 0
-          Y:
-            RawValue: 0
-          Z:
-            RawValue: 0
-        UserTag: 0
-        IsPersistent: 1
-        CompoundShapes: []
-        IsSetFromSourceCollider: 0
-      Layer: 0
-      IsTrigger: 0
-      PhysicsMaterial:
-        Id:
-          Value: 0
-    PhysicsCallbacks2D: []
-    PhysicsCallbacks3D:
-    - CallbackFlags:
-        Value: 0
-    Transform2D: []
-    Transform2DVertical: []
-    Transform3D:
-    - Position:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 262144
-        Z:
-          RawValue: 0
-      Rotation:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 0
-        Z:
-          RawValue: 0
-    View: []
-    PhysicsJoints2D: []
-    PhysicsJoints3D: []
-  - GridPanel:
-    - X: 0
-      Y: 0
-      NeedsMarkUpdate:
-        Value: 0
-      MarkType:
-        Value: 0
-    CharacterController2D: []
-    CharacterController3D:
-    - Config:
-        Id:
-          Value: 4
-    NavMeshAvoidanceAgent: []
-    NavMeshAvoidanceObstacle: []
-    NavMeshPathfinder: []
-    NavMeshSteeringAgent: []
-    PhysicsBody2D: []
     PhysicsBody3D: []
     PhysicsCollider2D: []
-    PhysicsCollider3D:
-    - ShapeConfig:
-        ShapeType: 1
-        SphereRadius:
-          RawValue: 32768
-        PositionOffset:
-          X:
-            RawValue: 0
-          Y:
-            RawValue: 32768
-          Z:
-            RawValue: 0
-        BoxExtents:
-          X:
-            RawValue: 0
-          Y:
-            RawValue: 0
-          Z:
-            RawValue: 0
-        RotationOffset:
-          X:
-            RawValue: 0
-          Y:
-            RawValue: 0
-          Z:
-            RawValue: 0
-        UserTag: 0
-        IsPersistent: 1
-        CompoundShapes: []
-        IsSetFromSourceCollider: 0
-      Layer: 0
-      IsTrigger: 0
-      PhysicsMaterial:
-        Id:
-          Value: 0
+    PhysicsCollider3D: []
     PhysicsCallbacks2D: []
-    PhysicsCallbacks3D:
-    - CallbackFlags:
-        Value: 0
-    Transform2D: []
-    Transform2DVertical: []
-    Transform3D:
+    PhysicsCallbacks3D: []
+    Transform2D:
     - Position:
         X:
-          RawValue: 131072
+          RawValue: 0
         Y:
-          RawValue: 131072
-        Z:
           RawValue: 0
       Rotation:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 0
-        Z:
-          RawValue: 0
-    View: []
-    PhysicsJoints2D: []
-    PhysicsJoints3D: []
-  - GridPanel:
-    - X: 0
-      Y: 0
-      NeedsMarkUpdate:
-        Value: 0
-      MarkType:
-        Value: 0
-    CharacterController2D: []
-    CharacterController3D:
-    - Config:
-        Id:
-          Value: 4
-    NavMeshAvoidanceAgent: []
-    NavMeshAvoidanceObstacle: []
-    NavMeshPathfinder: []
-    NavMeshSteeringAgent: []
-    PhysicsBody2D: []
-    PhysicsBody3D: []
-    PhysicsCollider2D: []
-    PhysicsCollider3D:
-    - ShapeConfig:
-        ShapeType: 1
-        SphereRadius:
-          RawValue: 32768
-        PositionOffset:
-          X:
-            RawValue: 0
-          Y:
-            RawValue: 32768
-          Z:
-            RawValue: 0
-        BoxExtents:
-          X:
-            RawValue: 0
-          Y:
-            RawValue: 0
-          Z:
-            RawValue: 0
-        RotationOffset:
-          X:
-            RawValue: 0
-          Y:
-            RawValue: 0
-          Z:
-            RawValue: 0
-        UserTag: 0
-        IsPersistent: 1
-        CompoundShapes: []
-        IsSetFromSourceCollider: 0
-      Layer: 0
-      IsTrigger: 0
-      PhysicsMaterial:
-        Id:
-          Value: 0
-    PhysicsCallbacks2D: []
-    PhysicsCallbacks3D:
-    - CallbackFlags:
-        Value: 0
-    Transform2D: []
+        RawValue: 0
     Transform2DVertical: []
-    Transform3D:
-    - Position:
-        X:
-          RawValue: 131072
-        Y:
-          RawValue: 131072
-        Z:
-          RawValue: 0
-      Rotation:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 0
-        Z:
-          RawValue: 0
+    Transform3D: []
     View: []
     PhysicsJoints2D: []
     PhysicsJoints3D: []

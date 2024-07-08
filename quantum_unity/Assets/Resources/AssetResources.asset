@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6dd8e95ae0daaec4496511105240e8a3, type: 3}
   m_Name: AssetResources
   m_EditorClassIdentifier: 
-  AddressablesGroup:
-    _resources: []
   AssetBundlesGroup:
     _resources: []
   ResourcesGroup:
@@ -43,13 +41,73 @@ MonoBehaviour:
         Id:
           Value: 5
       ResourcePath: DB/Configs/SimulationConfig
+    - Path: Resources/DB/Characters/Prototype/TestCharacter1(Display)|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 433014135839453319
+      ResourcePath: DB/Characters/Prototype/TestCharacter1(Display)
     - Path: Resources/DB/Map1_mesh
       AssetRef:
         Id:
           Value: 810189026489540597
       ResourcePath: DB/Map1_mesh
+    - Path: Resources/DB/Characters/Prototype/TestCharacter1|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 1412351431545780470
+      ResourcePath: DB/Characters/Prototype/TestCharacter1
     - Path: Resources/DB/Map1
       AssetRef:
         Id:
           Value: 1710471675203725834
       ResourcePath: DB/Map1
+    - Path: Resources/DB/NestedAssetType|EntityView
+      AssetRef:
+        Id:
+          Value: 2544702636978322692
+      ResourcePath: DB/NestedAssetType
+    - Path: Resources/DB/Characters/Controllers/PlayerController|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 2789297206992260840
+      ResourcePath: DB/Characters/Controllers/PlayerController
+    - Path: Resources/DB/Characters/Prototype/CustomCharacter(Display)|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 3195682053057766984
+      ResourcePath: DB/Characters/Prototype/CustomCharacter(Display)
+    - Path: Resources/DB/CharacterController3DConfigAsset
+      AssetRef:
+        Id:
+          Value: 3231775877962509185
+      ResourcePath: DB/CharacterController3DConfigAsset
+    - Path: Resources/DB/Characters/Prototype2/TestCharacter2(Display)|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 3283874643754091908
+      ResourcePath: DB/Characters/Prototype2/TestCharacter2(Display)
+    - Path: Resources/DB/Characters/TrainingDummy/TrainingDummy(Display)|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 3756923185798216479
+      ResourcePath: DB/Characters/TrainingDummy/TrainingDummy(Display)
+    - Path: Resources/DB/Characters/TrainingDummy/TrainingDummy|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 3881020397903923013
+      ResourcePath: DB/Characters/TrainingDummy/TrainingDummy
+    - Path: Resources/DB/Characters/Prototype/CustomCharacter Variant|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 4084560570410143004
+      ResourcePath: DB/Characters/Prototype/CustomCharacter Variant
+    - Path: Resources/DB/Characters/Prototype/CustomCharacter|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 4131666639751508372
+      ResourcePath: DB/Characters/Prototype/CustomCharacter
+    - Path: Resources/DB/Characters/Prototype2/TestCharacter2|EntityPrototype
+      AssetRef:
+        Id:
+          Value: 4418454664013030241
+      ResourcePath: DB/Characters/Prototype2/TestCharacter2

@@ -8,6 +8,8 @@ namespace Quantum.Editor {
   using UnityEngine;
   using UnityEditor;
 
+  [CustomPropertyDrawer(typeof(Quantum.Prototypes.GridAlignment_Prototype))]
+  [CustomPropertyDrawer(typeof(Quantum.Prototypes.InputFlag_Prototype))]
   [CustomPropertyDrawer(typeof(Quantum.Prototypes.MarkerType_Prototype))]
   [CustomPropertyDrawer(typeof(Quantum.Prototypes.InputButtons_Prototype))]
   partial class PrototypeDrawer {}

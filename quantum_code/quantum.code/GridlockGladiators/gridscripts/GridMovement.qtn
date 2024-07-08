@@ -1,0 +1,28 @@
+
+
+component GridMovement
+{
+    int X;
+    int Y;
+
+    FPVector2 MoveDirection;
+
+    FP TargetTolerance;
+    FP Speed;
+    FP OpponentPanelSpeedReduction;
+    FP HeightOffset;
+
+    bool IsMoving;
+    bool CanMove;
+    bool CanCancelMovement;
+    bool CanMoveDiagonally;
+    bool AlwaysLookAtOpposingSide;
+    bool MoveToAlignedSideIfStuck;
+    bool CanBeWalkedThrough;
+    bool MoveOnStart;
+
+    GridAlignment DefaultAlignment;
+    GridAlignment TempAlignment;
+
+
+}

@@ -16,7 +16,7 @@ MonoBehaviour:
     PlayerCount: 0
     ChecksumCrossPlatformDeterminism: 0
     LockstepSimulation: 0
-    AggressiveSendMode: 0
+    AggressiveSendMode: 1
     UpdateFPS: 60
     ChecksumInterval: 60
     RollbackWindow: 60

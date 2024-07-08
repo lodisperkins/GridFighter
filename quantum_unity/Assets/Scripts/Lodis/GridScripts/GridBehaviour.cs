@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Lodis.Gameplay;
 using Lodis.Movement;
+using Lodis.Utility;
 
 namespace Lodis.GridScripts
 {
@@ -56,6 +57,7 @@ namespace Lodis.GridScripts
         private Vector2[] _rhsBarrierPositions;
         [SerializeField]
         private GameObject _collisionPlaneRef;
+        private EntityComponentGrid _grid;
         private List<BarrierBehaviour> _barriers;
         private Coroutine _panelExchangeRoutine;
         private int _tempMaxColumns;
@@ -136,6 +138,9 @@ namespace Lodis.GridScripts
         /// </summary>
         public void CreateGrid()
         {
+            _grid = GetComponent<EntityComponentGrid>();
+            _grid.Prototype.Panels = new Quantum.Prototypes.DictionaryEntry_FPVector2_GridPanel_Prototype[0];
+
             if (_panelSpacingMiddle <= 0)
                 _panelSpacingMiddle = _panelSpacingX;
 
@@ -158,6 +163,18 @@ namespace Lodis.GridScripts
                 panel.transform.localScale = _panelScale;
                 _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
                 _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
+
+                //Initialize quantum panel refs
+                EntityComponentGridPanel qPanel = panel.GetComponent<EntityComponentGridPanel>();
+
+                var entry = new Quantum.Prototypes.DictionaryEntry_FPVector2_GridPanel_Prototype();
+
+                entry.Value = qPanel.Prototype;
+
+                entry.Key = new Photon.Deterministic.FPVector2(xPos, yPos);
+
+                _grid.Prototype.Panels.Add(qPanel);
+
                 //If the x position in the grid is equal to the given x dimension,
                 //reset x position to be 0, and increase the y position.
                 if (xPos == (int)_dimensions.x - 1)

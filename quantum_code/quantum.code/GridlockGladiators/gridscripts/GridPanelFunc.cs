@@ -9,8 +9,6 @@ namespace Quantum
 {
     public partial struct GridPanel
     {
-        [FieldOffset(0)]
-        public GridAlignment Alignment;
         
         public bool ComparePosition(int x, int y)
         {

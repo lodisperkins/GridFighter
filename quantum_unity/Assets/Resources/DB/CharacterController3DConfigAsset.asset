@@ -9,38 +9,40 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fc6f4b4ee2c89e42ab7ce3f39cb8a27, type: 3}
-  m_Name: DefaultCharacterController2D
+  m_Script: {fileID: 11500000, guid: 3ab6f3d6bf4b1ff41a8a53503e10efb3, type: 3}
+  m_Name: CharacterController3DConfigAsset
   m_EditorClassIdentifier: 
   Settings:
     Identifier:
-      Path: Resources/DB/Configs/DefaultCharacterController2D
+      Path: Resources/DB/CharacterController3DConfigAsset
       Guid:
-        Value: 3
+        Value: 3231775877962509185
     Offset:
       X:
         RawValue: 0
       Y:
+        RawValue: 32768
+      Z:
         RawValue: 0
     Radius:
-      RawValue: 45875
+      RawValue: 32768
     MaxPenetration:
-      RawValue: 655
+      RawValue: 3275
     PenetrationCorrection:
       RawValue: 32768
     Extent:
-      RawValue: 13107
-    MaxContacts: 4
+      RawValue: 6553
+    MaxContacts: 8
     LayerMask:
       BitMask: 134217527
     UseManifoldNormal: 0
-    AirControl: 1
+    AirControl: 0
     Acceleration:
       RawValue: 1638400
     Braking:
       RawValue: 655360
     BaseJumpImpulse:
-      RawValue: 458752
+      RawValue: 393216
     MaxSpeed:
       RawValue: 196608
     Gravity:
@@ -48,6 +50,8 @@ MonoBehaviour:
         RawValue: 0
       Y:
         RawValue: -655360
+      Z:
+        RawValue: 0
     MaxSlope:
       RawValue: 3932160
     MaxSlopeSpeed:

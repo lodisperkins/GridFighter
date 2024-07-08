@@ -132,3 +132,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ce92fdcc8bc2bc4ca5943c9379aa06e, type: 3}
+--- !u!114 &7576120311699258755 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4498364200258464153, guid: 0ce92fdcc8bc2bc4ca5943c9379aa06e,
+    type: 3}
+  m_PrefabInstance: {fileID: 6291158284422992922}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836dcb7e0f6259748b850a10912ce727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-8511747330198111962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0120b722c3ca5454da1240b65656905f, type: 3}
+  m_Name: CustomCharacter VariantEntityPrototype
+  m_EditorClassIdentifier: 
+  Settings:
+    Identifier:
+      Path: Resources/DB/Characters/Prototype/CustomCharacter Variant|EntityPrototype
+      Guid:
+        Value: 4084560570410143004
+  Parent: {fileID: 7576120311699258755}

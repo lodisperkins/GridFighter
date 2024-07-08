@@ -1,0 +1,35 @@
+// Input flags used to represent the directional and button inputs
+enum InputFlag
+{
+    NONE = 0,
+    Left = 1,
+    Right = 2,
+    Down = 4,
+    Up = 8,
+    Weak = 16,
+    Strong = 32,
+    Special1 = 64,
+    Special2 = 128,
+    Shuffle = 256,
+    Burst = 512,
+    Directions = 15,
+    Buttons = 240,
+}
+
+// The input values sent to Quantum from Unity.
+input
+{
+    InputFlag inputFlag;
+}
+
+component QPlayerInput
+{
+    int playerNum;
+    FP timeHeld;
+    bool needsBuffer;
+}
+
+component PlayerLink
+{
+    player_ref Player;
+}

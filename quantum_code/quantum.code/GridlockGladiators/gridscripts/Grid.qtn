@@ -1,4 +1,15 @@
-﻿
+﻿/// <summary>
+/// Used to label which side of the grid an object belongs to
+/// </summary>
+enum GridAlignment
+{
+    NONE,
+    LEFT,
+    RIGHT,
+    ANY
+}
+
+
 singleton component Grid
 {
     int Width;

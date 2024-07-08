@@ -1,0 +1,7 @@
+component Lerp
+{
+    FPVector3 StartPosition;
+    FPVector3 EndPosition;
+    FP StartTime;
+    FP EndTime;
+}

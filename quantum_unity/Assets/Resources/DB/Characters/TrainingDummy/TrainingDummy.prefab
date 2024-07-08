@@ -144,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6962633595821766105
 Transform:
   m_ObjectHideFlags: 0
@@ -1847,7 +1847,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 375adf84adc77744e9c135dccc3ce5e9, type: 2}
+  - {fileID: 2100000, guid: 66c1e1639ac08764793d072d30779c63, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1897,7 +1897,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5067025441095145304
 Transform:
   m_ObjectHideFlags: 0
@@ -2234,7 +2234,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 375adf84adc77744e9c135dccc3ce5e9, type: 2}
+  - {fileID: 2100000, guid: 66c1e1639ac08764793d072d30779c63, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2904,7 +2904,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: 7247546917797058619, guid: dc49d54e3eba6a446941613a3fc2efde, type: 3}
+  m_Mesh: {fileID: -7909600629690569951, guid: 08fe41f0845dc0d42bd78a4561531681, type: 3}
   m_Bones:
   - {fileID: 2343900194461641}
   m_BlendShapeWeights: []
@@ -3455,7 +3455,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1178356557992220177
 Transform:
   m_ObjectHideFlags: 0
@@ -3823,7 +3823,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 375adf84adc77744e9c135dccc3ce5e9, type: 2}
+  - {fileID: 2100000, guid: 66c1e1639ac08764793d072d30779c63, type: 2}
   - {fileID: 2100000, guid: bd2f3484e7062a04fa434d542af80704, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -4230,7 +4230,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 375adf84adc77744e9c135dccc3ce5e9, type: 2}
+  - {fileID: 2100000, guid: 66c1e1639ac08764793d072d30779c63, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -4955,7 +4955,7 @@ PrefabInstance:
     - target: {fileID: 561307191668043433, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_Name
-      value: TestCharacter1
+      value: TrainingDummy
       objectReference: {fileID: 0}
     - target: {fileID: 624667988152981373, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -5659,11 +5659,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5180280961208456968, guid: d03fc9930c8f3bd4fa57a7bb13a28389,
         type: 3}
-    - target: {fileID: 4233771346250973803, guid: c600a5779f55f8e44a90699633fe29a7,
-        type: 3}
-      propertyPath: m_PresetInfoIsWorld
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4253743197577252273, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_IsActive
@@ -5687,9 +5682,14 @@ PrefabInstance:
         type: 3}
     - target: {fileID: 6432807319471925545, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _knockback
+      value: 
+      objectReference: {fileID: 3312354080315468095}
+    - target: {fileID: 6432807319471925545, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _voicePack
       value: 
-      objectReference: {fileID: 11400000, guid: fd79fdc23cb3d0849829e7d84c67c4a5,
+      objectReference: {fileID: 11400000, guid: f6813532454e89140865afebfcef88bf,
         type: 2}
     - target: {fileID: 7771075552791449285, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
@@ -5786,43 +5786,81 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1650739329716103563}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6089261164261432433, guid: c600a5779f55f8e44a90699633fe29a7,
+    - targetCorrespondingSourceObject: {fileID: 561307191668043433, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8189235522621799328}
+      addedObject: {fileID: 6729195595249505262}
   m_SourcePrefab: {fileID: 100100000, guid: c600a5779f55f8e44a90699633fe29a7, type: 3}
+--- !u!1 &2492379211295133931 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 561307191668043433, guid: c600a5779f55f8e44a90699633fe29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2692198498634202690}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6729195595249505262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492379211295133931}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0044bcdbcc70bf0438ad5aeb8d5a0a4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _character: {fileID: 2492379211295133931}
+  _attackType: 0
+  _attackDelay: 0
+  _attackStrength: 0
+  _maxRange: 0
+  _attackDirection: {x: 0, y: 0}
+  _enableRandomBehaviour: 0
+--- !u!114 &3312354080315468095 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 624667988152981373, guid: c600a5779f55f8e44a90699633fe29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2692198498634202690}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492379211295133931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a4368269c45d6b4681bc1fcb91f8315, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4498364200258464153 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1959622385763293147, guid: c600a5779f55f8e44a90699633fe29a7,
+    type: 3}
+  m_PrefabInstance: {fileID: 2692198498634202690}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2492379211295133931}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 836dcb7e0f6259748b850a10912ce727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &6027930692785025906 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8573480685531974960, guid: c600a5779f55f8e44a90699633fe29a7,
     type: 3}
   m_PrefabInstance: {fileID: 2692198498634202690}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &8204989528223261235 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6089261164261432433, guid: c600a5779f55f8e44a90699633fe29a7,
-    type: 3}
-  m_PrefabInstance: {fileID: 2692198498634202690}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8189235522621799328
+--- !u!114 &8594693968007750031
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8204989528223261235}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
+  m_Script: {fileID: 11500000, guid: 0120b722c3ca5454da1240b65656905f, type: 3}
+  m_Name: TrainingDummyEntityPrototype
   m_EditorClassIdentifier: 
-  m_Version: 3
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_LightLayerMask: 1
-  m_RenderingLayers: 1
-  m_CustomShadowLayers: 0
-  m_ShadowLayerMask: 1
-  m_ShadowRenderingLayers: 1
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
+  Settings:
+    Identifier:
+      Path: Resources/DB/Characters/TrainingDummy/TrainingDummy|EntityPrototype
+      Guid:
+        Value: 3881020397903923013
+  Parent: {fileID: 4498364200258464153}

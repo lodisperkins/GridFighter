@@ -15,48 +15,58 @@ namespace Lodis.Gameplay
 {
     public class PlayerSpawnBehaviour : MonoBehaviour
     {
+        [Header("Scene References")]
+        [SerializeField] private Vector2 _RHSSpawnLocation;
+        [SerializeField] private Vector2 _LHSSpawnLocation;
+        [SerializeField] private PlayerInputManager _inputManager;
+        [SerializeField] private GameObject _playerRef;
+        [SerializeField] private QuantumRunnerLocalDebug _quantumRunner;
+
+        [Header("Player Data")]
+        [Tooltip("The data of the character to use when spawning player 1.")]
+        [SerializeField] private CharacterData _player1Data;
+        [Tooltip("The data of the character to use when spawning player 2.")]
+        [SerializeField] private CharacterData _player2Data;
+        [Tooltip("The ai dummy character to spawn.")]
+        [SerializeField] private AI.AIControllerBehaviour _dummy;
+
+        [Header("Custom Character Usage Flags")]
+        [SerializeField] private BoolVariable _p1IsCustom;
+        [SerializeField] private BoolVariable _p2IsCustom;
+
+        //---
         private bool _p1DeviceSet;
         private bool _p2DeviceSet;
+
         private GameObject _player1;
         private GameObject _player2;
+
         private Movement.GridMovementBehaviour _p1Movement;
         private Movement.GridMovementBehaviour _p2Movement;
+
         private CharacterStateMachineBehaviour _p1StateManager;
         private KnockbackBehaviour _p1Knockback;
         private CharacterStateMachineBehaviour _p2StateManager;
+
         private KnockbackBehaviour _p2Knockback;
         private MovesetBehaviour _p2Moveset;
         private InputBehaviour _p2Input;
+
         private GameMode _mode;
-        [SerializeField]
-        private AI.AIControllerBehaviour _dummy;
-        [SerializeField]
-        private Vector2 _RHSSpawnLocation;
-        [SerializeField]
-        private Vector2 _LHSSpawnLocation;
-        [SerializeField]
-        private PlayerInputManager _inputManager;
-        [SerializeField]
-        private GameObject _playerRef;
-        [SerializeField()]
-        [Tooltip("The data of the character to use when spawning player 1.")]
-        private CharacterData _player1Data;
-        [SerializeField()]
-        [Tooltip("The data of the character to use when spawning player 2.")]
-        private CharacterData _player2Data;
-        [SerializeField]
-        private BoolVariable _p1IsCustom;
-        [SerializeField]
-        private BoolVariable _p2IsCustom;
         private IControllable _p1InputController;
         private IControllable _p2InputController;
+
         private RingBarrierBehaviour _ringBarrierR;
         private RingBarrierBehaviour _ringBarrierL;
+
         private GridBehaviour _grid;
         private PanelBehaviour _lhsSpawnPanel;
         private PanelBehaviour _rhsSpawnPanel;
+
         private bool _suddenDeathActive;
+
         private SceneManagerBehaviour _sceneManager;
+
         private MovesetBehaviour _p1Moveset;
         private InputBehaviour _p1Input;
 
@@ -112,6 +122,7 @@ namespace Lodis.Gameplay
             }
 
             _p2InputController = _player2.GetComponent<IControllable>();
+            _quantumRunner.Players.Add(_p2InputController);
 
             _p2InputController.Character = Instantiate(_player2Data.CharacterReference, _player2.transform);
 
@@ -119,6 +130,7 @@ namespace Lodis.Gameplay
             _ringBarrierR.Owner = _p2InputController.Character;
             _player2.transform.forward = Vector3.left;
             BlackBoardBehaviour.Instance.Player2 = _p2InputController.Character;
+
             //Get reference to player 2 components
             _p2Movement = _p2InputController.Character.GetComponent<Movement.GridMovementBehaviour>();
             _p2StateManager = _p2InputController.Character.GetComponent<CharacterStateMachineBehaviour>();
@@ -169,6 +181,8 @@ namespace Lodis.Gameplay
 
             _p1InputController = _player1.GetComponent<IControllable>();
             _p1InputController.Character = Instantiate(_player1Data.CharacterReference, _player1.transform);
+
+            _quantumRunner.Players.Add(_p2InputController);
 
             _p1InputController.Character.name += "(P1)";
             _ringBarrierL.Owner = _p1InputController.Character;

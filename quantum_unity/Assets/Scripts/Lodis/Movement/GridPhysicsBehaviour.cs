@@ -21,8 +21,6 @@ namespace Lodis.Movement
         MAXIMUM
     }
 
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(ConstantForce))]
     public class GridPhysicsBehaviour : MonoBehaviour
     {
         private Rigidbody _rigidbody;

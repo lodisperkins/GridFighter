@@ -5819,9 +5819,10 @@ namespace Quantum {
 
       // execute filter loop
       var filter = default(T);
-
       while (it.Next(&filter)) {
-        Update(f, ref filter);
+
+                Log.Info("Updating");
+                Update(f, ref filter);
       }
     }
 

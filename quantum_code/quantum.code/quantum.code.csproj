@@ -82,21 +82,29 @@
     <Compile Include="FrameContext.User.cs" />
     <None Include="GridlockGladiators\GridScripts\Grid.qtn" />
     <Compile Include="GridlockGladiators\GridScripts\GridFunc.cs" />
+    <Compile Include="GridlockGladiators\GridScripts\GridMovementSystem.cs" />
     <Compile Include="GridlockGladiators\GridScripts\GridPanelFunc.cs" />
+    <Compile Include="GridlockGladiators\Input\InputBufferSystem.cs" />
+    <Compile Include="GridlockGladiators\Input\PlayerInput.cs" />
+    <Compile Include="GridlockGladiators\Systems\Utility\Lerp.cs" />
     <Compile Include="GridlockGladiators\TestMovementSystem.cs" />
     <Compile Include="RuntimeConfig.User.cs" />
     <Compile Include="RuntimePlayer.User.cs" />
     <Compile Include="SimulationConfig.User.cs" />
     <Compile Include="SystemSetup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="GridlockGladiators\Input\Input.qtn" />
+    <None Include="GridlockGladiators\UtilityComponents\Lerp.qtn" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="db.json" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GridlockGladiators\GridScripts\GridMovement.qtn" />
     <None Include="GridlockGladiators\GridScripts\GridPanel.qtn" />
     <None Include="GridlockGladiators\TestInput.qtn" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent Condition="'$(OS)' == 'Windows_NT'">"$(ProjectDir)..\..\tools\codegen_unity\quantum.codegen.unity.host.exe" "$(TargetDir)\quantum.code.dll" "$(ProjectDir)..\..\quantum_unity\Assets"</PostBuildEvent>
