@@ -376,7 +376,7 @@ namespace Lodis.Movement
             if (!knockBackScript)
                 knockBackScript = this;
 
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
+            float velocityMagnitude = knockBackScript.Physics.LastVelocity.Magnitude;
 
             //Apply ricochet force and damage
             damageScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);

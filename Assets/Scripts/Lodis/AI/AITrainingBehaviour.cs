@@ -4,6 +4,7 @@ using UnityEngine;
 using Lodis.Gameplay;
 using UnityEngine.UI;
 using Lodis.GridScripts;
+using FixedPoints;
 
 namespace Lodis.AI
 {
@@ -113,7 +114,7 @@ namespace Lodis.AI
 
             PanelBehaviour panel = null;
 
-            Vector2 location = new Vector2(BlackBoardBehaviour.Instance.Grid.TempMaxColumns, _opponentMovement.Position.y);
+            FVector2 location = new FVector2(BlackBoardBehaviour.Instance.Grid.TempMaxColumns, _opponentMovement.Position.Y);
 
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(location, out panel, false, _gridMovement.Alignment))
                 _movement.MoveToLocation(panel);

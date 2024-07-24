@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,7 +29,7 @@ namespace Lodis.Gameplay
             GridBehaviour grid = BlackBoardBehaviour.Instance.Grid;
             for (int i = 0; i < grid.Dimensions.y; i++)
             {
-                PanelPositions[i] = new Vector2(grid.TempMaxColumns + OwnerMoveScript.GetAlignmentX(), i);
+                PanelPositions[i] = new FVector2(grid.TempMaxColumns + OwnerMoveScript.GetAlignmentX(), i);
             }
         }
 

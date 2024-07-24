@@ -77,7 +77,7 @@ namespace Lodis.Gameplay
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
 
             PanelBehaviour targetPanel;
-            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.y == OwnerMoveScript.Position.y)
+            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.Y == OwnerMoveScript.Position.Y)
                 transform = targetPanel.transform;
 
 

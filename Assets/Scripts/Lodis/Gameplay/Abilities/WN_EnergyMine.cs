@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -30,7 +31,7 @@ namespace Lodis.Gameplay
 
             _travelDistance = abilityData.GetCustomStatValue("TravelDistance");
 
-            Vector2 direction = owner.transform.forward;
+            FVector2 direction = (FVector3)owner.transform.forward;
 
             PanelPositions[0] = OwnerMoveScript.Position + direction * _travelDistance;
 

@@ -1,4 +1,5 @@
 ﻿using BBUnity.Conditions;
+using FixedPoints;
 using Lodis.AI;
 using Lodis.Movement;
 using Pada1.BBCore;
@@ -20,11 +21,11 @@ public class OutOfRangeCondition : GOCondition
     public override bool Check()
     {
         _opponentMovement = _dummy.Opponent.GetComponent<GridMovementBehaviour>();
-        Vector2 dummyPos = _dummy.AIMovement.MovementBehaviour.CurrentPanel.Position;
-        Vector2 enemyPos = _opponentMovement.CurrentPanel.Position;
-        Vector3 directionToOpponent = (enemyPos - dummyPos);
-        float dot = Vector3.Dot(_dummy.Character.transform.forward, directionToOpponent);
+        FVector2 dummyPos = _dummy.AIMovement.MovementBehaviour.CurrentPanel.Position;
+        FVector2 enemyPos = _opponentMovement.CurrentPanel.Position;
+        FVector3 directionToOpponent = (enemyPos - dummyPos);
+        float dot = Vector3.Dot(_dummy.Character.transform.forward, (Vector3)directionToOpponent);
 
-        return Mathf.Abs(dummyPos.x - enemyPos.x) > _dummy.MaxRange || dot < 0 || dummyPos.y != _opponentMovement.Position.y + _opponentMovement.MoveDirection.y;
+        return Mathf.Abs(dummyPos.X - enemyPos.Y) > _dummy.MaxRange || dot < 0 || dummyPos.Y != _opponentMovement.Position.Y + _opponentMovement.MoveDirection.Y;
     }
 }

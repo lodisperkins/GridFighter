@@ -1,4 +1,5 @@
-﻿using Lodis.Gameplay;
+﻿using FixedPoints;
+using Lodis.Gameplay;
 using Lodis.Movement;
 using Newtonsoft.Json;
 using System.Collections;
@@ -13,9 +14,9 @@ namespace Lodis.Input
         public float TimeDelay;
         public float TimeStamp;
         public int ActionID;
-        public Vector2 ActionDirection;
+        public FVector2 ActionDirection;
 
-        public ActionRecording(float timeDelay, float timeStamp, int actionID, Vector2 actionDirection)
+        public ActionRecording(float timeDelay, float timeStamp, int actionID, FVector2 actionDirection)
         {
             TimeStamp = timeStamp;
             TimeDelay = timeDelay;
@@ -77,7 +78,7 @@ namespace Lodis.Input
 
         protected virtual void RecordNewAction(int id)
         {
-            Vector2 direction = Vector2.zero;
+            FVector2 direction = FVector2.Zero;
 
             if (id == -1)
                 direction = OwnerMovement.MoveDirection;

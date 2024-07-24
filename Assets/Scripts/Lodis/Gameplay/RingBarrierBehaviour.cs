@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
@@ -187,10 +188,10 @@ namespace Lodis.Gameplay
                 return;
 
             //Calculates the dot product to ensure the character is moving towards the barrier.
-            float dot = Vector3.Dot(transform.forward, knockback.Physics.LastVelocity.normalized);
+            float dot = FVector3.Dot((FVector3)transform.forward, knockback.Physics.LastVelocity.GetNormalized());
 
             //Shatter the barrier if the pwner is being knocked back at the appropriate speed and damage.
-            if (collision.gameObject == Owner && knockback.Physics.LastVelocity.magnitude >= _shatterSpeed.Value && dot < 0
+            if (collision.gameObject == Owner && knockback.Physics.LastVelocity.Magnitude >= _shatterSpeed.Value && dot < 0
                 && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.Value)
                 TakeDamage(Owner, Health, 0, 0, DamageType.KNOCKBACK);
         }
@@ -199,7 +200,7 @@ namespace Lodis.Gameplay
         {
             KnockbackBehaviour knockbackBehaviour = collision.gameObject.GetComponent<KnockbackBehaviour>();
 
-            if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.magnitude < _minimumDamageSpeed || !_canHit)
+            if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.Magnitude < _minimumDamageSpeed || !_canHit)
                 return;
 
             if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)

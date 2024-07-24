@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -78,7 +79,7 @@ namespace Lodis.Gameplay
             //Makes the character move until it runs into an obstacle
             for (int i = (int)_panelTravelDistance; i >= 0; i--)
             {
-                Vector2 moveOffset = new Vector2(i, 0);
+                FVector2 moveOffset = new FVector2(i, 0f);
                 if (OwnerMoveScript.MoveToPanel(OwnerMoveScript.CurrentPanel.Position + moveOffset * Mathf.RoundToInt(owner.transform.forward.x), false, GridScripts.GridAlignment.ANY, false, false))
                     break;
             }

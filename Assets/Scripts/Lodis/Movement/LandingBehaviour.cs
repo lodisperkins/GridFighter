@@ -181,7 +181,7 @@ namespace Lodis.Movement
 
         private bool CheckFalling()
         {
-            Vector3 velocity = _knockback.Physics.LastVelocity;
+            Vector3 velocity = (Vector3)_knockback.Physics.LastVelocity;
             if (velocity.magnitude == 0)
                 return false;
 

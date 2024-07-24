@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -81,7 +82,7 @@ namespace Lodis.Gameplay
                 float direction = OwnerMoveScript.Alignment == GridAlignment.LEFT ? 1 : -1;
 
                 PanelBehaviour targetPanel;
-                if (BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + Vector2.right * direction * travelDistance, out targetPanel))
+                if (BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + FVector2.Right * direction * travelDistance, out targetPanel))
                     transform = targetPanel.transform;
                 else
                     transform = lastSpawnTransform;

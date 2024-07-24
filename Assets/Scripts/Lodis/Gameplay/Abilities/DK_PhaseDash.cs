@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FixedPoints;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,7 +12,7 @@ namespace Lodis.Gameplay
     public class DK_PhaseDash : Ability
     {
         private float _travleDistance;
-        private Vector2 _moveDirection;
+        private FVector2 _moveDirection;
 
         //Called when ability is created
         public override void Init(GameObject newOwner)
@@ -40,7 +41,7 @@ namespace Lodis.Gameplay
         public override void Update()
         {
             base.Update();
-            _moveDirection = OwnerInput.AttackDirection;
+            _moveDirection = (FVector2)OwnerInput.AttackDirection;
         }
     }
 }

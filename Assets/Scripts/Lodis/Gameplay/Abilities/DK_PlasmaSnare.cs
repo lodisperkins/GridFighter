@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using FixedPoints;
 
 namespace Lodis.Gameplay
 {
@@ -89,16 +90,16 @@ namespace Lodis.Gameplay
         {
             Transform transform = null;
             PanelBehaviour targetPanel = null;
-            Vector2 position = Vector2.zero;
+            FVector2 position = FVector2.Zero;
 
-            if (OwnerMoveScript.Position.y == _opponentKnockback.MovementBehaviour.Position.y)
+            if (OwnerMoveScript.Position.Y == _opponentKnockback.MovementBehaviour.Position.Y)
             {
                 BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_opponentKnockback.transform.position, out targetPanel);
             }
 
             if (!targetPanel)
             {
-                position = OwnerMoveScript.Position + (Vector2.right * OwnerMoveScript.GetAlignmentX()) * _spawnDistance;
+                position = OwnerMoveScript.Position + (FVector2.Right * OwnerMoveScript.GetAlignmentX()) * _spawnDistance;
                 BlackBoardBehaviour.Instance.Grid.GetPanel(position, out targetPanel);
             }
 

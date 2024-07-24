@@ -1,4 +1,5 @@
-﻿using Lodis.Gameplay;
+﻿using FixedPoints;
+using Lodis.Gameplay;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using System.Collections;
@@ -10,7 +11,7 @@ namespace Lodis.Quest
 {
     public class MoveStep : QuestStep
     {
-        private List<Vector2> _moveLocations;
+        private List<FVector2> _moveLocations;
         private GridMovementBehaviour _ownerMovement;
         private List<PanelBehaviour> _panels;
 
@@ -18,12 +19,12 @@ namespace Lodis.Quest
         {
             _ownerMovement = owner.GetComponent<GridMovementBehaviour>();
 
-            _moveLocations = new List<Vector2>();
+            _moveLocations = new List<FVector2>();
 
-            _moveLocations.Add(_ownerMovement.Position + Vector2.right);
-            _moveLocations.Add(_ownerMovement.Position + Vector2.left);
-            _moveLocations.Add(_ownerMovement.Position + Vector2.up);
-            _moveLocations.Add(_ownerMovement.Position + Vector2.down);
+            _moveLocations.Add(_ownerMovement.Position + FVector2.Right);
+            _moveLocations.Add(_ownerMovement.Position + FVector2.Left);
+            _moveLocations.Add(_ownerMovement.Position + FVector2.Up);
+            _moveLocations.Add(_ownerMovement.Position + FVector2.Down);
         }
 
         public override void OnStart()

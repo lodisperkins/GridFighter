@@ -88,7 +88,8 @@ namespace Lodis.UI
 
             if (GUILayout.Button("SpawnEntity"))
             {
-                EntitySpawnBehaviour.Instance.SpawnEntity((GameObject)_entity.objectReferenceValue, _entitySpawnPoint.vector2Value, (GridAlignment)_alignment.enumValueIndex);
+                Debug.LogError("Can't spawn entity as spawning has not been set up to use fixed points.");
+                //EntitySpawnBehaviour.Instance.SpawnEntity((GameObject)_entity.objectReferenceValue, _entitySpawnPoint.vector2Value, (GridAlignment)_alignment.enumValueIndex);
             }
         }
     }

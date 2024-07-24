@@ -9,6 +9,7 @@ using Lodis.Gameplay;
 using Lodis.Movement;
 using Lodis.Utility;
 using Pada1.BBCore.Tasks;
+using FixedPoints;
 
 [Action("CustomAction/ChooseBestAttack")]
 public class AttackAction : GOAction
@@ -52,7 +53,7 @@ public class AttackAction : GOAction
         Vector3 displacement = _dummy.Opponent.transform.position - _dummy.Character.transform.position;
         float targetHealth = _dummy.OpponentKnockback.Health;
 
-         _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, _dummy.OpponentKnockback.Physics.LastVelocity, null, null);
+         _situation = new AttackNode(displacement, targetHealth, 0, 0, "", 0, (Vector3)_dummy.OpponentKnockback.Physics.LastVelocity, null, null);
 
         //Get a decision based on the current situation
         _decision = (AttackNode)_dummy.AttackDecisions.GetDecision(_situation, _dummy.OpponentMove, _dummy.OpponentDefense.IsDefending, targetHealth, _dummy);
@@ -177,7 +178,7 @@ public class AttackAction : GOAction
 
         //Initialize a new decision with the current situation to add to the tree
         Vector3 displacement = collisionObject.transform.position - _dummy.Character.transform.position;
-        _decision = (AttackNode)_dummy.AttackDecisions.AddDecision(new AttackNode(displacement, targetHealth, 0, startUpTime, name, attackStrength, collisionObject.GetComponent<GridPhysicsBehaviour>().LastVelocity, null, null));
+        _decision = (AttackNode)_dummy.AttackDecisions.AddDecision(new AttackNode(displacement, targetHealth, 0, startUpTime, name, attackStrength, (Vector3)collisionObject.GetComponent<GridPhysicsBehaviour>().LastVelocity, null, null));
 
         if (_decision == null)
             return;

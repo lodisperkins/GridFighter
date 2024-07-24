@@ -1,4 +1,5 @@
-﻿using Lodis.AI;
+﻿using FixedPoints;
+using Lodis.AI;
 using Lodis.CharacterCreation;
 using Lodis.GridScripts;
 using Lodis.Input;
@@ -60,8 +61,8 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _p1Moveset;
         private InputBehaviour _p1Input;
 
-        public Vector2 RHSSpawnLocation { get => _RHSSpawnLocation; private set => _RHSSpawnLocation = value; }
-        public Vector2 LHSSpawnLocation { get => _LHSSpawnLocation; private set => _LHSSpawnLocation = value; }
+        public FVector2 RHSSpawnLocation { get => (FVector2)_RHSSpawnLocation; private set => _RHSSpawnLocation = (Vector2)value; }
+        public FVector2 LHSSpawnLocation { get => (FVector2)_LHSSpawnLocation; private set => _LHSSpawnLocation = (Vector2)value; }
 
         /// <summary>
         /// The data of the character to use when spawning player 1.

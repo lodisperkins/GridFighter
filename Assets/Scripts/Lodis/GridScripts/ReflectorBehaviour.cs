@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.Movement;
+using FixedPoints;
 
 namespace Lodis.Gameplay
 {
@@ -45,7 +46,7 @@ namespace Lodis.Gameplay
             otherCollider.Owner = _collider.Owner;
             otherCollider.ColliderInfo.OwnerAlignement = _collider.Owner.GetComponent<GridMovementBehaviour>().Alignment;
             otherCollider.ResetActiveTime();
-            gridPhysics.ApplyVelocityChange(-gridPhysics.LastVelocity * 2);
+            gridPhysics.ApplyVelocityChange((Vector3)(-gridPhysics.LastVelocity * 2f));
         }
 
         /// <summary>

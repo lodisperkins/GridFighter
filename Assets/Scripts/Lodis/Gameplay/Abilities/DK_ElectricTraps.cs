@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
 
             //Place the link in its appropriate position
-            gridMovement.MoveToPanel(position, true, GridAlignment.ANY, true);
+            gridMovement.MoveToPanel((FixedPoints.FVector2)position, true, GridAlignment.ANY, true);
             gridMovement.Speed = abilityData.GetCustomStatValue("Speed");
 
             _linkMoveScripts.Add(gridMovement);

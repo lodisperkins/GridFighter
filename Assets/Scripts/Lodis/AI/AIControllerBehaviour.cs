@@ -15,6 +15,7 @@ using UnityEngine.Events;
 using System.Runtime.Remoting.Messaging;
 using Lodis.Utility;
 using Assets.Scripts.Lodis.AI;
+using FixedPoints;
 
 namespace Lodis.AI
 {
@@ -395,11 +396,11 @@ namespace Lodis.AI
 
         private void PerformAction(ActionNode action)
         {
-            Vector2 direction = action.MoveDirection;
+            FVector2 direction = action.MoveDirection;
             if (action.CurrentAbilityID == -1 && !_movementBehaviour.IsMoving && _movementBehaviour.CanMove && (StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Moving"))
             {
-                direction.x *= _movementBehaviour.GetAlignmentX();
-                _movementBehaviour.Move(direction);
+                direction.X *= _movementBehaviour.GetAlignmentX();
+                _movementBehaviour.Move((FVector2)direction);
                 return;
             }
             else if (action.CurrentAbilityID == -2)
@@ -447,8 +448,8 @@ namespace Lodis.AI
 
             //Update grid state
             _currentSituation.AlignmentX = (int)_movementBehaviour.GetAlignmentX();
-            _currentSituation.AverageHitBoxOffset = GetAveragePosition();
-            _currentSituation.AverageVelocity = GetAverageVelocity();
+            _currentSituation.AverageHitBoxOffset = (FVector3)GetAveragePosition();
+            _currentSituation.AverageVelocity = (FVector3)GetAverageVelocity();
             _currentSituation.MoveDirection = _movementBehaviour.MoveDirection;
             _currentSituation.IsGrounded = _gridPhysics.IsGrounded;
 

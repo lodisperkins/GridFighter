@@ -7,6 +7,7 @@ using Lodis.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FixedPoints;
 
 namespace Lodis.AI
 {
@@ -53,7 +54,7 @@ namespace Lodis.AI
             _needPath = true;
         }
 
-        public void MoveToLocation(Vector2 panelPosition)
+        public void MoveToLocation(FVector2 panelPosition)
         {
             if (_moveTarget.Position == panelPosition) return;
 

@@ -33,7 +33,7 @@ namespace Lodis.Movement
             //Adds a force to objects to push them off of the field barrier if they land on top
             if (contactPoint.normal == Vector3.down)
             {
-                Vector3 pushVelocity = new Vector3(knockBackScript.Physics.LastVelocity.x, _pushScale, 0);
+                Vector3 pushVelocity = new Vector3(knockBackScript.Physics.LastVelocity.X, _pushScale, 0);
                 knockBackScript.Physics.ApplyImpulseForce(Vector3.up * knockBackScript.Physics.Gravity / 10);
                 knockBackScript.Physics.ApplyForce(pushVelocity);
             }

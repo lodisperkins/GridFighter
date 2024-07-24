@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEditor;
 using Lodis.Gameplay;
 using UnityEngine.Events;
+using FixedPoints;
 
 namespace Lodis.AI
 {
@@ -62,7 +63,7 @@ namespace Lodis.AI
         /// <param name="entity">The entity to create a new instance of</param>
         /// <param name="position">The position in world space to spawn the entity</param>
         /// <param name="gridAlignment">The side of the grid this entity will belong to</param>
-        public void SpawnEntity(GameObject entity, Vector2 position, GridAlignment gridAlignment = GridAlignment.ANY)
+        public void SpawnEntity(GameObject entity, FVector2 position, GridAlignment gridAlignment = GridAlignment.ANY)
         {
             //Try to get the move script attached
             GridMovementBehaviour moveScript = entity.GetComponent<GridMovementBehaviour>();
@@ -145,7 +146,8 @@ namespace Lodis.AI
 
             if (GUILayout.Button("SpawnEntity"))
             {
-                EntitySpawnBehaviour.Instance.SpawnEntity((GameObject)_entity.objectReferenceValue, _entitySpawnPoint.vector2Value, (GridAlignment)_alignment.enumValueIndex);
+                Debug.LogError("Can't spawn entities as spawning has not been converted to used fixed points.");
+                //EntitySpawnBehaviour.Instance.SpawnEntity((GameObject)_entity.objectReferenceValue, _entitySpawnPoint.vector2Value, (GridAlignment)_alignment.enumValueIndex);
             }
         }
     }

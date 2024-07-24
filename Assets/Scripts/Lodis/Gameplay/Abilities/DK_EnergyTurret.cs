@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace Lodis.Gameplay
     {
         private GameObject _spawn;
         private GameObject _chargeEffectRef;
-        private Vector3 _spawnPosition;
+        private FVector3 _spawnPosition;
         private ProjectileSpawnerBehaviour _projectileSpawner;
         private GameObject _largeLaserRef;
         private GameObject _laserRef;
@@ -39,7 +40,7 @@ namespace Lodis.Gameplay
             _shotSpeed = abilityData.GetCustomStatValue("Speed");
 
             PanelBehaviour panel;
-            BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + Vector2.right * OwnerMoveScript.GetAlignmentX(), out panel);
+            BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + FVector2.Right * OwnerMoveScript.GetAlignmentX(), out panel);
 
             _spawnPosition = panel.Position;
 

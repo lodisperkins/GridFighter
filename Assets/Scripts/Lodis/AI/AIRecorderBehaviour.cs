@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Lodis.AI;
+using FixedPoints;
 using Ilumisoft.VisualStateMachine;
 using Lodis.Gameplay;
 using Lodis.GridScripts;
@@ -250,8 +251,8 @@ namespace Lodis.AI
             _currentSituation.CurrentState = StateMachine.StateMachine.CurrentState;
 
             _currentSituation.AlignmentX = (int)OwnerMovement.GetAlignmentX();
-            _currentSituation.AverageHitBoxOffset = GetAveragePosition();
-            _currentSituation.AverageVelocity = GetAverageVelocity();
+            _currentSituation.AverageHitBoxOffset = (FVector3)GetAveragePosition();
+            _currentSituation.AverageVelocity = (FVector3)GetAverageVelocity();
             _currentSituation.MoveDirection = OwnerMovement.MoveDirection;
             _currentSituation.IsGrounded = _gridPhysics.IsGrounded;
 

@@ -8,6 +8,7 @@ using DG.Tweening;
 using Lodis.GridScripts;
 using System;
 using Lodis.Utility;
+using FixedPoints;
 
 namespace Lodis.Movement
 {
@@ -30,8 +31,8 @@ namespace Lodis.Movement
         [SerializeField]
         private float _mass = 1;
         private bool _objectAtRest;
-        private Vector3 _acceleration;
-        private Vector3 _lastVelocity;
+        private FVector3 _acceleration;
+        private FVector3 _lastVelocity;
         [Tooltip("The strength of the force pushing downwards on this object once in air")]
         [SerializeField]
         private float _gravity = 9.81f;
@@ -118,13 +119,13 @@ namespace Lodis.Movement
         /// <summary>
         /// Returns the velocity of the rigid body in the last fixed update
         /// </summary>
-        public Vector3 LastVelocity { get => _lastVelocity; }
+        public FVector3 LastVelocity { get => _lastVelocity; }
 
         public Collider BounceCollider { get => _bounceCollider; }
 
         public bool IsGrounded{ get => _isGrounded; }
 
-        public Vector3 Acceleration { get => _acceleration; }
+        public FVector3 Acceleration { get => _acceleration; }
         public Rigidbody RB { get => _rigidbody; }
         public Vector3 GroundedBoxPosition { get => _groundedBoxPosition; set => _groundedBoxPosition = value; }
         public Vector3 GroundedBoxExtents { get => _groundedBoxExtents; set => _groundedBoxExtents = value; }
@@ -426,7 +427,7 @@ namespace Lodis.Movement
                 return newX;
 
             //Find the position of the panel they would be on if the current force was applied.
-            newX = _movementBehaviour.Position.x + forceMagnitude * -_movementBehaviour.GetAlignmentX();
+            newX = _movementBehaviour.Position.X + forceMagnitude * -_movementBehaviour.GetAlignmentX();
 
             //Subtract from the force magnitude to clamp it based on alignement.
             if (_movementBehaviour.Alignment == GridAlignment.LEFT && newX < 0)
@@ -652,12 +653,12 @@ namespace Lodis.Movement
 
             if (knockBackScript && _useVelocityForBounce)
             {
-                velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;
+                velocityMagnitude = knockBackScript.Physics.LastVelocity.Magnitude;
                 baseKnockBack = knockBackScript.LaunchVelocity.magnitude / velocityMagnitude + bounceDampening;
             }
             else if (_useVelocityForBounce)
             {
-                velocityMagnitude = LastVelocity.magnitude;
+                velocityMagnitude = LastVelocity.Magnitude;
                 baseKnockBack = _lastForceAdded.magnitude / velocityMagnitude + bounceDampening;
             }
 
@@ -710,7 +711,7 @@ namespace Lodis.Movement
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            _lastVelocity = force;
+            _lastVelocity = (FVector3)force;
             _lastForceAdded = force;
             ForceToApply = force;
 
@@ -753,8 +754,8 @@ namespace Lodis.Movement
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.x,0).normalized);
-            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.y).normalized);
+            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.X,0).normalized);
+            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.Y).normalized);
 
             if (xDot < 0)
                 RB.velocity = new Vector3(0, RB.velocity.y, RB.velocity.z);
@@ -807,8 +808,8 @@ namespace Lodis.Movement
 
             _objectAtRest = false;
 
-            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.x, 0).normalized);
-            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.y).normalized);
+            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.X, 0).normalized);
+            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.Y).normalized);
 
             if (xDot < 0)
                 RB.velocity = new Vector3(0, RB.velocity.y, RB.velocity.z);
@@ -833,7 +834,7 @@ namespace Lodis.Movement
             _onForceAdded?.Invoke(force / Mass);
             _onForceAddedTemp?.Invoke(force);
             _onForceAddedTemp = null;
-            _acceleration = force / Mass;
+            _acceleration = (FVector3)force / Mass;
         }
 
         /// <summary>
@@ -988,7 +989,7 @@ namespace Lodis.Movement
 
         private void FixedUpdate()
         {
-            _acceleration = (RB.velocity - LastVelocity) / Time.fixedDeltaTime;
+            _acceleration = ((FVector3)RB.velocity - LastVelocity) / Time.fixedDeltaTime;
 
 
             if (UseGravity && !IgnoreForces)
@@ -1002,7 +1003,7 @@ namespace Lodis.Movement
             if (_rigidbody.isKinematic && _movementBehaviour?.IsMoving == true)
                 _lastVelocity = _movementBehaviour.MoveDirection;
             else
-                _lastVelocity = RB.velocity;
+                _lastVelocity = (FVector3)RB.velocity;
 
             _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude <= 0.01f;
 
@@ -1011,8 +1012,8 @@ namespace Lodis.Movement
 
         private void Update()
         {
-            if (FaceHeading && LastVelocity.magnitude > 0)
-                transform.forward = LastVelocity.normalized;
+            if (FaceHeading && LastVelocity.Magnitude > 0)
+                transform.forward = (Vector3)LastVelocity.GetNormalized();
         }
     }
 }

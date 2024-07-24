@@ -1,8 +1,10 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -67,14 +69,14 @@ namespace Lodis.Gameplay
             //Spawn black hole.
             Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
 
-            Vector2 direction = owner.transform.forward;
+            FVector2 direction = new FVector2(owner.transform.forward.x, owner.transform.forward.y);
 
             //Unlike normal projectiles the black hole needs to stay in place for a short while. So grid movement is used instead of projectile physics.
             GridMovementBehaviour gridMovementBehaviour = Projectile.GetComponent<GridMovementBehaviour>();
             gridMovementBehaviour.Position = OwnerMoveScript.Position;
             gridMovementBehaviour.Speed = abilityData.GetCustomStatValue("Speed");
 
-            gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
+            gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * (Fixed32)_travelDistance, false, GridAlignment.ANY, true, false, true);
             ActiveProjectiles.Add(Projectile);
             gridMovementBehaviour.AddOnMoveEndTempAction(SpawnBlackHole);
         }

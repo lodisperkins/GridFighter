@@ -451,7 +451,7 @@ namespace Lodis.Gameplay
             if (!knockBackScript || knockBackScript.CurrentAirState != AirState.TUMBLING)
                 return;
 
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude;;
+            float velocityMagnitude = knockBackScript.Physics.LastVelocity.Magnitude;
 
             //Apply ricochet force and damage
             knockBackScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
@@ -464,7 +464,7 @@ namespace Lodis.Gameplay
             if (!knockBackScript || knockBackScript.CurrentAirState != AirState.TUMBLING)
                 return;
 
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.magnitude; ;
+            float velocityMagnitude = knockBackScript.Physics.LastVelocity.Magnitude; ;
 
             //Apply ricochet force and damage
             knockBackScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);

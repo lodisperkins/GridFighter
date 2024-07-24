@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -15,12 +16,12 @@ namespace Lodis.Gameplay
         private bool _smoothMovement;
         private int _entityCount;
         private float _moveSpeed;
-        private Vector2[] _panelPositions;
+        private FVector2[] _panelPositions;
         private string _id;
         private UnityAction _onMoveEndAction;
         private GridAlignment _alignement = GridAlignment.ANY;
 
-        public Vector2[] PanelPositions { get => _panelPositions; set => _panelPositions = value; }
+        public FVector2[] PanelPositions { get => _panelPositions; set => _panelPositions = value; }
         public int EntityCount { get => _entityCount; private set => _entityCount = value; }
         public float MoveSpeed { get => _moveSpeed; private set => _moveSpeed = value; }
         public bool SmoothMovement { get => _smoothMovement; set => _smoothMovement = value; }
@@ -36,7 +37,7 @@ namespace Lodis.Gameplay
             _moveSpeed = abilityData.GetCustomStatValue("Speed");
 
             ActiveEntities = new List<GridMovementBehaviour>();
-            PanelPositions = new Vector2[EntityCount];
+            PanelPositions = new FVector2[EntityCount];
 
             //Reference for entities to spawn.
             _entityRef = abilityData.visualPrefab;

@@ -1,4 +1,5 @@
-﻿using Lodis.FX;
+﻿using FixedPoints;
+using Lodis.FX;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Sound;
@@ -129,7 +130,7 @@ namespace Lodis.Gameplay
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
 
             OwnerMoveScript.SnapToTarget();
-            OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + _distance * Vector2.right * OwnerMoveScript.GetAlignmentX(), false, GridScripts.GridAlignment.ANY, true, false, true);
+            OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + _distance * FVector2.Right * OwnerMoveScript.GetAlignmentX(), false, GridScripts.GridAlignment.ANY, true, false, true);
 
             OwnerMoveScript.AddOnMoveEndTempAction(EndAbility);
         }

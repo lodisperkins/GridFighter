@@ -13,6 +13,7 @@ using UnityEngine.SceneManagement;
 using UnityEditor;
 using Lodis.ScriptableObjects;
 using Lodis.FX;
+using FixedPoints;
 
 namespace Lodis.Input
 {
@@ -383,7 +384,7 @@ namespace Lodis.Input
                 return;
 
             Vector2 direction = (Vector2)args[0];
-            _bufferedAction = new BufferedInput(action => _defense.ActivatePhaseShift(_attackDirection), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving", 0.2f);
+            _bufferedAction = new BufferedInput(action => _defense.ActivatePhaseShift((FixedPoints.FVector2)_attackDirection), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving", 0.2f);
         }
 
         private void RemoveShieldFromBuffer()
@@ -420,7 +421,7 @@ namespace Lodis.Input
             if (_canMove)
                 _storedMoveInput = direction;
 
-            _bufferedAction = new BufferedInput(action => _gridMovement.MoveToPanel(_storedMoveInput + _gridMovement.Position),condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, 0.2f);
+            _bufferedAction = new BufferedInput(action => _gridMovement.MoveToPanel((FVector2)_storedMoveInput + _gridMovement.Position),condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, 0.2f);
         }
 
         /// <summary>
@@ -475,7 +476,7 @@ namespace Lodis.Input
         /// </summary>
         public void DisableMovementBasedOnCondition(Condition condition)
         {
-            if (_attackDirection.normalized == _gridMovement.MoveDirection.normalized || _gridMovement.MoveDirection == Vector2.zero)
+            if ((FVector2)_attackDirection.normalized == _gridMovement.MoveDirection.GetNormalized() || _gridMovement.MoveDirection == FVector2.Zero)
             {
                 _moveInputEnableCondition = condition;
                 _canMove = false;
@@ -542,7 +543,7 @@ namespace Lodis.Input
 
             _storedMoveInput = newMoveInput;
             if (_storedMoveInput.magnitude == 1 && _canMove)
-                _gridMovement.MoveToPanel(_gridMovement.Position + _storedMoveInput);
+                _gridMovement.MoveToPanel(_gridMovement.Position + (FVector2)_storedMoveInput);
 
             //Debug.Log(_gridMovement.Speed);
         }

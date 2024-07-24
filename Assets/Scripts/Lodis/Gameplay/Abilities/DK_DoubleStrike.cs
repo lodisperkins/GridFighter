@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using FixedPoints;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,7 @@ namespace Lodis.Gameplay
         private HitColliderData _fistCollider;
         private GameObject _visualPrefabInstance;
         private HitColliderBehaviour _hitScript;
-        private Vector2 _attackDirection;
+        private FVector2 _attackDirection;
         private bool _secondStrikeActivated;
         private Quaternion _rotation;
 
@@ -36,10 +37,10 @@ namespace Lodis.Gameplay
             if (_ownerInput)
             {
                 //Set initial attack direction so player can change directions immediately
-                _attackDirection = _ownerInput.AttackDirection;
+                _attackDirection = (FVector2)_ownerInput.AttackDirection;
             }
             else
-                _attackDirection = owner.transform.forward;
+                _attackDirection = new FVector2(owner.transform.forward.x, owner.transform.forward.y);
 
             //Play animation
             ChangeMoveAttributes();
@@ -63,16 +64,16 @@ namespace Lodis.Gameplay
             _hitScript.DebuggingEnabled = true;
 
             //Set the direction of the attack
-            Vector2 attackPosition;
-            if (_attackDirection == Vector2.zero)
-                _attackDirection = (Vector2)(owner.transform.forward);
+            FVector2 attackPosition;
+            if (_attackDirection == FVector2.Zero)
+                _attackDirection = new FVector2(owner.transform.forward.x, owner.transform.forward.y);
 
             //Get the panel position based on the direction of attack and distance given
             attackPosition = OwnerMoveScript.Position + (_attackDirection * abilityData.GetCustomStatValue("TravelDistance"));
 
             //Clamp to be sure the player doesn't go off grid
-            attackPosition.x = Mathf.Clamp(attackPosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
-            attackPosition.y = Mathf.Clamp(attackPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+            attackPosition.X = Mathf.Clamp(attackPosition.X, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
+            attackPosition.Y = Mathf.Clamp(attackPosition.Y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
 
             //Equation to calculate speed of attack given the active time
             float distance = abilityData.GetCustomStatValue("TravelDistance") + (abilityData.GetCustomStatValue("TravelDistance") * BlackBoardBehaviour.Instance.Grid.PanelSpacingX);
@@ -82,7 +83,7 @@ namespace Lodis.Gameplay
             OwnerMoveScript.CanCancelMovement = true;
 
             //Change rotation to the direction of movement
-            owner.transform.forward = new Vector3(_attackDirection.x, 0, _attackDirection.y);
+            owner.transform.forward = new Vector3(_attackDirection.X, 0, _attackDirection.Y);
 
             //Move towards panel
             OwnerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
@@ -148,7 +149,7 @@ namespace Lodis.Gameplay
             if (_ownerInput.AttackDirection.magnitude > 0 && CurrentAbilityPhase == AbilityPhase.RECOVER && !MaxActivationAmountReached)
             {
                 //...restart the ability
-                _attackDirection = _ownerInput.AttackDirection;
+                _attackDirection = (FVector2)_ownerInput.AttackDirection;
 
                 _secondStrikeActivated = true;
                 OnRecover(null);

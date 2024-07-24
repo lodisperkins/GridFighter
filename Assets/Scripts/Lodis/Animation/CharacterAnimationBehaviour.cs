@@ -1,4 +1,5 @@
 ﻿using CustomEventSystem;
+using FixedPoints;
 using Ilumisoft.VisualStateMachine;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
@@ -476,12 +477,12 @@ namespace Lodis.Gameplay
             _animationPhase = 0;
 
             //Calculates the time it takes to get to the destination
-            Vector2 oldPosition = new Vector2();
+            FVector2 oldPosition = new FVector2();
 
             if (_moveBehaviour.PreviousPanel)
                 oldPosition = _moveBehaviour.PreviousPanel.Position;
 
-            float travelDistance = (oldPosition - _moveBehaviour.CurrentPanel.Position).magnitude;
+            float travelDistance = (oldPosition - _moveBehaviour.CurrentPanel.Position).Magnitude;
             float travelTime = travelDistance / _moveBehaviour.Speed;
             _currentClipStartUpTime = _moveAnimationStartUpTime;
             _currentClipActiveTime = travelTime + _moveAnimationHangTime;
@@ -492,8 +493,8 @@ namespace Lodis.Gameplay
 
             if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT) mirror = -1;
 
-            _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.x * mirror);
-            _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.y);
+            _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.X * mirror);
+            _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.Y);
 
             _animator.SetTrigger("Movement");
         }
@@ -557,8 +558,8 @@ namespace Lodis.Gameplay
 
         public void UpdateInAirMoveDirection()
         {
-            _animator.SetFloat("VelocityInAirY", _knockbackBehaviour.Physics.LastVelocity.y);
-            _animator.SetFloat("VelocityInAirX", _knockbackBehaviour.Physics.LastVelocity.x * _moveBehaviour.GetAlignmentX());
+            _animator.SetFloat("VelocityInAirY", _knockbackBehaviour.Physics.LastVelocity.Y);
+            _animator.SetFloat("VelocityInAirX", _knockbackBehaviour.Physics.LastVelocity.X * _moveBehaviour.GetAlignmentX());
         }
 
         public bool CompareStateName(string name)

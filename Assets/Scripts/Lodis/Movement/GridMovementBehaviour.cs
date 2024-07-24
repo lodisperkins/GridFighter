@@ -12,6 +12,8 @@ using Lodis.Utility;
 using DG.Tweening;
 using Lodis.Sound;
 using CustomEventSystem;
+using FixedPoints;
+using Types;
 
 namespace Lodis.Movement
 {
@@ -21,10 +23,10 @@ namespace Lodis.Movement
     {
         [SerializeField]
         [Tooltip("The position of the object on the grid.")]
-        private Vector2 _position;
+        private FVector2 _position;
         [SerializeField]
         [Tooltip("The current direction the object is moving in.")]
-        private Vector2 _moveDirection;
+        private FVector2 _moveDirection;
         [SerializeField]
         [Tooltip("This is how close the object has to be to the panel it's moving towards to say its reached it.")]
         private float _targetTolerance = 0.05f;
@@ -78,7 +80,7 @@ namespace Lodis.Movement
 
         private Tweener _moveTween;
         private static FloatVariable _maxYPosition;
-        private Vector3 _targetPosition;
+        private FVector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
         private PanelBehaviour _lastPanel;
         private PanelBehaviour _currentPanel;
@@ -157,7 +159,7 @@ namespace Lodis.Movement
         /// <summary>
         /// The current velocity of the object moving on the grid.
         /// </summary>
-        public Vector2 MoveDirection
+        public FVector2 MoveDirection
         {
             get { return _moveDirection; }
             set { _moveDirection = value; }
@@ -166,7 +168,7 @@ namespace Lodis.Movement
         /// <summary>
         /// The position of the object on the grid.
         /// </summary>
-        public Vector2 Position
+        public FVector2 Position
         {
             get { return _position; }
             set { _position = value; }
@@ -275,7 +277,7 @@ namespace Lodis.Movement
             _renderer = GetComponentInChildren<SkinnedMeshRenderer>();
 
             //Set the starting position
-            _targetPosition = transform.position;
+            _targetPosition = (FVector3)transform.position;
             _meshFilter = GetComponent<MeshFilter>();
 
             _health = GetComponent<HealthBehaviour>();
@@ -290,7 +292,7 @@ namespace Lodis.Movement
         private void Start()
         {
             //Set the starting panel to be occupied
-            if (BlackBoardBehaviour.Instance.Grid.GetPanel(_position, out _currentPanel, true, Alignment))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position, out _currentPanel, true, Alignment))
             {
                 _currentPanel.Occupied = true;
 
@@ -483,7 +485,7 @@ namespace Lodis.Movement
             if (CurrentPanel)
                 CurrentPanel.Occupied = !CanBeWalkedThrough;
 
-            MoveDirection = Vector2.zero;
+            MoveDirection = FVector2.Zero;
         }
 
         /// <summary>
@@ -491,13 +493,13 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="newPosition"></param>
         /// <returns></returns>
-        private void LerpPosition(Vector3 newPosition)
+        private void LerpPosition(FVector3 newPosition)
         {
             if (_moveTween?.active == true)
                 _moveTween.ChangeEndValue(newPosition, true);
             else
             {
-                _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed).SetEase(Ease.Linear);
+                _moveTween = transform.DOMove((Vector3)newPosition, TravelTime).SetUpdate(UpdateType.Fixed).SetEase(Ease.Linear);
                 _moveTween.onComplete = ResetMovementValues;
             }
         }
@@ -513,9 +515,9 @@ namespace Lodis.Movement
         /// <param name="reservePanel">If true, the target panel is marked occupied before the object reaches it.</param>
         /// <param name="clampPosition">If true, will travel to the nearest available panel if the target can't be reached.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
-        public bool Move(Vector2 direction, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false, bool reservePanel = true, bool clampPosition = false)
+        public bool Move(FVector2 direction, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false, bool reservePanel = true, bool clampPosition = false)
         {
-            Vector2 panelPosition = Position + direction;
+            FVector2 panelPosition = Position + direction;
 
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
@@ -525,8 +527,8 @@ namespace Lodis.Movement
             else if (CanCancelMovement && IsMoving)
                 CancelMovement();
 
-            if (!CanMoveDiagonally && panelPosition.x != _position.x && panelPosition.y != _position.y)
-                panelPosition.y = _position.y;
+            if (!CanMoveDiagonally && panelPosition.X != _position.X && panelPosition.Y != _position.Y)
+                panelPosition.Y = _position.Y;
 
             if (clampPosition)
             {
@@ -544,17 +546,17 @@ namespace Lodis.Movement
             //Sets the new position to be the position of the panel added to half the gameObjects height.
 
 
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, _heightOffset, 0);
+            FVector3 newPosition = (FVector3)(_targetPanel.transform.position) + new FVector3(0, (Types.Fixed32)_heightOffset, 0);
             _targetPosition = newPosition;
 
-            MoveDirection = (panelPosition - _position).normalized;
+            MoveDirection = (panelPosition - _position).GetNormalized();
 
             SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
-                transform.position = newPosition;
+                transform.position = (Vector3)newPosition;
                 SetIsMoving(false);
             }
             else
@@ -586,7 +588,7 @@ namespace Lodis.Movement
         /// <param name="reservePanel">If true, the target panel is marked occupied before the object reaches it.</param>
         /// <param name="clampPosition">If true, will travel to the nearest available panel if the target can't be reached.</param>
         /// <returns>Returns false if the panel is occupied or not in the grids array of panels.</returns>
-        public bool MoveToPanel(Vector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false, bool reservePanel = true, bool clampPosition = false)
+        public bool MoveToPanel(FVector2 panelPosition, bool snapPosition = false, GridAlignment tempAlignment = GridAlignment.NONE, bool canBeOccupied = false, bool reservePanel = true, bool clampPosition = false)
         {
             if (tempAlignment == GridAlignment.NONE)
                 tempAlignment = _defaultAlignment;
@@ -596,8 +598,8 @@ namespace Lodis.Movement
             else if (CanCancelMovement && IsMoving)
                 CancelMovement();
 
-            if (!CanMoveDiagonally && panelPosition.x != _position.x && panelPosition.y != _position.y)
-                panelPosition.y = _position.y;
+            if (!CanMoveDiagonally && panelPosition.X != _position.X && panelPosition.Y != _position.Y)
+                panelPosition.Y = _position.Y;
 
             if (clampPosition)
             {
@@ -615,17 +617,17 @@ namespace Lodis.Movement
             //Sets the new position to be the position of the panel added to half the gameObjects height.
 
 
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, _heightOffset, 0);
+            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)_heightOffset, 0);
             _targetPosition = newPosition;
 
-            MoveDirection = (panelPosition - _position).normalized;
+            MoveDirection = (panelPosition - _position).GetNormalized();
 
             SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
-                transform.position = newPosition;
+                transform.position = (Vector3)newPosition;
                 SetIsMoving(false);
             }
             else
@@ -662,11 +664,11 @@ namespace Lodis.Movement
             if (IsMoving && !CanCancelMovement ||!_canMove || _health?.Stunned == true)
                 return false;
 
-            if (!CanMoveDiagonally && x != _position.x && y != _position.y)
-                y = (int)_position.y;
+            if (!CanMoveDiagonally && x != _position.X && y != _position.Y)
+                y = (int)_position.Y;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, _position == new Vector2( x,y), tempAlignment))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, _position == new FVector2( x,y), tempAlignment))
                 return false;
 
             _previousPanel = _currentPanel;
@@ -679,17 +681,17 @@ namespace Lodis.Movement
             else
                 offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
+            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)offset, 0);
             _targetPosition = newPosition;
 
-            MoveDirection = new Vector2(x, y) - _position;
+            MoveDirection = new FVector2(x, y) - _position;
 
             SetIsMoving(true);
 
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
-                transform.position = newPosition;
+                transform.position = (Vector3)newPosition;
                 SetIsMoving(false);
             }
             else
@@ -727,12 +729,12 @@ namespace Lodis.Movement
                 return false;
 
             //To Do: This section should make this function prevent diagonal movement based on the "_canMoveDiagonally" boolean
-            Vector2 targetPosition = targetPanel.Position;
-            if (!CanMoveDiagonally && targetPosition.x != _position.x && targetPosition.y != _position.y && CurrentPanel)
+            FVector2 targetPosition = targetPanel.Position;
+            if (!CanMoveDiagonally && targetPosition.X != _position.X && targetPosition.Y != _position.Y && CurrentPanel)
             {
-                targetPosition.y = _position.y;
+                targetPosition.Y = _position.Y;
                 //If it's not possible to move to the panel at the given position, return false.
-                if (!BlackBoardBehaviour.Instance.Grid.GetPanel((int)targetPosition.x, (int)targetPosition.y, out targetPanel, _position == new Vector2(targetPosition.x, targetPosition.y), tempAlignment))
+                if (!BlackBoardBehaviour.Instance.Grid.GetPanel((int)targetPosition.X, (int)targetPosition.Y, out targetPanel, _position == new FVector2(targetPosition.X, targetPosition.Y), tempAlignment))
                     return false;
             }
             _previousPanel = _currentPanel;
@@ -746,11 +748,11 @@ namespace Lodis.Movement
             else
                 offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, offset, 0);
+            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)offset, 0);
             _targetPosition = newPosition;
 
 
-            MoveDirection = (targetPanel.Position - _position).normalized;
+            MoveDirection = (targetPanel.Position - _position).GetNormalized();
 
             SetIsMoving(true);
 
@@ -758,7 +760,7 @@ namespace Lodis.Movement
             if (snapPosition)
             {
                 
-                transform.position = newPosition;
+                transform.position = (Vector3)newPosition;
                 SetIsMoving(false);
             }
             else
@@ -799,7 +801,7 @@ namespace Lodis.Movement
 
             _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
-                gameObject.transform.position = panel.transform.position + Vector3.up * HeightOffset;
+                gameObject.transform.position = (Vector3)((FVector3)panel.transform.position + FVector3.Up * (Fixed32)HeightOffset);
                 gameObject.SetActive(true);
                 _onTeleportEnd?.Raise(gameObject);
                 SpawnTeleportEffect();
@@ -814,7 +816,7 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="position">Spawns the character at the exact position given ignoring the height offset.</param>
         /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
-        public void TeleportToLocation(Vector3 position, float travelTime = 0.05f, bool setInactive = true)
+        public void TeleportToLocation(FVector3 position, float travelTime = 0.05f, bool setInactive = true)
         {
             if (_health?.Stunned == true)
                 return;
@@ -829,7 +831,7 @@ namespace Lodis.Movement
 
             _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
             {
-                gameObject.transform.position = position;
+                gameObject.transform.position = (Vector3)position;
                 gameObject.SetActive(true);
                 _onTeleportEnd?.Raise(gameObject);
                 SpawnTeleportEffect();
@@ -846,7 +848,7 @@ namespace Lodis.Movement
                 return;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(_position, out _targetPanel))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(Position, out _targetPanel))
                 return;
 
             _previousPanel = _currentPanel;
@@ -859,18 +861,18 @@ namespace Lodis.Movement
             else
                 _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
-            Vector3 newPosition = _targetPanel.transform.position + new Vector3(0, _heightOffset, 0);
+            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)_heightOffset, 0);
             _targetPosition = newPosition;
 
             if (_moveTween?.active == true)
                 _moveTween.ChangeEndValue(newPosition, true);
             else
             {
-                _moveTween = transform.DOMove(newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
+                _moveTween = transform.DOMove((Vector3)newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
                 _moveTween.onComplete = ResetMovementValues;
             }
 
-            MoveDirection = (_currentPanel.Position - _position).normalized;
+            MoveDirection = (_currentPanel.Position - _position).GetNormalized();
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
@@ -885,16 +887,16 @@ namespace Lodis.Movement
         private void SpawnTeleportEffect()
         {
             //Offset the particles so they spawn at the players location
-            Vector3 offset = (Vector3.right * _targetTolerance * transform.forward.x) + Vector3.back * 0.2f + Vector3.up;
+            FVector3 offset = (FVector3.Right * (Fixed32)_targetTolerance * (Fixed32)transform.forward.x) + FVector3.Back * (Fixed32)0.2 + FVector3.Up;
 
             //Sets the y position so that the effect is at the players center
             if (!_meshFilter)
-                offset.y = transform.localScale.y / 2;
+                offset.Y = (Fixed32)(transform.localScale.y / 2);
             else
-                offset.y = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+                offset.Y = (Fixed32)((_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2);
 
             //Spawns the effect and makes it face the camera
-            Instantiate(_returnEffect, transform.position + offset, Camera.main.transform.rotation);
+            Instantiate(_returnEffect, transform.position + (Vector3)offset, Camera.main.transform.rotation);
         }
 
         /// <summary>
@@ -906,8 +908,8 @@ namespace Lodis.Movement
                 return;
 
 
-            float currentDistance = Vector3.Distance(_lastPanel.transform.position, transform.position);
-            float targetDistance = Vector3.Distance(_targetPanel.transform.position, transform.position);
+            float currentDistance = FVector3.Distance((FVector3)_lastPanel.transform.position, (FVector3)transform.position);
+            float targetDistance = FVector3.Distance((FVector3)_targetPanel.transform.position, (FVector3)transform.position);
 
             CanCancelMovement = true;
 
@@ -968,10 +970,8 @@ namespace Lodis.Movement
             {
                 BlackBoardBehaviour.Instance.Grid.GetPanel(args =>
                 {
-                    return Vector2.Distance(((PanelBehaviour)args[0]).Position, _currentPanel.Position) <= offSet;
-                }, 
-                out panel, gameObject
-                );
+                    return FVector2.Distance(((PanelBehaviour)args[0]).Position, _currentPanel.Position) <= offSet;
+                }, out panel, gameObject);
 
                 if (panel != null)
                 {
@@ -1001,7 +1001,7 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = !CanBeWalkedThrough;
 
             _isMoving = false;
-            _targetPosition = Vector3.zero;
+            _targetPosition = FVector3.Zero;
         }
 
         public float GetAlignmentX()
@@ -1051,10 +1051,10 @@ namespace Lodis.Movement
             if (!_currentPanel)
                 return;
 
-            if (Vector3.Distance(transform.position, _currentPanel.transform.position + Vector3.up  * _heightOffset) >= _targetTolerance || _searchingForSafePanel)
+            if (FVector3.Distance((FVector3)transform.position, (FVector3)_currentPanel.transform.position + FVector3.Up  * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
                 MoveToCurrentPanel();
 
-            SetIsMoving(Vector3.Distance(transform.position, _targetPosition) >= _targetTolerance);
+            SetIsMoving(FVector3.Distance((FVector3)transform.position, _targetPosition) >= _targetTolerance);
 
             string state = BlackBoardBehaviour.Instance.GetPlayerState(gameObject);
 

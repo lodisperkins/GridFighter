@@ -1,4 +1,5 @@
-﻿using Lodis.Movement;
+﻿using FixedPoints;
+using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System;
@@ -168,7 +169,7 @@ namespace Lodis.Gameplay
         private TimedAction _deckShuffleAction;
         private TimedAction _burstAction;
 
-        private Vector2 _lastAttackDirection;
+        private FVector2 _lastAttackDirection;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -238,7 +239,7 @@ namespace Lodis.Gameplay
         public Transform HeldItemSpawnRight { get => _heldItemSpawnRight; private set => _heldItemSpawnRight = value; }
 
         public static float DeckReloadTime { get; private set; }
-        public Vector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
+        public FVector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
 
         private void Awake()
         {
@@ -548,7 +549,7 @@ namespace Lodis.Gameplay
             ability.UseAbility(args);
             _lastAbilityInUse = ability;
             if (args?.Length > 1)
-                LastAttackDirection = (Vector2)args[1];
+                LastAttackDirection = (FVector2)args[1];
             if (args?.Length > 0)
                 _lastAttackStrength = (float)args[0];
 
@@ -609,7 +610,7 @@ namespace Lodis.Gameplay
 
             _lastAbilityInUse = currentAbility;
             if (args?.Length > 1)
-                LastAttackDirection = (Vector2)args[1];
+                LastAttackDirection = (FVector2)args[1];
 
             if (args?.Length > 0)
                 _lastAttackStrength = (float)args[0];
@@ -663,7 +664,7 @@ namespace Lodis.Gameplay
             ability.UseAbility(args);
             _lastAbilityInUse = ability;
             if (args?.Length > 1)
-                LastAttackDirection = (Vector2)args[1];
+                LastAttackDirection = (FVector2)args[1];
             if (args?.Length > 0)
                 _lastAttackStrength = (float)args[0];
 
@@ -719,7 +720,7 @@ namespace Lodis.Gameplay
             _lastAbilityInUse = ability;
 
             if (args?.Length > 1)
-                LastAttackDirection = (Vector2)args[1];
+                LastAttackDirection = (FVector2)args[1];
             ability.currentActivationAmount++;
 
             if (ability.MaxActivationAmountReached)

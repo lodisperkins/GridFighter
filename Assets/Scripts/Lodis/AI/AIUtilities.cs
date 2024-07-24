@@ -4,6 +4,7 @@ using UnityEngine;
 using Lodis.GridScripts;
 using System;
 using Lodis.Gameplay;
+using FixedPoints;
 
 namespace Lodis.AI
 {
@@ -45,7 +46,7 @@ namespace Lodis.AI
         /// <param name="goal">The panel the path ends</param>
         public float CalculateManhattanDistance(PanelBehaviour panel, PanelBehaviour goal)
         {
-            return Math.Abs(panel.Position.x - goal.Position.x) + Math.Abs(panel.Position.y - goal.Position.y);
+            return Math.Abs(panel.Position.X - goal.Position.X) + Math.Abs(panel.Position.Y - goal.Position.Y);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Lodis.AI
         /// <param name="goal">The end of the path</param>
         private float CustomHeuristic(PanelBehaviour panel, PanelBehaviour goal)
         {
-            return Vector3.Distance(goal.Position, panel.Position);
+            return FVector2.Distance(goal.Position, panel.Position);
         }
 
         /// <summary>
@@ -66,8 +67,8 @@ namespace Lodis.AI
         /// <returns></returns>
         public float CalculateDiagnolDistance(PanelBehaviour panel, PanelBehaviour goal)
         {
-            float dx = Math.Abs(panel.Position.x - goal.Position.x);
-            float dy = Math.Abs(panel.Position.y - goal.Position.y);
+            float dx = Math.Abs(panel.Position.X - goal.Position.X);
+            float dy = Math.Abs(panel.Position.Y - goal.Position.Y);
             return 2 * (dx + dy) + (3 - 2 * 2) * Math.Min(dx, dy);
         }
 
@@ -169,7 +170,7 @@ namespace Lodis.AI
 
                 foreach (PanelBehaviour neighbor in BlackBoardBehaviour.Instance.Grid.GetPanelNeighbors(panelNode.panel.Position))
                 {
-                    float distance = Vector2.Distance(neighbor.Position, panelNode.panel.Position);
+                    float distance = FVector2.Distance(neighbor.Position, panelNode.panel.Position);
                     if (ContainsPanel(closedList, neighbor) || ContainsPanel(openList, neighbor))
                     {
                         continue;

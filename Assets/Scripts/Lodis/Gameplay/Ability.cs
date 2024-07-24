@@ -11,6 +11,7 @@ using Lodis.Movement;
 using Lodis.Utility;
 using Lodis.Sound;
 using Lodis.Input;
+using FixedPoints;
 
 namespace Lodis.Gameplay
 {
@@ -404,12 +405,12 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            Vector2 attackDirection = (Vector2)args[1];
+            FVector2 attackDirection = (FVector2)args[1];
 
             if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
-                attackDirection.x *= -1;
+                attackDirection.X *= -1;
 
-            if (attackDirection.magnitude > 0 && (int)abilityData.AbilityType < 8)
+            if (attackDirection.Magnitude > 0 && (int)abilityData.AbilityType < 8)
             {
                 OwnerMoveScript.CanCancelMovement = true;
                 OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + attackDirection);

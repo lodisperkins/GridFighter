@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Lodis.Gameplay;
 using Lodis.Movement;
+using FixedPoints;
 
 namespace Lodis.GridScripts
 {
@@ -157,7 +158,7 @@ namespace Lodis.GridScripts
                 GameObject panel = (Instantiate(_panelRef.gameObject, spawnPosition, new Quaternion(), transform));
                 panel.transform.localScale = _panelScale;
                 _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
-                _panels[xPos, yPos].Position = new Vector2(xPos, yPos);
+                _panels[xPos, yPos].Position = new FVector2(xPos, yPos);
                 //If the x position in the grid is equal to the given x dimension,
                 //reset x position to be 0, and increase the y position.
                 if (xPos == (int)_dimensions.x - 1)
@@ -309,7 +310,7 @@ namespace Lodis.GridScripts
             //Loops through the list of panels and sets their label based on position.
             foreach (PanelBehaviour panel in _panels)
             {
-                if (panel.Position.x < columns)
+                if (panel.Position.X < columns)
                 {
                     panel.Alignment = GridAlignment.LEFT;
                 }
@@ -321,9 +322,9 @@ namespace Lodis.GridScripts
             }
         }
 
-        public bool CheckIfPositionInRange(Vector2 position)
+        public bool CheckIfPositionInRange(FVector2 position)
         {
-            return position.x >= 0 && position.x < Dimensions.x && position.y >= 0 && position.y < Dimensions.y;
+            return position.X >= 0 && position.X < Dimensions.x && position.Y >= 0 && position.Y < Dimensions.y;
         }
 
         /// <summary>
@@ -337,7 +338,7 @@ namespace Lodis.GridScripts
                 GameObject barrierObject = null;
                 PanelBehaviour spawnPanel = null;
 
-                if (GetPanel(position, out spawnPanel, false))
+                if (GetPanel((int)position.x, (int)position.y, out spawnPanel, false))
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef.gameObject, spawnPosition, new Quaternion(), transform);
@@ -364,7 +365,7 @@ namespace Lodis.GridScripts
                 GameObject barrierObject = null;
                 PanelBehaviour spawnPanel = null;
 
-                if (GetPanel(position, out spawnPanel, false))
+                if (GetPanel((int)position.x, (int)position.y, out spawnPanel, false))
                 {
                     Vector3 spawnPosition = new Vector3(spawnPanel.transform.position.x, spawnPanel.transform.position.y + _barrierRef.transform.localScale.y / 2, spawnPanel.transform.position.z);
                     barrierObject = Instantiate(_barrierRef.gameObject, spawnPosition, new Quaternion(), transform);
@@ -425,7 +426,7 @@ namespace Lodis.GridScripts
 
             foreach (PanelBehaviour panel in _panels)
             {
-                if (panel.Position.x >= min && panel.Position.x <= max)
+                if (panel.Position.X >= min && panel.Position.X <= max)
                 {
                     panel.Alignment = alignment;
                 }
@@ -467,7 +468,7 @@ namespace Lodis.GridScripts
         /// <param name="canBeOccupied">If true, the function will return true even if the panel found is occupied.</param>
         /// <param name="alignment">Will return false if the panel found doesn't match this alignment.</param>
         /// <returns>Returns true if the panel is found in the list and the canBeOccupied condition is met.</returns>
-        public bool GetPanel(Vector2 position, out PanelBehaviour panel, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
+        public bool GetPanel(FVector2 position, out PanelBehaviour panel, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
         { 
             panel = null;
 
@@ -475,16 +476,16 @@ namespace Lodis.GridScripts
                 return false;
 
             //If the given position is in range or if the panel is occupied when it shouldn't be, return false.
-            if (position.x < 0 || position.x >= _dimensions.x || position.y < 0 || position.y >= _dimensions.y || float.IsNaN(position.x) || float.IsNaN(position.y))
+            if (position.X < 0 || position.X >= _dimensions.x || position.Y < 0 || position.Y >= _dimensions.y || float.IsNaN(position.X) || float.IsNaN(position.Y))
                 return false;
-            else if (!canBeOccupied && _panels[(int)position.x, (int)position.y].Occupied)
+            else if (!canBeOccupied && _panels[(int)position.X, (int)position.Y].Occupied)
                 return false;
-            else if (_panels[(int)position.x, (int)position.y].Alignment != alignment && alignment != GridAlignment.ANY)
+            else if (_panels[(int)position.X, (int)position.Y].Alignment != alignment && alignment != GridAlignment.ANY)
                 return false;
 
             
 
-            panel = _panels[Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y)];
+            panel = _panels[Mathf.RoundToInt(position.X), Mathf.RoundToInt(position.Y)];
 
             return true;
         }
@@ -563,7 +564,7 @@ namespace Lodis.GridScripts
         /// <param name="canBeOccupied">Whether or not to ignore panels that are ooccupied</param>
         /// <param name="alignment">The side of the grid to look for neighbors. Panels found on the other side will be ignored</param>
         /// <returns></returns>
-        public List<PanelBehaviour> GetPanelNeighbors(Vector2 position, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, bool includeDiagonals = true)
+        public List<PanelBehaviour> GetPanelNeighbors(FVector2 position, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, bool includeDiagonals = true)
         {
             List<PanelBehaviour> neighbors = new List<PanelBehaviour>();
 
@@ -571,13 +572,13 @@ namespace Lodis.GridScripts
             {
                 for (int y = -1; y <= 1; y++)
                 {
-                    Vector2 offset = new Vector2(x, y);
-                    Vector2 target = offset + position;
+                    FVector2 offset = new FVector2(x, y);
+                    FVector2 target = offset + position;
 
                     if (target == position)
                         continue;
 
-                    if (offset.magnitude > 1 && !includeDiagonals)
+                    if (offset.Magnitude > 1 && !includeDiagonals)
                         continue;
 
                     PanelBehaviour panel = null;
@@ -595,22 +596,22 @@ namespace Lodis.GridScripts
         /// <param name="panelPosition">The value to clamp.</param>
         /// <param name="gridAlignment">The alignment to clamp the position within.</param>
         /// <returns>The clamped value. Will return the same value if it's already in range.</returns>
-        public Vector2 ClampPanelPosition(Vector2 panelPosition, GridAlignment gridAlignment)
+        public FVector2 ClampPanelPosition(FVector2 panelPosition, GridAlignment gridAlignment)
         {
             switch (gridAlignment)
             {
                 case GridAlignment.NONE:
                 case GridAlignment.ANY:
-                    panelPosition.x = Mathf.Clamp(panelPosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
-                    panelPosition.y = Mathf.Clamp(panelPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+                    panelPosition.X = (Types.Fixed32)Mathf.Clamp(panelPosition.X, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
+                    panelPosition.Y = (Types.Fixed32)Mathf.Clamp(panelPosition.Y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
                     break;
                 case GridAlignment.LEFT:
-                    panelPosition.x = Mathf.Clamp(panelPosition.x, 0, TempMaxColumns - 1);
-                    panelPosition.y = Mathf.Clamp(panelPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+                    panelPosition.X = Mathf.Clamp(panelPosition.X, 0, TempMaxColumns - 1);
+                    panelPosition.Y = (Types.Fixed32)Mathf.Clamp(panelPosition.Y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
                     break;
                 case GridAlignment.RIGHT:
-                    panelPosition.x = Mathf.Clamp(panelPosition.x, TempMaxColumns - 1, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
-                    panelPosition.y = Mathf.Clamp(panelPosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+                    panelPosition.X = (Types.Fixed32)Mathf.Clamp(panelPosition.X, TempMaxColumns - 1, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
+                    panelPosition.Y = (Types.Fixed32)Mathf.Clamp(panelPosition.Y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
                     break;
             }
 

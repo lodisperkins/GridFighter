@@ -7,6 +7,7 @@ using Lodis.GridScripts;
 using Lodis.ScriptableObjects;
 using UnityEngine.Events;
 using Lodis.Input;
+using FixedPoints;
 
 namespace Lodis.Gameplay
 {
@@ -239,14 +240,14 @@ namespace Lodis.Gameplay
         /// Activates phase shift. Character moves while intangible.
         /// </summary>
         /// <param name="moveDirection">THe direction for the character move towards while phase-shifting</param>
-        public void ActivatePhaseShift(Vector2 moveDirection)
+        public void ActivatePhaseShift(FVector2 moveDirection)
         {
             if (_isResting || !_movement.CanMove || _isPhaseShifting)
                 return;
 
             //Only take the x value if a diagnol direction was given
-            if (moveDirection.magnitude > 1)
-                moveDirection = new Vector2(moveDirection.x, 0);
+            if (moveDirection.Magnitude > 1)
+                moveDirection = new FVector2(moveDirection.X, 0);
 
             //Disable shield to prevent the shield from colliding with other attacks
             _isParrying = false;

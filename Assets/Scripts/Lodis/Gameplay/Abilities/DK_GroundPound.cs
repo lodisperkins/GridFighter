@@ -1,4 +1,5 @@
 ﻿
+using FixedPoints;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -47,7 +48,7 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="visualPrefabInstance"></param>
         /// <param name="direction"></param>
-        private void MoveHitBox(GameObject visualPrefabInstance, Vector2 direction)
+        private void MoveHitBox(GameObject visualPrefabInstance, FVector2 direction)
         {
             //Give the shockwave the ability to move
             GridMovementBehaviour movementBehaviour = visualPrefabInstance.GetComponent<GridMovementBehaviour>();
@@ -61,14 +62,14 @@ namespace Lodis.Gameplay
 
             //Caluclate move position based on the travel distance and character facing
             int travelDistance = (int)abilityData.GetCustomStatValue("ShockwaveTravelDistance");
-            Vector2 offset = direction * travelDistance;
-            Vector2 movePosition = OwnerMoveScript.Position + offset;
+            FVector2 offset = direction * travelDistance;
+            FVector2 movePosition = OwnerMoveScript.Position + offset;
 
             //Clamp the position to be within the grid dimensions
-            movePosition.x = Mathf.Clamp(movePosition.x, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
-            movePosition.x = Mathf.Round(movePosition.x);
-            movePosition.y = Mathf.Clamp(movePosition.y, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
-            movePosition.y = Mathf.Round(movePosition.y);
+            movePosition.X = Mathf.Clamp(movePosition.X, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1);
+            movePosition.X = Mathf.Round(movePosition.X);
+            movePosition.X = Mathf.Clamp(movePosition.X, 0, BlackBoardBehaviour.Instance.Grid.Dimensions.y - 1);
+            movePosition.Y = Mathf.Round(movePosition.Y);
             //Move shockwave
             movementBehaviour.MoveToPanel(movePosition, false, GridScripts.GridAlignment.ANY, true);
 
@@ -94,7 +95,7 @@ namespace Lodis.Gameplay
             Object.Instantiate(_explosionEffect, OwnerMoveScript.CurrentPanel.transform.position, Camera.main.transform.rotation);
 
             //Move first shockwave
-            MoveHitBox(_visualPrefabInstance, owner.transform.forward);
+            MoveHitBox(_visualPrefabInstance, new FVector2(owner.transform.forward.x, owner.transform.forward.y));
 
             //Instantiate the second shockwave and attack a hit box to it
             _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
@@ -106,7 +107,7 @@ namespace Lodis.Gameplay
             hitScript.ColliderInfo.OwnerAlignement = OwnerMoveScript.Alignment;
 
             //Move second shockwave
-            MoveHitBox(_visualPrefabInstance, -owner.transform.forward);
+            MoveHitBox(_visualPrefabInstance, new FVector2(-owner.transform.forward.x, -owner.transform.forward.y));
 
             hitScript.DebuggingEnabled = true;
             CameraBehaviour.ShakeBehaviour.ShakeRotation();

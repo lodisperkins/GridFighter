@@ -1,4 +1,5 @@
-﻿using Lodis.Movement;
+﻿using FixedPoints;
+using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -60,7 +61,7 @@ namespace Lodis.Gameplay
 
             OwnerMoveScript.CancelMovement();
             OwnerMoveScript.DisableMovement(condition => !InUse, false, true);
-            OwnerMoveScript.TeleportToLocation(position);
+            OwnerMoveScript.TeleportToLocation((FixedPoints.FVector3)position);
 
             _throwAction = RoutineBehaviour.Instance.StartNewTimedAction(info => ThrowOpponent(),TimedActionCountType.SCALEDTIME, 0.1f);
         }
@@ -147,7 +148,7 @@ namespace Lodis.Gameplay
         {
             _opponentCaptured = false;
             float direction = OwnerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? 1 : -1;
-            Vector2 offset = Vector2.right * abilityData.GetCustomStatValue("TravelDistance") * direction;
+            FVector2 offset = FVector2.Right * abilityData.GetCustomStatValue("TravelDistance") * direction;
             OwnerMoveScript.MoveToAlignedSideWhenStuck = false;
             OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + offset, false, GridScripts.GridAlignment.ANY, true, false, true);
 

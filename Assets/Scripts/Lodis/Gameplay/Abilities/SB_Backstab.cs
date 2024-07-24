@@ -27,7 +27,7 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
 
-            int posY = (int)OwnerMoveScript.Position.y;
+            int posY = (int)OwnerMoveScript.Position.Y;
             int posX = 0;
 
             if (OwnerMoveScript.Alignment == GridAlignment.LEFT)

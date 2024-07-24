@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -58,7 +59,7 @@ namespace Lodis.Gameplay
             {
                 Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
 
-                Vector2 direction = owner.transform.forward;
+                FVector2 direction = new FVector2(owner.transform.forward.x, owner.transform.forward.y);
                 //Bomb using grid movement to find the panel it should stay on. 
                 //Unlike normal projectiles the bomb needs to stay in place for a short while.
                 GridMovementBehaviour gridMovementBehaviour = Projectile.GetComponent<GridMovementBehaviour>();

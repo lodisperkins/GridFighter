@@ -201,7 +201,7 @@ public class DefendAction : GOAction
         MovesetBehaviour opponentMoveset = _dummy.Opponent.GetComponent<MovesetBehaviour>();
 
         _dummy.AttackDecisions.AddDecision(new AttackNode(displacement, _dummy.Knockback.Health, 0, abilityData.startUpTime,
-            abilityData.abilityName, opponentMoveset.LastAttackStrength, _dummy.Knockback.Physics.LastVelocity, null, null));
+            abilityData.abilityName, opponentMoveset.LastAttackStrength, (Vector3)_dummy.Knockback.Physics.LastVelocity, null, null));
     }
 
     public override TaskStatus OnUpdate()

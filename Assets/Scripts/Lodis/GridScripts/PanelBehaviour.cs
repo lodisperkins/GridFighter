@@ -4,15 +4,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using FixedPoints;
 
 namespace Lodis.GridScripts
 {
+    [System.Serializable]
+    public struct Panel
+    {
+        public FVector2 Position;
+        public bool Occupied;
+        public GridAlignment Alignment;
+    }
+
     public class PanelBehaviour : MonoBehaviour
     {
-        private Vector2 _position;
-        [SerializeField]
-        private bool _occupied;
-        private GridAlignment _alignment;
+        [SerializeField] private Panel panelData;
         [Tooltip("The material to give this panel if it is not aligned with either side of the grid.")]
         [SerializeField]
         private Color _neutralColor;
@@ -40,15 +46,15 @@ namespace Lodis.GridScripts
         /// <summary>
         /// The position of this panel on the grid.
         /// </summary>
-        public Vector2 Position
+        public FVector2 Position
         {
             get
             {
-                return _position;
+                return PanelData.Position;
             }
             set
             {
-                _position = value;
+                panelData.Position = value;
             }
         }
 
@@ -59,11 +65,11 @@ namespace Lodis.GridScripts
         {
             get
             {
-                return _occupied;
+                return PanelData.Occupied;
             }
             set
             {
-                _occupied = value;
+                panelData.Occupied = value;
             }
         }
 
@@ -76,18 +82,20 @@ namespace Lodis.GridScripts
         {
             get
             {
-                return _alignment;
+                return PanelData.Alignment;
             }
             set
             {
-                bool flashAlignment = _alignment != value;
+                bool flashAlignment = panelData.Alignment != value;
                     
-                _alignment = value;
+                panelData.Alignment = value;
                 UpdateMaterial();
                 if (flashAlignment)
                     FlashAlignment();
             }
         }
+
+        public Panel PanelData { get => panelData; set => panelData = value; }
 
         private void Awake()
         {
@@ -214,7 +222,7 @@ namespace Lodis.GridScripts
 
         public void FlashAlignment()
         {
-            Color color = _alignment == GridAlignment.LEFT ? _positionLHSColor : _positionRHSColor;
+            Color color = Alignment == GridAlignment.LEFT ? _positionLHSColor : _positionRHSColor;
             _flashBehaviour.Flash(color, 5, 1, true, 5);
         }
 

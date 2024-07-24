@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using FixedPoints;
 using Lodis.Gameplay;
 using Lodis.Movement;
 using Lodis.Sound;
@@ -50,8 +51,8 @@ namespace Lodis.GridScripts
                 return;
 
             //Don't add a force if the object is traveling at a low speed
-            float dotProduct = Vector3.Dot(physics.LastVelocity, Vector3.up);
-            if (physics.LastVelocity.y >= 0)
+            float dotProduct = FVector3.Dot(physics.LastVelocity, FVector3.Up);
+            if (physics.LastVelocity.Y >= 0)
                 return;
 
             Vector3 particleSpawnPosition = new Vector3(other.transform.position.x, 0, other.transform.position.z);
@@ -62,7 +63,7 @@ namespace Lodis.GridScripts
                 physics.RB.isKinematic = false;
 
                 SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 0.8f);
-                if (physics.LastVelocity.magnitude >= _shakeSpeed)
+                if (physics.LastVelocity.Magnitude >= _shakeSpeed)
                 {
                     CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
                     ObjectPoolBehaviour.Instance.GetObject(_debris.gameObject, particleSpawnPosition, Camera.main.transform.rotation);
@@ -86,15 +87,15 @@ namespace Lodis.GridScripts
 
 
             //Don't add a force if the object is traveling at a low speed
-            float dotProduct = Vector3.Dot(physics.LastVelocity, Vector3.up);
+            float dotProduct = FVector3.Dot(physics.LastVelocity, FVector3.Up);
             if (dotProduct >= 0 || dotProduct == -1)
                 return;
 
-            if (physics.LastVelocity.x == 0)
+            if (physics.LastVelocity.X == 0)
                 return;
 
             //Calculate and apply friction force
-            physics.ApplyForce(_friction * (physics.LastVelocity.x / Mathf.Abs(physics.LastVelocity.x) * Vector3.right));
+            physics.ApplyForce(_friction * (physics.LastVelocity.X / Mathf.Abs(physics.LastVelocity.X) * Vector3.right));
         }
     }
 }

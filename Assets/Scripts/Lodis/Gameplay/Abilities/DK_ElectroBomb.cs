@@ -1,4 +1,5 @@
-﻿using Lodis.FX;
+﻿using FixedPoints;
+using Lodis.FX;
 using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.Movement;
@@ -196,7 +197,7 @@ namespace Lodis.Gameplay
 
             OwnerMoveScript.CancelMovement();
             OwnerMoveScript.DisableMovement(condition => !InUse);
-            OwnerMoveScript.TeleportToLocation(position, 0, false);
+            OwnerMoveScript.TeleportToLocation((FixedPoints.FVector3)position, 0, false);
             CameraBehaviour.Instance.ZoomAmount = 0;
             //MatchManagerBehaviour.Instance.SuperInUse = true;
             //Spawn the the holding effect.
@@ -229,10 +230,10 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.SetIntagibilityByCondition(condition => !InUse);
 
             PanelBehaviour opponentPanel = null;
-            if (_opponentMovement.Position.x == BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1 || _opponentMovement.Position.x == 0)
+            if (_opponentMovement.Position.X == BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1 || _opponentMovement.Position.X == 0)
             {
 
-                BlackBoardBehaviour.Instance.Grid.GetPanel(_opponentMovement.Position + Vector2.right * -OwnerMoveScript.GetAlignmentX(), out opponentPanel);
+                BlackBoardBehaviour.Instance.Grid.GetPanel(_opponentMovement.Position + FVector2.Right * -OwnerMoveScript.GetAlignmentX(), out opponentPanel);
 
                 _opponentMovement.transform.position = opponentPanel.transform.position + Vector3.up * _opponentMovement.HeightOffset;
             }
@@ -242,7 +243,7 @@ namespace Lodis.Gameplay
             PanelBehaviour landingPanel = null; 
             BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_opponentMovement.transform.position, out opponentPanel);
 
-            Vector2 panelPosition = BlackBoardBehaviour.Instance.Grid.ClampPanelPosition(opponentPanel.Position + Vector2.right * OwnerMoveScript.GetAlignmentX(), GridAlignment.ANY);
+            FVector2 panelPosition = BlackBoardBehaviour.Instance.Grid.ClampPanelPosition(opponentPanel.Position + FVector2.Right * OwnerMoveScript.GetAlignmentX(), GridAlignment.ANY);
 
             BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out landingPanel);
 
@@ -250,7 +251,7 @@ namespace Lodis.Gameplay
 
             OwnerMoveScript.CancelMovement();
             OwnerMoveScript.DisableMovement(condition => !InUse);
-            OwnerMoveScript.TeleportToLocation(position, 0, false);
+            OwnerMoveScript.TeleportToLocation((FVector3)position, 0, false);
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
 
