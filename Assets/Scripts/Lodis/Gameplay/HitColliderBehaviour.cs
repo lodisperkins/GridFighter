@@ -9,6 +9,9 @@ using Lodis.Movement;
 using Lodis.Utility;
 using Lodis.Sound;
 using Newtonsoft.Json;
+using FixedPoints;
+using Types;
+using UnityGGPO;
 
 namespace Lodis.Gameplay
 {
@@ -139,28 +142,10 @@ namespace Lodis.Gameplay
         public float StartTime { get; private set; }
         public float CurrentTimeActive { get; private set; }
 
-        public HitColliderBehaviour(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
-           : base()
+        public override void InitCollider(Fixed32 width, Fixed32 height, EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
         {
-            HitColliderData info = new HitColliderData { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnAlignment = angleChangeOnCollision, HitStunTime = hitStunTimer };
-            Init(info, owner);
-        }
-
-        public HitColliderBehaviour(HitColliderData info, GameObject owner)
-        {
-            Init(info, owner);
-        }
-
-        public HitColliderBehaviour()
-        {
-        }
-
-        public  void Init(HitColliderData info, GameObject owner)
-        {
-
-            ColliderInfo = info;
-            ColliderInfo.OwnerAlignement = owner.GetComponent<GridMovementBehaviour>().Alignment;
-            Owner = owner;
+            base.InitCollider(width, height, owner, ownerPhysicsComponent);
+            ColliderInfo.OwnerAlignement = owner.UnityObject.GetComponent<GridMovementBehaviour>().Alignment;
         }
 
         protected override void Awake()
@@ -220,25 +205,11 @@ namespace Lodis.Gameplay
         {
             collider2.ColliderInfo = collider1.ColliderInfo;
             collider2.AddCollisionEvent(collider1.ColliderInfo.OnHit);
-            collider2.Owner = collider1.Owner;
         }
 
         public override void AddCollisionEvent(CollisionEvent collisionEvent)
         {
             ColliderInfo.AddOnHitEvent(collisionEvent);
-        }
-
-        ///     <summary>
-        /// Initializes this colliders stats
-        /// </summary>
-        /// <param name="damage">The amount of damage this attack will do</param>
-        /// <param name="baseKnockBack">How far back this attack will knock an object back</param>
-        /// <param name="hitAngle">The angle (in radians) that the object in knock back will be launched at</param>
-        /// <param name="timeActive">If true, the hit collider will damage objects that enter it multiple times</param>
-        public void Init(float damage, float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0, GameObject owner = null, bool destroyOnHit = false, bool isMultiHit = false, bool angleChangeOnCollision = true, float hitStunTimer = 0)
-        {
-            HitColliderData info = new HitColliderData { Damage = damage, BaseKnockBack = baseKnockBack, HitAngle = hitAngle, DespawnAfterTimeLimit = despawnAfterTimeLimit, TimeActive = timeActive, DestroyOnHit = destroyOnHit, AdjustAngleBasedOnAlignment = angleChangeOnCollision, HitStunTime = hitStunTimer };
-            Init(info, owner);
         }
 
         /// <summary>
@@ -248,16 +219,16 @@ namespace Lodis.Gameplay
         /// <returns>Whether or not enough time has passed since the last hit</returns>
         protected bool CheckHitTime(GameObject gameObject)
         {
-            float lastHitTime = 0;
+            Fixed32 lastHitTime = 0;
             if (!Collisions.TryGetValue(gameObject, out lastHitTime))
             {
-                Collisions.Add(gameObject, Time.time * RoutineBehaviour.Instance.CharacterTimeScale);
+                Collisions.Add(gameObject, Utils.TimeGetTime() * RoutineBehaviour.Instance.CharacterTimeScale);
                 return true;
             }
 
-            if (Time.time * RoutineBehaviour.Instance.CharacterTimeScale - lastHitTime >= ColliderInfo.MultiHitWaitTime)
+            if (Utils.TimeGetTime() * RoutineBehaviour.Instance.CharacterTimeScale - lastHitTime >= ColliderInfo.MultiHitWaitTime)
             {
-                Collisions[gameObject] = Time.time * RoutineBehaviour.Instance.CharacterTimeScale;
+                Collisions[gameObject] = Utils.TimeGetTime() * RoutineBehaviour.Instance.CharacterTimeScale;
                 return true;
             }
 
@@ -274,13 +245,9 @@ namespace Lodis.Gameplay
             StartTime = Time.time;
         }
 
-        private void ResolveCollision(GameObject attachedGameObject, GameObject collisionObject)
+        private void ResolveCollision(GameObject attachedGameObject, Collision collision)
         {
-            if (CheckIfLayerShouldBeIgnored(collisionObject.layer)) return;
-
             ColliderBehaviour otherCollider = attachedGameObject.GetComponent<ColliderBehaviour>();
-
-            if (CheckIfLayerShouldBeIgnored(attachedGameObject.layer)) return;
 
             Vector3 hitEffectPosition = transform.position;
 
@@ -290,10 +257,6 @@ namespace Lodis.Gameplay
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
             {
-                //Return if either objects want to ignore the other.
-                if (otherCollider.CheckIfLayerShouldBeIgnored(gameObject.layer) || otherCollider.Owner == Owner)
-                    return;
-
                 //If it is a hit collider...
                 if (otherCollider is HitColliderBehaviour hitCollider)
                 {
@@ -309,31 +272,31 @@ namespace Lodis.Gameplay
             if (ColliderInfo.HitSpark)
                 Instantiate(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
 
-            float newHitAngle = ColliderInfo.HitAngle;
-            float defaultAngle = newHitAngle;
+            Fixed32 newHitAngle = ColliderInfo.HitAngle;
+            Fixed32 defaultAngle = newHitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
             if (ColliderInfo.AdjustAngleBasedOnAlignment)
             {
                 //Find the direction this collider was going to apply force originally
-                Vector3 currentForceDirection = new Vector3(Mathf.Cos(newHitAngle), Mathf.Sin(newHitAngle), 0);
+                FVector3 currentForceDirection = new FVector3(Fixed32.Cos(newHitAngle), Fixed32.Sin(newHitAngle), 0);
 
                 //Find a new direction based the alignment
                 int direction = ColliderInfo.OwnerAlignement == GridAlignment.LEFT ? 1 : -1;
-                currentForceDirection.x *= direction;
+                currentForceDirection.X *= direction;
 
                 //Find the new angle based on the direction of the attack on the x axis
-                float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
+                Fixed32 dotProduct = FVector3.Dot(currentForceDirection, FVector3.Right);
                 newHitAngle = Mathf.Acos(dotProduct);
 
                 //Find if the angle should be negative or positive
-                if (Vector3.Dot(currentForceDirection, Vector3.up) < 0)
+                if (FVector3.Dot(currentForceDirection, FVector3.Up) < 0)
                     newHitAngle *= -1;
             }
 
             //Add the game object to the list of collisions so it is not collided with again
             if (!Collisions.ContainsKey(attachedGameObject))
-                Collisions.Add(attachedGameObject, Time.frameCount);
+                Collisions.Add(attachedGameObject, Utils.TimeGetTime());
 
 
             //Grab whatever health script is attached to this object
@@ -363,8 +326,8 @@ namespace Lodis.Gameplay
                 }
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
-                    float totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
-                    Vector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, true);
+                    Fixed32 totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
+                    FVector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, true);
                     knockback.Physics.ApplyImpulseForce(force);
                     damageDealt = true;
                 }
@@ -377,7 +340,7 @@ namespace Lodis.Gameplay
             }
 
             SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
-            ColliderInfo.OnHit?.Invoke(attachedGameObject.gameObject, otherCollider, attachedGameObject, this, damageScript);
+            ColliderInfo.OnHit?.Invoke(collision);
 
             ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
@@ -412,44 +375,41 @@ namespace Lodis.Gameplay
                             || ColliderInfo.Priority == -1) && ColliderInfo.AbilityType != AbilityType.BURST;
         }
 
-        private void OnTriggerEnter(Collider other)
+        public override void OnOverlapEnter(Collision collision)
         {
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
-            GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
-            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || otherGameObject.gameObject == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            GameObject otherGameObject = collision.Collider.OwnerPhysicsComponent.gameObject;
+            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.Collider.Owner == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
-            ResolveCollision(otherGameObject, other.gameObject);
+            ResolveCollision(otherGameObject, collision);
         }
 
-        private void OnTriggerStay(Collider other)
+        public override void OnOverlapStay(Collision collision)
         {
+            GameObject otherGameObject = collision.Collider.OwnerPhysicsComponent.gameObject;
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!ColliderInfo.IsMultiHit || !CheckHitTime(other.gameObject))
+            if (!ColliderInfo.IsMultiHit || !CheckHitTime(otherGameObject))
                 return;
 
-
-            //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
-            GameObject otherGameObject = other.attachedRigidbody ? other.attachedRigidbody.gameObject : other.gameObject;
-
-            if (otherGameObject.gameObject == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (collision.Collider.Owner == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
-            ResolveCollision(otherGameObject, other.gameObject);
+            ResolveCollision(otherGameObject, collision);
         }
 
-        private void OnCollisionEnter(Collision collision)
+        public override void OnHitEnter(Collision collision)
         {
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
-            GameObject otherGameObject = collision.collider.attachedRigidbody ? collision.collider.attachedRigidbody.gameObject : collision.gameObject;
+            GameObject otherGameObject = collision.Collider.OwnerPhysicsComponent.gameObject;
 
-            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || otherGameObject.gameObject == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.Collider.Owner == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
 
-            ResolveCollision(otherGameObject, collision.collider.gameObject);
+            ResolveCollision(otherGameObject, collision);
         }
 
 

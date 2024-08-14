@@ -13,27 +13,26 @@ namespace Lodis.Gameplay
     {
         private float _stunTime;
 	    //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             _stunTime = abilityData.GetCustomStatValue("Stun Time");
         }
 
-        private void RebootDeck(params object[] args)
+        private void RebootDeck(Collision collision)
         {
-            //Only check knockback if a player was hit.
-            GameObject other = (GameObject)args[0];
+            GameObject other = collision.Entity.UnityObject;
             if (!other.CompareTag("Player"))
                 return;
 
+            //Check invincibility
             KnockbackBehaviour knockback = other.GetComponent<KnockbackBehaviour>();
-
             if (knockback.IsInvincible || knockback.IsIntangible)
                 return;
 
+            //Stun and shuffle deck
             knockback.Stun(_stunTime);
             MovesetBehaviour moveset = other.GetComponent<MovesetBehaviour>();
-
             moveset.ManualShuffle(true);
         }
 

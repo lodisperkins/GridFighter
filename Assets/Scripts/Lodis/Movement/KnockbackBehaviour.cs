@@ -8,6 +8,8 @@ using UnityEngine.Events;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using Lodis.GridScripts;
+using Types;
+using FixedPoints;
 
 namespace Lodis.Movement
 {
@@ -37,14 +39,13 @@ namespace Lodis.Movement
         private GridPhysicsBehaviour _gridPhysicsBehaviour;
         private LandingBehaviour _landingBehaviour;
 
-        private Vector2 _newPanelPosition = new Vector2(float.NaN, float.NaN);
+        private FVector2 _newPanelPosition = new FVector2(float.NaN, float.NaN);
         private float _lastBaseKnockBack;
-        private Vector3 _launchForce;
+        private FVector3 _launchForce;
         [Tooltip("The rate at which an objects move speed in air will decrease")]
         private FloatVariable _velocityDecayRate;
         [SerializeField] private FloatVariable _gravityIncreaseRate;
         [SerializeField] private FloatVariable _gravityIncreaseValue;
-        private readonly TimedAction _gravityIncreaseTimer = new TimedAction();
         private float _startGravity;
 
         private UnityAction _onKnockBack;
@@ -82,7 +83,7 @@ namespace Lodis.Movement
         /// <summary>
         /// Returns the velocity of this object when it was first launched
         /// </summary>
-        public Vector3 LaunchVelocity { get => _launchForce; }
+        public FVector3 LaunchVelocity { get => _launchForce; }
 
         /// <summary>
         /// The scale of the last base knock back value applied to the object
@@ -107,8 +108,6 @@ namespace Lodis.Movement
         public FloatVariable GravityIncreaseRate => _gravityIncreaseRate;
 
         public FloatVariable GravityIncreaseValue => _gravityIncreaseValue;
-
-        public TimedAction GravityIncreaseTimer => _gravityIncreaseTimer;
 
         public LandingBehaviour LandingScript => _landingBehaviour;
 
@@ -289,8 +288,10 @@ namespace Lodis.Movement
             RoutineBehaviour.Instance.StartNewConditionAction(args => Physics.Gravity = _adjustedGravity, resetCondition);
         }
 
-        protected override IEnumerator ActivateStun(float time)
+        public override void Stun(Fixed32 time)
         {
+            base.Stun(time);
+
             MovesetBehaviour moveset = GetComponent<MovesetBehaviour>();
             Input.InputBehaviour inputBehaviour = GetComponent<Input.InputBehaviour>();
             GridMovementBehaviour movement = GetComponent<GridMovementBehaviour>();
@@ -318,18 +319,6 @@ namespace Lodis.Movement
             CurrentAirState = AirState.NONE;
             
             _onKnockBackTemp += CancelStun;
-
-            yield return new WaitForSeconds(time);
-
-            if (moveset)
-                moveset.enabled = true;
-            if (inputBehaviour)
-                inputBehaviour.enabled = true;
-
-            CurrentAirState = previousState;
-
-            _onKnockBackTemp -= CancelStun;
-            Stunned = false;
         }
 
         public override void CancelStun()
@@ -347,7 +336,8 @@ namespace Lodis.Movement
             CancelHitStun();
             CurrentAirState = AirState.NONE;
             Physics.CancelFreeze();
-            Physics.RB.isKinematic = true; 
+            Physics.StopVelocity();
+            //Physics.RB.isKinematic = true;
         }
 
         public void CancelHitStun()
@@ -360,9 +350,9 @@ namespace Lodis.Movement
             _isFlinching = false;
         }
 
-        public override void OnCollisionEnter(Collision collision)
+        public override void OnHitEnter(Collision collision)
         {
-            HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
+            HealthBehaviour damageScript = collision.Entity.UnityObject.GetComponent<HealthBehaviour>();
 
             if (damageScript == null)
                 return;
@@ -376,10 +366,10 @@ namespace Lodis.Movement
             if (!knockBackScript)
                 knockBackScript = this;
 
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.Magnitude;
+            float velocityMagnitude = knockBackScript.Physics.Velocity.Magnitude;
 
             //Apply ricochet force and damage
-            damageScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+            damageScript.TakeDamage(collision.Entity, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
         private void ActivateHitStunByTimer(float timeInHitStun)
@@ -410,7 +400,7 @@ namespace Lodis.Movement
         {
             return CurrentAirState == AirState.NONE && !Physics.IsFrozen && Physics.ObjectAtRest && !_landingBehaviour.Landing && !InHitStun &&!IsFlinching && !_landingBehaviour.IsDown && !Stunned && !_landingBehaviour.RecoveringFromFall;
         }
-        public override float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public override float TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
@@ -435,24 +425,24 @@ namespace Lodis.Movement
             _lastTotalKnockBack = totalKnockback;
 
             //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, hitAngle, _startGravity, Physics.Mass);
+            FVector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, hitAngle, _startGravity, Physics.Mass);
 
             if (hitStun > 0)
                 _isFlinching = true;
 
-            if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
+            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
                 _onKnockBackStartTemp = null;
 
                 _launchForce = knockBackForce;
-                Physics.RB.isKinematic = false;
+                //Physics.RB.isKinematic = false;
 
                 //Add force to objectd
                 Physics.ApplyImpulseForce(_launchForce);
 
-                if (_launchForce.magnitude > 0)
+                if (_launchForce.Magnitude > 0)
                 {
                     CurrentAirState = AirState.TUMBLING;
                     _onKnockBack?.Invoke();
@@ -463,7 +453,7 @@ namespace Lodis.Movement
 
             return damage;
         }
-        public override float TakeDamage(HitColliderData info, GameObject attacker)
+        public override float TakeDamage(HitColliderData info, EntityData attacker)
         {
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
@@ -477,7 +467,6 @@ namespace Lodis.Movement
 
 
             _onTakeDamage?.Invoke();
-            OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
 
@@ -485,25 +474,25 @@ namespace Lodis.Movement
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass, info.ClampForceWithinRing);
+            FVector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass, info.ClampForceWithinRing);
             if (info.HitStunTime > 0)
                 _isFlinching = true;
 
             ActivateHitStunByTimer(info.HitStunTime);
 
-            if ((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)
+            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.Value)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
                 _onKnockBackStartTemp = null;
 
                 _launchForce = knockBackForce;
-                Physics.RB.isKinematic = false;
+                //Physics.RB.isKinematic = false;
 
                 //Add force to objectd
                 Physics.ApplyImpulseForce(_launchForce, false, info.IgnoreMomentum);
 
-                if (_launchForce.magnitude > 0)
+                if (_launchForce.Magnitude > 0)
                 {
                     CurrentAirState = AirState.TUMBLING;
                     _onKnockBack?.Invoke();
@@ -513,14 +502,14 @@ namespace Lodis.Movement
             }
             else if (_landingBehaviour.Landing)
             {
-                knockBackForce = Vector3.up * MinimumLaunchMagnitude.Value;
+                knockBackForce = FVector3.Up * MinimumLaunchMagnitude.Value;
 
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
                 _onKnockBackStartTemp = null;
 
                 _launchForce = knockBackForce;
-                Physics.RB.isKinematic = false;
+                //Physics.RB.isKinematic = false;
 
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
@@ -528,7 +517,7 @@ namespace Lodis.Movement
                 //Add force to objectd
                 Physics.ApplyImpulseForce(_launchForce, false, info.IgnoreMomentum);
 
-                if (_launchForce.magnitude > 0)
+                if (_launchForce.Magnitude > 0)
                 {
                     CurrentAirState = AirState.TUMBLING;
                     _onKnockBack?.Invoke();
@@ -547,145 +536,7 @@ namespace Lodis.Movement
             return baseKnockback + Mathf.Round((health / 100 * knockbackScale));
         }
 
-        public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
-        {
-            _onTakeDamageStart?.Invoke();
-            _onTakeDamageStartTemp?.Invoke();
-
-            //Return if there is no rigidbody or movement script attached
-            if (IsInvincible)
-                return 0;
-
-            //Get the hit collider data of the first collider attached to the ability data
-            HitColliderData info = abilityData.GetColliderInfo(0);
-
-            //Adds damage to the total damage
-            Health += info.Damage;
-            
-            //Apply hit stun
-            ActivateHitStunByTimer(info.HitStunTime);
-            
-            //Call damage events to let others know this object was hit
-            _onTakeDamage?.Invoke();
-            OnTakeDamageEvent.Raise(gameObject);
-            _onTakeDamageTemp?.Invoke();
-            _onTakeDamageTemp = null;
-
-            //Calculate knockback value based on the current health and scale of the attack
-            float totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
-            _lastTotalKnockBack = totalKnockback;
-
-            //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass);
-            if (info.HitStunTime > 0)
-                _isFlinching = true;
-
-            //Return if this attack doesn't generate enough force
-            if (!((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)) return info.Damage;
-            
-            //Call events to let others know this character has began knockback
-            _onKnockBackStart?.Invoke();
-            _onKnockBackStartTemp?.Invoke();
-            _onKnockBackStartTemp = null;
-
-            //Store the force used to launch the character
-            _launchForce = knockBackForce;
-            Physics.RB.isKinematic = false;
-
-            //Add force to object
-            Physics.ApplyImpulseForce(_launchForce);
-
-            if (!(_launchForce.magnitude > 0)) return info.Damage;
-            
-            //Set the new air state and call the knockback events
-            CurrentAirState = AirState.TUMBLING;
-            _onKnockBack?.Invoke();
-            _onKnockBackTemp?.Invoke();
-            _onKnockBackTemp = null;
-
-            return info.Damage;
-        }
-
-        /// /// <summary>
-        /// Damages this game object and applies a backwards force based on the angle
-        /// </summary>
-        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        /// <param name="damage">The amount of damage being applied to the object. 
-        /// Ring barriers only break if the damage amount is greater than the total health</param>
-        /// <param name="baseKnockBack">How many panels far will this attakc make the object travel</param>
-        /// <param name="hitAngle">The angle to launch the object</param>
-        /// <param name="knockBackScale">How much the knockback will scale with damage</param>
-        /// <param name="damageType">The type of damage this object will take</param>
-        /// <param name="hitStun">The amount of time the character will be in hit stun</param>
-        public float TakeDamage(string attacker, float damage, float baseKnockBack, float hitAngle, float hitStun, float knockBackScale, DamageType damageType = DamageType.DEFAULT)
-        {
-            _onTakeDamageStart?.Invoke();
-            _onTakeDamageStartTemp?.Invoke();
-
-            //Return if there is no rigidbody or movement script attached
-            if (!_movementBehaviour || IsInvincible)
-                return 0;
-
-            //Adds damage to the total damage
-            Health += damage;
-            
-            //Apply hit stun
-            ActivateHitStunByTimer(hitStun);
-            
-            //Call damage events to let others know this object was hit
-            _onTakeDamage?.Invoke();
-            OnTakeDamageEvent.Raise(gameObject);
-            _onTakeDamageTemp?.Invoke();
-            _onTakeDamageTemp = null;
-
-            //Calculate knockback value based on the current health and scale of the attack
-            float totalKnockback = GetTotalKnockback(baseKnockBack, knockBackScale, Health);
-            _lastTotalKnockBack = totalKnockback;
-
-            //Calculates force and applies it to the rigidbody
-            Vector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, hitAngle, _startGravity, Physics.Mass);
-            if (hitStun > 0)
-                _isFlinching = true;
-
-            //Return if this attack doesn't generate enough force
-            if (!((knockBackForce / Physics.Mass).magnitude > MinimumLaunchMagnitude.Value)) return damage;
-            
-            //Call events to let others know this character has began knockback
-            _onKnockBackStart?.Invoke();
-            _onKnockBackStartTemp?.Invoke();
-            _onKnockBackStartTemp = null;
-            
-            //Store the force used to launch the character
-            _launchForce = knockBackForce;
-            Physics.RB.isKinematic = false;
-            
-            //Snap the object to its target panel if it was moving
-            if (_movementBehaviour.IsMoving)
-            {
-                _movementBehaviour.CanCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.CanCancelMovement = false;
-            }
-
-            //Disables object movement on the grid
-            _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
-
-            //Add force to object
-            Physics.ApplyImpulseForce(_launchForce);
-
-            //If the launch force is too small don't update the air state
-            if (!(_launchForce.magnitude > 0)) return damage;
-            
-            //Set the new air state and call the knockback events
-            CurrentAirState = AirState.TUMBLING;
-            _onKnockBack?.Invoke();
-            _onKnockBackTemp?.Invoke();
-            _onKnockBackTemp = null;
-
-            //Return the damage taken for debugging 
-            return damage;
-        }
-
+       
         private void UpdateGroundedColliderPosition()
         {
             switch (CurrentAirState)
@@ -693,17 +544,17 @@ namespace Lodis.Movement
                 case AirState.TUMBLING:
                 {
                     var bounds = Physics.BounceCollider.bounds;
-                    Physics.GroundedBoxPosition = bounds.center;
-                    Physics.GroundedBoxExtents = bounds.extents * 2;
+                    Physics.GroundedBoxPosition = (FVector3)bounds.center;
+                    Physics.GroundedBoxExtents = (FVector3)(bounds.extents * 2);
                     break;
                 }
                 case AirState.FREEFALL:
-                    Physics.GroundedBoxPosition = _freeFallGroundedPoint + transform.position;
-                    Physics.GroundedBoxExtents = _freeFallGroundedPointExtents;
+                    Physics.GroundedBoxPosition = (FVector3)(_freeFallGroundedPoint + transform.position);
+                    Physics.GroundedBoxExtents = (FVector3)_freeFallGroundedPointExtents;
                     break;
                 default:
-                    Physics.GroundedBoxPosition = _idleGroundedPoint + transform.position;
-                    Physics.GroundedBoxExtents = _idleGroundedPointExtents;
+                    Physics.GroundedBoxPosition = (FVector3)(_idleGroundedPoint + transform.position);
+                    Physics.GroundedBoxExtents = (FVector3)_idleGroundedPointExtents;
                     break;
             }
         }
@@ -719,21 +570,18 @@ namespace Lodis.Movement
             Gizmos.DrawCube(_idleGroundedPoint + position, _idleGroundedPointExtents);
         }
 
-        private void FixedUpdate()
+        public override void Tick(Fixed32 dt)
         {
-            if (Physics.RB.velocity.magnitude > _maxMagnitude.Value)
-                Physics.RB.velocity = Physics.RB.velocity.normalized * _maxMagnitude.Value;
-
-            UpdateGroundedColliderPosition();
-        }
-
-        public override void Update()
-        {
-            base.Update();
+            base.Tick(dt);
 
             if (CurrentAirState == AirState.TUMBLING) _lastTimeInKnockBack += Time.deltaTime;
 
             LandingScript.enabled = !OutOfBounds;
+
+            if (Physics.Velocity.Magnitude > _maxMagnitude.Value)
+                Physics.ApplyVelocityChange(Physics.Velocity.GetNormalized() * _maxMagnitude.Value);
+
+            UpdateGroundedColliderPosition();
         }
     }
 

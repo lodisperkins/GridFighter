@@ -1,20 +1,24 @@
-﻿using Lodis.Input;
+﻿using FixedPoints;
+using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Types;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 namespace Lodis.Gameplay
 {
-    public class HealthBehaviour : MonoBehaviour
+    public class HealthBehaviour : SimulationBehaviour
     {
         [Tooltip("The measurement of the amount of damage this object can take or has taken")]
         [SerializeField]
         private float _health;
+        private Fixed32 _healthFixed;
         [Tooltip("The starting amount of damage this object can take or has taken. Set to -1 to start with max health.")]
         [SerializeField]
         private float _startingHealth = -1;
@@ -32,7 +36,7 @@ namespace Lodis.Gameplay
         [Tooltip("Whether or not this object can be damaged or knocked back")]
         [SerializeField]
         private bool _isInvincible;
-        private TimedAction _invincibilityTimer;
+        private FixedTimeAction _invincibilityTimer;
         private Condition _invincibilityCondition;
         private Condition _intagibilityCondition;
         [Tooltip("Whether or not this object is in a stunned state")]
@@ -56,16 +60,15 @@ namespace Lodis.Gameplay
         private int _damageableAbilityID = -1;
         private string _defaultLayer;
         private HitColliderBehaviour _lastCollider;
-        protected GridMovementBehaviour Movement;
         private HitStopBehaviour _hitStop;
-        protected Condition AliveCondition;
-        protected UnityAction _onTakeDamage;
-        [FormerlySerializedAs("OnTakeDamage")] [SerializeField]
-        protected CustomEventSystem.Event OnTakeDamageEvent;
         private CharacterDefenseBehaviour _defenseBehaviour;
 
+        protected GridMovementBehaviour _movement;
+        private Condition aliveCondition;
+        protected UnityAction _onTakeDamage;
+        private FixedTimeAction _stunTimer;
 
-        public bool Stunned 
+        public bool Stunned
         {
             get
             {
@@ -89,22 +92,22 @@ namespace Lodis.Gameplay
             }
         }
 
-        public float Health 
-        { 
-            get => _health;
+        public Fixed32 Health
+        {
+            get => _healthFixed;
             protected set
             {
                 //Prevent damage if the object is invincible or dead
-                if (value < _health && (_isInvincible || !IsAlive))
+                if (value < _healthFixed && (_isInvincible || !IsAlive))
                 {
                     return;
                 }
 
-                _health = value;
+                _healthFixed = value;
             }
         }
 
-        public bool IsInvincible 
+        public bool IsInvincible
         {
             get => _isInvincible;
 
@@ -127,8 +130,8 @@ namespace Lodis.Gameplay
             set => _lastCollider = value;
         }
 
-        public bool IsIntangible 
-        { 
+        public bool IsIntangible
+        {
             get => _isIntangible;
             set
             {
@@ -144,24 +147,28 @@ namespace Lodis.Gameplay
         public CharacterDefenseBehaviour DefenseBehaviour { get => _defenseBehaviour; private set => _defenseBehaviour = value; }
         public Renderer MeshRenderer { get => _meshRenderer; set => _meshRenderer = value; }
         public int DamageableAbilityID { get => _damageableAbilityID; private set => _damageableAbilityID = value; }
+        public Condition AliveCondition { get => aliveCondition; set => aliveCondition = value; }
 
         protected virtual void Awake()
         {
             if (_startingHealth < 0)
-                _health = _maxHealth.Value;
+                _healthFixed = _maxHealth.Value;
             else
-                _health = _startingHealth;
+                _healthFixed = _startingHealth;
+
+            _healthFixed = _health;
+
             DefenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
-            Movement = GetComponent<GridMovementBehaviour>();
+            _movement = GetComponent<GridMovementBehaviour>();
             _hitStop = GetComponent<HitStopBehaviour>();
         }
 
         protected virtual void Start()
         {
             _isAlive = true;
-            AliveCondition = condition => _health > 0;
+            AliveCondition = condition => _healthFixed > 0;
             _defaultLayer = LayerMask.LayerToName(gameObject.layer);
 
             if (_meshRenderer)
@@ -194,18 +201,18 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
-        public virtual float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public virtual float TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
-            float damageTaken = _health;
+            Fixed32 damageTaken = _healthFixed;
 
             Health -= damage;
 
             damageTaken -= Health;
 
             if (Health < 0)
-                _health = 0;
+                _healthFixed = 0;
 
-            OnTakeDamageEvent.Raise(gameObject);
+            _onTakeDamage?.Invoke();
             return damageTaken;
         }
 
@@ -219,51 +226,30 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
-        public virtual float TakeDamage(HitColliderData info, GameObject attacker)
+        public virtual float TakeDamage(HitColliderData info, EntityData attacker)
         {
-            float damageTaken = _health;
+            Fixed32 damageTaken = _healthFixed;
 
             Health -= info.Damage;
 
             damageTaken -= Health;
 
-            if (_health < 0)
-                _health = 0;
+            if (_healthFixed < 0)
+                _healthFixed = 0;
 
-            OnTakeDamageEvent.Raise(gameObject);
+            _onTakeDamage?.Invoke();
             return damageTaken;
         }
 
-        /// <summary>
-        /// Takes damage based on the damage type.
-        /// </summary>
-        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        /// <param name="abilityData">The data scriptable object associated with the ability</param>
-        /// <param name="damageType">The type of damage this object will take</param>
-        public virtual float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
+        public virtual Fixed32 Heal(Fixed32 healthAmount)
         {
-            float damageTaken = _health;
-
-            Health -= abilityData.GetColliderInfo(0).Damage;
-
-            damageTaken -= Health;
-
-            if (_health < 0)
-                _health = 0;
-
-            OnTakeDamageEvent.Raise(gameObject);
-            return damageTaken;
-        }
-
-        public virtual float Heal(float healthAmount)
-        {
-            _health = healthAmount;
+            _healthFixed = healthAmount;
             return healthAmount;
         }
 
         public virtual void ResetHealth()
         {
-            _health = _startingHealth == -1 ? _maxHealth.Value : _startingHealth;
+            _healthFixed = _startingHealth == -1 ? _maxHealth.Value : _startingHealth;
             _isAlive = true;
 
             if (_stunned)
@@ -274,8 +260,25 @@ namespace Lodis.Gameplay
         /// Starts the timer for the movement and input being disabled
         /// </summary>
         /// <param name="time">The amount of time the object is stunned</param>
-        protected virtual IEnumerator ActivateStun(float time)
+        protected void DeactivateStun()
         {
+            //Enable components if the actor has them attached
+            if (_moveset)
+                _moveset.enabled = true;
+            if (_input)
+                _input.enabled = true;
+            Stunned = false;
+        }
+
+        /// <summary>
+        /// Disables abilty use and input for the object if applicable
+        /// </summary>
+        /// <param name="time">The amount of time to disable the components for</param>
+        public virtual void Stun(Fixed32 time)
+        {
+            if (Stunned || IsInvincible || _defenseBehaviour?.IsShielding == true || IsIntangible)
+                return;
+
             Stunned = true;
 
             _hitStop.CancelHitStop(true);
@@ -291,32 +294,12 @@ namespace Lodis.Gameplay
                 _input.enabled = false;
                 _input.StopAllCoroutines();
             }
-            if (Movement)
+            if (_movement)
             {
-                Movement.DisableMovement(condition => Stunned == false, false, true);
+                _movement.DisableMovement(condition => Stunned == false, false, true);
             }
 
-
-            yield return new WaitForSeconds(time);
-
-            //Enable components if the actor has them attached
-            if (_moveset)
-                _moveset.enabled = true;
-            if (_input)
-                _input.enabled = true;
-            Stunned = false;
-        }
-
-        /// <summary>
-        /// Disables abilty use and input for the object if applicable
-        /// </summary>
-        /// <param name="time">The amount of time to disable the components for</param>
-        public void Stun(float time)
-        {
-            if (Stunned || IsInvincible || _defenseBehaviour?.IsShielding == true || IsIntangible)
-                return;
-
-            _stunRoutine = StartCoroutine(ActivateStun(time));
+            _stunTimer = FixedPointTimer.StartNewTimedAction(DeactivateStun, time);
             _onStunEnabled?.Invoke();
         }
 
@@ -325,15 +308,9 @@ namespace Lodis.Gameplay
             if (!Stunned)
                 return;
 
-            StopCoroutine(_stunRoutine);
+            _stunTimer.Stop();
 
-            //Enable components if the actor has them attached
-            if (_moveset)
-                _moveset.enabled = true;
-            if (_input)
-                _input.enabled = true;
-
-            Stunned = false;
+            DeactivateStun();
         }
 
         public void AddOnStunAction(UnityAction action)
@@ -388,9 +365,9 @@ namespace Lodis.Gameplay
             IsInvincible = true;
 
             if (_invincibilityTimer != null)
-                RoutineBehaviour.Instance.StopAction(_invincibilityTimer);
+                _invincibilityTimer.Stop();
 
-            _invincibilityTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => IsInvincible = false, TimedActionCountType.SCALEDTIME, time);
+            _invincibilityTimer = FixedPointTimer.StartNewTimedAction(() => IsInvincible = false, time);
 
         }
 
@@ -403,7 +380,7 @@ namespace Lodis.Gameplay
             _invincibilityCondition = condition;
             IsInvincible = true;
         }
-        
+
         /// <summary>
         /// Makes the object invincible. No damage can be taken by the object
         /// </summary>
@@ -411,6 +388,7 @@ namespace Lodis.Gameplay
         public void SetIntagibilityByTimer(float time)
         {
             IsIntangible = true;
+            //TODO add layer system
             gameObject.layer = LayerMask.NameToLayer("IgnoreHitColliders");
             RoutineBehaviour.Instance.StartNewTimedAction(args => IsIntangible = false, TimedActionCountType.SCALEDTIME, time);
         }
@@ -434,7 +412,7 @@ namespace Lodis.Gameplay
             if (!_isInvincible)
                 return;
 
-            StopAllCoroutines();
+            _invincibilityTimer?.Stop();
             _invincibilityCondition = null;
             IsInvincible = false;
         }
@@ -444,34 +422,8 @@ namespace Lodis.Gameplay
             _isAlive = AliveCondition.Invoke();
         }
 
-        public virtual void OnCollisionEnter(Collision collision)
-        {
-            KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<KnockbackBehaviour>();
-            //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript || knockBackScript.CurrentAirState != AirState.TUMBLING)
-                return;
-
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.Magnitude;
-
-            //Apply ricochet force and damage
-            knockBackScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
-        }
-
-        public virtual void OnTriggerEnter(Collider other)
-        {
-            KnockbackBehaviour knockBackScript = other.gameObject.GetComponent<KnockbackBehaviour>();
-            //Checks if the object is not grid moveable and isn't in hit stun
-            if (!knockBackScript || knockBackScript.CurrentAirState != AirState.TUMBLING)
-                return;
-
-            float velocityMagnitude = knockBackScript.Physics.LastVelocity.Magnitude; ;
-
-            //Apply ricochet force and damage
-            knockBackScript.TakeDamage(gameObject, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
-        }
-
         // Update is called once per frame
-        public virtual void Update()
+        public override void Tick(Fixed32 dt)
         {
             //Death check
             if (IsAlive && Health <= 0)
@@ -480,14 +432,14 @@ namespace Lodis.Gameplay
             UpdateIsAlive();
 
             if (!IsAlive && _destroyOnDeath)
-                Destroy(gameObject);
+                GridGame.RemoveEntityFromGame(Entity.Data);
 
             //Invincibilty check
             if (_invincibilityCondition?.Invoke() == true)
             {
                 IsInvincible = false;
                 _invincibilityCondition = null;
-            }  
+            }
 
             //Intangibilty check
             if (_intagibilityCondition?.Invoke() == true)
@@ -496,11 +448,21 @@ namespace Lodis.Gameplay
                 _intagibilityCondition = null;
             }
 
-            gameObject.layer = IsIntangible? LayerMask.NameToLayer("IgnoreHitColliders") : gameObject.layer = LayerMask.NameToLayer(_defaultLayer);
+            gameObject.layer = IsIntangible ? LayerMask.NameToLayer("IgnoreHitColliders") : gameObject.layer = LayerMask.NameToLayer(_defaultLayer);
 
             //Clamp health
             if (Health > _maxHealth.Value)
                 Health = _maxHealth.Value;
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

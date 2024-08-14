@@ -88,7 +88,7 @@ namespace Lodis.Gameplay
         /// Use this to initialize all abilities in the deck
         /// </summary>
         /// <param name="owner"></param>
-        public virtual void InitAbilities(GameObject owner)
+        public virtual void InitAbilities(EntityDataBehaviour owner)
         {
             InitDeck();
 

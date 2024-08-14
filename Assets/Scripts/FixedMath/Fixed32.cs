@@ -1,3 +1,5 @@
+using System.IO;
+
 namespace Types
 {
     /// <summary>
@@ -6,13 +8,14 @@ namespace Types
     /// </summary>
     public struct Fixed32
     {
-        public readonly int Scale;
         public const int Epsilon = 1;
 
         private const int FractionMask = 0xffff;
+        public static Fixed32 PI = (Fixed32)3.1415926535897932384626433832795;
         private const int DefaultScale = 16;
 
         public long RawValue { get; private set; }
+        public int Scale { get; private set; }
 
         public Fixed32(int scale) : this(scale, 0) { }
 
@@ -37,6 +40,18 @@ namespace Types
             {
                 return (int)(this.RawValue & FractionMask);
             }
+        }
+
+        public void Serialize(BinaryWriter bw)
+        {
+            bw.Write(Scale);
+            bw.Write(RawValue);
+        }
+
+        public void Deserialize(BinaryReader br)
+        {
+            RawValue = br.ReadInt64();
+            Scale = br.Read();
         }
 
         public static Fixed32 operator +(Fixed32 leftHandSide, Fixed32 rightHandSide)
@@ -93,6 +108,38 @@ namespace Types
         public override string ToString()
         {
             return ((double)this).ToString();
+        }
+
+        // Trigonometric functions using Taylor series approximations
+        public static Fixed32 Sin(Fixed32 angle)
+        {
+            double radians = (double)angle * (PI / 180);
+            double sin = radians;
+            double term = radians;
+            for (int i = 3; i <= 15; i += 2)
+            {
+                term *= -radians * radians / (i * (i - 1));
+                sin += term;
+            }
+            return (Fixed32)sin;
+        }
+
+        public static Fixed32 Cos(Fixed32 angle)
+        {
+            double radians = (double)angle * (PI / 180);
+            double cos = 1.0;
+            double term = 1.0;
+            for (int i = 2; i <= 14; i += 2)
+            {
+                term *= -radians * radians / (i * (i - 1));
+                cos += term;
+            }
+            return (Fixed32)cos;
+        }
+
+        public static Fixed32 Tan(Fixed32 angle)
+        {
+            return Sin(angle) / Cos(angle);
         }
     }
 }

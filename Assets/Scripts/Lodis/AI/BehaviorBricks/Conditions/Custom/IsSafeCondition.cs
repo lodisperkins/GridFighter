@@ -30,7 +30,7 @@ public class IsSafeCondition : GOCondition
             if (physics == null) continue;
 
             Vector3 direction = (physics.transform.position - _dummy.transform.position).normalized;
-            float dotProduct = FVector3.Dot((FVector3)direction, physics.LastVelocity.GetNormalized());
+            float dotProduct = FVector3.Dot((FVector3)direction, physics.Velocity.GetNormalized());
 
             if (Mathf.Abs(dotProduct) >= 0.8f)
                 return true;

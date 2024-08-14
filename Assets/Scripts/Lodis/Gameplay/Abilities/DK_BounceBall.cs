@@ -1,8 +1,10 @@
-﻿using Lodis.Movement;
+﻿using FixedPoints;
+using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -19,9 +21,9 @@ namespace Lodis.Gameplay
         List<GameObject> _balls = new List<GameObject>();
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
 
             _ballCount = (int)abilityData.GetCustomStatValue("BallCount");
             _ballSpawnDelay = abilityData.GetCustomStatValue("BallSpawnDelay");
@@ -45,7 +47,7 @@ namespace Lodis.Gameplay
                 //Get the collider to update collision information.
                 HitColliderBehaviour hitCollider = ballInstance.GetComponent<HitColliderBehaviour>();
                 hitCollider.ColliderInfo = GetColliderData(0);
-                hitCollider.Owner = owner;
+                hitCollider.Owner = Owner.Data;
 
                 GridPhysicsBehaviour physics = ballInstance.GetComponent<GridPhysicsBehaviour>();
 
@@ -55,8 +57,8 @@ namespace Lodis.Gameplay
                 //Calculates the angle and magnitude of the force to be applied.
                 float radians = abilityData.GetCustomStatValue("ShotAngle");
                 float magnitude = abilityData.GetCustomStatValue("ShotForce");
-                Vector3 force = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians)) * magnitude;
-                force.x *= OwnerMoveScript.GetAlignmentX();
+                FVector3 force = new FVector3(Fixed32.Cos(radians), Fixed32.Sin(radians), 0) * magnitude;
+                force.X *= OwnerMoveScript.GetAlignmentX();
 
                 physics.ApplyImpulseForce(force);
 

@@ -24,9 +24,9 @@ namespace Lodis.Gameplay
         private float _shotSpeed;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             _laserRef = abilityData.Effects[0];
             _largeLaserRef = abilityData.Effects[1];
         }
@@ -50,7 +50,7 @@ namespace Lodis.Gameplay
         private IEnumerator FireShots()
         {
 
-            _projectileSpawner.Owner = owner;
+            _projectileSpawner.Owner = Owner;
             GameObject Projectile = null;
             _projectileSpawner.Projectile = _laserRef;
 
@@ -60,7 +60,7 @@ namespace Lodis.Gameplay
 
                 effect.localScale /= 2;
 
-                Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.transform.forward * _shotSpeed, GetColliderData(0));
+                Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.EntityTransform.Forward * _shotSpeed, GetColliderData(0));
 
                 //Fire projectile
                 Projectile.name += "(" + abilityData.name + i + ")";
@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
             }
 
             _projectileSpawner.Projectile = _largeLaserRef;
-            Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.transform.forward * _shotSpeed, GetColliderData(1));
+            Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.EntityTransform.Forward * _shotSpeed, GetColliderData(1));
 
             //Fire projectile
             Projectile.name += "(" + abilityData.name + "Large" + ")";
@@ -85,7 +85,7 @@ namespace Lodis.Gameplay
             _spawn = ActiveEntities[0].gameObject;
 
             _projectileSpawner = _spawn.GetComponentInChildren<ProjectileSpawnerBehaviour>();
-            _projectileSpawner.Owner = owner;
+            _projectileSpawner.Owner = Owner;
 
             _projectileSpawner.StartCoroutine(FireShots());
         }

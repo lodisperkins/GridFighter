@@ -3,6 +3,7 @@ using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -24,19 +25,19 @@ namespace Lodis.Gameplay
         private float _oldZ;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             _whirlEffect = abilityData.visualPrefab;
             _releaseEffect = Resources.Load<GameObject>("Effects/ThrowReleaseBurst");
-            _oldOpponentParent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform.parent;
-            _oldRotation = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform.rotation;
+            _oldOpponentParent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).transform.parent;
+            _oldRotation = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).transform.rotation;
         }
 
 
-        private void PrepareThrow(params object[] args)
+        private void PrepareThrow(Collision collision)
         {
-            GameObject other = (GameObject)args[0];
+            GameObject other = collision.Entity.UnityObject;
 
             if (!other.CompareTag("Player"))
                 return;
@@ -57,7 +58,7 @@ namespace Lodis.Gameplay
             _oldZ = _opponentPhysics.transform.position.z;
 
             float throwHeight = abilityData.GetCustomStatValue("ThrowHeight");
-            Vector3 position = owner.transform.position + Vector3.up * throwHeight;
+            Vector3 position = Owner.transform.position + Vector3.up * throwHeight;
 
             OwnerMoveScript.CancelMovement();
             OwnerMoveScript.DisableMovement(condition => !InUse, false, true);
@@ -81,7 +82,7 @@ namespace Lodis.Gameplay
             float throwDelay = abilityData.GetCustomStatValue("ThrowDelay");
             OwnerAnimationScript.PlayAnimation(clip, 1, true);
 
-            GameObject whirlInstance = MonoBehaviour.Instantiate(_whirlEffect, owner.transform.position, owner.transform.rotation);
+            GameObject whirlInstance = MonoBehaviour.Instantiate(_whirlEffect, Owner.transform.position, Owner.transform.rotation);
             MonoBehaviour.Destroy(whirlInstance, throwDelay);
 
 
@@ -94,13 +95,13 @@ namespace Lodis.Gameplay
 
                     OwnerAnimationScript.PlayAnimation(abilityData.recoverTime + throwDelay, clip);
 
-                    MonoBehaviour.Instantiate(_releaseEffect, owner.transform.position, owner.transform.rotation);
+                    MonoBehaviour.Instantiate(_releaseEffect, Owner.transform.position, Owner.transform.rotation);
 
                     //Calculates the angle and magnitude of the force to be applied.
                     float radians = abilityData.GetCustomStatValue("ThrowAngle");
                     float magnitude = abilityData.GetCustomStatValue("ThrowForce");
-                    Vector3 force = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians)) * magnitude;
-                    force.x *= owner.transform.forward.x;
+                    FVector3 force = new FVector3(Fixed32.Cos(radians), Fixed32.Sin(radians), 0) * magnitude;
+                    force.X *= Owner.transform.forward.x;
 
                     //Reset physics attributes.
                     _opponentPhysics.UseGravity = true;
@@ -155,7 +156,7 @@ namespace Lodis.Gameplay
             HitColliderData data = GetColliderData(0);
             data.OnHit += PrepareThrow;
 
-            _collider = HitColliderSpawner.SpawnBoxCollider(owner.transform, Vector3.one, data, owner);
+            _collider = HitColliderSpawner.SpawnCollider(Owner.FixedTransform, 1, 1, data, Owner);
         }
 
         protected override void OnRecover(params object[] args)

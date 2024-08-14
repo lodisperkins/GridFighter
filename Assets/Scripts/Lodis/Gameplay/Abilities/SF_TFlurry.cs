@@ -17,9 +17,9 @@ namespace Lodis.Gameplay
         private ConditionAction _spawnAccessoryAction;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
             _flurryRef = Resources.Load<GameObject>("Projectiles/Prototype2/ChargeSwordFlurry");
         }
 
@@ -29,9 +29,9 @@ namespace Lodis.Gameplay
             _swordCollider = GetColliderData(0);
         }
 
-        private void SpawnFlurry(params object[] args)
+        private void SpawnFlurry(Collision collision)
         {
-            GameObject target = (GameObject)args[0];
+            GameObject target = collision.Entity.UnityObject;
             if (!target.CompareTag("Player"))
                 return;
 
@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
             HitColliderBehaviour flurryCollider = _flurry.GetComponent<HitColliderBehaviour>();
 
             flurryCollider.ColliderInfo = GetColliderData(1);
-            flurryCollider.Owner = owner;
+            flurryCollider.Owner = Owner;
 
             DisableAccessory();
             RoutineBehaviour.Instance.StopAction(_spawnAccessoryAction);

@@ -13,6 +13,8 @@ using UnityEngine.UI;
 using DG.Tweening.Core;
 using DG.Tweening.Plugins.Options;
 using CustomEventSystem;
+using SharedGame;
+using Unity.Collections;
 
 namespace Lodis.Gameplay
 {

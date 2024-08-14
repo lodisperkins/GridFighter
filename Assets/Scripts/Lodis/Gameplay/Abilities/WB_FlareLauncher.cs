@@ -14,20 +14,20 @@ namespace Lodis.Gameplay
         private HitColliderBehaviour _hitColliderBehaviour;
 
 	    //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
         }
 
 	    //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            GameObject instance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
+            GameObject instance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform, true);
             instance.transform.localRotation = Quaternion.identity;
             _hitColliderBehaviour = instance.GetComponent<HitColliderBehaviour>();
 
             _hitColliderBehaviour.ColliderInfo = GetColliderData(0);
-            _hitColliderBehaviour.Owner = owner;
+            _hitColliderBehaviour.Owner = Owner;
         }
 
         protected override void OnEnd()

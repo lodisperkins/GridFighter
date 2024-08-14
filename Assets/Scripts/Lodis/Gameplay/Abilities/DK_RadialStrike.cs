@@ -20,9 +20,9 @@ namespace Lodis.Gameplay
         private bool _deactivated = false;
         private Vector3 _hitBoxScale;
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
         }
 
         protected override void OnStart(params object[] args)
@@ -47,7 +47,7 @@ namespace Lodis.Gameplay
 
             _hitBoxScale = new Vector3(abilityData.GetCustomStatValue("HitBoxScaleX") * BlackBoardBehaviour.Instance.Grid.PanelScale.x, abilityData.GetCustomStatValue("HitBoxScaleY"), abilityData.GetCustomStatValue("HitBoxScaleZ") * BlackBoardBehaviour.Instance.Grid.PanelScale.z);
             //Instantiate particles and hit box
-            _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, Owner.transform.position, Owner.transform.rotation);
             HitColliderData hitColliderRef = GetColliderData(0);
 
             
@@ -55,8 +55,8 @@ namespace Lodis.Gameplay
             Transform spawnTransform = OwnerMoveScript.Alignment == GridScripts.GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[0] : OwnerMoveset.LeftMeleeSpawns[0];
 
             //Spawn a game object with the collider attached
-            _hitCollider = HitColliderSpawner.SpawnBoxCollider(spawnTransform, _hitBoxScale, hitColliderRef, owner);
-            _hitCollider.transform.position += owner.transform.forward * abilityData.GetCustomStatValue("HitBoxDistanceX");
+            //_hitCollider = HitColliderSpawner.SpawnCollider(spawnTransform, _hitBoxScale, hitColliderRef, Owner);
+            _hitCollider.transform.position += Owner.transform.forward * abilityData.GetCustomStatValue("HitBoxDistanceX");
             GridTrackerBehaviour tracker;
             if (!_hitCollider.GetComponent<GridTrackerBehaviour>())
             {
@@ -80,7 +80,7 @@ namespace Lodis.Gameplay
             for (int i = (int)_panelTravelDistance; i >= 0; i--)
             {
                 FVector2 moveOffset = new FVector2(i, 0f);
-                if (OwnerMoveScript.MoveToPanel(OwnerMoveScript.CurrentPanel.Position + moveOffset * Mathf.RoundToInt(owner.transform.forward.x), false, GridScripts.GridAlignment.ANY, false, false))
+                if (OwnerMoveScript.MoveToPanel(OwnerMoveScript.CurrentPanel.Position + moveOffset * Mathf.RoundToInt(Owner.transform.forward.x), false, GridScripts.GridAlignment.ANY, false, false))
                     break;
             }
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using FixedPoints;
 using Lodis.Movement;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -24,13 +25,13 @@ namespace Lodis.Gameplay
         private float _gravity;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
 
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WB_LobShot_Data"));
-            owner = newOwner;
+            Owner = newOwner;
             _distance = abilityData.GetCustomStatValue("PanelDistance");
             _angle = abilityData.GetCustomStatValue("Angle");
             _gravity = abilityData.GetCustomStatValue("Gravity");
@@ -64,8 +65,8 @@ namespace Lodis.Gameplay
             projectileSpawner.Projectile = _projectile;
 
             //Calculate the force needed to make the lobshot travel the given distance
-            Vector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle);
-            launchForce.x *= projectileSpawner.transform.forward.x;
+            FVector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle);
+            launchForce.X *= projectileSpawner.transform.forward.x;
 
             //Store the gravity of the lobshot for to change its falling speed
             GameObject activeProjectile = projectileSpawner.FireProjectile(launchForce, _projectileCollider, true, true);

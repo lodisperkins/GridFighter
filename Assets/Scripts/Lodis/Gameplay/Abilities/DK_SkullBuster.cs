@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -41,24 +42,26 @@ namespace Lodis.Gameplay
         private GameObject _hitEffectLoopRef;
         private GameObject _hitEffectLoopInstance;
         private TimedAction _hitLoopDespawnAction;
+        private FixedAnimationCurve _fCurve;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
 
             //Calculates the animation curve for the jump
             float hangTime = abilityData.GetCustomStatValue("HangTime") / (abilityData.startUpTime + abilityData.timeActive);
             _riseTime = abilityData.startUpTime / (abilityData.startUpTime + abilityData.timeActive);
             hangTime = Mathf.Clamp(hangTime, 0.1f, 0.5f) + 0.2f;
-            _curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(_riseTime, .5f), new Keyframe(hangTime, .5f), new Keyframe(1, 1)); 
+            _curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(_riseTime, .5f), new Keyframe(hangTime, .5f), new Keyframe(1, 1));
+            _fCurve = new FixedAnimationCurve(_curve);
 
-            _knockBackBehaviour = owner.GetComponent<KnockbackBehaviour>();
+            _knockBackBehaviour = Owner.GetComponent<KnockbackBehaviour>();
             _grid = BlackBoardBehaviour.Instance.Grid;
             _hitEffectLoopRef = abilityData.Effects[0];
 
             //Stores the opponents physics script to make them bounce later
-            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
+            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner);
             if (opponent == null) return;
             _opponentPhysics = opponent.GetComponent<GridPhysicsBehaviour>();
             //Initialize default values
@@ -78,19 +81,19 @@ namespace Lodis.Gameplay
             //Calculate the time it takes to reache the peak height
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             //Add the velocity to the character to make them jump
-            _knockBackBehaviour.Physics.Jump((int)_distance, _jumpHeight, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, Vector3.up * .3f, _curve);
+            _knockBackBehaviour.Physics.Jump(_jumpHeight, (int)_distance, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, FVector3.Up * .3f);
             //Disable bouncing so the character doesn't bounce when landing
             _knockBackBehaviour.Physics.DisablePanelBounce();
 
             _chargeEffect = Object.Instantiate(_chargeEffectRef, _spawnTransform);
 
             //Disable ability benefits if the player is hit out of burst
-            OnHit += arguments =>
+            OnHit += collision =>
             {
 
-                GameObject objectHit = (GameObject)arguments[0];
+                GameObject objectHit = collision.Entity.UnityObject;
 
-                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
+                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner))
                     return;
 
                 CameraBehaviour.Instance.ZoomAmount = 1;
@@ -114,7 +117,7 @@ namespace Lodis.Gameplay
             _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, _spawnTransform);
             _visualPrefabInstance.transform.localPosition += Vector3.back * 0.3f;
             //Spawn a game object with the collider attached
-            _hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one * _colliderScale, _fistCollider, owner);
+            //_hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one * _colliderScale, _fistCollider, Owner);
             _hitScript.transform.localPosition = Vector3.zero;
             _hitScript.ColliderInfo.OnHit = OnHit;
 

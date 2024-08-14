@@ -18,12 +18,12 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
 
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WF_Straight_Data"));
-            owner = newOwner;
+            Owner = newOwner;
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;
@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
 
             CleanProjectileList();
             
-            Vector2 moveDir = owner.transform.forward;
+            Vector2 moveDir = Owner.transform.forward;
 
             //Only fire if there aren't two many instances of this object active
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)

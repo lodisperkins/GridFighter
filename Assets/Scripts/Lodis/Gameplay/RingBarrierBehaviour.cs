@@ -5,6 +5,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -17,10 +18,6 @@ namespace Lodis.Gameplay
         [Tooltip("The length of the hit stun to apply to objects that crash into the ring barrier.")]
         [SerializeField]
         private float _hitStunOnCollision;
-        [Tooltip("The collider that will be used to bounce characters away from the barrier.")]
-        [SerializeField]
-        private Collider _collider;
-        private Collider _ownerCollider;
         [Tooltip("How fast a character in knockback has to travelto instantly shatter this barrier.")]
         [SerializeField]
         private FloatVariable _shatterSpeed;
@@ -51,7 +48,10 @@ namespace Lodis.Gameplay
         private RingBarrierFeedbackBehaviour _ringBarrierFeedbackBehaviour;
         [SerializeField]
         private float _timeUntilNextHit = 0.01f;
+
+        //---
         private bool _canHit = true;
+        private EntityData _ownerData;
 
         /// <summary>
         /// The character that owns this ring barrier.
@@ -72,7 +72,7 @@ namespace Lodis.Gameplay
             //Ignore the owner when it dies so they can pass through.
             AddOnDeathAction(() =>
             {
-                Physics.IgnoreCollision(_collider, _ownerCollider);
+                GridGame.IgnoreCollision(Entity.Data, _ownerData);
                 _winCollider.SetActive(true);
             });
 
@@ -80,7 +80,7 @@ namespace Lodis.Gameplay
             if (MatchManagerBehaviour.Instance.InvincibleBarriers)
                 SetInvincibilityByCondition(condition => !MatchManagerBehaviour.Instance.InvincibleBarriers);
 
-            _ownerCollider = Owner.GetComponent<GridPhysicsBehaviour>().BounceCollider;
+            _ownerData = Owner.GetComponent<EntityDataBehaviour>().Data;
             _alignment = Owner.GetComponent<GridMovementBehaviour>().Alignment;
         }
 
@@ -98,16 +98,15 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
         /// <param name="hitStun">The amount of time the object will be in hit stun</param>
-        public override float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public override float TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
-            if (!Owner || damageType != DamageType.KNOCKBACK || IsInvincible || (attacker != Owner) || damage < _minimumDamageSpeed)
+            if (!Owner || damageType != DamageType.KNOCKBACK || IsInvincible || (attacker.UnityObject != Owner) || damage < _minimumDamageSpeed)
                 return 0;
 
             //Apply damage and activate damage effects.
             Health -= damage;
 
             CameraBehaviour.ShakeBehaviour.ShakeRotation();
-            OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamage?.Invoke();
 
             //_shieldController.GetHit(attacker.transform.position - transform.forward, transform.forward, 4, damage);
@@ -119,9 +118,9 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="info">The hit collider data of the attack</param>
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        public override float TakeDamage(HitColliderData info, GameObject attacker)
+        public override float TakeDamage(HitColliderData info, EntityData attacker)
         {
-            if (!Owner || info.TypeOfDamage != DamageType.KNOCKBACK || (attacker != Owner) || info.Damage < _minimumDamageSpeed)
+            if (!Owner || info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.UnityObject != Owner) || info.Damage < _minimumDamageSpeed)
                 return 0;
 
 
@@ -130,29 +129,8 @@ namespace Lodis.Gameplay
 
             CameraBehaviour.ShakeBehaviour.ShakeRotation();
 
-            OnTakeDamageEvent.Raise(gameObject);
             _onTakeDamage?.Invoke();
             return info.Damage;
-        }
-
-        /// <summary>
-        /// Takes damage based on the damage type.
-        /// </summary>
-        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        /// <param name="abilityData">The data scriptable object associated with the ability</param>
-        /// <param name="damageType">The type of damage this object will take</param>
-        public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
-        {
-            float damage = abilityData.GetColliderInfo(0).Damage;
-            if (!Owner || damageType != DamageType.KNOCKBACK || (attacker != Owner.name) || damage < _minimumDamageSpeed)
-                return 0;
-
-            //Apply damage and activate damage effects
-            Health -= damage;
-
-            OnTakeDamageEvent.Raise(gameObject);
-            _onTakeDamage?.Invoke();
-            return damage;
         }
 
         /// <summary>
@@ -166,47 +144,47 @@ namespace Lodis.Gameplay
             _visuals.SetActive(true);
             _winCollider.SetActive(false);
 
-            Physics.IgnoreCollision(_collider, _ownerCollider, false);
+            GridGame.IgnoreCollision(Entity.Data, _ownerData, false);
             _ringBarrierFeedbackBehaviour.ResetVisuals();
         }
 
         public void Deactivate(bool spawnEffects = true)
         {
-            Physics.IgnoreCollision(_collider, _ownerCollider);
+            GridGame.IgnoreCollision(Entity.Data, _ownerData);
             _winCollider.SetActive(true);
             _ringBarrierFeedbackBehaviour.DeactivateBarrier(spawnEffects);
         }
 
-        public override void OnTriggerEnter(Collider collision)
+        public override void OnOverlapEnter(Collision collision)
         {
             if (!_canInstantShatter)
                 return;
 
             //Only try to take damage if the object had a rigid body attached.
-            KnockbackBehaviour knockback = collision.attachedRigidbody?.GetComponent<KnockbackBehaviour>();
+            KnockbackBehaviour knockback = collision.Entity.UnityObject.GetComponent<KnockbackBehaviour>();
             if (!knockback)
                 return;
 
             //Calculates the dot product to ensure the character is moving towards the barrier.
-            float dot = FVector3.Dot((FVector3)transform.forward, knockback.Physics.LastVelocity.GetNormalized());
+            float dot = FVector3.Dot((FVector3)transform.forward, knockback.Physics.Velocity.GetNormalized());
 
             //Shatter the barrier if the pwner is being knocked back at the appropriate speed and damage.
-            if (collision.gameObject == Owner && knockback.Physics.LastVelocity.Magnitude >= _shatterSpeed.Value && dot < 0
+            if (collision.Entity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.Value && dot < 0
                 && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.Value)
-                TakeDamage(Owner, Health, 0, 0, DamageType.KNOCKBACK);
+                TakeDamage(Entity.Data, Health, 0, 0, DamageType.KNOCKBACK);
         }
 
-        public override void OnCollisionEnter(Collision collision)
+        public override void OnHitEnter(Collision collision)
         {
-            KnockbackBehaviour knockbackBehaviour = collision.gameObject.GetComponent<KnockbackBehaviour>();
+            KnockbackBehaviour knockbackBehaviour = collision.Entity.UnityObject.GetComponent<KnockbackBehaviour>();
 
-            if (!knockbackBehaviour || knockbackBehaviour.Physics.LastVelocity.Magnitude < _minimumDamageSpeed || !_canHit)
+            if (!knockbackBehaviour || knockbackBehaviour.Physics.Velocity.Magnitude < _minimumDamageSpeed || !_canHit)
                 return;
 
             if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
                 return;
 
-            var offsetX = collision.transform.position.x - transform.position.x;
+            var offsetX = collision.Entity.Transform.Position.X - Entity.FixedTransform.Position.X;
             float dir = offsetX / Mathf.Abs(offsetX);
             
             //Find the direction this collider was going to apply force originally
@@ -226,15 +204,21 @@ namespace Lodis.Gameplay
 
             //Deal damage to the character.
             knockbackBehaviour.LastCollider = hitCollider;
-            knockbackBehaviour.TakeDamage(info,gameObject);
+            knockbackBehaviour.TakeDamage(info,collision.Entity);
 
             _canHit = false;
             RoutineBehaviour.Instance.StartNewTimedAction(args => _canHit = true, TimedActionCountType.SCALEDTIME, _timeUntilNextHit);
 
             //Display the appropriate particle effect.
-            Instantiate(_hitEffect.gameObject, collision.contacts[0].point, new Quaternion());
-            if (collision.gameObject == Owner)
-                Instantiate(_takeDamageEffect, collision.contacts[0].point, new Quaternion()).Alignment = _alignment;
+
+            PanelBehaviour panel;
+
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(collision.Entity.UnityObject.transform.position, out panel);
+            Vector3 particleSpawn = new Vector3(collision.ContactPoint.X, collision.ContactPoint.Y, panel.transform.position.z);
+
+            Instantiate(_hitEffect.gameObject, particleSpawn, new Quaternion());
+            if (collision.Entity.UnityObject == Owner)
+                Instantiate(_takeDamageEffect, particleSpawn, new Quaternion()).Alignment = _alignment;
         }
     }
 }

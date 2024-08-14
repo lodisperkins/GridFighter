@@ -18,11 +18,11 @@ namespace Lodis.Gameplay
         private bool _reflected;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             //Get owner health
-            _ownerHealth = owner.GetComponent<HealthBehaviour>();
+            _ownerHealth = Owner.GetComponent<HealthBehaviour>();
         }
 
 	    //Called when ability is used
@@ -32,10 +32,10 @@ namespace Lodis.Gameplay
             _barrierCollider = GetColliderData(0);
 
             //Set the position of the barrier in relation to the character
-            Vector3 offset = new Vector3(abilityData.GetCustomStatValue("XOffset") * owner.transform.forward.x, abilityData.GetCustomStatValue("YOffset"), 0);
+            Vector3 offset = new Vector3(abilityData.GetCustomStatValue("XOffset") * Owner.transform.forward.x, abilityData.GetCustomStatValue("YOffset"), 0);
 
             //Create barrier
-            _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, owner.transform.position + offset, new Quaternion());
+            _visualPrefabInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, Owner.transform.position + offset, new Quaternion());
 
             //Attach hit box to barrier
             HitColliderBehaviour instanceBehaviour = _visualPrefabInstance.AddComponent<HitColliderBehaviour>();
@@ -64,7 +64,7 @@ namespace Lodis.Gameplay
             if (otherHitCollider && otherRigidbody && !otherHitCollider.CompareTag("Player") && !otherHitCollider.CompareTag("Entity"))
             {
                 //...reset the active time and reverse its velocity
-                otherHitCollider.Owner = owner;
+                otherHitCollider.Owner = Owner.Data;
                 otherHitCollider.ResetActiveTime();
                 otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.Impulse);
 

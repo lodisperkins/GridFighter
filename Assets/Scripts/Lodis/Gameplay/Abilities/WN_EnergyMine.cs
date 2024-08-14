@@ -20,9 +20,9 @@ namespace Lodis.Gameplay
         private TimedAction _despawnAction;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
         }
 
         protected override void OnStart(params object[] args)
@@ -31,7 +31,7 @@ namespace Lodis.Gameplay
 
             _travelDistance = abilityData.GetCustomStatValue("TravelDistance");
 
-            FVector2 direction = (FVector3)owner.transform.forward;
+            FVector2 direction = (FVector3)Owner.transform.forward;
 
             PanelPositions[0] = OwnerMoveScript.Position + direction * _travelDistance;
 
@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
 
             HitColliderBehaviour colliderBehaviour = ActiveEntities[0].GetComponent<HitColliderBehaviour>();
             colliderBehaviour.ColliderInfo = _explosionColliderData;
-            colliderBehaviour.Owner = owner;
+            colliderBehaviour.Owner = Owner;
 
             //Collider collider = ActiveEntities[0].GetComponentInChildren<Collider>();
             //collider.enabled = false;

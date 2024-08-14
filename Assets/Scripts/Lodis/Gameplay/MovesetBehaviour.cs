@@ -5,7 +5,9 @@ using Lodis.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Types;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -48,7 +50,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public delegate void AbilityHitEvent(Ability abilityUsed, params object[] collisionArgs);
 
-    public class MovesetBehaviour : MonoBehaviour
+    public class MovesetBehaviour : SimulationBehaviour
     {
         [Header("Deck Settings")]
         [Tooltip("The basic ability deck this character will be using.")]
@@ -165,9 +167,9 @@ namespace Lodis.Gameplay
         private UnityAction _onUseAbility;
         private AbilityHitEvent _onHit;
         private AbilityHitEvent _onHitTemp;
-        private TimedAction _rechargeAction;
-        private TimedAction _deckShuffleAction;
-        private TimedAction _burstAction;
+        private FixedTimeAction _rechargeAction;
+        private FixedTimeAction _deckShuffleAction;
+        private FixedTimeAction _burstAction;
 
         private FVector2 _lastAttackDirection;
 
@@ -199,7 +201,7 @@ namespace Lodis.Gameplay
                 _energyChargeEnabled = value;
 
                 if (!_energyChargeEnabled)
-                    RoutineBehaviour.Instance.StopAction(_rechargeAction);
+                    _rechargeAction?.Stop();
             }
         }
 
@@ -261,8 +263,8 @@ namespace Lodis.Gameplay
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_OffensiveBurst_Data"));
             _specialDeck = Instantiate(SpecialDeckRef);
 
-            _normalDeck.InitAbilities(gameObject);
-            _specialDeck.InitAbilities(gameObject);
+            _normalDeck.InitAbilities(Entity);
+            _specialDeck.InitAbilities(Entity);
 
             _discardDeck = Deck.CreateInstance<Deck>();
 
@@ -297,8 +299,8 @@ namespace Lodis.Gameplay
             if (!MatchManagerBehaviour.InfiniteEnergy)
                 Energy = _startEnergy.Value;
 
-            RoutineBehaviour.Instance.StopAction(_burstAction);
-            RoutineBehaviour.Instance.StopAction(_rechargeAction);
+            _burstAction?.Stop();
+            _rechargeAction?.Stop();
             BurstEnergy = MaxBurstEnergy.Value; 
             _canBurst = true;
         }
@@ -796,7 +798,7 @@ namespace Lodis.Gameplay
             if (LoadingShuffle)
                 return;
 
-            RoutineBehaviour.Instance.StopAction(_deckShuffleAction);
+            _deckShuffleAction?.Stop();
             DiscardActiveSlots();
             Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleStart);
 
@@ -813,18 +815,18 @@ namespace Lodis.Gameplay
             OnUpdateHand?.Invoke();
             OnManualShuffle?.Invoke();
 
-            _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => 
+            _deckShuffleAction = FixedPointTimer.StartNewTimedAction(() => 
             {
                 _discardDeck.AddAbilities(_specialDeck);
                 _specialDeck.ClearDeck();
                 ResetSpecialDeck();
                 Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleEnd);
-            }, TimedActionCountType.SCALEDTIME, _manualShuffleStartTime + _manualShuffleActiveTime);
+            }, _manualShuffleStartTime.FixedValue + _manualShuffleActiveTime.FixedValue);
             
-            RoutineBehaviour.Instance.StartNewTimedAction(args => 
+            FixedPointTimer.StartNewTimedAction(() => 
             {
                 _loadingShuffle = false;
-            }, TimedActionCountType.SCALEDTIME, _manualShuffleWaitTime);
+            }, _manualShuffleWaitTime.FixedValue);
 
 
             _movementBehaviour.DisableMovement(condition => !_loadingShuffle, true, true);
@@ -886,13 +888,13 @@ namespace Lodis.Gameplay
         /// Increases the current energy by the damage of the attack received by an ability.
         /// Only works if the collider is owned by the opponent.
         /// </summary>
-        public void IncreaseEnergyFromDamage(params object[] args)
+        public void IncreaseEnergyFromDamage(Collision collision)
         {
-            HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[3];
-            HealthBehaviour health = (HealthBehaviour)args[4];
+            HitColliderBehaviour hitCollider = collision.Entity.GetComponent<HitColliderBehaviour>();
+            HealthBehaviour health = collision.Entity.GetComponent<HealthBehaviour>();
             bool? invincible = health?.IsInvincible == true;
 
-            if (hitCollider.Owner != gameObject || invincible.GetValueOrDefault()) return;
+            if (hitCollider.Entity != Entity || invincible.GetValueOrDefault()) return;
 
             Energy += hitCollider.ColliderInfo.Damage / 50;
 
@@ -905,24 +907,14 @@ namespace Lodis.Gameplay
 
         public void CancelCurrentBurstCharge()
         {
-            RoutineBehaviour.Instance.StopAction(_rechargeAction);
+            _rechargeAction?.Stop();
         }
 
-        private void FixedUpdate()
+        public override void Tick(Fixed32 dt)
         {
-            //Call fixed update for abilities
-            if (_lastAbilityInUse != null)
-            {
-                if (_lastAbilityInUse.InUse)
-                {
-                    _lastAbilityInUse.FixedUpdate();
-                }
-            }
-        }
+            base.Tick(dt);
 
-        private void Update()
-        {
-
+            //Old update
             //Call update for abilities
             if (_lastAbilityInUse != null)
             {
@@ -939,15 +931,15 @@ namespace Lodis.Gameplay
                 burstEnergyRechargeRate /= 100;
             }
 
-            bool timerActive = (_rechargeAction?.GetEnabled()).GetValueOrDefault();
+            bool timerActive = (_rechargeAction?.IsActive).GetValueOrDefault();
 
             if (!timerActive && EnergyChargeEnabled)
-                _rechargeAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => Energy += _energyRechargeValue.Value, TimedActionCountType.SCALEDTIME, _energyRechargeRate.Value);
+                _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, _energyRechargeRate.Value);
 
-            timerActive = (_burstAction?.GetEnabled()).GetValueOrDefault();
+            timerActive = (_burstAction?.IsActive).GetValueOrDefault();
 
             if (!timerActive)
-                _burstAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent => BurstEnergy += _burstEnergyRechargeValue.Value, TimedActionCountType.SCALEDTIME, burstEnergyRechargeRate);
+                _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.Value, burstEnergyRechargeRate);
 
             //Reload the deck if there are no cards in the hands or the deck
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading && NextAbilitySlot == null && !_loadingShuffle)
@@ -956,20 +948,40 @@ namespace Lodis.Gameplay
                 Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleStart);
                 DiscardActiveSlots();
                 _onAutoShuffle?.Invoke();
-                _deckShuffleAction = RoutineBehaviour.Instance.StartNewTimedAction(timedEvent =>
+                _deckShuffleAction = FixedPointTimer.StartNewTimedAction(() =>
                 {
                     ResetSpecialDeck();
                     Sound.SoundManagerBehaviour.Instance.PlaySound(_shuffleEnd);
-                }, TimedActionCountType.SCALEDTIME, _deckReloadTime);
+                }, _deckReloadTime);
             }
 
             if (!CanBurst)
                 CanBurst = BurstEnergy == _maxBurstEnergyRef.Value;
 
-            
+
 
             if (MatchManagerBehaviour.Instance.SuperInUse)
                 CanBurst = false;
+
+            //old fixed update
+            //Call fixed update for abilities
+            if (_lastAbilityInUse != null)
+            {
+                if (_lastAbilityInUse.InUse)
+                {
+                    _lastAbilityInUse.FixedUpdate();
+                }
+            }
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            throw new NotImplementedException();
         }
     }
 }

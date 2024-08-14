@@ -205,12 +205,9 @@ namespace Lodis.Gameplay
             _knockBack.AddOnKnockBackAction(EnableBrace);
             _movement.AddOnMoveBeginAction(StopShield);
 
-            _shieldCollider.AddCollisionEvent(args => 
+            _shieldCollider.AddCollisionEvent(collision => 
             {
-                if (args.Length < 2)
-                    return;
-
-                HitColliderBehaviour other = args[1] as HitColliderBehaviour;
+                HitColliderBehaviour other = collision.Entity.GetComponent<HitColliderBehaviour>();
 
                 if (!other)
                     return;
@@ -221,11 +218,11 @@ namespace Lodis.Gameplay
 
                 //If the player was parrying still, make them invincible briefly
                 if (IsParrying)
-                    ActivateParryInvinciblity(args);
+                    ActivateParryInvinciblity(collision);
             }
             );
 
-            _onPhaseShift += () => _phaseShiftEvent?.Raise(_shieldCollider.Owner);
+            _onPhaseShift += () => _phaseShiftEvent?.Raise(_shieldCollider.Owner.UnityObject);
         }
 
         /// <summary>
@@ -347,7 +344,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void BeginParry()
         {
-            if (!_canParry || BlackBoardBehaviour.Instance.GetPlayerState(_shieldCollider.Owner) != "Idle")
+            if (!_canParry || BlackBoardBehaviour.Instance.GetPlayerState(_shieldCollider.Owner.UnityObject) != "Idle")
                 return;
 
             _isParrying = true;
@@ -479,7 +476,7 @@ namespace Lodis.Gameplay
                 HitColliderBehaviour collider = other.attachedRigidbody?.GetComponent<HitColliderBehaviour>();
 
                 if (!collider) return;
-                if (collider.Owner == gameObject) return;
+                if (collider.Owner.UnityObject == gameObject) return;
 
                 _phaseShiftSuccessEvent?.Raise(gameObject);
                 _currentPhaseShiftRestTime = _successPhaseShiftRestTime;
@@ -501,10 +498,10 @@ namespace Lodis.Gameplay
                 _knockBack.CurrentAirState = AirState.FREEFALL;
         }
 
-        private void OnCollisionEnter(Collision collision)
-        {
-            BreakFall(collision.gameObject);
-        }
+        //private void OnCollisionEnter(Collision collision)
+        //{
+        //    BreakFall(collision.Entity.UnityObject);
+        //}
 
         private void Update()
         {

@@ -22,9 +22,9 @@ namespace Lodis.Gameplay
         private TimedAction _despawnAction;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
         }
 
         protected override void OnStart(params object[] args)
@@ -40,7 +40,7 @@ namespace Lodis.Gameplay
         private void SpawnExplosion()
         {
             HitColliderData data = _explosionColliderData.ScaleStats(_damage);
-            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position + Vector3.up * 0.5f, Vector3.one * 3, data, owner);
+            //HitColliderSpawner.SpawnCollider(Projectile.transform.position + Vector3.up * 0.5f, Vector3.one * 3, data, Owner);
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
         }
@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
             {
                 Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
 
-                FVector2 direction = new FVector2(owner.transform.forward.x, owner.transform.forward.y);
+                FVector2 direction = new FVector2(Owner.transform.forward.x, Owner.transform.forward.y);
                 //Bomb using grid movement to find the panel it should stay on. 
                 //Unlike normal projectiles the bomb needs to stay in place for a short while.
                 GridMovementBehaviour gridMovementBehaviour = Projectile.GetComponent<GridMovementBehaviour>();

@@ -19,16 +19,16 @@ namespace Lodis.Gameplay
         private GameObject _chargeEffectRef;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
 
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SN_Jab_Data"));
             _chargeEffectRef = Resources.Load<GameObject>("Effects/RisingChargeEffect");
             _smokeTrailRef = Resources.Load<GameObject>("Effects/GroundWindTrail");
 
-            owner = newOwner;
+            Owner = newOwner;
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;
@@ -46,7 +46,7 @@ namespace Lodis.Gameplay
                 spawnTransform = OwnerMoveset.LeftMeleeSpawns[1];
 
             GameObject chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, spawnTransform, true);
-            GameObject smokeTrail = ObjectPoolBehaviour.Instance.GetObject(_smokeTrailRef, owner.transform.position - Vector3.up / 2, owner.transform.rotation);
+            GameObject smokeTrail = ObjectPoolBehaviour.Instance.GetObject(_smokeTrailRef, Owner.transform.position - Vector3.up / 2, Owner.transform.rotation);
 
             RoutineBehaviour.Instance.StartNewConditionAction(arguments =>
             {

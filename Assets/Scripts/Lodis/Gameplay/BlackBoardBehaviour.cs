@@ -242,6 +242,16 @@ namespace Lodis.Gameplay
             return 0;
         }
 
+        public int GetIDFromPlayer(EntityData player)
+        {
+            if (Player1 == player.UnityObject)
+                return Player1ID;
+            else if (Player2 == player.UnityObject)
+                return Player2ID;
+
+            return 0;
+        }
+
         /// <summary>
         /// Gets a reference to the player that is aligned with the given side
         /// </summary>
@@ -307,6 +317,20 @@ namespace Lodis.Gameplay
 
             return null;
         }
+
+        /// <summary>
+        /// Gets the opponent of the given player.
+        /// </summary>
+        public GameObject GetOpponentForPlayer(EntityDataBehaviour player)
+        {
+            if (player.gameObject == Player1)
+                return Player2;
+            else if (player.gameObject == Player2)
+                return Player1;
+
+            return null;
+        }
+
 
         /// <summary>
         /// Gets the color of the players alignment

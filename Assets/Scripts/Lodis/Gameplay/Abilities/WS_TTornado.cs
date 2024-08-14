@@ -17,15 +17,15 @@ namespace Lodis.Gameplay
         private Transform _heldItemSpawn;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
         }
 
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
-            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], owner.transform.position, Quaternion.identity);
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], Owner.transform.position, Quaternion.identity);
         }
 
         //Called when ability is used
@@ -33,13 +33,13 @@ namespace Lodis.Gameplay
         {
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
             DisableAccessory();
-            _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
+            _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform, true);
             _orbs.transform.position = new Vector3( _orbs.transform.position.x, abilityData.GetCustomStatValue("OrbHeight"), _orbs.transform.position.z);
 
             HitColliderBehaviour hitColliderBehaviour = _orbs.GetComponent<HitColliderBehaviour>();
 
             hitColliderBehaviour.ColliderInfo = GetColliderData(0);
-            hitColliderBehaviour.Owner = owner;
+            hitColliderBehaviour.Owner = Owner;
 
             OwnerAnimationScript.gameObject.SetActive(false);
         }
@@ -61,7 +61,7 @@ namespace Lodis.Gameplay
             abilityData.GetAdditionalAnimation(0, out clip);
 
             OwnerAnimationScript.PlayAnimation(clip, 1, false, true);
-            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], owner.transform.position + Vector3.up, Quaternion.identity);
+            _effectInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], Owner.transform.position + Vector3.up, Quaternion.identity);
             
         }
 

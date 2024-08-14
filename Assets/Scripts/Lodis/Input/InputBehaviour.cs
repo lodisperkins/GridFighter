@@ -14,11 +14,34 @@ using UnityEditor;
 using Lodis.ScriptableObjects;
 using Lodis.FX;
 using FixedPoints;
+using System;
+using UnityGGPO;
+using Types;
+using System.IO;
 
 namespace Lodis.Input
 {
     public delegate void InputBufferAction(object[] args = null);
 
+    [Flags]
+    public enum InputFlag
+    {
+        NONE = 0,
+        Up = 1 << 0,
+        Down = 1 << 1,
+        Left = 1 << 2,
+        Right = 1 << 3,
+        Weak = 1 << 4,
+        Strong = 1 << 5,
+        Special1 = 1 << 6,
+        Special2 = 1 << 7,
+        Burst = 1 << 8,
+        Shuffle = 1 << 9
+    }
+
+    /// <summary>
+    /// Stores an action that will take place once some condition is met.
+    /// </summary>
     public class BufferedInput
     {
         public BufferedInput(InputBufferAction action, Condition useCondition, float bufferClearTime)
@@ -40,7 +63,7 @@ namespace Lodis.Input
                 _action = null;
                 return true;
             }
-            else if (Time.time - _bufferStartTime >= _bufferClearTime)
+            else if (Utils.TimeGetTime() - _bufferStartTime >= _bufferClearTime)
             {
                 _action = null;
                 return false;
@@ -49,18 +72,28 @@ namespace Lodis.Input
             return false;
         }
 
+        //Serialize functions so that the buffer can be reset during rollback.
+        public void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_bufferStartTime);
+        }
+        public void Deserialize(BinaryReader br)
+        {
+            _bufferStartTime = br.ReadUInt64();
+        }
+
         public bool HasAction()
         {
             return _action != null;
         }
 
         private InputBufferAction _action;
-        private float _bufferClearTime;
-        private float _bufferStartTime;
+        private Fixed32 _bufferClearTime;
+        private Fixed32 _bufferStartTime;
         private Condition _useCondition;
     }
 
-    public class InputBehaviour : MonoBehaviour, IControllable
+    public class InputBehaviour : SimulationBehaviour, IControllable
     {
         private Movement.GridMovementBehaviour _gridMovement;
         private CharacterDefenseBehaviour _defense;
@@ -164,31 +197,116 @@ namespace Lodis.Input
         private void Awake()
         {
             PlayerControls = new PlayerControls();
-            //Initialize action delegates
-            //Movement input
-            if (!_holdToMove)
+            ////Initialize action delegates
+            ////Movement input
+            //if (!_holdToMove)
+            //{
+            //    PlayerControls.Player.MoveUp.started += context => BufferMovement(Vector2.up);
+            //    PlayerControls.Player.MoveDown.started += context => BufferMovement(Vector2.down);
+            //    PlayerControls.Player.MoveLeft.started += context => BufferMovement(Vector2.left);
+            //    PlayerControls.Player.MoveRight.started += context => BufferMovement(Vector2.right);
+            //}
+
+            ////Ability input
+            //PlayerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; };
+            //PlayerControls.Player.Attack.canceled += context => NormalAttackButtonDown = false;
+            //PlayerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
+            //PlayerControls.Player.ChargeAttack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
+            //PlayerControls.Player.ChargeAttack.performed += context => { BufferChargeNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable(); };
+            //PlayerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 });  _special1Down = true; };
+            //PlayerControls.Player.Special1.canceled += context => { _special1Down = false; };
+
+            //PlayerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 });  _special2Down = true; };
+            //PlayerControls.Player.Special2.canceled += context => { _special2Down = false; };
+            //PlayerControls.Player.Burst.started += BufferBurst;
+            //PlayerControls.Player.Shuffle.started += BufferShuffle;
+
+            //PlayerControls.Player.Pause.started += context => { MatchManagerBehaviour.Instance.TogglePauseMenu(); ClearBuffer(); };
+
+            //Instead of listening to input events from unity we will instead listen to custom GGPO input events.
+            GridGame.OnPollInput += GridGame_PollInput;
+            GridGame.OnProcessInput += GridGame_ProcessInput;
+        }
+
+        /// <summary>
+        /// Called every GGPO frame and is used to parse the current inputs. Inputs could be changed during rollback. This function should catch that and update the buffered action.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="inputs"></param>
+        private void GridGame_ProcessInput(int id, long inputs)
+        {
+            if (id != PlayerID)
+                return;
+
+            if ((inputs & (long)InputFlag.Up) != 0)
             {
-                PlayerControls.Player.MoveUp.started += context => BufferMovement(Vector2.up);
-                PlayerControls.Player.MoveDown.started += context => BufferMovement(Vector2.down);
-                PlayerControls.Player.MoveLeft.started += context => BufferMovement(Vector2.left);
-                PlayerControls.Player.MoveRight.started += context => BufferMovement(Vector2.right);
+                _attackDirection = new Vector2(0, 1);
+                // Call the function related to Up input
+                BufferMovement(new Vector2(0, 1));
+            }
+            if ((inputs & (long)InputFlag.Down) != 0)
+            {
+                _attackDirection = new Vector2(0, -1);
+                // Call the function related to Down input
+                BufferMovement(new Vector2(0, -1));
+            }
+            if ((inputs & (long)InputFlag.Left) != 0)
+            {
+                _attackDirection = new Vector2(-1, 0);
+                // Call the function related to Left input
+                BufferMovement(new Vector2(-1, 0));
+            }
+            if ((inputs & (long)InputFlag.Right) != 0)
+            {
+                _attackDirection = new Vector2(1, 0);
+                // Call the function related to Right input
+                BufferMovement(new Vector2(1, 0));
+            }
+            if ((inputs & (long)InputFlag.Weak) != 0)
+            {
+                // Call the function related to Weak attack
+                BufferNormalAbility();
+            }
+            if ((inputs & (long)InputFlag.Strong) != 0)
+            {
+                // Call the function related to Strong attack
+                BufferChargeNormalAbility();
+            }
+            if ((inputs & (long)InputFlag.Special1) != 0)
+            {
+                // Call the function related to Special1
+                BufferSpecialAbility(0);
+            }
+            if ((inputs & (long)InputFlag.Special2) != 0)
+            {
+                // Call the function related to Special2
+                BufferSpecialAbility(1);
+            }
+            if ((inputs & (long)InputFlag.Burst) != 0)
+            {
+                // Call the function related to Burst
+                BufferBurst();
+            }
+            if ((inputs & (long)InputFlag.Shuffle) != 0)
+            {
+                // Call the function related to Shuffle
+                BufferShuffle();
             }
 
-            //Ability input
-            PlayerControls.Player.Attack.started += context => { NormalAttackButtonDown = true; };
-            PlayerControls.Player.Attack.canceled += context => NormalAttackButtonDown = false;
-            PlayerControls.Player.Attack.performed += context => { BufferNormalAbility(context, new object[2]);};
-            PlayerControls.Player.ChargeAttack.started += context => { NormalAttackButtonDown = true; TryChargeAttack(); };
-            PlayerControls.Player.ChargeAttack.performed += context => { BufferChargeNormalAbility(context, new object[2]); _onChargeEnded?.Raise(Character); _chargeAction?.Disable(); };
-            PlayerControls.Player.Special1.started += context => { BufferSpecialAbility(context, new object[2] { 0, 0 });  _special1Down = true; };
-            PlayerControls.Player.Special1.canceled += context => { _special1Down = false; };
+            UpdateBufferedAction();
+        }
 
-            PlayerControls.Player.Special2.started += context => { BufferSpecialAbility(context, new object[2] { 1, 0 });  _special2Down = true; };
-            PlayerControls.Player.Special2.canceled += context => { _special2Down = false; };
-            PlayerControls.Player.Burst.started += BufferBurst;
-            PlayerControls.Player.Shuffle.started += BufferShuffle;
+        /// <summary>
+        /// Sets the current input flags for this player.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private long GridGame_PollInput(int id)
+        {
+            if (id != PlayerID)
+                return 0;
 
-            PlayerControls.Player.Pause.started += context => { MatchManagerBehaviour.Instance.TogglePauseMenu(); ClearBuffer(); };
+            return (long)GetInputFlags();
         }
 
         // Start is called before the first frame update
@@ -254,10 +372,12 @@ namespace Lodis.Input
         /// <param name="args">Any additional arguments to give to the ability. 
         /// Index 0 is always the power scale.
         /// index 1 is always the direction of input.</param>
-        public void BufferNormalAbility(InputAction.CallbackContext context, params object[] args)
+        public void BufferNormalAbility()
         {
             if (_stateMachineBehaviour.StateMachine.CurrentState != "Idle" && _stateMachineBehaviour.StateMachine.CurrentState != "Moving" && _stateMachineBehaviour.StateMachine.CurrentState != "Attacking")
                 return;
+
+            object[] args = new object[2];
 
             AbilityType abilityType;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
@@ -290,10 +410,12 @@ namespace Lodis.Input
         /// <param name="args">Any additional arguments to give to the ability. 
         /// Index 0 is always the power scale.
         /// index 1 is always the direction of input.</param>
-        public void BufferChargeNormalAbility(InputAction.CallbackContext context, params object[] args)
+        public void BufferChargeNormalAbility()
         {
             if (!_canBufferAbility)
                 return;
+
+            object[] args = new object[2];
 
             AbilityType abilityType;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
@@ -315,7 +437,10 @@ namespace Lodis.Input
             float powerScale = _minChargeLimit * 0.1f + 1;
 
             //Find the power scale based on the time the button was held to use a charge ability
-            float timeHeld = Mathf.Clamp((float)context.duration, 0, _maxChargeTime);
+            //Old code for counting charge strength
+            //float timeHeld = Mathf.Clamp((float)context.duration, 0, _maxChargeTime);
+
+            float timeHeld = _minChargeLimit;
             if (timeHeld > _minChargeLimit)
             {
                 powerScale = timeHeld * 0.1f + 1;
@@ -341,7 +466,7 @@ namespace Lodis.Input
             _abilityBuffered = true;
         }
 
-        public void BufferBurst(InputAction.CallbackContext context)
+        public void BufferBurst()
         {
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(action => UseAbility(AbilityType.BURST, null), condition => { _abilityBuffered = false; return true; }, 0.2f);
@@ -353,12 +478,14 @@ namespace Lodis.Input
         /// </summary>
         /// <param name="context">The input callback context</param>
         /// <param name="args">Any additional arguments to give to the ability. 
-        public void BufferSpecialAbility(InputAction.CallbackContext context, params object[] args)
+        public void BufferSpecialAbility(int abilityNum)
         {
+            object[] args = new object[2];
             AbilityType abilityType = AbilityType.SPECIAL;
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 
             //Assign the arguments for the ability
+            args[0] = abilityNum;
             args[1] = _attackDirection;
 
             //Use a normal ability if it was not held long enough
@@ -370,7 +497,7 @@ namespace Lodis.Input
             _abilityBuffered = true;
         }
 
-        private void BufferShuffle(InputAction.CallbackContext context)
+        private void BufferShuffle()
         {
             if (_moveset.LoadingShuffle || _moveset.DeckReloading)
                 return;
@@ -421,7 +548,18 @@ namespace Lodis.Input
             if (_canMove)
                 _storedMoveInput = direction;
 
-            _bufferedAction = new BufferedInput(action => _gridMovement.MoveToPanel((FVector2)_storedMoveInput + _gridMovement.Position),condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, 0.2f);
+            _bufferedAction = new BufferedInput(action => _gridMovement.MoveToPanel((FVector2)_storedMoveInput + _gridMovement.Position), condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, 0.2f);
+        }
+
+        /// <summary>
+        /// Sends the game simulation this players current buffered action so it can handle serializing it.
+        /// </summary>
+        private void UpdateBufferedAction()
+        {
+            if (PlayerID == 0)
+                GridGame.P1BufferedAction = _bufferedAction;
+            else if (PlayerID == 1)
+                GridGame.P2BufferedAction = _bufferedAction;
         }
 
         /// <summary>
@@ -554,7 +692,7 @@ namespace Lodis.Input
         }
 
         // Update is called once per frame
-        void Update()
+        public override void Tick(Fixed32 dt)
         {
             if (!PlayerActionButtonDown && _attackButtonDown)
             {
@@ -624,6 +762,40 @@ namespace Lodis.Input
 
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
+        }
+
+        private InputFlag GetInputFlags()
+        {
+            InputFlag flags = InputFlag.NONE;
+
+            if (_playerControls.Player.MoveUp.ReadValue<float>() > 0)
+                flags |= InputFlag.Up;
+            if (_playerControls.Player.MoveDown.ReadValue<float>() > 0)
+                flags |= InputFlag.Down;
+            if (_playerControls.Player.MoveLeft.ReadValue<float>() > 0)
+                flags |= InputFlag.Left;
+            if (_playerControls.Player.MoveRight.ReadValue<float>() > 0)
+                flags |= InputFlag.Right;
+            if (_playerControls.Player.Attack.ReadValue<float>() > 0)
+                flags |= InputFlag.Weak;
+            if (_playerControls.Player.Special1.ReadValue<float>() > 0)
+                flags |= InputFlag.Special1;
+            if (_playerControls.Player.Special2.ReadValue<float>() > 0)
+                flags |= InputFlag.Special2;
+            if (_playerControls.Player.Burst.ReadValue<float>() > 0)
+                flags |= InputFlag.Burst;
+            if (_playerControls.Player.Shuffle.ReadValue<float>() > 0)
+                flags |= InputFlag.Shuffle;
+
+            return flags;
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
         }
     }
 }

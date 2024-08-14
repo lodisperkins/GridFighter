@@ -22,9 +22,9 @@ namespace Lodis.Gameplay
         private TimedAction _despawnAction;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
             _blackHoleRef = Resources.Load<GameObject>("Projectiles/Prototype2/BlackHole");
         }
 
@@ -43,14 +43,14 @@ namespace Lodis.Gameplay
             HitColliderData launchColliderData = GetColliderData(3);
             launchColliderData.TimeActive = _despawnTime;
 
-            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position + Vector3.up * 0.5f, Vector3.one * 3, launchColliderData, owner);
+            //HitColliderSpawner.SpawnCollider(Projectile.transform.position + Vector3.up * 0.5f,3, 3, launchColliderData, Owner.Data);
 
             HitColliderBehaviour[] hitColliders = _blackHoleInstance.GetComponentsInChildren<HitColliderBehaviour>();
 
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 hitColliders[i].ColliderInfo = GetColliderData(i);
-                hitColliders[i].Owner = owner;
+                hitColliders[i].Owner = Owner.Data;
 
                 hitColliders[i].gameObject.SetActive(true);
 
@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
             //Spawn black hole.
             Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
 
-            FVector2 direction = new FVector2(owner.transform.forward.x, owner.transform.forward.y);
+            FVector2 direction = new FVector2(Owner.transform.forward.x, Owner.transform.forward.y);
 
             //Unlike normal projectiles the black hole needs to stay in place for a short while. So grid movement is used instead of projectile physics.
             GridMovementBehaviour gridMovementBehaviour = Projectile.GetComponent<GridMovementBehaviour>();

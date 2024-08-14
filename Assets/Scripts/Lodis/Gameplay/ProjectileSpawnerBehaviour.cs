@@ -1,15 +1,21 @@
-﻿using Lodis.Movement;
+﻿using FixedPoints;
+using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Lodis.Gameplay
 {
-    public class ProjectileSpawnerBehaviour : MonoBehaviour
+    public class ProjectileSpawnerBehaviour : SimulationBehaviour
     {
         public GameObject Projectile = null;
-        public GameObject Owner = null;
+        public EntityData Owner = null;
+
+        public override void Deserialize(BinaryReader br)
+        {
+        }
 
         /// <summary>
         /// Fires a projectile
@@ -64,7 +70,7 @@ namespace Lodis.Gameplay
         /// <param name="hitColliderInfo">The hit collider info to attach to the projectile</param>
         /// <returns></returns>
         /// <param name="useGravity"></param>
-        public GameObject FireProjectile(Vector3 force, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
+        public GameObject FireProjectile(FVector3 force, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
         {
             if (!Projectile)
                 return null;
@@ -130,9 +136,14 @@ namespace Lodis.Gameplay
 
             physics.UseGravity = useGravity;
 
-            physics.ApplyImpulseForce(transform.forward * forceScale);
+            physics.ApplyImpulseForce(Owner.Transform.Forward * forceScale);
 
             return temp;
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

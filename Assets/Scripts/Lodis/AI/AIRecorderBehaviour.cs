@@ -115,33 +115,33 @@ namespace Lodis.AI
             CurrentTime = 0;
         }
 
-        private Vector3 GetAverageVelocity()
+        private FVector3 GetAverageVelocity()
         {
-            Vector3 averageVelocity = Vector3.zero;
+            FVector3 averageVelocity = FVector3.Zero;
 
             _attacksInRange = BlackBoardBehaviour.Instance.GetActiveColliders(_opponentMove.Alignment);
 
             if (_attacksInRange == null || _attacksInRange.Count == 0)
-                return Vector3.zero;
+                return FVector3.Zero;
 
             for (int i = 0; i < _attacksInRange.Count; i++)
-                if (_attacksInRange[i].RB)
-                    averageVelocity += _attacksInRange[i].RB.velocity;
+                if (_attacksInRange[i].GridPhysics)
+                    averageVelocity += _attacksInRange[i].GridPhysics.Velocity;
 
             return averageVelocity;
         }
 
-        private Vector3 GetAveragePosition()
+        private FVector3 GetAveragePosition()
         {
-            Vector3 averagePosition = Vector3.zero;
+            FVector3 averagePosition = FVector3.Zero;
 
             _attacksInRange = BlackBoardBehaviour.Instance.GetActiveColliders(_opponentMove.Alignment);
 
             if (_attacksInRange == null || _attacksInRange.Count == 0)
-                return Vector3.zero;
+                return FVector3.Zero;
 
             for (int i = 0; i < _attacksInRange.Count; i++)
-                averagePosition += _attacksInRange[i].gameObject.transform.position - transform.position;
+                averagePosition += _attacksInRange[i].EntityTransform.Position - (FVector3)transform.position;
 
             return averagePosition;
         }
@@ -275,7 +275,7 @@ namespace Lodis.AI
             _currentSituation.PanelPosition = OwnerMovement.Position;
             _currentSituation.OwnerToTarget = _opponent.transform.position - transform.position;
 
-            _currentSituation.OpponentVelocity = _opponentGridPhysics.LastVelocity;
+            _currentSituation.OpponentVelocity = _opponentGridPhysics.Velocity;
             _currentSituation.OpponentEnergy = _opponentMoveset.Energy;
             _currentSituation.OpponentMoveDirection = _opponentMove.MoveDirection;
             _currentSituation.OpponentHealth = _opponentKnocback.Health;

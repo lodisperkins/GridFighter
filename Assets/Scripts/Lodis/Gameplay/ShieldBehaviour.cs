@@ -1,6 +1,7 @@
 ﻿using Lodis.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -31,11 +32,11 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle"></param>
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
-        public override float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        public override float TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
             if (!Owner) return 0;
 
-            if (IsInvincible || (attacker == Owner))
+            if (IsInvincible || (attacker.UnityObject == Owner))
                 return 0;
 
             Health -= damage;
@@ -47,34 +48,14 @@ namespace Lodis.Gameplay
         /// Takes damage based on the damage type.
         /// </summary>
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        public override float TakeDamage(HitColliderData info, GameObject attacker)
+        public override float TakeDamage(HitColliderData info, EntityData attacker)
         {
-            if (!IsAlive || IsInvincible  || (attacker == Owner))
+            if (!IsAlive || IsInvincible  || (attacker.UnityObject == Owner))
                 return 0;
 
             Health -= info.Damage;
 
             return info.Damage;
-        }
-
-        /// <summary>
-        /// Takes damage based on the damage type.
-        /// </summary>
-        /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        /// <param name="abilityData">The data scriptable object associated with the ability</param>
-        /// <param name="damageType">The type of damage this object will take</param>
-        public override float TakeDamage(string attacker, AbilityData abilityData, DamageType damageType = DamageType.DEFAULT)
-        {
-            if (!Owner) return 0;
-
-            if (!IsAlive || IsInvincible || (attacker == Owner.name))
-                return 0;
-
-            float damage = abilityData.GetCustomStatValue("Damage");
-            
-            Health -= damage;
-
-            return damage;
         }
     }
 }

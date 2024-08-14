@@ -24,11 +24,11 @@ namespace Lodis.Gameplay
         private Quaternion _rotation;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             //Get owner input
-            _ownerInput = owner.GetComponentInParent<Input.InputBehaviour>();
+            _ownerInput = Owner.GetComponentInParent<Input.InputBehaviour>();
         }
 
         protected override void OnStart(params object[] args)
@@ -40,11 +40,11 @@ namespace Lodis.Gameplay
                 _attackDirection = (FVector2)_ownerInput.AttackDirection;
             }
             else
-                _attackDirection = new FVector2(owner.transform.forward.x, owner.transform.forward.y);
+                _attackDirection = new FVector2(Owner.transform.forward.x, Owner.transform.forward.y);
 
             //Play animation
             ChangeMoveAttributes();
-            _rotation = owner.transform.rotation;
+            _rotation = Owner.transform.rotation;
         }
 
         //Called when ability is used
@@ -55,18 +55,18 @@ namespace Lodis.Gameplay
             _fistCollider = GetColliderData(0);
 
             //Spawn particles
-           _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
-            _visualPrefabInstance.transform.forward = owner.transform.forward;
+           _visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform, true);
+            _visualPrefabInstance.transform.forward = Owner.transform.forward;
             //Spawn a game object with the collider attached
             _hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             _hitScript.ColliderInfo = _fistCollider;
-            _hitScript.Owner = owner;
+            _hitScript.Owner = Owner;
             _hitScript.DebuggingEnabled = true;
 
             //Set the direction of the attack
             FVector2 attackPosition;
             if (_attackDirection == FVector2.Zero)
-                _attackDirection = new FVector2(owner.transform.forward.x, owner.transform.forward.y);
+                _attackDirection = new FVector2(Owner.transform.forward.x, Owner.transform.forward.y);
 
             //Get the panel position based on the direction of attack and distance given
             attackPosition = OwnerMoveScript.Position + (_attackDirection * abilityData.GetCustomStatValue("TravelDistance"));
@@ -83,7 +83,7 @@ namespace Lodis.Gameplay
             OwnerMoveScript.CanCancelMovement = true;
 
             //Change rotation to the direction of movement
-            owner.transform.forward = new Vector3(_attackDirection.X, 0, _attackDirection.Y);
+            Owner.transform.forward = new Vector3(_attackDirection.X, 0, _attackDirection.Y);
 
             //Move towards panel
             OwnerMoveScript.MoveToPanel(attackPosition, false, GridScripts.GridAlignment.ANY, true, false);
@@ -95,7 +95,7 @@ namespace Lodis.Gameplay
             base.OnRecover(args);
             //Despawn particles and hit box
             ResetMoveAttributes();
-            owner.transform.rotation = _rotation;
+            Owner.transform.rotation = _rotation;
 
 
             if (!_secondStrikeActivated)

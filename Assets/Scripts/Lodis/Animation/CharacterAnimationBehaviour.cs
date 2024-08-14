@@ -5,6 +5,8 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Types;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Events;
@@ -32,7 +34,7 @@ namespace Lodis.Gameplay
     }
 
     [RequireComponent(typeof(Animator))]
-    public class CharacterAnimationBehaviour : MonoBehaviour
+    public class CharacterAnimationBehaviour : SimulationBehaviour
     {
         [Tooltip("The move behaviour attached to the owner. Used to update movement animations")]
         [SerializeField]
@@ -107,6 +109,7 @@ namespace Lodis.Gameplay
             _animator.runtimeAnimatorController = _overrideController;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
+            _animator.enabled = false;
 
             _characterStateManager.AddOnStateChangedAction(() =>
             {
@@ -558,8 +561,8 @@ namespace Lodis.Gameplay
 
         public void UpdateInAirMoveDirection()
         {
-            _animator.SetFloat("VelocityInAirY", _knockbackBehaviour.Physics.LastVelocity.Y);
-            _animator.SetFloat("VelocityInAirX", _knockbackBehaviour.Physics.LastVelocity.X * _moveBehaviour.GetAlignmentX());
+            _animator.SetFloat("VelocityInAirY", _knockbackBehaviour.Physics.Velocity.Y);
+            _animator.SetFloat("VelocityInAirX", _knockbackBehaviour.Physics.Velocity.X * _moveBehaviour.GetAlignmentX());
         }
 
         public bool CompareStateName(string name)
@@ -630,6 +633,12 @@ namespace Lodis.Gameplay
                 targetEvent.Action.Invoke();
         }
 
+        public override void Tick(Fixed32 dt)
+        {
+            base.Tick(dt);
+            _animator.Update(dt);
+        }
+
         private void Update()
         {
             if (_characterStateManager.StateMachine.CurrentState != "Attacking" && AbilityAnimationRoutine != null)
@@ -654,6 +663,16 @@ namespace Lodis.Gameplay
                 _animator.SetBool("OnRightSide", true);
 
             _animatingAbility = _animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

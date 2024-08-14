@@ -32,15 +32,15 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _opponentMoveset;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             _distance = abilityData.GetCustomStatValue("Distance");
             abilityData.GetAdditionalAnimation(0, out _comboClip);
 
 
             _chargeEffectRef = abilityData.Effects[0];
-            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<MovesetBehaviour>();
+            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<MovesetBehaviour>();
             OwnerAnimationScript.AddEventListener("Punch1", () => 
             {
                 SpawnCollider(0);
@@ -105,11 +105,11 @@ namespace Lodis.Gameplay
             _comboStarted = false;
             _landedFirstHit = false;
 
-            _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<Movement.GridMovementBehaviour>();
+            _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<Movement.GridMovementBehaviour>();
             _opponentKnockback = _opponentMovement.GetComponent<KnockbackBehaviour>();
             TimeCountType = TimedActionCountType.UNSCALEDTIME;
 
-            FXManagerBehaviour.Instance.StartSuperMoveVisual(BlackBoardBehaviour.Instance.GetIDFromPlayer(owner), abilityData.startUpTime);
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner), abilityData.startUpTime);
             //Spawn the the holding effect.
 
             Transform effectSpawn = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
@@ -151,12 +151,12 @@ namespace Lodis.Gameplay
 
         public void SpawnCollider(int colliderIndex)
         {
-            Vector3 spawnPosition = owner.transform.position + (Vector3.right * OwnerMoveScript.GetAlignmentX()) + Vector3.up;
-            HitColliderBehaviour hitColliderBehaviour = HitColliderSpawner.SpawnBoxCollider(spawnPosition, Vector3.one, GetColliderData(colliderIndex), owner);
+            FVector3 spawnPosition = Owner.FixedTransform.Position + (FVector3.Right * OwnerMoveScript.GetAlignmentX()) + FVector3.Up;
+            HitColliderBehaviour hitColliderBehaviour = HitColliderSpawner.SpawnCollider(spawnPosition, 1, 1, GetColliderData(colliderIndex), Owner);
 
-            hitColliderBehaviour.ColliderInfo.OnHit += args =>
+            hitColliderBehaviour.ColliderInfo.OnHit += collision =>
             {
-                HealthBehaviour health = args[4] as HealthBehaviour;
+                HealthBehaviour health = collision.Entity.GetComponent<HealthBehaviour>();
 
                 if (!health.IsInvincible && !health.IsIntangible)
                     _landedFirstHit = true;
@@ -195,7 +195,7 @@ namespace Lodis.Gameplay
             if (CurrentAbilityPhase != AbilityPhase.ACTIVE)
                 return;
 
-            float distance = Vector3.Distance(owner.transform.position, _opponentMovement.transform.position);
+            float distance = Vector3.Distance(Owner.transform.position, _opponentMovement.transform.position);
 
             if (distance <= 1f && !_comboStarted && !_opponentKnockback.IsInvincible && !_opponentKnockback.IsIntangible)
             {
@@ -216,7 +216,7 @@ namespace Lodis.Gameplay
 
             _comboStarted = false;
             PanelBehaviour panel;
-            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(owner.transform.position, out panel);
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(Owner.transform.position, out panel);
 
             OwnerMoveScript.Position = panel.Position;
             OwnerMoveScript.EnableMovement();

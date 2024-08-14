@@ -1,4 +1,5 @@
-﻿using Lodis.Movement;
+﻿using FixedPoints;
+using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -29,13 +30,13 @@ namespace Lodis.Gameplay
         private float _strongShotGravity;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
 
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SB_LobShot_Data"));
-            owner = newOwner;
+            Owner = newOwner;
 
             //Load the projectile prefab
             _strongProjectileRef = abilityData.visualPrefab;
@@ -54,9 +55,9 @@ namespace Lodis.Gameplay
         {
             OwnerMoveset.ProjectileSpawner.Projectile = projectile;
 
-            Vector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(distance, angle);
-            launchForce.z += axis.z * launchForce.magnitude;
-            launchForce.x *= axis.x;
+            FVector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(distance, angle);
+            launchForce.Z += axis.z * launchForce.Magnitude;
+            launchForce.X *= axis.x;
 
             GameObject activeProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(launchForce, hitColliderData, true, false);
             activeProjectile.transform.position = position;
@@ -70,9 +71,9 @@ namespace Lodis.Gameplay
         /// Spawns the four weak shots
         /// </summary>
         /// <param name="args"></param>
-        private void SpawnWeakShots(params object[] args)
+        private void SpawnWeakShots(Collision collision)
         {
-            HitColliderBehaviour hitCollider = (HitColliderBehaviour)args[3];
+            HitColliderBehaviour hitCollider = collision.Entity.GetComponent<HitColliderBehaviour>();
             Vector3 position = hitCollider.transform.position + Vector3.up * abilityData.GetCustomStatValue("WeakShotSpawnHeight");
             SpawnStrongShot(new Vector3(1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
             SpawnStrongShot(new Vector3(-1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
@@ -118,7 +119,7 @@ namespace Lodis.Gameplay
 
         private void SpawnProjectiles()
         {
-            GameObject activeStrongShot = SpawnStrongShot(owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileData, OwnerMoveset.ProjectileSpawner.transform.position, _strongShotGravity);
+            GameObject activeStrongShot = SpawnStrongShot(Owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileData, OwnerMoveset.ProjectileSpawner.transform.position, _strongShotGravity);
             _weakSpawn = activeStrongShot.transform;
             ActiveProjectiles.Add(activeStrongShot);
         }

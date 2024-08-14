@@ -20,13 +20,13 @@ namespace Lodis.Gameplay
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
 
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
 
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WN_Jab_Data"));
-            owner = newOwner;
+            Owner = newOwner;
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;

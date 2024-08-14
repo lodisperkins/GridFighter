@@ -24,9 +24,9 @@ namespace Lodis.Gameplay
         private HitColliderData _stunCollider;
 
 	    //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
             _attackLinkVisual = (GameObject)Resources.Load("Structures/ElectricTraps/AttackLink");
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
         }
@@ -87,7 +87,7 @@ namespace Lodis.Gameplay
                 }
 
                 collider.GetComponent<Collider>().enabled = true;
-                collider.Owner = owner;
+                collider.Owner = Owner;
                 OnHitTemp += args => collider.GetComponent<Collider>().enabled = false;
                 collider.ColliderInfo = _stunCollider;
             }
@@ -99,10 +99,10 @@ namespace Lodis.Gameplay
         /// Stuns the object that came in contact with a link
         /// </summary>
         /// <param name="args"></param>
-        private void StunEntity(params object[] args)
+        private void StunEntity(Collision collision)
         {
             //Get health beahviour
-            GameObject entity = (GameObject)args[0];
+            GameObject entity = collision.Entity.UnityObject;
             HealthBehaviour entityHealth = entity.GetComponent<HealthBehaviour>();
 
             //If there  is a health behaviour...
@@ -149,12 +149,12 @@ namespace Lodis.Gameplay
             int closestPanelX = gridTempMaxColumns;
             //Temp max columns returns column count relative to player 1. 
             //Decrements the x value to get the column count for player 2.
-            if (owner.transform.forward.x < 0)
+            if (Owner.transform.forward.x < 0)
                 closestPanelX--;
                     
             //Finds the farthest possible panel to know how far to throw traps
             Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
-            int ownerFacing = (int)owner.transform.forward.x;
+            int ownerFacing = (int)Owner.transform.forward.x;
             int farthestPanelX = (int)Mathf.Clamp(closestPanelX + (abilityData.GetCustomStatValue("DistanceBetweenStructures") * ownerFacing), 0, dimensions.x - 1);
             
             //Switch to know where to place the ability on the stage based on the direction given

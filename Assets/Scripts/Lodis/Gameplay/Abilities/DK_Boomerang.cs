@@ -20,9 +20,9 @@ namespace Lodis.Gameplay
         private bool _reboundColliderAdded;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
             //Load projectile asset
             ProjectileRef = (GameObject)Resources.Load("Projectiles/Prototype/CrossProjectile");
         }
@@ -58,20 +58,20 @@ namespace Lodis.Gameplay
             {
                 //...update the rebound colliders event
                 _reboundCollider = colliderBehaviours[1];
-                _reboundCollider.ClearCollisionEvent();
+                _reboundCollider.ClearAllCollisionEvents();
                 _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
             }
 
-            _reboundCollider.Owner = owner;
+            _reboundCollider.Owner = Owner.Data;
         }
 
         /// <summary>
         /// Checks if the projectile hit a valid object. If so, changes velocity
         /// </summary>
         /// <param name="args"></param>
-        public void TryRedirectProjectile(params object[] args)
+        public void TryRedirectProjectile(Collision collision)
         {
-            GameObject other = (GameObject)args[0];
+            GameObject other = collision.Entity.UnityObject;
 
             //If the projectile rebounded too many times...
             if (_reboundCount >= abilityData.GetCustomStatValue("MaxRebounds"))
@@ -83,7 +83,7 @@ namespace Lodis.Gameplay
             }
 
             //Don't redirect the projectile if the player isn't standing still or just moving
-            if (other == owner)
+            if (other == Owner)
             {
                 CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
 
@@ -101,7 +101,7 @@ namespace Lodis.Gameplay
                 //...reverse velocity
                 projectile.AddForce(-projectile.velocity * _speedMultiplier * 2, ForceMode.VelocityChange);
                 _reboundCount++;
-                _reboundCollider.Owner = other;
+                _reboundCollider.Owner = collision.Entity;
             }
             //Otherwise if it hit a structure like a wall...
             else if(other.CompareTag("Structure"))

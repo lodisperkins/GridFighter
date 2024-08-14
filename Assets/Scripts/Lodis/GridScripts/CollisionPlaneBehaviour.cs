@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using FixedPoints;
 using Lodis.Gameplay;
 using Lodis.Movement;
@@ -9,7 +10,7 @@ using UnityEngine;
 
 namespace Lodis.GridScripts
 {
-    public class CollisionPlaneBehaviour : MonoBehaviour
+    public class CollisionPlaneBehaviour : SimulationBehaviour
     {
         [Tooltip("How quick objects bouncing on the plane stop bouncing")]
         [SerializeField]
@@ -39,47 +40,56 @@ namespace Lodis.GridScripts
 
         public float BounceDampening { get => _bounceDampening; set => _bounceDampening = value; }
 
+        public override void Deserialize(BinaryReader br)
+        {
+            throw new System.NotImplementedException();
+        }
 
-        private void OnCollisionEnter(Collision other)
+        public override void Serialize(BinaryWriter bw)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void OnHitEnter(Collision other)
         {
             //Get knock back script to apply force
-            Movement.GridPhysicsBehaviour physics = other.transform.GetComponent<Movement.GridPhysicsBehaviour>();
-            KnockbackBehaviour knockback = other.transform.GetComponent<KnockbackBehaviour>();
+            Movement.GridPhysicsBehaviour physics = other.Collider.OwnerPhysicsComponent;
+            KnockbackBehaviour knockback = other.Entity.GetComponent<KnockbackBehaviour>();
 
             //Return if the object doesn't have one or is invincible
             if (!physics || !knockback)
                 return;
 
             //Don't add a force if the object is traveling at a low speed
-            float dotProduct = FVector3.Dot(physics.LastVelocity, FVector3.Up);
-            if (physics.LastVelocity.Y >= 0)
+            float dotProduct = FVector3.Dot(physics.Velocity, FVector3.Up);
+            if (physics.Velocity.Y >= 0)
                 return;
 
-            Vector3 particleSpawnPosition = new Vector3(other.transform.position.x, 0, other.transform.position.z);
+            FVector3 particleSpawnPosition = new FVector3(other.Entity.Transform.Position.X, 0, other.Entity.Transform.Position.Z);
             if (knockback.CurrentAirState != AirState.TUMBLING)
                 SoundManagerBehaviour.Instance.PlaySound(_softLandingClip, 0.8f);
             else
             {
-                physics.RB.isKinematic = false;
+                //physics.RB.isKinematic = false;
 
                 SoundManagerBehaviour.Instance.PlaySound(_hardLandingClip, 0.8f);
-                if (physics.LastVelocity.Magnitude >= _shakeSpeed)
+                if (physics.Velocity.Magnitude >= _shakeSpeed)
                 {
                     CameraBehaviour.ShakeBehaviour.ShakeRotation(_fallScreenShakeDuration, _fallScreenShakeStrength, _fallScreenShakeFrequency);
-                    ObjectPoolBehaviour.Instance.GetObject(_debris.gameObject, particleSpawnPosition, Camera.main.transform.rotation);
+                    ObjectPoolBehaviour.Instance.GetObject(_debris.gameObject, (Vector3)particleSpawnPosition, Camera.main.transform.rotation);
                 }
             }
 
 
-            _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, particleSpawnPosition, Camera.main.transform.rotation);
+            _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, (Vector3)particleSpawnPosition, Camera.main.transform.rotation);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_groundDustParticles, _groundDustParticlesRef.main.duration);
 
         }
 
-        private void OnCollisionStay(Collision other)
+        public override void OnHitStay(Collision other)
         {
             //Get knock back script to apply force
-            Movement.GridPhysicsBehaviour physics = other.transform.root.GetComponent<Movement.GridPhysicsBehaviour>();
+            Movement.GridPhysicsBehaviour physics = other.Collider.OwnerPhysicsComponent;
 
             //Return if the object doesn't have one or is invincible
             if (!physics)
@@ -87,15 +97,15 @@ namespace Lodis.GridScripts
 
 
             //Don't add a force if the object is traveling at a low speed
-            float dotProduct = FVector3.Dot(physics.LastVelocity, FVector3.Up);
+            float dotProduct = FVector3.Dot(physics.Velocity, FVector3.Up);
             if (dotProduct >= 0 || dotProduct == -1)
                 return;
 
-            if (physics.LastVelocity.X == 0)
+            if (physics.Velocity.X == 0)
                 return;
 
             //Calculate and apply friction force
-            physics.ApplyForce(_friction * (physics.LastVelocity.X / Mathf.Abs(physics.LastVelocity.X) * Vector3.right));
+            physics.ApplyForce(_friction * (physics.Velocity.X / Mathf.Abs(physics.Velocity.X) * FVector3.Right));
         }
     }
 }

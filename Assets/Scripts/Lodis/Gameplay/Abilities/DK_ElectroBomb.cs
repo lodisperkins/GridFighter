@@ -41,18 +41,18 @@ namespace Lodis.Gameplay
         private Vector3 _defaultCameraMoveSpeed;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             _chargeEffectRef = abilityData.Effects[0];
 
             _slowMotionTimeScale = abilityData.GetCustomStatValue("SlowMotionTimeScale");
             _slowMotionTime = abilityData.GetCustomStatValue("SlowMotionTime");
-            _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<GridMovementBehaviour>();
-            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<MovesetBehaviour>();
-            _opponentKnockback = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<KnockbackBehaviour>();
+            _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<GridMovementBehaviour>();
+            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<MovesetBehaviour>();
+            _opponentKnockback = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<KnockbackBehaviour>();
 
-            _characterFeedback = owner.GetComponentInChildren<CharacterFeedbackBehaviour>();
+            _characterFeedback = Owner.GetComponentInChildren<CharacterFeedbackBehaviour>();
             _opponentFeedback = _opponentMovement.gameObject.GetComponentInChildren<CharacterFeedbackBehaviour>();
 
             _defaultCameraMoveSpeed = CameraBehaviour.Instance.CameraMoveSpeed;
@@ -65,12 +65,12 @@ namespace Lodis.Gameplay
 
                 OwnerVoiceScript.PlayLightAttackSound();
 
-                _axeKick = ObjectPoolBehaviour.Instance.GetObject(effect, owner.transform.position, Quaternion.Euler(owner.transform.rotation.x, -owner.transform.rotation.y, owner.transform.rotation.z));
+                _axeKick = ObjectPoolBehaviour.Instance.GetObject(effect, Owner.transform.position, Quaternion.Euler(Owner.transform.rotation.x, -Owner.transform.rotation.y, Owner.transform.rotation.z));
             });
 
             OwnerAnimationScript.AddEventListener("ElectroKick", () =>
             {
-                HitColliderBehaviour kickCollider = HitColliderSpawner.SpawnBoxCollider(_opponentMovement.transform.position, Vector3.one, GetColliderData(3), owner);
+                HitColliderBehaviour kickCollider = HitColliderSpawner.SpawnCollider(_opponentMovement.EntityTransform.Position, 1, 1, GetColliderData(3), Owner);
             });
 
             OwnerAnimationScript.AddEventListener("ChargeElectroBomb", PrepareBlast);
@@ -97,7 +97,7 @@ namespace Lodis.Gameplay
                 ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
                 projectileSpawner.Projectile = abilityData.Effects[2];
                 SpawnTransform = _heldItemSpawn;
-                ShotDirection = projectileSpawner.transform.forward;
+                ShotDirection = projectileSpawner.EntityTransform.Forward;
 
                 HitColliderData data = ProjectileColliderData;
 
@@ -106,7 +106,7 @@ namespace Lodis.Gameplay
                 //Fire projectile
                 Projectile.name += "(" + abilityData.name + ")";
 
-                Projectile.transform.position += owner.transform.forward;
+                Projectile.transform.position += Owner.transform.forward;
 
                 ActiveProjectiles.Add(Projectile);
 
@@ -170,13 +170,13 @@ namespace Lodis.Gameplay
             float explosionColliderWidth = abilityData.GetCustomStatValue("ExplosionColliderWidth");
 
             BlackBoardBehaviour.Instance.Player2.GetComponent<GridPhysicsBehaviour>().StopVelocity();
-            HitColliderSpawner.SpawnBoxCollider(Projectile.transform.position + Vector3.up, new Vector3(explosionColliderWidth, explosionColliderHeight, 1), GetColliderData(1), owner);
+            HitColliderSpawner.SpawnCollider((FVector3)(Projectile.transform.position + Vector3.up), explosionColliderWidth, explosionColliderHeight, GetColliderData(1), Owner);
         }
 
         private void StartSuperEffect(params object[] args)
         {
 
-            IControllable controller = owner.GetComponentInParent<IControllable>();
+            IControllable controller = Owner.GetComponentInParent<IControllable>();
 
             FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, abilityData.startUpTime);
         }
@@ -212,14 +212,14 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StartNewTimedAction(args => OwnerAnimationScript.PlayAnimation(throwClip, 1, true), TimedActionCountType.FRAME, 1);
         }
 
-        private void StartCombo(params object[] args)
+        private void StartCombo(Collision collision)
         {
-            GameObject target = (GameObject)args[0];
+            GameObject target = collision.Entity.UnityObject;
             if (!target.CompareTag("Player"))
                 return;
 
             
-            HealthBehaviour opponentHealthBehaviour = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).GetComponent<HealthBehaviour>();
+            HealthBehaviour opponentHealthBehaviour = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<HealthBehaviour>();
 
             if (opponentHealthBehaviour.IsInvincible)
                 return;

@@ -9,6 +9,8 @@ using Lodis.GridScripts;
 using System;
 using Lodis.Utility;
 using FixedPoints;
+using System.IO;
+using Types;
 
 namespace Lodis.Movement
 {
@@ -22,56 +24,126 @@ namespace Lodis.Movement
         MAXIMUM
     }
 
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(ConstantForce))]
-    public class GridPhysicsBehaviour : MonoBehaviour
+    /// <summary>
+    /// The component that handles all physics calucations for an entity.
+    /// </summary>
+    public class GridPhysicsBehaviour : SimulationBehaviour
     {
-        private Rigidbody _rigidbody;
+        [Header("Parameters")]
         [Tooltip("How much mass the game object has. The higher the number, the less panels it travels when knocked back.")]
-        [SerializeField]
-        private float _mass = 1;
-        private bool _objectAtRest;
-        private FVector3 _acceleration;
-        private FVector3 _lastVelocity;
-        [Tooltip("The strength of the force pushing downwards on this object once in air")]
-        [SerializeField]
-        private float _gravity = 9.81f;
+        [SerializeField] private float _mass = 1;
+        [Tooltip("The strength of the force pushing downwards on this object once in air.")]
+        [SerializeField] private float _gravity = 9.81f;
         [Tooltip("How much this object will reduce the velocity of objects that bounce off of it.")]
-        [SerializeField]
-        private float _bounceDampen = 2;
-        private ConstantForce _constantForceBehaviour;
-        [Tooltip("The collider attached this object that will be used for registering collision against objects while air")]
-        [SerializeField]
-        private Collider _bounceCollider;
-        [SerializeField]
-        private bool _isGrounded;
-        private Vector3 _groundedBoxPosition;
-        private Vector3 _groundedBoxExtents;
-        [SerializeField]
-        private float _bounciness = 0.8f;
-        [SerializeField]
-        private bool _panelBounceEnabled;
-        private Vector3 _normalForce;
-        [SerializeField]
-        private bool _useGravity = true;
-        [Tooltip("If true, this object will ignore all forces acting on it including gravity")]
-        [SerializeField]
-        private bool _ignoreForces;
-        [Tooltip("Any angles for knock back force recieved in this range will send the object directly upwards")]
-        [SerializeField]
-        private float _rangeToIgnoreUpAngle = 0.2f;
-        [Tooltip("How fast will objects be allowed to travel in knockback")]
-        [SerializeField]
-        private ScriptableObjects.FloatVariable _maxMagnitude;
-        [SerializeField]
-        private bool _faceHeading;
-        private Vector3 _lastForceAdded;
-        private Vector3 _forceToApply;
-        private CustomYieldInstruction _wait;
-        private GridMovementBehaviour _movementBehaviour;
-        [SerializeField]
-        private BounceCombination _bounceCombination;
+        [SerializeField] private float _bounceDampen = 2;
+        [SerializeField] private float _bounciness = 0.8f;
+        [Tooltip("Any angles for knock back force recieved in this range will send the object directly upwards.")]
+        [SerializeField] private float _rangeToIgnoreUpAngle = 0.2f;
+        [Tooltip("How fast will objects be allowed to travel in knockback.")]
+        [SerializeField] private ScriptableObjects.FloatVariable _maxMagnitude;
+        [Tooltip("How this entity will react to other physics objects when bouncig off of them.")]
+        [SerializeField] private BounceCombination _bounceCombination;
+        [Tooltip("The curve entities will use when jumping by default.")]
+        [SerializeField] private AnimationCurve _defaultJumpCurve;
 
+        [Header("Toggles")]
+        [Tooltip("Whether or not the force of gravity will be applied every frame.")]
+        [SerializeField] private bool _useGravity = true;
+        [Tooltip("If true, this object will ignore all forces acting on it including gravity.")]
+        [SerializeField] private bool _ignoreForces;
+        [Tooltip("Whether or not this object is currently touching an entity labeled as grounded.")]
+        [SerializeField] private bool _isGrounded;
+        [Tooltip("Whether or not this object will bounce upwards when the land on panels.")]
+        [SerializeField] private bool _panelBounceEnabled;
+        [Tooltip("Whether or not this object will rotate towards the direction it's heading in.")]
+        [SerializeField] private bool _faceHeading;
+        [Tooltip("Whether or not this object should increase how much it bounces based on how fast it's going.")]
+        [SerializeField] private bool _useVelocityForBounce;
+
+        [Header("Scene References")]
+        [Tooltip("The collider attached this object that will be used for registering collision against objects while air")]
+        [SerializeField] private Collider _bounceCollider;
+
+        //---
+        private bool _objectAtRest;
+        private bool _isFrozen;
+        private bool _isKinematic;
+        /// <summary>
+        /// Whether or not this object will bounce on panels it falls on
+        /// </summary>
+        public bool PanelBounceEnabled { get =>_panelBounceEnabled; }
+        /// <summary>
+        /// Whether or not this object should be effected by gravity
+        /// </summary>
+        public bool UseGravity { get => _useGravity; set =>_useGravity = value; }
+        public bool IsGrounded{ get => _isGrounded; }
+        public bool ObjectAtRest { get => _objectAtRest; }
+        public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
+        public bool IsFrozen => _isFrozen;
+        public bool FaceHeading { get => _faceHeading; set => _faceHeading = value; }
+
+        //Physics stats
+        private FVector3 _acceleration;
+        private FVector3 _velocity;
+        private FVector3 _lastVelocity;
+        private FVector3 _groundedBoxPosition;
+        private FVector3 _groundedBoxExtents;
+        private FVector3 _normalForce;
+        private FVector3 _lastForceAdded;
+        private FVector3 _forceToApply;
+        private FVector3 _frozenStoredForce;
+        private FVector3 _frozenVelocity;
+
+        public FVector3 Acceleration { get => _acceleration; }
+        public FVector3 GroundedBoxPosition { get => _groundedBoxPosition; set => _groundedBoxPosition = value; }
+        public FVector3 GroundedBoxExtents { get => _groundedBoxExtents; set => _groundedBoxExtents = value; }
+        public FVector3 ForceToApply { get => _forceToApply; private set => _forceToApply = value; }
+        public FVector3 FrozenStoredForce { get => _frozenStoredForce; private set => _frozenStoredForce = value; }
+        public FVector3 FrozenVelocity { get => _frozenVelocity; private set => _frozenVelocity = value; }
+        /// <summary>
+        /// Returns the velocity of the rigid body in the last fixed update
+        /// </summary>
+        public FVector3 Velocity { get => _velocity; }
+        /// <summary>
+        /// How bouncy this object is
+        /// </summary>
+        public float Bounciness { get => _bounciness; set { _bounciness = value; } }
+        public float Gravity { get =>_gravity; set => _gravity = value; }
+        public float Mass { get => _mass; }
+        public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
+
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            _velocity.Serialize(bw);
+            _lastVelocity.Serialize(bw);
+            _lastForceAdded.Serialize(bw);
+            _forceToApply.Serialize(bw);
+            _frozenStoredForce.Serialize(bw);
+            _frozenVelocity.Serialize(bw);
+
+            bw.Write(_useGravity);
+            bw.Write(_isFrozen);
+            bw.Write(_panelBounceEnabled);
+            bw.Write(_isGrounded);
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            _velocity.Deserialize(br);
+            _lastVelocity.Deserialize(br);
+            _lastForceAdded.Deserialize(br);
+            _frozenStoredForce.Deserialize(br);
+            _frozenVelocity.Deserialize(br);
+
+            _useGravity = br.ReadBoolean();
+            _isFrozen = br.ReadBoolean();
+            _panelBounceEnabled = br.ReadBoolean();
+            _isGrounded = br.ReadBoolean();
+        }
+
+        //Events
         /// <summary>
         /// The event called when this object collides with another
         /// </summary>
@@ -80,73 +152,25 @@ namespace Lodis.Movement
         /// The event called when this object lands on top of a structure
         /// </summary>
         private CollisionEvent _onCollisionWithGround;
-
         private ForceAddedEvent _onForceAdded;
         private ForceAddedEvent _onForceStart;
         private ForceAddedEvent _onForceAddedTemp;
 
-
+        //Actions and timers
+        private CustomYieldInstruction _wait;
         private Coroutine _currentCoroutine;
-        private Sequence _jumpSequence;
-        [SerializeField]
-        private bool _isFrozen;
-        [SerializeField]
-        private bool _useVelocityForBounce;
-        private Vector3 _frozenStoredForce;
-        private Vector3 _frozenVelocity;
+        private LerpAction _jumpSequence;
         private DelayedAction _freezeAction;
-        private ConditionAction _bufferedJump;
+        private FixedConditionAction _bufferedJump;
 
-        /// <summary>
-        /// Whether or not this object will bounce on panels it falls on
-        /// </summary>
-        public bool PanelBounceEnabled { get =>_panelBounceEnabled; }
-
-        /// <summary>
-        /// How bouncy this object is
-        /// </summary>
-        public float Bounciness { get => _bounciness; set { _bounciness = value; } }
-
-        public float Gravity { get =>_gravity; set => _gravity = value; }
-
-        public float Mass { get => _mass; }
-
-        /// <summary>
-        /// Whether or not this object should be effected by gravity
-        /// </summary>
-        public bool UseGravity { get => _useGravity; set =>_useGravity = value; }
-
-        /// <summary>
-        /// Returns the velocity of the rigid body in the last fixed update
-        /// </summary>
-        public FVector3 LastVelocity { get => _lastVelocity; }
-
+        //Scene references
+        private GridMovementBehaviour _movementBehaviour;
         public Collider BounceCollider { get => _bounceCollider; }
-
-        public bool IsGrounded{ get => _isGrounded; }
-
-        public FVector3 Acceleration { get => _acceleration; }
-        public Rigidbody RB { get => _rigidbody; }
-        public Vector3 GroundedBoxPosition { get => _groundedBoxPosition; set => _groundedBoxPosition = value; }
-        public Vector3 GroundedBoxExtents { get => _groundedBoxExtents; set => _groundedBoxExtents = value; }
-        public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
-        public bool ObjectAtRest { get => _objectAtRest; }
-        public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
 
-        public bool IsFrozen => _isFrozen;
-
-        public bool FaceHeading { get => _faceHeading; set => _faceHeading = value; }
-        public Vector3 ForceToApply { get => _forceToApply; private set => _forceToApply = value; }
-        public Vector3 FrozenStoredForce { get => _frozenStoredForce; private set => _frozenStoredForce = value; }
-        public Vector3 FrozenVelocity { get => _frozenVelocity; private set => _frozenVelocity = value; }
 
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>();
-            RB.isKinematic = true;
-            RB.useGravity = false;
-            _constantForceBehaviour = GetComponent<ConstantForce>();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
         }
 
@@ -178,29 +202,11 @@ namespace Lodis.Movement
         }
 
         /// <summary>
-        /// True if the rigidbody is sleeping.
-        /// </summary>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public bool RigidbodyInactive(object[] args = null)
-        {
-            return RB.IsSleeping();
-        }
-
-        /// <summary>
         /// Sets velocity and angular velocity to be zero
         /// </summary>
         public void StopVelocity()
         {
-            RB.velocity = Vector3.zero;
-            RB.angularVelocity = Vector3.zero;
-        }
-        /// <summary>
-        /// Makes the object kinematic
-        /// </summary>
-        public void MakeKinematic()
-        {
-            RB.isKinematic = true;
+            _velocity = FVector3.Zero;
         }
 
         /// <summary>
@@ -208,8 +214,7 @@ namespace Lodis.Movement
         /// </summary>
         public void StopAllForces()
         {
-            RB.velocity = Vector3.zero;
-            RB.angularVelocity = Vector3.zero;
+            _velocity = FVector3.Zero;
             UseGravity = false;
         }
 
@@ -225,7 +230,7 @@ namespace Lodis.Movement
                 _onForceAddedTemp +=
                     args =>
                     {
-                        FrozenStoredForce = (Vector3)args[0];
+                        FrozenStoredForce = (FVector3)args[0];
                         FreezeInPlaceByTimer(time, keepMomentum, makeKinematic, false, storeForceApplied);
                     };
 
@@ -238,16 +243,16 @@ namespace Lodis.Movement
             _isFrozen = true;
 
             if (_jumpSequence?.IsPlaying() == true)
-                _jumpSequence?.TogglePause();
+                _jumpSequence?.Pause();
 
             bool gravityEnabled = UseGravity;
-            FrozenVelocity = _rigidbody.velocity;
+            FrozenVelocity = _velocity;
 
-            if (makeKinematic && _rigidbody.isKinematic)
+            if (makeKinematic && _isKinematic)
                 makeKinematic = false;
 
             if (makeKinematic)
-                MakeKinematic();
+                _isKinematic = true;
 
             StopAllForces();
             _freezeAction = RoutineBehaviour.Instance.StartNewTimedAction(args => UnfreezeObject(makeKinematic, keepMomentum, gravityEnabled, storeForceApplied),
@@ -268,7 +273,7 @@ namespace Lodis.Movement
                 _onForceAddedTemp +=
                     args =>
                     {
-                        FrozenStoredForce = (Vector3)args[0];
+                        FrozenStoredForce = (FVector3)args[0];
                         FreezeInPlaceByCondition(condition, keepMomentum, makeKinematic, false, storeForceApplied);
                     };
 
@@ -280,22 +285,22 @@ namespace Lodis.Movement
 
             _isFrozen = true;
             bool gravityEnabled = UseGravity;
-            FrozenVelocity = _rigidbody.velocity;
+            FrozenVelocity = _velocity;
 
-            if (_jumpSequence?.active == true)
-                _jumpSequence?.TogglePause();
+            if (_jumpSequence?.IsPlaying() == true)
+                _jumpSequence?.Pause();
 
-            if (makeKinematic && _rigidbody.isKinematic)
+            if (makeKinematic && _isKinematic)
                 makeKinematic = false;
 
             StopAllForces();
             if (makeKinematic)
-                MakeKinematic();
+                _isKinematic = true;
 
             _freezeAction = RoutineBehaviour.Instance.StartNewConditionAction(args => UnfreezeObject(makeKinematic, keepMomentum, gravityEnabled, storeForceApplied), condition);
         }
 
-        public void SetFrozenMoveVectors(Vector3 frozenVelocity, Vector3 frozenForce)
+        public void SetFrozenMoveVectors(FVector3 frozenVelocity, FVector3 frozenForce)
         {
             FrozenVelocity = frozenVelocity;
             FrozenStoredForce = frozenForce;
@@ -310,7 +315,7 @@ namespace Lodis.Movement
                 RoutineBehaviour.Instance.StopAction(_freezeAction);
 
             if (makeKinematic)
-                RB.isKinematic = false;
+                _isKinematic = false;
 
             UseGravity = gravityEnabled;
             _isFrozen = false;
@@ -318,56 +323,56 @@ namespace Lodis.Movement
             if (_jumpSequence != null)
             {
                 StopVelocity();
-                _jumpSequence?.TogglePause();
-                FrozenStoredForce = Vector3.zero;
-                FrozenVelocity = Vector3.zero;
+                _jumpSequence?.Pause();
+                FrozenStoredForce = FVector3.Zero;
+                FrozenVelocity = FVector3.Zero;
                 return;
             }
 
-            if (keepMomentum && FrozenVelocity.magnitude > 0)
+            if (keepMomentum && FrozenVelocity.Magnitude > 0)
                 ApplyVelocityChange(FrozenVelocity);
 
-            if (storeForceApplied && FrozenStoredForce.magnitude > 0)
+            if (storeForceApplied && FrozenStoredForce.Magnitude > 0)
                 ApplyImpulseForce(FrozenStoredForce);
 
-            FrozenStoredForce = Vector3.zero;
-            FrozenVelocity = Vector3.zero;
+            FrozenStoredForce = FVector3.Zero;
+            FrozenVelocity = FVector3.Zero;
         }
 
         /// <summary>
         /// Canceled the current freeze operation by stopping the timer and enabling gravity.
         /// Does not keep momentum or apply stored forces.
         /// </summary>
-        public void CancelFreeze(out (Vector3,Vector3) moveVectors, bool keepMomentum = false, bool applyStoredForce = false, bool keepStoredForce = false)
+        public void CancelFreeze(out (FVector3,FVector3) moveVectors, bool keepMomentum = false, bool applyStoredForce = false, bool keepStoredForce = false)
         {
             if (_freezeAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_freezeAction);
 
-            if (_jumpSequence?.active == true)
+            if (_jumpSequence?.IsPlaying() == true)
                 _jumpSequence?.Kill();
 
             if (!IsGrounded)
-                RB.isKinematic = false;
+                _isKinematic = false;
 
             UseGravity = true;
             _isFrozen = false;
 
-            if (keepMomentum && FrozenVelocity.magnitude > 0)
+            if (keepMomentum && FrozenVelocity.Magnitude > 0)
                 ApplyVelocityChange(FrozenVelocity);
 
-            if (applyStoredForce && FrozenStoredForce.magnitude > 0)
+            if (applyStoredForce && FrozenStoredForce.Magnitude > 0)
                 ApplyImpulseForce(FrozenStoredForce);
 
-            Vector3 frozenVelocity = FrozenVelocity;
-            Vector3 frozenForce = FrozenStoredForce;
+            FVector3 frozenVelocity = FrozenVelocity;
+            FVector3 frozenForce = FrozenStoredForce;
 
             moveVectors = (frozenVelocity, frozenForce);
 
             if (keepStoredForce)
                 return;
 
-            FrozenStoredForce = Vector3.zero;
-            FrozenVelocity = Vector3.zero;
+            FrozenStoredForce = FVector3.Zero;
+            FrozenVelocity = FVector3.Zero;
         }
 
         /// <summary>
@@ -379,26 +384,23 @@ namespace Lodis.Movement
             if (_freezeAction?.GetEnabled() == true)
                 RoutineBehaviour.Instance.StopAction(_freezeAction);
 
-            if (_jumpSequence?.active == true)
+            if (_jumpSequence?.IsPlaying() == true)
                 _jumpSequence?.Kill();
 
             if (!IsGrounded)
-                RB.isKinematic = false;
+                _isKinematic = false;
 
             UseGravity = true;
             _isFrozen = false;
 
-            if (keepMomentum && FrozenVelocity.magnitude > 1)
+            if (keepMomentum && FrozenVelocity.Magnitude > 1)
                 ApplyVelocityChange(FrozenVelocity);
 
-            if (applyStoredForce && FrozenStoredForce.magnitude > 0)
+            if (applyStoredForce && FrozenStoredForce.Magnitude > 0)
                 ApplyImpulseForce(FrozenStoredForce);
 
-            Vector3 frozenVelocity = FrozenVelocity;
-            Vector3 frozenForce = FrozenStoredForce;
-
-            FrozenStoredForce = Vector3.zero;
-            FrozenVelocity = Vector3.zero;
+            FrozenStoredForce = FVector3.Zero;
+            FrozenVelocity = FVector3.Zero;
         }
 
         /// <summary>
@@ -445,7 +447,7 @@ namespace Lodis.Movement
         /// <param name="launchAngle">The angle to launch the object</param>
         /// <param name="clampForceWithinRing">Whether or not the grid force could push the object out of the ring.</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public Vector3 CalculatGridForce(float forceMagnitude, float launchAngle, bool clampForceWithinRing = false)
+        public FVector3 CalculatGridForce(float forceMagnitude, float launchAngle, bool clampForceWithinRing = false)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
@@ -453,7 +455,7 @@ namespace Lodis.Movement
 
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
-                return new Vector3();
+                return new FVector3();
 
             if (clampForceWithinRing)
             {
@@ -462,7 +464,7 @@ namespace Lodis.Movement
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
-                return Vector3.up * Mathf.Sqrt(2 * Gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
+                return FVector3.Up * Mathf.Sqrt(2 * Gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
             //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
@@ -477,16 +479,16 @@ namespace Lodis.Movement
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
             if (float.IsNaN(magnitude))
-                return new Vector3();
+                return new FVector3();
 
             if (_maxMagnitude == null)
-                return new Vector3();
+                return new FVector3();
 
             //Clamps magnitude to be within the limit
             magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Value);
 
             //Return the knockback force
-            return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * (magnitude * Mass);
+            return new FVector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle), 0) * (magnitude * Mass);
         }
 
         /// <summary>
@@ -495,7 +497,7 @@ namespace Lodis.Movement
         /// <param name="forceMagnitude">How many panels will the object move assuming its mass is 1</param>
         /// <param name="launchAngle">The angle to launch the object</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public static Vector3 CalculatGridForce(float forceMagnitude, float launchAngle, float gravity = 9.81f, float mass = 1)
+        public static FVector3 CalculatGridForce(float forceMagnitude, float launchAngle, float gravity = 9.81f, float mass = 1)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
@@ -503,11 +505,11 @@ namespace Lodis.Movement
 
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
-                return new Vector3();
+                return new FVector3();
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= 0.2f)
-                return Vector3.up * Mathf.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
+                return FVector3.Up * Mathf.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
             //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
@@ -522,10 +524,10 @@ namespace Lodis.Movement
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
             if (float.IsNaN(magnitude))
-                return new Vector3();
+                return new FVector3();
 
             //Return the knockback force
-            return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * (magnitude * mass);
+            return new FVector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle), 0) * (magnitude * mass);
         }
 
         /// <summary>
@@ -534,7 +536,7 @@ namespace Lodis.Movement
         /// <param name="forceMagnitude">How many panels will the object move assuming its mass is 1</param>
         /// <param name="launchAngle">The angle to launch the object</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public Vector3 CalculatGridForce(float forceMagnitude, float launchAngle, float gravity = 9.81f, float mass = 1, bool clampForceWithinRing = false)
+        public FVector3 CalculatGridForce(float forceMagnitude, float launchAngle, float gravity = 9.81f, float mass = 1, bool clampForceWithinRing = false)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
@@ -542,14 +544,14 @@ namespace Lodis.Movement
 
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
-                return new Vector3();
+                return new FVector3();
 
             if (clampForceWithinRing)
                 forceMagnitude = ClampForceMagnitude(forceMagnitude, launchAngle);
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
             if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= 0.2f)
-                return Vector3.up * Mathf.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
+                return FVector3.Up * Mathf.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
             //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
@@ -564,10 +566,10 @@ namespace Lodis.Movement
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
             if (float.IsNaN(magnitude))
-                return new Vector3();
+                return new FVector3();
 
             //Return the knockback force
-            return new Vector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle)) * (magnitude * mass);
+            return new FVector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle), 0) * (magnitude * mass);
         }
 
         /// <summary>
@@ -606,28 +608,21 @@ namespace Lodis.Movement
             _onCollisionWithGround += collisionEvent;
         }
 
-        private void OnTriggerEnter(Collider other)
+        public  void ResolveCollision(Collision collision)
         {
-            GameObject otherGameObject;
-            HealthBehaviour damageScript = (otherGameObject = other.gameObject).GetComponent<HealthBehaviour>();
+            EntityData otherEntity = collision.Collider.Owner;
 
-            _onCollision?.Invoke(otherGameObject, other.gameObject.GetComponent<ColliderBehaviour>(), other, GetComponent<Collider>(), damageScript);
-        }
+            HealthBehaviour damageScript = otherEntity.GetComponent<HealthBehaviour>();
+            GridPhysicsBehaviour gridPhysicsBehaviour = otherEntity.GetComponent<GridPhysicsBehaviour>();
 
-        protected virtual void OnCollisionEnter(Collision collision)
-        {
-
-            HealthBehaviour damageScript = collision.gameObject.GetComponent<HealthBehaviour>();
-            GridPhysicsBehaviour gridPhysicsBehaviour = collision.gameObject.GetComponent<GridPhysicsBehaviour>();
-
-            _onCollision?.Invoke(collision.gameObject, collision.gameObject.GetComponent<ColliderBehaviour>(), collision, GetComponent<Collider>(), damageScript);
+            _onCollision?.Invoke(collision);
 
             CollisionPlaneBehaviour collisionPlane = null;
             float bounceDampening = BounceDampen;
 
             if (!gridPhysicsBehaviour || !damageScript)
             {
-                collisionPlane = collision.gameObject.GetComponent<CollisionPlaneBehaviour>();
+                collisionPlane = otherEntity.GetComponent<CollisionPlaneBehaviour>();
                 if (!collisionPlane || !PanelBounceEnabled)
                     return;
 
@@ -642,8 +637,7 @@ namespace Lodis.Movement
                 knockBackScript = GetComponent<KnockbackBehaviour>();
 
             //Calculate the knockback and hit angle for the ricochet
-            ContactPoint contactPoint = collision.GetContact(0);
-            Vector3 direction = new Vector3(contactPoint.normal.x, contactPoint.normal.y, 0);
+            Vector3 direction = new Vector3(collision.Normal.X, collision.Normal.Y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
 
@@ -653,13 +647,13 @@ namespace Lodis.Movement
 
             if (knockBackScript && _useVelocityForBounce)
             {
-                velocityMagnitude = knockBackScript.Physics.LastVelocity.Magnitude;
-                baseKnockBack = knockBackScript.LaunchVelocity.magnitude / velocityMagnitude + bounceDampening;
+                velocityMagnitude = knockBackScript.Physics.Velocity.Magnitude;
+                baseKnockBack = knockBackScript.LaunchVelocity.Magnitude / velocityMagnitude + bounceDampening;
             }
             else if (_useVelocityForBounce)
             {
-                velocityMagnitude = LastVelocity.Magnitude;
-                baseKnockBack = _lastForceAdded.magnitude / velocityMagnitude + bounceDampening;
+                velocityMagnitude = Velocity.Magnitude;
+                baseKnockBack = _lastForceAdded.Magnitude / velocityMagnitude + bounceDampening;
             }
 
             if (baseKnockBack == 0 || float.IsNaN(baseKnockBack))
@@ -690,51 +684,54 @@ namespace Lodis.Movement
         /// <summary>
         /// Adds an instant change in velocity to the object ignoring mass.
         /// </summary>
-        /// <param name="velocity">The new velocity for the object.</param>
-        public void ApplyVelocityChange(Vector3 force, bool disableMovement = false, bool ignoreMomentum = false)
+        /// <param name="force">The new velocity for the object.</param>
+        public void ApplyVelocityChange(FVector3 force, bool disableMovement = false)
         {
             if (IgnoreForces)
                 return;
 
-            if (ignoreMomentum)
-                StopVelocity();
+            _isKinematic = false;
 
-            RB.isKinematic = false;
-
+            //Try to snap the object to a panel center before applying force.
             if (_movementBehaviour?.IsMoving == true)
             {
+                //Cancel movement and then move.
                 _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
                 _movementBehaviour.CanCancelMovement = false;
                 
-                if (disableMovement)
-                    _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            _lastVelocity = (FVector3)force;
+            if (disableMovement)
+                _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
+
+            //Store force data for later use.
             _lastForceAdded = force;
             ForceToApply = force;
 
-            if (_panelBounceEnabled && IsGrounded && force.y < 0)
-                force.y *= -1;
+            //Forces should be flipped upwards if applied directly downwards on a grounded object.
+            if (_panelBounceEnabled && IsGrounded && force.Y < 0)
+                force.Y *= -1;
 
+            //Apply force if we can.
             if (IsFrozen)
                 FrozenVelocity = _lastForceAdded;
             else
-                RB.AddForce(force, ForceMode.VelocityChange);
+                _velocity = force;
 
-
-
+            //Handle force events.
             _onForceAdded?.Invoke(force);
             _onForceAddedTemp?.Invoke(force);
             _onForceAddedTemp = null;
         }
 
         /// <summary>
-        /// Adds an instant change in velocity to the object ignoring mass.
+        /// Adds a force to the object using it's mass.
         /// </summary>
-        /// <param name="velocity">The new velocity for the object.</param>
-        public void ApplyForce(Vector3 force, bool disableMovement = false, bool ignoreMomentum = false)
+        /// <param name="force">The force to apply to the object.</param>
+        /// <param name="disableMovement">Will tell the movement component to disable movement if true.</param>
+        /// <param name="ignoreMomentum">If true, will stop the velocity of the object entirely before adding the force.</param>
+        public void ApplyForce(FVector3 force, bool disableMovement = false, bool ignoreMomentum = false)
         {
             if (IgnoreForces)
                 return;
@@ -742,8 +739,9 @@ namespace Lodis.Movement
             if (ignoreMomentum)
                 StopVelocity();
 
-            RB.isKinematic = false;
+            _isKinematic = false;
 
+            //Try to snap the object to a panel center before applying force.
             if (_movementBehaviour?.IsMoving == true)
             {
                 _movementBehaviour.CanCancelMovement = true;
@@ -754,26 +752,30 @@ namespace Lodis.Movement
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.X,0).normalized);
-            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.Y).normalized);
-
+            //If a new force is added in the opposite direction, this will instantly flip that value.
+            //This makes the object snap to the other direction and feels more responsive.
+            float xDot = FVector2.Dot(new FVector2(force.X, 0).GetNormalized(), new FVector2(Velocity.X,0).GetNormalized());
+            float yDot = FVector2.Dot(new FVector2(0, force.Y).GetNormalized(), new FVector2(0, Velocity.Y).GetNormalized());
             if (xDot < 0)
-                RB.velocity = new Vector3(0, RB.velocity.y, RB.velocity.z);
+                _velocity = new FVector3(0, _velocity.Y, _velocity.Z);
             if (yDot < 0)
-                RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
+                _velocity = new FVector3(_velocity.X, 0, _velocity.Z);
 
+            //Cache force data for later use.
             _lastForceAdded = force / Mass;
             ForceToApply = _lastForceAdded;
 
-            if (_panelBounceEnabled && IsGrounded && force.y < 0)
-                force.y *= -1;
+            //Forces should be flipped upwards if applied directly downwards on a grounded object.
+            if (_panelBounceEnabled && IsGrounded && force.Y < 0)
+                force.Y *= -1;
 
+            //Apply the force.
             if (IsFrozen)
                 FrozenVelocity = _lastForceAdded;
             else
-                RB.AddForce(force / Mass, ForceMode.Force);
+                _velocity += (force / Mass) * GridGame.FixedTimeStep;
 
-
+            //Handle force events.
             _onForceAdded?.Invoke(force / Mass);
             _onForceAddedTemp?.Invoke(force);
             _onForceAddedTemp = null;
@@ -785,7 +787,7 @@ namespace Lodis.Movement
         /// Disables movement if not in hitstun.
         /// </summary>
         /// <param name="force">The force to apply to the object.</param>
-        public void ApplyImpulseForce(Vector3 force, bool disableMovement = false, bool ignoreMomentum = false)
+        public void ApplyImpulseForce(FVector3 force, bool disableMovement = false, bool ignoreMomentum = false)
         {
             if (IgnoreForces)
                 return;
@@ -804,20 +806,20 @@ namespace Lodis.Movement
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            RB.isKinematic = false;
-
-            _objectAtRest = false;
-
-            float xDot = Vector2.Dot(new Vector2(force.x, 0).normalized, new Vector2(LastVelocity.X, 0).normalized);
-            float yDot = Vector2.Dot(new Vector2(0, force.y).normalized, new Vector2(0, LastVelocity.Y).normalized);
-
+            _isKinematic = false;
+            
+            //If a new force is added in the opposite direction, this will instantly flip that value.
+            //This makes the object snap to the other direction and feels more responsive.
+            float xDot = FVector2.Dot(new FVector2(force.X, 0).GetNormalized(), new FVector2(Velocity.X, 0).GetNormalized());
+            float yDot = FVector2.Dot(new FVector2(0, force.Y).GetNormalized(), new FVector2(0, Velocity.Y).GetNormalized());
             if (xDot < 0)
-                RB.velocity = new Vector3(0, RB.velocity.y, RB.velocity.z);
+                _velocity = new FVector3(0, _velocity.Y, _velocity.Z);
             if (yDot < 0)
-                RB.velocity = new Vector3(RB.velocity.x, 0, RB.velocity.z);
+                _velocity = new FVector3(_velocity.X, 0, _velocity.Z);
 
-            if (IsGrounded && force.y < 0)
-                force.y *= -0.5f;
+            //Forces should be flipped upwards if applied directly downwards on a grounded object.
+            if (IsGrounded && force.Y < 0)
+                force.Y *= -1f;
 
             _lastForceAdded = force / Mass;
             ForceToApply = _lastForceAdded;
@@ -825,7 +827,7 @@ namespace Lodis.Movement
             if (IsFrozen)
                 FrozenVelocity = _lastForceAdded;
             else
-                RB.AddForce(force / Mass, ForceMode.Impulse);
+                _velocity += force / Mass;
             
 
             if (IsFrozen)
@@ -846,17 +848,20 @@ namespace Lodis.Movement
         /// <param name="jumpToClosestAvailablePanel">If true, the object will try to jump to a closer panel if the destination isn't available</param>
         /// <param name="canBeOccupied">If true, the destination panel can be occupied by another object</param>
         /// <param name="alignment">The alignment of the panels this object is allowed to jump on</param>
-        public void Jump(float height, int panelDistance,  float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, Vector3 panelOffset = default(Vector3), Ease ease = Ease.InOutSine)
+        public void Jump(float height, int panelDistance,  float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, FVector3 panelOffset = default(FVector3), FixedAnimationCurve curve = null)
         {
             _jumpSequence?.Kill();
 
+            if (curve == null)
+                curve = new FixedAnimationCurve(_defaultJumpCurve);
+
             if (_isFrozen)
             {
-                if (_bufferedJump?.GetEnabled() == true)
-                    RoutineBehaviour.Instance.StopAction(_bufferedJump);
+                if (_bufferedJump?.IsActive == true)
+                    _bufferedJump.Stop();
 
-                _bufferedJump = RoutineBehaviour.Instance.StartNewConditionAction(
-                    args => Jump(height, panelDistance, duration, jumpToClosestAvailablePanel, canBeOccupied, alignment, panelOffset, ease),
+                _bufferedJump = FixedPointTimer.StartNewConditionAction(
+                    () => Jump(height, panelDistance, duration, jumpToClosestAvailablePanel, canBeOccupied, alignment, panelOffset, curve),
                     condition => !_isFrozen);
 
                 return;
@@ -866,11 +871,10 @@ namespace Lodis.Movement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
             float displacement = (panelSize * panelDistance) + (panelSpacing * (panelDistance - 1));
-            RB.isKinematic = false;
             //Try to find a panel at the location
             PanelBehaviour panel;
-            Vector3 panelPosition = transform.position + transform.forward * panelDistance;
-            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
+            FVector3 panelPosition = EntityTransform.Position + EntityTransform.Forward * panelDistance;
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld((Vector3)panelPosition, out panel, canBeOccupied, alignment);
 
             //Returns if a panel couldn't be found and we don't want to keep looking
             if (!panel && !jumpToClosestAvailablePanel) return;
@@ -879,72 +883,13 @@ namespace Lodis.Movement
             //Looks for a panel to land on
             for (int i = panelDistance - 1; i > 0; i--)
             {
-                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
+                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld((Vector3)panelPosition, out panel, canBeOccupied, alignment);
 
                 if (panel) break;
             }
 
             //Perform the jump
-            _jumpSequence = _rigidbody.DOJump(panelPosition + panelOffset, height, 1, duration).SetEase(ease);
-            _jumpSequence.onKill += () => _jumpSequence = null;
-            _jumpSequence.onComplete += () => _jumpSequence = null;
-
-            //Cancel the jump if a force is added
-            _onForceAdded += args =>
-            {
-                _jumpSequence?.Kill();
-            };
-        }
-
-        /// <summary>
-        /// Interpolates from the objects current position to a panel at the given distance while adding a jump effect on the y.
-        /// </summary>
-        /// <param name="panelDistance">How many panels far the object will jump</param>
-        /// <param name="height">The maximum height of the jump</param>
-        /// <param name="duration">The amount of time the jump will last</param>
-        /// <param name="jumpToClosestAvailablePanel">If true, the object will try to jump to a closer panel if the destination isn't available</param>
-        /// <param name="canBeOccupied">If true, the destination panel can be occupied by another object</param>
-        /// <param name="alignment">The alignment of the panels this object is allowed to jump on</param>
-        public void Jump(int panelDistance, float height, float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, Vector3 panelOffset = default(Vector3), AnimationCurve curve = null)
-        {
-            _jumpSequence?.Kill();
-
-            if (_isFrozen)
-            {
-                if (_bufferedJump?.GetEnabled() == true)
-                    RoutineBehaviour.Instance.StopAction(_bufferedJump);
-
-                _bufferedJump = RoutineBehaviour.Instance.StartNewConditionAction(
-                    args => Jump(panelDistance, height, duration, jumpToClosestAvailablePanel, canBeOccupied, alignment, panelOffset, curve),
-                    condition => !_isFrozen);
-
-                return;
-            }
-
-            //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
-            float displacement = (panelSize * panelDistance) + (panelSpacing * (panelDistance - 1));
-            RB.isKinematic = false;
-            //Try to find a panel at the location
-            PanelBehaviour panel;
-            Vector3 panelPosition = transform.position + transform.forward * panelDistance;
-            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
-
-            //Returns if a panel couldn't be found and we don't want to keep looking
-            if (!panel && !jumpToClosestAvailablePanel) return;
-
-
-            //Looks for a panel to land on
-            for (int i = panelDistance - 1; i > 0; i--)
-            {
-                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(panelPosition, out panel, canBeOccupied, alignment);
-
-                if (panel) break;
-            }
-
-            //Perform the jump
-            _jumpSequence = _rigidbody.DOJump(panelPosition + panelOffset, height, 1, duration).SetEase(curve);
+            _jumpSequence = FixedLerp.DoJump(EntityTransform, panelPosition + panelOffset, height, 1, duration, curve);
             _jumpSequence.onKill += () => _jumpSequence = null;
             _jumpSequence.onComplete += () => _jumpSequence = null;
 
@@ -963,7 +908,7 @@ namespace Lodis.Movement
         {
             bool grounded = false;
 
-            Collider[] hits = Physics.OverlapBox(GroundedBoxPosition, GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure"}));
+            Collider[] hits = Physics.OverlapBox((Vector3)GroundedBoxPosition, (Vector3)GroundedBoxExtents, new Quaternion(), LayerMask.GetMask(new string[] { "Structure"}));
 
             foreach (Collider collider in hits)
             {
@@ -973,7 +918,7 @@ namespace Lodis.Movement
                 normalY = Mathf.Ceil(normalY);
                 if (normalY == 1)
                 {
-                    if (!_isGrounded) _onCollisionWithGround?.Invoke();
+                    if (!_isGrounded) _onCollisionWithGround?.Invoke(default);
                     grounded = true;
                 }
             }
@@ -984,36 +929,33 @@ namespace Lodis.Movement
         private void OnDrawGizmos()
         {
             if (Application.isPlaying)
-                Gizmos.DrawLine(transform.position, transform.position + Vector3.down * GroundedBoxExtents.y);
+                Gizmos.DrawLine(transform.position, transform.position + Vector3.down * GroundedBoxExtents.Y);
         }
 
-        private void FixedUpdate()
+        public override void Tick(Fixed32 dt)
         {
-            _acceleration = ((FVector3)RB.velocity - LastVelocity) / Time.fixedDeltaTime;
+            base.Tick(dt);
+            
+            //Code that was ran in unity update.
+            if (FaceHeading && Velocity.Magnitude > 0)
+                EntityTransform.Forward = Velocity.GetNormalized();
+            
+            //Code that ran in unity fixed update.
+            _acceleration = (_lastVelocity - Velocity) / Time.fixedDeltaTime;
 
 
             if (UseGravity && !IgnoreForces)
-                _constantForceBehaviour.force = new Vector3(0, -Gravity, 0);
-            else
-                _constantForceBehaviour.force = Vector3.zero;
+                _velocity += new FVector3(0, -Gravity, 0);
 
 
             _isGrounded = CheckIsGrounded();
 
-            if (_rigidbody.isKinematic && _movementBehaviour?.IsMoving == true)
-                _lastVelocity = _movementBehaviour.MoveDirection;
-            else
-                _lastVelocity = (FVector3)RB.velocity;
+            if (_objectAtRest && _movementBehaviour?.IsMoving == true)
+                _velocity = _movementBehaviour.MoveDirection;
 
-            _objectAtRest = IsGrounded && _rigidbody.velocity.magnitude <= 0.01f;
+            _objectAtRest = IsGrounded && _velocity.Magnitude <= 0.01f;
 
-            ForceToApply = Vector3.zero;
-        }
-
-        private void Update()
-        {
-            if (FaceHeading && LastVelocity.Magnitude > 0)
-                transform.forward = (Vector3)LastVelocity.GetNormalized();
+            ForceToApply = FVector3.Zero;
         }
     }
 }

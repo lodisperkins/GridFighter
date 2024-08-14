@@ -40,7 +40,7 @@ namespace Lodis.Gameplay
         private bool _inUse;
         private bool _canPlayAnimation;
         private List<HitColliderData> _colliderInfo;
-        private TimedAction _currentTimer;
+        private FixedTimeAction _currentTimer;
         private KnockbackBehaviour _ownerKnockBackScript;
         private Movement.GridMovementBehaviour _ownerMoveScript;
         private CharacterAnimationBehaviour _ownerAnimationScript;
@@ -51,7 +51,7 @@ namespace Lodis.Gameplay
         private GameObject _accessoryInstance;
         private TimedActionCountType _timeCountType = TimedActionCountType.SCALEDTIME;
         //The object that is using the ability
-        public GameObject owner = null;
+        private EntityDataBehaviour owner = null;
         public MovesetBehaviour OwnerMoveset = null;
         public ScriptableObjects.AbilityData abilityData;
         /// <summary>
@@ -117,7 +117,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// The timed action that is counting down to the next ability phase
         /// </summary>
-        public TimedAction CurrentTimer
+        public FixedTimeAction CurrentTimer
         {
             get { return _currentTimer; }
         }
@@ -129,8 +129,9 @@ namespace Lodis.Gameplay
         public GameObject AccessoryInstance { get => _accessoryInstance; private set => _accessoryInstance = value; }
         public TimedActionCountType TimeCountType { get => _timeCountType; set => _timeCountType = value; }
 
-        public bool AbilityPaused { get => _currentTimer?.IsPaused == true; }
+        public bool AbilityPaused { get => _currentTimer?.IsActive == true; }
         public CharacterVoiceBehaviour OwnerVoiceScript { get => _ownerVoiceScript; private set => _ownerVoiceScript = value; }
+        public EntityDataBehaviour Owner { get => owner; set => owner = value; }
 
         /// <summary>
         /// The phase before an the ability is activated. This is where the character is building up
@@ -144,7 +145,7 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActivateSound);
             Start(args);
-            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => ActivePhase(args), TimeCountType, abilityData.startUpTime);
+            _currentTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args),  abilityData.startUpTime);
         }
 
         /// <summary>
@@ -157,7 +158,7 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
             Activate(args);
-            _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(context => RecoverPhase(args), TimeCountType, abilityData.timeActive);
+            _currentTimer = FixedPointTimer.StartNewTimedAction(() => RecoverPhase(args), abilityData.timeActive);
         }
 
         /// <summary>
@@ -172,9 +173,9 @@ namespace Lodis.Gameplay
 
             Recover(args);
             if (MaxActivationAmountReached)
-                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => EndAbility(), TimeCountType, abilityData.recoverTime);
+                _currentTimer = FixedPointTimer.StartNewTimedAction(() => EndAbility(), abilityData.recoverTime);
             else
-                _currentTimer = RoutineBehaviour.Instance.StartNewTimedAction(arguments => _inUse = false, TimeCountType, abilityData.recoverTime);
+                _currentTimer = FixedPointTimer.StartNewTimedAction(() => _inUse = false, abilityData.recoverTime);
 
         }
 
@@ -251,7 +252,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void UnpauseAbilityTimer()
         {
-            _currentTimer.Unpause();
+            _currentTimer.Resume();
         }
 
         /// <summary>
@@ -259,7 +260,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void EndAbility()
         {
-            RoutineBehaviour.Instance.StopAction(_currentTimer);
+            _currentTimer.Stop();
             onEnd?.Invoke();
             End();
             _inUse = false;
@@ -269,9 +270,9 @@ namespace Lodis.Gameplay
         /// Initializes base stats and members for the ability
         /// </summary>
         /// <param name="newOwner">The user of the ability</param>
-        public virtual void Init(GameObject newOwner)
+        public virtual void Init(EntityDataBehaviour newOwner)
         {
-            owner = newOwner;
+            Owner = newOwner;
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/" + GetType().Name + "_Data"));
             OwnerMoveScript = newOwner.GetComponent<Movement.GridMovementBehaviour>();
             OwnerMoveset = newOwner.GetComponent<MovesetBehaviour>();
@@ -307,9 +308,9 @@ namespace Lodis.Gameplay
                 return;
 
 
-            for (int i = 0; i < owner.transform.childCount; i++)
+            for (int i = 0; i < Owner.transform.childCount; i++)
             {
-                Transform child = owner.transform.GetChild(i);
+                Transform child = Owner.transform.GetChild(i);
 
                 if (child.CompareTag("Accessory"))
                 {
@@ -323,7 +324,7 @@ namespace Lodis.Gameplay
 
         public void ResetAccessory()
         {
-            _accessoryInstance.transform.parent = owner.transform;
+            _accessoryInstance.transform.parent = Owner.transform;
             _accessoryInstance.transform.localPosition = _accessoryStartPosition;
             _accessoryInstance.transform.localRotation = _accessoryStartRotation;
             EnableAccessory();
@@ -334,16 +335,16 @@ namespace Lodis.Gameplay
         {
             for (int i = 0; i < _colliderInfo.Count; i++)
             {
-                OnHit += arguments =>
+                OnHit += collision =>
                 {
-                    if ((GameObject)arguments[0] == BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner) && GetCurrentCancelRule()?.CanOnlyCancelOnOpponentHit == true)
+                    if (collision.Entity.UnityObject == BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner.gameObject) && GetCurrentCancelRule()?.CanOnlyCancelOnOpponentHit == true)
                          _opponentHit = true;
                 };
 
                 HitColliderData data = _colliderInfo[i];
-                data.AddOnHitEvent(arguments =>
-                { OnHit?.Invoke(arguments); });
-                data.AddOnHitEvent(arguments => { OnHitTemp?.Invoke(arguments); OnHitTemp = null; });
+                data.AddOnHitEvent(collision =>
+                { OnHit?.Invoke(collision); });
+                data.AddOnHitEvent(collision => { OnHitTemp?.Invoke(collision); OnHitTemp = null; });
                 _colliderInfo[i] = data;
             }
 

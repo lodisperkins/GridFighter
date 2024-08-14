@@ -5,6 +5,7 @@ using UnityEngine;
 using DG.Tweening;
 using Lodis.Utility;
 using Lodis.Movement;
+using FixedPoints;
 
 namespace Lodis.Gameplay
 {
@@ -23,9 +24,9 @@ namespace Lodis.Gameplay
         private int _startX = 1;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
             _explosionEffect = (GameObject)Resources.Load("Effects/SmallExplosion");
             _bombTimer = abilityData.GetCustomStatValue("BombTimer");
             //Stop the timer to prevent the explosion from happening
@@ -68,7 +69,7 @@ namespace Lodis.Gameplay
         /// </summary>
         private void ExplodeBomb(GridMovementBehaviour entity)
         {
-            HitColliderSpawner.SpawnBoxCollider(entity.transform.position + Vector3.up / 2, Vector3.one, _hitColliderData, owner);
+            HitColliderSpawner.SpawnCollider(entity.EntityTransform.Position + FVector3.Up / 2, 1, 1, _hitColliderData, Owner);
 
             Object.Instantiate(_explosionEffect, entity.transform.position, Camera.main.transform.rotation);
 
@@ -104,7 +105,7 @@ namespace Lodis.Gameplay
                 ColliderBehaviour collider = entity.GetComponent<ColliderBehaviour>();
 
                 collider.AddCollisionEvent(collisionArgs => ExplodeBomb(entity));
-                collider.Owner = owner;
+                collider.Owner = Owner;
             }
 
             //Starts the bomb countdown
@@ -125,7 +126,7 @@ namespace Lodis.Gameplay
         private void ClearBombEvent(GridMovementBehaviour entity)
         {
             ColliderBehaviour collider = entity.GetComponent<ColliderBehaviour>();
-            collider.ClearCollisionEvent();
+            collider.ClearAllCollisionEvents();
         }
 
         protected override void OnMatchRestart()

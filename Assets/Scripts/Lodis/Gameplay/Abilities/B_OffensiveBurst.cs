@@ -22,12 +22,12 @@ namespace Lodis.Gameplay
         private HitStopBehaviour _ownerHitStop;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
             if (!_burstEffect) _burstEffect = abilityData.visualPrefab;
             _defaultRestTime = abilityData.recoverTime;
-            _ownerHitStop = owner.GetComponent<HitStopBehaviour>();
+            _ownerHitStop = Owner.GetComponent<HitStopBehaviour>();
         }
 
         protected override void OnStart(params object[] args)
@@ -45,17 +45,17 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.CancelStun();
 
             //Disable ability benefits if the player is hit out of burst
-            OnHit += arguments =>
+            OnHit += collision =>
             {
 
-                GameObject objectHit = (GameObject)arguments[0];
+                GameObject objectHit = collision.Entity.UnityObject;
 
-                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner))
+                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(collision.Entity.UnityObject))
                     return;
 
                 CameraBehaviour.Instance.ZoomAmount = 3;
                 _zoomAction = RoutineBehaviour.Instance.StartNewTimedAction(parameter => CameraBehaviour.Instance.ZoomAmount = 0, TimedActionCountType.SCALEDTIME, 0.7f);
-                AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(owner), "Burst Drive");
+                AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(collision.Entity.UnityObject), "Burst Drive");
                 if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
 
@@ -65,13 +65,13 @@ namespace Lodis.Gameplay
 
                 PanelBehaviour panel;
 
-                bool validPanel = BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(owner.transform.position, out panel);
+                bool validPanel = BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(Owner.transform.position, out panel);
 
                 if (validPanel)
                 {
                     OwnerMoveScript.TeleportToPanel(panel);
                     OwnerMoveScript.EnableMovement();
-                    OwnerKnockBackScript.Physics.RB.isKinematic = true;
+                    OwnerKnockBackScript.Physics.StopAllForces();
                     OwnerKnockBackScript.CurrentAirState = AirState.NONE;
                 }
             };
@@ -83,7 +83,7 @@ namespace Lodis.Gameplay
             HitColliderData hitColliderData = GetColliderData(0);
 
             //Try to get a barrier from the pool to use as the hit box
-            _barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform.position, owner.transform.rotation);
+            _barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform.position, Owner.transform.rotation);
 
             HitColliderBehaviour instantiatedCollider = null;
 
@@ -92,8 +92,8 @@ namespace Lodis.Gameplay
                 instantiatedCollider = _barrier.AddComponent<HitColliderBehaviour>();
 
             //Update the new colliders data
+            instantiatedCollider.InitCollider(1, 1, _barrier.GetComponent<SimulationBehaviour>().Entity.Data);
             instantiatedCollider.ColliderInfo = hitColliderData;
-            instantiatedCollider.Owner = owner;
 
             //Spawns a new particle effect at this player's position
             //Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);

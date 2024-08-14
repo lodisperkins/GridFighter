@@ -14,71 +14,58 @@ using Lodis.Sound;
 using CustomEventSystem;
 using FixedPoints;
 using Types;
+using System.IO;
+using UnityEngine.Serialization;
 
 namespace Lodis.Movement
 {
 
     [RequireComponent(typeof(CustomEventSystem.GameEventListener))]
-    public class GridMovementBehaviour : MonoBehaviour
+    public class GridMovementBehaviour : SimulationBehaviour
     {
-        [SerializeField]
-        [Tooltip("The position of the object on the grid.")]
-        private FVector2 _position;
-        [SerializeField]
-        [Tooltip("The current direction the object is moving in.")]
         private FVector2 _moveDirection;
-        [SerializeField]
-        [Tooltip("This is how close the object has to be to the panel it's moving towards to say its reached it.")]
-        private float _targetTolerance = 0.05f;
-        [SerializeField]
+        private Fixed32 _targetTolerance = 0.05f;
+        private Fixed32 _speed;
+        private Fixed32 _opponentPanelSpeedReduction;
+
+
+        [Header("Movement stats")]
         [Tooltip("How fast the object can move towards a panel.")]
-        private float _speed;
-        [SerializeField]
+        [FormerlySerializedAs("_speed")]
+        [SerializeField] private float _speedFloat;
         [Tooltip("The amount speed will be reduced when moving from an opponent panel.")]
-        private float _opponentPanelSpeedReduction;
+        [FormerlySerializedAs("_opponentPanelSpeedReduction")]
+        [SerializeField] private float _opponentPanelSpeedReductionFloat;
+
+        [Header("Behaviour Options")]
         [Tooltip("Whether or not this object is moving towards a panel")]
-        [SerializeField]
-        private bool _isMoving;
+        [SerializeField] private bool _isMoving;
         [Tooltip("Whether or not this object can move to other panels")]
-        [SerializeField]
-        private bool _canMove = true;
+        [SerializeField] private bool _canMove = true;
         [Tooltip("If true, the object can cancel its movement in one direction, and start moving in another direction.")]
-        [SerializeField]
-        private bool _canCancelMovement;
-        [Tooltip("The side of the grid that this object can move on by default.")]
-        [SerializeField]
-        private GridAlignment _defaultAlignment = GridAlignment.ANY;
-
-        [Tooltip("Whether or not to move to the default aligned side if this object is on a panel belonging to the opposite side")]
-        [SerializeField]
-        private bool _moveToAlignedSideIfStuck = true;
-        [SerializeField]
-        private AudioClip _moveSound;
-        [SerializeField]
-        private CustomEventSystem.Event _onTeleportStart;
-        [SerializeField]
-        private CustomEventSystem.Event _onTeleportEnd;
-
+        [SerializeField] private bool _canCancelMovement;
         [Tooltip("Whether or not this object should always rotate to face the opposite side")]
-        [SerializeField]
-        private bool _alwaysLookAtOpposingSide = true;
-        [SerializeField]
-        private bool _canBeWalkedThrough = false;
-        [SerializeField]
+        [SerializeField] private bool _alwaysLookAtOpposingSide = true;
+        [SerializeField] private bool _canBeWalkedThrough = false;
         [Tooltip("If true the object will be allowed to move diagonally on the grid.")]
-        private bool _canMoveDiagonally;
-
-        [SerializeField]
+        [SerializeField] private bool _canMoveDiagonally;
         [Tooltip("If true, the object will instantly move to its current position when the start function is called.")]
-        private bool _moveOnStart = true;
-        [SerializeField]
+        [SerializeField] private bool _moveOnStart = true;
         [Tooltip("If true, the object will cast a ray to check if it is currently behind a barrier.")]
-        private bool _checkIfBehindBarrier;
-        [SerializeField]
+        [SerializeField] private bool _checkIfBehindBarrier;
         [Tooltip("If true, the object is behind a barrier. Only updated if check if behind barrier is true")]
-        private bool _isBehindBarrier;
+        [SerializeField] private bool _isBehindBarrier;
+        [Tooltip("Whether or not to move to the default aligned side if this object is on a panel belonging to the opposite side")]
+        [SerializeField] private bool _moveToAlignedSideIfStuck = true;
+        [Tooltip("The side of the grid that this object can move on by default.")]
+        [SerializeField] private GridAlignment _defaultAlignment = GridAlignment.ANY;
 
-        private Tweener _moveTween;
+        [Header("Feedback")]
+        [SerializeField] private AudioClip _moveSound;
+        [SerializeField] private CustomEventSystem.Event _onTeleportStart;
+        [SerializeField] private CustomEventSystem.Event _onTeleportEnd;
+
+        private LerpAction _moveLerp;
         private static FloatVariable _maxYPosition;
         private FVector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
@@ -121,10 +108,10 @@ namespace Lodis.Movement
         /// </summary>
         public float Speed
         {
-            get { return _speed; }
+            get { return _speedFloat; }
             set 
             {
-                _speed = value;
+                _speedFloat = value;
             }
         }
 
@@ -170,8 +157,12 @@ namespace Lodis.Movement
         /// </summary>
         public FVector2 Position
         {
-            get { return _position; }
-            set { _position = value; }
+            get { return new FVector2(Entity.Data.X, Entity.Data.Y); }
+            set 
+            {
+                Entity.Data.X = value.X;
+                Entity.Data.Y = value.Y;
+            }
         }
 
         /// <summary>
@@ -253,6 +244,9 @@ namespace Lodis.Movement
 
         private void Awake()
         {
+            _speed = _speedFloat;
+            _opponentPanelSpeedReduction = _opponentPanelSpeedReductionFloat;
+
             MaxYPosition = (FloatVariable)Resources.Load("ScriptableObjects/MaxYPosition");
             _returnEffect = ((GameObject)Resources.Load("Effects/Teleport")).GetComponent<ParticleSystem>();
             //initialize events
@@ -402,12 +396,12 @@ namespace Lodis.Movement
 
             if (IsMoving && waitForEndOfMovement)
             { 
-                AddOnMoveEndTempAction(() => { _canMove = false; _moveTween.Kill(); _isMoving = false; });
+                AddOnMoveEndTempAction(() => { _canMove = false; _moveLerp.Kill(); _isMoving = false; });
             }
             else
             {
                 _canMove = false;
-                _moveTween.Kill();
+                _moveLerp.Kill();
                 _isMoving = false;
             }
 
@@ -495,13 +489,12 @@ namespace Lodis.Movement
         /// <returns></returns>
         private void LerpPosition(FVector3 newPosition)
         {
-            if (_moveTween?.active == true)
-                _moveTween.ChangeEndValue(newPosition, true);
-            else
-            {
-                _moveTween = transform.DOMove((Vector3)newPosition, TravelTime).SetUpdate(UpdateType.Fixed).SetEase(Ease.Linear);
-                _moveTween.onComplete = ResetMovementValues;
-            }
+            if (_moveLerp?.IsPlaying() == true)
+                _moveLerp.Kill();
+
+
+            _moveLerp = FixedLerp.DoMove(EntityTransform, newPosition, TravelTime);
+            _moveLerp.onComplete += ResetMovementValues;
         }
 
 
@@ -527,8 +520,8 @@ namespace Lodis.Movement
             else if (CanCancelMovement && IsMoving)
                 CancelMovement();
 
-            if (!CanMoveDiagonally && panelPosition.X != _position.X && panelPosition.Y != _position.Y)
-                panelPosition.Y = _position.Y;
+            if (!CanMoveDiagonally && panelPosition.X != Position.X && panelPosition.Y != Position.Y)
+                panelPosition.Y = Position.Y;
 
             if (clampPosition)
             {
@@ -539,7 +532,7 @@ namespace Lodis.Movement
             }
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition || canBeOccupied, tempAlignment))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, Position == panelPosition || canBeOccupied, tempAlignment))
                 return false;
 
             _previousPanel = _currentPanel;
@@ -549,7 +542,7 @@ namespace Lodis.Movement
             FVector3 newPosition = (FVector3)(_targetPanel.transform.position) + new FVector3(0, (Types.Fixed32)_heightOffset, 0);
             _targetPosition = newPosition;
 
-            MoveDirection = (panelPosition - _position).GetNormalized();
+            MoveDirection = (panelPosition - Position).GetNormalized();
 
             SetIsMoving(true);
 
@@ -573,7 +566,7 @@ namespace Lodis.Movement
             _currentPanel = _targetPanel;
             if (reservePanel)
                 _currentPanel.Occupied = !CanBeWalkedThrough;
-            _position = _currentPanel.Position;
+            Position = _currentPanel.Position;
 
             return true;
         }
@@ -598,8 +591,8 @@ namespace Lodis.Movement
             else if (CanCancelMovement && IsMoving)
                 CancelMovement();
 
-            if (!CanMoveDiagonally && panelPosition.X != _position.X && panelPosition.Y != _position.Y)
-                panelPosition.Y = _position.Y;
+            if (!CanMoveDiagonally && panelPosition.X != Position.X && panelPosition.Y != Position.Y)
+                panelPosition.Y = Position.Y;
 
             if (clampPosition)
             {
@@ -610,7 +603,7 @@ namespace Lodis.Movement
             }
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, _position == panelPosition || canBeOccupied, tempAlignment))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, Position == panelPosition || canBeOccupied, tempAlignment))
                 return false;
 
             _previousPanel = _currentPanel;
@@ -620,7 +613,7 @@ namespace Lodis.Movement
             FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)_heightOffset, 0);
             _targetPosition = newPosition;
 
-            MoveDirection = (panelPosition - _position).GetNormalized();
+            MoveDirection = (panelPosition - Position).GetNormalized();
 
             SetIsMoving(true);
 
@@ -644,7 +637,7 @@ namespace Lodis.Movement
             _currentPanel = _targetPanel;
             if (reservePanel)
                 _currentPanel.Occupied = !CanBeWalkedThrough;
-            _position = _currentPanel.Position;
+            Position = _currentPanel.Position;
 
             return true;
         }
@@ -664,11 +657,11 @@ namespace Lodis.Movement
             if (IsMoving && !CanCancelMovement ||!_canMove || _health?.Stunned == true)
                 return false;
 
-            if (!CanMoveDiagonally && x != _position.X && y != _position.Y)
-                y = (int)_position.Y;
+            if (!CanMoveDiagonally && x != Position.X && y != Position.Y)
+                y = (int)Position.Y;
 
             //If it's not possible to move to the panel at the given position, return false.
-            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, _position == new FVector2( x,y), tempAlignment))
+            if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, Position == new FVector2( x,y), tempAlignment))
                 return false;
 
             _previousPanel = _currentPanel;
@@ -684,7 +677,7 @@ namespace Lodis.Movement
             FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)offset, 0);
             _targetPosition = newPosition;
 
-            MoveDirection = new FVector2(x, y) - _position;
+            MoveDirection = new FVector2(x, y) - Position;
 
             SetIsMoving(true);
 
@@ -707,7 +700,7 @@ namespace Lodis.Movement
             _lastPanel = _currentPanel;
             _currentPanel = _targetPanel;
             _currentPanel.Occupied = !CanBeWalkedThrough;
-            _position = _currentPanel.Position;
+            Position = _currentPanel.Position;
             return true;
         }
 
@@ -730,11 +723,11 @@ namespace Lodis.Movement
 
             //To Do: This section should make this function prevent diagonal movement based on the "_canMoveDiagonally" boolean
             FVector2 targetPosition = targetPanel.Position;
-            if (!CanMoveDiagonally && targetPosition.X != _position.X && targetPosition.Y != _position.Y && CurrentPanel)
+            if (!CanMoveDiagonally && targetPosition.X != Position.X && targetPosition.Y != Position.Y && CurrentPanel)
             {
-                targetPosition.Y = _position.Y;
+                targetPosition.Y = Position.Y;
                 //If it's not possible to move to the panel at the given position, return false.
-                if (!BlackBoardBehaviour.Instance.Grid.GetPanel((int)targetPosition.X, (int)targetPosition.Y, out targetPanel, _position == new FVector2(targetPosition.X, targetPosition.Y), tempAlignment))
+                if (!BlackBoardBehaviour.Instance.Grid.GetPanel((int)targetPosition.X, (int)targetPosition.Y, out targetPanel, Position == new FVector2(targetPosition.X, targetPosition.Y), tempAlignment))
                     return false;
             }
             _previousPanel = _currentPanel;
@@ -752,7 +745,7 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
 
-            MoveDirection = (targetPanel.Position - _position).GetNormalized();
+            MoveDirection = (targetPanel.Position - Position).GetNormalized();
 
             SetIsMoving(true);
 
@@ -776,7 +769,7 @@ namespace Lodis.Movement
             _lastPanel = _currentPanel;
             _currentPanel = _targetPanel;
             _currentPanel.Occupied = !CanBeWalkedThrough;
-            _position = _currentPanel.Position;
+            Position = _currentPanel.Position;
 
             return true;
         }
@@ -855,24 +848,22 @@ namespace Lodis.Movement
 
             //Sets the new position to be the position of the panel added to half the gameObjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            float _heightOffset = 0;
+            Fixed32 heightOffset = 0;
             if (!_meshFilter)
-                _heightOffset = transform.localScale.y / 2;
+                heightOffset = transform.localScale.y / 2;
             else
-                _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+                heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
 
-            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)_heightOffset, 0);
+            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, heightOffset, 0);
             _targetPosition = newPosition;
 
-            if (_moveTween?.active == true)
-                _moveTween.ChangeEndValue(newPosition, true);
-            else
-            {
-                _moveTween = transform.DOMove((Vector3)newPosition, TravelTime).SetUpdate(UpdateType.Fixed);
-                _moveTween.onComplete = ResetMovementValues;
-            }
+            if (_moveLerp?.IsPlaying() == true)
+                _moveLerp.Kill();
 
-            MoveDirection = (_currentPanel.Position - _position).GetNormalized();
+            _moveLerp = FixedLerp.DoMove(EntityTransform, newPosition, TravelTime);
+            _moveLerp.onComplete += ResetMovementValues;
+
+            MoveDirection = (_currentPanel.Position - Position).GetNormalized();
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
@@ -881,7 +872,7 @@ namespace Lodis.Movement
             //Updates the current panel
             _currentPanel = _targetPanel;
             _currentPanel.Occupied = !CanBeWalkedThrough;
-            _position = _currentPanel.Position;
+            Position = _currentPanel.Position;
         }
 
         private void SpawnTeleportEffect()
@@ -936,11 +927,11 @@ namespace Lodis.Movement
 
             _searchingForSafePanel = true;
             int offSet = 0;
-            float defaultMoveSpeed = _speed;
+            float defaultMoveSpeed = _speedFloat;
             PanelBehaviour panel = null;
 
             CancelMovement();
-            _speed = _opponentPanelSpeedReduction;
+            _speedFloat = _opponentPanelSpeedReductionFloat;
 
             AddOnMoveBeginTempAction(() => 
             { 
@@ -954,7 +945,7 @@ namespace Lodis.Movement
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
             {
-                _speed = defaultMoveSpeed;
+                _speedFloat = defaultMoveSpeed;
                 _searchingForSafePanel = false;
                 if (offSet > 1)
                 {
@@ -989,10 +980,10 @@ namespace Lodis.Movement
         /// </summary>
         public void CancelMovement()
         {
-            if (!IsMoving || _moveTween == null)
+            if (!IsMoving || _moveLerp == null)
                 return;
 
-            _moveTween.Kill();
+            _moveLerp.Kill();
             _currentPanel.Occupied = false;
             _currentPanel = PreviousPanel;
             _targetPanel = null;
@@ -1019,30 +1010,15 @@ namespace Lodis.Movement
             }
         }
 
-        private void OnDestroy()
+        public override void End()
         {
             if (_currentPanel)
                 _currentPanel.Occupied = false;
         }
 
-        private void FixedUpdate()
+        public override void Tick(Fixed32 dt)
         {
-            //If the character is above the max y position...
-            if (transform.position.y > MaxYPosition.Value)
-            {
-                //...clamp their height.
-                Vector3 newPostion = new Vector3(transform.position.x, MaxYPosition.Value, transform.position.z);
-                transform.position = newPostion;
-            }
-
-
-            if (!_checkIfBehindBarrier) return;
-
-            IsBehindBarrier = Physics.Raycast(transform.position, transform.forward, BlackBoardBehaviour.Instance.Grid.PanelSpacingX, LayerMask.GetMask("Structure"));
-        }
-
-        private void Update()
-        {
+            //Old update
             if (!_canMove || _health?.Stunned == true)
                 return;
 
@@ -1051,10 +1027,10 @@ namespace Lodis.Movement
             if (!_currentPanel)
                 return;
 
-            if (FVector3.Distance((FVector3)transform.position, (FVector3)_currentPanel.transform.position + FVector3.Up  * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
+            if (FVector3.Distance((FVector3)EntityTransform.Position, (FVector3)_currentPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
                 MoveToCurrentPanel();
 
-            SetIsMoving(FVector3.Distance((FVector3)transform.position, _targetPosition) >= _targetTolerance);
+            SetIsMoving(FVector3.Distance(EntityTransform.Position, _targetPosition) >= _targetTolerance);
 
             string state = BlackBoardBehaviour.Instance.GetPlayerState(gameObject);
 
@@ -1062,11 +1038,41 @@ namespace Lodis.Movement
                 return;
 
             if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
-                transform.rotation = Quaternion.Euler(0, -90, 0);
+                EntityTransform.Rotation = FQuaternion.Euler(0, -90, 0);
             else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
-                transform.rotation = Quaternion.Euler(0, 90, 0);
+                EntityTransform.Rotation = FQuaternion.Euler(0, 90, 0);
+
+            //Old fixed update
+            //If the character is above the max y position...
+            if (transform.position.y > MaxYPosition.Value)
+            {
+                //...clamp their height.
+                FVector3 newPostion = new FVector3(EntityTransform.Position.X, MaxYPosition.Value, EntityTransform.Position.Z);
+                EntityTransform.Position = newPostion;
+            }
+
+            //if (!_checkIfBehindBarrier) return;
+
+            //IsBehindBarrier = Physics.Raycast(transform.position, transform.forward, BlackBoardBehaviour.Instance.Grid.PanelSpacingX, LayerMask.GetMask("Structure"));
         }
 
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_isMoving);
+            bw.Write(_canMove);
+            bw.Write(_canCancelMovement);
+            bw.Write(_alwaysLookAtOpposingSide);
+            bw.Write(_moveToAlignedSideIfStuck);
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            _isMoving = br.ReadBoolean();
+            _canMove = br.ReadBoolean();
+            _canCancelMovement = br.ReadBoolean();
+            _alwaysLookAtOpposingSide = br.ReadBoolean();
+            _moveToAlignedSideIfStuck = br.ReadBoolean();
+        }
     }
 }
 

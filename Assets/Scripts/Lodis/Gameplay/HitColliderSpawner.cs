@@ -1,99 +1,19 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Utility;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
 {
     public static class HitColliderSpawner
     {
+        
         /// <summary>
-        /// Spawns a new sphere collider
-        /// </summary>
-        /// <param name="position">The world position of this collider</param>
-        /// <param name="radius">The size of the sphere colliders radius</param>
-        /// <param name="damage">The amount of damage this collider will do</param>
-        /// <param name="baseKnockBack">How far this object will knock others back</param>
-        /// <param name="hitAngle">THe angle that objects hit by this collider will be launched at</param>
-        /// <param name="despawnAfterTimeLimit">Whether or not this collider should despawn after a given time</param>
-        /// <param name="timeActive">The amount of time this actor can be active for</param>
-        /// <param name="owner">The owner of this collider. Collision with owner are ignored</param>
-        /// <returns>A new collider with the given parameters</returns>
-        public static HitColliderBehaviour SpawnSphereCollider(Vector3 position, float radius, float damage,
-            float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
-            float timeActive = 0, GameObject owner = null)
-        {
-            GameObject hitObject = new GameObject();
-            hitObject.name = owner.name + " SphereCollider";
-            SphereCollider collider = hitObject.AddComponent<SphereCollider>();
-            hitObject.transform.position = position;
-            collider.isTrigger = true;
-            collider.radius = radius;
-
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
-                owner,false, false, true);
-
-            return hitScript;
-        }
-
-        /// <summary>
-        /// Spawns a new sphere collider
-        /// </summary>
-        /// <param name="parent">The game object this collider will be attached to</param>
-        /// <param name="radius">The size of the sphere colliders radius</param>
-        /// <param name="damage">The amount of damage this collider will do</param>
-        /// <param name="baseKnockBack">How far this object will knock others back</param>
-        /// <param name="hitAngle">THe angle that objects hit by this collider will be launched at</param>
-        /// <param name="despawnAfterTimeLimit">Whether or not this collider should despawn after a given time</param>
-        /// <param name="timeActive">The amount of time this actor can be active for</param>
-        /// <param name="owner">The owner of this collider. Collision with owner are ignored</param>
-        /// <returns></returns>
-        public static HitColliderBehaviour SpawnSphereCollider(Transform parent, float radius, float damage, 
-            float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit, float timeActive = 0,
-            GameObject owner = null)
-        {
-            GameObject hitObject = new GameObject();
-            hitObject.name = owner.name + " SphereCollider";
-            SphereCollider collider = hitObject.AddComponent<SphereCollider>();
-            hitObject.transform.parent = parent;
-            collider.isTrigger = true;
-            collider.radius = radius;
-
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
-                owner, false, false, true);
-
-            return hitScript;
-        }
-
-        /// <summary>
-        /// Spawns a new sphere collider
-        /// </summary>
-        /// <param name="parent">The game object this collider will be attached to</param>
-        /// <param name="radius">The size of the sphere colliders radius</param>
-        /// <param name="hitCollider">The hit collider this collider will copy its values from</param>
-        /// <returns></returns>
-        public static HitColliderBehaviour SpawnSphereCollider(Transform parent, float radius, HitColliderBehaviour hitCollider)
-        {
-            GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.Owner.name + " SphereCollider";
-            SphereCollider collider = hitObject.AddComponent<SphereCollider>();
-            hitObject.transform.parent = parent;
-            hitObject.transform.localPosition = Vector3.zero;
-            collider.isTrigger = true;
-            collider.radius = radius;
-
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            HitColliderBehaviour.Copy(hitCollider, hitScript);
-
-            return hitScript;
-        }
-
-        /// <summary>
-        /// Spawns a new 
+        /// Spawns a new entity with a grid collider attached.
         /// </summary>
         /// <param name="position"></param>
         /// <param name="size"></param>
@@ -104,20 +24,32 @@ namespace Lodis.Gameplay
         /// <param name="timeActive"></param>
         /// <param name="owner"></param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, float damage,
+        public static HitColliderBehaviour SpawnCollider(FVector3 position, Fixed32 width, Fixed32 height, float damage,
             float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
-            float timeActive = 0, GameObject owner = null)
+            float timeActive = 0, EntityData owner = null, MarkerType marker = MarkerType.DANGER)
         {
-            GameObject hitObject = new GameObject();
-            hitObject.name = owner.name + "BoxCollider";
-            BoxCollider collider = hitObject.AddComponent<BoxCollider>();
-            hitObject.transform.position = position;
-            collider.isTrigger = true;
-            collider.size = size;
+            //Create a new grid collider in the simulation
+            EntityData colliderEntity = GridGame.SpawnEntity(position);
+            colliderEntity.Name = owner.Name + "Collider";
 
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
-                owner, false, false, true);
+            //Initialize collider stats
+            HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
+            HitColliderData info = new HitColliderData()
+            {
+                Damage = damage,
+                BaseKnockBack = baseKnockBack,
+                HitAngle = hitAngle,
+                DespawnAfterTimeLimit = despawnAfterTimeLimit,
+                TimeActive = timeActive
+            };
+
+            //Set colliders settings
+            GridTrackerBehaviour tracker = colliderEntity.UnityObject.AddComponent<GridTrackerBehaviour>();
+            tracker.Marker = MarkerType.DANGER;
+
+            hitScript.InitCollider(width, height, owner);
+            hitScript.ColliderInfo = info;
+            hitScript.EntityCollider.Overlap = true;
 
             return hitScript;
         }
@@ -129,21 +61,22 @@ namespace Lodis.Gameplay
         /// <param name="size">The dimension of this collider</param>
         /// <param name="hitCollider">The hit collider this collider will copy its values from</param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnBoxCollider(Vector3 position, Vector3 size, HitColliderData hitCollider, GameObject owner)
+        public static HitColliderBehaviour SpawnCollider(FVector3 position, Fixed32 width, Fixed32 height, HitColliderData info, EntityData owner)
         {
-            GameObject hitObject = new GameObject();
-            hitObject.name = hitCollider.OwnerAlignement + "BoxCollider";
-            BoxCollider collider = hitObject.AddComponent<BoxCollider>();
-            hitObject.transform.position = position;
-            collider.isTrigger = true;
-            collider.size = size;
+            //Create a new grid collider in the simulation
+            EntityData colliderEntity = GridGame.SpawnEntity(position);
+            colliderEntity.Name = owner.Name + "Collider";
 
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
+            //Initialize collider stats
+            HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
+
+            //Set colliders settings
+            GridTrackerBehaviour tracker = colliderEntity.UnityObject.AddComponent<GridTrackerBehaviour>();
             tracker.Marker = MarkerType.DANGER;
 
-            hitScript.ColliderInfo = hitCollider;
-            hitScript.Owner = owner;
+            hitScript.InitCollider(width, height, owner);
+            hitScript.ColliderInfo = info;
+            hitScript.EntityCollider.Overlap = true;
 
             return hitScript;
         }
@@ -160,23 +93,64 @@ namespace Lodis.Gameplay
         /// <param name="timeActive">The amount of time this actor can be active for</param>
         /// <param name="owner">The owner of this collider. Collision with owner are ignored</param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, float damage,
-            float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
-            float timeActive, GameObject owner = null)
+        public static HitColliderBehaviour SpawnCollider(FTransform parent, Fixed32 width, Fixed32 height, HitColliderData info, EntityData owner = null)
         {
-            GameObject hitObject = new GameObject();
-            hitObject.name = owner.name + "BoxCollider";
-            BoxCollider collider = hitObject.AddComponent<BoxCollider>();
-            hitObject.transform.parent = parent;
-            hitObject.transform.localPosition = Vector3.zero;
-            collider.isTrigger = true;
-            collider.size = size;
+            //Create a new grid collider in the simulation
+            EntityData colliderEntity = GridGame.SpawnEntity(owner);
+            colliderEntity.Name = owner.Name + "Collider";
 
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
+            //Initialize collider stats
+            HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
+
+            //Set colliders settings
+            GridTrackerBehaviour tracker = colliderEntity.UnityObject.AddComponent<GridTrackerBehaviour>();
             tracker.Marker = MarkerType.DANGER;
-            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
-                owner, false, false, true);
+
+            hitScript.InitCollider(width, height, owner);
+            hitScript.ColliderInfo = info;
+            hitScript.EntityCollider.Overlap = true;
+
+            return hitScript;
+        }
+
+        /// <summary>
+        /// Spawns a new box collider
+        /// </summary>
+        /// <param name="parent">The game object this collider will be attached to</param>
+        /// <param name="size">The dimension of the box collider</param>
+        /// <param name="damage">The amount of damage this collider will do</param>
+        /// <param name="baseKnockBack">How far this object will knock others back</param>
+        /// <param name="hitAngle">THe angle that objects hit by this collider will be launched at</param>
+        /// <param name="despawnAfterTimeLimit">Whether or not this collider should despawn after a given time</param>
+        /// <param name="timeActive">The amount of time this actor can be active for</param>
+        /// <param name="owner">The owner of this collider. Collision with owner are ignored</param>
+        /// <returns></returns>
+        public static HitColliderBehaviour SpawnCollider(FTransform parent, Fixed32 width, Fixed32 height, float damage,
+            float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
+            float timeActive, EntityData owner = null)
+        {
+            //Create a new grid collider in the simulation
+            EntityData colliderEntity = GridGame.SpawnEntity(owner);
+            colliderEntity.Name = owner.Name + "Collider";
+
+            //Initialize collider stats
+            HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
+            HitColliderData info = new HitColliderData()
+            {
+                Damage = damage,
+                BaseKnockBack = baseKnockBack,
+                HitAngle = hitAngle,
+                DespawnAfterTimeLimit = despawnAfterTimeLimit,
+                TimeActive = timeActive
+            };
+
+            //Set colliders settings
+            GridTrackerBehaviour tracker = colliderEntity.UnityObject.AddComponent<GridTrackerBehaviour>();
+            tracker.Marker = MarkerType.DANGER;
+
+            hitScript.InitCollider(width, height, owner);
+            hitScript.ColliderInfo = info;
+            hitScript.EntityCollider.Overlap = true;
 
             return hitScript;
         }
@@ -189,106 +163,36 @@ namespace Lodis.Gameplay
         /// <param name="hitCollider">The hit collider this collider will copy its values from</param>
         /// <returns></returns>
         /// <param name="owner"></param>
-        public static HitColliderBehaviour SpawnBoxCollider(Transform parent, Vector3 size, HitColliderData hitCollider, GameObject owner)
-        {
-            GameObject hitObject = null;
+        //public static HitColliderBehaviour SpawnCollider(Fixed32 width, Fixed32 height, FVector3 location, int panelY, HitColliderData hitCollider, GameObject owner)
+        //{
+        //    GameObject hitObject = null;
 
-            bool colliderExisted = ObjectPoolBehaviour.Instance.GetObject(out hitObject, owner.name + hitCollider.Name + " BoxCollider", parent, true, true);
+           
 
-            HitColliderBehaviour hitScript;
+        //    bool colliderExisted = ObjectPoolBehaviour.Instance.GetObject(out hitObject, owner.name + hitCollider.Name + " BoxCollider", null, true, true);
 
-            hitObject.name = owner.name + hitCollider.Name + " BoxCollider";
-            BoxCollider collider = colliderExisted? hitObject.GetComponent<BoxCollider>() : hitObject.AddComponent<BoxCollider>();
-            hitObject.transform.SetParent(parent);
-            hitObject.transform.localPosition = Vector3.zero;
-            hitObject.transform.localRotation = Quaternion.identity;
-            collider.isTrigger = true;
-            collider.size = size;
+        //    HitColliderBehaviour hitScript;
 
-            if (hitObject.TryGetComponent(out hitScript))
-                return hitScript;
+        //    hitObject.name = owner.name + hitCollider.Name + " BoxCollider";
+        //    BoxCollider collider = colliderExisted? hitObject.GetComponent<BoxCollider>() : hitObject.AddComponent<BoxCollider>();
+        //    hitObject.transform.SetParent(parent);
+        //    hitObject.transform.localPosition = Vector3.zero;
+        //    hitObject.transform.localRotation = Quaternion.identity;
+        //    collider.isTrigger = true;
+        //    collider.size = size;
 
-            hitScript = colliderExisted ? hitObject.GetComponent<HitColliderBehaviour>() : hitObject.AddComponent<HitColliderBehaviour>();
-            GridTrackerBehaviour tracker = colliderExisted ? hitObject.GetComponent<GridTrackerBehaviour>() : hitObject.AddComponent<GridTrackerBehaviour>();
-            tracker.Marker = MarkerType.DANGER;
-            hitScript.ColliderInfo = hitCollider;
-            hitScript.Owner = owner;
+        //    if (hitObject.TryGetComponent(out hitScript))
+        //        return hitScript;
 
-            return hitScript;
-        }
+        //    hitScript = colliderExisted ? hitObject.GetComponent<HitColliderBehaviour>() : hitObject.AddComponent<HitColliderBehaviour>();
+        //    GridTrackerBehaviour tracker = colliderExisted ? hitObject.GetComponent<GridTrackerBehaviour>() : hitObject.AddComponent<GridTrackerBehaviour>();
+        //    tracker.Marker = MarkerType.DANGER;
+        //    hitScript.ColliderInfo = hitCollider;
+        //    hitScript.Owner = owner;
 
-        /// <summary>
-        /// Spawns a new capsule collider
-        /// </summary>
-        /// <param name="position">The world position of this collider</param>
-        /// <param name="radius">The length of the radius of this collider</param>
-        /// <param name="height">How tall this collider is</param>
-        /// <param name="damage">The amount of damage this collider will do to objects</param>
-        /// <param name="baseKnockBack">How far will objects hit by this collider will travel</param>
-        /// <param name="hitAngle">The angle objects hit by this collider are launched</param>
-        /// <param name="rotation">The orientation of this collider</param>
-        /// <param name="despawnAfterTimeLimit">Whether or not this collider will despawn after a given time</param>
-        /// <param name="timeActive">The amount of time this collider is going to be active for</param>
-        /// <param name="owner">The game object that owns this collider. Collision with this object will be ignored</param>
-        /// <returns></returns>
-        public static HitColliderBehaviour SpawnCapsuleCollider(Vector3 position, float radius, float height, 
-            float damage, float baseKnockBack, float hitAngle, 
-            Quaternion rotation, bool despawnAfterTimeLimit, float timeActive = 0,
-            GameObject owner = null)
-        {
-            GameObject hitObject = new GameObject();
-            hitObject.name = owner.name + "CapsuleCollider";
-            CapsuleCollider collider = hitObject.AddComponent<CapsuleCollider>();
-            hitObject.transform.position = position;
-            collider.isTrigger = true;
-            collider.radius = radius;
-            collider.height = height;
-            hitObject.transform.rotation = rotation;
+        //    return hitScript;
+        //}
 
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
-            tracker.Marker = MarkerType.DANGER;
-            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
-                owner, false, false, true);
-
-            return hitScript;
-        }
-
-        /// <summary>
-        /// Spawns a new capsule collider
-        /// </summary>
-        /// <param name="parent">The game object that this collider is attached to</param>
-        /// <param name="radius">The length of the radius of this collider</param>
-        /// <param name="height">How tall this collider is</param>
-        /// <param name="damage">The amount of damage this collider will do to objects</param>
-        /// <param name="baseKnockBack">How far will objects hit by this collider will travel</param>
-        /// <param name="hitAngle">The angle objects hit by this collider are launched</param>
-        /// <param name="rotation">The orientation of this collider</param>
-        /// <param name="despawnAfterTimeLimit">Whether or not this collider will despawn after a given time</param>
-        /// <param name="timeActive">The amount of time this collider is going to be active for</param>
-        /// <param name="owner">The game object that owns this collider. Collision with this object will be ignored</param>
-        /// <returns></returns>
-        public static HitColliderBehaviour SpawnCapsuleCollider(Transform parent, float radius, float height,
-            float damage, float baseKnockBack, float hitAngle, Quaternion rotation,  bool despawnAfterTimeLimit,
-            float timeActive = 0, GameObject owner = null)
-        {
-            GameObject hitObject = new GameObject();
-            hitObject.name = owner.name + "CapsuleCollider";
-            CapsuleCollider collider = hitObject.AddComponent<CapsuleCollider>();
-            hitObject.transform.parent = parent;
-            collider.isTrigger = true;
-            collider.radius = radius;
-            collider.height = height;
-            hitObject.transform.rotation = rotation;
-
-            HitColliderBehaviour hitScript = hitObject.AddComponent<HitColliderBehaviour>();
-            GridTrackerBehaviour tracker = hitObject.AddComponent<GridTrackerBehaviour>();
-            tracker.Marker = MarkerType.DANGER;
-            hitScript.Init(damage, baseKnockBack, hitAngle, despawnAfterTimeLimit, timeActive,
-                owner, false, false, true);
-
-            return hitScript;
-        }
     }
 }
 

@@ -17,9 +17,9 @@ namespace Lodis.Gameplay
         private HitColliderData _projectileCollider;
         private Vector3 _defaultScale;
 
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
 
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_Straight_Data"));

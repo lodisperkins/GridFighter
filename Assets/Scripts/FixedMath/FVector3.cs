@@ -1,6 +1,8 @@
 using System;
+using System.IO;
 using Types;
 using UnityEngine;
+using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
 
 
 namespace FixedPoints
@@ -71,6 +73,20 @@ namespace FixedPoints
             X /= magnitude;
             Y /= magnitude;
             Z /= magnitude;
+        }
+
+        public void Serialize(BinaryWriter bw)
+        {
+            X.Serialize(bw);
+            Y.Serialize(bw);
+            Z.Serialize(bw);
+        }
+
+        public void Deserialize(BinaryReader br)
+        {
+            X.Deserialize(br);
+            Y.Deserialize(br);
+            Z.Deserialize(br);
         }
 
         /// <summary>
@@ -394,5 +410,17 @@ namespace FixedPoints
             return new FVector2(vector.X, vector.Y);
         }
 
+        public static FVector3 operator *(FVector3 point, FQuaternion rotation)
+        {
+            return rotation * point;
+        }
+
+        /// <summary>
+        /// Scales a vector by another vector.
+        /// </summary>
+        /// <param name="a">The first vector.</param>
+        /// <param name="b">The second vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static FVector3 Scale(FVector3 a, FVector3 b) => new FVector3(a.X * b.X, a.Y * b.Y, a.Z * b.Z);
     }
 }

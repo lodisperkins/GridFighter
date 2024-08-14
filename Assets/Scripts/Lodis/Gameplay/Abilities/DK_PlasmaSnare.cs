@@ -39,18 +39,18 @@ namespace Lodis.Gameplay
         private float _spawnDistance;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             _chargeEffectRef = abilityData.Effects[0];
-            _opponentParent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform.parent;
+            _opponentParent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).transform.parent;
         }
 
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
             _spawnDistance = abilityData.GetCustomStatValue("SpawnDistance");
-            _opponentTransform = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner).transform;
+            _opponentTransform = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).transform;
             _opponentKnockback = _opponentTransform.GetComponent<KnockbackBehaviour>();
 
             _panelTransform = GetTarget();
@@ -108,10 +108,10 @@ namespace Lodis.Gameplay
             return transform;
         }
 
-        private void LiftOpponent(params object[] args)
+        private void LiftOpponent(Collision collision)
         {
             //Only check knockback if a player was hit.
-            GameObject other = (GameObject)args[0];
+            GameObject other = collision.Entity.UnityObject;
             if (!other.CompareTag("Player"))
                 return;
 
@@ -171,7 +171,7 @@ namespace Lodis.Gameplay
             }
 
             //Spawn the new sphere and set its effect to inactive by default. The effect should only appear when the opponent is lifted.
-            _auraSphere = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, _spawnPosition, owner.transform.rotation);
+            _auraSphere = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, _spawnPosition, Owner.transform.rotation);
             _auraSphere.transform.GetChild(0).gameObject.SetActive(false);
             _returnToPool = _auraSphere.GetComponent<GameEventListener>();
             _returnToPool.AddAction(() =>
@@ -194,7 +194,7 @@ namespace Lodis.Gameplay
             _collider = _auraSphere.GetComponent<HitColliderBehaviour>();
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             _collider.ColliderInfo = GetColliderData(0);
-            _collider.Owner = owner;
+            _collider.Owner = Owner;
             _collider.ColliderInfo.OnHit += LiftOpponent;
             
             DisableAccessory();

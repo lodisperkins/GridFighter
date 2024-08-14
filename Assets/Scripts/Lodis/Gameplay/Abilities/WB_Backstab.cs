@@ -17,9 +17,9 @@ namespace Lodis.Gameplay
         private GameObject _chargeEffect;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             _chargeEffectRef = abilityData.Effects[0];
         }
 
@@ -64,7 +64,7 @@ namespace Lodis.Gameplay
 
             _projectileSpawner.Projectile = ProjectileRef;
 
-            ShotDirection = _projectileSpawner.transform.forward;
+            ShotDirection = (FixedPoints.FVector3)_projectileSpawner.transform.forward;
 
             Projectile = _projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), ProjectileColliderData, UseGravity);
 

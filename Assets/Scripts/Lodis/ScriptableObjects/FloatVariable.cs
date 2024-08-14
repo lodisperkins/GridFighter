@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.ScriptableObjects
@@ -10,6 +11,8 @@ namespace Lodis.ScriptableObjects
     {
         [SerializeField]
         private float _val;
+        private Fixed32 _fixedVal;
+        
         public float Value
         {
             get
@@ -19,12 +22,27 @@ namespace Lodis.ScriptableObjects
             set
             {
                 _val = value;
+                _fixedVal = (Fixed32)value;
+            }
+        }
+
+        public Fixed32 FixedValue
+        {
+            get
+            {
+                return _fixedVal;
+            }
+            set
+            {
+                _fixedVal = value;
+                _val = value;
             }
         }
 
         public void Init(float value)
         {
             _val = value;
+            _fixedVal = value;
         }
 
         public static FloatVariable CreateInstance(float value)

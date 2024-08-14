@@ -15,9 +15,9 @@ namespace Lodis.Gameplay
         private List<PanelBehaviour> _targetPanels = new List<PanelBehaviour>();
 
 	    //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             OnMoveEndAction += DisableAllEntities;
             SmoothMovement = true;
         }

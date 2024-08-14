@@ -39,27 +39,27 @@ namespace Lodis.Gameplay
             if (!gridPhysics) return;
             
             //Don't reflect if this is the owner's projectile
-            if (otherCollider.Owner == _collider.gameObject)
+            if (otherCollider.Owner == _collider.Owner)
                 return;
 
             //Change the projectiles owner and velocity
             otherCollider.Owner = _collider.Owner;
             otherCollider.ColliderInfo.OwnerAlignement = _collider.Owner.GetComponent<GridMovementBehaviour>().Alignment;
             otherCollider.ResetActiveTime();
-            gridPhysics.ApplyVelocityChange((Vector3)(-gridPhysics.LastVelocity * 2f));
+            gridPhysics.ApplyVelocityChange(-gridPhysics.Velocity * 2f);
         }
 
         /// <summary>
         /// Stuns the attacker if there is a health script attached to the parent.
         /// </summary>
         /// <param name="other">The object that attacked this reflector</param>
-        public void TryStunAttacker(GameObject other)
+        public void TryStunAttacker(EntityData other)
         {
             //If the object is the owner of this collider return
             if (other == _collider.Owner) return;
 
             //Only stun if this object has a health component and isn't already stunned
-            HealthBehaviour healthBehaviour = other.GetComponentInChildren<HealthBehaviour>();
+            HealthBehaviour healthBehaviour = other.UnityObject.GetComponentInChildren<HealthBehaviour>();
             if (!healthBehaviour)
                 return;
             if (healthBehaviour.Stunned) return;
@@ -68,17 +68,17 @@ namespace Lodis.Gameplay
             healthBehaviour.Stun(_attackerStunTime);
         }
 
-        private void OnCollision(params object[] args)
+        private void OnCollision(Collision collision)
         {
-            GameObject other = (GameObject)args[0];
-            HitColliderBehaviour hitCollider = args[1] as HitColliderBehaviour;
+            GameObject other = collision.Entity.UnityObject;
+            HitColliderBehaviour hitCollider = collision.Entity.GetComponent<HitColliderBehaviour>();
 
             if (!hitCollider || !CompareTag("Reflector")) return;
 
             //If the hitbox is attached to a character stun them
             if (other.transform.root.CompareTag("Player") || other.transform.root.CompareTag("Entity"))
             {
-                TryStunAttacker(other.transform.root.gameObject);
+                TryStunAttacker(collision.Entity);
                 return;
             }
 

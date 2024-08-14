@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using FixedPoints;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,31 +11,25 @@ namespace Lodis.Movement
         [SerializeField]
         private float _pushScale;
 
-        protected override void OnCollisionEnter(Collision collision) 
+        public override void OnHitEnter(Collision collision) 
         {
-            //Calculate the knockback and hit angle for the ricochet
-            ContactPoint contactPoint = collision.GetContact(0);
-
             //Adds a force to objects to push them off of the field barrier if they land on top
-            if (contactPoint.normal != Vector3.down)
-                base.OnCollisionEnter(collision);
+            if (collision.Normal != FVector2.Down)
+                base.OnHitEnter(collision);
         }
 
-        private void OnCollisionStay(Collision collision)
+        public override void OnHitStay(Collision collision)
         {
-            Movement.KnockbackBehaviour knockBackScript = collision.gameObject.GetComponent<Movement.KnockbackBehaviour>();
+            Movement.KnockbackBehaviour knockBackScript = collision.Collider.OwnerPhysicsComponent.GetComponent<Movement.KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
             if (!knockBackScript)
                 return;
 
-            //Calculate the knockback and hit angle for the ricochet
-            ContactPoint contactPoint = collision.GetContact(0);
-
             //Adds a force to objects to push them off of the field barrier if they land on top
-            if (contactPoint.normal == Vector3.down)
+            if (collision.Normal != FVector2.Down)
             {
-                Vector3 pushVelocity = new Vector3(knockBackScript.Physics.LastVelocity.X, _pushScale, 0);
-                knockBackScript.Physics.ApplyImpulseForce(Vector3.up * knockBackScript.Physics.Gravity / 10);
+                FVector3 pushVelocity = new FVector3(knockBackScript.Physics.Velocity.X, _pushScale, 0);
+                knockBackScript.Physics.ApplyImpulseForce(FVector3.Up * knockBackScript.Physics.Gravity / 10);
                 knockBackScript.Physics.ApplyForce(pushVelocity);
             }
         }

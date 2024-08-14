@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.Utility;
+using Lodis.Movement;
 
 namespace Lodis.Gameplay
 {
@@ -18,6 +19,10 @@ namespace Lodis.Gameplay
         private MeshRenderer _healthRenderer;
         [SerializeField]
         private Gradient _healthGradient;
+
+        //---
+        public GridMovementBehaviour Movement { get; set; }
+
         public string Owner { get => _owner; set => _owner = value; }
 
         // Start is called before the first frame update
@@ -38,21 +43,21 @@ namespace Lodis.Gameplay
         /// <param name="hitAngle">The angle to launch this object. Ignore for barriers</param>
         /// <param name="damageType">The type of damage being received</param>
         /// <returns>The amount of damage taken. Returns 0 if the attacker was the owner and if the type wasn't knock back </returns>
-        public override float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
-        {
-            if (attacker.name == Owner && damageType == DamageType.KNOCKBACK || attacker.name != Owner && damageType != DamageType.KNOCKBACK || Owner == "")
-                return base.TakeDamage(gameObject, damage, baseKnockBack, hitAngle, damageType);
+        //public override float TakeDamage(GameObject attacker, float damage, float baseKnockBack = 0, float hitAngle = 0, DamageType damageType = DamageType.DEFAULT, float hitStun = 0)
+        //{
+        //    if (attacker.name == Owner && damageType == DamageType.KNOCKBACK || attacker.name != Owner && damageType != DamageType.KNOCKBACK || Owner == "")
+        //        return base.TakeDamage(gameObject, damage, baseKnockBack, hitAngle, damageType);
 
-            return 0;
-        }
+        //    return 0;
+        //}
 
-        public override float TakeDamage(HitColliderData info, GameObject attacker)
-        {
-            if (attacker.name == Owner && info.TypeOfDamage == DamageType.KNOCKBACK || attacker.name != Owner && info.TypeOfDamage != DamageType.KNOCKBACK || Owner == "")
-                return base.TakeDamage(info, attacker);
+        //public override float TakeDamage(HitColliderData info, GameObject attacker)
+        //{
+        //    if (attacker.name == Owner && info.TypeOfDamage == DamageType.KNOCKBACK || attacker.name != Owner && info.TypeOfDamage != DamageType.KNOCKBACK || Owner == "")
+        //        return base.TakeDamage(info, attacker);
 
-            return 0;
-        }
+        //    return 0;
+        //}
 
        
 

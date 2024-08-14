@@ -17,13 +17,13 @@ namespace Lodis.Gameplay
         private HitColliderData _projectileCollider;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
 
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SS_DoubleShot_Data"));
-            owner = newOwner;
+            Owner = newOwner;
 
             //Load the projectile prefab
             _projectile = abilityData.visualPrefab;

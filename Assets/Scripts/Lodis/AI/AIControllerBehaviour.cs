@@ -69,7 +69,7 @@ namespace Lodis.AI
         private GridPhysicsBehaviour _gridPhysics;
         private IntVariable _playerID;
         private BufferedInput _bufferedAction;
-        private DefenseNode _lastDefenseDecision;
+        //private DefenseNode _lastDefenseDecision;
 
         [SerializeField]
         private bool _copyAttacks;
@@ -175,7 +175,7 @@ namespace Lodis.AI
         public bool CopyAttacks { get => _copyAttacks; set => _copyAttacks = value; }
 
         public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
-        public DefenseNode LastDefenseDecision { get => _lastDefenseDecision; set => _lastDefenseDecision = value; }
+        //public DefenseNode LastDefenseDecision { get => _lastDefenseDecision; set => _lastDefenseDecision = value; }
 
         public void LoadDecisions()
         {
@@ -351,12 +351,12 @@ namespace Lodis.AI
             _abilityBuffered = true;
         }
 
-        private Vector3 GetAverageVelocity()
+        private FVector3 GetAverageVelocity()
         {
             _attacksInRange = BlackBoardBehaviour.Instance.GetActiveColliders(_opponentMove.Alignment);
-            Vector3 averageVelocity = Vector3.zero;
+            FVector3 averageVelocity = FVector3.Zero;
 
-            if (_attacksInRange == null) return Vector3.zero;
+            if (_attacksInRange == null) return FVector3.Zero;
 
             _attacksInRange.RemoveAll(physics =>
             {
@@ -364,11 +364,11 @@ namespace Lodis.AI
             });
 
             if (_attacksInRange.Count == 0)
-                return Vector3.zero;
+                return FVector3.Zero;
 
             for (int i = 0; i < _attacksInRange.Count; i++)
-                if (_attacksInRange[i].RB)
-                    averageVelocity += _attacksInRange[i].RB.velocity;
+                if (_attacksInRange[i].GridPhysics)
+                    averageVelocity += _attacksInRange[i].GridPhysics.Velocity;
 
             return averageVelocity;
         }
@@ -471,7 +471,7 @@ namespace Lodis.AI
             //Update opponent values
             _currentSituation.OwnerToTarget = _opponent.transform.position - _character.transform.position;
             _currentSituation.OpponentState = BlackBoardBehaviour.Instance.GetPlayerState(Opponent);
-            _currentSituation.OpponentVelocity = _opponentGridPhysics.LastVelocity;
+            _currentSituation.OpponentVelocity = _opponentGridPhysics.Velocity;
             _currentSituation.OpponentEnergy = _opponentMoveset.Energy;
             _currentSituation.OpponentMoveDirection = _opponentMove.MoveDirection;
             _currentSituation.OpponentHealth = _opponentKnocback.Health;

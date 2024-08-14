@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Reflection;
 using Lodis.Utility;
+using FixedPoints;
 
 namespace Lodis.Gameplay
 {
@@ -16,7 +17,7 @@ namespace Lodis.Gameplay
         public Transform SpawnTransform;
         //Usd to store a reference to the projectile prefab
         public GameObject ProjectileRef;
-        public Vector3 ShotDirection;
+        public FVector3 ShotDirection;
         public GameObject Projectile;
         //The collider attached to the projectile
         public HitColliderData ProjectileColliderData;
@@ -29,13 +30,13 @@ namespace Lodis.Gameplay
         public float Speed;
 
         public bool ScaleStats { get; set; }
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
 
             //initialize default stats
             
-            owner = newOwner;
+            Owner = newOwner;
             ProjectileRef = abilityData?.visualPrefab;
         }
 
@@ -72,7 +73,7 @@ namespace Lodis.Gameplay
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
             projectileSpawner.Projectile = ProjectileRef;
             SpawnTransform = projectileSpawner.transform;
-            ShotDirection = projectileSpawner.transform.forward;
+            ShotDirection = projectileSpawner.EntityTransform.Forward;
 
             HitColliderData data = ProjectileColliderData;
             if (ScaleStats)

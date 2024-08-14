@@ -29,9 +29,9 @@ namespace Lodis.Gameplay
         public UnityAction OnMoveEndAction { get => _onMoveEndAction; set => _onMoveEndAction = value; }
         public GridAlignment Alignement { get => _alignement; set => _alignement = value; }
 
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
             //Init stats
             EntityCount = (int)abilityData.GetCustomStatValue("EntityCount");
             _moveSpeed = abilityData.GetCustomStatValue("Speed");
@@ -42,7 +42,7 @@ namespace Lodis.Gameplay
             //Reference for entities to spawn.
             _entityRef = abilityData.visualPrefab;
 
-            _id = _entityRef.name + "(" + owner.name + ")";
+            _id = _entityRef.name + "(" + Owner.name + ")";
         }
 
         /// <summary>

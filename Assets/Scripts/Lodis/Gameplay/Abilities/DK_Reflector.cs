@@ -22,23 +22,20 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            _shield = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, owner.transform, true);
+            _shield = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform, true);
             _shieldCollider = _shield.GetComponent<ColliderBehaviour>();
-            _shieldCollider.Owner = owner;
+            _shieldCollider.Owner = Owner;
 
-            _shieldCollider.AddCollisionEvent(parameters =>
+            _shieldCollider.AddCollisionEvent(collision =>
             {
-                if (parameters.Length < 2)
-                    return;
-
-                HitColliderBehaviour other = parameters[1] as HitColliderBehaviour;
+                HitColliderBehaviour other = collision.Entity.GetComponent<HitColliderBehaviour>();
 
                 if (!other)
                     return;
 
                 //Spawns particles after block for player feedback
                 if (BlackBoardBehaviour.Instance.BlockEffect)
-                    ObjectPoolBehaviour.Instance.GetObject(BlackBoardBehaviour.Instance.ReflectEffect.gameObject, other.transform.position + Vector3.up, owner.transform.rotation);
+                    ObjectPoolBehaviour.Instance.GetObject(BlackBoardBehaviour.Instance.ReflectEffect.gameObject, other.transform.position + Vector3.up, Owner.transform.rotation);
 
                 MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, 0.1f);
                 EndAbility();

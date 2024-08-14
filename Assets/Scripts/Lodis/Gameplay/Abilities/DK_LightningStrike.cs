@@ -22,9 +22,9 @@ namespace Lodis.Gameplay
         private GameObject _stompEffect;
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             _stompEffectRef = abilityData.Effects[0];
         }
 
@@ -49,7 +49,7 @@ namespace Lodis.Gameplay
             if (!target) return;
 
             //Stores the opponents physics script to make them bounce later
-            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
+            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner);
             if (opponent == null) return;
             _opponentPhysics = opponent.GetComponent<GridPhysicsBehaviour>();
 
@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
             //Initialize hit collider
             _collider = _visualPrefabInstanceTransform.GetComponent<HitColliderBehaviour>();
             _collider.ColliderInfo = GetColliderData(0);
-            _collider.Owner = owner;
+            _collider.Owner = Owner;
 
             _collider.AddCollisionEvent(EnableBounce);
             //Activate hitboxes attached to lighting object
@@ -74,7 +74,7 @@ namespace Lodis.Gameplay
         {
             Transform transform = null;
 
-            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(owner);
+            GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner);
 
             PanelBehaviour targetPanel;
             if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(opponent.transform.position, out targetPanel) && targetPanel.Position.Y == OwnerMoveScript.Position.Y)
@@ -86,9 +86,9 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Makes the opponent bouncy after colliding with the ground.
         /// </summary>
-        private void EnableBounce(params object[] args)
+        private void EnableBounce(Collision collision)
         {
-            GameObject other = (GameObject)args[0];
+            GameObject other = collision.Entity.UnityObject;
 
             if (_opponentPhysics?.PanelBounceEnabled == true || other != _opponentPhysics.gameObject)
                 return;
@@ -108,7 +108,7 @@ namespace Lodis.Gameplay
         {
             if (!_visualPrefabInstanceTransform) return;
 
-            _stompEffect = MonoBehaviour.Instantiate(_stompEffectRef, owner.transform.position, Camera.main.transform.rotation);
+            _stompEffect = MonoBehaviour.Instantiate(_stompEffectRef, Owner.transform.position, Camera.main.transform.rotation);
 
             ToggleChildren();
         }

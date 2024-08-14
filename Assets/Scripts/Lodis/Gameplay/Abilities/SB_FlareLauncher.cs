@@ -11,9 +11,9 @@ namespace Lodis.Gameplay
     public class SB_FlareLauncher : ProjectileAbility
     {
 	    //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(newOwner);
+			base.Init(Owner);
             ScaleStats = true;
         }
 

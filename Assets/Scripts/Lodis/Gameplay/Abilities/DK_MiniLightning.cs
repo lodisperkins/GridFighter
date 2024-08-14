@@ -22,9 +22,9 @@ namespace Lodis.Gameplay
 
 
         //Called when ability is created
-        public override void Init(GameObject newOwner)
+        public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(newOwner);
+            base.Init(Owner);
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Lodis.Gameplay
                 //Initialize hit collider
                 _collider = _visualPrefabInstanceTransforms[i].GetComponent<HitColliderBehaviour>();
                 _collider.ColliderInfo = GetColliderData(i);
-                _collider.Owner = owner;
+                _collider.Owner = Owner;
 
                 if (i > 0)
                     _collider.ColliderInfo.TimeActive += _delay;

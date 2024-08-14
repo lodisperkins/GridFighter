@@ -315,7 +315,7 @@ namespace Lodis.Gameplay
             knockback.CancelHitStun();
             knockback.CancelStun();
             knockback.Physics.StopVelocity();
-            knockback.Physics.RB.isKinematic = true;
+            //knockback.Physics.RB.isKinematic = true;
 
             InputBehaviour input = _player1.GetComponent<InputBehaviour>();
             if (input)
@@ -333,7 +333,7 @@ namespace Lodis.Gameplay
             knockback.CancelHitStun();
             knockback.CancelStun();
             knockback.Physics.StopVelocity();
-            knockback.Physics.RB.isKinematic = true;
+            //knockback.Physics.RB.isKinematic = true;
 
             input = _player2.GetComponent<InputBehaviour>();
             if (input)
