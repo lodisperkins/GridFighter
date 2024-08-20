@@ -321,7 +321,7 @@ namespace Lodis.Input
             _knockbackBehaviour.AddOnTakeDamageAction(DisableCharge);
             _defaultSpeed = _gridMovement.Speed;
             MatchManagerBehaviour.Instance.AddOnMatchPauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate);
-            MatchManagerBehaviour.Instance.AddOnMatchUnpauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate);
+            MatchManagerBehaviour.Instance.AddOnMatchUnpauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually);
         }
 
         private void OnEnable()

@@ -8,11 +8,15 @@ using Types;
 using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
+using static UnityEngine.Rendering.DebugUI;
 
+/// <summary>
+/// Contains info pertaining to an entity in the rollback simulation.
+/// </summary>
 [System.Serializable]
 public class EntityData
 {
-    private List<SimulationBehaviour> _components;
+    private List<SimulationBehaviour> _components = new List<SimulationBehaviour>();
     private bool _active;
 
     public string Name;
@@ -26,21 +30,32 @@ public class EntityData
 
     public GameObject UnityObject;
 
-    public bool Active { get => _active; private set => _active = value; }
+    public bool Active 
+    { 
+        get => _active; 
+        set
+        {
+            _active = value;
+            UnityObject.SetActive(value);
+        }
+    }
 
-    public delegate void EntityUpdateEvent(float dt);
+    public delegate void EntityUpdateEvent(Fixed32 dt);
     public event EntityUpdateEvent OnTick;
 
     public delegate void EntityGameEvent();
+    public event EntityGameEvent OnInit;
     public event EntityGameEvent OnBegin;
     public event EntityGameEvent OnEnd;
 
     public EntityData()
     {
         Name = "New Entity";
+        Transform = new FTransform();
+        Init();
     }
 
-    public EntityData(string name)
+    public EntityData(string name) : this()
     {
         Name = name;
     }
@@ -57,6 +72,16 @@ public class EntityData
         Name = br.ReadString();
         Collider.Deserialize(br);
         Transform.Deserialize(br);
+    }
+
+    public void Init()
+    {
+        for (int i = 0; i < _components.Count; i++)
+        {
+            _components[i].Init();
+        }
+
+        OnInit?.Invoke();
     }
 
     public void Begin()

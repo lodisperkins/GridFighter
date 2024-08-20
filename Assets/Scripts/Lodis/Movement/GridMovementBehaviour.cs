@@ -57,6 +57,8 @@ namespace Lodis.Movement
         [SerializeField] private bool _isBehindBarrier;
         [Tooltip("Whether or not to move to the default aligned side if this object is on a panel belonging to the opposite side")]
         [SerializeField] private bool _moveToAlignedSideIfStuck = true;
+        [Tooltip("Whether or not the facing will be updated regardless of the state the character is in.")]
+        [SerializeField] private bool _facingIgnoresState;
         [Tooltip("The side of the grid that this object can move on by default.")]
         [SerializeField] private GridAlignment _defaultAlignment = GridAlignment.ANY;
 
@@ -283,7 +285,7 @@ namespace Lodis.Movement
                 _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
         }
 
-        private void Start()
+        public override void Begin ()
         {
             //Set the starting panel to be occupied
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position, out _currentPanel, true, Alignment))
@@ -753,7 +755,7 @@ namespace Lodis.Movement
             if (snapPosition)
             {
                 
-                transform.position = (Vector3)newPosition;
+                EntityTransform.Position = newPosition;
                 SetIsMoving(false);
             }
             else
@@ -1034,13 +1036,13 @@ namespace Lodis.Movement
 
             string state = BlackBoardBehaviour.Instance.GetPlayerState(gameObject);
 
-            if (state != "Idle")
-                return;
-
-            if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
-                EntityTransform.Rotation = FQuaternion.Euler(0, -90, 0);
-            else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
-                EntityTransform.Rotation = FQuaternion.Euler(0, 90, 0);
+            if (state == "Idle" || _facingIgnoresState)
+            {
+                if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
+                    EntityTransform.Rotation = FQuaternion.Euler(0, -90, 0);
+                else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
+                    EntityTransform.Rotation = FQuaternion.Euler(0, 90, 0);
+            }
 
             //Old fixed update
             //If the character is above the max y position...

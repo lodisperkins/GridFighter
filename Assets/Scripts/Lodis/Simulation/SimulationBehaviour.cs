@@ -76,7 +76,7 @@ public abstract class SimulationBehaviour : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when entity is added to the scene.
+    /// Called when entity is added to the scene. Called at the same time as Unity Awake
     /// </summary>
     public virtual void Begin() {}
 

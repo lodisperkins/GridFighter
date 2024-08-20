@@ -17,7 +17,7 @@ public struct GridGame : IGame
     private static List<EntityData> ActiveEntities = new List<EntityData>();
 
     //A dictionary of entity pairs that determines whether or not they collide. Used to ignore specific entities instead of layers.
-    private static Dictionary<(EntityData, EntityData), bool> _collisionPairs;
+    private static Dictionary<(EntityData, EntityData), bool> _collisionPairs = new Dictionary<(EntityData, EntityData), bool>();
 
     public static Fixed32 FixedTimeStep = 0.01667f;
     public static float TimeScale = 1f;
@@ -105,6 +105,11 @@ public struct GridGame : IGame
 
     public long ReadInputs(int controllerId)
     {
+        controllerId++;
+
+        if (OnPollInput == null)
+            return 0;
+
         return (long)(OnPollInput?.Invoke(controllerId));
     }
 
@@ -232,7 +237,6 @@ public struct GridGame : IGame
         }
 
         ActiveEntities.Add(entity);
-        entity.Begin();
     }
 
     public static void RemoveEntityFromGame(EntityData entity)
@@ -259,13 +263,16 @@ public struct GridGame : IGame
         //Component update
         for (int i = 0; i < ActiveEntities.Count; i++)
         {
+            if (!ActiveEntities[i].Active)
+                ActiveEntities[i].Begin();
+
             ActiveEntities[i].Tick(FixedTimeStep);
         }
 
         //Input update
         InputSystem.Update();
-        OnProcessInput?.Invoke(0, inputs[0]);
-        OnProcessInput?.Invoke(1, inputs[1]);
+        OnProcessInput?.Invoke(1, inputs[0]);
+        OnProcessInput?.Invoke(2, inputs[1]);
 
         //Timer update
         for (int i = 0; i < FixedPointTimer.Actions.Count; i++)

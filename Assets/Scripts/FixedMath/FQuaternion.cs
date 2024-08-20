@@ -39,12 +39,15 @@ namespace FixedPoints
             var cz = Fixed32.Cos(z / 2);
             var sz = Fixed32.Sin(z / 2);
 
-            return new FQuaternion(
+            FQuaternion result = new FQuaternion(
                 sx * cy * cz - cx * sy * sz,
                 cx * sy * cz + sx * cy * sz,
                 cx * cy * sz - sx * sy * cz,
                 cx * cy * cz + sx * sy * sz
             );
+
+            result.Normalize();
+            return result;
         }
 
         public static FQuaternion Euler(Fixed32 angleX, Fixed32 angleY, Fixed32 angleZ)
@@ -61,12 +64,15 @@ namespace FixedPoints
             var cz = Fixed32.Cos(z / 2);
             var sz = Fixed32.Sin(z / 2);
 
-            return new FQuaternion(
+            FQuaternion result = new FQuaternion(
                 sx * cy * cz - cx * sy * sz,
                 cx * sy * cz + sx * cy * sz,
                 cx * cy * sz - sx * sy * cz,
                 cx * cy * cz + sx * sy * sz
             );
+
+            result.Normalize();
+            return result;
         }
 
         public static FQuaternion LookRotation(FVector3 forward, FVector3 up)

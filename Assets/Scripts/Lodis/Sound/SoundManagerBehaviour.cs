@@ -61,7 +61,6 @@ namespace Lodis.Sound
 
         public void StopSound(AudioClip clip)
         {
-            return;
             if (!_soundEffectSource.isPlaying || clip != _lastClip)
                 return;
 

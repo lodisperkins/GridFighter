@@ -1,4 +1,6 @@
 ﻿using Lodis.Gameplay;
+using Lodis.Movement;
+using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -19,8 +21,10 @@ namespace Lodis.GridScripts
         public MarkerType Marker;
         private PanelBehaviour _lastPanelMarked;
         [Tooltip("If true, will mark all panels this object collides with. Marks panels based on location by default.")]
-        [SerializeField]
-        private bool _markPanelsBasedOnCollision;
+        [SerializeField] private bool _markPanelsBasedOnCollision;
+        [SerializeField] private bool _markPanelAtGridLocation;
+        [ShowIf("_markPanelAtGridLocation")]
+        [SerializeField] private GridMovementBehaviour _movementToTrack;
         private List<PanelBehaviour> _panelsInRange;
 
         public List<PanelBehaviour> PanelsInRange 
@@ -130,7 +134,12 @@ namespace Lodis.GridScripts
         // Update is called once per frame
         void Update()
         {
-            if (!MarkPanelsBasedOnCollision)
+            if (MarkPanelsBasedOnCollision)
+                return;
+
+            if (_markPanelAtGridLocation)
+                MarkPanelAtGridPosition(_movementToTrack.Position.X, _movementToTrack.Position.Y, Marker);
+            else
                 MarkPanelAtLocation(transform.position, Marker);
         }
     }

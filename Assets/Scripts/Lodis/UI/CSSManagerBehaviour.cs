@@ -103,6 +103,7 @@ namespace Lodis.UI
 
         private void Start()
         {
+            GridGameManager.Instance.StartLocalGame();
             SetColor(1);
             SceneManager.sceneLoaded += ResetValues;
             SceneManagerBehaviour.Instance.P1Devices.Value = new InputDevice[0];

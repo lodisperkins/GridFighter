@@ -189,6 +189,8 @@ namespace Lodis.GridScripts
             _width = (_dimensions.x * localScale.x) + (PanelSpacingX * _dimensions.x) + _panelSpacingMiddle;
             _height = (_dimensions.y * localScale.z) + (PanelSpacingZ * _dimensions.y);
 
+            Grid = this;
+
             if (!_collisionPlaneRef)
                 return;
 
@@ -202,7 +204,6 @@ namespace Lodis.GridScripts
             collisionPlane.transform.localScale = new Vector3(_width / 10, collisionPlane.transform.localScale.y, _height / 10);
             collisionPlane.transform.position += new Vector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
 
-            Grid = this;
         }
 
         /// <summary>

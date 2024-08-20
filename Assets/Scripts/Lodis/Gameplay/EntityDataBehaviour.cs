@@ -1,6 +1,7 @@
 using FixedPoints;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 /// <summary>
@@ -36,9 +37,15 @@ public class EntityDataBehaviour : MonoBehaviour
             sim.Entity = this;
         }
 
+        Data.Init();
         Data.OnTick += UpdateUnityTransform;
 
         _entityData.UnityObject = gameObject;
+
+        Fixed32 angle = Fixed32.PI / 2;  // 90 degrees in radians
+        Fixed32 sinValue = Fixed32.Sin(angle);
+        Fixed32 cosValue = Fixed32.Cos(angle);
+        Debug.Log($"Sin(90 degrees): {(float)sinValue}, Cos(90 degrees): {(float)cosValue}");
 
         //Try to add entity to game so it can be updated.
         if (!_addToGameManually)
@@ -65,8 +72,13 @@ public class EntityDataBehaviour : MonoBehaviour
         GridGame.RemoveEntityFromGame(_entityData);
     }
 
-    private void UpdateUnityTransform(float dt)
+    private void UpdateUnityTransform(Fixed32 dt)
     {
         _visualRoot.SetPositionAndRotation((Vector3)Data.Transform.Position, (Quaternion)Data.Transform.Rotation);
+    }
+
+    private void OnDestroy()
+    {
+        GridGame.RemoveEntityFromGame(_entityData);
     }
 }

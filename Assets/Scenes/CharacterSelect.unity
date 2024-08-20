@@ -1805,7 +1805,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _characterDisplayModel
       value: 
-      objectReference: {fileID: 8491566300199994609, guid: e2c185c35427c8e4e905c851f21d7499,
+      objectReference: {fileID: 4869269471340178670, guid: 10002a5af3d95544897cb0cc4552a0c1,
         type: 3}
     - target: {fileID: 3502820541183900771, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
@@ -2081,7 +2081,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _characterDisplayModel
       value: 
-      objectReference: {fileID: 8491566300199994609, guid: e2c185c35427c8e4e905c851f21d7499,
+      objectReference: {fileID: 4869269471340178670, guid: 10002a5af3d95544897cb0cc4552a0c1,
         type: 3}
     - target: {fileID: 3502820541576609177, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
@@ -3420,7 +3420,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3502820540727906542, guid: bc4c384ed9639d544b741e274fbd471d, type: 3}
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3502820541154051350, guid: bc4c384ed9639d544b741e274fbd471d, type: 3}
+    - {fileID: 3502820540305943962, guid: bc4c384ed9639d544b741e274fbd471d, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3474145207059763592, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}

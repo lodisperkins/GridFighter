@@ -18,8 +18,12 @@ namespace Lodis.UI
 
         public void Awake()
         {
-            BlackBoardBehaviour.Instance.InitializeGrid();
-            BlackBoardBehaviour.Instance.Grid.CreateGrid();
+            if (GridBehaviour.Grid == null)
+            {
+                BlackBoardBehaviour.Instance.InitializeGrid();
+                BlackBoardBehaviour.Instance.Grid.DestroyGrid();
+                BlackBoardBehaviour.Instance.Grid.CreateGrid();
+            }
         }
 
         /// <summary>

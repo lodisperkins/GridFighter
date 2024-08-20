@@ -99,6 +99,9 @@ namespace Lodis.Gameplay
             }
             else
                 BlackBoardBehaviour.Instance.Grid.AssignOwners(_player1.name);
+
+            GridGameManager.Instance.StartLocalGame();
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
         }
 
         public void SpawnPlayer2()

@@ -5,6 +5,9 @@ using System.IO;
 
 namespace FixedPoints
 {
+    /// <summary>
+    /// A transform that functions similar to Unity's transform but uses fixed point math.
+    /// </summary>
     public class FTransform
     {
         public FVector3 Position { get; set; }
@@ -13,6 +16,13 @@ namespace FixedPoints
 
         private FTransform parent;
         private List<FTransform> children;
+
+        public FTransform()
+        {
+            Position = new FVector3();
+            Rotation = new FQuaternion(0,0,0,1);
+            Scale = new FVector3(1,1,1);    
+        }
 
         public FTransform(FVector3 position, FQuaternion rotation, FVector3 scale)
         {

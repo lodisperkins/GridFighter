@@ -37,15 +37,17 @@ namespace FixedPoints
             }
         }
 
-        private static void Update(float dt)
+        /// <summary>
+        /// Updates all active lerp actions.
+        /// </summary>
+        private static void Update(Fixed32 dt)
         {
             for (int i = Actions.Count - 1; i >= 0; i--)
             {
-                if (Actions[i].Update())
-                {
-                    Actions.RemoveAt(i);
-                }
+                Actions[i].Update();
             }
+
+            Actions.RemoveAll(l => l.Killed);
         }
 
         /// <summary>
@@ -144,6 +146,10 @@ namespace FixedPoints
         protected bool IsPaused;
         private bool _killed;
 
+        public bool Killed
+        {
+            get => _killed;
+        }
 
         public delegate void LerpActionEvent();
         public event LerpActionEvent onKill;
@@ -222,6 +228,10 @@ namespace FixedPoints
             IsPaused = br.ReadBoolean();
         }
 
+        /// <summary>
+        /// Progresses the lerp through time.
+        /// </summary>
+        /// <returns>Whether or not the lerp has completed on this update.</returns>
         public bool Update()
         {
             if (IsPaused || _killed)

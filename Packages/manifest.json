@@ -11,8 +11,6 @@
     "com.unity.test-framework": "1.1.33",
     "com.unity.timeline": "1.7.6",
     "com.unity.ugui": "1.0.0",
-    "unityggpo.plugin": "https://github.com/nykwil/UnityGGPO.git?path=/Unity/Packages/UnityGGPO",
-    "unityggpo.sharedgame": "https://github.com/nykwil/UnityGGPO.git?path=/Unity/Packages/SharedGame",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
     "com.unity.modules.animation": "1.0.0",

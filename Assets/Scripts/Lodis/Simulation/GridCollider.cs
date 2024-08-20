@@ -20,6 +20,9 @@ public struct Collision
 
 public delegate void CollisionEvent(Collision collision);
 
+/// <summary>
+/// An AABB collider that use the y position of the panel it's on for depth.
+/// </summary>
 [Serializable]
 public class GridCollider
 {
