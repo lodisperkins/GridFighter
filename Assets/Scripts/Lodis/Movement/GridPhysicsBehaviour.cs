@@ -944,11 +944,10 @@ namespace Lodis.Movement
             _acceleration = (_lastVelocity - Velocity) / Time.fixedDeltaTime;
 
 
-            if (UseGravity && !IgnoreForces)
-                _velocity += new FVector3(0, -Gravity, 0);
-
-
             _isGrounded = CheckIsGrounded();
+
+            if (UseGravity && !IgnoreForces && !IsGrounded)
+                _velocity += new FVector3(0, -Gravity, 0);
 
             if (_objectAtRest && _movementBehaviour?.IsMoving == true)
                 _velocity = _movementBehaviour.MoveDirection;

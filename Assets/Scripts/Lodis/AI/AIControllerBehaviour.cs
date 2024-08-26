@@ -343,7 +343,7 @@ namespace Lodis.AI
             _attackDirection.x *= Mathf.Round(transform.forward.x);
 
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(action => UseAbility(ability, attackStrength, attackDirection), condition =>
+            _bufferedAction = new BufferedInput(() => UseAbility(ability, attackStrength, attackDirection), condition =>
             {
                 _abilityBuffered = false;
                 return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;

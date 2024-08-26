@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Codice.Client.Common;
+using Pada1.BBCore.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
@@ -10,13 +12,32 @@ namespace SharedGame {
     public abstract class GameManager : MonoBehaviour {
 
         public enum UpdateType {
+            /// <summary>
+            /// This type is useful when you want to run the game at a consistent frame rate with some allowance for frames to catch up if needed.
+            /// </summary>
             VectorWar,
+            /// <summary>
+            /// Suitable for scenarios where you need the game to process every frame exactly as it comes, ensuring that no frames are skipped or fast-forwarded. 
+            /// This might be used for debugging or specific gameplay modes where consistency is critical.
+            /// </summary>
             Always,
+            /// <summary>
+            /// Useful in games where maintaining a consistent frame rate is important, even if it means skipping some frames. 
+            /// This is common in networked games where all clients need to stay synchronized.
+            /// </summary>
             FixedSkip,
+            /// <summary>
+            /// Appropriate for games where it's important to process every frame (no skipping), 
+            /// but still keep up with the desired frame rate by catching up quickly if necessary.
+            /// </summary>
             FixedFastForward,
+            /// <summary>
+            /// Best for scenarios where a smoother experience is desirable, potentially by sacrificing a bit of frame accuracy in favor of a more stable and visually consistent output.
+            /// </summary>
             Smoothed
         }
 
+        [Tooltip("Select the type of update behavior for the game.")]
         public UpdateType updateType = UpdateType.FixedSkip;
 
         private static GameManager _instance;
@@ -126,7 +147,17 @@ namespace SharedGame {
             OnStateChanged?.Invoke();
         }
 
+        /// <summary>
+        /// This update type is tailored for a specific use case, tied to a game or simulation named "VectorWar."
+        /// </summary>
         private void UpdateVectorwar() {
+
+            /// <summary>
+            ///The game checks if it's ahead (FramesAhead > 0), and if so, it sleeps to synchronize.
+            ///It then idles briefly and processes a tick every frame.
+            ///The next frame is scheduled immediately after processing the current frame.
+            /// </summary>
+
             var now = (double)Utils.TimeGetTime();
             if (Runner.FramesAhead > 0) {
                 Utils.Sleep((int)FrameToMs(Runner.FramesAhead));
@@ -140,7 +171,14 @@ namespace SharedGame {
             }
         }
 
+        /// <summary>
+        /// This update type is designed to ensure the game keeps up with the desired frame rate by potentially skipping frames if it falls behind.
+        /// </summary>
         private void UpdateFixedSkip() {
+            ///It first checks if the game is ahead of schedule and adjusts the next frame's time accordingly.
+            ///The game idles until it's time to process the next frame.
+            ///If the game falls behind(i.e., now >= next), it processes multiple ticks to catch up to the current time.
+
             var now = Utils.TimeGetTime();
             if (Runner.FramesAhead > 0) {
                 next += FrameToMs(Runner.FramesAhead);
@@ -154,8 +192,14 @@ namespace SharedGame {
             }
         }
 
+        /// <summary>
+        /// Provides a smoother experience by adjusting the frame timing based on how far the game is ahead or behind.
+        /// </summary>
         private void UpdateSmoothed() {
-            var now = (double)Utils.TimeGetTime();
+            ///It calculates how far the game is ahead or behind in terms of frames and adjusts the timing accordingly.
+            ///The Tick is called, and the next frame is scheduled based on a dynamically adjusted time step, which aims to smooth out the frame rate.
+
+                        var now = (double)Utils.TimeGetTime();
             var extraMs = Mathf.Max(0, (int)(next - now - 1));
             Runner.Idle(extraMs);
             if (now >= next) {
@@ -177,6 +221,9 @@ namespace SharedGame {
             }
         }
 
+        /// <summary>
+        /// Similar to FixedSkip, but instead of skipping frames, this type processes additional frames quickly if the game is behind.
+        /// </summary>
         private void UpdateFixedFastForward() {
             var now = Utils.TimeGetTime();
             var extraMs = Mathf.Max(0, (int)(next - now - 1));
@@ -191,7 +238,14 @@ namespace SharedGame {
             }
         }
 
+        /// <summary>
+        /// This update type processes a game tick on every frame without skipping or fast-forwarding.
+        /// </summary>
         private void UpdateAlways() {
+            ///The game checks if it's ahead (FramesAhead > 0), and if so, it sleeps to synchronize.
+            ///It then idles briefly and processes a tick every frame.
+            ///The next frame is scheduled immediately after processing the current frame.
+            ///
             if (Runner.FramesAhead > 0) {
                 Utils.Sleep((int)FrameToMs(Runner.FramesAhead));
                 Runner.FramesAhead = 0;

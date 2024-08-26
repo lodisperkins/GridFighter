@@ -26,7 +26,7 @@ public class EntityData
     public int X;
     public int Y;
 
-    public GridCollider Collider;
+    public GridCollider Collider { get; set; }
 
     public GameObject UnityObject;
 
@@ -63,14 +63,14 @@ public class EntityData
     public virtual void Serialize(BinaryWriter bw)
     {
         bw.Write(Name);
-        Collider.Serialize(bw);
+        Collider?.Serialize(bw);
         Transform.Serialize(bw);
     }
 
     public virtual void Deserialize(BinaryReader br)
     {
         Name = br.ReadString();
-        Collider.Deserialize(br);
+        Collider?.Deserialize(br);
         Transform.Deserialize(br);
     }
 

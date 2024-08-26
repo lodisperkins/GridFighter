@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(Owner);
+			base.Init(newOwner);
             //Get owner health
             _ownerHealth = Owner.GetComponent<HealthBehaviour>();
         }

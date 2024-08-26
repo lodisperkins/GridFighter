@@ -34,7 +34,7 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(Owner);
+			base.Init(newOwner);
             _distance = abilityData.GetCustomStatValue("Distance");
             abilityData.GetAdditionalAnimation(0, out _comboClip);
 

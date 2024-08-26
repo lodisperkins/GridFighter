@@ -26,7 +26,7 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(Owner);
+			base.Init(newOwner);
             _laserRef = abilityData.Effects[0];
             _largeLaserRef = abilityData.Effects[1];
         }

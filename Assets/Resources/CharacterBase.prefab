@@ -134,6 +134,7 @@ MonoBehaviour:
   _checkIfBehindBarrier: 0
   _isBehindBarrier: 0
   _moveToAlignedSideIfStuck: 1
+  _facingIgnoresState: 0
   _defaultAlignment: 2
   _moveSound: {fileID: 8300000, guid: a5eda9809f8053a41b9797ee670acf36, type: 3}
   _onTeleportStart: {fileID: 11400000, guid: 9bc9ffbb1888a5a44ba793fbbe5d91b5, type: 2}
@@ -1077,6 +1078,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Marker: 0
   _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _movementToTrack: {fileID: 0}
 --- !u!114 &6865455213470047562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1265,14 +1268,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData:
-    Name: New Entity
+    Name: 
     X: 0
     Y: 0
-    Collider:
-      _layersToIgnore:
-        serializedVersion: 2
-        m_Bits: 0
-      _overlap: 0
     UnityObject: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 561307191668043432}
@@ -1676,11 +1674,6 @@ MonoBehaviour:
     Name: New Entity
     X: 0
     Y: 0
-    Collider:
-      _layersToIgnore:
-        serializedVersion: 2
-        m_Bits: 0
-      _overlap: 0
     UnityObject: {fileID: 0}
 --- !u!1 &5789836127144102983
 GameObject:

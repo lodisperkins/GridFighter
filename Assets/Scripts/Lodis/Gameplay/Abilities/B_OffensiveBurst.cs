@@ -24,7 +24,7 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(Owner);
+            base.Init(newOwner);
             if (!_burstEffect) _burstEffect = abilityData.visualPrefab;
             _defaultRestTime = abilityData.recoverTime;
             _ownerHitStop = Owner.GetComponent<HitStopBehaviour>();

@@ -578,7 +578,7 @@ namespace Lodis.Movement
 
             LandingScript.enabled = !OutOfBounds;
 
-            if (Physics.Velocity.Magnitude > _maxMagnitude.Value)
+            if (Physics.Velocity.Magnitude > _maxMagnitude.Value && CurrentAirState == AirState.TUMBLING)
                 Physics.ApplyVelocityChange(Physics.Velocity.GetNormalized() * _maxMagnitude.Value);
 
             UpdateGroundedColliderPosition();

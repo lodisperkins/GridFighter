@@ -1174,7 +1174,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -2352,7 +2354,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -3123,7 +3127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -3283,7 +3289,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -4448,7 +4456,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -6679,7 +6689,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -7035,7 +7047,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -8869,7 +8883,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -9552,7 +9568,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -10002,7 +10020,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -10536,7 +10556,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -10779,7 +10801,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -10906,7 +10930,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -13012,7 +13038,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -14827,7 +14855,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -15287,7 +15317,7 @@ MonoBehaviour:
   _matchTimeRemaining: 0
   _timeSinceRoundStart: 0
   _onTimerUp: {fileID: 11400000, guid: acaf75c9202905d46aa9744f5386428e, type: 2}
-  _isInfinite: 0
+  _isInfinite: 1
 --- !u!4 &1233098218
 Transform:
   m_ObjectHideFlags: 0
@@ -16973,7 +17003,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -18839,7 +18871,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -19127,7 +19161,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -19333,7 +19369,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -20496,7 +20534,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -20887,7 +20927,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -24022,7 +24064,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -24474,7 +24518,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0
@@ -24997,7 +25043,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e074ceb943e91f4a839a023d6c5281d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _occupied: 0
+  panelData:
+    Occupied: 0
+    Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
   _emissionStrength: 15
   _emissionFadeDuration: 0

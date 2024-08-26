@@ -37,15 +37,13 @@ public class EntityDataBehaviour : MonoBehaviour
             sim.Entity = this;
         }
 
+        if (string.IsNullOrEmpty(_entityData.Name))
+            _entityData.Name = gameObject.name;
+
         Data.Init();
         Data.OnTick += UpdateUnityTransform;
 
         _entityData.UnityObject = gameObject;
-
-        Fixed32 angle = Fixed32.PI / 2;  // 90 degrees in radians
-        Fixed32 sinValue = Fixed32.Sin(angle);
-        Fixed32 cosValue = Fixed32.Cos(angle);
-        Debug.Log($"Sin(90 degrees): {(float)sinValue}, Cos(90 degrees): {(float)cosValue}");
 
         //Try to add entity to game so it can be updated.
         if (!_addToGameManually)

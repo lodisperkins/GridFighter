@@ -44,7 +44,7 @@ namespace FixedPoints
         {
             for (int i = Actions.Count - 1; i >= 0; i--)
             {
-                Actions[i].Update();
+                Actions[i].Update(dt);
             }
 
             Actions.RemoveAll(l => l.Killed);
@@ -163,7 +163,7 @@ namespace FixedPoints
             Target = target;
             Duration = duration;
             Curve = curve;
-            TimeElapsed = new Fixed32(0);
+            TimeElapsed = 0;
             IsPaused = false;
         }
 
@@ -210,7 +210,7 @@ namespace FixedPoints
         /// <summary>
         /// Reset the lerp action to the orignal starting position.
         /// </summary>
-        public void Rewind() => TimeElapsed = new Fixed32(0);
+        public void Rewind() => TimeElapsed = 0;
 
         public virtual void Serialize(BinaryWriter bw)
         {
@@ -232,18 +232,18 @@ namespace FixedPoints
         /// Progresses the lerp through time.
         /// </summary>
         /// <returns>Whether or not the lerp has completed on this update.</returns>
-        public bool Update()
+        public bool Update(Fixed32 dt)
         {
             if (IsPaused || _killed)
                 return false;
 
-            TimeElapsed += Utils.TimeGetTime();
+            TimeElapsed += dt;
 
             //If time is up...
-            if (TimeElapsed.RawValue >= Duration.RawValue)
-            {
+            if (TimeElapsed >= Duration)
+            {    
                 //...snap to the end.
-                Apply(new Fixed32(1));
+                Apply(1);
 
                 _killed = true;
                 FixedLerp.RemoveAction(this);
@@ -349,7 +349,7 @@ namespace FixedPoints
         protected override void Apply(Fixed32 t)
         {
             // Example punch logic, needs actual punch algorithm
-            FVector3 newValue = StartValue + PunchValue * (new Fixed32(1) - t);
+            FVector3 newValue = StartValue + PunchValue * (1 - t);
             Target.Position = newValue;
         }
     }
@@ -375,7 +375,7 @@ namespace FixedPoints
             //Jumping using parabolic arc
             Fixed32 progress = (Fixed32)(t * Fixed32.PI * NumJumps);
             Fixed32 yOffset = JumpPower * Fixed32.Sin(progress);
-            FVector3 newValue = StartValue + (EndValue - StartValue) * t + new FVector3(new Fixed32(0), yOffset, new Fixed32(0));
+            FVector3 newValue = StartValue + (EndValue - StartValue) * t + new FVector3(0, yOffset, 0);
             Target.Position = newValue;
         }
     }

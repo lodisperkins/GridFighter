@@ -27,12 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2765739998997917290}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2765739998997917296
 MonoBehaviour:
@@ -63,6 +64,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2765739998997917297}
+        m_TargetAssemblyTypeName: 
         m_MethodName: UpdateInputY
         m_Mode: 3
         m_Arguments:
@@ -78,6 +80,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2765739998997917297}
+        m_TargetAssemblyTypeName: 
         m_MethodName: UpdateInputY
         m_Mode: 3
         m_Arguments:
@@ -93,6 +96,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2765739998997917297}
+        m_TargetAssemblyTypeName: 
         m_MethodName: UpdateInputX
         m_Mode: 3
         m_Arguments:
@@ -108,6 +112,7 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2765739998997917297}
+        m_TargetAssemblyTypeName: 
         m_MethodName: UpdateInputX
         m_Mode: 3
         m_Arguments:
@@ -140,7 +145,7 @@ MonoBehaviour:
   _character: {fileID: 0}
   _canMove: 1
   _holdToMove: 1
-  _holdSpeed: 8
+  _holdSpeed: 1
   _minChargeLimit: 0.15
   _maxChargeTime: 5
   _attackDirectionBufferClearTime: 0.05
@@ -177,8 +182,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_MoveRepeatDelay: 0.5
   m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
     type: 3}
   m_PointAction: {fileID: -4846155329040235444, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
@@ -197,9 +204,8 @@ MonoBehaviour:
     type: 3}
   m_ScrollWheelAction: {fileID: 1859472952875991877, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
     type: 3}
-  m_TrackedDevicePositionAction: {fileID: 6104928886477562055, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
-    type: 3}
-  m_TrackedDeviceOrientationAction: {fileID: -1283444988724195413, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
-    type: 3}
+  m_TrackedDevicePositionAction: {fileID: 0}
+  m_TrackedDeviceOrientationAction: {fileID: 0}
   m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
+  m_CursorLockBehavior: 0

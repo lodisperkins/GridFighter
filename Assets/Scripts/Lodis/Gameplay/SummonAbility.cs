@@ -31,7 +31,7 @@ namespace Lodis.Gameplay
 
         public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(Owner);
+            base.Init(newOwner);
             //Init stats
             EntityCount = (int)abilityData.GetCustomStatValue("EntityCount");
             _moveSpeed = abilityData.GetCustomStatValue("Speed");

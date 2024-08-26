@@ -27,7 +27,7 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(Owner);
+			base.Init(newOwner);
             _whirlEffect = abilityData.visualPrefab;
             _releaseEffect = Resources.Load<GameObject>("Effects/ThrowReleaseBurst");
             _oldOpponentParent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).transform.parent;

@@ -20,7 +20,7 @@ namespace Lodis.Gameplay
 
         public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(Owner);
+            base.Init(newOwner);
             //initialize default stats
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/WF_Straight_Data"));
             Owner = newOwner;

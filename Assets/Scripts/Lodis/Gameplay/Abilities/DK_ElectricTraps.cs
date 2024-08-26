@@ -26,7 +26,7 @@ namespace Lodis.Gameplay
 	    //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(Owner);
+            base.Init(newOwner);
             _attackLinkVisual = (GameObject)Resources.Load("Structures/ElectricTraps/AttackLink");
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
         }

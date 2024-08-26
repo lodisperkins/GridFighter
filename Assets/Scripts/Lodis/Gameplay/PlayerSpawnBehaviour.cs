@@ -100,7 +100,6 @@ namespace Lodis.Gameplay
             else
                 BlackBoardBehaviour.Instance.Grid.AssignOwners(_player1.name);
 
-            GridGameManager.Instance.StartLocalGame();
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
         }
 
@@ -287,7 +286,7 @@ namespace Lodis.Gameplay
 
         void OnEnable()
         {
-            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInFixedUpdate;
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
         }
 
         void OnDisable()

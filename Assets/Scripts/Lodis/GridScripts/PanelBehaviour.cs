@@ -20,23 +20,16 @@ namespace Lodis.GridScripts
     {
         [SerializeField] private Panel panelData;
         [Tooltip("The material to give this panel if it is not aligned with either side of the grid.")]
-        [SerializeField]
-        private Color _neutralColor;
-        [SerializeField]
-        private float _emissionStrength;
-        [SerializeField]
-        private float _emissionFadeDuration;
+        [SerializeField] private Color _neutralColor;
+        [SerializeField] private float _emissionStrength;
+        [SerializeField] private float _emissionFadeDuration;
         private Color _positionLHSColor;
         private Color _positionRHSColor;
-        [SerializeField]
-        private Color _warningColor;
-        [SerializeField]
-        private Color _dangerColor;
-        [SerializeField]
-        private Color _unblockableColor;
+        [SerializeField] private Color _warningColor;
+        [SerializeField] private Color _dangerColor;
+        [SerializeField] private Color _unblockableColor;
         private Color _defaultColor;
-        [SerializeField]
-        private MeshRenderer _mesh;
+        [SerializeField] private MeshRenderer _mesh;
         private GameObject _markObject;
         private Movement.GridMovementBehaviour _markerMovement;
         private Vector2 _lastMarkPosition;

@@ -28,7 +28,7 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
-			base.Init(Owner);
+			base.Init(newOwner);
             _explosionEffect = (GameObject)Resources.Load("Effects/MediumExplosion");
             _knockBackBehaviour = Owner.GetComponent<KnockbackBehaviour>();
         }

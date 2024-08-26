@@ -1540,6 +1540,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3502820540723417789, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: m_Name
+      value: P1DeckManager
+      objectReference: {fileID: 0}
     - target: {fileID: 3502820540727906539, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
       propertyPath: m_IsActive
@@ -1594,6 +1599,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502820540811253316, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: m_Name
+      value: P2DeckManager
       objectReference: {fileID: 0}
     - target: {fileID: 3502820540828684921, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
@@ -1800,6 +1810,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502820541084910189, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: m_Name
+      value: P1CharacterCustomizationManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502820541180008637, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: m_Name
+      value: P2CustomCharacterDisplayManager
       objectReference: {fileID: 0}
     - target: {fileID: 3502820541180008638, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
@@ -2076,6 +2096,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _rootPage._children.Array.data[1]._children.Array.data[0].OnInactive.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502820541518623057, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: m_Name
+      value: P1CustomCharacterDisplayManager
       objectReference: {fileID: 0}
     - target: {fileID: 3502820541518623058, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
@@ -2477,6 +2502,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502820542122927954, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: m_Name
+      value: P2CharacterCustomizationManager
       objectReference: {fileID: 0}
     - target: {fileID: 3502820542148722587, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}

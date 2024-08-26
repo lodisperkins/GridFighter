@@ -70,7 +70,7 @@ public abstract class SimulationBehaviour : MonoBehaviour
     /// </summary>
     public virtual void OnOverlapExit(Collision collision) { }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         Entity = GetComponent<EntityDataBehaviour>();
     }

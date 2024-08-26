@@ -130,6 +130,7 @@ namespace Lodis.UI
 
                 buttonInstance.AddOnSelectEvent(() =>
                 {
+                    //This isn't null when it's selected again. Look at property of custom character.
                     if (!_customCharacterManager.CustomCharacter)
                         _characterSpawner.SpawnEntity(_characterDisplayModel); 
                 });

@@ -243,7 +243,7 @@ namespace Lodis.Gameplay
         public static float DeckReloadTime { get; private set; }
         public FVector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
 
-        private void Awake()
+        public override void Init()
         {
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
@@ -256,7 +256,7 @@ namespace Lodis.Gameplay
         }
 
         // Start is called before the first frame update
-        private void Start()
+        public override void Begin()
         {
             _normalDeck = Instantiate(NormalDeckRef);
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_DefensiveBurst_Data"));

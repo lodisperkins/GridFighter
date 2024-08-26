@@ -42,6 +42,8 @@ namespace Lodis.Gameplay
             EntityCollider.OnCollisionEnter += RaiseHitEvents;
             EntityCollider.OnOverlapEnter += RaiseHitEvents;
             Entity.Data.Collider = EntityCollider;
+
+
         }
 
         protected virtual void Start()

@@ -10,19 +10,25 @@ using static EntityData;
 using FixedPoints;
 using Types;
 using UnityEngine.InputSystem;
+using Lodis.ScriptableObjects;
+using System.Runtime.Remoting.Messaging;
 
 
 public struct GridGame : IGame
 {
     private static List<EntityData> ActiveEntities = new List<EntityData>();
+    private static List<EntityData> ActivePhysicsEntities = new List<EntityData>();
 
     //A dictionary of entity pairs that determines whether or not they collide. Used to ignore specific entities instead of layers.
     private static Dictionary<(EntityData, EntityData), bool> _collisionPairs = new Dictionary<(EntityData, EntityData), bool>();
 
+    private static long _p1Inputs;
+    private static long _p2Inputs;
+
     public static Fixed32 FixedTimeStep = 0.01667f;
     public static float TimeScale = 1f;
 
-    public delegate long InputPollCallback(int id);
+    public delegate void InputPollCallback(int id);
     public delegate void InputProcessCallback(int id, long inputs);
     public delegate void SerializationCallback(BinaryWriter writer);
     public delegate void DeserializationCallback(BinaryReader reader);
@@ -84,6 +90,14 @@ public struct GridGame : IGame
         }
     }
 
+    public static void SetPlayerInput(IntVariable playerID, long inputs)
+    {
+        if (playerID == 1)
+            _p1Inputs = inputs;
+        else if (playerID == 2)
+            _p2Inputs = inputs;
+    }
+
     public void FromBytes(NativeArray<byte> bytes)
     {
         using (var memoryStream = new MemoryStream(bytes.ToArray()))
@@ -110,7 +124,11 @@ public struct GridGame : IGame
         if (OnPollInput == null)
             return 0;
 
-        return (long)(OnPollInput?.Invoke(controllerId));
+        OnPollInput?.Invoke(controllerId);
+
+        long inputs = controllerId == 1 ? _p1Inputs : _p2Inputs;
+
+        return inputs;
     }
 
     /// <summary>
@@ -232,17 +250,24 @@ public struct GridGame : IGame
     {
         if (ActiveEntities.Contains(entity))
         {
-            Debug.LogError("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
+            Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
             return;
         }
 
         ActiveEntities.Add(entity);
+
+        if (entity.Collider != null)
+            ActivePhysicsEntities.Add(entity);
     }
 
     public static void RemoveEntityFromGame(EntityData entity)
     {
         ActiveEntities.Remove(entity);
         entity.End();
+
+
+        if (entity.Collider != null)
+            ActivePhysicsEntities.Remove(entity);
     }
 
     public static void IgnoreCollision(EntityData entity1, EntityData entity2, bool ignore = true)
@@ -283,9 +308,9 @@ public struct GridGame : IGame
         //Collision update
 
         //This loop ensures that we aren't checking collisions with the same colliders by have the second loop start where the first one left off.
-        for (int row = 0; row < ActiveEntities.Count; row++)
+        for (int row = 0; row < ActivePhysicsEntities.Count; row++)
         {
-            for (int column = row; column < ActiveEntities.Count; column++)
+            for (int column = row; column < ActivePhysicsEntities.Count; column++)
             {
                 //Continue to prevent the object from colliding with itself.
                 if (row == column)
@@ -294,7 +319,7 @@ public struct GridGame : IGame
                 //Check if these entities should ignore each other.
                 bool shouldIgnore;
 
-                if (_collisionPairs.TryGetValue((ActiveEntities[row], ActiveEntities[column]), out shouldIgnore))
+                if (_collisionPairs.TryGetValue((ActivePhysicsEntities[row], ActivePhysicsEntities[column]), out shouldIgnore))
                 {
                     if (shouldIgnore)
                         continue;
@@ -303,8 +328,8 @@ public struct GridGame : IGame
                 //Cache attached colliders
                 Collision collisionData1;
                 Collision collisionData2;
-                GridCollider collider1 = ActiveEntities[row].Collider;
-                GridCollider collider2 = ActiveEntities[column].Collider;
+                GridCollider collider1 = ActivePhysicsEntities[row].Collider;
+                GridCollider collider2 = ActivePhysicsEntities[column].Collider;
 
                 //If they aren't on the same row there's no point in checking collision.
                 if ((collider1 == null || collider2 == null) || collider1.PanelY != collider2.PanelY)
@@ -320,7 +345,7 @@ public struct GridGame : IGame
                 collisionData2 = collisionData1;
                 collisionData2.Normal = collisionData1.Normal * -1;
                 collisionData2.Collider = collider1;
-                collisionData2.Entity = ActiveEntities[row];
+                collisionData2.Entity = ActivePhysicsEntities[row];
 
                 //Handle the collision events based on whether or not the collision should treat the objects like solid surfaces.
                 if (!collider1.Overlap && !collider2.Overlap)

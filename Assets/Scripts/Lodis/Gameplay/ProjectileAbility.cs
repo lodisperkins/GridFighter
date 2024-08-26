@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
         public bool ScaleStats { get; set; }
         public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(Owner);
+            base.Init(newOwner);
 
             //initialize default stats
             

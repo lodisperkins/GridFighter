@@ -26,7 +26,7 @@ namespace Lodis.Gameplay
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
-            base.Init(Owner);
+            base.Init(newOwner);
             _explosionEffect = (GameObject)Resources.Load("Effects/SmallExplosion");
             _bombTimer = abilityData.GetCustomStatValue("BombTimer");
             //Stop the timer to prevent the explosion from happening

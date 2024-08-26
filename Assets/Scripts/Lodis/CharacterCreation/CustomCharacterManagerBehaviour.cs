@@ -26,9 +26,6 @@ namespace Lodis.CharacterCreation
         {
             get
             {
-                if (!_customCharacter)
-                    _customCharacter = GameObject.FindObjectOfType<MeshReplacementBehaviour>();
-
                 return _customCharacter;
             }
             set => _customCharacter = value;

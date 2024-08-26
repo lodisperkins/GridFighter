@@ -24,7 +24,7 @@ namespace Lodis.Movement
     public class GridMovementBehaviour : SimulationBehaviour
     {
         private FVector2 _moveDirection;
-        private Fixed32 _targetTolerance = 0.05f;
+        private Fixed32 _targetTolerance = 0.1f;
         private Fixed32 _speed;
         private Fixed32 _opponentPanelSpeedReduction;
 
@@ -244,8 +244,10 @@ namespace Lodis.Movement
         public bool CanCancelMovement { get => _canCancelMovement; set => _canCancelMovement = value; }
         public static FloatVariable MaxYPosition { get => _maxYPosition; private set => _maxYPosition = value; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             _speed = _speedFloat;
             _opponentPanelSpeedReduction = _opponentPanelSpeedReductionFloat;
 
@@ -859,11 +861,7 @@ namespace Lodis.Movement
             FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, heightOffset, 0);
             _targetPosition = newPosition;
 
-            if (_moveLerp?.IsPlaying() == true)
-                _moveLerp.Kill();
-
-            _moveLerp = FixedLerp.DoMove(EntityTransform, newPosition, TravelTime);
-            _moveLerp.onComplete += ResetMovementValues;
+          LerpPosition(newPosition);
 
             MoveDirection = (_currentPanel.Position - Position).GetNormalized();
 
@@ -1024,15 +1022,17 @@ namespace Lodis.Movement
             if (!_canMove || _health?.Stunned == true)
                 return;
 
-            MoveToClosestAlignedPanelOnRow();
+            //MoveToClosestAlignedPanelOnRow();
 
             if (!_currentPanel)
                 return;
 
-            if (FVector3.Distance((FVector3)EntityTransform.Position, (FVector3)_currentPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
-                MoveToCurrentPanel();
+            //if (FVector3.Distance(EntityTransform.Position, (FVector3)_currentPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
+            //    MoveToCurrentPanel();
 
-            SetIsMoving(FVector3.Distance(EntityTransform.Position, _targetPosition) >= _targetTolerance);
+            Fixed32 dist = FVector3.Distance(EntityTransform.Position, _targetPosition);
+
+            SetIsMoving(dist >= _targetTolerance);
 
             string state = BlackBoardBehaviour.Instance.GetPlayerState(gameObject);
 
@@ -1046,12 +1046,12 @@ namespace Lodis.Movement
 
             //Old fixed update
             //If the character is above the max y position...
-            if (transform.position.y > MaxYPosition.Value)
-            {
-                //...clamp their height.
-                FVector3 newPostion = new FVector3(EntityTransform.Position.X, MaxYPosition.Value, EntityTransform.Position.Z);
-                EntityTransform.Position = newPostion;
-            }
+            //if (transform.position.y > MaxYPosition.Value)
+            //{
+            //    //...clamp their height.
+            //    FVector3 newPostion = new FVector3(EntityTransform.Position.X, MaxYPosition.Value, EntityTransform.Position.Z);
+            //    EntityTransform.Position = newPostion;
+            //}
 
             //if (!_checkIfBehindBarrier) return;
 

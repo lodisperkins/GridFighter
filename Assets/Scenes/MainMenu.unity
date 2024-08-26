@@ -11095,6 +11095,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateType: 2
+  _startLocalGame: 1
 --- !u!4 &938025652
 Transform:
   m_ObjectHideFlags: 0
@@ -24690,7 +24691,7 @@ PrefabInstance:
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -147
+      value: -146.99998
       objectReference: {fileID: 0}
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}

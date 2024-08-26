@@ -812,7 +812,7 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Submit"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""0716b01d-d142-4d63-abdf-a50366798baf"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
