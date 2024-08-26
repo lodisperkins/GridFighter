@@ -20,14 +20,14 @@ namespace Lodis.Gameplay
         [SerializeField]
         private string _currentState;
         private string _lastState;
-        private UnityEvent _onStateChanged;
+        private UnityEvent<string> _onStateChanged;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public string LastState { get => _lastState; private set => _lastState = value; }
 
         private void Awake()
         {
-            _onStateChanged = new UnityEvent();
+            _onStateChanged = new UnityEvent<string>();
         }
 
         // Start is called before the first frame update
@@ -56,7 +56,7 @@ namespace Lodis.Gameplay
             !_characterDefense.IsDefending && !_characterDefense.IsResting && !_moveset.AbilityInUse && !_moveset.LoadingShuffle);
         }
 
-        public void AddOnStateChangedAction(UnityAction action)
+        public void AddOnStateChangedAction(UnityAction<string> action)
         {
             _onStateChanged?.AddListener(action);
         }
@@ -71,7 +71,7 @@ namespace Lodis.Gameplay
 
             if (_currentState != LastState)
             {
-                _onStateChanged?.Invoke();
+                _onStateChanged?.Invoke(_currentState);
                 LastState = _currentState;
             }
         }

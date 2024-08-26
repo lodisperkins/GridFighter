@@ -82,11 +82,11 @@ namespace Lodis.Animation
                 ChangeEyesToIdle();
         }
 
-        private void SetEyes()
+        private void SetEyes(string state)
         {
-            if (_stateMachine.StateMachine.CurrentState == "Idle")
+            if (state == "Idle")
                 ChangeEyesToIdle();
-            else if (_stateMachine.StateMachine.CurrentState == "Attacking")
+            else if (state == "Attacking")
                 ChangeEyesToAngry();
         }
 

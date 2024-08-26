@@ -103,7 +103,7 @@ namespace Lodis.UI
             StartSpawnEffect();
         }
 
-        public void DisplayComboMessage()
+        public void DisplayComboMessage(string state)
         {
             string currentState = _opponentStateMachine.LastState;
             if (!_comboText.enabled || currentState != "Idle" || _disableTextAction?.GetEnabled() == true)

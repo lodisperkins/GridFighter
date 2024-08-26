@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Types;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Animations;
 using UnityEngine.Events;
@@ -111,9 +112,9 @@ namespace Lodis.Gameplay
             _characterStateMachine = _characterStateManager.StateMachine;
             _animator.enabled = false;
 
-            _characterStateManager.AddOnStateChangedAction(() =>
+            _characterStateManager.AddOnStateChangedAction(state =>
             {
-                if (_characterStateMachine.CurrentState == "Attacking" || _characterStateMachine.CurrentState == "Shuffling")
+                if (state == "Attacking" || state == "Shuffling")
                     return;
 
                 _targetSpeed = 1;
@@ -492,12 +493,7 @@ namespace Lodis.Gameplay
             _currentClipRecoverTime = _defenseBehaviour.IsPhaseShifting? _moveAnimationRecoverTime + _defenseBehaviour.DefaultPhaseShiftRestTime.Value : _moveAnimationRecoverTime;
             float totalTime = _currentClipStartUpTime + _currentClipRecoverTime + _currentClipActiveTime;
 
-            int mirror = 1;
-
-            if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT) mirror = -1;
-
-            _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.X * mirror);
-            _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.Y);
+            SetMoveAnimParameters();
 
             _animator.SetTrigger("Movement");
         }
@@ -633,10 +629,23 @@ namespace Lodis.Gameplay
                 targetEvent.Action.Invoke();
         }
 
+        public void SetMoveAnimParameters()
+        {
+            int mirror = 1;
+
+            if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT) mirror = -1;
+
+            _animator.SetFloat("MoveDirectionX", _moveBehaviour.MoveDirection.X * mirror);
+            _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.Y);
+        }    
+
         public override void Tick(Fixed32 dt)
         {
             base.Tick(dt);
             _animator.Update(dt);
+
+            if (_characterStateMachine.CurrentState == "Moving")
+                SetMoveAnimParameters();
         }
 
         private void Update()

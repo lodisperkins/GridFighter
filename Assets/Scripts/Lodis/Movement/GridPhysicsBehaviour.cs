@@ -68,6 +68,7 @@ namespace Lodis.Movement
         private bool _objectAtRest;
         private bool _isFrozen;
         private bool _isKinematic;
+        private bool _gridActive = true;
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
         /// </summary>
@@ -81,6 +82,7 @@ namespace Lodis.Movement
         public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
         public bool IsFrozen => _isFrozen;
         public bool FaceHeading { get => _faceHeading; set => _faceHeading = value; }
+        public bool IsKinematic { get => _isKinematic; set => _isKinematic = value; }
 
         //Physics stats
         private FVector3 _acceleration;
@@ -169,9 +171,18 @@ namespace Lodis.Movement
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
 
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
+
+            _onForceAdded += args => _gridActive = false;
+
+            //If this is attached to an entity with a statemachine, they should always be grid active on Idle.
+            if (TryGetComponent(out CharacterStateMachineBehaviour stateMachine))
+            {
+                stateMachine.AddOnStateChangedAction(SetGridActive);
+            }
         }
 
         // Start is called before the first frame update
@@ -181,6 +192,14 @@ namespace Lodis.Movement
                 return;
 
             _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
+        }
+
+        private void SetGridActive(string state)
+        {
+            if (state == "Idle")
+            {
+                _gridActive = true;
+            }
         }
 
         /// <summary>
@@ -935,7 +954,22 @@ namespace Lodis.Movement
         public override void Tick(Fixed32 dt)
         {
             base.Tick(dt);
-            
+            _isGrounded = CheckIsGrounded();
+
+            //Disable all forces if this object is actively moving on the grid or kinematic.
+            if (IsKinematic || _gridActive)
+            {
+                if (_movementBehaviour?.IsMoving == true)
+                    _velocity = _movementBehaviour.MoveDirection;
+                else
+                    _velocity = FVector3.Zero;
+
+                _acceleration = FVector3.Zero;
+                _objectAtRest = true;
+
+                return;
+            }
+
             //Code that was ran in unity update.
             if (FaceHeading && Velocity.Magnitude > 0)
                 EntityTransform.Forward = Velocity.GetNormalized();
@@ -943,14 +977,8 @@ namespace Lodis.Movement
             //Code that ran in unity fixed update.
             _acceleration = (_lastVelocity - Velocity) / Time.fixedDeltaTime;
 
-
-            _isGrounded = CheckIsGrounded();
-
             if (UseGravity && !IgnoreForces && !IsGrounded)
                 _velocity += new FVector3(0, -Gravity, 0);
-
-            if (_objectAtRest && _movementBehaviour?.IsMoving == true)
-                _velocity = _movementBehaviour.MoveDirection;
 
             _objectAtRest = IsGrounded && _velocity.Magnitude <= 0.01f;
 

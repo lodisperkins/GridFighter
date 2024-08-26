@@ -6,7 +6,6 @@ using Lodis.Gameplay;
 using UnityEditor;
 using UnityEngine.Events;
 using System.Diagnostics;
-using System.Reflection;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using DG.Tweening;
@@ -547,6 +546,7 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
             MoveDirection = (panelPosition - Position).GetNormalized();
+            UnityEngine.Debug.Log(MoveDirection);
 
             SetIsMoving(true);
 

@@ -705,9 +705,6 @@ namespace Lodis.Input
         }
 
         // Update is called once per frame
-
-        Fixed32 rollbackTimer = 0;
-        //This isn't being called
         public override void Tick(Fixed32 dt)
         {
             if (!PlayerActionButtonDown && _attackButtonDown)
@@ -778,10 +775,6 @@ namespace Lodis.Input
 
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
-
-            rollbackTimer += dt;
-
-            Debug.Log("Rollback: " +  rollbackTimer);
         }
 
         private void GetInputFlags()
@@ -810,50 +803,50 @@ namespace Lodis.Input
             GridGame.SetPlayerInput(PlayerID, (long)flags);
 
             // Check each input and log which ones are being pressed
-            if (_playerControls.Player.MoveUp.IsPressed())
-            {
-                Debug.Log("Move Up button is being pressed");
-            }
+            //if (_playerControls.Player.MoveUp.IsPressed())
+            //{
+            //    Debug.Log("Move Up button is being pressed");
+            //}
 
-            if (_playerControls.Player.MoveDown.IsPressed())
-            {
-                Debug.Log("Move Down button is being pressed");
-            }
+            //if (_playerControls.Player.MoveDown.IsPressed())
+            //{
+            //    Debug.Log("Move Down button is being pressed");
+            //}
 
-            if (_playerControls.Player.MoveLeft.IsPressed())
-            {
-                Debug.Log("Move Left button is being pressed");
-            }
+            //if (_playerControls.Player.MoveLeft.IsPressed())
+            //{
+            //    Debug.Log("Move Left button is being pressed");
+            //}
 
-            if (_playerControls.Player.MoveRight.IsPressed())
-            {
-                Debug.Log("Move Right button is being pressed");
-            }
+            //if (_playerControls.Player.MoveRight.IsPressed())
+            //{
+            //    Debug.Log("Move Right button is being pressed");
+            //}
 
-            if (_playerControls.Player.Attack.IsPressed())
-            {
-                Debug.Log("Attack button is being pressed");
-            }
+            //if (_playerControls.Player.Attack.IsPressed())
+            //{
+            //    Debug.Log("Attack button is being pressed");
+            //}
 
-            if (_playerControls.Player.Special1.IsPressed())
-            {
-                Debug.Log("Special1 button is being pressed");
-            }
+            //if (_playerControls.Player.Special1.IsPressed())
+            //{
+            //    Debug.Log("Special1 button is being pressed");
+            //}
 
-            if (_playerControls.Player.Special2.IsPressed())
-            {
-                Debug.Log("Special2 button is being pressed");
-            }
+            //if (_playerControls.Player.Special2.IsPressed())
+            //{
+            //    Debug.Log("Special2 button is being pressed");
+            //}
 
-            if (_playerControls.Player.Burst.IsPressed())
-            {
-                Debug.Log("Burst button is being pressed");
-            }
+            //if (_playerControls.Player.Burst.IsPressed())
+            //{
+            //    Debug.Log("Burst button is being pressed");
+            //}
 
-            if (_playerControls.Player.Shuffle.IsPressed())
-            {
-                Debug.Log("Shuffle button is being pressed");
-            }
+            //if (_playerControls.Player.Shuffle.IsPressed())
+            //{
+            //    Debug.Log("Shuffle button is being pressed");
+            //}
         }
 
 
@@ -863,14 +856,6 @@ namespace Lodis.Input
 
         public override void Deserialize(BinaryReader br)
         {
-        }
-
-        float unityTimer = 0;
-        void Update()
-        {
-            unityTimer += Time.deltaTime;
-
-            Debug.Log("Unity: " + unityTimer);
         }
 
     }
