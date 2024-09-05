@@ -109,7 +109,6 @@ namespace Lodis.Gameplay
             //Move second shockwave
             MoveHitBox(_visualPrefabInstance, new FVector2(-Owner.transform.forward.x, -Owner.transform.forward.y));
 
-            hitScript.DebuggingEnabled = true;
             CameraBehaviour.ShakeBehaviour.ShakeRotation();
             _wavesSpawned = true;
         }

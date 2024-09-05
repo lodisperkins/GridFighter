@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -71,7 +72,7 @@ namespace Lodis.Gameplay
             Projectile = _projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), data, UseGravity);
             DisableAccessory();
 
-            RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
+            FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !Projectile.Active);
             //Fire projectile
             ActiveProjectiles.Add(Projectile);
         }

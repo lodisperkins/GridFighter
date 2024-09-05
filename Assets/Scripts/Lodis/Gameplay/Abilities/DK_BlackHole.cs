@@ -67,7 +67,8 @@ namespace Lodis.Gameplay
             //The base activate func fires a single instance of the projectile when called
 
             //Spawn black hole.
-            Projectile = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
+            EntityDataBehaviour projectileData = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
+            Projectile = ObjectPoolBehaviour.Instance.GetObject(projectileData, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, OwnerMoveset.FixedTransform.WorldRotation);
 
             FVector2 direction = new FVector2(Owner.transform.forward.x, Owner.transform.forward.y);
 

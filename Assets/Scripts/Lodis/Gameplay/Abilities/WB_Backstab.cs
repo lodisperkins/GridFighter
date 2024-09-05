@@ -70,7 +70,7 @@ namespace Lodis.Gameplay
 
             DisableAccessory();
 
-            RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
+            RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.Active);
 
             //Fire projectile
             ActiveProjectiles.Add(Projectile);

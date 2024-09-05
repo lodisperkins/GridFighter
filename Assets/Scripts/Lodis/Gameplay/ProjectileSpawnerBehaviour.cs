@@ -4,13 +4,15 @@ using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Types;
 using UnityEngine;
+using UnityEngine.InputSystem.Utilities;
 
 namespace Lodis.Gameplay
 {
     public class ProjectileSpawnerBehaviour : SimulationBehaviour
     {
-        public GameObject Projectile = null;
+        public EntityDataBehaviour Projectile = null;
         public EntityData Owner = null;
 
         public override void Deserialize(BinaryReader br)
@@ -23,19 +25,19 @@ namespace Lodis.Gameplay
         /// <param name="force">The amount of force to apply to the projectile</param>
         /// <returns></returns>
         /// <param name="useGravity"></param>
-        public GameObject FireProjectile(Vector3 force, bool useGravity = false)
+        public EntityDataBehaviour FireProjectile(FVector3 force, bool useGravity = false)
         {
             if (!Projectile)
                 return null;
+            
+            EntityDataBehaviour temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, FixedTransform.WorldPosition, FixedTransform.WorldRotation);
 
-            GameObject temp = Instantiate(Projectile, transform.position, transform.rotation, null);
-            Debug.Log(transform.position);
-            Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
-            rigidbody.useGravity = useGravity;
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
+            GridPhysicsBehaviour rigidbody = temp.GetComponent<GridPhysicsBehaviour>();
+            rigidbody.UseGravity = useGravity;
+            rigidbody.Velocity = FVector3.Zero;
+
             if (rigidbody)
-                rigidbody.AddForce(force, ForceMode.Impulse);
+                rigidbody.ApplyImpulseForce(force);
 
             return temp;
         }
@@ -46,19 +48,19 @@ namespace Lodis.Gameplay
         /// <param name="forceScale">The amount of force to apply to the projectile</param>
         /// <returns></returns>
         /// <param name="useGravity"></param>
-        public GameObject FireProjectile(float forceScale, bool useGravity = false)
+        public EntityDataBehaviour FireProjectile(Fixed32 forceScale, bool useGravity = false)
         {
             if (!Projectile)
                 return null;
 
-            GameObject temp = Instantiate(Projectile, transform.position, transform.rotation, null);
-            Debug.Log(transform.position);
-            Rigidbody rigidbody = temp.GetComponent<Rigidbody>();
-            rigidbody.useGravity = useGravity;
-            rigidbody.velocity = Vector3.zero;
-            rigidbody.angularVelocity = Vector3.zero;
+            EntityDataBehaviour temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, FixedTransform.WorldPosition, FixedTransform.WorldRotation);
+
+            GridPhysicsBehaviour rigidbody = temp.GetComponent<GridPhysicsBehaviour>();
+            rigidbody.UseGravity = useGravity;
+            rigidbody.Velocity = FVector3.Zero;
+
             if (rigidbody)
-                rigidbody.AddForce(transform.forward * forceScale, ForceMode.Impulse);
+                rigidbody.ApplyImpulseForce(FixedTransform.Forward * forceScale);
 
             return temp;
         }
@@ -70,25 +72,23 @@ namespace Lodis.Gameplay
         /// <param name="hitColliderInfo">The hit collider info to attach to the projectile</param>
         /// <returns></returns>
         /// <param name="useGravity"></param>
-        public GameObject FireProjectile(FVector3 force, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
+        public EntityDataBehaviour FireProjectile(FVector3 force, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
         {
             if (!Projectile)
                 return null;
 
-            GameObject temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, transform.position, transform.rotation);
+            EntityDataBehaviour temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, FixedTransform.WorldPosition, FixedTransform.WorldRotation);
 
-            HitColliderBehaviour collider;
-            if (!temp.TryGetComponent(out collider))
-                collider = temp.AddComponent<HitColliderBehaviour>();
+            if (!temp.TryGetComponent(out HitColliderBehaviour collider))
+                collider = temp.gameObject.AddComponent<HitColliderBehaviour>();
 
             collider.ColliderInfo = hitColliderInfo;
             collider.Owner = Owner;
 
-            GridPhysicsBehaviour physics = temp.GetComponent<GridPhysicsBehaviour>();
-
-            if (physics == null)
+            
+            if (!temp.TryGetComponent<GridPhysicsBehaviour>(out var physics))
             {
-                physics = temp.AddComponent<GridPhysicsBehaviour>();
+                physics = temp.gameObject.AddComponent<GridPhysicsBehaviour>();
             }
 
             physics.StopVelocity();
@@ -109,25 +109,23 @@ namespace Lodis.Gameplay
         /// <param name="hitColliderInfo">The hit collider info to attach to the projectile</param>
         /// <returns></returns>
         /// <param name="useGravity"></param>
-        public GameObject FireProjectile(float forceScale, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
+        public EntityDataBehaviour FireProjectile(float forceScale, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
         {
             if (!Projectile)
                 return null;
 
-            GameObject temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, transform.position, transform.rotation);
+            EntityDataBehaviour temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, FixedTransform.WorldPosition, FixedTransform.WorldRotation);
 
-            HitColliderBehaviour collider;
-            if (!temp.TryGetComponent(out collider))
-                collider = temp.AddComponent<HitColliderBehaviour>();
+            if (!temp.gameObject.TryGetComponent(out HitColliderBehaviour collider))
+                collider = temp.gameObject.AddComponent<HitColliderBehaviour>();
 
             collider.ColliderInfo = hitColliderInfo;
             collider.Owner = Owner;
 
-            GridPhysicsBehaviour physics = temp.GetComponent<GridPhysicsBehaviour>();
-
-            if (physics == null)
+            
+            if (!temp.gameObject.TryGetComponent<GridPhysicsBehaviour>(out var physics))
             {
-                physics = temp.AddComponent<GridPhysicsBehaviour>();
+                physics = temp.gameObject.AddComponent<GridPhysicsBehaviour>();
             }
 
             physics.StopVelocity();
@@ -136,7 +134,7 @@ namespace Lodis.Gameplay
 
             physics.UseGravity = useGravity;
 
-            physics.ApplyImpulseForce(Owner.Transform.Forward * forceScale);
+            physics.ApplyImpulseForce(FixedTransform.Forward * forceScale);
 
             return temp;
         }

@@ -1,34 +1,38 @@
-
 using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 
 namespace FixedPoints
 {
     /// <summary>
-    /// A transform that functions similar to Unity's transform but uses fixed point math.
+    /// A transform that functions similar to Unity's transform but uses fixed-point math.
     /// </summary>
+    [Serializable]
     public class FTransform
     {
-        public FVector3 Position { get; set; }
-        public FQuaternion Rotation { get; set; }
-        public FVector3 Scale { get; set; }
+        [SerializeField] private FVector3 _worldPosition;
+        [SerializeField] private FQuaternion _worldRotation;
+        [SerializeField] private FVector3 _worldScale;
+        public EntityData Owner { get; private set; }
 
         private FTransform parent;
         private List<FTransform> children;
 
-        public FTransform()
+        public FTransform(EntityData owner)
         {
-            Position = new FVector3();
-            Rotation = new FQuaternion(0,0,0,1);
-            Scale = new FVector3(1,1,1);    
+            _worldPosition = new FVector3();
+            _worldRotation = new FQuaternion(0, 0, 0, 1);
+            _worldScale = new FVector3(1, 1, 1);
+            Owner = owner;
         }
 
-        public FTransform(FVector3 position, FQuaternion rotation, FVector3 scale)
+        public FTransform(FVector3 position, FQuaternion rotation, FVector3 scale, EntityData owner)
         {
-            Position = position;
-            Rotation = rotation;
-            Scale = scale;
+            Owner = owner;
+            WorldPosition = position;
+            WorldRotation = rotation;
+            WorldScale = scale;
             parent = null;
             children = new List<FTransform>();
         }
@@ -41,25 +45,21 @@ namespace FixedPoints
                 if (parent == value)
                     return;
 
-                if (parent != null)
-                    parent.RemoveChild(this);
-
+                parent?.RemoveChild(this);
                 parent = value;
-
-                if (parent != null)
-                    parent.AddChild(this);
+                parent?.AddChild(this);
             }
         }
 
-        public int ChildCount => children.Count;
+        public int ChildCount => children?.Count ?? 0;
 
-        public FTransform GetChild(int index)
-        {
-            return children[index];
-        }
+        public FTransform GetChild(int index) => children?[index];
 
         public void AddChild(FTransform child)
         {
+            if (children == null)
+                children = new List<FTransform>();
+
             if (!children.Contains(child))
             {
                 children.Add(child);
@@ -69,7 +69,7 @@ namespace FixedPoints
 
         public void RemoveChild(FTransform child)
         {
-            if (children.Contains(child))
+            if (children != null && children.Contains(child))
             {
                 children.Remove(child);
                 child.Parent = null;
@@ -78,29 +78,90 @@ namespace FixedPoints
 
         public void Serialize(BinaryWriter bw)
         {
-            Position.Serialize(bw);
-            Rotation.Serialize(bw);
-            Scale.Serialize(bw);
+            WorldPosition.Serialize(bw);
+            WorldRotation.Serialize(bw);
+            WorldScale.Serialize(bw);
         }
 
         public void Deserialize(BinaryReader br)
         {
-            Position.Deserialize(br);
-            Rotation.Deserialize(br);
-            Scale.Deserialize(br);
+            WorldPosition.Deserialize(br);
+            WorldRotation.Deserialize(br);
+            WorldScale.Deserialize(br);
         }
+
+        public FVector3 WorldPosition
+        {
+            get
+            {
+                if (parent == null)
+                {
+                    return _worldPosition;
+                }
+                else
+                {
+                    // World position is the parent's world position plus the local position transformed by the parent's rotation and scale
+                    return parent.WorldPosition + (parent.WorldRotation * FVector3.Scale(parent.WorldScale, _worldPosition));
+                }
+            }
+            set
+            {
+                _worldPosition = value; // Directly update the private value
+            }
+        }
+
+        public FQuaternion WorldRotation
+        {
+            get
+            {
+                if (parent == null)
+                {
+                    return _worldRotation;
+                }
+                else
+                {
+                    // World rotation is the parent's world rotation combined with the local rotation
+                    return parent.WorldRotation * _worldRotation;
+                }
+            }
+            set
+            {
+                _worldRotation = value; // Directly update the private value
+            }
+        }
+
+        public FVector3 WorldScale
+        {
+            get
+            {
+                if (parent == null)
+                {
+                    return _worldScale;
+                }
+                else
+                {
+                    // World scale is the parent's scale multiplied by the local scale
+                    return FVector3.Scale(parent.WorldScale, _worldScale);
+                }
+            }
+            set
+            {
+                _worldScale = value; // Directly update the private value
+            }
+        }
+
 
         public FVector3 LocalPosition
         {
             get
             {
-                if (parent == null) return Position;
-                return FTransform.InverseTransformPoint(parent, Position);
+                if (parent == null) return WorldPosition;
+                return FTransform.InverseTransformPoint(parent, WorldPosition);
             }
             set
             {
-                if (parent == null) Position = value;
-                else Position = FTransform.TransformPoint(parent, value);
+                if (parent == null) _worldPosition = value;
+                else _worldPosition = FTransform.TransformPoint(parent, value);
             }
         }
 
@@ -108,13 +169,13 @@ namespace FixedPoints
         {
             get
             {
-                if (parent == null) return Rotation;
-                return FTransform.InverseTransformRotation(parent, Rotation);
+                if (parent == null) return WorldRotation;
+                return FTransform.InverseTransformRotation(parent, WorldRotation);
             }
             set
             {
-                if (parent == null) Rotation = value;
-                else Rotation = FTransform.TransformRotation(parent, value);
+                if (parent == null) _worldRotation = value;
+                else _worldRotation = FTransform.TransformRotation(parent, value);
             }
         }
 
@@ -122,44 +183,50 @@ namespace FixedPoints
         {
             get
             {
-                if (parent == null) return Scale;
+                if (parent == null) return WorldScale;
                 return new FVector3(
-                    Scale.X / parent.Scale.X,
-                    Scale.Y / parent.Scale.Y,
-                    Scale.Z / parent.Scale.Z
+                    WorldScale.X / parent.WorldScale.X,
+                    WorldScale.Y / parent.WorldScale.Y,
+                    WorldScale.Z / parent.WorldScale.Z
                 );
             }
             set
             {
-                if (parent == null) Scale = value;
-                else Scale = new FVector3(
-                    value.X * parent.Scale.X,
-                    value.Y * parent.Scale.Y,
-                    value.Z * parent.Scale.Z
+                if (parent == null) _worldScale = value;
+                else _worldScale = new FVector3(
+                    value.X * parent.WorldScale.X,
+                    value.Y * parent.WorldScale.Y,
+                    value.Z * parent.WorldScale.Z
                 );
             }
         }
 
         public static FVector3 TransformPoint(FTransform transform, FVector3 point)
         {
-            return transform.Position + transform.Rotation * FVector3.Scale(transform.Scale, point);
+            return transform.WorldPosition + transform.WorldRotation * FVector3.Scale(transform.WorldScale, point);
         }
 
         public static FVector3 InverseTransformPoint(FTransform transform, FVector3 point)
         {
-            FVector3 subtraction = (point - transform.Position);
-            FVector3 result = new FVector3(subtraction.X / transform.Scale.X, subtraction.Y / transform.Scale.Y, subtraction.Z / transform.Scale.Z);
-            return FQuaternion.Inverse(transform.Rotation) * result;
+            FVector3 subtraction = point - transform.WorldPosition;
+            FVector3 result = new FVector3(subtraction.X / transform.WorldScale.X, subtraction.Y / transform.WorldScale.Y, subtraction.Z / transform.WorldScale.Z);
+            return FQuaternion.Inverse(transform.WorldRotation) * result;
         }
 
         public static FQuaternion TransformRotation(FTransform transform, FQuaternion rotation)
         {
-            return transform.Rotation * rotation;
+            return transform.WorldRotation * rotation;
         }
 
         public static FQuaternion InverseTransformRotation(FTransform transform, FQuaternion rotation)
         {
-            return FQuaternion.Inverse(transform.Rotation) * rotation;
+            return FQuaternion.Inverse(transform.WorldRotation) * rotation;
+        }
+
+        internal void SetPositionAndRotation(FVector3 position, FQuaternion rotation)
+        {
+            WorldPosition = position;
+            WorldRotation = rotation;
         }
 
         /// <summary>
@@ -167,32 +234,30 @@ namespace FixedPoints
         /// </summary>
         public FVector3 Forward
         {
-            get => Rotation * FVector3.Forward;
+            get => WorldRotation * FVector3.Forward;
             set
             {
-                FVector3 forward = Rotation * FVector3.Forward;
+                FVector3 forward = WorldRotation * FVector3.Forward;
                 if (forward == value) return;
 
                 FQuaternion targetRotation = FQuaternion.LookRotation(value, FVector3.Up);
-                Rotation = targetRotation;
+                _worldRotation = targetRotation;
             }
         }
 
         /// <summary>
         /// Gets the right vector of the transform.
         /// </summary>
-        public FVector3 Right => Rotation * FVector3.Right;
+        public FVector3 Right => WorldRotation * FVector3.Right;
 
         /// <summary>
         /// Gets the left vector of the transform.
         /// </summary>
-        public FVector3 Left => Rotation * FVector3.Left;
+        public FVector3 Left => WorldRotation * FVector3.Left;
 
         /// <summary>
         /// Gets the back vector of the transform.
         /// </summary>
-        public FVector3 Back => Rotation * FVector3.Back;
+        public FVector3 Back => WorldRotation * FVector3.Back;
     }
-
-
 }

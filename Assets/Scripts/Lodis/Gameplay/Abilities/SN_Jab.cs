@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
         public Transform spawnTransform = null;
 
         //Usd to store a reference to the laser prefab
-        private GameObject _projectile;
+        private EntityDataBehaviour _projectile;
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
         private GameObject _smokeTrailRef;
@@ -31,7 +31,7 @@ namespace Lodis.Gameplay
             Owner = newOwner;
 
             //Load the projectile prefab
-            _projectile = abilityData.visualPrefab;
+            _projectile = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
         }
 
         protected override void OnStart(params object[] args)

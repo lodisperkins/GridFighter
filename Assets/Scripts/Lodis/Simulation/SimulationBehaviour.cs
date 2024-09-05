@@ -1,10 +1,6 @@
 using FixedPoints;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
-using FixedPoints;
 using Types;
 
 /// <summary>
@@ -23,7 +19,7 @@ public abstract class SimulationBehaviour : MonoBehaviour
     /// <summary>
     /// The fixed point transform belonging to the rollback simulation entity.
     /// </summary>
-    public FTransform EntityTransform { get => _entity.Data.Transform; }
+    public FTransform FixedTransform { get => _entity.Data.Transform; }
 
     /// <summary>
     /// Called when this component is added to an entity.
@@ -72,7 +68,10 @@ public abstract class SimulationBehaviour : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Entity = GetComponent<EntityDataBehaviour>();
+        Entity = GetComponentInParent<EntityDataBehaviour>();
+
+        if (!Entity)
+            Entity = GetComponentInChildren<EntityDataBehaviour>();
     }
 
     /// <summary>

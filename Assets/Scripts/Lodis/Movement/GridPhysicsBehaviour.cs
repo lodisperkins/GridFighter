@@ -90,7 +90,6 @@ namespace Lodis.Movement
         private FVector3 _lastVelocity;
         private FVector3 _groundedBoxPosition;
         private FVector3 _groundedBoxExtents;
-        private FVector3 _normalForce;
         private FVector3 _lastForceAdded;
         private FVector3 _forceToApply;
         private FVector3 _frozenStoredForce;
@@ -105,7 +104,7 @@ namespace Lodis.Movement
         /// <summary>
         /// Returns the velocity of the rigid body in the last fixed update
         /// </summary>
-        public FVector3 Velocity { get => _velocity; }
+        public FVector3 Velocity { get => _velocity; set => ApplyVelocityChange(value); }
         /// <summary>
         /// How bouncy this object is
         /// </summary>
@@ -114,6 +113,29 @@ namespace Lodis.Movement
         public float Mass { get => _mass; }
         public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
 
+
+        //Events
+        /// <summary>
+        /// The event called when this object collides with another
+        /// </summary>
+        private CollisionEvent _onCollision;
+        /// <summary>
+        /// The event called when this object lands on top of a structure
+        /// </summary>
+        private CollisionEvent _onCollisionWithGround;
+        private ForceAddedEvent _onForceAdded;
+        private ForceAddedEvent _onForceAddedTemp;
+
+        //Actions and timers
+        private LerpAction _jumpSequence;
+        private DelayedAction _freezeAction;
+        private FixedConditionAction _bufferedJump;
+
+        //Scene references
+        private GridMovementBehaviour _movementBehaviour;
+        public Collider BounceCollider { get => _bounceCollider; }
+        public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
+        public bool GridActive { get => _gridActive; private set => _gridActive = value; }
 
 
         public override void Serialize(BinaryWriter bw)
@@ -145,38 +167,12 @@ namespace Lodis.Movement
             _isGrounded = br.ReadBoolean();
         }
 
-        //Events
-        /// <summary>
-        /// The event called when this object collides with another
-        /// </summary>
-        private CollisionEvent _onCollision;
-        /// <summary>
-        /// The event called when this object lands on top of a structure
-        /// </summary>
-        private CollisionEvent _onCollisionWithGround;
-        private ForceAddedEvent _onForceAdded;
-        private ForceAddedEvent _onForceStart;
-        private ForceAddedEvent _onForceAddedTemp;
-
-        //Actions and timers
-        private CustomYieldInstruction _wait;
-        private Coroutine _currentCoroutine;
-        private LerpAction _jumpSequence;
-        private DelayedAction _freezeAction;
-        private FixedConditionAction _bufferedJump;
-
-        //Scene references
-        private GridMovementBehaviour _movementBehaviour;
-        public Collider BounceCollider { get => _bounceCollider; }
-        public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
-
-
         protected override void Awake()
         {
             base.Awake();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
 
-            _onForceAdded += args => _gridActive = false;
+            _onForceAdded += args => GridActive = false;
 
             //If this is attached to an entity with a statemachine, they should always be grid active on Idle.
             if (TryGetComponent(out CharacterStateMachineBehaviour stateMachine))
@@ -198,7 +194,7 @@ namespace Lodis.Movement
         {
             if (state == "Idle")
             {
-                _gridActive = true;
+                GridActive = true;
             }
         }
 
@@ -428,9 +424,8 @@ namespace Lodis.Movement
         /// </summary>
         private void UpdatePanelPosition()
         {
-            GridScripts.PanelBehaviour panel = null;
 
-            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out PanelBehaviour panel, false))
                 _movementBehaviour.Position = panel.Position;
         }
 
@@ -635,13 +630,11 @@ namespace Lodis.Movement
             GridPhysicsBehaviour gridPhysicsBehaviour = otherEntity.GetComponent<GridPhysicsBehaviour>();
 
             _onCollision?.Invoke(collision);
-
-            CollisionPlaneBehaviour collisionPlane = null;
             float bounceDampening = BounceDampen;
 
             if (!gridPhysicsBehaviour || !damageScript)
             {
-                collisionPlane = otherEntity.GetComponent<CollisionPlaneBehaviour>();
+                CollisionPlaneBehaviour collisionPlane = otherEntity.GetComponent<CollisionPlaneBehaviour>();
                 if (!collisionPlane || !PanelBounceEnabled)
                     return;
 
@@ -656,14 +649,14 @@ namespace Lodis.Movement
                 knockBackScript = GetComponent<KnockbackBehaviour>();
 
             //Calculate the knockback and hit angle for the ricochet
-            Vector3 direction = new Vector3(collision.Normal.X, collision.Normal.Y, 0);
+            Vector3 direction = new(collision.Normal.X, collision.Normal.Y, 0);
             float dotProduct = Vector3.Dot(Vector3.right, -direction);
             float hitAngle = Mathf.Acos(dotProduct);
-
-
-            float velocityMagnitude = 0;
             float baseKnockBack = 1;
 
+
+
+            float velocityMagnitude;
             if (knockBackScript && _useVelocityForBounce)
             {
                 velocityMagnitude = knockBackScript.Physics.Velocity.Magnitude;
@@ -709,7 +702,7 @@ namespace Lodis.Movement
             if (IgnoreForces)
                 return;
 
-            _isKinematic = false;
+            GridActive = false;
 
             //Try to snap the object to a panel center before applying force.
             if (_movementBehaviour?.IsMoving == true)
@@ -758,7 +751,7 @@ namespace Lodis.Movement
             if (ignoreMomentum)
                 StopVelocity();
 
-            _isKinematic = false;
+            GridActive = false;
 
             //Try to snap the object to a panel center before applying force.
             if (_movementBehaviour?.IsMoving == true)
@@ -825,7 +818,7 @@ namespace Lodis.Movement
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
             }
 
-            _isKinematic = false;
+            GridActive = false;
             
             //If a new force is added in the opposite direction, this will instantly flip that value.
             //This makes the object snap to the other direction and feels more responsive.
@@ -867,7 +860,7 @@ namespace Lodis.Movement
         /// <param name="jumpToClosestAvailablePanel">If true, the object will try to jump to a closer panel if the destination isn't available</param>
         /// <param name="canBeOccupied">If true, the destination panel can be occupied by another object</param>
         /// <param name="alignment">The alignment of the panels this object is allowed to jump on</param>
-        public void Jump(float height, int panelDistance,  float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, FVector3 panelOffset = default(FVector3), FixedAnimationCurve curve = null)
+        public void Jump(float height, int panelDistance,  float duration, bool jumpToClosestAvailablePanel = false, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, FVector3 panelOffset = default, FixedAnimationCurve curve = null)
         {
             _jumpSequence?.Kill();
 
@@ -891,9 +884,8 @@ namespace Lodis.Movement
             float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
             float displacement = (panelSize * panelDistance) + (panelSpacing * (panelDistance - 1));
             //Try to find a panel at the location
-            PanelBehaviour panel;
-            FVector3 panelPosition = EntityTransform.Position + EntityTransform.Forward * panelDistance;
-            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld((Vector3)panelPosition, out panel, canBeOccupied, alignment);
+            FVector3 panelPosition = FixedTransform.WorldPosition + FixedTransform.Forward * panelDistance;
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld((Vector3)panelPosition, out PanelBehaviour panel, canBeOccupied, alignment);
 
             //Returns if a panel couldn't be found and we don't want to keep looking
             if (!panel && !jumpToClosestAvailablePanel) return;
@@ -908,7 +900,7 @@ namespace Lodis.Movement
             }
 
             //Perform the jump
-            _jumpSequence = FixedLerp.DoJump(EntityTransform, panelPosition + panelOffset, height, 1, duration, curve);
+            _jumpSequence = FixedLerp.DoJump(FixedTransform, panelPosition + panelOffset, height, 1, duration, curve);
             _jumpSequence.onKill += () => _jumpSequence = null;
             _jumpSequence.onComplete += () => _jumpSequence = null;
 
@@ -951,13 +943,40 @@ namespace Lodis.Movement
                 Gizmos.DrawLine(transform.position, transform.position + Vector3.down * GroundedBoxExtents.Y);
         }
 
+        /// <summary>
+        /// Get the current panel coordinate for this object. 
+        /// If there isn't a movement behaviour attached, it will find it based on location.
+        /// </summary>
+        public FVector2 GetGridPosition()
+        {
+            FVector2 position = new();
+
+            if (!_movementBehaviour)
+            {
+                GridBehaviour.Grid.GetPanelAtLocationInWorld(transform.position, out PanelBehaviour panel);
+
+                if (panel != null)
+                {
+                    position.X = panel.Position.X;
+                    position.Y = panel.Position.Y;
+                }
+            }
+            else
+            {
+                position.X = _movementBehaviour.Position.X;
+                position.Y = _movementBehaviour.Position.Y;
+            }
+
+            return position;
+        }
+
         public override void Tick(Fixed32 dt)
         {
             base.Tick(dt);
             _isGrounded = CheckIsGrounded();
 
             //Disable all forces if this object is actively moving on the grid or kinematic.
-            if (IsKinematic || _gridActive)
+            if (IsKinematic || GridActive)
             {
                 if (_movementBehaviour?.IsMoving == true)
                     _velocity = _movementBehaviour.MoveDirection;
@@ -972,7 +991,7 @@ namespace Lodis.Movement
 
             //Code that was ran in unity update.
             if (FaceHeading && Velocity.Magnitude > 0)
-                EntityTransform.Forward = Velocity.GetNormalized();
+                FixedTransform.Forward = Velocity.GetNormalized();
             
             //Code that ran in unity fixed update.
             _acceleration = (_lastVelocity - Velocity) / Time.fixedDeltaTime;
@@ -983,6 +1002,8 @@ namespace Lodis.Movement
             _objectAtRest = IsGrounded && _velocity.Magnitude <= 0.01f;
 
             ForceToApply = FVector3.Zero;
+
+            FixedTransform.WorldPosition += Velocity;
         }
     }
 }

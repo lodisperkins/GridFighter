@@ -184,7 +184,7 @@ namespace Lodis.Gameplay
             if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
                 return;
 
-            var offsetX = collision.Entity.Transform.Position.X - Entity.FixedTransform.Position.X;
+            var offsetX = collision.Entity.Transform.WorldPosition.X - Entity.FixedTransform.WorldPosition.X;
             float dir = offsetX / Mathf.Abs(offsetX);
             
             //Find the direction this collider was going to apply force originally

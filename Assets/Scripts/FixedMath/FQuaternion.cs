@@ -8,12 +8,13 @@ using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
 
 namespace FixedPoints
 {
+    [Serializable]
     public struct FQuaternion
     {
-        public Fixed32 X { get; set; }
-        public Fixed32 Y { get; set; }
-        public Fixed32 Z { get; set; }
-        public Fixed32 W { get; set; }
+        public Fixed32 X;
+        public Fixed32 Y;
+        public Fixed32 Z;
+        public Fixed32 W;
 
         public FQuaternion(Fixed32 x, Fixed32 y, Fixed32 z, Fixed32 w)
         {

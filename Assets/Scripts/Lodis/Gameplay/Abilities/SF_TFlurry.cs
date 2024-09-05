@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using FixedPoints;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,15 +13,15 @@ namespace Lodis.Gameplay
     public class SF_TFlurry : ProjectileAbility
     {
         private HitColliderData _swordCollider;
-        private GameObject _flurryRef;
-        private GameObject _flurry;
-        private ConditionAction _spawnAccessoryAction;
+        private EntityDataBehaviour _flurryRef;
+        private EntityDataBehaviour _flurry;
+        private FixedConditionAction _spawnAccessoryAction;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
             base.Init(newOwner);
-            _flurryRef = Resources.Load<GameObject>("Projectiles/Prototype2/ChargeSwordFlurry");
+            _flurryRef = Resources.Load<EntityDataBehaviour>("Projectiles/Prototype2/ChargeSwordFlurry");
         }
 
         protected override void OnStart(params object[] args)
@@ -31,20 +32,20 @@ namespace Lodis.Gameplay
 
         private void SpawnFlurry(Collision collision)
         {
-            GameObject target = collision.Entity.UnityObject;
-            if (!target.CompareTag("Player"))
+            EntityData target = collision.Entity;
+            if (!target.UnityObject.CompareTag("Player"))
                 return;
 
-            _flurry = ObjectPoolBehaviour.Instance.GetObject(_flurryRef, target.transform.position + Vector3.up, Projectile.transform.rotation);
+            _flurry = ObjectPoolBehaviour.Instance.GetObject(_flurryRef, target.Transform.WorldPosition + FVector3.Up, Projectile.FixedTransform.WorldRotation);
             HitColliderBehaviour flurryCollider = _flurry.GetComponent<HitColliderBehaviour>();
 
             flurryCollider.ColliderInfo = GetColliderData(1);
             flurryCollider.Owner = Owner;
 
             DisableAccessory();
-            RoutineBehaviour.Instance.StopAction(_spawnAccessoryAction);
+            FixedPointTimer.StopAction(_spawnAccessoryAction);
 
-            _spawnAccessoryAction = RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !_flurry.activeInHierarchy);
+            _spawnAccessoryAction = FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !_flurry.Active);
 
             ActiveProjectiles.Add(_flurry);
         }
@@ -53,7 +54,7 @@ namespace Lodis.Gameplay
         {
             DisableAccessory();
 
-            _spawnAccessoryAction = RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
+            _spawnAccessoryAction = FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !Projectile.Active);
         }
 
         //Called when ability is used

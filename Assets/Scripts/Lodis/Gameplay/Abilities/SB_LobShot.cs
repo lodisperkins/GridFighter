@@ -16,8 +16,8 @@ namespace Lodis.Gameplay
     public class SB_LobShot : ProjectileAbility
     {
         //Usd to store a reference to the laser prefab
-        private GameObject _strongProjectileRef;
-        private GameObject _weakProjectilRef;
+        private EntityDataBehaviour _strongProjectileRef;
+        private EntityDataBehaviour _weakProjectilRef;
         private Transform _weakSpawn;
         private HitColliderData _strongProjectileData;
         //The collider attached to the laser
@@ -39,8 +39,8 @@ namespace Lodis.Gameplay
             Owner = newOwner;
 
             //Load the projectile prefab
-            _strongProjectileRef = abilityData.visualPrefab;
-            _weakProjectilRef = (GameObject)Resources.Load("Projectiles/Prototype/LobShot");
+            _strongProjectileRef = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
+            _weakProjectilRef = (EntityDataBehaviour)Resources.Load("Projectiles/Prototype/LobShot");
             _weakShotAngle = abilityData.GetCustomStatValue("WeakShotAngle");
             _strongShotAngle = abilityData.GetCustomStatValue("StrongShotAngle");
             _weakShotGravity = abilityData.GetCustomStatValue("WeakShotGravity");
@@ -51,7 +51,7 @@ namespace Lodis.Gameplay
         /// Spawns the smaller, weaker lobshot
         /// </summary>
         /// <param name="axis"></param>
-        private GameObject SpawnStrongShot(Vector3 axis, float distance, float angle, GameObject projectile, HitColliderData hitColliderData, Vector3 position, float gravity)
+        private EntityDataBehaviour SpawnStrongShot(Vector3 axis, float distance, float angle, EntityDataBehaviour projectile, HitColliderData hitColliderData, Vector3 position, float gravity)
         {
             OwnerMoveset.ProjectileSpawner.Projectile = projectile;
 
@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
             launchForce.Z += axis.z * launchForce.Magnitude;
             launchForce.X *= axis.x;
 
-            GameObject activeProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(launchForce, hitColliderData, true, false);
+            EntityDataBehaviour activeProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(launchForce, hitColliderData, true, false);
             activeProjectile.transform.position = position;
 
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
@@ -119,7 +119,7 @@ namespace Lodis.Gameplay
 
         private void SpawnProjectiles()
         {
-            GameObject activeStrongShot = SpawnStrongShot(Owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileData, OwnerMoveset.ProjectileSpawner.transform.position, _strongShotGravity);
+            EntityDataBehaviour activeStrongShot = SpawnStrongShot(Owner.transform.forward, _strongShotDistance, _strongShotAngle, _strongProjectileRef, _strongProjectileData, OwnerMoveset.ProjectileSpawner.transform.position, _strongShotGravity);
             _weakSpawn = activeStrongShot.transform;
             ActiveProjectiles.Add(activeStrongShot);
         }

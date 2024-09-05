@@ -234,13 +234,13 @@ namespace Lodis.Gameplay
             //{
             //    UnpauseAbilityTimer();
             //}
-            /*else */if (_auraSphere && OwnerInput)
-            {
-                Vector3 position = _auraSphere.transform.position + (Vector3)OwnerInput.AttackDirection * Time.deltaTime * _moveSpeed;
-                position.x = Mathf.Clamp(position.x, 0, _maxX);
-                position.y = Mathf.Clamp(position.y, 1, GridMovementBehaviour.MaxYPosition);
-                _auraSphere.transform.position = position;
-            }
+            ///*else */if (_auraSphere && OwnerInput)
+            //{
+            //    Vector3 position = _auraSphere.transform.position + (Vector)OwnerInput.AttackDirection * Time.deltaTime * _moveSpeed;
+            //    position.x = Mathf.Clamp(position.x, 0, _maxX);
+            //    position.y = Mathf.Clamp(position.y, 1, GridMovementBehaviour.MaxYPosition);
+            //    _auraSphere.transform.position = position;
+            //}
         }
     }
 }

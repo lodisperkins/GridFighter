@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
         /// </summary>
         private void ExplodeBomb(GridMovementBehaviour entity)
         {
-            HitColliderSpawner.SpawnCollider(entity.EntityTransform.Position + FVector3.Up / 2, 1, 1, _hitColliderData, Owner);
+            HitColliderSpawner.SpawnCollider(entity.FixedTransform.WorldPosition + FVector3.Up / 2, 1, 1, _hitColliderData, Owner);
 
             Object.Instantiate(_explosionEffect, entity.transform.position, Camera.main.transform.rotation);
 

@@ -63,10 +63,6 @@ namespace Lodis.Gameplay
                 tracker = _hitCollider.gameObject.AddComponent<GridTrackerBehaviour>();
                 tracker.Marker = MarkerType.DANGER;
             }    
-
-
-
-            _hitCollider.DebuggingEnabled = true;
         }
 
 	    //Called when ability is used

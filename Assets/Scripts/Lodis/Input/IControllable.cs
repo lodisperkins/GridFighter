@@ -1,4 +1,5 @@
-﻿using Lodis.ScriptableObjects;
+﻿using FixedPoints;
+using Lodis.ScriptableObjects;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace Lodis.Input
             get;set;
         }
 
-        Vector2 AttackDirection
+        FVector2 AttackDirection
         {
             get;
         }

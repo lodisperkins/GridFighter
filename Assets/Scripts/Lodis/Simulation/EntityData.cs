@@ -16,7 +16,7 @@ using static UnityEngine.Rendering.DebugUI;
 [System.Serializable]
 public class EntityData
 {
-    private List<SimulationBehaviour> _components = new List<SimulationBehaviour>();
+    private readonly List<SimulationBehaviour> _components = new();
     private bool _active;
 
     public string Name;
@@ -36,7 +36,9 @@ public class EntityData
         set
         {
             _active = value;
-            UnityObject.SetActive(value);
+
+            if (UnityObject)
+                UnityObject.SetActive(value);
         }
     }
 
@@ -51,7 +53,7 @@ public class EntityData
     public EntityData()
     {
         Name = "New Entity";
-        Transform = new FTransform();
+        Transform = new FTransform(this);
         Init();
     }
 

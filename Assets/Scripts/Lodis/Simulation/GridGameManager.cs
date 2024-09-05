@@ -1,6 +1,8 @@
+using FixedPoints;
 using SharedGame;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 using UnityGGPO;
 
@@ -8,6 +10,8 @@ public class GridGameManager : GameManager
 {
     [Tooltip("Starts a local game immediately when the game starts.")]
     [SerializeField] private bool _startLocalGame;
+    [SerializeField] private Fixed32 _fixed32TestConversion;
+
     public static bool LocalGameStarted { get; private set; }
     public static bool OnlineGameStarted { get; private set; }
 

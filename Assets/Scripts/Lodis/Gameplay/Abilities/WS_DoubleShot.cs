@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
     public class WS_DoubleShot : ProjectileAbility
     {
         //Usd to store a reference to the laser prefab
-        private GameObject _projectile;
+        private EntityDataBehaviour _projectile;
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
 
@@ -26,7 +26,7 @@ namespace Lodis.Gameplay
             Owner = newOwner;
             
             //Load the projectile prefab
-            _projectile = abilityData.visualPrefab;
+            _projectile = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
         }
 
         private void SpawnProjectile()
@@ -47,7 +47,7 @@ namespace Lodis.Gameplay
             projectileSpawner.Projectile = _projectile;
 
             //Fire laser
-            GameObject newProjectile = projectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+            EntityDataBehaviour newProjectile = projectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
 
             ActiveProjectiles.Add(newProjectile);
         }

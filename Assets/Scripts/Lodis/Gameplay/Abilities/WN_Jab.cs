@@ -16,7 +16,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         public Transform spawnTransform = null;
         //Usd to store a reference to the laser prefab
-        private GameObject _projectile;
+        private EntityDataBehaviour _projectile;
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
 
@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
             Owner = newOwner;
 
             //Load the projectile prefab
-            _projectile = abilityData.visualPrefab;
+            _projectile = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
         }
 
         protected override void OnActivate(params object[] args)
@@ -50,7 +50,7 @@ namespace Lodis.Gameplay
             if (ActiveProjectiles.Count < abilityData.GetCustomStatValue("MaxInstances") || abilityData.GetCustomStatValue("MaxInstances") < 0)
             {
                 //Fire laser
-                GameObject projectile = OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+                EntityDataBehaviour projectile = OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
                 ActiveProjectiles.Add(projectile);
             }
         }

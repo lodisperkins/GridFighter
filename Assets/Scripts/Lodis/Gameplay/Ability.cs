@@ -260,7 +260,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void EndAbility()
         {
-            _currentTimer.Stop();
+            _currentTimer?.Stop();
             onEnd?.Invoke();
             End();
             _inUse = false;

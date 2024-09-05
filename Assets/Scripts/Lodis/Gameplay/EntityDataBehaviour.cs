@@ -18,12 +18,19 @@ public class EntityDataBehaviour : MonoBehaviour
     [Tooltip("The transform of the object that is the visual representation of this entity.")]
     [SerializeField] private Transform _visualRoot;
 
+    //---
+    protected bool inGame;
+
     /// <summary>
     /// The rollback simulations representation of this game object.
     /// </summary>
     public EntityData Data {  get { return _entityData; } set { _entityData = value; } }
 
     public FTransform FixedTransform { get { return _entityData.Transform; } }
+
+    public bool AddToGameManually { get => _addToGameManually; private set => _addToGameManually = value; }
+
+    public bool Active { get => Data.Active; }
 
     // Start is called before the first frame update
     void Awake()
@@ -37,6 +44,18 @@ public class EntityDataBehaviour : MonoBehaviour
             sim.Entity = this;
         }
 
+        //Adds all components to the entity so they can be updated by the rollback simulation.
+        EntityDataBehaviour[] entityComps = GetComponentsInChildren<EntityDataBehaviour>();
+
+        foreach (EntityDataBehaviour entity in entityComps)
+        {
+            if (entity == this)
+                continue;
+
+            entity.transform.parent = null;
+            Data.Transform.AddChild(entity.Data.Transform);
+        }
+
         if (string.IsNullOrEmpty(_entityData.Name))
             _entityData.Name = gameObject.name;
 
@@ -46,8 +65,11 @@ public class EntityDataBehaviour : MonoBehaviour
         _entityData.UnityObject = gameObject;
 
         //Try to add entity to game so it can be updated.
-        if (!_addToGameManually)
+        if (!AddToGameManually)
+        {
             GridGame.AddEntityToGame(_entityData);
+            inGame = true;
+        }
     }
 
     /// <summary>
@@ -58,6 +80,7 @@ public class EntityDataBehaviour : MonoBehaviour
     {
         gameObject.SetActive(true);
         GridGame.AddEntityToGame(_entityData);
+        inGame = true;
     }
 
     /// <summary>
@@ -72,11 +95,54 @@ public class EntityDataBehaviour : MonoBehaviour
 
     private void UpdateUnityTransform(Fixed32 dt)
     {
-        _visualRoot.SetPositionAndRotation((Vector3)Data.Transform.Position, (Quaternion)Data.Transform.Rotation);
+        if (_visualRoot)
+            _visualRoot.SetPositionAndRotation((Vector3)Data.Transform.WorldPosition, (Quaternion)Data.Transform.WorldRotation);
+    }
+
+    private void OnEnable()
+    {
+        if (!inGame)
+        {
+            AddToGame();
+        }
+    }
+
+    private void OnDisable()
+    {
+        inGame = false;
+        GridGame.RemoveEntityFromGame(_entityData);
     }
 
     private void OnDestroy()
     {
+        inGame = false;
         GridGame.RemoveEntityFromGame(_entityData);
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (_entityData == null || _entityData.Transform == null)
+            return;
+
+        // Get the FTransform global position, rotation, and scale
+        FTransform fixedTransform = _entityData.Transform;
+        Vector3 position = (Vector3)fixedTransform.WorldPosition;
+
+        // Calculate the forward, right, and up directions based on the FTransform
+        Vector3 forward = (Vector3)(fixedTransform.WorldRotation * FVector3.Forward);
+        Vector3 right = (Vector3)(fixedTransform.WorldRotation * FVector3.Right);
+        Vector3 up = (Vector3)(fixedTransform.WorldRotation * FVector3.Up);
+
+        // Set Gizmo color and draw the lines for forward (blue), right (red), and up (green)
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(position, position + forward * 2); // Forward (Z-axis)
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(position, position + right * 2); // Right (X-axis)
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(position, position + up * 2); // Up (Y-axis)
+
+        // Draw a small cube at the position to represent the object
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawCube(position, Vector3.one * 0.1f);
     }
 }

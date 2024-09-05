@@ -60,7 +60,7 @@ namespace FixedPoints
         /// <returns></returns>
         public static LerpAction DoMove(FTransform target, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
         {
-            LerpAction action = new MoveAction(target, target.Position, endValue, duration, curve);
+            LerpAction action = new MoveAction(target, target.WorldPosition, endValue, duration, curve);
             Actions.Add(action);
             return action;
         }
@@ -75,7 +75,7 @@ namespace FixedPoints
         /// <returns></returns>
         public static LerpAction DoRotate(FTransform target, FQuaternion endValue, Fixed32 duration, FixedAnimationCurve curve = null)
         {
-            LerpAction action = new RotateAction(target, target.Rotation, endValue, duration, curve);
+            LerpAction action = new RotateAction(target, target.WorldRotation, endValue, duration, curve);
             Actions.Add(action);
             return action;
         }
@@ -91,7 +91,7 @@ namespace FixedPoints
         /// <returns></returns>
         public static LerpAction DoScale(FTransform target, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
         {
-            LerpAction action = new ScaleAction(target, target.Scale, endValue, duration, curve);
+            LerpAction action = new ScaleAction(target, target.WorldScale, endValue, duration, curve);
             Actions.Add(action);
             return action;
         }
@@ -123,7 +123,7 @@ namespace FixedPoints
         /// <returns></returns>
         public static LerpAction DoJump(FTransform target, FVector3 endValue, Fixed32 jumpPower, int numJumps, Fixed32 duration, FixedAnimationCurve curve = null)
         {
-            LerpAction action = new JumpAction(target, target.Position, endValue, jumpPower, numJumps, duration, curve);
+            LerpAction action = new JumpAction(target, target.WorldPosition, endValue, jumpPower, numJumps, duration, curve);
             Actions.Add(action);
             return action;
         }
@@ -286,7 +286,7 @@ namespace FixedPoints
         protected override void Apply(Fixed32 t)
         {
             FVector3 newPosition = StartValue + (EndValue - StartValue) * t;
-            Target.Position = newPosition;
+            Target.WorldPosition = newPosition;
         }
     }
 
@@ -308,7 +308,7 @@ namespace FixedPoints
         protected override void Apply(Fixed32 t)
         {
             FQuaternion newRotation = FQuaternion.Lerp(StartValue, EndValue, t);
-            Target.Rotation = newRotation;
+            Target.WorldRotation = newRotation;
         }
     }
 
@@ -330,7 +330,7 @@ namespace FixedPoints
         protected override void Apply(Fixed32 t)
         {
             FVector3 newScale = StartValue + (EndValue - StartValue) * t;
-            Target.Scale = newScale;
+            Target.WorldScale = newScale;
         }
     }
 
@@ -343,14 +343,14 @@ namespace FixedPoints
             : base(target, duration, curve)
         {
             PunchValue = punchValue;
-            StartValue = target.Position;
+            StartValue = target.WorldPosition;
         }
 
         protected override void Apply(Fixed32 t)
         {
             // Example punch logic, needs actual punch algorithm
             FVector3 newValue = StartValue + PunchValue * (1 - t);
-            Target.Position = newValue;
+            Target.WorldPosition = newValue;
         }
     }
 
@@ -376,7 +376,7 @@ namespace FixedPoints
             Fixed32 progress = (Fixed32)(t * Fixed32.PI * NumJumps);
             Fixed32 yOffset = JumpPower * Fixed32.Sin(progress);
             FVector3 newValue = StartValue + (EndValue - StartValue) * t + new FVector3(0, yOffset, 0);
-            Target.Position = newValue;
+            Target.WorldPosition = newValue;
         }
     }
 }

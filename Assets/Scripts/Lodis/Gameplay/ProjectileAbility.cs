@@ -16,16 +16,16 @@ namespace Lodis.Gameplay
     {
         public Transform SpawnTransform;
         //Usd to store a reference to the projectile prefab
-        public GameObject ProjectileRef;
+        public EntityDataBehaviour ProjectileRef;
         public FVector3 ShotDirection;
-        public GameObject Projectile;
+        public EntityDataBehaviour Projectile;
         //The collider attached to the projectile
         public HitColliderData ProjectileColliderData;
-        public List<GameObject> ActiveProjectiles = new List<GameObject>();
+        public List<EntityDataBehaviour> ActiveProjectiles = new();
         public bool DestroyOnHit = true;
         public bool IsMultiHit = false;
         public bool UseGravity;
-        public bool despawnAfterTimeLimit { get; private set; }
+        public bool DespawnAfterTimeLimit { get; private set; }
 
         public float Speed;
 
@@ -37,14 +37,14 @@ namespace Lodis.Gameplay
             //initialize default stats
             
             Owner = newOwner;
-            ProjectileRef = abilityData?.visualPrefab;
+            ProjectileRef = abilityData?.visualPrefab.GetComponent<EntityDataBehaviour>();
         }
 
         public void CleanProjectileList(bool useName = false)
         {
             for (int i = 0; i < ActiveProjectiles.Count; i++)
             {
-                if (!ActiveProjectiles[i].activeInHierarchy || (ActiveProjectiles[i].name != ProjectileRef.name + "(" + abilityData.name + ")" && useName))
+                if (!ActiveProjectiles[i].Active || (ActiveProjectiles[i].name != ProjectileRef.name + "(" + abilityData.name + ")" && useName))
                 {
                     ActiveProjectiles.RemoveAt(i);
                     i--;
@@ -73,7 +73,7 @@ namespace Lodis.Gameplay
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
             projectileSpawner.Projectile = ProjectileRef;
             SpawnTransform = projectileSpawner.transform;
-            ShotDirection = projectileSpawner.EntityTransform.Forward;
+            ShotDirection = projectileSpawner.FixedTransform.Forward;
 
             HitColliderData data = ProjectileColliderData;
             if (ScaleStats)

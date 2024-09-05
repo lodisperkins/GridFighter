@@ -28,7 +28,6 @@ namespace Lodis.Gameplay
         private bool _explosionSpawned;
         private ConditionAction _spawnAccessoryAction;
         private GridMovementBehaviour _opponentMovement;
-        private MovesetBehaviour _opponentMoveset;
         private KnockbackBehaviour _opponentKnockback;
         private CharacterFeedbackBehaviour _characterFeedback;
         private CharacterFeedbackBehaviour _opponentFeedback;
@@ -49,7 +48,6 @@ namespace Lodis.Gameplay
             _slowMotionTimeScale = abilityData.GetCustomStatValue("SlowMotionTimeScale");
             _slowMotionTime = abilityData.GetCustomStatValue("SlowMotionTime");
             _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<GridMovementBehaviour>();
-            _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<MovesetBehaviour>();
             _opponentKnockback = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<KnockbackBehaviour>();
 
             _characterFeedback = Owner.GetComponentInChildren<CharacterFeedbackBehaviour>();
@@ -68,10 +66,10 @@ namespace Lodis.Gameplay
                 _axeKick = ObjectPoolBehaviour.Instance.GetObject(effect, Owner.transform.position, Quaternion.Euler(Owner.transform.rotation.x, -Owner.transform.rotation.y, Owner.transform.rotation.z));
             });
 
-            OwnerAnimationScript.AddEventListener("ElectroKick", () =>
+            OwnerAnimationScript.AddEventListener("ElectroKick", (UnityEngine.Events.UnityAction)(() =>
             {
-                HitColliderBehaviour kickCollider = HitColliderSpawner.SpawnCollider(_opponentMovement.EntityTransform.Position, 1, 1, GetColliderData(3), Owner);
-            });
+                HitColliderBehaviour kickCollider = HitColliderSpawner.SpawnCollider((FVector3)_opponentMovement.FixedTransform.WorldPosition, 1, 1, GetColliderData(3), Owner);
+            }));
 
             OwnerAnimationScript.AddEventListener("ChargeElectroBomb", PrepareBlast);
 
@@ -95,9 +93,9 @@ namespace Lodis.Gameplay
                 OwnerVoiceScript.PlayHeavyAttackSound();
 
                 ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
-                projectileSpawner.Projectile = abilityData.Effects[2];
+                projectileSpawner.Projectile = abilityData.Effects[2].GetComponent<EntityDataBehaviour>();
                 SpawnTransform = _heldItemSpawn;
-                ShotDirection = projectileSpawner.EntityTransform.Forward;
+                ShotDirection = projectileSpawner.FixedTransform.Forward;
 
                 HitColliderData data = ProjectileColliderData;
 
@@ -111,7 +109,7 @@ namespace Lodis.Gameplay
                 ActiveProjectiles.Add(Projectile);
 
                 DelayedAction action = RoutineBehaviour.Instance.StartNewConditionAction(SpawnExplosion, condition => Projectile.transform.position.y <= 0 && !_explosionSpawned);
-                RoutineBehaviour.Instance.StartNewConditionAction(parameters => RoutineBehaviour.Instance.StopAction(action), condition => !Projectile.activeInHierarchy);
+                RoutineBehaviour.Instance.StartNewConditionAction(parameters => RoutineBehaviour.Instance.StopAction(action), condition => !Projectile.Data.Active);
 
                 CameraBehaviour.Instance.ZoomAmount = 0;
 
@@ -124,7 +122,7 @@ namespace Lodis.Gameplay
         {
             DisableAccessory();
 
-            _spawnAccessoryAction = RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
+            _spawnAccessoryAction = RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.Active);
         }
 
         private IEnumerator SetTimeUnscaled()
@@ -165,7 +163,7 @@ namespace Lodis.Gameplay
         private void SpawnExplosion(params object[] args)
         {
             _explosionSpawned = true;
-            Projectile.SetActive(false);
+            Projectile.RemoveFromGame();
             float explosionColliderHeight = abilityData.GetCustomStatValue("ExplosionColliderHeight");
             float explosionColliderWidth = abilityData.GetCustomStatValue("ExplosionColliderWidth");
 
@@ -201,10 +199,9 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.ZoomAmount = 0;
             //MatchManagerBehaviour.Instance.SuperInUse = true;
             //Spawn the the holding effect.
-            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, OwnerMoveset.HeldItemSpawnLeft, true);
+            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, OwnerMoveset.HeldItemSpawnLeft, true);
             CameraBehaviour.Instance.ClampY = false;
-            AnimationClip throwClip = null;
-            abilityData.GetAdditionalAnimation(1, out throwClip);
+            abilityData.GetAdditionalAnimation(1, out AnimationClip throwClip);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_axeKick);
 
             OwnerVoiceScript.PlayLightAttackSound();
@@ -240,12 +237,11 @@ namespace Lodis.Gameplay
 
             opponentHealthBehaviour.Stun(2);
 
-            PanelBehaviour landingPanel = null; 
             BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_opponentMovement.transform.position, out opponentPanel);
 
             FVector2 panelPosition = BlackBoardBehaviour.Instance.Grid.ClampPanelPosition(opponentPanel.Position + FVector2.Right * OwnerMoveScript.GetAlignmentX(), GridAlignment.ANY);
 
-            BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out landingPanel);
+            BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out PanelBehaviour landingPanel);
 
             Vector3 position = landingPanel.transform.position + Vector3.up * OwnerMoveScript.HeightOffset;
 
@@ -266,9 +262,8 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.ZoomAmount = 4;
             CameraBehaviour.Instance.ClampX = false;
 
-            AnimationClip kickClip;
 
-            abilityData.GetAdditionalAnimation(0, out kickClip);
+            abilityData.GetAdditionalAnimation(0, out AnimationClip kickClip);
 
             RoutineBehaviour.Instance.StartNewTimedAction(arguments => OwnerAnimationScript.PlayAnimation(kickClip, 1, true), TimedActionCountType.FRAME, 1);
 

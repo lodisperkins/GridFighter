@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
     {
         public Transform spawnTransform = null;
         //Used to store a reference to the laser prefab
-        private GameObject _projectile;
+        private EntityDataBehaviour _projectile;
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
         private Vector3 _defaultScale;
@@ -25,7 +25,7 @@ namespace Lodis.Gameplay
             abilityData = (ScriptableObjects.AbilityData)(Resources.Load("AbilityData/SF_Straight_Data"));
 
             //Load the projectile prefab
-            _projectile = abilityData.visualPrefab;
+            _projectile = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
             _defaultScale = _projectile.transform.localScale;
         }
 
@@ -41,7 +41,7 @@ namespace Lodis.Gameplay
 
             //Fire laser
             OwnerMoveset.ProjectileSpawner.Projectile = _projectile;
-            GameObject newProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+            EntityDataBehaviour newProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
             newProjectile.transform.localScale = _defaultScale * 2;
             ActiveProjectiles.Add(newProjectile);
         }

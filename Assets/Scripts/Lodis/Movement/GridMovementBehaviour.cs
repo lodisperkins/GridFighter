@@ -496,7 +496,7 @@ namespace Lodis.Movement
                 _moveLerp.Kill();
 
 
-            _moveLerp = FixedLerp.DoMove(EntityTransform, newPosition, TravelTime);
+            _moveLerp = FixedLerp.DoMove(FixedTransform, newPosition, TravelTime);
             _moveLerp.onComplete += ResetMovementValues;
         }
 
@@ -546,7 +546,6 @@ namespace Lodis.Movement
             _targetPosition = newPosition;
 
             MoveDirection = (panelPosition - Position).GetNormalized();
-            UnityEngine.Debug.Log(MoveDirection);
 
             SetIsMoving(true);
 
@@ -757,7 +756,7 @@ namespace Lodis.Movement
             if (snapPosition)
             {
                 
-                EntityTransform.Position = newPosition;
+                FixedTransform.WorldPosition = newPosition;
                 SetIsMoving(false);
             }
             else
@@ -1015,7 +1014,12 @@ namespace Lodis.Movement
             if (_currentPanel)
                 _currentPanel.Occupied = false;
         }
-
+        [SerializeField]
+        bool rotateY;
+        [SerializeField]
+        bool rotateX;
+        Fixed32 rotationX;
+        Fixed32 rotationY;
         public override void Tick(Fixed32 dt)
         {
             //Old update
@@ -1030,7 +1034,7 @@ namespace Lodis.Movement
             //if (FVector3.Distance(EntityTransform.Position, (FVector3)_currentPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
             //    MoveToCurrentPanel();
 
-            Fixed32 dist = FVector3.Distance(EntityTransform.Position, _targetPosition);
+            Fixed32 dist = FVector3.Distance(FixedTransform.WorldPosition, _targetPosition);
 
             SetIsMoving(dist >= _targetTolerance);
 
@@ -1039,9 +1043,29 @@ namespace Lodis.Movement
             if (state == "Idle" || _facingIgnoresState)
             {
                 if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
-                    EntityTransform.Rotation = FQuaternion.Euler(0, -90, 0);
+                    FixedTransform.WorldRotation = FQuaternion.Euler(0, -90, 0);
                 else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
-                    EntityTransform.Rotation = FQuaternion.Euler(0, 90, 0);
+                    FixedTransform.WorldRotation = FQuaternion.Euler(0, 90, 0);
+            }
+
+
+            FVector3 euler = new FVector3(rotationX, rotationY, 0);
+
+            if (rotateX && rotateY)
+            {
+                rotationX += 1;
+                rotationY += 1;
+                FixedTransform.LocalRotation = FQuaternion.Euler(euler);
+            }
+            else if (rotateY)
+            {
+                rotationY += 1;
+                FixedTransform.LocalRotation = FQuaternion.Euler(euler);
+            }
+            else if (rotateX)
+            {
+                rotationX += 1;
+                FixedTransform.LocalRotation = FQuaternion.Euler(euler);
             }
 
             //Old fixed update

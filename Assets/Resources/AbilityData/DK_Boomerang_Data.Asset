@@ -41,7 +41,8 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 0}
+  visualPrefab: {fileID: 6740710594312166088, guid: 5577a461f4e790348962e338d7d59427,
+    type: 3}
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []

@@ -131,10 +131,6 @@ namespace Lodis.Gameplay
 
     public class HitColliderBehaviour : ColliderBehaviour
     {
-        /// <summary>
-        /// If enabled, draws the collider in the editor
-        /// </summary>
-        public bool DebuggingEnabled;
         public HitColliderData ColliderInfo;
         private bool _addedToActiveList;
         private bool _playedSpawnEffects;
@@ -410,21 +406,6 @@ namespace Lodis.Gameplay
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
 
             ResolveCollision(otherGameObject, collision);
-        }
-
-
-        private void OnDrawGizmos()
-        {
-            if (!DebuggingEnabled)
-                return;
-
-            BoxCollider boxCollider = GetComponent<BoxCollider>();
-            SphereCollider sphereCollider = GetComponent<SphereCollider>();
-
-            if (boxCollider)
-                Gizmos.DrawCube(transform.position, boxCollider.size);
-            else if (sphereCollider)
-                Gizmos.DrawSphere(transform.position, sphereCollider.radius);
         }
 
         private void Update()

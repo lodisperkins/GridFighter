@@ -61,7 +61,6 @@ namespace Lodis.Gameplay
             _hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             _hitScript.ColliderInfo = _fistCollider;
             _hitScript.Owner = Owner;
-            _hitScript.DebuggingEnabled = true;
 
             //Set the direction of the attack
             FVector2 attackPosition;
@@ -146,7 +145,7 @@ namespace Lodis.Gameplay
                 return;
 
             //If the player is trying to change their attack direction...
-            if (_ownerInput.AttackDirection.magnitude > 0 && CurrentAbilityPhase == AbilityPhase.RECOVER && !MaxActivationAmountReached)
+            if (_ownerInput.AttackDirection.Magnitude > 0 && CurrentAbilityPhase == AbilityPhase.RECOVER && !MaxActivationAmountReached)
             {
                 //...restart the ability
                 _attackDirection = (FVector2)_ownerInput.AttackDirection;

@@ -9,6 +9,7 @@ namespace Types
     /// or low-level graphics operations. The number is stored with a fixed number of fractional bits.
     /// Gotten from this repo here: https://github.com/stormmuller/fixed-point-types/blob/master/Types/Types/Fixed32.cs
     /// </summary>
+    [System.Serializable]
     public struct Fixed32
     {
         public const int Epsilon = 1;
@@ -17,7 +18,7 @@ namespace Types
         private const int DefaultScale = 16;
         private int _scale;
 
-        public long RawValue { get; private set; }
+        public long RawValue;
         public int Scale 
         {
             get
@@ -36,7 +37,11 @@ namespace Types
         }
 
 
-        public Fixed32(int scale = DefaultScale) : this(scale, 0) { }
+        public Fixed32(int rawValue)
+        {
+            RawValue = rawValue;
+            _scale = DefaultScale;
+        }
 
         public Fixed32(int scale, int wholeNumber)
         {

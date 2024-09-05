@@ -23,8 +23,6 @@ namespace Lodis.Gameplay
         public override void Init(EntityDataBehaviour newOwner)
         {
             base.Init(newOwner);
-            //Load projectile asset
-            ProjectileRef = (GameObject)Resources.Load("Projectiles/Prototype/CrossProjectile");
         }
 
         protected override void OnStart(params object[] args)
@@ -50,7 +48,7 @@ namespace Lodis.Gameplay
             if (colliderBehaviours.Length == 1)
             {
                 //...add a rebound collider that can reflect the boomerang on hit
-                _reboundCollider = Projectile.AddComponent<ColliderBehaviour>();
+                _reboundCollider = Projectile.gameObject.AddComponent<ColliderBehaviour>();
                 _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
             }
             //Otherwise...

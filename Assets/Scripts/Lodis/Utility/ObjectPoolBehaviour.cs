@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using FixedPoints;
+using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 
@@ -8,6 +10,7 @@ namespace Lodis.Utility
     public class ObjectPoolBehaviour : MonoBehaviour
     {
         private Dictionary<string, Queue<GameObject>> _objectPool = new Dictionary<string, Queue<GameObject>>();
+        private Dictionary<string, Queue<EntityDataBehaviour>> _entityObjectPool = new Dictionary<string, Queue<EntityDataBehaviour>>();
         private static ObjectPoolBehaviour _instance;
         private CustomEventSystem.Event _onReturnToPool;
 
@@ -103,6 +106,33 @@ namespace Lodis.Utility
             //...otherwise create a new instance of the object
             else
                 return CreateNewObject(gameObject, position, rotation);
+        }
+
+        /// <summary>
+        /// Gets the first instance of the object found in the pool
+        /// </summary>
+        /// <param name="gameObject">A reference to the object</param>
+        /// <param name="position">The new position of the object</param>
+        /// <param name="rotation">The new rotation of the object</param>
+        /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
+        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation)
+        {
+            //If an object of this type has a queue in the dictionary...
+            if (_entityObjectPool.TryGetValue(gameObject.name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
+            {
+                //...set the first instance found active and return the object
+                EntityDataBehaviour objectInstance = objectQueue.Dequeue();
+
+                if (!objectInstance)
+                    return null;
+
+                objectInstance.FixedTransform.SetPositionAndRotation(position, rotation);
+                objectInstance.AddToGame();
+                return objectInstance;
+            }
+            //...otherwise create a new instance of the object
+            else
+                return CreateNewObject(entity, position, rotation);
         }
 
         /// <summary>
@@ -272,6 +302,23 @@ namespace Lodis.Utility
         /// Instantiates a new instance of the object and changes its name to match the prefab
         /// </summary>
         /// <param name="gameObject">A reference to the prefab to instantiate</param>
+        /// <param name="position">The new position of the object</param>
+        /// <param name="rotation">The new rotation of the object</param>
+        /// <returns>The newly instantiated prefab</returns>
+        private EntityDataBehaviour CreateNewObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation)
+        {
+            EntityDataBehaviour newObject = Instantiate(entity);
+
+            newObject.FixedTransform.SetPositionAndRotation(position, rotation);
+            newObject.name = gameObject.name;
+            newObject.Data.Name = gameObject.name;
+            return newObject;
+        }
+
+        /// <summary>
+        /// Instantiates a new instance of the object and changes its name to match the prefab
+        /// </summary>
+        /// <param name="gameObject">A reference to the prefab to instantiate</param>
         /// <param name="parent">The new parent of the object</param>
         /// <param name="resetPosition">Whether or not to make this game object match the position and rotation of its parent</param>
         /// <returns>The newly instantiated prefab</returns>
@@ -334,6 +381,54 @@ namespace Lodis.Utility
         public void ReturnGameObject(GameObject objectInstance, float time)
         {
             RoutineBehaviour.Instance.StartNewTimedAction(args => ReturnGameObject(objectInstance), TimedActionCountType.SCALEDTIME, time);
+        }
+
+        /// <summary>
+        /// Makes the game object inactive in the seen and adds it back to the pool
+        /// </summary>
+        /// <param name="objectInstance">The instance of the game object to return to the pool</param>
+        public void ReturnGameObject(EntityDataBehaviour objectInstance)
+        {
+            if (!objectInstance)
+                return;
+
+            //If the object has a queue in the dictionary already...
+            if (_entityObjectPool.TryGetValue(objectInstance.name, out Queue<EntityDataBehaviour> queue) && !queue.Contains(objectInstance))
+            {
+                //...add the object back into the queue
+                queue.Enqueue(objectInstance);
+            }
+            else if (queue?.Contains(objectInstance) == true)
+            {
+                return;
+            }
+            //Otherwise...
+            else
+            {
+                //...add the object to a new queue
+                Queue<EntityDataBehaviour> newObjectQueue = new Queue<EntityDataBehaviour>();
+                newObjectQueue.Enqueue(objectInstance);
+                _entityObjectPool.Add(objectInstance.name, newObjectQueue);
+            }
+
+            //Disable the object in the scene
+            objectInstance.RemoveFromGame();
+            OnReturnToPool?.Raise(objectInstance.gameObject);
+
+            for (int i = 0; i < objectInstance.transform.childCount; i++)
+            {
+                OnReturnToPool?.Raise(objectInstance.transform.GetChild(i).gameObject);
+            }
+        }
+
+        /// <summary>
+        /// Makes the game object inactive in the seen and adds it back to the pool
+        /// </summary>
+        /// <param name="objectInstance">The instance of the game object to return to the pool</param>
+        /// <param name="time">The amount of time in seconds to wait before returning the object</param>
+        public void ReturnGameObject(EntityDataBehaviour objectInstance, Fixed32 time)
+        {
+            FixedPointTimer.StartNewTimedAction(() => ReturnGameObject(objectInstance), time);
         }
     }
 }

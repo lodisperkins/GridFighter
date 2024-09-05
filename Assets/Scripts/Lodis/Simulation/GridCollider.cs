@@ -1,4 +1,5 @@
 using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using NUnit.Framework;
@@ -32,7 +33,9 @@ public class GridCollider
     //---
     private Fixed32 _width;
     private Fixed32 _height;
-    private int _panelY;
+    private int _panelYOffset;
+    private int _panelXOffset;
+    private Fixed32 _worldYPosition;
     private int _layer;
     private EntityData _owner;
     private GridPhysicsBehaviour _ownerPhysicsComponent;
@@ -50,11 +53,29 @@ public class GridCollider
     {
         get
         {
-            _panelY = OwnerPhysicsComponent.MovementBehaviour.Position.Y; 
-            return _panelY;
+            return _panelYOffset + OwnerPhysicsComponent.GetGridPosition().Y;
         }
-        set => _panelY = value;
+        set => _panelYOffset = value;
     }
+
+    public int PanelX 
+    {
+        get
+        {
+            return _panelXOffset + OwnerPhysicsComponent.GetGridPosition().X;
+        }
+        set => _panelXOffset = value;
+    }
+
+    public FVector3 WorldPosition
+    {
+        get
+        {
+            GridBehaviour.Grid.GetPanel(PanelX, PanelY, out PanelBehaviour panel);
+            return (FVector3)(panel.transform.position + Vector3.up * _worldYPosition);
+        }
+    }
+
     public Fixed32 Width { get => _width; set => _width = value; }
     public Fixed32 Height { get => _height; set => _height = value; }
 
@@ -74,11 +95,13 @@ public class GridCollider
     public LayerMask LayersToIgnore { get => _layersToIgnore; set => _layersToIgnore = value; }
     public bool Overlap { get => _overlap; set => _overlap = value; }
 
-    public void Init(Fixed32 width, Fixed32 height, EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
+    public void Init(Fixed32 width, Fixed32 height, EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null, int panelYOffset = 0, int panelXOffset = 0, Fixed32 worldYPosition = default)
     {
         _width = width;
         _height = height;
-        _panelY = 0;
+        _panelYOffset = panelYOffset;
+        _panelXOffset = panelXOffset;
+        _worldYPosition = worldYPosition;
         _ownerPhysicsComponent = ownerPhysicsComponent;
         _owner = owner;
         _layer = ownerPhysicsComponent.gameObject.layer;
@@ -175,21 +198,21 @@ public class GridCollider
         }
 
         //Calculating contact point.
-        FVector3 otherToAABB = other.Owner.Transform.Position - Owner.Transform.Position;
+        FVector3 otherToAABB = other.Owner.Transform.WorldPosition - Owner.Transform.WorldPosition;
 
-        if (otherToAABB.X > Width / 2)
-            otherToAABB.X = Width / 2;
-        else if (otherToAABB.X < -Width / 2)
-            otherToAABB.X = -Width / 2;
+        if (otherToAABB.Z > Width / 2)
+            otherToAABB.Z = Width / 2;
+        else if (otherToAABB.Z < -Width / 2)
+            otherToAABB.Z = -Width / 2;
 
         if (otherToAABB.Y > Height / 2)
             otherToAABB.Y = Height / 2;
         else if (otherToAABB.Y < -Height / 2)
             otherToAABB.Y = -Height / 2;
 
-        FVector3 closestPoint = Owner.Transform.Position + otherToAABB;
+        FVector3 closestPoint = Owner.Transform.WorldPosition + otherToAABB;
 
-        FVector3 otherToClosestPoint = (other.Owner.Transform.Position - closestPoint);
+        FVector3 otherToClosestPoint = (other.Owner.Transform.WorldPosition - closestPoint);
 
         collisionData = new Collision
         {
@@ -221,7 +244,7 @@ public class GridCollider
 
     public void Draw()
     {
-        FVector2 position = Owner.Transform.Position;
+        FVector2 position = Owner.Transform.WorldPosition;
         // Replace this with an appropriate draw method for your framework, if any
         // For example, using UnityEngine:
         Debug.DrawLine(new Vector3(GetLeft(), GetBottom()), new Vector3(GetRight(), GetTop()), Color.red);
@@ -229,22 +252,22 @@ public class GridCollider
 
     public Fixed32 GetLeft()
     {
-        return Owner.Transform.Position.X - Width / 2;
+        return WorldPosition.Z - Width / 2;
     }
 
     public Fixed32 GetRight()
     {
-        return Owner.Transform.Position.X + Width / 2;
+        return WorldPosition.Z + Width / 2;
     }
 
     public Fixed32 GetTop()
     {
-        return Owner.Transform.Position.Y + Height / 2;
+        return WorldPosition.Y + Height / 2;
     }
 
     public Fixed32 GetBottom()
     {
-        return Owner.Transform.Position.Y - Height / 2;
+        return Owner.Transform.WorldPosition.Y - Height / 2;
     }
 
     private FVector2 GetPenetrationAmount(GridCollider other)
@@ -276,13 +299,13 @@ public class GridCollider
     {
         _width.Serialize(bw);
         _height.Serialize(bw);
-        bw.Write(_panelY);
+        bw.Write(_panelYOffset);
     }
 
     public void Deserialize(BinaryReader br)
     {
         _width.Deserialize(br);
         _height.Deserialize(br);
-        _panelY = br.ReadInt32();
+        _panelYOffset = br.ReadInt32();
     }
 }

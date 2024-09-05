@@ -11096,6 +11096,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateType: 2
   _startLocalGame: 1
+  _fixed32TestConversion:
+    RawValue: 0
 --- !u!4 &938025652
 Transform:
   m_ObjectHideFlags: 0
@@ -11105,7 +11107,7 @@ Transform:
   m_GameObject: {fileID: 938025650}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.295883, y: 12.547223, z: -13.516454}
+  m_LocalPosition: {x: 1.1111112, y: 12.547223, z: -13.516454}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -24691,7 +24693,7 @@ PrefabInstance:
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -146.99998
+      value: -147
       objectReference: {fileID: 0}
     - target: {fileID: 2143985314412585006, guid: 68cd49be7c08f0c40ba78bc78c401ecc,
         type: 3}

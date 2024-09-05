@@ -65,7 +65,7 @@ namespace Lodis.GridScripts
             if (physics.Velocity.Y >= 0)
                 return;
 
-            FVector3 particleSpawnPosition = new FVector3(other.Entity.Transform.Position.X, 0, other.Entity.Transform.Position.Z);
+            FVector3 particleSpawnPosition = new FVector3(other.Entity.Transform.WorldPosition.X, 0, other.Entity.Transform.WorldPosition.Z);
             if (knockback.CurrentAirState != AirState.TUMBLING)
                 SoundManagerBehaviour.Instance.PlaySound(_softLandingClip, 0.8f);
             else

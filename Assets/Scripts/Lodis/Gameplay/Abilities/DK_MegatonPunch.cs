@@ -151,7 +151,7 @@ namespace Lodis.Gameplay
 
         public void SpawnCollider(int colliderIndex)
         {
-            FVector3 spawnPosition = Owner.FixedTransform.Position + (FVector3.Right * OwnerMoveScript.GetAlignmentX()) + FVector3.Up;
+            FVector3 spawnPosition = Owner.FixedTransform.WorldPosition + (FVector3.Right * OwnerMoveScript.GetAlignmentX()) + FVector3.Up;
             HitColliderBehaviour hitColliderBehaviour = HitColliderSpawner.SpawnCollider(spawnPosition, 1, 1, GetColliderData(colliderIndex), Owner);
 
             hitColliderBehaviour.ColliderInfo.OnHit += collision =>

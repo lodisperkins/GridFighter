@@ -32,7 +32,7 @@ namespace Lodis.AI
 
         [Tooltip("The direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
         [SerializeField]
-        private Vector2 _attackDirection;
+        private FVector2 _attackDirection;
         private StateMachine _stateMachine;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private int _lastSlot;
@@ -158,7 +158,7 @@ namespace Lodis.AI
 
         public bool CanAttack { get => _canAttack; private set => _canAttack = value; }
 
-        public Vector2 AttackDirection
+        public FVector2 AttackDirection
         {
             get
             {
@@ -340,7 +340,7 @@ namespace Lodis.AI
         public void BufferAction(Ability ability, float attackStrength, Vector2 attackDirection)
         {
             AbilityType abilityType = AbilityType.SPECIAL;
-            _attackDirection.x *= Mathf.Round(transform.forward.x);
+            _attackDirection.X *= Mathf.Round(transform.forward.x);
 
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(() => UseAbility(ability, attackStrength, attackDirection), condition =>

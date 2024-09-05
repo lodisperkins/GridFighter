@@ -438,7 +438,7 @@ namespace Lodis.Gameplay
             direction /= Mathf.Abs(direction);
 
 
-            if (_controller.AttackDirection.x != direction || !other.CompareTag("Structure") || other.CompareTag("CollisionPlane") || BreakingFall)
+            if (_controller.AttackDirection.X != direction || !other.CompareTag("Structure") || other.CompareTag("CollisionPlane") || BreakingFall)
                 return;
 
 

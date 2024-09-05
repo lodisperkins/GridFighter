@@ -7,38 +7,39 @@ using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
 
 namespace FixedPoints
 {
+    [Serializable]
     public struct FVector3
     {
-        private Fixed32 _x;
-        private Fixed32 _y;
-        private Fixed32 _z;
+        public Fixed32 X;
+        public Fixed32 Y;
+        public Fixed32 Z;
 
-        /// <summary>
-        /// Gets or sets the X component of the vector.
-        /// </summary>
-        public Fixed32 X
-        {
-            get { return _x; }
-            set { _x = value; }
-        }
+        ///// <summary>
+        ///// Gets or sets the X component of the vector.
+        ///// </summary>
+        //public Fixed32 X
+        //{
+        //    get { return X; }
+        //    set { X = value; }
+        //}
 
-        /// <summary>
-        /// Gets or sets the Y component of the vector.
-        /// </summary>
-        public Fixed32 Y
-        {
-            get { return _y; }
-            set { _y = value; }
-        }
+        ///// <summary>
+        ///// Gets or sets the Y component of the vector.
+        ///// </summary>
+        //public Fixed32 Y
+        //{
+        //    get { return Y; }
+        //    set { Y = value; }
+        //}
 
-        /// <summary>
-        /// Gets or sets the Z component of the vector.
-        /// </summary>
-        public Fixed32 Z
-        {
-            get { return _z; }
-            set { _z = value; }
-        }
+        ///// <summary>
+        ///// Gets or sets the Z component of the vector.
+        ///// </summary>
+        //public Fixed32 Z
+        //{
+        //    get { return Z; }
+        //    set { Z = value; }
+        //}
 
         /// <summary>
         /// Initializes a new instance of the FVector3 struct with the specified components.
@@ -48,9 +49,9 @@ namespace FixedPoints
         /// <param name="z">The Z component.</param>
         public FVector3(Fixed32 x, Fixed32 y, Fixed32 z)
         {
-            _x = x;
-            _y = y;
-            _z = z;
+            X = x;
+            Y = y;
+            Z = z;
         }
 
         /// <summary>

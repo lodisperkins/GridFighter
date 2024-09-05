@@ -17,7 +17,7 @@ namespace Lodis.Gameplay
         //How fast the laser will travel
         public float shotSpeed = 20;
         //Usd to store a reference to the laser prefab
-        private GameObject _projectile;
+        private EntityDataBehaviour _projectile;
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
         private float _distance;
@@ -37,7 +37,7 @@ namespace Lodis.Gameplay
             _gravity = abilityData.GetCustomStatValue("Gravity");
             
             //Load the projectile prefab
-            _projectile = abilityData.visualPrefab;
+            _projectile = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
         }
 
         //Called when ability is used
@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
             launchForce.X *= projectileSpawner.transform.forward.x;
 
             //Store the gravity of the lobshot for to change its falling speed
-            GameObject activeProjectile = projectileSpawner.FireProjectile(launchForce, _projectileCollider, true, true);
+            EntityDataBehaviour activeProjectile = projectileSpawner.FireProjectile(launchForce, _projectileCollider, true, true);
             GridPhysicsBehaviour gridPhysics = activeProjectile.GetComponent<GridPhysicsBehaviour>();
             gridPhysics.Gravity = _gravity;
 

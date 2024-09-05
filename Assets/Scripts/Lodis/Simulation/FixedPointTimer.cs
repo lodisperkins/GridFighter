@@ -19,7 +19,7 @@ namespace FixedPoints
 
         private bool isActive;
 
-        public bool IsActive { get => isActive; protected set => isActive = value; }
+        public bool IsActive { get => isActive; set => isActive = value; }
 
         public abstract void TryPerformAction();
 
@@ -245,7 +245,7 @@ namespace FixedPoints
         {
             FixedTimeAction newAction = new FixedTimeAction(action, duration, unit);
             _actions.Add(newAction);
-
+            newAction.IsActive = true;
             return newAction;
         }
 
@@ -254,6 +254,12 @@ namespace FixedPoints
             FixedConditionAction fixedConditionAction = new FixedConditionAction(action, condition);
             _actions.Add(fixedConditionAction);
             return fixedConditionAction;
+        }
+
+        public static void StopAction(FixedAction action)
+        {
+            _actions.Remove(action);
+            action.IsActive = false;
         }
 
         public static void SerializeActions(BinaryWriter bw)

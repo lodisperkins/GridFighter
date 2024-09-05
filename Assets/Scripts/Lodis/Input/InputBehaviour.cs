@@ -1,16 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
-using UnityEngine.InputSystem.Controls;
 using Lodis.Gameplay;
 using UnityEngine.Events;
 using Lodis.Movement;
-using System.Windows.Input;
 using Lodis.Utility;
-using UnityEngine.SceneManagement;
-using UnityEditor;
 using Lodis.ScriptableObjects;
 using Lodis.FX;
 using FixedPoints;
@@ -117,7 +110,7 @@ namespace Lodis.Input
         [SerializeField]
         private float _holdSpeed;
         private Vector2 _storedMoveInput;
-        private Vector2 _attackDirection;
+        private FVector2 _attackDirection;
         [Tooltip("The minimum amount of time needed to hold the button down to change it to the charge variation.")]
         [SerializeField]
         private float _minChargeLimit = 0.5f;
@@ -185,7 +178,7 @@ namespace Lodis.Input
         /// <summary>
         /// The direction the player is currently holding for an attack
         /// </summary>
-        public Vector2 AttackDirection
+        public FVector2 AttackDirection
         {
             get
             {
@@ -244,25 +237,25 @@ namespace Lodis.Input
 
             if ((inputs & (long)InputFlag.Up) != 0)
             {
-                _attackDirection = new Vector2(0, 1);
+                _attackDirection = new FVector2(0, 1);
                 // Call the function related to Up input
                 BufferMovement(new Vector2(0, 1));
             }
             if ((inputs & (long)InputFlag.Down) != 0)
             {
-                _attackDirection = new Vector2(0, -1);
+                _attackDirection = new FVector2(0, -1);
                 // Call the function related to Down input
                 BufferMovement(new Vector2(0, -1));
             }
             if ((inputs & (long)InputFlag.Left) != 0)
             {
-                _attackDirection = new Vector2(-1, 0);
+                _attackDirection = new FVector2(-1, 0);
                 // Call the function related to Left input
                 BufferMovement(new Vector2(-1, 0));
             }
             if ((inputs & (long)InputFlag.Right) != 0)
             {
-                _attackDirection = new Vector2(1, 0);
+                _attackDirection = new FVector2(1, 0);
                 // Call the function related to Right input
                 BufferMovement(new Vector2(1, 0));
             }
@@ -384,14 +377,14 @@ namespace Lodis.Input
             object[] args = new object[2];
 
             AbilityType abilityType;
-            _attackDirection.x *= Mathf.Round(transform.forward.x);
+            _attackDirection.X *= Mathf.Round(transform.forward.x);
 
             //Decide which ability type to use based on the input
-            if (_attackDirection.y != 0)
+            if (_attackDirection.Y != 0)
                 abilityType = AbilityType.WEAKSIDE;
-            else if (_attackDirection.x < 0)
+            else if (_attackDirection.X < 0)
                 abilityType = AbilityType.WEAKBACKWARD;
-            else if (_attackDirection.x > 0)
+            else if (_attackDirection.X > 0)
                 abilityType = AbilityType.WEAKFORWARD;
             else
                 abilityType = AbilityType.WEAKNEUTRAL;
@@ -422,14 +415,14 @@ namespace Lodis.Input
             object[] args = new object[2];
 
             AbilityType abilityType;
-            _attackDirection.x *= Mathf.Round(transform.forward.x);
+            _attackDirection.X *= Mathf.Round(transform.forward.x);
 
             //Decide which ability type to use based on the input
-            if (_attackDirection.y != 0)
+            if (_attackDirection.Y != 0)
                 abilityType = AbilityType.WEAKSIDE;
-            else if (_attackDirection.x < 0)
+            else if (_attackDirection.X < 0)
                 abilityType = AbilityType.WEAKBACKWARD;
-            else if (_attackDirection.x > 0)
+            else if (_attackDirection.X > 0)
                 abilityType = AbilityType.WEAKFORWARD;
             else
                 abilityType = AbilityType.WEAKNEUTRAL;
@@ -486,7 +479,7 @@ namespace Lodis.Input
         {
             object[] args = new object[2];
             AbilityType abilityType = AbilityType.SPECIAL;
-            _attackDirection.x *= Mathf.Round(transform.forward.x);
+            _attackDirection.X *= Mathf.Round(transform.forward.x);
 
             //Assign the arguments for the ability
             args[0] = abilityNum;
@@ -627,7 +620,7 @@ namespace Lodis.Input
         /// </summary>
         public void DisableMovementBasedOnCondition(Condition condition)
         {
-            if ((FVector2)_attackDirection.normalized == _gridMovement.MoveDirection.GetNormalized() || _gridMovement.MoveDirection == FVector2.Zero)
+            if (_attackDirection.GetNormalized() == _gridMovement.MoveDirection.GetNormalized() || _gridMovement.MoveDirection == FVector2.Zero)
             {
                 _moveInputEnableCondition = condition;
                 _canMove = false;
@@ -760,13 +753,13 @@ namespace Lodis.Input
             //If there is a direction input, update the attack direction buffer and the time of input
             if (attackDirInput.magnitude > 0)
             {
-                _attackDirection = new Vector2(Mathf.Round(attackDirInput.x), Mathf.Round(attackDirInput.y));
+                _attackDirection = new FVector2(Mathf.Round(attackDirInput.x), Mathf.Round(attackDirInput.y));
                 _timeOfLastDirectionInput = Time.time;
             }
 
             //Clear the buffer if its exceeded the alotted time
             if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
-                _attackDirection = Vector2.zero;
+                _attackDirection = FVector2.Zero;
 
             if (_bufferedAction?.HasAction() == true)
                 _bufferedAction.UseAction();

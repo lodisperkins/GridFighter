@@ -141,7 +141,7 @@ namespace Lodis.AI
                 return FVector3.Zero;
 
             for (int i = 0; i < _attacksInRange.Count; i++)
-                averagePosition += _attacksInRange[i].EntityTransform.Position - (FVector3)transform.position;
+                averagePosition += _attacksInRange[i].FixedTransform.WorldPosition - (FVector3)transform.position;
 
             return averagePosition;
         }

@@ -1,4 +1,5 @@
-﻿using Lodis.Movement;
+﻿using Lodis.GridScripts;
+using Lodis.Movement;
 using Lodis.Utility;
 using Newtonsoft.Json;
 using System.Collections;
@@ -10,14 +11,17 @@ using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
-    
+    [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class ColliderBehaviour : SimulationBehaviour
     {
         [SerializeField] private CustomEventSystem.Event _onHitObject;
         [SerializeField] private GridCollider _entityCollider;
-        [SerializeField] protected float _width;
-        [SerializeField] protected float _height;
-
+        [SerializeField] private int _panelXOffset;
+        [SerializeField] private int _panelYOffset;
+        [SerializeField] private Fixed32 _worldYPosition;
+        [SerializeField] protected Fixed32 _width = 1;
+        [SerializeField] protected Fixed32 _height = 1;
+        [SerializeField] protected bool _debuggingEnabled;
         //---
         protected Dictionary<GameObject, Fixed32> Collisions;
         protected CustomEventSystem.GameEventListener ReturnToPoolListener;
@@ -30,14 +34,16 @@ namespace Lodis.Gameplay
         public EntityData Owner { get => EntityCollider.Owner; set { EntityCollider.Owner = value; } }
         public GridCollider EntityCollider { get => _entityCollider; private set => _entityCollider = value; }
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             ReturnToPoolListener = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
             ReturnToPoolListener.Init(ObjectPoolBehaviour.Instance.OnReturnToPool, gameObject);
             Collisions = new Dictionary<GameObject, Fixed32>();
             GridPhysics = GetComponent<GridPhysicsBehaviour>();
 
-            _entityCollider.Init(_width, _height, Entity.Data, GridPhysics);
+            _entityCollider = new GridCollider();
+            _entityCollider.Init(_width, _height, Entity.Data, GridPhysics, _panelYOffset, _panelXOffset, _worldYPosition);
 
             EntityCollider.OnCollisionEnter += RaiseHitEvents;
             EntityCollider.OnOverlapEnter += RaiseHitEvents;
@@ -87,10 +93,19 @@ namespace Lodis.Gameplay
             
         }
 
+        private void OnDrawGizmos()
+        {
+            if (!_debuggingEnabled) return;
+
+            Vector3 size = new Vector3(1, _height, _width);
+            Vector3 offset = new Vector3(1.5f * _panelYOffset, _worldYPosition, 1.05f * _panelXOffset);
+
+            Gizmos.DrawCube(gameObject.transform.position + offset, size);
+        }
+
         public override void Deserialize(BinaryReader br)
         {
         }
-
         public virtual void InitCollider(Fixed32 width, Fixed32 height, EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
         {
             _entityCollider.Init(width, height, owner, ownerPhysicsComponent);

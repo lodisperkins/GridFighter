@@ -16,17 +16,21 @@ using System.Runtime.Remoting.Messaging;
 
 public struct GridGame : IGame
 {
-    private static List<EntityData> ActiveEntities = new List<EntityData>();
-    private static List<EntityData> ActivePhysicsEntities = new List<EntityData>();
+    private static List<EntityData> ActiveEntities = new();
+    private static readonly List<EntityData> ActivePhysicsEntities = new();
 
     //A dictionary of entity pairs that determines whether or not they collide. Used to ignore specific entities instead of layers.
-    private static Dictionary<(EntityData, EntityData), bool> _collisionPairs = new Dictionary<(EntityData, EntityData), bool>();
+    private static readonly Dictionary<(EntityData, EntityData), bool> _collisionPairs = new();
 
     private static long _p1Inputs;
     private static long _p2Inputs;
 
-    public static Fixed32 FixedTimeStep = 0.01667f;
-    public static float TimeScale = 1f;
+    /// <summary>
+    /// The timestep in which the rollback simulation updates.
+    /// The decimal value is 0.01667.
+    /// </summary>
+    public static Fixed32 FixedTimeStep = new Fixed32(1092);
+    public static Fixed32 TimeScale = 1;
 
     public delegate void InputPollCallback(int id);
     public delegate void InputProcessCallback(int id, long inputs);
@@ -44,7 +48,7 @@ public struct GridGame : IGame
 
     public int Framenumber { get; private set; }
 
-    public int Checksum => GetHashCode();
+    public readonly int Checksum => GetHashCode();
 
     public void Serialize(BinaryWriter bw)
     {
@@ -140,7 +144,7 @@ public struct GridGame : IGame
     {
         //Create new entity.
         EntityData entityData = new EntityData();
-        entityData.Transform.Position = position;
+        entityData.Transform.WorldPosition = position;
 
         //Create visual for entity.
         GameObject unityObject = new GameObject(entityData.Name);
@@ -167,8 +171,8 @@ public struct GridGame : IGame
     {
         //Create new entity.
         EntityData entityData = new EntityData();
-        entityData.Transform.Position = (FVector3)position;
-        entityData.Transform.Scale = (FVector3)scale;
+        entityData.Transform.WorldPosition = (FVector3)position;
+        entityData.Transform.WorldScale = (FVector3)scale;
 
         //Create visual for entity.
         GameObject unityObject = new GameObject(entityData.Name);
@@ -196,9 +200,9 @@ public struct GridGame : IGame
     {
         //Create new entity.
         EntityData entityData = new EntityData();
-        entityData.Transform.Position = (FVector3)position;
-        entityData.Transform.Scale = (FVector3)scale;
-        entityData.Transform.Rotation = rotation;
+        entityData.Transform.WorldPosition = (FVector3)position;
+        entityData.Transform.WorldScale = (FVector3)scale;
+        entityData.Transform.WorldRotation = rotation;
         entityData.Transform.Parent = parent.Transform;
 
         //Create visual for entity.
@@ -246,6 +250,10 @@ public struct GridGame : IGame
         return entityData;
     }
 
+    /// <summary>
+    /// Adds the entity and all of its children to the rollback simulation.
+    /// Doesn't add to unity scene.
+    /// </summary>
     public static void AddEntityToGame(EntityData entity)
     {
         if (ActiveEntities.Contains(entity))
@@ -256,15 +264,35 @@ public struct GridGame : IGame
 
         ActiveEntities.Add(entity);
 
+
+        for (int i = 0; i < entity.Transform.ChildCount; i++)
+        {
+            AddEntityToGame(entity.Transform.GetChild(i).Owner);
+        }
+
         if (entity.Collider != null)
             ActivePhysicsEntities.Add(entity);
     }
 
+    /// <summary>
+    /// Removes the entity and all of its children from the rollback simulation.
+    /// Doesn't remove from unity scene.
+    /// </summary>
     public static void RemoveEntityFromGame(EntityData entity)
     {
         ActiveEntities.Remove(entity);
         entity.End();
 
+        for (int i = 0; i < entity.Transform.ChildCount; i++)
+        {
+            EntityData child = entity.Transform.GetChild(i).Owner;
+            ActiveEntities.Remove(child);
+            child.End();
+
+            if (child.Collider != null)
+                ActivePhysicsEntities.Remove(child);
+
+        }
 
         if (entity.Collider != null)
             ActivePhysicsEntities.Remove(entity);

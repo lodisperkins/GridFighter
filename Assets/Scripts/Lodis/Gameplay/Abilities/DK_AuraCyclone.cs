@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using FixedPoints;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -34,7 +35,7 @@ namespace Lodis.Gameplay
             base.OnActivate(args);
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
-            RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.activeInHierarchy);
+            FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !Projectile.Active);
         }
 
         protected override void OnEnd()

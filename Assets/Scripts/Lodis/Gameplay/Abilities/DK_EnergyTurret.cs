@@ -1,4 +1,5 @@
-﻿using FixedPoints;
+﻿using BBUnity.Actions;
+using FixedPoints;
 using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
@@ -14,11 +15,10 @@ namespace Lodis.Gameplay
     public class DK_EnergyTurret : SummonAbility
     {
         private GameObject _spawn;
-        private GameObject _chargeEffectRef;
         private FVector3 _spawnPosition;
         private ProjectileSpawnerBehaviour _projectileSpawner;
-        private GameObject _largeLaserRef;
-        private GameObject _laserRef;
+        private EntityDataBehaviour _largeLaserRef;
+        private EntityDataBehaviour _laserRef;
         private int _shotCount;
         private float _shotDelay;
         private float _shotSpeed;
@@ -27,8 +27,8 @@ namespace Lodis.Gameplay
         public override void Init(EntityDataBehaviour newOwner)
         {
 			base.Init(newOwner);
-            _laserRef = abilityData.Effects[0];
-            _largeLaserRef = abilityData.Effects[1];
+            _laserRef = abilityData.Effects[0].GetComponent<EntityDataBehaviour>();
+            _largeLaserRef = abilityData.Effects[1].GetComponent<EntityDataBehaviour>();
         }
 
         protected override void OnStart(params object[] args)
@@ -39,8 +39,7 @@ namespace Lodis.Gameplay
             _shotDelay = abilityData.GetCustomStatValue("ShotDelay");
             _shotSpeed = abilityData.GetCustomStatValue("Speed");
 
-            PanelBehaviour panel;
-            BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + FVector2.Right * OwnerMoveScript.GetAlignmentX(), out panel);
+            BlackBoardBehaviour.Instance.Grid.GetPanel(OwnerMoveScript.Position + FVector2.Right * OwnerMoveScript.GetAlignmentX(), out PanelBehaviour panel);
 
             _spawnPosition = panel.Position;
 
@@ -51,16 +50,16 @@ namespace Lodis.Gameplay
         {
 
             _projectileSpawner.Owner = Owner;
-            GameObject Projectile = null;
             _projectileSpawner.Projectile = _laserRef;
 
+            EntityDataBehaviour Projectile;
             for (int i = 0; i < _shotCount; i++)
             {
                 Transform effect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[2], _projectileSpawner.transform.position, Camera.main.transform.rotation).transform;
 
                 effect.localScale /= 2;
 
-                Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.EntityTransform.Forward * _shotSpeed, GetColliderData(0));
+                Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.FixedTransform.Forward * _shotSpeed, GetColliderData(0));
 
                 //Fire projectile
                 Projectile.name += "(" + abilityData.name + i + ")";
@@ -69,7 +68,7 @@ namespace Lodis.Gameplay
             }
 
             _projectileSpawner.Projectile = _largeLaserRef;
-            Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.EntityTransform.Forward * _shotSpeed, GetColliderData(1));
+            Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.FixedTransform.Forward * _shotSpeed, GetColliderData(1));
 
             //Fire projectile
             Projectile.name += "(" + abilityData.name + "Large" + ")";
