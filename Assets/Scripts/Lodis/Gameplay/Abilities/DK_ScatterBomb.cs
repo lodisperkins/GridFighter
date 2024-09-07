@@ -105,7 +105,7 @@ namespace Lodis.Gameplay
                 ColliderBehaviour collider = entity.GetComponent<ColliderBehaviour>();
 
                 collider.AddCollisionEvent(collisionArgs => ExplodeBomb(entity));
-                collider.Owner = Owner;
+                collider.Spawner = Owner;
             }
 
             //Starts the bomb countdown

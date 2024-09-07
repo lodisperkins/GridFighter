@@ -50,7 +50,7 @@ namespace Lodis.Gameplay
             for (int i = 0; i < hitColliders.Length; i++)
             {
                 hitColliders[i].ColliderInfo = GetColliderData(i);
-                hitColliders[i].Owner = Owner.Data;
+                hitColliders[i].Spawner = Owner.Data;
 
                 hitColliders[i].gameObject.SetActive(true);
 

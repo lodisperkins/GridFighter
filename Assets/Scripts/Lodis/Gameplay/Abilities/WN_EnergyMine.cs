@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
 
             HitColliderBehaviour colliderBehaviour = ActiveEntities[0].GetComponent<HitColliderBehaviour>();
             colliderBehaviour.ColliderInfo = _explosionColliderData;
-            colliderBehaviour.Owner = Owner;
+            colliderBehaviour.Spawner = Owner;
 
             //Collider collider = ActiveEntities[0].GetComponentInChildren<Collider>();
             //collider.enabled = false;

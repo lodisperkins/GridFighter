@@ -68,10 +68,10 @@ namespace Lodis.Gameplay
             //_frozenMoveVectors.Item1 += frozenVectors.Item1;
             //_frozenMoveVectors.Item2 += frozenVectors.Item2;
 
-            if (_health.LastCollider.Owner != null)
+            if (_health.LastCollider.Spawner != null)
             { 
                 //Starts the hit stop for the attacker
-                _health.LastCollider.Owner.UnityObject.GetComponent<HitStopBehaviour>().StartHitStop(time * 1.5f, animationStopDelay, false, false, false,0,0,0);
+                _health.LastCollider.Spawner.UnityObject.GetComponent<HitStopBehaviour>().StartHitStop(time * 1.5f, animationStopDelay, false, false, false,0,0,0);
             }
             //Call the same function with the new parameters found
             StartHitStop(time, lastColliderInfo.HitStopShakeStrength, true, true, lastColliderInfo.ShakesCamera, lastColliderInfo.CameraShakeStrength, lastColliderInfo.CameraShakeDuration, lastColliderInfo.CameraShakeFrequency);

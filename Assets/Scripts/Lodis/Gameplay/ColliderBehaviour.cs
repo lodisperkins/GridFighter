@@ -16,22 +16,19 @@ namespace Lodis.Gameplay
     {
         [SerializeField] private CustomEventSystem.Event _onHitObject;
         [SerializeField] private GridCollider _entityCollider;
-        [SerializeField] private int _panelXOffset;
-        [SerializeField] private int _panelYOffset;
-        [SerializeField] private Fixed32 _worldYPosition;
-        [SerializeField] protected Fixed32 _width = 1;
-        [SerializeField] protected Fixed32 _height = 1;
         [SerializeField] protected bool _debuggingEnabled;
         //---
         protected Dictionary<GameObject, Fixed32> Collisions;
         protected CustomEventSystem.GameEventListener ReturnToPoolListener;
         protected float _lastHitFrame;
         protected CollisionEvent _onHit;
+
         private GridPhysicsBehaviour _gridPhysics;
+        private EntityData _spawner;
 
         public LayerMask LayersToIgnore { get => EntityCollider.LayersToIgnore; set => EntityCollider.LayersToIgnore = value; }
         public GridPhysicsBehaviour GridPhysics { get => _gridPhysics; private set => _gridPhysics = value; }
-        public EntityData Owner { get => EntityCollider.Owner; set { EntityCollider.Owner = value; } }
+        public EntityData Spawner { get => _spawner; set { _spawner = value; } }
         public GridCollider EntityCollider { get => _entityCollider; private set => _entityCollider = value; }
 
         protected override void Awake()
@@ -42,14 +39,10 @@ namespace Lodis.Gameplay
             Collisions = new Dictionary<GameObject, Fixed32>();
             GridPhysics = GetComponent<GridPhysicsBehaviour>();
 
-            _entityCollider = new GridCollider();
-            _entityCollider.Init(_width, _height, Entity.Data, GridPhysics, _panelYOffset, _panelXOffset, _worldYPosition);
+            _entityCollider.Init(Entity.Data, GridPhysics);
 
             EntityCollider.OnCollisionEnter += RaiseHitEvents;
             EntityCollider.OnOverlapEnter += RaiseHitEvents;
-            Entity.Data.Collider = EntityCollider;
-
-
         }
 
         protected virtual void Start()
@@ -97,8 +90,8 @@ namespace Lodis.Gameplay
         {
             if (!_debuggingEnabled) return;
 
-            Vector3 size = new Vector3(1, _height, _width);
-            Vector3 offset = new Vector3(1.5f * _panelYOffset, _worldYPosition, 1.05f * _panelXOffset);
+            Vector3 size = new Vector3(1, _entityCollider.Height, _entityCollider.Width);
+            Vector3 offset = new Vector3(1.5f * _entityCollider.PanelYOffset, _entityCollider.WorldYPosition, 1.05f * _entityCollider.PanelXOffset);
 
             Gizmos.DrawCube(gameObject.transform.position + offset, size);
         }

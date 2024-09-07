@@ -27,7 +27,7 @@ namespace Lodis.Gameplay
             _hitColliderBehaviour = instance.GetComponent<HitColliderBehaviour>();
 
             _hitColliderBehaviour.ColliderInfo = GetColliderData(0);
-            _hitColliderBehaviour.Owner = Owner;
+            _hitColliderBehaviour.Spawner = Owner;
         }
 
         protected override void OnEnd()

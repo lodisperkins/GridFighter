@@ -1003,7 +1003,7 @@ namespace Lodis.Movement
 
             ForceToApply = FVector3.Zero;
 
-            FixedTransform.WorldPosition += Velocity;
+            FixedTransform.WorldPosition += Velocity * dt;
         }
     }
 }

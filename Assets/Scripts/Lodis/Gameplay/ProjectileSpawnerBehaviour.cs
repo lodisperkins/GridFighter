@@ -13,7 +13,7 @@ namespace Lodis.Gameplay
     public class ProjectileSpawnerBehaviour : SimulationBehaviour
     {
         public EntityDataBehaviour Projectile = null;
-        public EntityData Owner = null;
+        public EntityDataBehaviour Owner = null;
 
         public override void Deserialize(BinaryReader br)
         {
@@ -83,7 +83,7 @@ namespace Lodis.Gameplay
                 collider = temp.gameObject.AddComponent<HitColliderBehaviour>();
 
             collider.ColliderInfo = hitColliderInfo;
-            collider.Owner = Owner;
+            collider.Spawner = Owner;
 
             
             if (!temp.TryGetComponent<GridPhysicsBehaviour>(out var physics))
@@ -120,7 +120,7 @@ namespace Lodis.Gameplay
                 collider = temp.gameObject.AddComponent<HitColliderBehaviour>();
 
             collider.ColliderInfo = hitColliderInfo;
-            collider.Owner = Owner;
+            collider.Spawner = Owner;
 
             
             if (!temp.gameObject.TryGetComponent<GridPhysicsBehaviour>(out var physics))

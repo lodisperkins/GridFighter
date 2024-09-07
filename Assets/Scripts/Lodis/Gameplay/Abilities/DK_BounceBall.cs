@@ -47,7 +47,7 @@ namespace Lodis.Gameplay
                 //Get the collider to update collision information.
                 HitColliderBehaviour hitCollider = ballInstance.GetComponent<HitColliderBehaviour>();
                 hitCollider.ColliderInfo = GetColliderData(0);
-                hitCollider.Owner = Owner.Data;
+                hitCollider.Spawner = Owner.Data;
 
                 GridPhysicsBehaviour physics = ballInstance.GetComponent<GridPhysicsBehaviour>();
 

@@ -60,7 +60,7 @@ namespace Lodis.Gameplay
             //Spawn a game object with the collider attached
             _hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             _hitScript.ColliderInfo = _fistCollider;
-            _hitScript.Owner = Owner;
+            _hitScript.Spawner = Owner;
 
             //Set the direction of the attack
             FVector2 attackPosition;

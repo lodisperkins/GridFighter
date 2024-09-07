@@ -59,7 +59,7 @@ namespace Lodis.Gameplay
             //Initialize hit collider
             _collider = _visualPrefabInstanceTransform.GetComponent<HitColliderBehaviour>();
             _collider.ColliderInfo = GetColliderData(0);
-            _collider.Owner = Owner;
+            _collider.Spawner = Owner;
 
             _collider.AddCollisionEvent(EnableBounce);
             //Activate hitboxes attached to lighting object

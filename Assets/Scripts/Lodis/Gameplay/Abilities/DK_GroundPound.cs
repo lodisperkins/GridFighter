@@ -89,7 +89,7 @@ namespace Lodis.Gameplay
 
             HitColliderBehaviour hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             hitScript.ColliderInfo = _shockWaveCollider;
-            hitScript.Owner = Owner;
+            hitScript.Spawner = Owner;
             hitScript.ColliderInfo.OwnerAlignement = OwnerMoveScript.Alignment;
 
             Object.Instantiate(_explosionEffect, OwnerMoveScript.CurrentPanel.transform.position, Camera.main.transform.rotation);
@@ -103,7 +103,7 @@ namespace Lodis.Gameplay
 
             hitScript = _visualPrefabInstance.GetComponent<HitColliderBehaviour>();
             hitScript.ColliderInfo = _shockWaveCollider;
-            hitScript.Owner = Owner;
+            hitScript.Spawner = Owner;
             hitScript.ColliderInfo.OwnerAlignement = OwnerMoveScript.Alignment;
 
             //Move second shockwave

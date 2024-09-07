@@ -1,14 +1,8 @@
 using FixedPoints;
-using Lodis.Movement;
-using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Types;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
-using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
-using static UnityEngine.Rendering.DebugUI;
 
 /// <summary>
 /// Contains info pertaining to an entity in the rollback simulation.
@@ -18,15 +12,26 @@ public class EntityData
 {
     private readonly List<SimulationBehaviour> _components = new();
     private bool _active;
+    private GridCollider _gridCollider;
 
     public string Name;
-
     public FTransform Transform;
-
     public int X;
     public int Y;
 
-    public GridCollider Collider { get; set; }
+    public GridCollider Collider 
+    { 
+        get { return _gridCollider; }
+        set
+        {
+            value.OnOverlapEnter += OnOverlapEnter;
+            value.OnOverlapExit += OnOverlapExit;
+            value.OnCollisionEnter += OnCollisionEnter;
+            value.OnCollisionExit += OnCollisionExit;
+
+            _gridCollider = value;
+        }
+    }
 
     public GameObject UnityObject;
 
@@ -156,6 +161,11 @@ public class EntityData
         return comp;
     }
 
+    public bool HasComponent<T>() where T : SimulationBehaviour
+    {
+        return _components.Find(c => c.GetType() == typeof(T)) != null;
+    }
+
     public void OnCollisionEnter(Collision collision)
     {
         foreach (var comp in _components)
@@ -180,11 +190,25 @@ public class EntityData
         }
     }
 
+    public void OnOverlapEnter(Collision collision)
+    {
+        foreach (var comp in _components)
+        {
+            comp.OnOverlapEnter(collision);
+        }
+    }
     public void OnOverlapStay(Collision collision)
     {
         foreach (var comp in _components)
         {
             comp.OnOverlapStay(collision);
+        }
+    }
+    public void OnOverlapExit(Collision collision)
+    {
+        foreach (var comp in _components)
+        {
+            comp.OnOverlapExit(collision);
         }
     }
 

@@ -194,7 +194,7 @@ namespace Lodis.Gameplay
             _collider = _auraSphere.GetComponent<HitColliderBehaviour>();
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             _collider.ColliderInfo = GetColliderData(0);
-            _collider.Owner = Owner;
+            _collider.Spawner = Owner;
             _collider.ColliderInfo.OnHit += LiftOpponent;
             
             DisableAccessory();

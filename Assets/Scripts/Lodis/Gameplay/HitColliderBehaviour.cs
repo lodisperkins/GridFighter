@@ -311,7 +311,7 @@ namespace Lodis.Gameplay
                 damageScript.LastCollider = this;
                 KnockbackBehaviour knockback;
 
-                if (ColliderInfo.Damage > 0 && damageScript.TakeDamage(ColliderInfo, Owner) > 0)
+                if (ColliderInfo.Damage > 0 && damageScript.TakeDamage(ColliderInfo, Spawner) > 0)
                 {
                     if (ColliderInfo.OwnerAlignement == GridAlignment.LEFT)
                         BlackBoardBehaviour.Instance.LHSTotalDamage += ColliderInfo.Damage;
@@ -375,7 +375,8 @@ namespace Lodis.Gameplay
         {
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.Collider.OwnerPhysicsComponent.gameObject;
-            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.Collider.Owner == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+
+            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.Entity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
@@ -389,7 +390,7 @@ namespace Lodis.Gameplay
             if (!ColliderInfo.IsMultiHit || !CheckHitTime(otherGameObject))
                 return;
 
-            if (collision.Collider.Owner == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (collision.Entity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             ResolveCollision(otherGameObject, collision);
@@ -400,7 +401,7 @@ namespace Lodis.Gameplay
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.Collider.OwnerPhysicsComponent.gameObject;
 
-            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.Collider.Owner == Owner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.Entity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;

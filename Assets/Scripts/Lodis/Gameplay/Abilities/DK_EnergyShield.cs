@@ -27,7 +27,7 @@ namespace Lodis.Gameplay
         {
             _shield = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform, true);
             _shieldCollider = _shield.GetComponent<ColliderBehaviour>();
-            _shieldCollider.Owner = Owner;
+            _shieldCollider.Spawner = Owner;
 
             _shieldCollider.AddCollisionEvent(collision =>
             {

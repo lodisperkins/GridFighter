@@ -87,7 +87,7 @@ namespace Lodis.Gameplay
                 }
 
                 collider.GetComponent<Collider>().enabled = true;
-                collider.Owner = Owner;
+                collider.Spawner = Owner;
                 OnHitTemp += args => collider.GetComponent<Collider>().enabled = false;
                 collider.ColliderInfo = _stunCollider;
             }

@@ -307,10 +307,10 @@ namespace Lodis.Utility
         /// <returns>The newly instantiated prefab</returns>
         private EntityDataBehaviour CreateNewObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation)
         {
-            EntityDataBehaviour newObject = Instantiate(entity);
+            EntityDataBehaviour newObject = Instantiate(entity, (Vector3)position, (Quaternion)rotation);
 
             newObject.FixedTransform.SetPositionAndRotation(position, rotation);
-            newObject.name = gameObject.name;
+            newObject.name = entity.Data.Name;
             newObject.Data.Name = gameObject.name;
             return newObject;
         }

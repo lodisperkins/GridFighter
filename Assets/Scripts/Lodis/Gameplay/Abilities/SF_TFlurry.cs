@@ -40,7 +40,7 @@ namespace Lodis.Gameplay
             HitColliderBehaviour flurryCollider = _flurry.GetComponent<HitColliderBehaviour>();
 
             flurryCollider.ColliderInfo = GetColliderData(1);
-            flurryCollider.Owner = Owner;
+            flurryCollider.Spawner = Owner;
 
             DisableAccessory();
             FixedPointTimer.StopAction(_spawnAccessoryAction);

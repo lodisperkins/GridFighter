@@ -64,7 +64,7 @@ namespace Lodis.Gameplay
             if (otherHitCollider && otherRigidbody && !otherHitCollider.CompareTag("Player") && !otherHitCollider.CompareTag("Entity"))
             {
                 //...reset the active time and reverse its velocity
-                otherHitCollider.Owner = Owner.Data;
+                otherHitCollider.Spawner = Owner.Data;
                 otherHitCollider.ResetActiveTime();
                 otherRigidbody.AddForce(-otherRigidbody.velocity * 2, ForceMode.Impulse);
 

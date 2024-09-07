@@ -222,7 +222,7 @@ namespace Lodis.Gameplay
             }
             );
 
-            _onPhaseShift += () => _phaseShiftEvent?.Raise(_shieldCollider.Owner.UnityObject);
+            _onPhaseShift += () => _phaseShiftEvent?.Raise(_shieldCollider.Spawner.UnityObject);
         }
 
         /// <summary>
@@ -344,7 +344,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void BeginParry()
         {
-            if (!_canParry || BlackBoardBehaviour.Instance.GetPlayerState(_shieldCollider.Owner.UnityObject) != "Idle")
+            if (!_canParry || BlackBoardBehaviour.Instance.GetPlayerState(_shieldCollider.Spawner.UnityObject) != "Idle")
                 return;
 
             _isParrying = true;
@@ -476,7 +476,7 @@ namespace Lodis.Gameplay
                 HitColliderBehaviour collider = other.attachedRigidbody?.GetComponent<HitColliderBehaviour>();
 
                 if (!collider) return;
-                if (collider.Owner.UnityObject == gameObject) return;
+                if (collider.Spawner.UnityObject == gameObject) return;
 
                 _phaseShiftSuccessEvent?.Raise(gameObject);
                 _currentPhaseShiftRestTime = _successPhaseShiftRestTime;

@@ -404,7 +404,7 @@ namespace Lodis.Movement
             else
             {
                 _canMove = false;
-                _moveLerp.Kill();
+                _moveLerp?.Kill();
                 _isMoving = false;
             }
 

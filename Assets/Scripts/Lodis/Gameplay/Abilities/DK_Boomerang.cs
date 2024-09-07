@@ -60,7 +60,7 @@ namespace Lodis.Gameplay
                 _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
             }
 
-            _reboundCollider.Owner = Owner.Data;
+            _reboundCollider.Spawner = Owner.Data;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace Lodis.Gameplay
                 //...reverse velocity
                 projectile.AddForce(-projectile.velocity * _speedMultiplier * 2, ForceMode.VelocityChange);
                 _reboundCount++;
-                _reboundCollider.Owner = collision.Entity;
+                _reboundCollider.Spawner = collision.Entity;
             }
             //Otherwise if it hit a structure like a wall...
             else if(other.CompareTag("Structure"))

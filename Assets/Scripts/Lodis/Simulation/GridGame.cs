@@ -12,6 +12,7 @@ using Types;
 using UnityEngine.InputSystem;
 using Lodis.ScriptableObjects;
 using System.Runtime.Remoting.Messaging;
+using Lodis.Gameplay;
 
 
 public struct GridGame : IGame
@@ -270,7 +271,7 @@ public struct GridGame : IGame
             AddEntityToGame(entity.Transform.GetChild(i).Owner);
         }
 
-        if (entity.Collider != null)
+        if (entity.Collider != null || entity.HasComponent<ColliderBehaviour>())
             ActivePhysicsEntities.Add(entity);
     }
 
@@ -294,7 +295,7 @@ public struct GridGame : IGame
 
         }
 
-        if (entity.Collider != null)
+        if (entity.Collider != null || entity.HasComponent<ColliderBehaviour>())
             ActivePhysicsEntities.Remove(entity);
     }
 
@@ -364,30 +365,28 @@ public struct GridGame : IGame
                     continue;
 
                 //Check the next thing if a collision wasn't found.
-                if (!collider1.CheckCollision(collider2, out collisionData1))
-                {
-                    continue;
-                }
+                collider1.CheckCollision(collider2, out collisionData1);
 
-                //Flip the values for the other colliders data.
-                collisionData2 = collisionData1;
-                collisionData2.Normal = collisionData1.Normal * -1;
-                collisionData2.Collider = collider1;
-                collisionData2.Entity = ActivePhysicsEntities[row];
+                ////Flip the values for the other colliders data.
+                //collisionData2 = collisionData1;
+                //collisionData2.Normal = collisionData1.Normal * -1;
+                //collisionData2.Collider = collider1;
+                //collisionData2.Entity = ActivePhysicsEntities[row];
 
-                //Handle the collision events based on whether or not the collision should treat the objects like solid surfaces.
-                if (!collider1.Overlap && !collider2.Overlap)
-                {
-                    collider1.OwnerPhysicsComponent.ResolveCollision(collisionData1);
-
-                    collider1.Owner.OnCollisionStay(collisionData1);
-                    collider2.Owner.OnCollisionStay(collisionData2);
-                }
-                else
-                {
-                    collider1.Owner.OnOverlapStay(collisionData1);
-                    collider2.Owner.OnOverlapStay(collisionData2);
-                }
+                ////Handle the collision events based on whether or not the collision should treat the objects like solid surfaces.
+                ////Collision stay events are handled here since the need to be called every frame while enter/exit events are handled by the collider.
+                //if (!collider1.Overlap && !collider2.Overlap)
+                //{
+                //    collider1.OwnerPhysicsComponent.ResolveCollision(collisionData1);
+                    
+                //    collider1.Owner.OnCollisionStay(collisionData1);
+                //    collider2.Owner.OnCollisionStay(collisionData2);
+                //}
+                //else
+                //{
+                //    collider1.Owner.OnOverlapStay(collisionData1);
+                //    collider2.Owner.OnOverlapStay(collisionData2);
+                //}
             }
 
         }

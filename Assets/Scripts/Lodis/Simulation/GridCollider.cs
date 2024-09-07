@@ -9,6 +9,7 @@ using System.Runtime.Remoting.Messaging;
 using Types;
 using UnityEngine;
 using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public struct Collision
 {
@@ -27,15 +28,22 @@ public delegate void CollisionEvent(Collision collision);
 [Serializable]
 public class GridCollider
 {
+    [Tooltip("The layers this collider won't collide with.")]
     [SerializeField] private LayerMask _layersToIgnore;
+    [Tooltip("If true this collider will pass through objects without trying to apply a force to prevent them going through each other.")]
     [SerializeField] private bool _overlap;
+    [Tooltip("How wide the AABB collider will be.")]
+    [SerializeField] private Fixed32 _width = 1;
+    [Tooltip("How tall the AABB collider will be.")]
+    [SerializeField] private Fixed32 _height = 1;
+    [Tooltip("The y position of this collider on the grid relative to its owner.")]
+    [SerializeField] private int _panelYOffset;
+    [Tooltip("The x position of this collider on the grid relative to its owner.")]
+    [SerializeField] private int _panelXOffset;
+    [Tooltip("The height of this collider in the world.")]
+    [SerializeField] private Fixed32 _worldYPosition;
 
     //---
-    private Fixed32 _width;
-    private Fixed32 _height;
-    private int _panelYOffset;
-    private int _panelXOffset;
-    private Fixed32 _worldYPosition;
     private int _layer;
     private EntityData _owner;
     private GridPhysicsBehaviour _ownerPhysicsComponent;
@@ -49,36 +57,54 @@ public class GridCollider
     public event CollisionEvent OnOverlapStay;
     public event CollisionEvent OnOverlapExit;
 
+    /// <summary>
+    /// The current y position of this panel on the grid. Adds the y offset to the owner position.
+    /// </summary>
     public int PanelY 
     {
         get
         {
-            return _panelYOffset + OwnerPhysicsComponent.GetGridPosition().Y;
+            return PanelYOffset + OwnerPhysicsComponent.GetGridPosition().Y;
         }
-        set => _panelYOffset = value;
+        set => PanelYOffset = value;
     }
 
+    /// <summary>
+    /// The current x position of this panel on the grid. Adds the x offset to the owner position.
+    /// </summary>
     public int PanelX 
     {
         get
         {
-            return _panelXOffset + OwnerPhysicsComponent.GetGridPosition().X;
+            return PanelXOffset + OwnerPhysicsComponent.GetGridPosition().X;
         }
-        set => _panelXOffset = value;
+        set => PanelXOffset = value;
     }
 
+    /// <summary>
+    /// Gets the position of this collider in the world based on the current panel its owner is on.
+    /// </summary>
     public FVector3 WorldPosition
     {
         get
         {
             GridBehaviour.Grid.GetPanel(PanelX, PanelY, out PanelBehaviour panel);
-            return (FVector3)(panel.transform.position + Vector3.up * _worldYPosition);
+            return (FVector3)(panel.transform.position + Vector3.up * WorldYPosition);
         }
     }
 
+    /// <summary>
+    /// How wide the AABB collider will be.
+    /// </summary>
     public Fixed32 Width { get => _width; set => _width = value; }
+    /// <summary>
+    /// How tall the AABB collider will be.
+    /// </summary>
     public Fixed32 Height { get => _height; set => _height = value; }
 
+    /// <summary>
+    /// The simulation object that will have collision events called on it.
+    /// </summary>
     public EntityData Owner
     {
         get
@@ -91,17 +117,48 @@ public class GridCollider
         }
     }
 
+    /// <summary>
+    /// The components responsible for calculating physics attached to the entity this collider belongs to.
+    /// </summary>
     public GridPhysicsBehaviour OwnerPhysicsComponent { get => _ownerPhysicsComponent; }
+    /// <summary>
+    /// The layers this collider won't collide with.
+    /// </summary>
     public LayerMask LayersToIgnore { get => _layersToIgnore; set => _layersToIgnore = value; }
+    /// <summary>
+    /// If true this collider will pass through objects without trying to apply a force to prevent them going through each other.
+    /// </summary>
     public bool Overlap { get => _overlap; set => _overlap = value; }
+    /// <summary>
+    /// The y position of this collider on the grid relative to its owner.
+    /// </summary>
+    public int PanelYOffset { get => _panelYOffset; set => _panelYOffset = value; }
+
+    /// <summary>
+    /// The x position of this collider on the grid relative to its owner.
+    /// </summary>
+    public int PanelXOffset { get => _panelXOffset; set => _panelXOffset = value; }
+
+    /// <summary>
+    /// The height of this collider in the world.
+    /// </summary>
+    public Fixed32 WorldYPosition { get => _worldYPosition; set => _worldYPosition = value; }
+
+    public void Init(EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
+    {
+        _ownerPhysicsComponent = ownerPhysicsComponent;
+        _owner = owner;
+        _layer = ownerPhysicsComponent.gameObject.layer;
+        owner.Collider = this;
+    }
 
     public void Init(Fixed32 width, Fixed32 height, EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null, int panelYOffset = 0, int panelXOffset = 0, Fixed32 worldYPosition = default)
     {
         _width = width;
         _height = height;
-        _panelYOffset = panelYOffset;
-        _panelXOffset = panelXOffset;
-        _worldYPosition = worldYPosition;
+        PanelYOffset = panelYOffset;
+        PanelXOffset = panelXOffset;
+        WorldYPosition = worldYPosition;
         _ownerPhysicsComponent = ownerPhysicsComponent;
         _owner = owner;
         _layer = ownerPhysicsComponent.gameObject.layer;
@@ -223,14 +280,30 @@ public class GridCollider
             Entity = other.Owner
         };
 
+        Collision collisionData2 = new Collision
+        {
+            Normal = collisionData.Normal * -1,
+            Collider = this,
+            PenetrationDistance = GetPenetrationAmount(other).Magnitude,
+            ContactPoint = closestPoint,
+            Entity = Owner
+        };
+
         //If this is a new collision...
         if (AddCollider(collisionData))
         {
             //...call on collision enter events.
             if (Overlap)
+            {
                 OnOverlapEnter?.Invoke(collisionData);
+                other.OnOverlapEnter?.Invoke(collisionData2);
+            }
             else
+            {
+                OwnerPhysicsComponent.ResolveCollision(collisionData);
                 OnCollisionEnter?.Invoke(collisionData);
+                other.OnCollisionEnter?.Invoke(collisionData2);
+            }
         }
 
         //On collision stay events are always called when collision occurs.
@@ -252,12 +325,12 @@ public class GridCollider
 
     public Fixed32 GetLeft()
     {
-        return WorldPosition.Z - Width / 2;
+        return WorldPosition.X - Width / 2;
     }
 
     public Fixed32 GetRight()
     {
-        return WorldPosition.Z + Width / 2;
+        return WorldPosition.X + Width / 2;
     }
 
     public Fixed32 GetTop()
@@ -267,7 +340,7 @@ public class GridCollider
 
     public Fixed32 GetBottom()
     {
-        return Owner.Transform.WorldPosition.Y - Height / 2;
+        return WorldPosition.Y - Height / 2;
     }
 
     private FVector2 GetPenetrationAmount(GridCollider other)
@@ -299,13 +372,13 @@ public class GridCollider
     {
         _width.Serialize(bw);
         _height.Serialize(bw);
-        bw.Write(_panelYOffset);
+        bw.Write(PanelYOffset);
     }
 
     public void Deserialize(BinaryReader br)
     {
         _width.Deserialize(br);
         _height.Deserialize(br);
-        _panelYOffset = br.ReadInt32();
+        PanelYOffset = br.ReadInt32();
     }
 }

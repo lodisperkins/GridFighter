@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
             HitColliderBehaviour hitColliderBehaviour = _orbs.GetComponent<HitColliderBehaviour>();
 
             hitColliderBehaviour.ColliderInfo = GetColliderData(0);
-            hitColliderBehaviour.Owner = Owner;
+            hitColliderBehaviour.Spawner = Owner;
 
             OwnerAnimationScript.gameObject.SetActive(false);
         }

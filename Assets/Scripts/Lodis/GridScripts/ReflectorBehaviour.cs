@@ -39,12 +39,12 @@ namespace Lodis.Gameplay
             if (!gridPhysics) return;
             
             //Don't reflect if this is the owner's projectile
-            if (otherCollider.Owner == _collider.Owner)
+            if (otherCollider.Spawner == _collider.Spawner)
                 return;
 
             //Change the projectiles owner and velocity
-            otherCollider.Owner = _collider.Owner;
-            otherCollider.ColliderInfo.OwnerAlignement = _collider.Owner.GetComponent<GridMovementBehaviour>().Alignment;
+            otherCollider.Spawner = _collider.Spawner;
+            otherCollider.ColliderInfo.OwnerAlignement = _collider.Spawner.GetComponent<GridMovementBehaviour>().Alignment;
             otherCollider.ResetActiveTime();
             gridPhysics.ApplyVelocityChange(-gridPhysics.Velocity * 2f);
         }
@@ -56,7 +56,7 @@ namespace Lodis.Gameplay
         public void TryStunAttacker(EntityData other)
         {
             //If the object is the owner of this collider return
-            if (other == _collider.Owner) return;
+            if (other == _collider.Spawner) return;
 
             //Only stun if this object has a health component and isn't already stunned
             HealthBehaviour healthBehaviour = other.UnityObject.GetComponentInChildren<HealthBehaviour>();

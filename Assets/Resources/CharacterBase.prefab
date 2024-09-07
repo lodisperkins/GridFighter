@@ -28,6 +28,7 @@ GameObject:
   - component: {fileID: 1988483426190075038}
   - component: {fileID: 9214871793191098141}
   - component: {fileID: 427050719508043804}
+  - component: {fileID: 8769265702160132241}
   m_Layer: 9
   m_Name: CharacterBase
   m_TagString: Player
@@ -1300,6 +1301,33 @@ MonoBehaviour:
     UnityObject: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 561307191668043432}
+--- !u!114 &8769265702160132241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561307191668043433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _overlap: 1
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: 0
+    _panelXOffset: 0
+    _worldYPosition:
+      RawValue: 0
+  _debuggingEnabled: 1
 --- !u!1 &3280269941161266660
 GameObject:
   m_ObjectHideFlags: 0
@@ -1697,35 +1725,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Projectile: {fileID: 0}
-  Owner:
-    Name: New Entity
-    Transform:
-      _worldPosition:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 0
-        Z:
-          RawValue: 0
-      _worldRotation:
-        X:
-          RawValue: 0
-        Y:
-          RawValue: 0
-        Z:
-          RawValue: 0
-        W:
-          RawValue: 65536
-      _worldScale:
-        X:
-          RawValue: 65536
-        Y:
-          RawValue: 65536
-        Z:
-          RawValue: 65536
-    X: 0
-    Y: 0
-    UnityObject: {fileID: 0}
+  Owner: {fileID: 427050719508043804}
 --- !u!114 &9088445964086657447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2633,14 +2633,14 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 0
     _overlap: 0
-  _panelXOffset: 0
-  _panelYOffset: 0
-  _worldYPosition:
-    RawValue: 0
-  _width:
-    RawValue: 65536
-  _height:
-    RawValue: 65536
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: 0
+    _panelXOffset: 0
+    _worldYPosition:
+      RawValue: 0
   _debuggingEnabled: 0
 --- !u!4 &5386106008844156196 stripped
 Transform:

@@ -56,7 +56,7 @@ namespace Lodis.Gameplay
                 //Initialize hit collider
                 _collider = _visualPrefabInstanceTransforms[i].GetComponent<HitColliderBehaviour>();
                 _collider.ColliderInfo = GetColliderData(i);
-                _collider.Owner = Owner;
+                _collider.Spawner = Owner;
 
                 if (i > 0)
                     _collider.ColliderInfo.TimeActive += _delay;
