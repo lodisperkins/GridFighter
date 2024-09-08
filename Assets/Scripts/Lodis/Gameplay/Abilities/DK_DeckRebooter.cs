@@ -21,7 +21,7 @@ namespace Lodis.Gameplay
 
         private void RebootDeck(Collision collision)
         {
-            GameObject other = collision.Entity.UnityObject;
+            GameObject other = collision.OtherEntity.UnityObject;
             if (!other.CompareTag("Player"))
                 return;
 

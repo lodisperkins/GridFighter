@@ -86,7 +86,7 @@ namespace Lodis.Movement
 
         public override void OnOverlapStay(Collision other)
         {
-            if (_knockback.CurrentAirState != AirState.NONE && other.Entity.UnityObject.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen && _knockback.Physics.ObjectAtRest)
+            if (_knockback.CurrentAirState != AirState.NONE && other.OtherEntity.UnityObject.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen && _knockback.Physics.ObjectAtRest)
             {
                 CanCheckLanding = true;
             }

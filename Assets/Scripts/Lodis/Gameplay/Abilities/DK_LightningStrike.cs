@@ -88,7 +88,7 @@ namespace Lodis.Gameplay
         /// </summary>
         private void EnableBounce(Collision collision)
         {
-            GameObject other = collision.Entity.UnityObject;
+            GameObject other = collision.OtherEntity.UnityObject;
 
             if (_opponentPhysics?.PanelBounceEnabled == true || other != _opponentPhysics.gameObject)
                 return;

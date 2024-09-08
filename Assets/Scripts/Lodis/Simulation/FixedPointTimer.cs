@@ -63,6 +63,7 @@ namespace FixedPoints
         public FixedTimeAction(FixedDelayedEvent action, float duration, UnitOfTime unit = UnitOfTime.Scaled)
         {
             onDelayComplete = action;
+            timeRemaining = duration;
             this.duration = duration;
             this.unit = unit;
         }
@@ -90,11 +91,11 @@ namespace FixedPoints
         {
             if (unit == UnitOfTime.Scaled)
             {
-                return Utils.TimeGetTime() * GridGame.TimeScale - timeStarted;
+                return GridGame.Time * GridGame.TimeScale - timeStarted;
             }
             else if (unit == UnitOfTime.Unscaled)
             {
-                return Utils.TimeGetTime() - timeStarted;
+                return GridGame.Time - timeStarted;
             }
 
             return -1;
@@ -110,6 +111,8 @@ namespace FixedPoints
 
             if (count > 0)
                 loopCount += count;
+            else if (count == -1) 
+                loopCount = -1;
 
             return this;
         }
@@ -195,7 +198,7 @@ namespace FixedPoints
 
                 onDelayComplete.Invoke();
 
-                if (loopCount <= 0)
+                if (loopCount == 0)
                 {
                     IsActive = false;
                     Stop();

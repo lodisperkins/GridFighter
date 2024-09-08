@@ -49,7 +49,7 @@ namespace Lodis.Input
             OnPerformAction = action;
             _useCondition = useCondition;
             _bufferClearTime = bufferClearTime;
-            _bufferStartTime = Utils.TimeGetTime();
+            _bufferStartTime = GridGame.Time;
         }
 
 
@@ -64,7 +64,7 @@ namespace Lodis.Input
                 OnPerformAction = null;
                 return true;
             }
-            else if (Utils.TimeGetTime() - _bufferStartTime >= _bufferClearTime)
+            else if (GridGame.Time - _bufferStartTime >= _bufferClearTime)
             {
                 OnPerformAction = null;
                 OnClearAction?.Invoke();

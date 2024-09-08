@@ -337,7 +337,7 @@ namespace Lodis.Gameplay
             {
                 OnHit += collision =>
                 {
-                    if (collision.Entity.UnityObject == BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner.gameObject) && GetCurrentCancelRule()?.CanOnlyCancelOnOpponentHit == true)
+                    if (collision.OtherEntity.UnityObject == BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner.gameObject) && GetCurrentCancelRule()?.CanOnlyCancelOnOpponentHit == true)
                          _opponentHit = true;
                 };
 

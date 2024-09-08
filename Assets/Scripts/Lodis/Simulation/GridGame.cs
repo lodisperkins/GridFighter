@@ -32,6 +32,10 @@ public struct GridGame : IGame
     /// </summary>
     public static Fixed32 FixedTimeStep = new Fixed32(1092);
     public static Fixed32 TimeScale = 1;
+    /// <summary>
+    /// The amount of time that has passed since the simulation began.
+    /// </summary>
+    public static Fixed32 Time;
 
     public delegate void InputPollCallback(int id);
     public delegate void InputProcessCallback(int id, long inputs);
@@ -312,6 +316,7 @@ public struct GridGame : IGame
 
     public void Update(long[] inputs, int disconnectFlags)
     {
+        Time += FixedTimeStep;
         OnSimulationUpdate?.Invoke(FixedTimeStep);
 
         //Component update

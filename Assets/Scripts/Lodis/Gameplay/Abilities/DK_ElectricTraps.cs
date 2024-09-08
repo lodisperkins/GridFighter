@@ -102,7 +102,7 @@ namespace Lodis.Gameplay
         private void StunEntity(Collision collision)
         {
             //Get health beahviour
-            GameObject entity = collision.Entity.UnityObject;
+            GameObject entity = collision.OtherEntity.UnityObject;
             HealthBehaviour entityHealth = entity.GetComponent<HealthBehaviour>();
 
             //If there  is a health behaviour...

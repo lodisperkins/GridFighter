@@ -20,7 +20,7 @@ namespace Lodis.Movement
 
         public override void OnHitStay(Collision collision)
         {
-            Movement.KnockbackBehaviour knockBackScript = collision.Collider.OwnerPhysicsComponent.GetComponent<Movement.KnockbackBehaviour>();
+            Movement.KnockbackBehaviour knockBackScript = collision.OtherCollider.OwnerPhysicsComponent.GetComponent<Movement.KnockbackBehaviour>();
             //Checks if the object is not grid moveable and isn't in hit stun
             if (!knockBackScript)
                 return;

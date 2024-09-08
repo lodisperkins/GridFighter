@@ -32,7 +32,7 @@ namespace Lodis.Gameplay
 
         private void SpawnFlurry(Collision collision)
         {
-            EntityData target = collision.Entity;
+            EntityData target = collision.OtherEntity;
             if (!target.UnityObject.CompareTag("Player"))
                 return;
 

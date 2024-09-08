@@ -352,7 +352,7 @@ namespace Lodis.Movement
 
         public override void OnHitEnter(Collision collision)
         {
-            HealthBehaviour damageScript = collision.Entity.UnityObject.GetComponent<HealthBehaviour>();
+            HealthBehaviour damageScript = collision.OtherEntity.UnityObject.GetComponent<HealthBehaviour>();
 
             if (damageScript == null)
                 return;
@@ -369,7 +369,7 @@ namespace Lodis.Movement
             float velocityMagnitude = knockBackScript.Physics.Velocity.Magnitude;
 
             //Apply ricochet force and damage
-            damageScript.TakeDamage(collision.Entity, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+            damageScript.TakeDamage(collision.OtherEntity, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
         private void ActivateHitStunByTimer(float timeInHitStun)

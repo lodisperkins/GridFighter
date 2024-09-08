@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         public void TryRedirectProjectile(Collision collision)
         {
-            GameObject other = collision.Entity.UnityObject;
+            GameObject other = collision.OtherEntity.UnityObject;
 
             //If the projectile rebounded too many times...
             if (_reboundCount >= abilityData.GetCustomStatValue("MaxRebounds"))
@@ -99,7 +99,7 @@ namespace Lodis.Gameplay
                 //...reverse velocity
                 projectile.AddForce(-projectile.velocity * _speedMultiplier * 2, ForceMode.VelocityChange);
                 _reboundCount++;
-                _reboundCollider.Spawner = collision.Entity;
+                _reboundCollider.Spawner = collision.OtherEntity;
             }
             //Otherwise if it hit a structure like a wall...
             else if(other.CompareTag("Structure"))

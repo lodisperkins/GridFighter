@@ -111,7 +111,7 @@ namespace Lodis.Gameplay
         private void LiftOpponent(Collision collision)
         {
             //Only check knockback if a player was hit.
-            GameObject other = collision.Entity.UnityObject;
+            GameObject other = collision.OtherEntity.UnityObject;
             if (!other.CompareTag("Player"))
                 return;
 

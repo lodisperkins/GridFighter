@@ -156,7 +156,7 @@ namespace Lodis.Gameplay
 
             hitColliderBehaviour.ColliderInfo.OnHit += collision =>
             {
-                HealthBehaviour health = collision.Entity.GetComponent<HealthBehaviour>();
+                HealthBehaviour health = collision.OtherEntity.GetComponent<HealthBehaviour>();
 
                 if (!health.IsInvincible && !health.IsIntangible)
                     _landedFirstHit = true;

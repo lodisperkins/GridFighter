@@ -70,15 +70,15 @@ namespace Lodis.Gameplay
 
         private void OnCollision(Collision collision)
         {
-            GameObject other = collision.Entity.UnityObject;
-            HitColliderBehaviour hitCollider = collision.Entity.GetComponent<HitColliderBehaviour>();
+            GameObject other = collision.OtherEntity.UnityObject;
+            HitColliderBehaviour hitCollider = collision.OtherEntity.GetComponent<HitColliderBehaviour>();
 
             if (!hitCollider || !CompareTag("Reflector")) return;
 
             //If the hitbox is attached to a character stun them
             if (other.transform.root.CompareTag("Player") || other.transform.root.CompareTag("Entity"))
             {
-                TryStunAttacker(collision.Entity);
+                TryStunAttacker(collision.OtherEntity);
                 return;
             }
 

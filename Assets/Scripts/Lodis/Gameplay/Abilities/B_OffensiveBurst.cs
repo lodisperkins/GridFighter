@@ -48,14 +48,14 @@ namespace Lodis.Gameplay
             OnHit += collision =>
             {
 
-                GameObject objectHit = collision.Entity.UnityObject;
+                GameObject objectHit = collision.OtherEntity.UnityObject;
 
-                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(collision.Entity.UnityObject))
+                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(collision.OtherEntity.UnityObject))
                     return;
 
                 CameraBehaviour.Instance.ZoomAmount = 3;
                 _zoomAction = RoutineBehaviour.Instance.StartNewTimedAction(parameter => CameraBehaviour.Instance.ZoomAmount = 0, TimedActionCountType.SCALEDTIME, 0.7f);
-                AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(collision.Entity.UnityObject), "Burst Drive");
+                AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(collision.OtherEntity.UnityObject), "Burst Drive");
                 if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
 

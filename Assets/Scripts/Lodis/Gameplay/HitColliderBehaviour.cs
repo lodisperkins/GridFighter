@@ -374,9 +374,9 @@ namespace Lodis.Gameplay
         public override void OnOverlapEnter(Collision collision)
         {
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
-            GameObject otherGameObject = collision.Collider.OwnerPhysicsComponent.gameObject;
+            GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
 
-            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.Entity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.OtherEntity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
@@ -385,12 +385,12 @@ namespace Lodis.Gameplay
 
         public override void OnOverlapStay(Collision collision)
         {
-            GameObject otherGameObject = collision.Collider.OwnerPhysicsComponent.gameObject;
+            GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
             //Only allow damage to be applied this way if the collider is a multi-hit collider
             if (!ColliderInfo.IsMultiHit || !CheckHitTime(otherGameObject))
                 return;
 
-            if (collision.Entity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (collision.OtherEntity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             ResolveCollision(otherGameObject, collision);
@@ -399,9 +399,9 @@ namespace Lodis.Gameplay
         public override void OnHitEnter(Collision collision)
         {
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
-            GameObject otherGameObject = collision.Collider.OwnerPhysicsComponent.gameObject;
+            GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
 
-            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.Entity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.OtherEntity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;

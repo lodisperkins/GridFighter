@@ -13,10 +13,29 @@ using static UnityEngine.Rendering.DebugUI.Table;
 
 public struct Collision
 {
+    /// <summary>
+    /// The direction the collision occured in relative to the object that started the collision.
+    /// </summary>
     public FVector2 Normal;
-    public GridCollider Collider;
+    /// <summary>
+    /// The collider of the object that was collided with.
+    /// </summary>
+    public GridCollider OtherCollider;
+    /// <summary>
+    /// The area on the AABB that the collision occured.
+    /// </summary>
     public FVector2 ContactPoint;
+    /// <summary>
+    /// How deep the colliders are overlapping.
+    /// </summary>
     public Fixed32 PenetrationDistance;
+    /// <summary>
+    /// The entity that the collider is overlapping with.
+    /// </summary>
+    public EntityData OtherEntity;
+    /// <summary>
+    /// The entity that is attached to this collider.
+    /// </summary>
     public EntityData Entity;
 }
 
@@ -191,7 +210,7 @@ public class GridCollider
 
         for (int i = 0; i < _collisions.Length; i++)
         {
-            if (_collisions[i].Collider == other && other != null)
+            if (_collisions[i].OtherCollider == other || _collisions[i].Entity == other.Owner)
             {
                 collision = _collisions[i];
                 _collisions[i] = default;
@@ -210,7 +229,10 @@ public class GridCollider
     {
         for (int i = 0; i < _collisions.Length; i++)
         {
-            if (_collisions[i].Collider == null)
+            if (_collisions[i].OtherEntity == collision.OtherEntity)
+                return false;
+
+            if (_collisions[i].OtherCollider == null || !_collisions[i].OtherEntity.Active)
             {
                 _collisions[i] = collision;
                 return true;
@@ -218,6 +240,14 @@ public class GridCollider
         }
 
         return false;
+    }
+
+    public void ClearCollisionExit()
+    {
+        for (int i = 0; i < _collisions.Length; i++)
+        {
+            _collisions[i] = default;
+        }
     }
 
     public bool CheckCollision(GridCollider other, out Collision collisionData)
@@ -273,20 +303,22 @@ public class GridCollider
 
         collisionData = new Collision
         {
-            Collider = other,
+            OtherCollider = other,
             Normal = GetPenetrationAmount(other).GetNormalized(),
             ContactPoint = closestPoint,
             PenetrationDistance = GetPenetrationAmount(other).Magnitude,
-            Entity = other.Owner
+            OtherEntity = other.Owner,
+            Entity = Owner
         };
 
         Collision collisionData2 = new Collision
         {
             Normal = collisionData.Normal * -1,
-            Collider = this,
+            OtherCollider = this,
             PenetrationDistance = GetPenetrationAmount(other).Magnitude,
             ContactPoint = closestPoint,
-            Entity = Owner
+            OtherEntity = Owner,
+            Entity = other.Owner
         };
 
         //If this is a new collision...

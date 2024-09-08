@@ -143,6 +143,9 @@ namespace Lodis.Gameplay
         [Tooltip("The rate at which burst energy is regained")]
         [SerializeField]
         private FloatVariable _burstEnergyRechargeRate;
+        [Tooltip("The rate at which burst energy is regained when it is set to infinite")]
+        [SerializeField]
+        private FloatVariable _infiniteBurstEnergyRechargeRate;
         [SerializeField]
         private bool _canBurst = true;
 
@@ -154,6 +157,7 @@ namespace Lodis.Gameplay
         [Tooltip("The sound that will play when shuffling ends any time.")]
         private AudioClip _shuffleEnd;
 
+        //---
         private UnityAction OnUpdateHand;
         private UnityAction OnManualShuffle;
         private UnityAction _onAutoShuffle;
@@ -172,6 +176,7 @@ namespace Lodis.Gameplay
         private FixedTimeAction _burstAction;
 
         private FVector2 _lastAttackDirection;
+        private Fixed32 _currentBurstRechargeRate;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -258,6 +263,7 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         public override void Begin()
         {
+            //Set up deck
             _normalDeck = Instantiate(NormalDeckRef);
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_DefensiveBurst_Data"));
             _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_OffensiveBurst_Data"));
@@ -270,12 +276,20 @@ namespace Lodis.Gameplay
 
             ResetSpecialDeck();
 
+            //Set up energy meters
             _canBurst = true;
             BurstEnergy = MaxBurstEnergy.Value;
 
             if (!MatchManagerBehaviour.InfiniteEnergy)
                 Energy = _startEnergy.Value;
 
+            _currentBurstRechargeRate = _burstEnergyRechargeRate.Value;
+
+            _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, _energyRechargeRate.Value).Loop();
+
+            _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.Value, _currentBurstRechargeRate).Loop();
+
+            //Set up other references and parameters
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
             if (!target) return;
 
@@ -283,6 +297,7 @@ namespace Lodis.Gameplay
 
             _manualShuffleWaitTime = _manualShuffleStartTime + _manualShuffleActiveTime + _manualShuffleRecoverTime;
             OnUseAbility += _knockbackBehaviour.DisableInvincibility;
+
         }
 
         private void OnDisable()
@@ -891,10 +906,10 @@ namespace Lodis.Gameplay
         public void IncreaseEnergyFromDamage(Collision collision)
         {
             HitColliderBehaviour hitCollider = collision.Entity.GetComponent<HitColliderBehaviour>();
-            HealthBehaviour health = collision.Entity.GetComponent<HealthBehaviour>();
+            HealthBehaviour health = collision.OtherEntity.GetComponent<HealthBehaviour>();
             bool? invincible = health?.IsInvincible == true;
 
-            if (hitCollider.Entity != Entity || invincible.GetValueOrDefault()) return;
+            if (hitCollider.Spawner != Entity.Data || invincible.GetValueOrDefault()) return;
 
             Energy += hitCollider.ColliderInfo.Damage / 50;
 
@@ -924,22 +939,14 @@ namespace Lodis.Gameplay
                 }
             }
 
-            float burstEnergyRechargeRate = _burstEnergyRechargeRate;
-
             if (MatchManagerBehaviour.Instance.InfiniteBurst)
             {
-                burstEnergyRechargeRate /= 100;
+                _currentBurstRechargeRate = _infiniteBurstEnergyRechargeRate.Value;
             }
-
-            bool timerActive = (_rechargeAction?.IsActive).GetValueOrDefault();
-
-            if (!timerActive && EnergyChargeEnabled)
-                _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, _energyRechargeRate.Value);
-
-            timerActive = (_burstAction?.IsActive).GetValueOrDefault();
-
-            if (!timerActive)
-                _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.Value, burstEnergyRechargeRate);
+            else
+            {
+                _currentBurstRechargeRate = _burstEnergyRechargeRate.Value;
+            }
 
             //Reload the deck if there are no cards in the hands or the deck
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading && NextAbilitySlot == null && !_loadingShuffle)
@@ -957,8 +964,6 @@ namespace Lodis.Gameplay
 
             if (!CanBurst)
                 CanBurst = BurstEnergy == _maxBurstEnergyRef.Value;
-
-
 
             if (MatchManagerBehaviour.Instance.SuperInUse)
                 CanBurst = false;

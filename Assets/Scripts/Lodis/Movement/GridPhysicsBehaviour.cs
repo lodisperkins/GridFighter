@@ -624,7 +624,7 @@ namespace Lodis.Movement
 
         public  void ResolveCollision(Collision collision)
         {
-            EntityData otherEntity = collision.Collider.Owner;
+            EntityData otherEntity = collision.OtherCollider.Owner;
 
             HealthBehaviour damageScript = otherEntity.GetComponent<HealthBehaviour>();
             GridPhysicsBehaviour gridPhysicsBehaviour = otherEntity.GetComponent<GridPhysicsBehaviour>();
@@ -953,7 +953,7 @@ namespace Lodis.Movement
 
             if (!_movementBehaviour)
             {
-                GridBehaviour.Grid.GetPanelAtLocationInWorld(transform.position, out PanelBehaviour panel);
+                GridBehaviour.Grid.GetPanelAtLocationInWorld((Vector3)FixedTransform.WorldPosition, out PanelBehaviour panel);
 
                 if (panel != null)
                 {

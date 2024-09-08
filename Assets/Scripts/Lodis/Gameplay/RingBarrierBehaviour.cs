@@ -161,7 +161,7 @@ namespace Lodis.Gameplay
                 return;
 
             //Only try to take damage if the object had a rigid body attached.
-            KnockbackBehaviour knockback = collision.Entity.UnityObject.GetComponent<KnockbackBehaviour>();
+            KnockbackBehaviour knockback = collision.OtherEntity.UnityObject.GetComponent<KnockbackBehaviour>();
             if (!knockback)
                 return;
 
@@ -169,14 +169,14 @@ namespace Lodis.Gameplay
             float dot = FVector3.Dot((FVector3)transform.forward, knockback.Physics.Velocity.GetNormalized());
 
             //Shatter the barrier if the pwner is being knocked back at the appropriate speed and damage.
-            if (collision.Entity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.Value && dot < 0
+            if (collision.OtherEntity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.Value && dot < 0
                 && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.Value)
                 TakeDamage(Entity.Data, Health, 0, 0, DamageType.KNOCKBACK);
         }
 
         public override void OnHitEnter(Collision collision)
         {
-            KnockbackBehaviour knockbackBehaviour = collision.Entity.UnityObject.GetComponent<KnockbackBehaviour>();
+            KnockbackBehaviour knockbackBehaviour = collision.OtherEntity.UnityObject.GetComponent<KnockbackBehaviour>();
 
             if (!knockbackBehaviour || knockbackBehaviour.Physics.Velocity.Magnitude < _minimumDamageSpeed || !_canHit)
                 return;
@@ -184,7 +184,7 @@ namespace Lodis.Gameplay
             if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
                 return;
 
-            var offsetX = collision.Entity.Transform.WorldPosition.X - Entity.FixedTransform.WorldPosition.X;
+            var offsetX = collision.OtherEntity.Transform.WorldPosition.X - Entity.FixedTransform.WorldPosition.X;
             float dir = offsetX / Mathf.Abs(offsetX);
             
             //Find the direction this collider was going to apply force originally
@@ -204,7 +204,7 @@ namespace Lodis.Gameplay
 
             //Deal damage to the character.
             knockbackBehaviour.LastCollider = hitCollider;
-            knockbackBehaviour.TakeDamage(info,collision.Entity);
+            knockbackBehaviour.TakeDamage(info,collision.OtherEntity);
 
             _canHit = false;
             RoutineBehaviour.Instance.StartNewTimedAction(args => _canHit = true, TimedActionCountType.SCALEDTIME, _timeUntilNextHit);
@@ -213,11 +213,11 @@ namespace Lodis.Gameplay
 
             PanelBehaviour panel;
 
-            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(collision.Entity.UnityObject.transform.position, out panel);
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(collision.OtherEntity.UnityObject.transform.position, out panel);
             Vector3 particleSpawn = new Vector3(collision.ContactPoint.X, collision.ContactPoint.Y, panel.transform.position.z);
 
             Instantiate(_hitEffect.gameObject, particleSpawn, new Quaternion());
-            if (collision.Entity.UnityObject == Owner)
+            if (collision.OtherEntity.UnityObject == Owner)
                 Instantiate(_takeDamageEffect, particleSpawn, new Quaternion()).Alignment = _alignment;
         }
     }

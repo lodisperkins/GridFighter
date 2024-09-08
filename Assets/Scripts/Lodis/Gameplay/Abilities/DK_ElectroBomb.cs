@@ -211,7 +211,7 @@ namespace Lodis.Gameplay
 
         private void StartCombo(Collision collision)
         {
-            GameObject target = collision.Entity.UnityObject;
+            GameObject target = collision.OtherEntity.UnityObject;
             if (!target.CompareTag("Player"))
                 return;
 

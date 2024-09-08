@@ -207,7 +207,7 @@ namespace Lodis.Gameplay
 
             _shieldCollider.AddCollisionEvent(collision => 
             {
-                HitColliderBehaviour other = collision.Entity.GetComponent<HitColliderBehaviour>();
+                HitColliderBehaviour other = collision.OtherEntity.GetComponent<HitColliderBehaviour>();
 
                 if (!other)
                     return;

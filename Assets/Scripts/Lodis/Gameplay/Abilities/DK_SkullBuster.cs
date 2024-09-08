@@ -91,7 +91,7 @@ namespace Lodis.Gameplay
             OnHit += collision =>
             {
 
-                GameObject objectHit = collision.Entity.UnityObject;
+                GameObject objectHit = collision.OtherEntity.UnityObject;
 
                 if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner))
                     return;

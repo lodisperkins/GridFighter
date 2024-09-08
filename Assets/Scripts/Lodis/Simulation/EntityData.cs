@@ -117,6 +117,11 @@ public class EntityData
     {
         Active = false;
 
+        if (Collider != null)
+        {
+            Collider.ClearCollisionExit();
+        }
+
         for (int i = 0; i < _components.Count; i++)
         {
             _components[i].End();

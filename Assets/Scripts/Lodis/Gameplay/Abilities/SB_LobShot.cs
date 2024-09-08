@@ -73,7 +73,7 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         private void SpawnWeakShots(Collision collision)
         {
-            HitColliderBehaviour hitCollider = collision.Entity.GetComponent<HitColliderBehaviour>();
+            HitColliderBehaviour hitCollider = collision.OtherEntity.GetComponent<HitColliderBehaviour>();
             Vector3 position = hitCollider.transform.position + Vector3.up * abilityData.GetCustomStatValue("WeakShotSpawnHeight");
             SpawnStrongShot(new Vector3(1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);
             SpawnStrongShot(new Vector3(-1, 0, 0), _weakShotDistance, _weakShotAngle, _weakProjectilRef, _weakProjectileData, position, _weakShotGravity);

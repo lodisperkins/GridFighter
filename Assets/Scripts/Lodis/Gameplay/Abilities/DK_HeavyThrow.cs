@@ -37,7 +37,7 @@ namespace Lodis.Gameplay
 
         private void PrepareThrow(Collision collision)
         {
-            GameObject other = collision.Entity.UnityObject;
+            GameObject other = collision.OtherEntity.UnityObject;
 
             if (!other.CompareTag("Player"))
                 return;

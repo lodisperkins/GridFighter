@@ -45,7 +45,7 @@ namespace Lodis.Gameplay
             //Disable ability benefits if the player is hit out of burst
             OnHit += collision =>
             {
-                GameObject objectHit = collision.Entity.UnityObject;
+                GameObject objectHit = collision.OtherEntity.UnityObject;
 
                 if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner.gameObject))
                     return;
