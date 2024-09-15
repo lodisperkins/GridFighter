@@ -2,6 +2,7 @@
 using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -55,7 +56,8 @@ namespace Lodis.Gameplay
         {
             OwnerMoveset.ProjectileSpawner.Projectile = projectile;
 
-            FVector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(distance, angle);
+            //Fixed values are 9.81 and 1
+            FVector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(distance, angle, new Fixed32(642908), new Fixed32(65536));
             launchForce.Z += axis.z * launchForce.Magnitude;
             launchForce.X *= axis.x;
 

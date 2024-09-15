@@ -11097,7 +11097,7 @@ MonoBehaviour:
   updateType: 2
   _startLocalGame: 1
   _fixed32TestConversion:
-    RawValue: 0
+    RawValue: 91750
 --- !u!4 &938025652
 Transform:
   m_ObjectHideFlags: 0

@@ -49,7 +49,7 @@ namespace Lodis.Input
             OnPerformAction = action;
             _useCondition = useCondition;
             _bufferClearTime = bufferClearTime;
-            _bufferStartTime = GridGame.Time;
+            _bufferStartTime = Utils.TimeGetTime();
         }
 
 
@@ -64,7 +64,7 @@ namespace Lodis.Input
                 OnPerformAction = null;
                 return true;
             }
-            else if (GridGame.Time - _bufferStartTime >= _bufferClearTime)
+            else if (Utils.TimeGetTime() - _bufferStartTime >= _bufferClearTime)
             {
                 OnPerformAction = null;
                 OnClearAction?.Invoke();
@@ -726,6 +726,9 @@ namespace Lodis.Input
                 ClearBuffer();
                 return;
             }
+
+            if (_abilityBuffered)
+                _movementBuffered = false;
 
             //if (_holdToMove && !_abilityBuffered)
             //    CheckMoveInput();

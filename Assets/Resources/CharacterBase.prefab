@@ -275,6 +275,7 @@ MonoBehaviour:
     type: 2}
   _burstEnergyRechargeRate: {fileID: 11400000, guid: 21df2b2c687a9e64c8c28a803e703faf,
     type: 2}
+  _infiniteBurstEnergyRechargeRate: {fileID: 0}
   _canBurst: 0
   _shuffleStart: {fileID: 8300000, guid: ce31763ab2877064d9d8187090bd904f, type: 3}
   _shuffleEnd: {fileID: 8300000, guid: ba8a777b86e30d54597c7dd8e59a08c2, type: 3}
@@ -322,11 +323,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _useGravity: 1
-  _ignoreForces: 0
+  _isKinematic: 0
   _isGrounded: 0
   _panelBounceEnabled: 0
   _faceHeading: 0
   _useVelocityForBounce: 1
+  _setGroundPosition: 1
+  _groundPosition:
+    RawValue: 32768
   _bounceCollider: {fileID: 7228149465337761564}
 --- !u!114 &3205124130663625092
 MonoBehaviour:
@@ -1318,7 +1322,9 @@ MonoBehaviour:
     _layersToIgnore:
       serializedVersion: 2
       m_Bits: 0
+    _tagsToIgnore: []
     _overlap: 1
+    _collideOnAnyRow: 0
     _width:
       RawValue: 65536
     _height:
@@ -2632,7 +2638,9 @@ MonoBehaviour:
     _layersToIgnore:
       serializedVersion: 2
       m_Bits: 0
+    _tagsToIgnore: []
     _overlap: 0
+    _collideOnAnyRow: 0
     _width:
       RawValue: 65536
     _height:

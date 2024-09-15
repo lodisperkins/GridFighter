@@ -1031,8 +1031,8 @@ namespace Lodis.Movement
             if (!_currentPanel)
                 return;
 
-            //if (FVector3.Distance(EntityTransform.Position, (FVector3)_currentPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
-            //    MoveToCurrentPanel();
+            if (FVector3.Distance(FixedTransform.WorldPosition, (FVector3)_currentPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
+                MoveToCurrentPanel();
 
             Fixed32 dist = FVector3.Distance(FixedTransform.WorldPosition, _targetPosition);
 

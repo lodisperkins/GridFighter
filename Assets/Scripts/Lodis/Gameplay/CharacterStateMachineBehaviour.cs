@@ -24,6 +24,7 @@ namespace Lodis.Gameplay
 
         public StateMachine StateMachine { get => _stateMachine; }
         public string LastState { get => _lastState; private set => _lastState = value; }
+        public string CurrentState { get => _stateMachine.CurrentState; }
 
         private void Awake()
         {

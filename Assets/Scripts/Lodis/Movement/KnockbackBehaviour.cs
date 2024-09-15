@@ -73,6 +73,7 @@ namespace Lodis.Movement
         private float _lastTotalKnockBack;
         private float _lastTimeInKnockBack;
         private float _adjustedGravity;
+        private bool _isSlidingHit;
 
         public float LastTimeInKnockBack
         {
@@ -99,7 +100,11 @@ namespace Lodis.Movement
         public bool IsFlinching { get => _isFlinching; }
         public float TimeInCurrentHitStun { get => _timeInCurrentHitStun; }
 
-        public AirState CurrentAirState { get => _currentAirState; set => _currentAirState = value; }
+        public AirState CurrentAirState 
+        {
+            get => _currentAirState;
+            set => _currentAirState = value;
+        }
 
         public GridMovementBehaviour MovementBehaviour => _movementBehaviour;
 
@@ -127,6 +132,7 @@ namespace Lodis.Movement
         }
 
         public bool OutOfBounds { get => _outOfBounds; set => _outOfBounds = value; }
+        public bool IsSlidingHit { get => _isSlidingHit; private set => _isSlidingHit = value; }
 
         protected override void Awake()
         {
@@ -420,12 +426,19 @@ namespace Lodis.Movement
             _onTakeDamage?.Invoke();
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
+            IsSlidingHit = false;
+
             float totalKnockback = _lastBaseKnockBack;
 
             _lastTotalKnockBack = totalKnockback;
 
             //Calculates force and applies it to the rigidbody
             FVector3 knockBackForce = GridPhysicsBehaviour.CalculatGridForce(totalKnockback, hitAngle, _startGravity, Physics.Mass);
+
+            if (Physics.IsGrounded && knockBackForce.X > 0 && knockBackForce.Y < new Fixed32(655))
+            {
+                IsSlidingHit = true;
+            }
 
             if (hitStun > 0)
                 _isFlinching = true;
@@ -469,14 +482,21 @@ namespace Lodis.Movement
             _onTakeDamage?.Invoke();
             _onTakeDamageTemp?.Invoke();
             _onTakeDamageTemp = null;
+            IsSlidingHit = false;
 
             float totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
-            FVector3 knockBackForce = Physics.CalculatGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass, info.ClampForceWithinRing);
+            FVector3 knockBackForce = Physics.CalculateGridForce(totalKnockback, info.HitAngle, _startGravity, Physics.Mass, info.ClampForceWithinRing);
             if (info.HitStunTime > 0)
                 _isFlinching = true;
+
+
+            if (Physics.IsGrounded && knockBackForce.X > 0 && knockBackForce.Y < new Fixed32(655))
+            {
+                IsSlidingHit = true;
+            }
 
             ActivateHitStunByTimer(info.HitStunTime);
 

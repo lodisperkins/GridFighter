@@ -492,7 +492,7 @@ namespace Lodis.Gameplay
         private void DisableFallBreaking(params object[]  args)
         {
             BreakingFall = false;
-            _knockBack.Physics.IgnoreForces = false;
+            _knockBack.Physics.IsKinematic = false;
             _disableFallBreakAction = null;
             if (!_knockBack.Physics.IsGrounded)
                 _knockBack.CurrentAirState = AirState.FREEFALL;

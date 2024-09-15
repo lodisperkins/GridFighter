@@ -68,6 +68,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 67584
+    TagsToIgnore: []
     MultiHitWaitTime: 0
     Damage: 1
     BaseKnockBack: 0

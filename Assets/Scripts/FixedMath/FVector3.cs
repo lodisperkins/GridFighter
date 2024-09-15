@@ -245,6 +245,7 @@ namespace FixedPoints
             return value;
         }
 
+
         /// <summary>
         /// Adds two vectors.
         /// </summary>

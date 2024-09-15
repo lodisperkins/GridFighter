@@ -2,6 +2,7 @@ using FixedPoints;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
+using NaughtyAttributes;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -49,8 +50,12 @@ public class GridCollider
 {
     [Tooltip("The layers this collider won't collide with.")]
     [SerializeField] private LayerMask _layersToIgnore;
+    [Tooltip("The tags this collider won't collide with.")]
+    [SerializeField] private string[] _tagsToIgnore;
     [Tooltip("If true this collider will pass through objects without trying to apply a force to prevent them going through each other.")]
     [SerializeField] private bool _overlap;
+    [Tooltip("If true this collider will collide will not consider the panel y position when colliding.")]
+    [SerializeField] private bool _collideOnAnyRow;
     [Tooltip("How wide the AABB collider will be.")]
     [SerializeField] private Fixed32 _width = 1;
     [Tooltip("How tall the AABB collider will be.")]
@@ -162,6 +167,7 @@ public class GridCollider
     /// The height of this collider in the world.
     /// </summary>
     public Fixed32 WorldYPosition { get => _worldYPosition; set => _worldYPosition = value; }
+    public string[] TagsToIgnore { get => _tagsToIgnore; set => _tagsToIgnore = value; }
 
     public void Init(EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
     {
@@ -189,16 +195,31 @@ public class GridCollider
     /// </summary>
     /// <param name="layer">The unity physics collision layer of the game object.</param>
     /// <returns></returns>
-    public bool CheckIfLayerShouldBeIgnored(int layer)
+    public bool CheckIfColliderShouldBeIgnored(GameObject unityObject)
     {
         if (LayersToIgnore == 0)
             return false;
 
-        int mask = LayersToIgnore;
-        if (mask == (mask | 1 << layer))
-            return true;
+        int layer = unityObject.layer;
 
-        return false;
+        int mask = LayersToIgnore;
+
+        bool ignoresLayer = false;
+        bool ignoresTag = false;
+
+        if (mask == (mask | 1 << layer))
+            ignoresLayer = true;
+
+        foreach (string tag in TagsToIgnore)
+        {
+            if (unityObject.CompareTag(tag))
+            {
+                ignoresTag = true;
+                break;
+            }
+        }
+
+        return ignoresLayer || ignoresTag;
     }
 
     /// <summary>
@@ -255,7 +276,7 @@ public class GridCollider
         collisionData = default;
 
         //Check if collision should occur using Unity layers.
-        if (CheckIfLayerShouldBeIgnored(other._layer))
+        if (CheckIfColliderShouldBeIgnored(other.Owner.UnityObject) || other.CheckIfColliderShouldBeIgnored(Owner.UnityObject))
             return false;
 
         //Check collision for AABB.
@@ -264,21 +285,30 @@ public class GridCollider
             GetBottom() < other.GetTop() &&
             GetTop() > other.GetBottom() &&
             GetLeft() < other.GetRight() && 
-            other.PanelY == PanelY;
+            (other.PanelY == PanelY || other._collideOnAnyRow || _collideOnAnyRow);
 
 
         if (!collisionDetected)
         {
             Collision collision;
+            Collision collision2;
 
             //If the collider was active and was removed...
             if (RemoveCollider(other, out collision))
             {
+                other.RemoveCollider(this, out collision2);
+
                 //...call the exit events.
                 if (Overlap)
+                {
                     OnOverlapExit?.Invoke(collision);
-                else 
+                    other.OnOverlapExit?.Invoke(collision2);
+                }
+                else
+                {
                     OnCollisionExit?.Invoke(collision);
+                    OnCollisionExit?.Invoke(collision2);
+                }
             }
 
             return false;
@@ -287,10 +317,10 @@ public class GridCollider
         //Calculating contact point.
         FVector3 otherToAABB = other.Owner.Transform.WorldPosition - Owner.Transform.WorldPosition;
 
-        if (otherToAABB.Z > Width / 2)
-            otherToAABB.Z = Width / 2;
+        if (otherToAABB.X > Width / 2)
+            otherToAABB.X = Width / 2;
         else if (otherToAABB.Z < -Width / 2)
-            otherToAABB.Z = -Width / 2;
+            otherToAABB.X = -Width / 2;
 
         if (otherToAABB.Y > Height / 2)
             otherToAABB.Y = Height / 2;
@@ -340,9 +370,15 @@ public class GridCollider
 
         //On collision stay events are always called when collision occurs.
         if (Overlap)
+        {
             OnOverlapStay?.Invoke(collisionData);
+            other.OnOverlapStay?.Invoke(collisionData2);
+        }
         else
+        {
             OnCollisionStay?.Invoke(collisionData);
+            other.OnCollisionStay?.Invoke(collisionData2);
+        }
 
         return true;
     }

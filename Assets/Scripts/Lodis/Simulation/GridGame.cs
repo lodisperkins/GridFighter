@@ -15,6 +15,11 @@ using System.Runtime.Remoting.Messaging;
 using Lodis.Gameplay;
 
 
+public class TagSelectorAttribute : PropertyAttribute
+{
+    public bool UseDefaultTagFieldDrawer = true;
+}
+
 public struct GridGame : IGame
 {
     private static List<EntityData> ActiveEntities = new();
@@ -344,12 +349,8 @@ public struct GridGame : IGame
         //This loop ensures that we aren't checking collisions with the same colliders by have the second loop start where the first one left off.
         for (int row = 0; row < ActivePhysicsEntities.Count; row++)
         {
-            for (int column = row; column < ActivePhysicsEntities.Count; column++)
+            for (int column = row + 1; column < ActivePhysicsEntities.Count; column++)
             {
-                //Continue to prevent the object from colliding with itself.
-                if (row == column)
-                    continue;
-
                 //Check if these entities should ignore each other.
                 bool shouldIgnore;
 
@@ -366,7 +367,7 @@ public struct GridGame : IGame
                 GridCollider collider2 = ActivePhysicsEntities[column].Collider;
 
                 //If they aren't on the same row there's no point in checking collision.
-                if ((collider1 == null || collider2 == null) || collider1.PanelY != collider2.PanelY)
+                if ((collider1 == null || collider2 == null))
                     continue;
 
                 //Check the next thing if a collision wasn't found.

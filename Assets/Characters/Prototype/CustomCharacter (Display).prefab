@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 298086441860818304, guid: e2c185c35427c8e4e905c851f21d7499,
+        type: 3}
+      propertyPath: _setGroundPosition
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3090128458314548751, guid: e2c185c35427c8e4e905c851f21d7499,
         type: 3}
       propertyPath: _movementToTrack

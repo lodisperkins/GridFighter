@@ -27,6 +27,7 @@ namespace Lodis.Gameplay
         private EntityData _spawner;
 
         public LayerMask LayersToIgnore { get => EntityCollider.LayersToIgnore; set => EntityCollider.LayersToIgnore = value; }
+        public string[] TagsToIgnore { get => EntityCollider.TagsToIgnore; set => EntityCollider.TagsToIgnore = value; }
         public GridPhysicsBehaviour GridPhysics { get => _gridPhysics; private set => _gridPhysics = value; }
         public EntityData Spawner { get => _spawner; set { _spawner = value; } }
         public GridCollider EntityCollider { get => _entityCollider; private set => _entityCollider = value; }
@@ -90,7 +91,7 @@ namespace Lodis.Gameplay
         {
             if (!_debuggingEnabled) return;
 
-            Vector3 size = new Vector3(1, _entityCollider.Height, _entityCollider.Width);
+            Vector3 size = new Vector3(_entityCollider.Width, _entityCollider.Height, 1);
             Vector3 offset = new Vector3(1.5f * _entityCollider.PanelYOffset, _entityCollider.WorldYPosition, 1.05f * _entityCollider.PanelXOffset);
 
             Gizmos.DrawCube(gameObject.transform.position + offset, size);

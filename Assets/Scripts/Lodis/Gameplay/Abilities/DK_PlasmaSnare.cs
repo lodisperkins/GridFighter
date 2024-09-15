@@ -122,7 +122,7 @@ namespace Lodis.Gameplay
 
             //Attaches opponent to sphere and activate lifting. 
             _opponentTransform.parent = _auraSphere.transform;
-            _opponentKnockback.Physics.IgnoreForces = true;
+            _opponentKnockback.Physics.IsKinematic = true;
             _opponentKnockback.Physics.StopAllForces();
 
            _opponentTransform.localPosition = Vector3.zero;
@@ -148,7 +148,7 @@ namespace Lodis.Gameplay
 
 
             _opponentTransform.parent = _opponentParent;
-            _opponentKnockback.Physics.IgnoreForces = false;
+            _opponentKnockback.Physics.IsKinematic = false;
             _opponentKnockback.Physics.UseGravity = true;
             _opponentCaptured = false;
 

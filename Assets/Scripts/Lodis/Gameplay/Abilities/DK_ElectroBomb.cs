@@ -181,7 +181,7 @@ namespace Lodis.Gameplay
 
         private void PrepareBlast()
         {
-            OwnerKnockBackScript.Physics.IgnoreForces = true;
+            OwnerKnockBackScript.Physics.IsKinematic = true;
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
             float jumpHeight = abilityData.GetCustomStatValue("JumpHeight");
             _characterFeedback.SetCharacterUIEnabled(false);
@@ -301,7 +301,7 @@ namespace Lodis.Gameplay
             if (_thalamusInstance)
                 _thalamusInstance.layer = _thalamusLayer;
 
-            OwnerKnockBackScript.Physics.IgnoreForces = false;
+            OwnerKnockBackScript.Physics.IsKinematic = false;
             CameraBehaviour.Instance.ClampX = true;
             CameraBehaviour.Instance.ClampY = true;
 
@@ -326,7 +326,7 @@ namespace Lodis.Gameplay
             if (_thalamusInstance)
                 _thalamusInstance.layer = _thalamusLayer;
 
-            OwnerKnockBackScript.Physics.IgnoreForces = false;
+            OwnerKnockBackScript.Physics.IsKinematic = false;
             CameraBehaviour.Instance.ClampX = true;
             CameraBehaviour.Instance.ClampY = true;
             CameraBehaviour.Instance.CameraMoveSpeed = _defaultCameraMoveSpeed;

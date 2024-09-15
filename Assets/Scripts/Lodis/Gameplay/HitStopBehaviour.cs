@@ -50,6 +50,8 @@ namespace Lodis.Gameplay
         /// </summary>
         private void StartHitStop()
         {
+            if (!_health.LastCollider)
+                return;
 
             //Gets the data for the last collider to hit this object to determine the length of the hit stun
             HitColliderData lastColliderInfo = _health.LastCollider.ColliderInfo;

@@ -36,7 +36,7 @@ namespace Lodis.Gameplay
 
             //Freezes all forces in the knockback and physics components
             OwnerKnockBackScript.Physics.CancelFreeze();
-            OwnerKnockBackScript.Physics.IgnoreForces = true;
+            OwnerKnockBackScript.Physics.IsKinematic = true;
             OwnerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
             OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
             OwnerKnockBackScript.CancelHitStun();
@@ -101,7 +101,7 @@ namespace Lodis.Gameplay
                 //...put them in freefall
                 OwnerKnockBackScript.CurrentAirState = AirState.FREEFALL;
 
-            OwnerKnockBackScript.Physics.IgnoreForces = false;
+            OwnerKnockBackScript.Physics.IsKinematic = false;
         }
 
         private void ResetState()
@@ -129,7 +129,7 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             ResetState();
-            OwnerKnockBackScript.Physics.IgnoreForces = false;
+            OwnerKnockBackScript.Physics.IsKinematic = false;
             CameraBehaviour.Instance.ZoomAmount = 0;
             RoutineBehaviour.Instance.StopAction(_zoomAction);
         }

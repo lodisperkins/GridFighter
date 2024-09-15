@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using UnityEngine;
 
 namespace Types
@@ -76,6 +77,49 @@ namespace Types
         {
             RawValue = br.ReadInt64();
             Scale = br.Read();
+        }
+
+        public int Sign()
+        {
+            if (RawValue > 0)
+                return 1;
+            else if (RawValue < 0)
+                return -1;
+            else
+                return 0;
+        }
+
+        public static Fixed32 Abs(Fixed32 value)
+        {
+            return value < 0 ? -value : value;
+        }
+
+        // Square Root function for Fixed32
+        public static Fixed32 Sqrt(Fixed32 value)
+        {
+            if (value.RawValue < 0)
+                throw new ArgumentException("Square root of negative number is not defined for Fixed32.");
+
+            if (value.RawValue == 0)
+                return new Fixed32(0);  // The square root of 0 is 0.
+
+            // Initial guess (using value/2 as a rough estimate)
+            Fixed32 guess = value / 2;
+
+
+            // Newton's method iteration (converges quickly)
+            for (int i = 0; i < 10; i++)  // 10 iterations should be sufficient
+            {
+                Fixed32 nextGuess = (guess + value / guess) / 2;
+
+                // If the result has converged, stop iterating
+                if (nextGuess.RawValue == guess.RawValue)
+                    break;
+
+                guess = nextGuess;
+            }
+
+            return guess;
         }
 
         public static Fixed32 operator +(Fixed32 leftHandSide, Fixed32 rightHandSide)

@@ -68,13 +68,14 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
+    TagsToIgnore: []
     MultiHitWaitTime: 0
     Damage: 2
-    BaseKnockBack: 0.5
-    KnockBackScale: 0.1
+    BaseKnockBack: 4
+    KnockBackScale: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.15
+    HitAngle: 1
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.05

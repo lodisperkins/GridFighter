@@ -1,6 +1,7 @@
 ﻿using System;
 using FixedPoints;
 using Lodis.Movement;
+using Types;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -65,7 +66,7 @@ namespace Lodis.Gameplay
             projectileSpawner.Projectile = _projectile;
 
             //Calculate the force needed to make the lobshot travel the given distance
-            FVector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle);
+            FVector3 launchForce = GridPhysicsBehaviour.CalculatGridForce(_distance, _angle, new Fixed32(642908), new Fixed32(65536));
             launchForce.X *= projectileSpawner.transform.forward.x;
 
             //Store the gravity of the lobshot for to change its falling speed

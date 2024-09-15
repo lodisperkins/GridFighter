@@ -11,6 +11,8 @@ using Lodis.Utility;
 using FixedPoints;
 using System.IO;
 using Types;
+using NaughtyAttributes;
+using System.Drawing.Printing;
 
 namespace Lodis.Movement
 {
@@ -50,7 +52,7 @@ namespace Lodis.Movement
         [Tooltip("Whether or not the force of gravity will be applied every frame.")]
         [SerializeField] private bool _useGravity = true;
         [Tooltip("If true, this object will ignore all forces acting on it including gravity.")]
-        [SerializeField] private bool _ignoreForces;
+        [SerializeField] private bool _isKinematic;
         [Tooltip("Whether or not this object is currently touching an entity labeled as grounded.")]
         [SerializeField] private bool _isGrounded;
         [Tooltip("Whether or not this object will bounce upwards when the land on panels.")]
@@ -59,6 +61,9 @@ namespace Lodis.Movement
         [SerializeField] private bool _faceHeading;
         [Tooltip("Whether or not this object should increase how much it bounces based on how fast it's going.")]
         [SerializeField] private bool _useVelocityForBounce;
+        [SerializeField] private bool _setGroundPosition;
+        [ShowIf("_setGroundPosition")]
+        [SerializeField] private Fixed32 _groundPosition = -1;
 
         [Header("Scene References")]
         [Tooltip("The collider attached this object that will be used for registering collision against objects while air")]
@@ -67,7 +72,6 @@ namespace Lodis.Movement
         //---
         private bool _objectAtRest;
         private bool _isFrozen;
-        private bool _isKinematic;
         private bool _gridActive = true;
         /// <summary>
         /// Whether or not this object will bounce on panels it falls on
@@ -79,10 +83,9 @@ namespace Lodis.Movement
         public bool UseGravity { get => _useGravity; set =>_useGravity = value; }
         public bool IsGrounded{ get => _isGrounded; }
         public bool ObjectAtRest { get => _objectAtRest; }
-        public bool IgnoreForces { get => _ignoreForces; set => _ignoreForces = value; }
+        public bool IsKinematic { get => _isKinematic; set => _isKinematic = value; }
         public bool IsFrozen => _isFrozen;
         public bool FaceHeading { get => _faceHeading; set => _faceHeading = value; }
-        public bool IsKinematic { get => _isKinematic; set => _isKinematic = value; }
 
         //Physics stats
         private FVector3 _acceleration;
@@ -135,7 +138,10 @@ namespace Lodis.Movement
         private GridMovementBehaviour _movementBehaviour;
         public Collider BounceCollider { get => _bounceCollider; }
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
-        public bool GridActive { get => _gridActive; private set => _gridActive = value; }
+        /// <summary>
+        /// Whether or not this object is currently moving on the grid instead of freely in the world.
+        /// </summary>
+        public bool GridActive { get => _gridActive; set => _gridActive = value; }
 
 
         public override void Serialize(BinaryWriter bw)
@@ -461,7 +467,7 @@ namespace Lodis.Movement
         /// <param name="launchAngle">The angle to launch the object</param>
         /// <param name="clampForceWithinRing">Whether or not the grid force could push the object out of the ring.</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public FVector3 CalculatGridForce(float forceMagnitude, float launchAngle, bool clampForceWithinRing = false)
+        public FVector3 CalculateGridForce(float forceMagnitude, float launchAngle, bool clampForceWithinRing = false)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
             float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
@@ -511,37 +517,37 @@ namespace Lodis.Movement
         /// <param name="forceMagnitude">How many panels will the object move assuming its mass is 1</param>
         /// <param name="launchAngle">The angle to launch the object</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public static FVector3 CalculatGridForce(float forceMagnitude, float launchAngle, float gravity = 9.81f, float mass = 1)
+        public static FVector3 CalculatGridForce(Fixed32 forceMagnitude, Fixed32 launchAngle, Fixed32 gravity, Fixed32 mass)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
+            Fixed32 panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            Fixed32 panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
                 return new FVector3();
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
-            if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= 0.2f)
-                return FVector3.Up * Mathf.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
+            if (Fixed32.Abs(launchAngle - (Fixed32.PI / 2)) <= 0.2f)
+                return FVector3.Up * Fixed32.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
-            //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
+            //launchAngle = Fixed32.Clamp(launchAngle, .2f, 3.0f);
 
             //Uses the total knockback and panel distance to find how far the object is travelling
-            float displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
+            Fixed32 displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
             //Finds the magnitude of the force vector to be applied 
-            float val1 = displacement * gravity;
-            float val2 = Mathf.Sin(2 * launchAngle);
-            float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
-            float magnitude = val3;
+            Fixed32 val1 = displacement * gravity;
+            Fixed32 val2 = Fixed32.Sin(2 * launchAngle);
+            Fixed32 val3 = Fixed32.Sqrt(val1 / Fixed32.Abs(val2));
+            Fixed32 magnitude = val3;
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
-            if (float.IsNaN(magnitude))
-                return new FVector3();
+            //if (Fixed32.IsNaN(magnitude))
+            //    return new FVector3();
 
             //Return the knockback force
-            return new FVector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle), 0) * (magnitude * mass);
+            return new FVector3(Fixed32.Cos(launchAngle) * magnitude, Fixed32.Sin(launchAngle) * val1, 0) * mass;
         }
 
         /// <summary>
@@ -550,40 +556,42 @@ namespace Lodis.Movement
         /// <param name="forceMagnitude">How many panels will the object move assuming its mass is 1</param>
         /// <param name="launchAngle">The angle to launch the object</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public FVector3 CalculatGridForce(float forceMagnitude, float launchAngle, float gravity = 9.81f, float mass = 1, bool clampForceWithinRing = false)
+        public FVector3 CalculateGridForce(Fixed32 forceMagnitude, Fixed32 launchAngle, Fixed32 gravity, Fixed32 mass, bool clampForceWithinRing = false)
         {
+            // Clamp the force if needed before calculating total displacement
+            if (clampForceWithinRing)
+                forceMagnitude = ClampForceMagnitude(forceMagnitude, launchAngle);
+
             //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
+            Fixed32 panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            Fixed32 panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
                 return new FVector3();
 
-            if (clampForceWithinRing)
-                forceMagnitude = ClampForceMagnitude(forceMagnitude, launchAngle);
-
             //If the angle is within a certain range, ignore the angle and apply an upward force
-            if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= 0.2f)
-                return FVector3.Up * Mathf.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
+            //Fixed values are 1.6 and 1.4
+            if (Fixed32.Abs(launchAngle) < new Fixed32(104857) && Fixed32.Abs(launchAngle) > new Fixed32(91750))
+                return FVector3.Up * Fixed32.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
-            //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
+            //launchAngle = Fixed32.Clamp(launchAngle, .2f, 3.0f);
 
             //Uses the total knockback and panel distance to find how far the object is travelling
-            float displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
+            Fixed32 displacement = (panelSize * forceMagnitude) /*+ (panelSpacing * (forceMagnitude - 1))*/;
             //Finds the magnitude of the force vector to be applied 
-            float val1 = displacement * gravity;
-            float val2 = Mathf.Sin(2 * launchAngle);
-            float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
-            float magnitude = val3;
+            Fixed32 val1 = displacement * gravity;
+            Fixed32 val2 = Fixed32.Sin(2 * launchAngle);
+            Fixed32 val3 = Fixed32.Sqrt(val1 / Fixed32.Abs(val2));
+            Fixed32 magnitude = val3;
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
-            if (float.IsNaN(magnitude))
-                return new FVector3();
+            //if (Fixed32.IsNaN(magnitude))
+            //    return new FVector3();
 
             //Return the knockback force
-            return new FVector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle), 0) * (magnitude * mass);
+            return new FVector3(Fixed32.Cos(launchAngle) * magnitude, Fixed32.Sin(launchAngle) * magnitude, 0) * mass;
         }
 
         /// <summary>
@@ -690,7 +698,7 @@ namespace Lodis.Movement
             }
 
             //Apply ricochet force
-            gridPhysicsBehaviour.ApplyVelocityChange(CalculatGridForce(baseKnockBack * bounce, hitAngle, true));
+            gridPhysicsBehaviour.ApplyVelocityChange(CalculateGridForce(baseKnockBack * bounce, hitAngle, true));
         }
 
         /// <summary>
@@ -699,7 +707,7 @@ namespace Lodis.Movement
         /// <param name="force">The new velocity for the object.</param>
         public void ApplyVelocityChange(FVector3 force, bool disableMovement = false)
         {
-            if (IgnoreForces)
+            if (IsKinematic)
                 return;
 
             GridActive = false;
@@ -745,7 +753,7 @@ namespace Lodis.Movement
         /// <param name="ignoreMomentum">If true, will stop the velocity of the object entirely before adding the force.</param>
         public void ApplyForce(FVector3 force, bool disableMovement = false, bool ignoreMomentum = false)
         {
-            if (IgnoreForces)
+            if (IsKinematic)
                 return;
 
             if (ignoreMomentum)
@@ -801,7 +809,7 @@ namespace Lodis.Movement
         /// <param name="force">The force to apply to the object.</param>
         public void ApplyImpulseForce(FVector3 force, bool disableMovement = false, bool ignoreMomentum = false)
         {
-            if (IgnoreForces)
+            if (IsKinematic)
                 return;
 
 
@@ -840,7 +848,6 @@ namespace Lodis.Movement
                 FrozenVelocity = _lastForceAdded;
             else
                 _velocity += force / Mass;
-            
 
             if (IsFrozen)
                 FrozenStoredForce = _lastForceAdded;
@@ -973,7 +980,13 @@ namespace Lodis.Movement
         public override void Tick(Fixed32 dt)
         {
             base.Tick(dt);
-            _isGrounded = CheckIsGrounded();
+            _isGrounded = FixedTransform.WorldPosition.Y <= _groundPosition;
+
+            if (_setGroundPosition && FixedTransform.WorldPosition.Y < _groundPosition)
+            {
+                FixedTransform.WorldPosition = new FVector3(FixedTransform.WorldPosition.X, _groundPosition, FixedTransform.WorldPosition.Z);
+                Velocity = new FVector3(Velocity.X, 0, Velocity.Z);
+            }
 
             //Disable all forces if this object is actively moving on the grid or kinematic.
             if (IsKinematic || GridActive)
@@ -996,14 +1009,15 @@ namespace Lodis.Movement
             //Code that ran in unity fixed update.
             _acceleration = (_lastVelocity - Velocity) / Time.fixedDeltaTime;
 
-            if (UseGravity && !IgnoreForces && !IsGrounded)
-                _velocity += new FVector3(0, -Gravity, 0);
 
             _objectAtRest = IsGrounded && _velocity.Magnitude <= 0.01f;
 
             ForceToApply = FVector3.Zero;
 
             FixedTransform.WorldPosition += Velocity * dt;
+
+            if (UseGravity && !IsKinematic && !IsGrounded)
+                _velocity += new FVector3(0, -Gravity * Mass * dt, 0);
         }
     }
 }

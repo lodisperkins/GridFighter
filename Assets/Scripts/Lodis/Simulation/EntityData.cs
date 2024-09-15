@@ -25,8 +25,10 @@ public class EntityData
         set
         {
             value.OnOverlapEnter += OnOverlapEnter;
+            value.OnOverlapStay += OnOverlapStay;
             value.OnOverlapExit += OnOverlapExit;
             value.OnCollisionEnter += OnCollisionEnter;
+            value.OnCollisionStay += OnCollisionStay;
             value.OnCollisionExit += OnCollisionExit;
 
             _gridCollider = value;
@@ -175,7 +177,7 @@ public class EntityData
     {
         foreach (var comp in _components)
         {
-            comp.OnHitStay(collision);
+            comp.OnHitEnter(collision);
         }
     }
 
@@ -191,7 +193,7 @@ public class EntityData
     {
         foreach (var comp in _components)
         {
-            comp.OnHitStay(collision);
+            comp.OnHitExit(collision);
         }
     }
 

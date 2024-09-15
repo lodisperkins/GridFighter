@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
             _opponentCaptured = true;
             
             OwnerKnockBackScript.Physics.UseGravity = false;
-            _opponentPhysics.IgnoreForces = true;
+            _opponentPhysics.IsKinematic = true;
             _oldZ = _opponentPhysics.transform.position.z;
 
             float throwHeight = abilityData.GetCustomStatValue("ThrowHeight");
@@ -87,7 +87,7 @@ namespace Lodis.Gameplay
 
 
             _throwAction = RoutineBehaviour.Instance.StartNewTimedAction(
-                info =>
+                (DelayedEvent)(                info =>
                 {
                     //Play release animation and effects.
                     if (!abilityData.GetAdditionalAnimation(1, out clip))
@@ -106,7 +106,7 @@ namespace Lodis.Gameplay
                     //Reset physics attributes.
                     _opponentPhysics.UseGravity = true;
                     _opponentCaptured = false;
-                    _opponentPhysics.IgnoreForces = false;
+                    _opponentPhysics.IsKinematic = false;
 
                     //Set proper position and orientation after throw.
                     _opponentPhysics.transform.rotation = _oldRotation;
@@ -115,8 +115,8 @@ namespace Lodis.Gameplay
 
                     _opponentPhysics.ApplyVelocityChange(force);
 
-                    UnpauseAbilityTimer();
-                }, TimedActionCountType.SCALEDTIME, throwDelay);
+                    base.UnpauseAbilityTimer();
+                }), TimedActionCountType.SCALEDTIME, throwDelay);
         }
 
         /// <summary>

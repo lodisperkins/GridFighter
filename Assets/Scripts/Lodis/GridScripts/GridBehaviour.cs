@@ -195,14 +195,14 @@ namespace Lodis.GridScripts
                 return;
 
             //Spawn the collision plane underneath the grid
-            GameObject collisionPlane = Instantiate(_collisionPlaneRef, transform);
+            EntityDataBehaviour collisionPlane = Instantiate(_collisionPlaneRef).GetComponent<EntityDataBehaviour>();
 
 
             float collisionPlaneOffsetX = ((_dimensions.x - 1) * localScale.x) + (PanelSpacingX * (_dimensions.x - 2) + _panelSpacingMiddle);
             float collisionPlaneOffsetY = ((_dimensions.y - 1) * localScale.z) + (PanelSpacingZ * (_dimensions.y - 1));
 
-            collisionPlane.transform.localScale = new Vector3(_width / 10, collisionPlane.transform.localScale.y, _height / 10);
-            collisionPlane.transform.position += new Vector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
+            collisionPlane.FixedTransform.LocalScale = new FVector3(_width / 10, collisionPlane.transform.localScale.y, _height / 10);
+            collisionPlane.FixedTransform.WorldPosition += new FVector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
 
         }
 

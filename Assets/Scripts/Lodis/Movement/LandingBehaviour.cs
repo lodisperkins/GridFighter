@@ -15,20 +15,23 @@ namespace Lodis.Movement
     {
         [Tooltip("The amount of time it takes for this object to regain footing after landing")] [SerializeField]
         private float _landingTime;
-        private FixedTimeAction _landingAction;
 
         [SerializeField] private float _knockDownTime;
         [SerializeField] private float _knockDownRecoverTime;
         [SerializeField] private float _knockDownRecoverInvincibleTime;
         [SerializeField] private float _knockDownLandingTime;
         [SerializeField] private IntVariable _groundedHitMax;
+        
+        //---
         private UnityAction _onLandingStart;
         private UnityAction _onLand;
         private UnityAction _onRecover;
         private int _groundedHitCounter;
         private KnockbackBehaviour _knockback;
         private CharacterAnimationBehaviour _characterAnimator;
+        private CharacterStateMachineBehaviour _characterStateMachine;
         private bool _canCheckLanding;
+        private FixedTimeAction _landingAction;
 
         public float LandingTime { get => _landingTime;}
         public bool IsDown { get; private set; }
@@ -46,18 +49,22 @@ namespace Lodis.Movement
             set => _canCheckLanding = value;
         }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             _knockback = GetComponent<KnockbackBehaviour>();
             _characterAnimator = GetComponentInChildren<CharacterAnimationBehaviour>();
+            _characterStateMachine = GetComponent<CharacterStateMachineBehaviour>();
             _knockback.AddOnStunAction(CancelLanding);
             _knockback.Physics.AddOnForceAddedEvent(args => TryCancelLanding());
             MatchManagerBehaviour.Instance.AddOnMatchRestartAction(CancelLanding);
+            _onLand += _knockback.MovementBehaviour.SnapToTarget;
         }
 
         private bool TryCancelLanding()
         {
-            if (_groundedHitCounter > _groundedHitMax.Value)
+            if (_groundedHitCounter > _groundedHitMax.Value || !Landing)
                 return false;
 
             CancelLanding();
@@ -84,9 +91,9 @@ namespace Lodis.Movement
             _onRecover += action;
         }
 
-        public override void OnOverlapStay(Collision other)
+        public override void OnHitStay(Collision other)
         {
-            if (_knockback.CurrentAirState != AirState.NONE && other.OtherEntity.UnityObject.CompareTag("Panel") && CheckFalling() && !_knockback.Physics.IsFrozen && _knockback.Physics.ObjectAtRest)
+            if (_knockback.CurrentAirState != AirState.NONE && other.OtherEntity.UnityObject.CompareTag("CollisionPlane") && CheckFalling() && !_knockback.Physics.IsFrozen && _knockback.Physics.ObjectAtRest)
             {
                 CanCheckLanding = true;
             }
@@ -96,12 +103,12 @@ namespace Lodis.Movement
         {
             if (!Landing) return;
 
-            _landingAction.Stop();
+            _landingAction?.Stop();
             _knockback.DisableInvincibility();
-            _knockback.Physics.StopAllForces();
             //_knockback.Physics.RB.isKinematic = false;
             IsDown = false;
             Landing = false;
+            _knockback.Physics.GridActive = true;
             RecoveringFromFall = false;
         }
         
@@ -127,6 +134,7 @@ namespace Lodis.Movement
                 RecoveringFromFall = false;
                 CanCheckLanding = false;
                 Landing = false;
+                _knockback.Physics.GridActive = true;
                 _knockback.CurrentAirState = AirState.NONE;
                 _onRecover?.Invoke();
             }, KnockDownRecoverTime);
@@ -144,8 +152,8 @@ namespace Lodis.Movement
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
             _knockback.LastTimeInKnockBack = 0;
             _knockback.CancelHitStun();
-
-            _landingAction.Stop();
+            _knockback.Physics.StopVelocity();
+            _landingAction?.Stop();
             
             switch (_knockback.CurrentAirState)
             {
@@ -188,19 +196,41 @@ namespace Lodis.Movement
 
             return dot >= 0;
         }
-        
+
+        private bool IsLanding()
+        {
+            // Condition 1: Check if character is grounded.
+            if (FixedTransform.WorldPosition.Y > new Fixed32(39321) || _knockback.Stunned)
+                return false;
+
+            // Condition 2: Check if character was recently in the air (normal fall)
+            bool wasInAir = _characterStateMachine.CurrentState == "Tumbling" || _characterStateMachine.CurrentState == "FreeFall";
+
+            // Condition 3: Check if the character has near-zero vertical velocity (indicating they stopped falling).
+            bool nearZeroVerticalVelocity = Fixed32.Abs(_knockback.Physics.Velocity.Y) <= new Fixed32(655);
+
+            // Condition 4: Check if the character's last velocity was negative (they were falling), or they were hit with a move that caused them to slide on the ground immediately.
+            bool wasFallingOrSliding = _knockback.Physics.Velocity.Y <= 0 || _knockback.IsSlidingHit;
+
+            // Condition 5: Ensure the player is not currently in a stun state (hit animation still playing).
+            bool notInStun = !_knockback.InHitStun;
+
+            // Only trigger the landing animation if all conditions are met.
+            return (wasInAir || _knockback.IsSlidingHit) && nearZeroVerticalVelocity && wasFallingOrSliding && notInStun;
+        }
+
+
         public override void Tick(Fixed32 dt)
         {
-            if (_knockback.Physics.Velocity.Magnitude <= _knockback.NetForceLandingTolerance &&
-                !Landing && CanCheckLanding && !_knockback.Stunned && _knockback.Physics.IsGrounded)
+            if (!Landing && IsLanding())
             {
                 StartLandingLag();
             }
 
-            if (!_knockback.Physics.IsGrounded || _knockback.CheckIfIdle())
-                _groundedHitCounter = 0;
+            //if (!_knockback.Physics.IsGrounded || _knockback.CheckIfIdle())
+            //    _groundedHitCounter = 0;
 
-            if (Landing && !_knockback.Physics.IsGrounded)
+            if (Landing && FixedTransform.WorldPosition.Y > new Fixed32(39321))
                 CancelLanding();
 
             if (Landing && !RecoveringFromFall && !_characterAnimator.CompareStateName("HardLanding"))

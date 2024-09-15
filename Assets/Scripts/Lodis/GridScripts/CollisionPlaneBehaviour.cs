@@ -6,6 +6,7 @@ using Lodis.Gameplay;
 using Lodis.Movement;
 using Lodis.Sound;
 using Lodis.Utility;
+using Types;
 using UnityEngine;
 
 namespace Lodis.GridScripts
@@ -18,6 +19,7 @@ namespace Lodis.GridScripts
         [Tooltip("The amount of resistance the plane has against objects sliding over it")]
         [SerializeField]
         private float _friction = 3.0f;
+        [SerializeField] private Fixed32 _frictionTargetSpeed;
         [Tooltip("The minimum speed needed to make the screen shake when a player falls.")]
         [SerializeField]
         private float _shakeSpeed;
@@ -92,7 +94,7 @@ namespace Lodis.GridScripts
             Movement.GridPhysicsBehaviour physics = other.OtherCollider.OwnerPhysicsComponent;
 
             //Return if the object doesn't have one or is invincible
-            if (!physics)
+            if (!physics || physics.GridActive || !physics.IsGrounded)
                 return;
 
 
@@ -101,11 +103,16 @@ namespace Lodis.GridScripts
             if (dotProduct >= 0 || dotProduct == -1)
                 return;
 
-            if (physics.Velocity.X == 0)
-                return;
-
-            //Calculate and apply friction force
-            physics.ApplyForce(_friction * (physics.Velocity.X / Mathf.Abs(physics.Velocity.X) * FVector3.Right));
+            if (physics.Velocity.X < _frictionTargetSpeed)
+            {
+                //physics.GridActive = true;
+                physics.MovementBehaviour.SnapToTarget();
+            }
+            else
+            {
+                //Calculate and apply friction force
+                physics.ApplyForce(_friction * -(physics.Velocity.X / Mathf.Abs(physics.Velocity.X) * FVector3.Right));
+            }
         }
     }
 }

@@ -31,6 +31,8 @@ namespace Lodis.Gameplay
         public bool IsMultiHit;
         [Tooltip("The collision layers to ignore when checking for valid collisions.")]
         public LayerMask LayersToIgnore;
+        [Tooltip("The collision tags to ignore when checking for valid collisions.")]
+        public string[] TagsToIgnore;
         [Tooltip("If this collider can hit multiple times, this is how many seconds the object will have to wait before being able to register a collision with the same object.")]
         public float MultiHitWaitTime;
         [Tooltip("The amount of damage this attack will deal.")]
@@ -86,7 +88,7 @@ namespace Lodis.Gameplay
         [Tooltip("If true, the camera will shake when this collider hits.")]
         [JsonIgnore]
         public bool ShakesCamera;
-        [Tooltip("Event called when this collider htis a valid object.")]
+        [Tooltip("Event called when this collider hits a valid object.")]
         [JsonIgnore]
         public CollisionEvent OnHit;
         [JsonIgnore]
@@ -144,9 +146,9 @@ namespace Lodis.Gameplay
             ColliderInfo.OwnerAlignement = owner.UnityObject.GetComponent<GridMovementBehaviour>().Alignment;
         }
 
-        protected override void Awake()
+        public override void Init()
         {
-            base.Awake();
+            base.Init();
             gameObject.layer = LayerMask.NameToLayer("Ability");
             ReturnToPoolListener.AddAction(
                 () =>
@@ -156,13 +158,14 @@ namespace Lodis.Gameplay
                 });
         }
 
-        protected override void Start()
+        public override void Begin()
         {
-            base.Start();
+            base.Begin();
 
             //ReturnToPoolListener.AddAction(RemoveFromActiveList);
             AddToActiveList();
             LayersToIgnore = ColliderInfo.LayersToIgnore;
+            TagsToIgnore = ColliderInfo.TagsToIgnore;
             LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
             StartTime = Time.time;
         }
@@ -323,7 +326,7 @@ namespace Lodis.Gameplay
                 else if (knockback = damageScript as KnockbackBehaviour)
                 {
                     Fixed32 totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
-                    FVector3 force = knockback.Physics.CalculatGridForce(totalKnockback, newHitAngle, true);
+                    FVector3 force = knockback.Physics.CalculateGridForce(totalKnockback, newHitAngle, true);
                     knockback.Physics.ApplyImpulseForce(force);
                     damageDealt = true;
                 }
