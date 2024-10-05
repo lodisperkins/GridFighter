@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,14 +21,14 @@ namespace Lodis.Gameplay
     {
         private float _maxTravelDistance;
         private List<Movement.GridMovementBehaviour> _linkMoveScripts;
-        private GameObject _attackLinkVisual;
+        private EntityDataBehaviour _attackLinkVisual;
         private HitColliderData _stunCollider;
 
 	    //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
             base.Init(newOwner);
-            _attackLinkVisual = (GameObject)Resources.Load("Structures/ElectricTraps/AttackLink");
+            _attackLinkVisual = ((GameObject)Resources.Load("Structures/ElectricTraps/AttackLink")).GetComponent<EntityDataBehaviour>();
             _linkMoveScripts = new List<Movement.GridMovementBehaviour>();
         }
 
@@ -46,10 +47,10 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Deploys one of the links
         /// </summary>
-        private void FireLink(Vector2 position)
+        private void FireLink(FVector2 position)
         {
             //Creates copy of link prefab
-            GameObject visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, SpawnTransform.position, abilityData.visualPrefab.transform.rotation);
+            EntityDataBehaviour visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), SpawnTransform.WorldPosition, FQuaternion.Identity);
             //Get the movement script attached and add it to a list
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
 
@@ -77,13 +78,13 @@ namespace Lodis.Gameplay
             //Spawns attackLinks on each panel in the path
             for (int i = 0; i < panels.Count; i++)
             {
-                GameObject attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].transform.position + Vector3.up * 0.8f, _attackLinkVisual.transform.rotation);
+                EntityDataBehaviour attackLink = ObjectPoolBehaviour.Instance.GetObject(_attackLinkVisual, panels[i].FixedWorldPosition + FVector3.Up * 0.8f, FQuaternion.Identity);
 
                 HitColliderBehaviour collider = attackLink.GetComponent<HitColliderBehaviour>();
 
                 if (!collider)
                 {
-                    collider = attackLink.AddComponent<HitColliderBehaviour>();
+                    collider = attackLink.Data.AddComponent<HitColliderBehaviour>();
                 }
 
                 collider.GetComponent<Collider>().enabled = true;
@@ -140,45 +141,32 @@ namespace Lodis.Gameplay
                 return;;
             }
 
-            SpawnTransform = OwnerMoveset.ProjectileSpawner.transform;
+            SpawnTransform = OwnerMoveset.ProjectileSpawner.FixedTransform;
 
-            Vector2 attackDirection = (Vector2)args[1];
-
-            //Finds closes panel on x to know how close to throw traps
-            int gridTempMaxColumns = BlackBoardBehaviour.Instance.Grid.TempMaxColumns;
-            int closestPanelX = gridTempMaxColumns;
-            //Temp max columns returns column count relative to player 1. 
-            //Decrements the x value to get the column count for player 2.
-            if (Owner.transform.forward.x < 0)
-                closestPanelX--;
-                    
-            //Finds the farthest possible panel to know how far to throw traps
-            Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
-            int ownerFacing = (int)Owner.transform.forward.x;
-            int farthestPanelX = (int)Mathf.Clamp(closestPanelX + (abilityData.GetCustomStatValue("DistanceBetweenStructures") * ownerFacing), 0, dimensions.x - 1);
+            FVector2 attackDirection = (FVector2)args[1];
             
             //Switch to know where to place the ability on the stage based on the direction given
             switch (attackDirection)
             {
-                case Vector2 dir when dir.Equals(Vector2.right):
-                    FireLink(new Vector2(farthestPanelX, dimensions.y - 1));
-                    FireLink(new Vector2(farthestPanelX, 0));
+                case FVector2 dir when dir.Equals(FVector2.Right):
+                    FireLink(ShotDirection);
+                    FireLink(ShotDirection);
                     break;
-                case Vector2 dir when dir.Equals(Vector2.left):
-                    FireLink(new Vector2(closestPanelX, dimensions.y - 1));
-                    FireLink(new Vector2(closestPanelX, 0));
+                case FVector2 dir when dir.Equals(FVector2.Left):
+                    FireLink(ShotDirection);
+                    FireLink(ShotDirection);
                     break;
-                case Vector2 dir when dir.Equals(Vector2.up):
-                    FireLink(new Vector2(closestPanelX, dimensions.y - 1));
-                    FireLink(new Vector2(farthestPanelX, dimensions.y - 1));
+                case FVector2 dir when dir.Equals(FVector2.Up):
+                    FireLink(ShotDirection);
+                    FireLink(ShotDirection);
                     break;
-                case Vector2 dir when dir.Equals(Vector2.down):
-                    FireLink(new Vector2(closestPanelX, 0));
-                    FireLink(new Vector2(farthestPanelX, 0));
+                case FVector2 dir when dir.Equals(FVector2.Down):
+                    FireLink(ShotDirection);
+                    FireLink(ShotDirection);
                     break;
                 default:
-                    FireLink(new Vector2(closestPanelX, dimensions.y - 2));
-                    FireLink(new Vector2(farthestPanelX, dimensions.y - 2));
+                    FireLink(ShotDirection);
+                    FireLink(ShotDirection);
                     break;
                     
             }

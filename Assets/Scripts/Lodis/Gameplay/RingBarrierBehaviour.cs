@@ -17,19 +17,19 @@ namespace Lodis.Gameplay
         private GameObject _owner;
         [Tooltip("The length of the hit stun to apply to objects that crash into the ring barrier.")]
         [SerializeField]
-        private float _hitStunOnCollision;
+        private Fixed32 _hitStunOnCollision;
         [Tooltip("How fast a character in knockback has to travelto instantly shatter this barrier.")]
         [SerializeField]
         private FloatVariable _shatterSpeed;
         [Tooltip("The amount of speed a character needs to travel to damage this barrier at all.")]
         [SerializeField]
-        private float _minimumDamageSpeed;
+        private Fixed32 _minimumDamageSpeed;
         [Tooltip("The amount of knockback characters will receive when being bounced off.")]
         [SerializeField]
-        private float _knockBackDistance;
+        private Fixed32 _knockBackDistance;
         [Tooltip("The angles characters will launch at after being bounced away from the barrier.")]
         [SerializeField]
-        private float _launchAngle;
+        private Fixed32 _launchAngle;
         [SerializeField]
         private ShieldController _shieldController;
         [Tooltip("Whether or no this barrier can be instantly shatter when the character is at high enough damage and speed.")]
@@ -47,7 +47,7 @@ namespace Lodis.Gameplay
         private GridAlignment _alignment;
         private RingBarrierFeedbackBehaviour _ringBarrierFeedbackBehaviour;
         [SerializeField]
-        private float _timeUntilNextHit = 0.01f;
+        private Fixed32 _timeUntilNextHit;
 
         //---
         private bool _canHit = true;
@@ -73,7 +73,7 @@ namespace Lodis.Gameplay
             AddOnDeathAction(() =>
             {
                 GridGame.IgnoreCollision(Entity.Data, _ownerData);
-                _winCollider.SetActive(true);
+                FixedPointTimer.StartNewTimedAction(() => _winCollider.SetActive(true), new Fixed32(6553));
             });
 
             //Set invincibility for debugging based on match manager value.
@@ -171,7 +171,7 @@ namespace Lodis.Gameplay
             //Shatter the barrier if the pwner is being knocked back at the appropriate speed and damage.
             if (collision.OtherEntity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.Value && dot < 0
                 && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.Value)
-                TakeDamage(Entity.Data, Health, 0, 0, DamageType.KNOCKBACK);
+                TakeDamage(collision.OtherEntity, Health, 0, 0, DamageType.KNOCKBACK);
         }
 
         public override void OnHitEnter(Collision collision)
@@ -184,21 +184,20 @@ namespace Lodis.Gameplay
             if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
                 return;
 
-            var offsetX = collision.OtherEntity.Transform.WorldPosition.X - Entity.FixedTransform.WorldPosition.X;
-            float dir = offsetX / Mathf.Abs(offsetX);
+            Fixed32 dir = Owner.GetComponent<GridMovementBehaviour>().GetAlignmentX();
             
             //Find the direction this collider was going to apply force originally
-            Vector3 currentForceDirection = new Vector3(Mathf.Cos(_launchAngle) * dir, Mathf.Sin(_launchAngle), 0);
+            FVector3 currentForceDirection = new FVector3(Fixed32.Cos(_launchAngle) * dir, Fixed32.Sin(_launchAngle), 0);
 
             //Find the new angle based on the direction of the attack on the x axis
-            float dotProduct = Vector3.Dot(currentForceDirection, Vector3.right);
-            float newAngle = Mathf.Acos(dotProduct);
+            Fixed32 dotProduct = FVector3.Dot(currentForceDirection, FVector3.Right);
+            Fixed32 newAngle = Fixed32.Acos(dotProduct);
 
             //Stops velocity so momentum is shifted completely.
-            knockbackBehaviour.Physics.StopVelocity();
+            //knockbackBehaviour.Physics.StopVelocity();
 
             //Creates a new hit collider to attack the character
-            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = _knockBackDistance, KnockBackScale = 1.2f, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopShakeStrength = 1, };
+            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = knockbackBehaviour.Physics.Velocity.Magnitude / 2, KnockBackScale = 1.2f, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopShakeStrength = 1, };
             HitColliderBehaviour hitCollider = new HitColliderBehaviour();
             hitCollider.ColliderInfo = info;
 
@@ -207,14 +206,11 @@ namespace Lodis.Gameplay
             knockbackBehaviour.TakeDamage(info,collision.OtherEntity);
 
             _canHit = false;
-            RoutineBehaviour.Instance.StartNewTimedAction(args => _canHit = true, TimedActionCountType.SCALEDTIME, _timeUntilNextHit);
+            FixedPointTimer.StartNewTimedAction(() => _canHit = true, _timeUntilNextHit);
 
             //Display the appropriate particle effect.
 
-            PanelBehaviour panel;
-
-            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(collision.OtherEntity.UnityObject.transform.position, out panel);
-            Vector3 particleSpawn = new Vector3(collision.ContactPoint.X, collision.ContactPoint.Y, panel.transform.position.z);
+            Vector3 particleSpawn = new Vector3(collision.ContactPoint.X, collision.ContactPoint.Y, knockbackBehaviour.FixedTransform.WorldPosition.Z);
 
             Instantiate(_hitEffect.gameObject, particleSpawn, new Quaternion());
             if (collision.OtherEntity.UnityObject == Owner)

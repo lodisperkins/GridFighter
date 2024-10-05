@@ -13,16 +13,18 @@ namespace Lodis.UI
     public class DisplayCharacterSpawnBehaviour : EntitySpawnBehaviour
     {
         private GridMovementBehaviour _previousCharacterInstance;
+        private static bool _spawnedGrid;
 
         public GridMovementBehaviour PreviousCharacterInstance { get => _previousCharacterInstance; private set => _previousCharacterInstance = value; }
 
         public void Awake()
         {
-            if (GridBehaviour.Grid == null)
+            if (!_spawnedGrid)
             {
                 BlackBoardBehaviour.Instance.InitializeGrid();
                 BlackBoardBehaviour.Instance.Grid.DestroyGrid();
                 BlackBoardBehaviour.Instance.Grid.CreateGrid();
+                _spawnedGrid = true;
             }
         }
 

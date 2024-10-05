@@ -92,7 +92,7 @@ namespace Lodis.Gameplay
                 instantiatedCollider = _barrier.AddComponent<HitColliderBehaviour>();
 
             //Update the new colliders data
-            instantiatedCollider.InitCollider(1, 1, _barrier.GetComponent<SimulationBehaviour>().Entity.Data);
+            instantiatedCollider.InitCollider(1, 1, _barrier.GetComponent<SimulationBehaviour>().Entity);
             instantiatedCollider.ColliderInfo = hitColliderData;
 
             //Spawns a new particle effect at this player's position

@@ -630,7 +630,7 @@ namespace Lodis.Gameplay
                 LastAttackDirection = (FVector2)args[1];
 
             if (args?.Length > 0)
-                _lastAttackStrength = (float)args[0];
+                _lastAttackStrength = (Fixed32)args[0];
 
             OnUseAbility?.Invoke();
 

@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using FixedPoints;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,12 +23,18 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            GameObject instance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform, true);
-            instance.transform.localRotation = Quaternion.identity;
-            _hitColliderBehaviour = instance.GetComponent<HitColliderBehaviour>();
+            EntityDataBehaviour instance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), Owner.FixedTransform);
 
-            _hitColliderBehaviour.ColliderInfo = GetColliderData(0, (float)args[0]);
-            _hitColliderBehaviour.Spawner = Owner;
+            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.LEFT)
+                instance.FixedTransform.WorldRotation = FQuaternion.Identity;
+            else
+                instance.FixedTransform.WorldRotation = FQuaternion.Euler(0, 180, 0);
+            HitColliderBehaviour[] colliders = instance.GetComponentsInChildren<HitColliderBehaviour>();
+
+            foreach (HitColliderBehaviour collider in colliders)
+            {
+                collider.Spawner = Owner;
+            }
         }
 
         protected override void OnEnd()

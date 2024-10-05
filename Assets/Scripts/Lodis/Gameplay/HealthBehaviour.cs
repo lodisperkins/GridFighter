@@ -149,14 +149,14 @@ namespace Lodis.Gameplay
         public int DamageableAbilityID { get => _damageableAbilityID; private set => _damageableAbilityID = value; }
         public Condition AliveCondition { get => aliveCondition; set => aliveCondition = value; }
 
-        protected virtual void Awake()
+        protected override void Awake()
         {
+            base.Awake();
+
             if (_startingHealth < 0)
                 _healthFixed = _maxHealth.Value;
             else
                 _healthFixed = _startingHealth;
-
-            _healthFixed = _health;
 
             DefenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();

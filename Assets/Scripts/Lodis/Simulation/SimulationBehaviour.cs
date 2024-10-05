@@ -68,7 +68,18 @@ public abstract class SimulationBehaviour : MonoBehaviour
 
     protected virtual void Awake()
     {
-        Entity = GetComponentInParent<EntityDataBehaviour>();
+        SetEntity();
+    }
+    
+    public void SetEntity()
+    {
+        if (Entity)
+            return;
+
+        Entity = GetComponent<EntityDataBehaviour>();
+
+        if (!Entity)
+            Entity = GetComponentInParent<EntityDataBehaviour>();
 
         if (!Entity)
             Entity = GetComponentInChildren<EntityDataBehaviour>();
@@ -84,6 +95,12 @@ public abstract class SimulationBehaviour : MonoBehaviour
     /// </summary>
     /// <param name="dt">The fixed time step of the rollback simulations update.</param>
     public virtual void Tick(Fixed32 dt) { }
+
+    /// <summary>
+    /// Called after the main update loop.
+    /// </summary>
+    /// <param name="dt">The fixed time step of the rollback simulations update.</param>
+    public virtual void LateTick(Fixed32 dt) { }
 
     /// <summary>
     /// Called when the entity is removed from the scene.

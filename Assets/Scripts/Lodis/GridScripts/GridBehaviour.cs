@@ -5,6 +5,7 @@ using UnityEditor;
 using Lodis.Gameplay;
 using Lodis.Movement;
 using FixedPoints;
+using Types;
 
 namespace Lodis.GridScripts
 {
@@ -57,6 +58,14 @@ namespace Lodis.GridScripts
         private Vector2[] _rhsBarrierPositions;
         [SerializeField]
         private GameObject _collisionPlaneRef;
+        [Header("Fixed Point Stats")]
+        [SerializeField] private FTransform _fixedGridTransform;
+        [SerializeField] private FVector3 _fixedPanelScale;
+        [SerializeField] private Fixed32 _fixedPanelSpacingX;
+        [SerializeField] private Fixed32 _fixedPanelSpacingZ;
+        [SerializeField] private Fixed32 _fixedPanelSpacingMiddle;
+
+        //---
         private List<BarrierBehaviour> _barriers;
         private Coroutine _panelExchangeRoutine;
         private int _tempMaxColumns;
@@ -141,6 +150,7 @@ namespace Lodis.GridScripts
                 _panelSpacingMiddle = _panelSpacingX;
 
             float spacingVal = 0;
+            Fixed32 fixedSpacingVal = 0;
 
             if (!BlackBoardBehaviour.Instance.Grid)
                 BlackBoardBehaviour.Instance.InitializeGrid();
@@ -149,6 +159,7 @@ namespace Lodis.GridScripts
 
             //The world spawn position for each gameobject in the grid
             Vector3 spawnPosition = transform.position;
+            FVector3 fixedSpawnPosition = _fixedGridTransform.WorldPosition;
 
             //The x and y position for each game object in the grid
             int xPos = 0;
@@ -159,23 +170,29 @@ namespace Lodis.GridScripts
                 panel.transform.localScale = _panelScale;
                 _panels[xPos, yPos] = panel.GetComponent<PanelBehaviour>();
                 _panels[xPos, yPos].Position = new FVector2(xPos, yPos);
+                _panels[xPos, yPos].FixedWorldPosition = fixedSpawnPosition;
+
                 //If the x position in the grid is equal to the given x dimension,
                 //reset x position to be 0, and increase the y position.
                 if (xPos == (int)_dimensions.x - 1)
                 {
                     xPos = 0;
                     spawnPosition.x = transform.position.x;
+                    fixedSpawnPosition.X = _fixedGridTransform.WorldPosition.X;
                     yPos++;
                     
                     spawnPosition.z += _panelRef.transform.localScale.z + _panelSpacingZ;
+                    fixedSpawnPosition.Z += 1 + _fixedPanelSpacingZ;
                     continue;
                 }
 
                 spacingVal = xPos == _p1MaxColumns - 1 ? _panelSpacingMiddle : _panelSpacingX;
+                fixedSpacingVal = xPos == _p1MaxColumns - 1 ? _fixedPanelSpacingMiddle : _fixedPanelSpacingX;
 
                 //Increase x position
                 xPos++;
                 spawnPosition.x += _panelRef.transform.localScale.x + spacingVal;
+                fixedSpawnPosition.X += 1 + fixedSpacingVal;
             }
 
 
@@ -559,6 +576,22 @@ namespace Lodis.GridScripts
         }
 
         /// <summary>
+        /// Gets the panel that is closest to the given location in the world
+        /// </summary>
+        /// <param name="location">The location to look for the panel in world space</param>
+        /// <param name="panel">The panel reference to assign</param>
+        /// <param name="canBeOccupied">Whether or not panels that are occupied should be ignored</param>
+        /// <param name="alignment">The side of the grid to look for this panel</param>
+        /// <returns></returns>
+        public void GetGridCoordinateFromLocation(Vector3 location, out FVector2 panelCoordinate)
+        {
+            int x = Mathf.RoundToInt((location.x / (PanelRef.transform.localScale.x + PanelSpacingX)));
+            int y = Mathf.RoundToInt((location.z / (PanelRef.transform.localScale.z + PanelSpacingZ)));
+
+            panelCoordinate = new FVector2(x, y);
+        }
+
+        /// <summary>
         /// Gets a list of panels that are withing a range of 1
         /// </summary>
         /// <param name="position">The position of the panel to find neighbors for</param>
@@ -572,6 +605,39 @@ namespace Lodis.GridScripts
             for (int x = -1; x <= 1; x++)
             {
                 for (int y = -1; y <= 1; y++)
+                {
+                    FVector2 offset = new FVector2(x, y);
+                    FVector2 target = offset + position;
+
+                    if (target == position)
+                        continue;
+
+                    if (offset.Magnitude > 1 && !includeDiagonals)
+                        continue;
+
+                    PanelBehaviour panel = null;
+                    if (GetPanel(target, out panel, canBeOccupied, alignment))
+                        neighbors.Add(panel);
+                }
+            }
+
+            return neighbors;
+        }
+
+        /// <summary>
+        /// Gets a list of panels that are within a given range
+        /// </summary>
+        /// <param name="position">The position of the panel to find neighbors for</param>
+        /// <param name="canBeOccupied">Whether or not to ignore panels that are ooccupied</param>
+        /// <param name="alignment">The side of the grid to look for neighbors. Panels found on the other side will be ignored</param>
+        /// <returns></returns>
+        public List<PanelBehaviour> GetPanelNeighbors(FVector2 position, int range, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, bool includeDiagonals = true)
+        {
+            List<PanelBehaviour> neighbors = new List<PanelBehaviour>();
+
+            for (int x = -range; x <= range; x++)
+            {
+                for (int y = -range; y <= range; y++)
                 {
                     FVector2 offset = new FVector2(x, y);
                     FVector2 target = offset + position;

@@ -1,6 +1,8 @@
-﻿using Lodis.Utility;
+﻿using Lodis.Movement;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -16,8 +18,8 @@ namespace Lodis.Gameplay
         private Vector3 _originalTravelDirection;
         private int _reboundCount;
         private ColliderBehaviour _reboundCollider;
-        private float _speedMultiplier;
-        private bool _reboundColliderAdded;
+        private Fixed32 _speedMultiplier;
+        private bool _firstCollisionHappened;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -40,27 +42,26 @@ namespace Lodis.Gameplay
         {
             base.OnActivate(args);
             _reboundCount = 0;
+            _firstCollisionHappened = false;
 
             //Stores the rebound collider and the hit box attached to this boomerang
-            ColliderBehaviour[] colliderBehaviours = Projectile.GetComponents<ColliderBehaviour>();
+            _reboundCollider = Projectile.Data.GetComponentInChildren<ColliderBehaviour>(false);
 
-            //If the boomerang only has a hit collider...
-            if (colliderBehaviours.Length == 1)
+            //If the boomerang doesn't have a rebound collider...
+            if (!_reboundCollider)
             {
-                //...add a rebound collider that can reflect the boomerang on hit
-                _reboundCollider = Projectile.gameObject.AddComponent<ColliderBehaviour>();
-                _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
+                //...log an error.
+                Debug.LogError("Can't find rebound collider on boomerang ability for " + Owner.Data.Name);
             }
             //Otherwise...
             else
             {
                 //...update the rebound colliders event
-                _reboundCollider = colliderBehaviours[1];
                 _reboundCollider.ClearAllCollisionEvents();
                 _reboundCollider.AddCollisionEvent(TryRedirectProjectile);
+                _reboundCollider.Spawner = Owner.Data;
             }
 
-            _reboundCollider.Spawner = Owner.Data;
         }
 
         /// <summary>
@@ -69,6 +70,12 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         public void TryRedirectProjectile(Collision collision)
         {
+            if (!_firstCollisionHappened)
+            {
+                _firstCollisionHappened = true;
+                return;
+            }
+
             GameObject other = collision.OtherEntity.UnityObject;
 
             //If the projectile rebounded too many times...
@@ -85,19 +92,19 @@ namespace Lodis.Gameplay
             {
                 CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
 
-                if (stateMachine.StateMachine.CurrentState != "Idle" && stateMachine.StateMachine.CurrentState != "Moving" && stateMachine.StateMachine.CurrentState != "Attacking")
+                if (!stateMachine.CompareState("Idle", "Moving", "Attacking"))
                 {
                     return;
                 }
             }
 
-            Rigidbody projectile = Projectile.GetComponent<Rigidbody>();
+            GridPhysicsBehaviour projectile = Projectile.Data.GetComponent<GridPhysicsBehaviour>();
 
             //If it hit a valid object...
             if ((other.CompareTag("Player") || other.CompareTag("Entity")))
             {
                 //...reverse velocity
-                projectile.AddForce(-projectile.velocity * _speedMultiplier * 2, ForceMode.VelocityChange);
+                projectile.ApplyVelocityChange(-projectile.Velocity * _speedMultiplier);
                 _reboundCount++;
                 _reboundCollider.Spawner = collision.OtherEntity;
             }

@@ -261,6 +261,8 @@ namespace FixedPoints
 
         public static void StopAction(FixedAction action)
         {
+            if (action == null) return;
+
             _actions.Remove(action);
             action.IsActive = false;
         }

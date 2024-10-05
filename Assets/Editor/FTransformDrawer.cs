@@ -11,8 +11,8 @@ public class FTransformDrawer : PropertyDrawer
         EditorGUI.indentLevel++;
 
         // Get the properties for _worldPosition, _worldRotation, and _worldScale
-        SerializedProperty positionProp = property.FindPropertyRelative("_worldPosition");
-        SerializedProperty rotationProp = property.FindPropertyRelative("_worldRotation");
+        SerializedProperty positionProp = property.FindPropertyRelative("_localPosition");
+        SerializedProperty rotationProp = property.FindPropertyRelative("_localRotation");
         SerializedProperty scaleProp = property.FindPropertyRelative("_worldScale");
 
         // Calculate positions for the fields (avoiding label overlap)
@@ -60,8 +60,8 @@ public class FTransformDrawer : PropertyDrawer
             Vector3 globalScale = unityTransform.lossyScale; // Using lossyScale to get global scale
 
             // Get the properties of FTransform to update them
-            SerializedProperty positionProp = property.FindPropertyRelative("_worldPosition");
-            SerializedProperty rotationProp = property.FindPropertyRelative("_worldRotation");
+            SerializedProperty positionProp = property.FindPropertyRelative("_localPosition");
+            SerializedProperty rotationProp = property.FindPropertyRelative("_localRotation");
             SerializedProperty scaleProp = property.FindPropertyRelative("_worldScale");
 
             // Copy the global position, rotation, and scale to the FTransform

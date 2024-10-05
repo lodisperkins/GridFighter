@@ -1,4 +1,5 @@
 ﻿using Lodis.Utility;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -68,8 +69,10 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
+
             //Initialize collider stats
-            float powerScale = (float)args[0];
+            Fixed32 powerScale = (Fixed32)args[0];
             _projectileCollider = GetColliderData(0);
             _projectileCollider = _projectileCollider.ScaleStats(powerScale);
 

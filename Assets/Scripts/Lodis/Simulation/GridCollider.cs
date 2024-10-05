@@ -56,8 +56,14 @@ public class GridCollider
     [SerializeField] private bool _overlap;
     [Tooltip("If true this collider will collide will not consider the panel y position when colliding.")]
     [SerializeField] private bool _collideOnAnyRow;
+    [Tooltip("Whether or not this collider has a defined width. If true, will calculate collision on x based on whether the x position of the other object is greater that or lower than this object's x position.")]
+    [SerializeField] private bool _isAWall;
     [Tooltip("How wide the AABB collider will be.")]
+    [HideIf("_isAWall")]
     [SerializeField] private Fixed32 _width = 1;
+    [Tooltip("Keeps track of the direction the object is facing. Used to determine when an object is behind this one.")]
+    [ShowIf("_isAWall")]
+    [SerializeField] private bool _facingRight = true;
     [Tooltip("How tall the AABB collider will be.")]
     [SerializeField] private Fixed32 _height = 1;
     [Tooltip("The y position of this collider on the grid relative to its owner.")]
@@ -68,8 +74,8 @@ public class GridCollider
     [SerializeField] private Fixed32 _worldYPosition;
 
     //---
+    private EntityDataBehaviour _entity;
     private int _layer;
-    private EntityData _owner;
     private GridPhysicsBehaviour _ownerPhysicsComponent;
     private Collision[] _collisions = new Collision[20];
 
@@ -100,7 +106,7 @@ public class GridCollider
     {
         get
         {
-            return PanelXOffset + OwnerPhysicsComponent.GetGridPosition().X;
+            return PanelXOffset * _entity.FixedTransform.Forward.Z + OwnerPhysicsComponent.GetGridPosition().X;
         }
         set => PanelXOffset = value;
     }
@@ -112,8 +118,22 @@ public class GridCollider
     {
         get
         {
-            GridBehaviour.Grid.GetPanel(PanelX, PanelY, out PanelBehaviour panel);
-            return (FVector3)(panel.transform.position + Vector3.up * WorldYPosition);
+            if (PanelXOffset != 0 || PanelYOffset != 0)
+            {
+                GridBehaviour.Grid.GetPanel(PanelX, PanelY, out PanelBehaviour panel);
+                if (panel != null)
+                {
+                    return panel.FixedWorldPosition + FVector3.Up * WorldYPosition;
+                }
+                else
+                {
+                    return FVector3.Zero;
+                }
+            }
+
+            FVector3 position = Entity.FixedTransform.WorldPosition + FVector3.Up * WorldYPosition;
+
+            return position;
         }
     }
 
@@ -129,15 +149,15 @@ public class GridCollider
     /// <summary>
     /// The simulation object that will have collision events called on it.
     /// </summary>
-    public EntityData Owner
+    public EntityDataBehaviour Entity
     {
         get
         {
-            return _owner;
+            return _entity;
         }
         set
         {
-            _owner = value;
+            _entity = value;
         }
     }
 
@@ -168,16 +188,22 @@ public class GridCollider
     /// </summary>
     public Fixed32 WorldYPosition { get => _worldYPosition; set => _worldYPosition = value; }
     public string[] TagsToIgnore { get => _tagsToIgnore; set => _tagsToIgnore = value; }
+    public bool IsAWall { get => _isAWall; set => _isAWall = value; }
 
-    public void Init(EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
+    public void Init(EntityDataBehaviour owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
     {
         _ownerPhysicsComponent = ownerPhysicsComponent;
-        _owner = owner;
-        _layer = ownerPhysicsComponent.gameObject.layer;
-        owner.Collider = this;
+        _entity = owner;
+
+        if (_ownerPhysicsComponent)
+            _layer = ownerPhysicsComponent.gameObject.layer;
+
+        //Try to auto add this collider to the owners array
+        AddColliderToOwner();
     }
 
-    public void Init(Fixed32 width, Fixed32 height, EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null, int panelYOffset = 0, int panelXOffset = 0, Fixed32 worldYPosition = default)
+
+    public void Init(Fixed32 width, Fixed32 height, EntityDataBehaviour owner, GridPhysicsBehaviour ownerPhysicsComponent = null, int panelYOffset = 0, int panelXOffset = 0, Fixed32 worldYPosition = default)
     {
         _width = width;
         _height = height;
@@ -185,10 +211,29 @@ public class GridCollider
         PanelXOffset = panelXOffset;
         WorldYPosition = worldYPosition;
         _ownerPhysicsComponent = ownerPhysicsComponent;
-        _owner = owner;
-        _layer = ownerPhysicsComponent.gameObject.layer;
+        _entity = owner;
+
+        //Try to auto add this collider to the owners array
+        AddColliderToOwner();
+
+        if (_ownerPhysicsComponent)
+            _layer = ownerPhysicsComponent.gameObject.layer;
     }
 
+    private void AddColliderToOwner()
+    {
+        if (_entity.Data.Colliders != null)
+        {
+            if (_entity.Data.Colliders.Contains(this))
+                throw new Exception("Tried to add the same collider to " + _entity.Data.Name);
+
+            _entity.Data.Colliders = _entity.Data.Colliders.Add(this);
+        }
+        else
+        {
+            _entity.Data.Colliders = new GridCollider[] { this };
+        }
+    }
     /// <summary>
     /// Checks if the layer is in the colliders layer mask of 
     /// layers to ignore.
@@ -231,7 +276,7 @@ public class GridCollider
 
         for (int i = 0; i < _collisions.Length; i++)
         {
-            if (_collisions[i].OtherCollider == other || _collisions[i].Entity == other.Owner)
+            if (_collisions[i].OtherCollider == other || _collisions[i].Entity == other.Entity.Data)
             {
                 collision = _collisions[i];
                 _collisions[i] = default;
@@ -271,20 +316,50 @@ public class GridCollider
         }
     }
 
-    public bool CheckCollision(GridCollider other, out Collision collisionData)
+    private bool CheckWallCollisionOnX(GridCollider other)
     {
-        collisionData = default;
+        bool collidingOnX = false;
 
+        if (_facingRight)
+        {
+            collidingOnX = other.WorldPosition.X <= WorldPosition.X;
+        }
+        else
+        {
+            collidingOnX = other.WorldPosition.X >= WorldPosition.X;
+        }
+
+        return collidingOnX;
+    }
+
+    public bool CheckCollision(GridCollider other)
+    {
         //Check if collision should occur using Unity layers.
-        if (CheckIfColliderShouldBeIgnored(other.Owner.UnityObject) || other.CheckIfColliderShouldBeIgnored(Owner.UnityObject))
+        if (CheckIfColliderShouldBeIgnored(other.Entity.Data.UnityObject) || other.CheckIfColliderShouldBeIgnored(Entity.Data.UnityObject))
             return false;
 
+        bool collidingOnX = false;
+
+        if (IsAWall)
+        {
+            collidingOnX = CheckWallCollisionOnX(other);
+        }
+        else if (other.IsAWall)
+        {
+            collidingOnX = other.CheckWallCollisionOnX(this);
+        }
+        else
+        {
+            collidingOnX = GetRight() > other.GetLeft() && GetLeft() < other.GetRight();
+        }
+
         //Check collision for AABB.
-        bool collisionDetected =
-            GetRight() > other.GetLeft() &&
-            GetBottom() < other.GetTop() &&
-            GetTop() > other.GetBottom() &&
-            GetLeft() < other.GetRight() && 
+        bool collisionDetected = 
+            //Check vertical AABB collision
+            GetBottom() < other.GetTop() && GetTop() > other.GetBottom() &&
+            //Checking horizontal collision
+            collidingOnX &&
+            //Check special collision params
             (other.PanelY == PanelY || other._collideOnAnyRow || _collideOnAnyRow);
 
 
@@ -315,7 +390,7 @@ public class GridCollider
         }
 
         //Calculating contact point.
-        FVector3 otherToAABB = other.Owner.Transform.WorldPosition - Owner.Transform.WorldPosition;
+        FVector3 otherToAABB = other.Entity.Data.Transform.WorldPosition - Entity.Data.Transform.WorldPosition;
 
         if (otherToAABB.X > Width / 2)
             otherToAABB.X = Width / 2;
@@ -327,18 +402,18 @@ public class GridCollider
         else if (otherToAABB.Y < -Height / 2)
             otherToAABB.Y = -Height / 2;
 
-        FVector3 closestPoint = Owner.Transform.WorldPosition + otherToAABB;
+        FVector3 closestPoint = Entity.Data.Transform.WorldPosition + otherToAABB;
 
-        FVector3 otherToClosestPoint = (other.Owner.Transform.WorldPosition - closestPoint);
+        FVector3 otherToClosestPoint = (other.Entity.Data.Transform.WorldPosition - closestPoint);
 
-        collisionData = new Collision
+        Collision collisionData = new Collision
         {
             OtherCollider = other,
             Normal = GetPenetrationAmount(other).GetNormalized(),
             ContactPoint = closestPoint,
             PenetrationDistance = GetPenetrationAmount(other).Magnitude,
-            OtherEntity = other.Owner,
-            Entity = Owner
+            OtherEntity = other.Entity,
+            Entity = Entity
         };
 
         Collision collisionData2 = new Collision
@@ -347,8 +422,8 @@ public class GridCollider
             OtherCollider = this,
             PenetrationDistance = GetPenetrationAmount(other).Magnitude,
             ContactPoint = closestPoint,
-            OtherEntity = Owner,
-            Entity = other.Owner
+            OtherEntity = Entity,
+            Entity = other.Entity
         };
 
         //If this is a new collision...
@@ -385,7 +460,7 @@ public class GridCollider
 
     public void Draw()
     {
-        FVector2 position = Owner.Transform.WorldPosition;
+        FVector2 position = Entity.Data.Transform.WorldPosition;
         // Replace this with an appropriate draw method for your framework, if any
         // For example, using UnityEngine:
         Debug.DrawLine(new Vector3(GetLeft(), GetBottom()), new Vector3(GetRight(), GetTop()), Color.red);

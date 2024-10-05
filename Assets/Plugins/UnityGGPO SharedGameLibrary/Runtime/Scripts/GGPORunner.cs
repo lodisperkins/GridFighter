@@ -375,6 +375,7 @@ namespace SharedGame {
                 var player = GameInfo.players[i];
                 if (player.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) {
                     var input = Game.ReadInputs(player.controllerId);
+                    Log.Debug(input);
 #if SYNC_TEST
      input = rand(); // test: use random inputs to demonstrate sync testing
 #endif

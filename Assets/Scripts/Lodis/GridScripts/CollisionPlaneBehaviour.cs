@@ -16,9 +16,6 @@ namespace Lodis.GridScripts
         [Tooltip("How quick objects bouncing on the plane stop bouncing")]
         [SerializeField]
         private float _bounceDampening = 3.0f;
-        [Tooltip("The amount of resistance the plane has against objects sliding over it")]
-        [SerializeField]
-        private float _friction = 3.0f;
         [SerializeField] private Fixed32 _frictionTargetSpeed;
         [Tooltip("The minimum speed needed to make the screen shake when a player falls.")]
         [SerializeField]
@@ -44,12 +41,11 @@ namespace Lodis.GridScripts
 
         public override void Deserialize(BinaryReader br)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public override void Serialize(BinaryWriter bw)
         {
-            throw new System.NotImplementedException();
         }
 
         public override void OnHitEnter(Collision other)
@@ -86,33 +82,6 @@ namespace Lodis.GridScripts
             _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, (Vector3)particleSpawnPosition, Camera.main.transform.rotation);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_groundDustParticles, _groundDustParticlesRef.main.duration);
 
-        }
-
-        public override void OnHitStay(Collision other)
-        {
-            //Get knock back script to apply force
-            Movement.GridPhysicsBehaviour physics = other.OtherCollider.OwnerPhysicsComponent;
-
-            //Return if the object doesn't have one or is invincible
-            if (!physics || physics.GridActive || !physics.IsGrounded)
-                return;
-
-
-            //Don't add a force if the object is traveling at a low speed
-            float dotProduct = FVector3.Dot(physics.Velocity, FVector3.Up);
-            if (dotProduct >= 0 || dotProduct == -1)
-                return;
-
-            if (physics.Velocity.X < _frictionTargetSpeed)
-            {
-                //physics.GridActive = true;
-                physics.MovementBehaviour.SnapToTarget();
-            }
-            else
-            {
-                //Calculate and apply friction force
-                physics.ApplyForce(_friction * -(physics.Velocity.X / Mathf.Abs(physics.Velocity.X) * FVector3.Right));
-            }
         }
     }
 }

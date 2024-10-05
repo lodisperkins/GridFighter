@@ -138,6 +138,35 @@ namespace Lodis.Utility
         /// <summary>
         /// Gets the first instance of the object found in the pool
         /// </summary>
+        /// <param name="gameObject">A reference to the object</param>
+        /// <param name="position">The new position of the object</param>
+        /// <param name="rotation">The new rotation of the object</param>
+        /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
+        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FTransform parent)
+        {
+            //If an object of this type has a queue in the dictionary...
+            if (_entityObjectPool.TryGetValue(gameObject.name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
+            {
+                //...set the first instance found active and return the object
+                EntityDataBehaviour objectInstance = objectQueue.Dequeue();
+
+                if (!objectInstance)
+                    return null;
+
+                objectInstance.FixedTransform.Parent = parent;
+                objectInstance.FixedTransform.LocalPosition = FVector3.Zero;
+                objectInstance.FixedTransform.LocalRotation = FQuaternion.Identity;
+                objectInstance.AddToGame();
+                return objectInstance;
+            }
+            //...otherwise create a new instance of the object
+            else
+                return CreateNewObject(entity, parent);
+        }
+
+        /// <summary>
+        /// Gets the first instance of the object found in the pool
+        /// </summary>
         /// <param name="name">The name of the object to search for</param>
         /// <param name="position">The new position of the object</param>
         /// <param name="rotation">The new rotation of the object</param>
@@ -310,6 +339,25 @@ namespace Lodis.Utility
             EntityDataBehaviour newObject = Instantiate(entity, (Vector3)position, (Quaternion)rotation);
 
             newObject.FixedTransform.SetPositionAndRotation(position, rotation);
+            newObject.name = entity.Data.Name;
+            newObject.Data.Name = gameObject.name;
+            return newObject;
+        }
+
+        /// <summary>
+        /// Instantiates a new instance of the object and changes its name to match the prefab
+        /// </summary>
+        /// <param name="gameObject">A reference to the prefab to instantiate</param>
+        /// <param name="position">The new position of the object</param>
+        /// <param name="rotation">The new rotation of the object</param>
+        /// <returns>The newly instantiated prefab</returns>
+        private EntityDataBehaviour CreateNewObject(EntityDataBehaviour entity, FTransform parent)
+        {
+            EntityDataBehaviour newObject = Instantiate(entity, (Vector3)parent.WorldPosition, (Quaternion)parent.WorldRotation);
+
+            newObject.FixedTransform.Parent = parent;
+            newObject.FixedTransform.LocalPosition = FVector3.Zero;
+            newObject.FixedTransform.LocalRotation = FQuaternion.Identity;
             newObject.name = entity.Data.Name;
             newObject.Data.Name = gameObject.name;
             return newObject;

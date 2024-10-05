@@ -76,6 +76,7 @@ MonoBehaviour:
     AbilityType: 8
     AbilityID: 74556600
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset: 0
     HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
       type: 3}
     HitEffectLevel: 3
@@ -111,6 +112,7 @@ MonoBehaviour:
     AbilityType: 8
     AbilityID: 74556600
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset: 0
     HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
       type: 3}
     HitEffectLevel: 3
@@ -147,6 +149,7 @@ MonoBehaviour:
     AbilityID: 74556600
     SpawnEffect: {fileID: 1493204891009420812, guid: 67bf52d6da49f564e8176f83473f4340,
       type: 3}
+    SpawnEffectOffset: 0
     HitSpark: {fileID: 8796043290497693099, guid: 946b15e227b4de04da7a6199a52563a3,
       type: 3}
     HitEffectLevel: 3

@@ -1175,6 +1175,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -2355,6 +2360,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -3128,6 +3138,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -3290,6 +3305,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -3841,6 +3861,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bounceDampening: 5
   _friction: 3
+  _frictionTargetSpeed:
+    RawValue: 0
   _shakeSpeed: 15
   _fallScreenShakeDuration: 0.06
   _fallScreenShakeFrequency: 2
@@ -4457,6 +4479,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -6690,6 +6717,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -7048,6 +7080,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -8884,6 +8921,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -9569,6 +9611,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -10021,6 +10068,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -10557,6 +10609,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -10802,6 +10859,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -10931,6 +10993,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -13039,6 +13106,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -13941,6 +14013,88 @@ PrefabInstance:
       propertyPath: m_RenderingLayerMask
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3345132314065755823, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314065755823, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314065755823, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1359032538}
+    - target: {fileID: 3345132314065755823, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314065755823, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChargeExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314065755823, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.Gameplay.CharacterExplosionBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314065755823, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 80aa92efa7a08ce4c8c7d05e98fb1965,
+        type: 2}
+    - target: {fileID: 3345132314065755823, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Lodis.ScriptableObjects.IntVariable, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314194696762, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314194696762, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314194696762, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1359032538}
+    - target: {fileID: 3345132314194696762, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314194696762, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChargeExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314194696762, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.Gameplay.CharacterExplosionBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3345132314194696762, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 3cc64ad6d1cac594bbf636a0233d9ac0,
+        type: 2}
+    - target: {fileID: 3345132314194696762, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Lodis.ScriptableObjects.IntVariable, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 3397708986823275200, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_IsActive
@@ -13951,6 +14105,88 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: b31a728d406837d4c9a0daf6aa647879, type: 2}
+    - target: {fileID: 3745244757949772943, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244757949772943, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244757949772943, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1359032538}
+    - target: {fileID: 3745244757949772943, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244757949772943, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChargeExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244757949772943, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.Gameplay.CharacterExplosionBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244757949772943, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 3cc64ad6d1cac594bbf636a0233d9ac0,
+        type: 2}
+    - target: {fileID: 3745244757949772943, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Lodis.ScriptableObjects.IntVariable, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244758355603482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244758355603482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244758355603482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1359032538}
+    - target: {fileID: 3745244758355603482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244758355603482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChargeExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244758355603482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.Gameplay.CharacterExplosionBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3745244758355603482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 80aa92efa7a08ce4c8c7d05e98fb1965,
+        type: 2}
+    - target: {fileID: 3745244758355603482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Lodis.ScriptableObjects.IntVariable, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 3850099405710119482, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -14015,6 +14251,88 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.x
       value: 5.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278765960082, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278765960082, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278765960082, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1359032538}
+    - target: {fileID: 4396363278765960082, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278765960082, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChargeExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278765960082, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.Gameplay.CharacterExplosionBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278765960082, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 3cc64ad6d1cac594bbf636a0233d9ac0,
+        type: 2}
+    - target: {fileID: 4396363278765960082, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Lodis.ScriptableObjects.IntVariable, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278905388807, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278905388807, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278905388807, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1359032538}
+    - target: {fileID: 4396363278905388807, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278905388807, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ChargeExplosion
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278905388807, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.Gameplay.CharacterExplosionBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4396363278905388807, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
+      value: 
+      objectReference: {fileID: 11400000, guid: 80aa92efa7a08ce4c8c7d05e98fb1965,
+        type: 2}
+    - target: {fileID: 4396363278905388807, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _onOverlapBegin.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: Lodis.ScriptableObjects.IntVariable, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 4492405424548494987, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
@@ -14126,6 +14444,16 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5599124116377828911, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: debuggingEnabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5599124116525644474, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: debuggingEnabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5620558790479168329, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_Enabled
@@ -14165,6 +14493,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6492097685919417388, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6492097686325182649, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
@@ -14251,6 +14584,16 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 8077344210818359414, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: debuggingEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077344210818359414, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _entityCollider._isAWall
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8091357962834497556, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_Layer
@@ -14301,6 +14644,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0.345
       objectReference: {fileID: 0}
+    - target: {fileID: 8744172616445229444, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: _shieldController
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 8744172616445229445, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
       propertyPath: m_IsActive
@@ -14335,6 +14683,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.y
       value: 110.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 9177687171149757353, guid: 1075e2639ce6cca49b7216bf0359c8e5,
+        type: 3}
+      propertyPath: debuggingEnabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9222724936293841580, guid: 1075e2639ce6cca49b7216bf0359c8e5,
         type: 3}
@@ -14856,6 +15209,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -17004,6 +17362,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -17528,6 +17891,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2123807749}
     m_Modifications:
+    - target: {fileID: 6046806633728468049, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _entityData.Transform._worldScale.Z.RawValue
+      value: 80065
+      objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883322, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
       propertyPath: m_RootOrder
@@ -17695,6 +18063,76 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
+      propertyPath: _panelScale.X.RawValue
+      value: 68812
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _panelScale.Y.RawValue
+      value: 6553
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _panelScale.Z.RawValue
+      value: 98304
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _panelSpacingX.RawValue
+      value: 14417
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _panelSpacingZ.RawValue
+      value: 68812
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _barrierScale.X.RawValue
+      value: 85196
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _barrierScale.Y.RawValue
+      value: 65536
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _barrierScale.Z.RawValue
+      value: 65536
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedPanelScale.X.RawValue
+      value: 68812
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedPanelScale.Y.RawValue
+      value: 6553
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedPanelScale.Z.RawValue
+      value: 98304
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedPanelSpacingX.RawValue
+      value: 14417
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedPanelSpacingZ.RawValue
+      value: 68812
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _panelSpacingMiddle.RawValue
+      value: 16384
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
       propertyPath: _p1BarrierPositions.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -17712,6 +18150,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _rhsBarrierPositions.Array.size
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedPanelSpacingMiddle.RawValue
+      value: 16384
       objectReference: {fileID: 0}
     - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
@@ -17822,6 +18265,26 @@ PrefabInstance:
         type: 3}
       propertyPath: _rhsBarrierPositions.Array.data[3].y
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedGridTransform._worldScale.X.RawValue
+      value: 65536
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedGridTransform._worldScale.Y.RawValue
+      value: 65536
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedGridTransform._worldScale.Z.RawValue
+      value: 80065
+      objectReference: {fileID: 0}
+    - target: {fileID: 7258814305269883325, guid: c882d81c34a860648b748b8330392ff0,
+        type: 3}
+      propertyPath: _fixedGridTransform._localRotation.W.RawValue
+      value: 65536
       objectReference: {fileID: 0}
     - target: {fileID: 8317477168196206713, guid: c882d81c34a860648b748b8330392ff0,
         type: 3}
@@ -18872,6 +19335,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -19162,6 +19630,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -19370,6 +19843,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -20535,6 +21013,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -20928,6 +21411,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -24065,6 +24553,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -24519,6 +25012,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
@@ -25044,6 +25542,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panelData:
+    Position:
+      _x:
+        RawValue: 0
+      _y:
+        RawValue: 0
     Occupied: 0
     Alignment: 0
   _neutralColor: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}

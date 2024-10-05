@@ -64,8 +64,9 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 6
     AbilityID: -1.6914799e+9
-    SpawnEffect: {fileID: 6814929850833701180, guid: 0693a339a1c2f284695c43e038a8b3a8,
+    SpawnEffect: {fileID: 1562327961759149356, guid: 93663854dde2df3449acc2dd76d85671,
       type: 3}
+    SpawnEffectOffset: 0
     HitSpark: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
     HitEffectLevel: 2
@@ -74,7 +75,7 @@ MonoBehaviour:
     CameraShakeDuration: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
-    SpawnSound: {fileID: 8300000, guid: 5e7471077dd4eba46b4f16152e376577, type: 3}
+    SpawnSound: {fileID: 8300000, guid: 4515abd4739dbba468266fe210cc8e37, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:

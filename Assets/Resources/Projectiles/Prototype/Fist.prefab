@@ -249,7 +249,9 @@ MonoBehaviour:
   Marker: 2
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
+  _markCollider: 0
   _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 0}
 --- !u!114 &1942633460931124968
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -267,16 +269,18 @@ MonoBehaviour:
     _layersToIgnore:
       serializedVersion: 2
       m_Bits: 0
+    _tagsToIgnore: []
     _overlap: 1
-  _panelXOffset: 0
-  _panelYOffset: 0
-  _worldYPosition:
-    RawValue: 0
-  _width:
-    RawValue: 65536
-  _height:
-    RawValue: 65536
-  _debuggingEnabled: 1
+    _collideOnAnyRow: 0
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: 0
+    _panelXOffset: 0
+    _worldYPosition:
+      RawValue: 0
+  debuggingEnabled: 1
   ColliderInfo:
     Name: 
     DespawnAfterTimeLimit: 0
@@ -286,6 +290,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
+    TagsToIgnore: []
     MultiHitWaitTime: 0
     Damage: 0
     BaseKnockBack: 0
@@ -325,6 +330,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData:
     Name: Fist
+    Transform:
+      _worldPosition:
+        X:
+          RawValue: 0
+        Y:
+          RawValue: 0
+        Z:
+          RawValue: 0
+      _worldRotation:
+        X:
+          RawValue: 0
+        Y:
+          RawValue: 0
+        Z:
+          RawValue: 0
+        W:
+          RawValue: 65536
+      _worldScale:
+        X:
+          RawValue: 65536
+        Y:
+          RawValue: 65536
+        Z:
+          RawValue: 65536
     X: 0
     Y: 0
     UnityObject: {fileID: 428546948933386335}
@@ -356,11 +385,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _useGravity: 0
-  _ignoreForces: 0
+  _isKinematic: 0
   _isGrounded: 0
   _panelBounceEnabled: 0
   _faceHeading: 0
   _useVelocityForBounce: 0
+  _setGroundPosition: 0
+  _groundPosition:
+    RawValue: -65536
   _bounceCollider: {fileID: 0}
 --- !u!1001 &663129740534462776
 PrefabInstance:

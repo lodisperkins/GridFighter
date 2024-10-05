@@ -15,6 +15,7 @@ namespace Lodis.Gameplay
         {
 			base.Init(newOwner);
             ScaleStats = true;
+            FaceHeading = false;
         }
 
 	    //Called when ability is used

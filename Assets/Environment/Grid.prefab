@@ -49,7 +49,7 @@ MonoBehaviour:
   _barrierRef: {fileID: 3170123629028843225, guid: 922b56b38a41c59479c787713e18b825,
     type: 3}
   _dimensions: {x: 5, y: 3}
-  _panelScale: {x: 1.05, y: 0.1, z: 1.5}
+  _panelScale: {x: 0, y: 0, z: 0}
   _barrierScale: {x: 0, y: 0, z: 0}
   _panelSpacingX: 0
   _panelSpacingZ: 0

@@ -292,9 +292,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _mass: 4
-  _gravity: 50
+  _gravity: 25
   _bounceDampen: 5
   _bounciness: 1.5
+  _friction:
+    RawValue: 19660
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _bounceCombination: 3
@@ -324,6 +326,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _useGravity: 1
   _isKinematic: 0
+  _gridActive: 1
   _isGrounded: 0
   _panelBounceEnabled: 0
   _faceHeading: 0
@@ -1086,7 +1089,14 @@ MonoBehaviour:
   Marker: 0
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
+  _markCollider: 0
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 0}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!114 &6865455213470047562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1277,14 +1287,14 @@ MonoBehaviour:
   _entityData:
     Name: 
     Transform:
-      _worldPosition:
+      _localPosition:
         X:
           RawValue: 0
         Y:
           RawValue: 0
         Z:
           RawValue: 0
-      _worldRotation:
+      _localRotation:
         X:
           RawValue: 0
         Y:
@@ -1318,6 +1328,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -1325,15 +1341,17 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
     _worldYPosition:
       RawValue: 0
-  _debuggingEnabled: 1
+  debuggingEnabled: 0
 --- !u!1 &3280269941161266660
 GameObject:
   m_ObjectHideFlags: 0
@@ -1747,14 +1765,14 @@ MonoBehaviour:
   _entityData:
     Name: Projectile Spawner
     Transform:
-      _worldPosition:
+      _localPosition:
         X:
           RawValue: 0
         Y:
           RawValue: 48365
         Z:
           RawValue: 32768
-      _worldRotation:
+      _localRotation:
         X:
           RawValue: 0
         Y:
@@ -2634,6 +2652,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -2641,15 +2665,17 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 0
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
     _worldYPosition:
       RawValue: 0
-  _debuggingEnabled: 0
+  debuggingEnabled: 0
 --- !u!4 &5386106008844156196 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9130470748693586590, guid: 3750288d4cc41f440964731ec1982842,

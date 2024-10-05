@@ -39,6 +39,7 @@ public class TestForce : MonoBehaviour
     }
 }
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(TestForce))]
 public class TestForceEditor : Editor
 {
@@ -66,3 +67,4 @@ public class TestForceEditor : Editor
         }
     }
 }
+#endif

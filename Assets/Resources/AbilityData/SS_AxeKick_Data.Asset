@@ -17,8 +17,8 @@ MonoBehaviour:
   exampleClip: {fileID: 0}
   AbilityType: 5
   timeActive: 0.3
-  recoverTime: 0.4
-  startUpTime: 0.2
+  recoverTime: 0.2
+  startUpTime: 0.4
   chargeTime: 0
   maxActivationAmount: 1
   EnergyCost: 0
@@ -31,7 +31,7 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 3213832195720607860, guid: 4581ff6148150ec42aaee82c75d0d558,
+  visualPrefab: {fileID: 2168324044689623625, guid: 2fa6702bf2a007744a08c6e1e110d4ac,
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
@@ -65,6 +65,7 @@ MonoBehaviour:
     AbilityType: 5
     AbilityID: 246938960
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset: 0
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2

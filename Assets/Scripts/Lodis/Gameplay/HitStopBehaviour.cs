@@ -1,7 +1,9 @@
 ﻿using System;
+using FixedPoints;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -18,9 +20,9 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _moveset;
 
         private HealthBehaviour _health;
-        private DelayedAction _stopAction;
-        private TimedAction _enableAction;
-        private float _hitStopScale = 0.15f;
+        private FixedTimeAction _stopAction;
+        private FixedTimeAction _enableAction;
+        private Fixed32 _hitStopScale = 0.15f;
         [SerializeField]
         private bool _hitStopActive;
         private (Vector3, Vector3) _frozenMoveVectors;
@@ -56,9 +58,10 @@ namespace Lodis.Gameplay
             //Gets the data for the last collider to hit this object to determine the length of the hit stun
             HitColliderData lastColliderInfo = _health.LastCollider.ColliderInfo;
             //Calculates a small delay for the animation so that it syncs up better with the hit
-            float animationStopDelay = lastColliderInfo.HitStunTime * 0.05f;
+            //Raw value is 0.05
+            Fixed32 animationStopDelay = lastColliderInfo.HitStunTime * new Fixed32(3276);
             //The length of the hit stop is found by combining the globla hit stop scale with the hit stun time and teh ability's modifier
-            float time = lastColliderInfo.HitStunTime;
+            Fixed32 time = lastColliderInfo.HitStunTime;
 
             if (time == 0)
                 return;
@@ -73,7 +76,8 @@ namespace Lodis.Gameplay
             if (_health.LastCollider.Spawner != null)
             { 
                 //Starts the hit stop for the attacker
-                _health.LastCollider.Spawner.UnityObject.GetComponent<HitStopBehaviour>().StartHitStop(time * 1.5f, animationStopDelay, false, false, false,0,0,0);
+                //Raw value is 1.5
+                _health.LastCollider.Spawner.UnityObject.GetComponent<HitStopBehaviour>().StartHitStop(time * new Fixed32(98304), animationStopDelay, false, false, false,0,0,0);
             }
             //Call the same function with the new parameters found
             StartHitStop(time, lastColliderInfo.HitStopShakeStrength, true, true, lastColliderInfo.ShakesCamera, lastColliderInfo.CameraShakeStrength, lastColliderInfo.CameraShakeDuration, lastColliderInfo.CameraShakeFrequency);
@@ -87,15 +91,12 @@ namespace Lodis.Gameplay
         /// <param name="waitForForceApplied">Whether or not we should wait until a force is applied before the hit stop is active.</param>
         /// <param name="shakeCharacter">Whether or not the character model should shake during the hitstop.</param>
         /// <param name="shakeCamera">Whether or not the camera should shake during the hitstop effect.</param>
-        public void StartHitStop(float time, float strength, bool waitForForceApplied, bool shakeCharacter, bool shakeCamera, float cameraShakeStrength, float cameraShakeDuration, int cameraShakeFrequency)
+        public void StartHitStop(Fixed32 time, Fixed32 strength, bool waitForForceApplied, bool shakeCharacter, bool shakeCamera, Fixed32 cameraShakeStrength, Fixed32 cameraShakeDuration, int cameraShakeFrequency)
         {
             HitStopActive = true;
-            //If there is already a timer to make the object stop, cancel it.
-            if (_stopAction?.GetEnabled() == true)
-                RoutineBehaviour.Instance.StopAction(_stopAction);
             //If there is already a timer to make the object enabled, cancel it.
-            if (_enableAction?.GetEnabled() == true)
-                RoutineBehaviour.Instance.StopAction(_enableAction);
+            if (_enableAction?.IsActive == true)
+                FixedPointTimer.StopAction(_enableAction);
 
             //Shake the camera or the chracter based on the arguments given
             if (shakeCharacter)
@@ -109,7 +110,7 @@ namespace Lodis.Gameplay
             //The animator should be disabled only after the animation stop delay time has passed.
 
 
-            _enableAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            _enableAction = FixedPointTimer.StartNewTimedAction(() =>
             {
 
                 RoutineBehaviour.Instance.CharacterTimeScale = 1;
@@ -123,7 +124,7 @@ namespace Lodis.Gameplay
 
                 _frozenMoveVectors.Item1 = Vector3.zero;
                 _frozenMoveVectors.Item2 = Vector3.zero;
-            }, TimedActionCountType.SCALEDTIME, time);
+            }, time);
 
             RoutineBehaviour.Instance.CharacterTimeScale = 0;
         }
@@ -139,7 +140,7 @@ namespace Lodis.Gameplay
 
             HitStopActive = false;
             _shakeBehaviour.StopShaking();
-            RoutineBehaviour.Instance.StopAction(_enableAction);
+            FixedPointTimer.StopAction(_enableAction);
             RoutineBehaviour.Instance.CharacterTimeScale = 1;
         }
     }

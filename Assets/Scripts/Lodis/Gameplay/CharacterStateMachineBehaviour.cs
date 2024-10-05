@@ -62,6 +62,20 @@ namespace Lodis.Gameplay
             _onStateChanged?.AddListener(action);
         }
 
+        /// <summary>
+        /// Returns true if the current state is one of the given states.
+        /// </summary>
+        public bool CompareState(params string[] states)
+        {
+            foreach (var item in states)
+            {
+                if (CurrentState == item)
+                    return true;
+            }
+
+            return false;
+        }
+
         private void Update()
         {
             //if (_currentState != _stateMachine.CurrentState)

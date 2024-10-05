@@ -277,11 +277,29 @@ public struct GridGame : IGame
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
-            AddEntityToGame(entity.Transform.GetChild(i).Owner);
+            AddEntityToGame(entity.Transform.GetChild(i).Entity);
         }
 
-        if (entity.Collider != null || entity.HasComponent<ColliderBehaviour>())
+        if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
             ActivePhysicsEntities.Add(entity);
+    }
+
+    public static void AddPhysicsEntity(EntityData entity)
+    {
+        if (!ActiveEntities.Contains(entity))
+        {
+            throw new System.Exception("Cannot add a physics entity that has not been added to the game. Entity was " + entity.Name);
+        }
+
+        if (ActivePhysicsEntities.Contains(entity) || entity.Colliders?.Length == 0)
+            return;
+
+        ActivePhysicsEntities.Add(entity);
+    }
+
+    public static void RemovePhysicsEntity(EntityData entity)
+    {
+        ActivePhysicsEntities.Remove(entity);
     }
 
     /// <summary>
@@ -295,16 +313,16 @@ public struct GridGame : IGame
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
-            EntityData child = entity.Transform.GetChild(i).Owner;
+            EntityData child = entity.Transform.GetChild(i).Entity;
             ActiveEntities.Remove(child);
             child.End();
 
-            if (child.Collider != null)
+            if (child.Colliders?.Length > 0)
                 ActivePhysicsEntities.Remove(child);
 
         }
 
-        if (entity.Collider != null || entity.HasComponent<ColliderBehaviour>())
+        if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
             ActivePhysicsEntities.Remove(entity);
     }
 
@@ -360,41 +378,37 @@ public struct GridGame : IGame
                         continue;
                 }
 
-                //Cache attached colliders
-                Collision collisionData1;
-                Collision collisionData2;
-                GridCollider collider1 = ActivePhysicsEntities[row].Collider;
-                GridCollider collider2 = ActivePhysicsEntities[column].Collider;
+                //Cache current entities
+                EntityData entity1 = ActivePhysicsEntities[row];
+                EntityData entity2 = ActivePhysicsEntities[column];
 
-                //If they aren't on the same row there's no point in checking collision.
-                if ((collider1 == null || collider2 == null))
-                    continue;
+                if (entity1.Colliders == null || entity2.Colliders == null) continue;
 
-                //Check the next thing if a collision wasn't found.
-                collider1.CheckCollision(collider2, out collisionData1);
+                //Check collision between all possible colliders
+                for (int i = 0; i < entity1.Colliders.Length; i++)
+                {
+                    for (int j = 0; j < entity2.Colliders.Length; j++)
+                    {
+                        GridCollider collider1 = entity1.Colliders[i];
+                        GridCollider collider2 = entity2.Colliders[j];
 
-                ////Flip the values for the other colliders data.
-                //collisionData2 = collisionData1;
-                //collisionData2.Normal = collisionData1.Normal * -1;
-                //collisionData2.Collider = collider1;
-                //collisionData2.Entity = ActivePhysicsEntities[row];
+                        //If they aren't on the same row there's no point in checking collision.
+                        if ((collider1 == null || collider2 == null))
+                            continue;
 
-                ////Handle the collision events based on whether or not the collision should treat the objects like solid surfaces.
-                ////Collision stay events are handled here since the need to be called every frame while enter/exit events are handled by the collider.
-                //if (!collider1.Overlap && !collider2.Overlap)
-                //{
-                //    collider1.OwnerPhysicsComponent.ResolveCollision(collisionData1);
-                    
-                //    collider1.Owner.OnCollisionStay(collisionData1);
-                //    collider2.Owner.OnCollisionStay(collisionData2);
-                //}
-                //else
-                //{
-                //    collider1.Owner.OnOverlapStay(collisionData1);
-                //    collider2.Owner.OnOverlapStay(collisionData2);
-                //}
+                        //Check the next thing if a collision wasn't found.
+                        collider1.CheckCollision(collider2);
+                    }
+                }
             }
 
+        }
+
+
+        //Component late update
+        for (int i = 0; i < ActiveEntities.Count; i++)
+        {
+            ActiveEntities[i].LateTick(FixedTimeStep);
         }
 
     }

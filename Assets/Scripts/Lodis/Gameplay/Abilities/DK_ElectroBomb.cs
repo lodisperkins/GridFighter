@@ -35,7 +35,7 @@ namespace Lodis.Gameplay
         private float _slowMotionTime;
         private GameObject _thalamusInstance;
         private int _thalamusLayer;
-        private Transform _heldItemSpawn;
+        private FTransform _heldItemSpawn;
         private GameObject _axeKick;
         private Vector3 _defaultCameraMoveSpeed;
 
@@ -138,11 +138,11 @@ namespace Lodis.Gameplay
 
             DisableAccessory();
 
-            _heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
+            //_heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
             if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
-                _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
+               // _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
 
-            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
+            //_thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
             _thalamusLayer = _thalamusInstance.layer;
 
             _thalamusInstance.layer = LayerMask.NameToLayer("BattleOverlayEffect");
@@ -251,11 +251,11 @@ namespace Lodis.Gameplay
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
 
-            _heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
+            //_heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
             if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
-                _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
+              //  _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
 
-            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
+            //_thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
             _thalamusInstance.transform.localRotation = Quaternion.identity;
             _thalamusInstance.layer = LayerMask.NameToLayer("Default");
 

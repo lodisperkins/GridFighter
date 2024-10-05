@@ -109,7 +109,18 @@ namespace Lodis.UI
             SceneManagerBehaviour.Instance.P2Devices.Value = new InputDevice[0];
             
             _inputManager = GetComponent<PlayerInputManager>();
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
+            if (!GridGameManager.IsHost)
+            {
+                _colorManager.SetPlayerColor(1, 5);
+                _p1ColorIndex = 5;
+                _canSelectCharP1 = true;
+                SetDataP1(_defaultAICharacter);
+                _player1JoinInstruction.enabled = false;
+                _player1Root.SetActive(false);
+                _currentPlayer = 2;
+            }
+
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || GridGameManager.IsHost)
             {
                 _colorManager.SetPlayerColor(2, 5);
                 _p2ColorIndex = 5;
@@ -153,7 +164,7 @@ namespace Lodis.UI
             if (!playerInput)
                 return;
 
-            if (playerNum == 1)
+            if (playerNum == 1 && GridGameManager.IsHost)
             {
                 _player1EventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
                 _player1EventSystem.playerRoot = _player1Root;
@@ -167,7 +178,7 @@ namespace Lodis.UI
 
                 _p1Rebinder.ResetToDefault();
             }
-            else if (playerNum == 2)
+            else if (playerNum == 2 && !GridGameManager.IsHost)
             {
                 _player2EventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
                 _player2EventSystem.playerRoot = _player2Root;
@@ -293,6 +304,8 @@ namespace Lodis.UI
                     RoutineBehaviour.Instance.StartNewTimedAction(args => ActivateMenu(playerInput, num), TimedActionCountType.FRAME, 1);
                     RoutineBehaviour.Instance.StartNewTimedAction(args => SetCanSelectChar(num), TimedActionCountType.FRAME, 2);
                 }
+
+                SetDataP1(_defaultAICharacter);
             };
 
             controls.UI.Navigate.started += context => GoToPage(context, num);

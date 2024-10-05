@@ -83,6 +83,7 @@ MonoBehaviour:
     AbilityType: 1
     AbilityID: -225857060
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
     HitStopShakeStrength: 0.8

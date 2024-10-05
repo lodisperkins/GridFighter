@@ -2,6 +2,7 @@
 using Lodis.Movement;
 using Lodis.Utility;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -11,17 +12,19 @@ using UnityEngine.Events;
 
 namespace Lodis.Gameplay
 {
-    [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class ColliderBehaviour : SimulationBehaviour
     {
         [SerializeField] private CustomEventSystem.Event _onHitObject;
+        [SerializeField] private UnityEvent _onOverlapBegin;
+        [SerializeField] private UnityEvent _onHitBegin;
         [SerializeField] private GridCollider _entityCollider;
-        [SerializeField] protected bool _debuggingEnabled;
+        [SerializeField] private bool debuggingEnabled;
         //---
         protected Dictionary<GameObject, Fixed32> Collisions;
         protected CustomEventSystem.GameEventListener ReturnToPoolListener;
         protected float _lastHitFrame;
         protected CollisionEvent _onHit;
+        private CollisionGroupBehaviour groupManager;
 
         private GridPhysicsBehaviour _gridPhysics;
         private EntityData _spawner;
@@ -30,20 +33,37 @@ namespace Lodis.Gameplay
         public string[] TagsToIgnore { get => EntityCollider.TagsToIgnore; set => EntityCollider.TagsToIgnore = value; }
         public GridPhysicsBehaviour GridPhysics { get => _gridPhysics; private set => _gridPhysics = value; }
         public EntityData Spawner { get => _spawner; set { _spawner = value; } }
-        public GridCollider EntityCollider { get => _entityCollider; private set => _entityCollider = value; }
+        public GridCollider EntityCollider { get => _entityCollider; set => _entityCollider = value; }
+        public CustomEventSystem.Event OnHitObject { get => _onHitObject; set => _onHitObject = value; }
+        public bool DebuggingEnabled { get => debuggingEnabled; set => debuggingEnabled = value; }
+        public CollisionGroupBehaviour GroupManager { get => groupManager; set => groupManager = value; }
+
+        public override void Init()
+        {
+            base.Init();
+
+            ReturnToPoolListener = gameObject?.AddComponent<CustomEventSystem.GameEventListener>();
+            ReturnToPoolListener.Init(ObjectPoolBehaviour.Instance.OnReturnToPool, gameObject);
+        }
 
         protected override void Awake()
         {
             base.Awake();
-            ReturnToPoolListener = gameObject.AddComponent<CustomEventSystem.GameEventListener>();
-            ReturnToPoolListener.Init(ObjectPoolBehaviour.Instance.OnReturnToPool, gameObject);
             Collisions = new Dictionary<GameObject, Fixed32>();
-            GridPhysics = GetComponent<GridPhysicsBehaviour>();
+            GridPhysics = Entity.GetComponent<GridPhysicsBehaviour>();
 
-            _entityCollider.Init(Entity.Data, GridPhysics);
+            if (!GridPhysics)
+                throw new Exception(Entity.name + " has a collider but is missing a GridPhysicsBehaviour.");
+
+            if (_entityCollider == null)
+                _entityCollider = new GridCollider();
+
+            _entityCollider.Init(Entity, GridPhysics);
 
             EntityCollider.OnCollisionEnter += RaiseHitEvents;
+            EntityCollider.OnCollisionEnter += c => _onHitBegin?.Invoke();
             EntityCollider.OnOverlapEnter += RaiseHitEvents;
+            EntityCollider.OnOverlapEnter += c => _onOverlapBegin?.Invoke();
         }
 
         protected virtual void Start()
@@ -89,25 +109,32 @@ namespace Lodis.Gameplay
 
         private void OnDrawGizmos()
         {
-            if (!_debuggingEnabled) return;
+            if (!DebuggingEnabled) return;
 
-            Vector3 size = new Vector3(_entityCollider.Width, _entityCollider.Height, 1);
-            Vector3 offset = new Vector3(1.5f * _entityCollider.PanelYOffset, _entityCollider.WorldYPosition, 1.05f * _entityCollider.PanelXOffset);
+            float width = _entityCollider.IsAWall ? 0.1f : _entityCollider.Width;
+            Vector3 size = new Vector3(width, _entityCollider.Height, 1);
+            Vector3 offset = new Vector3(1.5f * _entityCollider.PanelXOffset, _entityCollider.WorldYPosition, 2 * _entityCollider.PanelYOffset);
 
-            Gizmos.DrawCube(gameObject.transform.position + offset, size);
+            Transform rootTransform = EntityCollider.Entity ? _entityCollider.Entity.transform : transform; ;
+
+            Gizmos.DrawCube(rootTransform.position + offset, size);
         }
 
         public override void Deserialize(BinaryReader br)
         {
         }
-        public virtual void InitCollider(Fixed32 width, Fixed32 height, EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
+        public virtual void InitCollider(Fixed32 width, Fixed32 height, EntityDataBehaviour owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
         {
             _entityCollider.Init(width, height, owner, ownerPhysicsComponent);
         }
 
         private void RaiseHitEvents(Collision collision)
         {
-            _onHitObject?.Raise(gameObject);
+            if (groupManager == null)
+                OnHitObject?.Raise(gameObject);
+            else
+                OnHitObject?.Raise(groupManager.gameObject);
+
             _onHit?.Invoke(collision);
         }
     }

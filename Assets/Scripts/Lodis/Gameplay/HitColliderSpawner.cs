@@ -26,11 +26,11 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public static HitColliderBehaviour SpawnCollider(FVector3 position, Fixed32 width, Fixed32 height, float damage,
             float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
-            float timeActive = 0, EntityData owner = null, MarkerType marker = MarkerType.DANGER)
+            float timeActive = 0, EntityDataBehaviour owner = null, MarkerType marker = MarkerType.DANGER)
         {
             //Create a new grid collider in the simulation
             EntityData colliderEntity = GridGame.SpawnEntity(position);
-            colliderEntity.Name = owner.Name + "Collider";
+            colliderEntity.Name = owner.Data.Name + "Collider";
 
             //Initialize collider stats
             HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
@@ -61,11 +61,11 @@ namespace Lodis.Gameplay
         /// <param name="size">The dimension of this collider</param>
         /// <param name="hitCollider">The hit collider this collider will copy its values from</param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnCollider(FVector3 position, Fixed32 width, Fixed32 height, HitColliderData info, EntityData owner)
+        public static HitColliderBehaviour SpawnCollider(FVector3 position, Fixed32 width, Fixed32 height, HitColliderData info, EntityDataBehaviour owner)
         {
             //Create a new grid collider in the simulation
             EntityData colliderEntity = GridGame.SpawnEntity(position);
-            colliderEntity.Name = owner.Name + "Collider";
+            colliderEntity.Name = owner.Data.Name + "Collider";
 
             //Initialize collider stats
             HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
@@ -93,11 +93,11 @@ namespace Lodis.Gameplay
         /// <param name="timeActive">The amount of time this actor can be active for</param>
         /// <param name="owner">The owner of this collider. Collision with owner are ignored</param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnCollider(FTransform parent, Fixed32 width, Fixed32 height, HitColliderData info, EntityData owner = null)
+        public static HitColliderBehaviour SpawnCollider(FTransform parent, Fixed32 width, Fixed32 height, HitColliderData info, EntityDataBehaviour owner = null)
         {
             //Create a new grid collider in the simulation
             EntityData colliderEntity = GridGame.SpawnEntity(owner);
-            colliderEntity.Name = owner.Name + "Collider";
+            colliderEntity.Name = owner.Data.Name + "Collider";
 
             //Initialize collider stats
             HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
@@ -127,11 +127,11 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public static HitColliderBehaviour SpawnCollider(FTransform parent, Fixed32 width, Fixed32 height, float damage,
             float baseKnockBack, float hitAngle, bool despawnAfterTimeLimit,
-            float timeActive, EntityData owner = null)
+            float timeActive, EntityDataBehaviour owner = null)
         {
             //Create a new grid collider in the simulation
             EntityData colliderEntity = GridGame.SpawnEntity(owner);
-            colliderEntity.Name = owner.Name + "Collider";
+            colliderEntity.Name = owner.Data.Name + "Collider";
 
             //Initialize collider stats
             HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();

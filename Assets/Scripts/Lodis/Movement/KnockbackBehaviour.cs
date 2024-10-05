@@ -375,7 +375,7 @@ namespace Lodis.Movement
             float velocityMagnitude = knockBackScript.Physics.Velocity.Magnitude;
 
             //Apply ricochet force and damage
-            damageScript.TakeDamage(collision.OtherEntity, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+            damageScript.TakeDamage(Entity, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
         }
 
         private void ActivateHitStunByTimer(float timeInHitStun)
@@ -443,7 +443,7 @@ namespace Lodis.Movement
             if (hitStun > 0)
                 _isFlinching = true;
 
-            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.Value)
+            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.Value || Physics.BouncePending)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -500,7 +500,7 @@ namespace Lodis.Movement
 
             ActivateHitStunByTimer(info.HitStunTime);
 
-            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.Value)
+            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.Value || Physics.BouncePending)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -510,7 +510,7 @@ namespace Lodis.Movement
                 //Physics.RB.isKinematic = false;
 
                 //Add force to objectd
-                Physics.ApplyImpulseForce(_launchForce, false, info.IgnoreMomentum);
+                Physics.ApplyImpulseForce(_launchForce, true, info.IgnoreMomentum);
 
                 if (_launchForce.Magnitude > 0)
                 {

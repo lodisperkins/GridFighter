@@ -7,11 +7,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using Types;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.Animations;
 using UnityEngine.Events;
-using UnityEngine.Playables;
 
 namespace Lodis.Gameplay
 {
@@ -639,17 +636,13 @@ namespace Lodis.Gameplay
             _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.Y);
         }    
 
-        public override void Tick(Fixed32 dt)
+        private void Update()
         {
-            base.Tick(dt);
-            _animator.Update(dt);
+            _animator.Update(Time.deltaTime);
 
             if (_characterStateMachine.CurrentState == "Moving")
                 SetMoveAnimParameters();
-        }
 
-        private void Update()
-        {
             if (_characterStateManager.StateMachine.CurrentState != "Attacking" && AbilityAnimationRoutine != null)
             {
                 StopCoroutine(AbilityAnimationRoutine);
@@ -674,14 +667,42 @@ namespace Lodis.Gameplay
             _animatingAbility = _animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
         }
 
+        /// <summary>
+        /// Saves the current animation state, including the current timestamp of the playing animation.
+        /// </summary>
         public override void Serialize(BinaryWriter bw)
         {
-            throw new System.NotImplementedException();
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            // Save the name of the current animation clip and the playback time
+            bw.Write(stateInfo.shortNameHash); // Clip name
+            bw.Write(stateInfo.normalizedTime); // Current timestamp of the animation
         }
 
+        /// <summary>
+        /// Loads the saved animation state and resumes the animation from the saved timestamp.
+        /// </summary>
         public override void Deserialize(BinaryReader br)
         {
-            throw new System.NotImplementedException();
+            // Load the name of the animation clip and the playback time
+            string clipName = br.ReadString();
+            float playbackTime = br.ReadSingle();
+
+            if (string.IsNullOrEmpty(clipName))
+            {
+                Debug.LogWarning("No animation clip was serialized.");
+                return;
+            }
+
+            // Find the animation clip by name
+            foreach (AnimationClip clip in _animator.runtimeAnimatorController.animationClips)
+            {
+                if (clip.name == clipName)
+                {
+                    // Play the animation from the saved playback time
+                    _animator.Play(clipName, _animationLayer, playbackTime);
+                    break;
+                }
+            }
         }
     }
 }

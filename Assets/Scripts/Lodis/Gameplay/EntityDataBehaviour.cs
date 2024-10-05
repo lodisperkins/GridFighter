@@ -31,6 +31,7 @@ public class EntityDataBehaviour : MonoBehaviour
     public bool AddToGameManually { get => _addToGameManually; private set => _addToGameManually = value; }
 
     public bool Active { get => Data.Active; }
+    public Transform VisualRoot { get => _visualRoot; set => _visualRoot = value; }
 
     // Start is called before the first frame update
     void Awake()
@@ -56,8 +57,14 @@ public class EntityDataBehaviour : MonoBehaviour
             Data.Transform.AddChild(entity.Data.Transform);
         }
 
-        if (string.IsNullOrEmpty(_entityData.Name))
+        if (_entityData == null)
+        {
+            _entityData = new EntityData(gameObject.name);
+        }
+        else if (string.IsNullOrEmpty(_entityData.Name))
+        {
             _entityData.Name = gameObject.name;
+        }
 
         Data.Init();
         Data.OnTick += UpdateUnityTransform;
@@ -95,8 +102,8 @@ public class EntityDataBehaviour : MonoBehaviour
 
     private void UpdateUnityTransform(Fixed32 dt)
     {
-        if (_visualRoot)
-            _visualRoot.SetPositionAndRotation((Vector3)Data.Transform.WorldPosition, (Quaternion)Data.Transform.WorldRotation);
+        if (VisualRoot)
+            VisualRoot.SetPositionAndRotation((Vector3)Data.Transform.WorldPosition, (Quaternion)Data.Transform.WorldRotation);
     }
 
     private void OnEnable()

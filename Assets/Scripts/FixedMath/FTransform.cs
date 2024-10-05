@@ -11,25 +11,25 @@ namespace FixedPoints
     [Serializable]
     public class FTransform
     {
-        [SerializeField] private FVector3 _worldPosition;
-        [SerializeField] private FQuaternion _worldRotation;
+        [SerializeField] private FVector3 _localPosition;
+        [SerializeField] private FQuaternion _localRotation;
         [SerializeField] private FVector3 _worldScale;
-        public EntityData Owner { get; private set; }
+        public EntityData Entity { get; private set; }
 
         private FTransform parent;
         private List<FTransform> children;
 
         public FTransform(EntityData owner)
         {
-            _worldPosition = new FVector3();
-            _worldRotation = new FQuaternion(0, 0, 0, 1);
+            _localPosition = new FVector3();
+            _localRotation = new FQuaternion(0, 0, 0, 1);
             _worldScale = new FVector3(1, 1, 1);
-            Owner = owner;
+            Entity = owner;
         }
 
         public FTransform(FVector3 position, FQuaternion rotation, FVector3 scale, EntityData owner)
         {
-            Owner = owner;
+            Entity = owner;
             WorldPosition = position;
             WorldRotation = rotation;
             WorldScale = scale;
@@ -96,17 +96,20 @@ namespace FixedPoints
             {
                 if (parent == null)
                 {
-                    return _worldPosition;
+                    return _localPosition;
                 }
                 else
                 {
                     // World position is the parent's world position plus the local position transformed by the parent's rotation and scale
-                    return parent.WorldPosition + (parent.WorldRotation * FVector3.Scale(parent.WorldScale, _worldPosition));
+                    return TransformPoint(Parent, LocalPosition);
                 }
             }
             set
             {
-                _worldPosition = value; // Directly update the private value
+                if (parent != null)
+                    _localPosition = InverseTransformPoint(parent, value); // Directly update the private value
+                else
+                    _localPosition = value;
             }
         }
 
@@ -116,17 +119,20 @@ namespace FixedPoints
             {
                 if (parent == null)
                 {
-                    return _worldRotation;
+                    return _localRotation;
                 }
                 else
                 {
                     // World rotation is the parent's world rotation combined with the local rotation
-                    return parent.WorldRotation * _worldRotation;
+                    return TransformRotation(Parent, LocalRotation);
                 }
             }
             set
             {
-                _worldRotation = value; // Directly update the private value
+                if (parent != null)
+                    _localRotation = InverseTransformRotation(parent, value); // Directly update the private value
+                else
+                    _localRotation = value;
             }
         }
 
@@ -155,13 +161,11 @@ namespace FixedPoints
         {
             get
             {
-                if (parent == null) return WorldPosition;
-                return FTransform.InverseTransformPoint(parent, WorldPosition);
+                return _localPosition;
             }
             set
             {
-                if (parent == null) _worldPosition = value;
-                else _worldPosition = FTransform.TransformPoint(parent, value);
+                _localPosition = value;
             }
         }
 
@@ -169,13 +173,11 @@ namespace FixedPoints
         {
             get
             {
-                if (parent == null) return WorldRotation;
-                return FTransform.InverseTransformRotation(parent, WorldRotation);
+                return _localRotation;
             }
             set
             {
-                if (parent == null) _worldRotation = value;
-                else _worldRotation = FTransform.TransformRotation(parent, value);
+                _localRotation = value;
             }
         }
 
@@ -241,7 +243,7 @@ namespace FixedPoints
                 if (forward == value) return;
 
                 FQuaternion targetRotation = FQuaternion.LookRotation(value, FVector3.Up);
-                _worldRotation = targetRotation;
+                _localRotation = targetRotation;
             }
         }
 

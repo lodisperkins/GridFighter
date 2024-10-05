@@ -56,7 +56,7 @@ MonoBehaviour:
     KnockBackScale: 1.5
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.2
+    HitAngle: 0.6
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime: 0.2
@@ -64,8 +64,9 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 4
     AbilityID: -767001100
-    SpawnEffect: {fileID: 6814929850833701180, guid: 0693a339a1c2f284695c43e038a8b3a8,
+    SpawnEffect: {fileID: 1562327961759149356, guid: 122567848b9b1a34b85d0fd7ad4a2ad8,
       type: 3}
+    SpawnEffectOffset: 0.5
     HitSpark: {fileID: 2972137616953671510, guid: 3b6d31ab622956941a502c2a29929280,
       type: 3}
     HitEffectLevel: 3
@@ -79,7 +80,7 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 20
+    value: 40
   - name: MaxInstances
     value: 1
   animationType: 3

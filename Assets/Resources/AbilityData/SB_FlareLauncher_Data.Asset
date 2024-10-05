@@ -66,6 +66,7 @@ MonoBehaviour:
     AbilityID: -944582500
     SpawnEffect: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
       type: 3}
+    SpawnEffectOffset: 0
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2

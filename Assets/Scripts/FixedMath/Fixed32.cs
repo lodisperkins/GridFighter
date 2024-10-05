@@ -91,7 +91,8 @@ namespace Types
 
         public static Fixed32 Abs(Fixed32 value)
         {
-            return value < 0 ? -value : value;
+            Fixed32 result = value < new Fixed32(0) ? -value : value;
+            return result;
         }
 
         // Square Root function for Fixed32
@@ -122,6 +123,42 @@ namespace Types
             return guess;
         }
 
+        public static Fixed32 Round(Fixed32 value)
+        {
+            Fixed32 half = (Fixed32)0.5f;  // Representing 0.5 in Fixed32
+            Fixed32 roundedValue;
+
+            // If the value is positive, add 0.5 and truncate.
+            if (value >= 0)
+            {
+                roundedValue = value + half;
+            }
+            // If the value is negative, subtract 0.5 and truncate.
+            else
+            {
+                roundedValue = value - half;
+            }
+
+            // Truncate the fractional part by shifting to the right, equivalent to Mathf.Floor for positive numbers.
+            return new Fixed32(roundedValue.WholeNumber << value.Scale);
+        }
+
+
+
+        public static Fixed32 Clamp(Fixed32 value, Fixed32 a, Fixed32 b)
+        {
+            if (value < a)
+            {
+                value = a;
+            }
+            else if (value > b)
+            {
+                value = b;
+            }
+
+            return value;   
+        }
+
         public static Fixed32 operator +(Fixed32 leftHandSide, Fixed32 rightHandSide)
         {
             leftHandSide.RawValue += rightHandSide.RawValue;
@@ -132,6 +169,12 @@ namespace Types
         {
             leftHandSide.RawValue -= rightHandSide.RawValue;
             return leftHandSide;
+        }
+
+        public static Fixed32 operator -(Fixed32 num)
+        {
+            num.RawValue = -num.RawValue;
+            return num;
         }
 
         public static Fixed32 operator *(Fixed32 leftHandSide, Fixed32 rightHandSide)
@@ -187,6 +230,29 @@ namespace Types
         {
             return (Fixed32)Mathf.Cos(radians);
         }
+
+        public static Fixed32 Acos(Fixed32 x)
+        {
+            // Ensure the input is within the valid range [-1, 1]
+            if (x < -1 || x > 1)
+                throw new ArgumentOutOfRangeException("x", "Acos input must be between -1 and 1");
+
+            // Coefficients for the approximation of acos
+            // Polynomial approximation for acos(x) when x is in [-1, 1]
+            Fixed32 c1 = new Fixed32(102939);   // approximately 1.5707288
+            Fixed32 c2 = new Fixed32(-13901);  // approximately -0.2121144
+            Fixed32 c3 = new Fixed32(4866);    // approximately 0.0742610
+            Fixed32 c4 = new Fixed32(-1227);    // approximately -0.0187293
+
+            // Calculate the square root of (1 - x^2)
+            Fixed32 sqrtTerm = Fixed32.Sqrt(1 - x);
+
+            // Polynomial approximation
+            Fixed32 result = c1 + (x * (c2 + (x * (c3 + (x * c4)))));
+
+            return sqrtTerm * result;
+        }
+
 
         public static Fixed32 Tan(Fixed32 angle)
         {

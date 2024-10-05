@@ -52,7 +52,9 @@ MonoBehaviour:
   Marker: 2
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
+  _markCollider: 0
   _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 0}
 --- !u!114 &4641103313446305388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -79,11 +81,14 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _useGravity: 0
-  _ignoreForces: 0
+  _isKinematic: 0
   _isGrounded: 0
   _panelBounceEnabled: 0
   _faceHeading: 0
   _useVelocityForBounce: 0
+  _setGroundPosition: 0
+  _groundPosition:
+    RawValue: -65536
   _bounceCollider: {fileID: 0}
 --- !u!114 &1652091589986752385
 MonoBehaviour:
@@ -102,7 +107,9 @@ MonoBehaviour:
     _layersToIgnore:
       serializedVersion: 2
       m_Bits: 0
+    _tagsToIgnore: []
     _overlap: 1
+    _collideOnAnyRow: 0
     _width:
       RawValue: 65536
     _height:
@@ -111,7 +118,7 @@ MonoBehaviour:
     _panelXOffset: 0
     _worldYPosition:
       RawValue: 0
-  _debuggingEnabled: 1
+  debuggingEnabled: 1
   ColliderInfo:
     Name: 
     DespawnAfterTimeLimit: 0
@@ -121,6 +128,7 @@ MonoBehaviour:
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
+    TagsToIgnore: []
     MultiHitWaitTime: 0
     Damage: 0
     BaseKnockBack: 0

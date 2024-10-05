@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4555501451664436271
 Transform:
   m_ObjectHideFlags: 0
@@ -149,7 +149,124 @@ MonoBehaviour:
   Marker: 2
   _markPanelsBasedOnCollision: 1
   _markPanelAtGridLocation: 0
+  _markCollider: 0
   _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 0}
+--- !u!1 &1732049487632498474
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1923578926838280114}
+  - component: {fileID: 3556605455510110903}
+  - component: {fileID: 4768092695017605785}
+  m_Layer: 16
+  m_Name: HitBox(1,0)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1923578926838280114
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732049487632498474}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2625608556329051511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3556605455510110903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732049487632498474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _tagsToIgnore: []
+    _overlap: 1
+    _collideOnAnyRow: 0
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: 0
+    _panelXOffset: 1
+    _worldYPosition:
+      RawValue: 0
+  debuggingEnabled: 1
+  ColliderInfo:
+    Name: AxeKickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057143
+    TagsToIgnore: []
+    MultiHitWaitTime: 0
+    Damage: 3
+    BaseKnockBack: 0.7
+    KnockBackScale: 0.5
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 0.3
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.05
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 1
+    AbilityID: -225857060
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+--- !u!114 &4768092695017605785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1732049487632498474}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Marker: 2
+  _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _markCollider: 1
+  _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 3556605455510110903}
 --- !u!1 &2168324044689623625
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,9 +276,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7753967484100786593}
-  - component: {fileID: 1246134418055472313}
   - component: {fileID: 6992580504982431711}
-  - component: {fileID: 5920515064345373019}
+  - component: {fileID: 7457857602030291921}
+  - component: {fileID: 7110470185185689662}
   m_Layer: 16
   m_Name: AxeKick
   m_TagString: Untagged
@@ -186,63 +303,9 @@ Transform:
   - {fileID: 1787618871932538660}
   - {fileID: 2074141430552017565}
   - {fileID: 4555501451664436271}
+  - {fileID: 2625608556329051511}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1246134418055472313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2168324044689623625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _onHitObject: {fileID: 0}
-  _entityCollider:
-    _layersToIgnore:
-      serializedVersion: 2
-      m_Bits: 0
-    _overlap: 0
-  _width: 4.04
-  _height: 2.19
-  _debuggingEnabled: 1
-  ColliderInfo:
-    Name: 
-    DespawnAfterTimeLimit: 0
-    TimeActive: 0
-    DestroyOnHit: 0
-    IsMultiHit: 0
-    LayersToIgnore:
-      serializedVersion: 2
-      m_Bits: 0
-    MultiHitWaitTime: 0
-    Damage: 0
-    BaseKnockBack: 0
-    KnockBackScale: 0
-    ClampForceWithinRing: 0
-    IgnoreMomentum: 0
-    HitAngle: 0
-    AdjustAngleBasedOnAlignment: 0
-    TypeOfDamage: 0
-    HitStunTime: 0
-    Priority: 0
-    OwnerAlignement: 0
-    AbilityType: 0
-    AbilityID: 0
-    SpawnEffect: {fileID: 0}
-    HitSpark: {fileID: 0}
-    HitEffectLevel: 0
-    HitStopShakeStrength: 0
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
-    CameraShakeFrequency: 0
-    ShakesCamera: 0
-    SpawnSound: {fileID: 0}
-    HitSound: {fileID: 0}
-    DespawnSound: {fileID: 0}
 --- !u!114 &6992580504982431711
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -257,12 +320,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _entityData:
     Name: New Entity
+    Transform:
+      _worldPosition:
+        X:
+          RawValue: 0
+        Y:
+          RawValue: 0
+        Z:
+          RawValue: 0
+      _worldRotation:
+        X:
+          RawValue: 0
+        Y:
+          RawValue: 0
+        Z:
+          RawValue: 0
+        W:
+          RawValue: 65536
+      _worldScale:
+        X:
+          RawValue: 65536
+        Y:
+          RawValue: 65536
+        Z:
+          RawValue: 65536
     X: 0
     Y: 0
-    UnityObject: {fileID: 0}
+    UnityObject: {fileID: 2168324044689623625}
   _addToGameManually: 0
-  _visualRoot: {fileID: 0}
---- !u!114 &5920515064345373019
+  _visualRoot: {fileID: 7753967484100786593}
+--- !u!114 &7457857602030291921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -287,13 +374,538 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _useGravity: 1
-  _ignoreForces: 0
+  _useGravity: 0
+  _isKinematic: 0
   _isGrounded: 0
   _panelBounceEnabled: 0
   _faceHeading: 0
   _useVelocityForBounce: 0
+  _setGroundPosition: 0
+  _groundPosition:
+    RawValue: -65536
   _bounceCollider: {fileID: 0}
+--- !u!114 &7110470185185689662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2168324044689623625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8866f96c2ae981b4b87ced854a2a1216, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colliders:
+  - {fileID: 3556605455510110903}
+  - {fileID: 5712276960567258736}
+  - {fileID: 2500919090096829159}
+  - {fileID: 6451030275633810592}
+  - {fileID: 5964733128889066971}
+  - {fileID: 1743547572888053483}
+  _groupName: Axe Kick Colliders
+  _isMultiHit: 0
+  _despawnAfterTimeLimit: 1
+  _despawnTime:
+    RawValue: 13107
+  _rootEntity: {fileID: 6992580504982431711}
+--- !u!1 &2573303337011244584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6838175719026717242}
+  - component: {fileID: 2500919090096829159}
+  - component: {fileID: 7027648874756282225}
+  m_Layer: 16
+  m_Name: HitBox(1,-1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6838175719026717242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2573303337011244584}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2625608556329051511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2500919090096829159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2573303337011244584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _tagsToIgnore: []
+    _overlap: 1
+    _collideOnAnyRow: 0
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: -1
+    _panelXOffset: 1
+    _worldYPosition:
+      RawValue: 0
+  debuggingEnabled: 1
+  ColliderInfo:
+    Name: AxeKickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057143
+    TagsToIgnore: []
+    MultiHitWaitTime: 0
+    Damage: 3
+    BaseKnockBack: 0.7
+    KnockBackScale: 0.5
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 0.3
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.05
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 1
+    AbilityID: -225857060
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+--- !u!114 &7027648874756282225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2573303337011244584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Marker: 2
+  _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _markCollider: 1
+  _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 2500919090096829159}
+--- !u!1 &3630073965130681793
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2625608556329051511}
+  m_Layer: 16
+  m_Name: HitBoxes
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2625608556329051511
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3630073965130681793}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1923578926838280114}
+  - {fileID: 2129368985443628261}
+  - {fileID: 6838175719026717242}
+  - {fileID: 9125498183346349701}
+  - {fileID: 3939887390148437576}
+  - {fileID: 7283537289557430968}
+  m_Father: {fileID: 7753967484100786593}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4173448780622490198
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7283537289557430968}
+  - component: {fileID: 1743547572888053483}
+  - component: {fileID: 5307010294486380648}
+  m_Layer: 16
+  m_Name: HitBox(2.-1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7283537289557430968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173448780622490198}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2625608556329051511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1743547572888053483
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173448780622490198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _tagsToIgnore: []
+    _overlap: 1
+    _collideOnAnyRow: 0
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: -1
+    _panelXOffset: 2
+    _worldYPosition:
+      RawValue: 0
+  debuggingEnabled: 1
+  ColliderInfo:
+    Name: AxeKickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057143
+    TagsToIgnore: []
+    MultiHitWaitTime: 0
+    Damage: 6
+    BaseKnockBack: 1
+    KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 0.3
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.05
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 1
+    AbilityID: -225857060
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+--- !u!114 &5307010294486380648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4173448780622490198}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Marker: 2
+  _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _markCollider: 1
+  _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 1743547572888053483}
+--- !u!1 &4886488662551927163
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2129368985443628261}
+  - component: {fileID: 5712276960567258736}
+  - component: {fileID: 7200990189909629160}
+  m_Layer: 16
+  m_Name: HitBox(1,1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2129368985443628261
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4886488662551927163}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2625608556329051511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5712276960567258736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4886488662551927163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _tagsToIgnore: []
+    _overlap: 1
+    _collideOnAnyRow: 0
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: 1
+    _panelXOffset: 1
+    _worldYPosition:
+      RawValue: 0
+  debuggingEnabled: 1
+  ColliderInfo:
+    Name: AxeKickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057143
+    TagsToIgnore: []
+    MultiHitWaitTime: 0
+    Damage: 3
+    BaseKnockBack: 0.7
+    KnockBackScale: 0.5
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 0.3
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.05
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 1
+    AbilityID: -225857060
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+--- !u!114 &7200990189909629160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4886488662551927163}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Marker: 2
+  _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _markCollider: 1
+  _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 5712276960567258736}
+--- !u!1 &6154804292956767076
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3939887390148437576}
+  - component: {fileID: 5964733128889066971}
+  - component: {fileID: 4985249139221704881}
+  m_Layer: 16
+  m_Name: HitBox(2,1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3939887390148437576
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154804292956767076}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2625608556329051511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5964733128889066971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154804292956767076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _tagsToIgnore: []
+    _overlap: 1
+    _collideOnAnyRow: 0
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: 1
+    _panelXOffset: 2
+    _worldYPosition:
+      RawValue: 0
+  debuggingEnabled: 1
+  ColliderInfo:
+    Name: AxeKickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057143
+    TagsToIgnore: []
+    MultiHitWaitTime: 0
+    Damage: 6
+    BaseKnockBack: 1
+    KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 0.3
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.05
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 1
+    AbilityID: -225857060
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+--- !u!114 &4985249139221704881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6154804292956767076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Marker: 2
+  _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _markCollider: 1
+  _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 5964733128889066971}
 --- !u!1 &7114194045449134152
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,6 +954,121 @@ MonoBehaviour:
   _speed: 10
   _rotateOnSelf: 1
   _resetOnDisable: 1
+--- !u!1 &7520764935273478650
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9125498183346349701}
+  - component: {fileID: 6451030275633810592}
+  - component: {fileID: 4894387623735258998}
+  m_Layer: 16
+  m_Name: HitBox(2,0)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9125498183346349701
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7520764935273478650}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2625608556329051511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6451030275633810592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7520764935273478650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _tagsToIgnore: []
+    _overlap: 1
+    _collideOnAnyRow: 0
+    _width:
+      RawValue: 65536
+    _height:
+      RawValue: 65536
+    _panelYOffset: 0
+    _panelXOffset: 2
+    _worldYPosition:
+      RawValue: 0
+  debuggingEnabled: 1
+  ColliderInfo:
+    Name: AxeKickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 4057143
+    TagsToIgnore: []
+    MultiHitWaitTime: 0
+    Damage: 6
+    BaseKnockBack: 1
+    KnockBackScale: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle: 0.3
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime: 0.05
+    Priority: 0
+    OwnerAlignement: 0
+    AbilityType: 1
+    AbilityID: -225857060
+    SpawnEffect: {fileID: 0}
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopShakeStrength: 0.8
+    CameraShakeStrength: 0
+    CameraShakeDuration: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+--- !u!114 &4894387623735258998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7520764935273478650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Marker: 2
+  _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _markCollider: 1
+  _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 6451030275633810592}
 --- !u!1 &9189759815208285768
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,7 +1087,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1787618871932538660
 Transform:
   m_ObjectHideFlags: 0
@@ -478,22 +1205,22 @@ PrefabInstance:
     - target: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.24154103
+      value: 0.6551199
       objectReference: {fileID: 0}
     - target: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.2972445
+      value: -0.6484513
       objectReference: {fileID: 0}
     - target: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.68494076
+      value: -0.31353563
       objectReference: {fileID: 0}
     - target: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.6198063
+      value: -0.22808813
       objectReference: {fileID: 0}
     - target: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,
         type: 3}
@@ -503,7 +1230,7 @@ PrefabInstance:
     - target: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 161.90001
+      value: 251.9
       objectReference: {fileID: 0}
     - target: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,
         type: 3}
@@ -525,10 +1252,25 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 16
       objectReference: {fileID: 0}
+    - target: {fileID: 4782121960410002313, guid: a977d758164395145bb01826d494a9be,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5442852780768904584, guid: a977d758164395145bb01826d494a9be,
         type: 3}
       propertyPath: m_Layer
       value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 7494990211986062056, guid: a977d758164395145bb01826d494a9be,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8526299147469683028, guid: a977d758164395145bb01826d494a9be,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

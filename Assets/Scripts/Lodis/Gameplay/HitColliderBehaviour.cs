@@ -66,6 +66,7 @@ namespace Lodis.Gameplay
         [Tooltip("The effect that will spawn when the hit box is spawned.")]
         [JsonIgnore]
         public GameObject SpawnEffect;
+        public float SpawnEffectOffset;
         [Tooltip("The spark effect that will spawn on hit.")]
         [JsonIgnore]
         public GameObject HitSpark;
@@ -107,7 +108,7 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="scale">The amount to scale the stats by</param>
         /// <returns>A new copy of the hit collider info</returns>
-        public HitColliderData ScaleStats(float scale)
+        public HitColliderData ScaleStats(Fixed32 scale)
         {
             HitColliderData ColliderInfo = (HitColliderData)MemberwiseClone();
 
@@ -137,13 +138,13 @@ namespace Lodis.Gameplay
         private bool _addedToActiveList;
         private bool _playedSpawnEffects;
 
-        public float StartTime { get; private set; }
-        public float CurrentTimeActive { get; private set; }
+        public Fixed32 StartTime { get; private set; }
+        public Fixed32 CurrentTimeActive { get; private set; }
 
-        public override void InitCollider(Fixed32 width, Fixed32 height, EntityData owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
+        public override void InitCollider(Fixed32 width, Fixed32 height, EntityDataBehaviour owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
         {
             base.InitCollider(width, height, owner, ownerPhysicsComponent);
-            ColliderInfo.OwnerAlignement = owner.UnityObject.GetComponent<GridMovementBehaviour>().Alignment;
+            ColliderInfo.OwnerAlignement = owner.Data.UnityObject.GetComponent<GridMovementBehaviour>().Alignment;
         }
 
         public override void Init()
@@ -167,7 +168,7 @@ namespace Lodis.Gameplay
             LayersToIgnore = ColliderInfo.LayersToIgnore;
             TagsToIgnore = ColliderInfo.TagsToIgnore;
             LayersToIgnore |= (1 << LayerMask.NameToLayer("IgnoreHitColliders"));
-            StartTime = Time.time;
+            StartTime = GridGame.Time;
         }
 
         private void OnEnable()
@@ -221,13 +222,13 @@ namespace Lodis.Gameplay
             Fixed32 lastHitTime = 0;
             if (!Collisions.TryGetValue(gameObject, out lastHitTime))
             {
-                Collisions.Add(gameObject, Utils.TimeGetTime() * RoutineBehaviour.Instance.CharacterTimeScale);
+                Collisions.Add(gameObject, GridGame.Time * RoutineBehaviour.Instance.CharacterTimeScale);
                 return true;
             }
 
-            if (Utils.TimeGetTime() * RoutineBehaviour.Instance.CharacterTimeScale - lastHitTime >= ColliderInfo.MultiHitWaitTime)
+            if (GridGame.Time * RoutineBehaviour.Instance.CharacterTimeScale - lastHitTime >= ColliderInfo.MultiHitWaitTime)
             {
-                Collisions[gameObject] = Utils.TimeGetTime() * RoutineBehaviour.Instance.CharacterTimeScale;
+                Collisions[gameObject] = GridGame.Time * RoutineBehaviour.Instance.CharacterTimeScale;
                 return true;
             }
 
@@ -241,11 +242,14 @@ namespace Lodis.Gameplay
         /// </summary>
         public void ResetActiveTime()
         {
-            StartTime = Time.time;
+            StartTime = GridGame.Time;
         }
 
         private void ResolveCollision(GameObject attachedGameObject, Collision collision)
         {
+            if (GroupManager?.CollisionResolved == true)
+                return;
+
             ColliderBehaviour otherCollider = attachedGameObject.GetComponent<ColliderBehaviour>();
 
             Vector3 hitEffectPosition = transform.position;
@@ -256,6 +260,9 @@ namespace Lodis.Gameplay
             //Return if its attached to this object or this object wants to ignore collider
             if (otherCollider)
             {
+                if (otherCollider.Spawner == Spawner)
+                    return;
+
                 //If it is a hit collider...
                 if (otherCollider is HitColliderBehaviour hitCollider)
                 {
@@ -281,7 +288,7 @@ namespace Lodis.Gameplay
                 FVector3 currentForceDirection = new FVector3(Fixed32.Cos(newHitAngle), Fixed32.Sin(newHitAngle), 0);
 
                 //Find a new direction based the alignment
-                int direction = ColliderInfo.OwnerAlignement == GridAlignment.LEFT ? 1 : -1;
+                int direction = Spawner.GetComponent<GridMovementBehaviour>().Alignment == GridAlignment.LEFT ? 1 : -1;
                 currentForceDirection.X *= direction;
 
                 //Find the new angle based on the direction of the attack on the x axis
@@ -344,6 +351,8 @@ namespace Lodis.Gameplay
             ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+
+            GroupManager?.TrySetCollisionFinish();
         }
 
         private void ResolvePriority(GameObject attachedGameObject, HitColliderBehaviour hitCollider)
@@ -420,7 +429,7 @@ namespace Lodis.Gameplay
             if (!_playedSpawnEffects)
             {
                 if (ColliderInfo.SpawnEffect)
-                    Instantiate(ColliderInfo.SpawnEffect, transform.position, Camera.main.transform.rotation);
+                    Instantiate(ColliderInfo.SpawnEffect, transform.position + Spawner.UnityObject.transform.forward * ColliderInfo.SpawnEffectOffset, Camera.main.transform.rotation);
 
                 SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
                 _playedSpawnEffects = true;
@@ -428,7 +437,7 @@ namespace Lodis.Gameplay
 
             _addedToActiveList = true;
             //Update the amount of current frames
-            CurrentTimeActive = Time.time * RoutineBehaviour.Instance.CharacterTimeScale - StartTime;
+            CurrentTimeActive = GridGame.Time * RoutineBehaviour.Instance.CharacterTimeScale - StartTime;
 
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)

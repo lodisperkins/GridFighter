@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Reflection;
 using Lodis.Utility;
 using FixedPoints;
+using Types;
 
 namespace Lodis.Gameplay
 {
@@ -14,7 +15,7 @@ namespace Lodis.Gameplay
     [System.Serializable]
     public class ProjectileAbility : Ability
     {
-        public Transform SpawnTransform;
+        public FTransform SpawnTransform;
         //Usd to store a reference to the projectile prefab
         public EntityDataBehaviour ProjectileRef;
         public FVector3 ShotDirection;
@@ -25,6 +26,7 @@ namespace Lodis.Gameplay
         public bool DestroyOnHit = true;
         public bool IsMultiHit = false;
         public bool UseGravity;
+        public bool FaceHeading = true;
         public bool DespawnAfterTimeLimit { get; private set; }
 
         public float Speed;
@@ -72,14 +74,14 @@ namespace Lodis.Gameplay
 
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
             projectileSpawner.Projectile = ProjectileRef;
-            SpawnTransform = projectileSpawner.transform;
+            SpawnTransform = projectileSpawner.FixedTransform;
             ShotDirection = projectileSpawner.FixedTransform.Forward;
 
             HitColliderData data = ProjectileColliderData;
             if (ScaleStats)
-                data = ProjectileColliderData.ScaleStats((float)args[0]);
+                data = ProjectileColliderData.ScaleStats((Fixed32)args[0]);
 
-            Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), data, UseGravity);
+            Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), data, UseGravity, FaceHeading);
 
             //Fire projectile
             Projectile.name += "(" + abilityData.name + ")";

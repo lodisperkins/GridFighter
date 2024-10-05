@@ -79,7 +79,7 @@ namespace Lodis.Movement
         private CustomEventSystem.GameEventListener _onMoveEnd;
         private CustomEventSystem.GameEventListener _onMoveEndTemp;
         private PanelBehaviour _previousPanel;
-        private float _heightOffset;
+        private Fixed32 _heightOffset;
         private MeshFilter _meshFilter;
         private bool _searchingForSafePanel;
         private ParticleSystem _returnEffect;
@@ -87,6 +87,7 @@ namespace Lodis.Movement
         private DelayedAction _moveEnabledAction;
         private TimedAction _teleportAction;
         private HealthBehaviour _health;
+        private GridPhysicsBehaviour _physics;
 
         /// <summary>
         /// Whether or not this object should move to its current panel when spawned
@@ -306,6 +307,8 @@ namespace Lodis.Movement
 
                 
             }
+
+            _physics = Entity.GetComponent<GridPhysicsBehaviour>();
         }
 
         /// <summary>
@@ -542,7 +545,7 @@ namespace Lodis.Movement
             //Sets the new position to be the position of the panel added to half the gameObjects height.
 
 
-            FVector3 newPosition = (FVector3)(_targetPanel.transform.position) + new FVector3(0, (Types.Fixed32)_heightOffset, 0);
+            FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, _heightOffset, 0);
             _targetPosition = newPosition;
 
             MoveDirection = (panelPosition - Position).GetNormalized();
@@ -552,7 +555,7 @@ namespace Lodis.Movement
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
-                transform.position = (Vector3)newPosition;
+                FixedTransform.WorldPosition = newPosition;
                 SetIsMoving(false);
             }
             else
@@ -613,7 +616,7 @@ namespace Lodis.Movement
             //Sets the new position to be the position of the panel added to half the gameObjects height.
 
 
-            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)_heightOffset, 0);
+            FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, _heightOffset, 0);
             _targetPosition = newPosition;
 
             MoveDirection = (panelPosition - Position).GetNormalized();
@@ -623,7 +626,7 @@ namespace Lodis.Movement
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
-                transform.position = (Vector3)newPosition;
+                FixedTransform.WorldPosition = newPosition;
                 SetIsMoving(false);
             }
             else
@@ -671,13 +674,13 @@ namespace Lodis.Movement
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            float offset = 0;
+            Fixed32 offset = 0;
             if (!_meshFilter)
-                offset = transform.localScale.y / 2;
+                offset = FixedTransform.LocalScale.Y / 2;
             else
-                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+                offset = (_meshFilter.mesh.bounds.size.y * FixedTransform.LocalScale.Y) / 2;
 
-            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)offset, 0);
+            FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, offset, 0);
             _targetPosition = newPosition;
 
             MoveDirection = new FVector2(x, y) - Position;
@@ -687,7 +690,7 @@ namespace Lodis.Movement
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
-                transform.position = (Vector3)newPosition;
+                FixedTransform.WorldPosition = newPosition;
                 SetIsMoving(false);
             }
             else
@@ -738,13 +741,13 @@ namespace Lodis.Movement
 
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
-            float offset = 0;
+            Fixed32 offset = 0;
             if (!_meshFilter)
-                offset = transform.localScale.y / 2;
+                offset = FixedTransform.LocalScale.Y / 2;
             else
-                offset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+                offset = (_meshFilter.mesh.bounds.size.y * FixedTransform.LocalScale.Y) / 2;
 
-            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, (Types.Fixed32)offset, 0);
+            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, offset, 0);
             _targetPosition = newPosition;
 
 
@@ -853,11 +856,11 @@ namespace Lodis.Movement
             //Adding the height ensures the gameObject is not placed inside the panel.
             Fixed32 heightOffset = 0;
             if (!_meshFilter)
-                heightOffset = transform.localScale.y / 2;
+                heightOffset = FixedTransform.LocalScale.Y / 2;
             else
-                heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+                heightOffset = (_meshFilter.mesh.bounds.size.y * FixedTransform.LocalScale.Y) / 2;
 
-            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, heightOffset, 0);
+            FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, heightOffset, 0);
             _targetPosition = newPosition;
 
           LerpPosition(newPosition);
@@ -994,7 +997,7 @@ namespace Lodis.Movement
             _targetPosition = FVector3.Zero;
         }
 
-        public float GetAlignmentX()
+        public int GetAlignmentX()
         {
             switch (Alignment)
             {
@@ -1022,11 +1025,18 @@ namespace Lodis.Movement
         Fixed32 rotationY;
         public override void Tick(Fixed32 dt)
         {
+            if (_physics?.GridActive == false)
+            {
+                if (_isMoving)
+                    CancelMovement();
+
+                return;
+            }
             //Old update
             if (!_canMove || _health?.Stunned == true)
                 return;
 
-            //MoveToClosestAlignedPanelOnRow();
+            MoveToClosestAlignedPanelOnRow();
 
             if (!_currentPanel)
                 return;

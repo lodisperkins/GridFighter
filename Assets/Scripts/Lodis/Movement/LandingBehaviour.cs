@@ -33,6 +33,8 @@ namespace Lodis.Movement
         private bool _canCheckLanding;
         private FixedTimeAction _landingAction;
 
+        public static Fixed32 LandingSpeed = new Fixed32(6553);
+
         public float LandingTime { get => _landingTime;}
         public bool IsDown { get; private set; }
         public bool RecoveringFromFall { get; private set; }
@@ -108,7 +110,7 @@ namespace Lodis.Movement
             //_knockback.Physics.RB.isKinematic = false;
             IsDown = false;
             Landing = false;
-            _knockback.Physics.GridActive = true;
+            //_knockback.Physics.GridActive = true;
             RecoveringFromFall = false;
         }
         
@@ -118,6 +120,7 @@ namespace Lodis.Movement
             //Start knockdown
             IsDown = true;
             _knockback.SetInvincibilityByTimer(_knockDownRecoverInvincibleTime);
+
             _knockback.MovementBehaviour.DisableMovement(condition => !RecoveringFromFall && !IsDown, false, true);
 
             _landingAction = FixedPointTimer.StartNewTimedAction(TumblingRecover, _knockDownLandingTime);
@@ -204,7 +207,7 @@ namespace Lodis.Movement
                 return false;
 
             // Condition 2: Check if character was recently in the air (normal fall)
-            bool wasInAir = _characterStateMachine.CurrentState == "Tumbling" || _characterStateMachine.CurrentState == "FreeFall";
+            bool wasInAir = _knockback.CurrentAirState != AirState.NONE;
 
             // Condition 3: Check if the character has near-zero vertical velocity (indicating they stopped falling).
             bool nearZeroVerticalVelocity = Fixed32.Abs(_knockback.Physics.Velocity.Y) <= new Fixed32(655);
@@ -215,12 +218,14 @@ namespace Lodis.Movement
             // Condition 5: Ensure the player is not currently in a stun state (hit animation still playing).
             bool notInStun = !_knockback.InHitStun;
 
+            bool atLandingSpeed = _knockback.Physics.Velocity.X <= LandingSpeed;
+
             // Only trigger the landing animation if all conditions are met.
-            return (wasInAir || _knockback.IsSlidingHit) && nearZeroVerticalVelocity && wasFallingOrSliding && notInStun;
+            return (wasInAir || _knockback.IsSlidingHit) && nearZeroVerticalVelocity && wasFallingOrSliding && notInStun && atLandingSpeed && !_knockback.Physics.GridActive;
         }
 
 
-        public override void Tick(Fixed32 dt)
+        public override void LateTick(Fixed32 dt)
         {
             if (!Landing && IsLanding())
             {

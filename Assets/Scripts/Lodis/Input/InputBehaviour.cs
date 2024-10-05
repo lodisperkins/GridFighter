@@ -92,63 +92,63 @@ namespace Lodis.Input
 
     public class InputBehaviour : SimulationBehaviour, IControllable
     {
+        [Header("References")]
+        [SerializeField] private IntVariable _playerID;
+        [SerializeField] private GameObject _character;
+
+        [Header("Input Parameters")]
+        [SerializeField] private float _holdSpeed;
+        [Tooltip("The minimum amount of time needed to hold the button down to change it to the charge variation.")]
+        [SerializeField] private Fixed32 _minChargeLimit = new Fixed32(32768);
+        [Tooltip("The maximum amount of time needed before an attack is fully charged.")]
+        [SerializeField] private Fixed32 _maxChargeTime = 5;
+        [Tooltip("The amount of time needed to clear the buffer when a direciotn is pressed.")]
+        [SerializeField] private float _attackDirectionBufferClearTime;
+
+        [Header("Toggles")]
+        [SerializeField] private bool _canMove = true;
+        [SerializeField] private bool _holdToMove;
+        [SerializeField] private bool _inputEnabled = true;
+        [SerializeField] private bool _abilityBuffered;
+
+        [Header("Events")]
+        [SerializeField] private CustomEventSystem.Event _onChargeStarted;
+        [SerializeField] private CustomEventSystem.Event _onChargeEnded;
+
+        //---
         private Movement.GridMovementBehaviour _gridMovement;
         private CharacterDefenseBehaviour _defense;
         private MovesetBehaviour _moveset;
+        private KnockbackBehaviour _knockbackBehaviour;
+        private CharacterStateMachineBehaviour _stateMachineBehaviour;
+
         private Condition _moveInputEnableCondition;
-
-        private static bool _playerActionButtonDown;
-        private static UnityAction _onActionButtonDown;
-
-        public static UnityAction OnApplicationQuit;
-        [SerializeField]
-        private GameObject _character;
-        [SerializeField]
-        private bool _canMove = true;
-        [SerializeField]
-        private bool _holdToMove;
-        [SerializeField]
-        private float _holdSpeed;
-        private Vector2 _storedMoveInput;
-        private FVector2 _attackDirection;
-        [Tooltip("The minimum amount of time needed to hold the button down to change it to the charge variation.")]
-        [SerializeField]
-        private float _minChargeLimit = 0.5f;
-        [Tooltip("The maximum amount of time needed before an attack is fully charged.")]
-        [SerializeField]
-        private float _maxChargeTime = 5;
-        [Tooltip("The amount of time needed to clear the buffer when a direciotn is pressed.")]
-        [SerializeField]
-        private float _attackDirectionBufferClearTime;
-        private float _timeOfLastDirectionInput;
-        private PlayerControls _playerControls;
-        [SerializeField]
-        private IntVariable _playerID;
         private Condition _inputEnableCondition = null;
-        [SerializeField]
-        private bool _inputEnabled = true;
+        private static UnityAction _onActionButtonDown;
+        private PlayerControls _playerControls;
         private BufferedInput _bufferedAction;
         private Ability _lastAbilityUsed = null;
 
+        private InputDevice[] _devices;
+        private FixedTimeAction _chargeAction;
+
+        private Vector2 _storedMoveInput;
+        private FVector2 _attackDirection;
+        private float _timeOfLastDirectionInput;
+        private float _defaultSpeed;
+        private Fixed32 _chargeHoldTime;
+
+        private static bool _playerActionButtonDown;
+        private bool _isPaused;
+        private bool _canBufferDefense;
+        private bool _canBufferAbility = true;
+        private bool _movementBuffered;
         private bool _attackButtonDown;
+        private bool _chargingAttack;
         private bool _special1Down;
         private bool _special2Down;
 
-        [SerializeField]
-        private bool _abilityBuffered;
-        [SerializeField]
-        private CustomEventSystem.Event _onChargeStarted;
-        [SerializeField]
-        private CustomEventSystem.Event _onChargeEnded;
-        private bool _isPaused;
-        private InputDevice[] _devices;
-        private bool _canBufferDefense;
-        private KnockbackBehaviour _knockbackBehaviour;
-        private float _defaultSpeed;
-        private CharacterStateMachineBehaviour _stateMachineBehaviour;
-        private bool _canBufferAbility = true;
-        private TimedAction _chargeAction;
-        private bool _movementBuffered;
+        public static UnityAction OnApplicationQuit;
 
         public InputDevice[] Devices 
         {
@@ -304,6 +304,100 @@ namespace Lodis.Input
                 GetInputFlags();
         }
 
+        private void GetInputFlags()
+        {
+            InputFlag flags = InputFlag.NONE;
+
+            if (true)
+                flags |= InputFlag.Up;
+            if (_playerControls.Player.MoveDown.IsPressed())
+                flags |= InputFlag.Down;
+            if (_playerControls.Player.MoveLeft.IsPressed())
+                flags |= InputFlag.Left;
+            if (_playerControls.Player.MoveRight.IsPressed())
+                flags |= InputFlag.Right;
+            if (_playerControls.Player.Attack.IsPressed())
+                flags |= InputFlag.Weak;
+            if (_playerControls.Player.Special1.IsPressed())
+                flags |= InputFlag.Special1;
+            if (_playerControls.Player.Special2.IsPressed())
+                flags |= InputFlag.Special2;
+            if (_playerControls.Player.Burst.IsPressed())
+                flags |= InputFlag.Burst;
+            if (_playerControls.Player.Shuffle.IsPressed())
+                flags |= InputFlag.Shuffle;
+
+
+            if (_playerControls.Player.ChargeAttack.IsPressed())
+            {
+                TryChargeAttack();
+            }
+            else if (_chargingAttack)
+            {
+                _chargingAttack = false;
+                _onChargeEnded?.Raise(Character);
+                _chargeAction?.Stop();
+                flags |= InputFlag.Strong;
+            }
+
+
+            GridGame.SetPlayerInput(PlayerID, (long)flags);
+
+            // Check each input and log which ones are being pressed
+            //if (_playerControls.Player.MoveUp.IsPressed())
+            //{
+            //    Debug.Log("Move Up button is being pressed");
+            //}
+
+            //if (_playerControls.Player.MoveDown.IsPressed())
+            //{
+            //    Debug.Log("Move Down button is being pressed");
+            //}
+
+            //if (_playerControls.Player.MoveLeft.IsPressed())
+            //{
+            //    Debug.Log("Move Left button is being pressed");
+            //}
+
+            //if (_playerControls.Player.MoveRight.IsPressed())
+            //{
+            //    Debug.Log("Move Right button is being pressed");
+            //}
+
+            //if (_playerControls.Player.Attack.IsPressed())
+            //{
+            //    Debug.Log("Attack button is being pressed");
+            //}
+
+            //if (_playerControls.Player.Special1.IsPressed())
+            //{
+            //    Debug.Log("Special1 button is being pressed");
+            //}
+
+            //if (_playerControls.Player.Special2.IsPressed())
+            //{
+            //    Debug.Log("Special2 button is being pressed");
+            //}
+
+            //if (_playerControls.Player.Burst.IsPressed())
+            //{
+            //    Debug.Log("Burst button is being pressed");
+            //}
+
+            //if (_playerControls.Player.Shuffle.IsPressed())
+            //{
+            //    Debug.Log("Shuffle button is being pressed");
+            //}
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+        }
+
         // Start is called before the first frame update
         void Start()
         {
@@ -334,22 +428,27 @@ namespace Lodis.Input
 
         private void TryChargeAttack()
         {
-            if (_stateMachineBehaviour.StateMachine.CurrentState != "Idle" && _stateMachineBehaviour.StateMachine.CurrentState != "Moving" && _stateMachineBehaviour.StateMachine.CurrentState != "Attacking")
+            if (!_stateMachineBehaviour.CompareState("Idle", "Moving", "Attacking") || _chargingAttack)
             {
-                _canBufferAbility = false;
+                if (!_chargingAttack)
+                    _canBufferAbility = false;
+
                 return;
             }
+
             _canBufferAbility = true;
-            _chargeAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _onChargeStarted?.Raise(Character), TimedActionCountType.SCALEDTIME, _minChargeLimit);
+            _chargingAttack = true;
+            _chargeAction = FixedPointTimer.StartNewTimedAction(() => _onChargeStarted?.Raise(Character), _minChargeLimit);
         }
 
         private void DisableCharge()
         {
             _canBufferAbility = false;
             _onChargeEnded?.Raise(Character);
-            _chargeAction?.Disable();
+            _chargeAction?.Stop();
             NormalAttackButtonDown = false;
             _abilityBuffered = false;
+            _chargingAttack = false;
         }
 
         public bool GetSpecialButton(int buttonNum)
@@ -371,7 +470,7 @@ namespace Lodis.Input
         /// index 1 is always the direction of input.</param>
         public void BufferNormalAbility()
         {
-            if (_stateMachineBehaviour.StateMachine.CurrentState != "Idle" && _stateMachineBehaviour.StateMachine.CurrentState != "Moving" && _stateMachineBehaviour.StateMachine.CurrentState != "Attacking")
+            if (!_stateMachineBehaviour.CompareState("Idle", "Moving", "Attacking"))
                 return;
 
             object[] args = new object[2];
@@ -391,12 +490,15 @@ namespace Lodis.Input
 
             //Assign the arguments for the ability
             args[1] = _attackDirection;
-            args[0] = 0.0f;
+            args[0] = new Fixed32(0);
 
             //Use a normal ability if it was not held long enough
             _bufferedAction = new BufferedInput(() => { _abilityBuffered = false; UseAbility(abilityType, args); _onChargeEnded?.Raise(Character); }, 
                 condition =>
-                { return _moveset.GetCanUseAbility() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"); }, 0.2f);
+                {
+                    return _moveset.GetCanUseAbility() && _stateMachineBehaviour.CompareState("Idle", "Moving", "Attacking");
+                }, 0.2f);
+
             _abilityBuffered = true;
         }
 
@@ -431,13 +533,10 @@ namespace Lodis.Input
             args[1] = _attackDirection;
             args[0] = 0.0f;
             abilityType += 4;
-            float powerScale = _minChargeLimit * 0.1f + 1;
+            Fixed32 powerScale = _minChargeLimit * 0.1f + 1;
 
             //Find the power scale based on the time the button was held to use a charge ability
-            //Old code for counting charge strength
-            //float timeHeld = Mathf.Clamp((float)context.duration, 0, _maxChargeTime);
-
-            float timeHeld = _minChargeLimit;
+            Fixed32 timeHeld = Fixed32.Clamp(_chargeHoldTime, 0, _maxChargeTime);
             if (timeHeld > _minChargeLimit)
             {
                 powerScale = timeHeld * 0.1f + 1;
@@ -553,7 +652,7 @@ namespace Lodis.Input
 
         private void Move()
         {
-            _gridMovement.Move((FVector2)_storedMoveInput);
+            _gridMovement.Move((FVector2)_storedMoveInput, clampPosition: true);
             _movementBuffered = false;
         }
 
@@ -771,87 +870,11 @@ namespace Lodis.Input
 
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
-        }
 
-        private void GetInputFlags()
-        {
-            InputFlag flags = InputFlag.NONE;
-
-            if (_playerControls.Player.MoveUp.IsPressed())
-                flags |= InputFlag.Up;
-            if (_playerControls.Player.MoveDown.IsPressed())
-                flags |= InputFlag.Down;
-            if (_playerControls.Player.MoveLeft.IsPressed())
-                flags |= InputFlag.Left;
-            if (_playerControls.Player.MoveRight.IsPressed())
-                flags |= InputFlag.Right;
-            if (_playerControls.Player.Attack.IsPressed())
-                flags |= InputFlag.Weak;
-            if (_playerControls.Player.Special1.IsPressed())
-                flags |= InputFlag.Special1;
-            if (_playerControls.Player.Special2.IsPressed())
-                flags |= InputFlag.Special2;
-            if (_playerControls.Player.Burst.IsPressed())
-                flags |= InputFlag.Burst;
-            if (_playerControls.Player.Shuffle.IsPressed())
-                flags |= InputFlag.Shuffle;
-
-            GridGame.SetPlayerInput(PlayerID, (long)flags);
-
-            // Check each input and log which ones are being pressed
-            //if (_playerControls.Player.MoveUp.IsPressed())
-            //{
-            //    Debug.Log("Move Up button is being pressed");
-            //}
-
-            //if (_playerControls.Player.MoveDown.IsPressed())
-            //{
-            //    Debug.Log("Move Down button is being pressed");
-            //}
-
-            //if (_playerControls.Player.MoveLeft.IsPressed())
-            //{
-            //    Debug.Log("Move Left button is being pressed");
-            //}
-
-            //if (_playerControls.Player.MoveRight.IsPressed())
-            //{
-            //    Debug.Log("Move Right button is being pressed");
-            //}
-
-            //if (_playerControls.Player.Attack.IsPressed())
-            //{
-            //    Debug.Log("Attack button is being pressed");
-            //}
-
-            //if (_playerControls.Player.Special1.IsPressed())
-            //{
-            //    Debug.Log("Special1 button is being pressed");
-            //}
-
-            //if (_playerControls.Player.Special2.IsPressed())
-            //{
-            //    Debug.Log("Special2 button is being pressed");
-            //}
-
-            //if (_playerControls.Player.Burst.IsPressed())
-            //{
-            //    Debug.Log("Burst button is being pressed");
-            //}
-
-            //if (_playerControls.Player.Shuffle.IsPressed())
-            //{
-            //    Debug.Log("Shuffle button is being pressed");
-            //}
-        }
-
-
-        public override void Serialize(BinaryWriter bw)
-        {
-        }
-
-        public override void Deserialize(BinaryReader br)
-        {
+            if (_chargingAttack)
+                _chargeHoldTime += dt;
+            else
+                _chargeHoldTime = 0;
         }
 
     }

@@ -67,6 +67,7 @@ namespace Lodis.GridScripts
         }
 
         public MarkerType CurrentMarker { get => _currentMarker; private set => _currentMarker = value; }
+        public FVector3 FixedWorldPosition { get; set; }
 
         /// <summary>
         /// The side of the grid this panel this panel belongs to
@@ -209,7 +210,7 @@ namespace Lodis.GridScripts
             //if (_mesh.material.GetFloat("_EmissionStrength") > 0)
             //    _mesh?.material.SetFloat("_EmissionStrength", _emissionStrength / 2);
                 
-            _mesh?.material.DOFloat(0, "_EmissionStrength", _emissionFadeDuration);
+            _mesh?.material.DOFloat(0, "_EmissionStrength", _emissionFadeDuration);                                
             CurrentMarker = MarkerType.NONE;
         }
 

@@ -116,23 +116,26 @@ namespace Lodis.Gameplay
 
             EntityDataBehaviour temp = ObjectPoolBehaviour.Instance.GetObject(Projectile, FixedTransform.WorldPosition, FixedTransform.WorldRotation);
 
-            if (!temp.gameObject.TryGetComponent(out HitColliderBehaviour collider))
-                collider = temp.gameObject.AddComponent<HitColliderBehaviour>();
-
-            collider.ColliderInfo = hitColliderInfo;
-            collider.Spawner = Owner;
-
             
             if (!temp.gameObject.TryGetComponent<GridPhysicsBehaviour>(out var physics))
             {
                 physics = temp.gameObject.AddComponent<GridPhysicsBehaviour>();
             }
 
+            if (!temp.gameObject.TryGetComponent(out HitColliderBehaviour collider))
+                collider = temp.gameObject.AddComponent<HitColliderBehaviour>();
+
+            collider.ColliderInfo = hitColliderInfo;
+            collider.Spawner = Owner;
+
+
             physics.StopVelocity();
 
             physics.FaceHeading = faceHeading;
 
             physics.UseGravity = useGravity;
+
+            physics.GridActive = false;
 
             physics.ApplyImpulseForce(FixedTransform.Forward * forceScale);
 

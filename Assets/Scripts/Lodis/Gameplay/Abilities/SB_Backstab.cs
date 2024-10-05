@@ -36,9 +36,9 @@ namespace Lodis.Gameplay
 
             PanelBehaviour panel = null;
             BlackBoardBehaviour.Instance.Grid.GetPanel(posX, posY, out panel);
-            SpawnTransform = panel.transform;
+            //SpawnTransform = panel.transform;
 
-            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, SpawnTransform.position + Vector3.up, SpawnTransform.rotation);
+            //_chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, SpawnTransform.position + Vector3.up, SpawnTransform.rotation);
             _chargeEffect.AddComponent<GridTrackerBehaviour>().Marker = MarkerType.WARNING;
         }
 
@@ -61,7 +61,7 @@ namespace Lodis.Gameplay
             else if (OwnerMoveScript.Alignment == GridAlignment.RIGHT)
                 rotation = Quaternion.Euler(0, 90, 0);
 
-            _projectileSpawner = Object.Instantiate(OwnerMoveset.ProjectileSpawner, SpawnTransform.position + Vector3.up, rotation);
+            //_projectileSpawner = Object.Instantiate(OwnerMoveset.ProjectileSpawner, SpawnTransform.position + Vector3.up, rotation);
 
             _projectileSpawner.Projectile = ProjectileRef;
 
