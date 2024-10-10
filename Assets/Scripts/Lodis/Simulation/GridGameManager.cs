@@ -1,4 +1,6 @@
 using FixedPoints;
+using NaughtyAttributes;
+using ParrelSync;
 using SharedGame;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,16 +14,25 @@ public class GridGameManager : GameManager
     [Tooltip("Starts a local game immediately when the game starts.")]
     [SerializeField] private bool _startLocalGame;
     [SerializeField] private Fixed32 _fixed32TestConversion;
+    private GameManager gameManager => GameManager.Instance;
+    private GgpoPerformancePanel perf;
+    private GGPORunner game;
 
     public static bool LocalGameStarted { get; private set; }
     public static bool OnlineGameStarted { get; private set; }
     public static bool IsHost { get; private set; }
+
+    public string inpIp;
+    public string inpPort;
+    public string txtIp;
+    public string txtPort;
 
     private void Awake()
     {
         DontDestroyOnLoad(gameObject);
         //gameManager.OnRunningChanged += OnRunningChanged;
         GameObject gob = new GameObject("PerfPanel");
+        gob.transform.parent = transform;
         perf = gob.AddComponent<GgpoPerformancePanel>();
         perf.Setup();
 
@@ -31,7 +42,7 @@ public class GridGameManager : GameManager
 
     public override void StartGGPOGame(IPerfUpdate perfPanel, IList<Connections> connections, int playerIndex)
     {
-        GGPORunner game = new GGPORunner("gridlockgladiators", new GridGame(), perfPanel);
+        game = new GGPORunner("gridlockgladiators", new GridGame(), perfPanel);
         game.Init(connections, playerIndex);
         StartGame(game);
         OnlineGameStarted = true;
@@ -45,18 +56,6 @@ public class GridGameManager : GameManager
         OnlineGameStarted = false;
     }
 
-    public string inpIp;
-    public string inpPort;
-    public string txtIp;
-    public string txtPort;
-
-    private GameManager gameManager => GameManager.Instance;
-    private GgpoPerformancePanel perf;
-
-    private void OnDestroy()
-    {
-        gameManager.OnRunningChanged -= OnRunningChanged;
-    }
 
     private List<Connections> GetConnections()
     {
@@ -76,32 +75,25 @@ public class GridGameManager : GameManager
         return list;
     }
 
-    public void OnHostClick()
+    [Button]
+    public void OnOnlineClick()
     {
-        inpIp = "192.168.0.141";
+        game?.Shutdown();
+
+        IsHost = !ClonesManager.IsClone();
+
+        int playerIndex = IsHost ? 0 : 1;
+
+        inpIp = "127.0.0.1";
+        txtIp = "127.0.0.1";
+
         inpPort = "7000";
-        txtIp = "169.254.160.242";
         txtPort = "7001";
-        gameManager.StartGGPOGame(perf, GetConnections(), 0);
-        IsHost = true;
+        gameManager.StartGGPOGame(perf, GetConnections(), playerIndex);
     }
 
-    public void OnRemoteClick()
-    {
-        inpIp = "169.254.160.242";
-        inpPort = "7000";
-        txtIp = "192.168.0.141";
-        txtPort = "7000";
-        gameManager.StartGGPOGame(perf, GetConnections(), 1);
-    }
-
-    private void OnLocalClick()
+    public void OnLocalClick()
     {
         gameManager.StartLocalGame();
-    }
-
-    private void OnRunningChanged(bool isRunning)
-    {
-        gameObject.SetActive(!isRunning);
     }
 }

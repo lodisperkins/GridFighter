@@ -75,8 +75,8 @@ namespace Types
 
         public void Deserialize(BinaryReader br)
         {
+            Scale = br.ReadInt32();
             RawValue = br.ReadInt64();
-            Scale = br.Read();
         }
 
         public int Sign()

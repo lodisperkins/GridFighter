@@ -59,7 +59,7 @@ namespace SharedGame {
         public bool OnEventRunningDelegate() {
             Log.Debug("OnEventRunningDelegate");
             GameInfo.SetConnectState(PlayerConnectState.Running);
-            SetStatusText("");
+            SetStatusText("Running so I guess connected?");
             return true;
         }
 
@@ -157,43 +157,55 @@ namespace SharedGame {
             GameInfo = new GameInfo();
         }
 
-        public void Init(IList<Connections> connections, int playerIndex) {
+        public void Init(IList<Connections> connections, int playerIndex)
+        {
             var remote_index = -1;
             var num_spectators = 0;
             var num_players = 0;
 
-            for (int i = 0; i < connections.Count; ++i) {
-                if (i != playerIndex && remote_index == -1) {
+            for (int i = 0; i < connections.Count; ++i)
+            {
+                if (i != playerIndex && remote_index == -1)
+                {
                     remote_index = i;
                 }
 
-                if (connections[i].spectator) {
+                if (connections[i].spectator)
+                {
                     ++num_spectators;
                 }
-                else {
+                else
+                {
                     ++num_players;
                 }
             }
-            if (connections[playerIndex].spectator) {
+            if (connections[playerIndex].spectator)
+            {
                 InitSpectator(connections[playerIndex].port, num_players, connections[remote_index].ip, connections[remote_index].port);
             }
-            else {
+            else
+            {
                 var players = new List<GGPOPlayer>();
-                for (int i = 0; i < connections.Count; ++i) {
-                    var player = new GGPOPlayer {
+                for (int i = 0; i < connections.Count; ++i)
+                {
+                    var player = new GGPOPlayer
+                    {
                         player_num = players.Count + 1,
                     };
-                    if (playerIndex == i) {
+                    if (playerIndex == i)
+                    {
                         player.type = GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL;
                         player.ip_address = "";
                         player.port = 0;
                     }
-                    else if (connections[i].spectator) {
+                    else if (connections[i].spectator)
+                    {
                         player.type = GGPOPlayerType.GGPO_PLAYERTYPE_SPECTATOR;
                         player.ip_address = connections[remote_index].ip;
                         player.port = connections[remote_index].port;
                     }
-                    else {
+                    else
+                    {
                         player.type = GGPOPlayerType.GGPO_PLAYERTYPE_REMOTE;
                         player.ip_address = connections[remote_index].ip;
                         player.port = connections[remote_index].port;
@@ -243,8 +255,8 @@ namespace SharedGame {
             // automatically disconnect clients after 3000 ms and start our count-down timer for
             // disconnects after 1000 ms. To completely disable disconnects, simply use a value of 0
             // for ggpo_set_disconnect_timeout.
-            CheckAndReport(GGPO.Session.SetDisconnectTimeout(3000));
-            CheckAndReport(GGPO.Session.SetDisconnectNotifyStart(1000));
+            //CheckAndReport(GGPO.Session.SetDisconnectTimeout(3000));
+            //CheckAndReport(GGPO.Session.SetDisconnectNotifyStart(1000));
 
             int controllerId = 0;
             int playerIndex = 0;
@@ -370,7 +382,7 @@ namespace SharedGame {
 
         public void RunFrame() {
             var result = GGPO.OK;
-
+            //GGPO.Session.SynchronizeInput(MAX_PLAYERS, out _);
             for (int i = 0; i < GameInfo.players.Length; ++i) {
                 var player = GameInfo.players[i];
                 if (player.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) {
@@ -382,6 +394,8 @@ namespace SharedGame {
                     result = GGPO.Session.AddLocalInput(player.handle, input);
                 }
             }
+
+            Log.Debug("Result: " + result);
 
             // synchronize these inputs with ggpo. If we have enough input to proceed ggpo will
             // modify the input list with the correct inputs to use and return 1.
@@ -421,6 +435,7 @@ namespace SharedGame {
 
         private void SetStatusText(string status) {
             GameInfo.status = status;
+            Log.Debug(status);
         }
 
         private void CheckAndReport(int result) {

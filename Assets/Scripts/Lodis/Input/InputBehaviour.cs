@@ -289,8 +289,6 @@ namespace Lodis.Input
                 // Call the function related to Shuffle
                 BufferShuffle();
             }
-
-            UpdateBufferedAction();
         }
 
         /// <summary>
@@ -308,7 +306,7 @@ namespace Lodis.Input
         {
             InputFlag flags = InputFlag.NONE;
 
-            if (true)
+            if (_playerControls.Player.MoveUp.IsPressed())
                 flags |= InputFlag.Up;
             if (_playerControls.Player.MoveDown.IsPressed())
                 flags |= InputFlag.Down;
@@ -654,17 +652,6 @@ namespace Lodis.Input
         {
             _gridMovement.Move((FVector2)_storedMoveInput, clampPosition: true);
             _movementBuffered = false;
-        }
-
-        /// <summary>
-        /// Sends the game simulation this players current buffered action so it can handle serializing it.
-        /// </summary>
-        private void UpdateBufferedAction()
-        {
-            if (PlayerID == 0)
-                GridGame.P1BufferedAction = _bufferedAction;
-            else if (PlayerID == 1)
-                GridGame.P2BufferedAction = _bufferedAction;
         }
 
         /// <summary>

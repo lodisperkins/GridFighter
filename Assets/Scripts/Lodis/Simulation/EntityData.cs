@@ -82,25 +82,30 @@ public class EntityData
 
     public virtual void Serialize(BinaryWriter bw)
     {
-        bw.Write(Name);
+        //bw.Write(Name);
+
+        Transform.Serialize(bw);
+
+        if (_gridColliders == null) return;
 
         foreach (var col in _gridColliders)
         {
             col?.Serialize(bw);
         }
-        Transform.Serialize(bw);
     }
 
     public virtual void Deserialize(BinaryReader br)
     {
-        Name = br.ReadString();
+        //Name = br.ReadString();
+
+        Transform.Deserialize(br);
+
+        if (_gridColliders == null) return;
 
         foreach (var col in _gridColliders)
         {
             col?.Deserialize(br);
         }
-
-        Transform.Deserialize(br);
     }
 
     public void Init()

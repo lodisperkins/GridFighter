@@ -53,9 +53,6 @@ public struct GridGame : IGame
     public static event DeserializationCallback OnDeserialization;
     public static event EntityUpdateEvent OnSimulationUpdate;
 
-    public static BufferedInput P1BufferedAction;
-    public static BufferedInput P2BufferedAction;
-
     public int Framenumber { get; private set; }
 
     public readonly int Checksum => GetHashCode();
@@ -63,10 +60,6 @@ public struct GridGame : IGame
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Framenumber);
-        bw.Write(ActiveEntities.Count);
-
-        P1BufferedAction?.Serialize(bw);
-        P2BufferedAction?.Serialize(bw);
 
         for (int i = 0; i < ActiveEntities.Count; ++i)
         {
@@ -77,15 +70,7 @@ public struct GridGame : IGame
     public void Deserialize(BinaryReader br)
     {
         Framenumber = br.ReadInt32();
-        int length = br.ReadInt32();
 
-        P1BufferedAction.Deserialize(br);
-        P2BufferedAction?.Deserialize(br);  
-
-        if (length != ActiveEntities.Count)
-        {
-            ActiveEntities = new List<EntityData>(length);
-        }
         for (int i = 0; i < ActiveEntities.Count; ++i)
         {
             ActiveEntities[i].Deserialize(br);

@@ -286,7 +286,7 @@ namespace Lodis.Gameplay
 
         void OnEnable()
         {
-            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
         }
 
         void OnDisable()
