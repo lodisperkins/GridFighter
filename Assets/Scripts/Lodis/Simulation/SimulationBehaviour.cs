@@ -106,4 +106,9 @@ public abstract class SimulationBehaviour : MonoBehaviour
     /// Called when the entity is removed from the scene.
     /// </summary>
     public virtual void End() {}
+
+    private void OnDestroy()
+    {
+        Entity?.Data.RemoveComponent(this);
+    }
 }

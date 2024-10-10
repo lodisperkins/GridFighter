@@ -4855,6 +4855,8 @@ GameObject:
   - component: {fileID: 5648933950176139871}
   - component: {fileID: 7901779708177219984}
   - component: {fileID: 4394984300465290108}
+  - component: {fileID: 5829564947854288992}
+  - component: {fileID: 1929565742769866594}
   m_Layer: 0
   m_Name: PanelStealProjectile
   m_TagString: Untagged
@@ -9759,6 +9761,55 @@ MonoBehaviour:
     UnityObject: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 5648933950176139869}
+--- !u!114 &5829564947854288992
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648933950176139840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+    m_PersistentCalls:
+      m_Calls: []
+  Event: {fileID: 0}
+  IntendedSender: {fileID: 0}
+  AcceptTagAsSender: 0
+--- !u!114 &1929565742769866594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5648933950176139840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedFloat: 0
+  _opponentPanelSpeedReductionFloat: 0
+  _isMoving: 0
+  _canMove: 1
+  _canCancelMovement: 0
+  _alwaysLookAtOpposingSide: 0
+  _canBeWalkedThrough: 0
+  _canMoveDiagonally: 1
+  _moveOnStart: 1
+  _checkIfBehindBarrier: 0
+  _isBehindBarrier: 0
+  _moveToAlignedSideIfStuck: 0
+  _facingIgnoresState: 0
+  _defaultAlignment: 3
+  _moveSound: {fileID: 0}
+  _onTeleportStart: {fileID: 0}
+  _onTeleportEnd: {fileID: 0}
+  rotateY: 0
+  rotateX: 0
 --- !u!1 &5648933950788379697
 GameObject:
   m_ObjectHideFlags: 0

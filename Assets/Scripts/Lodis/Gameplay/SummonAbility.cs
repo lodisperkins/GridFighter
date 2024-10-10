@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
     public class SummonAbility : Ability
     {
         private List<GridMovementBehaviour> _activeEntities;
-        private GameObject _entityRef;
+        private EntityDataBehaviour _entityRef;
         private bool _smoothMovement;
         private int _entityCount;
         private float _moveSpeed;
@@ -40,7 +40,7 @@ namespace Lodis.Gameplay
             PanelPositions = new FVector2[EntityCount];
 
             //Reference for entities to spawn.
-            _entityRef = abilityData.visualPrefab;
+            _entityRef = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
 
             _id = _entityRef.name + "(" + Owner.name + ")";
         }
@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
         {
             foreach (GridMovementBehaviour entity in ActiveEntities)
             {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(entity.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(entity.Entity);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Lodis.Gameplay
             for (int i = 0; i < EntityCount; i++)
             {
                 //Get a reference from the object pool and set its ID.
-                GameObject instance = ObjectPoolBehaviour.Instance.GetObject(_entityRef, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
+                EntityDataBehaviour instance = ObjectPoolBehaviour.Instance.GetObject(_entityRef, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, OwnerMoveset.FixedTransform.WorldRotation);
                 instance.name = _id;
 
                 //Gets the move component so this can be placed on the grid.
@@ -97,7 +97,7 @@ namespace Lodis.Gameplay
                 BlackBoardBehaviour.Instance.AddEntityToList(moveBehaviour);
 
                 if (!moveBehaviour)
-                    moveBehaviour = instance.AddComponent<GridMovementBehaviour>();
+                    moveBehaviour = instance.Data.AddComponent<GridMovementBehaviour>();
 
                 //If the entity should lerp to the position, update the starting position.
                 if (SmoothMovement)

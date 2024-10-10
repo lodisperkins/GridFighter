@@ -13,6 +13,8 @@ using UnityEngine.InputSystem;
 using Lodis.ScriptableObjects;
 using System.Runtime.Remoting.Messaging;
 using Lodis.Gameplay;
+using UnityEngine.InputSystem.HID;
+using System.Linq;
 
 
 public class TagSelectorAttribute : PropertyAttribute
@@ -22,8 +24,11 @@ public class TagSelectorAttribute : PropertyAttribute
 
 public struct GridGame : IGame
 {
-    private static List<EntityData> ActiveEntities = new();
-    private static readonly List<EntityData> ActivePhysicsEntities = new();
+    private static List<EntityData> _activeEntities = new();
+    private static readonly List<EntityData> _activePhysicsEntities = new();
+
+    private static List<EntityData> _entitiesToRemove = new();
+    private static List<EntityData> _physicsEntitiesToRemove = new();
 
     //A dictionary of entity pairs that determines whether or not they collide. Used to ignore specific entities instead of layers.
     private static readonly Dictionary<(EntityData, EntityData), bool> _collisionPairs = new();
@@ -61,9 +66,9 @@ public struct GridGame : IGame
     {
         bw.Write(Framenumber);
 
-        for (int i = 0; i < ActiveEntities.Count; ++i)
+        for (int i = 0; i < _activeEntities.Count; ++i)
         {
-            ActiveEntities[i].Serialize(bw);
+            _activeEntities[i].Serialize(bw);
         }
     }
 
@@ -71,9 +76,9 @@ public struct GridGame : IGame
     {
         Framenumber = br.ReadInt32();
 
-        for (int i = 0; i < ActiveEntities.Count; ++i)
+        for (int i = 0; i < _activeEntities.Count; ++i)
         {
-            ActiveEntities[i].Deserialize(br);
+            _activeEntities[i].Deserialize(br);
         }
     }
 
@@ -251,13 +256,13 @@ public struct GridGame : IGame
     /// </summary>
     public static void AddEntityToGame(EntityData entity)
     {
-        if (ActiveEntities.Contains(entity))
+        if (_activeEntities.Contains(entity))
         {
             Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
             return;
         }
 
-        ActiveEntities.Add(entity);
+        _activeEntities.Add(entity);
 
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
@@ -266,25 +271,25 @@ public struct GridGame : IGame
         }
 
         if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
-            ActivePhysicsEntities.Add(entity);
+            _activePhysicsEntities.Add(entity);
     }
 
     public static void AddPhysicsEntity(EntityData entity)
     {
-        if (!ActiveEntities.Contains(entity))
+        if (!_activeEntities.Contains(entity))
         {
             throw new System.Exception("Cannot add a physics entity that has not been added to the game. Entity was " + entity.Name);
         }
 
-        if (ActivePhysicsEntities.Contains(entity) || entity.Colliders?.Length == 0)
+        if (_activePhysicsEntities.Contains(entity) || entity.Colliders?.Length == 0)
             return;
 
-        ActivePhysicsEntities.Add(entity);
+        _activePhysicsEntities.Add(entity);
     }
 
     public static void RemovePhysicsEntity(EntityData entity)
     {
-        ActivePhysicsEntities.Remove(entity);
+        _physicsEntitiesToRemove.Add(entity);
     }
 
     /// <summary>
@@ -293,22 +298,22 @@ public struct GridGame : IGame
     /// </summary>
     public static void RemoveEntityFromGame(EntityData entity)
     {
-        ActiveEntities.Remove(entity);
+        _entitiesToRemove.Add(entity);
         entity.End();
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
             EntityData child = entity.Transform.GetChild(i).Entity;
-            ActiveEntities.Remove(child);
+            _entitiesToRemove.Add(child);
             child.End();
 
             if (child.Colliders?.Length > 0)
-                ActivePhysicsEntities.Remove(child);
+                _physicsEntitiesToRemove.Add(child);
 
         }
 
         if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
-            ActivePhysicsEntities.Remove(entity);
+            _physicsEntitiesToRemove.Add(entity);
     }
 
     public static void IgnoreCollision(EntityData entity1, EntityData entity2, bool ignore = true)
@@ -327,13 +332,33 @@ public struct GridGame : IGame
         Time += FixedTimeStep;
         OnSimulationUpdate?.Invoke(FixedTimeStep);
 
-        //Component update
-        for (int i = 0; i < ActiveEntities.Count; i++)
+        //Remove all unwanted entities
+        for (int i = 0; i < _entitiesToRemove.Count; i++)
         {
-            if (!ActiveEntities[i].Active)
-                ActiveEntities[i].Begin();
+            _activeEntities.Remove(_entitiesToRemove[i]);
+        }
 
-            ActiveEntities[i].Tick(FixedTimeStep);
+        _entitiesToRemove.Clear();
+
+
+        //Remove all unwanted physics entities
+        for (int i = 0; i < _physicsEntitiesToRemove.Count; i++)
+        {
+            _activePhysicsEntities.Remove(_physicsEntitiesToRemove[i]);
+        }
+
+        _physicsEntitiesToRemove.Clear();
+
+        //Component update
+        for (int i = 0; i < _activeEntities.Count; i++)
+        {
+            if (_entitiesToRemove.Contains(_activeEntities[i]))
+                continue;
+
+            if (!_activeEntities[i].Active)
+                _activeEntities[i].Begin();
+
+            _activeEntities[i].Tick(FixedTimeStep);
         }
 
         //Input update
@@ -350,22 +375,22 @@ public struct GridGame : IGame
         //Collision update
 
         //This loop ensures that we aren't checking collisions with the same colliders by have the second loop start where the first one left off.
-        for (int row = 0; row < ActivePhysicsEntities.Count; row++)
+        for (int row = 0; row < _activePhysicsEntities.Count; row++)
         {
-            for (int column = row + 1; column < ActivePhysicsEntities.Count; column++)
+            for (int column = row + 1; column < _activePhysicsEntities.Count; column++)
             {
                 //Check if these entities should ignore each other.
                 bool shouldIgnore;
 
-                if (_collisionPairs.TryGetValue((ActivePhysicsEntities[row], ActivePhysicsEntities[column]), out shouldIgnore))
+                if (_collisionPairs.TryGetValue((_activePhysicsEntities[row], _activePhysicsEntities[column]), out shouldIgnore))
                 {
                     if (shouldIgnore)
                         continue;
                 }
 
                 //Cache current entities
-                EntityData entity1 = ActivePhysicsEntities[row];
-                EntityData entity2 = ActivePhysicsEntities[column];
+                EntityData entity1 = _activePhysicsEntities[row];
+                EntityData entity2 = _activePhysicsEntities[column];
 
                 if (entity1.Colliders == null || entity2.Colliders == null) continue;
 
@@ -391,9 +416,9 @@ public struct GridGame : IGame
 
 
         //Component late update
-        for (int i = 0; i < ActiveEntities.Count; i++)
+        for (int i = 0; i < _activeEntities.Count; i++)
         {
-            ActiveEntities[i].LateTick(FixedTimeStep);
+            _activeEntities[i].LateTick(FixedTimeStep);
         }
 
     }

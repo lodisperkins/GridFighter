@@ -26,7 +26,7 @@ MonoBehaviour:
   - Phase: 6
     CanOnlyCancelOnOpponentHit: 0
     CanCancelOnMove: 1
-    CanCancelIntoSelf: 1
+    CanCancelIntoSelf: 0
     CanCancelIntoSpecial: 1
     CanCancelIntoNormal: 1
     cancelOnHit: 0
@@ -58,7 +58,7 @@ MonoBehaviour:
   - name: EntityCount
     value: 3
   - name: Speed
-    value: 5
+    value: 4
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

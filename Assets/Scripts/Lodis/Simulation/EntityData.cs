@@ -157,8 +157,6 @@ public class EntityData
     {
         Active = false;
 
-        GridGame.RemovePhysicsEntity(this);
-
         if (_gridColliders != null)
         {
             foreach (GridCollider col in _gridColliders)
@@ -179,7 +177,6 @@ public class EntityData
     {
         _components.Add(comp);
         comp.Init();
-
         return comp;
     }
 
