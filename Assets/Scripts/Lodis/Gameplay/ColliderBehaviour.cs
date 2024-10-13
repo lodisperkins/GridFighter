@@ -24,6 +24,7 @@ namespace Lodis.Gameplay
         protected CustomEventSystem.GameEventListener ReturnToPoolListener;
         protected float _lastHitFrame;
         protected CollisionEvent _onHit;
+        protected CollisionEvent _onOpponentHit;
         private CollisionGroupBehaviour groupManager;
 
         private GridPhysicsBehaviour _gridPhysics;
@@ -92,6 +93,11 @@ namespace Lodis.Gameplay
             _onHit += collisionEvent;
         }
 
+        public void AddOpponentCollisionEvent(CollisionEvent collisionEvent)
+        {
+            _onOpponentHit += collisionEvent;
+        }
+
         public virtual void RemoveCollisionEvent(CollisionEvent collisionEvent)
         {
             _onHit -= collisionEvent;
@@ -123,9 +129,15 @@ namespace Lodis.Gameplay
         public override void Deserialize(BinaryReader br)
         {
         }
-        public virtual void InitCollider(Fixed32 width, Fixed32 height, EntityDataBehaviour owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
+        public virtual void InitCollider(Fixed32 width, Fixed32 height, EntityDataBehaviour spawner)
         {
-            _entityCollider.Init(width, height, owner, ownerPhysicsComponent);
+            if (_entityCollider == null)
+                _entityCollider = new GridCollider();
+
+            Spawner = spawner;
+
+            _entityCollider.Width = width;
+            _entityCollider.Height = height;
         }
 
         private void RaiseHitEvents(Collision collision)
@@ -134,6 +146,11 @@ namespace Lodis.Gameplay
                 OnHitObject?.Raise(gameObject);
             else
                 OnHitObject?.Raise(groupManager.gameObject);
+
+            if (collision.OtherEntity.UnityObject == BlackBoardBehaviour.Instance.GetOpponentForPlayer(Spawner?.UnityObject))
+            {
+                _onOpponentHit?.Invoke(collision);
+            }
 
             _onHit?.Invoke(collision);
         }

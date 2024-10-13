@@ -141,10 +141,10 @@ namespace Lodis.Gameplay
         public Fixed32 StartTime { get; private set; }
         public Fixed32 CurrentTimeActive { get; private set; }
 
-        public override void InitCollider(Fixed32 width, Fixed32 height, EntityDataBehaviour owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
+        public override void InitCollider(Fixed32 width, Fixed32 height, EntityDataBehaviour spawner)
         {
-            base.InitCollider(width, height, owner, ownerPhysicsComponent);
-            ColliderInfo.OwnerAlignement = owner.Data.UnityObject.GetComponent<GridMovementBehaviour>().Alignment;
+            base.InitCollider(width, height, spawner);
+            ColliderInfo.OwnerAlignement = spawner.Data.UnityObject.GetComponent<GridMovementBehaviour>().Alignment;
         }
 
         public override void Init()
@@ -421,7 +421,7 @@ namespace Lodis.Gameplay
             ResolveCollision(otherGameObject, collision);
         }
 
-        private void Update()
+        public override void Tick(Fixed32 dt)
         {
             if (gameObject == null)
                 return;

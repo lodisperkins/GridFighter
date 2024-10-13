@@ -184,6 +184,7 @@ public class EntityData
     {
         T comp = UnityObject.AddComponent<T>();
         comp.Init();
+        _components.Add(comp);
 
         return comp;
     }

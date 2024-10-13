@@ -255,15 +255,17 @@ public class GridCollider
         if (mask == (mask | 1 << layer))
             ignoresLayer = true;
 
-        foreach (string tag in TagsToIgnore)
+        if (TagsToIgnore != null)
         {
-            if (unityObject.CompareTag(tag))
+            foreach (string tag in TagsToIgnore)
             {
-                ignoresTag = true;
-                break;
+                if (unityObject.CompareTag(tag))
+                {
+                    ignoresTag = true;
+                    break;
+                }
             }
         }
-
         return ignoresLayer || ignoresTag;
     }
 

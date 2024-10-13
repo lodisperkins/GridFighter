@@ -1,5 +1,6 @@
 ﻿using FixedPoints;
 using Lodis.GridScripts;
+using Lodis.Movement;
 using Lodis.Utility;
 using System;
 using System.Collections;
@@ -61,22 +62,28 @@ namespace Lodis.Gameplay
         /// <param name="size">The dimension of this collider</param>
         /// <param name="hitCollider">The hit collider this collider will copy its values from</param>
         /// <returns></returns>
-        public static HitColliderBehaviour SpawnCollider(FVector3 position, Fixed32 width, Fixed32 height, HitColliderData info, EntityDataBehaviour owner)
+        public static HitColliderBehaviour SpawnCollider(FVector3 position, Fixed32 width, Fixed32 height, HitColliderData info, EntityDataBehaviour spawner, bool debuggingEnabled = true)
         {
             //Create a new grid collider in the simulation
-            EntityData colliderEntity = GridGame.SpawnEntity(position);
-            colliderEntity.Name = owner.Data.Name + "Collider";
+            EntityDataBehaviour colliderEntity = GridGame.SpawnEntity(position);
+            colliderEntity.Data.Name = spawner.Data.Name + "Collider";
+
+            GridPhysicsBehaviour physics = colliderEntity.Data.AddComponent<GridPhysicsBehaviour>();
+            physics.IsKinematic = true;
 
             //Initialize collider stats
-            HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
+            HitColliderBehaviour hitScript = colliderEntity.Data.AddComponent<HitColliderBehaviour>();
 
             //Set colliders settings
-            GridTrackerBehaviour tracker = colliderEntity.UnityObject.AddComponent<GridTrackerBehaviour>();
+            GridTrackerBehaviour tracker = colliderEntity.gameObject.AddComponent<GridTrackerBehaviour>();
             tracker.Marker = MarkerType.DANGER;
 
-            hitScript.InitCollider(width, height, owner);
+            hitScript.InitCollider(width, height, spawner);
             hitScript.ColliderInfo = info;
+            hitScript.EntityCollider.LayersToIgnore = info.LayersToIgnore;
             hitScript.EntityCollider.Overlap = true;
+            hitScript.DebuggingEnabled = debuggingEnabled;
+            hitScript.Spawner = spawner;
 
             return hitScript;
         }

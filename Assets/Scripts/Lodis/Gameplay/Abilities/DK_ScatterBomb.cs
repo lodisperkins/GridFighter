@@ -69,7 +69,10 @@ namespace Lodis.Gameplay
         /// </summary>
         private void ExplodeBomb(GridMovementBehaviour entity)
         {
-            HitColliderSpawner.SpawnCollider(entity.FixedTransform.WorldPosition + FVector3.Up / 2, 1, 1, _hitColliderData, Owner);
+            HitColliderBehaviour collider =  HitColliderSpawner.SpawnCollider(entity.FixedTransform.WorldPosition + FVector3.Up / 2, 1, 1, _hitColliderData, Owner);
+
+            collider.Entity.Data.Name = "Explosion";
+            collider.Entity.name = "Explosion";
 
             Object.Instantiate(_explosionEffect, entity.transform.position, Camera.main.transform.rotation);
 
@@ -104,7 +107,7 @@ namespace Lodis.Gameplay
             {
                 ColliderBehaviour collider = entity.GetComponent<ColliderBehaviour>();
 
-                collider.AddCollisionEvent(collisionArgs => ExplodeBomb(entity));
+                collider.AddOpponentCollisionEvent(collisionArgs => ExplodeBomb(entity));
                 collider.Spawner = Owner;
             }
 
