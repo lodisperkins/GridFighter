@@ -216,7 +216,7 @@ namespace Lodis.Movement
             bool wasFallingOrSliding = _knockback.Physics.Velocity.Y <= 0 || _knockback.IsSlidingHit;
 
             // Condition 5: Ensure the player is not currently in a stun state (hit animation still playing).
-            bool notInStun = !_knockback.InHitStun;
+            bool notInStun = !_knockback.InHitStun && !_knockback.Physics.IsFrozen;
 
             bool atLandingSpeed = _knockback.Physics.Velocity.X <= LandingSpeed;
 
