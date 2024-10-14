@@ -33937,7 +33937,7 @@ Transform:
   m_GameObject: {fileID: 1301690773271155241}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.8, z: 0}
+  m_LocalPosition: {x: 0, y: -2, z: 0}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.7}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -34115,11 +34115,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedFloat: 0
+  _speedFloat: 50
   _opponentPanelSpeedReductionFloat: 0
   _isMoving: 0
   _canMove: 1
-  _canCancelMovement: 0
+  _canCancelMovement: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 1
   _canMoveDiagonally: 1
@@ -34146,7 +34146,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _onHitObject: {fileID: 0}
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -34154,8 +34160,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
@@ -34258,6 +34266,8 @@ MonoBehaviour:
   _gravity: 9.81
   _bounceDampen: 2
   _bounciness: 0.8
+  _friction:
+    RawValue: 0
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
@@ -34268,7 +34278,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _useGravity: 0
-  _isKinematic: 0
+  _isKinematic: 1
   _gridActive: 1
   _isGrounded: 0
   _panelBounceEnabled: 0

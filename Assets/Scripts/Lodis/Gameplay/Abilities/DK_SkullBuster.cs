@@ -4,6 +4,7 @@ using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -38,11 +39,12 @@ namespace Lodis.Gameplay
         private Transform _spawnTransform;
         private HitColliderBehaviour _hitScript;
         private TimedAction _zoomAction;
-        private float _colliderScale;
+        private Fixed32 _colliderScale;
         private GameObject _hitEffectLoopRef;
         private GameObject _hitEffectLoopInstance;
         private TimedAction _hitLoopDespawnAction;
         private FixedAnimationCurve _fCurve;
+        private GameObject _fistEffect;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -58,10 +60,16 @@ namespace Lodis.Gameplay
 
             _knockBackBehaviour = Owner.GetComponent<KnockbackBehaviour>();
             _grid = BlackBoardBehaviour.Instance.Grid;
+
+            //Getting the fire loop effect
             _hitEffectLoopRef = abilityData.Effects[0];
 
             //Stores the opponents physics script to make them bounce later
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner);
+
+            //Getting the big fist effect
+            //_fistEffect = abilityData.Effects[1];
+
             if (opponent == null) return;
             _opponentPhysics = opponent.GetComponent<GridPhysicsBehaviour>();
             //Initialize default values
@@ -83,7 +91,7 @@ namespace Lodis.Gameplay
             //Add the velocity to the character to make them jump
             _knockBackBehaviour.Physics.Jump(_jumpHeight, (int)_distance, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, FVector3.Up * .3f);
             //Disable bouncing so the character doesn't bounce when landing
-            _knockBackBehaviour.Physics.DisablePanelBounce();
+            //_knockBackBehaviour.Physics.DisablePanelBounce();
 
             _chargeEffect = Object.Instantiate(_chargeEffectRef, _spawnTransform);
 
@@ -113,11 +121,12 @@ namespace Lodis.Gameplay
             _fistCollider = GetColliderData(0);
 
             //Spawn particles and hitbox
-            //_visualPrefabInstances.Item1 = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
+            //_visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
             _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, _spawnTransform);
             _visualPrefabInstance.transform.localPosition += Vector3.back * 0.3f;
+
             //Spawn a game object with the collider attached
-            //_hitScript = HitColliderSpawner.SpawnBoxCollider(_spawnTransform, Vector3.one * _colliderScale, _fistCollider, Owner);
+            _hitScript = HitColliderSpawner.SpawnCollider(Owner.FixedTransform, _colliderScale, _colliderScale, _fistCollider, Owner);
             _hitScript.transform.localPosition = Vector3.zero;
             _hitScript.ColliderInfo.OnHit = OnHit;
 

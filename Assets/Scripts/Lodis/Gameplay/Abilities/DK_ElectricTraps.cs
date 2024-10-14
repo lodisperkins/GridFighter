@@ -4,6 +4,7 @@ using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
 namespace Lodis.Gameplay
 {
@@ -58,6 +59,8 @@ namespace Lodis.Gameplay
             gridMovement.MoveToPanel((FixedPoints.FVector2)position, true, GridAlignment.ANY, true);
             gridMovement.Speed = abilityData.GetCustomStatValue("Speed");
 
+            visualPrefab.GetComponent<HitColliderBehaviour>().CollisionEnabled = false;
+
             _linkMoveScripts.Add(gridMovement);
         }
 
@@ -87,9 +90,9 @@ namespace Lodis.Gameplay
                     collider = attackLink.Data.AddComponent<HitColliderBehaviour>();
                 }
 
-                collider.GetComponent<Collider>().enabled = true;
+                collider.CollisionEnabled = true;
                 collider.Spawner = Owner;
-                OnHitTemp += args => collider.GetComponent<Collider>().enabled = false;
+                OnHitTemp += args => collider.CollisionEnabled = false;
                 collider.ColliderInfo = _stunCollider;
             }
 
@@ -144,31 +147,44 @@ namespace Lodis.Gameplay
             SpawnTransform = OwnerMoveset.ProjectileSpawner.FixedTransform;
 
             FVector2 attackDirection = (FVector2)args[1];
-            
+
+            //Finds closes panel on x to know how close to throw traps
+            int gridTempMaxColumns = BlackBoardBehaviour.Instance.Grid.TempMaxColumns;
+            int closestPanelX = gridTempMaxColumns;
+            //Temp max columns returns column count relative to player 1. 
+            //Decrements the x value to get the column count for player 2.
+            if (Owner.transform.forward.x < 0)
+                closestPanelX--;
+
+            //Finds the farthest possible panel to know how far to throw traps
+            Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
+            int ownerFacing = (int)Owner.transform.forward.x;
+            int farthestPanelX = (int)Mathf.Clamp(closestPanelX + (abilityData.GetCustomStatValue("DistanceBetweenStructures") * ownerFacing), 0, dimensions.x - 1);
+
             //Switch to know where to place the ability on the stage based on the direction given
             switch (attackDirection)
             {
                 case FVector2 dir when dir.Equals(FVector2.Right):
-                    FireLink(ShotDirection);
-                    FireLink(ShotDirection);
+                    FireLink(new FVector2(farthestPanelX, dimensions.y - 1));
+                    FireLink(new FVector2(farthestPanelX, 0));
                     break;
                 case FVector2 dir when dir.Equals(FVector2.Left):
-                    FireLink(ShotDirection);
-                    FireLink(ShotDirection);
+                    FireLink(new FVector2(closestPanelX, dimensions.y - 1));
+                    FireLink(new FVector2(closestPanelX, 0));
                     break;
-                case FVector2 dir when dir.Equals(FVector2.Up):
-                    FireLink(ShotDirection);
-                    FireLink(ShotDirection);
-                    break;
-                case FVector2 dir when dir.Equals(FVector2.Down):
-                    FireLink(ShotDirection);
-                    FireLink(ShotDirection);
-                    break;
+                //case FVector2 dir when dir.Equals(FVector2.Up):
+                //    FireLink(new FVector2(closestPanelX, dimensions.y - 1));
+                //    FireLink(new FVector2(farthestPanelX, dimensions.y - 1));
+                //    break;
+                //case FVector2 dir when dir.Equals(FVector2.Down):
+                //    FireLink(new FVector2(closestPanelX, 0));
+                //    FireLink(new FVector2(farthestPanelX, 0));
+                //    break;
                 default:
-                    FireLink(ShotDirection);
-                    FireLink(ShotDirection);
+                    FireLink(new FVector2(closestPanelX, OwnerMoveScript.Position.Y));
+                    FireLink(new FVector2(farthestPanelX, OwnerMoveScript.Position.Y));
                     break;
-                    
+
             }
         }
 

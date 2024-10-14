@@ -228,7 +228,7 @@ public struct GridGame : IGame
     /// </summary>
     /// <param name="position">The unity world position of the entity.</param>
     /// <returns>The entity that was created.</returns>
-    public static EntityData SpawnEntity(EntityData parent = null)
+    public static EntityDataBehaviour SpawnEntity(EntityData parent = null)
     {
         //Create new entity.
         EntityData entityData = new EntityData();
@@ -247,7 +247,7 @@ public struct GridGame : IGame
         //Adding the entity to the rollback simulattion.
         AddEntityToGame(entityData);
 
-        return entityData;
+        return script;
     }
 
     /// <summary>

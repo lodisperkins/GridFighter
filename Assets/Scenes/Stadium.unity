@@ -3860,7 +3860,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _bounceDampening: 5
-  _friction: 3
   _frictionTargetSpeed:
     RawValue: 0
   _shakeSpeed: 15
@@ -27954,7 +27953,7 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _infiniteEnergy
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}

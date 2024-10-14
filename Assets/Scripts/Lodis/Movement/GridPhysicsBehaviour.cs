@@ -383,7 +383,7 @@ namespace Lodis.Movement
             if (_jumpSequence != null)
             {
                 StopVelocity();
-                _jumpSequence?.Pause();
+                _jumpSequence?.Resume();
                 FrozenStoredForce = FVector3.Zero;
                 FrozenVelocity = FVector3.Zero;
                 return;
@@ -949,9 +949,15 @@ namespace Lodis.Movement
             }
 
             //Perform the jump
+            _gridActive = false;
+            
             _jumpSequence = FixedLerp.DoJump(FixedTransform, panelPosition + panelOffset, height, 1, duration, curve);
             _jumpSequence.onKill += () => _jumpSequence = null;
-            _jumpSequence.onComplete += () => _jumpSequence = null;
+            _jumpSequence.onComplete += () => 
+            {
+                _jumpSequence = null;
+                _gridActive = true;
+            };
 
             //Cancel the jump if a force is added
             _onForceAdded += args =>

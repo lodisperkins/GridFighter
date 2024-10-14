@@ -38,12 +38,15 @@ namespace Lodis.Gameplay
             _distance = abilityData.GetCustomStatValue("Distance");
             abilityData.GetAdditionalAnimation(0, out _comboClip);
 
-
+            // Punch events
             _chargeEffectRef = abilityData.Effects[0];
             _opponentMoveset = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<MovesetBehaviour>();
             OwnerAnimationScript.AddEventListener("Punch1", () => 
             {
+                //Spawn collider for punch 1
                 SpawnCollider(0);
+
+                //Spawn effects for punch 1
                 OwnerVoiceScript.PlayLightAttackSound();
                 CameraBehaviour.Instance.AlignmentFocus = OwnerMoveScript.Alignment;
                 CameraBehaviour.Instance.ZoomAmount = 2;
@@ -53,9 +56,13 @@ namespace Lodis.Gameplay
 
             OwnerAnimationScript.AddEventListener("Punch2", () => 
             {
+                //We should only continue if the first hit landed
                 if (_landedFirstHit)
                 {
+                    //Spawn collider for punch 2
                     SpawnCollider(0);
+
+                    //Play effects for punch 2
                     OwnerVoiceScript.PlayLightAttackSound();
                     CameraBehaviour.Instance.ZoomAmount = 3;
                 }
@@ -64,12 +71,18 @@ namespace Lodis.Gameplay
             });
             OwnerAnimationScript.AddEventListener("Punch3", () =>
             {
+                //Spawn collider for punch 3
                 SpawnCollider(1);
+
+                //Play effects for punch 3
                 OwnerVoiceScript.PlayLightAttackSound();
                 CameraBehaviour.Instance.ZoomAmount = 4;
 
             });
 
+            //Additional effects
+
+            //Slow motion begins to make things dramatic!!!
             _slowMotionTimeScale = abilityData.GetCustomStatValue("SlowMotionTimeScale");
             _slowMotionTime = abilityData.GetCustomStatValue("SlowMotionTime");
 
@@ -88,7 +101,10 @@ namespace Lodis.Gameplay
 
             OwnerAnimationScript.AddEventListener("Punch4", () =>
             {
+                //Spawn collider for the final blow
                 SpawnCollider(2);
+
+                //Play effects for final blow
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
                 _endTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
                 OwnerVoiceScript.PlayHeavyAttackSound();
@@ -102,12 +118,16 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
 
+            //Init values
             _comboStarted = false;
             _landedFirstHit = false;
 
             _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<Movement.GridMovementBehaviour>();
             _opponentKnockback = _opponentMovement.GetComponent<KnockbackBehaviour>();
+
             TimeCountType = TimedActionCountType.UNSCALEDTIME;
+
+            //Start super move effects
 
             FXManagerBehaviour.Instance.StartSuperMoveVisual(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner), abilityData.startUpTime);
             //Spawn the the holding effect.

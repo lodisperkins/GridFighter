@@ -90,7 +90,7 @@ public class GridCollider
     /// <summary>
     /// The current y position of this panel on the grid. Adds the y offset to the owner position.
     /// </summary>
-    public int PanelY 
+    public int PanelY
     {
         get
         {
@@ -102,7 +102,7 @@ public class GridCollider
     /// <summary>
     /// The current x position of this panel on the grid. Adds the x offset to the owner position.
     /// </summary>
-    public int PanelX 
+    public int PanelX
     {
         get
         {
@@ -189,6 +189,7 @@ public class GridCollider
     public Fixed32 WorldYPosition { get => _worldYPosition; set => _worldYPosition = value; }
     public string[] TagsToIgnore { get => _tagsToIgnore; set => _tagsToIgnore = value; }
     public bool IsAWall { get => _isAWall; set => _isAWall = value; }
+    public bool CollisionEnabled { get; set; } = true;
 
     public void Init(EntityDataBehaviour owner, GridPhysicsBehaviour ownerPhysicsComponent = null)
     {
@@ -337,7 +338,7 @@ public class GridCollider
     public bool CheckCollision(GridCollider other)
     {
         //Check if collision should occur using Unity layers.
-        if (CheckIfColliderShouldBeIgnored(other.Entity.Data.UnityObject) || other.CheckIfColliderShouldBeIgnored(Entity.Data.UnityObject))
+        if (CheckIfColliderShouldBeIgnored(other.Entity.Data.UnityObject) || other.CheckIfColliderShouldBeIgnored(Entity.Data.UnityObject) || !CollisionEnabled)
             return false;
 
         bool collidingOnX = false;

@@ -38,6 +38,7 @@ namespace Lodis.Gameplay
         public CustomEventSystem.Event OnHitObject { get => _onHitObject; set => _onHitObject = value; }
         public bool DebuggingEnabled { get => debuggingEnabled; set => debuggingEnabled = value; }
         public CollisionGroupBehaviour GroupManager { get => groupManager; set => groupManager = value; }
+        public bool CollisionEnabled { get => _entityCollider.CollisionEnabled; set => _entityCollider.CollisionEnabled = value; }
 
         public override void Init()
         {
