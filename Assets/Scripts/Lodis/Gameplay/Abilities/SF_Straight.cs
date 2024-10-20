@@ -49,7 +49,7 @@ namespace Lodis.Gameplay
 
         protected override void OnActivate(params object[] args)
         {
-            CameraBehaviour.ShakeBehaviour.ShakeRotation(0.2f);
+            //CameraBehaviour.ShakeBehaviour.ShakeRotation(0.2f);
             //Initialize collider stats
             Fixed32 powerScale = (Fixed32)args[0];
             _projectileCollider = GetColliderData(0);

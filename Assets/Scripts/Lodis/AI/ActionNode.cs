@@ -33,7 +33,7 @@ namespace Assets.Scripts.Lodis.AI
         public bool CanMove;
         public bool CanCancelMovement;
         public float MoveSpeed;
-        public FVector2 MoveDirection;
+        public Vector2 MoveDirection;
         public bool IsGrounded;
         public int AlignmentX = 1;
 
@@ -41,7 +41,7 @@ namespace Assets.Scripts.Lodis.AI
         public float Energy;
         public bool CanBurst;
         public bool CanUseAbility;
-        public FVector2 AttackDirection;
+        public Vector2 AttackDirection;
 
         public int CurrentAbilityID = -1;
         public int Ability1ID = -1;
@@ -55,12 +55,12 @@ namespace Assets.Scripts.Lodis.AI
 
         public string CurrentState;
 
-        public FVector2 PanelPosition;
-        public FVector3 AverageHitBoxOffset;
-        public FVector3 AverageVelocity;
+        public Vector2 PanelPosition;
+        public Vector3 AverageHitBoxOffset;
+        public Vector3 AverageVelocity;
 
-        public FVector2 OpponentMoveDirection;
-        public FVector3 OpponentVelocity;
+        public Vector2 OpponentMoveDirection;
+        public Vector3 OpponentVelocity;
 
         public bool OpponentAbilityInUse;
         public float OpponentEnergy;
@@ -125,7 +125,7 @@ namespace Assets.Scripts.Lodis.AI
             if (CurrentState != situationNode.CurrentState)
                 return 400;
 
-            if (PanelPosition.Y != situationNode.PanelPosition.Y)
+            if (PanelPosition.y != situationNode.PanelPosition.y)
                 return 400;
 
             //Vector2 position = PanelPosition;
@@ -141,7 +141,7 @@ namespace Assets.Scripts.Lodis.AI
 
             //}
 
-            if (!BlackBoardBehaviour.Instance.Grid.CheckIfPositionInRange(situationNode.PanelPosition + MoveDirection) && CurrentAbilityID == -1)
+            if (!BlackBoardBehaviour.Instance.Grid.CheckIfPositionInRange((FVector2)(situationNode.PanelPosition + MoveDirection)) && CurrentAbilityID == -1)
                 return 400;
 
 
@@ -190,11 +190,11 @@ namespace Assets.Scripts.Lodis.AI
 
             //Check opponent velocity
             float velocityAccuracy = 1;
-            if (situationNode.OpponentVelocity.Magnitude != 0 || OpponentVelocity.Magnitude != 0)
+            if (situationNode.OpponentVelocity.magnitude != 0 || OpponentVelocity.magnitude != 0)
             {
-                FVector3 opponentVelocity = OpponentVelocity;
+                Vector3 opponentVelocity = OpponentVelocity;
 
-                velocityAccuracy = FVector3.Dot(situationNode.OpponentVelocity.GetNormalized() * alignmentModifier, opponentVelocity.GetNormalized());
+                velocityAccuracy = Vector3.Dot(situationNode.OpponentVelocity.normalized * alignmentModifier, opponentVelocity.normalized);
                 if (velocityAccuracy < 0)
                     velocityAccuracy = 0;
             }
@@ -211,9 +211,9 @@ namespace Assets.Scripts.Lodis.AI
 
             //Check hit box distance
             float hitBoxPositionAccuracy = 1;
-            if (situationNode.AverageHitBoxOffset.Magnitude != 0 && AverageHitBoxOffset.Magnitude != 0)
+            if (situationNode.AverageHitBoxOffset.magnitude != 0 && AverageHitBoxOffset.magnitude != 0)
             {
-                hitBoxPositionAccuracy = 1 - FVector3.Dot(situationNode.AverageHitBoxOffset.GetNormalized() * alignmentModifier, AverageHitBoxOffset.GetNormalized());
+                hitBoxPositionAccuracy = 1 - Vector3.Dot(situationNode.AverageHitBoxOffset.normalized * alignmentModifier, AverageHitBoxOffset.normalized);
                 if (hitBoxPositionAccuracy < 0)
                     hitBoxPositionAccuracy = 0;
             }
@@ -232,10 +232,10 @@ namespace Assets.Scripts.Lodis.AI
 
             float attackVelocityAccuracy = 1;
 
-            if (situationNode.AverageVelocity.Magnitude != 0 && AverageVelocity.Magnitude != 0)
+            if (situationNode.AverageVelocity.magnitude != 0 && AverageVelocity.magnitude != 0)
             {
 
-                attackVelocityAccuracy = FVector3.Dot(situationNode.AverageVelocity.GetNormalized() * alignmentModifier, AverageVelocity.GetNormalized());
+                attackVelocityAccuracy = Vector3.Dot(situationNode.AverageVelocity.normalized * alignmentModifier, AverageVelocity.normalized);
             }
 
             //if (float.IsNaN(attackVelocityAccuracy))

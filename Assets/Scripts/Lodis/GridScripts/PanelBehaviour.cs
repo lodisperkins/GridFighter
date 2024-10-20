@@ -216,6 +216,9 @@ namespace Lodis.GridScripts
 
         public void FlashAlignment()
         {
+            if (!_flashBehaviour)
+                return;
+
             Color color = Alignment == GridAlignment.LEFT ? _positionLHSColor : _positionRHSColor;
             _flashBehaviour.Flash(color, 5, 1, true, 5);
         }

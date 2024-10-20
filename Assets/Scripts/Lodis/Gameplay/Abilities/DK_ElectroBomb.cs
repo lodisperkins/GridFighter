@@ -7,6 +7,7 @@ using Lodis.Sound;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -31,8 +32,8 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _opponentKnockback;
         private CharacterFeedbackBehaviour _characterFeedback;
         private CharacterFeedbackBehaviour _opponentFeedback;
-        private float _slowMotionTimeScale;
-        private float _slowMotionTime;
+        private Fixed32 _slowMotionTimeScale; // 0.05
+        private Fixed32 _slowMotionTime; // 1.2
         private GameObject _thalamusInstance;
         private int _thalamusLayer;
         private FTransform _heldItemSpawn;
@@ -44,9 +45,10 @@ namespace Lodis.Gameplay
         {
 			base.Init(newOwner);
             _chargeEffectRef = abilityData.Effects[0];
-
-            _slowMotionTimeScale = abilityData.GetCustomStatValue("SlowMotionTimeScale");
-            _slowMotionTime = abilityData.GetCustomStatValue("SlowMotionTime");
+            //0.05
+            _slowMotionTimeScale = new Fixed32(3276);
+            //1.2
+            _slowMotionTime = new Fixed32(78643);
             _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<GridMovementBehaviour>();
             _opponentKnockback = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<KnockbackBehaviour>();
 
@@ -77,7 +79,8 @@ namespace Lodis.Gameplay
             //Throw bomb animation events
             OwnerAnimationScript.AddEventListener("StartElectroBombSlowMotion", () =>
             {
-                MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, 0.01f, _slowMotionTime);
+                //0.01
+                MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, new Fixed32(655), _slowMotionTime);
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(false);
                 SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[0], 3);
             });
@@ -176,7 +179,7 @@ namespace Lodis.Gameplay
 
             IControllable controller = Owner.GetComponentInParent<IControllable>();
 
-            FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, abilityData.startUpTime);
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, 2);
         }
 
         private void PrepareBlast()

@@ -243,7 +243,7 @@ public class GridCollider
     /// <returns></returns>
     public bool CheckIfColliderShouldBeIgnored(GameObject unityObject)
     {
-        if (LayersToIgnore == 0)
+        if (LayersToIgnore == 0 || !unityObject)
             return false;
 
         int layer = unityObject.layer;

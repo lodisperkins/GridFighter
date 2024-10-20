@@ -157,7 +157,7 @@ namespace Lodis.Gameplay
 
         public override void OnOverlapEnter(Collision collision)
         {
-            if (!_canInstantShatter)
+            if (!_canInstantShatter || collision.OtherEntity.UnityObject == null)
                 return;
 
             //Only try to take damage if the object had a rigid body attached.

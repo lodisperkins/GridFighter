@@ -218,7 +218,7 @@ namespace Lodis.GridScripts
             float collisionPlaneOffsetX = ((_dimensions.x - 1) * localScale.x) + (PanelSpacingX * (_dimensions.x - 2) + _panelSpacingMiddle);
             float collisionPlaneOffsetY = ((_dimensions.y - 1) * localScale.z) + (PanelSpacingZ * (_dimensions.y - 1));
 
-            collisionPlane.FixedTransform.LocalScale = new FVector3(_width / 10, collisionPlane.transform.localScale.y, _height / 10);
+            collisionPlane.FixedTransform.LocalScale = new FVector3(_width / 10, collisionPlane.transform.localScale.y, _height / 11);
             collisionPlane.FixedTransform.WorldPosition += new FVector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
 
         }
@@ -313,6 +313,23 @@ namespace Lodis.GridScripts
 
             _panelExchangeRoutine = null;
             _tempMaxColumns = _p1MaxColumns;
+        }
+
+        /// <summary>
+        /// Gets the length of the given side of the grid on the x axis.
+        /// </summary>
+        public int GetAlignmentXScale(GridAlignment alignment)
+        {
+            if (alignment == GridAlignment.LEFT)
+            {
+                return _tempMaxColumns;
+            }
+            else if (alignment == GridAlignment.RIGHT)
+            {
+                return (int)Dimensions.x - _tempMaxColumns;
+            }
+
+            return (int)Dimensions.x;
         }
 
         /// <summary>

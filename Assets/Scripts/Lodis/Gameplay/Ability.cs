@@ -12,6 +12,7 @@ using Lodis.Utility;
 using Lodis.Sound;
 using Lodis.Input;
 using FixedPoints;
+using Types;
 
 namespace Lodis.Gameplay
 {
@@ -145,7 +146,7 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActivateSound);
             Start(args);
-            _currentTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args),  abilityData.startUpTime);
+            _currentTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args),  abilityData.startUpTime, (FixedTimeAction.UnitOfTime)TimeCountType);
         }
 
         /// <summary>
@@ -158,7 +159,7 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
             Activate(args);
-            _currentTimer = FixedPointTimer.StartNewTimedAction(() => RecoverPhase(args), abilityData.timeActive);
+            _currentTimer = FixedPointTimer.StartNewTimedAction(() => RecoverPhase(args), abilityData.timeActive, (FixedTimeAction.UnitOfTime)TimeCountType);
         }
 
         /// <summary>
@@ -173,9 +174,9 @@ namespace Lodis.Gameplay
 
             Recover(args);
             if (MaxActivationAmountReached)
-                _currentTimer = FixedPointTimer.StartNewTimedAction(() => EndAbility(), abilityData.recoverTime);
+                _currentTimer = FixedPointTimer.StartNewTimedAction(() => EndAbility(), abilityData.recoverTime, (FixedTimeAction.UnitOfTime)TimeCountType);
             else
-                _currentTimer = FixedPointTimer.StartNewTimedAction(() => _inUse = false, abilityData.recoverTime);
+                _currentTimer = FixedPointTimer.StartNewTimedAction(() => _inUse = false, abilityData.recoverTime, (FixedTimeAction.UnitOfTime)TimeCountType);
 
         }
 
@@ -487,6 +488,8 @@ namespace Lodis.Gameplay
         /// Called in every fixed update for the ability owner
         /// </summary>
         public virtual void FixedUpdate() { }
+
+        public virtual void Tick(Fixed32 dt) { }
 
         public HitColliderData GetColliderData(int index)
         {

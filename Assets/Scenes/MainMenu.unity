@@ -11097,7 +11097,7 @@ MonoBehaviour:
   updateType: 1
   _startLocalGame: 1
   _fixed32TestConversion:
-    RawValue: 6553
+    RawValue: 104857
   inpIp: 
   inpPort: 
   txtIp: 

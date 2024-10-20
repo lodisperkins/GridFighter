@@ -15,6 +15,8 @@ using DG.Tweening.Plugins.Options;
 using CustomEventSystem;
 using SharedGame;
 using Unity.Collections;
+using Types;
+using FixedPoints;
 
 namespace Lodis.Gameplay
 {
@@ -93,8 +95,10 @@ namespace Lodis.Gameplay
         private bool _suddenDeathActive;
         private bool _matchStarted;
         private bool _playerOutOfRing;
-        private TweenerCore<float, float, FloatOptions> _timeScaleTween;
-        private DelayedAction _timeScaleAction;
+        private TweenerCore<float, float, FloatOptions> _fxTimeScaleTween;
+        private LerpAction _physicsTimeScaleLerp;
+        private FixedAction _physicsTimeScaleAction;
+        private DelayedAction _fxTimeScaleAction;
         private int _lhsWins;
         private int _rhsWins;
 
@@ -239,10 +243,16 @@ namespace Lodis.Gameplay
         /// <param name="newTimeScale">The new time scale. 0 being no time passes and 1 being the normal speed.</param>
         /// <param name="speed">How long it takes to transition into the new time scale.</param>
         /// <param name="duration">How long the timescale will be this speed.</param>
-        public void ChangeTimeScale(float newTimeScale, float speed, float duration)
+        public void ChangeTimeScale(Fixed32 newTimeScale, Fixed32 speed, Fixed32 duration)
         {
-            _timeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
-            _timeScaleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Time.timeScale = 1, TimedActionCountType.UNSCALEDTIME, duration);
+            _fxTimeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
+
+            _physicsTimeScaleLerp = FixedLerp.To(() => GridGame.TimeScale, x => GridGame.TimeScale = x, newTimeScale, speed);
+
+
+            _fxTimeScaleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Time.timeScale = 1, TimedActionCountType.UNSCALEDTIME, duration);
+
+            _physicsTimeScaleAction = FixedPointTimer.StartNewTimedAction(() => GridGame.TimeScale = 1, duration, FixedTimeAction.UnitOfTime.Unscaled);
         }
 
         /// <summary>
@@ -253,15 +263,18 @@ namespace Lodis.Gameplay
         /// <param name="duration">How long the timescale will be this speed.</param>
         public void ChangeTimeScale(float newTimeScale, float speed, Condition condition)
         {
-            _timeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
-            _timeScaleAction = RoutineBehaviour.Instance.StartNewConditionAction(args => Time.timeScale = 1, condition);
+            _fxTimeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
+
+            _fxTimeScaleTween.onUpdate += () => GridGame.TimeScale = Time.timeScale;
+            _fxTimeScaleAction = RoutineBehaviour.Instance.StartNewConditionAction(args => Time.timeScale = 1, condition);
         }
 
         public void ResetTimeScale()
         {
             Time.timeScale = 1;
-            _timeScaleTween.Kill();
-            RoutineBehaviour.Instance.StopAction(_timeScaleAction);
+            GridGame.TimeScale = 1;
+            _fxTimeScaleTween.Kill();
+            RoutineBehaviour.Instance.StopAction(_fxTimeScaleAction);
         }
 
         public void SetPlayerControlsActive(bool value)
@@ -297,6 +310,7 @@ namespace Lodis.Gameplay
 
             _isPaused = !_isPaused;
             Time.timeScale = Convert.ToInt32(!_isPaused);
+            GridGame.TimeScale = Convert.ToInt32(!_isPaused); ;
             _timeScale = Time.timeScale;
 
             SetPlayerControlsActive(!_isPaused);

@@ -7,13 +7,14 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using Lodis.Sound;
 using Lodis.FX;
+using Types;
 
 namespace Lodis.Gameplay
 {
     public class CharacterExplosionBehaviour : MonoBehaviour
     {
         [SerializeField] private GameObject _explosion;
-        [SerializeField] private float _explosionChargeTime;
+        [SerializeField] private Fixed32 _explosionChargeTime;
         private CharacterFeedbackBehaviour _characterFeedback;
         [SerializeField] private float _maxEmission;
         [SerializeField] private AudioClip _chargeSound;
@@ -25,7 +26,7 @@ namespace Lodis.Gameplay
         private IntVariable _lastLoserID;
 
         public GameObject Explosion { get => _explosion; set => _explosion = value; }
-        public float ExplosionChargeTime { get => _explosionChargeTime; set => _explosionChargeTime = value; }
+        public Fixed32 ExplosionChargeTime { get => _explosionChargeTime; set => _explosionChargeTime = value; }
         public TimedAction ChargeAction { get => _chargeAction; private set => _chargeAction = value; }
 
         public void Start()
@@ -58,7 +59,9 @@ namespace Lodis.Gameplay
             FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(false);
             SoundManagerBehaviour.Instance.PlaySound(_chargeSound);
             SoundManagerBehaviour.Instance.TogglePauseMusic();
-            MatchManagerBehaviour.Instance.ChangeTimeScale(0.2f, ExplosionChargeTime, ExplosionChargeTime);
+
+
+            MatchManagerBehaviour.Instance.ChangeTimeScale(new Types.Fixed32(13107), ExplosionChargeTime, ExplosionChargeTime);
             _characterVoice.PlayDeathSound();
 
             CameraBehaviour.Instance.ClampX = false;

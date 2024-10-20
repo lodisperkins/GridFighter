@@ -4,6 +4,7 @@ using Lodis.Sound;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -14,7 +15,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class B_OffensiveBurst : Ability
     {
-        private GameObject _barrier;
+        private EntityDataBehaviour _barrier;
         private GameObject _burstEffect;
         private float _defaultRestTime;
         private bool _makeFreeFall;
@@ -83,20 +84,20 @@ namespace Lodis.Gameplay
             HitColliderData hitColliderData = GetColliderData(0);
 
             //Try to get a barrier from the pool to use as the hit box
-            _barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform.position, Owner.transform.rotation);
+            _barrier = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), Owner.FixedTransform.WorldPosition, Owner.FixedTransform.WorldRotation);
 
             HitColliderBehaviour instantiatedCollider = null;
 
             //Add a hitcollider if there isn't one attached in order to deal damage
             if (!_barrier.TryGetComponent(out instantiatedCollider))
-                instantiatedCollider = _barrier.AddComponent<HitColliderBehaviour>();
+                instantiatedCollider = _barrier.Data.AddComponent<HitColliderBehaviour>();
 
             //Update the new colliders data
-            instantiatedCollider.InitCollider(1, 1, _barrier.GetComponent<SimulationBehaviour>().Entity);
+            instantiatedCollider.InitCollider(5, 5, Owner);
             instantiatedCollider.ColliderInfo = hitColliderData;
 
             //Spawns a new particle effect at this player's position
-            //Object.Instantiate(_burstEffect, owner.transform.position, Camera.main.transform.rotation);
+            //Object.Instantiate(_burstEffect, Owner.transform.position, Camera.main.transform.rotation);
 
             //If the player isn't resting on the ground...
             if (OwnerKnockBackScript.CurrentAirState != AirState.NONE && !OwnerKnockBackScript.Physics.IsGrounded)
@@ -133,9 +134,8 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StopAction(_zoomAction);
         }
 
-        public override void Update()
+        public override void Tick(Fixed32 dt)
         {
-            base.Update();
             if (CurrentAbilityPhase == AbilityPhase.RECOVER && !OwnerKnockBackScript.Physics.IsGrounded && InUse)
                 EndAbility();
         }

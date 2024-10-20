@@ -128,6 +128,23 @@ namespace FixedPoints
             return action;
         }
 
+        /// <summary>
+        /// Creates a tween that interpolates a value over time.
+        /// </summary>
+        /// <param name="getter">A delegate to get the current value.</param>
+        /// <param name="setter">A delegate to set the value during interpolation.</param>
+        /// <param name="endValue">The target value at the end of the tween.</param>
+        /// <param name="duration">The duration of the tween in fixed time.</param>
+        /// <param name="curve">Optional curve to modify the interpolation behavior.</param>
+        public static LerpAction To(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+        {
+            // Create a new tween action and add it to the list.
+            LerpAction action = new FixedTweenAction(getter, setter, getter(), endValue, duration, curve);
+            Actions.Add(action);
+
+            return action;
+        }
+
         public static void RemoveAction(LerpAction action)
         {
             Actions.Remove(action);
@@ -379,4 +396,38 @@ namespace FixedPoints
             Target.WorldPosition = newValue;
         }
     }
+
+    /// <summary>
+    /// Represents a fixed-point tween action that interpolates a value over time.
+    /// </summary>
+    public class FixedTweenAction : LerpAction
+    {
+        private readonly Func<Fixed32> _getter;
+        private readonly Action<Fixed32> _setter;
+        private readonly Fixed32 _startValue;
+        private readonly Fixed32 _endValue;
+
+        public FixedTweenAction(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 startValue, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+            : base(null, duration, curve)
+        {
+            _getter = getter;
+            _setter = setter;
+            _startValue = startValue;
+            _endValue = endValue;
+        }
+
+        /// <summary>
+        /// Updates the tween over time.
+        /// </summary>
+        /// <param name="dt">The time step (dt).</param>
+        /// <returns>True if the tween has finished, false otherwise.</returns>
+        protected override void Apply(Fixed32 t)
+        {
+
+            // Lerp the value between start and end based on t.
+            Fixed32 currentValue = _startValue + (_endValue - _startValue) * t;
+            _setter(currentValue);
+        }
+    }
+
 }

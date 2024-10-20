@@ -69,8 +69,7 @@ namespace Lodis.Gameplay
             //Move shockwave
             movementBehaviour.Move(offset, false, GridScripts.GridAlignment.ANY, true, false, true);
 
-            if (!_wavesSpawned)
-                movementBehaviour.AddOnMoveEndAction(() => ObjectPoolBehaviour.Instance.ReturnGameObject(movementBehaviour.gameObject));
+            FixedPointTimer.StartNewConditionAction(() => ObjectPoolBehaviour.Instance.ReturnGameObject(movementBehaviour.gameObject), c => !movementBehaviour.IsMoving);
         }
 
         //Called when ability is used

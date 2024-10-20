@@ -51,6 +51,8 @@ MonoBehaviour:
   _gravity: 9.81
   _bounceDampen: 2
   _bounciness: 0.8
+  _friction:
+    RawValue: 0
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
@@ -137,6 +139,7 @@ MonoBehaviour:
     UnityObject: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 3182570595452489212}
+  _children: []
 --- !u!114 &5621950166366053141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +153,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -157,8 +166,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
@@ -24456,6 +24467,8 @@ MonoBehaviour:
   _gravity: 9.81
   _bounceDampen: 2
   _bounciness: 0.8
+  _friction:
+    RawValue: 0
   _rangeToIgnoreUpAngle: 0.2
   _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
@@ -24489,6 +24502,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -24496,8 +24515,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
@@ -24584,6 +24605,8 @@ MonoBehaviour:
     UnityObject: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 6740710594312166089}
+  _children:
+  - {fileID: 8559612497075323861}
 --- !u!1001 &7416041044611586131
 PrefabInstance:
   m_ObjectHideFlags: 0

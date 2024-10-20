@@ -959,20 +959,26 @@ namespace Lodis.Movement
             condition => !IsMoving
             );
 
-            for (int i = 0; i < BlackBoardBehaviour.Instance.Grid.Dimensions.x * BlackBoardBehaviour.Instance.Grid.Dimensions.y; i ++)
-            {
-                BlackBoardBehaviour.Instance.Grid.GetPanel(args =>
-                {
-                    return FVector2.Distance(((PanelBehaviour)args[0]).Position, _currentPanel.Position) <= offSet;
-                }, out panel, gameObject);
+            int maxSearch = GridBehaviour.Grid.GetAlignmentXScale(Alignment);
 
+            //Get the current panel we are on. Doing this because current panel could be null here if it couldn't find one earlier.
+            FVector2 position;
+            GridBehaviour.Grid.GetGridCoordinateFromLocation(transform.position, out position);
+
+            for (int i = 0; i < maxSearch; i ++)
+            {
+                //Calculate an offset to find the closest panel behind the player.
+                offSet += 1 * -GetAlignmentX();
+                //Try to get the panel at the location. Only allow the panel to be occupied if we are searching the last possible option.
+                BlackBoardBehaviour.Instance.Grid.GetPanel(position.X + offSet, Position.Y, out panel, i == maxSearch - 1, Alignment);
+
+                //Move if we found a good panel.
                 if (panel != null)
                 {
                     MoveToPanel(panel);
                     _searchingForSafePanel = false;
                     return;
                 }
-                offSet++;
             }
 
         }

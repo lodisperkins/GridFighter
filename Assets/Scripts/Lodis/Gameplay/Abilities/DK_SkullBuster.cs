@@ -89,7 +89,7 @@ namespace Lodis.Gameplay
             //Calculate the time it takes to reache the peak height
             _riseTime = abilityData.startUpTime - abilityData.GetCustomStatValue("HangTime");
             //Add the velocity to the character to make them jump
-            _knockBackBehaviour.Physics.Jump(_jumpHeight, (int)_distance, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, FVector3.Up * .3f);
+            _knockBackBehaviour.Physics.Jump(_jumpHeight, (int)_distance, abilityData.startUpTime + abilityData.timeActive, true, true, GridAlignment.ANY, FVector3.Up * .3f, _fCurve);
             //Disable bouncing so the character doesn't bounce when landing
             //_knockBackBehaviour.Physics.DisablePanelBounce();
 
@@ -201,6 +201,10 @@ namespace Lodis.Gameplay
 
             if (_hitEffectLoopInstance)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitEffectLoopInstance);
+
+            if (_hitScript)
+                _hitScript.Entity.RemoveFromGame(true);
+
             CameraBehaviour.Instance.ZoomAmount = 0;
         }
     }

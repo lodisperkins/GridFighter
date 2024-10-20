@@ -55,7 +55,7 @@ MonoBehaviour:
         Y:
           RawValue: 0
         Z:
-          RawValue: 0
+          RawValue: 87162
       _localRotation:
         X:
           RawValue: 0
@@ -77,6 +77,7 @@ MonoBehaviour:
     UnityObject: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 3991252713363413223}
+  _children: []
 --- !u!114 &743758813837586620
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -229,6 +230,7 @@ MonoBehaviour:
     UnityObject: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 2380304751625507806}
+  _children: []
 --- !u!114 &1818633693362716948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -260,7 +262,7 @@ MonoBehaviour:
       RawValue: 203161
     _facingRight: 1
     _height:
-      RawValue: 71434
+      RawValue: 32768
     _panelYOffset: 0
     _panelXOffset: 0
     _worldYPosition:
@@ -313,7 +315,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8679185744603700277}
-  - component: {fileID: 6531934373623809041}
+  - component: {fileID: 5601963912983266491}
   m_Layer: 20
   m_Name: WinCollider
   m_TagString: Untagged
@@ -338,7 +340,7 @@ Transform:
   - {fileID: 2380304751625507806}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6531934373623809041
+--- !u!114 &5601963912983266491
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -351,7 +353,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData:
-    Name: Win Collider
+    Name: New Entity
     Transform:
       _localPosition:
         X:
@@ -381,3 +383,4 @@ MonoBehaviour:
     UnityObject: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 8679185744603700277}
+  _children: []

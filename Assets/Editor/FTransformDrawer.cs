@@ -44,6 +44,7 @@ public class FTransformDrawer : PropertyDrawer
         // Create a menu with options
         GenericMenu menu = new GenericMenu();
         menu.AddItem(new GUIContent("Copy From Unity Transform (Global)"), false, () => CopyFromUnityTransform(property));
+        menu.AddItem(new GUIContent("Copy From Unity Transform (Local)"), false, () => CopyFromUnityTransformLocal(property));
         menu.ShowAsContext();
     }
 
@@ -58,6 +59,37 @@ public class FTransformDrawer : PropertyDrawer
             Vector3 globalPosition = unityTransform.position;
             Quaternion globalRotation = unityTransform.rotation;
             Vector3 globalScale = unityTransform.lossyScale; // Using lossyScale to get global scale
+
+            // Get the properties of FTransform to update them
+            SerializedProperty positionProp = property.FindPropertyRelative("_localPosition");
+            SerializedProperty rotationProp = property.FindPropertyRelative("_localRotation");
+            SerializedProperty scaleProp = property.FindPropertyRelative("_worldScale");
+
+            // Copy the global position, rotation, and scale to the FTransform
+            CopyVector3ToFVector3(globalPosition, positionProp);
+            CopyQuaternionToFQuaternion(globalRotation, rotationProp);
+            CopyVector3ToFVector3(globalScale, scaleProp);
+
+            // Apply the changes to the SerializedObject
+            property.serializedObject.ApplyModifiedProperties();
+        }
+        else
+        {
+            Debug.LogWarning("No active Unity Transform selected.");
+        }
+    }
+
+    private void CopyFromUnityTransformLocal(SerializedProperty property)
+    {
+        // Get the currently selected GameObject in the scene
+        if (Selection.activeTransform != null)
+        {
+            Transform unityTransform = Selection.activeTransform;
+
+            // Convert local transform to global transform
+            Vector3 globalPosition = unityTransform.localPosition;
+            Quaternion globalRotation = unityTransform.localRotation;
+            Vector3 globalScale = unityTransform.localScale; // Using lossyScale to get global scale
 
             // Get the properties of FTransform to update them
             SerializedProperty positionProp = property.FindPropertyRelative("_localPosition");

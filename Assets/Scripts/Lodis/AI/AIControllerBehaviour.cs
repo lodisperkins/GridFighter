@@ -16,6 +16,7 @@ using System.Runtime.Remoting.Messaging;
 using Lodis.Utility;
 using Assets.Scripts.Lodis.AI;
 using FixedPoints;
+using Types;
 
 namespace Lodis.AI
 {
@@ -396,7 +397,7 @@ namespace Lodis.AI
 
         private void PerformAction(ActionNode action)
         {
-            FVector2 direction = action.MoveDirection;
+            FVector2 direction = (FVector2)action.MoveDirection;
             if (action.CurrentAbilityID == -1 && !_movementBehaviour.IsMoving && _movementBehaviour.CanMove && (StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Moving"))
             {
                 direction.X *= _movementBehaviour.GetAlignmentX();
@@ -409,9 +410,9 @@ namespace Lodis.AI
                 return;
             }
 
-            direction = action.AttackDirection;
+            direction = (FVector2)action.AttackDirection;
 
-            _moveset.UseAbility(action.CurrentAbilityID, 1.6f, direction);
+            _moveset.UseAbility(action.CurrentAbilityID, new Fixed32(104857), direction);
         }
 
         private void StartPlayback(float delayOffset = 0)
@@ -448,9 +449,9 @@ namespace Lodis.AI
 
             //Update grid state
             _currentSituation.AlignmentX = (int)_movementBehaviour.GetAlignmentX();
-            _currentSituation.AverageHitBoxOffset = (FVector3)GetAveragePosition();
-            _currentSituation.AverageVelocity = (FVector3)GetAverageVelocity();
-            _currentSituation.MoveDirection = _movementBehaviour.MoveDirection;
+            _currentSituation.AverageHitBoxOffset = GetAveragePosition();
+            _currentSituation.AverageVelocity = (Vector3)GetAverageVelocity();
+            _currentSituation.MoveDirection = (Vector2)_movementBehaviour.MoveDirection;
             _currentSituation.IsGrounded = _gridPhysics.IsGrounded;
 
             //Update current actions
@@ -471,12 +472,12 @@ namespace Lodis.AI
             //Update opponent values
             _currentSituation.OwnerToTarget = _opponent.transform.position - _character.transform.position;
             _currentSituation.OpponentState = BlackBoardBehaviour.Instance.GetPlayerState(Opponent);
-            _currentSituation.OpponentVelocity = _opponentGridPhysics.Velocity;
+            _currentSituation.OpponentVelocity = (Vector3)_opponentGridPhysics.Velocity;
             _currentSituation.OpponentEnergy = _opponentMoveset.Energy;
-            _currentSituation.OpponentMoveDirection = _opponentMove.MoveDirection;
+            _currentSituation.OpponentMoveDirection = (Vector2)_opponentMove.MoveDirection;
             _currentSituation.OpponentHealth = _opponentKnocback.Health;
             _currentSituation.OpponentBarrierHealth = _opponentBarrier.Health;
-            _currentSituation.PanelPosition = _movementBehaviour.Position;
+            _currentSituation.PanelPosition = (Vector2)_movementBehaviour.Position;
 
         }
 

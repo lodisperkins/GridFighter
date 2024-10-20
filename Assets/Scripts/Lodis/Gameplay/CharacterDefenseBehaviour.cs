@@ -420,7 +420,8 @@ namespace Lodis.Gameplay
             }
 
             _onParryEvent?.Raise(gameObject);
-            MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, 0.05f);
+            //0.05
+            MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, new Types.Fixed32(3276));
             Instantiate(_perfectDefenseEffect, transform.position + Vector3.up * 0.5f, Camera.main.transform.rotation);
 
             //Deactivate the parry
@@ -465,8 +466,8 @@ namespace Lodis.Gameplay
             if (!_knockBack || _knockBack.CurrentAirState != AirState.TUMBLING)
                 return;
             
-            Collider bounceCollider = _knockBack.Physics.BounceCollider;
-            Gizmos.DrawCube(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 1.5f);
+            //Collider bounceCollider = _knockBack.Physics.BounceCollider;
+            //Gizmos.DrawCube(bounceCollider.gameObject.transform.position, bounceCollider.bounds.extents * 1.5f);
         }
 
         private void OnTriggerEnter(Collider other)

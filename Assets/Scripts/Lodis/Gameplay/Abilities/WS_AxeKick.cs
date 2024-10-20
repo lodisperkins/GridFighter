@@ -40,6 +40,7 @@ namespace Lodis.Gameplay
             foreach (HitColliderBehaviour collider in colliders)
             {
                 collider.Spawner = Owner;
+                collider.ColliderInfo.AddOnHitEvent(OnHit);
             }
         }
 

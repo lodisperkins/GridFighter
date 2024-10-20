@@ -107,7 +107,7 @@ namespace Lodis.Gameplay
             _animator.runtimeAnimatorController = _overrideController;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
-            _animator.enabled = false;
+            //_animator.enabled = false;
 
             _characterStateManager.AddOnStateChangedAction(state =>
             {
@@ -638,8 +638,6 @@ namespace Lodis.Gameplay
 
         private void Update()
         {
-            _animator.Update(Time.deltaTime);
-
             if (_characterStateMachine.CurrentState == "Moving")
                 SetMoveAnimParameters();
 
@@ -653,6 +651,8 @@ namespace Lodis.Gameplay
                 _lastTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
 
             _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+
+            //Debug.Log("TimeScale: " + RoutineBehaviour.Instance.CharacterTimeScale);
 
             if (!_knockbackBehaviour.Physics.IsGrounded)
                 UpdateInAirMoveDirection();

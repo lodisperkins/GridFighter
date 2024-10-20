@@ -215,16 +215,18 @@ namespace Lodis.Movement
 
             _onForceAdded += args => GridActive = false;
 
-            //If this is attached to an entity with a statemachine, they should always be grid active on Idle.
-            if (TryGetComponent(out CharacterStateMachineBehaviour stateMachine))
-            {
-                stateMachine.AddOnStateChangedAction(SetGridActive);
-            }
+            
         }
 
         // Start is called before the first frame update
         void Start()
         {
+            //If this is attached to an entity with a statemachine, they should always be grid active on Idle.
+            if (TryGetComponent(out CharacterStateMachineBehaviour stateMachine))
+            {
+                stateMachine.AddOnStateChangedAction(SetGridActive);
+            }
+
             if (!_movementBehaviour)
                 return;
 
@@ -497,7 +499,7 @@ namespace Lodis.Movement
             else if (_movementBehaviour.Alignment == GridAlignment.RIGHT && newX > BlackBoardBehaviour.Instance.Grid.Dimensions.x - 1)
                 forceMagnitude -= newX - BlackBoardBehaviour.Instance.Grid.Dimensions.x;
 
-            return forceMagnitude;
+            return forceMagnitude - 1;
         }
 
         /// <summary>
@@ -1031,14 +1033,13 @@ namespace Lodis.Movement
                 FixedTransform.Forward = Velocity.GetNormalized();
             
             //Code that ran in unity fixed update.
-            _acceleration = (_lastVelocity - Velocity) / Time.fixedDeltaTime;
+            _acceleration = (_lastVelocity - Velocity) / GridGame.FixedTimeStep;
 
             _objectAtRest = IsGrounded && _velocity.Magnitude <= 0.01f;
 
             ForceToApply = FVector3.Zero;
 
-
-            FixedTransform.WorldPosition += Velocity * dt;
+            FixedTransform.WorldPosition += Velocity * dt * GridGame.TimeScale;
 
             //---Gravity
             if (UseGravity && !IsKinematic && !IsGrounded)

@@ -221,7 +221,7 @@ namespace Lodis.Movement
             bool atLandingSpeed = _knockback.Physics.Velocity.X <= LandingSpeed;
 
             // Only trigger the landing animation if all conditions are met.
-            return (wasInAir || _knockback.IsSlidingHit) && nearZeroVerticalVelocity && wasFallingOrSliding && notInStun && atLandingSpeed && !_knockback.Physics.GridActive;
+            return (wasInAir || _knockback.IsSlidingHit) && nearZeroVerticalVelocity && wasFallingOrSliding && notInStun && atLandingSpeed;
         }
 
 

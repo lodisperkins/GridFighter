@@ -204,7 +204,7 @@ public class EntityData
     public T GetComponent<T>() where T : SimulationBehaviour
     {
 
-        T comp = (T)_components.Find(c => c.GetType() == typeof(T));
+        T comp = (T)_components.Find(c => c is T);
 
         return comp;
     }

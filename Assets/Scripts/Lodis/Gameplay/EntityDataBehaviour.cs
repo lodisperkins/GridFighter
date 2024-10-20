@@ -1,6 +1,7 @@
 using FixedPoints;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Common;
 using Types;
 using UnityEngine;
 
@@ -17,6 +18,7 @@ public class EntityDataBehaviour : MonoBehaviour
     [SerializeField] private bool _addToGameManually;
     [Tooltip("The transform of the object that is the visual representation of this entity.")]
     [SerializeField] private Transform _visualRoot;
+    [SerializeField] private EntityDataBehaviour[] _children;
 
     //---
     protected bool inGame;
@@ -37,7 +39,7 @@ public class EntityDataBehaviour : MonoBehaviour
     void Awake()
     {
         //Adds all components to the entity so they can be updated by the rollback simulation.
-        SimulationBehaviour[] simComponents = GetComponentsInChildren<SimulationBehaviour>();
+        SimulationBehaviour[] simComponents = GetComponents<SimulationBehaviour>();
 
         foreach (SimulationBehaviour sim in simComponents)
         {
@@ -46,15 +48,17 @@ public class EntityDataBehaviour : MonoBehaviour
         }
 
         //Adds all components to the entity so they can be updated by the rollback simulation.
-        EntityDataBehaviour[] entityComps = GetComponentsInChildren<EntityDataBehaviour>();
 
-        foreach (EntityDataBehaviour entity in entityComps)
+        if (_children != null)
         {
-            if (entity == this)
-                continue;
+            foreach (EntityDataBehaviour entity in _children)
+            {
+                if (entity == this)
+                    continue;
 
-            entity.transform.parent = null;
-            Data.Transform.AddChild(entity.Data.Transform);
+                entity.transform.parent = null;
+                Data.Transform.AddChild(entity.Data.Transform);
+            }
         }
 
         if (_entityData == null)
@@ -77,6 +81,7 @@ public class EntityDataBehaviour : MonoBehaviour
             GridGame.AddEntityToGame(_entityData);
             inGame = true;
         }
+
     }
 
     /// <summary>
@@ -88,6 +93,16 @@ public class EntityDataBehaviour : MonoBehaviour
         gameObject.SetActive(true);
         GridGame.AddEntityToGame(_entityData);
         inGame = true;
+    }
+
+    /// <summary>
+    /// Removes this entity to the rollback simulation so it won't be updated.
+    /// Also sets it inactive in the unity scene so it won't be visually represented.
+    /// </summary>
+    public void RemoveFromGame(bool destroy)
+    {
+        gameObject.SetActive(false);    
+        GridGame.RemoveEntityFromGame(_entityData, destroy);
     }
 
     /// <summary>
@@ -130,6 +145,14 @@ public class EntityDataBehaviour : MonoBehaviour
     {
         if (_entityData == null || _entityData.Transform == null)
             return;
+
+        if (_entityData.Transform.Parent == null && transform.parent && !Application.isPlaying)
+        {
+            EntityDataBehaviour parentScript = transform.parent.GetComponent<EntityDataBehaviour>();
+
+            if (parentScript != null)
+                parentScript.FixedTransform.AddChild(_entityData.Transform);
+        }
 
         // Get the FTransform global position, rotation, and scale
         FTransform fixedTransform = _entityData.Transform;

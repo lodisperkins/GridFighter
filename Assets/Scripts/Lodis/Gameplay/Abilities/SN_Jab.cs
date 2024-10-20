@@ -69,7 +69,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
+            //CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
 
             //Initialize collider stats
             Fixed32 powerScale = (Fixed32)args[0];

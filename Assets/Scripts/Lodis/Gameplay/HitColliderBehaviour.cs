@@ -385,6 +385,9 @@ namespace Lodis.Gameplay
 
         public override void OnOverlapEnter(Collision collision)
         {
+            if (collision.OtherCollider.OwnerPhysicsComponent == null)
+                return;
+
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
 
@@ -397,6 +400,8 @@ namespace Lodis.Gameplay
 
         public override void OnOverlapStay(Collision collision)
         {
+            if (collision.OtherCollider.OwnerPhysicsComponent == null)
+                return;
             GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
             //Only allow damage to be applied this way if the collider is a multi-hit collider
             if (!ColliderInfo.IsMultiHit || !CheckHitTime(otherGameObject))
@@ -410,6 +415,8 @@ namespace Lodis.Gameplay
 
         public override void OnHitEnter(Collision collision)
         {
+            if (collision.OtherCollider.OwnerPhysicsComponent == null)
+                return;
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
 

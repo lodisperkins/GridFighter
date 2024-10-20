@@ -164,7 +164,8 @@ namespace Lodis.Movement
                 if (!_movementBehaviour)
                     return;
 
-                _movementBehaviour.CurrentPanel.Occupied = false;
+                if (_movementBehaviour.CurrentPanel != null)
+                    _movementBehaviour.CurrentPanel.Occupied = false;
 
                 //Disables object movement on the grid
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), true, true);
@@ -601,7 +602,7 @@ namespace Lodis.Movement
             if (Physics.Velocity.Magnitude > _maxMagnitude.Value && CurrentAirState == AirState.TUMBLING)
                 Physics.ApplyVelocityChange(Physics.Velocity.GetNormalized() * _maxMagnitude.Value);
 
-            UpdateGroundedColliderPosition();
+            //UpdateGroundedColliderPosition();
         }
     }
 

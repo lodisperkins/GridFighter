@@ -37,7 +37,8 @@ namespace Lodis.Gameplay
                 if (BlackBoardBehaviour.Instance.BlockEffect)
                     ObjectPoolBehaviour.Instance.GetObject(BlackBoardBehaviour.Instance.ReflectEffect.gameObject, other.transform.position + Vector3.up, Owner.transform.rotation);
 
-                MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, 0.1f);
+                //0.1f
+                MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, new Types.Fixed32(6553));
                 EndAbility();
             }
            );

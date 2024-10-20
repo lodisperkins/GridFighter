@@ -6,6 +6,7 @@ using Lodis.Sound;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -20,8 +21,8 @@ namespace Lodis.Gameplay
         private bool _comboStarted;
         private Movement.GridMovementBehaviour _opponentMovement;
         private AnimationClip _comboClip;
-        private float _slowMotionTimeScale;
-        private float _slowMotionTime;
+        private Fixed32 _slowMotionTimeScale;
+        private Fixed32 _slowMotionTime;
         private TimedAction _endTimer;
         private KnockbackBehaviour _opponentKnockback;
         private bool _landedFirstHit = false;
@@ -30,6 +31,7 @@ namespace Lodis.Gameplay
         private GameObject _chargeEffect;
         private GameObject _chargeEffectRef;
         private MovesetBehaviour _opponentMoveset;
+        private Fixed32 defaultGravity;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -37,6 +39,7 @@ namespace Lodis.Gameplay
 			base.Init(newOwner);
             _distance = abilityData.GetCustomStatValue("Distance");
             abilityData.GetAdditionalAnimation(0, out _comboClip);
+            defaultGravity = OwnerKnockBackScript.Physics.Gravity;
 
             // Punch events
             _chargeEffectRef = abilityData.Effects[0];
@@ -74,6 +77,8 @@ namespace Lodis.Gameplay
                 //Spawn collider for punch 3
                 SpawnCollider(1);
 
+                _opponentKnockback.Physics.Gravity /= 2;
+
                 //Play effects for punch 3
                 OwnerVoiceScript.PlayLightAttackSound();
                 CameraBehaviour.Instance.ZoomAmount = 4;
@@ -83,8 +88,10 @@ namespace Lodis.Gameplay
             //Additional effects
 
             //Slow motion begins to make things dramatic!!!
-            _slowMotionTimeScale = abilityData.GetCustomStatValue("SlowMotionTimeScale");
-            _slowMotionTime = abilityData.GetCustomStatValue("SlowMotionTime");
+            //0.05
+            _slowMotionTimeScale = new Fixed32(3276);
+            //1.2
+            _slowMotionTime = new Fixed32(78643);
 
             OwnerAnimationScript.AddEventListener("SlowMotionStart", () =>
             {
@@ -93,7 +100,8 @@ namespace Lodis.Gameplay
                 Transform effectSpawn = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
 
                 _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], effectSpawn, true);
-                MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, 0.01f, _slowMotionTime);
+                //0.01
+                MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, new Fixed32(655), _slowMotionTime);
 
                 CameraBehaviour.Instance.ZoomAmount = 4.2f;
             });
@@ -123,13 +131,13 @@ namespace Lodis.Gameplay
             _landedFirstHit = false;
 
             _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<Movement.GridMovementBehaviour>();
-            _opponentKnockback = _opponentMovement.GetComponent<KnockbackBehaviour>();
+            _opponentKnockback = _opponentMovement.GetComponentInChildren<KnockbackBehaviour>();
 
             TimeCountType = TimedActionCountType.UNSCALEDTIME;
 
             //Start super move effects
 
-            FXManagerBehaviour.Instance.StartSuperMoveVisual(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner), abilityData.startUpTime);
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner), 2);
             //Spawn the the holding effect.
 
             Transform effectSpawn = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
@@ -137,7 +145,7 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.SetIntagibilityByCondition(condition => CurrentAbilityPhase != AbilityPhase.STARTUP);
 
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, effectSpawn, true);
-            OwnerKnockBackScript.IgnoreAdjustedGravity(arguments => !InUse);
+            _opponentKnockback.IgnoreAdjustedGravity(arguments => !InUse);
             _opponentKnockback.SetDamageableAbilityID(abilityData.ID, arguments => !InUse);
             //RoutineBehaviour.Instance.StartNewConditionAction(args => ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect), condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
         }
@@ -169,27 +177,30 @@ namespace Lodis.Gameplay
             _opponentKnockback.Physics.CancelFreeze();
         }
 
+        private void OnOpponentHit(Collision collision)
+        {
+            HealthBehaviour health = collision.OtherEntity.GetComponent<HealthBehaviour>();
+
+            if (!health.IsInvincible && !health.IsIntangible)
+                _landedFirstHit = true;
+
+
+            OwnerKnockBackScript.SetIntagibilityByCondition(condition => !InUse);
+            MatchManagerBehaviour.Instance.SuperInUse = true;
+        }
+
         public void SpawnCollider(int colliderIndex)
         {
-            FVector3 spawnPosition = Owner.FixedTransform.WorldPosition + (FVector3.Right * OwnerMoveScript.GetAlignmentX()) + FVector3.Up;
+            FVector3 spawnPosition = Owner.FixedTransform.WorldPosition + (FVector3.Right * OwnerMoveScript.GetAlignmentX());
             HitColliderBehaviour hitColliderBehaviour = HitColliderSpawner.SpawnCollider(spawnPosition, 1, 1, GetColliderData(colliderIndex), Owner);
 
-            hitColliderBehaviour.ColliderInfo.OnHit += collision =>
-            {
-                HealthBehaviour health = collision.OtherEntity.GetComponent<HealthBehaviour>();
-
-                if (!health.IsInvincible && !health.IsIntangible)
-                    _landedFirstHit = true;
-
-
-                OwnerKnockBackScript.SetIntagibilityByCondition(condition => !InUse);
-                MatchManagerBehaviour.Instance.SuperInUse = true;
-            };
+            hitColliderBehaviour.AddOpponentCollisionEvent(OnOpponentHit);
 
             if (colliderIndex == 2)
             {
                 hitColliderBehaviour.ColliderInfo.OnHit += args =>
                 {
+                    _opponentKnockback.Physics.Gravity = defaultGravity;
                     ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
                 };
             }
@@ -210,14 +221,15 @@ namespace Lodis.Gameplay
             _colliders.Clear();
         }
 
-        public override void FixedUpdate()
+        public override void Tick(Fixed32 dt)
         {
             if (CurrentAbilityPhase != AbilityPhase.ACTIVE)
                 return;
 
-            float distance = Vector3.Distance(Owner.transform.position, _opponentMovement.transform.position);
+            Fixed32 distance = FVector3.Distance(Owner.FixedTransform.WorldPosition, _opponentMovement.FixedTransform.WorldPosition);
 
-            if (distance <= 1f && !_comboStarted && !_opponentKnockback.IsInvincible && !_opponentKnockback.IsIntangible)
+            //Fixed32 val is 1
+            if (distance <= new Fixed32(98304) && !_comboStarted && !_opponentKnockback.IsInvincible && !_opponentKnockback.IsIntangible)
             {
                 StartCombo();
             }
@@ -238,7 +250,11 @@ namespace Lodis.Gameplay
             PanelBehaviour panel;
             BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(Owner.transform.position, out panel);
 
-            OwnerMoveScript.Position = panel.Position;
+            if (panel != null)
+            {
+                OwnerMoveScript.Position = panel.Position;
+            }
+
             OwnerMoveScript.EnableMovement();
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
@@ -257,6 +273,9 @@ namespace Lodis.Gameplay
             MatchManagerBehaviour.Instance.SuperInUse = false;
             OwnerKnockBackScript.IsIntangible = false;
             OwnerMoveScript.CanCancelMovement = false;
+
+            if (_opponentKnockback != null)
+                _opponentKnockback.Physics.Gravity = defaultGravity;
         }
 
         protected override void OnMatchRestart()
@@ -275,6 +294,10 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
             DestroyAllColliders();
             OwnerMoveScript.CanCancelMovement = false;
+
+
+            if (_opponentKnockback != null)
+                _opponentKnockback.Physics.Gravity = defaultGravity;
         }
     }
 }

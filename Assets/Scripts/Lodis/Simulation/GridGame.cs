@@ -28,6 +28,7 @@ public struct GridGame : IGame
     private static readonly List<EntityData> _activePhysicsEntities = new();
 
     private static List<EntityData> _entitiesToRemove = new();
+    private static List<EntityData> _entitiesToDestory = new();
     private static List<EntityData> _physicsEntitiesToRemove = new();
 
     //A dictionary of entity pairs that determines whether or not they collide. Used to ignore specific entities instead of layers.
@@ -309,6 +310,35 @@ public struct GridGame : IGame
 
             if (child.Colliders?.Length > 0)
                 _physicsEntitiesToRemove.Add(child);
+        }
+
+        if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
+            _physicsEntitiesToRemove.Add(entity);
+    }
+
+    /// <summary>
+    /// Removes the entity and all of its children from the rollback simulation.
+    /// Doesn't remove from unity scene.
+    /// </summary>
+    public static void RemoveEntityFromGame(EntityData entity, bool destroy)
+    {
+        _entitiesToRemove.Add(entity);
+        entity.End();
+
+        if (destroy)
+            _entitiesToDestory.Add(entity);
+
+        for (int i = 0; i < entity.Transform.ChildCount; i++)
+        {
+            EntityData child = entity.Transform.GetChild(i).Entity;
+            _entitiesToRemove.Add(child);
+            child.End();
+
+            if (child.Colliders?.Length > 0)
+                _physicsEntitiesToRemove.Add(child);
+
+            if (destroy)
+                _entitiesToDestory.Add(child);
 
         }
 
@@ -337,6 +367,13 @@ public struct GridGame : IGame
         {
             _activeEntities.Remove(_entitiesToRemove[i]);
         }
+
+        for (int i = 0; i < _entitiesToDestory.Count; i++)
+        {
+            MonoBehaviour.Destroy(_entitiesToDestory[i].UnityObject);
+        }
+
+        
 
         _entitiesToRemove.Clear();
 
@@ -392,7 +429,10 @@ public struct GridGame : IGame
                 EntityData entity1 = _activePhysicsEntities[row];
                 EntityData entity2 = _activePhysicsEntities[column];
 
-                if (entity1.Colliders == null || entity2.Colliders == null) continue;
+                if (entity1.Colliders == null || entity2.Colliders == null || !entity1.Active || !entity2.Active)
+                {
+                    continue;
+                }
 
                 //Check collision between all possible colliders
                 for (int i = 0; i < entity1.Colliders.Length; i++)

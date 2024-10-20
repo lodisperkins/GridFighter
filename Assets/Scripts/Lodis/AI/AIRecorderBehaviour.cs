@@ -251,14 +251,14 @@ namespace Lodis.AI
             _currentSituation.CurrentState = StateMachine.StateMachine.CurrentState;
 
             _currentSituation.AlignmentX = (int)OwnerMovement.GetAlignmentX();
-            _currentSituation.AverageHitBoxOffset = (FVector3)GetAveragePosition();
-            _currentSituation.AverageVelocity = (FVector3)GetAverageVelocity();
-            _currentSituation.MoveDirection = OwnerMovement.MoveDirection;
+            _currentSituation.AverageHitBoxOffset = (Vector3)GetAveragePosition();
+            _currentSituation.AverageVelocity = (Vector3)GetAverageVelocity();
+            _currentSituation.MoveDirection = (Vector2)OwnerMovement.MoveDirection;
             _currentSituation.IsGrounded = _gridPhysics.IsGrounded;
 
             if (OwnerMoveset.AbilityInUse)
             {
-                _currentSituation.AttackDirection = OwnerMoveset.LastAttackDirection;
+                _currentSituation.AttackDirection = (Vector2)OwnerMoveset.LastAttackDirection;
                 _currentSituation.Energy = OwnerMoveset.Energy;
                 _currentSituation.CurrentAbilityID = OwnerMoveset.LastAbilityInUse.abilityData.ID;
             }
@@ -272,12 +272,12 @@ namespace Lodis.AI
             _currentSituation.Health = _knockbackBehaviour.Health;
             _currentSituation.BarrierHealth = _ownerBarrier.Health;
 
-            _currentSituation.PanelPosition = OwnerMovement.Position;
+            _currentSituation.PanelPosition = (Vector2)OwnerMovement.Position;
             _currentSituation.OwnerToTarget = _opponent.transform.position - transform.position;
 
-            _currentSituation.OpponentVelocity = _opponentGridPhysics.Velocity;
+            _currentSituation.OpponentVelocity = (Vector3)_opponentGridPhysics.Velocity;
             _currentSituation.OpponentEnergy = _opponentMoveset.Energy;
-            _currentSituation.OpponentMoveDirection = _opponentMove.MoveDirection;
+            _currentSituation.OpponentMoveDirection = (Vector2)_opponentMove.MoveDirection;
             _currentSituation.OpponentHealth = _opponentKnocback.Health;
             _currentSituation.OpponentBarrierHealth = _opponentBarrier.Health;
             _currentSituation.MatchTimeRemaining = MatchTimerBehaviour.Instance.MatchTimeRemaining;

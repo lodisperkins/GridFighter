@@ -103,7 +103,7 @@ namespace FixedPoints
                     // World position is the parent's world position plus the local position transformed by the parent's rotation and scale
                     return TransformPoint(Parent, LocalPosition);
                 }
-            }
+            }             
             set
             {
                 if (parent != null)

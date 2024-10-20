@@ -171,7 +171,7 @@ MonoBehaviour:
   _opponentPanelSpeedReductionFloat: 0
   _isMoving: 0
   _canMove: 1
-  _canCancelMovement: 0
+  _canCancelMovement: 1
   _alwaysLookAtOpposingSide: 0
   _canBeWalkedThrough: 0
   _canMoveDiagonally: 0

@@ -1,6 +1,7 @@
 ﻿using Lodis.Gameplay;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.FX
@@ -79,7 +80,7 @@ namespace Lodis.FX
             RenderTexture.active = renderTexture;
         }
 
-        public void StartSuperMoveVisual(int player, float duration)
+        public void StartSuperMoveVisual(int player, Fixed32 duration)
         {
             if (player != 1 && player != 2)
                 return;

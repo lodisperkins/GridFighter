@@ -61,6 +61,12 @@ public class CollisionGroupBehaviour : SimulationBehaviour
     {
         base.Begin();
 
+        foreach (var collider in _colliders)
+        {
+            collider.Entity = Entity;
+            Entity.Data.AddComponent(collider);
+        }
+
         if (_isMultiHit)
         {
             return;

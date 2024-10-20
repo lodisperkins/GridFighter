@@ -52,8 +52,8 @@ MonoBehaviour:
   DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: SkullBusterCollider
-    DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    DespawnAfterTimeLimit: 1
+    TimeActive: 0.2
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:

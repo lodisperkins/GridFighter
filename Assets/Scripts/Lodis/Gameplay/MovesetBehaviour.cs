@@ -203,10 +203,17 @@ namespace Lodis.Gameplay
             get => _energyChargeEnabled;
             set
             {
-                _energyChargeEnabled = value;
 
-                if (!_energyChargeEnabled)
+                if (!value)
+                {
                     _rechargeAction?.Stop();
+                }
+                else if (value && !_energyChargeEnabled)
+                {
+                    _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, _energyRechargeRate.Value).Loop();
+                }
+
+                _energyChargeEnabled = value;
             }
         }
 
@@ -285,7 +292,19 @@ namespace Lodis.Gameplay
 
             _currentBurstRechargeRate = _burstEnergyRechargeRate.Value;
 
-            _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, _energyRechargeRate.Value).Loop();
+            _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, 1).Loop();
+
+
+
+
+            if (MatchManagerBehaviour.Instance.InfiniteBurst)
+            {
+                _currentBurstRechargeRate = _infiniteBurstEnergyRechargeRate.Value;
+            }
+            else
+            {
+                _currentBurstRechargeRate = _burstEnergyRechargeRate.Value;
+            }
 
             _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.Value, _currentBurstRechargeRate).Loop();
 
@@ -316,6 +335,9 @@ namespace Lodis.Gameplay
 
             _burstAction?.Stop();
             _rechargeAction?.Stop();
+
+            _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, 1).Loop();
+
             BurstEnergy = MaxBurstEnergy.Value; 
             _canBurst = true;
         }
@@ -568,7 +590,7 @@ namespace Lodis.Gameplay
             if (args?.Length > 1)
                 LastAttackDirection = (FVector2)args[1];
             if (args?.Length > 0)
-                _lastAttackStrength = (float)args[0];
+                _lastAttackStrength = (Fixed32)args[0];
 
             OnUseAbility?.Invoke();
 
@@ -915,19 +937,13 @@ namespace Lodis.Gameplay
 
             if (_opponentMoveset)
             {
-                _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 200;
-                _opponentMoveset.BurstEnergy += hitCollider.ColliderInfo.Damage / 5;
+                _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 100;
+                _opponentMoveset.BurstEnergy += hitCollider.ColliderInfo.Damage / 10;
             }
         }
 
-        public void CancelCurrentBurstCharge()
+        private void Update()
         {
-            _rechargeAction?.Stop();
-        }
-
-        public override void Tick(Fixed32 dt)
-        {
-            base.Tick(dt);
 
             //Old update
             //Call update for abilities
@@ -938,15 +954,11 @@ namespace Lodis.Gameplay
                     _lastAbilityInUse.Update();
                 }
             }
+        }
 
-            if (MatchManagerBehaviour.Instance.InfiniteBurst)
-            {
-                _currentBurstRechargeRate = _infiniteBurstEnergyRechargeRate.Value;
-            }
-            else
-            {
-                _currentBurstRechargeRate = _burstEnergyRechargeRate.Value;
-            }
+        public override void Tick(Fixed32 dt)
+        {
+            base.Tick(dt);
 
             //Reload the deck if there are no cards in the hands or the deck
             if (_specialDeck.Count <= 0 && _specialAbilitySlots[0] == null && _specialAbilitySlots[1] == null && !_deckReloading && NextAbilitySlot == null && !_loadingShuffle)
@@ -969,6 +981,18 @@ namespace Lodis.Gameplay
                 CanBurst = false;
 
             //old fixed update
+            //Call fixed update for abilities
+            if (_lastAbilityInUse != null)
+            {
+                if (_lastAbilityInUse.InUse)
+                {
+                    _lastAbilityInUse.Tick(dt);
+                }
+            }
+        }
+
+        private void FixedUpdate()
+        {
             //Call fixed update for abilities
             if (_lastAbilityInUse != null)
             {
