@@ -24,7 +24,7 @@ namespace Lodis.Gameplay
         [Tooltip("If true, the hit collider will despawn after the amount of active frames have been surpassed.")]
         public bool DespawnAfterTimeLimit;
         [Tooltip("How long the hitbox will be active for.")]
-        public float TimeActive;
+        public Fixed32 TimeActive;
         [Tooltip("Whether or not this collider will be destroyed if it hits a valid object.")]
         public bool DestroyOnHit;
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
@@ -34,39 +34,39 @@ namespace Lodis.Gameplay
         [Tooltip("The collision tags to ignore when checking for valid collisions.")]
         public string[] TagsToIgnore;
         [Tooltip("If this collider can hit multiple times, this is how many seconds the object will have to wait before being able to register a collision with the same object.")]
-        public float MultiHitWaitTime;
+        public Fixed32 MultiHitWaitTime;
         [Tooltip("The amount of damage this attack will deal.")]
-        public float Damage;
+        public Fixed32 Damage;
         [Tooltip("How far back this attack will knock an object back.")]
-        public float BaseKnockBack;
+        public Fixed32 BaseKnockBack;
         [Tooltip("How much the knock back of this ability will scale based on the health of the object hit.")]
-        public float KnockBackScale;
+        public Fixed32 KnockBackScale;
         [Tooltip("Whether or not this move can knock opponents out of the ring.")]
         public bool ClampForceWithinRing;
         [Tooltip("Whether or not the force added will override the velocity of the object.")]
         public bool IgnoreMomentum;
         [Tooltip("The angle (in radians) that the object in knock back will be launched at.")]
-        public float HitAngle;
+        public Fixed32 HitAngle;
         [Tooltip("If true, the angle the force is applied at will change based on where it hit the target")]
         public bool AdjustAngleBasedOnAlignment;
         [Tooltip("The type of damage this collider will be read as")]
         public DamageType TypeOfDamage;
         [Tooltip("The amount of time a character can't perform any actions after being hit")]
-        public float HitStunTime;
+        public Fixed32 HitStunTime;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
-        public float Priority;
+        public Fixed32 Priority;
         [HideInInspector]
         public GridAlignment OwnerAlignement;
         [HideInInspector]
         public AbilityType AbilityType;
         [HideInInspector]
-        public float AbilityID;
+        public Fixed32 AbilityID;
 
         [Header("Collision Effects")]
         [Tooltip("The effect that will spawn when the hit box is spawned.")]
         [JsonIgnore]
         public GameObject SpawnEffect;
-        public float SpawnEffectOffset;
+        public Fixed32 SpawnEffectOffset;
         [Tooltip("The spark effect that will spawn on hit.")]
         [JsonIgnore]
         public GameObject HitSpark;
@@ -76,13 +76,13 @@ namespace Lodis.Gameplay
         public int HitEffectLevel;
         [Tooltip("The strength of the shake on the character being hit.")]
         [JsonIgnore]
-        public float HitStopShakeStrength;
+        public Fixed32 HitStopShakeStrength;
         [Tooltip("The strength of the camera shake after hitting opponent.")]
         [JsonIgnore]
-        public float CameraShakeStrength;
+        public Fixed32 CameraShakeStrength;
         [Tooltip("The duration of the camera shake after hitting opponent.")]
         [JsonIgnore]
-        public float CameraShakeDuration;
+        public Fixed32 CameraShakeDuration;
         [Tooltip("The frequency of the camera shake after hitting opponent.")]
         [JsonIgnore]
         public int CameraShakeFrequency;
@@ -217,18 +217,18 @@ namespace Lodis.Gameplay
         /// Useful for multihit colliders
         /// </summary>
         /// <returns>Whether or not enough time has passed since the last hit</returns>
-        protected bool CheckHitTime(GameObject gameObject)
+        protected bool CheckHitTime(int hash)
         {
             Fixed32 lastHitTime = 0;
-            if (!Collisions.TryGetValue(gameObject, out lastHitTime))
+            if (!Collisions.TryGetValue(hash, out lastHitTime))
             {
-                Collisions.Add(gameObject, GridGame.Time * RoutineBehaviour.Instance.CharacterTimeScale);
+                Collisions.Add(hash, GridGame.Time * GridGame.TimeScale);
                 return true;
             }
 
-            if (GridGame.Time * RoutineBehaviour.Instance.CharacterTimeScale - lastHitTime >= ColliderInfo.MultiHitWaitTime)
+            if (GridGame.Time * GridGame.TimeScale - lastHitTime >= ColliderInfo.MultiHitWaitTime)
             {
-                Collisions[gameObject] = GridGame.Time * RoutineBehaviour.Instance.CharacterTimeScale;
+                Collisions[hash] = GridGame.Time * GridGame.TimeScale;
                 return true;
             }
 
@@ -300,9 +300,11 @@ namespace Lodis.Gameplay
                     newHitAngle *= -1;
             }
 
+            int attachedHash = attachedGameObject.GetHashCode();
+
             //Add the game object to the list of collisions so it is not collided with again
-            if (!Collisions.ContainsKey(attachedGameObject))
-                Collisions.Add(attachedGameObject, Utils.TimeGetTime());
+            if (!Collisions.ContainsKey(attachedHash))
+                Collisions.Add(attachedHash, Utils.TimeGetTime());
 
 
             //Grab whatever health script is attached to this object
@@ -391,7 +393,7 @@ namespace Lodis.Gameplay
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
 
-            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.OtherEntity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (Collisions.ContainsKey(otherGameObject.GetHashCode()) || ColliderInfo.IsMultiHit || collision.OtherEntity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
@@ -404,7 +406,7 @@ namespace Lodis.Gameplay
                 return;
             GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
             //Only allow damage to be applied this way if the collider is a multi-hit collider
-            if (!ColliderInfo.IsMultiHit || !CheckHitTime(otherGameObject))
+            if (!ColliderInfo.IsMultiHit || !CheckHitTime(otherGameObject.GetHashCode()))
                 return;
 
             if (collision.OtherEntity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
@@ -420,7 +422,7 @@ namespace Lodis.Gameplay
             //If the other object has a rigid body attached grab the game object attached to the rigid body and collider script.
             GameObject otherGameObject = collision.OtherCollider.OwnerPhysicsComponent.gameObject;
 
-            if (Collisions.ContainsKey(otherGameObject) || ColliderInfo.IsMultiHit || collision.OtherEntity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
+            if (Collisions.ContainsKey(otherGameObject.GetHashCode()) || ColliderInfo.IsMultiHit || collision.OtherEntity == Spawner || (otherGameObject.CompareTag("Reflector") && ColliderInfo.AbilityType != AbilityType.UNBLOCKABLE))
                 return;
 
             if (Collisions.Count > 0 && ColliderInfo.DestroyOnHit) return;
@@ -444,7 +446,7 @@ namespace Lodis.Gameplay
 
             _addedToActiveList = true;
             //Update the amount of current frames
-            CurrentTimeActive = GridGame.Time * RoutineBehaviour.Instance.CharacterTimeScale - StartTime;
+            CurrentTimeActive = GridGame.Time * GridGame.TimeScale - StartTime;
 
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)

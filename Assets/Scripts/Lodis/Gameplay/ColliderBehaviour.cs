@@ -20,12 +20,13 @@ namespace Lodis.Gameplay
         [SerializeField] private GridCollider _entityCollider;
         [SerializeField] private bool debuggingEnabled;
         //---
-        protected Dictionary<GameObject, Fixed32> Collisions;
+        protected Dictionary<int, Fixed32> Collisions;
         protected CustomEventSystem.GameEventListener ReturnToPoolListener;
         protected float _lastHitFrame;
         protected CollisionEvent _onHit;
         protected CollisionEvent _onOpponentHit;
         private CollisionGroupBehaviour groupManager;
+        private int _collisionCount;
 
         private GridPhysicsBehaviour _gridPhysics;
         private EntityData _spawner;
@@ -51,7 +52,7 @@ namespace Lodis.Gameplay
         protected override void Awake()
         {
             base.Awake();
-            Collisions = new Dictionary<GameObject, Fixed32>();
+            Collisions = new Dictionary<int, Fixed32>();
             GridPhysics = Entity.GetComponent<GridPhysicsBehaviour>();
 
             if (!GridPhysics)
@@ -111,7 +112,50 @@ namespace Lodis.Gameplay
 
         public override void Serialize(BinaryWriter bw)
         {
-            
+            //Tell the actual colliding object to serialize.
+            _entityCollider.Serialize(bw);
+
+            //Save the number of collisions to know how many to add again during deserialization.
+            if (Collisions.Count > 0)
+            {
+                bw.Write(Collisions.Count);
+            }
+
+
+            //Save the keys and values of each collision in case the objects collided with changes.
+            foreach (var entry in Collisions)
+            {
+                bw.Write(entry.Key);
+                entry.Value.Serialize(bw);
+            }
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            //Tell the actual colliding object to deserialize.
+            _entityCollider.Deserialize(br);
+
+            //Only try to add collisions if there were any serialized in the first place.
+            int count = br.ReadInt32();
+
+            if (count <= 0)
+            {
+                return;
+            }
+
+
+            //Load the old collisions.
+            Collisions.Clear();
+
+            for (int i = 0; i < count; i++)
+            {
+                int hashKey = br.ReadInt32();
+
+                Fixed32 timeVal = new Fixed32();
+                timeVal.Deserialize(br);
+
+                Collisions.Add(hashKey, timeVal);
+            }
         }
 
         private void OnDrawGizmos()
@@ -127,9 +171,6 @@ namespace Lodis.Gameplay
             Gizmos.DrawCube(rootTransform.position + offset, size);
         }
 
-        public override void Deserialize(BinaryReader br)
-        {
-        }
         public virtual void InitCollider(Fixed32 width, Fixed32 height, EntityDataBehaviour spawner)
         {
             if (_entityCollider == null)

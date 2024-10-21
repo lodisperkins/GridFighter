@@ -255,6 +255,17 @@ namespace Lodis.Gameplay
         public static float DeckReloadTime { get; private set; }
         public FVector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
 
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Init()
         {
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
@@ -1001,16 +1012,6 @@ namespace Lodis.Gameplay
                     _lastAbilityInUse.FixedUpdate();
                 }
             }
-        }
-
-        public override void Serialize(BinaryWriter bw)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void Deserialize(BinaryReader br)
-        {
-            throw new NotImplementedException();
         }
     }
 }

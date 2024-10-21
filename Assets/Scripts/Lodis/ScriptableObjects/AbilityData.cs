@@ -9,6 +9,7 @@ using UnityEngine.Assertions;
 using UnityEngine.UI;
 using UnityEngine.Video;
 using Lodis.Utility;
+using Types;
 
 namespace Lodis.ScriptableObjects
 {
@@ -28,13 +29,13 @@ namespace Lodis.ScriptableObjects
         [System.Serializable]
         public class Stat
         {
-            public Stat(string newName, float newValue)
+            public Stat(string newName, Fixed32 newValue)
             {
                 name = newName;
                 value = newValue;
             }
             public string name;
-            public float value;
+            public Fixed32 value;
         }
 
         private int _id;
@@ -47,19 +48,17 @@ namespace Lodis.ScriptableObjects
 
         [Header("Usage Timing")]
         [Tooltip("How long the ability should be active for")]
-        public float timeActive = 0;
+        public Fixed32 timeActive = 0;
         [Tooltip("How long does the object that used the ability needs before returning to idle")]
-        public float recoverTime = 0;
+        public Fixed32 recoverTime = 0;
         [Tooltip("How long does the object that used the ability must wait before the ability activates")]
-        public float startUpTime = 0;
+        public Fixed32 startUpTime = 0;
 
         [Header("Activation")]
-        [Tooltip("The amount of time this ability must be in an active slot before it can be used. Can be ignored if this ability is a normal type.")]
-        public float chargeTime = 0;
         [Tooltip("The amount of time this ability can be used before it is removed from the active slot. Can be ignored if this ability is a normal type.")]
         public int maxActivationAmount = 1;
         [Tooltip("The amount energy it costs to activate this ability.")]
-        public float EnergyCost = 0;
+        public int EnergyCost = 0;
 
         [Header("Cancellation Rules")]
         public CancellationRule[] CancellationRules;
@@ -100,7 +99,7 @@ namespace Lodis.ScriptableObjects
         [Header("Usage Stats")]
         [Tooltip("Information for all colliders this ability will use")]
         [SerializeField]
-        protected HitColliderData[] ColliderData;
+        public HitColliderData[] ColliderData;
         [Tooltip("Any additional stats this ability needs to keep track of")]
         [SerializeField]
         protected Stat[] _customStats;
@@ -130,6 +129,8 @@ namespace Lodis.ScriptableObjects
                 return _id;
             }
         }
+
+        public Stat[] CustomStats { get => _customStats; }
 
         /// <summary>
         /// Gets the custom animation attached this data
@@ -169,7 +170,7 @@ namespace Lodis.ScriptableObjects
         /// </summary>
         /// <param name="statName">The name of the stat value</param>
         /// <returns>The value of the stat. Return NaN if the stat couldn't be found</returns>
-        public float GetCustomStatValue(string statName)
+        public Fixed32 GetCustomStatValue(string statName)
         {
             foreach (Stat stat in _customStats)
             {

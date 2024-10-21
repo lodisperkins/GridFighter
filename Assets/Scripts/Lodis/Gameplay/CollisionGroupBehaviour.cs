@@ -26,18 +26,25 @@ public class CollisionGroupBehaviour : SimulationBehaviour
     [ShowIf("_despawnAfterTimeLimit")]
     [SerializeField] private EntityDataBehaviour _rootEntity;
 
+    //---
     private bool _collisionResolved;
 
     public bool CollisionResolved { get => _collisionResolved; }
 
     public override void Deserialize(BinaryReader br)
     {
-
+        foreach (var collider in _colliders)
+        {
+            collider.Deserialize(br);
+        }
     }
 
     public override void Serialize(BinaryWriter bw)
     {
-
+        foreach (var collider in _colliders)
+        {
+            collider.Serialize(bw);
+        }
     }
 
     public void TrySetCollisionFinish()

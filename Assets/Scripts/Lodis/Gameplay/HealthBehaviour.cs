@@ -149,6 +149,26 @@ namespace Lodis.Gameplay
         public int DamageableAbilityID { get => _damageableAbilityID; private set => _damageableAbilityID = value; }
         public Condition AliveCondition { get => aliveCondition; set => aliveCondition = value; }
 
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            Health.Serialize(bw);
+            bw.Write(_isInvincible);
+            bw.Write(_stunned);
+            bw.Write(_isIntangible);
+            bw.Write(DamageableAbilityID);
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            Health.Deserialize(br);
+            _isInvincible = br.ReadBoolean();
+            _stunned = br.ReadBoolean();
+            _isIntangible = br.ReadBoolean();
+            DamageableAbilityID = br.ReadInt32();
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -453,16 +473,6 @@ namespace Lodis.Gameplay
             //Clamp health
             if (Health > _maxHealth.Value)
                 Health = _maxHealth.Value;
-        }
-
-        public override void Serialize(BinaryWriter bw)
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Deserialize(BinaryReader br)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }
