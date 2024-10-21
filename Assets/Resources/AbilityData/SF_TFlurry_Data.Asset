@@ -17,10 +17,12 @@ MonoBehaviour:
     the opponent on contact.
   exampleClip: {fileID: 0}
   AbilityType: 6
-  timeActive: 0.3
-  recoverTime: 0.25
-  startUpTime: 0.3
-  chargeTime: 0
+  timeActive:
+    RawValue: 19660
+  recoverTime:
+    RawValue: 16384
+  startUpTime:
+    RawValue: 19660
   maxActivationAmount: 1
   EnergyCost: 0
   CancellationRules: []
@@ -44,34 +46,49 @@ MonoBehaviour:
   ColliderData:
   - Name: ChargeSwordCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.4
+    TimeActive:
+      RawValue: 26214
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3991863
-    MultiHitWaitTime: 0
-    Damage: 1
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 65536
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.5
+    HitAngle:
+      RawValue: 32768
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0
-    Priority: 3
+    HitStunTime:
+      RawValue: 0
+    Priority:
+      RawValue: 196608
     OwnerAlignement: 0
     AbilityType: 6
-    AbilityID: -97303540
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
       type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 1.5
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 98304
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: ae07fdbfcc3185847beedc32e8d2a324, type: 3}
@@ -79,34 +96,49 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   - Name: ChargeFlurryCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.5
+    TimeActive:
+      RawValue: 32768
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3991863
-    MultiHitWaitTime: 0.15
-    Damage: 1
-    BaseKnockBack: 0.35
-    KnockBackScale: 0.1
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 9830
+    Damage:
+      RawValue: 65536
+    BaseKnockBack:
+      RawValue: 22937
+    KnockBackScale:
+      RawValue: 6553
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.5
+    HitAngle:
+      RawValue: 32768
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.06
-    Priority: 0
+    HitStunTime:
+      RawValue: 3932
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 6
-    AbilityID: -97303540
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
       type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: ae07fdbfcc3185847beedc32e8d2a324, type: 3}
@@ -114,9 +146,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 10
+    value:
+      RawValue: 655360
   - name: MaxInstances
-    value: 1
+    value:
+      RawValue: 65536
   animationType: 3
   _customAnimation: {fileID: -1411638731736582281, guid: f6cd47805ff66084483c78007c7f59c4,
     type: 3}

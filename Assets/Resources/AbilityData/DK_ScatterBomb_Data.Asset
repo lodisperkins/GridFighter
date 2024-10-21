@@ -17,10 +17,12 @@ MonoBehaviour:
     when they are touched.
   exampleClip: {fileID: 32900000, guid: 2b4490d45a425dc4891c31c7b43d068c, type: 3}
   AbilityType: 8
-  timeActive: 0.05
-  recoverTime: 0.1
-  startUpTime: 0.5
-  chargeTime: 0
+  timeActive:
+    RawValue: 3276
+  recoverTime:
+    RawValue: 6553
+  startUpTime:
+    RawValue: 32768
   maxActivationAmount: 1
   EnergyCost: 2
   CancellationRules: []
@@ -44,35 +46,48 @@ MonoBehaviour:
   ColliderData:
   - Name: BombCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.05
+    TimeActive:
+      RawValue: 3276
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 134212919
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 15
-    BaseKnockBack: 5
-    KnockBackScale: 1.5
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 983040
+    BaseKnockBack:
+      RawValue: 327680
+    KnockBackScale:
+      RawValue: 98304
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.8
+    HitAngle:
+      RawValue: 117964
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.15
-    Priority: -1
+    HitStunTime:
+      RawValue: 9830
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: -1.5995386e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 1
-    CameraShakeStrength: 0.05
-    CameraShakeDuration: 0.5
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 32768
     CameraShakeFrequency: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
@@ -80,11 +95,14 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 10
+    value:
+      RawValue: 655360
   - name: BombTimer
-    value: 20
+    value:
+      RawValue: 1310720
   - name: EntityCount
-    value: 3
+    value:
+      RawValue: 196608
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

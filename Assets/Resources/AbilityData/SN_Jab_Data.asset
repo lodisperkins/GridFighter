@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: Winds up and fires a powerful flaming punch projectile.
   exampleClip: {fileID: 0}
   AbilityType: 4
-  timeActive: 0.1
-  recoverTime: 0.5
-  startUpTime: 0.7
-  chargeTime: 0
+  timeActive:
+    RawValue: 6553
+  recoverTime:
+    RawValue: 32768
+  startUpTime:
+    RawValue: 45875
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules: []
@@ -43,36 +45,49 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 2
+    TimeActive:
+      RawValue: 131072
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 12
-    BaseKnockBack: 4
-    KnockBackScale: 1.5
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 786432
+    BaseKnockBack:
+      RawValue: 262144
+    KnockBackScale:
+      RawValue: 98304
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.6
+    HitAngle:
+      RawValue: 39321
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.2
-    Priority: 3
+    HitStunTime:
+      RawValue: 13107
+    Priority:
+      RawValue: 196608
     OwnerAlignement: 0
     AbilityType: 4
-    AbilityID: -767001100
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 1562327961759149356, guid: 122567848b9b1a34b85d0fd7ad4a2ad8,
       type: 3}
-    SpawnEffectOffset: 0.5
+    SpawnEffectOffset:
+      RawValue: 32768
     HitSpark: {fileID: 2972137616953671510, guid: 3b6d31ab622956941a502c2a29929280,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 1
-    CameraShakeStrength: 0.15
-    CameraShakeDuration: 0.5
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 9830
+    CameraShakeDuration:
+      RawValue: 32768
     CameraShakeFrequency: 50
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: b2a5d6c25039d454da0cc372697f7677, type: 3}
@@ -80,9 +95,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 40
+    value:
+      RawValue: 2621440
   - name: MaxInstances
-    value: 1
+    value:
+      RawValue: 65536
   animationType: 3
   _customAnimation: {fileID: 5180280961208456968, guid: 3f22158e12ff636468af81f5cf89f28c,
     type: 3}

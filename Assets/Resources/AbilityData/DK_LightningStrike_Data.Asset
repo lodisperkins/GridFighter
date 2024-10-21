@@ -17,10 +17,12 @@ MonoBehaviour:
     is on.
   exampleClip: {fileID: 32900000, guid: aab21fb6fdfcbe44b91dd0c166b91a73, type: 3}
   AbilityType: 8
-  timeActive: 0.2
-  recoverTime: 0.5
-  startUpTime: 0.08
-  chargeTime: 0
+  timeActive:
+    RawValue: 13107
+  recoverTime:
+    RawValue: 32768
+  startUpTime:
+    RawValue: 4587
   maxActivationAmount: 1
   EnergyCost: 1
   CancellationRules:
@@ -54,49 +56,66 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.5
+    TimeActive:
+      RawValue: 32768
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 1566775
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 5
-    BaseKnockBack: 1.2
-    KnockBackScale: 0.2
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 327680
+    BaseKnockBack:
+      RawValue: 78643
+    KnockBackScale:
+      RawValue: 13107
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: -1.5
+    HitAngle:
+      RawValue: -98304
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: -1.9946495e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
-    CameraShakeFrequency: 0
-    ShakesCamera: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 6553
+    CameraShakeFrequency: 1
+    ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: b97b6ee01c6943742a7df877659cd9c1, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 8
+    value:
+      RawValue: 524288
   - name: MaxInstances
-    value: 1
+    value:
+      RawValue: 65536
   - name: SpawnHeight
-    value: 6
+    value:
+      RawValue: 393216
   - name: OpponentBounciness
-    value: 1
+    value:
+      RawValue: 65536
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 3433ce6b68ec77242a998e58082ac474, type: 3}
   _shouldMirror: 1

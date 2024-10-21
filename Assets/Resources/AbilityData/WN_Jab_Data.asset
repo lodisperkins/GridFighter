@@ -17,10 +17,12 @@ MonoBehaviour:
     good for building damage and disrupting attacks.\r"
   exampleClip: {fileID: 32900000, guid: 3884e68004dc993489b2e738342d5335, type: 3}
   AbilityType: 0
-  timeActive: 0.05
-  recoverTime: 0.2
-  startUpTime: 0.06
-  chargeTime: 1
+  timeActive:
+    RawValue: 3276
+  recoverTime:
+    RawValue: 13107
+  startUpTime:
+    RawValue: 3932
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
@@ -62,36 +64,49 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.16
+    TimeActive:
+      RawValue: 10485
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 67584
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 1
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 65536
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.5
+    HitAngle:
+      RawValue: 32768
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0.1
-    Priority: 1
+    HitStunTime:
+      RawValue: 6553
+    Priority:
+      RawValue: 65536
     OwnerAlignement: 0
     AbilityType: 0
-    AbilityID: 696030700
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
       type: 3}
-    SpawnEffectOffset: -0.5
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 1493204891009420812, guid: 4fd7b1505062b0d4983e510a086c28ba,
       type: 3}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: a39671ccb52009f468b0b3a1d4fc772d, type: 3}
@@ -99,9 +114,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 30
+    value:
+      RawValue: 1966080
   - name: MaxInstances
-    value: 3
+    value:
+      RawValue: 196608
   animationType: 3
   _customAnimation: {fileID: 2472269385163858818, guid: 98a0dc63639b74444bb6d9af35cce79c,
     type: 3}

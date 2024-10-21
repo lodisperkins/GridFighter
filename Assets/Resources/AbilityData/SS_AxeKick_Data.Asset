@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: None
   exampleClip: {fileID: 0}
   AbilityType: 5
-  timeActive: 0.3
-  recoverTime: 0.2
-  startUpTime: 0.4
-  chargeTime: 0
+  timeActive:
+    RawValue: 19660
+  recoverTime:
+    RawValue: 13107
+  startUpTime:
+    RawValue: 13107
   maxActivationAmount: 1
   EnergyCost: 0
   CancellationRules: []
@@ -43,35 +45,48 @@ MonoBehaviour:
   ColliderData:
   - Name: ElectricAxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.25
+    TimeActive:
+      RawValue: 16384
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3991607
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 6
-    BaseKnockBack: 2
-    KnockBackScale: 1
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 393216
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.35
+    HitAngle:
+      RawValue: 88473
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.1
-    Priority: -1
+    HitStunTime:
+      RawValue: 6553
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 5
-    AbilityID: 246938960
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 1.6
-    CameraShakeStrength: 0.05
-    CameraShakeDuration: 0.2
+    HitStopShakeStrength:
+      RawValue: 104857
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 13107
     CameraShakeFrequency: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}

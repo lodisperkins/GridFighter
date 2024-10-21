@@ -17,10 +17,12 @@ MonoBehaviour:
     deck and temporarily stuns them.
   exampleClip: {fileID: 32900000, guid: 51a3a5e6d8428614b87c334bc60c1852, type: 3}
   AbilityType: 8
-  timeActive: 0.1
-  recoverTime: 0.3
-  startUpTime: 0.15
-  chargeTime: 0
+  timeActive:
+    RawValue: 6553
+  recoverTime:
+    RawValue: 19660
+  startUpTime:
+    RawValue: 9830
   maxActivationAmount: 1
   EnergyCost: 2
   CancellationRules:
@@ -62,34 +64,49 @@ MonoBehaviour:
   ColliderData:
   - Name: DeckRebooterCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 2
+    TimeActive:
+      RawValue: 131072
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3960119
-    MultiHitWaitTime: 0
-    Damage: 2
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 131072
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0
+    HitAngle:
+      RawValue: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: -1
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: 1.3520439e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 8867112169225384458, guid: 247021d2ec9bf654ba6875163715662c,
       type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
@@ -97,9 +114,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 5
+    value:
+      RawValue: 327680
   - name: Stun Time
-    value: 2
+    value:
+      RawValue: 131072
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

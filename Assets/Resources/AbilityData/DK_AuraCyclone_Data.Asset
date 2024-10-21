@@ -17,10 +17,12 @@ MonoBehaviour:
     through enemies.
   exampleClip: {fileID: 32900000, guid: f056bfbfb3fd6bc49a21290da043dd4b, type: 3}
   AbilityType: 8
-  timeActive: 0.2
-  recoverTime: 0.5
-  startUpTime: 0.15
-  chargeTime: 0
+  timeActive:
+    RawValue: 13107
+  recoverTime:
+    RawValue: 32768
+  startUpTime:
+    RawValue: 9830
   maxActivationAmount: 1
   EnergyCost: 3
   CancellationRules: []
@@ -44,34 +46,49 @@ MonoBehaviour:
   ColliderData:
   - Name: TornadoCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 2
+    TimeActive:
+      RawValue: 131072
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4090167
-    MultiHitWaitTime: 0.1
-    Damage: 6
-    BaseKnockBack: 1.5
-    KnockBackScale: 0.5
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 6553
+    Damage:
+      RawValue: 393216
+    BaseKnockBack:
+      RawValue: 98304
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.45
+    HitAngle:
+      RawValue: 95027
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.07
-    Priority: -1
+    HitStunTime:
+      RawValue: 4587
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: -1.0943135e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 1
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 23c97dc4f1b7b0142b6b7805bf97ffac, type: 3}
@@ -79,7 +96,8 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 3.5
+    value:
+      RawValue: 229376
   animationType: 3
   _customAnimation: {fileID: -5711371977894514463, guid: 2a10415d6837d43418c9d8d26aff3063,
     type: 3}

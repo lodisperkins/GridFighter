@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: 'Temporarily takes a row of the opponent tiles. '
   exampleClip: {fileID: 32900000, guid: 0e620e65399a6564ab7e89b989d0e3e4, type: 3}
   AbilityType: 8
-  timeActive: 0.01
-  recoverTime: 0.05
-  startUpTime: 0.01
-  chargeTime: 1
+  timeActive:
+    RawValue: 655
+  recoverTime:
+    RawValue: 3276
+  startUpTime:
+    RawValue: 655
   maxActivationAmount: 1
   EnergyCost: 1
   CancellationRules:
@@ -52,13 +54,17 @@ MonoBehaviour:
   ColliderData: []
   _customStats:
   - name: OwnershipTime
-    value: 10
+    value:
+      RawValue: 655360
   - name: AmountOfRows
-    value: 1
+    value:
+      RawValue: 65536
   - name: EntityCount
-    value: 3
+    value:
+      RawValue: 196608
   - name: Speed
-    value: 4
+    value:
+      RawValue: 262144
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

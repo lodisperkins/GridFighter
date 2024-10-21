@@ -17,10 +17,12 @@ MonoBehaviour:
     tornado that can hit multiple times.
   exampleClip: {fileID: 0}
   AbilityType: 5
-  timeActive: 0.5
-  recoverTime: 0.5
-  startUpTime: 0.3
-  chargeTime: 0
+  timeActive:
+    RawValue: 32768
+  recoverTime:
+    RawValue: 32768
+  startUpTime:
+    RawValue: 19660
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules: []
@@ -46,33 +48,48 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057399
-    MultiHitWaitTime: 0.2
-    Damage: 4
-    BaseKnockBack: 0.5
-    KnockBackScale: 1
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 13107
+    Damage:
+      RawValue: 262144
+    BaseKnockBack:
+      RawValue: 32768
+    KnockBackScale:
+      RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: -0.2
+    HitAngle:
+      RawValue: -13107
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.1
-    Priority: -1
+    HitStunTime:
+      RawValue: 6553
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 5
-    AbilityID: -1.683445e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 1
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 03ac7b0c6287a7c498c7ab4d7b5bc9c0, type: 3}
@@ -80,9 +97,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: OrbHeight
-    value: 1
+    value:
+      RawValue: 65536
   - name: RotationSpeed
-    value: 13
+    value:
+      RawValue: 851968
   animationType: 3
   _customAnimation: {fileID: 880133236554766610, guid: 17a9e4acdf966b4489c6c6fcded75f65,
     type: 3}

@@ -17,10 +17,12 @@ MonoBehaviour:
     that can hit multiple times.
   exampleClip: {fileID: 32900000, guid: 14d1a2b3020c1884f9680601cccdb9b2, type: 3}
   AbilityType: 1
-  timeActive: 0.5
-  recoverTime: 0.3
-  startUpTime: 0.1
-  chargeTime: 0
+  timeActive:
+    RawValue: 32768
+  recoverTime:
+    RawValue: 19660
+  startUpTime:
+    RawValue: 6553
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
@@ -64,33 +66,48 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057399
-    MultiHitWaitTime: 0.2
-    Damage: 2
-    BaseKnockBack: 0.35
-    KnockBackScale: 0.1
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 13107
+    Damage:
+      RawValue: 131072
+    BaseKnockBack:
+      RawValue: 22937
+    KnockBackScale:
+      RawValue: 6553
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.2
+    HitAngle:
+      RawValue: 78643
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 1
-    AbilityID: 726023400
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 168380961112235169, guid: e420048addf42694c911fc7ac19ea7bc,
       type: 3}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.6
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 39321
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9d46610105635f44eb9f7863784aaf9c, type: 3}
@@ -98,9 +115,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: OrbHeight
-    value: 1
+    value:
+      RawValue: 65536
   - name: RotationSpeed
-    value: 20
+    value:
+      RawValue: 1310720
   animationType: 3
   _customAnimation: {fileID: 880133236554766610, guid: 17a9e4acdf966b4489c6c6fcded75f65,
     type: 3}

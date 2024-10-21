@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: Spawns a projectile that detonates after a few seconds.
   exampleClip: {fileID: 0}
   AbilityType: 4
-  timeActive: 0.1
-  recoverTime: 0.4
-  startUpTime: 0.4
-  chargeTime: 0
+  timeActive:
+    RawValue: 6553
+  recoverTime:
+    RawValue: 26214
+  startUpTime:
+    RawValue: 26214
   maxActivationAmount: 1
   EnergyCost: 0
   CancellationRules: []
@@ -44,34 +46,49 @@ MonoBehaviour:
   ColliderData:
   - Name: ChargeRemoteBombCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.1
+    TimeActive:
+      RawValue: 6553
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3992631
-    MultiHitWaitTime: 0
-    Damage: 10
-    BaseKnockBack: 1.5
-    KnockBackScale: 1.7
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 655360
+    BaseKnockBack:
+      RawValue: 98304
+    KnockBackScale:
+      RawValue: 111411
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.35
+    HitAngle:
+      RawValue: 88473
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.15
-    Priority: -1
+    HitStunTime:
+      RawValue: 9830
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 4
-    AbilityID: -1.0838482e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 1.6
-    CameraShakeStrength: 0.05
-    CameraShakeDuration: 0.5
+    HitStopShakeStrength:
+      RawValue: 104857
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 32768
     CameraShakeFrequency: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
@@ -79,13 +96,17 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 3
+    value:
+      RawValue: 196608
   - name: MaxInstances
-    value: -1
+    value:
+      RawValue: -65536
   - name: TravelDistance
-    value: 4
+    value:
+      RawValue: 262144
   - name: DespawnTime
-    value: 1
+    value:
+      RawValue: 65536
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

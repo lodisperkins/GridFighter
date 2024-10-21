@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: Spawns a blade behind the enemy to catch them by surprise.
   exampleClip: {fileID: 32900000, guid: 5daaf49a393b58841a15e3c7ae1acf3c, type: 3}
   AbilityType: 7
-  timeActive: 0.1
-  recoverTime: 0.4
-  startUpTime: 0.3
-  chargeTime: 0
+  timeActive:
+    RawValue: 6553
+  recoverTime:
+    RawValue: 26214
+  startUpTime:
+    RawValue: 19660
   maxActivationAmount: 1
   EnergyCost: 0
   CancellationRules: []
@@ -44,34 +46,49 @@ MonoBehaviour:
   ColliderData:
   - Name: ChargeBackAuraSpearCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 1
+    TimeActive:
+      RawValue: 65536
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3991863
-    MultiHitWaitTime: 0
-    Damage: 8
-    BaseKnockBack: 3
-    KnockBackScale: 0.5
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 524288
+    BaseKnockBack:
+      RawValue: 196608
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 2.1
+    HitAngle:
+      RawValue: 137625
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.1
-    Priority: 3
+    HitStunTime:
+      RawValue: 6553
+    Priority:
+      RawValue: 196608
     OwnerAlignement: 0
     AbilityType: 7
-    AbilityID: -1.4990477e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
       type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 1.6
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 104857
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: ae07fdbfcc3185847beedc32e8d2a324, type: 3}
@@ -79,9 +96,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 10
+    value:
+      RawValue: 655360
   - name: MaxInstances
-    value: 1
+    value:
+      RawValue: 65536
   animationType: 3
   _customAnimation: {fileID: 7623476096177806632, guid: d009465e92390b842a9d41c99033afb1,
     type: 3}

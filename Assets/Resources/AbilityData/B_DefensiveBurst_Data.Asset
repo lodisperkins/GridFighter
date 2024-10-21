@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: None
   exampleClip: {fileID: 0}
   AbilityType: 10
-  timeActive: 0.6
-  recoverTime: 0.8
-  startUpTime: 0
-  chargeTime: 0
+  timeActive:
+    RawValue: 39321
+  recoverTime:
+    RawValue: 52428
+  startUpTime:
+    RawValue: 0
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
@@ -52,33 +54,48 @@ MonoBehaviour:
   ColliderData:
   - Name: DefensiveBurstCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.6
+    TimeActive:
+      RawValue: 39321
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 1606656
-    MultiHitWaitTime: 0
-    Damage: 5
-    BaseKnockBack: 10
-    KnockBackScale: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 327680
+    BaseKnockBack:
+      RawValue: 655360
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 1
-    IgnoreMomentum: 0
-    HitAngle: -0.5
+    IgnoreMomentum: 1
+    HitAngle:
+      RawValue: -32768
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.7
-    Priority: 10
+    HitStunTime:
+      RawValue: 45875
+    Priority:
+      RawValue: 655360
     OwnerAlignement: 0
     AbilityType: 10
-    AbilityID: -655053760
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 1
-    CameraShakeStrength: 0.05
-    CameraShakeDuration: 0.5
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 32768
     CameraShakeFrequency: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 0}

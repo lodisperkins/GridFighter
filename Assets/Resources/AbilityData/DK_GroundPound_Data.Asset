@@ -17,10 +17,12 @@ MonoBehaviour:
     shockwave can knock enemies toward you.
   exampleClip: {fileID: 32900000, guid: 7bf223eb1ff5e3849850ca369b8470d8, type: 3}
   AbilityType: 8
-  timeActive: 0.5
-  recoverTime: 0.2
-  startUpTime: 0.3
-  chargeTime: 5
+  timeActive:
+    RawValue: 32768
+  recoverTime:
+    RawValue: 13107
+  startUpTime:
+    RawValue: 19660
   maxActivationAmount: 1
   EnergyCost: 3
   CancellationRules: []
@@ -44,35 +46,48 @@ MonoBehaviour:
   ColliderData:
   - Name: 
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 65536
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 15
-    BaseKnockBack: 2
-    KnockBackScale: 1.1
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 983040
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 72089
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 2
+    HitAngle:
+      RawValue: 131072
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.15
-    Priority: 0
+    HitStunTime:
+      RawValue: 9830
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: -1.1273178e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 7150885560406515932, guid: 896327d564dd09a40a6ae0c24becb75f,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 1
-    CameraShakeStrength: 0.05
-    CameraShakeDuration: 0.5
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 32768
     CameraShakeFrequency: 1
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: b67a009ce06a8d64b993865715a8645a, type: 3}
@@ -80,13 +95,17 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: ShockwaveProgressionDelay
-    value: 0.05
+    value:
+      RawValue: 3276
   - name: JumpForce
-    value: 16
+    value:
+      RawValue: 1048576
   - name: ShockwaveTravelDistance
-    value: 5
+    value:
+      RawValue: 327680
   - name: ShockwaveTravelSpeed
-    value: 15
+    value:
+      RawValue: 983040
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 2be0533620ce0d2469d23e63635edfdd, type: 2}
   _shouldMirror: 1

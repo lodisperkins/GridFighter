@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: A quick spinning kick that has a wide range.
   exampleClip: {fileID: 32900000, guid: a0e6dd42d0e983b44a6263f00ab93b89, type: 3}
   AbilityType: 1
-  timeActive: 0.2
-  recoverTime: 0.2
-  startUpTime: 0.1
-  chargeTime: 0
+  timeActive:
+    RawValue: 13107
+  recoverTime:
+    RawValue: 13107
+  startUpTime:
+    RawValue: 6553
   maxActivationAmount: 1
   EnergyCost: 0
   CancellationRules:
@@ -61,34 +63,47 @@ MonoBehaviour:
   ColliderData:
   - Name: AxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
+    TimeActive:
+      RawValue: 13107
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057143
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 3
-    BaseKnockBack: 0.7
-    KnockBackScale: 0.5
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 196608
+    BaseKnockBack:
+      RawValue: 45875
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.3
+    HitAngle:
+      RawValue: 19660
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 1
-    AbilityID: -225857060
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}

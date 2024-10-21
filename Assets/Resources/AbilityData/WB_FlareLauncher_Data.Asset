@@ -17,10 +17,12 @@ MonoBehaviour:
     air.
   exampleClip: {fileID: 32900000, guid: 4c99f08ab0a34484bb8d1c2241885ffa, type: 3}
   AbilityType: 3
-  timeActive: 0.2
-  recoverTime: 0.22
-  startUpTime: 0.2
-  chargeTime: 0
+  timeActive:
+    RawValue: 13107
+  recoverTime:
+    RawValue: 14417
+  startUpTime:
+    RawValue: 13107
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
@@ -62,34 +64,47 @@ MonoBehaviour:
   ColliderData:
   - Name: FlareLauncherCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
+    TimeActive:
+      RawValue: 13107
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 16641335
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 3
-    BaseKnockBack: 1
-    KnockBackScale: 1
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 196608
+    BaseKnockBack:
+      RawValue: 65536
+    KnockBackScale:
+      RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 2
+    HitAngle:
+      RawValue: 131072
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: -1
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 3
-    AbilityID: 434344320
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 30be62bbf4aceee449850dbe76565062, type: 3}

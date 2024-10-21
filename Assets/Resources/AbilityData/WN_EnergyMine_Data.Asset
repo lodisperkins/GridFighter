@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: Spawns a projectile that detonates when touched.
   exampleClip: {fileID: 32900000, guid: 5bcbd183e9cab7145a0cbcb399794e75, type: 3}
   AbilityType: 0
-  timeActive: 0.2
-  recoverTime: 0.15
-  startUpTime: 0.2
-  chargeTime: 0
+  timeActive:
+    RawValue: 13107
+  recoverTime:
+    RawValue: 9830
+  startUpTime:
+    RawValue: 13107
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules:
@@ -61,34 +63,49 @@ MonoBehaviour:
   ColliderData:
   - Name: RemoteBombExplosionCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 10
+    TimeActive:
+      RawValue: 655360
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3992887
-    MultiHitWaitTime: 0
-    Damage: 7
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 458752
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0
+    HitAngle:
+      RawValue: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0.5
-    Priority: 1
+    HitStunTime:
+      RawValue: 32768
+    Priority:
+      RawValue: 65536
     OwnerAlignement: 0
     AbilityType: 0
-    AbilityID: 163836740
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 8867112169225384458, guid: 247021d2ec9bf654ba6875163715662c,
       type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
@@ -96,15 +113,20 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 4
+    value:
+      RawValue: 262144
   - name: MaxInstances
-    value: 1
+    value:
+      RawValue: 65536
   - name: TravelDistance
-    value: 4
+    value:
+      RawValue: 262144
   - name: DespawnTime
-    value: 10
+    value:
+      RawValue: 655360
   - name: EntityCount
-    value: 1
+    value:
+      RawValue: 65536
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

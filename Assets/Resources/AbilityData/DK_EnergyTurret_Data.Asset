@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: Creates a turret that fires a rapid barrage of lasers.
   exampleClip: {fileID: 32900000, guid: 4ee315abfd485104f89db8a3bc154782, type: 3}
   AbilityType: 8
-  timeActive: 0.1
-  recoverTime: 0.2
-  startUpTime: 0.1
-  chargeTime: 0
+  timeActive:
+    RawValue: 6553
+  recoverTime:
+    RawValue: 13107
+  startUpTime:
+    RawValue: 6553
   maxActivationAmount: 1
   EnergyCost: 1
   CancellationRules: []
@@ -46,32 +48,47 @@ MonoBehaviour:
   ColliderData:
   - Name: LaserCollider
     DespawnAfterTimeLimit: 0
-    TimeActive: 0.5
+    TimeActive:
+      RawValue: 32768
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3959095
-    MultiHitWaitTime: 0
-    Damage: 1
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 65536
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1
+    HitAngle:
+      RawValue: 65536
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.5
-    Priority: 1
+    HitStunTime:
+      RawValue: 32768
+    Priority:
+      RawValue: 65536
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: -1.1832154e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 1
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 8c7f6259c913f6d4aa79713d465a3042, type: 3}
@@ -79,34 +96,49 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   - Name: LargeLaserCollider
     DespawnAfterTimeLimit: 0
-    TimeActive: 0.5
+    TimeActive:
+      RawValue: 32768
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 3959095
-    MultiHitWaitTime: 0
-    Damage: 5
-    BaseKnockBack: 1
-    KnockBackScale: 1
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 327680
+    BaseKnockBack:
+      RawValue: 65536
+    KnockBackScale:
+      RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1
+    HitAngle:
+      RawValue: 65536
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.1
-    Priority: 2
+    HitStunTime:
+      RawValue: 6553
+    Priority:
+      RawValue: 131072
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: -1.1832154e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
       type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 1
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: dc82c298b95f37448912cd57810ebb90, type: 3}
@@ -114,13 +146,17 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: ShotCount
-    value: 8
+    value:
+      RawValue: 524288
   - name: ShotDelay
-    value: 0.1
+    value:
+      RawValue: 6553
   - name: Speed
-    value: 20
+    value:
+      RawValue: 1310720
   - name: EntityCount
-    value: 1
+    value:
+      RawValue: 65536
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

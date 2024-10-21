@@ -17,10 +17,12 @@ MonoBehaviour:
     Move them around while they are in the air to set up for a follow up attack.
   exampleClip: {fileID: 32900000, guid: 610d595b569bb6d4ea2024223ced08ef, type: 3}
   AbilityType: 8
-  timeActive: 0.6
-  recoverTime: 0.2
-  startUpTime: 0.1
-  chargeTime: 0
+  timeActive:
+    RawValue: 39321
+  recoverTime:
+    RawValue: 13107
+  startUpTime:
+    RawValue: 6553
   maxActivationAmount: 1
   EnergyCost: 2
   CancellationRules:
@@ -54,34 +56,47 @@ MonoBehaviour:
   ColliderData:
   - Name: AuraSphereCollider
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4189239
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 1
-    BaseKnockBack: 30
-    KnockBackScale: 1
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 65536
+    BaseKnockBack:
+      RawValue: 1966080
+    KnockBackScale:
+      RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.5
+    HitAngle:
+      RawValue: 98304
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0.07
-    Priority: -1
+    HitStunTime:
+      RawValue: 4587
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: 1.1442893e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.5
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 32768
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 7748e202bd3376244bccb4648020bccf, type: 3}
@@ -89,19 +104,26 @@ MonoBehaviour:
     DespawnSound: {fileID: 8300000, guid: be3c38e5fdd93f547aa359b4fa7acd0e, type: 3}
   _customStats:
   - name: LiftHeight
-    value: 1
+    value:
+      RawValue: 65536
   - name: KnockbackThreshold
-    value: 1
+    value:
+      RawValue: 65536
   - name: LiftTime
-    value: 0.5
+    value:
+      RawValue: 32768
   - name: HoldTime
-    value: 3
+    value:
+      RawValue: 196608
   - name: MoveSpeed
-    value: 3.5
+    value:
+      RawValue: 229376
   - name: SpawnDistance
-    value: 3
+    value:
+      RawValue: 196608
   - name: ProjectileSpeed
-    value: 20
+    value:
+      RawValue: 1310720
   animationType: 3
   _customAnimation: {fileID: 3374748389425109202, guid: c6a5725ac7061d94e8ca3c7a9b6ec7b4,
     type: 3}

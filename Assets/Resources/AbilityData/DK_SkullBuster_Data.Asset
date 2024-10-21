@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: Leap forward two panels before crashing down on your enemies
   exampleClip: {fileID: 32900000, guid: 9921d4512403aa24386c542e43f37815, type: 3}
   AbilityType: 8
-  timeActive: 0.1
-  recoverTime: 0.6
-  startUpTime: 0.4
-  chargeTime: 5
+  timeActive:
+    RawValue: 6553
+  recoverTime:
+    RawValue: 39321
+  startUpTime:
+    RawValue: 26214
   maxActivationAmount: 1
   EnergyCost: 4
   CancellationRules:
@@ -53,36 +55,49 @@ MonoBehaviour:
   ColliderData:
   - Name: SkullBusterCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
+    TimeActive:
+      RawValue: 13107
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 30
-    BaseKnockBack: 10
-    KnockBackScale: 3
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 1966080
+    BaseKnockBack:
+      RawValue: 655360
+    KnockBackScale:
+      RawValue: 196608
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: -1
+    HitAngle:
+      RawValue: -65536
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.7
-    Priority: 4
+    HitStunTime:
+      RawValue: 45875
+    Priority:
+      RawValue: 262144
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: -1.202016e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 1493204891009420812, guid: 67bf52d6da49f564e8176f83473f4340,
       type: 3}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 8482821253585752479, guid: b2d1a7e3c779c334183600eee56341df,
       type: 3}
     HitEffectLevel: 3
-    HitStopShakeStrength: 4
-    CameraShakeStrength: 1
-    CameraShakeDuration: 2
+    HitStopShakeStrength:
+      RawValue: 262144
+    CameraShakeStrength:
+      RawValue: 65536
+    CameraShakeDuration:
+      RawValue: 131072
     CameraShakeFrequency: 45
     ShakesCamera: 1
     SpawnSound: {fileID: 0}
@@ -90,19 +105,26 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: TravelDistance
-    value: 3
+    value:
+      RawValue: 196608
   - name: JumpHeight
-    value: 2
+    value:
+      RawValue: 131072
   - name: HangTime
-    value: 0.7
+    value:
+      RawValue: 45875
   - name: DownwardSpeed
-    value: 15
+    value:
+      RawValue: 983040
   - name: DownwardGravityMultiplier
-    value: 8
+    value:
+      RawValue: 524288
   - name: OpponentBounciness
-    value: 3
+    value:
+      RawValue: 196608
   - name: ColliderScale
-    value: 1.5
+    value:
+      RawValue: 98304
   animationType: 3
   _customAnimation: {fileID: 5180280961208456968, guid: bc6b2460239e4494cb656ac7084942c1,
     type: 3}

@@ -16,10 +16,12 @@ MonoBehaviour:
   abilityDescription: Spawns a giant flame blade that deals massive damage.
   exampleClip: {fileID: 0}
   AbilityType: 7
-  timeActive: 0.4
-  recoverTime: 0.3
-  startUpTime: 0.5
-  chargeTime: 0
+  timeActive:
+    RawValue: 26214
+  recoverTime:
+    RawValue: 19660
+  startUpTime:
+    RawValue: 32768
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules: []
@@ -43,36 +45,49 @@ MonoBehaviour:
   ColliderData:
   - Name: ChargeFlareLauncher
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.7
+    TimeActive:
+      RawValue: 45875
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 16640311
     TagsToIgnore: []
-    MultiHitWaitTime: 0.1
-    Damage: 1.5
-    BaseKnockBack: 1
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 6553
+    Damage:
+      RawValue: 98304
+    BaseKnockBack:
+      RawValue: 65536
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 1
-    HitAngle: 1
+    HitAngle:
+      RawValue: 65536
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.07
-    Priority: -1
+    HitStunTime:
+      RawValue: 4587
+    Priority:
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 7
-    AbilityID: -944582500
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
       type: 3}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2
-    HitStopShakeStrength: 1.6
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 104857
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: b77ff69dcd63b164fad980e19406c7ba, type: 3}
@@ -80,9 +95,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: Speed
-    value: 0.7
+    value:
+      RawValue: 45875
   - name: MaxInstances
-    value: 1
+    value:
+      RawValue: 65536
   animationType: 3
   _customAnimation: {fileID: 6799277343206176382, guid: 3916c8cafe8b9184a8c8807dd1564c95,
     type: 3}

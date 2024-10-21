@@ -17,10 +17,12 @@ MonoBehaviour:
     away.
   exampleClip: {fileID: 32900000, guid: 2e21e9c62da077743985b007d7fb42c7, type: 3}
   AbilityType: 8
-  timeActive: 0.1
-  recoverTime: 0.3
-  startUpTime: 0.2
-  chargeTime: 0
+  timeActive:
+    RawValue: 6553
+  recoverTime:
+    RawValue: 19660
+  startUpTime:
+    RawValue: 13107
   maxActivationAmount: 1
   EnergyCost: 1
   CancellationRules: []
@@ -45,33 +47,48 @@ MonoBehaviour:
   ColliderData:
   - Name: 1stStrikeCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.5
+    TimeActive:
+      RawValue: 32768
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4058423
-    MultiHitWaitTime: 0
-    Damage: 2
-    BaseKnockBack: 2
-    KnockBackScale: 1
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 131072
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1
+    HitAngle:
+      RawValue: 65536
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.055
-    Priority: 0
+    HitStunTime:
+      RawValue: 3932
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: 1.1379776e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
@@ -79,33 +96,48 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   - Name: 2ndStrikeCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.5
+    TimeActive:
+      RawValue: 32768
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4058423
-    MultiHitWaitTime: 0
-    Damage: 2
-    BaseKnockBack: 4
-    KnockBackScale: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 131072
+    BaseKnockBack:
+      RawValue: 262144
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1
+    HitAngle:
+      RawValue: 65536
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.055
-    Priority: 0
+    HitStunTime:
+      RawValue: 3932
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: 1.1379776e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
@@ -113,33 +145,48 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   - Name: 3rdStrikeCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.5
+    TimeActive:
+      RawValue: 32768
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4058423
-    MultiHitWaitTime: 0
-    Damage: 2
-    BaseKnockBack: 1
-    KnockBackScale: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 131072
+    BaseKnockBack:
+      RawValue: 65536
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 1.8
+    HitAngle:
+      RawValue: 117964
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.07
-    Priority: 0
+    HitStunTime:
+      RawValue: 4587
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 8
-    AbilityID: 1.1379776e+9
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
@@ -147,9 +194,11 @@ MonoBehaviour:
     DespawnSound: {fileID: 0}
   _customStats:
   - name: TravelDistance
-    value: 2
+    value:
+      RawValue: 131072
   - name: SpawnDelay
-    value: 0.15
+    value:
+      RawValue: 9830
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1
