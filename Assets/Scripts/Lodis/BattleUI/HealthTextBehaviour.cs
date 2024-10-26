@@ -23,7 +23,7 @@ public class HealthTextBehaviour : MonoBehaviour
         if (_target)
         {
             HealthComponent = _target.GetComponent<HealthBehaviour>();
-            MaxValue = HealthComponent.MaxHealth.Value;
+            MaxValue = HealthComponent.MaxHealth.FixedValue;
         }
 
         _text.color = _healthGradient.Evaluate(1f);
@@ -33,6 +33,6 @@ public class HealthTextBehaviour : MonoBehaviour
     void Update()
     {
         _text.text = Mathf.Round(_healthComponent.Health).ToString();
-        _text.color = _healthGradient.Evaluate(_healthComponent.Health / _healthComponent.MaxHealth.Value);
+        _text.color = _healthGradient.Evaluate(_healthComponent.Health / _healthComponent.MaxHealth.FixedValue);
     }
 }

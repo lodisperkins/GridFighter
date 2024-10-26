@@ -93,7 +93,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 3
     AbilityID:
-      RawValue: 0
+      RawValue: -1854013440
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0

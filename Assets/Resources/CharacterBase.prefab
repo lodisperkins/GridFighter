@@ -123,8 +123,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedFloat: 8
-  _opponentPanelSpeedReductionFloat: 7
+  _speed:
+    RawValue: 524288
+  _opponentPanelSpeedReduction:
+    RawValue: 458752
   _isMoving: 0
   _canMove: 1
   _canCancelMovement: 0
@@ -140,8 +142,6 @@ MonoBehaviour:
   _moveSound: {fileID: 8300000, guid: a5eda9809f8053a41b9797ee670acf36, type: 3}
   _onTeleportStart: {fileID: 11400000, guid: 9bc9ffbb1888a5a44ba793fbbe5d91b5, type: 2}
   _onTeleportEnd: {fileID: 11400000, guid: aecd38cd09557b44ab8a900c918a017a, type: 2}
-  rotateY: 0
-  rotateX: 0
 --- !u!114 &402071183606503675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,7 +243,8 @@ MonoBehaviour:
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _discardDeck: {fileID: 0}
-  _deckReloadTime: 6
+  _deckReloadTime:
+    RawValue: 393216
   _manualShuffleStartTime: {fileID: 11400000, guid: 0c367ef0ca043a54ba0b95e61339d657,
     type: 2}
   _manualShuffleActiveTime: {fileID: 11400000, guid: e0113aa2b9e6d7f42864c50ced5862d2,
@@ -261,7 +262,8 @@ MonoBehaviour:
   - {fileID: 0}
   _heldItemSpawnLeft: {fileID: 0}
   _heldItemSpawnRight: {fileID: 0}
-  _energy: 0
+  _energy:
+    RawValue: 0
   _maxEnergyRef: {fileID: 11400000, guid: fff879d3df2142a4496d3cd3de299af5, type: 2}
   _energyRechargeValue: {fileID: 11400000, guid: 490d301c94c4e8a4ca55468f4f2ab3ed,
     type: 2}
@@ -269,7 +271,8 @@ MonoBehaviour:
   _energyRechargeRate: {fileID: 11400000, guid: bcb306df5e8c18f499e8892c8bc5a618,
     type: 2}
   _energyChargeEnabled: 1
-  _burstEnergy: 0
+  _burstEnergy:
+    RawValue: 0
   _maxBurstEnergyRef: {fileID: 11400000, guid: adf7850c118d0f04380b8ba33b419c43, type: 2}
   _burstEnergyRechargeValue: {fileID: 11400000, guid: 2d6720c8921c0ee4d8a786a56d6977f0,
     type: 2}
@@ -292,13 +295,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 4
-  _gravity: 25
-  _bounceDampen: 5
-  _bounciness: 1.5
+  _mass:
+    RawValue: 262144
+  _gravity:
+    RawValue: 1638400
+  _bounceDampen:
+    RawValue: 327680
+  _bounciness:
+    RawValue: 98304
   _friction:
     RawValue: 19660
-  _rangeToIgnoreUpAngle: 0.2
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _bounceCombination: 3
   _defaultJumpCurve:
@@ -1110,11 +1118,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c0f4c052ab27349b5a94def1a5a3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _landingTime: 0.05
-  _knockDownTime: 0.1
-  _knockDownRecoverTime: 0.4
-  _knockDownRecoverInvincibleTime: 1
-  _knockDownLandingTime: 0.3
+  _landingTime:
+    RawValue: 3276
+  _knockDownTime:
+    RawValue: 6553
+  _knockDownRecoverTime:
+    RawValue: 26214
+  _knockDownRecoverInvincibleTime:
+    RawValue: 65536
+  _knockDownLandingTime:
+    RawValue: 19660
   _groundedHitMax: {fileID: 11400000, guid: 5992caf4f86705a4b969023749ddea5c, type: 2}
 --- !u!114 &7952319893960084557
 MonoBehaviour:

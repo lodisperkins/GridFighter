@@ -22,12 +22,12 @@ namespace Lodis.UI
         {
             GameObject headShot = null;
 
-            if (_playerID.Value == 1)
+            if (_playerID.Value == 0)
             {
                 headShot = MatchManagerBehaviour.Instance.PlayerSpawner.Player1Data.HeadShot;
                 _nameText.text = MatchManagerBehaviour.Instance.PlayerSpawner.Player1Data.DisplayName;
             }
-            else if (_playerID.Value == 2)
+            else if (_playerID.Value == 1)
             {
                 headShot = MatchManagerBehaviour.Instance.PlayerSpawner.Player2Data.HeadShot;
                 _nameText.text = MatchManagerBehaviour.Instance.PlayerSpawner.Player2Data.DisplayName;

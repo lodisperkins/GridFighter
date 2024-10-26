@@ -99,12 +99,18 @@ namespace Lodis.Gameplay
             }
 
             GridPhysicsBehaviour projectile = Projectile.Data.GetComponent<GridPhysicsBehaviour>();
+            GridMovementBehaviour movement = collision.OtherEntity.GetComponent<GridMovementBehaviour>();
 
             //If it hit a valid object...
             if ((other.CompareTag("Player") || other.CompareTag("Entity")))
             {
                 //...reverse velocity
-                projectile.ApplyVelocityChange(-projectile.Velocity * _speedMultiplier);
+
+                if (projectile.Velocity.X.Sign() != movement.GetAlignmentX())
+                {
+                    projectile.ApplyVelocityChange(-projectile.Velocity * _speedMultiplier);
+                }
+
                 _reboundCount++;
                 _reboundCollider.Spawner = collision.OtherEntity;
             }

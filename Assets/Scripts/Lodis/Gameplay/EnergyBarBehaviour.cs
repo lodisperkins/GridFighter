@@ -51,7 +51,7 @@ public class EnergyBarBehaviour : MonoBehaviour
         Target = player.GetComponent<MovesetBehaviour>();
         _burstMeter.Init(Target);
         _slider = GetComponent<Slider>();
-        _slider.maxValue = MaxValue.Value;
+        _slider.maxValue = MaxValue.FixedValue;
         _backgroundImage.color = BlackBoardBehaviour.Instance.GetPlayerColorByID(_playerID);
         //CreateMeterTicks();
     }
@@ -66,12 +66,12 @@ public class EnergyBarBehaviour : MonoBehaviour
         //Get the x position at the front end of the rect
         float startXPos = _fillAreaTransform.anchoredPosition.x - (_fillAreaTransform.rect.width / 2);
         //Get the amount of space that should be between each tick
-        float xOffset = _fillAreaTransform.rect.width / MaxValue.Value;
+        float xOffset = _fillAreaTransform.rect.width / MaxValue.FixedValue;
         //Set the current x position to be the first tick position
         float currentXPos = startXPos +  xOffset;
 
         //Loop until we reach the maximum amount of ticks possible
-        for (int i = 0; i < (int)MaxValue.Value - 1; i++)
+        for (int i = 0; i < (int)MaxValue.FixedValue - 1; i++)
         {
             //Instantiate a new meter tick and store its rect transform
             RectTransform meterTick = Instantiate(_meterTickRef, _fillAreaTransform.parent);

@@ -24,17 +24,13 @@ namespace Lodis.Movement
     {
         private FVector2 _moveDirection;
         private Fixed32 _targetTolerance = 0.1f;
-        private Fixed32 _speed;
-        private Fixed32 _opponentPanelSpeedReduction;
 
 
         [Header("Movement stats")]
         [Tooltip("How fast the object can move towards a panel.")]
-        [FormerlySerializedAs("_speed")]
-        [SerializeField] private float _speedFloat;
+        [SerializeField] private Fixed32 _speed;
         [Tooltip("The amount speed will be reduced when moving from an opponent panel.")]
-        [FormerlySerializedAs("_opponentPanelSpeedReduction")]
-        [SerializeField] private float _opponentPanelSpeedReductionFloat;
+        [SerializeField] private Fixed32 _opponentPanelSpeedReduction;
 
         [Header("Behaviour Options")]
         [Tooltip("Whether or not this object is moving towards a panel")]
@@ -108,19 +104,19 @@ namespace Lodis.Movement
         /// <summary>
         /// How much time it takes to move between panels
         /// </summary>
-        public float Speed
+        public Fixed32 Speed
         {
-            get { return _speedFloat; }
+            get { return _speed; }
             set 
             {
-                _speedFloat = value;
+                _speed = value;
             }
         }
 
         /// <summary>
         /// How long it would take this object to travel to a panel based on its speed
         /// </summary>
-        public float TravelTime { get => 1 / Speed; }
+        public Fixed32 TravelTime { get => 1 / Speed; }
 
         /// <summary>
         /// The current panel this object is resting on
@@ -248,9 +244,6 @@ namespace Lodis.Movement
         {
             base.Awake();
 
-            _speed = _speedFloat;
-            _opponentPanelSpeedReduction = _opponentPanelSpeedReductionFloat;
-
             MaxYPosition = (FloatVariable)Resources.Load("ScriptableObjects/MaxYPosition");
             _returnEffect = ((GameObject)Resources.Load("Effects/Teleport")).GetComponent<ParticleSystem>();
             //initialize events
@@ -304,8 +297,6 @@ namespace Lodis.Movement
             if (CompareTag("Player") || CompareTag("Entity"))
             {
                 BlackBoardBehaviour.Instance.AddEntityToList(this);
-
-                
             }
 
             _physics = Entity.GetComponent<GridPhysicsBehaviour>();
@@ -863,7 +854,10 @@ namespace Lodis.Movement
             FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, heightOffset, 0);
             _targetPosition = newPosition;
 
-          LerpPosition(newPosition);
+            //LerpPosition(newPosition);
+
+            FixedTransform.WorldPosition = newPosition;
+            SetIsMoving(false);
 
             MoveDirection = (_currentPanel.Position - Position).GetNormalized();
 
@@ -901,8 +895,8 @@ namespace Lodis.Movement
                 return;
 
 
-            float currentDistance = FVector3.Distance((FVector3)_lastPanel.transform.position, (FVector3)transform.position);
-            float targetDistance = FVector3.Distance((FVector3)_targetPanel.transform.position, (FVector3)transform.position);
+            Fixed32 currentDistance = FVector3.Distance((FVector3)_lastPanel.transform.position, (FVector3)transform.position);
+            Fixed32 targetDistance = FVector3.Distance((FVector3)_targetPanel.transform.position, (FVector3)transform.position);
 
             CanCancelMovement = true;
 
@@ -929,11 +923,11 @@ namespace Lodis.Movement
 
             _searchingForSafePanel = true;
             int offSet = 0;
-            float defaultMoveSpeed = _speedFloat;
+            Fixed32 defaultMoveSpeed = _speed;
             PanelBehaviour panel = null;
 
             CancelMovement();
-            _speedFloat = _opponentPanelSpeedReductionFloat;
+            _speed = _opponentPanelSpeedReduction;
 
             AddOnMoveBeginTempAction(() => 
             { 
@@ -947,7 +941,7 @@ namespace Lodis.Movement
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
             {
-                _speedFloat = defaultMoveSpeed;
+                _speed = defaultMoveSpeed;
                 _searchingForSafePanel = false;
                 if (offSet > 1)
                 {
@@ -1023,12 +1017,7 @@ namespace Lodis.Movement
             if (_currentPanel)
                 _currentPanel.Occupied = false;
         }
-        [SerializeField]
-        bool rotateY;
-        [SerializeField]
-        bool rotateX;
-        Fixed32 rotationX;
-        Fixed32 rotationY;
+
         public override void Tick(Fixed32 dt)
         {
             if (_physics?.GridActive == false)
@@ -1043,6 +1032,8 @@ namespace Lodis.Movement
                 return;
 
             MoveToClosestAlignedPanelOnRow();
+
+            GridBehaviour.Grid.GetPanel(Position, out _currentPanel);
 
             if (!_currentPanel)
                 return;
@@ -1062,26 +1053,6 @@ namespace Lodis.Movement
                     FixedTransform.WorldRotation = FQuaternion.Euler(0, -90, 0);
                 else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
                     FixedTransform.WorldRotation = FQuaternion.Euler(0, 90, 0);
-            }
-
-
-            FVector3 euler = new FVector3(rotationX, rotationY, 0);
-
-            if (rotateX && rotateY)
-            {
-                rotationX += 1;
-                rotationY += 1;
-                FixedTransform.LocalRotation = FQuaternion.Euler(euler);
-            }
-            else if (rotateY)
-            {
-                rotationY += 1;
-                FixedTransform.LocalRotation = FQuaternion.Euler(euler);
-            }
-            else if (rotateX)
-            {
-                rotationX += 1;
-                FixedTransform.LocalRotation = FQuaternion.Euler(euler);
             }
 
             //Old fixed update
@@ -1114,6 +1085,12 @@ namespace Lodis.Movement
             _canCancelMovement = br.ReadBoolean();
             _alwaysLookAtOpposingSide = br.ReadBoolean();
             _moveToAlignedSideIfStuck = br.ReadBoolean();
+
+            if (_isMoving)
+            {
+                CancelMovement();
+                Move(MoveDirection);
+            }
         }
     }
 }

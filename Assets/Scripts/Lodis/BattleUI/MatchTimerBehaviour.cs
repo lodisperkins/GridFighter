@@ -60,7 +60,7 @@ namespace Lodis.UI
             Gameplay.MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => IsActive = true);
             Gameplay.MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ResetTimer);
             Gameplay.MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => IsActive = false);
-            MatchTimeRemaining = _matchTime.Value;
+            MatchTimeRemaining = _matchTime.FixedValue;
         }
 
         public void ResetTimer()
@@ -69,7 +69,7 @@ namespace Lodis.UI
                 return;
 
             if (!IsInfinite)
-                MatchTimeRemaining = _matchTime.Value;
+                MatchTimeRemaining = _matchTime.FixedValue;
             else
                 MatchTimeRemaining = float.PositiveInfinity;
 

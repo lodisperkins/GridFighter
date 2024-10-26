@@ -7846,7 +7846,7 @@ PrefabInstance:
     - target: {fileID: 4290014089331699701, guid: 2cc7350bb9cbb4d4cb791f6c20029b5d,
         type: 3}
       propertyPath: _targetID
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4290014089331699701, guid: 2cc7350bb9cbb4d4cb791f6c20029b5d,
         type: 3}
@@ -19494,13 +19494,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
   _friction:
     RawValue: 0
-  _rangeToIgnoreUpAngle: 0.2
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
@@ -28471,31 +28476,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2002827554}
     - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
-      propertyPath: _explosion
-      value: 
-      objectReference: {fileID: 1245706752387870896, guid: 4c6c95d842f6bf7429c5615143bf438b,
-        type: 3}
-    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
-      propertyPath: _chargeSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 647c8de60c5fc4a41b42e530941c2dc4, type: 3}
-    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
-      propertyPath: _maxEmission
-      value: 600
-      objectReference: {fileID: 0}
-    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
-      propertyPath: _explosionSound
-      value: 
-      objectReference: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
-    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
       propertyPath: _explosionChargeTime
       value: 1.1
       objectReference: {fileID: 0}
-    - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
-      propertyPath: _onCharacterExplosion
-      value: 
-      objectReference: {fileID: 11400000, guid: f5d578bbf9dd7174ca377133551d3ee3,
-        type: 2}
     - target: {fileID: 1359032538, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
       propertyPath: _explosionChargeTime.RawValue
       value: 72089
@@ -29633,50 +29616,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
-      propertyPath: _p1IsCustom
-      value: 
-      objectReference: {fileID: 11400000, guid: c8d4b0853a99c454d9994f642a156b18,
-        type: 2}
-    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _p2IsCustom
-      value: 
-      objectReference: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976,
-        type: 2}
-    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _player1Data
-      value: 
-      objectReference: {fileID: 11400000, guid: 9e61dee5c98e8fe4ab94070dfc1b05b4,
-        type: 2}
-    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _player2Data
-      value: 
-      objectReference: {fileID: 11400000, guid: e58f4edf10230094aabb53e76bd1dc76,
-        type: 2}
-    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _LHSSpawnLocation.x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _LHSSpawnLocation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _RHSSpawnLocation.x
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
-      propertyPath: _RHSSpawnLocation.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
-        type: 3}
       propertyPath: _player1CharacterRef
       value: 
       objectReference: {fileID: 1658872878371820837, guid: eeeeeee9b08e2c74daab43fcaca65a83,
@@ -29981,6 +29920,11 @@ PrefabInstance:
     - target: {fileID: 4290014089331699700, guid: 2cc7350bb9cbb4d4cb791f6c20029b5d,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4290014089331699701, guid: 2cc7350bb9cbb4d4cb791f6c20029b5d,
+        type: 3}
+      propertyPath: _targetID
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4290014089331699701, guid: 2cc7350bb9cbb4d4cb791f6c20029b5d,

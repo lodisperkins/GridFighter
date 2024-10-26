@@ -15,6 +15,7 @@ using System.Runtime.Remoting.Messaging;
 using Lodis.Gameplay;
 using UnityEngine.InputSystem.HID;
 using System.Linq;
+using Lodis.Utility;
 
 
 public class TagSelectorAttribute : PropertyAttribute
@@ -66,6 +67,7 @@ public struct GridGame : IGame
     public void Serialize(BinaryWriter bw)
     {
         bw.Write(Framenumber);
+        bw.Write(_activeEntities.Count);
 
         for (int i = 0; i < _activeEntities.Count; ++i)
         {
@@ -76,8 +78,11 @@ public struct GridGame : IGame
     public void Deserialize(BinaryReader br)
     {
         Framenumber = br.ReadInt32();
+        int entityCount = br.ReadInt32();
 
-        for (int i = 0; i < _activeEntities.Count; ++i)
+        int count = entityCount > _activeEntities.Count ? _activeEntities.Count : entityCount;
+
+        for (int i = 0; i < count; ++i)
         {
             _activeEntities[i].Deserialize(br);
         }
@@ -97,9 +102,9 @@ public struct GridGame : IGame
 
     public static void SetPlayerInput(IntVariable playerID, long inputs)
     {
-        if (playerID == 1)
+        if (playerID == 0)
             _p1Inputs = inputs;
-        else if (playerID == 2)
+        else if (playerID == 1)
             _p2Inputs = inputs;
     }
 
@@ -124,14 +129,13 @@ public struct GridGame : IGame
 
     public long ReadInputs(int controllerId)
     {
-        controllerId++;
 
         if (OnPollInput == null)
             return 0;
 
         OnPollInput?.Invoke(controllerId);
 
-        long inputs = controllerId == 1 ? _p1Inputs : _p2Inputs;
+        long inputs = controllerId == 0 ? _p1Inputs : _p2Inputs;
 
         return inputs;
     }
@@ -400,9 +404,17 @@ public struct GridGame : IGame
 
         //Input update
         InputSystem.Update();
-        OnProcessInput?.Invoke(1, inputs[0]);
-        OnProcessInput?.Invoke(2, inputs[1]);
+        OnProcessInput?.Invoke(0, inputs[0]);
+        OnProcessInput?.Invoke(1, inputs[1]);
 
+        //if (SceneManagerBehaviour.Instance.GameMode == (int)GameMode.ONLINE && !GridGameManager.IsHost)
+        //{
+        //    OnProcessInput?.Invoke(1, inputs[0]);
+        //    OnProcessInput?.Invoke(0, inputs[1]);
+        //}
+        //else
+        //{
+        //}
         //Timer update
         for (int i = 0; i < FixedPointTimer.Actions.Count; i++)
         {

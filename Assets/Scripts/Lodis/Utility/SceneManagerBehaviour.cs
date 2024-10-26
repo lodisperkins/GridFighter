@@ -21,7 +21,8 @@ namespace Lodis.Utility
         PRACTICE,
         MULTIPLAYER,
         SIMULATE,
-        TUTORIAL
+        TUTORIAL,
+        ONLINE
     }
 
     public class SceneManagerBehaviour : MonoBehaviour
@@ -138,6 +139,11 @@ namespace Lodis.Utility
         public void SetGameMode(int mode)
         {
             _gameMode.Value = mode;
+        }
+
+        public void SetGameMode(GameMode mode)
+        {
+            _gameMode.Value = (int)mode;
         }
 
         public void LoadBattleScene(int mode)

@@ -144,7 +144,6 @@ namespace Lodis.Gameplay
 
         public override void Serialize(BinaryWriter bw)
         {
-            throw new System.NotImplementedException();
         }
     }
 }

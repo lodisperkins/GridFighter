@@ -11,55 +11,74 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 namespace Lodis.Gameplay
 {
     public class PlayerSpawnBehaviour : MonoBehaviour
     {
+        [Header("Spawn References")]
+        [Tooltip("The AI to spawn when player vs cpu mode is active.")]
+        [SerializeField] private AI.AIControllerBehaviour _dummy;
+        [Tooltip("A reference to the controller to use for players in local multiplayer.")]
+        [SerializeField] private GameObject _playerRef;
+        [Tooltip("A reference to the controller to use for players in online multiplayer. Needed because the player input component attached to the local player ref auto joins players.")]
+        [SerializeField] private GameObject _onlinePlayerRef;
+
+        [Tooltip("The unity input manager to manage players spawning.")]
+        [SerializeField] private PlayerInputManager _inputManager;
+        
+        [Tooltip("The data of the character to use when spawning player 1.")]
+        [SerializeField] private CharacterData _player1Data;
+        [Tooltip("The data of the character to use when spawning player 2.")]
+        [SerializeField] private CharacterData _player2Data;
+
+        [Header("Spawn Parameters")]
+        [Tooltip("Scriptable that keeps track of whether or not p1 is using a custom character. Needed to know if custom files should be loaded.")]
+        [SerializeField] private BoolVariable _p1IsCustom;
+        [Tooltip("Scriptable that keeps track of whether or not p2 is using a custom character. Needed to know if custom files should be loaded.")]
+        [SerializeField] private BoolVariable _p2IsCustom;
+        [Tooltip("The panel coordinate to spawn player 2.")]
+        [SerializeField] private Vector2 _RHSSpawnLocation;
+        [Tooltip("The panel coordinate to spawn player 1.")]
+        [SerializeField] private Vector2 _LHSSpawnLocation;
+
+        //---
+
         private bool _p1DeviceSet;
         private bool _p2DeviceSet;
+
         private GameObject _player1;
         private GameObject _player2;
+
         private Movement.GridMovementBehaviour _p1Movement;
         private Movement.GridMovementBehaviour _p2Movement;
+
         private CharacterStateMachineBehaviour _p1StateManager;
-        private KnockbackBehaviour _p1Knockback;
         private CharacterStateMachineBehaviour _p2StateManager;
+
+        private KnockbackBehaviour _p1Knockback;
         private KnockbackBehaviour _p2Knockback;
+
+        private MovesetBehaviour _p1Moveset;
         private MovesetBehaviour _p2Moveset;
+
+        private InputBehaviour _p1Input;
         private InputBehaviour _p2Input;
-        private GameMode _mode;
-        [SerializeField]
-        private AI.AIControllerBehaviour _dummy;
-        [SerializeField]
-        private Vector2 _RHSSpawnLocation;
-        [SerializeField]
-        private Vector2 _LHSSpawnLocation;
-        [SerializeField]
-        private PlayerInputManager _inputManager;
-        [SerializeField]
-        private GameObject _playerRef;
-        [SerializeField()]
-        [Tooltip("The data of the character to use when spawning player 1.")]
-        private CharacterData _player1Data;
-        [SerializeField()]
-        [Tooltip("The data of the character to use when spawning player 2.")]
-        private CharacterData _player2Data;
-        [SerializeField]
-        private BoolVariable _p1IsCustom;
-        [SerializeField]
-        private BoolVariable _p2IsCustom;
+
         private IControllable _p1InputController;
         private IControllable _p2InputController;
+
         private RingBarrierBehaviour _ringBarrierR;
         private RingBarrierBehaviour _ringBarrierL;
-        private GridBehaviour _grid;
+
         private PanelBehaviour _lhsSpawnPanel;
         private PanelBehaviour _rhsSpawnPanel;
+
+        private GridBehaviour _grid;
+        private GameMode _mode;
         private bool _suddenDeathActive;
         private SceneManagerBehaviour _sceneManager;
-        private MovesetBehaviour _p1Moveset;
-        private InputBehaviour _p1Input;
 
         public FVector2 RHSSpawnLocation { get => (FVector2)_RHSSpawnLocation; private set => _RHSSpawnLocation = (Vector2)value; }
         public FVector2 LHSSpawnLocation { get => (FVector2)_LHSSpawnLocation; private set => _LHSSpawnLocation = (Vector2)value; }
@@ -105,23 +124,46 @@ namespace Lodis.Gameplay
 
         public void SpawnPlayer2()
         {
-            //Spawn player 2
-            if (_mode != GameMode.MULTIPLAYER)
+            //Spawn player 2 by mode.
+
+            //Spawn AI by default.
+            if (_mode != GameMode.MULTIPLAYER && _mode != GameMode.ONLINE)
+            {
                 _player2 = Instantiate(_dummy.gameObject);
-            else
+            }
+            //Spawn the second player as normal in a local match.
+            else if (_mode != GameMode.ONLINE)
             {
                 _player2 = _inputManager.JoinPlayer(1, 1, _sceneManager.P2ControlScheme, _sceneManager.P2Devices).gameObject;
                 _player2.GetComponent<InputBehaviour>().Devices = _sceneManager.P2Devices;
             }
+            //If we are in an online match...
+            else if (_mode == GameMode.ONLINE)
+            {
+                //...spawn a player in the first slot if we aren't hosting.
+                if (!GridGameManager.IsHost)
+                {
+                    _player2 = _inputManager.JoinPlayer(0, 0, _sceneManager.P2ControlScheme, _sceneManager.P2Devices).gameObject;
+                    _player2.GetComponent<InputBehaviour>().Devices = _sceneManager.P2Devices;
+                }
+                //If we are spawn a dummy player to be controlled through the network.
+                else
+                {
+                    _player2 = Instantiate(_onlinePlayerRef);
+                }
+            }
 
+            //Attach character to the spawned controller.
             _p2InputController = _player2.GetComponent<IControllable>();
-
             _p2InputController.Character = Instantiate(_player2Data.CharacterReference, _player2.transform);
-
+            _p2InputController.Character.transform.parent.gameObject.name += "(P2)";
             _p2InputController.Character.name += "(P2)";
+
+            //Set scene values.
             _ringBarrierR.Owner = _p2InputController.Character;
             _player2.transform.forward = Vector3.left;
             BlackBoardBehaviour.Instance.Player2 = _p2InputController.Character;
+
             //Get reference to player 2 components
             _p2Movement = _p2InputController.Character.GetComponent<Movement.GridMovementBehaviour>();
             _p2StateManager = _p2InputController.Character.GetComponent<CharacterStateMachineBehaviour>();
@@ -129,12 +171,17 @@ namespace Lodis.Gameplay
             _p2Moveset = _p2InputController.Character.GetComponent<MovesetBehaviour>();
             _p2Input = _player2.GetComponent<InputBehaviour>();
 
+            //Handle input rebinding.
             ApplyBindingOverrides(_p2Input, SceneManagerBehaviour.Instance.P2InputProfile,SceneManagerBehaviour.Instance.P2ControlScheme, true);
             
+            //Initializes custom attributes if this is a custom character.
             if (_p2IsCustom.Value)
             {
+                //Deck set up
                 _p2Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck(Player2Data.DisplayName);
                 _p2Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(Player2Data.DisplayName);
+
+                //Cosmetic set up
                 MeshReplacementBehaviour meshManager = _p2InputController.Character.GetComponentInChildren<MeshReplacementBehaviour>();
 
                 Color hairColor;
@@ -150,6 +197,7 @@ namespace Lodis.Gameplay
             _p2InputController.Enabled = true;
             BlackBoardBehaviour.Instance.Player2Controller = _p2InputController;
 
+            //Set up grid placement.
             if (_grid.GetPanel(RHSSpawnLocation, out _rhsSpawnPanel, false))
                 _p2Movement.MoveToPanel(_rhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
             else
@@ -160,38 +208,57 @@ namespace Lodis.Gameplay
 
         public void SpawnPlayer1()
         {
-            //Spawn player 2
+            //Spawn player 1 by mode.
+
+            //Spawn AI if this is a CPU only battle.
             if (_mode == GameMode.SIMULATE)
-                _player1 = Instantiate(_dummy.gameObject);
-            else
             {
+                _player1 = Instantiate(_dummy.gameObject);
+            }
+            //Otherwise if we're playing locally or hosting just spawn player 1 in as normal.
+            else if (_mode != GameMode.ONLINE || GridGameManager.IsHost)
+            {
+                Debug.Log("Is host is " + GridGameManager.IsHost);
+                Debug.Log("Gamemode is " + _mode);
                 _player1 = _inputManager.JoinPlayer(0, 0, _sceneManager.P1ControlScheme, _sceneManager.P1Devices).gameObject;
                 _player1.GetComponent<InputBehaviour>().Devices = _sceneManager.P1Devices;
             }
+            //If we are online and aren't hosting just spawn a dummy player to be controlled through the network.
+            else if (_mode == GameMode.ONLINE && !GridGameManager.IsHost)
+            {
+                _player1 = Instantiate(_onlinePlayerRef);
+            }
 
-
+            //Set up controller character.
             _p1InputController = _player1.GetComponent<IControllable>();
             _p1InputController.Character = Instantiate(_player1Data.CharacterReference, _player1.transform);
-
+            _p1InputController.Character.transform.parent.gameObject.name += "(P1)";
             _p1InputController.Character.name += "(P1)";
+
+            //Set up scene values.
             _ringBarrierL.Owner = _p1InputController.Character;
             _player1.transform.forward = Vector3.right;
             BlackBoardBehaviour.Instance.Player1 = _p1InputController.Character;
+
             //Get reference to player 2 components
             _p1Movement = _p1InputController.Character.GetComponent<Movement.GridMovementBehaviour>();
             _p1StateManager = _p1InputController.Character.GetComponent<CharacterStateMachineBehaviour>();
             _p1Knockback = _p1InputController.Character.GetComponent<KnockbackBehaviour>();
             _p1InputController.PlayerID = BlackBoardBehaviour.Instance.Player1ID;
-
             _p1Moveset = _p1InputController.Character.GetComponent<MovesetBehaviour>();
             _p1Input = _player1.GetComponent<InputBehaviour>();
 
+            //Handle rebinding stuff.
             ApplyBindingOverrides(_p1Input, SceneManagerBehaviour.Instance.P1InputProfile, SceneManagerBehaviour.Instance.P1ControlScheme);
 
+            //Initialize cusotm values if a custom character was choosen.
             if (_p1IsCustom.Value)
             {
+                //Set up custom decks.
                 _p1Moveset.NormalDeckRef = DeckBuildingManagerBehaviour.LoadCustomNormalDeck(Player1Data.DisplayName);
                 _p1Moveset.SpecialDeckRef = DeckBuildingManagerBehaviour.LoadCustomSpecialDeck(Player1Data.DisplayName);
+
+                //Set up cosmetics.
                 MeshReplacementBehaviour meshManager = _p1InputController.Character.GetComponentInChildren<MeshReplacementBehaviour>();
 
                 Color hairColor;
@@ -205,6 +272,7 @@ namespace Lodis.Gameplay
 
             BlackBoardBehaviour.Instance.Player1Controller = _p1InputController;
 
+            //Set up grid placement
             if (_grid.GetPanel(LHSSpawnLocation, out _lhsSpawnPanel, false))
                 _p1Movement.MoveToPanel(_lhsSpawnPanel, true, GridScripts.GridAlignment.ANY);
             else
@@ -286,7 +354,7 @@ namespace Lodis.Gameplay
 
         void OnEnable()
         {
-            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
         }
 
         void OnDisable()
@@ -317,7 +385,7 @@ namespace Lodis.Gameplay
             knockback.CancelHitStun();
             knockback.CancelStun();
             knockback.Physics.StopVelocity();
-            //knockback.Physics.RB.isKinematic = true;
+            knockback.Physics.GridActive = true;
 
             InputBehaviour input = _player1.GetComponent<InputBehaviour>();
             if (input)
@@ -335,7 +403,7 @@ namespace Lodis.Gameplay
             knockback.CancelHitStun();
             knockback.CancelStun();
             knockback.Physics.StopVelocity();
-            //knockback.Physics.RB.isKinematic = true;
+            knockback.Physics.GridActive = true;
 
             input = _player2.GetComponent<InputBehaviour>();
             if (input)
@@ -354,7 +422,7 @@ namespace Lodis.Gameplay
 
         private void LoadAIDecisions()
         {
-            if (_mode == GameMode.SINGLEPLAYER || _mode == GameMode.MULTIPLAYER)
+            if (_mode != GameMode.SIMULATE && _mode != GameMode.PlayerVSCPU)
                 return;
 
             AIControllerBehaviour dummyController = BlackBoardBehaviour.Instance.Player2Controller as AIControllerBehaviour;

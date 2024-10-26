@@ -1,0 +1,3893 @@
+{
+    "Abilities": [
+        {
+            "abilityName": "Defensive Burst",
+            "abilityDescription": "None",
+            "abilityType": "BURST",
+            "timeActive": 0.6000000238418579,
+            "recoverTime": 0.800000011920929,
+            "startUpTime": 0.0,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "None",
+            "stats": [],
+            "collisionInfo": [
+                {
+                    "Name": "DefensiveBurstCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.6000000238418579,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 1606656
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 10.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": true,
+                    "IgnoreMomentum": false,
+                    "HitAngle": -0.5,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.699999988079071,
+                    "Priority": 10.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 10,
+                    "AbilityID": -655053760.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.05000000074505806,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 1,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Offensive Burst",
+            "abilityDescription": "None",
+            "abilityType": "BURST",
+            "timeActive": 0.6000000238418579,
+            "recoverTime": 0.800000011920929,
+            "startUpTime": 0.0,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "None",
+            "stats": [],
+            "collisionInfo": [
+                {
+                    "Name": "OffensiveBurstCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.6000000238418579,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 1606656
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 10.0,
+                    "BaseKnockBack": 40.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": true,
+                    "HitAngle": 1.5,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.699999988079071,
+                    "Priority": 11.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 10,
+                    "AbilityID": 1258162560.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.05000000074505806,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 1,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "T-Saw",
+            "abilityDescription": "Throw Thalamus forward to create a spinning saw blade to slice through enemies.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.5,
+            "startUpTime": 0.15000000596046449,
+            "maxActivationAmount": 1,
+            "energyCost": 3.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "T-Saw",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 3.5
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "TornadoCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 2.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4090167
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.10000000149011612,
+                    "Damage": 6.0,
+                    "BaseKnockBack": 1.5,
+                    "KnockBackScale": 0.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.4500000476837159,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.07000000029802323,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1094313472.0,
+                    "SpawnEffect": {
+                        "instanceID": 37022
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47928
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Boomerang",
+            "abilityDescription": "Throws a spinning blade forward. Catch it on the way back to throw it again.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.30000001192092898,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 1,
+            "energyCost": 2.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "Boomarang",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 6.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                },
+                {
+                    "name": "MaxRebounds",
+                    "value": 5.0
+                },
+                {
+                    "name": "SpeedMultiplier",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "BoomerangCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 10.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.10000000149011612,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 12.0,
+                    "KnockBackScale": 1.2000000476837159,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.5,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 1716510592.0,
+                    "SpawnEffect": {
+                        "instanceID": 48130
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47898
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47916
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Bounce E-Ball",
+            "abilityDescription": "Spawns two balls of energy that slowly bounces towards the opponent.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.20000000298023225,
+            "maxActivationAmount": 1,
+            "energyCost": 1.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "BounceEball",
+            "stats": [
+                {
+                    "name": "ShotAngle",
+                    "value": 1.2999999523162842
+                },
+                {
+                    "name": "ShotForce",
+                    "value": 5.0
+                },
+                {
+                    "name": "BallCount",
+                    "value": 2.0
+                },
+                {
+                    "name": "BallSpawnDelay",
+                    "value": 0.5
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "BounceBallCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 7.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4091191
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 1.0,
+                    "KnockBackScale": 1.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.7999999523162842,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 2.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -67112736.0,
+                    "SpawnEffect": {
+                        "instanceID": 36806
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47936
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 47938
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Deck Rebooter",
+            "abilityDescription": "Fires a projectile that forces the opponent to reshuffle their deck and temporarily stuns them.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.30000001192092898,
+            "startUpTime": 0.15000000596046449,
+            "maxActivationAmount": 1,
+            "energyCost": 2.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "DeckRebooter",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 5.0
+                },
+                {
+                    "name": "Stun Time",
+                    "value": 2.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "DeckRebooterCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 2.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3960119
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 2.0,
+                    "BaseKnockBack": 0.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.0,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 1352043904.0,
+                    "SpawnEffect": {
+                        "instanceID": 36806
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 35758
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 48152
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Electric Traps",
+            "abilityDescription": "Throws out two electric pylons upon the first activation. Activate it again to create an electric path that can stun enemies. Hold a move direction to change their grid placement.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.05000000074505806,
+            "recoverTime": 0.10000000149011612,
+            "startUpTime": 0.05000000074505806,
+            "maxActivationAmount": 2,
+            "energyCost": 2.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "ElectroTrap",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 20.0
+                },
+                {
+                    "name": "StunTime",
+                    "value": 2.0
+                },
+                {
+                    "name": "DistanceBetweenStructures",
+                    "value": 3.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "ElectricTrapCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 1.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 0.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.0,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.0,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1869449728.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Electro-Bomb",
+            "abilityDescription": "Unleashes a devastating ball of energy that does massive damage and knockback.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 1.0,
+            "startUpTime": 2.0,
+            "maxActivationAmount": 1,
+            "energyCost": 5.0,
+            "effects": [
+                "Charge_ElectroBomb",
+                "KickSlash",
+                "ElectroBomb"
+            ],
+            "sounds": [
+                "Shut_Down_v2_Wav"
+            ],
+            "icon": "ElectroBomb",
+            "stats": [
+                {
+                    "name": "ExplosionColliderHeight",
+                    "value": 5.0
+                },
+                {
+                    "name": "ExplosionColliderWidth",
+                    "value": 4.0
+                },
+                {
+                    "name": "JumpHeight",
+                    "value": 3.0
+                },
+                {
+                    "name": "Speed",
+                    "value": 10.0
+                },
+                {
+                    "name": "SlowMotionTimeScale",
+                    "value": 0.05000000074505806
+                },
+                {
+                    "name": "SlowMotionTime",
+                    "value": 1.2000000476837159
+                },
+                {
+                    "name": "OrbSpeed",
+                    "value": 2.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "OrbCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 1.5,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 33549367
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.05000000074505806,
+                    "Damage": 3.0,
+                    "BaseKnockBack": 1.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": -1.399999976158142,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.10000000149011612,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 72479048.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 0.5,
+                    "CameraShakeStrength": 0.05000000074505806,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 1,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 31070
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "ExplosionCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.20000000298023225,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4057399
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.10000000149011612,
+                    "Damage": 25.0,
+                    "BaseKnockBack": 30.0,
+                    "KnockBackScale": 2.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": true,
+                    "HitAngle": 0.6000000238418579,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.5,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 72479048.0,
+                    "SpawnEffect": {
+                        "instanceID": 48058
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 48060
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.07999999821186066,
+                    "CameraShakeDuration": 0.699999988079071,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 48062
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "SwordCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 1.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4057399
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.10000000149011612,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 0.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": true,
+                    "HitAngle": 0.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.10000000149011612,
+                    "Priority": 3.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 72479048.0,
+                    "SpawnEffect": {
+                        "instanceID": 48064
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.5,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47964
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "KickCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.20000000298023225,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4058423
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 1.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 6.0,
+                    "KnockBackScale": 0.10000000149011612,
+                    "ClampForceWithinRing": true,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.7799999713897706,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.5,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 72479048.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 48066
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.05000000074505806,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 48024
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Energy Turret",
+            "abilityDescription": "Creates a turret that fires a rapid barrage of lasers.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 1,
+            "energyCost": 1.0,
+            "effects": [
+                "BlueLaser",
+                "LargeBlueLaser",
+                "ProjectileSpawn"
+            ],
+            "sounds": [],
+            "icon": "EnergyTurret",
+            "stats": [
+                {
+                    "name": "ShotCount",
+                    "value": 8.0
+                },
+                {
+                    "name": "ShotDelay",
+                    "value": 0.10000000149011612
+                },
+                {
+                    "name": "Speed",
+                    "value": 20.0
+                },
+                {
+                    "name": "EntityCount",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "LaserCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.5,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3959095
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 0.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.5,
+                    "Priority": 1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1183215360.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48160
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "LargeLaserCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.5,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3959095
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 1.0,
+                    "KnockBackScale": 1.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.10000000149011612,
+                    "Priority": 2.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1183215360.0,
+                    "SpawnEffect": {
+                        "instanceID": 36290
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48162
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Ground-Pound",
+            "abilityDescription": "Performs a high jump before smashing into the ground. The traveling shockwave can knock enemies toward you.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.5,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.30000001192092898,
+            "maxActivationAmount": 1,
+            "energyCost": 3.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "GroundPound",
+            "stats": [
+                {
+                    "name": "ShockwaveProgressionDelay",
+                    "value": 0.05000000074505806
+                },
+                {
+                    "name": "JumpForce",
+                    "value": 16.0
+                },
+                {
+                    "name": "ShockwaveTravelDistance",
+                    "value": 5.0
+                },
+                {
+                    "name": "ShockwaveTravelSpeed",
+                    "value": 15.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 65536
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 15.0,
+                    "BaseKnockBack": 2.0,
+                    "KnockBackScale": 1.100000023841858,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 2.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.15000000596046449,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1127317760.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 48112
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.05000000074505806,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 1,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 44824
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Lighting Strike",
+            "abilityDescription": "Summon a strong bolt of lighting that zaps the panel the opponent is on.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.5,
+            "startUpTime": 0.07999999821186066,
+            "maxActivationAmount": 1,
+            "energyCost": 1.0,
+            "effects": [
+                "LightningStomp"
+            ],
+            "sounds": [],
+            "icon": "ElectroStomp",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 8.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                },
+                {
+                    "name": "SpawnHeight",
+                    "value": 6.0
+                },
+                {
+                    "name": "OpponentBounciness",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.5,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 1566775
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 1.2000000476837159,
+                    "KnockBackScale": 0.20000000298023225,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": -1.5,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1994649472.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 35758
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48026
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Megaton Punch",
+            "abilityDescription": "Dash forward and unleash and explosive combo.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.699999988079071,
+            "startUpTime": 2.0,
+            "maxActivationAmount": 1,
+            "energyCost": 5.0,
+            "effects": [
+                "Charge_Fire(Unscaled)",
+                "Charge_Light"
+            ],
+            "sounds": [
+                "Shut_Down_v2_Wav"
+            ],
+            "icon": "MegatonPunch",
+            "stats": [
+                {
+                    "name": "Distance",
+                    "value": 10.0
+                },
+                {
+                    "name": "SlowMotionTimeScale",
+                    "value": 0.05000000074505806
+                },
+                {
+                    "name": "SlowMotionTime",
+                    "value": 1.2000000476837159
+                },
+                {
+                    "name": "DashHitBoxX",
+                    "value": 2.0
+                },
+                {
+                    "name": "DashHitBoxY",
+                    "value": 3.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "HookCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 33549623
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 10.0,
+                    "BaseKnockBack": 5.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": true,
+                    "HitAngle": 1.600000023841858,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.699999988079071,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 74556600.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47906
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 0.5,
+                    "CameraShakeStrength": 1.0,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 50,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 31068
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "UpperCutCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 33549623
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 12.0,
+                    "BaseKnockBack": 60.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": true,
+                    "HitAngle": 1.5,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.699999988079071,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 74556600.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47906
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 1.0,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 50,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 31068
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "MegatonPunchCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 33549623
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 15.0,
+                    "BaseKnockBack": 10.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.20000000298023225,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 1.0,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 74556600.0,
+                    "SpawnEffect": {
+                        "instanceID": 48088
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 48142
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 1.0,
+                    "CameraShakeDuration": 1.0,
+                    "CameraShakeFrequency": 90,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 31068
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Laser Barrage",
+            "abilityDescription": "Summon multiple beams of energy in a straight line a few panels away.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.30000001192092898,
+            "startUpTime": 0.20000000298023225,
+            "maxActivationAmount": 1,
+            "energyCost": 1.0,
+            "effects": [
+                "LaserBeam"
+            ],
+            "sounds": [],
+            "icon": "LazerBarrage",
+            "stats": [
+                {
+                    "name": "TravelDistance",
+                    "value": 2.0
+                },
+                {
+                    "name": "SpawnDelay",
+                    "value": 0.15000000596046449
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "1stStrikeCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.5,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4058423
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 2.0,
+                    "BaseKnockBack": 2.0,
+                    "KnockBackScale": 1.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.054999999701976779,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 1137977600.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47888
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "2ndStrikeCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.5,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4058423
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 2.0,
+                    "BaseKnockBack": 4.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.054999999701976779,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 1137977600.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47888
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "3rdStrikeCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.5,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4058423
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 2.0,
+                    "BaseKnockBack": 1.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.7999999523162842,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.07000000029802323,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 1137977600.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47888
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Advance",
+            "abilityDescription": "Temporarily takes a row of the opponent tiles. ",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.009999999776482582,
+            "recoverTime": 0.05000000074505806,
+            "startUpTime": 0.009999999776482582,
+            "maxActivationAmount": 1,
+            "energyCost": 1.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "Advance",
+            "stats": [
+                {
+                    "name": "OwnershipTime",
+                    "value": 10.0
+                },
+                {
+                    "name": "AmountOfRows",
+                    "value": 1.0
+                },
+                {
+                    "name": "EntityCount",
+                    "value": 3.0
+                },
+                {
+                    "name": "Speed",
+                    "value": 4.0
+                }
+            ],
+            "collisionInfo": []
+        },
+        {
+            "abilityName": "T-Snare",
+            "abilityDescription": "If the opponent is on the same row, impale them and trap them. Move them around while they are in the air to set up for a follow up attack.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.6000000238418579,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 1,
+            "energyCost": 2.0,
+            "effects": [
+                "Charge_Light"
+            ],
+            "sounds": [],
+            "icon": "T-Snare",
+            "stats": [
+                {
+                    "name": "LiftHeight",
+                    "value": 1.0
+                },
+                {
+                    "name": "KnockbackThreshold",
+                    "value": 1.0
+                },
+                {
+                    "name": "LiftTime",
+                    "value": 0.5
+                },
+                {
+                    "name": "HoldTime",
+                    "value": 3.0
+                },
+                {
+                    "name": "MoveSpeed",
+                    "value": 3.5
+                },
+                {
+                    "name": "SpawnDistance",
+                    "value": 3.0
+                },
+                {
+                    "name": "ProjectileSpeed",
+                    "value": 20.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "AuraSphereCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4189239
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 30.0,
+                    "KnockBackScale": 1.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.5,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.07000000029802323,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": 1144289280.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.5,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47996
+                    },
+                    "HitSound": {
+                        "instanceID": 47998
+                    },
+                    "DespawnSound": {
+                        "instanceID": 48000
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Reflector",
+            "abilityDescription": "Spawns a barrier that can reflect one projectile back at the opponent.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.5,
+            "recoverTime": 0.25,
+            "startUpTime": 0.05000000074505806,
+            "maxActivationAmount": 1,
+            "energyCost": 2.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "Reflector",
+            "stats": [],
+            "collisionInfo": []
+        },
+        {
+            "abilityName": "Scatter Bombs",
+            "abilityDescription": "Deploys three bombs on the opponents back row. They explode when they are touched.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.05000000074505806,
+            "recoverTime": 0.10000000149011612,
+            "startUpTime": 0.5,
+            "maxActivationAmount": 1,
+            "energyCost": 2.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "ScatterBomb",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 10.0
+                },
+                {
+                    "name": "BombTimer",
+                    "value": 20.0
+                },
+                {
+                    "name": "EntityCount",
+                    "value": 3.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "BombCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.05000000074505806,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 134212919
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 15.0,
+                    "BaseKnockBack": 5.0,
+                    "KnockBackScale": 1.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.7999999523162842,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.15000000596046449,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1599538560.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47898
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.05000000074505806,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 1,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 31068
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Skull Buster",
+            "abilityDescription": "Leap forward two panels before crashing down on your enemies",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.6000000238418579,
+            "startUpTime": 0.4000000059604645,
+            "maxActivationAmount": 1,
+            "energyCost": 4.0,
+            "effects": [
+                "Impact_FireLoop(Unscaled)"
+            ],
+            "sounds": [],
+            "icon": "SkullBasher",
+            "stats": [
+                {
+                    "name": "TravelDistance",
+                    "value": 3.0
+                },
+                {
+                    "name": "JumpHeight",
+                    "value": 2.0
+                },
+                {
+                    "name": "HangTime",
+                    "value": 0.699999988079071
+                },
+                {
+                    "name": "DownwardSpeed",
+                    "value": 15.0
+                },
+                {
+                    "name": "DownwardGravityMultiplier",
+                    "value": 8.0
+                },
+                {
+                    "name": "OpponentBounciness",
+                    "value": 3.0
+                },
+                {
+                    "name": "ColliderScale",
+                    "value": 1.5
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "SkullBusterCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.20000000298023225,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 30.0,
+                    "BaseKnockBack": 10.0,
+                    "KnockBackScale": 3.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": -1.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.699999988079071,
+                    "Priority": 4.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1202016000.0,
+                    "SpawnEffect": {
+                        "instanceID": 48088
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 48090
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 4.0,
+                    "CameraShakeStrength": 1.0,
+                    "CameraShakeDuration": 2.0,
+                    "CameraShakeFrequency": 45,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 48092
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Charged Backstab",
+            "abilityDescription": "Spawns a blade behind the enemy to catch them by surprise.",
+            "abilityType": "STRONGBACKWARD",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.4000000059604645,
+            "startUpTime": 0.30000001192092898,
+            "maxActivationAmount": 1,
+            "energyCost": 0.0,
+            "effects": [
+                "Charge_Light"
+            ],
+            "sounds": [],
+            "icon": "energy-arrow",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 10.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "ChargeBackAuraSpearCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 1.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3991863
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 8.0,
+                    "BaseKnockBack": 3.0,
+                    "KnockBackScale": 0.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 2.0999999046325685,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.10000000149011612,
+                    "Priority": 3.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 7,
+                    "AbilityID": -1499047680.0,
+                    "SpawnEffect": {
+                        "instanceID": 36290
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.600000023841858,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48104
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Flare Wheel",
+            "abilityDescription": "Spawns a giant flame blade that deals massive damage.",
+            "abilityType": "STRONGBACKWARD",
+            "timeActive": 0.4000000059604645,
+            "recoverTime": 0.30000001192092898,
+            "startUpTime": 0.5,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "flame-spin",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 0.699999988079071
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "ChargeFlareLauncher",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.699999988079071,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 16640311
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.10000000149011612,
+                    "Damage": 1.5,
+                    "BaseKnockBack": 1.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": true,
+                    "HitAngle": 1.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.07000000029802323,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 7,
+                    "AbilityID": -944582528.0,
+                    "SpawnEffect": {
+                        "instanceID": 47906
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47898
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.600000023841858,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47908
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Double Punch",
+            "abilityDescription": "Spawns a slow moving projectile thats good for applying pressure.",
+            "abilityType": "STRONGFORWARD",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.10000000149011612,
+            "startUpTime": 0.30000001192092898,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "punch-blast",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 2.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 2.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 2.5,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 16542007
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 8.0,
+                    "BaseKnockBack": 2.0,
+                    "KnockBackScale": 0.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.2999999523162842,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.07000000029802323,
+                    "Priority": 3.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 6,
+                    "AbilityID": -1691479936.0,
+                    "SpawnEffect": {
+                        "instanceID": 35738
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47976
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.5,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48040
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "T-Barrage",
+            "abilityDescription": "Calls a blade forward that unleashes a flurry of strikes on the opponent on contact.",
+            "abilityType": "STRONGFORWARD",
+            "timeActive": 0.30000001192092898,
+            "recoverTime": 0.25,
+            "startUpTime": 0.30000001192092898,
+            "maxActivationAmount": 1,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "ice-spear",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 10.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "ChargeSwordCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.4000000059604645,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3991863
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 0.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.5,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.0,
+                    "Priority": 3.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 6,
+                    "AbilityID": -97303536.0,
+                    "SpawnEffect": {
+                        "instanceID": 36290
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.5,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 48104
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "ChargeFlurryCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.5,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3991863
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.15000000596046449,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 0.3499999940395355,
+                    "KnockBackScale": 0.10000000149011612,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.5,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05999999865889549,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 6,
+                    "AbilityID": -97303536.0,
+                    "SpawnEffect": {
+                        "instanceID": 36290
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 35758
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48104
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Energy Grenade",
+            "abilityDescription": "Spawns a projectile that detonates after a few seconds.",
+            "abilityType": "STRONGNEUTRAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.4000000059604645,
+            "startUpTime": 0.4000000059604645,
+            "maxActivationAmount": 1,
+            "energyCost": 0.0,
+            "effects": [
+                "ProjectileSpawn"
+            ],
+            "sounds": [],
+            "icon": "unlit-bomb",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 3.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": -1.0
+                },
+                {
+                    "name": "TravelDistance",
+                    "value": 4.0
+                },
+                {
+                    "name": "DespawnTime",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "ChargeRemoteBombCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.10000000149011612,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3992631
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 10.0,
+                    "BaseKnockBack": 1.5,
+                    "KnockBackScale": 1.7000000476837159,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.350000023841858,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.15000000596046449,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 4,
+                    "AbilityID": -1083848192.0,
+                    "SpawnEffect": {
+                        "instanceID": 47976
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 35758
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.600000023841858,
+                    "CameraShakeStrength": 0.05000000074505806,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 1,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 31068
+                    },
+                    "HitSound": {
+                        "instanceID": 47978
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Haymaker",
+            "abilityDescription": "Winds up and fires a powerful flaming punch projectile.",
+            "abilityType": "STRONGNEUTRAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.5,
+            "startUpTime": 0.699999988079071,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "fire-punch",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 40.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 2.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 12.0,
+                    "BaseKnockBack": 4.0,
+                    "KnockBackScale": 1.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.6000000238418579,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.20000000298023225,
+                    "Priority": 3.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 4,
+                    "AbilityID": -767001088.0,
+                    "SpawnEffect": {
+                        "instanceID": 35714
+                    },
+                    "SpawnEffectOffset": 0.5,
+                    "HitSpark": {
+                        "instanceID": 48006
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.15000000596046449,
+                    "CameraShakeDuration": 0.5,
+                    "CameraShakeFrequency": 50,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 48008
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Electric Axe Kick",
+            "abilityDescription": "None",
+            "abilityType": "STRONGSIDE",
+            "timeActive": 0.30000001192092898,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.4000000059604645,
+            "maxActivationAmount": 1,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "high-kick",
+            "stats": [],
+            "collisionInfo": [
+                {
+                    "Name": "ElectricAxeKickCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.25,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3991607
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 6.0,
+                    "BaseKnockBack": 2.0,
+                    "KnockBackScale": 1.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.350000023841858,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.10000000149011612,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 5,
+                    "AbilityID": 246938960.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 35758
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.600000023841858,
+                    "CameraShakeStrength": 0.05000000074505806,
+                    "CameraShakeDuration": 0.20000000298023225,
+                    "CameraShakeFrequency": 1,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 47888
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Lightning T-Tornado",
+            "abilityDescription": "Spin at high speeds with a blade in hand to generate a large tornado that can hit multiple times.",
+            "abilityType": "STRONGSIDE",
+            "timeActive": 0.5,
+            "recoverTime": 0.5,
+            "startUpTime": 0.30000001192092898,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [
+                "Charge_Lightning",
+                "Impact_Lightning_Lv2"
+            ],
+            "sounds": [],
+            "icon": "concentration-orb",
+            "stats": [
+                {
+                    "name": "OrbHeight",
+                    "value": 1.0
+                },
+                {
+                    "name": "RotationSpeed",
+                    "value": 13.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4057399
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.20000000298023225,
+                    "Damage": 4.0,
+                    "BaseKnockBack": 0.5,
+                    "KnockBackScale": 1.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": -0.20000000298023225,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.10000000149011612,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 5,
+                    "AbilityID": -1683444992.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 35758
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47966
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Backstab",
+            "abilityDescription": "Spawns a blade behind the enemy to catch them by surprise.",
+            "abilityType": "WEAKBACKWARD",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.10000000149011612,
+            "startUpTime": 0.25,
+            "maxActivationAmount": 1,
+            "energyCost": 0.0,
+            "effects": [
+                "Charge_Light"
+            ],
+            "sounds": [],
+            "icon": "BackStab",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 15.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.699999988079071,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3991863
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 1.0,
+                    "KnockBackScale": 0.10000000149011612,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 2.200000047683716,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 3,
+                    "AbilityID": -1448321664.0,
+                    "SpawnEffect": {
+                        "instanceID": 36706
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47946
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Flare Launcher",
+            "abilityDescription": "Perform a flaming backflip that launches your opponent in the air.",
+            "abilityType": "WEAKBACKWARD",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.2199999988079071,
+            "startUpTime": 0.20000000298023225,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "FlareLauncher",
+            "stats": [],
+            "collisionInfo": [
+                {
+                    "Name": "FlareLauncherCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.20000000298023225,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 16641335
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 3.0,
+                    "BaseKnockBack": 1.0,
+                    "KnockBackScale": 1.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 2.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": -1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 3,
+                    "AbilityID": 434344320.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 40882
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Straight",
+            "abilityDescription": "Fires a quick flame punch. Doesn’t travel far, but does a little knockback to the opponent when it lands.\r\n",
+            "abilityType": "WEAKFORWARD",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.10000000149011612,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "Straight",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 15.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.20000000298023225,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 2.0,
+                    "BaseKnockBack": 0.5,
+                    "KnockBackScale": 0.699999988079071,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 2,
+                    "AbilityID": -848784384.0,
+                    "SpawnEffect": {
+                        "instanceID": 36706
+                    },
+                    "SpawnEffectOffset": -0.5,
+                    "HitSpark": {
+                        "instanceID": 48064
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48168
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "T-Flurry",
+            "abilityDescription": "Calls a blade forward that unleashes a flurry of strikes on the opponent on contact.",
+            "abilityType": "WEAKFORWARD",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.15000000596046449,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "T_Flurry",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 12.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "SwordCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.30000001192092898,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3991863
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 2.0,
+                    "BaseKnockBack": 0.10000000149011612,
+                    "KnockBackScale": 0.10000000149011612,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.5,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.07000000029802323,
+                    "Priority": 1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 2,
+                    "AbilityID": -1028830464.0,
+                    "SpawnEffect": {
+                        "instanceID": 36706
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 1.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47946
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "FlurryCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.30000001192092898,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3991863
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.10000000149011612,
+                    "Damage": 0.5,
+                    "BaseKnockBack": 0.009999999776482582,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.30000001192092898,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 2,
+                    "AbilityID": -1028830464.0,
+                    "SpawnEffect": {
+                        "instanceID": 36706
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47946
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Energy Mine",
+            "abilityDescription": "Spawns a projectile that detonates when touched.",
+            "abilityType": "WEAKNEUTRAL",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.15000000596046449,
+            "startUpTime": 0.20000000298023225,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "RemoteBomb",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 4.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                },
+                {
+                    "name": "TravelDistance",
+                    "value": 4.0
+                },
+                {
+                    "name": "DespawnTime",
+                    "value": 10.0
+                },
+                {
+                    "name": "EntityCount",
+                    "value": 1.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "RemoteBombExplosionCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 10.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 3992887
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 7.0,
+                    "BaseKnockBack": 0.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.0,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.5,
+                    "Priority": 1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 0,
+                    "AbilityID": 163836736.0,
+                    "SpawnEffect": {
+                        "instanceID": 36806
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 37022
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 31066
+                    },
+                    "HitSound": {
+                        "instanceID": 47978
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Jab",
+            "abilityDescription": "Fires a quick flame punch. Doesn’t do knockback, but good for building damage and disrupting attacks.\r",
+            "abilityType": "WEAKNEUTRAL",
+            "timeActive": 0.05000000074505806,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.05999999865889549,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "Jab",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 30.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 3.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.1599999964237213,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 67584
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 0.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.5,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.10000000149011612,
+                    "Priority": 1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 0,
+                    "AbilityID": 696030720.0,
+                    "SpawnEffect": {
+                        "instanceID": 37152
+                    },
+                    "SpawnEffectOffset": -0.5,
+                    "HitSpark": {
+                        "instanceID": 47954
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 44822
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Axe Kick",
+            "abilityDescription": "A quick spinning kick that has a wide range.",
+            "abilityType": "WEAKSIDE",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 1,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "AxelKick",
+            "stats": [],
+            "collisionInfo": [
+                {
+                    "Name": "AxeKickCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.20000000298023225,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4057143
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 3.0,
+                    "BaseKnockBack": 0.699999988079071,
+                    "KnockBackScale": 0.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.30000001192092898,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 1,
+                    "AbilityID": -225857056.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 47916
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "T-Tornado",
+            "abilityDescription": "Spin at high speeds with a blade in hand to generate a tornado that can hit multiple times.",
+            "abilityType": "WEAKSIDE",
+            "timeActive": 0.5,
+            "recoverTime": 0.30000001192092898,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [
+                "Charge_Light",
+                "ThrowReleaseBurst"
+            ],
+            "sounds": [],
+            "icon": "T_Tornado",
+            "stats": [
+                {
+                    "name": "OrbHeight",
+                    "value": 1.0
+                },
+                {
+                    "name": "RotationSpeed",
+                    "value": 20.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4057399
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.20000000298023225,
+                    "Damage": 2.0,
+                    "BaseKnockBack": 0.3499999940395355,
+                    "KnockBackScale": 0.10000000149011612,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.2000000476837159,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 1,
+                    "AbilityID": 726023424.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 36504
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.6000000238418579,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48118
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Black Hole",
+            "abilityDescription": "Creates a large black hole that pushes opponents towards its center.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 1,
+            "energyCost": 2.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "blackHole",
+            "stats": [
+                {
+                    "name": "TravelDistance",
+                    "value": 3.0
+                },
+                {
+                    "name": "DespawnTime",
+                    "value": 2.5
+                },
+                {
+                    "name": "Speed",
+                    "value": 5.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "LeftCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 5.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4062519
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.10000000149011612,
+                    "Damage": 0.0,
+                    "BaseKnockBack": 0.30000001192092898,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.0,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1283796608.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 0,
+                    "HitStopShakeStrength": 0.4000000059604645,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 193998
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "MidCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 5.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4062519
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.05000000074505806,
+                    "Damage": 0.0,
+                    "BaseKnockBack": 2.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.5,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.5,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1283796608.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 36458
+                    },
+                    "HitEffectLevel": 0,
+                    "HitStopShakeStrength": 0.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 194038
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "RightCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 5.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4062519
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.10000000149011612,
+                    "Damage": 0.0,
+                    "BaseKnockBack": 0.30000001192092898,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 2.0,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.5,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1283796608.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 0,
+                    "HitStopShakeStrength": 0.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "LaunchCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 3.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": true,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4062519
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 1.0,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 3.0,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.5,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.5,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -1283796608.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "DoubleStrike",
+            "abilityDescription": "Dash through enemies with this quick melee attack! The direction of the dash changes based on the input held. Press a different direction after the first dash to perform another. ",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.5,
+            "startUpTime": 0.20000000298023225,
+            "maxActivationAmount": 2,
+            "energyCost": 2.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "fire-dash",
+            "stats": [
+                {
+                    "name": "TravelDistance",
+                    "value": 4.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "BodyCollider",
+                    "DespawnAfterTimeLimit": false,
+                    "TimeActive": 0.0,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 65792
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 15.0,
+                    "KnockBackScale": 1.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.399999976158142,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -594054720.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47898
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Energy Shield",
+            "abilityDescription": "A shield that protects against all incoming projectiles at the cost of draining the energy meter.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.4000000059604645,
+            "startUpTime": 0.20000000298023225,
+            "maxActivationAmount": 1,
+            "energyCost": 1.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "shieldcomb",
+            "stats": [
+                {
+                    "name": "EnergyDrainAmount",
+                    "value": 0.699999988079071
+                }
+            ],
+            "collisionInfo": []
+        },
+        {
+            "abilityName": "HeavyThrow",
+            "abilityDescription": "Dash towards the oppponent to carry them up high before throwing them down to the ground.",
+            "abilityType": "SPECIAL",
+            "timeActive": 1.0,
+            "recoverTime": 1.2000000476837159,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 1,
+            "energyCost": 4.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "grab",
+            "stats": [
+                {
+                    "name": "ThrowHeight",
+                    "value": 2.0
+                },
+                {
+                    "name": "ThrowDelay",
+                    "value": 0.4000000059604645
+                },
+                {
+                    "name": "ThrowAngle",
+                    "value": -0.4000000059604645
+                },
+                {
+                    "name": "ThrowForce",
+                    "value": 30.0
+                },
+                {
+                    "name": "TravelDistance",
+                    "value": 4.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "LaunchCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 1.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 4193591
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 30.0,
+                    "KnockBackScale": 1.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 1.5,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.5,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -304499008.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 0
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Phase Dash",
+            "abilityDescription": "Become temporarily intangible and dash through enemy attacks.",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.20000000298023225,
+            "recoverTime": 0.10000000149011612,
+            "startUpTime": 0.0,
+            "maxActivationAmount": 1,
+            "energyCost": 1.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "sprint",
+            "stats": [
+                {
+                    "name": "TravelDistance",
+                    "value": 2.0
+                }
+            ],
+            "collisionInfo": []
+        },
+        {
+            "abilityName": "RadialStrike",
+            "abilityDescription": "Dash forward at high speed before delivering an ultra-hot sweep kick!",
+            "abilityType": "SPECIAL",
+            "timeActive": 0.30000001192092898,
+            "recoverTime": 0.6000000238418579,
+            "startUpTime": 0.20000000298023225,
+            "maxActivationAmount": 1,
+            "energyCost": 4.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "fire-ring",
+            "stats": [
+                {
+                    "name": "HitBoxScaleX",
+                    "value": 2.0
+                },
+                {
+                    "name": "HitBoxScaleY",
+                    "value": 1.0
+                },
+                {
+                    "name": "HitBoxScaleZ",
+                    "value": 3.0
+                },
+                {
+                    "name": "RotationSpeed",
+                    "value": 650.0
+                },
+                {
+                    "name": "PanelTravelDistance",
+                    "value": 3.0
+                },
+                {
+                    "name": "HitBoxDistanceX",
+                    "value": 1.0
+                },
+                {
+                    "name": "HitBoxDistanceZ",
+                    "value": 0.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "RadialStrikeCollider",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.20000000298023225,
+                    "DestroyOnHit": false,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 65536
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 15.0,
+                    "BaseKnockBack": 5.0,
+                    "KnockBackScale": 1.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.30000001192092898,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.15000000596046449,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 8,
+                    "AbilityID": -630553024.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47898
+                    },
+                    "HitEffectLevel": 3,
+                    "HitStopShakeStrength": 1.600000023841858,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": true,
+                    "SpawnSound": {
+                        "instanceID": 47908
+                    },
+                    "HitSound": {
+                        "instanceID": 48086
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Charge Lob Shot",
+            "abilityDescription": "Fires an arcing blast that eplodes into smaller projectiles on hit.",
+            "abilityType": "STRONGBACKWARD",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.30000001192092898,
+            "startUpTime": 0.20000000298023225,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "ember-shot",
+            "stats": [
+                {
+                    "name": "StrongShotDistance",
+                    "value": 10.0
+                },
+                {
+                    "name": "StrongShotForceIncreaseRate",
+                    "value": 1000.0
+                },
+                {
+                    "name": "WeakShotDistance",
+                    "value": 0.5
+                },
+                {
+                    "name": "WeakShotGravity",
+                    "value": 9.8100004196167
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 2.0
+                },
+                {
+                    "name": "StrongHitMaxPower",
+                    "value": 30.0
+                },
+                {
+                    "name": "StrongShotGravity",
+                    "value": 58.86000061035156
+                },
+                {
+                    "name": "StrongShotAngle",
+                    "value": 1.0
+                },
+                {
+                    "name": "WeakShotAngle",
+                    "value": 0.699999988079071
+                },
+                {
+                    "name": "WeakShotSpawnHeight",
+                    "value": 0.5
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "StrongShot",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 2.5,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 65536
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 10.0,
+                    "BaseKnockBack": 2.0,
+                    "KnockBackScale": 0.5,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 2.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.07000000029802323,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 7,
+                    "AbilityID": 692061568.0,
+                    "SpawnEffect": {
+                        "instanceID": 48064
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47976
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.600000023841858,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 193998
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                },
+                {
+                    "Name": "WeakShot",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 5.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 0.20000000298023225,
+                    "KnockBackScale": 0.0,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 2.0,
+                    "AdjustAngleBasedOnAlignment": false,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.20000000298023225,
+                    "Priority": 0.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 7,
+                    "AbilityID": 692061568.0,
+                    "SpawnEffect": {
+                        "instanceID": 0
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 0
+                    },
+                    "HitEffectLevel": 0,
+                    "HitStopShakeStrength": 0.0,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48162
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "ChargeDoubleShot",
+            "abilityDescription": "None",
+            "abilityType": "STRONGSIDE",
+            "timeActive": 0.10000000149011612,
+            "recoverTime": 0.20000000298023225,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "bullet-impacts",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 5.5
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 2.0
+                },
+                {
+                    "name": "TimeBetweenShots",
+                    "value": 0.0
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.30000001192092898,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 5.0,
+                    "BaseKnockBack": 1.2000000476837159,
+                    "KnockBackScale": 0.800000011920929,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.4000000059604645,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.10000000149011612,
+                    "Priority": 2.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 5,
+                    "AbilityID": 36143944.0,
+                    "SpawnEffect": {
+                        "instanceID": 37152
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 47898
+                    },
+                    "HitEffectLevel": 2,
+                    "HitStopShakeStrength": 1.600000023841858,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48040
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "LobShot",
+            "abilityDescription": "Fires an arching shot that knocks the opponent towards you for a follow up attack.",
+            "abilityType": "WEAKBACKWARD",
+            "timeActive": 0.05000000074505806,
+            "recoverTime": 0.30000001192092898,
+            "startUpTime": 0.10000000149011612,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "ember-shot",
+            "stats": [
+                {
+                    "name": "PanelDistance",
+                    "value": 6.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 1.0
+                },
+                {
+                    "name": "Gravity",
+                    "value": 29.43000030517578
+                },
+                {
+                    "name": "Angle",
+                    "value": 0.6000000238418579
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 5.0,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 1.0,
+                    "BaseKnockBack": 2.0,
+                    "KnockBackScale": 0.4000000059604645,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 2.0,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 3,
+                    "AbilityID": 2086957568.0,
+                    "SpawnEffect": {
+                        "instanceID": 48064
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 48064
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 48162
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        },
+        {
+            "abilityName": "Double Shot",
+            "abilityDescription": "Fire two projectiles down two rows of panels.",
+            "abilityType": "WEAKSIDE",
+            "timeActive": 0.07000000029802323,
+            "recoverTime": 0.10000000149011612,
+            "startUpTime": 0.05000000074505806,
+            "maxActivationAmount": 0,
+            "energyCost": 0.0,
+            "effects": [],
+            "sounds": [],
+            "icon": "bullet-impacts",
+            "stats": [
+                {
+                    "name": "Speed",
+                    "value": 10.0
+                },
+                {
+                    "name": "MaxInstances",
+                    "value": 2.0
+                },
+                {
+                    "name": "TimeBetweenShots",
+                    "value": 0.0
+                },
+                {
+                    "name": "HitStun",
+                    "value": 0.10000000149011612
+                }
+            ],
+            "collisionInfo": [
+                {
+                    "Name": "",
+                    "DespawnAfterTimeLimit": true,
+                    "TimeActive": 0.30000001192092898,
+                    "DestroyOnHit": true,
+                    "IsMultiHit": false,
+                    "LayersToIgnore": {
+                        "serializedVersion": "2",
+                        "m_Bits": 0
+                    },
+                    "TagsToIgnore": [],
+                    "MultiHitWaitTime": 0.0,
+                    "Damage": 2.0,
+                    "BaseKnockBack": 0.30000001192092898,
+                    "KnockBackScale": 0.30000001192092898,
+                    "ClampForceWithinRing": false,
+                    "IgnoreMomentum": false,
+                    "HitAngle": 0.5,
+                    "AdjustAngleBasedOnAlignment": true,
+                    "TypeOfDamage": 0,
+                    "HitStunTime": 0.05000000074505806,
+                    "Priority": 1.0,
+                    "OwnerAlignement": 0,
+                    "AbilityType": 1,
+                    "AbilityID": 1003512576.0,
+                    "SpawnEffect": {
+                        "instanceID": 37310
+                    },
+                    "SpawnEffectOffset": 0.0,
+                    "HitSpark": {
+                        "instanceID": 48130
+                    },
+                    "HitEffectLevel": 1,
+                    "HitStopShakeStrength": 0.800000011920929,
+                    "CameraShakeStrength": 0.0,
+                    "CameraShakeDuration": 0.0,
+                    "CameraShakeFrequency": 0,
+                    "ShakesCamera": false,
+                    "SpawnSound": {
+                        "instanceID": 193964
+                    },
+                    "HitSound": {
+                        "instanceID": 0
+                    },
+                    "DespawnSound": {
+                        "instanceID": 0
+                    }
+                }
+            ]
+        }
+    ]
+}

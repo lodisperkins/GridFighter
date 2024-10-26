@@ -157,7 +157,7 @@ namespace Lodis.Gameplay
 
         private void Update()
         {
-            _deathSparks.gameObject.SetActive(Mathf.Ceil(_health.Health) == _health.MaxHealth.Value);
+            _deathSparks.gameObject.SetActive(Mathf.Ceil(_health.Health) == _health.MaxHealth.FixedValue);
         }
     }
 }

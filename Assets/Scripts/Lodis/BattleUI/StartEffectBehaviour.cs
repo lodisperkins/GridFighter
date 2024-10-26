@@ -126,7 +126,7 @@ namespace Lodis.UI
 
         private void BeginMatchStartEffect()
         {
-            float currentDelay = (_matchStartTime.Value - MatchTimerBehaviour.Instance.TimeSinceRoundStart);
+            float currentDelay = (_matchStartTime.FixedValue - MatchTimerBehaviour.Instance.TimeSinceRoundStart);
 
             if (MatchManagerBehaviour.Instance.SuddenDeathActive)
                 _suddenDeathSecondaryStartEffect.gameObject.SetActive(true);

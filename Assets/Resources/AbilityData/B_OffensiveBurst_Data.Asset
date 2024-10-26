@@ -65,7 +65,7 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 0
     Damage:
-      RawValue: 0
+      RawValue: 655360
     BaseKnockBack:
       RawValue: 2621440
     KnockBackScale:
@@ -83,7 +83,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 10
     AbilityID:
-      RawValue: 0
+      RawValue: 155385856
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0

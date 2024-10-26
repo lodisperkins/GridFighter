@@ -13,13 +13,12 @@ namespace Lodis.Movement
     [RequireComponent(typeof(KnockbackBehaviour))]
     public class LandingBehaviour : SimulationBehaviour
     {
-        [Tooltip("The amount of time it takes for this object to regain footing after landing")] [SerializeField]
-        private float _landingTime;
-
-        [SerializeField] private float _knockDownTime;
-        [SerializeField] private float _knockDownRecoverTime;
-        [SerializeField] private float _knockDownRecoverInvincibleTime;
-        [SerializeField] private float _knockDownLandingTime;
+        [Tooltip("The amount of time it takes for this object to regain footing after landing")]
+        [SerializeField] private Fixed32 _landingTime;
+        [SerializeField] private Fixed32 _knockDownTime;
+        [SerializeField] private Fixed32 _knockDownRecoverTime;
+        [SerializeField] private Fixed32 _knockDownRecoverInvincibleTime;
+        [SerializeField] private Fixed32 _knockDownLandingTime;
         [SerializeField] private IntVariable _groundedHitMax;
         
         //---
@@ -35,11 +34,11 @@ namespace Lodis.Movement
 
         public static Fixed32 LandingSpeed = new Fixed32(6553);
 
-        public float LandingTime { get => _landingTime;}
+        public Fixed32 LandingTime { get => _landingTime;}
         public bool IsDown { get; private set; }
         public bool RecoveringFromFall { get; private set; }
-        public float KnockDownRecoverTime { get => _knockDownRecoverTime; set => _knockDownRecoverTime = value; }
-        public float KnockDownLandingTime { get => _knockDownLandingTime; set => _knockDownLandingTime = value; }
+        public Fixed32 KnockDownRecoverTime { get => _knockDownRecoverTime; set => _knockDownRecoverTime = value; }
+        public Fixed32 KnockDownLandingTime { get => _knockDownLandingTime; set => _knockDownLandingTime = value; }
         /// <summary>
         /// Whether or not this object is current regaining footing after hitting the ground
         /// </summary>

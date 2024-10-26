@@ -31,12 +31,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3714706006734652295}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3714706006734652313
 MonoBehaviour:
@@ -50,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 3
   m_MaxPlayerCount: 2
   m_AllowJoining: 1
   m_JoinBehavior: 2
@@ -70,6 +71,7 @@ MonoBehaviour:
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
+      m_Flags: 0
     m_Reference: {fileID: 0}
   m_PlayerPrefab: {fileID: 0}
   m_SplitScreen: 0
@@ -101,6 +103,7 @@ MonoBehaviour:
   _matchStartTime: {fileID: 0}
   _invincibleBarriers: 0
   _infiniteEnergy: 0
+  _infiniteBurst: 0
   _timeScale: 1
   _matchMusic: {fileID: 0}
   _suddenDeathMusic: {fileID: 0}
@@ -143,15 +146,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _dummy: {fileID: 6183915638186026948, guid: a1d3756919dba494ea801d8fa04b4d6c, type: 3}
-  _RHSSpawnLocation: {x: 0, y: 0}
-  _LHSSpawnLocation: {x: 0, y: 0}
-  _inputManager: {fileID: 3714706006734652313}
   _playerRef: {fileID: 2765739998997917290, guid: de05c6ed12e6ef845b5c326a1cc157b5,
     type: 3}
+  _onlinePlayerRef: {fileID: 6683764936017846421, guid: db01bf4204efb1c4aa17d8257eb601d4,
+    type: 3}
+  _inputManager: {fileID: 3714706006734652313}
   _player1Data: {fileID: 11400000, guid: 9e61dee5c98e8fe4ab94070dfc1b05b4, type: 2}
   _player2Data: {fileID: 11400000, guid: e58f4edf10230094aabb53e76bd1dc76, type: 2}
-  _p1IsCustom: {fileID: 0}
-  _p2IsCustom: {fileID: 0}
+  _p1IsCustom: {fileID: 11400000, guid: c8d4b0853a99c454d9994f642a156b18, type: 2}
+  _p2IsCustom: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976, type: 2}
+  _RHSSpawnLocation: {x: 5, y: 1}
+  _LHSSpawnLocation: {x: 2, y: 1}
 --- !u!114 &3714706006734652315
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -192,6 +197,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1359032538}
+        m_TargetAssemblyTypeName: 
         m_MethodName: ChargeExplosion
         m_Mode: 2
         m_Arguments:
@@ -223,6 +229,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1359032538}
+        m_TargetAssemblyTypeName: 
         m_MethodName: ChargeExplosion
         m_Mode: 2
         m_Arguments:
@@ -250,10 +257,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dad08f18f383ce840b2238fe1a41a1a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosion: {fileID: 391899427738355809, guid: c9ead59b0b937914793e809c5592b5b9,
+  _explosion: {fileID: 1245706752387870896, guid: 4c6c95d842f6bf7429c5615143bf438b,
     type: 3}
-  _explosionChargeTime: 1
-  _maxEmission: 150
-  _chargeSound: {fileID: 0}
-  _explosionSound: {fileID: 0}
-  _onCharacterExplosion: {fileID: 0}
+  _explosionChargeTime:
+    RawValue: 0
+  _maxEmission: 600
+  _chargeSound: {fileID: 8300000, guid: 647c8de60c5fc4a41b42e530941c2dc4, type: 3}
+  _explosionSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+  _onCharacterExplosion: {fileID: 11400000, guid: f5d578bbf9dd7174ca377133551d3ee3,
+    type: 2}

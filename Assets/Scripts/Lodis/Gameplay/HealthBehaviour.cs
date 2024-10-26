@@ -17,8 +17,7 @@ namespace Lodis.Gameplay
     {
         [Tooltip("The measurement of the amount of damage this object can take or has taken")]
         [SerializeField]
-        private float _health;
-        private Fixed32 _healthFixed;
+        private Fixed32 _health;
         [Tooltip("The starting amount of damage this object can take or has taken. Set to -1 to start with max health.")]
         [SerializeField]
         private float _startingHealth = -1;
@@ -94,16 +93,16 @@ namespace Lodis.Gameplay
 
         public Fixed32 Health
         {
-            get => _healthFixed;
+            get => _health;
             protected set
             {
                 //Prevent damage if the object is invincible or dead
-                if (value < _healthFixed && (_isInvincible || !IsAlive))
+                if (value < _health && (_isInvincible || !IsAlive))
                 {
                     return;
                 }
 
-                _healthFixed = value;
+                _health = value;
             }
         }
 
@@ -153,7 +152,7 @@ namespace Lodis.Gameplay
 
         public override void Serialize(BinaryWriter bw)
         {
-            Health.Serialize(bw);
+            _health.Serialize(bw);
             bw.Write(_isInvincible);
             bw.Write(_stunned);
             bw.Write(_isIntangible);
@@ -162,7 +161,7 @@ namespace Lodis.Gameplay
 
         public override void Deserialize(BinaryReader br)
         {
-            Health.Deserialize(br);
+            _health.Deserialize(br);
             _isInvincible = br.ReadBoolean();
             _stunned = br.ReadBoolean();
             _isIntangible = br.ReadBoolean();
@@ -174,9 +173,9 @@ namespace Lodis.Gameplay
             base.Awake();
 
             if (_startingHealth < 0)
-                _healthFixed = _maxHealth.Value;
+                _health = _maxHealth.FixedValue;
             else
-                _healthFixed = _startingHealth;
+                _health = _startingHealth;
 
             DefenseBehaviour = GetComponent<CharacterDefenseBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
@@ -188,7 +187,7 @@ namespace Lodis.Gameplay
         protected virtual void Start()
         {
             _isAlive = true;
-            AliveCondition = condition => _healthFixed > 0;
+            AliveCondition = condition => _health > 0;
             _defaultLayer = LayerMask.LayerToName(gameObject.layer);
 
             if (_meshRenderer)
@@ -223,14 +222,14 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public virtual float TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
-            Fixed32 damageTaken = _healthFixed;
+            Fixed32 damageTaken = _health;
 
             Health -= damage;
 
             damageTaken -= Health;
 
             if (Health < 0)
-                _healthFixed = 0;
+                _health = 0;
 
             _onTakeDamage?.Invoke();
             return damageTaken;
@@ -248,14 +247,14 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public virtual float TakeDamage(HitColliderData info, EntityData attacker)
         {
-            Fixed32 damageTaken = _healthFixed;
+            Fixed32 damageTaken = _health;
 
             Health -= info.Damage;
 
             damageTaken -= Health;
 
-            if (_healthFixed < 0)
-                _healthFixed = 0;
+            if (_health < 0)
+                _health = 0;
 
             _onTakeDamage?.Invoke();
             return damageTaken;
@@ -263,13 +262,13 @@ namespace Lodis.Gameplay
 
         public virtual Fixed32 Heal(Fixed32 healthAmount)
         {
-            _healthFixed = healthAmount;
+            _health = healthAmount;
             return healthAmount;
         }
 
         public virtual void ResetHealth()
         {
-            _healthFixed = _startingHealth == -1 ? _maxHealth.Value : _startingHealth;
+            _health = _startingHealth == -1 ? _maxHealth.FixedValue : _startingHealth;
             _isAlive = true;
 
             if (_stunned)
@@ -471,8 +470,8 @@ namespace Lodis.Gameplay
             gameObject.layer = IsIntangible ? LayerMask.NameToLayer("IgnoreHitColliders") : gameObject.layer = LayerMask.NameToLayer(_defaultLayer);
 
             //Clamp health
-            if (Health > _maxHealth.Value)
-                Health = _maxHealth.Value;
+            if (Health > _maxHealth.FixedValue)
+                Health = _maxHealth.FixedValue;
         }
     }
 }

@@ -101,7 +101,7 @@ namespace Lodis.Gameplay
         /// </summary>
         private void UpdateCracks()
         {
-            float currentHealthPercentage = _health.Health / _health.MaxHealth.Value;
+            float currentHealthPercentage = _health.Health / _health.MaxHealth.FixedValue;
             Texture2D currentTexture = null;
 
             if (_emissionColor == default(Color))

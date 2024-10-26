@@ -70,7 +70,7 @@ namespace Lodis.Gameplay
             //else
             //    _material.color = new Color(1, 1, 1, 1);
 
-            _material.SetColor("_EmissionColor", _healthGradient.Evaluate(Health / MaxHealth.Value) * 1.2f);
+            _material.SetColor("_EmissionColor", _healthGradient.Evaluate(Health / MaxHealth.FixedValue) * 1.2f);
         }
     }
 }

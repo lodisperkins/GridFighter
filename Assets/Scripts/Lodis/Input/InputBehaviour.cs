@@ -225,6 +225,7 @@ namespace Lodis.Input
             GridGame.OnPollInput += GridGame_PollInput;
             GridGame.OnProcessInput += GridGame_ProcessInput;
         }
+
         /// <summary>
         /// Called every GGPO frame and is used to parse the current inputs. Inputs could be changed during rollback. This function should catch that and update the buffered action.
         /// </summary>
@@ -232,8 +233,21 @@ namespace Lodis.Input
         /// <param name="inputs"></param>
         private void GridGame_ProcessInput(int id, long inputs)
         {
+            //print inputs with id
+            //likely polling 0 for player2
             if (id != PlayerID)
                 return;
+
+
+            if (PlayerID == 1)
+            {
+                Debug.Log("Player2 input processed.");
+            }
+
+            if (PlayerID == 0)
+            {
+                Debug.Log("Player1 input processed.");
+            }
 
             if ((inputs & (long)InputFlag.Up) != 0)
             {
@@ -298,12 +312,24 @@ namespace Lodis.Input
         /// <returns></returns>
         private void GridGame_PollInput(int id)
         {
+            Debug.Log("Poll id is " + id);
             if (id == PlayerID)
+            {
                 GetInputFlags();
+            }
         }
 
         private void GetInputFlags()
         {
+            if (PlayerID == 0)
+            {
+                Debug.Log("Player1 input polled.");
+            }
+            if (PlayerID == 1)
+            {
+                Debug.Log("Player2 input polled.");
+            }
+
             InputFlag flags = InputFlag.NONE;
 
             if (_playerControls.Player.MoveUp.IsPressed())
@@ -362,10 +388,15 @@ namespace Lodis.Input
             //    Debug.Log("Move Right button is being pressed");
             //}
 
-            //if (_playerControls.Player.Attack.IsPressed())
-            //{
-            //    Debug.Log("Attack button is being pressed");
-            //}
+            if (_playerControls.Player.Attack.IsPressed() && PlayerID == 1)
+            {
+                Debug.Log("Attack button is being pressed " + PlayerID.Value);
+            }
+
+            if (_playerControls.Player.Attack.IsPressed() && PlayerID == 0)
+            {
+                Debug.Log("Attack button is being pressed " + PlayerID.Value);
+            }
 
             //if (_playerControls.Player.Special1.IsPressed())
             //{
@@ -410,7 +441,7 @@ namespace Lodis.Input
             _knockbackBehaviour.AddOnTakeDamageAction(DisableCharge);
             _defaultSpeed = _gridMovement.Speed;
             MatchManagerBehaviour.Instance.AddOnMatchPauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate);
-            MatchManagerBehaviour.Instance.AddOnMatchUnpauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually);
+            MatchManagerBehaviour.Instance.AddOnMatchUnpauseAction(() => InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate);
         }
 
         private void OnEnable()
@@ -472,6 +503,9 @@ namespace Lodis.Input
                 return;
 
             object[] args = new object[2];
+
+            if (PlayerID == 1)
+                Debug.Log("Ability buffered");
 
             AbilityType abilityType;
             _attackDirection.X *= Mathf.Round(transform.forward.x);

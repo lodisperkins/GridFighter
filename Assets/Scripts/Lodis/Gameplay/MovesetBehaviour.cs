@@ -66,7 +66,7 @@ namespace Lodis.Gameplay
         private Deck _discardDeck;
         [Tooltip("The amount of time it will take for the special deck to reload once all abilities are used")]
         [SerializeField]
-        private float _deckReloadTime;
+        private Fixed32 _deckReloadTime;
         [SerializeField]
         [Tooltip("How long it will take to start manually shuffling.")]
         private FloatVariable _manualShuffleStartTime;
@@ -88,7 +88,6 @@ namespace Lodis.Gameplay
         private Ability _nextAbilitySlot;
         [SerializeField]
         private Ability _lastAbilityInUse;
-        private float _lastAttackStrength;
 
 
         [Header("Ability Casting")]
@@ -113,7 +112,7 @@ namespace Lodis.Gameplay
         [Header("Energy Meter Settings")]
         [Tooltip("The amount of energy this character has")]
         [SerializeField]
-        private float _energy;
+        private Fixed32 _energy;
         [Tooltip("The maximum amount of energy characters can have")]
         [SerializeField]
         private FloatVariable _maxEnergyRef;
@@ -133,7 +132,7 @@ namespace Lodis.Gameplay
         [Header("Burst Energy Settings")]
         [Tooltip("The amount of burst energy this character has")]
         [SerializeField]
-        private float _burstEnergy;
+        private Fixed32 _burstEnergy;
         [Tooltip("The maximum amount of burst energy characters can have")]
         [SerializeField]
         private FloatVariable _maxBurstEnergyRef;
@@ -177,6 +176,7 @@ namespace Lodis.Gameplay
 
         private FVector2 _lastAttackDirection;
         private Fixed32 _currentBurstRechargeRate;
+        private Fixed32 _lastAttackStrength;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -210,30 +210,30 @@ namespace Lodis.Gameplay
                 }
                 else if (value && !_energyChargeEnabled)
                 {
-                    _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, _energyRechargeRate.Value).Loop();
+                    _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.FixedValue, _energyRechargeRate.FixedValue).Loop();
                 }
 
                 _energyChargeEnabled = value;
             }
         }
 
-        public float Energy
+        public Fixed32 Energy
         { 
             get => _energy;
             private set 
             {
                 _energy = value;
-                _energy = Mathf.Clamp(_energy, 0, _maxEnergyRef.Value);
+                _energy = Fixed32.Clamp(_energy, 0, _maxEnergyRef.FixedValue);
             }
         }
 
-        public float BurstEnergy
+        public Fixed32 BurstEnergy
         { 
             get => _burstEnergy;
             private set 
             {
                 _burstEnergy = value;
-                _burstEnergy = Mathf.Clamp(_burstEnergy, 0, _maxBurstEnergyRef.Value);
+                _burstEnergy = Mathf.Clamp(_burstEnergy, 0, _maxBurstEnergyRef.FixedValue);
             }
         }
 
@@ -245,25 +245,37 @@ namespace Lodis.Gameplay
         public Transform[] LeftMeleeSpawns { get => _leftMeleeSpawns; set => _leftMeleeSpawns = value; }
         public Transform[] RightMeleeSpawns { get => _rightMeleeSpawns; set => _rightMeleeSpawns = value; }
         public FloatVariable MaxBurstEnergy { get => _maxBurstEnergyRef; }
-        public float LastAttackStrength { get => _lastAttackStrength; private set => _lastAttackStrength = value; }
+        public Fixed32 LastAttackStrength { get => _lastAttackStrength; private set => _lastAttackStrength = value; }
         public CharacterAnimationBehaviour AnimationBehaviour { get => _animationBehaviour; set => _animationBehaviour = value; }
         public Deck NormalDeckRef { get => _normalDeckRef; set => _normalDeckRef = value; }
         public Deck SpecialDeckRef { get => _specialDeckRef; set => _specialDeckRef = value; }
         public Transform HeldItemSpawnLeft { get => _heldItemSpawnLeft; private set => _heldItemSpawnLeft = value; }
         public Transform HeldItemSpawnRight { get => _heldItemSpawnRight; private set => _heldItemSpawnRight = value; }
 
-        public static float DeckReloadTime { get; private set; }
+        public static Fixed32 DeckReloadTime { get; private set; }
         public FVector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
 
 
         public override void Serialize(BinaryWriter bw)
         {
-            throw new NotImplementedException();
+            Energy.Serialize(bw);
+            BurstEnergy.Serialize(bw);
+            bw.Write(_abilityInUse);
+            bw.Write(_energyChargeEnabled);
+            bw.Write(_canBurst);
+            bw.Write(_loadingShuffle);
+            bw.Write(_deckReloading);
         }
 
         public override void Deserialize(BinaryReader br)
         {
-            throw new NotImplementedException();
+            Energy.Deserialize(br);
+            BurstEnergy.Deserialize(br);
+            _abilityInUse = br.ReadBoolean();
+            _energyChargeEnabled = br.ReadBoolean();
+            _canBurst = br.ReadBoolean();
+            _loadingShuffle = br.ReadBoolean();
+            _deckReloading = br.ReadBoolean();
         }
 
         public override void Init()
@@ -275,7 +287,7 @@ namespace Lodis.Gameplay
             DeckReloadTime = _deckReloadTime;
 
             if (MatchManagerBehaviour.InfiniteEnergy)
-                _energy = _maxEnergyRef.Value;
+                _energy = _maxEnergyRef.FixedValue;
         }
 
         // Start is called before the first frame update
@@ -296,28 +308,28 @@ namespace Lodis.Gameplay
 
             //Set up energy meters
             _canBurst = true;
-            BurstEnergy = MaxBurstEnergy.Value;
+            BurstEnergy = MaxBurstEnergy.FixedValue;
 
             if (!MatchManagerBehaviour.InfiniteEnergy)
-                Energy = _startEnergy.Value;
+                Energy = _startEnergy.FixedValue;
 
-            _currentBurstRechargeRate = _burstEnergyRechargeRate.Value;
+            _currentBurstRechargeRate = _burstEnergyRechargeRate.FixedValue;
 
-            _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, 1).Loop();
+            _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.FixedValue, 1).Loop();
 
 
 
 
             if (MatchManagerBehaviour.Instance.InfiniteBurst)
             {
-                _currentBurstRechargeRate = _infiniteBurstEnergyRechargeRate.Value;
+                _currentBurstRechargeRate = _infiniteBurstEnergyRechargeRate.FixedValue;
             }
             else
             {
-                _currentBurstRechargeRate = _burstEnergyRechargeRate.Value;
+                _currentBurstRechargeRate = _burstEnergyRechargeRate.FixedValue;
             }
 
-            _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.Value, _currentBurstRechargeRate).Loop();
+            _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.FixedValue, _currentBurstRechargeRate).Loop();
 
             //Set up other references and parameters
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
@@ -342,14 +354,14 @@ namespace Lodis.Gameplay
             ManualShuffle(true);
 
             if (!MatchManagerBehaviour.InfiniteEnergy)
-                Energy = _startEnergy.Value;
+                Energy = _startEnergy.FixedValue;
 
             _burstAction?.Stop();
             _rechargeAction?.Stop();
 
-            _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.Value, 1).Loop();
+            _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.FixedValue, 1).Loop();
 
-            BurstEnergy = MaxBurstEnergy.Value; 
+            BurstEnergy = MaxBurstEnergy.FixedValue; 
             _canBurst = true;
         }
 
@@ -986,7 +998,7 @@ namespace Lodis.Gameplay
             }
 
             if (!CanBurst)
-                CanBurst = BurstEnergy == _maxBurstEnergyRef.Value;
+                CanBurst = BurstEnergy == _maxBurstEnergyRef.FixedValue;
 
             if (MatchManagerBehaviour.Instance.SuperInUse)
                 CanBurst = false;

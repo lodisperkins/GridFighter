@@ -27,7 +27,7 @@ public class BurstMeterBehaviour : MonoBehaviour
     public void Init(MovesetBehaviour target)
     {
         _target = target;
-        _slider.maxValue = Target.MaxBurstEnergy.Value;
+        _slider.maxValue = Target.MaxBurstEnergy.FixedValue;
     }
 
     // Update is called once per frame

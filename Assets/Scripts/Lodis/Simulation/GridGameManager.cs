@@ -1,4 +1,5 @@
 using FixedPoints;
+using Lodis.Utility;
 using NaughtyAttributes;
 using ParrelSync;
 using SharedGame;
@@ -6,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Types;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityGGPO;
 
@@ -18,9 +20,22 @@ public class GridGameManager : GameManager
     private GgpoPerformancePanel perf;
     private GGPORunner game;
 
+    //---
+    private static bool _isHost;
+
     public static bool LocalGameStarted { get; private set; }
     public static bool OnlineGameStarted { get; private set; }
-    public static bool IsHost { get; private set; }
+    public static bool IsHost 
+    {
+        get
+        {
+            if (!OnlineGameStarted)
+                return false;
+
+            return _isHost;
+        }
+        private set => _isHost = value;
+    }
 
     public string inpIp;
     public string inpPort;
@@ -35,6 +50,8 @@ public class GridGameManager : GameManager
         gob.transform.parent = transform;
         perf = gob.AddComponent<GgpoPerformancePanel>();
         perf.Setup();
+
+        //InputSystem.settings.maxEventBytesPerUpdate = 0;
 
         if (_startLocalGame)
             StartLocalGame();
@@ -80,7 +97,8 @@ public class GridGameManager : GameManager
     {
         game?.Shutdown();
 
-        IsHost = !ClonesManager.IsClone();
+        _isHost = !ClonesManager.IsClone();
+        SceneManagerBehaviour.Instance.SetGameMode(GameMode.ONLINE);
 
         int playerIndex = IsHost ? 0 : 1;
 
@@ -95,5 +113,10 @@ public class GridGameManager : GameManager
     public void OnLocalClick()
     {
         gameManager.StartLocalGame();
+    }
+
+    private void LateUpdate()
+    {
+        Debug.Log(InputSystem.settings.updateMode);
     }
 }

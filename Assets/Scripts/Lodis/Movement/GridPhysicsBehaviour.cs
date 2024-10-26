@@ -66,15 +66,15 @@ namespace Lodis.Movement
 
         [Header("Parameters")]
         [Tooltip("How much mass the game object has. The higher the number, the less panels it travels when knocked back.")]
-        [SerializeField] private float _mass = 1;
+        [SerializeField] private Fixed32 _mass = 1;
         [Tooltip("The strength of the force pushing downwards on this object once in air.")]
-        [SerializeField] private float _gravity = 9.81f;
+        [SerializeField] private Fixed32 _gravity = 9.81f;
         [Tooltip("How much this object will reduce the velocity of objects that bounce off of it.")]
-        [SerializeField] private float _bounceDampen = 2;
-        [SerializeField] private float _bounciness = 0.8f;
+        [SerializeField] private Fixed32 _bounceDampen = 2;
+        [SerializeField] private Fixed32 _bounciness = 0.8f;
         [SerializeField] private Fixed32 _friction;
         [Tooltip("Any angles for knock back force recieved in this range will send the object directly upwards.")]
-        [SerializeField] private float _rangeToIgnoreUpAngle = 0.2f;
+        [SerializeField] private Fixed32 _rangeToIgnoreUpAngle = 0.2f;
         [Tooltip("How fast will objects be allowed to travel in knockback.")]
         [SerializeField] private ScriptableObjects.FloatVariable _maxMagnitude;
         [Tooltip("How this entity will react to other physics objects when bouncig off of them.")]
@@ -146,10 +146,10 @@ namespace Lodis.Movement
         /// <summary>
         /// How bouncy this object is
         /// </summary>
-        public float Bounciness { get => _bounciness; set { _bounciness = value; } }
-        public float Gravity { get =>_gravity; set => _gravity = value; }
-        public float Mass { get => _mass; }
-        public float BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
+        public Fixed32 Bounciness { get => _bounciness; set { _bounciness = value; } }
+        public Fixed32 Gravity { get =>_gravity; set => _gravity = value; }
+        public Fixed32 Mass { get => _mass; }
+        public Fixed32 BounceDampen { get => _bounceDampen; set => _bounceDampen = value; }
 
 
         //Events
@@ -192,6 +192,8 @@ namespace Lodis.Movement
             bw.Write(_isFrozen);
             bw.Write(_panelBounceEnabled);
             bw.Write(_isGrounded);
+            bw.Write(_gridActive);
+            bw.Write(_isKinematic);
         }
 
         public override void Deserialize(BinaryReader br)
@@ -199,6 +201,7 @@ namespace Lodis.Movement
             _velocity.Deserialize(br);
             _lastVelocity.Deserialize(br);
             _lastForceAdded.Deserialize(br);
+            _forceToApply.Deserialize(br);
             _frozenStoredForce.Deserialize(br);
             _frozenVelocity.Deserialize(br);
 
@@ -206,6 +209,8 @@ namespace Lodis.Movement
             _isFrozen = br.ReadBoolean();
             _panelBounceEnabled = br.ReadBoolean();
             _isGrounded = br.ReadBoolean();
+            _gridActive = br.ReadBoolean();
+            _isKinematic = br.ReadBoolean();
         }
 
         protected override void Awake()
@@ -547,7 +552,7 @@ namespace Lodis.Movement
                 return new FVector3();
 
             //Clamps magnitude to be within the limit
-            magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.Value);
+            magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.FixedValue);
 
             //Return the knockback force
             return new FVector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle), 0) * (magnitude * Mass);

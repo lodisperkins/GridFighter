@@ -11,7 +11,7 @@ namespace Lodis.ScriptableObjects
     {
         [SerializeField]
         private float _val;
-        private Fixed32 _fixedVal;
+        [SerializeField] private Fixed32 _fixedVal;
         
         public float Value
         {
@@ -45,6 +45,12 @@ namespace Lodis.ScriptableObjects
             _fixedVal = value;
         }
 
+        public void Init(Fixed32 value)
+        {
+            _val = value;
+            _fixedVal = value;
+        }
+
         public static FloatVariable CreateInstance(float value)
         {
             var data = CreateInstance<FloatVariable>();
@@ -54,27 +60,38 @@ namespace Lodis.ScriptableObjects
 
         public static FloatVariable operator + (FloatVariable lhs, FloatVariable rhs)
         {
-            return CreateInstance(lhs.Value + rhs.Value);
+            return CreateInstance(lhs.FixedValue + rhs.FixedValue);
         }
 
         public static FloatVariable operator - (FloatVariable lhs, FloatVariable rhs)
         {
-            return CreateInstance(lhs.Value - rhs.Value);
+            return CreateInstance(lhs.FixedValue - rhs.FixedValue);
         }
 
         public static FloatVariable operator * (FloatVariable lhs, FloatVariable rhs)
         {
-            return CreateInstance(lhs.Value * rhs.Value);
+            return CreateInstance(lhs.FixedValue * rhs.FixedValue);
         }
 
         public static FloatVariable operator / (FloatVariable lhs, FloatVariable rhs)
         {
-            return CreateInstance(lhs.Value - rhs.Value);
+            return CreateInstance(lhs.FixedValue - rhs.FixedValue);
         }
 
         public static implicit operator float(FloatVariable v)
         {
-            return v.Value;
+            return v.FixedValue;
+        }
+
+        public static implicit operator Fixed32(FloatVariable v)
+        {
+            return v.FixedValue;
+        }
+
+
+        private void OnValidate()
+        {
+            _fixedVal = _val;
         }
     }
 }

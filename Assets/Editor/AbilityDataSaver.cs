@@ -70,6 +70,7 @@ public class AbilityDataSaver : EditorWindow
 
     private void LoadAllAbilities()
     {
+        return;
         if (!File.Exists(_saveFilePath))
         {
             Debug.LogError($"No file found at {_saveFilePath}");
@@ -168,11 +169,11 @@ public class AbilityDataSaver : EditorWindow
         public string abilityName;
         public string abilityDescription;
         public string abilityType;
-        public float timeActive;
-        public float recoverTime;
-        public float startUpTime;
+        public Fixed32 timeActive;
+        public Fixed32 recoverTime;
+        public Fixed32 startUpTime;
         public int maxActivationAmount;
-        public float energyCost;
+        public Fixed32 energyCost;
         public string[] effects;
         public string[] sounds;
         public string icon;

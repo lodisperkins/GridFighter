@@ -284,7 +284,7 @@ namespace Lodis.Movement
         private void IncreaseKnockbackGravity()
         {
             if (CurrentAirState != AirState.TUMBLING) return;
-            Physics.Gravity += _gravityIncreaseValue.Value;
+            Physics.Gravity += _gravityIncreaseValue.FixedValue;
             _adjustedGravity = Physics.Gravity;
         }
 
@@ -444,7 +444,7 @@ namespace Lodis.Movement
             if (hitStun > 0)
                 _isFlinching = true;
 
-            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.Value || Physics.BouncePending)
+            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.FixedValue || Physics.BouncePending)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -501,7 +501,7 @@ namespace Lodis.Movement
 
             ActivateHitStunByTimer(info.HitStunTime);
 
-            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.Value || Physics.BouncePending)
+            if ((knockBackForce / Physics.Mass).Magnitude > MinimumLaunchMagnitude.FixedValue || Physics.BouncePending)
             {
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -523,7 +523,7 @@ namespace Lodis.Movement
             }
             else if (_landingBehaviour.Landing)
             {
-                knockBackForce = FVector3.Up * MinimumLaunchMagnitude.Value;
+                knockBackForce = FVector3.Up * MinimumLaunchMagnitude.FixedValue;
 
                 _onKnockBackStart?.Invoke();
                 _onKnockBackStartTemp?.Invoke();
@@ -599,8 +599,8 @@ namespace Lodis.Movement
 
             LandingScript.enabled = !OutOfBounds;
 
-            if (Physics.Velocity.Magnitude > _maxMagnitude.Value && CurrentAirState == AirState.TUMBLING)
-                Physics.ApplyVelocityChange(Physics.Velocity.GetNormalized() * _maxMagnitude.Value);
+            if (Physics.Velocity.Magnitude > _maxMagnitude.FixedValue && CurrentAirState == AirState.TUMBLING)
+                Physics.ApplyVelocityChange(Physics.Velocity.GetNormalized() * _maxMagnitude.FixedValue);
 
             //UpdateGroundedColliderPosition();
         }

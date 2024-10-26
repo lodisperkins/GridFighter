@@ -83,6 +83,8 @@ public class EntityData
     public virtual void Serialize(BinaryWriter bw)
     {
         //bw.Write(Name);
+        bw.Write(X);
+        bw.Write(Y);
 
         Transform.Serialize(bw);
 
@@ -97,6 +99,9 @@ public class EntityData
     public virtual void Deserialize(BinaryReader br)
     {
         //Name = br.ReadString();
+
+        X = br.ReadInt32();
+        Y = br.ReadInt32();
 
         Transform.Deserialize(br);
 

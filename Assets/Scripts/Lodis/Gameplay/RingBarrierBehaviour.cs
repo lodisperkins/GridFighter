@@ -169,8 +169,8 @@ namespace Lodis.Gameplay
             float dot = FVector3.Dot((FVector3)transform.forward, knockback.Physics.Velocity.GetNormalized());
 
             //Shatter the barrier if the pwner is being knocked back at the appropriate speed and damage.
-            if (collision.OtherEntity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.Value && dot < 0
-                && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.Value)
+            if (collision.OtherEntity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.FixedValue && dot < 0
+                && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.FixedValue)
                 TakeDamage(collision.OtherEntity, Health, 0, 0, DamageType.KNOCKBACK);
         }
 

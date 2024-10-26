@@ -49,7 +49,7 @@ namespace Lodis.Gameplay
         void Start()
         {
             HealthComponent = BlackBoardBehaviour.Instance.GetPlayerFromID(_targetID).GetComponent<HealthBehaviour>();
-            MaxValue = HealthComponent.MaxHealth.Value;
+            MaxValue = HealthComponent.MaxHealth.FixedValue;
 
             _damageCounterShake = _damageCounter.GetComponent<ShakeBehaviour>();
             _damageFlash = _damageCounter.GetComponent<TextFlashBehaviour>();

@@ -150,8 +150,13 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 1
   _markPanelAtGridLocation: 0
   _markCollider: 0
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1 &1732049487632498474
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,6 +203,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -205,8 +216,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
@@ -217,33 +230,47 @@ MonoBehaviour:
   ColliderInfo:
     Name: AxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
-    DestroyOnHit: 1
+    TimeActive:
+      RawValue: 13107
+    DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057143
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 3
-    BaseKnockBack: 0.7
-    KnockBackScale: 0.5
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 196608
+    BaseKnockBack:
+      RawValue: 45875
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.3
+    HitAngle:
+      RawValue: 52428
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 1
-    AbilityID: -225857060
+    AbilityID:
+      RawValue: -1310457856
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
@@ -265,8 +292,13 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
   _markCollider: 1
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 3556605455510110903}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1 &2168324044689623625
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,14 +353,14 @@ MonoBehaviour:
   _entityData:
     Name: New Entity
     Transform:
-      _worldPosition:
+      _localPosition:
         X:
           RawValue: 0
         Y:
           RawValue: 0
         Z:
           RawValue: 0
-      _worldRotation:
+      _localRotation:
         X:
           RawValue: 0
         Y:
@@ -349,6 +381,7 @@ MonoBehaviour:
     UnityObject: {fileID: 2168324044689623625}
   _addToGameManually: 0
   _visualRoot: {fileID: 7753967484100786593}
+  _children: []
 --- !u!114 &7457857602030291921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -361,11 +394,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
-  _rangeToIgnoreUpAngle: 0.2
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
+  _friction:
+    RawValue: 0
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
@@ -376,6 +416,7 @@ MonoBehaviour:
     m_RotationOrder: 4
   _useGravity: 0
   _isKinematic: 0
+  _gridActive: 1
   _isGrounded: 0
   _panelBounceEnabled: 0
   _faceHeading: 0
@@ -406,6 +447,12 @@ MonoBehaviour:
   _groupName: Axe Kick Colliders
   _isMultiHit: 0
   _despawnAfterTimeLimit: 1
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _despawnTime:
     RawValue: 13107
   _rootEntity: {fileID: 6992580504982431711}
@@ -455,6 +502,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -462,8 +515,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: -1
@@ -474,33 +529,47 @@ MonoBehaviour:
   ColliderInfo:
     Name: AxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
-    DestroyOnHit: 1
+    TimeActive:
+      RawValue: 13107
+    DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057143
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 3
-    BaseKnockBack: 0.7
-    KnockBackScale: 0.5
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 196608
+    BaseKnockBack:
+      RawValue: 45875
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.3
+    HitAngle:
+      RawValue: 52428
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 1
-    AbilityID: -225857060
+    AbilityID:
+      RawValue: -1310457856
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
@@ -522,8 +591,13 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
   _markCollider: 1
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 2500919090096829159}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1 &3630073965130681793
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,6 +681,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -614,8 +694,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: -1
@@ -626,33 +708,47 @@ MonoBehaviour:
   ColliderInfo:
     Name: AxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
-    DestroyOnHit: 1
+    TimeActive:
+      RawValue: 13107
+    DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057143
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 6
-    BaseKnockBack: 1
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 393216
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.3
+    HitAngle:
+      RawValue: 13107
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 1
-    AbilityID: -225857060
+    AbilityID:
+      RawValue: -1310457856
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
@@ -674,8 +770,13 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
   _markCollider: 1
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 1743547572888053483}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1 &4886488662551927163
 GameObject:
   m_ObjectHideFlags: 0
@@ -722,6 +823,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -729,8 +836,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 1
@@ -741,33 +850,47 @@ MonoBehaviour:
   ColliderInfo:
     Name: AxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
-    DestroyOnHit: 1
+    TimeActive:
+      RawValue: 13107
+    DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057143
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 3
-    BaseKnockBack: 0.7
-    KnockBackScale: 0.5
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 196608
+    BaseKnockBack:
+      RawValue: 45875
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.3
+    HitAngle:
+      RawValue: 52428
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 1
-    AbilityID: -225857060
+    AbilityID:
+      RawValue: -1310457856
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
@@ -789,8 +912,13 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
   _markCollider: 1
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 5712276960567258736}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1 &6154804292956767076
 GameObject:
   m_ObjectHideFlags: 0
@@ -837,6 +965,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -844,8 +978,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 1
@@ -856,33 +992,47 @@ MonoBehaviour:
   ColliderInfo:
     Name: AxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
-    DestroyOnHit: 1
+    TimeActive:
+      RawValue: 13107
+    DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057143
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 6
-    BaseKnockBack: 1
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 393216
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.3
+    HitAngle:
+      RawValue: 13107
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 1
-    AbilityID: -225857060
+    AbilityID:
+      RawValue: -1310457856
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
@@ -904,8 +1054,13 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
   _markCollider: 1
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 5964733128889066971}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1 &7114194045449134152
 GameObject:
   m_ObjectHideFlags: 0
@@ -1000,6 +1155,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -1007,8 +1168,10 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
@@ -1019,33 +1182,47 @@ MonoBehaviour:
   ColliderInfo:
     Name: AxeKickCollider
     DespawnAfterTimeLimit: 1
-    TimeActive: 0.2
-    DestroyOnHit: 1
+    TimeActive:
+      RawValue: 13107
+    DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 4057143
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 6
-    BaseKnockBack: 1
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 393216
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0.3
+    HitAngle:
+      RawValue: 13107
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
-    HitStunTime: 0.05
-    Priority: 0
+    HitStunTime:
+      RawValue: 3276
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 1
-    AbilityID: -225857060
+    AbilityID:
+      RawValue: -1310457856
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
-    HitStopShakeStrength: 0.8
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 52428
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 8300000, guid: 9487e50021cb97742980190c5c8cede4, type: 3}
@@ -1067,8 +1244,13 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
   _markCollider: 1
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 6451030275633810592}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1 &9189759815208285768
 GameObject:
   m_ObjectHideFlags: 0

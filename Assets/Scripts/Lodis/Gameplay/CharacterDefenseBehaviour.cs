@@ -293,7 +293,7 @@ namespace Lodis.Gameplay
             //Start timer for player immobility
             RoutineBehaviour.Instance.StopAction(_shieldTimer);
             _shieldTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => 
-            { _isResting = false;  value = false; }, TimedActionCountType.SCALEDTIME, time.Value);
+            { _isResting = false;  value = false; }, TimedActionCountType.SCALEDTIME, time.FixedValue);
         }
 
         /// <summary>
@@ -481,7 +481,7 @@ namespace Lodis.Gameplay
 
                 _phaseShiftSuccessEvent?.Raise(gameObject);
                 _currentPhaseShiftRestTime = _successPhaseShiftRestTime;
-                MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale.Value, _slowMotionTransitionSpeed.Value, _slowMotionTime.Value);
+                MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale.FixedValue, _slowMotionTransitionSpeed.FixedValue, _slowMotionTime.FixedValue);
             }
 
             if (!IsBraced || !other.CompareTag("Structure") || other.CompareTag("CollisionPlane") || BreakingFall)
@@ -517,7 +517,7 @@ namespace Lodis.Gameplay
 
             _moveset.EnergyChargeEnabled = false;
 
-            if (!_moveset.TryUseEnergy(_shieldDrainValue.Value * Time.deltaTime))
+            if (!_moveset.TryUseEnergy(_shieldDrainValue.FixedValue * Time.deltaTime))
                 DeactivateShield();
         }
     }

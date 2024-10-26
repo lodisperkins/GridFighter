@@ -175,9 +175,9 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public string GetPlayerStateFromID(IntVariable id)
         {
-            if (id.Value == 1)
+            if (id.Value == 0)
                 return Player1State;
-            else if(id.Value == 2)
+            else if(id.Value == 1)
                 return Player2State;
 
             return null;
@@ -192,9 +192,9 @@ namespace Lodis.Gameplay
         {
             if (!id) return null;
 
-            if (id.Value == 1)
+            if (id.Value == 0)
                 return Player1Controller;
-            else if(id.Value == 2)
+            else if(id.Value == 1)
                 return Player2Controller;
 
             return null;
@@ -209,9 +209,9 @@ namespace Lodis.Gameplay
         {
             if (!id) return null;
 
-            if (id.Value == 1)
+            if (id.Value == 0)
                 return Player1;
-            else if(id.Value == 2)
+            else if(id.Value == 1)
                 return Player2;
 
             return null;
@@ -224,9 +224,9 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         public GameObject GetPlayerFromID(int id)
         {
-            if (id == 1)
+            if (id == 0)
                 return Player1;
-            else if(id == 2)
+            else if(id == 1)
                 return Player2;
 
             return null;
@@ -239,7 +239,7 @@ namespace Lodis.Gameplay
             else if (Player2 == player)
                 return Player2ID;
 
-            return 0;
+            return -1;
         }
 
         public int GetIDFromPlayer(EntityData player)
@@ -249,7 +249,7 @@ namespace Lodis.Gameplay
             else if (Player2 == player.UnityObject)
                 return Player2ID;
 
-            return 0;
+            return -1;
         }
 
         /// <summary>
@@ -297,9 +297,9 @@ namespace Lodis.Gameplay
         {
             if (!id) return null;
 
-            if (id.Value == 1)
+            if (id.Value == 0)
                 return Player2;
-            else if (id.Value == 2)
+            else if (id.Value == 1)
                 return Player1;
 
             return null;
@@ -340,9 +340,9 @@ namespace Lodis.Gameplay
         {
             if (!id) return Color.black;
 
-            if (id.Value == 1)
+            if (id.Value == 0)
                 return Player1Color;
-            else if (id.Value == 2)
+            else if (id.Value == 1)
                 return Player2Color;
 
             return Color.black;

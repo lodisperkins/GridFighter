@@ -42,7 +42,7 @@ namespace Lodis.Utility
             }
         }
 
-        public float CharacterTimeScale { get => _characterTimeScale; set => _characterTimeScale.Value = value; }
+        public float CharacterTimeScale { get => _characterTimeScale; set => _characterTimeScale.FixedValue = value; }
         public float CharacterTime { get => _characterTime; private set => _characterTime = value; }
 
         private void Awake()

@@ -200,7 +200,7 @@ namespace Lodis.Gameplay
                 _matchStarted = true;
                 _onMatchStart?.Invoke();
                 _matchStartEvent.Raise();
-            }, TimedActionCountType.SCALEDTIME, MatchStartTime.Value);
+            }, TimedActionCountType.SCALEDTIME, MatchStartTime.FixedValue);
         }
 
         private void SetMatchResult()
@@ -356,7 +356,7 @@ namespace Lodis.Gameplay
                 _matchStarted = true;
                 _onMatchStart?.Invoke();
                 _matchStartEvent.Raise();
-            }, TimedActionCountType.SCALEDTIME, MatchStartTime.Value);
+            }, TimedActionCountType.SCALEDTIME, MatchStartTime.FixedValue);
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
             {

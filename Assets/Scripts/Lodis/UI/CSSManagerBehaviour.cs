@@ -111,16 +111,16 @@ namespace Lodis.UI
             _inputManager = GetComponent<PlayerInputManager>();
 
             //Online code when connecting to host
-            //if (!GridGameManager.IsHost)
-            //{
-            //    _colorManager.SetPlayerColor(1, 5);
-            //    _p1ColorIndex = 5;
-            //    _canSelectCharP1 = true;
-            //    SetDataP1(_defaultAICharacter);
-            //    _player1JoinInstruction.enabled = false;
-            //    _player1Root.SetActive(false);
-            //    _currentPlayer = 2;
-            //}
+            if (!GridGameManager.IsHost && GridGameManager.OnlineGameStarted)
+            {
+                _colorManager.SetPlayerColor(1, 5);
+                _p1ColorIndex = 5;
+                _canSelectCharP1 = true;
+                SetDataP1(_defaultAICharacter);
+                _player1JoinInstruction.enabled = false;
+                _player1Root.SetActive(false);
+                _currentPlayer = 2;
+            }
 
             if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || GridGameManager.IsHost)
             {
@@ -166,7 +166,7 @@ namespace Lodis.UI
             if (!playerInput)
                 return;
 
-            if (playerNum == 1 /*&& GridGameManager.IsHost*/)
+            if (playerNum == 1 && (GridGameManager.IsHost || GridGameManager.LocalGameStarted))
             {
                 _player1EventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
                 _player1EventSystem.playerRoot = _player1Root;
@@ -180,7 +180,7 @@ namespace Lodis.UI
 
                 _p1Rebinder.ResetToDefault();
             }
-            else if (playerNum == 2/* && !GridGameManager.IsHost*/)
+            else if (playerNum == 2 && (!GridGameManager.IsHost || GridGameManager.LocalGameStarted))
             {
                 _player2EventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
                 _player2EventSystem.playerRoot = _player2Root;
@@ -308,7 +308,18 @@ namespace Lodis.UI
                 }
 
                 //Online code to auto select character for testing
-                //SetDataP1(_defaultAICharacter);
+
+                if (GridGameManager.OnlineGameStarted)
+                {
+                    SetDataP1(_defaultAICharacter);
+
+                    if (!GridGameManager.IsHost)
+                    {
+                        _p2IsCustom.Value = false;
+                        SetDataP2(_defaultAICharacter);
+                    }
+                }
+                
             };
 
             controls.UI.Navigate.started += context => GoToPage(context, num);
@@ -546,7 +557,8 @@ namespace Lodis.UI
         }
         public void StartMatch()
         {
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.MULTIPLAYER)
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.MULTIPLAYER
+                || SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.ONLINE)
                 SceneManagerBehaviour.Instance.LoadScene(4);
             else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
                 SceneManagerBehaviour.Instance.LoadScene(5);

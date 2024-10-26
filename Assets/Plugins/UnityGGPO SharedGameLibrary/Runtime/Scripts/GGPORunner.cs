@@ -255,7 +255,7 @@ namespace SharedGame {
             // automatically disconnect clients after 3000 ms and start our count-down timer for
             // disconnects after 1000 ms. To completely disable disconnects, simply use a value of 0
             // for ggpo_set_disconnect_timeout.
-            //CheckAndReport(GGPO.Session.SetDisconnectTimeout(3000));
+            //CheckAndReport(GGPO.Session.SetDisconnectTimeout(0));
             //CheckAndReport(GGPO.Session.SetDisconnectNotifyStart(1000));
 
             int controllerId = 0;
@@ -269,7 +269,7 @@ namespace SharedGame {
                     playerInfo.handle = handle;
                     playerInfo.type = players[i].type;
                     playerInfo.connect_progress = 100;
-                    playerInfo.controllerId = controllerId++;
+                    playerInfo.controllerId = playerIndex;
                     GameInfo.players[playerIndex++] = playerInfo;
                     GameInfo.SetConnectState(handle, PlayerConnectState.Connecting);
                     CheckAndReport(GGPO.Session.SetFrameDelay(handle, FRAME_DELAY));
