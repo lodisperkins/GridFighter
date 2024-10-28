@@ -2,6 +2,7 @@ using FixedPoints;
 using System.IO;
 using UnityEngine;
 using Types;
+using UnityEngine.Events;
 
 /// <summary>
 /// A generic class used to represent components that should perform logic in line with the rollback simulation.
@@ -9,6 +10,11 @@ using Types;
 /// </summary>
 public abstract class SimulationBehaviour : MonoBehaviour
 {
+    [Tooltip("Called when the game state is saved.")]
+    [SerializeField] private UnityEvent _onSerialize;
+    [Tooltip("Called when the game state is loaded.")]
+    [SerializeField] private UnityEvent _onDeserialize;
+
     private EntityDataBehaviour _entity;
 
     /// <summary>
@@ -26,15 +32,27 @@ public abstract class SimulationBehaviour : MonoBehaviour
     /// </summary>
     public virtual void Init() { }
 
+    public void Serialize(BinaryWriter bw)
+    {
+        OnSerialize(bw);
+        _onSerialize?.Invoke();
+    }
+
+    public void Deserialize(BinaryReader br)
+    {
+        OnDeserialize(br);
+        _onDeserialize?.Invoke();
+    }
+
     /// <summary>
     /// Handles data that is saved and sent across the network.
     /// </summary>
-    public abstract void Serialize(BinaryWriter bw);
+    public abstract void OnSerialize(BinaryWriter bw);
 
     /// <summary>
     /// Handles data that is loaded when a rollback happens.
     /// </summary>
-    public abstract void Deserialize(BinaryReader br);
+    public abstract void OnDeserialize(BinaryReader br);
 
     /// <summary>
     /// Called when this entity starts hitting another solid object.

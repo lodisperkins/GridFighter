@@ -150,7 +150,7 @@ namespace Lodis.Gameplay
 
 
 
-        public override void Serialize(BinaryWriter bw)
+        public override void OnSerialize(BinaryWriter bw)
         {
             _health.Serialize(bw);
             bw.Write(_isInvincible);
@@ -159,7 +159,7 @@ namespace Lodis.Gameplay
             bw.Write(DamageableAbilityID);
         }
 
-        public override void Deserialize(BinaryReader br)
+        public override void OnDeserialize(BinaryReader br)
         {
             _health.Deserialize(br);
             _isInvincible = br.ReadBoolean();

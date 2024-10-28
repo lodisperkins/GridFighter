@@ -99,7 +99,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Changes the damage texture to a new one based on the current health.
         /// </summary>
-        private void UpdateCracks()
+        public void UpdateCracks()
         {
             float currentHealthPercentage = _health.Health / _health.MaxHealth.FixedValue;
             Texture2D currentTexture = null;

@@ -11096,6 +11096,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   updateType: 1
   _startLocalGame: 1
+  _testingLocalSaves: 1
   _fixed32TestConversion:
     RawValue: 104857
   inpIp: 

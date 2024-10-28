@@ -241,11 +241,11 @@ namespace Lodis.Movement
                 _characterAnimator.PlayHardLandingAnimation();
         }
 
-        public override void Serialize(BinaryWriter bw)
+        public override void OnSerialize(BinaryWriter bw)
         {
         }
 
-        public override void Deserialize(BinaryReader br)
+        public override void OnDeserialize(BinaryReader br)
         {
         }
     }

@@ -163,6 +163,8 @@ namespace Lodis.Gameplay
         {
             base.Begin();
 
+            gameObject.layer = LayerMask.NameToLayer("Ability");
+
             //ReturnToPoolListener.AddAction(RemoveFromActiveList);
             AddToActiveList();
             LayersToIgnore = ColliderInfo.LayersToIgnore;

@@ -1069,7 +1069,7 @@ namespace Lodis.Movement
             //IsBehindBarrier = Physics.Raycast(transform.position, transform.forward, BlackBoardBehaviour.Instance.Grid.PanelSpacingX, LayerMask.GetMask("Structure"));
         }
 
-        public override void Serialize(BinaryWriter bw)
+        public override void OnSerialize(BinaryWriter bw)
         {
             bw.Write(_isMoving);
             bw.Write(_canMove);
@@ -1078,7 +1078,7 @@ namespace Lodis.Movement
             bw.Write(_moveToAlignedSideIfStuck);
         }
 
-        public override void Deserialize(BinaryReader br)
+        public override void OnDeserialize(BinaryReader br)
         {
             _isMoving = br.ReadBoolean();
             _canMove = br.ReadBoolean();

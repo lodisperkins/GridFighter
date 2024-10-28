@@ -74,6 +74,7 @@ public class EntityDataBehaviour : MonoBehaviour
         Data.OnTick += UpdateUnityTransform;
 
         _entityData.UnityObject = gameObject;
+        _entityData.UnityScript = this;
 
         //Try to add entity to game so it can be updated.
         if (!AddToGameManually)

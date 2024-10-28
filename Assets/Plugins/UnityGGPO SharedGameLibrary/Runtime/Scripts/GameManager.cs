@@ -61,11 +61,12 @@ namespace SharedGame {
 
         public bool IsRunning { get; private set; }
 
+
         public IGameRunner Runner { get; private set; }
 
         private double start;
         private double next;
-        private int currentFrame;
+        protected int currentFrame;
 
         private double MsToFrame(double time) {
             return time / 1000.0 * 60.0;
@@ -141,7 +142,7 @@ namespace SharedGame {
         private void Tick() {
             OnPreRunFrame();
             Runner.RunFrame();
-            currentFrame++;
+            //currentFrame++;
             OnStateChanged?.Invoke();
         }
 

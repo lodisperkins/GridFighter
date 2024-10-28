@@ -256,7 +256,7 @@ namespace Lodis.Gameplay
         public FVector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
 
 
-        public override void Serialize(BinaryWriter bw)
+        public override void OnSerialize(BinaryWriter bw)
         {
             Energy.Serialize(bw);
             BurstEnergy.Serialize(bw);
@@ -267,7 +267,7 @@ namespace Lodis.Gameplay
             bw.Write(_deckReloading);
         }
 
-        public override void Deserialize(BinaryReader br)
+        public override void OnDeserialize(BinaryReader br)
         {
             Energy.Deserialize(br);
             BurstEnergy.Deserialize(br);

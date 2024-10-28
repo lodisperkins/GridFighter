@@ -179,7 +179,7 @@ namespace Lodis.Movement
         public bool GridActive { get => _gridActive; set => _gridActive = value; }
         public bool BouncePending { get => _currentBounce.Bounces <= 0; }
 
-        public override void Serialize(BinaryWriter bw)
+        public override void OnSerialize(BinaryWriter bw)
         {
             _velocity.Serialize(bw);
             _lastVelocity.Serialize(bw);
@@ -196,7 +196,7 @@ namespace Lodis.Movement
             bw.Write(_isKinematic);
         }
 
-        public override void Deserialize(BinaryReader br)
+        public override void OnDeserialize(BinaryReader br)
         {
             _velocity.Deserialize(br);
             _lastVelocity.Deserialize(br);

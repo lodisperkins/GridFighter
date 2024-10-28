@@ -13,11 +13,14 @@ public class EntityData
     private readonly List<SimulationBehaviour> _components = new();
     private bool _active;
     private GridCollider[] _gridColliders;
+    private int _frameAdded;
+    private int _frameRemoved;
 
     public string Name;
     public FTransform Transform;
     public int X;
     public int Y;
+
 
     public GridCollider[] Colliders 
     { 
@@ -46,18 +49,27 @@ public class EntityData
     }
 
     public GameObject UnityObject;
+    public EntityDataBehaviour UnityScript;
 
     public bool Active 
     { 
         get => _active; 
         set
         {
+            if (!_active && value)
+                GridGame.AddEntityToGame(this);
+            else if (_active && !value)
+                GridGame.RemoveEntityFromGame(this);
+
             _active = value;
 
             if (UnityObject)
                 UnityObject.SetActive(value);
         }
     }
+
+    public int FrameAdded { get => _frameAdded; set => _frameAdded = value; }
+    public int FrameRemoved { get => _frameRemoved; set => _frameRemoved = value; }
 
     public delegate void EntityUpdateEvent(Fixed32 dt);
     public event EntityUpdateEvent OnTick;
@@ -83,10 +95,18 @@ public class EntityData
     public virtual void Serialize(BinaryWriter bw)
     {
         //bw.Write(Name);
+
+        bw.Write(Active);
+
         bw.Write(X);
         bw.Write(Y);
 
         Transform.Serialize(bw);
+
+        foreach (SimulationBehaviour component in _components)
+        {
+            component.Serialize(bw);
+        }
 
         if (_gridColliders == null) return;
 
@@ -100,10 +120,17 @@ public class EntityData
     {
         //Name = br.ReadString();
 
+        Active = br.ReadBoolean();
+
         X = br.ReadInt32();
         Y = br.ReadInt32();
 
         Transform.Deserialize(br);
+
+        foreach (SimulationBehaviour component in _components)
+        {
+            component.Deserialize(br);
+        }
 
         if (_gridColliders == null) return;
 
@@ -125,7 +152,8 @@ public class EntityData
 
     public void Begin()
     {
-        Active = true;
+        _active = true;
+        UnityObject?.SetActive(true);
 
         if (_gridColliders != null && _gridColliders.Length > 0)
             GridGame.AddPhysicsEntity(this);
@@ -160,7 +188,9 @@ public class EntityData
 
     public void End()
     {
-        Active = false;
+        _active = false;
+
+        UnityObject?.SetActive(false);
 
         if (_gridColliders != null)
         {

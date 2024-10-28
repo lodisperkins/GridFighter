@@ -5,6 +5,7 @@ using ParrelSync;
 using SharedGame;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using Types;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,16 +16,30 @@ public class GridGameManager : GameManager
 {
     [Tooltip("Starts a local game immediately when the game starts.")]
     [SerializeField] private bool _startLocalGame;
+    [Tooltip("Enables certain features that are only active in online play.")]
+    [SerializeField] private bool _testingLocalSaves;
     [SerializeField] private Fixed32 _fixed32TestConversion;
-    private GameManager gameManager => GameManager.Instance;
-    private GgpoPerformancePanel perf;
-    private GGPORunner game;
+    private GameManager _gameManager => GameManager.Instance;
+    private GgpoPerformancePanel _perf;
+    private static GGPORunner _onlineGame;
+    private static LocalRunner _localGame;
 
     //---
     private static bool _isHost;
 
     public static bool LocalGameStarted { get; private set; }
     public static bool OnlineGameStarted { get; private set; }
+    public static int FrameNumber
+    {
+        get
+        {
+            if (OnlineGameStarted)
+                return _onlineGame.Game.Framenumber;
+            else
+                return _localGame.Game.Framenumber;
+        }
+    }
+
     public static bool IsHost 
     {
         get
@@ -37,6 +52,8 @@ public class GridGameManager : GameManager
         private set => _isHost = value;
     }
 
+    public static bool TestingLocalSaves { get; set; }
+
     public string inpIp;
     public string inpPort;
     public string txtIp;
@@ -48,9 +65,9 @@ public class GridGameManager : GameManager
         //gameManager.OnRunningChanged += OnRunningChanged;
         GameObject gob = new GameObject("PerfPanel");
         gob.transform.parent = transform;
-        perf = gob.AddComponent<GgpoPerformancePanel>();
-        perf.Setup();
-
+        _perf = gob.AddComponent<GgpoPerformancePanel>();
+        _perf.Setup();
+        TestingLocalSaves = _testingLocalSaves;
         //InputSystem.settings.maxEventBytesPerUpdate = 0;
 
         if (_startLocalGame)
@@ -59,20 +76,26 @@ public class GridGameManager : GameManager
 
     public override void StartGGPOGame(IPerfUpdate perfPanel, IList<Connections> connections, int playerIndex)
     {
-        game = new GGPORunner("gridlockgladiators", new GridGame(), perfPanel);
-        game.Init(connections, playerIndex);
-        StartGame(game);
+        _onlineGame = new GGPORunner("gridlockgladiators", new GridGame(), perfPanel);
+        _onlineGame.Init(connections, playerIndex);
+        StartGame(_onlineGame);
         OnlineGameStarted = true;
         LocalGameStarted = false;
     }
 
     public override void StartLocalGame()
     {
-        StartGame(new LocalRunner(new GridGame()));
+        _localGame = new LocalRunner(new GridGame());
+        StartGame(_localGame);
         LocalGameStarted = true;
         OnlineGameStarted = false;
     }
 
+    protected override void OnPreRunFrame()
+    {
+        base.OnPreRunFrame();
+        currentFrame = _localGame.Game.Framenumber;
+    }
 
     private List<Connections> GetConnections()
     {
@@ -95,7 +118,7 @@ public class GridGameManager : GameManager
     [Button]
     public void OnOnlineClick()
     {
-        game?.Shutdown();
+        _onlineGame?.Shutdown();
 
         _isHost = !ClonesManager.IsClone();
         SceneManagerBehaviour.Instance.SetGameMode(GameMode.ONLINE);
@@ -107,12 +130,26 @@ public class GridGameManager : GameManager
 
         inpPort = "7000";
         txtPort = "7001";
-        gameManager.StartGGPOGame(perf, GetConnections(), playerIndex);
+        _gameManager.StartGGPOGame(_perf, GetConnections(), playerIndex);
     }
 
     public void OnLocalClick()
     {
-        gameManager.StartLocalGame();
+        _gameManager.StartLocalGame();
+    }
+    
+    [Button]
+    public void OnTestSave()
+    {
+        TestingLocalSaves = true;
+        _localGame.OnTestSave();
+    }
+
+    [Button]
+    public void OnTestLoad()
+    {
+        TestingLocalSaves = true;
+        _localGame.OnTestLoad();
     }
 
     private void LateUpdate()

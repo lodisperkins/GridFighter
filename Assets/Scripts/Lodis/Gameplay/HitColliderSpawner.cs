@@ -32,6 +32,7 @@ namespace Lodis.Gameplay
             //Create a new grid collider in the simulation
             EntityData colliderEntity = GridGame.SpawnEntity(position);
             colliderEntity.Name = owner.Data.Name + "Collider";
+            colliderEntity.UnityObject.layer = LayerMask.NameToLayer("Ability");
 
             //Initialize collider stats
             HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();
@@ -68,6 +69,7 @@ namespace Lodis.Gameplay
             EntityDataBehaviour colliderEntity = GridGame.SpawnEntity(position);
             colliderEntity.Data.Name = spawner.Data.Name + "Collider";
             colliderEntity.gameObject.name = spawner.Data.Name + "Collider";
+            colliderEntity.gameObject.layer = LayerMask.NameToLayer("Ability");
 
             GridPhysicsBehaviour physics = colliderEntity.Data.AddComponent<GridPhysicsBehaviour>();
             physics.IsKinematic = true;
@@ -106,6 +108,7 @@ namespace Lodis.Gameplay
             //Create a new grid collider in the simulation
             EntityDataBehaviour colliderEntity = GridGame.SpawnEntity(parent.Entity);
             colliderEntity.Data.Name = spawner.Data.Name + "Collider";
+            colliderEntity.gameObject.layer = LayerMask.NameToLayer("Ability");
 
             GridPhysicsBehaviour physics = colliderEntity.Data.AddComponent<GridPhysicsBehaviour>();
             physics.IsKinematic = true;
@@ -145,6 +148,7 @@ namespace Lodis.Gameplay
             //Create a new grid collider in the simulation
             EntityData colliderEntity = GridGame.SpawnEntity(owner);
             colliderEntity.Name = owner.Data.Name + "Collider";
+            colliderEntity.UnityObject.layer = LayerMask.NameToLayer("Ability");
 
             //Initialize collider stats
             HitColliderBehaviour hitScript = colliderEntity.AddComponent<HitColliderBehaviour>();

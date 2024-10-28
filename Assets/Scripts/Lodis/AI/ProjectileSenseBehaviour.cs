@@ -11,12 +11,12 @@ namespace Lodis.AI
     {
         [SerializeField] private AIControllerBehaviour _owner;
 
-        public override void Deserialize(BinaryReader br)
+        public override void OnDeserialize(BinaryReader br)
         {
             throw new System.NotImplementedException();
         }
 
-        public override void Serialize(BinaryWriter bw)
+        public override void OnSerialize(BinaryWriter bw)
         {
             throw new System.NotImplementedException();
         }

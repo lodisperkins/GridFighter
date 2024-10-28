@@ -16,6 +16,7 @@ using Lodis.Gameplay;
 using UnityEngine.InputSystem.HID;
 using System.Linq;
 using Lodis.Utility;
+using NUnit.Framework.Interfaces;
 
 
 public class TagSelectorAttribute : PropertyAttribute
@@ -66,6 +67,8 @@ public struct GridGame : IGame
 
     public void Serialize(BinaryWriter bw)
     {
+        HandleRemovalOfMarkedEntities();
+
         bw.Write(Framenumber);
         bw.Write(_activeEntities.Count);
 
@@ -78,9 +81,48 @@ public struct GridGame : IGame
     public void Deserialize(BinaryReader br)
     {
         Framenumber = br.ReadInt32();
-        int entityCount = br.ReadInt32();
 
-        int count = entityCount > _activeEntities.Count ? _activeEntities.Count : entityCount;
+        for (int i = 0; i < _activeEntities.Count; ++i)
+        {
+            EntityData entity = _activeEntities[i];
+            if (entity.FrameAdded > Framenumber)
+            {
+                //Abilities need to be added back to the pool so they are reusable.
+                if (entity.UnityObject.layer == LayerMask.NameToLayer("Ability"))
+                {
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(entity.UnityScript);
+                }
+                //Otherwise just remove them from the game as normal.
+                else
+                {
+                    RemoveEntityFromGame(entity);
+                }
+            }
+        }
+
+        for (int i = 0; i < _entitiesToRemove.Count; i++)
+        {
+            EntityData entityToRemove = _entitiesToRemove[i];
+
+            if (entityToRemove.FrameRemoved > Framenumber)
+            {
+                //Abilities need to be taken from the pool so they are reusable.
+                if (entityToRemove.UnityObject.layer == LayerMask.NameToLayer("Ability"))
+                {
+                    ObjectPoolBehaviour.Instance.GetObject(entityToRemove.UnityScript, entityToRemove.Transform.WorldPosition, entityToRemove.Transform.WorldRotation);
+                }
+                //Otherwise just spawn them back into the game.
+                else
+                {
+                    AddEntityToGame(entityToRemove);
+                    _entitiesToRemove.RemoveAt(i);
+                }
+            }
+        }
+
+        HandleRemovalOfMarkedEntities();
+
+        int count = br.ReadInt32();
 
         for (int i = 0; i < count; ++i)
         {
@@ -90,6 +132,7 @@ public struct GridGame : IGame
 
     public NativeArray<byte> ToBytes()
     {
+        //Allocates memory for a new array of bites that has the game state data and returns it.
         using (var memoryStream = new MemoryStream())
         {
             using (var writer = new BinaryWriter(memoryStream))
@@ -121,6 +164,11 @@ public struct GridGame : IGame
 
     public void FreeBytes(NativeArray<byte> data)
     {
+        //Frees up the memory used in the game state previously saved.
+        if (data.IsCreated)
+        {
+            data.Dispose();
+        }
     }
 
     public void LogInfo(string filename)
@@ -268,7 +316,7 @@ public struct GridGame : IGame
         }
 
         _activeEntities.Add(entity);
-
+        entity.FrameAdded = GridGameManager.FrameNumber;
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
@@ -305,6 +353,7 @@ public struct GridGame : IGame
     {
         _entitiesToRemove.Add(entity);
         entity.End();
+        entity.FrameRemoved = GridGameManager.FrameNumber;
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
@@ -361,11 +410,8 @@ public struct GridGame : IGame
         _collisionPairs.Add((entity1, entity2), ignore);
     }
 
-    public void Update(long[] inputs, int disconnectFlags)
+    private void HandleRemovalOfMarkedEntities()
     {
-        Time += FixedTimeStep;
-        OnSimulationUpdate?.Invoke(FixedTimeStep);
-
         //Remove all unwanted entities
         for (int i = 0; i < _entitiesToRemove.Count; i++)
         {
@@ -377,8 +423,6 @@ public struct GridGame : IGame
             MonoBehaviour.Destroy(_entitiesToDestory[i].UnityObject);
         }
 
-        
-
         _entitiesToRemove.Clear();
 
 
@@ -389,7 +433,22 @@ public struct GridGame : IGame
         }
 
         _physicsEntitiesToRemove.Clear();
+    }
 
+    public void Update(long[] inputs, int disconnectFlags)
+    {
+        Time += FixedTimeStep;
+        OnSimulationUpdate?.Invoke(FixedTimeStep);
+
+        if (!GridGameManager.OnlineGameStarted)
+        {
+            Framenumber++;
+
+            if (!GridGameManager.TestingLocalSaves)
+            {
+                HandleRemovalOfMarkedEntities();
+            }
+        }
         //Component update
         for (int i = 0; i < _activeEntities.Count; i++)
         {
@@ -407,14 +466,6 @@ public struct GridGame : IGame
         OnProcessInput?.Invoke(0, inputs[0]);
         OnProcessInput?.Invoke(1, inputs[1]);
 
-        //if (SceneManagerBehaviour.Instance.GameMode == (int)GameMode.ONLINE && !GridGameManager.IsHost)
-        //{
-        //    OnProcessInput?.Invoke(1, inputs[0]);
-        //    OnProcessInput?.Invoke(0, inputs[1]);
-        //}
-        //else
-        //{
-        //}
         //Timer update
         for (int i = 0; i < FixedPointTimer.Actions.Count; i++)
         {

@@ -127,6 +127,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -196,6 +202,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -422,7 +434,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 438dda136aaf75e4aa58f774a6f5dba4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 0
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8764218841854632973}
+        m_TargetAssemblyTypeName: Lodis.Gameplay.RingBarrierFeedbackBehaviour, Assembly-CSharp
+        m_MethodName: UpdateCracks
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _health:
+    RawValue: 0
   _startingHealth: -1
   _maxHealth: {fileID: 11400000, guid: 83e5ea0a3fbbb4940bd7e83fa9ac4062, type: 2}
   _destroyOnDeath: 0
@@ -647,6 +678,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8866f96c2ae981b4b87ced854a2a1216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _colliders:
   - {fileID: 9177687170181128010}
   - {fileID: 5599124115480993369}
@@ -674,13 +711,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
   _friction:
     RawValue: 0
-  _rangeToIgnoreUpAngle: 0.2
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
