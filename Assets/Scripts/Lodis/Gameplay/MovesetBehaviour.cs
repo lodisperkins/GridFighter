@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Types;
 using UnityEngine;
 using UnityEngine.Events;
@@ -177,6 +178,8 @@ namespace Lodis.Gameplay
         private FVector2 _lastAttackDirection;
         private Fixed32 _currentBurstRechargeRate;
         private Fixed32 _lastAttackStrength;
+        private (Ability, object[]) _lastSerializedAbility;
+        private bool _serializedAbility;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -258,24 +261,48 @@ namespace Lodis.Gameplay
 
         public override void OnSerialize(BinaryWriter bw)
         {
-            Energy.Serialize(bw);
-            BurstEnergy.Serialize(bw);
+            _energy.Serialize(bw);
+            _burstEnergy.Serialize(bw);
             bw.Write(_abilityInUse);
             bw.Write(_energyChargeEnabled);
             bw.Write(_canBurst);
             bw.Write(_loadingShuffle);
             bw.Write(_deckReloading);
+
+            if (_lastAbilityInUse != null)
+            {
+                _lastAbilityInUse.Serialize(bw);
+                _serializedAbility = true;
+            }
+            else
+            {
+                Ability.DummySerialize(bw);
+            }
         }
 
         public override void OnDeserialize(BinaryReader br)
         {
-            Energy.Deserialize(br);
-            BurstEnergy.Deserialize(br);
+            _energy.Deserialize(br);
+            _burstEnergy.Deserialize(br);
             _abilityInUse = br.ReadBoolean();
             _energyChargeEnabled = br.ReadBoolean();
             _canBurst = br.ReadBoolean();
             _loadingShuffle = br.ReadBoolean();
             _deckReloading = br.ReadBoolean();
+
+
+            if (_lastAbilityInUse != null && _serializedAbility)
+            {
+                _lastAbilityInUse.Deserialize(br);
+                _serializedAbility = false;
+            }
+            else if (!_serializedAbility)
+            {
+                if (_abilityInUse)
+                    _lastAbilityInUse.EndAbility();
+
+                Ability.DummyDeserialize(br);
+            }
         }
 
         public override void Init()

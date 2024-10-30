@@ -153,7 +153,9 @@ public class EntityData
     public void Begin()
     {
         _active = true;
-        UnityObject?.SetActive(true);
+
+        if (UnityObject)
+            UnityObject?.SetActive(true);
 
         if (_gridColliders != null && _gridColliders.Length > 0)
             GridGame.AddPhysicsEntity(this);
@@ -190,7 +192,8 @@ public class EntityData
     {
         _active = false;
 
-        UnityObject?.SetActive(false);
+        if (UnityObject)
+            UnityObject?.SetActive(false);
 
         if (_gridColliders != null)
         {

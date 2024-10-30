@@ -31,9 +31,23 @@ namespace FixedPoints
 
         private static void DeserializeActions(BinaryReader br)
         {
+            List<LerpAction> actionsToRemove = new List<LerpAction>();
+
             for (int i = 0; i < Actions.Count; i++)
             {
+                if (Actions[i].FrameStarted > GridGameManager.FrameNumber)
+                {
+                    actionsToRemove.Add(Actions[i]);
+
+                    continue;
+                }
+
                 Actions[i].Deserialize(br);
+            }
+
+            foreach (LerpAction action in actionsToRemove)
+            {
+                Actions.Remove(action);
             }
         }
 
@@ -162,10 +176,16 @@ namespace FixedPoints
         protected Fixed32 TimeElapsed;
         protected bool IsPaused;
         private bool _killed;
+        private int _frameStarted;
 
         public bool Killed
         {
             get => _killed;
+        }
+
+        public int FrameStarted
+        {
+            get { return _frameStarted; }
         }
 
         public delegate void LerpActionEvent();
@@ -182,6 +202,7 @@ namespace FixedPoints
             Curve = curve;
             TimeElapsed = 0;
             IsPaused = false;
+            _frameStarted = GridGameManager.FrameNumber;
         }
 
         public bool IsPlaying()
@@ -231,16 +252,12 @@ namespace FixedPoints
 
         public virtual void Serialize(BinaryWriter bw)
         {
-            Target.Serialize(bw);
-            Duration.Serialize(bw);
             TimeElapsed.Serialize(bw);
             bw.Write(IsPaused);
         }
 
         public virtual void Deserialize(BinaryReader br)
         {
-            Target.Deserialize(br);
-            Duration.Deserialize(br);
             TimeElapsed.Deserialize(br);
             IsPaused = br.ReadBoolean();
         }

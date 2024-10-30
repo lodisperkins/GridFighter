@@ -40,5 +40,11 @@ namespace Lodis.Gameplay
             BlackBoardBehaviour.Instance.Grid.ExchangeRowsByTimer((int)abilityData.GetCustomStatValue("AmountOfRows"), OwnerMoveScript.Alignment, abilityData.GetCustomStatValue("OwnershipTime"));
             base.OnActivate();
         }
+
+        protected override void OnMatchRestart()
+        {
+            base.OnMatchRestart();
+            GridBehaviour.Grid.CancelRowExchange();
+        }
     }
 }

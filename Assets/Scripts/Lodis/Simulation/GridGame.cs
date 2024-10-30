@@ -76,6 +76,8 @@ public struct GridGame : IGame
         {
             _activeEntities[i].Serialize(bw);
         }
+
+        OnSerialization?.Invoke(bw);
     }
 
     public void Deserialize(BinaryReader br)
@@ -128,6 +130,8 @@ public struct GridGame : IGame
         {
             _activeEntities[i].Deserialize(br);
         }
+
+        OnDeserialization?.Invoke(br);
     }
 
     public NativeArray<byte> ToBytes()

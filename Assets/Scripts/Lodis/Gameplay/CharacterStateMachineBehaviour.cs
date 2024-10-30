@@ -5,10 +5,12 @@ using UnityEngine;
 using Ilumisoft.VisualStateMachine;
 using Lodis.Movement;
 using UnityEngine.Events;
+using System.IO;
+using Types;
 
 namespace Lodis.Gameplay
 {
-    public class CharacterStateMachineBehaviour : MonoBehaviour
+    public class CharacterStateMachineBehaviour : SimulationBehaviour
     {
         [SerializeField]
         private StateMachine _stateMachine;
@@ -26,14 +28,17 @@ namespace Lodis.Gameplay
         public string LastState { get => _lastState; private set => _lastState = value; }
         public string CurrentState { get => _stateMachine.CurrentState; }
 
-        private void Awake()
+        protected override void Awake()
         {
+            base.Awake();
             _onStateChanged = new UnityEvent<string>();
         }
 
         // Start is called before the first frame update
-        void Start()
+        public override void Begin()
         {
+            base.Begin();
+
             _knockBack = GetComponent<Movement.KnockbackBehaviour>();
             _moveset = GetComponent<MovesetBehaviour>();
             _input = GetComponent<Input.InputBehaviour>();
@@ -76,7 +81,7 @@ namespace Lodis.Gameplay
             return false;
         }
 
-        private void Update()
+        public override void Tick(Fixed32 dt)
         {
             //if (_currentState != _stateMachine.CurrentState)
             //    Debug.Log(_stateMachine.CurrentState);d
@@ -89,6 +94,20 @@ namespace Lodis.Gameplay
                 _onStateChanged?.Invoke(_currentState);
                 LastState = _currentState;
             }
+        }
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            bw.Write(_currentState);
+            bw.Write(_lastState);
+        }
+
+        public override void OnDeserialize(BinaryReader br)
+        {
+            _currentState = br.ReadString();
+            _lastState = br.ReadString();
+
+            _stateMachine.ForceEnterState(_currentState);
         }
     }
 }

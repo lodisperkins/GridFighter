@@ -203,7 +203,7 @@ namespace Lodis.Gameplay
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitEffectLoopInstance);
 
             if (_hitScript)
-                _hitScript.Entity.RemoveFromGame(true);
+                _hitScript.Entity.RemoveFromGame();
 
             CameraBehaviour.Instance.ZoomAmount = 0;
         }

@@ -18,6 +18,8 @@ namespace FixedPoints
         protected FixedDelayedEvent onDelayCancel;
 
         private bool isActive;
+        public int FrameStarted;
+        public int FrameFinished;
 
         public bool IsActive { get => isActive; set => isActive = value; }
 
@@ -60,8 +62,9 @@ namespace FixedPoints
         protected object[] eventArgs;
         private bool hasPaused;
 
-        public FixedTimeAction(FixedDelayedEvent action, float duration, UnitOfTime unit = UnitOfTime.Scaled)
+        public FixedTimeAction(FixedDelayedEvent action, Fixed32 duration, Fixed32 timeBegan, UnitOfTime unit = UnitOfTime.Scaled)
         {
+            TimeStarted = timeBegan;
             onDelayComplete = action;
             timeRemaining = duration;
             this.duration = duration;
@@ -71,12 +74,12 @@ namespace FixedPoints
         /// <summary>
         /// The time that this action began. Value varies based on specified unit at start.
         /// </summary>
-        public float TimeStarted { get => timeStarted; private set => timeStarted = value; }
+        public Fixed32 TimeStarted { get => timeStarted; private set => timeStarted = value; }
 
         /// <summary>
         /// The amount of time this action has left. Value varies based on specified unit at start.
         /// </summary>
-        public float Duration { get => duration; private set => duration = value; }
+        public Fixed32 Duration { get => duration; private set => duration = value; }
 
         /// <summary>
         /// The unit of time to use to measure the duration of this action.
@@ -159,7 +162,7 @@ namespace FixedPoints
         public override void Deserialize(BinaryReader br)
         {
             base.Deserialize(br);
-            timeRemaining = br.ReadInt64();
+            timeRemaining = br.ReadInt32();
             loopCount = br.ReadInt32();
             hasPaused = br.ReadBoolean();
         }
@@ -246,7 +249,8 @@ namespace FixedPoints
 
         public static FixedTimeAction StartNewTimedAction(FixedDelayedEvent action, Fixed32 duration, UnitOfTime unit = UnitOfTime.Scaled)
         {
-            FixedTimeAction newAction = new FixedTimeAction(action, duration, unit);
+            FixedTimeAction newAction = new FixedTimeAction(action, duration, GridGame.Time, unit);
+            newAction.FrameStarted = GridGameManager.FrameNumber;
             _actions.Add(newAction);
             newAction.IsActive = true;
             return newAction;
@@ -255,6 +259,8 @@ namespace FixedPoints
         public static FixedConditionAction StartNewConditionAction(FixedDelayedEvent action, Condition condition)
         {
             FixedConditionAction fixedConditionAction = new FixedConditionAction(action, condition);
+            fixedConditionAction.FrameStarted = GridGameManager.FrameNumber;
+
             _actions.Add(fixedConditionAction);
             return fixedConditionAction;
         }
@@ -277,9 +283,23 @@ namespace FixedPoints
 
         public static void DeserializeActions(BinaryReader br)
         {
+            List<FixedAction> actionsToRemove = new List<FixedAction>();
+
             for (int i = 0; i < _actions.Count; i++)
             {
+                if (_actions[i].FrameStarted > GridGameManager.FrameNumber)
+                {
+                    actionsToRemove.Add( _actions[i]);
+
+                    continue;
+                }
+
                 _actions[i].Deserialize(br);
+            }
+
+            foreach (FixedAction action in actionsToRemove)
+            {
+                _actions.Remove(action);
             }
         }
     }

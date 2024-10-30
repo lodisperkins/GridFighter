@@ -50,6 +50,27 @@ namespace Lodis.Movement
             set => _canCheckLanding = value;
         }
 
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            bw.Write(Landing);
+            bw.Write(_groundedHitCounter);
+            bw.Write(IsDown);
+            bw.Write(RecoveringFromFall);
+        }
+
+        public override void OnDeserialize(BinaryReader br)
+        {
+            Landing = br.ReadBoolean();
+            _groundedHitCounter = br.ReadInt32();
+            IsDown = br.ReadBoolean();
+            RecoveringFromFall = br.ReadBoolean();
+
+            if (!Landing)
+            {
+                CancelLanding();
+            }
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -241,12 +262,5 @@ namespace Lodis.Movement
                 _characterAnimator.PlayHardLandingAnimation();
         }
 
-        public override void OnSerialize(BinaryWriter bw)
-        {
-        }
-
-        public override void OnDeserialize(BinaryReader br)
-        {
-        }
     }
 }

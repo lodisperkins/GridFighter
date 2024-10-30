@@ -51,6 +51,8 @@ namespace Lodis.Gameplay
         private Quaternion _accessoryStartRotation;
         private GameObject _accessoryInstance;
         private TimedActionCountType _timeCountType = TimedActionCountType.SCALEDTIME;
+        private int _frameActivated;
+
         //The object that is using the ability
         private EntityDataBehaviour owner = null;
         public MovesetBehaviour OwnerMoveset = null;
@@ -133,6 +135,46 @@ namespace Lodis.Gameplay
         public bool AbilityPaused { get => _currentTimer?.IsActive == true; }
         public CharacterVoiceBehaviour OwnerVoiceScript { get => _ownerVoiceScript; private set => _ownerVoiceScript = value; }
         public EntityDataBehaviour Owner { get => owner; set => owner = value; }
+
+        public static void DummySerialize(BinaryWriter bw)
+        {
+            bw.Write(false);
+            bw.Write(0);
+            bw.Write(false);
+            bw.Write(0);
+        }
+
+        public static void DummyDeserialize(BinaryReader br)
+        {
+            br.ReadBoolean();
+            br.ReadInt32();
+            br.ReadBoolean();
+            br.ReadInt32();
+        }
+
+        public void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_inUse);
+            bw.Write(currentActivationAmount);
+            bw.Write(_opponentHit);
+            bw.Write((int)CurrentAbilityPhase);
+        }
+
+        public void Deserialize(BinaryReader br) 
+        {
+            _inUse = br.ReadBoolean();
+            currentActivationAmount = br.ReadInt32();
+            _opponentHit = br.ReadBoolean();
+            CurrentAbilityPhase = (AbilityPhase)br.ReadInt32();
+
+            if (!_inUse)
+            {
+                EndAbility();
+            }
+        }
+        
+        protected virtual void OnSerialize(BinaryWriter bw) { }
+        protected virtual void OnDeserialize(BinaryReader br) { }
 
         /// <summary>
         /// The phase before an the ability is activated. This is where the character is building up
@@ -301,6 +343,16 @@ namespace Lodis.Gameplay
 
             InitializeAccessory();
             MatchManagerBehaviour.Instance.AddOnMatchRestartAction(OnMatchRestart);
+            GridGame.OnDeserialization += br => TryResetAbility();
+        }
+
+        private void TryResetAbility()
+        {
+            if (_frameActivated > GridGameManager.FrameNumber)
+            {
+                EndAbility();
+                OnMatchRestart();
+            }
         }
 
         private void InitializeAccessory()
@@ -334,6 +386,8 @@ namespace Lodis.Gameplay
 
         private void Start(params object[] args)
         {
+            _frameActivated = GridGameManager.FrameNumber;
+
             for (int i = 0; i < _colliderInfo.Count; i++)
             {
                 OnHit += collision =>
@@ -354,12 +408,12 @@ namespace Lodis.Gameplay
 
             PlayVoiceSound();
 
-            if (!OwnerKnockBackScript)
-                return;
-
-            OwnerKnockBackScript.AddOnTakeDamageTempAction(() => TryDamageCancel(0));
-            OwnerKnockBackScript.AddOnHitStunTempAction(() => TryDamageCancel(1));
-            OwnerKnockBackScript.AddOnKnockBackStartTempAction(() => TryDamageCancel(2));
+            if (OwnerKnockBackScript)
+            {
+                OwnerKnockBackScript.AddOnTakeDamageTempAction(() => TryDamageCancel(0));
+                OwnerKnockBackScript.AddOnHitStunTempAction(() => TryDamageCancel(1));
+                OwnerKnockBackScript.AddOnKnockBackStartTempAction(() => TryDamageCancel(2));
+            }
 
             OnStart();
         }
@@ -491,6 +545,7 @@ namespace Lodis.Gameplay
 
         public virtual void Tick(Fixed32 dt) { }
 
+
         public HitColliderData GetColliderData(int index)
         {
             return _colliderInfo[index];
@@ -540,6 +595,7 @@ namespace Lodis.Gameplay
 
             _accessoryInstance.SetActive(false);
         }
+
     }
 
 #if UNITY_EDITOR
