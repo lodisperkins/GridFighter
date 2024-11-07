@@ -1012,6 +1012,13 @@ namespace Lodis.Movement
             {
                 FixedTransform.WorldPosition = new FVector3(FixedTransform.WorldPosition.X, _groundPosition, FixedTransform.WorldPosition.Z);
                 Velocity = new FVector3(Velocity.X, 0, Velocity.Z);
+
+                if (MovementBehaviour != null)
+                {
+                    FVector2 position;
+                    GridBehaviour.Grid.GetGridCoordinateFromLocation((Vector3)FixedTransform.WorldPosition, out position);
+                    MovementBehaviour.Position = position;
+                }
             }
 
             //--Bounces

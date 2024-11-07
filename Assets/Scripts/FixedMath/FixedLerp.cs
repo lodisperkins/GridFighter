@@ -23,6 +23,8 @@ namespace FixedPoints
 
         private static void SerializeActions(BinaryWriter bw)
         {
+            bw.Write(Actions.Count);
+
             for (int i = 0; i < Actions.Count; i++)
             {
                 Actions[i].Serialize(bw);
@@ -31,9 +33,13 @@ namespace FixedPoints
 
         private static void DeserializeActions(BinaryReader br)
         {
+            int count = br.ReadInt32();
+
             List<LerpAction> actionsToRemove = new List<LerpAction>();
 
-            for (int i = 0; i < Actions.Count; i++)
+            int countInUse = Math.Min(count, Actions.Count);
+
+            for (int i = 0; i < countInUse; i++)
             {
                 if (Actions[i].FrameStarted > GridGameManager.FrameNumber)
                 {

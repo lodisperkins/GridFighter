@@ -1080,17 +1080,22 @@ namespace Lodis.Movement
 
         public override void OnDeserialize(BinaryReader br)
         {
+            //if (Position != _currentPanel?.Position)
+            //{
+            //    MoveToPanel(Position, true);
+            //}
+
             _isMoving = br.ReadBoolean();
             _canMove = br.ReadBoolean();
             _canCancelMovement = br.ReadBoolean();
             _alwaysLookAtOpposingSide = br.ReadBoolean();
             _moveToAlignedSideIfStuck = br.ReadBoolean();
 
-            if (_isMoving)
-            {
-                CancelMovement();
-                Move(MoveDirection);
-            }
+            //if (_isMoving)
+            //{
+            //    CancelMovement();
+            //    Move(MoveDirection);
+            //}
         }
     }
 }

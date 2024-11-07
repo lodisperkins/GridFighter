@@ -280,6 +280,10 @@ namespace Lodis.Input
             }
             if ((inputs & (long)InputFlag.Strong) != 0)
             {
+                TryChargeAttack();
+            }
+            else if (_chargingAttack)
+            {
                 // Call the function related to Strong attack
                 BufferChargeNormalAbility();
             }
@@ -354,16 +358,8 @@ namespace Lodis.Input
 
             if (_playerControls.Player.ChargeAttack.IsPressed())
             {
-                TryChargeAttack();
-            }
-            else if (_chargingAttack)
-            {
-                _chargingAttack = false;
-                _onChargeEnded?.Raise(Character);
-                _chargeAction?.Stop();
                 flags |= InputFlag.Strong;
             }
-
 
             GridGame.SetPlayerInput(PlayerID, (long)flags);
 
@@ -543,6 +539,10 @@ namespace Lodis.Input
         /// index 1 is always the direction of input.</param>
         public void BufferChargeNormalAbility()
         {
+            _chargingAttack = false;
+            _onChargeEnded?.Raise(Character);
+            _chargeAction?.Stop();
+
             if (!_canBufferAbility)
                 return;
 

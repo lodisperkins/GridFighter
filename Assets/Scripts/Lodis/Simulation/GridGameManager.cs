@@ -154,6 +154,6 @@ public class GridGameManager : GameManager
 
     private void LateUpdate()
     {
-        Debug.Log(InputSystem.settings.updateMode);
+        //Debug.Log(InputSystem.settings.updateMode);
     }
 }
