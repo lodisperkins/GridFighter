@@ -28,12 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 74591016415453549}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 1}
   m_LocalScale: {x: 10, y: 10, z: 16}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5680485170780137522}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8503952229423937371
 MeshFilter:
@@ -54,10 +55,12 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -82,6 +85,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!54 &4311501179965167094
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -89,10 +93,21 @@ Rigidbody:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 74591016415453549}
-  serializedVersion: 2
+  serializedVersion: 4
   m_Mass: 1
   m_Drag: 0
   m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
@@ -106,9 +121,17 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 74591016415453549}
   m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
   m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
+  serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &7156454938280041837
@@ -123,6 +146,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25d864185b4833f468ef1264ab4d6459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _owner: {fileID: 6183915638186026948}
 --- !u!1 &5680485170780137523
 GameObject:
@@ -136,6 +165,7 @@ GameObject:
   - component: {fileID: 6183915638186026948}
   - component: {fileID: 7025333189879560728}
   - component: {fileID: 1303132085147626082}
+  - component: {fileID: -3951557503420391302}
   m_Layer: 9
   m_Name: AIController
   m_TagString: Player
@@ -150,13 +180,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7639739936438293685}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6183915638186026948
 MonoBehaviour:
@@ -173,7 +204,11 @@ MonoBehaviour:
   _character: {fileID: 0}
   _attackStrength: 1.5
   _maxRange: 10
-  _attackDirection: {x: 0, y: 0}
+  _attackDirection:
+    _x:
+      RawValue: 0
+    _y:
+      RawValue: 0
   _enableRandomBehaviour: 0
   _senseCollider: {fileID: 2917431262450575549}
   _canAttack: 1
@@ -282,3 +317,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e867bf7b20b1ca4dbd0e6c6ca45a4f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3951557503420391302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5680485170780137523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc3f072b198fe9e4390951728f6f9e09, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _playerID: {fileID: 0}
+  _character: {fileID: 0}
+  _holdSpeed: 1
+  _minChargeLimit:
+    RawValue: 32768
+  _maxChargeTime:
+    RawValue: 327680
+  _attackDirectionBufferClearTime: 0.05
+  _canMove: 1
+  _holdToMove: 1
+  _inputEnabled: 1
+  _abilityBuffered: 0
+  _aiControlled: 0
+  _onChargeStarted: {fileID: 11400000, guid: 0a1158f9dd9ab0f4b8dca57ab98000aa, type: 2}
+  _onChargeEnded: {fileID: 11400000, guid: 5ef561623c994e44a91f274065867cf4, type: 2}

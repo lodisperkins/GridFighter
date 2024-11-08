@@ -18,6 +18,8 @@ public class GridGameManager : GameManager
     [SerializeField] private bool _startLocalGame;
     [Tooltip("Enables certain features that are only active in online play.")]
     [SerializeField] private bool _testingLocalSaves;
+    [Tooltip("Enables the AI to take control over the other client.")]
+    [SerializeField] private bool _aiFightEnabled;
     [SerializeField] private Fixed32 _fixed32TestConversion;
     private GameManager _gameManager => GameManager.Instance;
     private GgpoPerformancePanel _perf;
@@ -29,6 +31,7 @@ public class GridGameManager : GameManager
 
     public static bool LocalGameStarted { get; private set; }
     public static bool OnlineGameStarted { get; private set; }
+    public static bool AIFightEnabled { get; private set; }
     public static int FrameNumber
     {
         get
@@ -69,7 +72,7 @@ public class GridGameManager : GameManager
         _perf.Setup();
         TestingLocalSaves = _testingLocalSaves;
         //InputSystem.settings.maxEventBytesPerUpdate = 0;
-
+        AIFightEnabled = _aiFightEnabled;
         if (_startLocalGame)
             StartLocalGame();
     }

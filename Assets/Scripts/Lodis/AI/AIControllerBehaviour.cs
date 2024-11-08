@@ -24,7 +24,6 @@ namespace Lodis.AI
     {
         [SerializeField]
         private GameObject _character;
-        private Gameplay.MovesetBehaviour _moveset;
         [Tooltip("Sets the value that amplifies the power of strong attacks when doing them randomly.")]
         [SerializeField]
         private float _attackStrength;
@@ -34,42 +33,18 @@ namespace Lodis.AI
         [Tooltip("The direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
         [SerializeField]
         private FVector2 _attackDirection;
-        private StateMachine _stateMachine;
-        private Movement.KnockbackBehaviour _knockbackBehaviour;
-        private int _lastSlot;
         [SerializeField]
         private bool _enableRandomBehaviour;
-        private bool _chargingAttack;
-        private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
         [SerializeField]
         private Collider _senseCollider;
         [SerializeField]
         private bool _canAttack = true;
-        private BehaviorExecutor _executor;
-
-        private GameObject _opponent;
-        private GridMovementBehaviour _opponentMove;
-        private KnockbackBehaviour _opponentKnocback;
-        private CharacterDefenseBehaviour _opponentDefense;
-
-        private CharacterDefenseBehaviour _defense;
-        private AIDummyMovementBehaviour _aiMovementBehaviour;
-        private AttackDecisionTree _attackDecisions;
-        private DefenseDecisionTree _defenseDecisions;
-        private RingBarrierBehaviour _ownerBarrier;
-        private RingBarrierBehaviour _opponentBarrier;
-
-        private bool _touchingBarrier;
-        private bool _touchingOpponentBarrier;
 
         [SerializeField]
         private int _maxDecisionCount;
         [Tooltip("The amount of time the dummy has to be in knock back to consider using a burst.")]
         [SerializeField]
         private float _timeNeededToBurst;
-        private GridPhysicsBehaviour _gridPhysics;
-        private IntVariable _playerID;
-        private BufferedInput _bufferedAction;
         //private DefenseNode _lastDefenseDecision;
 
         [SerializeField]
@@ -83,23 +58,11 @@ namespace Lodis.AI
         [SerializeField]
         [Tooltip("How much to add to the win count for every decision made.")]
         private int _winReward;
-        private bool _abilityBuffered;
-
-        private MovesetBehaviour _opponentMoveset;
-        private GridMovementBehaviour _movementBehaviour;
-        private List<ActionNode>[] _recordings;
-        private List<ActionNode> _currentRecording;
-        private int _currentActionIndex;
-        private int _currentRecordingIndex;
-        private ActionNode _currentSituation = new ActionNode(null, null);
         [SerializeField]
         private string _recordingName = "AI";
         [SerializeField]
         [Tooltip("Whether or not to use recording data for decision making.")]
         private bool _useRecording;
-        private GridPhysicsBehaviour _opponentGridPhysics;
-        private bool _isPaused;
-        private TimedAction _playbackRoutine;
         [SerializeField]
         private int _randomDecisionConstant = 1;
         [SerializeField]
@@ -111,6 +74,7 @@ namespace Lodis.AI
         [SerializeField]
         [Tooltip("The last score found after comparing the current action situation to the current game state.")]
         private float _lastScore;
+
         [Header("Weights")]
         [SerializeField]
         [Tooltip("How important the direction the enemy is relative to the AI.")]
@@ -136,6 +100,47 @@ namespace Lodis.AI
         [SerializeField]
         [Tooltip("How important the opponent's current health is")]
         private float _opponentHealthWeight = 1;
+
+        //---
+        private GridPhysicsBehaviour _opponentGridPhysics;
+        private bool _isPaused;
+        private TimedAction _playbackRoutine;
+        private bool _abilityBuffered;
+
+        private MovesetBehaviour _opponentMoveset;
+        private GridMovementBehaviour _movementBehaviour;
+        private List<ActionNode>[] _recordings;
+        private List<ActionNode> _currentRecording;
+        private int _currentActionIndex;
+        private int _currentRecordingIndex;
+        private ActionNode _currentSituation = new ActionNode(null, null);
+        private GridPhysicsBehaviour _gridPhysics;
+        private IntVariable _playerID;
+        private BufferedInput _bufferedAction;
+        private BehaviorExecutor _executor;
+
+        private GameObject _opponent;
+        private GridMovementBehaviour _opponentMove;
+        private KnockbackBehaviour _opponentKnocback;
+        private CharacterDefenseBehaviour _opponentDefense;
+
+        private CharacterDefenseBehaviour _defense;
+        private AIDummyMovementBehaviour _aiMovementBehaviour;
+        private AttackDecisionTree _attackDecisions;
+        private DefenseDecisionTree _defenseDecisions;
+        private RingBarrierBehaviour _ownerBarrier;
+        private RingBarrierBehaviour _opponentBarrier;
+
+        private bool _touchingBarrier;
+        private bool _touchingOpponentBarrier;
+        private bool _chargingAttack;
+        private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
+        private StateMachine _stateMachine;
+        private Movement.KnockbackBehaviour _knockbackBehaviour;
+        private int _lastSlot;
+        private Gameplay.MovesetBehaviour _moveset;
+        private InputBehaviour _inputBehaviour;
+
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -208,6 +213,9 @@ namespace Lodis.AI
         {
             _executor = GetComponent<BehaviorExecutor>();
             _aiMovementBehaviour = GetComponent<AIDummyMovementBehaviour>();
+            _inputBehaviour = GetComponent<InputBehaviour>();
+
+            GridGame.OnProcessInput += (a,b) => _inputBehaviour.AIFlags = InputFlag.NONE;
         }
 
         private void Start()
@@ -238,9 +246,11 @@ namespace Lodis.AI
                 _currentRecording = _recordings[0];
             }
             else
+            {
                 MatchManagerBehaviour.Instance.AddOnMatchOverAction(AddMatchReward);
+            }
 
-
+            //---Auto restart match for training
             //MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
             //{
             //    if (MatchManagerBehaviour.Instance.LastMatchResult != MatchResult.DRAW)
@@ -298,14 +308,15 @@ namespace Lodis.AI
         public List<HitColliderBehaviour> GetAttacksInRange()
         {
             if (_attacksInRange.Count > 0)
+            {
                 _attacksInRange.RemoveAll(hitCollider =>
-                { 
+                {
                     if ((object)hitCollider != null)
                         return hitCollider == null || !hitCollider.gameObject.activeInHierarchy;
 
                     return true;
                 });
-
+            }
             return _attacksInRange;
         }
 
@@ -397,22 +408,95 @@ namespace Lodis.AI
 
         private void PerformAction(ActionNode action)
         {
-            FVector2 direction = (FVector2)action.MoveDirection;
-            if (action.CurrentAbilityID == -1 && !_movementBehaviour.IsMoving && _movementBehaviour.CanMove && (StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Moving"))
+            FVector2 direction = action.CurrentAbilityID == -1 ? (FVector2)action.MoveDirection : (FVector2)action.AttackDirection;
+
+            //Set movement flags.
+            if (direction != FVector2.Zero)
             {
-                direction.X *= _movementBehaviour.GetAlignmentX();
-                _movementBehaviour.Move((FVector2)direction);
-                return;
+                if (direction == FVector2.Up)
+                {
+                    _inputBehaviour.AIFlags |= InputFlag.Up;
+                }
+                else if (direction == FVector2.Down)
+                {
+                    _inputBehaviour.AIFlags |= InputFlag.Down;
+                }
+                else if (direction == FVector2.Left)
+                {
+                    _inputBehaviour.AIFlags |= InputFlag.Left;
+                }
+                else if (direction == FVector2.Right)
+                {
+                    _inputBehaviour.AIFlags |= InputFlag.Right;
+                }
             }
+            //Set shuffle flag.
             else if (action.CurrentAbilityID == -2)
             {
-                _moveset.ManualShuffle();
+                _inputBehaviour.AIFlags |= InputFlag.Shuffle;
                 return;
             }
 
-            direction = (FVector2)action.AttackDirection;
+            //Store the ability so the flag can be set based on its type.
+            Ability ability = _moveset.GetAbility(args =>
+            {
+                Ability possibleAbility = (Ability)args[0];
 
-            _moveset.UseAbility(action.CurrentAbilityID, new Fixed32(104857), direction);
+                return possibleAbility.abilityData.ID == action.CurrentAbilityID;
+            });
+
+            if (ability == null)
+                return;
+
+            //Set normal ability flag.
+            if ((int)ability.abilityData.AbilityType < 4)
+            {
+                _inputBehaviour.AIFlags |= InputFlag.Weak;
+            }
+            //Set strong ability flag.
+            else if ((int)ability.abilityData.AbilityType < 8)
+            {
+                _inputBehaviour.AIFlags |= InputFlag.Strong;
+            }
+            //Set special ability flag.
+            else if ((int)ability.abilityData.AbilityType == 8)
+            {
+                //Set flag based on which slot the ability is in.
+
+                int index = _moveset.GetSpecialAbilityIndex(ability);
+
+                if (index == 0)
+                {
+                    _inputBehaviour.AIFlags |= InputFlag.Special1;
+                }
+                else if (index == 1)
+                {
+                    _inputBehaviour.AIFlags |= InputFlag.Special2;
+                }
+            }
+            //Set burst ability flag.
+            else if ((int)ability.abilityData.AbilityType == 10)
+            {
+                _inputBehaviour.AIFlags |= InputFlag.Burst;
+            }
+
+            //Old action code
+            //if (action.CurrentAbilityID == -1 && !_movementBehaviour.IsMoving && _movementBehaviour.CanMove && (StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Moving"))
+            //{
+            //    direction.X *= _movementBehaviour.GetAlignmentX();
+            //    _movementBehaviour.Move((FVector2)direction);
+            //    return;
+            //}
+            //else if (action.CurrentAbilityID == -2)
+            //{
+            //    _moveset.ManualShuffle();
+            //    return;
+            //}
+
+            //direction = (FVector2)action.AttackDirection;
+
+            //_moveset.UseAbility(action.CurrentAbilityID, new Fixed32(104857), direction);
+
         }
 
         private void StartPlayback(float delayOffset = 0)
@@ -541,6 +625,7 @@ namespace Lodis.AI
 
         public void Update()
         {
+
             if (_bufferedAction?.HasAction() == true)
                 _bufferedAction.UseAction();
             else

@@ -110,6 +110,7 @@ namespace Lodis.Input
         [SerializeField] private bool _holdToMove;
         [SerializeField] private bool _inputEnabled = true;
         [SerializeField] private bool _abilityBuffered;
+        [SerializeField] private bool _aiControlled;
 
         [Header("Events")]
         [SerializeField] private CustomEventSystem.Event _onChargeStarted;
@@ -147,6 +148,8 @@ namespace Lodis.Input
         private bool _chargingAttack;
         private bool _special1Down;
         private bool _special2Down;
+
+        private InputFlag _aiFlags;
 
         public static UnityAction OnApplicationQuit;
 
@@ -189,12 +192,21 @@ namespace Lodis.Input
         public GameObject Character { get => _character; set => _character = value; }
         public bool Enabled { get => _inputEnabled; set => _inputEnabled = value; }
         public bool NormalAttackButtonDown { get => _attackButtonDown; private set => _attackButtonDown = value; }
+
+        public bool AIControlled { get => _aiControlled; set => _aiControlled = value; }
+        public InputFlag AIFlags { get => _aiFlags; set => _aiFlags = value; }
+
         public static bool PlayerActionButtonDown { get => _playerActionButtonDown; private set => _playerActionButtonDown = value; }
         public PlayerControls PlayerControls { get => _playerControls; private set => _playerControls = value; }
 
         protected override void Awake()
         {
-            PlayerControls = new PlayerControls();
+            if (!AIControlled)
+            {
+                PlayerControls = new PlayerControls();
+            }
+
+            //--Old input initialization
             ////Initialize action delegates
             ////Movement input
             //if (!_holdToMove)
@@ -220,7 +232,9 @@ namespace Lodis.Input
             //PlayerControls.Player.Shuffle.started += BufferShuffle;
 
             //PlayerControls.Player.Pause.started += context => { MatchManagerBehaviour.Instance.TogglePauseMenu(); ClearBuffer(); };
+
             _defaultSpeed = _holdSpeed;
+
             //Instead of listening to input events from unity we will instead listen to custom GGPO input events.
             GridGame.OnPollInput += GridGame_PollInput;
             GridGame.OnProcessInput += GridGame_ProcessInput;
@@ -336,32 +350,37 @@ namespace Lodis.Input
 
             InputFlag flags = InputFlag.NONE;
 
-            if (_playerControls.Player.MoveUp.IsPressed())
-                flags |= InputFlag.Up;
-            if (_playerControls.Player.MoveDown.IsPressed())
-                flags |= InputFlag.Down;
-            if (_playerControls.Player.MoveLeft.IsPressed())
-                flags |= InputFlag.Left;
-            if (_playerControls.Player.MoveRight.IsPressed())
-                flags |= InputFlag.Right;
-            if (_playerControls.Player.Attack.IsPressed())
-                flags |= InputFlag.Weak;
-            if (_playerControls.Player.Special1.IsPressed())
-                flags |= InputFlag.Special1;
-            if (_playerControls.Player.Special2.IsPressed())
-                flags |= InputFlag.Special2;
-            if (_playerControls.Player.Burst.IsPressed())
-                flags |= InputFlag.Burst;
-            if (_playerControls.Player.Shuffle.IsPressed())
-                flags |= InputFlag.Shuffle;
-
-
-            if (_playerControls.Player.ChargeAttack.IsPressed())
+            if (!AIControlled)
             {
-                flags |= InputFlag.Strong;
+                if (_playerControls.Player.MoveUp.IsPressed())
+                    flags |= InputFlag.Up;
+                if (_playerControls.Player.MoveDown.IsPressed())
+                    flags |= InputFlag.Down;
+                if (_playerControls.Player.MoveLeft.IsPressed())
+                    flags |= InputFlag.Left;
+                if (_playerControls.Player.MoveRight.IsPressed())
+                    flags |= InputFlag.Right;
+                if (_playerControls.Player.Attack.IsPressed())
+                    flags |= InputFlag.Weak;
+                if (_playerControls.Player.Special1.IsPressed())
+                    flags |= InputFlag.Special1;
+                if (_playerControls.Player.Special2.IsPressed())
+                    flags |= InputFlag.Special2;
+                if (_playerControls.Player.Burst.IsPressed())
+                    flags |= InputFlag.Burst;
+                if (_playerControls.Player.Shuffle.IsPressed())
+                    flags |= InputFlag.Shuffle;
+                if (_playerControls.Player.ChargeAttack.IsPressed())
+                    flags |= InputFlag.Strong;
+            }
+            else
+            {
+                flags = AIFlags;
             }
 
             GridGame.SetPlayerInput(PlayerID, (long)flags);
+
+            //---Debug commands
 
             // Check each input and log which ones are being pressed
             //if (_playerControls.Player.MoveUp.IsPressed())
@@ -384,15 +403,15 @@ namespace Lodis.Input
             //    Debug.Log("Move Right button is being pressed");
             //}
 
-            if (_playerControls.Player.Attack.IsPressed() && PlayerID == 1)
-            {
-                Debug.Log("Attack button is being pressed " + PlayerID.Value);
-            }
+            //if (_playerControls.Player.Attack.IsPressed() && PlayerID == 1)
+            //{
+            //    Debug.Log("Attack button is being pressed " + PlayerID.Value);
+            //}
 
-            if (_playerControls.Player.Attack.IsPressed() && PlayerID == 0)
-            {
-                Debug.Log("Attack button is being pressed " + PlayerID.Value);
-            }
+            //if (_playerControls.Player.Attack.IsPressed() && PlayerID == 0)
+            //{
+            //    Debug.Log("Attack button is being pressed " + PlayerID.Value);
+            //}
 
             //if (_playerControls.Player.Special1.IsPressed())
             //{

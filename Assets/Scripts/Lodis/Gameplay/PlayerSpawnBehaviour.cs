@@ -127,7 +127,7 @@ namespace Lodis.Gameplay
             //Spawn player 2 by mode.
 
             //Spawn AI by default.
-            if (_mode != GameMode.MULTIPLAYER && _mode != GameMode.ONLINE)
+            if ((_mode != GameMode.MULTIPLAYER && _mode != GameMode.ONLINE) || GridGameManager.AIFightEnabled)
             {
                 _player2 = Instantiate(_dummy.gameObject);
             }
@@ -154,10 +154,25 @@ namespace Lodis.Gameplay
             }
 
             //Attach character to the spawned controller.
-            _p2InputController = _player2.GetComponent<IControllable>();
+            _p2InputController = _player2.GetComponent<InputBehaviour>();
             _p2InputController.Character = Instantiate(_player2Data.CharacterReference, _player2.transform);
             _p2InputController.Character.transform.parent.gameObject.name += "(P2)";
             _p2InputController.Character.name += "(P2)";
+
+            _p2InputController.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
+            _p2InputController.Enabled = true;
+
+            //Set up separate AI controller if appropriate.
+            if (_mode != GameMode.MULTIPLAYER && _mode != GameMode.ONLINE || GridGameManager.AIFightEnabled)
+            {
+                _player2.GetComponent<InputBehaviour>().AIControlled = true;
+                AIControllerBehaviour controller = _player2.GetComponent<AIControllerBehaviour>();
+                controller.Character = _p2InputController.Character;
+                _p2InputController = controller;
+
+                _p2InputController.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
+                _p2InputController.Enabled = true;
+            }
 
             //Set scene values.
             _ringBarrierR.Owner = _p2InputController.Character;
@@ -193,8 +208,6 @@ namespace Lodis.Gameplay
                 meshManager.FaceColor = faceColor;
             }
 
-            _p2InputController.PlayerID = BlackBoardBehaviour.Instance.Player2ID;
-            _p2InputController.Enabled = true;
             BlackBoardBehaviour.Instance.Player2Controller = _p2InputController;
 
             //Set up grid placement.
@@ -422,7 +435,7 @@ namespace Lodis.Gameplay
 
         private void LoadAIDecisions()
         {
-            if (_mode != GameMode.SIMULATE && _mode != GameMode.PlayerVSCPU)
+            if (_mode != GameMode.SIMULATE && _mode != GameMode.PlayerVSCPU && !GridGameManager.AIFightEnabled)
                 return;
 
             AIControllerBehaviour dummyController = BlackBoardBehaviour.Instance.Player2Controller as AIControllerBehaviour;
