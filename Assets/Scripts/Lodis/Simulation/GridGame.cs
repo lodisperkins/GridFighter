@@ -54,10 +54,8 @@ public struct GridGame : IGame
     /// </summary>
     public static Fixed32 Time
     {
-        get
-        {
-            return Utils.TimeGetTime();
-        }
+        get;
+        private set;
     }
 
     public delegate void InputPollCallback(int id);
@@ -91,7 +89,7 @@ public struct GridGame : IGame
         //}
 
         OnSerialization?.Invoke(bw);
-        //Time.Serialize(bw);
+        Time.Serialize(bw);
         TimeScale.Serialize(bw);
         _entityListHandler.Serialize(bw);
         OnLateSerialization?.Invoke(bw);
@@ -103,7 +101,7 @@ public struct GridGame : IGame
         //Debug.Log($"Starting deserializing at position {br.BaseStream.Position}");
 
         OnDeserialization?.Invoke(br);
-        //Time.Deserialize(br);
+        Time.Deserialize(br);
         TimeScale.Deserialize(br);
         _entityListHandler.Deserialize(br);
         OnLateDeserialization?.Invoke(br);
@@ -472,7 +470,7 @@ public struct GridGame : IGame
 
     public void Update(long[] inputs, int disconnectFlags)
     {
-        //Time += FixedTimeStep;
+        Time += FixedTimeStep;
         OnSimulationUpdate?.Invoke(FixedTimeStep);
 
         if (!GridGameManager.OnlineGameStarted)
@@ -513,47 +511,47 @@ public struct GridGame : IGame
         //Collision update
 
         //This loop ensures that we aren't checking collisions with the same colliders by have the second loop start where the first one left off.
-        //for (int row = 0; row < _activePhysicsEntities.Count; row++)
-        //{
-        //    for (int column = row + 1; column < _activePhysicsEntities.Count; column++)
-        //    {
-        //        //Check if these entities should ignore each other.
-        //        bool shouldIgnore;
+        for (int row = 0; row < _activePhysicsEntities.Count; row++)
+        {
+            for (int column = row + 1; column < _activePhysicsEntities.Count; column++)
+            {
+                //Check if these entities should ignore each other.
+                bool shouldIgnore;
 
-        //        if (_collisionPairs.TryGetValue((_activePhysicsEntities[row], _activePhysicsEntities[column]), out shouldIgnore))
-        //        {
-        //            if (shouldIgnore)
-        //                continue;
-        //        }
+                if (_collisionPairs.TryGetValue((_activePhysicsEntities[row], _activePhysicsEntities[column]), out shouldIgnore))
+                {
+                    if (shouldIgnore)
+                        continue;
+                }
 
-        //        //Cache current entities
-        //        EntityData entity1 = _activePhysicsEntities[row];
-        //        EntityData entity2 = _activePhysicsEntities[column];
+                //Cache current entities
+                EntityData entity1 = _activePhysicsEntities[row];
+                EntityData entity2 = _activePhysicsEntities[column];
 
-        //        if (entity1.Colliders == null || entity2.Colliders == null || !entity1.Active || !entity2.Active)
-        //        {
-        //            continue;
-        //        }
+                if (entity1.Colliders == null || entity2.Colliders == null || !entity1.Active || !entity2.Active)
+                {
+                    continue;
+                }
 
-        //        //Check collision between all possible colliders
-        //        for (int i = 0; i < entity1.Colliders.Length; i++)
-        //        {
-        //            for (int j = 0; j < entity2.Colliders.Length; j++)
-        //            {
-        //                GridCollider collider1 = entity1.Colliders[i];
-        //                GridCollider collider2 = entity2.Colliders[j];
+                //Check collision between all possible colliders
+                for (int i = 0; i < entity1.Colliders.Length; i++)
+                {
+                    for (int j = 0; j < entity2.Colliders.Length; j++)
+                    {
+                        GridCollider collider1 = entity1.Colliders[i];
+                        GridCollider collider2 = entity2.Colliders[j];
 
-        //                //If they aren't on the same row there's no point in checking collision.
-        //                if ((collider1 == null || collider2 == null))
-        //                    continue;
+                        //If they aren't on the same row there's no point in checking collision.
+                        if ((collider1 == null || collider2 == null))
+                            continue;
 
-        //                //Check the next thing if a collision wasn't found.
-        //                collider1.CheckCollision(collider2);
-        //            }
-        //        }
-        //    }
+                        //Check the next thing if a collision wasn't found.
+                        collider1.CheckCollision(collider2);
+                    }
+                }
+            }
 
-        //}
+        }
 
 
         //Component late update

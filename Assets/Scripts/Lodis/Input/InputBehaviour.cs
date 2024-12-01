@@ -310,6 +310,7 @@ namespace Lodis.Input
             // If no directional input was detected, enqueue InputFlag.None
             if (!isDirectionalInput)
             {
+                _attackDirection = FVector2.Zero;
                 if (PlayerID == 0)
                     TestInputList.Enqueue(InputFlag.NONE);
             }
@@ -475,6 +476,7 @@ namespace Lodis.Input
             bw.Write(_movementBuffered);
             bw.Write(_storedMoveInput.x);
             bw.Write(_storedMoveInput.y);
+            _attackDirection.Serialize(bw);
 
             if (_bufferedAction != null)
             {
@@ -492,6 +494,7 @@ namespace Lodis.Input
             _movementBuffered = br.ReadBoolean();
             _storedMoveInput.x = br.ReadSingle();
             _storedMoveInput.y = br.ReadSingle();
+            _attackDirection.Deserialize(br);
 
             Fixed32 bufferStartTime = new Fixed32();
             bufferStartTime.Deserialize(br);

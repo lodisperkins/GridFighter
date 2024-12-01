@@ -491,23 +491,23 @@ public class GridCollider
 
     private FVector2 GetPenetrationAmount(GridCollider other)
     {
-        Fixed32 smallestPenetration = Math.Abs(GetRight() - other.GetLeft());
+        Fixed32 smallestPenetration = Fixed32.Abs(GetRight() - other.GetLeft());
 
         FVector2 normalFace = new FVector2(1, 0);
 
         if (Math.Abs(GetLeft() - other.GetRight()) < smallestPenetration)
         {
-            smallestPenetration = Math.Abs(GetLeft() - other.GetRight());
+            smallestPenetration = Fixed32.Abs(GetLeft() - other.GetRight());
             normalFace = new FVector2(-1, 0);
         }
         if (Math.Abs(GetTop() - other.GetBottom()) < smallestPenetration)
         {
-            smallestPenetration = Math.Abs(GetTop() - other.GetBottom());
+            smallestPenetration = Fixed32.Abs(GetTop() - other.GetBottom());
             normalFace = new FVector2(0, 1);
         }
-        if (Math.Abs(GetBottom() - other.GetTop()) < smallestPenetration)
+        if (Fixed32.Abs(GetBottom() - other.GetTop()) < smallestPenetration)
         {
-            smallestPenetration = Math.Abs(GetBottom() - other.GetTop());
+            smallestPenetration = Fixed32.Abs(GetBottom() - other.GetTop());
             normalFace = new FVector2(0, -1);
         }
 

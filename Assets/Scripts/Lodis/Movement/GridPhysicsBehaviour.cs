@@ -478,7 +478,7 @@ namespace Lodis.Movement
         private void UpdatePanelPosition()
         {
 
-            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out PanelBehaviour panel, false))
+            if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out PanelBehaviour panel, false, clamp: true))
                 _movementBehaviour.Position = panel.Position;
         }
 

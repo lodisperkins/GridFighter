@@ -569,7 +569,7 @@ namespace Lodis.GridScripts
         /// <param name="canBeOccupied">Whether or not panels that are occupied should be ignored</param>
         /// <param name="alignment">The side of the grid to look for this panel</param>
         /// <returns></returns>
-        public bool GetPanelAtLocationInWorld(Vector3 location, out PanelBehaviour panel, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
+        public bool GetPanelAtLocationInWorld(Vector3 location, out PanelBehaviour panel, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY, bool clamp = false)
         {
             panel = null;
 
@@ -578,6 +578,12 @@ namespace Lodis.GridScripts
 
             int x = Mathf.RoundToInt((location.x / (PanelRef.transform.localScale.x + PanelSpacingX)));
             int y = Mathf.RoundToInt((location.z / (PanelRef.transform.localScale.z + PanelSpacingZ)));
+
+            if (clamp)
+            {
+                x = (int)Mathf.Clamp(x, 0, _dimensions.x - 1);
+                y = (int)Mathf.Clamp(y, 0, _dimensions.y - 1);
+            }
 
             //If the given position is in range or if the panel is occupied when it shouldn't be, return false.
             if (x < 0 || x >= _dimensions.x || y < 0 || y >= _dimensions.y || float.IsNaN(x) || float.IsNaN(y))

@@ -408,9 +408,9 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 0}
+          - m_Target: {fileID: 2313499556558640970}
             m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-            m_MethodName: 
+            m_MethodName: SetTrigger
             m_Mode: 5
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -1105,7 +1105,7 @@ MonoBehaviour:
       timeMode: 0
     preferences:
       zoomSettings:
-        zoomFactor: 1
+        zoomFactor: 0.9
       dragSettings:
         dragOffset: {x: 319.43878, y: -67.3627}
       gridSettings:
@@ -1114,6 +1114,7 @@ MonoBehaviour:
         isEnabled: 1
     entryState: Idle
   _setTriggersManually: 0
+  _updateAutomatically: 0
 --- !u!114 &6408732290084351063
 MonoBehaviour:
   m_ObjectHideFlags: 0
