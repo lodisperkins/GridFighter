@@ -123,6 +123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _speed:
     RawValue: 524288
   _opponentPanelSpeedReduction:
@@ -200,7 +206,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a4368269c45d6b4681bc1fcb91f8315, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 0
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _health:
+    RawValue: 0
   _startingHealth: 0
   _maxHealth: {fileID: 11400000, guid: a850879eb5579a94c8611fe9609619f4, type: 2}
   _destroyOnDeath: 0
@@ -240,6 +253,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b79447850bcd2ba4ea22b79bb1c220d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _normalDeckRef: {fileID: 11400000, guid: 2f59478c31ed9cb4ca3c28b5330dd51a, type: 2}
   _specialDeckRef: {fileID: 11400000, guid: 10218f4c8e3b0a1429a0f3c78931cc6c, type: 2}
   _discardDeck: {fileID: 0}
@@ -295,6 +314,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _mass:
     RawValue: 262144
   _gravity:
@@ -356,6 +381,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1714ac92737c9d64296a70ccf50bc0c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _stateMachine: {fileID: 3333362921062252507}
   _currentState: 
 --- !u!114 &3333362921062252507
@@ -378,15 +409,15 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 0}
-            m_TargetAssemblyTypeName: 
-            m_MethodName: set_isKinematic
-            m_Mode: 6
+            m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+            m_MethodName: 
+            m_Mode: 5
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
-              m_StringArgument: 
+              m_StringArgument: Idle
               m_BoolArgument: 1
             m_CallState: 2
           - m_Target: {fileID: 0}
@@ -828,8 +859,8 @@ MonoBehaviour:
         m_PersistentCalls:
           m_Calls:
           - m_Target: {fileID: 2313499556558640970}
-            m_TargetAssemblyTypeName: 
-            m_MethodName: SetTrigger
+            m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+            m_MethodName: Play
             m_Mode: 5
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
@@ -838,7 +869,7 @@ MonoBehaviour:
               m_FloatArgument: 0
               m_StringArgument: Idle
               m_BoolArgument: 0
-            m_CallState: 2
+            m_CallState: 0
       onExitTransition:
         m_PersistentCalls:
           m_Calls: []
@@ -1118,6 +1149,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04c0f4c052ab27349b5a94def1a5a3b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _landingTime:
     RawValue: 3276
   _knockDownTime:
@@ -1327,6 +1364,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 561307191668043432}
   _children:
@@ -1343,6 +1381,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -1764,6 +1808,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d87d969c35e242a4eb02c9c756070b23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   Projectile: {fileID: 0}
   Owner: {fileID: 427050719508043804}
 --- !u!114 &9088445964086657447
@@ -1807,6 +1857,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 5474204029689953125}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 5449818576778757990}
   _children: []
@@ -2209,6 +2260,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e61f6d2c3e95504abad56ee6888dead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _moveBehaviour: {fileID: 561307191668043444}
   _knockbackBehaviour: {fileID: 624667988152981373}
   _defenseBehaviour: {fileID: 402071183606503675}
@@ -2668,6 +2725,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:

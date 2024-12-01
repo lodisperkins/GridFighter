@@ -39,12 +39,12 @@ namespace Lodis.GridScripts
 
         public float BounceDampening { get => _bounceDampening; set => _bounceDampening = value; }
 
-        public override void OnDeserialize(BinaryReader br)
+        public override void Deserialize(BinaryReader br)
         {
             
         }
 
-        public override void OnSerialize(BinaryWriter bw)
+        public override void Serialize(BinaryWriter bw)
         {
         }
 

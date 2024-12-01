@@ -1,3 +1,4 @@
+using Assets.Scripts.Lodis.Simulation;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,48 +14,27 @@ namespace FixedPoints
     public static class FixedLerp
     {
         private static List<LerpAction> Actions { get; } = new List<LerpAction>();
+        private static SerializedListHandler<LerpAction> serializedListHandler;
 
         static FixedLerp()
         {
             GridGame.OnSimulationUpdate += Update;
-            GridGame.OnSerialization += SerializeActions;
-            GridGame.OnDeserialization += DeserializeActions;
+            //GridGame.OnSerialization += SerializeActions;
+            //GridGame.OnDeserialization += DeserializeActions;
+            serializedListHandler = new SerializedListHandler<LerpAction>(Actions);
+            serializedListHandler.Name = "FixedLerp";
         }
 
         private static void SerializeActions(BinaryWriter bw)
         {
-            bw.Write(Actions.Count);
-
-            for (int i = 0; i < Actions.Count; i++)
-            {
-                Actions[i].Serialize(bw);
-            }
+            //bw.Write(0);
+            serializedListHandler.Serialize(bw);
         }
 
         private static void DeserializeActions(BinaryReader br)
         {
-            int count = br.ReadInt32();
-
-            List<LerpAction> actionsToRemove = new List<LerpAction>();
-
-            int countInUse = Math.Min(count, Actions.Count);
-
-            for (int i = 0; i < countInUse; i++)
-            {
-                if (Actions[i].FrameStarted > GridGameManager.FrameNumber)
-                {
-                    actionsToRemove.Add(Actions[i]);
-
-                    continue;
-                }
-
-                Actions[i].Deserialize(br);
-            }
-
-            foreach (LerpAction action in actionsToRemove)
-            {
-                Actions.Remove(action);
-            }
+            //br.ReadInt32();
+            serializedListHandler.Deserialize(br);
         }
 
         /// <summary>
@@ -68,6 +48,14 @@ namespace FixedPoints
             }
 
             Actions.RemoveAll(l => l.Killed);
+            //Debug.Log($"Fixed lerp action count: {Actions.Count}");
+        }
+
+        public static T GetAction<T>(FTransform target) where T : LerpAction
+        {
+            LerpAction action = Actions.Find(a => a is T && a.GetTarget() == target);
+
+            return (T)action;
         }
 
         /// <summary>
@@ -165,16 +153,27 @@ namespace FixedPoints
             return action;
         }
 
+        public static bool ContainsAction(LerpAction action)
+        {
+            return Actions.Contains(action);
+        }
+
         public static void RemoveAction(LerpAction action)
         {
             Actions.Remove(action);
+        }
+        public static void AddAction(LerpAction action)
+        {
+            if (Actions?.Contains(action) == true) return;
+
+            Actions.Add(action);
         }
     }
 
     /// <summary>
     /// Abstract class that defines base logic for all fixed lerping.
     /// </summary>
-    public abstract class LerpAction
+    public abstract class LerpAction : ISerializedListObject
     {
         protected FTransform Target;
         protected Fixed32 Duration;
@@ -196,6 +195,7 @@ namespace FixedPoints
 
         public delegate void LerpActionEvent();
         public event LerpActionEvent onKill;
+        public event LerpActionEvent onRevive;
         public event LerpActionEvent onComplete;
 
         /// <param name="target">The transform of the entity this lerp action is for.</param>
@@ -213,7 +213,12 @@ namespace FixedPoints
 
         public bool IsPlaying()
         {
-            return !IsPaused && TimeElapsed < Duration && !_killed;
+            return !IsPaused && TimeElapsed < Duration && !_killed && FixedLerp.ContainsAction(this);
+        }
+
+        public FTransform GetTarget()
+        {
+            return Target;
         }
 
         /// <summary>
@@ -254,19 +259,32 @@ namespace FixedPoints
         /// <summary>
         /// Reset the lerp action to the orignal starting position.
         /// </summary>
-        public void Rewind() => TimeElapsed = 0;
+        public void Rewind()
+        {
+            IsPaused = false;
+            _killed = false;
+            TimeElapsed = 0;
+            _frameStarted = GridGameManager.FrameNumber;
+            onRevive?.Invoke();
+            FixedLerp.AddAction(this);
+        }
 
-        public virtual void Serialize(BinaryWriter bw)
+        public virtual void OnSerialize(BinaryWriter bw)
         {
             TimeElapsed.Serialize(bw);
             bw.Write(IsPaused);
+            bw.Write(_killed);
         }
 
-        public virtual void Deserialize(BinaryReader br)
+        public virtual void OnDeserialize(BinaryReader br)
         {
+            FixedLerp.AddAction(this);
             TimeElapsed.Deserialize(br);
             IsPaused = br.ReadBoolean();
+            _killed = br.ReadBoolean();
         }
+        public ListEvent OnAddedToList { get; set; }
+        public int FrameSerialized { get; set; }
 
         /// <summary>
         /// Progresses the lerp through time.
@@ -305,6 +323,11 @@ namespace FixedPoints
         /// </summary>
         /// <param name="t"></param>
         protected abstract void Apply(Fixed32 t);
+
+        public bool CheckIfCanBeAddedToList()
+        {
+            return !_killed/* && FrameStarted <= GridGameManager.FrameNumber*/;
+        }
     }
 
     /// <summary>
@@ -328,6 +351,39 @@ namespace FixedPoints
             FVector3 newPosition = StartValue + (EndValue - StartValue) * t;
             Target.WorldPosition = newPosition;
         }
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            EndValue.Serialize(bw);
+        }
+
+        public override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            StartValue.Deserialize(br);
+            EndValue.Deserialize(br);
+        }
+
+        public void ChangeEndValue(FVector3 newEndValue)
+        {
+            Rewind();
+            EndValue = newEndValue;
+        }
+
+        public void ChangeStartValue(FVector3 newStartValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+        }
+
+        public void ChangeValues(FVector3 newStartValue, FVector3 newEndValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+            EndValue = newEndValue;
+        }
     }
 
     /// <summary>
@@ -349,6 +405,39 @@ namespace FixedPoints
         {
             FQuaternion newRotation = FQuaternion.Lerp(StartValue, EndValue, t);
             Target.WorldRotation = newRotation;
+        }
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            EndValue.Serialize(bw);
+        }
+
+        public override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            StartValue.Deserialize(br);
+            EndValue.Deserialize(br);
+        }
+
+        public void ChangeEndValue(FQuaternion newEndValue)
+        {
+            Rewind();
+            EndValue = newEndValue;
+        }
+
+        public void ChangeStartValue(FQuaternion newStartValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+        }
+
+        public void ChangeValues(FQuaternion newStartValue, FQuaternion newEndValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+            EndValue = newEndValue;
         }
     }
 
@@ -372,7 +461,41 @@ namespace FixedPoints
             FVector3 newScale = StartValue + (EndValue - StartValue) * t;
             Target.WorldScale = newScale;
         }
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            EndValue.Serialize(bw);
+        }
+
+        public override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            StartValue.Deserialize(br);
+            EndValue.Deserialize(br);
+        }
+
+        public void ChangeEndValue(FVector3 newEndValue)
+        {
+            Rewind();
+            EndValue = newEndValue;
+        }
+
+        public void ChangeStartValue(FVector3 newStartValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+        }
+
+        public void ChangeValues(FVector3 newStartValue, FVector3 newEndValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+            EndValue = newEndValue;
+        }
     }
+
 
     public class PunchAction : LerpAction
     {
@@ -388,11 +511,44 @@ namespace FixedPoints
 
         protected override void Apply(Fixed32 t)
         {
-            // Example punch logic, needs actual punch algorithm
             FVector3 newValue = StartValue + PunchValue * (1 - t);
             Target.WorldPosition = newValue;
         }
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            PunchValue.Serialize(bw);
+        }
+
+        public override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            StartValue.Deserialize(br);
+            PunchValue.Deserialize(br);
+        }
+
+        public void ChangeEndValue(FVector3 newEndValue)
+        {
+            Rewind();
+            PunchValue = newEndValue;
+        }
+
+        public void ChangeStartValue(FVector3 newStartValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+        }
+
+        public void ChangeValues(FVector3 newStartValue, FVector3 newPunchValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+            PunchValue = newPunchValue;
+        }
     }
+
 
     public class JumpAction : LerpAction
     {
@@ -412,13 +568,46 @@ namespace FixedPoints
 
         protected override void Apply(Fixed32 t)
         {
-            //Jumping using parabolic arc
             Fixed32 progress = (Fixed32)(t * Fixed32.PI * NumJumps);
             Fixed32 yOffset = JumpPower * Fixed32.Sin(progress);
             FVector3 newValue = StartValue + (EndValue - StartValue) * t + new FVector3(0, yOffset, 0);
             Target.WorldPosition = newValue;
         }
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            EndValue.Serialize(bw);
+        }
+
+        public override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            StartValue.Deserialize(br);
+            EndValue.Deserialize(br);
+        }
+
+        public void ChangeEndValue(FVector3 newEndValue)
+        {
+            Rewind();
+            EndValue = newEndValue;
+        }
+
+        public void ChangeStartValue(FVector3 newStartValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+        }
+
+        public void ChangeValues(FVector3 newStartValue, FVector3 newEndValue)
+        {
+            Rewind();
+            StartValue = newStartValue;
+            EndValue = newEndValue;
+        }
     }
+
 
     /// <summary>
     /// Represents a fixed-point tween action that interpolates a value over time.
@@ -427,8 +616,8 @@ namespace FixedPoints
     {
         private readonly Func<Fixed32> _getter;
         private readonly Action<Fixed32> _setter;
-        private readonly Fixed32 _startValue;
-        private readonly Fixed32 _endValue;
+        private Fixed32 _startValue;
+        private Fixed32 _endValue;
 
         public FixedTweenAction(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 startValue, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
             : base(null, duration, curve)
@@ -439,17 +628,43 @@ namespace FixedPoints
             _endValue = endValue;
         }
 
-        /// <summary>
-        /// Updates the tween over time.
-        /// </summary>
-        /// <param name="dt">The time step (dt).</param>
-        /// <returns>True if the tween has finished, false otherwise.</returns>
         protected override void Apply(Fixed32 t)
         {
-
-            // Lerp the value between start and end based on t.
             Fixed32 currentValue = _startValue + (_endValue - _startValue) * t;
             _setter(currentValue);
+        }
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            _startValue.Serialize(bw);
+            _endValue.Serialize(bw);
+        }
+
+        public override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            _startValue = (Fixed32)br.ReadSingle();
+            _endValue = (Fixed32)br.ReadSingle();
+        }
+
+        public void ChangeEndValue(Fixed32 newEndValue)
+        {
+            Rewind();
+            _endValue = newEndValue;
+        }
+
+        public void ChangeStartValue(Fixed32 newStartValue)
+        {
+            Rewind();
+            _startValue = newStartValue;
+        }
+
+        public void ChangeValues(Fixed32 newStartValue, Fixed32 newEndValue)
+        {
+            Rewind();
+            _startValue = newStartValue;
+            _endValue = newEndValue;
         }
     }
 

@@ -437,6 +437,8 @@ namespace Lodis.AI
                 return;
             }
 
+            return;
+
             //Store the ability so the flag can be set based on its type.
             Ability ability = _moveset.GetAbility(args =>
             {

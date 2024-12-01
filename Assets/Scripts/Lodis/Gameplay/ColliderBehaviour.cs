@@ -110,8 +110,9 @@ namespace Lodis.Gameplay
             _onHit = null;
         }
 
-        public override void OnSerialize(BinaryWriter bw)
+        public override void Serialize(BinaryWriter bw)
         {
+            return;
             //Tell the actual colliding object to serialize.
             _entityCollider.Serialize(bw);
 
@@ -127,8 +128,9 @@ namespace Lodis.Gameplay
             }
         }
 
-        public override void OnDeserialize(BinaryReader br)
+        public override void Deserialize(BinaryReader br)
         {
+            return;
             //Tell the actual colliding object to deserialize.
             _entityCollider.Deserialize(br);
 

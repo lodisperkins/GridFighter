@@ -15,7 +15,8 @@
         private List<AnyState> _anyStates;
         [SerializeField]
         private bool _setTriggersManually;
-
+        [Tooltip("If true, will update automatically using Unitys update.")]
+        [SerializeField] private bool _updateAutomatically;
         /// <summary>
         /// Returns the ID of the currently active state or string.Empty if none is active
         /// </summary>
@@ -81,6 +82,14 @@
         }
 
         private void Update()
+        {
+            if (_updateAutomatically)
+            {
+                UpdateStateMachine();
+            }
+        }
+
+        public void UpdateStateMachine()
         {
             // Trigger the OnUpdateState event of the currently active state
             if (CurrentState == string.Empty || !graph.TryGetState(CurrentState, out State state))

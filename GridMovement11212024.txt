@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.GridScripts;
@@ -15,6 +15,7 @@ using FixedPoints;
 using Types;
 using System.IO;
 using UnityEngine.Serialization;
+using Unity.PlasticSCM.Editor.WebApi;
 
 namespace Lodis.Movement
 {
@@ -66,7 +67,7 @@ namespace Lodis.Movement
         private static FloatVariable _maxYPosition;
         private FVector3 _targetPosition;
         private PanelBehaviour _targetPanel = null;
-        private PanelBehaviour _previousPanel;
+        private PanelBehaviour _lastPanel;
         private PanelBehaviour _currentPanel;
         private GameEventListener _moveEnabledEventListener;
         private CustomEventSystem.GameEventListener _moveDisabledEventListener;
@@ -74,6 +75,7 @@ namespace Lodis.Movement
         private CustomEventSystem.GameEventListener _onMoveBeginTemp;
         private CustomEventSystem.GameEventListener _onMoveEnd;
         private CustomEventSystem.GameEventListener _onMoveEndTemp;
+        private PanelBehaviour _previousPanel;
         private Fixed32 _heightOffset;
         private MeshFilter _meshFilter;
         private bool _searchingForSafePanel;
@@ -486,21 +488,19 @@ namespace Lodis.Movement
         private void LerpPosition(FVector3 newPosition)
         {
             if (_moveLerp?.IsPlaying() == true)
+            {
                 _moveLerp.Kill();
-
-            if (_moveLerp == null)
-            {
-                _moveLerp = (FixedPoints.MoveAction)FixedLerp.DoMove(FixedTransform, newPosition, TravelTime);
             }
-            else
-            {
-                _moveLerp.Rewind();
-                _moveLerp.ChangeValues(FixedTransform.WorldPosition, newPosition);
-            }
-
+            _moveLerp = (FixedPoints.MoveAction)FixedLerp.DoMove(FixedTransform, newPosition, TravelTime);
+            //if (_moveLerp?.IsPlaying() == true)
+            //{
+            //    _moveLerp.ChangeEndValue(newPosition);
+            //}
+            //else
+            //{
+            //  _moveLerp = (FixedPoints.MoveAction)FixedLerp.DoMove(FixedTransform, newPosition, TravelTime);
+            //}
             _moveLerp.onComplete += ResetMovementValues;
-
-            //UnityEngine.Debug.Log($"Lerping to {TargetPanel.Position}");
         }
 
 
@@ -522,25 +522,7 @@ namespace Lodis.Movement
                 tempAlignment = _defaultAlignment;
 
             if (IsMoving && !CanCancelMovement || !_canMove || _health?.Stunned == true)
-            {
-                if (IsMoving && !CanCancelMovement)
-                {
-                    UnityEngine.Debug.Log($"Condition failed: IsMoving={IsMoving} && !CanCancelMovement={CanCancelMovement}");
-                    return false;
-                }
-
-                if (!_canMove)
-                {
-                    UnityEngine.Debug.Log("Condition failed: _canMove is false.");
-                    return false;
-                }
-
-                if (_health?.Stunned == true)
-                {
-                    UnityEngine.Debug.Log("Condition failed: _health is stunned.");
-                    return false;
-                }
-            }
+                return false;
             else if (CanCancelMovement && IsMoving)
                 CancelMovement();
 
@@ -562,35 +544,32 @@ namespace Lodis.Movement
             _previousPanel = _currentPanel;
             //Sets the new position to be the position of the panel added to half the gameObjects height.
 
-
             FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, _heightOffset, 0);
             _targetPosition = newPosition;
 
             MoveDirection = (panelPosition - Position).GetNormalized();
 
-            SetIsMoving(true);
-
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
                 FixedTransform.WorldPosition = newPosition;
-                SetIsMoving(false);
+                SetIsMoving(true);
             }
-            else
-            {
-                LerpPosition(newPosition);
-            }
+            //else
+            //{
+            //    LerpPosition(newPosition);
+            //}
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
-            _previousPanel = _currentPanel;
-            _currentPanel = _targetPanel;
+            _lastPanel = _currentPanel;
             if (reservePanel)
-                _currentPanel.Occupied = !CanBeWalkedThrough;
-            Position = _currentPanel.Position;
+                _targetPanel.Occupied = !CanBeWalkedThrough;
+
+            Position = _targetPanel.Position;
 
             return true;
         }
@@ -639,29 +618,28 @@ namespace Lodis.Movement
 
             MoveDirection = (panelPosition - Position).GetNormalized();
 
-            SetIsMoving(true);
-
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
+                
+
                 FixedTransform.WorldPosition = newPosition;
-                SetIsMoving(false);
+                SetIsMoving(true);
             }
-            else
-            {
-                LerpPosition(newPosition);
-            }
+            //else
+            //{
+            //    LerpPosition(newPosition);
+            //}
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
-            _previousPanel = _currentPanel;
-            _currentPanel = _targetPanel;
+            _lastPanel = _currentPanel;
             if (reservePanel)
-                _currentPanel.Occupied = !CanBeWalkedThrough;
-            Position = _currentPanel.Position;
+                _targetPanel.Occupied = !CanBeWalkedThrough;
+            Position = _targetPanel.Position;
 
             return true;
         }
@@ -689,7 +667,6 @@ namespace Lodis.Movement
                 return false;
 
             _previousPanel = _currentPanel;
-
             //Sets the new position to be the position of the panel added to half the gameOgjects height.
             //Adding the height ensures the gameObject is not placed inside the panel.
             Fixed32 offset = 0;
@@ -701,30 +678,30 @@ namespace Lodis.Movement
             FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, offset, 0);
             _targetPosition = newPosition;
 
+
             MoveDirection = new FVector2(x, y) - Position;
-
-            SetIsMoving(true);
-
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
+
+               
+
                 FixedTransform.WorldPosition = newPosition;
-                SetIsMoving(false);
+                SetIsMoving(true);
             }
-            else
-            {
-                LerpPosition(newPosition);
-            }
+            //else
+            //{
+            //    LerpPosition(newPosition);
+            //}
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
-            _previousPanel = _currentPanel;
-            _currentPanel = _targetPanel;
-            _currentPanel.Occupied = !CanBeWalkedThrough;
-            Position = _currentPanel.Position;
+            _lastPanel = _currentPanel;
+            _targetPanel.Occupied = !CanBeWalkedThrough;
+            Position = _targetPanel.Position;
             return true;
         }
 
@@ -771,29 +748,27 @@ namespace Lodis.Movement
 
             MoveDirection = (targetPanel.Position - Position).GetNormalized();
 
-            SetIsMoving(true);
-
             //If snap position is true, hard set the position to the destination. Otherwise smoothly slide to destination.
             if (snapPosition)
             {
                 
+                
                 FixedTransform.WorldPosition = newPosition;
-                SetIsMoving(false);
+                SetIsMoving(true);
             }
-            else
-            {
-                LerpPosition(newPosition);
-            }
+            //else
+            //{
+            //    LerpPosition(newPosition);
+            //}
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
                 _currentPanel.Occupied = false;
 
             //Updates the current panel
-            _previousPanel = _currentPanel;
-            _currentPanel = _targetPanel;
-            _currentPanel.Occupied = !CanBeWalkedThrough;
-            Position = _currentPanel.Position;
+            _lastPanel = _currentPanel;
+            _targetPanel.Occupied = !CanBeWalkedThrough;
+            Position = _targetPanel.Position;
 
             return true;
         }
@@ -860,13 +835,14 @@ namespace Lodis.Movement
         /// </summary>
         private void MoveToCurrentPanel()
         {
-
-            if (IsMoving && !CanCancelMovement || !_canMove)
+            if (TargetPanel == CurrentPanel || !_canMove)
                 return;
 
             //If it's not possible to move to the panel at the given position, return false.
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(Position, out _targetPanel))
                 return;
+
+            MoveDirection = (Position - _previousPanel.Position).GetNormalized();
 
             _previousPanel = _currentPanel;
 
@@ -880,17 +856,14 @@ namespace Lodis.Movement
 
             FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, heightOffset, 0);
             _targetPosition = newPosition;
+            //SetIsMoving(false);
 
-            //LerpPosition(newPosition);
-
-            FixedTransform.WorldPosition = newPosition;
-            SetIsMoving(false);
-
-            MoveDirection = (_currentPanel.Position - Position).GetNormalized();
 
             //Sets the current panel to be unoccupied if it isn't null
             if (_currentPanel)
                 _currentPanel.Occupied = false;
+
+            LerpPosition(newPosition);
 
             //Updates the current panel
             _currentPanel = _targetPanel;
@@ -918,11 +891,11 @@ namespace Lodis.Movement
         /// </summary>
         public void SnapToTarget()
         {
-            if (!IsMoving || _previousPanel == null || _targetPanel == null)
+            if (!IsMoving || _lastPanel == null || _targetPanel == null)
                 return;
 
 
-            Fixed32 currentDistance = FVector3.Distance((FVector3)_previousPanel.transform.position, (FVector3)transform.position);
+            Fixed32 currentDistance = FVector3.Distance((FVector3)_lastPanel.transform.position, (FVector3)transform.position);
             Fixed32 targetDistance = FVector3.Distance((FVector3)_targetPanel.transform.position, (FVector3)transform.position);
 
             CanCancelMovement = true;
@@ -1047,6 +1020,7 @@ namespace Lodis.Movement
 
         public override void Tick(Fixed32 dt)
         {
+            //If we are in physics mode don't allow grid movement.
             if (_physics?.GridActive == false)
             {
                 if (_isMoving)
@@ -1054,23 +1028,29 @@ namespace Lodis.Movement
 
                 return;
             }
+
             //Old update
+
+            //Check is we are stunned or if movement has been disabled some other way.
             if (!_canMove || _health?.Stunned == true)
                 return;
 
+            //This handles moving back to the closest panel when we are on the opponents side.
             MoveToClosestAlignedPanelOnRow();
 
-            GridBehaviour.Grid.GetPanel(Position, out _currentPanel);
+            ////Ask the grid for the panel at our current position.
+            //GridBehaviour.Grid.GetPanel(Position, out _currentPanel);
 
-            if (!_currentPanel)
-                return;
+            //if (!_currentPanel)
+            //    return;
 
-            Fixed32 dist = FVector3.Distance(FixedTransform.WorldPosition, (FVector3)_currentPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset);
+            SetIsMoving((_moveLerp != null && _moveLerp.IsPlaying()));
 
-            if (dist >= _targetTolerance || _searchingForSafePanel)
+            //Check if we are in the tolerated distance of the panel. If not move there.
+            if (FVector3.Distance(FixedTransform.WorldPosition, (FVector3)_targetPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset) >= _targetTolerance || _searchingForSafePanel)
+            {
                 MoveToCurrentPanel();
-
-            SetIsMoving(dist >= _targetTolerance && (_moveLerp != null && _moveLerp.IsPlaying()));
+            }
 
             string state = BlackBoardBehaviour.Instance.GetPlayerState(gameObject);
 
@@ -1098,95 +1078,26 @@ namespace Lodis.Movement
 
         public override void Serialize(BinaryWriter bw)
         {
-            bw.Write(_isMoving);
+            //bw.Write(_isMoving);
             bw.Write(_canMove);
             bw.Write(_canCancelMovement);
             bw.Write(_alwaysLookAtOpposingSide);
             bw.Write(_moveToAlignedSideIfStuck);
-
-            if (_previousPanel != null)
-            {
-                _previousPanel.Position.Serialize(bw);
-            }
-            else
-            {
-                Fixed32 x = new Fixed32(16, -1);
-                x.Serialize(bw);
-                Fixed32 y = new Fixed32(16, -1);
-                y.Serialize(bw);
-            }
-
-            //if (_targetPanel != null)
-            //{
-            //    _targetPanel.Position.Serialize(bw);
-            //}
-            //else
-            //{
-            //    Fixed32 x = new Fixed32(16, -1);
-            //    x.Serialize(bw);
-            //    Fixed32 y = new Fixed32(16, -1);
-            //    y.Serialize(bw);
-            //}
-            MoveDirection.Serialize(bw);
-            _targetPosition.Serialize(bw);
-
-            //UnityEngine.Debug.Log($"Target position serialized {_targetPosition}");
-
-            if (_moveLerp != null)
-            {
-                bw.Write(true);
-                _moveLerp.OnSerialize(bw);
-            }
-            else
-            {
-                bw.Write(false);
-            }
         }
 
         public override void Deserialize(BinaryReader br)
         {
-            //UnityEngine.Debug.Log($"Last deserialized positionn is {Position}");
-            CanMoveDiagonally = true;
-
-            //CancelMovement();
-            //MoveToCurrentPanel();
-            _isMoving = br.ReadBoolean();
-            //_isMoving = false;
+            //_isMoving = br.ReadBoolean();
             _canMove = br.ReadBoolean();
             _canCancelMovement = br.ReadBoolean();
             _alwaysLookAtOpposingSide = br.ReadBoolean();
             _moveToAlignedSideIfStuck = br.ReadBoolean();
 
-            FVector2 previousPosition = new FVector2();
-            previousPosition.Deserialize(br);
-
-            GridBehaviour.Grid.GetPanel(previousPosition, out _previousPanel);
-
-            //FVector2 targetPosition = new FVector2();
-            //targetPosition.Deserialize(br);
-
-            //GridBehaviour.Grid.GetPanel(targetPosition, out _targetPanel);
-
-
-            MoveDirection.Deserialize(br);
-            _targetPosition.Deserialize(br);
-
-            GridBehaviour.Grid.GetPanelAtLocationInWorld((Vector3)_targetPosition, out _targetPanel);
-
-            //UnityEngine.Debug.Log($"Target position deserialized {_targetPosition}");
-
-            bool savedMoveLerp = br.ReadBoolean();
-
-            if (savedMoveLerp)
-                _moveLerp.OnDeserialize(br);
-
-            //MoveToPanel(Position, true);
-
-            //if (_isMoving)
-            //{
-            //    CancelMovement();
-            //    Move(MoveDirection);
-            //}
+            if (_isMoving)
+            {
+                CancelMovement();
+                MoveToCurrentPanel();
+            }
         }
     }
 }

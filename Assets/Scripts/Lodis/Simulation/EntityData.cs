@@ -1,4 +1,7 @@
+using Assets.Scripts.Lodis.Simulation;
 using FixedPoints;
+using Lodis.Movement;
+using Lodis.Utility;
 using System.Collections.Generic;
 using System.IO;
 using Types;
@@ -8,9 +11,10 @@ using UnityEngine;
 /// Contains info pertaining to an entity in the rollback simulation.
 /// </summary>
 [System.Serializable]
-public class EntityData
+public class EntityData : ISerializedListObject
 {
     private readonly List<SimulationBehaviour> _components = new();
+    private readonly SerializedListHandler<SimulationBehaviour> _serializedComponents;
     private bool _active;
     private GridCollider[] _gridColliders;
     private int _frameAdded;
@@ -70,6 +74,8 @@ public class EntityData
 
     public int FrameAdded { get => _frameAdded; set => _frameAdded = value; }
     public int FrameRemoved { get => _frameRemoved; set => _frameRemoved = value; }
+    public int FrameSerialized { get; set; }
+    public ListEvent OnAddedToList { get; set; }
 
     public delegate void EntityUpdateEvent(Fixed32 dt);
     public event EntityUpdateEvent OnTick;
@@ -85,6 +91,9 @@ public class EntityData
         Name = "New Entity";
         Transform = new FTransform(this);
         Init();
+        _serializedComponents = new SerializedListHandler<SimulationBehaviour>(_components);
+        _serializedComponents.Name = Name + " Components";
+        OnAddedToList = AddDeserializedEntityToGame;
     }
 
     public EntityData(string name) : this()
@@ -92,10 +101,22 @@ public class EntityData
         Name = name;
     }
 
+    private void AddDeserializedEntityToGame()
+    {
+        //Abilities need to be taken from the pool so they are reusable.
+        if (UnityObject.layer == LayerMask.NameToLayer("Ability"))
+        {
+            ObjectPoolBehaviour.Instance.GetObject(UnityScript, Transform.WorldPosition, Transform.WorldRotation);
+        }
+        //Otherwise just spawn them back into the game.
+        else
+        {
+            GridGame.AddEntityToGame(this);
+        }
+    }
+
     public virtual void Serialize(BinaryWriter bw)
     {
-        //bw.Write(Name);
-
         bw.Write(Active);
 
         bw.Write(X);
@@ -103,10 +124,7 @@ public class EntityData
 
         Transform.Serialize(bw);
 
-        foreach (SimulationBehaviour component in _components)
-        {
-            component.Serialize(bw);
-        }
+        _serializedComponents.Serialize(bw);
 
         if (_gridColliders == null) return;
 
@@ -118,19 +136,13 @@ public class EntityData
 
     public virtual void Deserialize(BinaryReader br)
     {
-        //Name = br.ReadString();
-
         Active = br.ReadBoolean();
 
         X = br.ReadInt32();
         Y = br.ReadInt32();
 
         Transform.Deserialize(br);
-
-        foreach (SimulationBehaviour component in _components)
-        {
-            component.Deserialize(br);
-        }
+        _serializedComponents.Deserialize(br);
 
         if (_gridColliders == null) return;
 
@@ -344,6 +356,35 @@ public class EntityData
         foreach (var comp in _components)
         {
             comp.OnOverlapExit(collision);
+        }
+    }
+
+    public bool CheckIfCanBeAddedToList()
+    {
+        return Active || FrameRemoved > GridGameManager.FrameNumber;
+    }
+
+    public void OnSerialize(BinaryWriter bw)
+    {
+        Serialize(bw);
+    }
+
+    public void OnDeserialize(BinaryReader br)
+    {
+        Deserialize(br);
+
+        if (FrameAdded > GridGameManager.FrameNumber)
+        {
+            //Abilities need to be added back to the pool so they are reusable.
+            if (UnityObject.layer == LayerMask.NameToLayer("Ability"))
+            {
+                ObjectPoolBehaviour.Instance.ReturnGameObject(UnityScript);
+            }
+            //Otherwise just remove them from the game as normal.
+            else
+            {
+                GridGame.RemoveEntityFromGame(this);
+            }
         }
     }
 

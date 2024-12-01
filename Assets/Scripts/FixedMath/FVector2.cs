@@ -1,6 +1,7 @@
 using Types;
 using System;
 using UnityEngine;
+using System.IO;
 
 namespace FixedPoints
 {
@@ -37,6 +38,18 @@ namespace FixedPoints
         {
             _x = x;
             _y = y;
+        }
+
+        public void Serialize(BinaryWriter bw)
+        {
+            X.Serialize(bw);
+            Y.Serialize(bw);
+        }
+
+        public void Deserialize(BinaryReader br)
+        {
+            X.Deserialize(br);
+            Y.Deserialize(br);
         }
 
         /// <summary>

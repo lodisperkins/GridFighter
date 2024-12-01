@@ -17,6 +17,8 @@ using UnityEngine.InputSystem.HID;
 using System.Linq;
 using Lodis.Utility;
 using NUnit.Framework.Interfaces;
+using System;
+using Assets.Scripts.Lodis.Simulation;
 
 
 public class TagSelectorAttribute : PropertyAttribute
@@ -32,6 +34,8 @@ public struct GridGame : IGame
     private static List<EntityData> _entitiesToRemove = new();
     private static List<EntityData> _entitiesToDestory = new();
     private static List<EntityData> _physicsEntitiesToRemove = new();
+    private static List<EntityData> _serializedEntities = new();
+    private static SerializedListHandler<EntityData> _entityListHandler = new(_activeEntities);
 
     //A dictionary of entity pairs that determines whether or not they collide. Used to ignore specific entities instead of layers.
     private static readonly Dictionary<(EntityData, EntityData), bool> _collisionPairs = new();
@@ -48,17 +52,27 @@ public struct GridGame : IGame
     /// <summary>
     /// The amount of time that has passed since the simulation began.
     /// </summary>
-    public static Fixed32 Time;
+    public static Fixed32 Time
+    {
+        get
+        {
+            return Utils.TimeGetTime();
+        }
+    }
 
     public delegate void InputPollCallback(int id);
     public delegate void InputProcessCallback(int id, long inputs);
     public delegate void SerializationCallback(BinaryWriter writer);
     public delegate void DeserializationCallback(BinaryReader reader);
+    public delegate void ClearMemoryCallback();
 
     public static event InputPollCallback OnPollInput;
     public static event InputProcessCallback OnProcessInput;
     public static event SerializationCallback OnSerialization;
     public static event DeserializationCallback OnDeserialization;
+    public static event SerializationCallback OnLateSerialization;
+    public static event DeserializationCallback OnLateDeserialization;
+    public static event ClearMemoryCallback OnClearMemory;
     public static event EntityUpdateEvent OnSimulationUpdate;
 
     public int Framenumber { get; private set; }
@@ -67,71 +81,78 @@ public struct GridGame : IGame
 
     public void Serialize(BinaryWriter bw)
     {
-        HandleRemovalOfMarkedEntities();
+        //HandleRemovalOfMarkedEntities();
+        //_serializedEntities.Clear();
 
-        bw.Write(Framenumber);
-        bw.Write(_activeEntities.Count);
-
-        for (int i = 0; i < _activeEntities.Count; ++i)
-        {
-            _activeEntities[i].Serialize(bw);
-        }
+        //for (int i = 0; i < _activeEntities.Count; ++i)
+        //{
+        //    _activeEntities[i].Serialize(bw);
+        //    _serializedEntities.Add(_activeEntities[i]);
+        //}
 
         OnSerialization?.Invoke(bw);
+        //Time.Serialize(bw);
+        TimeScale.Serialize(bw);
+        _entityListHandler.Serialize(bw);
+        OnLateSerialization?.Invoke(bw);
+
     }
 
     public void Deserialize(BinaryReader br)
     {
-        Framenumber = br.ReadInt32();
-
-        for (int i = 0; i < _activeEntities.Count; ++i)
-        {
-            EntityData entity = _activeEntities[i];
-            if (entity.FrameAdded > Framenumber)
-            {
-                //Abilities need to be added back to the pool so they are reusable.
-                if (entity.UnityObject.layer == LayerMask.NameToLayer("Ability"))
-                {
-                    ObjectPoolBehaviour.Instance.ReturnGameObject(entity.UnityScript);
-                }
-                //Otherwise just remove them from the game as normal.
-                else
-                {
-                    RemoveEntityFromGame(entity);
-                }
-            }
-        }
-
-        for (int i = 0; i < _entitiesToRemove.Count; i++)
-        {
-            EntityData entityToRemove = _entitiesToRemove[i];
-
-            if (entityToRemove.FrameRemoved > Framenumber)
-            {
-                //Abilities need to be taken from the pool so they are reusable.
-                if (entityToRemove.UnityObject.layer == LayerMask.NameToLayer("Ability"))
-                {
-                    ObjectPoolBehaviour.Instance.GetObject(entityToRemove.UnityScript, entityToRemove.Transform.WorldPosition, entityToRemove.Transform.WorldRotation);
-                }
-                //Otherwise just spawn them back into the game.
-                else
-                {
-                    AddEntityToGame(entityToRemove);
-                    _entitiesToRemove.RemoveAt(i);
-                }
-            }
-        }
-
-        HandleRemovalOfMarkedEntities();
-
-        int count = br.ReadInt32();
-
-        for (int i = 0; i < count; ++i)
-        {
-            _activeEntities[i].Deserialize(br);
-        }
+        //Debug.Log($"Starting deserializing at position {br.BaseStream.Position}");
 
         OnDeserialization?.Invoke(br);
+        //Time.Deserialize(br);
+        TimeScale.Deserialize(br);
+        _entityListHandler.Deserialize(br);
+        OnLateDeserialization?.Invoke(br);
+
+
+        //for (int i = 0; i < _serializedEntities.Count; ++i)
+        //{
+        //    _serializedEntities[i].Deserialize(br);
+        //}
+
+        //for (int i = 0; i < _serializedEntities.Count; ++i)
+        //{
+        //    EntityData entity = _serializedEntities[i];
+        //    if (entity.FrameAdded > Framenumber)
+        //    {
+        //        //Abilities need to be added back to the pool so they are reusable.
+        //        if (entity.UnityObject.layer == LayerMask.NameToLayer("Ability"))
+        //        {
+        //            ObjectPoolBehaviour.Instance.ReturnGameObject(entity.UnityScript);
+        //        }
+        //        //Otherwise just remove them from the game as normal.
+        //        else
+        //        {
+        //            RemoveEntityFromGame(entity);
+        //        }
+        //    }
+        //}
+
+        //for (int i = 0; i < _entitiesToRemove.Count; i++)
+        //{
+        //    EntityData entityToRemove = _entitiesToRemove[i];
+
+        //    if (entityToRemove.FrameRemoved > Framenumber)
+        //    {
+        //        //Abilities need to be taken from the pool so they are reusable.
+        //        if (entityToRemove.UnityObject.layer == LayerMask.NameToLayer("Ability"))
+        //        {
+        //            ObjectPoolBehaviour.Instance.GetObject(entityToRemove.UnityScript, entityToRemove.Transform.WorldPosition, entityToRemove.Transform.WorldRotation);
+        //        }
+        //        //Otherwise just spawn them back into the game.
+        //        else
+        //        {
+        //            AddEntityToGame(entityToRemove);
+        //            _entitiesToRemove.RemoveAt(i);
+        //        }
+        //    }
+        //}
+        //HandleRemovalOfMarkedEntities();
+
     }
 
     public NativeArray<byte> ToBytes()
@@ -141,7 +162,15 @@ public struct GridGame : IGame
         {
             using (var writer = new BinaryWriter(memoryStream))
             {
+                // Write total size first if needed
+                long startPos = writer.BaseStream.Position;
+
+                // Do ALL writing in one pass
                 Serialize(writer);
+
+                // Verify end position if needed
+                long endPos = writer.BaseStream.Position;
+                //Debug.Log($"Wrote from {startPos} to {endPos}");
             }
             return new NativeArray<byte>(memoryStream.ToArray(), Allocator.Persistent);
         }
@@ -173,6 +202,8 @@ public struct GridGame : IGame
         {
             data.Dispose();
         }
+
+        OnClearMemory?.Invoke();
     }
 
     public void LogInfo(string filename)
@@ -441,7 +472,7 @@ public struct GridGame : IGame
 
     public void Update(long[] inputs, int disconnectFlags)
     {
-        Time += FixedTimeStep;
+        //Time += FixedTimeStep;
         OnSimulationUpdate?.Invoke(FixedTimeStep);
 
         if (!GridGameManager.OnlineGameStarted)
@@ -466,7 +497,9 @@ public struct GridGame : IGame
         }
 
         //Input update
-        InputSystem.Update();
+        if (GridGameManager.Instance.inputEnabled)
+            InputSystem.Update();
+
         OnProcessInput?.Invoke(0, inputs[0]);
         OnProcessInput?.Invoke(1, inputs[1]);
 
@@ -476,50 +509,51 @@ public struct GridGame : IGame
             FixedPointTimer.Actions[i].TryPerformAction();
         }
 
+        //Debug.Log($"Fixed timer count is {FixedPointTimer.Actions.Count}");
         //Collision update
 
         //This loop ensures that we aren't checking collisions with the same colliders by have the second loop start where the first one left off.
-        for (int row = 0; row < _activePhysicsEntities.Count; row++)
-        {
-            for (int column = row + 1; column < _activePhysicsEntities.Count; column++)
-            {
-                //Check if these entities should ignore each other.
-                bool shouldIgnore;
+        //for (int row = 0; row < _activePhysicsEntities.Count; row++)
+        //{
+        //    for (int column = row + 1; column < _activePhysicsEntities.Count; column++)
+        //    {
+        //        //Check if these entities should ignore each other.
+        //        bool shouldIgnore;
 
-                if (_collisionPairs.TryGetValue((_activePhysicsEntities[row], _activePhysicsEntities[column]), out shouldIgnore))
-                {
-                    if (shouldIgnore)
-                        continue;
-                }
+        //        if (_collisionPairs.TryGetValue((_activePhysicsEntities[row], _activePhysicsEntities[column]), out shouldIgnore))
+        //        {
+        //            if (shouldIgnore)
+        //                continue;
+        //        }
 
-                //Cache current entities
-                EntityData entity1 = _activePhysicsEntities[row];
-                EntityData entity2 = _activePhysicsEntities[column];
+        //        //Cache current entities
+        //        EntityData entity1 = _activePhysicsEntities[row];
+        //        EntityData entity2 = _activePhysicsEntities[column];
 
-                if (entity1.Colliders == null || entity2.Colliders == null || !entity1.Active || !entity2.Active)
-                {
-                    continue;
-                }
+        //        if (entity1.Colliders == null || entity2.Colliders == null || !entity1.Active || !entity2.Active)
+        //        {
+        //            continue;
+        //        }
 
-                //Check collision between all possible colliders
-                for (int i = 0; i < entity1.Colliders.Length; i++)
-                {
-                    for (int j = 0; j < entity2.Colliders.Length; j++)
-                    {
-                        GridCollider collider1 = entity1.Colliders[i];
-                        GridCollider collider2 = entity2.Colliders[j];
+        //        //Check collision between all possible colliders
+        //        for (int i = 0; i < entity1.Colliders.Length; i++)
+        //        {
+        //            for (int j = 0; j < entity2.Colliders.Length; j++)
+        //            {
+        //                GridCollider collider1 = entity1.Colliders[i];
+        //                GridCollider collider2 = entity2.Colliders[j];
 
-                        //If they aren't on the same row there's no point in checking collision.
-                        if ((collider1 == null || collider2 == null))
-                            continue;
+        //                //If they aren't on the same row there's no point in checking collision.
+        //                if ((collider1 == null || collider2 == null))
+        //                    continue;
 
-                        //Check the next thing if a collision wasn't found.
-                        collider1.CheckCollision(collider2);
-                    }
-                }
-            }
+        //                //Check the next thing if a collision wasn't found.
+        //                collider1.CheckCollision(collider2);
+        //            }
+        //        }
+        //    }
 
-        }
+        //}
 
 
         //Component late update
@@ -528,5 +562,6 @@ public struct GridGame : IGame
             _activeEntities[i].LateTick(FixedTimeStep);
         }
 
+        //Debug.Log($"Entity count is {_activeEntities.Count}");
     }
 }

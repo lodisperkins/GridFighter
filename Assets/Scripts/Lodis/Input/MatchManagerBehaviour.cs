@@ -112,12 +112,6 @@ namespace Lodis.Gameplay
                 if (!_instance)
                     _instance = FindObjectOfType(typeof(MatchManagerBehaviour)) as MatchManagerBehaviour;
 
-                if (!_instance)
-                {
-                    GameObject manager = new GameObject("GameManager");
-                    _instance = manager.AddComponent<MatchManagerBehaviour>();
-                }
-
                 return _instance;
             }
         }

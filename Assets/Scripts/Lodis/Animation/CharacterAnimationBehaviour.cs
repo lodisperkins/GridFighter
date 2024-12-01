@@ -670,7 +670,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Saves the current animation state, including the current timestamp of the playing animation.
         /// </summary>
-        public override void OnSerialize(BinaryWriter bw)
+        public override void Serialize(BinaryWriter bw)
         {
             AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
             // Save the name of the current animation clip and the playback time
@@ -681,7 +681,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Loads the saved animation state and resumes the animation from the saved timestamp.
         /// </summary>
-        public override void OnDeserialize(BinaryReader br)
+        public override void Deserialize(BinaryReader br)
         {
             // Load the name of the animation clip and the playback time
             string clipName = br.ReadString();

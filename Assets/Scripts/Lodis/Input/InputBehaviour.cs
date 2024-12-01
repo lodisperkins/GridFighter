@@ -3,14 +3,13 @@ using UnityEngine.InputSystem;
 using Lodis.Gameplay;
 using UnityEngine.Events;
 using Lodis.Movement;
-using Lodis.Utility;
 using Lodis.ScriptableObjects;
 using Lodis.FX;
 using FixedPoints;
 using System;
-using UnityGGPO;
 using Types;
 using System.IO;
+using System.Collections.Generic;
 
 namespace Lodis.Input
 {
@@ -39,17 +38,19 @@ namespace Lodis.Input
         private Fixed32 _bufferStartTime;
         private Condition _useCondition;
 
+        public Fixed32 BufferStartTime { get => _bufferStartTime; set => _bufferStartTime = value; }
+
         public delegate void InputBufferAction();
         public event InputBufferAction OnPerformAction;
         public event InputBufferAction OnClearAction;
 
 
-        public BufferedInput(InputBufferAction action, Condition useCondition, float bufferClearTime)
+        public BufferedInput(InputBufferAction action, Condition useCondition, Fixed32 bufferClearTime)
         {
             OnPerformAction = action;
             _useCondition = useCondition;
             _bufferClearTime = bufferClearTime;
-            _bufferStartTime = Utils.TimeGetTime();
+            BufferStartTime = GridGame.Time;
         }
 
 
@@ -64,7 +65,7 @@ namespace Lodis.Input
                 OnPerformAction = null;
                 return true;
             }
-            else if (Utils.TimeGetTime() - _bufferStartTime >= _bufferClearTime)
+            else if (GridGame.Time - BufferStartTime >= _bufferClearTime)
             {
                 OnPerformAction = null;
                 OnClearAction?.Invoke();
@@ -73,17 +74,6 @@ namespace Lodis.Input
 
             return false;
         }
-
-        //Serialize functions so that the buffer can be reset during rollback.
-        public void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_bufferStartTime);
-        }
-        public void Deserialize(BinaryReader br)
-        {
-            _bufferStartTime = br.ReadUInt64();
-        }
-
         public bool HasAction()
         {
             return OnPerformAction != null;
@@ -102,8 +92,10 @@ namespace Lodis.Input
         [SerializeField] private Fixed32 _minChargeLimit = new Fixed32(32768);
         [Tooltip("The maximum amount of time needed before an attack is fully charged.")]
         [SerializeField] private Fixed32 _maxChargeTime = 5;
-        [Tooltip("The amount of time needed to clear the buffer when a direciotn is pressed.")]
-        [SerializeField] private float _attackDirectionBufferClearTime;
+        [Tooltip("The amount of time needed to clear the buffer when a direction is pressed.")]
+        [SerializeField] private Fixed32 _attackDirectionBufferClearTime = new Fixed32(3276);
+        [Tooltip("The amount of time to wait before clearing the last input stored in the buffer.")]
+        [SerializeField] private Fixed32 _bufferClearTime = new Fixed32(13107);
 
         [Header("Toggles")]
         [SerializeField] private bool _canMove = true;
@@ -111,6 +103,7 @@ namespace Lodis.Input
         [SerializeField] private bool _inputEnabled = true;
         [SerializeField] private bool _abilityBuffered;
         [SerializeField] private bool _aiControlled;
+        [SerializeField] private bool _snapMovement;
 
         [Header("Events")]
         [SerializeField] private CustomEventSystem.Event _onChargeStarted;
@@ -135,7 +128,7 @@ namespace Lodis.Input
 
         private Vector2 _storedMoveInput;
         private FVector2 _attackDirection;
-        private float _timeOfLastDirectionInput;
+        private Fixed32 _timeOfLastDirectionInput;
         private float _defaultSpeed;
         private Fixed32 _chargeHoldTime;
 
@@ -149,7 +142,12 @@ namespace Lodis.Input
         private bool _special1Down;
         private bool _special2Down;
 
+        private BufferedInput[] _bufferedInputs = new BufferedInput[7];
+        private int _currentBufferInputIndex;
+
         private InputFlag _aiFlags;
+        private InputFlag _lastActionBuffered;
+        public static Queue<InputFlag> TestInputList = new Queue<InputFlag>();
 
         public static UnityAction OnApplicationQuit;
 
@@ -253,40 +251,69 @@ namespace Lodis.Input
                 return;
 
 
-            if (PlayerID == 1)
-            {
-                Debug.Log("Player2 input processed.");
-            }
+            // if (PlayerID == 1)
+            // {
+            //     Debug.Log("Player2 input processed.");
+            // }
 
-            if (PlayerID == 0)
-            {
-                Debug.Log("Player1 input processed.");
-            }
+            // if (PlayerID == 0)
+            // {
+            //     Debug.Log("Player1 input processed.");
+            // }
+            bool isDirectionalInput = false;
 
             if ((inputs & (long)InputFlag.Up) != 0)
             {
                 _attackDirection = new FVector2(0, 1);
                 // Call the function related to Up input
                 BufferMovement(new Vector2(0, 1));
+
+                if (PlayerID == 0)
+                    TestInputList.Enqueue(InputFlag.Up);
+
+                isDirectionalInput = true;
             }
             if ((inputs & (long)InputFlag.Down) != 0)
             {
                 _attackDirection = new FVector2(0, -1);
                 // Call the function related to Down input
                 BufferMovement(new Vector2(0, -1));
+
+                if (PlayerID == 0)
+                    TestInputList.Enqueue(InputFlag.Down);
+
+                isDirectionalInput = true;
             }
             if ((inputs & (long)InputFlag.Left) != 0)
             {
                 _attackDirection = new FVector2(-1, 0);
                 // Call the function related to Left input
                 BufferMovement(new Vector2(-1, 0));
+
+                if (PlayerID == 0)
+                    TestInputList.Enqueue(InputFlag.Left);
+
+                isDirectionalInput = true;
             }
             if ((inputs & (long)InputFlag.Right) != 0)
             {
                 _attackDirection = new FVector2(1, 0);
                 // Call the function related to Right input
                 BufferMovement(new Vector2(1, 0));
+
+                if (PlayerID == 0)
+                    TestInputList.Enqueue(InputFlag.Right);
+
+                isDirectionalInput = true;
             }
+
+            // If no directional input was detected, enqueue InputFlag.None
+            if (!isDirectionalInput)
+            {
+                if (PlayerID == 0)
+                    TestInputList.Enqueue(InputFlag.NONE);
+            }
+
             if ((inputs & (long)InputFlag.Weak) != 0)
             {
                 // Call the function related to Weak attack
@@ -330,7 +357,15 @@ namespace Lodis.Input
         /// <returns></returns>
         private void GridGame_PollInput(int id)
         {
-            Debug.Log("Poll id is " + id);
+            if (id == 0 && GridGameManager.Resimulating && id == PlayerID)
+            {
+                InputFlag flags;
+                TestInputList.TryDequeue(out flags);
+                GridGame.SetPlayerInput(PlayerID, (long)flags);
+                return;
+            }
+
+            //Debug.Log("Poll id is " + id);
             if (id == PlayerID)
             {
                 GetInputFlags();
@@ -339,14 +374,14 @@ namespace Lodis.Input
 
         private void GetInputFlags()
         {
-            if (PlayerID == 0)
-            {
-                Debug.Log("Player1 input polled.");
-            }
-            if (PlayerID == 1)
-            {
-                Debug.Log("Player2 input polled.");
-            }
+            // if (PlayerID == 0)
+            // {
+            //     Debug.Log("Player1 input polled.");
+            // }
+            // if (PlayerID == 1)
+            // {
+            //     Debug.Log("Player2 input polled.");
+            // }
 
             InputFlag flags = InputFlag.NONE;
 
@@ -434,12 +469,41 @@ namespace Lodis.Input
             //}
         }
 
-        public override void OnSerialize(BinaryWriter bw)
+        public override void Serialize(BinaryWriter bw)
         {
+            bw.Write(_abilityBuffered);
+            bw.Write(_movementBuffered);
+            bw.Write(_storedMoveInput.x);
+            bw.Write(_storedMoveInput.y);
+
+            if (_bufferedAction != null)
+            {
+                _bufferedAction.BufferStartTime.Serialize(bw);
+            }
+            else
+            {
+                new Fixed32(16, -1).Serialize(bw);
+            }
         }
 
-        public override void OnDeserialize(BinaryReader br)
+        public override void Deserialize(BinaryReader br)
         {
+            _abilityBuffered = br.ReadBoolean();
+            _movementBuffered = br.ReadBoolean();
+            _storedMoveInput.x = br.ReadSingle();
+            _storedMoveInput.y = br.ReadSingle();
+
+            Fixed32 bufferStartTime = new Fixed32();
+            bufferStartTime.Deserialize(br);
+
+            if (bufferStartTime != -1 && _movementBuffered)
+            {
+                _bufferedAction = new BufferedInput(Move, condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, GridGame.Time - bufferStartTime);
+                _bufferedAction.OnClearAction += () => _movementBuffered = false;
+            }
+
+            //if (_bufferedAction != null)
+            //    _bufferedAction.BufferStartTime = Utils.TimeGetTime();
         }
 
         // Start is called before the first frame update
@@ -544,7 +608,7 @@ namespace Lodis.Input
                 condition =>
                 {
                     return _moveset.GetCanUseAbility() && _stateMachineBehaviour.CompareState("Idle", "Moving", "Attacking");
-                }, 0.2f);
+                }, _bufferClearTime);
 
             _abilityBuffered = true;
         }
@@ -601,7 +665,7 @@ namespace Lodis.Input
             (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" ||
             _stateMachineBehaviour.StateMachine.CurrentState == "Attacking" ||
             _stateMachineBehaviour.StateMachine.CurrentState == "Moving")
-            && !FXManagerBehaviour.Instance.SuperMoveEffectActive, 0.2f);
+            && !FXManagerBehaviour.Instance.SuperMoveEffectActive, _bufferClearTime);
 
             _abilityBuffered = true;
         }
@@ -609,14 +673,14 @@ namespace Lodis.Input
         public void BufferUnblockableAbility(InputAction.CallbackContext context)
         {
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(() => UseAbility(AbilityType.UNBLOCKABLE, null), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, 0.2f);
+            _bufferedAction = new BufferedInput(() => UseAbility(AbilityType.UNBLOCKABLE, null), condition => { _abilityBuffered = false; return _moveset.GetCanUseAbility() && !_gridMovement.IsMoving; }, _bufferClearTime);
             _abilityBuffered = true;
         }
 
         public void BufferBurst()
         {
             //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(() => UseAbility(AbilityType.BURST, null), condition => { _abilityBuffered = false; return true; }, 0.2f);
+            _bufferedAction = new BufferedInput(() => UseAbility(AbilityType.BURST, null), condition => { _abilityBuffered = false; return true; }, _bufferClearTime);
             _abilityBuffered = true;
         }
 
@@ -640,7 +704,7 @@ namespace Lodis.Input
             { 
                 _abilityBuffered = false;
                 return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
-            }, 0.2f);
+            }, _bufferClearTime);
             _abilityBuffered = true;
         }
 
@@ -649,7 +713,7 @@ namespace Lodis.Input
             if (_moveset.LoadingShuffle || _moveset.DeckReloading)
                 return;
 
-            _bufferedAction = new BufferedInput(() => _moveset.ManualShuffle(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving", 0.2f);
+            _bufferedAction = new BufferedInput(() => _moveset.ManualShuffle(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving", _bufferClearTime);
         }
 
         private void BufferPhaseShift(InputAction.CallbackContext context, params object[] args)
@@ -658,7 +722,7 @@ namespace Lodis.Input
                 return;
 
             Vector2 direction = (Vector2)args[0];
-            _bufferedAction = new BufferedInput(() => _defense.ActivatePhaseShift((FixedPoints.FVector2)_attackDirection), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving", 0.2f);
+            _bufferedAction = new BufferedInput(() => _defense.ActivatePhaseShift((FixedPoints.FVector2)_attackDirection), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving", _bufferClearTime);
         }
 
         private void RemoveShieldFromBuffer()
@@ -676,11 +740,11 @@ namespace Lodis.Input
             if (NormalAttackButtonDown || _defense.IsPhaseShifting || PlayerControls.Player.Move.ReadValue<Vector2>().magnitude != 0)
                 return;
             else if (_bufferedAction == null && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"))
-                _bufferedAction = new BufferedInput(() => _defense.BeginParry(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle", 0.2f);
+                _bufferedAction = new BufferedInput(() => _defense.BeginParry(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle", _bufferClearTime);
             else if (_bufferedAction == null)
                 return;
             else if (!_bufferedAction.HasAction() && (_stateMachineBehaviour.StateMachine.CurrentState == "Idle" || _stateMachineBehaviour.StateMachine.CurrentState == "Moving"))
-                _bufferedAction = new BufferedInput(() => _defense.BeginParry(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle", 0.2f);
+                _bufferedAction = new BufferedInput(() => _defense.BeginParry(), condition => _stateMachineBehaviour.StateMachine.CurrentState == "Idle", _bufferClearTime);
         }
 
         /// <summary>
@@ -690,20 +754,39 @@ namespace Lodis.Input
         public void BufferMovement(Vector2 direction)
         {
             //Don't allow current movement buffer to be overwritten.
-            if (_movementBuffered || !_canMove)
+            if (_movementBuffered || !_canMove || _gridMovement.IsMoving)
                 return;
-            
+
             _storedMoveInput = direction;
 
             _movementBuffered = true;
             
-            _bufferedAction = new BufferedInput(Move, condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, 0.2f);
+            _bufferedAction = new BufferedInput(Move, condition => _storedMoveInput.magnitude > 0 && !_gridMovement.IsMoving && _canMove && _gridMovement.CanMove, _bufferClearTime);
             _bufferedAction.OnClearAction += () => _movementBuffered = false;
+
+
+
+            if (direction == Vector2.up)
+            {
+                _lastActionBuffered = InputFlag.Up;
+            }
+            if (direction == Vector2.down)
+            {
+                _lastActionBuffered = InputFlag.Down;
+            }
+            if (direction == Vector2.left)
+            {
+                _lastActionBuffered = InputFlag.Left;
+            }
+            if (direction == Vector2.right)
+            {
+                _lastActionBuffered = InputFlag.Right;
+            }
         }
 
         private void Move()
         {
-            _gridMovement.Move((FVector2)_storedMoveInput, clampPosition: true);
+            _gridMovement.Move((FVector2)_storedMoveInput, clampPosition: true, snapPosition: _snapMovement);
             _movementBuffered = false;
         }
 
@@ -896,11 +979,11 @@ namespace Lodis.Input
             if (attackDirInput.magnitude > 0)
             {
                 _attackDirection = new FVector2(Mathf.Round(attackDirInput.x), Mathf.Round(attackDirInput.y));
-                _timeOfLastDirectionInput = Time.time;
+                _timeOfLastDirectionInput = GridGame.Time;
             }
 
             //Clear the buffer if its exceeded the alotted time
-            if (Time.time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
+            if (GridGame.Time - _timeOfLastDirectionInput > _attackDirectionBufferClearTime)
                 _attackDirection = FVector2.Zero;
 
             if (_bufferedAction?.HasAction() == true)

@@ -50,7 +50,7 @@ namespace Lodis.Movement
             set => _canCheckLanding = value;
         }
 
-        public override void OnSerialize(BinaryWriter bw)
+        public override void Serialize(BinaryWriter bw)
         {
             bw.Write(Landing);
             bw.Write(_groundedHitCounter);
@@ -58,7 +58,7 @@ namespace Lodis.Movement
             bw.Write(RecoveringFromFall);
         }
 
-        public override void OnDeserialize(BinaryReader br)
+        public override void Deserialize(BinaryReader br)
         {
             Landing = br.ReadBoolean();
             _groundedHitCounter = br.ReadInt32();

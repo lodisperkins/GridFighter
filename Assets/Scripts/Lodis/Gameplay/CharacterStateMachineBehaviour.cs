@@ -86,6 +86,7 @@ namespace Lodis.Gameplay
             //if (_currentState != _stateMachine.CurrentState)
             //    Debug.Log(_stateMachine.CurrentState);d
 
+            _stateMachine.UpdateStateMachine();
 
             _currentState = _stateMachine.CurrentState;
 
@@ -96,13 +97,13 @@ namespace Lodis.Gameplay
             }
         }
 
-        public override void OnSerialize(BinaryWriter bw)
+        public override void Serialize(BinaryWriter bw)
         {
             bw.Write(_currentState);
             bw.Write(_lastState);
         }
 
-        public override void OnDeserialize(BinaryReader br)
+        public override void Deserialize(BinaryReader br)
         {
             _currentState = br.ReadString();
             _lastState = br.ReadString();

@@ -48,6 +48,8 @@ namespace SharedGame {
                 return _instance;
             }
         }
+        public static bool Resimulating { get; protected set; }
+        public static int FramesToResimulate { get; protected set; }
 
         public event Action<StatusInfo> OnStatus;
 
@@ -62,6 +64,7 @@ namespace SharedGame {
         public bool IsRunning { get; private set; }
 
 
+        public bool inputEnabled = true;
         public IGameRunner Runner { get; private set; }
 
         private double start;
@@ -97,7 +100,7 @@ namespace SharedGame {
         protected virtual void OnPreRunFrame() {
         }
 
-        private void Update() {
+        protected virtual void Update() {
             if (IsRunning != (Runner != null)) {
                 IsRunning = Runner != null;
                 OnRunningChanged?.Invoke(IsRunning);
@@ -108,22 +111,37 @@ namespace SharedGame {
             if (IsRunning) {
                 updateWatch.Start();
 
-                if (updateType == UpdateType.VectorWar) {
-                    UpdateVectorwar();
+                if (Resimulating && FramesToResimulate > 0)
+                {
+                    for (; FramesToResimulate > 0; FramesToResimulate--)
+                    {
+                        Tick();
+                    }
                 }
-                else if (updateType == UpdateType.Always) {
-                    UpdateAlways();
+                else
+                {
+                    Resimulating = false;
+                    if (updateType == UpdateType.VectorWar)
+                    {
+                        UpdateVectorwar();
+                    }
+                    else if (updateType == UpdateType.Always)
+                    {
+                        UpdateAlways();
+                    }
+                    else if (updateType == UpdateType.FixedSkip)
+                    {
+                        UpdateFixedSkip();
+                    }
+                    else if (updateType == UpdateType.FixedFastForward)
+                    {
+                        UpdateFixedFastForward();
+                    }
+                    else if (updateType == UpdateType.Smoothed)
+                    {
+                        UpdateSmoothed();
+                    }
                 }
-                else if (updateType == UpdateType.FixedSkip) {
-                    UpdateFixedSkip();
-                }
-                else if (updateType == UpdateType.FixedFastForward) {
-                    UpdateFixedFastForward();
-                }
-                else if (updateType == UpdateType.Smoothed) {
-                    UpdateSmoothed();
-                }
-
                 updateWatch.Stop();
 
                 var statusInfo = Runner.GetStatus(updateWatch);

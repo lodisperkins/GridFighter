@@ -379,6 +379,10 @@ namespace SharedGame {
         /*
         * Run a single frame of the game.
         */
+        private long[] localInputs = new long[7];
+        private long localInputIndex = 0;
+        private long[] onlineInputs = new long[7];
+        private long onlineInputIndex = 0;
 
         public void RunFrame() {
             var result = GGPO.OK;
@@ -387,7 +391,13 @@ namespace SharedGame {
                 var player = GameInfo.players[i];
                 if (player.type == GGPOPlayerType.GGPO_PLAYERTYPE_LOCAL) {
                     var input = Game.ReadInputs(player.controllerId);
-                    Log.Debug(input);
+
+                    localInputs[localInputIndex] = input;
+                    localInputIndex++;
+
+                    if (localInputIndex >= 7)
+                        localInputIndex = 0;
+
 #if SYNC_TEST
      input = rand(); // test: use random inputs to demonstrate sync testing
 #endif
@@ -395,7 +405,10 @@ namespace SharedGame {
                 }
             }
 
-            Log.Debug("Result: " + result);
+            //Log.Debug($"Local Inputs: {string.Join(", ", localInputs)}");
+
+
+            //Log.Debug("Result: " + result);
 
             // synchronize these inputs with ggpo. If we have enough input to proceed ggpo will
             // modify the input list with the correct inputs to use and return 1.
@@ -405,6 +418,10 @@ namespace SharedGame {
                     // inputs[0] and inputs[1] contain the inputs for p1 and p2. Advance the game by
                     // 1 frame using those inputs.
                     var inputs = GGPO.Session.SynchronizeInput(MAX_PLAYERS, out var disconnect_flags);
+
+                    onlineInputs = inputs;
+
+                    //Log.Debug($"Online Inputs: {string.Join(", ", onlineInputs)}");
                     AdvanceFrame(inputs, disconnect_flags);
                 }
                 catch (Exception ex) {

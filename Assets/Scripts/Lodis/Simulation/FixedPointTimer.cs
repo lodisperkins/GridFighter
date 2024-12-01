@@ -1,5 +1,7 @@
 
+using Assets.Scripts.Lodis.Simulation;
 using Lodis;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +12,7 @@ using static FixedPoints.FixedTimeAction;
 
 namespace FixedPoints
 {
-    public abstract class FixedAction
+    public abstract class FixedAction : ISerializedListObject
     {
 
         public delegate void FixedDelayedEvent();
@@ -22,23 +24,40 @@ namespace FixedPoints
         public int FrameFinished;
 
         public bool IsActive { get => isActive; set => isActive = value; }
+        public ListEvent OnAddedToList { get; set; }
+        public int FrameSerialized { get; set; }
 
         public abstract void TryPerformAction();
 
-        public virtual void Serialize(BinaryWriter bw)
+        protected virtual void Serialize(BinaryWriter bw)
         {
             bw.Write(IsActive);
         }
 
-        public virtual void Deserialize(BinaryReader br)
+        protected virtual void Deserialize(BinaryReader br)
         {
             IsActive = br.ReadBoolean();
         }
 
         public virtual void Stop()
         {
-            FixedPointTimer.Actions.Remove(this);
+            FixedPointTimer.StopAction(this);
             IsActive = false;
+        }
+
+        public bool CheckIfCanBeAddedToList()
+        {
+            return isActive && FrameStarted <= GridGameManager.FrameNumber;
+        }
+
+        public void OnSerialize(BinaryWriter bw)
+        {
+            Serialize(bw);
+        }
+
+        public void OnDeserialize(BinaryReader br)
+        {
+            Deserialize(br);
         }
     }
 
@@ -151,7 +170,7 @@ namespace FixedPoints
             hasPaused = false;
         }
 
-        public override void Serialize(BinaryWriter bw)
+        protected override void Serialize(BinaryWriter bw)
         {
             base.Serialize(bw);
             bw.Write(timeRemaining);
@@ -159,7 +178,7 @@ namespace FixedPoints
             bw.Write(hasPaused);
         }
 
-        public override void Deserialize(BinaryReader br)
+        protected override void Deserialize(BinaryReader br)
         {
             base.Deserialize(br);
             timeRemaining = br.ReadInt32();
@@ -238,6 +257,8 @@ namespace FixedPoints
     public class FixedPointTimer
     {
         private static List<FixedAction> _actions = new List<FixedAction>();
+        private static List<FixedAction> _actionsToRemove = new List<FixedAction>();
+        private static SerializedListHandler<FixedAction> _serializedList;
 
         public static List<FixedAction> Actions { get => _actions; private set => _actions = value; }
 
@@ -245,6 +266,8 @@ namespace FixedPoints
         {
             GridGame.OnSerialization += SerializeActions;
             GridGame.OnDeserialization += DeserializeActions;
+            _serializedList = new SerializedListHandler<FixedAction>(Actions);
+            _serializedList.Name = "Fixed Point Timer";
         }
 
         public static FixedTimeAction StartNewTimedAction(FixedDelayedEvent action, Fixed32 duration, UnitOfTime unit = UnitOfTime.Scaled)
@@ -269,38 +292,19 @@ namespace FixedPoints
         {
             if (action == null) return;
 
-            _actions.Remove(action);
+           _actions.Remove(action);
+
             action.IsActive = false;
         }
 
         public static void SerializeActions(BinaryWriter bw)
         {
-            for (int i = 0; i < _actions.Count; i++)
-            {
-                _actions[i].Serialize(bw);
-            }
+            _serializedList.Serialize(bw);
         }
-
+         
         public static void DeserializeActions(BinaryReader br)
         {
-            List<FixedAction> actionsToRemove = new List<FixedAction>();
-
-            for (int i = 0; i < _actions.Count; i++)
-            {
-                if (_actions[i].FrameStarted > GridGameManager.FrameNumber)
-                {
-                    actionsToRemove.Add( _actions[i]);
-
-                    continue;
-                }
-
-                _actions[i].Deserialize(br);
-            }
-
-            foreach (FixedAction action in actionsToRemove)
-            {
-                _actions.Remove(action);
-            }
+            _serializedList.Deserialize(br);
         }
     }
 }

@@ -259,7 +259,7 @@ namespace Lodis.Gameplay
         public FVector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
 
 
-        public override void OnSerialize(BinaryWriter bw)
+        public override void Serialize(BinaryWriter bw)
         {
             _energy.Serialize(bw);
             _burstEnergy.Serialize(bw);
@@ -280,7 +280,7 @@ namespace Lodis.Gameplay
             }
         }
 
-        public override void OnDeserialize(BinaryReader br)
+        public override void Deserialize(BinaryReader br)
         {
             _energy.Deserialize(br);
             _burstEnergy.Deserialize(br);
@@ -296,7 +296,7 @@ namespace Lodis.Gameplay
                 _lastAbilityInUse.Deserialize(br);
                 _serializedAbility = false;
             }
-            else if (!_serializedAbility)
+            else
             {
                 if (_abilityInUse)
                     _lastAbilityInUse.EndAbility();

@@ -3,12 +3,13 @@ using System.IO;
 using UnityEngine;
 using Types;
 using UnityEngine.Events;
+using Assets.Scripts.Lodis.Simulation;
 
 /// <summary>
 /// A generic class used to represent components that should perform logic in line with the rollback simulation.
 /// Also contains logic for serializing and deserializing the component data.
 /// </summary>
-public abstract class SimulationBehaviour : MonoBehaviour
+public abstract class SimulationBehaviour : MonoBehaviour, ISerializedListObject
 {
     [Tooltip("Called when the game state is saved.")]
     [SerializeField] private UnityEvent _onSerialize;
@@ -26,33 +27,35 @@ public abstract class SimulationBehaviour : MonoBehaviour
     /// The fixed point transform belonging to the rollback simulation entity.
     /// </summary>
     public FTransform FixedTransform { get => _entity.Data.Transform; }
+    public int FrameSerialized { get; set; }
 
     /// <summary>
     /// Called when this component is added to an entity.
     /// </summary>
     public virtual void Init() { }
 
-    public void Serialize(BinaryWriter bw)
+    public void OnSerialize(BinaryWriter bw)
     {
-        OnSerialize(bw);
+        Serialize(bw);
         _onSerialize?.Invoke();
     }
 
-    public void Deserialize(BinaryReader br)
+    public void OnDeserialize(BinaryReader br)
     {
-        OnDeserialize(br);
+        Deserialize(br);
         _onDeserialize?.Invoke();
     }
+    public ListEvent OnAddedToList { get; set; }
 
     /// <summary>
     /// Handles data that is saved and sent across the network.
     /// </summary>
-    public abstract void OnSerialize(BinaryWriter bw);
+    public abstract void Serialize(BinaryWriter bw);
 
     /// <summary>
     /// Handles data that is loaded when a rollback happens.
     /// </summary>
-    public abstract void OnDeserialize(BinaryReader br);
+    public abstract void Deserialize(BinaryReader br);
 
     /// <summary>
     /// Called when this entity starts hitting another solid object.
@@ -128,5 +131,10 @@ public abstract class SimulationBehaviour : MonoBehaviour
     private void OnDestroy()
     {
         Entity?.Data.RemoveComponent(this);
+    }
+
+    public bool CheckIfCanBeAddedToList()
+    {
+        return true;
     }
 }

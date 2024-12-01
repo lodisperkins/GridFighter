@@ -15,7 +15,7 @@ namespace Lodis.Gameplay
         public EntityDataBehaviour Projectile = null;
         public EntityDataBehaviour Owner = null;
 
-        public override void OnDeserialize(BinaryReader br)
+        public override void Deserialize(BinaryReader br)
         {
         }
 
@@ -142,7 +142,7 @@ namespace Lodis.Gameplay
             return temp;
         }
 
-        public override void OnSerialize(BinaryWriter bw)
+        public override void Serialize(BinaryWriter bw)
         {
         }
     }

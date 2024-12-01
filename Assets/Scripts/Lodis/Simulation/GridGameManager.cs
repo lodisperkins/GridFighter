@@ -1,4 +1,6 @@
 using FixedPoints;
+using Lodis.Gameplay;
+using Lodis.Input;
 using Lodis.Utility;
 using NaughtyAttributes;
 using ParrelSync;
@@ -21,12 +23,22 @@ public class GridGameManager : GameManager
     [Tooltip("Enables the AI to take control over the other client.")]
     [SerializeField] private bool _aiFightEnabled;
     [SerializeField] private Fixed32 _fixed32TestConversion;
-    private GameManager _gameManager => GameManager.Instance;
-    private GgpoPerformancePanel _perf;
-    private static GGPORunner _onlineGame;
-    private static LocalRunner _localGame;
+    [SerializeField] private bool _testLatency;
+    [ShowIf("_testLatency")]
+    [SerializeField] private int _saveDelay;
+    [ShowIf("_testLatency")]
+    [SerializeField] private int _loadDelay;
+
 
     //---
+    private GameManager _gameManager => GameManager.Instance;
+    private GgpoPerformancePanel _perf;
+
+    private int _lastFrameNumberLoaded;
+    private int _lastFrameNumberSaved;
+
+    private static GGPORunner _onlineGame;
+    private static LocalRunner _localGame;
     private static bool _isHost;
 
     public static bool LocalGameStarted { get; private set; }
@@ -61,6 +73,8 @@ public class GridGameManager : GameManager
     public string inpPort;
     public string txtIp;
     public string txtPort;
+    [SerializeField] private bool _canResimulate;
+    private bool _hasSaved;
 
     private void Awake()
     {
@@ -71,7 +85,7 @@ public class GridGameManager : GameManager
         _perf = gob.AddComponent<GgpoPerformancePanel>();
         _perf.Setup();
         TestingLocalSaves = _testingLocalSaves;
-        //InputSystem.settings.maxEventBytesPerUpdate = 0;
+        InputSystem.settings.maxEventBytesPerUpdate = 0;
         AIFightEnabled = _aiFightEnabled;
         if (_startLocalGame)
             StartLocalGame();
@@ -145,18 +159,41 @@ public class GridGameManager : GameManager
     public void OnTestSave()
     {
         TestingLocalSaves = true;
+        _lastFrameNumberSaved = FrameNumber;
         _localGame.OnTestSave();
+        InputBehaviour.TestInputList.Clear();
     }
 
     [Button]
     public void OnTestLoad()
     {
         TestingLocalSaves = true;
+        Resimulating = true;
+        FramesToResimulate = FrameNumber - _lastFrameNumberSaved;
+        _lastFrameNumberLoaded = FrameNumber;
         _localGame.OnTestLoad();
     }
 
     private void LateUpdate()
     {
+        if (MatchManagerBehaviour.Instance == null || !_testLatency)
+        {
+            return;
+        }
+
+        if (FrameNumber - _lastFrameNumberSaved > _saveDelay && !_hasSaved)
+        {
+            OnTestSave();
+            _hasSaved = true;
+        }
+
+
+        if (FrameNumber - _lastFrameNumberLoaded > _loadDelay && _hasSaved)
+        {
+            OnTestLoad();
+            _hasSaved = false;
+        }
+
         //Debug.Log(InputSystem.settings.updateMode);
     }
 }

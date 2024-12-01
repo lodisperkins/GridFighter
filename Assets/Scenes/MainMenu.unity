@@ -11094,11 +11094,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f22ac6f4ade64c24b805faef6bb6e34e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateType: 1
+  updateType: 3
+  inputEnabled: 1
   _startLocalGame: 1
-  _testingLocalSaves: 1
+  _testingLocalSaves: 0
+  _aiFightEnabled: 0
   _fixed32TestConversion:
-    RawValue: 104857
+    RawValue: 13107
+  _testLatency: 0
+  _saveDelay: 2
+  _loadDelay: 7
   inpIp: 
   inpPort: 
   txtIp: 

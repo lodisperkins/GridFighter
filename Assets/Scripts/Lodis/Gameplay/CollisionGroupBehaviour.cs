@@ -31,19 +31,21 @@ public class CollisionGroupBehaviour : SimulationBehaviour
 
     public bool CollisionResolved { get => _collisionResolved; }
 
-    public override void OnDeserialize(BinaryReader br)
+    public override void Deserialize(BinaryReader br)
     {
+        return;
         foreach (var collider in _colliders)
         {
-            collider.OnDeserialize(br);
+            collider.Deserialize(br);
         }
     }
 
-    public override void OnSerialize(BinaryWriter bw)
+    public override void Serialize(BinaryWriter bw)
     {
+        return;
         foreach (var collider in _colliders)
         {
-            collider.OnSerialize(bw);
+            collider.Serialize(bw);
         }
     }
 

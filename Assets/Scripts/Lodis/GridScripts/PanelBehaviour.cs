@@ -202,7 +202,7 @@ namespace Lodis.GridScripts
 
         public void RemoveMark()
         {
-            if (!_mesh)
+            if (!_mesh || CurrentMarker == MarkerType.NONE)
                 return;
 
             _mesh?.material.ChangeHue(_defaultColor, "_Color");
