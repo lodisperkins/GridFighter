@@ -19,8 +19,8 @@ namespace FixedPoints
         static FixedLerp()
         {
             GridGame.OnSimulationUpdate += Update;
-            //GridGame.OnSerialization += SerializeActions;
-            //GridGame.OnDeserialization += DeserializeActions;
+            GridGame.OnSerialization += SerializeActions;
+            GridGame.OnDeserialization += DeserializeActions;
             serializedListHandler = new SerializedListHandler<LerpAction>(Actions);
             serializedListHandler.Name = "FixedLerp";
         }

@@ -1132,15 +1132,15 @@ namespace Lodis.Movement
 
             //UnityEngine.Debug.Log($"Target position serialized {_targetPosition}");
 
-            if (_moveLerp != null)
-            {
-                bw.Write(true);
-                _moveLerp.OnSerialize(bw);
-            }
-            else
-            {
-                bw.Write(false);
-            }
+            //if (_moveLerp != null)
+            //{
+            //    bw.Write(true);
+            //    _moveLerp.OnSerialize(bw);
+            //}
+            //else
+            //{
+            //    bw.Write(false);
+            //}
         }
 
         public override void Deserialize(BinaryReader br)
@@ -1175,10 +1175,10 @@ namespace Lodis.Movement
 
             //UnityEngine.Debug.Log($"Target position deserialized {_targetPosition}");
 
-            bool savedMoveLerp = br.ReadBoolean();
+            //bool savedMoveLerp = br.ReadBoolean();
 
-            if (savedMoveLerp)
-                _moveLerp.OnDeserialize(br);
+            //if (savedMoveLerp)
+            //    _moveLerp.OnDeserialize(br);
 
             //MoveToPanel(Position, true);
 
