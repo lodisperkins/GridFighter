@@ -2,6 +2,7 @@
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Types;
 using UnityEngine;
 
@@ -121,6 +122,20 @@ namespace Lodis.Gameplay
                 ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
                 _reboundCount = 0;
             }
+        }
+
+        protected override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_reboundCount);
+            bw.Write(_firstCollisionHappened);
+        }
+
+        protected override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            _reboundCount = br.ReadInt32();
+            _firstCollisionHappened = br.ReadBoolean();
         }
     }
 }

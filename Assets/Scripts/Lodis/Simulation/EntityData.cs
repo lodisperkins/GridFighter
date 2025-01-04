@@ -53,7 +53,7 @@ public class EntityData : ISerializedListObject
     }
 
     public GameObject UnityObject;
-    public EntityDataBehaviour UnityScript;
+    [HideInInspector] public EntityDataBehaviour UnityScript;
 
     public bool Active 
     { 
@@ -76,6 +76,7 @@ public class EntityData : ISerializedListObject
     public int FrameRemoved { get => _frameRemoved; set => _frameRemoved = value; }
     public int FrameSerialized { get; set; }
     public ListEvent OnAddedToList { get; set; }
+    public ListEvent OnRemovedFromList { get; set; }
 
     public delegate void EntityUpdateEvent(Fixed32 dt);
     public event EntityUpdateEvent OnTick;
@@ -94,6 +95,7 @@ public class EntityData : ISerializedListObject
         _serializedComponents = new SerializedListHandler<SimulationBehaviour>(_components);
         _serializedComponents.Name = Name + " Components";
         OnAddedToList = AddDeserializedEntityToGame;
+        OnRemovedFromList = RemoveDeserializedEntityFromGame;
     }
 
     public EntityData(string name) : this()
@@ -113,6 +115,25 @@ public class EntityData : ISerializedListObject
         {
             GridGame.AddEntityToGame(this);
         }
+    }
+
+    private void RemoveDeserializedEntityFromGame()
+    {
+        //Abilities need to be added back to the pool so they are reusable.
+        if (UnityObject.layer == LayerMask.NameToLayer("Ability"))
+        {
+            ObjectPoolBehaviour.Instance.ReturnGameObject(UnityScript);
+        }
+        //Otherwise just remove them from the game as normal.
+        else
+        {
+            GridGame.RemoveEntityFromGame(this);
+        }
+    }
+
+    public void ClearEndEvent()
+    {
+        OnEnd = null;
     }
 
     public virtual void Serialize(BinaryWriter bw)
@@ -361,7 +382,7 @@ public class EntityData : ISerializedListObject
 
     public bool CheckIfCanBeAddedToList()
     {
-        return Active || FrameRemoved > GridGameManager.FrameNumber;
+        return Active || (FrameRemoved > GridGameManager.FrameNumber && FrameAdded <= GridGameManager.FrameNumber);
     }
 
     public void OnSerialize(BinaryWriter bw)
@@ -375,16 +396,7 @@ public class EntityData : ISerializedListObject
 
         if (FrameAdded > GridGameManager.FrameNumber)
         {
-            //Abilities need to be added back to the pool so they are reusable.
-            if (UnityObject.layer == LayerMask.NameToLayer("Ability"))
-            {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(UnityScript);
-            }
-            //Otherwise just remove them from the game as normal.
-            else
-            {
-                GridGame.RemoveEntityFromGame(this);
-            }
+           RemoveDeserializedEntityFromGame();
         }
     }
 

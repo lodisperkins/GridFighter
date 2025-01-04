@@ -5,12 +5,18 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1024308820858249817, guid: 21e48ff7c2220634887d04ebcd36387a,
         type: 3}
       propertyPath: m_Name
       value: Spiral
+      objectReference: {fileID: 0}
+    - target: {fileID: 3098394179667531462, guid: 21e48ff7c2220634887d04ebcd36387a,
+        type: 3}
+      propertyPath: _isKinematic
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3266577619889418128, guid: 21e48ff7c2220634887d04ebcd36387a,
         type: 3}
@@ -98,4 +104,7 @@ PrefabInstance:
       value: LargeBlueLaser
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21e48ff7c2220634887d04ebcd36387a, type: 3}

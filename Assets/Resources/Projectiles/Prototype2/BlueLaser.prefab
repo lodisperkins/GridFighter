@@ -5,8 +5,14 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4296703095717890468, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: _isKinematic
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6676342820181627761, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -98,4 +104,7 @@ PrefabInstance:
       value: BlueLaser
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c662ede171e2a26498c91a36fc787336, type: 3}

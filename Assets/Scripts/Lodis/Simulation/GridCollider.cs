@@ -53,7 +53,7 @@ public class GridCollider
     [Tooltip("The tags this collider won't collide with.")]
     [SerializeField] private string[] _tagsToIgnore;
     [Tooltip("If true this collider will pass through objects without trying to apply a force to prevent them going through each other.")]
-    [SerializeField] private bool _overlap;
+    [SerializeField] private bool _overlap = true;
     [Tooltip("If true this collider will collide will not consider the panel y position when colliding.")]
     [SerializeField] private bool _collideOnAnyRow;
     [Tooltip("Whether or not this collider has a defined width. If true, will calculate collision on x based on whether the x position of the other object is greater that or lower than this object's x position.")]

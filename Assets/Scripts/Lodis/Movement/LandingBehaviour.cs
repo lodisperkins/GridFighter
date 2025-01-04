@@ -65,10 +65,7 @@ namespace Lodis.Movement
             IsDown = br.ReadBoolean();
             RecoveringFromFall = br.ReadBoolean();
 
-            if (!Landing)
-            {
-                CancelLanding();
-            }
+            CancelLanding();
         }
 
         protected override void Awake()
@@ -173,7 +170,6 @@ namespace Lodis.Movement
             Landing = true;
             _onLandingStart?.Invoke();
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
-            _knockback.LastTimeInKnockBack = 0;
             _knockback.CancelHitStun();
             _knockback.Physics.StopVelocity();
             _landingAction?.Stop();

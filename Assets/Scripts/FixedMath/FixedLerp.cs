@@ -285,6 +285,7 @@ namespace FixedPoints
         }
         public ListEvent OnAddedToList { get; set; }
         public int FrameSerialized { get; set; }
+        public ListEvent OnRemovedFromList { get; set; }
 
         /// <summary>
         /// Progresses the lerp through time.

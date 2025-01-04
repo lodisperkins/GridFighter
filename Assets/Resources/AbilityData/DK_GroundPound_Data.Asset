@@ -45,9 +45,9 @@ MonoBehaviour:
   DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: 
-    DespawnAfterTimeLimit: 0
+    DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 0
+      RawValue: 65536
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
@@ -93,6 +93,55 @@ MonoBehaviour:
     SpawnSound: {fileID: 8300000, guid: b67a009ce06a8d64b993865715a8645a, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
+  - Name: 
+    DespawnAfterTimeLimit: 1
+    TimeActive:
+      RawValue: 65536
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 65536
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 983040
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 72089
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 65536
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 9830
+    Priority:
+      RawValue: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    AbilityID:
+      RawValue: 2129788928
+    SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 7150885560406515932, guid: 896327d564dd09a40a6ae0c24becb75f,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 32768
+    CameraShakeFrequency: 1
+    ShakesCamera: 1
+    SpawnSound: {fileID: 8300000, guid: b67a009ce06a8d64b993865715a8645a, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
   _customStats:
   - name: ShockwaveProgressionDelay
     value:
@@ -103,7 +152,7 @@ MonoBehaviour:
   - name: ShockwaveTravelDistance
     value:
       RawValue: 327680
-  - name: ShockwaveTravelSpeed
+  - name: Speed
     value:
       RawValue: 983040
   animationType: 3

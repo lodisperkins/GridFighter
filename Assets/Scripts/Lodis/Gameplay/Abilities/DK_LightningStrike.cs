@@ -17,7 +17,6 @@ namespace Lodis.Gameplay
     {
         private FTransform _visualPrefabInstanceTransform;
 
-        private float _oldBounciness;
         private GridPhysicsBehaviour _opponentPhysics;
         private HitColliderBehaviour _collider;
         private GameObject _stompEffectRef;
@@ -30,18 +29,6 @@ namespace Lodis.Gameplay
             _stompEffectRef = abilityData.Effects[0];
         }
 
-        ///// <summary>
-        ///// Toggles whether or not the children that contain the hitboxes are active in the hierarchy
-        ///// </summary>
-        //private void ToggleChildren()
-        //{
-        //    for (int i = 0; i < _visualPrefabInstanceTransform.childCount; i++)
-        //    {
-        //        Transform child = _visualPrefabInstanceTransform.GetChild(i);
-        //        child.gameObject.SetActive(!child.gameObject.activeInHierarchy);
-        //    }
-        //}
-
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
@@ -53,8 +40,6 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         private bool GetTarget(out FVector3 position)
         {
-            Transform transform = null;
-
             GameObject opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner);
 
             position = FVector3.Zero;
@@ -84,7 +69,7 @@ namespace Lodis.Gameplay
 
             if (!opponentKnockback.IsIntangible && !opponentKnockback.IsInvincible)
             {
-                _opponentPhysics.SetBounceForce(new GridPhysicsBehaviour.BounceForce(1, new FVector3(0, 25, 0), false));
+                _opponentPhysics.SetBounceForce(new GridPhysicsBehaviour.BounceForce(1, new FVector3(0, 25, 0)));
             }
             
         }

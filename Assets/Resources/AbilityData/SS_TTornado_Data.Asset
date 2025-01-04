@@ -30,7 +30,7 @@ MonoBehaviour:
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
-  CanInputMovementWhileActive: 0
+  CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
@@ -61,13 +61,13 @@ MonoBehaviour:
     Damage:
       RawValue: 262144
     BaseKnockBack:
-      RawValue: 32768
+      RawValue: 65536
     KnockBackScale:
       RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: -13107
+      RawValue: 32768
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -77,7 +77,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 5
     AbilityID:
-      RawValue: 0
+      RawValue: -1425801216
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0

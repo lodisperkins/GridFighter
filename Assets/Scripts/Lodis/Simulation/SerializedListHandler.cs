@@ -19,7 +19,6 @@ namespace Assets.Scripts.Lodis.Simulation
         private List<T> _list;
         private List<ISerializedListObject> _serializedObjects = new List<ISerializedListObject>();
         private int serializedCount;
-
         /// <summary>
         /// Optional name for the list for debugging purposes.
         /// </summary>
@@ -63,7 +62,18 @@ namespace Assets.Scripts.Lodis.Simulation
 
         public void Deserialize(BinaryReader br)
         {
+            List<T> itemsToRemove = new List<T>();
+
+            for (int i = 0; i < _list.Count; i++)
+            {
+                if (!_list[i].CheckIfCanBeAddedToList())
+                {
+                    _list[i]?.OnRemovedFromList();
+                }
+            }
+
             _list.Clear();
+
             //Debug.Log($"Last reading position for {Name} was {br.BaseStream.Position}");
             int count = br.ReadInt32();
 

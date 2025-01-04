@@ -48,7 +48,7 @@ MonoBehaviour:
     DespawnAfterTimeLimit: 1
     TimeActive:
       RawValue: 6553
-    DestroyOnHit: 0
+    DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -57,15 +57,15 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 0
     Damage:
-      RawValue: 655360
+      RawValue: 983040
     BaseKnockBack:
-      RawValue: 98304
+      RawValue: 131072
     KnockBackScale:
-      RawValue: 111411
+      RawValue: 13107
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 88473
+      RawValue: 65536
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -75,7 +75,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 4
     AbilityID:
-      RawValue: 0
+      RawValue: -908591104
     SpawnEffect: {fileID: 6002612636095783793, guid: a807139c9a4c2354fb50a973b5493ce9,
       type: 3}
     SpawnEffectOffset:
@@ -100,13 +100,13 @@ MonoBehaviour:
       RawValue: 196608
   - name: MaxInstances
     value:
-      RawValue: -65536
+      RawValue: 65536
   - name: TravelDistance
     value:
       RawValue: 262144
   - name: DespawnTime
     value:
-      RawValue: 65536
+      RawValue: 327680
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

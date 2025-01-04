@@ -10,6 +10,8 @@ using Lodis.Utility;
 using Lodis.GridScripts;
 using Types;
 using FixedPoints;
+using System.IO;
+using System.Net.Http.Headers;
 
 namespace Lodis.Movement
 {
@@ -24,29 +26,29 @@ namespace Lodis.Movement
     [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class KnockbackBehaviour : HealthBehaviour
     {
-        [SerializeField]
-        private bool _hasExploded;
-        [SerializeField]
-        private bool _outOfBounds;
+        [Header("State Descriptors")]
+        [Tooltip("Whether or not the character has died from being out of bounds.")]
+        [SerializeField] private bool _hasExploded;
+        [Tooltip("Whether or not the character is outside their ring barrier.")]
+        [SerializeField] private bool _outOfBounds;
+        [SerializeField] private bool _inHitStun;
+        [Tooltip("The current description of how the character is behaving in the air.")]
         [SerializeField] private AirState _currentAirState;
-        [SerializeField] private float _netForceLandingTolerance = 0.5f;
 
-        [Tooltip("How fast will objects be allowed to travel in knockback")] [SerializeField]
-        private FloatVariable _maxMagnitude;
+        [Header("Knockback Physics Parameters")]
+        [Tooltip("How fast will objects be allowed to travel in knockback.")]
+        [SerializeField] private FloatVariable _maxMagnitude;
 
-        private GridMovementBehaviour _movementBehaviour;
-        private HitStopBehaviour _hitstop;
-        private GridPhysicsBehaviour _gridPhysicsBehaviour;
-        private LandingBehaviour _landingBehaviour;
-
-        private FVector2 _newPanelPosition = new FVector2(float.NaN, float.NaN);
-        private float _lastBaseKnockBack;
-        private FVector3 _launchForce;
-        [Tooltip("The rate at which an objects move speed in air will decrease")]
-        private FloatVariable _velocityDecayRate;
+        [Tooltip("How long it takes gravity to increase while being comboed.")]
         [SerializeField] private FloatVariable _gravityIncreaseRate;
+        [Tooltip("How much gravity will increase while being comboed.")]
         [SerializeField] private FloatVariable _gravityIncreaseValue;
-        private float _startGravity;
+
+        [Tooltip("Knockback forces must be above this value to actually move the character.")]
+        [SerializeField] private FloatVariable _minimumLaunchMagnitude;
+
+        //---
+        private Fixed32 _startGravity;
 
         private UnityAction _onKnockBack;
         private UnityAction _onKnockBackStart;
@@ -58,28 +60,20 @@ namespace Lodis.Movement
         private UnityAction _onHitStun;
         private UnityAction _onHitStunTemp;
 
-        [SerializeField] private Vector3 _freeFallGroundedPoint;
-        [SerializeField] private Vector3 _freeFallGroundedPointExtents;
-        [Tooltip("The position that will be used to check if this character is grounded")] [SerializeField]
-        private Vector3 _idleGroundedPoint;
-        [SerializeField] private Vector3 _idleGroundedPointExtents;
-        
-        [SerializeField] private FloatVariable _minimumLaunchMagnitude;
-        [SerializeField] private bool _inHitStun;
+        private GridMovementBehaviour _movementBehaviour;
+        private HitStopBehaviour _hitstop;
+        private GridPhysicsBehaviour _gridPhysicsBehaviour;
+        private LandingBehaviour _landingBehaviour;
+
+        private float _lastBaseKnockBack;
+        private FVector3 _launchForce;
         private bool _isFlinching;
-        private float _timeInCurrentHitStun;
-        private TimedAction _hitStunTimer = new TimedAction();
+        private Fixed32 _timeInCurrentHitStun;
+        private FixedTimeAction _hitStunTimer;
         
         private float _lastTotalKnockBack;
-        private float _lastTimeInKnockBack;
-        private float _adjustedGravity;
+        private Fixed32 _adjustedGravity;
         private bool _isSlidingHit;
-
-        public float LastTimeInKnockBack
-        {
-            get { return _lastTimeInKnockBack; }
-            set { _lastTimeInKnockBack = value; }
-        }
 
         /// <summary>
         /// Returns the velocity of this object when it was first launched
@@ -98,7 +92,7 @@ namespace Lodis.Movement
         public GridPhysicsBehaviour Physics { get => _gridPhysicsBehaviour; set => _gridPhysicsBehaviour = value; }
         public bool InHitStun { get => _inHitStun;}
         public bool IsFlinching { get => _isFlinching; }
-        public float TimeInCurrentHitStun { get => _timeInCurrentHitStun; }
+        public Fixed32 TimeInCurrentHitStun { get => _timeInCurrentHitStun; }
 
         public AirState CurrentAirState 
         {
@@ -108,15 +102,13 @@ namespace Lodis.Movement
 
         public GridMovementBehaviour MovementBehaviour => _movementBehaviour;
 
-        public float StartGravity => _startGravity;
+        public Fixed32 StartGravity => _startGravity;
 
         public FloatVariable GravityIncreaseRate => _gravityIncreaseRate;
 
         public FloatVariable GravityIncreaseValue => _gravityIncreaseValue;
 
         public LandingBehaviour LandingScript => _landingBehaviour;
-
-        public float NetForceLandingTolerance => _netForceLandingTolerance;
 
         public FloatVariable MinimumLaunchMagnitude => _minimumLaunchMagnitude;
 
@@ -137,8 +129,6 @@ namespace Lodis.Movement
         protected override void Awake()
         {
             base.Awake();
-
-            _velocityDecayRate = Resources.Load<FloatVariable>("ScriptableObjects/VelocityDecayRate");
 
             _landingBehaviour = GetComponent<LandingBehaviour>();
             _movementBehaviour = GetComponent<GridMovementBehaviour>();
@@ -185,6 +175,32 @@ namespace Lodis.Movement
 
             _startGravity = Physics.Gravity;
             _adjustedGravity = _startGravity;
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            base.Serialize(bw);
+            bw.Write(_hasExploded);
+            bw.Write(_outOfBounds);
+            bw.Write((int)_currentAirState);
+            _launchForce.Serialize(bw);
+            bw.Write(_inHitStun);
+            bw.Write(_isFlinching);
+            _timeInCurrentHitStun.Serialize(bw);
+            bw.Write(_isSlidingHit);
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            base.Deserialize(br);
+            _hasExploded = br.ReadBoolean();
+            _outOfBounds = br.ReadBoolean();
+            _currentAirState = (AirState)br.ReadInt32();
+            _launchForce.Deserialize(br);
+            _inHitStun = br.ReadBoolean();
+            _isFlinching = br.ReadBoolean();
+            _timeInCurrentHitStun.Deserialize(br);
+            _isSlidingHit = br.ReadBoolean();
         }
 
         /// <summary>
@@ -292,7 +308,7 @@ namespace Lodis.Movement
         {
             Physics.Gravity = _startGravity;
 
-            RoutineBehaviour.Instance.StartNewConditionAction(args => Physics.Gravity = _adjustedGravity, resetCondition);
+            FixedPointTimer.StartNewConditionAction(() => Physics.Gravity = _adjustedGravity, resetCondition);
         }
 
         public override void Stun(Fixed32 time)
@@ -349,8 +365,8 @@ namespace Lodis.Movement
 
         public void CancelHitStun()
         {
-            if (_hitStunTimer.GetEnabled())
-                RoutineBehaviour.Instance.StopAction(_hitStunTimer);
+            if (_hitStunTimer?.IsActive == true)
+                _hitStunTimer.Stop();
 
             _timeInCurrentHitStun = 0;
             _inHitStun = false;
@@ -390,10 +406,10 @@ namespace Lodis.Movement
             _inHitStun = true;
             _timeInCurrentHitStun = timeInHitStun;
 
-            if (_hitStunTimer.GetEnabled())
-                RoutineBehaviour.Instance.StopAction(_hitStunTimer);
+            if (_hitStunTimer?.IsActive == true)
+                _hitStunTimer.Stop();
 
-            _hitStunTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => { _inHitStun = false; _isFlinching = false; _timeInCurrentHitStun = 0; }, TimedActionCountType.SCALEDTIME, timeInHitStun);
+            _hitStunTimer = FixedPointTimer.StartNewTimedAction(() => { _inHitStun = false; _isFlinching = false; _timeInCurrentHitStun = 0; }, timeInHitStun);
             _onHitStun?.Invoke();
             _onHitStunTemp?.Invoke();
             _onHitStunTemp = null;
@@ -407,7 +423,7 @@ namespace Lodis.Movement
         {
             return CurrentAirState == AirState.NONE && !Physics.IsFrozen && Physics.ObjectAtRest && !_landingBehaviour.Landing && !InHitStun &&!IsFlinching && !_landingBehaviour.IsDown && !Stunned && !_landingBehaviour.RecoveringFromFall;
         }
-        public override float TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
+        public override Fixed32 TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
@@ -467,7 +483,7 @@ namespace Lodis.Movement
 
             return damage;
         }
-        public override float TakeDamage(HitColliderData info, EntityData attacker)
+        public override Fixed32 TakeDamage(HitColliderData info, EntityData attacker)
         {
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
@@ -485,7 +501,7 @@ namespace Lodis.Movement
             _onTakeDamageTemp = null;
             IsSlidingHit = false;
 
-            float totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
+            Fixed32 totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody
@@ -552,50 +568,14 @@ namespace Lodis.Movement
             return info.Damage;
         }
 
-        public static float GetTotalKnockback(float baseKnockback, float knockbackScale, float health)
+        public static Fixed32 GetTotalKnockback(Fixed32 baseKnockback, Fixed32 knockbackScale, Fixed32 health)
         {
-            return baseKnockback + Mathf.Round((health / 100 * knockbackScale));
-        }
-
-       
-        private void UpdateGroundedColliderPosition()
-        {
-            switch (CurrentAirState)
-            {
-                case AirState.TUMBLING:
-                {
-                    var bounds = Physics.BounceCollider.bounds;
-                    Physics.GroundedBoxPosition = (FVector3)bounds.center;
-                    Physics.GroundedBoxExtents = (FVector3)(bounds.extents * 2);
-                    break;
-                }
-                case AirState.FREEFALL:
-                    Physics.GroundedBoxPosition = (FVector3)(_freeFallGroundedPoint + transform.position);
-                    Physics.GroundedBoxExtents = (FVector3)_freeFallGroundedPointExtents;
-                    break;
-                default:
-                    Physics.GroundedBoxPosition = (FVector3)(_idleGroundedPoint + transform.position);
-                    Physics.GroundedBoxExtents = (FVector3)_idleGroundedPointExtents;
-                    break;
-            }
-        }
-
-        private void OnDrawGizmos()
-        {
-            if (Application.isPlaying) return;
-            
-            Gizmos.color = Color.blue;
-            var position = transform.position;
-            Gizmos.DrawCube(_freeFallGroundedPoint + position, _freeFallGroundedPointExtents);
-            Gizmos.color = Color.green;
-            Gizmos.DrawCube(_idleGroundedPoint + position, _idleGroundedPointExtents);
+            return baseKnockback + baseKnockback * (health / 100 * knockbackScale);
         }
 
         public override void Tick(Fixed32 dt)
         {
             base.Tick(dt);
-
-            if (CurrentAirState == AirState.TUMBLING) _lastTimeInKnockBack += Time.deltaTime;
 
             LandingScript.enabled = !OutOfBounds;
 

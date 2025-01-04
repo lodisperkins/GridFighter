@@ -44,7 +44,7 @@ namespace Lodis.AI
 
         public void ToggleEnergyText()
         {
-            if (!MatchManagerBehaviour.InfiniteEnergy)
+            if (!MatchManagerBehaviour.Instance.InfiniteEnergy)
                 _energyButtonText.text = "Infinite Energy : Off";
             else 
                 _energyButtonText.text = "Infinite Energy : On";

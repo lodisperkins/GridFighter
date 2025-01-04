@@ -76,23 +76,23 @@ MonoBehaviour:
     Damage:
       RawValue: 458752
     BaseKnockBack:
-      RawValue: 0
+      RawValue: 196608
     KnockBackScale:
-      RawValue: 0
+      RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 0
-    AdjustAngleBasedOnAlignment: 0
+      RawValue: 108134
+    AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
-      RawValue: 32768
+      RawValue: 6553
     Priority:
       RawValue: 65536
     OwnerAlignement: 0
     AbilityType: 0
     AbilityID:
-      RawValue: 0
+      RawValue: -214106112
     SpawnEffect: {fileID: 8867112169225384458, guid: 247021d2ec9bf654ba6875163715662c,
       type: 3}
     SpawnEffectOffset:

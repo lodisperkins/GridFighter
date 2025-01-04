@@ -4,6 +4,8 @@ using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using Types;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -15,7 +17,7 @@ namespace Lodis.Gameplay
         private EntityDataBehaviour _entityRef;
         private bool _smoothMovement;
         private int _entityCount;
-        private float _moveSpeed;
+        private Fixed32 _moveSpeed;
         private FVector2[] _panelPositions;
         private string _id;
         private UnityAction _onMoveEndAction;
@@ -23,7 +25,7 @@ namespace Lodis.Gameplay
 
         public FVector2[] PanelPositions { get => _panelPositions; set => _panelPositions = value; }
         public int EntityCount { get => _entityCount; private set => _entityCount = value; }
-        public float MoveSpeed { get => _moveSpeed; private set => _moveSpeed = value; }
+        public Fixed32 MoveSpeed { get => _moveSpeed; private set => _moveSpeed = value; }
         public bool SmoothMovement { get => _smoothMovement; set => _smoothMovement = value; }
         public List<GridMovementBehaviour> ActiveEntities { get => _activeEntities; private set => _activeEntities = value; }
         public UnityAction OnMoveEndAction { get => _onMoveEndAction; set => _onMoveEndAction = value; }

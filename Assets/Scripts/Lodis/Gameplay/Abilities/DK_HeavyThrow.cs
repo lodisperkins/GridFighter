@@ -62,7 +62,7 @@ namespace Lodis.Gameplay
 
             OwnerMoveScript.CancelMovement();
             OwnerMoveScript.DisableMovement(condition => !InUse, false, true);
-            OwnerMoveScript.TeleportToLocation((FixedPoints.FVector3)position);
+            OwnerMoveScript.TeleportToLocation((FixedPoints.FVector3)position, new Fixed32(3276));
 
             _throwAction = RoutineBehaviour.Instance.StartNewTimedAction(info => ThrowOpponent(),TimedActionCountType.SCALEDTIME, 0.1f);
         }

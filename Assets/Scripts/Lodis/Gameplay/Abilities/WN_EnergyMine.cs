@@ -4,6 +4,7 @@ using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -15,9 +16,9 @@ namespace Lodis.Gameplay
     public class WN_EnergyMine : SummonAbility
     {
         private HitColliderData _explosionColliderData;
-        private float _travelDistance;
-        private  float _despawnTime;
-        private TimedAction _despawnAction;
+        private Fixed32 _travelDistance;
+        private  Fixed32 _despawnTime;
+        private FixedTimeAction _despawnAction;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -38,7 +39,7 @@ namespace Lodis.Gameplay
             _despawnTime = abilityData.GetCustomStatValue("DespawnTime");
             _explosionColliderData = GetColliderData(0);
             SmoothMovement = true;
-            RoutineBehaviour.Instance.StopAction(_despawnAction);
+            _despawnAction?.Stop();
         }
 
         //Called when ability is used
@@ -63,7 +64,7 @@ namespace Lodis.Gameplay
             //    collider.enabled = true;
             //});
 
-            _despawnAction = RoutineBehaviour.Instance.StartNewTimedAction(context => DisableAllEntities(), TimedActionCountType.SCALEDTIME, _despawnTime);
+            _despawnAction = FixedPointTimer.StartNewTimedAction(() => DisableAllEntities(), _despawnTime);
         }
     }
 }

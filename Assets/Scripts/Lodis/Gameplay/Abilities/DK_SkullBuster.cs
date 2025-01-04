@@ -20,18 +20,18 @@ namespace Lodis.Gameplay
     public class DK_SkullBuster : Ability
     {
         private KnockbackBehaviour _knockBackBehaviour;
-        private float _ownerGravity;
+        private Fixed32 _ownerGravity;
         private HitColliderData _fistCollider;
         private  GameObject _visualPrefabInstance;
         private (Coroutine, Coroutine) _visualPrefabCoroutines;
         private GridBehaviour _grid;
-        private float _timeForceAdded;
+        private Fixed32 _timeForceAdded;
         private bool _forceAdded;
-        private float _riseTime;
+        private Fixed32 _riseTime;
         private GridPhysicsBehaviour _opponentPhysics;
-        private float _distance;
-        private float _jumpHeight;
-        private float _oldBounciness;
+        private Fixed32 _distance;
+        private Fixed32 _jumpHeight;
+        private Fixed32 _oldBounciness;
         private AnimationCurve _curve;
         private GameObject _chargeEffectRef;
         private GameObject _chargeEffect;
@@ -52,9 +52,10 @@ namespace Lodis.Gameplay
             base.Init(newOwner);
 
             //Calculates the animation curve for the jump
-            float hangTime = abilityData.GetCustomStatValue("HangTime") / (abilityData.startUpTime + abilityData.timeActive);
+            Fixed32 hangTime = abilityData.GetCustomStatValue("HangTime") / (abilityData.startUpTime + abilityData.timeActive);
             _riseTime = abilityData.startUpTime / (abilityData.startUpTime + abilityData.timeActive);
-            hangTime = Mathf.Clamp(hangTime, 0.1f, 0.5f) + 0.2f;
+            //0.1, 0.5, 0.2
+            hangTime = Fixed32.Clamp(hangTime, new Fixed32(6553), new Fixed32(32768)) + new Fixed32(13107);
             _curve = new AnimationCurve(new Keyframe(0, 0), new Keyframe(_riseTime, .5f), new Keyframe(hangTime, .5f), new Keyframe(1, 1));
             _fCurve = new FixedAnimationCurve(_curve);
 

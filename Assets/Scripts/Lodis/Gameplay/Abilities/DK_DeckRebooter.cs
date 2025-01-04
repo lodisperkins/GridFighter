@@ -1,6 +1,7 @@
 ﻿using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -11,7 +12,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_DeckRebooter : ProjectileAbility
     {
-        private float _stunTime;
+        private Fixed32 _stunTime;
 	    //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {

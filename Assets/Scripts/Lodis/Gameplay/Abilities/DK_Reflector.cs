@@ -11,7 +11,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_Reflector : Ability
     {
-        private GameObject _shield;
+        private EntityDataBehaviour _shield;
         private ColliderBehaviour _shieldCollider;
 
         protected override void OnStart(params object[] args)
@@ -22,7 +22,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            _shield = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform, true);
+            _shield = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), Owner.FixedTransform.WorldPosition, Owner.FixedTransform.WorldRotation);
             _shieldCollider = _shield.GetComponent<ColliderBehaviour>();
             _shieldCollider.Spawner = Owner;
 

@@ -3,6 +3,7 @@ using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 using static UnityEngine.UI.GridLayoutGroup;
 
@@ -20,7 +21,6 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_ElectricTraps : ProjectileAbility
     {
-        private float _maxTravelDistance;
         private List<Movement.GridMovementBehaviour> _linkMoveScripts;
         private EntityDataBehaviour _attackLinkVisual;
         private HitColliderData _stunCollider;
@@ -119,19 +119,19 @@ namespace Lodis.Gameplay
         /// Destroys all links
         /// </summary>
         /// <param name="time"></param>
-        private void DestroyLinks(float time)
+        private void DestroyLinks(Fixed32 time)
         {
             if (_linkMoveScripts.Count == 0)
                 return;
 
             if (_linkMoveScripts[0])
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_linkMoveScripts[0].gameObject, time);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_linkMoveScripts[0].Entity, time);
 
             if (_linkMoveScripts.Count <= 1)
                 return;
 
             if (_linkMoveScripts[1])
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_linkMoveScripts[1].gameObject, time);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_linkMoveScripts[1].Entity, time);
         }
 
 	    //Called when ability is used
@@ -159,7 +159,7 @@ namespace Lodis.Gameplay
             //Finds the farthest possible panel to know how far to throw traps
             Vector2 dimensions = BlackBoardBehaviour.Instance.Grid.Dimensions;
             int ownerFacing = (int)Owner.transform.forward.x;
-            int farthestPanelX = (int)Mathf.Clamp(closestPanelX + (abilityData.GetCustomStatValue("DistanceBetweenStructures") * ownerFacing), 0, dimensions.x - 1);
+            int farthestPanelX = (int)Fixed32.Clamp(closestPanelX + (abilityData.GetCustomStatValue("DistanceBetweenStructures") * ownerFacing), 0, dimensions.x - 1);
 
             //Switch to know where to place the ability on the stage based on the direction given
             switch (attackDirection)
@@ -172,14 +172,6 @@ namespace Lodis.Gameplay
                     FireLink(new FVector2(closestPanelX, dimensions.y - 1));
                     FireLink(new FVector2(closestPanelX, 0));
                     break;
-                //case FVector2 dir when dir.Equals(FVector2.Up):
-                //    FireLink(new FVector2(closestPanelX, dimensions.y - 1));
-                //    FireLink(new FVector2(farthestPanelX, dimensions.y - 1));
-                //    break;
-                //case FVector2 dir when dir.Equals(FVector2.Down):
-                //    FireLink(new FVector2(closestPanelX, 0));
-                //    FireLink(new FVector2(farthestPanelX, 0));
-                //    break;
                 default:
                     FireLink(new FVector2(closestPanelX, OwnerMoveScript.Position.Y));
                     FireLink(new FVector2(farthestPanelX, OwnerMoveScript.Position.Y));

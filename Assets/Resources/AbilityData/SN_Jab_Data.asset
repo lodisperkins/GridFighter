@@ -60,7 +60,7 @@ MonoBehaviour:
     BaseKnockBack:
       RawValue: 262144
     KnockBackScale:
-      RawValue: 98304
+      RawValue: 131072
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:

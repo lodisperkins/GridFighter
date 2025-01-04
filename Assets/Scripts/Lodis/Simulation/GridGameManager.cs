@@ -3,7 +3,9 @@ using Lodis.Gameplay;
 using Lodis.Input;
 using Lodis.Utility;
 using NaughtyAttributes;
+#if UNITY_EDITOR
 using ParrelSync;
+#endif
 using SharedGame;
 using System.Collections;
 using System.Collections.Generic;
@@ -28,6 +30,7 @@ public class GridGameManager : GameManager
     [SerializeField] private int _saveDelay;
     [ShowIf("_testLatency")]
     [SerializeField] private int _loadDelay;
+    [SerializeField] private bool host;
 
 
     //---
@@ -98,6 +101,7 @@ public class GridGameManager : GameManager
         StartGame(_onlineGame);
         OnlineGameStarted = true;
         LocalGameStarted = false;
+        _isHost = host;
     }
 
     public override void StartLocalGame()
@@ -142,9 +146,10 @@ public class GridGameManager : GameManager
 
         int playerIndex = IsHost ? 0 : 1;
 
-        inpIp = "127.0.0.1";
-        txtIp = "127.0.0.1";
-
+        inpIp = "192.168.0.141";
+        //Rose Ip
+        //txtIp = "169.254.160.242";
+        txtIp = "192.168.0.141";
         inpPort = "7000";
         txtPort = "7001";
         _gameManager.StartGGPOGame(_perf, GetConnections(), playerIndex);

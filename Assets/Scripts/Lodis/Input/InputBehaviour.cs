@@ -329,12 +329,14 @@ namespace Lodis.Input
                 // Call the function related to Strong attack
                 BufferChargeNormalAbility();
             }
-            if ((inputs & (long)InputFlag.Special1) != 0)
+            _special1Down = (inputs & (long)InputFlag.Special1) != 0;
+            if (_special1Down)
             {
                 // Call the function related to Special1
                 BufferSpecialAbility(0);
             }
-            if ((inputs & (long)InputFlag.Special2) != 0)
+            _special2Down = (inputs & (long)InputFlag.Special2) != 0;
+            if (_special2Down)
             {
                 // Call the function related to Special2
                 BufferSpecialAbility(1);

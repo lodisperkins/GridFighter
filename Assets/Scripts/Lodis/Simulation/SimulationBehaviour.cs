@@ -46,6 +46,7 @@ public abstract class SimulationBehaviour : MonoBehaviour, ISerializedListObject
         _onDeserialize?.Invoke();
     }
     public ListEvent OnAddedToList { get; set; }
+    public ListEvent OnRemovedFromList { get; set; }
 
     /// <summary>
     /// Handles data that is saved and sent across the network.

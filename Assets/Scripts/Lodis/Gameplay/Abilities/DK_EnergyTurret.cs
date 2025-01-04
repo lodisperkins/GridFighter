@@ -5,6 +5,7 @@ using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Types;
 
 namespace Lodis.Gameplay
 {
@@ -14,14 +15,15 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_EnergyTurret : SummonAbility
     {
-        private GameObject _spawn;
+        private EntityDataBehaviour _spawn;
         private FVector3 _spawnPosition;
         private ProjectileSpawnerBehaviour _projectileSpawner;
         private EntityDataBehaviour _largeLaserRef;
         private EntityDataBehaviour _laserRef;
         private int _shotCount;
-        private float _shotDelay;
-        private float _shotSpeed;
+        private Fixed32 _shotDelay;
+        private Fixed32 _shotSpeed;
+        private int _currentShotCount;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -46,29 +48,30 @@ namespace Lodis.Gameplay
             PanelPositions[0] = _spawnPosition;
         }
 
-        private IEnumerator FireShots()
+        private void FireSmallShot()
         {
 
             _projectileSpawner.Owner = Owner;
             _projectileSpawner.Projectile = _laserRef;
 
             EntityDataBehaviour Projectile;
-            for (int i = 0; i < _shotCount; i++)
-            {
-                Transform effect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[2], _projectileSpawner.transform.position, Camera.main.transform.rotation).transform;
+            Transform effect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[2], _projectileSpawner.transform.position, Camera.main.transform.rotation).transform;
 
-                effect.localScale /= 2;
+            effect.localScale /= 2;
 
-                Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.FixedTransform.Forward * _shotSpeed, GetColliderData(0));
+            Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.FixedTransform.Forward * _shotSpeed, GetColliderData(0));
+            Projectile.FixedTransform.WorldPosition += FVector3.Up / 2;
 
-                //Fire projectile
-                Projectile.name += "(" + abilityData.name + i + ")";
+            //Fire projectile
+            Projectile.name += "(" + abilityData.name + _currentShotCount + ")";
+            _currentShotCount++;
+        }
 
-                yield return new WaitForSeconds(_shotDelay);
-            }
-
+        protected void FireLastShot()
+        {
             _projectileSpawner.Projectile = _largeLaserRef;
-            Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.FixedTransform.Forward * _shotSpeed, GetColliderData(1));
+            EntityDataBehaviour Projectile = _projectileSpawner.FireProjectile(_projectileSpawner.FixedTransform.Forward * _shotSpeed, GetColliderData(1));
+            Projectile.FixedTransform.WorldPosition += FVector3.Up / 2;
 
             //Fire projectile
             Projectile.name += "(" + abilityData.name + "Large" + ")";
@@ -81,12 +84,12 @@ namespace Lodis.Gameplay
             base.OnActivate(args);
 
             ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[2], OwnerMoveset.ProjectileSpawner.transform.position, Camera.main.transform.rotation);
-            _spawn = ActiveEntities[0].gameObject;
+            _spawn = ActiveEntities[0].Entity;
 
             _projectileSpawner = _spawn.GetComponentInChildren<ProjectileSpawnerBehaviour>();
             _projectileSpawner.Owner = Owner;
 
-            _projectileSpawner.StartCoroutine(FireShots());
+            FixedPointTimer.StartNewTimedAction(FireSmallShot, _shotDelay).Loop(_shotCount).OnComplete += FireLastShot;
         }
 
         protected override void OnMatchRestart()

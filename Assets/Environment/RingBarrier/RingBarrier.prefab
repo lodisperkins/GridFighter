@@ -152,7 +152,7 @@ MonoBehaviour:
       RawValue: 6553
     _facingRight: 0
     _height:
-      RawValue: 327680
+      RawValue: 3276800
     _panelYOffset: 0
     _panelXOffset: 0
     _worldYPosition:
@@ -227,7 +227,7 @@ MonoBehaviour:
       RawValue: 65536
     _facingRight: 0
     _height:
-      RawValue: 720896
+      RawValue: 3276800
     _panelYOffset: 0
     _panelXOffset: 0
     _worldYPosition:
@@ -472,7 +472,7 @@ MonoBehaviour:
   _minimumDamageSpeed:
     RawValue: 262144
   _knockBackDistance:
-    RawValue: 32768
+    RawValue: 65536
   _launchAngle:
     RawValue: 65536
   _shieldController: {fileID: 929767235}
@@ -526,6 +526,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 8744172618015234542}
   _children:
@@ -729,7 +730,6 @@ MonoBehaviour:
     RawValue: 0
   _rangeToIgnoreUpAngle:
     RawValue: 13107
-  _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -737,6 +737,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 1
   _gridActive: 0

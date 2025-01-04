@@ -41,11 +41,27 @@ namespace Lodis.Movement
 
             public int Bounces;
 
-            public BounceForce(int bounces, FVector3 bounceVelocity, bool decayOverTime = true, Fixed32 decayScale = default)
+            public bool CanBounce
+            {
+                get
+                {
+                    return Bounces == -1 || Bounces > 0;
+                }
+            }
+
+            public BounceForce(int bounces, FVector3 bounceVelocity)
             {
                 Bounces = bounces;
                 _bounceVelocity = bounceVelocity;
-                _decayOverTime = decayOverTime;
+                _decayOverTime = false;
+                _decayScale = 1;
+            }
+
+            public BounceForce(int bounces, FVector3 bounceVelocity, Fixed32 decayScale)
+            {
+                Bounces = bounces;
+                _bounceVelocity = bounceVelocity;
+                _decayOverTime = true;
                 _decayScale = decayScale;
             }
 
@@ -58,7 +74,8 @@ namespace Lodis.Movement
                     _bounceVelocity /= _decayScale;
                 }
 
-                Bounces--;
+                if (Bounces != -1)
+                    Bounces--;
 
                 return force; 
             }
@@ -75,12 +92,13 @@ namespace Lodis.Movement
         [SerializeField] private Fixed32 _friction;
         [Tooltip("Any angles for knock back force recieved in this range will send the object directly upwards.")]
         [SerializeField] private Fixed32 _rangeToIgnoreUpAngle = 0.2f;
-        [Tooltip("How fast will objects be allowed to travel in knockback.")]
-        [SerializeField] private ScriptableObjects.FloatVariable _maxMagnitude;
+        //[Tooltip("How fast will objects be allowed to travel in knockback.")]
+        //[SerializeField] private ScriptableObjects.FloatVariable _maxMagnitude;
         [Tooltip("How this entity will react to other physics objects when bouncig off of them.")]
         [SerializeField] private BounceCombination _bounceCombination;
         [Tooltip("The curve entities will use when jumping by default.")]
         [SerializeField] private AnimationCurve _defaultJumpCurve;
+        [SerializeField] private FloatVariable _maxYPosition;
 
         [Header("Toggles")]
         [Tooltip("Whether or not the force of gravity will be applied every frame.")]
@@ -279,6 +297,7 @@ namespace Lodis.Movement
         {
             _velocity = FVector3.Zero;
             UseGravity = false;
+            FrozenVelocity = FVector3.Zero;
         }
 
         /// <summary>
@@ -548,11 +567,11 @@ namespace Lodis.Movement
             if (float.IsNaN(magnitude))
                 return new FVector3();
 
-            if (_maxMagnitude == null)
-                return new FVector3();
+            //if (_maxMagnitude == null)
+            //    return new FVector3();
 
             //Clamps magnitude to be within the limit
-            magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.FixedValue);
+            //magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.FixedValue);
 
             //Return the knockback force
             return new FVector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle), 0) * (magnitude * Mass);
@@ -829,7 +848,7 @@ namespace Lodis.Movement
                 _velocity = new FVector3(_velocity.X, 0, _velocity.Z);
 
             //Cache force data for later use.
-            _lastForceAdded = force / Mass;
+            _lastForceAdded = force;
             ForceToApply = _lastForceAdded;
 
             //Forces should be flipped upwards if applied directly downwards on a grounded object.
@@ -885,7 +904,7 @@ namespace Lodis.Movement
             if (IsGrounded && force.Y < 0)
                 force.Y *= -1f;
 
-            _lastForceAdded = force / Mass;
+            _lastForceAdded = force;
             ForceToApply = _lastForceAdded;
 
             if (IsFrozen)
@@ -899,7 +918,7 @@ namespace Lodis.Movement
             _onForceAdded?.Invoke(force);
             _onForceAddedTemp?.Invoke(force);
             _onForceAddedTemp = null;
-            _acceleration = (FVector3)force / Mass;
+            _acceleration = force / Mass;
         }
 
         public void SetBounceForce(BounceForce bounce)
@@ -1020,9 +1039,14 @@ namespace Lodis.Movement
                     MovementBehaviour.Position = position;
                 }
             }
+            else if (FixedTransform.WorldPosition.Y > _maxYPosition?.FixedValue)
+            {
+                FixedTransform.WorldPosition = new FVector3(FixedTransform.WorldPosition.X, _maxYPosition.FixedValue, FixedTransform.WorldPosition.Z);
+            }
+
 
             //--Bounces
-            if (_currentBounce.Bounces > 0 && _isGrounded && !_isFrozen)
+            if (_currentBounce.CanBounce && _isGrounded && !_isFrozen)
             {
                 ApplyVelocityChange(_currentBounce.GetBounceForce());
             }

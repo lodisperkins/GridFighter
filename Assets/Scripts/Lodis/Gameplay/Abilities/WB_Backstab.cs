@@ -1,4 +1,5 @@
-﻿using Lodis.GridScripts;
+﻿using FixedPoints;
+using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Lodis.Gameplay
         private ProjectileSpawnerBehaviour _projectileSpawner;
         private GameObject _chargeEffectRef;
         private GameObject _chargeEffect;
+        private FVector3 _spawnPosition;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -27,6 +29,7 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
 
+            //Get the info and spawn the charge effect to warn the opponent.
             int posY = (int)OwnerMoveScript.Position.Y;
             int posX = 0;
 
@@ -35,9 +38,9 @@ namespace Lodis.Gameplay
 
             PanelBehaviour panel = null;
             BlackBoardBehaviour.Instance.Grid.GetPanel(posX, posY, out panel);
-            //SpawnTransform = panel.transform;
+            _spawnPosition = panel.FixedWorldPosition;
 
-            //_chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, SpawnTransform.position + Vector3.up, SpawnTransform.rotation);
+            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef.gameObject, (Vector3)_spawnPosition + Vector3.up, Quaternion.identity);
             _chargeEffect.AddComponent<GridTrackerBehaviour>().Marker = MarkerType.WARNING;
         }
 
@@ -53,40 +56,42 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            Quaternion rotation = Quaternion.identity;
-
+            //Make the projectile face the person who spawned it based on alignment.
+            FQuaternion rotation = FQuaternion.Identity;
             if (OwnerMoveScript.Alignment == GridAlignment.LEFT)
-                rotation = Quaternion.Euler(0, -90, 0);
+                rotation = FQuaternion.Euler(0, 270, 0);
             else if (OwnerMoveScript.Alignment == GridAlignment.RIGHT)
-                rotation = Quaternion.Euler(0, 90, 0);
+                rotation = FQuaternion.Euler(0, 90, 0);
 
-            //_projectileSpawner = Object.Instantiate(OwnerMoveset.ProjectileSpawner, SpawnTransform.position + Vector3.up, rotation);
+            //Spawn and orient the projectile.
+            _projectileSpawner = GridGame.SpawnEntity(OwnerMoveset.ProjectileSpawner, _spawnPosition + FVector3.Up,  FVector3.One, rotation);
 
             _projectileSpawner.Projectile = ProjectileRef;
 
-            ShotDirection = (FixedPoints.FVector3)_projectileSpawner.transform.forward;
+            ShotDirection = _projectileSpawner.FixedTransform.Forward;
 
+            //Fire projectile.
             Projectile = _projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), ProjectileColliderData, UseGravity);
 
-            DisableAccessory();
+            DisableAccessory(c => !Projectile.Active);
 
-            RoutineBehaviour.Instance.StartNewConditionAction(context => EnableAccessory(), condition => !Projectile.Active);
-
-            //Fire projectile
             ActiveProjectiles.Add(Projectile);
         }
 
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
+
             if (_projectileSpawner)
                 Object.Destroy(_projectileSpawner.gameObject);
+
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
         }
 
         protected override void OnEnd()
         {
             base.OnEnd();
+
             if (_projectileSpawner)
                 Object.Destroy(_projectileSpawner.gameObject);
 

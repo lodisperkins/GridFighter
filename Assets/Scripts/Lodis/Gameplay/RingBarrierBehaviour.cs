@@ -98,7 +98,7 @@ namespace Lodis.Gameplay
         /// <returns></returns>
         /// <param name="damageType">The type of damage this object will take</param>
         /// <param name="hitStun">The amount of time the object will be in hit stun</param>
-        public override float TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
+        public override Fixed32 TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
             if (!Owner || damageType != DamageType.KNOCKBACK || IsInvincible || (attacker.UnityObject != Owner) || damage < _minimumDamageSpeed)
                 return 0;
@@ -118,7 +118,7 @@ namespace Lodis.Gameplay
         /// </summary>
         /// <param name="info">The hit collider data of the attack</param>
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
-        public override float TakeDamage(HitColliderData info, EntityData attacker)
+        public override Fixed32 TakeDamage(HitColliderData info, EntityData attacker)
         {
             if (!Owner || info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.UnityObject != Owner) || info.Damage < _minimumDamageSpeed)
                 return 0;
@@ -197,7 +197,7 @@ namespace Lodis.Gameplay
             //knockbackBehaviour.Physics.StopVelocity();
 
             //Creates a new hit collider to attack the character
-            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = knockbackBehaviour.Physics.Velocity.Magnitude / 2, KnockBackScale = 1.2f, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopShakeStrength = 1, };
+            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = _knockBackDistance, KnockBackScale = 0, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopShakeStrength = 1, };
             HitColliderBehaviour hitCollider = new HitColliderBehaviour();
             hitCollider.ColliderInfo = info;
 

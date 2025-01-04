@@ -11,8 +11,6 @@ GameObject:
   - component: {fileID: 1043731898483994600}
   - component: {fileID: 7496024260328918796}
   - component: {fileID: 2709042906618238687}
-  - component: {fileID: 3348431129207406662}
-  - component: {fileID: -2790684648527412599}
   - component: {fileID: 2842100812217448222}
   - component: {fileID: 5784080527637818817}
   m_Layer: 0
@@ -56,11 +54,11 @@ MonoBehaviour:
   Marker: 2
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
-  _markCollider: 0
+  _markCollider: 1
   _markAtRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
-  _colliderToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 2709042906618238687}
   _xRange: 0
   _yRange: 0
   _radius: 0
@@ -76,6 +74,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 0}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -100,92 +104,56 @@ MonoBehaviour:
     _panelXOffset: 0
     _worldYPosition:
       RawValue: 0
-  debuggingEnabled: 0
+  debuggingEnabled: 1
   ColliderInfo:
     Name: 
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 0
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 0
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0
+    HitAngle:
+      RawValue: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0
-    Priority: 0
+    HitStunTime:
+      RawValue: 0
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 0
-    AbilityID: 0
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopShakeStrength: 0
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 0
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
---- !u!114 &3348431129207406662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279573249412428936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-    m_PersistentCalls:
-      m_Calls: []
-  Event: {fileID: 0}
-  IntendedSender: {fileID: 0}
-  AcceptTagAsSender: 0
---- !u!114 &-2790684648527412599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3279573249412428936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speedFloat: 0
-  _opponentPanelSpeedReductionFloat: 0
-  _isMoving: 0
-  _canMove: 1
-  _canCancelMovement: 1
-  _alwaysLookAtOpposingSide: 0
-  _canBeWalkedThrough: 0
-  _canMoveDiagonally: 0
-  _moveOnStart: 0
-  _checkIfBehindBarrier: 0
-  _isBehindBarrier: 0
-  _moveToAlignedSideIfStuck: 1
-  _facingIgnoresState: 0
-  _defaultAlignment: 3
-  _moveSound: {fileID: 0}
-  _onTeleportStart: {fileID: 0}
-  _onTeleportEnd: {fileID: 0}
-  rotateY: 0
-  rotateX: 0
 --- !u!114 &2842100812217448222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,8 +195,10 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 1043731898483994600}
+  _children: []
 --- !u!114 &5784080527637818817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,14 +211,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
   _friction:
     RawValue: 0
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 0}
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -256,9 +236,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
-  _isKinematic: 1
-  _gridActive: 1
+  _isKinematic: 0
+  _gridActive: 0
   _isGrounded: 0
   _panelBounceEnabled: 0
   _faceHeading: 0

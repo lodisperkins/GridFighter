@@ -69,7 +69,7 @@ MonoBehaviour:
     Damage:
       RawValue: 655360
     BaseKnockBack:
-      RawValue: 327680
+      RawValue: 32768
     KnockBackScale:
       RawValue: 0
     ClampForceWithinRing: 0
@@ -165,21 +165,21 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 0
     Damage:
-      RawValue: 0
+      RawValue: 1966080
     BaseKnockBack:
-      RawValue: 0
+      RawValue: 1966080
     KnockBackScale:
-      RawValue: 0
+      RawValue: 196608
     ClampForceWithinRing: 0
-    IgnoreMomentum: 0
+    IgnoreMomentum: 1
     HitAngle:
-      RawValue: 0
+      RawValue: 32768
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
-      RawValue: 0
+      RawValue: 65536
     Priority:
-      RawValue: 0
+      RawValue: -65536
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -192,11 +192,11 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength:
-      RawValue: 0
+      RawValue: 65536
     CameraShakeStrength:
-      RawValue: 0
+      RawValue: 131072
     CameraShakeDuration:
-      RawValue: 0
+      RawValue: 65536
     CameraShakeFrequency: 90
     ShakesCamera: 1
     SpawnSound: {fileID: 0}

@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using FixedPoints;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class SS_TTornado : Ability
     {
-        private GameObject _orbs;
+        private EntityDataBehaviour _orbs;
         private GameObject _effectInstance;
         private GameObject _thalamusInstance;
         private Transform _heldItemSpawn;
@@ -32,22 +33,29 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            //Handle vfx.
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
             DisableAccessory();
-            _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, Owner.transform, true);
-            _orbs.transform.position = new Vector3(_orbs.transform.position.x, abilityData.GetCustomStatValue("OrbHeight"), _orbs.transform.position.z);
+
+            //Collider spawning and setup.
+            _orbs = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), Owner.FixedTransform.WorldPosition, Owner.FixedTransform.WorldRotation);
+            _orbs.FixedTransform.Parent = Owner.FixedTransform;
+            _orbs.FixedTransform.LocalPosition = FVector3.Zero;
 
             HitColliderBehaviour hitColliderBehaviour = _orbs.GetComponent<HitColliderBehaviour>();
 
             hitColliderBehaviour.ColliderInfo = GetColliderData(0);
             hitColliderBehaviour.Spawner = Owner;
 
+            //Disabling the player visual here so it looks like they are in the tornado.
             OwnerAnimationScript.gameObject.SetActive(false);
         }
 
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
+
+            //Placing the sword back in their hand.
             _heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
             if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
                 _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
@@ -56,8 +64,12 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true);
             _thalamusInstance.transform.localRotation = Quaternion.identity;
 
+            //Removing vfx.
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             OwnerAnimationScript.gameObject.SetActive(true);
+
+
+            //Forcing the animation statemachine to go to the finish pose.
             AnimationClip clip = null;
             abilityData.GetAdditionalAnimation(0, out clip);
 
@@ -70,6 +82,7 @@ namespace Lodis.Gameplay
         {
             base.OnEnd();
 
+            //Clean up vfx.
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_effectInstance);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);

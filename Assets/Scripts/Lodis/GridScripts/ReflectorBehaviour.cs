@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Lodis.Movement;
 using FixedPoints;
+using Types;
 
 namespace Lodis.Gameplay
 {
     [RequireComponent(typeof(ColliderBehaviour))]
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class ReflectorBehaviour : MonoBehaviour
     {
         private ColliderBehaviour _collider;
         [Tooltip("How long are opponents stunned after their melee attacks are blocked")]
         [SerializeField]
-        private float _attackerStunTime;
+        private Fixed32 _attackerStunTime;
         [Tooltip("If true, projectiles will have the lifetime timer reset when reflect")]
         [SerializeField]
         private bool _resetProjectileTimer;

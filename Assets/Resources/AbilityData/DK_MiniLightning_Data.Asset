@@ -18,19 +18,28 @@ MonoBehaviour:
   exampleClip: {fileID: 32900000, guid: 2e21e9c62da077743985b007d7fb42c7, type: 3}
   AbilityType: 8
   timeActive:
-    RawValue: 6553
+    RawValue: 65536
   recoverTime:
     RawValue: 19660
   startUpTime:
     RawValue: 13107
   maxActivationAmount: 1
   EnergyCost: 1
-  CancellationRules: []
+  CancellationRules:
+  - Phase: 5
+    CanOnlyCancelOnOpponentHit: 1
+    CanCancelOnMove: 0
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 1
+    cancelOnHit: 0
+    cancelOnFlinch: 0
+    cancelOnKnockback: 0
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
   CanInputMovementDuringStartUp: 0
-  CanInputMovementWhileActive: 0
+  CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
@@ -76,7 +85,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
-      RawValue: 0
+      RawValue: 688193536
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0
@@ -125,7 +134,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
-      RawValue: 0
+      RawValue: 688193536
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0
@@ -174,7 +183,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
-      RawValue: 0
+      RawValue: 688193536
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0

@@ -289,13 +289,13 @@ public struct GridGame : IGame
         entityData.Transform.WorldPosition = (FVector3)position;
         entityData.Transform.WorldScale = (FVector3)scale;
         entityData.Transform.WorldRotation = rotation;
-        entityData.Transform.Parent = parent.Transform;
+        entityData.Transform.Parent = parent?.Transform;
 
         //Create visual for entity.
         GameObject unityObject = new GameObject(entityData.Name);
         unityObject.transform.position = position;
         unityObject.transform.localScale = scale;
-        unityObject.transform.SetParent(parent.UnityObject.transform);
+        unityObject.transform.SetParent(parent?.UnityObject.transform);
 
         //Add the entity script to the visual.
         EntityDataBehaviour script = unityObject.AddComponent<EntityDataBehaviour>();
@@ -314,15 +314,57 @@ public struct GridGame : IGame
     /// </summary>
     /// <param name="position">The unity world position of the entity.</param>
     /// <returns>The entity that was created.</returns>
+    public static T SpawnEntity<T>(T component, FVector3 position, FVector3 scale, FQuaternion rotation, EntityData parent = null) where T : SimulationBehaviour
+    {
+        //Create new entity.
+        EntityData entityData = new EntityData();
+        entityData.Transform.WorldPosition = position;
+        entityData.Transform.WorldScale = scale;
+        entityData.Transform.WorldRotation = rotation;
+        entityData.Transform.Parent = parent?.Transform;
+
+        //Create visual for entity.
+        T comp = UnityEngine.Object.Instantiate(component);
+        GameObject unityObject = comp.gameObject;
+        unityObject.name = component.gameObject.name + "(Clone)";
+        unityObject.transform.position = (Vector3)position;
+        unityObject.transform.localScale = (Vector3)scale;
+        unityObject.transform.SetParent(parent?.UnityObject.transform);
+
+        //Add the entity script to the visual.
+
+        EntityDataBehaviour entityDataBehaviour = null;
+
+        if (!unityObject.TryGetComponent<EntityDataBehaviour>(out entityDataBehaviour))
+        {
+            entityDataBehaviour = unityObject.AddComponent<EntityDataBehaviour>();
+        }
+
+        entityDataBehaviour.Data = entityData;
+
+        entityData.UnityObject = unityObject;
+        comp.Entity = entityDataBehaviour;
+
+        //Adding the entity to the rollback simulattion.
+        AddEntityToGame(entityData);
+
+        return comp;
+    }
+
+    /// <summary>
+    /// Creates a new entity at the given position and adds it to the rollback simulation.
+    /// </summary>
+    /// <param name="position">The unity world position of the entity.</param>
+    /// <returns>The entity that was created.</returns>
     public static EntityDataBehaviour SpawnEntity(EntityData parent = null)
     {
         //Create new entity.
         EntityData entityData = new EntityData();
-        entityData.Transform.Parent = parent.Transform;
+        entityData.Transform.Parent = parent?.Transform;
 
         //Create visual for entity.
         GameObject unityObject = new GameObject(entityData.Name);
-        unityObject.transform.SetParent(parent.UnityObject.transform);
+        unityObject.transform.SetParent(parent?.UnityObject.transform);
 
         //Add the entity script to the visual.
         EntityDataBehaviour script = unityObject.AddComponent<EntityDataBehaviour>();
@@ -476,12 +518,9 @@ public struct GridGame : IGame
         if (!GridGameManager.OnlineGameStarted)
         {
             Framenumber++;
-
-            if (!GridGameManager.TestingLocalSaves)
-            {
-                HandleRemovalOfMarkedEntities();
-            }
         }
+
+        HandleRemovalOfMarkedEntities();
         //Component update
         for (int i = 0; i < _activeEntities.Count; i++)
         {

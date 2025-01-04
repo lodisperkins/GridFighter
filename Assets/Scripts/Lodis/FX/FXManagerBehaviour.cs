@@ -1,12 +1,14 @@
 ﻿using Lodis.Gameplay;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http.Headers;
 using Types;
 using UnityEngine;
 
 namespace Lodis.FX
 {
-    public class FXManagerBehaviour : MonoBehaviour
+    public class FXManagerBehaviour : SimulationBehaviour
     {
         private CharacterCameraBehaviour _player1Camera;
         private CharacterCameraBehaviour _player2Camera;
@@ -21,6 +23,8 @@ namespace Lodis.FX
         [SerializeField]
         private AnimationCurve _superMoveCurve;
         private bool _superMoveActive;
+        private bool _environmentLightsEnabled;
+        private bool _playerControlsEnabled;
 
         private static FXManagerBehaviour _instance;
 
@@ -35,6 +39,7 @@ namespace Lodis.FX
                 {
                     GameObject manager = new GameObject("FXManager");
                     _instance = manager.AddComponent<FXManagerBehaviour>();
+                    manager.AddComponent<EntityDataBehaviour>();
                 }
 
                 return _instance;
@@ -63,12 +68,15 @@ namespace Lodis.FX
         {
             foreach (Light light in _environmentLights)
                 light.enabled = enabled;
+
+            _environmentLightsEnabled = enabled;
         }
 
         private void  SetPlayerControlsEnabled(bool enabled)
         {
             BlackBoardBehaviour.Instance.Player1Controller.Enabled = enabled;
             BlackBoardBehaviour.Instance.Player2Controller.Enabled = enabled;
+            _playerControlsEnabled = enabled;
         }
 
         private void DisplayScreenShot()
@@ -82,20 +90,20 @@ namespace Lodis.FX
 
         public void StartSuperMoveVisual(int player, Fixed32 duration)
         {
-            if (player != 1 && player != 2)
+            if (player != 0 && player != 1)
                 return;
 
             CharacterCameraBehaviour currentCamera = null;
             Animator currentAnimator = null;
             Vector3 direction;
 
-            if (player == 1)
+            if (player == 0)
             {
                 currentCamera = _player1Camera;
                 currentAnimator = _player1Animator;
                 direction = Vector3.back;
             }
-            else
+            else if (player == 1)
             {
                 currentCamera = _player2Camera;
                 currentAnimator = _player2Animator;
@@ -154,6 +162,30 @@ namespace Lodis.FX
             _player2Camera.SetCameraEnabled(false);
 
             SuperMoveEffectActive = false;
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_superMoveActive);
+            bw.Write(_environmentLightsEnabled);
+            bw.Write(_playerControlsEnabled);
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            _superMoveActive = br.ReadBoolean();
+            bool environmentLightsWereEnabled = br.ReadBoolean();
+            bool playerControlsWereEnabled = br.ReadBoolean();
+
+            if (environmentLightsWereEnabled != _environmentLightsEnabled)
+            {
+                SetEnvironmentLightsEnabled(environmentLightsWereEnabled);
+            }
+
+            if (playerControlsWereEnabled != _playerControlsEnabled)
+            {
+                SetPlayerControlsEnabled(playerControlsWereEnabled);
+            }
         }
     }
 }

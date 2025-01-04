@@ -29,6 +29,11 @@ public class MainMenuBehaviour : MonoBehaviour
         SceneManagerBehaviour.Instance.SetGameMode(mode);
     }
 
+    public void StartOnlineMode()
+    {
+        GridGameManager.Instance.GetComponent<GridGameManager>().OnOnlineClick();
+    }
+
     public void Quit()
     {
         Application.Quit();

@@ -80,7 +80,7 @@ namespace Lodis.Movement
         private ParticleSystem _returnEffect;
         private SkinnedMeshRenderer _renderer;
         private DelayedAction _moveEnabledAction;
-        private TimedAction _teleportAction;
+        private FixedTimeAction _teleportAction;
         private HealthBehaviour _health;
         private GridPhysicsBehaviour _physics;
 
@@ -234,7 +234,7 @@ namespace Lodis.Movement
 
         public bool IsBehindBarrier { get => _isBehindBarrier; private set => _isBehindBarrier = value; }
         public bool CanBeWalkedThrough { get => _canBeWalkedThrough; set => _canBeWalkedThrough = value; }
-        public float HeightOffset { get => _heightOffset; private set => _heightOffset = value; }
+        public Fixed32 HeightOffset { get => _heightOffset; private set => _heightOffset = value; }
         public bool CanMoveDiagonally { get => _canMoveDiagonally; set => _canMoveDiagonally = value; }
         public bool CanCancelMovement { get => _canCancelMovement; set => _canCancelMovement = value; }
         public static FloatVariable MaxYPosition { get => _maxYPosition; private set => _maxYPosition = value; }
@@ -803,26 +803,57 @@ namespace Lodis.Movement
         /// Will move regardless of movement rules like like being unable to move onto occupied panels.
         /// </summary>
         /// <param name="panel">The panel to teleport to. Spawns the character on top of the panel using its height offset.</param>
-        /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
         /// <returns>Returns false if the panel is null.</returns>
-        public bool TeleportToPanel(PanelBehaviour panel, float travelTime = 0.05f)
+        public bool TeleportToPanel(PanelBehaviour panel)
         {
             if (!panel || _health?.Stunned == true)
                 return false;
 
-            RoutineBehaviour.Instance.StopAction(_teleportAction);
+            //0.05
+            Fixed32 travelTime = new Fixed32(3276);
+
+            _teleportAction?.Stop();
 
             _onTeleportStart?.Raise(gameObject);
             SpawnTeleportEffect();
             gameObject.SetActive(false);
 
-            _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            _teleportAction = FixedPointTimer.StartNewTimedAction(() =>
             {
-                gameObject.transform.position = (Vector3)((FVector3)panel.transform.position + FVector3.Up * (Fixed32)HeightOffset);
+                FixedTransform.WorldPosition = panel.FixedWorldPosition + FVector3.Up * (Fixed32)HeightOffset;
                 gameObject.SetActive(true);
                 _onTeleportEnd?.Raise(gameObject);
                 SpawnTeleportEffect();
-            },TimedActionCountType.SCALEDTIME, travelTime);
+            }, travelTime);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Moves this object to another location and plays the teleportation effect. 
+        /// Will move regardless of movement rules like like being unable to move onto occupied panels.
+        /// </summary>
+        /// <param name="panel">The panel to teleport to. Spawns the character on top of the panel using its height offset.</param>
+        /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
+        /// <returns>Returns false if the panel is null.</returns>
+        public bool TeleportToPanel(PanelBehaviour panel, Fixed32 travelTime)
+        {
+            if (!panel || _health?.Stunned == true)
+                return false;
+
+            _teleportAction?.Stop();
+
+            _onTeleportStart?.Raise(gameObject);
+            SpawnTeleportEffect();
+            gameObject.SetActive(false);
+
+            _teleportAction = FixedPointTimer.StartNewTimedAction(() =>
+            {
+                FixedTransform.WorldPosition = panel.FixedWorldPosition + FVector3.Up * HeightOffset;
+                gameObject.SetActive(true);
+                _onTeleportEnd?.Raise(gameObject);
+                SpawnTeleportEffect();
+            }, travelTime);
 
             return true;
         }
@@ -833,12 +864,12 @@ namespace Lodis.Movement
         /// </summary>
         /// <param name="position">Spawns the character at the exact position given ignoring the height offset.</param>
         /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
-        public void TeleportToLocation(FVector3 position, float travelTime = 0.05f, bool setInactive = true)
+        public void TeleportToLocation(FVector3 position, Fixed32 travelTime, bool setInactive = true)
         {
             if (_health?.Stunned == true)
                 return;
 
-            RoutineBehaviour.Instance.StopAction(_teleportAction);
+            _teleportAction?.Stop();
 
             _onTeleportStart?.Raise(gameObject);
             SpawnTeleportEffect();
@@ -846,13 +877,13 @@ namespace Lodis.Movement
             if (setInactive)
                 gameObject.SetActive(false);
 
-            _teleportAction = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            _teleportAction = FixedPointTimer.StartNewTimedAction(() =>
             {
-                gameObject.transform.position = (Vector3)position;
+                FixedTransform.WorldPosition = position;
                 gameObject.SetActive(true);
                 _onTeleportEnd?.Raise(gameObject);
                 SpawnTeleportEffect();
-            },TimedActionCountType.SCALEDTIME, travelTime);
+            }, travelTime);
         }
 
         /// <summary>

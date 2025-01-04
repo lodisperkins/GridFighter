@@ -488,8 +488,10 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 615478722}
+  _children: []
 --- !u!33 &615478728
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1532,8 +1534,10 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 1385163609}
+  _children: []
 --- !u!33 &1385163615
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -2569,6 +2573,12 @@ PrefabInstance:
       propertyPath: _useLocalPosition
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3502820540988744678, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: _defaultAICharacter
+      value: 
+      objectReference: {fileID: 11400000, guid: 567c30f40491a064f90f02a5a10582ab,
+        type: 2}
     - target: {fileID: 3502820540996989231, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
       propertyPath: m_IsActive

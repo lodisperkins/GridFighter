@@ -269,14 +269,14 @@ namespace Lodis.Gameplay
             bw.Write(_loadingShuffle);
             bw.Write(_deckReloading);
 
-            if (_lastAbilityInUse != null)
+            if (_abilityInUse)
             {
+                bw.Write(_lastAbilityInUse.abilityData.ID);
                 _lastAbilityInUse.Serialize(bw);
-                _serializedAbility = true;
             }
             else
             {
-                Ability.DummySerialize(bw);
+                bw.Write(0);
             }
         }
 
@@ -290,18 +290,30 @@ namespace Lodis.Gameplay
             _loadingShuffle = br.ReadBoolean();
             _deckReloading = br.ReadBoolean();
 
+            //Return if the ID is 0 meaning we didn't serialize an ability for this frame.
+            int ID = br.ReadInt32();
+            if (ID == 0)
+            {
+                return;
+            }
 
-            if (_lastAbilityInUse != null && _serializedAbility)
+            //If we are using the same ability we serialized just deserialize it.
+            if (_abilityInUse && _lastAbilityInUse.abilityData.ID == ID)
             {
                 _lastAbilityInUse.Deserialize(br);
-                _serializedAbility = false;
             }
+            //Otherwise....
             else
             {
+                //...end whats currently in use.
                 if (_abilityInUse)
+                {
                     _lastAbilityInUse.EndAbility();
+                }
 
-                Ability.DummyDeserialize(br);
+                //And use the ability that is being deserialized.
+                UseAbility(ID);
+                _lastAbilityInUse.Deserialize(br);
             }
         }
 
@@ -313,7 +325,7 @@ namespace Lodis.Gameplay
 
             DeckReloadTime = _deckReloadTime;
 
-            if (MatchManagerBehaviour.InfiniteEnergy)
+            if (MatchManagerBehaviour.Instance.InfiniteEnergy)
                 _energy = _maxEnergyRef.FixedValue;
         }
 
@@ -337,7 +349,7 @@ namespace Lodis.Gameplay
             _canBurst = true;
             BurstEnergy = MaxBurstEnergy.FixedValue;
 
-            if (!MatchManagerBehaviour.InfiniteEnergy)
+            if (!MatchManagerBehaviour.Instance.InfiniteEnergy)
                 Energy = _startEnergy.FixedValue;
 
             _currentBurstRechargeRate = _burstEnergyRechargeRate.FixedValue;
@@ -380,7 +392,7 @@ namespace Lodis.Gameplay
             LastAbilityInUse?.EndAbility();
             ManualShuffle(true);
 
-            if (!MatchManagerBehaviour.InfiniteEnergy)
+            if (!MatchManagerBehaviour.Instance.InfiniteEnergy)
                 Energy = _startEnergy.FixedValue;
 
             _burstAction?.Stop();
@@ -795,7 +807,7 @@ namespace Lodis.Gameplay
             else if (ability.abilityData.EnergyCost > _energy && ability.currentActivationAmount == 0)
                 return null;
 
-            if (ability.currentActivationAmount == 0 && !MatchManagerBehaviour.InfiniteEnergy)
+            if (ability.currentActivationAmount == 0 && !MatchManagerBehaviour.Instance.InfiniteEnergy)
                 _energy -= ability.abilityData.EnergyCost;
 
             ability.OnHitTemp += IncreaseEnergyFromDamage;
@@ -951,9 +963,10 @@ namespace Lodis.Gameplay
 
         public bool TryUseEnergyForAction(UnityAction action, float actionCost)
         {
+
             if (Energy < actionCost) return false;
 
-            if (!MatchManagerBehaviour.InfiniteEnergy)
+            if (!MatchManagerBehaviour.Instance.InfiniteEnergy)
                 Energy -= actionCost;
             
             action?.Invoke();
@@ -963,9 +976,12 @@ namespace Lodis.Gameplay
 
         public bool TryUseEnergy(float actionCost)
         {
+            if (MatchManagerBehaviour.Instance.InfiniteEnergy)
+                return true;
+
             if (Energy < actionCost) return false;
 
-            if (!MatchManagerBehaviour.InfiniteEnergy)
+            if (!MatchManagerBehaviour.Instance.InfiniteEnergy)
                 Energy -= actionCost;
 
             return true;

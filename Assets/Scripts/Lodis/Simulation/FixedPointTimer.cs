@@ -22,10 +22,12 @@ namespace FixedPoints
         private bool isActive;
         public int FrameStarted;
         public int FrameFinished;
+        public EntityData Target;
 
         public bool IsActive { get => isActive; set => isActive = value; }
         public ListEvent OnAddedToList { get; set; }
         public int FrameSerialized { get; set; }
+        public ListEvent OnRemovedFromList { get; set; }
 
         public abstract void TryPerformAction();
 
@@ -77,7 +79,11 @@ namespace FixedPoints
         protected int loopCount = 1;
         protected Condition loopCondition;
 
-
+        public delegate void FixedTimeActionEvent();
+        /// <summary>
+        /// Called when all loops have finished.
+        /// </summary>
+        public event FixedTimeActionEvent OnComplete;
         protected object[] eventArgs;
         private bool hasPaused;
 
@@ -224,6 +230,7 @@ namespace FixedPoints
                 {
                     IsActive = false;
                     Stop();
+                    OnComplete?.Invoke();
                 }
                 else
                 {

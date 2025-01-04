@@ -41,7 +41,6 @@ namespace Lodis.Gameplay
         private bool _inUse;
         private bool _canPlayAnimation;
         private List<HitColliderData> _colliderInfo;
-        private FixedTimeAction _currentTimer;
         private KnockbackBehaviour _ownerKnockBackScript;
         private Movement.GridMovementBehaviour _ownerMoveScript;
         private CharacterAnimationBehaviour _ownerAnimationScript;
@@ -80,6 +79,9 @@ namespace Lodis.Gameplay
         public CollisionEvent OnHit = null;
         public CollisionEvent OnHitTemp = null;
         private bool _opponentHit;
+        private FixedTimeAction _startUpTimer;
+        private FixedTimeAction _activeTimer;
+        private FixedTimeAction _recoverTimer;
 
         public AbilityPhase CurrentAbilityPhase { get; private set; }
 
@@ -122,7 +124,36 @@ namespace Lodis.Gameplay
         /// </summary>
         public FixedTimeAction CurrentTimer
         {
-            get { return _currentTimer; }
+            get 
+            {
+                if (CurrentAbilityPhase == AbilityPhase.STARTUP)
+                {
+                    return _startUpTimer;
+                }
+                else if (CurrentAbilityPhase == AbilityPhase.ACTIVE)
+                {
+                    return _activeTimer;
+                }
+                else
+                {
+                    return _recoverTimer;
+                }
+            }
+            set
+            {
+                if (CurrentAbilityPhase == AbilityPhase.STARTUP)
+                {
+                    _startUpTimer = value;
+                }
+                else if (CurrentAbilityPhase == AbilityPhase.ACTIVE)
+                {
+                    _activeTimer = value;
+                }
+                else
+                {
+                    _recoverTimer = value;
+                }
+            }
         }
 
         public InputBehaviour OwnerInput { get => _ownerInput; private set => _ownerInput = value; }
@@ -132,7 +163,7 @@ namespace Lodis.Gameplay
         public GameObject AccessoryInstance { get => _accessoryInstance; private set => _accessoryInstance = value; }
         public TimedActionCountType TimeCountType { get => _timeCountType; set => _timeCountType = value; }
 
-        public bool AbilityPaused { get => _currentTimer?.IsActive == true; }
+        public bool AbilityPaused { get => CurrentTimer?.IsActive == true; }
         public CharacterVoiceBehaviour OwnerVoiceScript { get => _ownerVoiceScript; private set => _ownerVoiceScript = value; }
         public EntityDataBehaviour Owner { get => owner; set => owner = value; }
 
@@ -142,6 +173,7 @@ namespace Lodis.Gameplay
             bw.Write(0);
             bw.Write(false);
             bw.Write(0);
+            bw.Write(false);
         }
 
         public static void DummyDeserialize(BinaryReader br)
@@ -150,6 +182,7 @@ namespace Lodis.Gameplay
             br.ReadInt32();
             br.ReadBoolean();
             br.ReadInt32();
+            br.ReadBoolean();
         }
 
         public void Serialize(BinaryWriter bw)
@@ -158,6 +191,17 @@ namespace Lodis.Gameplay
             bw.Write(currentActivationAmount);
             bw.Write(_opponentHit);
             bw.Write((int)CurrentAbilityPhase);
+
+            if (_accessoryInstance != null)
+            {
+                bw.Write(_accessoryInstance.activeInHierarchy);
+            }
+            else
+            {
+                bw.Write(false);
+            }
+
+            OnSerialize(bw);
         }
 
         public void Deserialize(BinaryReader br) 
@@ -167,10 +211,21 @@ namespace Lodis.Gameplay
             _opponentHit = br.ReadBoolean();
             CurrentAbilityPhase = (AbilityPhase)br.ReadInt32();
 
+            if (_accessoryInstance != null)
+            {
+                _accessoryInstance.SetActive(br.ReadBoolean());
+            }
+            else
+            {
+                br.ReadBoolean();
+            }
+
             if (!_inUse)
             {
                 EndAbility();
             }
+
+            OnDeserialize(br);
         }
         
         protected virtual void OnSerialize(BinaryWriter bw) { }
@@ -188,7 +243,7 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActivateSound);
             Start(args);
-            _currentTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args),  abilityData.startUpTime, (FixedTimeAction.UnitOfTime)TimeCountType);
+            _startUpTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args),  abilityData.startUpTime, (FixedTimeAction.UnitOfTime)TimeCountType);
         }
 
         /// <summary>
@@ -201,7 +256,7 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
             Activate(args);
-            _currentTimer = FixedPointTimer.StartNewTimedAction(() => RecoverPhase(args), abilityData.timeActive, (FixedTimeAction.UnitOfTime)TimeCountType);
+            _activeTimer = FixedPointTimer.StartNewTimedAction(() => RecoverPhase(args), abilityData.timeActive, (FixedTimeAction.UnitOfTime)TimeCountType);
         }
 
         /// <summary>
@@ -216,9 +271,9 @@ namespace Lodis.Gameplay
 
             Recover(args);
             if (MaxActivationAmountReached)
-                _currentTimer = FixedPointTimer.StartNewTimedAction(() => EndAbility(), abilityData.recoverTime, (FixedTimeAction.UnitOfTime)TimeCountType);
+                _recoverTimer = FixedPointTimer.StartNewTimedAction(() => EndAbility(), abilityData.recoverTime, (FixedTimeAction.UnitOfTime)TimeCountType);
             else
-                _currentTimer = FixedPointTimer.StartNewTimedAction(() => _inUse = false, abilityData.recoverTime, (FixedTimeAction.UnitOfTime)TimeCountType);
+                _recoverTimer = FixedPointTimer.StartNewTimedAction(() => _inUse = false, abilityData.recoverTime, (FixedTimeAction.UnitOfTime)TimeCountType);
 
         }
 
@@ -287,7 +342,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void PauseAbilityTimer()
         {
-            _currentTimer.Pause();
+            CurrentTimer?.Pause();
         }
 
         /// <summary>
@@ -295,7 +350,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public virtual void UnpauseAbilityTimer()
         {
-            _currentTimer.Resume();
+            CurrentTimer?.Resume();
         }
 
         /// <summary>
@@ -303,7 +358,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void EndAbility()
         {
-            _currentTimer?.Stop();
+            CurrentTimer?.Stop();
             onEnd?.Invoke();
             End();
             _inUse = false;
@@ -594,6 +649,24 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.GetObject(despawnEffect, _accessoryInstance.transform.position, _accessoryInstance.transform.rotation);
 
             _accessoryInstance.SetActive(false);
+        }
+
+        /// <summary>
+        /// Make the accessory disappear and play the despawn effect.
+        /// </summary>
+        /// <param name="condition">When the accessory is going to appear again.</param>
+        public void DisableAccessory(Condition condition)
+        {
+            if (!abilityData.Accessory || !_accessoryInstance || !_accessoryInstance.activeInHierarchy)
+                return;
+
+            GameObject despawnEffect = abilityData.Accessory.DespawnEffect;
+
+            ObjectPoolBehaviour.Instance.GetObject(despawnEffect, _accessoryInstance.transform.position, _accessoryInstance.transform.rotation);
+
+            _accessoryInstance.SetActive(false);
+
+            FixedPointTimer.StartNewConditionAction(() => EnableAccessory(), condition);
         }
 
     }

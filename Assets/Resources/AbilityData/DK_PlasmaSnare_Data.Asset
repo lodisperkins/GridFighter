@@ -79,7 +79,7 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
     HitStunTime:
-      RawValue: 4587
+      RawValue: 65
     Priority:
       RawValue: -65536
     OwnerAlignement: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   _customStats:
   - name: LiftHeight
     value:
-      RawValue: 65536
+      RawValue: 32768
   - name: KnockbackThreshold
     value:
       RawValue: 65536

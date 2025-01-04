@@ -126,7 +126,7 @@ namespace Lodis.Gameplay
             get { return _targetFrameRate; }
         }
 
-        public static bool InfiniteEnergy { get; private set; }
+        public bool InfiniteEnergy { get => _infiniteEnergy; private set => _infiniteEnergy = value; }
         public bool InvincibleBarriers { get => _invincibleBarriers; set => _invincibleBarriers = value; }
         public bool SuddenDeathActive { get => _suddenDeathActive; private set => _suddenDeathActive = value; }
         public PlayerSpawnBehaviour PlayerSpawner { get => _playerSpawner; private set => _playerSpawner = value; }
@@ -143,7 +143,6 @@ namespace Lodis.Gameplay
 
             _grid.DestroyTempPanels();
             _grid.InvincibleBarriers = InvincibleBarriers;
-            InfiniteEnergy = _infiniteEnergy;
 
             //Initialize grid
             _grid.CreateGrid();

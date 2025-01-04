@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: m_shieldGreen
+  m_Name: Reflector_Mat
   m_Shader: {fileID: -6465566751694194690, guid: 97e8d1dfb721de642bd5b35e6bd297c3,
     type: 3}
   m_Parent: {fileID: 0}
@@ -20,7 +20,7 @@ Material:
   m_CustomRenderQueue: 2999
   stringTagMap: {}
   disabledShaderPasses: []
-  m_LockedProperties: 
+  m_LockedProperties: _Dissolve
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -50,9 +50,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_387174AF: 0.589
+    - Vector1_387174AF: 3.26
     - Vector1_3E9CDD42: 0.8
-    - Vector1_7049A996: 1
+    - Vector1_7049A996: 0.212
     - Vector1_71817C4: 1
     - Vector1_75FDB77B: 0.03
     - Vector1_953C4648: -0.07
@@ -65,14 +65,14 @@ Material:
     - Vector1_F3720F39: 0.09
     - _Alpha: 1
     - _Depth: 1
-    - _Dissolve: 0.84
-    - _Glow: 0
+    - _Dissolve: 0.98
+    - _Glow: 0.1
     - _Inflate: 0.02
     - _NoisePower: 4
     - _NoiseScale: 50
     - _QueueControl: 1
     - _QueueOffset: 0
-    - _Recharge: -1
+    - _Recharge: 1
     - _RechargeNoise: 0.1
     m_Colors:
     - Color_4C010F9E: {r: 0.03564434, g: 0.8396226, b: 0.28005365, a: 0}
@@ -82,9 +82,9 @@ Material:
     - Vector3_D7F8219: {r: 2, g: 2, b: 10, a: 0}
     - Vector4_A8EFE0F8: {r: 0, g: 0.25, b: -0.5, a: 0.5}
     - Vector4_D635FDD7: {r: 0.48, g: -0.5, b: 0.5, a: 0.49}
-    - _ColorEdges: {r: 1367.1202, g: 1258.4933, b: 0, a: 0}
-    - _ColorInside: {r: 3.827342, g: 9.493796, b: 6.9168463, a: 1}
-    - _DissolveDirection: {r: 1, g: 0, b: 0, a: 0}
+    - _ColorEdges: {r: 2393.9539, g: 1967.2106, b: 0, a: 0}
+    - _ColorInside: {r: 9.493796, g: 3.9482493, b: 3.827342, a: 1}
+    - _DissolveDirection: {r: 1, g: 1, b: 0, a: 0}
     - _Hit0: {r: 0, g: 0, b: 0, a: 0}
     - _Hit1: {r: 0, g: 0, b: 0, a: 0}
     - _Hit2: {r: 0, g: 0, b: 0, a: 0}
@@ -103,7 +103,7 @@ Material:
     - _Noise: {r: 0.2, g: 25, b: 0.25, a: 0}
     - _NoiseDirection: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _OnHitColor: {r: 0, g: 625.5223, b: 449.4201, a: 0}
-    - _Tiling: {r: 28.7, g: 60, b: 0, a: 0}
+    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2715569051175027221
 MonoBehaviour:

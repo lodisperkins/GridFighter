@@ -84,7 +84,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
-      RawValue: 0
+      RawValue: -253558784
     SpawnEffect: {fileID: 8867112169225384458, guid: 247021d2ec9bf654ba6875163715662c,
       type: 3}
     SpawnEffectOffset:
@@ -109,7 +109,7 @@ MonoBehaviour:
       RawValue: 85196
   - name: ShotForce
     value:
-      RawValue: 327680
+      RawValue: 458752
   - name: BallCount
     value:
       RawValue: 131072

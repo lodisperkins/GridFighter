@@ -439,7 +439,7 @@ namespace Lodis.Gameplay
 
             if (!_playedSpawnEffects)
             {
-                if (ColliderInfo.SpawnEffect)
+                if (ColliderInfo.SpawnEffect && Spawner != null && Spawner.UnityObject)
                     Instantiate(ColliderInfo.SpawnEffect, transform.position + Spawner.UnityObject.transform.forward * ColliderInfo.SpawnEffectOffset, Camera.main.transform.rotation);
 
                 SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);

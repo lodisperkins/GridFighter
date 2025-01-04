@@ -14,6 +14,7 @@ namespace Assets.Scripts.Lodis.Simulation
     internal interface ISerializedListObject
     {
         public ListEvent OnAddedToList { get; set; }
+        public ListEvent OnRemovedFromList { get; set; }
 
         public int FrameSerialized { get; set; }
 

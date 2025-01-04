@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -16,6 +17,18 @@ namespace Lodis.Gameplay
         private Collider _prefabeInstanceCollider;
         private HealthBehaviour _ownerHealth;
         private bool _reflected;
+
+        protected override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_reflected);
+        }
+
+        protected override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            _reflected = br.ReadBoolean();
+        }
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)

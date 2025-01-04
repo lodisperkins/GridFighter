@@ -6,6 +6,7 @@ using Lodis.Sound;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Types;
 using UnityEngine;
 
@@ -17,7 +18,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_MegatonPunch : Ability
     {
-        private float _distance;
+        private Fixed32 _distance;
         private bool _comboStarted;
         private Movement.GridMovementBehaviour _opponentMovement;
         private AnimationClip _comboClip;
@@ -25,13 +26,26 @@ namespace Lodis.Gameplay
         private Fixed32 _slowMotionTime;
         private TimedAction _endTimer;
         private KnockbackBehaviour _opponentKnockback;
-        private bool _landedFirstHit = false;
-        private bool _canCheckMiss;
+        private bool _landedFirstHit;
         private List<HitColliderBehaviour> _colliders = new List<HitColliderBehaviour>();
         private GameObject _chargeEffect;
         private GameObject _chargeEffectRef;
         private MovesetBehaviour _opponentMoveset;
+        private FixedPoints.MoveAction _oppMoveAction;
         private Fixed32 defaultGravity;
+
+        protected override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_comboStarted);
+            bw.Write(_landedFirstHit);
+        }
+        protected override void OnDeserialize(BinaryReader br)
+        {
+            base.OnDeserialize(br);
+            _comboStarted = br.ReadBoolean();
+            _landedFirstHit = br.ReadBoolean();
+        }
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -102,6 +116,19 @@ namespace Lodis.Gameplay
                 _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], effectSpawn, true);
                 //0.01
                 MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, new Fixed32(655), _slowMotionTime);
+                _opponentKnockback.Physics.StopAllForces();
+                FVector3 oppLocation = OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition + FVector3.Up * 2;
+
+                if (_oppMoveAction == null)
+                {
+                    _oppMoveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentKnockback.FixedTransform, oppLocation, new Fixed32(6553));
+                    _oppMoveAction.onComplete += () => _opponentKnockback.Physics.UseGravity = true; 
+                }
+                else
+                {
+                    _oppMoveAction.Rewind();
+                    _oppMoveAction.ChangeValues(_opponentKnockback.FixedTransform.WorldPosition, oppLocation);
+                }
 
                 CameraBehaviour.Instance.ZoomAmount = 4.2f;
             });

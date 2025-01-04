@@ -75,7 +75,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 6
     AbilityID:
-      RawValue: 0
+      RawValue: 1141964800
     SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
       type: 3}
     SpawnEffectOffset:
@@ -107,15 +107,15 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 9830
     Damage:
-      RawValue: 65536
+      RawValue: 327680
     BaseKnockBack:
-      RawValue: 22937
+      RawValue: 52428
     KnockBackScale:
       RawValue: 6553
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 32768
+      RawValue: 39321
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -125,7 +125,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 6
     AbilityID:
-      RawValue: 0
+      RawValue: 1141964800
     SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
       type: 3}
     SpawnEffectOffset:
