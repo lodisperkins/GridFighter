@@ -61,7 +61,7 @@ MonoBehaviour:
     BaseKnockBack:
       RawValue: 131072
     KnockBackScale:
-      RawValue: 13107
+      RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -71,7 +71,7 @@ MonoBehaviour:
     HitStunTime:
       RawValue: 9830
     Priority:
-      RawValue: -65536
+      RawValue: 131072
     OwnerAlignement: 0
     AbilityType: 4
     AbilityID:

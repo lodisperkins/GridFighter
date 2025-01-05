@@ -65,7 +65,7 @@ MonoBehaviour:
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 137625
+      RawValue: 163840
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -75,7 +75,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 7
     AbilityID:
-      RawValue: 0
+      RawValue: 1490354176
     SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
       type: 3}
     SpawnEffectOffset:

@@ -13,7 +13,7 @@ namespace Lodis.UI
     public class DisplayCharacterSpawnBehaviour : EntitySpawnBehaviour
     {
         private GridMovementBehaviour _previousCharacterInstance;
-        private static bool _spawnedGrid;
+        private bool _spawnedGrid;
 
         public GridMovementBehaviour PreviousCharacterInstance { get => _previousCharacterInstance; private set => _previousCharacterInstance = value; }
 

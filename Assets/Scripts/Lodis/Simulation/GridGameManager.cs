@@ -13,6 +13,7 @@ using System.Diagnostics.Contracts;
 using Types;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityGGPO;
 
@@ -90,8 +91,13 @@ public class GridGameManager : GameManager
         TestingLocalSaves = _testingLocalSaves;
         InputSystem.settings.maxEventBytesPerUpdate = 0;
         AIFightEnabled = _aiFightEnabled;
+
+        SceneManager.sceneUnloaded += a => GridGame.OnSceneUnloaded();
+
         if (_startLocalGame)
-            StartLocalGame();
+        {
+           StartLocalGame();
+        }
     }
 
     public override void StartGGPOGame(IPerfUpdate perfPanel, IList<Connections> connections, int playerIndex)
