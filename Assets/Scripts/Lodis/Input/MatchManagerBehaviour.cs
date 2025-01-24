@@ -314,7 +314,9 @@ namespace Lodis.Gameplay
                 _firstSelectedPauseButton.OnSelect(null);
             }
             else
+            {
                 _onMatchUnpause.Invoke();
+            }
         }
 
         public void Restart(bool suddenDeathActive = false)

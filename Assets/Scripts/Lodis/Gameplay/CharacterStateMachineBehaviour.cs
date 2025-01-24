@@ -53,8 +53,8 @@ namespace Lodis.Gameplay
             _stateMachine.SetTransitionCondition("Down-GroundRecovery", args => _knockBack.LandingScript.RecoveringFromFall);
             _stateMachine.SetTransitionConditionByLabel("Parry", args => (_characterDefense.IsShielding || _characterDefense.IsParrying) && !_characterDefense.IsPhaseShifting && !_characterDefense.IsResting);
             _stateMachine.SetTransitionConditionByLabel("Tumbling", args => _knockBack.CurrentAirState == AirState.TUMBLING);
-            _stateMachine.SetTransitionCondition("Any-Flinching", condition => false);
-            _knockBack.AddOnHitStunAction(() => _stateMachine.Trigger("Any-Flinching"));
+            _stateMachine.SetTransitionCondition("Any-Flinching", condition => _knockBack.InHitStun);
+            //_knockBack.AddOnHitStunAction(() => _stateMachine.Trigger("Any-Flinching"));
             _stateMachine.SetTransitionCondition("Any-FreeFall", args => _knockBack.CurrentAirState == AirState.FREEFALL);
             _stateMachine.SetTransitionConditionByLabel("Moving", args => _movement.IsMoving && !_moveset.AbilityInUse);
             _stateMachine.SetTransitionConditionByLabel("Shuffling", args => _moveset.LoadingShuffle);

@@ -61,13 +61,13 @@ MonoBehaviour:
     Damage:
       RawValue: 65536
     BaseKnockBack:
-      RawValue: 0
+      RawValue: 65536
     KnockBackScale:
       RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 65536
+      RawValue: 32768
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -77,7 +77,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
-      RawValue: 0
+      RawValue: -1862270976
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0
@@ -109,7 +109,7 @@ MonoBehaviour:
     Damage:
       RawValue: 327680
     BaseKnockBack:
-      RawValue: 65536
+      RawValue: 196608
     KnockBackScale:
       RawValue: 65536
     ClampForceWithinRing: 0
@@ -125,7 +125,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
-      RawValue: 0
+      RawValue: -1862270976
     SpawnEffect: {fileID: 1709348594830849669, guid: 879dfae371ac27a40b24c5ee7c08e208,
       type: 3}
     SpawnEffectOffset:
@@ -147,7 +147,7 @@ MonoBehaviour:
   _customStats:
   - name: ShotCount
     value:
-      RawValue: 524288
+      RawValue: 1048576
   - name: ShotDelay
     value:
       RawValue: 6553

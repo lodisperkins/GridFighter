@@ -1023,6 +1023,10 @@ namespace Lodis.Movement
         {
             base.Tick(dt);
 
+            //Normally fixed update isn't called when time scale is 0 so we'll add this check to simulate that.
+            if (GridGame.TimeScale == 0)
+                return;
+
             _isGrounded = FixedTransform.WorldPosition.Y <= _groundPosition;
             
             

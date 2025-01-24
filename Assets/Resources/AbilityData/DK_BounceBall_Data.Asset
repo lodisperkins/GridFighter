@@ -112,7 +112,7 @@ MonoBehaviour:
       RawValue: 458752
   - name: BallCount
     value:
-      RawValue: 131072
+      RawValue: 196608
   - name: BallSpawnDelay
     value:
       RawValue: 32768

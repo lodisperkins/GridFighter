@@ -974,7 +974,7 @@ namespace Lodis.Movement
         public void MoveToClosestAlignedPanelOnRow()
         {
 
-            if (!_moveToAlignedSideIfStuck || _currentPanel?.Alignment == Alignment || TargetPanel?.Alignment == Alignment 
+            if (!_moveToAlignedSideIfStuck || _currentPanel?.Alignment == Alignment /*|| TargetPanel?.Alignment == Alignment */
                 || !CanMove || Alignment == GridAlignment.ANY || _searchingForSafePanel || IsMoving)
                 return;
 

@@ -171,7 +171,7 @@ namespace Lodis.Movement
             _onLandingStart?.Invoke();
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
             _knockback.CancelHitStun();
-            _knockback.Physics.StopVelocity();
+            //_knockback.Physics.StopVelocity();
             _landingAction?.Stop();
             
             switch (_knockback.CurrentAirState)

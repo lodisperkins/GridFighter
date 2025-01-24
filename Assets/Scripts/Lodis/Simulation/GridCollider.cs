@@ -70,6 +70,9 @@ public class GridCollider
     [SerializeField] private int _panelYOffset;
     [Tooltip("The x position of this collider on the grid relative to its owner.")]
     [SerializeField] private int _panelXOffset;
+    [Tooltip("The width of this collider in the world.")]
+    [ShowIf("_isAWall")]
+    [SerializeField] private Fixed32 _wallXOffset;
     [Tooltip("The height of this collider in the world.")]
     [SerializeField] private Fixed32 _worldYPosition;
 
@@ -182,6 +185,11 @@ public class GridCollider
     /// The x position of this collider on the grid relative to its owner.
     /// </summary>
     public int PanelXOffset { get => _panelXOffset; set => _panelXOffset = value; }
+
+    /// <summary>
+    /// The height of this collider in the world.
+    /// </summary>
+    public Fixed32 WallXOffset { get => _wallXOffset; set => _wallXOffset = value; }
 
     /// <summary>
     /// The height of this collider in the world.
@@ -325,11 +333,11 @@ public class GridCollider
 
         if (_facingRight)
         {
-            collidingOnX = other.WorldPosition.X <= WorldPosition.X;
+            collidingOnX = other.WorldPosition.X + WallXOffset <= WorldPosition.X;
         }
         else
         {
-            collidingOnX = other.WorldPosition.X >= WorldPosition.X;
+            collidingOnX = other.WorldPosition.X + WallXOffset >= WorldPosition.X;
         }
 
         return collidingOnX;

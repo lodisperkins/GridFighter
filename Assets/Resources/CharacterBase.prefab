@@ -327,7 +327,6 @@ MonoBehaviour:
     RawValue: 19660
   _rangeToIgnoreUpAngle:
     RawValue: 13107
-  _maxMagnitude: {fileID: 11400000, guid: eeb493f22aac26d40927c9ec9f60b939, type: 2}
   _bounceCombination: 3
   _defaultJumpCurve:
     serializedVersion: 2
@@ -492,7 +491,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: -76.75, y: 311.25}
+    - position: {x: -102.30557, y: 131.2497}
       id: HardLanding
       onEnterState:
         m_PersistentCalls:
@@ -515,7 +514,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: -217.5, y: 311.5}
+    - position: {x: -228.61115, y: 223.72212}
       id: Down
       onEnterState:
         m_PersistentCalls:
@@ -560,7 +559,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 65.77771, y: 311.6666}
+    - position: {x: 67.99992, y: 302.7776}
       id: Tumbling
       onEnterState:
         m_PersistentCalls:
@@ -1099,11 +1098,47 @@ MonoBehaviour:
           m_Calls: []
       duration: 0
       timeMode: 0
+    - id: Transition 10
+      label: Tumbling
+      originID: Down
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 11
+      label: Tumbling
+      originID: GroundRecovery
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
+    - id: Transition 12
+      label: Tumbling
+      originID: HardLanding
+      targetID: Tumbling
+      onEnterTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      onExitTransition:
+        m_PersistentCalls:
+          m_Calls: []
+      duration: 0
+      timeMode: 0
     preferences:
       zoomSettings:
         zoomFactor: 0.9
       dragSettings:
-        dragOffset: {x: 319.43878, y: -67.3627}
+        dragOffset: {x: 378.32773, y: -86.251595}
       gridSettings:
         isEnabled: 1
       labelSettings:
@@ -1406,6 +1441,8 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
   debuggingEnabled: 0
@@ -2750,6 +2787,8 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
   debuggingEnabled: 0

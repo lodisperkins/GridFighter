@@ -48,7 +48,7 @@ namespace Lodis.Gameplay
         private void SpawnBall()
         {
             EntityDataBehaviour ballInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, Owner.FixedTransform.WorldRotation);
-
+            ballInstance.FixedTransform.WorldPosition += FVector3.Right * OwnerMoveScript.GetAlignmentX();
             //Get the collider to update collision information.
             HitColliderBehaviour hitCollider = ballInstance.GetComponent<HitColliderBehaviour>();
             hitCollider.ColliderInfo = GetColliderData(0);

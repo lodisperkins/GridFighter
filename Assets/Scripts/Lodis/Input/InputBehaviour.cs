@@ -26,7 +26,8 @@ namespace Lodis.Input
         Special1 = 1 << 6,
         Special2 = 1 << 7,
         Burst = 1 << 8,
-        Shuffle = 1 << 9
+        Shuffle = 1 << 9,
+        Pause = 1 << 10
     }
 
     /// <summary>
@@ -141,6 +142,7 @@ namespace Lodis.Input
         private bool _chargingAttack;
         private bool _special1Down;
         private bool _special2Down;
+        private bool _canTogglePause;
 
         private BufferedInput[] _bufferedInputs = new BufferedInput[7];
         private int _currentBufferInputIndex;
@@ -261,6 +263,16 @@ namespace Lodis.Input
             //     Debug.Log("Player1 input processed.");
             // }
             bool isDirectionalInput = false;
+            if ((inputs & (long)InputFlag.Pause) != 0 && _canTogglePause)
+            {
+                MatchManagerBehaviour.Instance.TogglePauseMenu();
+                _canTogglePause = false;
+                return;
+            }
+            else if ((inputs & (long)InputFlag.Pause) == 0)
+            {
+                _canTogglePause = true;
+            }
 
             if ((inputs & (long)InputFlag.Up) != 0)
             {
@@ -410,6 +422,8 @@ namespace Lodis.Input
                     flags |= InputFlag.Shuffle;
                 if (_playerControls.Player.ChargeAttack.IsPressed())
                     flags |= InputFlag.Strong;
+                if (_playerControls.Player.Pause.IsPressed())
+                    flags |= InputFlag.Pause;
             }
             else
             {
