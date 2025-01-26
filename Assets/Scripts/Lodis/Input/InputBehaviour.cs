@@ -235,9 +235,6 @@ namespace Lodis.Input
 
             _defaultSpeed = _holdSpeed;
 
-            //Instead of listening to input events from unity we will instead listen to custom GGPO input events.
-            GridGame.OnPollInput += GridGame_PollInput;
-            GridGame.OnProcessInput += GridGame_ProcessInput;
         }
 
         /// <summary>
@@ -546,11 +543,17 @@ namespace Lodis.Input
         {
             PlayerControls.Enable();
             PlayerControls.devices = _devices;
+
+            //Instead of listening to input events from unity we will instead listen to custom GGPO input events.
+            GridGame.OnPollInput += GridGame_PollInput;
+            GridGame.OnProcessInput += GridGame_ProcessInput;
         }
 
         private void OnDisable()
         {
             PlayerControls.Disable();
+            GridGame.OnPollInput -= GridGame_PollInput;
+            GridGame.OnProcessInput -= GridGame_ProcessInput;
         }
 
         private void TryChargeAttack()

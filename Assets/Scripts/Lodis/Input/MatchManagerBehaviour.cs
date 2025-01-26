@@ -369,6 +369,7 @@ namespace Lodis.Gameplay
         public void LoadCharacterSelect()
         {
             Time.timeScale = 1;
+            GridGame.TimeScale = 1;
             SceneManagerBehaviour.Instance.LoadScene("CharacterSelect");
         }
 

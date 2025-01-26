@@ -187,6 +187,7 @@ public class GridGameManager : GameManager
 
     private void LateUpdate()
     {
+        Debug.Log(InputSystem.settings.updateMode);
         if (MatchManagerBehaviour.Instance == null || !_testLatency)
         {
             return;
@@ -205,6 +206,5 @@ public class GridGameManager : GameManager
             _hasSaved = false;
         }
 
-        //Debug.Log(InputSystem.settings.updateMode);
     }
 }

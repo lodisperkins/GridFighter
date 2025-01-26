@@ -34,6 +34,7 @@ namespace Lodis.Utility
         private InputSystemUIInputModule _module;
         [SerializeField]
         private bool _updateDeviceBasedOnUI;
+        [SerializeField] private bool _showMouse;
         private string _p1ControlScheme;
         private string _p2ControlScheme;
         [SerializeField]
@@ -92,7 +93,7 @@ namespace Lodis.Utility
 
             SceneManager.sceneLoaded += OnSceneLoaded;
 
-            Cursor.visible = false;
+            Cursor.visible = _showMouse;
 
             Application.targetFrameRate = 60;
         }
@@ -161,6 +162,7 @@ namespace Lodis.Utility
 
             _previousScene = _currentIndex;
             _currentIndex.Value = index;
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
         }
 
         public void LoadScene(string name)
@@ -170,6 +172,7 @@ namespace Lodis.Utility
 
             _previousScene = _currentIndex;
             _currentIndex.Value = SceneManager.GetActiveScene().buildIndex;
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
         }
 
         public void LoadPreviousScene()

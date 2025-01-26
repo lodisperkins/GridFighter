@@ -372,7 +372,7 @@ namespace Lodis.Gameplay
 
         void OnDisable()
         {
-            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
+            InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
         }
 
         public void ResetPlayers()

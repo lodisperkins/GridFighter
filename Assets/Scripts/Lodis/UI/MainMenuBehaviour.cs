@@ -34,6 +34,11 @@ public class MainMenuBehaviour : MonoBehaviour
         GridGameManager.Instance.GetComponent<GridGameManager>().OnOnlineClick();
     }
 
+    public void Start()
+    {
+        GridGameManager.Instance.GetComponent<GridGameManager>().OnLocalClick();
+    }
+
     public void Quit()
     {
         Application.Quit();
