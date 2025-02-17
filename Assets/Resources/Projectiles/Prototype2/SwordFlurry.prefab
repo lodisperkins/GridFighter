@@ -99,6 +99,8 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
   debuggingEnabled: 0
@@ -226,7 +228,6 @@ MonoBehaviour:
     RawValue: 0
   _rangeToIgnoreUpAngle:
     RawValue: 13107
-  _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -234,6 +235,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 1
   _gridActive: 0
@@ -338,19 +340,94 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7318714702537426323, guid: 8903ee57f194e5a49a85dd94778e486c,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7530936645854291487, guid: 8903ee57f194e5a49a85dd94778e486c,
         type: 3}
       propertyPath: m_Name
       value: Flurry
       objectReference: {fileID: 0}
+    - target: {fileID: 8912722726000403482, guid: 8903ee57f194e5a49a85dd94778e486c,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009352338559056972, guid: 8903ee57f194e5a49a85dd94778e486c,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7530936645854291487, guid: 8903ee57f194e5a49a85dd94778e486c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4533325180709029022}
+    - targetCorrespondingSourceObject: {fileID: 7530936645854291487, guid: 8903ee57f194e5a49a85dd94778e486c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7963040594208655815}
   m_SourcePrefab: {fileID: 100100000, guid: 8903ee57f194e5a49a85dd94778e486c, type: 3}
+--- !u!198 &1604936355990941048 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3615999846679028097, guid: 8903ee57f194e5a49a85dd94778e486c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2624329398594604281}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3255085660719268526 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 668536632717823575, guid: 8903ee57f194e5a49a85dd94778e486c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2624329398594604281}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4560785024292113368 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1954655146155886369, guid: 8903ee57f194e5a49a85dd94778e486c,
     type: 3}
   m_PrefabInstance: {fileID: 2624329398594604281}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5541748978380794598 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7530936645854291487, guid: 8903ee57f194e5a49a85dd94778e486c,
+    type: 3}
+  m_PrefabInstance: {fileID: 2624329398594604281}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &4533325180709029022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5541748978380794598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 3255085660719268526}
+  - {fileID: 1604936355990941048}
+--- !u!114 &7963040594208655815
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5541748978380794598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 4533325180709029022}
+  colliderBehaviour: {fileID: 4348091442556909497}

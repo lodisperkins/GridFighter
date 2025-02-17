@@ -110,6 +110,21 @@ namespace Lodis.UI
             
             _inputManager = GetComponent<PlayerInputManager>();
 
+            //// Set up communication (replace with actual IPs)
+            //NetworkMessengerBehaviour.Instance.SetConnection("192.168.0.141", 7000, "192.168.0.141", 7001);
+
+            //// Subscribe to message received event
+            //NetworkMessengerBehaviour.Instance.OnMessageReceived += (message) =>
+            //{
+            //    Debug.Log("Received: " + message);
+            //};
+
+            //// Send a test message
+            //NetworkMessengerBehaviour.Instance.SendMessageToClient("Hello, friend!");
+
+            //// Stop listening after 10 seconds
+            //Invoke("StopListening", 10f);
+
             //Online code when connecting to host
             if (!GridGameManager.IsHost && GridGameManager.OnlineGameStarted)
             {
@@ -144,6 +159,12 @@ namespace Lodis.UI
             }
             SetColor(2);
 
+        }
+
+        void StopListening()
+        {
+            NetworkMessengerBehaviour.Instance.SetIsListening(false);
+            Debug.Log("Stopped listening.");
         }
 
         private void OnDisable()

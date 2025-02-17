@@ -9,7 +9,7 @@ namespace Lodis.Quest
     {
         public StrongAttackStep(QuestStepData data, GameObject owner) : base(data, owner)
         {
-            MatchManagerBehaviour.Instance.AddOnP2RingoutAction(CheckComplete);
+            MatchManagerBehaviour.Instance.AddOnP2LoseAction(CheckComplete);
         }
 
         private void CheckComplete()

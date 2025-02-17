@@ -38,6 +38,12 @@ public class MainMenuBehaviour : MonoBehaviour
     {
         GridGameManager.Instance.GetComponent<GridGameManager>().OnLocalClick();
     }
+    int count;
+    public void Print()
+    {
+        Debug.Log("Count " + count);
+        count++;
+    }
 
     public void Quit()
     {

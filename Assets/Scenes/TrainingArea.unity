@@ -26651,12 +26651,12 @@ PrefabInstance:
         type: 3}
       propertyPath: _onP1RingOut
       value: 
-      objectReference: {fileID: 3714706008162466666}
+      objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onP2RingOut
       value: 
-      objectReference: {fileID: 3714706008162466665}
+      objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _ringBarrierL
@@ -27904,30 +27904,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 20aac363db7700b4ab8da6581439054d, type: 3}
---- !u!114 &3714706008162466665 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1359032537, guid: 20aac363db7700b4ab8da6581439054d,
-    type: 3}
-  m_PrefabInstance: {fileID: 3714706008162466664}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3714706008162466666 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1359032536, guid: 20aac363db7700b4ab8da6581439054d,
-    type: 3}
-  m_PrefabInstance: {fileID: 3714706008162466664}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!222 &3760963334884376450
 CanvasRenderer:
   m_ObjectHideFlags: 0

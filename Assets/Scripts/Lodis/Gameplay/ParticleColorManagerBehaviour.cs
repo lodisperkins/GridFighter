@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow;
 
 namespace Lodis.Gameplay
 {
@@ -68,6 +69,54 @@ namespace Lodis.Gameplay
         /// </summary>
         public void SetColors()
         {
+            //Iterate through all systems to change the colors for each.
+            foreach (ParticleSystem particleSystem in _particleSystems)
+            {
+                //If allowed to change the start color...
+                if (_changeStartColor)
+                {
+                    ParticleSystem.MainModule main = particleSystem.main;
+
+                    //...either just change the hue or the entire color.
+                    if (_onlyChangeHue)
+                        main.startColor = GetHue(main.startColor.color);
+                    else
+                        main.startColor = _color;
+                }
+
+                //If allowed to change the "ColorOverLifetime" color...
+                if (_changeColorOverLifetime)
+                {
+                    ParticleSystem.ColorOverLifetimeModule lifetimeModule = particleSystem.colorOverLifetime;
+
+                    //...either just change the hue or the entire color.
+                    if (_onlyChangeHue)
+                        lifetimeModule.color = GetHue(lifetimeModule.color.color);
+                    else
+                        lifetimeModule.color = _color;
+                }
+
+                //If allowed to change the "ColorBySpeed" color...
+                if (_changeColorBySpeed)
+                {
+                    ParticleSystem.ColorBySpeedModule speedModule = particleSystem.colorBySpeed;
+
+                    //...either just change the hue or the entire color.
+                    if (_onlyChangeHue)
+                        speedModule.color = GetHue(speedModule.color.color);
+                    else
+                        speedModule.color = _color;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Changes the color of each property that is allowed to be changed in each particle system.
+        /// </summary>
+        public void SetColors(GridAlignment alignment)
+        {
+            _color = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(alignment);
+
             //Iterate through all systems to change the colors for each.
             foreach (ParticleSystem particleSystem in _particleSystems)
             {

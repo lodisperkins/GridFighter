@@ -414,7 +414,6 @@ namespace Lodis.Movement
 
             _hitStunTimer = FixedPointTimer.StartNewTimedAction(() => { _inHitStun = false; _isFlinching = false; _timeInCurrentHitStun = 0; }, timeInHitStun);
             _onHitStun?.Invoke();
-            Debug.Log("Called event with " + timeInHitStun);
             _onHitStunTemp?.Invoke();
             _onHitStunTemp = null;
         }

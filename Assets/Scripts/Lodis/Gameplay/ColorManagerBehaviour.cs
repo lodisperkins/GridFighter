@@ -1,9 +1,11 @@
-﻿using Lodis.GridScripts;
+﻿using Lodis.Gameplay;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -74,17 +76,22 @@ namespace Lodis.Gameplay
         [SerializeField] private bool _autoDetectAlignment;
         [Tooltip("The objects that will have their colors changed to match the alignment.")]
         [SerializeField] private ColorObject[] _objectsToColor;
+        [SerializeField] private ColorManagerBehaviour _linkedManager;
+
         private Light _specularLight;
 
         private Color _ownerColor;
 
-        public ColorObject[] ObjectsToColor { get => _objectsToColor; private set => _objectsToColor = value; }
+        public ColorObject[] ObjectsToColor { get => _objectsToColor; set => _objectsToColor = value; }
         public Light SpecularLight { get => _specularLight; set => _specularLight = value; }
 
         private void SetHue(ColorObject objectToColor)
         {
             for (int i = 0; i < objectToColor.ShaderProperties.Length; i++)
             {
+                if (objectToColor.ObjectRenderer == null)
+                    return;
+
                 for (int j = 0; j < objectToColor.ObjectRenderer.materials.Length; j++)
                 {
                     if (objectToColor.ObjectRenderer.materials[j].HasProperty(objectToColor.ShaderProperties[i]))
@@ -95,6 +102,9 @@ namespace Lodis.Gameplay
 
         private void SetColor(ColorObject objectToColor)
         {
+            if (objectToColor.ObjectRenderer == null)
+                return;
+
             for (int i = 0; i < objectToColor.ShaderProperties.Length; i++)
             {
                 for (int j = 0; j < objectToColor.ObjectRenderer.materials.Length; j++)
@@ -112,6 +122,11 @@ namespace Lodis.Gameplay
             if (gridMovementBehaviour)
             {
                 _alignment = gridMovementBehaviour.Alignment;
+
+
+                if (_linkedManager)
+                    _linkedManager._alignment = gridMovementBehaviour.Alignment;
+
                 return;
             }
             PanelBehaviour panel = null;
@@ -119,6 +134,9 @@ namespace Lodis.Gameplay
                 return;
 
             _alignment = panel.Alignment;
+
+            if (_linkedManager)
+                _linkedManager._alignment = panel.Alignment;
         }
 
         /// <summary>
@@ -133,6 +151,9 @@ namespace Lodis.Gameplay
 
             foreach (ColorObject colorObject in ObjectsToColor)
             {
+                if (colorObject.ObjectRenderer == null)
+                    continue;
+
                 if (SpecularLight)
                 {
                     colorObject.ObjectRenderer.material.SetInt("_UseCustomLight", 1);
@@ -150,6 +171,8 @@ namespace Lodis.Gameplay
 
                 colorObject.CacheColors();
             }
+
+            _linkedManager?.SetColors();
         }
 
         /// <summary>
@@ -178,6 +201,8 @@ namespace Lodis.Gameplay
 
                 colorObject.CacheColors();
             }
+
+            _linkedManager?.SetColors(alignmentID);
         }
 
         public void AddObjectToColor(GameObject objectToColor, params string[] shaderProperties)
@@ -199,5 +224,76 @@ namespace Lodis.Gameplay
             SetColors();
         }
 
+    }
+
+
+[CustomEditor(typeof(ColorManagerBehaviour))]
+    public class ColorManagerEditor : Editor
+    {
+        private string objectPrefix = "";
+        private List<string> shaderProperties = new List<string>();
+        private GameObject searchTarget;
+        private bool onlyChangeHue;
+
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
+            
+            ColorManagerBehaviour colorManager = (ColorManagerBehaviour)target;
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Auto Add Objects to Color", EditorStyles.boldLabel);
+            searchTarget = (GameObject)EditorGUILayout.ObjectField("Search Target", searchTarget, typeof(GameObject), true);
+            objectPrefix = EditorGUILayout.TextField("Child Object Prefix", objectPrefix);
+            onlyChangeHue = EditorGUILayout.Toggle("Only Change Hue", onlyChangeHue);
+            EditorGUILayout.LabelField("Shader Properties", EditorStyles.boldLabel);
+
+            if (shaderProperties.Count == 0)
+                shaderProperties.Add(""); // Ensure at least one field is present
+            
+            for (int i = 0; i < shaderProperties.Count; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                shaderProperties[i] = EditorGUILayout.TextField($"Property {i + 1}", shaderProperties[i]);
+                if (GUILayout.Button("Remove", GUILayout.Width(70)))
+                {
+                    shaderProperties.RemoveAt(i);
+                    break;
+                }
+                EditorGUILayout.EndHorizontal();
+            }
+
+            if (GUILayout.Button("Add Property"))
+                shaderProperties.Add("");
+
+            EditorGUILayout.Space();
+            if (GUILayout.Button("Add Objects to Color"))
+            {
+                AddObjectsToColor(colorManager);
+            }
+        }
+
+        private void AddObjectsToColor(ColorManagerBehaviour colorManager)
+        {
+            List<ColorObject> newColorObjects = new List<ColorObject>();
+            Transform parentTransform = searchTarget == null ? colorManager.transform : searchTarget.transform;
+
+            foreach (Transform child in parentTransform)
+            {
+                if (!string.IsNullOrEmpty(objectPrefix) && !child.name.StartsWith(objectPrefix))
+                    continue;
+                
+                Renderer renderer = child.GetComponentInChildren<Renderer>();
+                if (renderer != null)
+                {
+                    ColorObject colorObject = new ColorObject(renderer, shaderProperties.ToArray(), false, 0);
+                    colorObject.OnlyChangeHue = onlyChangeHue;
+                    newColorObjects.Add(colorObject);
+                }
+            }
+
+            colorManager.ObjectsToColor = newColorObjects.ToArray();
+            EditorUtility.SetDirty(colorManager);
+        }
     }
 }

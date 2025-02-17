@@ -978,10 +978,6 @@ MonoBehaviour:
   _saveDelay: 2
   _loadDelay: 7
   host: 0
-  inpIp: 
-  inpPort: 
-  txtIp: 
-  txtPort: 
   _canResimulate: 0
 --- !u!4 &1681571495
 Transform:

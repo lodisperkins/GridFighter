@@ -123,6 +123,7 @@ Material:
     - _GlossinessSource: 0
     - _GlossyReflections: 0
     - _Metallic: 0
+    - _MetallicEnabled: 0
     - _OcclusionStrength: 1
     - _QueueControl: 0
     - _QueueOffset: 0
@@ -150,7 +151,7 @@ Material:
     - _ShadowColor: {r: 0.03137255, g: 0.60784316, b: 0.48235294, a: 1}
     - _ShadowPatternColor: {r: 0.002428216, g: 0.002428216, b: 0.06480328, a: 1}
     - _ShadowTextureOffset: {r: 0, g: 0, b: 0, a: 0}
-    - _ShadowTextureTiling: {r: 4, g: 3.5, b: 0, a: 0}
+    - _ShadowTextureTiling: {r: 5, g: 5, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 0}
     - _TertiaryColor: {r: 0.41568628, g: 0.41568628, b: 0.41568628, a: 1}

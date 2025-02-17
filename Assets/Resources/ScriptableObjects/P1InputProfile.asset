@@ -29,11 +29,11 @@ MonoBehaviour:
     Path: /XInputControllerWindows/buttonSouth
     DisplayName: A
   - Binding: 5
-    Path: /XInputControllerWindows/buttonNorth
-    DisplayName: Y
-  - Binding: 6
     Path: /XInputControllerWindows/buttonWest
     DisplayName: X
+  - Binding: 6
+    Path: /XInputControllerWindows/buttonNorth
+    DisplayName: Y
   - Binding: 7
     Path: /XInputControllerWindows/buttonEast
     DisplayName: B

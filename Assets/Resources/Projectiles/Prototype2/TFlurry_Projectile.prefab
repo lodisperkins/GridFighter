@@ -14768,6 +14768,8 @@ GameObject:
   - component: {fileID: 2218697450402812319}
   - component: {fileID: 2644608670620962371}
   - component: {fileID: 7345495668650903756}
+  - component: {fileID: 383853276839091513}
+  - component: {fileID: 4113658113711932769}
   m_Layer: 0
   m_Name: TFlurry_Projectile
   m_TagString: Untagged
@@ -14832,6 +14834,8 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
   debuggingEnabled: 1
@@ -14937,7 +14941,6 @@ MonoBehaviour:
     RawValue: 0
   _rangeToIgnoreUpAngle:
     RawValue: 13107
-  _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -14945,6 +14948,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 0
   _gridActive: 0
@@ -15001,6 +15005,40 @@ MonoBehaviour:
   _addToGameManually: 0
   _visualRoot: {fileID: 1697626822471647620}
   _children: []
+--- !u!114 &383853276839091513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697626822471647621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 1
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 2031366310431379888}
+  - {fileID: 1209595759266402398}
+--- !u!114 &4113658113711932769
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1697626822471647621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 383853276839091513}
+  colliderBehaviour: {fileID: 4450530541339360223}
 --- !u!1 &1697626822997021118
 GameObject:
   m_ObjectHideFlags: 0
@@ -26172,7 +26210,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.07542719, g: 0.08769314, b: 0.14150941, a: 1}
+        key0: {r: 1, g: 1, b: 1, a: 1}
         key1: {r: 1, g: 1, b: 1, a: 0}
         key2: {r: 0.97166663, g: 0.5990566, b: 1, a: 0}
         key3: {r: 1, g: 1, b: 1, a: 0}
@@ -26197,7 +26235,7 @@ ParticleSystem:
         atime6: 32768
         atime7: 65535
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
@@ -31023,7 +31061,7 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 0.07542719, g: 0.08769314, b: 0.14150941, a: 1}
+        key0: {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 1}
         key1: {r: 1, g: 1, b: 1, a: 0}
         key2: {r: 0.97166663, g: 0.5990566, b: 1, a: 0}
         key3: {r: 1, g: 1, b: 1, a: 0}
@@ -31048,7 +31086,7 @@ ParticleSystem:
         atime6: 32768
         atime7: 65535
         m_Mode: 0
-        m_ColorSpace: -1
+        m_ColorSpace: 0
         m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
@@ -88033,6 +88071,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1697626822471647620}
     m_Modifications:
+    - target: {fileID: 1763543978354593832, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
+        type: 3}
+      propertyPath: collider
+      value: 
+      objectReference: {fileID: 4450530541339360223}
+    - target: {fileID: 1763543978354593832, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1763543978354593832, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
+        type: 3}
+      propertyPath: colliderBehaviour
+      value: 
+      objectReference: {fileID: 4450530541339360223}
     - target: {fileID: 2175089657181895320, guid: 3cea411d339b90b45b77f2bc1c0eab4c,
         type: 3}
       propertyPath: m_RootOrder

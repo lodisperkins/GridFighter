@@ -150,6 +150,13 @@ public class MeshReplacementBehaviour : MonoBehaviour
             int cosmeticHash = current.ID.GetHashCode();
 
             current.SetAllItemsEnabled(false);
+
+            if (WearableDictionary.ContainsKey(cosmeticHash))
+            {
+                Debug.LogError("Dictionary for armor already contains ID for " + current.ID);
+                continue;
+            }
+
             WearableDictionary.Add(cosmeticHash, current);
         }
 
@@ -292,7 +299,9 @@ public class MeshReplacementBehaviour : MonoBehaviour
         AddWearableToColorArray(_currentFeetWearable);
 
         _colorManager.AddObjectToColor(_bodyRenderer.gameObject,new string[4] {"_ShadowColor", "_ShadowPatternColor", "_OutlineColor", "_EmissionColor"});
-        _colorManager.SetColors();
+
+        if (Application.isPlaying)
+            _colorManager.SetColors();
 
 
         HasDefaultOutfit = false;

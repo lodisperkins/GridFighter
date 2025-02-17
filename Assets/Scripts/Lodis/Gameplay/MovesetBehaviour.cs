@@ -180,6 +180,7 @@ namespace Lodis.Gameplay
         private Fixed32 _lastAttackStrength;
         private (Ability, object[]) _lastSerializedAbility;
         private bool _serializedAbility;
+        private bool _lastBurstInfiniteOption;
 
         public ProjectileSpawnerBehaviour ProjectileSpawner => _projectileSpawner;
 
@@ -356,19 +357,8 @@ namespace Lodis.Gameplay
 
             _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.FixedValue, 1).Loop();
 
+            SetBurstCharge();
 
-
-
-            if (MatchManagerBehaviour.Instance.InfiniteBurst)
-            {
-                _currentBurstRechargeRate = _infiniteBurstEnergyRechargeRate.FixedValue;
-            }
-            else
-            {
-                _currentBurstRechargeRate = _burstEnergyRechargeRate.FixedValue;
-            }
-
-            _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.FixedValue, _currentBurstRechargeRate).Loop();
 
             //Set up other references and parameters
             GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
@@ -453,6 +443,22 @@ namespace Lodis.Gameplay
 
             return limbTransform;
         }
+
+        public void SetBurstCharge()
+        {
+            if (MatchManagerBehaviour.Instance.InfiniteBurst)
+            {
+                _currentBurstRechargeRate = _infiniteBurstEnergyRechargeRate.FixedValue;
+            }
+            else
+            {
+                _currentBurstRechargeRate = _burstEnergyRechargeRate.FixedValue;
+            }
+
+            _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.FixedValue, _currentBurstRechargeRate).Loop();
+        }
+
+
 
         /// <summary>
         /// Checks if the normal deck has an ability that matches the name
@@ -1008,8 +1014,22 @@ namespace Lodis.Gameplay
             }
         }
 
+       
+
         private void Update()
         {
+
+            if (_lastBurstInfiniteOption != MatchManagerBehaviour.Instance.InfiniteBurst)
+            {
+                SetBurstCharge();
+                _lastBurstInfiniteOption = MatchManagerBehaviour.Instance.InfiniteBurst;
+            }
+            if (MatchManagerBehaviour.Instance.InfiniteEnergy)
+            {
+                Energy = _startEnergy.FixedValue;
+            }
+
+
 
             //Old update
             //Call update for abilities

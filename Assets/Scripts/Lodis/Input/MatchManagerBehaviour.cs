@@ -76,10 +76,10 @@ namespace Lodis.Gameplay
         private UnityEvent _onMatchRestart;
         [SerializeField]
         private UnityEvent _onMatchOver;
-        [SerializeField]
-        private GameEventListener _onP1RingOut;
-        [SerializeField]
-        private GameEventListener _onP2RingOut;
+        [SerializeField] private UnityEvent _onP1RingOut;
+        [SerializeField] private UnityEvent _onP2RingOut;
+        [SerializeField] private UnityEvent _onP1Lose;
+        [SerializeField] private UnityEvent _onP2Lose;
 
         [SerializeField]
         private CustomEventSystem.Event _matchRestartEvent;
@@ -101,6 +101,7 @@ namespace Lodis.Gameplay
         private DelayedAction _fxTimeScaleAction;
         private int _lhsWins;
         private int _rhsWins;
+        private CharacterExplosionBehaviour _characterExplosionBehaviour;
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -140,6 +141,9 @@ namespace Lodis.Gameplay
         private void Awake()
         {
             _mode = (GameMode)SceneManagerBehaviour.Instance.GameMode.Value;
+
+            _characterExplosionBehaviour = GetComponent<CharacterExplosionBehaviour>();
+            _characterExplosionBehaviour.OnCharacterExplosionStart += OnPlayerExplosionStart;
 
             _grid.DestroyTempPanels();
             _grid.InvincibleBarriers = InvincibleBarriers;
@@ -202,11 +206,13 @@ namespace Lodis.Gameplay
             {
                 _matchResult = MatchResult.P1WINS;
                 _lhsWins++;
+                _onP2Lose?.Invoke();
             }
             else if (PlayerSpawner.P1HealthScript.HasExploded)
             {
                 _matchResult = MatchResult.P2WINS;
                 _rhsWins++;
+                _onP1Lose?.Invoke();
             }
             else if (!_suddenDeathActive)
             {
@@ -222,6 +228,14 @@ namespace Lodis.Gameplay
             //    _matchResult = MatchResult.P2WINS;
             //    _rhsWins++;
             //}
+        }
+
+        private void OnPlayerExplosionStart(int index)
+        {
+            if (index == 0)
+                _onP1RingOut?.Invoke();
+            else if (index == 1)
+                _onP2RingOut?.Invoke();
         }
 
         public void SetMatchResult(int resultID)
@@ -422,19 +436,29 @@ namespace Lodis.Gameplay
 
         public void AddOnP1RingoutAction(UnityAction action)
         {
-            _onP1RingOut.AddAction(action);
+            _onP1RingOut.AddListener(action);
         }
 
         public void AddOnP2RingoutAction(UnityAction action)
         {
-            _onP2RingOut.AddAction(action);
+            _onP2RingOut.AddListener(action);
         }
 
 
         public void AddOnRingoutAction(UnityAction action)
         {
-            _onP1RingOut.AddAction(action);
-            _onP2RingOut.AddAction(action);
+            _onP1RingOut.AddListener(action);
+            _onP2RingOut.AddListener(action);
+        }
+
+        public void AddOnP1LoseAction(UnityAction action)
+        {
+            _onP1Lose.AddListener(action);
+        }
+
+        public void AddOnP2LoseAction(UnityAction action)
+        {
+            _onP2Lose.AddListener(action);
         }
     }
 

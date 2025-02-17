@@ -435,7 +435,7 @@ namespace Lodis.Gameplay
 
         private void LoadAIDecisions()
         {
-            if (_mode != GameMode.SIMULATE && _mode != GameMode.PlayerVSCPU && !GridGameManager.AIFightEnabled)
+            if (_mode != GameMode.SIMULATE && _mode != GameMode.PlayerVSCPU && !GridGameManager.AIFightEnabled && _mode != GameMode.TUTORIAL && _mode != GameMode.PRACTICE)
                 return;
 
             AIControllerBehaviour dummyController = BlackBoardBehaviour.Instance.Player2Controller as AIControllerBehaviour;

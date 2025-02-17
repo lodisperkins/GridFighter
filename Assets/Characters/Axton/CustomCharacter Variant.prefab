@@ -88,16 +88,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6696874653952488930, guid: 0ce92fdcc8bc2bc4ca5943c9379aa06e,
-        type: 3}
-      propertyPath: _health
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6696874653952488930, guid: 0ce92fdcc8bc2bc4ca5943c9379aa06e,
-        type: 3}
-      propertyPath: _stateMachine
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7904683268612744415, guid: 0ce92fdcc8bc2bc4ca5943c9379aa06e,
         type: 3}
       propertyPath: m_IsActive

@@ -14,8 +14,6 @@ GameObject:
   - component: {fileID: 6769407473129059388}
   - component: {fileID: 3714706006734652315}
   - component: {fileID: 3714706006734652316}
-  - component: {fileID: 1359032536}
-  - component: {fileID: 1359032537}
   - component: {fileID: 1359032538}
   m_Layer: 0
   m_Name: GameManager
@@ -181,70 +179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d29409a0d163b824e97bf17cae711606, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1359032536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3714706006734652295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1359032538}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: ChargeExplosion
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 3cc64ad6d1cac594bbf636a0233d9ac0,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: Lodis.ScriptableObjects.IntVariable,
-            Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
-  IntendedSender: {fileID: 0}
-  AcceptTagAsSender: 0
---- !u!114 &1359032537
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3714706006734652295}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56d6c3b7dc37d7b479a3d7680de1c4df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actions:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1359032538}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: ChargeExplosion
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 11400000, guid: 80aa92efa7a08ce4c8c7d05e98fb1965,
-            type: 2}
-          m_ObjectArgumentAssemblyTypeName: Lodis.ScriptableObjects.IntVariable,
-            Assembly-CSharp
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  Event: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
-  IntendedSender: {fileID: 0}
-  AcceptTagAsSender: 0
 --- !u!114 &1359032538
 MonoBehaviour:
   m_ObjectHideFlags: 0

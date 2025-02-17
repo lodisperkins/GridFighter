@@ -119,7 +119,8 @@ namespace Lodis.Input
 
         private Condition _moveInputEnableCondition;
         private Condition _inputEnableCondition = null;
-        private static UnityAction _onActionButtonDown;
+        private static UnityAction _onP1ActionButtonDown;
+        private static UnityAction _onActionButtonUp;
         private PlayerControls _playerControls;
         private BufferedInput _bufferedAction;
         private Ability _lastAbilityUsed = null;
@@ -138,7 +139,7 @@ namespace Lodis.Input
         private bool _canBufferDefense;
         private bool _canBufferAbility = true;
         private bool _movementBuffered;
-        private bool _attackButtonDown;
+        private bool _weakAttackButtonDown;
         private bool _chargingAttack;
         private bool _special1Down;
         private bool _special2Down;
@@ -191,7 +192,7 @@ namespace Lodis.Input
 
         public GameObject Character { get => _character; set => _character = value; }
         public bool Enabled { get => _inputEnabled; set => _inputEnabled = value; }
-        public bool NormalAttackButtonDown { get => _attackButtonDown; private set => _attackButtonDown = value; }
+        public bool NormalAttackButtonDown { get => _weakAttackButtonDown; private set => _weakAttackButtonDown = value; }
 
         public bool AIControlled { get => _aiControlled; set => _aiControlled = value; }
         public InputFlag AIFlags { get => _aiFlags; set => _aiFlags = value; }
@@ -407,7 +408,7 @@ namespace Lodis.Input
                     flags |= InputFlag.Left;
                 if (_playerControls.Player.MoveRight.IsPressed())
                     flags |= InputFlag.Right;
-                if (_playerControls.Player.Attack.IsPressed())
+                if (_weakAttackButtonDown = _playerControls.Player.Attack.IsPressed())
                     flags |= InputFlag.Weak;
                 if (_playerControls.Player.Special1.IsPressed())
                     flags |= InputFlag.Special1;
@@ -938,18 +939,21 @@ namespace Lodis.Input
 
         public static void OnActionDown(UnityAction action)
         {
-            _onActionButtonDown += action;
+            _onP1ActionButtonDown += action;
         }
 
         // Update is called once per frame
         public override void Tick(Fixed32 dt)
         {
-            if (!PlayerActionButtonDown && _attackButtonDown)
+            if (PlayerID == 0)
             {
-                _onActionButtonDown?.Invoke();
-            }
+                if (!PlayerActionButtonDown && _weakAttackButtonDown)
+                {
+                    _onP1ActionButtonDown?.Invoke();
+                }
 
-            PlayerActionButtonDown = _attackButtonDown;
+                PlayerActionButtonDown = _weakAttackButtonDown;
+            }
 
             if (_moveset.AbilityInUse)
                 _canMove = CheckInputAllowedInAbilityPhase() || _stateMachineBehaviour.StateMachine.CurrentState != "Attacking";

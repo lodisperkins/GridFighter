@@ -62,6 +62,9 @@ namespace Lodis.Gameplay
             _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
             _thalamusInstance.transform.localRotation = Quaternion.identity;
 
+            FixedPointTimer.StartNewTimedAction(() =>
+            _thalamusInstance.GetComponent<ColorManagerBehaviour>().SetColors((int)OwnerMoveScript.Alignment), GridGame.FixedTimeStep);
+
             //Removing vfx.
             ObjectPoolBehaviour.Instance.ReturnGameObject(_orbs);
             OwnerAnimationScript.gameObject.SetActive(true);

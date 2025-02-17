@@ -15,15 +15,21 @@ namespace Lodis.Gameplay
     {
         [SerializeField] private GameObject _explosion;
         [SerializeField] private Fixed32 _explosionChargeTime;
-        private CharacterFeedbackBehaviour _characterFeedback;
         [SerializeField] private float _maxEmission;
         [SerializeField] private AudioClip _chargeSound;
         [SerializeField] private AudioClip _explosionSound;
         [SerializeField] private CustomEventSystem.Event _onCharacterExplosion;
+
+        //---
+        private CharacterFeedbackBehaviour _characterFeedback;
         private CharacterVoiceBehaviour _characterVoice;
         private float[] _emissionStrengthValues = { 0, 0 };
         private TimedAction _chargeAction;
         private IntVariable _lastLoserID;
+
+        public delegate void CharacterExplosionEvent(int index);
+        public event CharacterExplosionEvent OnCharacterExplosionStart;
+        public event CharacterExplosionEvent OnCharacterExplosion;
 
         public GameObject Explosion { get => _explosion; set => _explosion = value; }
         public Fixed32 ExplosionChargeTime { get => _explosionChargeTime; set => _explosionChargeTime = value; }
@@ -44,6 +50,8 @@ namespace Lodis.Gameplay
             
             if (knockback.OutOfBounds)
                 return;
+
+            OnCharacterExplosionStart?.Invoke(playerID);
 
             knockback.OutOfBounds = true;
 
@@ -87,6 +95,7 @@ namespace Lodis.Gameplay
                 SoundManagerBehaviour.Instance.TogglePauseMusic();
 
                 _onCharacterExplosion.Raise();
+                OnCharacterExplosion?.Invoke(playerID);
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
 
             }, TimedActionCountType.UNSCALEDTIME, ExplosionChargeTime);

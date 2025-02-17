@@ -71,12 +71,28 @@ public class GridGameManager : GameManager
         private set => _isHost = value;
     }
 
+    public static string LocalIP
+    {
+        get
+        {
+            return inpIp;
+        }
+    }
+
+    public static string RemoteIP
+    {
+        get
+        {
+            return txtIp;
+        }
+    }
+
     public static bool TestingLocalSaves { get; set; }
 
-    public string inpIp;
-    public string inpPort;
-    public string txtIp;
-    public string txtPort;
+    public static string inpIp;
+    public static string inpPort;
+    public static string txtIp;
+    public static string txtPort;
     [SerializeField] private bool _canResimulate;
     private bool _hasSaved;
 
@@ -158,7 +174,7 @@ public class GridGameManager : GameManager
         txtIp = "192.168.0.141";
         inpPort = "7000";
         txtPort = "7001";
-        _gameManager.StartGGPOGame(_perf, GetConnections(), playerIndex);
+        //_gameManager.StartGGPOGame(_perf, GetConnections(), playerIndex);
     }
 
     public void OnLocalClick()
@@ -187,7 +203,7 @@ public class GridGameManager : GameManager
 
     private void LateUpdate()
     {
-        Debug.Log(InputSystem.settings.updateMode);
+        //Debug.Log(InputSystem.settings.updateMode);
         if (MatchManagerBehaviour.Instance == null || !_testLatency)
         {
             return;

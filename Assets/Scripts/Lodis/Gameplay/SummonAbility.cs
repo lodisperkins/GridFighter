@@ -102,7 +102,7 @@ namespace Lodis.Gameplay
                     moveBehaviour = instance.Data.AddComponent<GridMovementBehaviour>();
 
                 //If the entity should lerp to the position, update the starting position.
-                if (SmoothMovement)
+                if (SmoothMovement && OwnerMoveScript.CurrentPanel)
                     moveBehaviour.Position = OwnerMoveScript.CurrentPanel.Position;
 
                 //Change attributes so the movement is unrestricted.

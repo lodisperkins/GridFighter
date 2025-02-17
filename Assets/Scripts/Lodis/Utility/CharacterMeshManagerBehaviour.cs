@@ -92,14 +92,22 @@ namespace Lodis.Utility
             _eyeAnimator = GetComponent<EyeAnimationBehaviour>();
 
             //Update renderers for in game feedback.
-            _knockback.MeshRenderer = GetRenderer("body_low");
+            if (_knockback)
+                _knockback.MeshRenderer = GetRenderer("body_low");
+
             _eyeAnimator.Renderer = GetRenderer("eyes_mesh");
 
             CharacterAnimationBehaviour characterAnimationBehaviour = GetComponent<CharacterAnimationBehaviour>();
             Animator animator = GetComponent<Animator>();
 
+            if (_hitStop)
+                _hitStop.Animator = animator;
+
+            if (!_moveset)
+                return;
+
             _moveset.AnimationBehaviour = characterAnimationBehaviour;
-            _hitStop.Animator = animator;
+
 
             //Set moveset transform using common body parts.
             Transform leftArm = FindChild(transform, "GridFighterBase_l_Arm_WristSHJnt");
