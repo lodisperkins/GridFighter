@@ -13,6 +13,7 @@ TagManager:
   - Reflector
   - WinCollider
   - Accessory
+  - RingBarrier
   layers:
   - Default
   - TransparentFX

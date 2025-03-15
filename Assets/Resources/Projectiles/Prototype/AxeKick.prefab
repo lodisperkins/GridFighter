@@ -202,6 +202,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -224,8 +230,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 1
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -351,7 +360,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData:
-    Name: New Entity
+    Name: AxeKick
     Transform:
       _localPosition:
         X:
@@ -379,6 +388,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 2168324044689623625}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 7753967484100786593}
   _children: []
@@ -394,6 +404,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _mass:
     RawValue: 65536
   _gravity:
@@ -406,7 +422,6 @@ MonoBehaviour:
     RawValue: 0
   _rangeToIgnoreUpAngle:
     RawValue: 13107
-  _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -414,6 +429,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 0
   _gridActive: 1
@@ -424,6 +440,7 @@ MonoBehaviour:
   _setGroundPosition: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &7110470185185689662
 MonoBehaviour:
@@ -437,6 +454,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8866f96c2ae981b4b87ced854a2a1216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _colliders:
   - {fileID: 3556605455510110903}
   - {fileID: 5712276960567258736}
@@ -501,6 +524,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -523,8 +552,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: -1
     _panelXOffset: 1
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -680,6 +712,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -702,8 +740,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: -1
     _panelXOffset: 2
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -822,6 +863,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -844,8 +891,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 1
     _panelXOffset: 1
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -964,6 +1014,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -986,8 +1042,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 1
     _panelXOffset: 2
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -1154,6 +1213,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -1176,8 +1241,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 2
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider

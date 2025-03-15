@@ -49,6 +49,9 @@ namespace Lodis.Sound
 
         public void PlayDeathSound()
         {
+            if (_voicePack == null)
+                return;
+
             _source.Stop();
             _source.PlayOneShot(_voicePack.Death);
         }
@@ -61,12 +64,17 @@ namespace Lodis.Sound
 
         public void PlayBurstSound()
         {
+            if (_voicePack.Burst == null)
+                return;
+
             _source.Stop();
             _source.PlayOneShot(_voicePack.Burst);
         }
 
         public void PlaySpawnSound()
         {
+            if (_voicePack.Spawn == null) return;
+
             _source.Stop();
             _source.PlayOneShot(_voicePack.Spawn);
         }

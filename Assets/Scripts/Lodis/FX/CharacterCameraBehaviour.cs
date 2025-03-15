@@ -69,7 +69,7 @@ namespace Lodis.FX
 
             transform.position = _lerpStart.position;
 
-            var tween = transform.DOMove(_lerpEnd.position, _lerpDuration).SetUpdate(true).SetEase(_lerpCurve);
+            var tween = transform.DOMove(_lerpEnd.position, _lerpDuration).SetUpdate(false).SetEase(_lerpCurve);
             tween.onComplete += () => _onLerpComplete?.Invoke();
             if (flipped)
                 tween.Flip();
@@ -82,7 +82,7 @@ namespace Lodis.FX
 
             transform.position = _lerpStart.position;
 
-            var tween = transform.DOPunchPosition(punch, duration,0,0).SetUpdate(true);
+            var tween = transform.DOPunchPosition(punch, duration,0,0).SetUpdate(false);
             tween.onComplete += () => _onLerpComplete?.Invoke();
         }
 
@@ -93,7 +93,7 @@ namespace Lodis.FX
 
             transform.position = _lerpStart.position;
 
-            var tween = transform.DOPunchPosition(punch, duration,0,0).SetUpdate(true).SetEase(curve);
+            var tween = transform.DOPunchPosition(punch, duration,0,0).SetUpdate(false).SetEase(curve);
             tween.onComplete += () => _onLerpComplete?.Invoke();
         }
 
@@ -105,7 +105,7 @@ namespace Lodis.FX
             transform.position = _lerpStart.position;
 
 
-            var tween = transform.DOMove(_lerpEnd.position, duration).SetUpdate(true).SetEase(curve);
+            var tween = transform.DOMove(_lerpEnd.position, duration).SetUpdate(false).SetEase(curve);
             tween.onComplete += () => _onLerpComplete?.Invoke();
         }
 

@@ -307,8 +307,17 @@ namespace Lodis.Gameplay
 
             if (scheme == "Keyboard")
             {
-                ApplyCompositeOverrides(inputProfile, playerInput.PlayerControls.Player.Move);
-                ApplyCompositeOverrides(inputProfile, playerInput.PlayerControls.Player.AttackDirection, invertHorizontal);
+                index = playerInput.PlayerControls.Player.MoveUp.GetBindingIndex(group: scheme);
+                playerInput.PlayerControls.Player.MoveUp.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.MoveUp).Path);
+
+                index = playerInput.PlayerControls.Player.MoveDown.GetBindingIndex(group: scheme);
+                playerInput.PlayerControls.Player.MoveDown.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.MoveDown).Path);
+
+                index = playerInput.PlayerControls.Player.MoveLeft.GetBindingIndex(group: scheme);
+                playerInput.PlayerControls.Player.MoveLeft.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.MoveLeft).Path);
+
+                index = playerInput.PlayerControls.Player.MoveRight.GetBindingIndex(group: scheme);
+                playerInput.PlayerControls.Player.MoveRight.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.MoveRight).Path);
             }
 
             playerInput.PlayerControls.Player.Attack.ApplyBindingOverride(index, inputProfile.GetBinding(BindingType.WeakAttack).Path);

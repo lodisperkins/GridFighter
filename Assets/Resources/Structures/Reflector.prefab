@@ -71,15 +71,18 @@ MonoBehaviour:
     _collideOnAnyRow: 0
     _isAWall: 0
     _width:
-      RawValue: 131072
+      RawValue: 196608
     _facingRight: 1
     _height:
-      RawValue: 131072
+      RawValue: 196608
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
-  debuggingEnabled: 0
+    debugID: 0
+  debuggingEnabled: 1
 --- !u!114 &2752061025252108853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,7 +173,6 @@ MonoBehaviour:
     RawValue: 0
   _rangeToIgnoreUpAngle:
     RawValue: 13107
-  _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -178,6 +180,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 1
   _gridActive: 0
@@ -188,6 +191,7 @@ MonoBehaviour:
   _setGroundPosition: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!1 &6984876292503503679
 GameObject:

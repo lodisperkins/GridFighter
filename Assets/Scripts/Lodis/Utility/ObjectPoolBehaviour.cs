@@ -48,6 +48,13 @@ namespace Lodis.Utility
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
         public GameObject GetObject(GameObject gameObject)
         {
+#if UNITY_EDITOR
+            if (gameObject.TryGetComponent<EntityDataBehaviour>(out _))
+            {
+                Debug.LogError("Tried to get an object that has an entity data behaviour from the normal pool instead of the Entity pool.");
+            }
+#endif
+
             //If an object of this type has a queue in the dictionary...
             if (_objectPool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
@@ -90,6 +97,13 @@ namespace Lodis.Utility
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
         public GameObject GetObject(GameObject gameObject, Vector3 position, Quaternion rotation)
         {
+#if UNITY_EDITOR
+            if (gameObject.TryGetComponent<EntityDataBehaviour>(out _))
+            {
+                Debug.LogError("Tried to get an object that has an entity data behaviour from the normal pool instead of the Entity pool.");
+            }
+#endif
+
             //If an object of this type has a queue in the dictionary...
             if (_objectPool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
@@ -118,7 +132,7 @@ namespace Lodis.Utility
         public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation)
         {
             //If an object of this type has a queue in the dictionary...
-            if (_entityObjectPool.TryGetValue(gameObject.name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
+            if (_entityObjectPool.TryGetValue(entity.Data.Name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 EntityDataBehaviour objectInstance = objectQueue.Dequeue();
@@ -128,6 +142,7 @@ namespace Lodis.Utility
 
                 objectInstance.FixedTransform.SetPositionAndRotation(position, rotation);
                 objectInstance.AddToGame();
+                objectInstance.UpdateUnityTransform(GridGame.FixedTimeStep);
                 return objectInstance;
             }
             //...otherwise create a new instance of the object
@@ -145,7 +160,7 @@ namespace Lodis.Utility
         public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FTransform parent)
         {
             //If an object of this type has a queue in the dictionary...
-            if (_entityObjectPool.TryGetValue(gameObject.name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
+            if (_entityObjectPool.TryGetValue(entity.Data.Name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 EntityDataBehaviour objectInstance = objectQueue.Dequeue();
@@ -157,6 +172,7 @@ namespace Lodis.Utility
                 objectInstance.FixedTransform.LocalPosition = FVector3.Zero;
                 objectInstance.FixedTransform.LocalRotation = FQuaternion.Identity;
                 objectInstance.AddToGame();
+                objectInstance.UpdateUnityTransform(GridGame.FixedTimeStep);
                 return objectInstance;
             }
             //...otherwise create a new instance of the object
@@ -205,6 +221,13 @@ namespace Lodis.Utility
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
         public GameObject GetObject(GameObject gameObject, Transform parent, bool resetPosition = false)
         {
+#if UNITY_EDITOR
+            if (gameObject.TryGetComponent<EntityDataBehaviour>(out _))
+            {
+                Debug.LogError("Tried to get an object that has an entity data behaviour from the normal pool instead of the Entity pool.");
+            }
+#endif
+
             //If an object of this type has a queue in the dictionary...
             if (_objectPool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
@@ -340,7 +363,7 @@ namespace Lodis.Utility
 
             newObject.FixedTransform.SetPositionAndRotation(position, rotation);
             newObject.name = entity.Data.Name;
-            newObject.Data.Name = gameObject.name;
+            newObject.Data.Name = entity.Data.Name;
             return newObject;
         }
 
@@ -359,7 +382,7 @@ namespace Lodis.Utility
             newObject.FixedTransform.LocalPosition = FVector3.Zero;
             newObject.FixedTransform.LocalRotation = FQuaternion.Identity;
             newObject.name = entity.Data.Name;
-            newObject.Data.Name = gameObject.name;
+            newObject.Data.Name = entity.Data.Name;
             return newObject;
         }
 
@@ -390,6 +413,13 @@ namespace Lodis.Utility
         {
             if (!objectInstance)
                 return;
+
+#if UNITY_EDITOR
+            if (objectInstance.TryGetComponent<EntityDataBehaviour>(out _))
+            {
+                Debug.LogError("Tried to return an object that has an entity data behaviour to the normal pool instead of the Entity pool.");
+            }
+#endif
 
             Queue<GameObject> queue;
             //If the object has a queue in the dictionary already...
@@ -428,6 +458,12 @@ namespace Lodis.Utility
         /// <param name="time">The amount of time in seconds to wait before returning the object</param>
         public void ReturnGameObject(GameObject objectInstance, float time)
         {
+#if UNITY_EDITOR
+            if (objectInstance.TryGetComponent<EntityDataBehaviour>(out _))
+            {
+                Debug.LogError("Tried to return an object that has an entity data behaviour to the normal pool instead of the Entity pool. Object was " + objectInstance.name);
+            }
+#endif
             RoutineBehaviour.Instance.StartNewTimedAction(args => ReturnGameObject(objectInstance), TimedActionCountType.SCALEDTIME, time);
         }
 

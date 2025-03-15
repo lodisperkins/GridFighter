@@ -821,6 +821,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 1
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 8208943836500725030}
     DefaultColors: []
@@ -829,6 +830,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
 --- !u!1 &965301490467430834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1431,6 +1433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 3
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 7908636675779063005}
     DefaultColors: []
@@ -1439,6 +1442,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
 --- !u!114 &1820454110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3018,6 +3022,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 3
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 3196423559867798137}
     DefaultColors: []
@@ -3026,6 +3031,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
 --- !u!114 &2090838970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3711,6 +3717,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 2
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 8409021361059638485}
     DefaultColors: []
@@ -3719,6 +3726,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
 --- !u!1 &4859955930615547508
 GameObject:
   m_ObjectHideFlags: 0
@@ -4563,6 +4571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 1
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 4758251751990263635}
     DefaultColors: []
@@ -4571,6 +4580,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
 --- !u!1 &5660476853438679181
 GameObject:
   m_ObjectHideFlags: 0
@@ -4976,6 +4986,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 2
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 3222326086478295980}
     DefaultColors: []
@@ -4984,6 +4995,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
 --- !u!1 &6822297218417847282
 GameObject:
   m_ObjectHideFlags: 0
@@ -5731,6 +5743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 3
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 4104518260654464676}
     DefaultColors: []
@@ -5739,6 +5752,7 @@ MonoBehaviour:
     - _Color
     OnlyChangeHue: 1
     SaturationThreshold: 0.5
+  _linkedManager: {fileID: 0}
 --- !u!114 &1633531264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6836,7 +6850,7 @@ PrefabInstance:
     - target: {fileID: 5735473924789612346, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: _entityData.Transform._localPosition.X.RawValue
-      value: 619315
+      value: 457310
       objectReference: {fileID: 0}
     - target: {fileID: 5735473924789612346, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
@@ -6846,7 +6860,7 @@ PrefabInstance:
     - target: {fileID: 5735473924789612346, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: _entityData.Transform._localPosition.Z.RawValue
-      value: 91327
+      value: 98591
       objectReference: {fileID: 0}
     - target: {fileID: 5735473924789612346, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
@@ -6916,7 +6930,7 @@ PrefabInstance:
     - target: {fileID: 8744172618015234542, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.575
+      value: 1.163
       objectReference: {fileID: 0}
     - target: {fileID: 8744172618015234542, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}

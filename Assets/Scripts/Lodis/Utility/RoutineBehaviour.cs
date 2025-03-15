@@ -11,6 +11,7 @@ namespace Lodis.Utility
     {
         SCALEDTIME,
         UNSCALEDTIME,
+        PAUSESCALED,
         FRAME,
         CHARACTERSCALEDTIME
     }

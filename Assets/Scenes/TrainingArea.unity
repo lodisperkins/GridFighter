@@ -2551,7 +2551,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 1095333758}
+  m_FirstSelected: {fileID: 1639154306}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &127878317
@@ -6101,6 +6101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 1
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 684108119}
     DefaultColors: []
@@ -6120,6 +6121,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
 --- !u!1 &469655793
 GameObject:
   m_ObjectHideFlags: 0
@@ -7521,6 +7523,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 3
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 4104518261685708712}
     DefaultColors: []
@@ -7529,6 +7532,7 @@ MonoBehaviour:
     - _Color
     OnlyChangeHue: 1
     SaturationThreshold: 0.5
+  _linkedManager: {fileID: 0}
 --- !u!114 &617942156
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15766,6 +15770,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 1
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 1378456149}
     DefaultColors: []
@@ -15773,6 +15778,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 0
     SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
 --- !u!23 &1378456149
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -17357,6 +17363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 2
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 1249612638}
     DefaultColors: []
@@ -17376,6 +17383,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
 --- !u!224 &1591226344 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 643524680384907173, guid: 4aebaf1929f274a4abe10801b9cffd07,
@@ -19636,7 +19644,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rootPage:
     PageRoot: {fileID: 1841244415}
-    FirstSelected: {fileID: 1095333758}
+    FirstSelected: {fileID: 1639154306}
     KeepRootVisible: 0
     PageName: None
     _children:
@@ -21588,6 +21596,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 2
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 2039207449}
     DefaultColors: []
@@ -21595,6 +21604,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 0
     SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
 --- !u!23 &2039207449
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -23772,6 +23782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 2
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 3222326085329603232}
     DefaultColors: []
@@ -23780,6 +23791,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
 --- !u!1 &448284795865194686
 GameObject:
   m_ObjectHideFlags: 0
@@ -24332,6 +24344,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 1
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 4758251752989050463}
     DefaultColors: []
@@ -24340,6 +24353,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
 --- !u!1 &965301489486518462
 GameObject:
   m_ObjectHideFlags: 0
@@ -25168,6 +25182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 2
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 8409021359927662041}
     DefaultColors: []
@@ -25176,6 +25191,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
 --- !u!1 &2439428574054556796
 GameObject:
   m_ObjectHideFlags: 0
@@ -27525,7 +27541,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _onMatchOver.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1095333758}
+      objectReference: {fileID: 1639154306}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchOver.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
@@ -27535,7 +27551,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _onMatchPause.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
       value: 
-      objectReference: {fileID: 1095333758}
+      objectReference: {fileID: 1639154306}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchPause.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgument
@@ -28208,6 +28224,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 3
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 3196423558701296501}
     DefaultColors: []
@@ -28216,6 +28233,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
 --- !u!1 &4232279311044519821
 GameObject:
   m_ObjectHideFlags: 0
@@ -30838,6 +30856,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 1
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 8208943837616976938}
     DefaultColors: []
@@ -30846,6 +30865,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
 --- !u!1 &7497165856575766928
 GameObject:
   m_ObjectHideFlags: 0
@@ -32578,6 +32598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 3
   _autoDetectAlignment: 0
+  _manuallySetColors: 0
   _objectsToColor:
   - ObjectRenderer: {fileID: 7908636676776744401}
     DefaultColors: []
@@ -32586,6 +32607,7 @@ MonoBehaviour:
     - _EmissionColor
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

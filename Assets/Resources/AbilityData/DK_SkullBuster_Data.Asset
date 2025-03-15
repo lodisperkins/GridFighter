@@ -37,6 +37,7 @@ MonoBehaviour:
   CancelAllOnHit: 1
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -66,7 +67,7 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 0
     Damage:
-      RawValue: 1966080
+      RawValue: 3276800
     BaseKnockBack:
       RawValue: 655360
     KnockBackScale:
@@ -124,7 +125,7 @@ MonoBehaviour:
       RawValue: 196608
   - name: ColliderScale
     value:
-      RawValue: 98304
+      RawValue: 131072
   animationType: 3
   _customAnimation: {fileID: 5180280961208456968, guid: bc6b2460239e4494cb656ac7084942c1,
     type: 3}

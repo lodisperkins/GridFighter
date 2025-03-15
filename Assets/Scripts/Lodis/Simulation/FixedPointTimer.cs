@@ -68,7 +68,8 @@ namespace FixedPoints
         public enum UnitOfTime
         {
             Scaled,
-            Unscaled
+            Unscaled,
+            PauseScaled
         }
 
         protected Fixed32 timeStarted;
@@ -207,7 +208,6 @@ namespace FixedPoints
                 return;
             }
 
-
             //Handle timer logic
             if (unit == UnitOfTime.Scaled)
             {
@@ -216,6 +216,10 @@ namespace FixedPoints
             else if (unit == UnitOfTime.Unscaled)
             {
                 timeRemaining -= GridGame.FixedTimeStep;
+            }
+            else if (unit == UnitOfTime.PauseScaled)
+            {
+                timeRemaining -= GridGame.FixedTimeStep * !GridGame.IsPaused;
             }
 
             if (timeRemaining <= 0)

@@ -120,7 +120,7 @@ MonoBehaviour:
       RawValue: 65536
   - name: TravelDistance
     value:
-      RawValue: 262144
+      RawValue: 196608
   - name: DespawnTime
     value:
       RawValue: 655360

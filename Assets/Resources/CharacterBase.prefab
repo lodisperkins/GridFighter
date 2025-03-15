@@ -292,9 +292,14 @@ MonoBehaviour:
     type: 2}
   _burstEnergyRechargeRate: {fileID: 11400000, guid: 21df2b2c687a9e64c8c28a803e703faf,
     type: 2}
+  _offensiveBurstCost: {fileID: 11400000, guid: a73d407e121f6ff47b67a42657d49649,
+    type: 2}
+  _burstHitRechargeRate: {fileID: 11400000, guid: 771903a2d91b31d4cb7500007dbd2d42,
+    type: 2}
   _infiniteBurstEnergyRechargeRate: {fileID: 11400000, guid: b947ee7bc7dcc8b45bef631cb18ee976,
     type: 2}
-  _canBurst: 0
+  _canDefensiveBurst: 1
+  _canOffensiveBurst: 1
   _shuffleStart: {fileID: 8300000, guid: ce31763ab2877064d9d8187090bd904f, type: 3}
   _shuffleEnd: {fileID: 8300000, guid: ba8a777b86e30d54597c7dd8e59a08c2, type: 3}
 --- !u!114 &8516649324113743832
@@ -363,6 +368,7 @@ MonoBehaviour:
   _setGroundPosition: 1
   _groundPosition:
     RawValue: 32768
+  clampPositionInBarriers: 1
   _bounceCollider: {fileID: 0}
 --- !u!114 &3205124130663625092
 MonoBehaviour:
@@ -662,7 +668,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 218.87357, y: 310.4044}
+    - position: {x: 221.0958, y: 377.07117}
       id: Flinching
       onEnterState:
         m_PersistentCalls:
@@ -1324,7 +1330,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 0
   _autoDetectAlignment: 1
+  _manuallySetColors: 0
   _objectsToColor: []
+  _linkedManager: {fileID: 0}
 --- !u!114 &9214871793191098141
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1445,6 +1453,7 @@ MonoBehaviour:
       RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 0
 --- !u!1 &3280269941161266660
 GameObject:
@@ -2791,6 +2800,7 @@ MonoBehaviour:
       RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 0
 --- !u!4 &5386106008844156196 stripped
 Transform:

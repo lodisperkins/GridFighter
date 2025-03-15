@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NaughtyAttributes.Test;
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -302,6 +303,17 @@ namespace Types
         public override int GetHashCode()
         {
             return RawValue.GetHashCode();
+        }
+
+        public static explicit operator bool(Fixed32 instance)
+        {
+            return instance.RawValue != 0;
+        }
+
+        public static Fixed32 operator *(Fixed32 instance, bool rhs)
+        {
+            int val = rhs ? 1 : 0;
+            return instance * val;
         }
     }
 }

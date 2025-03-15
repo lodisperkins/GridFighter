@@ -59,7 +59,7 @@ MonoBehaviour:
     Damage:
       RawValue: 983040
     BaseKnockBack:
-      RawValue: 327680
+      RawValue: 196608
     KnockBackScale:
       RawValue: 98304
     ClampForceWithinRing: 0

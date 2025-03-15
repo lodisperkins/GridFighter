@@ -8999,6 +8999,7 @@ GameObject:
   - component: {fileID: 834067889}
   - component: {fileID: 834067888}
   - component: {fileID: 834067891}
+  - component: {fileID: 834067892}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -9324,6 +9325,30 @@ MonoBehaviour:
                   m_StringArgument: 
                   m_BoolArgument: 1
                 m_CallState: 2
+              - m_Target: {fileID: 834067892}
+                m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
+                m_MethodName: set_defaultControlScheme
+                m_Mode: 5
+                m_Arguments:
+                  m_ObjectArgument: {fileID: 0}
+                  m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                  m_IntArgument: 0
+                  m_FloatArgument: 0
+                  m_StringArgument: Gamepad
+                  m_BoolArgument: 1
+                m_CallState: 2
+              - m_Target: {fileID: 834067892}
+                m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
+                m_MethodName: set_neverAutoSwitchControlSchemes
+                m_Mode: 6
+                m_Arguments:
+                  m_ObjectArgument: {fileID: 0}
+                  m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                  m_IntArgument: 0
+                  m_FloatArgument: 0
+                  m_StringArgument: 
+                  m_BoolArgument: 1
+                m_CallState: 2
           OnInactive:
             m_PersistentCalls:
               m_Calls:
@@ -9357,6 +9382,18 @@ MonoBehaviour:
               - m_Target: {fileID: 1778592649}
                 m_TargetAssemblyTypeName: 
                 m_MethodName: SetActive
+                m_Mode: 6
+                m_Arguments:
+                  m_ObjectArgument: {fileID: 0}
+                  m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                  m_IntArgument: 0
+                  m_FloatArgument: 0
+                  m_StringArgument: 
+                  m_BoolArgument: 0
+                m_CallState: 2
+              - m_Target: {fileID: 834067892}
+                m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
+                m_MethodName: set_neverAutoSwitchControlSchemes
                 m_Mode: 6
                 m_Arguments:
                   m_ObjectArgument: {fileID: 0}
@@ -10325,11 +10362,43 @@ MonoBehaviour:
     OnGoToChild:
       m_PersistentCalls:
         m_Calls: []
-  _eventSystem: {fileID: 0}
+  _eventSystem: {fileID: 834067889}
   _loadSceneOnFirstPage: 0
   _previousPageOnCancel: 1
   _sceneIndex: -1
   _changePageManually: 1
+  _useEventSystemScheme: 1
+--- !u!114 &834067892
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834067887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 8f3fb22a96ec2b949ab4d3146a4928c7,
+    type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 834067888}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Gamepad
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1 &859423906 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7997891042039204573, guid: cd44e3f1f47b4e844bb56c12bc030286,

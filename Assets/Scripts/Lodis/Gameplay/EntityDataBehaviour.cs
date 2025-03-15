@@ -116,7 +116,7 @@ public class EntityDataBehaviour : MonoBehaviour
         GridGame.RemoveEntityFromGame(_entityData);
     }
 
-    private void UpdateUnityTransform(Fixed32 dt)
+    public void UpdateUnityTransform(Fixed32 dt)
     {
         if (VisualRoot)
             VisualRoot.SetPositionAndRotation((Vector3)Data.Transform.WorldPosition, (Quaternion)Data.Transform.WorldRotation);
@@ -124,7 +124,7 @@ public class EntityDataBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        if (!inGame)
+        if (!inGame && !AddToGameManually)
         {
             AddToGame();
         }

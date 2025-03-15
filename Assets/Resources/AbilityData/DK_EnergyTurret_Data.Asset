@@ -28,6 +28,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -61,17 +62,17 @@ MonoBehaviour:
     Damage:
       RawValue: 65536
     BaseKnockBack:
-      RawValue: 65536
+      RawValue: 45875
     KnockBackScale:
       RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 32768
+      RawValue: 98304
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
-      RawValue: 32768
+      RawValue: 6553
     Priority:
       RawValue: 65536
     OwnerAlignement: 0
@@ -119,7 +120,7 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
-      RawValue: 6553
+      RawValue: 32768
     Priority:
       RawValue: 131072
     OwnerAlignement: 0
@@ -147,7 +148,7 @@ MonoBehaviour:
   _customStats:
   - name: ShotCount
     value:
-      RawValue: 1048576
+      RawValue: 524288
   - name: ShotDelay
     value:
       RawValue: 6553

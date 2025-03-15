@@ -126,8 +126,18 @@ MonoBehaviour:
   _onMatchOver:
     m_PersistentCalls:
       m_Calls: []
-  _onP1RingOut: {fileID: 0}
-  _onP2RingOut: {fileID: 0}
+  _onP1RingOut:
+    m_PersistentCalls:
+      m_Calls: []
+  _onP2RingOut:
+    m_PersistentCalls:
+      m_Calls: []
+  _onP1Lose:
+    m_PersistentCalls:
+      m_Calls: []
+  _onP2Lose:
+    m_PersistentCalls:
+      m_Calls: []
   _matchRestartEvent: {fileID: 0}
   _matchStartEvent: {fileID: 0}
   _matchOverEvent: {fileID: 0}
@@ -153,8 +163,8 @@ MonoBehaviour:
   _player2Data: {fileID: 11400000, guid: e58f4edf10230094aabb53e76bd1dc76, type: 2}
   _p1IsCustom: {fileID: 11400000, guid: c8d4b0853a99c454d9994f642a156b18, type: 2}
   _p2IsCustom: {fileID: 11400000, guid: 691de958046707d4284a17aae0cdc976, type: 2}
-  _RHSSpawnLocation: {x: 5, y: 1}
-  _LHSSpawnLocation: {x: 2, y: 1}
+  _RHSSpawnLocation: {x: 4, y: 1}
+  _LHSSpawnLocation: {x: 1, y: 1}
 --- !u!114 &3714706006734652315
 MonoBehaviour:
   m_ObjectHideFlags: 0

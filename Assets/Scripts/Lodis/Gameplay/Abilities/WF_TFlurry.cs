@@ -67,7 +67,10 @@ namespace Lodis.Gameplay
 
             //Only fire if there aren't too many instances of this object active.
             if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+            {
+                SpawnMaxInstanceSmoke();
                 return;
+            }
 
             ProjectileColliderData.OnHit += SpawnFlurry;
 

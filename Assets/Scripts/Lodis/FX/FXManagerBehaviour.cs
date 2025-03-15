@@ -111,7 +111,7 @@ namespace Lodis.FX
             }
             SetEnvironmentLightsEnabled(false);
             currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
-            MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, duration);
+            MatchManagerBehaviour.Instance.ChangeSimulationTimeScale(0, 0, duration);
             currentCamera.LerpCamera(duration, _superMoveCurve);
 
             SuperMoveEffectActive = true;

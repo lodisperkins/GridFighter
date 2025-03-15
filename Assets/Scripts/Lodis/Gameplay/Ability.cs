@@ -161,7 +161,10 @@ namespace Lodis.Gameplay
         protected GridMovementBehaviour OwnerMoveScript { get => _ownerMoveScript; private set => _ownerMoveScript = value; }
         protected CharacterAnimationBehaviour OwnerAnimationScript { get => _ownerAnimationScript; private set => _ownerAnimationScript = value; }
         public GameObject AccessoryInstance { get => _accessoryInstance; private set => _accessoryInstance = value; }
-        public TimedActionCountType TimeCountType { get => _timeCountType; set => _timeCountType = value; }
+        /// <summary>
+        /// The way the ability timers will have time applied to them. Use this to be in sync with the rollback simulation.
+        /// </summary>
+        public FixedTimeAction.UnitOfTime TimeUnit { get; set; }
 
         public bool AbilityPaused { get => CurrentTimer?.IsActive == true; }
         public CharacterVoiceBehaviour OwnerVoiceScript { get => _ownerVoiceScript; private set => _ownerVoiceScript = value; }
@@ -238,12 +241,13 @@ namespace Lodis.Gameplay
         /// <param name="args"></param>
         protected void StartUpPhase(params object[] args)
         {
+            //Debug.Log($"Beginning ability {abilityData.abilityName}");
             _inUse = true;
             onBegin?.Invoke();
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActivateSound);
             Start(args);
-            _startUpTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args),  abilityData.startUpTime, (FixedTimeAction.UnitOfTime)TimeCountType);
+            _startUpTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args),  abilityData.startUpTime, TimeUnit);
         }
 
         /// <summary>
@@ -256,7 +260,7 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
             Activate(args);
-            _activeTimer = FixedPointTimer.StartNewTimedAction(() => RecoverPhase(args), abilityData.timeActive, (FixedTimeAction.UnitOfTime)TimeCountType);
+            _activeTimer = FixedPointTimer.StartNewTimedAction(() => RecoverPhase(args), abilityData.timeActive, TimeUnit);
         }
 
         /// <summary>
@@ -271,9 +275,9 @@ namespace Lodis.Gameplay
 
             Recover(args);
             if (MaxActivationAmountReached)
-                _recoverTimer = FixedPointTimer.StartNewTimedAction(() => EndAbility(), abilityData.recoverTime, (FixedTimeAction.UnitOfTime)TimeCountType);
+                _recoverTimer = FixedPointTimer.StartNewTimedAction(() => EndAbility(), abilityData.recoverTime, TimeUnit);
             else
-                _recoverTimer = FixedPointTimer.StartNewTimedAction(() => _inUse = false, abilityData.recoverTime, (FixedTimeAction.UnitOfTime)TimeCountType);
+                _recoverTimer = FixedPointTimer.StartNewTimedAction(() => _inUse = false, abilityData.recoverTime, TimeUnit);
 
         }
 
@@ -310,7 +314,7 @@ namespace Lodis.Gameplay
         /// <returns>Returns true if the current ability phase can be canceled</returns>
         public bool TryCancel(Ability nextAbility = null)
         {
-            if (nextAbility?.abilityData.AbilityType == AbilityType.BURST)
+            if (nextAbility?.abilityData.AbilityType == AbilityType.BURST && abilityData.AbilityType != AbilityType.BURST)
             {
                 EndAbility();
                 return true;
@@ -470,7 +474,26 @@ namespace Lodis.Gameplay
                 OwnerKnockBackScript.AddOnKnockBackStartTempAction(() => TryDamageCancel(2));
             }
 
+            if (abilityData.AutoMovePhase == AbilityPhase.STARTUP)
+            {
+                FVector2 attackDirection = (FVector2)args[1];
+                AutoMove(attackDirection);
+            }
+
             OnStart();
+        }
+
+        private void AutoMove(FVector2 attackDirection)
+        {
+            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
+                attackDirection.X *= -1;
+
+            if (attackDirection.Magnitude > 0 && (int)abilityData.AbilityType < 8)
+            {
+                OwnerMoveScript.CanCancelMovement = true;
+                OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + attackDirection);
+                OwnerMoveScript.CanCancelMovement = false;
+            }
         }
 
         private void TryDamageCancel(int damageType)
@@ -516,16 +539,10 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            FVector2 attackDirection = (FVector2)args[1];
-
-            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
-                attackDirection.X *= -1;
-
-            if (attackDirection.Magnitude > 0 && (int)abilityData.AbilityType < 8)
+            if (abilityData.AutoMovePhase == AbilityPhase.ACTIVE)
             {
-                OwnerMoveScript.CanCancelMovement = true;
-                OwnerMoveScript.MoveToPanel(OwnerMoveScript.Position + attackDirection);
-                OwnerMoveScript.CanCancelMovement = false;
+                FVector2 attackDirection = (FVector2)args[1];
+                AutoMove(attackDirection);
             }
 
 
@@ -550,6 +567,11 @@ namespace Lodis.Gameplay
         /// </summary>
         private void Recover(params object[] args)
         {
+            if (abilityData.AutoMovePhase == AbilityPhase.RECOVER)
+            {
+                FVector2 attackDirection = (FVector2)args[1];
+                AutoMove(attackDirection);
+            }
             OnRecover(args);
         }
 
@@ -577,7 +599,8 @@ namespace Lodis.Gameplay
             onRecover = null;
             OnHit = null;
             OnHitTemp = null;
-
+            
+            //Debug.Log($"Ending ability {abilityData.abilityName}");
             OnEnd();
         }
 
@@ -614,6 +637,31 @@ namespace Lodis.Gameplay
         public HitColliderData GetColliderData(string name)
         {
             return _colliderInfo.Find(info => info.Name == name);
+        }
+
+        /// <summary>
+        /// Make the accessory appear and play the spawn effect.
+        /// </summary>
+        public void EnableAccessory(bool trySetColor)
+        {
+            if (!abilityData.Accessory || !_accessoryInstance || _accessoryInstance.activeInHierarchy)
+                return;
+
+            GameObject spawnEffect = abilityData.Accessory.SpawnEffect;
+
+            ObjectPoolBehaviour.Instance.GetObject(spawnEffect, _accessoryInstance.transform.position, _accessoryInstance.transform.rotation);
+
+            _accessoryInstance.SetActive(true);
+
+            if (!trySetColor)
+                return;
+
+            ColorManagerBehaviour colorManager = _accessoryInstance.GetComponentInChildren<ColorManagerBehaviour>();
+
+            if (colorManager)
+            {
+                colorManager.SetColors((int)OwnerMoveScript.Alignment);
+            }
         }
 
         /// <summary>

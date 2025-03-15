@@ -163,7 +163,7 @@ public class GridGameManager : GameManager
     {
         _onlineGame?.Shutdown();
 
-        _isHost = !ClonesManager.IsClone();
+        //_isHost = !ClonesManager.IsClone();
         SceneManagerBehaviour.Instance.SetGameMode(GameMode.ONLINE);
 
         int playerIndex = IsHost ? 0 : 1;

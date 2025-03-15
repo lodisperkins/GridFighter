@@ -606,8 +606,8 @@ namespace Lodis.Input
 
             object[] args = new object[2];
 
-            if (PlayerID == 1)
-                Debug.Log("Ability buffered");
+            //if (PlayerID == 1)
+            //    Debug.Log("Ability buffered");
 
             AbilityType abilityType;
             _attackDirection.X *= Mathf.Round(transform.forward.x);

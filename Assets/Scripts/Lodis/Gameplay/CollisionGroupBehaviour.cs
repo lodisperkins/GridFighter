@@ -33,7 +33,6 @@ public class CollisionGroupBehaviour : SimulationBehaviour
 
     public override void Deserialize(BinaryReader br)
     {
-        return;
         foreach (var collider in _colliders)
         {
             collider.Deserialize(br);
@@ -42,7 +41,6 @@ public class CollisionGroupBehaviour : SimulationBehaviour
 
     public override void Serialize(BinaryWriter bw)
     {
-        return;
         foreach (var collider in _colliders)
         {
             collider.Serialize(bw);

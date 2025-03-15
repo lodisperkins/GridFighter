@@ -30,7 +30,7 @@ namespace Lodis.Gameplay
         public bool DespawnAfterTimeLimit { get; private set; }
 
         public float Speed;
-
+        public GameObject MaxInstanceSmoke;
         public bool ScaleStats { get; set; }
         public override void Init(EntityDataBehaviour newOwner)
         {
@@ -40,6 +40,7 @@ namespace Lodis.Gameplay
             
             Owner = newOwner;
             ProjectileRef = abilityData?.visualPrefab.GetComponent<EntityDataBehaviour>();
+            MaxInstanceSmoke = Resources.Load<GameObject>("Effects/MaxInstanceSmokePuff");
         }
 
         public void CleanProjectileList(bool useName = false)
@@ -60,6 +61,11 @@ namespace Lodis.Gameplay
             ProjectileColliderData = GetColliderData(0);
             CleanProjectileList();
             ProjectileColliderData.OwnerAlignement = OwnerMoveScript.Alignment;
+        }
+
+        protected void SpawnMaxInstanceSmoke()
+        {
+            ObjectPoolBehaviour.Instance.GetObject(MaxInstanceSmoke, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
         }
 
         protected override void OnActivate(params object[] args)

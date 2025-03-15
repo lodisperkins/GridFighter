@@ -30,8 +30,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.3, y: 1.3, z: 1.3}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 2.6, y: 2.6, z: 2.6}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8879725164454934676}
   m_Father: {fileID: 0}
@@ -52,8 +52,13 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
   _markCollider: 0
+  _markAtRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!114 &5945091772905751757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66,12 +71,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 0}
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
+  _friction:
+    RawValue: 0
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -79,6 +96,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 0
   _gridActive: 0
@@ -89,6 +107,7 @@ MonoBehaviour:
   _setGroundPosition: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &4711087851357813414
 MonoBehaviour:
@@ -103,16 +122,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData:
-    Name: New Entity
+    Name: ChargeBlueFist
     Transform:
-      _worldPosition:
+      _localPosition:
         X:
           RawValue: 0
         Y:
           RawValue: 0
         Z:
           RawValue: 0
-      _worldRotation:
+      _localRotation:
         X:
           RawValue: 0
         Y:
@@ -131,8 +150,10 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 428546948933386335}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 1060968803567983333}
+  _children: []
 --- !u!114 &9091791928663573212
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +166,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 0}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -153,46 +186,64 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 0
   ColliderInfo:
     Name: 
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 0
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 0
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0
+    HitAngle:
+      RawValue: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0
-    Priority: 0
+    HitStunTime:
+      RawValue: 0
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 0
-    AbilityID: 0
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopShakeStrength: 0
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 0
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}

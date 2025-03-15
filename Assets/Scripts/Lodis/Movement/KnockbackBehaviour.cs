@@ -161,18 +161,6 @@ namespace Lodis.Movement
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), true, true);
             };
 
-            _onTakeDamage += () =>
-            {
-                if (!_movementBehaviour || !_movementBehaviour.IsMoving)
-                    return;
-
-                _movementBehaviour.CanCancelMovement = true;
-                PanelBehaviour panel;
-                BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel);
-                _movementBehaviour.MoveToPanel(panel);
-                _movementBehaviour.CanCancelMovement = false;
-            };
-
             _startGravity = Physics.Gravity;
             _adjustedGravity = _startGravity;
         }
@@ -297,6 +285,14 @@ namespace Lodis.Movement
             _onHitStunTemp += action;
         }
 
+        private void SnapToProjectilePanel()
+        {
+            _movementBehaviour.CanCancelMovement = true;
+            PanelBehaviour panel;
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld((Vector3)LastCollider.Entity.FixedTransform.WorldPosition, out panel);
+            _movementBehaviour.MoveToPanel(panel);
+            _movementBehaviour.CanCancelMovement = false;
+        }
         private void IncreaseKnockbackGravity()
         {
             if (CurrentAirState != AirState.TUMBLING) return;
@@ -324,7 +320,7 @@ namespace Lodis.Movement
 
             Stunned = true;
             if (CurrentAirState == AirState.FREEFALL || CurrentAirState == AirState.TUMBLING)
-               Physics.FreezeInPlaceByCondition(condition =>!Stunned && !_hitstop.HitStopActive, false, true, false, true);
+               Physics.FreezeInPlaceByCondition(condition =>!Stunned && !_hitstop.HitStopActive, false, true, true, true);
 
             
             if (moveset)
@@ -392,10 +388,18 @@ namespace Lodis.Movement
             if (!knockBackScript)
                 knockBackScript = this;
 
-            float velocityMagnitude = knockBackScript.Physics.Velocity.Magnitude;
+            Fixed32 velocityMagnitude = knockBackScript.Physics.Velocity.Magnitude;
 
-            //Apply ricochet force and damage
-            damageScript.TakeDamage(Entity, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+            if (collision.OtherEntity.UnityObject.CompareTag("RingBarrier"))
+            {
+                RingBarrierBehaviour barrier = collision.OtherEntity.UnityObject.GetComponent<RingBarrierBehaviour>();
+                barrier.TakeDamage(Entity, Health, damageType: DamageType.KNOCKBACK);
+            }
+            else
+            {
+                //Apply ricochet force and damage
+                damageScript.TakeDamage(Entity, velocityMagnitude, 0, 0, DamageType.KNOCKBACK);
+            }
         }
 
         private void ActivateHitStunByTimer(Fixed32 timeInHitStun)
@@ -483,6 +487,10 @@ namespace Lodis.Movement
                     _onKnockBackTemp = null;
                 }
             }
+            else
+            {
+                SnapToProjectilePanel();
+            }
 
             return damage;
         }
@@ -566,7 +574,10 @@ namespace Lodis.Movement
                 }
             }
             else
+            {
                 _movementBehaviour.DisableMovement(condition => CheckIfIdle(), false, true);
+                SnapToProjectilePanel();
+            }
 
             return info.Damage;
         }

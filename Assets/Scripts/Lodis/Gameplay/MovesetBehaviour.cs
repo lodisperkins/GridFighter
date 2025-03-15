@@ -143,11 +143,17 @@ namespace Lodis.Gameplay
         [Tooltip("The rate at which burst energy is regained")]
         [SerializeField]
         private FloatVariable _burstEnergyRechargeRate;
+        [Tooltip("How much burst energy it costs to do an offensive burst.")]
+        [SerializeField]
+        private FloatVariable _offensiveBurstCost;
+        [Tooltip("How much burst energy it costs to do an offensive burst.")]
+        [SerializeField]
+        private FloatVariable _burstHitRechargeRate;
         [Tooltip("The rate at which burst energy is regained when it is set to infinite")]
         [SerializeField]
         private FloatVariable _infiniteBurstEnergyRechargeRate;
-        [SerializeField]
-        private bool _canBurst = true;
+        [SerializeField] private bool _canDefensiveBurst = true;
+        [SerializeField] private bool _canOffensiveBurst = true;
 
         [Header("Sounds")]
         [SerializeField]
@@ -237,12 +243,13 @@ namespace Lodis.Gameplay
             private set 
             {
                 _burstEnergy = value;
-                _burstEnergy = Mathf.Clamp(_burstEnergy, 0, _maxBurstEnergyRef.FixedValue);
+                _burstEnergy = Fixed32.Clamp(_burstEnergy, 0, _maxBurstEnergyRef.FixedValue);
             }
         }
 
         public Ability NextAbilitySlot { get => _nextAbilitySlot; private set => _nextAbilitySlot = value; }
-        public bool CanBurst { get => _canBurst; private set => _canBurst = value; }
+        public bool CanDefensiveBurst { get => _canDefensiveBurst; private set => _canDefensiveBurst = value; }
+        public bool CanOffensiveBurst { get => _canOffensiveBurst; private set => _canOffensiveBurst = value; }
         public UnityAction OnBurst { get; set; }
         public bool LoadingShuffle { get => _loadingShuffle; }
         public bool DeckReloading { get => _deckReloading; }
@@ -266,7 +273,8 @@ namespace Lodis.Gameplay
             _burstEnergy.Serialize(bw);
             bw.Write(_abilityInUse);
             bw.Write(_energyChargeEnabled);
-            bw.Write(_canBurst);
+            bw.Write(_canDefensiveBurst);
+            bw.Write(_canOffensiveBurst);
             bw.Write(_loadingShuffle);
             bw.Write(_deckReloading);
 
@@ -287,7 +295,8 @@ namespace Lodis.Gameplay
             _burstEnergy.Deserialize(br);
             _abilityInUse = br.ReadBoolean();
             _energyChargeEnabled = br.ReadBoolean();
-            _canBurst = br.ReadBoolean();
+            _canDefensiveBurst = br.ReadBoolean();
+            _canOffensiveBurst = br.ReadBoolean();
             _loadingShuffle = br.ReadBoolean();
             _deckReloading = br.ReadBoolean();
 
@@ -347,7 +356,7 @@ namespace Lodis.Gameplay
             ResetSpecialDeck();
 
             //Set up energy meters
-            _canBurst = true;
+            _canDefensiveBurst = true;
             BurstEnergy = MaxBurstEnergy.FixedValue;
 
             if (!MatchManagerBehaviour.Instance.InfiniteEnergy)
@@ -391,7 +400,8 @@ namespace Lodis.Gameplay
             _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.FixedValue, 1).Loop();
 
             BurstEnergy = MaxBurstEnergy.FixedValue; 
-            _canBurst = true;
+            SetBurstCharge();
+            _canDefensiveBurst = true;
         }
 
         /// <summary>
@@ -455,7 +465,19 @@ namespace Lodis.Gameplay
                 _currentBurstRechargeRate = _burstEnergyRechargeRate.FixedValue;
             }
 
-            _burstAction = FixedPointTimer.StartNewTimedAction(() => BurstEnergy += _burstEnergyRechargeValue.FixedValue, _currentBurstRechargeRate).Loop();
+            _burstAction?.Stop();
+
+            _burstAction = FixedPointTimer.StartNewTimedAction(() =>
+            {
+                BurstEnergy += _burstEnergyRechargeValue.FixedValue;
+
+                //Stop charging so it doesnt overflow.
+                if (BurstEnergy >= MaxBurstEnergy)
+                {
+                    BurstEnergy = MaxBurstEnergy;
+                    _burstAction.Stop();
+                }
+            }, _currentBurstRechargeRate).Loop();
         }
 
 
@@ -631,20 +653,32 @@ namespace Lodis.Gameplay
         /// <returns>The ability used.</returns>
         public Ability UseBasicAbility(Ability ability, params object[] args)
         {
+            if (ability == null)
+                return null;
 
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && _stateMachineScript.StateMachine.CurrentState != "Moving" && ability.abilityData.AbilityType != AbilityType.BURST)
                 return null;
-            else if (ability.abilityData.AbilityType == AbilityType.BURST && !_canBurst)
+            else if (ability.abilityData.AbilityType == AbilityType.BURST && !_canDefensiveBurst && !_canOffensiveBurst)
                 return null;
+
+            if (ability.abilityData.abilityName == "Offensive Burst" && BurstEnergy < _offensiveBurstCost)
+            {
+                return null;
+            }
+            else if (ability.abilityData.abilityName == "Defensive Burst" && BurstEnergy != MaxBurstEnergy)
+            {
+                return null;
+            }
 
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(ability))
                     return _lastAbilityInUse;
 
-            if (ability == null)
-                return null;
+
+
+            
 
             ability.OnHitTemp += IncreaseEnergyFromDamage;
             ability.OnHitTemp += collisionArgs =>
@@ -664,9 +698,25 @@ namespace Lodis.Gameplay
 
             if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
             {
-                OnBurst?.Invoke();
-                _canBurst = false;
-                BurstEnergy = 0;
+                if (_lastAbilityInUse.abilityData.abilityName == "Offensive Burst" && BurstEnergy >= _offensiveBurstCost)
+                {
+                    BurstEnergy -= _offensiveBurstCost;
+                    _canOffensiveBurst = BurstEnergy >= _offensiveBurstCost;
+
+                    OnBurst?.Invoke();
+
+                    //If the burst meter was full that means charging stop so we should restart again.
+                    if (_canDefensiveBurst)
+                        SetBurstCharge();
+                }
+                else if (_lastAbilityInUse.abilityData.abilityName == "Defensive Burst")
+                {
+                    BurstEnergy = 0;
+                    OnBurst?.Invoke();
+                    SetBurstCharge();
+                }
+
+                _canDefensiveBurst = false;
             }
 
             //Return new ability
@@ -686,24 +736,38 @@ namespace Lodis.Gameplay
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && _stateMachineScript.StateMachine.CurrentState != "Moving" && abilityType != AbilityType.BURST)
                 return null;
-            else if (abilityType == AbilityType.BURST && !_canBurst)
+            else if (abilityType == AbilityType.BURST && !_canDefensiveBurst && !_canOffensiveBurst)
                 return null;
 
             //Find the ability in the deck abd use it
             Ability currentAbility = null;
 
             if (abilityType == AbilityType.BURST)
+            {
                 currentAbility = _normalDeck.GetBurstAbility(_stateMachineScript.StateMachine.CurrentState);
+
+                if (currentAbility.abilityData.abilityName == "Offensive Burst" && BurstEnergy < _offensiveBurstCost)
+                {
+                    return null;
+                }
+                else if (currentAbility.abilityData.abilityName == "Defensive Burst" && BurstEnergy != MaxBurstEnergy)
+                {
+                    return null;
+                }
+            }
             else
+            {
                 currentAbility = _normalDeck.GetAbilityByType(abilityType);
+            }
+
+            if (currentAbility == null)
+                return null;
 
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
                     return _lastAbilityInUse;
 
-            if (currentAbility == null)
-                return null;
 
             currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
 
@@ -726,9 +790,25 @@ namespace Lodis.Gameplay
 
             if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
             {
-                OnBurst?.Invoke();
-                _canBurst = false;
-                BurstEnergy = 0;
+                if (_lastAbilityInUse.abilityData.abilityName == "Offensive Burst" && BurstEnergy >= _offensiveBurstCost)
+                {
+                    BurstEnergy -= _offensiveBurstCost;
+                    _canOffensiveBurst = BurstEnergy >= _offensiveBurstCost;
+                    OnBurst?.Invoke();
+
+                    //If the burst meter was full that means charging stop so we should restart again.
+                    if (_canDefensiveBurst)
+                        SetBurstCharge();
+                }
+                else if (_lastAbilityInUse.abilityData.abilityName == "Defensive Burst")
+                {
+                    BurstEnergy = 0;
+                    _canOffensiveBurst = false;
+                    OnBurst?.Invoke();
+                    SetBurstCharge();
+                }
+
+                _canDefensiveBurst = false;
             }
 
             //Return new ability
@@ -748,13 +828,23 @@ namespace Lodis.Gameplay
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && abilityName != "EnergyBurst" && _stateMachineScript.StateMachine.CurrentState != "Moving")
                 return null;
-            else if (abilityName == "EnergyBurst" && !_canBurst)
+            else if ((abilityName == "Defensive Burst" && !_canDefensiveBurst) || (abilityName == "Offensive Burst" && !_canOffensiveBurst))
                 return null;
 
             //Find the ability in the deck and use it
             Ability ability = _normalDeck.GetAbilityByName(abilityName);
             if (ability == null)
                 return null;
+
+            if (ability.abilityData.abilityName == "Offensive Burst" && BurstEnergy < _offensiveBurstCost)
+            {
+                return null;
+            }
+            else if (ability.abilityData.abilityName == "Defensive Burst" && BurstEnergy != MaxBurstEnergy)
+            {
+                return null;
+            }
+
             ability.OnHitTemp += IncreaseEnergyFromDamage;
 
             ability.OnHitTemp += collisionArgs =>
@@ -767,6 +857,8 @@ namespace Lodis.Gameplay
             if (_lastAbilityInUse != null)
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(ability))
                     return _lastAbilityInUse;
+
+            
 
             ability.UseAbility(args);
             _lastAbilityInUse = ability;
@@ -783,6 +875,30 @@ namespace Lodis.Gameplay
                 RemoveAbilityFromSlot(0);
                 RemoveAbilityFromSlot(1);
             }
+
+            if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
+            {
+                if (_lastAbilityInUse.abilityData.abilityName == "Offensive Burst" && BurstEnergy >= _offensiveBurstCost)
+                {
+                    BurstEnergy -= _offensiveBurstCost;
+                    _canOffensiveBurst = BurstEnergy >= _offensiveBurstCost;
+                    OnBurst?.Invoke();
+
+                    //If the burst meter was full that means charging stop so we should restart again.
+                    if (_canDefensiveBurst)
+                        SetBurstCharge();
+
+                }
+                else if (_lastAbilityInUse.abilityData.abilityName == "Defensive Burst")
+                {
+                    BurstEnergy = 0;
+                    OnBurst?.Invoke();
+                    SetBurstCharge();
+                }
+
+                _canDefensiveBurst = false;
+            }
+
             //Return new ability
             return _lastAbilityInUse;
         }
@@ -1010,7 +1126,9 @@ namespace Lodis.Gameplay
             if (_opponentMoveset)
             {
                 _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 100;
-                _opponentMoveset.BurstEnergy += hitCollider.ColliderInfo.Damage / 10;
+                //When being hit burst energy will always increase by the minimum but will scale with heavy attacks.
+                Fixed32 rechargeVal = Fixed32.Clamp(_burstHitRechargeRate * hitCollider.ColliderInfo.Damage / 10, _burstHitRechargeRate, MaxBurstEnergy);
+                _opponentMoveset.BurstEnergy += rechargeVal;
             }
         }
 
@@ -1060,11 +1178,21 @@ namespace Lodis.Gameplay
                 }, _deckReloadTime);
             }
 
-            if (!CanBurst)
-                CanBurst = BurstEnergy == _maxBurstEnergyRef.FixedValue;
+            if (!CanDefensiveBurst)
+            {
+                CanDefensiveBurst = BurstEnergy == _maxBurstEnergyRef.FixedValue;
+            }
+
+            if (!CanOffensiveBurst)
+            {
+                CanOffensiveBurst = BurstEnergy >= _offensiveBurstCost;
+            }
 
             if (MatchManagerBehaviour.Instance.SuperInUse)
-                CanBurst = false;
+            {
+                CanDefensiveBurst = false;
+                CanOffensiveBurst = false;
+            }
 
             //old fixed update
             //Call fixed update for abilities

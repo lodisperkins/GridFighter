@@ -40,6 +40,7 @@ namespace Lodis.Gameplay
         private RingBarrierBehaviour _ringBarrierR;
         [SerializeField]
         private Button _firstSelectedPauseButton;
+        [SerializeField] private GameObject _pauseMenu;
 
         [Header("Match Options")]
         [SerializeField]
@@ -157,6 +158,8 @@ namespace Lodis.Gameplay
             _onMatchRestart.AddListener(PlayerSpawner.ResetPlayers);
             _onMatchRestart.AddListener(() =>
             {
+                CameraBehaviour.Instance.AlignmentFocus = GridScripts.GridAlignment.ANY;
+
                 if (SuddenDeathActive)
                     SoundManagerBehaviour.Instance.SetMusic(_suddenDeathMusic);
                 else
@@ -207,12 +210,14 @@ namespace Lodis.Gameplay
                 _matchResult = MatchResult.P1WINS;
                 _lhsWins++;
                 _onP2Lose?.Invoke();
+                CameraBehaviour.Instance.AlignmentFocus = GridScripts.GridAlignment.LEFT;
             }
             else if (PlayerSpawner.P1HealthScript.HasExploded)
             {
                 _matchResult = MatchResult.P2WINS;
                 _rhsWins++;
                 _onP1Lose?.Invoke();
+                CameraBehaviour.Instance.AlignmentFocus = GridScripts.GridAlignment.RIGHT;
             }
             else if (!_suddenDeathActive)
             {
@@ -261,6 +266,20 @@ namespace Lodis.Gameplay
 
             _physicsTimeScaleAction = FixedPointTimer.StartNewTimedAction(() => GridGame.TimeScale = 1, duration, FixedTimeAction.UnitOfTime.Unscaled);
         }
+
+        /// <summary>
+        /// Temporarily changes the speed of time for the game.
+        /// </summary>
+        /// <param name="newTimeScale">The new time scale. 0 being no time passes and 1 being the normal speed.</param>
+        /// <param name="speed">How long it takes to transition into the new time scale.</param>
+        /// <param name="duration">How long the timescale will be this speed.</param>
+        public void ChangeSimulationTimeScale(Fixed32 newTimeScale, Fixed32 speed, Fixed32 duration)
+        {
+            _physicsTimeScaleLerp = FixedLerp.To(() => GridGame.TimeScale, x => GridGame.TimeScale = x, newTimeScale, speed);
+
+            _physicsTimeScaleAction = FixedPointTimer.StartNewTimedAction(() => GridGame.TimeScale = 1, duration, FixedTimeAction.UnitOfTime.Unscaled);
+        }
+
 
         /// <summary>
         /// Temporarily changes the speed of time for the game.
@@ -317,7 +336,8 @@ namespace Lodis.Gameplay
 
             _isPaused = !_isPaused;
             Time.timeScale = Convert.ToInt32(!_isPaused);
-            GridGame.TimeScale = Convert.ToInt32(!_isPaused); ;
+            GridGame.TimeScale = Convert.ToInt32(!_isPaused);
+            GridGame.IsPaused = _isPaused;
             _timeScale = Time.timeScale;
 
             SetPlayerControlsActive(!_isPaused);
@@ -382,14 +402,42 @@ namespace Lodis.Gameplay
 
         public void LoadCharacterSelect()
         {
+            _isPaused = false;
             Time.timeScale = 1;
             GridGame.TimeScale = 1;
+            GridGame.IsPaused = false;
+            _timeScale = Time.timeScale;
+
+            if (_isPaused)
+            {
+                _onMatchPause?.Invoke();
+                _firstSelectedPauseButton.OnSelect(null);
+            }
+            else
+            {
+                _onMatchUnpause.Invoke();
+            }
+
             SceneManagerBehaviour.Instance.LoadScene("CharacterSelect");
         }
 
         public void ReturnToMainMenu()
         {
+            _isPaused = false;
             Time.timeScale = 1;
+            GridGame.TimeScale = 1;
+            GridGame.IsPaused = false;
+            _timeScale = Time.timeScale;
+
+            if (_isPaused)
+            {
+                _onMatchPause?.Invoke();
+                _firstSelectedPauseButton.OnSelect(null);
+            }
+            else
+            {
+                _onMatchUnpause.Invoke();
+            }
             SceneManagerBehaviour.Instance.LoadScene(1);
         }
 

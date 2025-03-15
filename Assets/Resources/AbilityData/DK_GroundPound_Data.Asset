@@ -29,6 +29,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -154,7 +155,7 @@ MonoBehaviour:
       RawValue: 327680
   - name: Speed
     value:
-      RawValue: 983040
+      RawValue: 1310720
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 2be0533620ce0d2469d23e63635edfdd, type: 2}
   _shouldMirror: 1

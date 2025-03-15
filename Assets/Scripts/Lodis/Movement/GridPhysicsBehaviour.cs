@@ -117,7 +117,8 @@ namespace Lodis.Movement
         [SerializeField] private bool _setGroundPosition;
         [ShowIf("_setGroundPosition")]
         [SerializeField] private Fixed32 _groundPosition = -1;
-
+        [Tooltip("If true, the objects position will stay within the barriers while they are up.")]
+        [SerializeField] private bool clampPositionInBarriers;
         [Header("Scene References")]
         [Tooltip("The collider attached this object that will be used for registering collision against objects while air")]
         [SerializeField] private Collider _bounceCollider;
@@ -785,7 +786,7 @@ namespace Lodis.Movement
                 _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
                 _movementBehaviour.CanCancelMovement = false;
-                
+                Debug.Log($"Snapped to target panel {_movementBehaviour.TargetPanel.Position}");
             }
 
             if (disableMovement)
@@ -833,6 +834,7 @@ namespace Lodis.Movement
                 _movementBehaviour.CanCancelMovement = true;
                 _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
                 _movementBehaviour.CanCancelMovement = false;
+                Debug.Log($"Snapped to target panel {_movementBehaviour.TargetPanel.Position}");
 
                 if (disableMovement)
                     _movementBehaviour.DisableMovement(condition => ObjectAtRest, false, true);
@@ -882,13 +884,9 @@ namespace Lodis.Movement
             if (ignoreMomentum)
                 StopVelocity();
 
-            if (_movementBehaviour?.IsMoving == true)
-            {
-                _movementBehaviour.CanCancelMovement = true;
-                _movementBehaviour.MoveToPanel(_movementBehaviour.TargetPanel, true);
-                _movementBehaviour.CanCancelMovement = false;
+            _movementBehaviour?.SnapToTarget();
+            //Debug.Log($"Snapped to target panel {_movementBehaviour?.TargetPanel.Position}");
 
-            }
             GridActive = false;
             
             //If a new force is added in the opposite direction, this will instantly flip that value.
@@ -1019,6 +1017,21 @@ namespace Lodis.Movement
             return position;
         }
 
+        private void ClampPositionWithinBarriers()
+        {
+            RingBarrierBehaviour lhs = BlackBoardBehaviour.Instance.RingBarrierLHS;
+            RingBarrierBehaviour rhs = BlackBoardBehaviour.Instance.RingBarrierRHS;
+
+            if (lhs.IsAlive && FixedTransform.WorldPosition.X < lhs.FixedTransform.WorldPosition.X)
+            {
+                FixedTransform.WorldPosition = new FVector3(lhs.FixedTransform.WorldPosition.X, FixedTransform.WorldPosition.Y, FixedTransform.WorldPosition.Z);
+            }
+            else if (rhs.IsAlive && FixedTransform.WorldPosition.X > rhs.FixedTransform.WorldPosition.X)
+            {
+                FixedTransform.WorldPosition = new FVector3(rhs.FixedTransform.WorldPosition.X, FixedTransform.WorldPosition.Y, FixedTransform.WorldPosition.Z);
+            }
+        }
+
         public override void Tick(Fixed32 dt)
         {
             base.Tick(dt);
@@ -1028,7 +1041,6 @@ namespace Lodis.Movement
                 return;
 
             _isGrounded = FixedTransform.WorldPosition.Y <= _groundPosition;
-            
             
             //---Hitting ground/resting
             if (_setGroundPosition && FixedTransform.WorldPosition.Y < _groundPosition)
@@ -1071,6 +1083,7 @@ namespace Lodis.Movement
             //Code that was ran in unity update.
             if (FaceHeading && Velocity.Magnitude > 0)
                 FixedTransform.Forward = Velocity.GetNormalized();
+
             
             //Code that ran in unity fixed update.
             _acceleration = (_lastVelocity - Velocity) / GridGame.FixedTimeStep;
@@ -1080,6 +1093,11 @@ namespace Lodis.Movement
             ForceToApply = FVector3.Zero;
 
             FixedTransform.WorldPosition += Velocity * dt * GridGame.TimeScale;
+
+            if (clampPositionInBarriers)
+            {
+                ClampPositionWithinBarriers();
+            }
 
             //---Gravity
             if (UseGravity && !IsKinematic && !IsGrounded)

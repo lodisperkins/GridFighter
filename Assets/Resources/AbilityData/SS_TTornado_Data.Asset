@@ -67,7 +67,7 @@ MonoBehaviour:
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 32768
+      RawValue: 19660
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:

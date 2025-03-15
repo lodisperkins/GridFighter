@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 7365902263347966786}
   - component: {fileID: 169175748333812932}
   - component: {fileID: 4728174368922841371}
+  - component: {fileID: 2586267583723468701}
   m_Layer: 10
   m_Name: CollisionPlane_Stadium
   m_TagString: CollisionPlane
@@ -32,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.07102966, y: 0, z: 0}
-  m_LocalScale: {x: 1.0000005, y: 1, z: 0.76}
+  m_LocalScale: {x: 0.75, y: 1, z: 0.76}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4562885733847766210}
@@ -109,7 +110,7 @@ MonoBehaviour:
   _bounceDampening: 5
   _frictionTargetSpeed:
     RawValue: 65536
-  _shakeSpeed: 15
+  _shakeSpeed: 20
   _fallScreenShakeDuration: 0.06
   _fallScreenShakeFrequency: 2
   _fallScreenShakeStrength: 0.5
@@ -211,6 +212,7 @@ MonoBehaviour:
   _setGroundPosition: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &4728174368922841371
 MonoBehaviour:
@@ -242,7 +244,7 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 65536
     _tagsToIgnore: []
-    _overlap: 0
+    _overlap: 1
     _collideOnAnyRow: 1
     _isAWall: 0
     _width:
@@ -256,7 +258,29 @@ MonoBehaviour:
       RawValue: 0
     _worldYPosition:
       RawValue: -32768
+    debugID: 0
   debuggingEnabled: 0
+--- !u!65 &2586267583723468701
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6261796229167299558}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 2.220446e-16, z: 10.000001}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &7307572072502270815
 PrefabInstance:
   m_ObjectHideFlags: 0

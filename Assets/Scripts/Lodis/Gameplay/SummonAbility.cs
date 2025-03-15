@@ -20,6 +20,9 @@ namespace Lodis.Gameplay
         private Fixed32 _moveSpeed;
         private FVector2[] _panelPositions;
         private string _id;
+
+        public GameObject MaxInstanceSmoke { get; private set; }
+
         private UnityAction _onMoveEndAction;
         private GridAlignment _alignement = GridAlignment.ANY;
 
@@ -45,6 +48,12 @@ namespace Lodis.Gameplay
             _entityRef = abilityData.visualPrefab.GetComponent<EntityDataBehaviour>();
 
             _id = _entityRef.name + "(" + Owner.name + ")";
+            MaxInstanceSmoke = Resources.Load<GameObject>("Effects/MaxInstanceSmokePuff");
+        }
+
+        protected void SpawnMaxInstanceSmoke()
+        {
+            ObjectPoolBehaviour.Instance.GetObject(MaxInstanceSmoke, OwnerMoveset.ProjectileSpawner.transform.position, OwnerMoveset.ProjectileSpawner.transform.rotation);
         }
 
         /// <summary>

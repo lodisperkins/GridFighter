@@ -73,7 +73,65 @@ namespace Lodis.Gameplay
             _opponentFeedback = _opponentMovement.gameObject.GetComponentInChildren<CharacterFeedbackBehaviour>();
 
             _defaultCameraMoveSpeed = CameraBehaviour.Instance.CameraMoveSpeed;
+        }
 
+        private void SpawnSword()
+        {
+            DisableAccessory();
+
+            _spawnAccessoryAction = FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !Projectile.Active);
+        }
+
+        private IEnumerator SetTimeUnscaled()
+        {
+            yield return new WaitUntil(() => !MatchManagerBehaviour.Instance.SuperInUse);
+            TimeUnit = FixedTimeAction.UnitOfTime.PauseScaled;
+        }
+
+        protected override void OnStart(params object[] args)
+        {
+
+            base.OnStart(args);
+
+            DisableAccessory();
+
+            //Store the held item spawn so it can be easily used to hold the sword in the right hand.
+            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
+            {
+                _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
+            }
+            else
+            {
+                _heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
+            }
+
+            //Place the sword in their hand.
+            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
+            _thalamusLayer = _thalamusInstance.layer;
+            _thalamusInstance.GetComponent<ColorManagerBehaviour>().SetColors((int)OwnerMoveScript.Alignment);
+
+            //Put on this layer so that it appears in the super move visual.
+            _thalamusInstance.layer = LayerMask.NameToLayer("BattleOverlayEffect");
+
+            _thalamusInstance.transform.rotation = _thalamusInstance.transform.parent.rotation;
+
+            ProjectileColliderData = GetColliderData(2);
+
+            TimeUnit = FixedTimeAction.UnitOfTime.PauseScaled;
+
+            StartSuperEffect();
+
+            //Set flags so the super can play without being interuppted by physics.
+            _explosionSpawned = false;
+            UseGravity = false;
+            OwnerKnockBackScript.IgnoreAdjustedGravity(arguments => !InUse);
+            _opponentKnockback.SetDamageableAbilityID(abilityData.ID, arguments => !InUse);
+            _threwBlast = false;
+            AddAnimationEvents();
+        }
+
+        private void AddAnimationEvents()
+        {
             //Kick animation events
             OwnerAnimationScript.AddEventListener("ElectroKickWindUp", () =>
             {
@@ -147,60 +205,6 @@ namespace Lodis.Gameplay
             });
         }
 
-        private void SpawnSword()
-        {
-            DisableAccessory();
-
-            _spawnAccessoryAction = FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !Projectile.Active);
-        }
-
-        private IEnumerator SetTimeUnscaled()
-        {
-            yield return new WaitUntil(() => !MatchManagerBehaviour.Instance.SuperInUse);
-            TimeCountType = TimedActionCountType.UNSCALEDTIME;
-
-        }
-
-        protected override void OnStart(params object[] args)
-        {
-            base.OnStart(args);
-
-            DisableAccessory();
-
-            //Store the held item spawn so it can be easily used to hold the sword in the right hand.
-            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
-            {
-                _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
-            }
-            else
-            {
-                _heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
-            }
-
-            //Place the sword in their hand.
-            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
-            _thalamusLayer = _thalamusInstance.layer;
-
-            //Put on this layer so that it appears in the super move visual.
-            _thalamusInstance.layer = LayerMask.NameToLayer("BattleOverlayEffect");
-
-            _thalamusInstance.transform.localRotation = Quaternion.identity;
-
-            ProjectileColliderData = GetColliderData(2);
-
-            //Not sure if this does anything.
-            TimeCountType = TimedActionCountType.UNSCALEDTIME;
-
-            StartSuperEffect();
-
-            //Set flags so the super can play without being interuppted by physics.
-            _explosionSpawned = false;
-            UseGravity = false;
-            OwnerKnockBackScript.IgnoreAdjustedGravity(arguments => !InUse);
-            _opponentKnockback.SetDamageableAbilityID(abilityData.ID, arguments => !InUse);
-            _threwBlast = false;
-        }
-
         private void SpawnExplosion()
         {
             _explosionSpawned = true;
@@ -255,6 +259,7 @@ namespace Lodis.Gameplay
 
             OwnerVoiceScript.PlayLightAttackSound();
 
+            Debug.Log(InUse);
             FixedPointTimer.StartNewTimedAction(() => SetUpToss(throwClip),  GridGame.FixedTimeStep * 2);
         }
 
@@ -267,19 +272,21 @@ namespace Lodis.Gameplay
 
             if (_moveAction == null)
             {
-                _moveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentMovement.FixedTransform, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, new Fixed32(98304) * 2);
+                _moveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentMovement.FixedTransform, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, new Fixed32(98304) * 2, id: "Opponent Move");
             }
             else
             {
                 _moveAction.Rewind();
                 _moveAction.ChangeValues(_opponentMovement.FixedTransform.WorldPosition, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition);
             }
-            
+
+            //_moveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentMovement.FixedTransform, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, new Fixed32(98304) * 2, id: "Opponent Move");
             FixedPointTimer.StartNewConditionAction(() =>
             {
                 _opponentKnockback.Physics.UseGravity = true; 
                 _moveAction.Kill();
             }, c => !InUse || _threwBlast);
+
         }
         private void StartCombo(Collision collision)
         {
@@ -353,6 +360,14 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.AlignmentFocus = GridAlignment.LEFT;
         }
 
+        private void ClearAnimationEvents()
+        {
+            OwnerAnimationScript.RemoveEventListener("ElectroKickWindUp");
+            OwnerAnimationScript.RemoveEventListener("ElectroKick");
+            OwnerAnimationScript.RemoveEventListener("ChargeElectroBomb");
+            OwnerAnimationScript.RemoveEventListener("ThrowElectroBomb");
+        }
+
         protected override void OnActivate(params object[] args)
         {
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
@@ -377,7 +392,7 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
-            TimeCountType = TimedActionCountType.CHARACTERSCALEDTIME;
+            TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
 
             if (!MatchManagerBehaviour.Instance.PlayerOutOfRing)
             {
@@ -401,12 +416,14 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.CameraMoveSpeed = _defaultCameraMoveSpeed;
             _characterFeedback.SetCharacterUIEnabled(true);
             _opponentFeedback.SetCharacterUIEnabled(true);
+
+            ClearAnimationEvents();
         }
 
         protected override void OnMatchRestart()
         {
             base.OnMatchRestart();
-            TimeCountType = TimedActionCountType.CHARACTERSCALEDTIME;
+            TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
             MatchManagerBehaviour.Instance.SuperInUse = false;
 
@@ -425,6 +442,8 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.CameraMoveSpeed = _defaultCameraMoveSpeed;
             _characterFeedback.SetCharacterUIEnabled(true);
             _opponentFeedback.SetCharacterUIEnabled(true);
+
+            ClearAnimationEvents();
         }
     }
 }

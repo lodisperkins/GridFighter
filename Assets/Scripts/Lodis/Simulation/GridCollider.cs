@@ -75,12 +75,14 @@ public class GridCollider
     [SerializeField] private Fixed32 _wallXOffset;
     [Tooltip("The height of this collider in the world.")]
     [SerializeField] private Fixed32 _worldYPosition;
+    [SerializeField] private int debugID;
 
     //---
     private EntityDataBehaviour _entity;
     private int _layer;
     private GridPhysicsBehaviour _ownerPhysicsComponent;
     private Collision[] _collisions = new Collision[20];
+    private bool _collisionListDirty;
 
     public event CollisionEvent OnCollisionEnter;
     public event CollisionEvent OnCollisionStay;
@@ -312,11 +314,28 @@ public class GridCollider
             if (_collisions[i].OtherCollider == null || !_collisions[i].OtherEntity.Active)
             {
                 _collisions[i] = collision;
+                _collisionListDirty = true;
                 return true;
             }
         }
 
         return false;
+    }
+
+    public void CleanCollisionList()
+    {
+        if (!_collisionListDirty)
+            return;
+
+        for (int i = 0; i < _collisions.Length; i++)
+        {
+            if (_collisions[i].OtherCollider == null || !_collisions[i].OtherEntity.Active)
+            {
+                _collisions[i] = default;
+            }
+        }
+
+        _collisionListDirty = false;
     }
 
     public void ClearCollisionExit()
@@ -345,8 +364,9 @@ public class GridCollider
 
     public bool CheckCollision(GridCollider other)
     {
+
         //Check if collision should occur using Unity layers.
-        if (CheckIfColliderShouldBeIgnored(other.Entity.Data.UnityObject) || other.CheckIfColliderShouldBeIgnored(Entity.Data.UnityObject) || !CollisionEnabled)
+        if (CheckIfColliderShouldBeIgnored(other.Entity.Data.UnityObject) || other.CheckIfColliderShouldBeIgnored(Entity.Data.UnityObject) || !CollisionEnabled || !other.CollisionEnabled)
             return false;
 
         bool collidingOnX = false;

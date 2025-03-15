@@ -43,7 +43,7 @@ namespace Lodis.Gameplay
             }
            );
 
-            OwnerKnockBackScript.SetInvincibilityByCondition(condition => !InUse || CurrentAbilityPhase == AbilityPhase.RECOVER);
+            //OwnerKnockBackScript.SetInvincibilityByCondition(condition => !InUse || CurrentAbilityPhase == AbilityPhase.RECOVER);
         }
 
         protected override void OnRecover(params object[] args)

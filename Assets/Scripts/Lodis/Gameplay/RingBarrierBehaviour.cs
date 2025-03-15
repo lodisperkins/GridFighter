@@ -1,4 +1,5 @@
-﻿using FixedPoints;
+﻿using CustomEventSystem;
+using FixedPoints;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
@@ -7,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Types;
 using UnityEngine;
+using Event = CustomEventSystem.Event;
 
 namespace Lodis.Gameplay
 {
@@ -48,6 +50,8 @@ namespace Lodis.Gameplay
         private RingBarrierFeedbackBehaviour _ringBarrierFeedbackBehaviour;
         [SerializeField]
         private Fixed32 _timeUntilNextHit;
+        [SerializeField] private Event _takeDamageEvent;
+
 
         //---
         private bool _canHit = true;
@@ -108,6 +112,7 @@ namespace Lodis.Gameplay
 
             CameraBehaviour.ShakeBehaviour.ShakeRotation();
             _onTakeDamage?.Invoke();
+            _takeDamageEvent.Raise(gameObject);
 
             //_shieldController.GetHit(attacker.transform.position - transform.forward, transform.forward, 4, damage);
             return damage;
@@ -130,6 +135,7 @@ namespace Lodis.Gameplay
             CameraBehaviour.ShakeBehaviour.ShakeRotation();
 
             _onTakeDamage?.Invoke();
+            _takeDamageEvent.Raise(gameObject);
             return info.Damage;
         }
 

@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
-  m_Name: P_Prototype_TestDeck
+  m_Script: {fileID: 11500000, guid: c8f6ea0244cac0b48925350657bf7b83, type: 3}
+  m_Name: BurstHitRechargeRate
   m_EditorClassIdentifier: 
-  _abilityData:
-  - {fileID: 11400000, guid: 00ac96169fe35194dabd945f2adeef15, type: 2}
-  - {fileID: 11400000, guid: 00ac96169fe35194dabd945f2adeef15, type: 2}
-  _deckName: TestDeck
+  _val: 0.25
+  _fixedVal:
+    RawValue: 16384

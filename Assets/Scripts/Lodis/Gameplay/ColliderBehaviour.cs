@@ -24,6 +24,9 @@ namespace Lodis.Gameplay
         protected CustomEventSystem.GameEventListener ReturnToPoolListener;
         protected float _lastHitFrame;
         protected CollisionEvent _onHit;
+        protected CollisionEvent _onHitStay;
+        protected CollisionEvent _onOverlap;
+        protected CollisionEvent _onOverlapStay;
         protected CollisionEvent _onOpponentHit;
         private CollisionGroupBehaviour groupManager;
         private int _collisionCount;
@@ -67,6 +70,8 @@ namespace Lodis.Gameplay
             EntityCollider.OnCollisionEnter += c => _onHitBegin?.Invoke();
             EntityCollider.OnOverlapEnter += RaiseHitEvents;
             EntityCollider.OnOverlapEnter += c => _onOverlapBegin?.Invoke();
+            EntityCollider.OnOverlapStay += c => _onOverlapStay?.Invoke(c);
+            EntityCollider.OnCollisionStay += c => _onHitStay?.Invoke(c);
         }
 
         protected virtual void Start()
@@ -93,6 +98,21 @@ namespace Lodis.Gameplay
         public virtual void AddCollisionEvent(CollisionEvent collisionEvent)
         {
             _onHit += collisionEvent;
+        }
+
+        public virtual void AddCollisionStayEvent(CollisionEvent collisionEvent)
+        {
+            _onHitStay += collisionEvent;
+        }
+
+        public void AddOnOverlapEvent(UnityAction action)
+        {
+            _onOverlapBegin.AddListener(action);
+        }
+
+        public void AddOnOverlapStayEvent(CollisionEvent action)
+        {
+            _onOverlapStay += action;
         }
 
         public void AddOpponentCollisionEvent(CollisionEvent collisionEvent)

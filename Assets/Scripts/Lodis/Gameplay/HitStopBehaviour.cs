@@ -77,10 +77,10 @@ namespace Lodis.Gameplay
             { 
                 //Starts the hit stop for the attacker
                 //Raw value is 1.5
-                _health.LastCollider.Spawner.UnityObject.GetComponent<HitStopBehaviour>().StartHitStop(time * new Fixed32(98304), animationStopDelay, false, false, false,0,0,0);
+                _health.LastCollider.Spawner.UnityObject.GetComponent<HitStopBehaviour>().StartHitStop(time, animationStopDelay, false, false, false,0,0,0);
             }
             //Call the same function with the new parameters found
-            StartHitStop(time, lastColliderInfo.HitStopShakeStrength, true, true, lastColliderInfo.ShakesCamera, lastColliderInfo.CameraShakeStrength, lastColliderInfo.CameraShakeDuration, lastColliderInfo.CameraShakeFrequency);
+            StartHitStop(time / 2, lastColliderInfo.HitStopShakeStrength, true, true, lastColliderInfo.ShakesCamera, lastColliderInfo.CameraShakeStrength, lastColliderInfo.CameraShakeDuration, lastColliderInfo.CameraShakeFrequency);
         }
 
         /// <summary>

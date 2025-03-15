@@ -47,6 +47,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -87,7 +88,7 @@ MonoBehaviour:
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
     HitStunTime:
-      RawValue: 6553
+      RawValue: 13107
     Priority:
       RawValue: 65536
     OwnerAlignement: 0

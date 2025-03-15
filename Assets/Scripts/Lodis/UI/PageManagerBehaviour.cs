@@ -70,6 +70,9 @@ namespace Lodis.UI
         [SerializeField]
         [Tooltip("If true pages will no longer turn on/off automatically. Use this if you are going to handle page visuals manually.")]
         private bool _changePageManually;
+        [SerializeField] private bool _useEventSystemScheme;
+
+        //---
         private int _currentChildIndex;
         private PlayerControls _controls;
         private PlayerInput _playerInput;
@@ -77,6 +80,7 @@ namespace Lodis.UI
         public UnityEngine.EventSystems.EventSystem EventManager { get => _eventSystem; set => _eventSystem = value; }
         public Page RootPage { get => _rootPage; private set => _rootPage = value; }
         public Page CurrentPage { get => _currentPage; private set => _currentPage = value; }
+        public bool UseEventSystemScheme { get => _useEventSystemScheme; set => _useEventSystemScheme = value; }
 
         public void Awake()
         {
@@ -84,11 +88,47 @@ namespace Lodis.UI
                 return;
 
             _controls = new PlayerControls();
+
             _controls.UI.Cancel.started += context =>
             {
-                if (_previousPageOnCancel)
+                // Return early if previous page navigation is disabled
+                if (!_previousPageOnCancel)
+                    return;
+
+                // If UseEventSystemScheme is false, always allow going to the previous page
+                if (!UseEventSystemScheme)
+                {
                     GoToPageParent();
+                    return;
+                }
+
+                // Get the event system's control scheme
+                PlayerInput playerInput = _eventSystem.GetComponent<PlayerInput>();
+                if (playerInput == null) return;
+
+                string eventSystemScheme = playerInput.currentControlScheme; // The active scheme used by the EventSystem
+
+                // Get control that triggered the context
+                var control = context.control;
+
+                // Get the binding for the control
+                var binding = context.action.GetBindingForControl(control);
+                if (!binding.HasValue) return;
+
+                // Extract the control scheme name from the binding groups
+                string[] splitResult = binding.Value.groups.Split(';');
+                string activePlayerControlScheme = string.Empty;
+
+                if (splitResult.Length > 0) 
+                    activePlayerControlScheme = splitResult[0]; // Take the first scheme if multiple
+
+                // Only go back if both control schemes match
+                if (!string.IsNullOrEmpty(activePlayerControlScheme) && activePlayerControlScheme == eventSystemScheme)
+                {
+                    GoToPageParent();
+                }
             };
+
 
             //_playerInput = GetComponent<PlayerInput>();
 
@@ -96,6 +136,17 @@ namespace Lodis.UI
 
             CurrentPage = RootPage;
         }
+
+        /// <summary>
+        /// Converts device layout names into proper control schemes.
+        /// </summary>
+        private string ConvertDeviceToScheme(string deviceLayout)
+        {
+            if (deviceLayout.Contains("Gamepad")) return "Gamepad";
+            if (deviceLayout.Contains("Keyboard") || deviceLayout.Contains("Mouse")) return "Keyboard&Mouse";
+            return deviceLayout; // Default return if no match found
+        }
+
         public void OnEnable()
         {
             _controls?.Enable();

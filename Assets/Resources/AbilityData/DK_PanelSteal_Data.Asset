@@ -37,6 +37,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 1
   CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 1

@@ -19,6 +19,7 @@ using Lodis.Utility;
 using NUnit.Framework.Interfaces;
 using System;
 using Assets.Scripts.Lodis.Simulation;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 
 public class TagSelectorAttribute : PropertyAttribute
@@ -49,6 +50,7 @@ public struct GridGame : IGame
     /// </summary>
     public static Fixed32 FixedTimeStep = new Fixed32(1092);
     public static Fixed32 TimeScale = 1;
+    public static bool IsPaused;
     /// <summary>
     /// The amount of time that has passed since the simulation began.
     /// </summary>
@@ -386,7 +388,7 @@ public struct GridGame : IGame
     {
         if (_activeEntities.Contains(entity))
         {
-            Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
+            //Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
             return;
         }
 
@@ -400,6 +402,9 @@ public struct GridGame : IGame
 
         if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
             _activePhysicsEntities.Add(entity);
+
+
+        //Debug.Log($"Added {entity.Name}");
     }
 
     public static void AddPhysicsEntity(EntityData entity)
@@ -418,6 +423,7 @@ public struct GridGame : IGame
     public static void RemovePhysicsEntity(EntityData entity)
     {
         _physicsEntitiesToRemove.Add(entity);
+        CleanColliderArrays();
     }
 
     /// <summary>
@@ -441,7 +447,7 @@ public struct GridGame : IGame
         }
 
         if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
-            _physicsEntitiesToRemove.Add(entity);
+            RemovePhysicsEntity(entity);
     }
 
     /// <summary>
@@ -471,7 +477,7 @@ public struct GridGame : IGame
         }
 
         if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
-            _physicsEntitiesToRemove.Add(entity);
+            RemovePhysicsEntity(entity);
     }
 
     public static void IgnoreCollision(EntityData entity1, EntityData entity2, bool ignore = true)
@@ -510,8 +516,25 @@ public struct GridGame : IGame
         _physicsEntitiesToRemove.Clear();
     }
 
+    public static void CleanColliderArrays()
+    {
+        foreach (var entity in _activePhysicsEntities)
+        {
+            foreach (var collider in entity.Colliders)
+            {
+                collider.CleanCollisionList();
+            }
+        }
+    }
+
     public void Update(long[] inputs, int disconnectFlags)
     {
+        if (IsPaused)
+        {
+            UpdateInput(inputs);
+            return;
+        }
+
         Time += FixedTimeStep;
         OnSimulationUpdate?.Invoke(FixedTimeStep);
 
@@ -533,12 +556,7 @@ public struct GridGame : IGame
             _activeEntities[i].Tick(FixedTimeStep);
         }
 
-        //Input update
-        if (GridGameManager.Instance.inputEnabled)
-            InputSystem.Update();
-
-        OnProcessInput?.Invoke(0, inputs[0]);
-        OnProcessInput?.Invoke(1, inputs[1]);
+        UpdateInput(inputs);
 
         //Timer update
         for (int i = 0; i < FixedPointTimer.Actions.Count; i++)
@@ -600,6 +618,17 @@ public struct GridGame : IGame
         }
 
         //Debug.Log($"Entity count is {_activeEntities.Count}");
+    }
+
+    private static void UpdateInput(long[] inputs)
+    {
+
+        //Input update
+        if (GridGameManager.Instance.inputEnabled)
+            InputSystem.Update();
+
+        OnProcessInput?.Invoke(0, inputs[0]);
+        OnProcessInput?.Invoke(1, inputs[1]);
     }
 
     public static void OnSceneUnloaded()

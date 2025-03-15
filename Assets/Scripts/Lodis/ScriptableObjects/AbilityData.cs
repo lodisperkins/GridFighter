@@ -70,6 +70,7 @@ namespace Lodis.ScriptableObjects
         public bool CancelAllOnKnockback = true;
 
         [Header("Movement Rules")]
+        public AbilityPhase AutoMovePhase = AbilityPhase.ACTIVE;
         [Tooltip("If false, the user of this ability can't move while it's winding up")]
         public bool CanInputMovementDuringStartUp;
         [Tooltip("If false, the user of this ability can't move while it's active")]

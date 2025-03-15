@@ -65,10 +65,11 @@ namespace FixedPoints
         /// <param name="endValue">The stopping point of the movement lerp.</param>
         /// <param name="duration">How long it will take to reach the stopping point.</param>
         /// <param name="curve">A curve to use to alter the lerp.</param>
-        /// <returns></returns>
-        public static LerpAction DoMove(FTransform target, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+        /// <param name="id">Optional ID for the lerp action.</param>
+        public static LerpAction DoMove(FTransform target, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
             LerpAction action = new MoveAction(target, target.WorldPosition, endValue, duration, curve);
+            action.ID = id;
             Actions.Add(action);
             return action;
         }
@@ -80,14 +81,14 @@ namespace FixedPoints
         /// <param name="endValue">The stopping point of the rotation lerp.</param>
         /// <param name="duration">How long it will take to reach the stopping point.</param>
         /// <param name="curve">A curve to use to alter the lerp.</param>
-        /// <returns></returns>
-        public static LerpAction DoRotate(FTransform target, FQuaternion endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+        /// <param name="id">Optional ID for the lerp action.</param>
+        public static LerpAction DoRotate(FTransform target, FQuaternion endValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
             LerpAction action = new RotateAction(target, target.WorldRotation, endValue, duration, curve);
+            action.ID = id;
             Actions.Add(action);
             return action;
         }
-
 
         /// <summary>
         /// Changes the target entity's world scale over time.
@@ -96,42 +97,45 @@ namespace FixedPoints
         /// <param name="endValue">The stopping point of the scale lerp.</param>
         /// <param name="duration">How long it will take to reach the stopping point.</param>
         /// <param name="curve">A curve to use to alter the lerp.</param>
-        /// <returns></returns>
-        public static LerpAction DoScale(FTransform target, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+        /// <param name="id">Optional ID for the lerp action.</param>
+        public static LerpAction DoScale(FTransform target, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
             LerpAction action = new ScaleAction(target, target.WorldScale, endValue, duration, curve);
+            action.ID = id;
             Actions.Add(action);
             return action;
         }
-
 
         /// <summary>
         /// Makes the target move to the end result quickly like a spring.
         /// </summary>
         /// <param name="target">The transform of the rollback simulation entity.</param>
-        /// <param name="endValue">The stopping point of the punch lerp.</param>
+        /// <param name="punchValue">The stopping point of the punch lerp.</param>
         /// <param name="duration">How long it will take to reach the stopping point.</param>
         /// <param name="curve">A curve to use to alter the lerp.</param>
-        /// <returns></returns>
-        public static LerpAction DoPunch(FTransform target, FVector3 punchValue, Fixed32 duration, FixedAnimationCurve curve = null)
+        /// <param name="id">Optional ID for the lerp action.</param>
+        public static LerpAction DoPunch(FTransform target, FVector3 punchValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
             LerpAction action = new PunchAction(target, punchValue, duration, curve);
+            action.ID = id;
             Actions.Add(action);
             return action;
         }
-
 
         /// <summary>
         /// Changes the target entity's world position over time in an arc to simulate a jump.
         /// </summary>
         /// <param name="target">The transform of the rollback simulation entity.</param>
         /// <param name="endValue">The stopping point of the jump lerp.</param>
+        /// <param name="jumpPower">The height/power of the jump.</param>
+        /// <param name="numJumps">Number of jumps to simulate.</param>
         /// <param name="duration">How long it will take to reach the stopping point.</param>
         /// <param name="curve">A curve to use to alter the lerp.</param>
-        /// <returns></returns>
-        public static LerpAction DoJump(FTransform target, FVector3 endValue, Fixed32 jumpPower, int numJumps, Fixed32 duration, FixedAnimationCurve curve = null)
+        /// <param name="id">Optional ID for the lerp action.</param>
+        public static LerpAction DoJump(FTransform target, FVector3 endValue, Fixed32 jumpPower, int numJumps, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
             LerpAction action = new JumpAction(target, target.WorldPosition, endValue, jumpPower, numJumps, duration, curve);
+            action.ID = id;
             Actions.Add(action);
             return action;
         }
@@ -144,12 +148,12 @@ namespace FixedPoints
         /// <param name="endValue">The target value at the end of the tween.</param>
         /// <param name="duration">The duration of the tween in fixed time.</param>
         /// <param name="curve">Optional curve to modify the interpolation behavior.</param>
-        public static LerpAction To(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+        /// <param name="id">Optional ID for the lerp action.</param>
+        public static LerpAction To(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
-            // Create a new tween action and add it to the list.
             LerpAction action = new FixedTweenAction(getter, setter, getter(), endValue, duration, curve);
+            action.ID = id;
             Actions.Add(action);
-
             return action;
         }
 
@@ -182,6 +186,7 @@ namespace FixedPoints
         protected bool IsPaused;
         private bool _killed;
         private int _frameStarted;
+        public string ID;
 
         public bool Killed
         {
@@ -246,12 +251,13 @@ namespace FixedPoints
         {
             if (_killed)
             {
-                Debug.LogWarning("Tried to killed an action that was already killed.");
                 return;
             }
 
             TimeElapsed = Duration;
             FixedLerp.RemoveAction(this);
+
+            //Debug.Log($"Killed {ID}");
             _killed = true;
             onKill?.Invoke();
         }
@@ -294,9 +300,14 @@ namespace FixedPoints
         public bool Update(Fixed32 dt)
         {
             if (IsPaused || _killed)
+            {
+                //Debug.Log($"Didnt update {ID} because it was paused or killed.");
                 return false;
+            }
 
             TimeElapsed += dt;
+
+            //Debug.Log("Update called for " + ID);
 
             //If time is up...
             if (TimeElapsed >= Duration)
@@ -308,6 +319,7 @@ namespace FixedPoints
                 FixedLerp.RemoveAction(this);
                 onComplete?.Invoke();
 
+                //Debug.Log($"Completed lerp {ID}");
                 return true;
             }
             //Otherwise...
@@ -315,6 +327,8 @@ namespace FixedPoints
             {
                 //...either apply the curve value or the value of linear time.
                 Apply(Curve != null ? Curve.Evaluate(TimeElapsed / Duration) : TimeElapsed / Duration);
+
+                //Debug.Log($"Evaluating lerp {ID}. Currently at {TimeElapsed / Duration}");
                 return false;
             }
         }

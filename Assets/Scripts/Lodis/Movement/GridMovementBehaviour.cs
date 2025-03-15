@@ -157,6 +157,7 @@ namespace Lodis.Movement
             get { return new FVector2(Entity.Data.X, Entity.Data.Y); }
             set 
             {
+                //UnityEngine.Debug.Log($"Position is being set to {value}");
                 Entity.Data.X = value.X;
                 Entity.Data.Y = value.Y;
             }

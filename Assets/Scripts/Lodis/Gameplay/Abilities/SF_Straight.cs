@@ -32,6 +32,9 @@ namespace Lodis.Gameplay
 
         public void SpawnProjectile()
         {
+            if (!InUse)
+                return;
+               
 
             //Log if a projectile couldn't be found
             if (!_projectile)
@@ -41,9 +44,12 @@ namespace Lodis.Gameplay
             }
 
             //Fire laser
-            OwnerMoveset.ProjectileSpawner.Projectile = _projectile;
-            EntityDataBehaviour newProjectile = OwnerMoveset.ProjectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
-            newProjectile.transform.localScale = _defaultScale * 2;
+            ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
+            projectileSpawner.Projectile = _projectile;
+
+            //Fire laser
+            EntityDataBehaviour newProjectile = projectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+
             ActiveProjectiles.Add(newProjectile);
         }
 
@@ -64,6 +70,10 @@ namespace Lodis.Gameplay
                     OwnerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
                 else
                     SpawnProjectile();
+            }
+            else
+            {
+                SpawnMaxInstanceSmoke();
             }
         }
     }

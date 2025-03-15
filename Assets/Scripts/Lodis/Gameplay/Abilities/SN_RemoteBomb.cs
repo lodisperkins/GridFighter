@@ -60,6 +60,7 @@ namespace Lodis.Gameplay
             //Spawn remote bomb if none are out.
             if (ActiveProjectiles.Count > 0)
             {
+                SpawnMaxInstanceSmoke();
                 return;
             }
 
@@ -73,7 +74,7 @@ namespace Lodis.Gameplay
             gridMovementBehaviour.Position = OwnerMoveScript.Position;
             gridMovementBehaviour.Speed = abilityData.GetCustomStatValue("Speed");
             gridMovementBehaviour.MoveToAlignedSideWhenStuck = false;
-
+            gridMovementBehaviour.CancelMovement();
             gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
             _timeSpawned = GridGame.Time;
             ActiveProjectiles.Add(Projectile);
@@ -99,7 +100,7 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
-            _despawnAction.Stop();
+            _despawnAction?.Stop();
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
         }
     }

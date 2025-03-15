@@ -527,6 +527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 0
   _autoDetectAlignment: 0
+  _manuallySetColors: 1
   _objectsToColor:
   - ObjectRenderer: {fileID: 2595293982753507227}
     DefaultColors: []

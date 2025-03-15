@@ -47,7 +47,10 @@ namespace Lodis.Gameplay
         {
             //Spawn remote bomb if none are out.
             if (ActiveEntities.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+            {
+                SpawnMaxInstanceSmoke();
                 return;
+            }
 
             base.OnActivate(args);
             //The base activate func fires a single instance of the projectile when called

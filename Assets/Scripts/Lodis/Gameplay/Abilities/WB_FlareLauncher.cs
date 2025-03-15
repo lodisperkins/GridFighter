@@ -41,7 +41,7 @@ namespace Lodis.Gameplay
             base.OnRecover(null);
 
             if (_hitColliderBehaviour)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitColliderBehaviour.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitColliderBehaviour.Entity);
         }
     }
 }

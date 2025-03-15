@@ -309,11 +309,11 @@ namespace Lodis.UI
 
         public void UpdateEventSystem(PlayerInput playerInput)
         {
-            if (!_gridCreated)
-            {
-                BlackBoardBehaviour.Instance.Grid.CreateGrid();
-                _gridCreated = true;
-            }
+            //if (!_gridCreated)
+            //{
+            //    BlackBoardBehaviour.Instance.Grid.CreateGrid();
+            //    _gridCreated = true;
+            //}
             int num = _currentPlayer;
 
             PlayerControls controls = new PlayerControls();

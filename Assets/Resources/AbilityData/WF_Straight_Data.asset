@@ -47,6 +47,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -65,7 +66,7 @@ MonoBehaviour:
   - Name: 
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 13107
+      RawValue: 6553
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
@@ -77,9 +78,9 @@ MonoBehaviour:
     Damage:
       RawValue: 131072
     BaseKnockBack:
-      RawValue: 32768
+      RawValue: 65536
     KnockBackScale:
-      RawValue: 45875
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:

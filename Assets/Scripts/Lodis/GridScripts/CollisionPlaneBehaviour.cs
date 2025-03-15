@@ -48,7 +48,7 @@ namespace Lodis.GridScripts
         {
         }
 
-        public override void OnHitEnter(Collision other)
+        public override void OnOverlapEnter(Collision other)
         {
             //Get knock back script to apply force
             Movement.GridPhysicsBehaviour physics = other.OtherCollider.OwnerPhysicsComponent;
@@ -59,7 +59,6 @@ namespace Lodis.GridScripts
                 return;
 
             //Don't add a force if the object is traveling at a low speed
-            float dotProduct = FVector3.Dot(physics.Velocity, FVector3.Up);
             if (physics.Velocity.Y >= 0)
                 return;
 
@@ -80,8 +79,6 @@ namespace Lodis.GridScripts
 
 
             _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, (Vector3)particleSpawnPosition, Camera.main.transform.rotation);
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_groundDustParticles, _groundDustParticlesRef.main.duration);
-
         }
     }
 }

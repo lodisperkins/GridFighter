@@ -54,7 +54,10 @@ namespace Lodis.Gameplay
 
             //Exit if too many lobshots are active
             if (ActiveProjectiles.Count >= abilityData.GetCustomStatValue("MaxInstances") && abilityData.GetCustomStatValue("MaxInstances") >= 0)
+            {
+                SpawnMaxInstanceSmoke();
                 return;
+            }
 
             FireProjectile();
         }

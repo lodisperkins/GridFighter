@@ -3,6 +3,7 @@ using FixedPoints;
 using Ilumisoft.VisualStateMachine;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -128,17 +129,21 @@ namespace Lodis.Gameplay
             {
                 RoutineBehaviour.Instance.StopAction(_winAnimCondition);
                 StopCurrentAnimation();
-                RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Intro"), condition => _characterStateMachine.CurrentState == "Idle");
+
+                if (SceneManagerBehaviour.Instance.GameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.GameMode != (int)GameMode.TUTORIAL)
+                    RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Intro"), condition => _characterStateMachine.CurrentState == "Idle");
             });
 
-            _animator.SetTrigger("Intro");
+            if (SceneManagerBehaviour.Instance.GameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.GameMode != (int)GameMode.TUTORIAL)
+                _animator.SetTrigger("Intro");
 
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
             {
                 if (!gameObject.activeInHierarchy || MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.DRAW)
                     return;
 
-                _winAnimCondition = RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Win"), condition => _characterStateMachine.CurrentState == "Idle");
+                if (SceneManagerBehaviour.Instance.GameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.GameMode != (int)GameMode.TUTORIAL)
+                    _winAnimCondition = RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Win"), condition => _characterStateMachine.CurrentState == "Idle");
             });
         }
 
@@ -249,6 +254,7 @@ namespace Lodis.Gameplay
                     if ((_currentClipActiveTime <= 0 || _movesetBehaviour.LastAbilityInUse != null && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 1)
                         && _currentClip.events.Length >= 2 && _animatingAbility)
                     {
+                        _animator.StartPlayback();
                         _animator.playbackTime = _currentClip.events[1].time;
                         break;
                     }
@@ -619,6 +625,18 @@ namespace Lodis.Gameplay
             _animationEvents.Add(new CustomAnimationEvent(eventName, action));
         }
 
+        /// <summary>
+        /// Adds a listener to a custom animationn event that's attached to the animation clip.
+        /// </summary>
+        /// <param name="eventName">The name of the event that matches the string parameter in the clip event arguments.</param>
+        /// <param name="action">The action to perform when called.</param>
+        public void RemoveEventListener(string eventName)
+        {
+            CustomAnimationEvent custEvent = _animationEvents.Find(c => c.EventName == eventName);
+
+            _animationEvents.Remove(custEvent);
+        }
+
         public void RaiseCustomEvent(string eventName)
         {
             CustomAnimationEvent targetEvent = _animationEvents.Find(custEvent => custEvent.EventName == eventName);
@@ -650,7 +668,7 @@ namespace Lodis.Gameplay
             if (_lastTransitionInfo.nameHash != currentInfo.nameHash && currentInfo.nameHash != 0)
                 _lastTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
 
-            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale * Convert.ToInt32(!GridGame.IsPaused);
 
             //Debug.Log("TimeScale: " + RoutineBehaviour.Instance.CharacterTimeScale);
 

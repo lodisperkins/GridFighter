@@ -29,6 +29,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -47,7 +48,7 @@ MonoBehaviour:
   - Name: TornadoCollider
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 131072
+      RawValue: 262144
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
@@ -59,13 +60,13 @@ MonoBehaviour:
     Damage:
       RawValue: 393216
     BaseKnockBack:
-      RawValue: 98304
+      RawValue: 65536
     KnockBackScale:
       RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 39321
+      RawValue: 91750
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -97,7 +98,7 @@ MonoBehaviour:
   _customStats:
   - name: Speed
     value:
-      RawValue: 229376
+      RawValue: 65536
   animationType: 3
   _customAnimation: {fileID: -5711371977894514463, guid: 2a10415d6837d43418c9d8d26aff3063,
     type: 3}

@@ -38,6 +38,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
@@ -68,7 +69,7 @@ MonoBehaviour:
     Damage:
       RawValue: 327680
     BaseKnockBack:
-      RawValue: 393216
+      RawValue: 196608
     KnockBackScale:
       RawValue: 78643
     ClampForceWithinRing: 0

@@ -52,7 +52,7 @@ public class ShakeBehaviour : MonoBehaviour
         if (!_rectTransform)
             _rectTransform = GetComponent<RectTransform>();
 
-        if (_tweener == null || !_tweener.IsPlaying())
+        if (_tweener == null || !_tweener.IsActive())
             _tweener = _rectTransform.DOShakeAnchorPos(_duration, _strength, _frequency, 90);
         else
             _tweener.Restart();

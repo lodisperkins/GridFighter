@@ -22,7 +22,7 @@ namespace Lodis.Gameplay
         private void Awake()
         {
             _collider = GetComponent<ColliderBehaviour>();
-            _collider.AddCollisionEvent(OnCollision);
+            _collider.AddOnOverlapStayEvent(OnCollision);
 
             gameObject.tag = "Reflector";
         }
@@ -83,6 +83,7 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            Debug.Log("Trying to reflect");
             //If its not attached to a character treat it as a projectile
             TryReflectProjectile(hitCollider);
         }

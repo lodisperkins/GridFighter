@@ -180,7 +180,7 @@ namespace Lodis.Gameplay
             base.OnRecover(args);
 
             if (_hitScript)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitScript.Entity);
 
             if (_visualPrefabInstance)
                 Object.Destroy(_visualPrefabInstance);

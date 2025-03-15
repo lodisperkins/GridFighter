@@ -38,6 +38,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 0
@@ -204,7 +205,7 @@ MonoBehaviour:
   _customStats:
   - name: TravelDistance
     value:
-      RawValue: 131072
+      RawValue: 65536
   - name: SpawnDelay
     value:
       RawValue: 9830

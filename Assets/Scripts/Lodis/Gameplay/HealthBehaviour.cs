@@ -102,6 +102,12 @@ namespace Lodis.Gameplay
                     return;
                 }
 
+                if (value > MaxHealth)
+                {
+                    _health = MaxHealth;
+                    return;
+                }
+
                 _health = value;
             }
         }

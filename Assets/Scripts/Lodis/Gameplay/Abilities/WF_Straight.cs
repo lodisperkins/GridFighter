@@ -32,6 +32,11 @@ namespace Lodis.Gameplay
         public void SpawnProjectile()
         {
 
+            if (!InUse)
+            {
+                return;
+            }
+
             //Log if a projectile couldn't be found
             if (!_projectile)
             {
@@ -63,6 +68,10 @@ namespace Lodis.Gameplay
                     OwnerMoveScript.AddOnMoveEndTempAction(SpawnProjectile);
                 else
                     SpawnProjectile();
+            }
+            else
+            {
+                SpawnMaxInstanceSmoke();
             }
         }
     }

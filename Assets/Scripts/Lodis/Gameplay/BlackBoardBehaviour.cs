@@ -87,7 +87,7 @@ namespace Lodis.Gameplay
             foreach (GridMovementBehaviour entity in _entitiesInGame)
             {
                 if (!entity.CompareTag("Player"))
-                    ObjectPoolBehaviour.Instance.ReturnGameObject(entity.gameObject);
+                    ObjectPoolBehaviour.Instance.ReturnGameObject(entity.Entity);
             }
         }
 
@@ -144,12 +144,12 @@ namespace Lodis.Gameplay
         {
             foreach (HitColliderBehaviour collider in _lhsActiveColliders)
             {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject, Time.deltaTime);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.Entity, GridGame.FixedTimeStep);
             }
 
             foreach (HitColliderBehaviour collider in _rhsActiveColliders)
             {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject, Time.deltaTime);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.Entity, GridGame.FixedTimeStep);
             }
         }
 

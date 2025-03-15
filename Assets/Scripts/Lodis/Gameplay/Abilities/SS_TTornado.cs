@@ -91,6 +91,9 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
             ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.DespawnEffect, _heldItemSpawn, true);
 
+            if (_orbs != null && _orbs.FixedTransform.Parent != null)
+                _orbs.FixedTransform.Parent.RemoveChild(_orbs.FixedTransform);
+
             OwnerAnimationScript.gameObject.SetActive(true);
             EnableAccessory();
         }

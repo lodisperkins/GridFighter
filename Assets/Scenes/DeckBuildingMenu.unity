@@ -6284,7 +6284,7 @@ MonoBehaviour:
     m_ActionId: bbf0e44c-e5e9-4fb6-b3a1-be65b0037908
     m_ActionName: UI/TrackedDeviceOrientation
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
@@ -6309,12 +6309,12 @@ MonoBehaviour:
     - PageRoot: {fileID: 620267379}
       FirstSelected: {fileID: 1248498003}
       KeepRootVisible: 0
-      PageName: None
+      PageName: CustomizationChoice
       _children:
       - PageRoot: {fileID: 1056162746}
         FirstSelected: {fileID: 1056162727}
         KeepRootVisible: 1
-        PageName: None
+        PageName: DeckBuildingMenu
         _children:
         - PageRoot: {fileID: 70317700}
           FirstSelected: {fileID: 0}
@@ -6552,7 +6552,7 @@ MonoBehaviour:
       - PageRoot: {fileID: 1130930481}
         FirstSelected: {fileID: 0}
         KeepRootVisible: 0
-        PageName: None
+        PageName: ArmorSelection
         _children: []
         OnActive:
           m_PersistentCalls:
@@ -6617,7 +6617,7 @@ MonoBehaviour:
       - PageRoot: {fileID: 1163496062}
         FirstSelected: {fileID: 593677617}
         KeepRootVisible: 0
-        PageName: None
+        PageName: ColorSelection
         _children: []
         OnActive:
           m_PersistentCalls:
@@ -6670,11 +6670,35 @@ MonoBehaviour:
       - PageRoot: {fileID: 565096572}
         FirstSelected: {fileID: 1996543956}
         KeepRootVisible: 0
-        PageName: None
+        PageName: NameKeyboard
         _children: []
         OnActive:
           m_PersistentCalls:
-            m_Calls: []
+            m_Calls:
+            - m_Target: {fileID: 505377983}
+              m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
+              m_MethodName: set_defaultControlScheme
+              m_Mode: 5
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: Gamepad
+                m_BoolArgument: 0
+              m_CallState: 2
+            - m_Target: {fileID: 505377983}
+              m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
+              m_MethodName: set_neverAutoSwitchControlSchemes
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 1
+              m_CallState: 2
         OnInactive:
           m_PersistentCalls:
             m_Calls:
@@ -6704,7 +6728,31 @@ MonoBehaviour:
               m_CallState: 2
         OnGoToParent:
           m_PersistentCalls:
-            m_Calls: []
+            m_Calls:
+            - m_Target: {fileID: 505377983}
+              m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
+              m_MethodName: set_defaultControlScheme
+              m_Mode: 5
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: Any
+                m_BoolArgument: 0
+              m_CallState: 2
+            - m_Target: {fileID: 505377983}
+              m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
+              m_MethodName: set_neverAutoSwitchControlSchemes
+              m_Mode: 6
+              m_Arguments:
+                m_ObjectArgument: {fileID: 0}
+                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+                m_IntArgument: 0
+                m_FloatArgument: 0
+                m_StringArgument: 
+                m_BoolArgument: 0
+              m_CallState: 2
         OnGoToChild:
           m_PersistentCalls:
             m_Calls: []
@@ -6893,6 +6941,7 @@ MonoBehaviour:
   _previousPageOnCancel: 1
   _sceneIndex: 1
   _changePageManually: 0
+  _useEventSystemScheme: 1
 --- !u!1 &505808901
 GameObject:
   m_ObjectHideFlags: 0
@@ -12374,6 +12423,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.size
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[8].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2033525663}
@@ -12409,9 +12468,39 @@ PrefabInstance:
       objectReference: {fileID: 1589256580}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[8].m_Target
+      value: 
+      objectReference: {fileID: 505377984}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[8].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[8].m_MethodName
+      value: GoToPageParent
+      objectReference: {fileID: 0}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[8].m_TargetAssemblyTypeName
+      value: Lodis.UI.PageManagerBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[8].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[6].m_Arguments.m_ObjectArgument
       value: 
       objectReference: {fileID: 1321084208}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[8].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 114754653124213986, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target

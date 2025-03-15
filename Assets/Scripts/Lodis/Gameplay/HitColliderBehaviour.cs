@@ -269,7 +269,7 @@ namespace Lodis.Gameplay
                 if (otherCollider is HitColliderBehaviour hitCollider)
                 {
                     //...destroy it if it has a lower priority
-                    ResolvePriority(attachedGameObject, hitCollider);
+                    ResolvePriority(otherCollider.Entity, hitCollider);
 
 
                     //Ignore the collider otherwise
@@ -278,7 +278,7 @@ namespace Lodis.Gameplay
             }
 
             if (ColliderInfo.HitSpark)
-                Instantiate(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
+                ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
 
             Fixed32 newHitAngle = ColliderInfo.HitAngle;
             Fixed32 defaultAngle = newHitAngle;
@@ -344,7 +344,7 @@ namespace Lodis.Gameplay
 
                 if (ColliderInfo.HitEffectLevel > 0 && damageDealt)
                 {
-                    Instantiate(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1], attachedGameObject.transform.position + (.5f * Vector3.up), transform.rotation);
+                    ObjectPoolBehaviour.Instance.GetObject(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1].gameObject, attachedGameObject.transform.position + (.5f * Vector3.up), transform.rotation);
                     SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
                 }
             }
@@ -354,12 +354,12 @@ namespace Lodis.Gameplay
 
             ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(Entity);
 
             GroupManager?.TrySetCollisionFinish();
         }
 
-        private void ResolvePriority(GameObject attachedGameObject, HitColliderBehaviour hitCollider)
+        private void ResolvePriority(EntityDataBehaviour attachedGameObject, HitColliderBehaviour hitCollider)
         {
             if (ComparePriority(hitCollider))
             {
@@ -370,11 +370,11 @@ namespace Lodis.Gameplay
                 ObjectPoolBehaviour.Instance.ReturnGameObject(attachedGameObject);
 
             if (hitCollider.ColliderInfo.HitSpark)
-                Instantiate(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+                ObjectPoolBehaviour.Instance.GetObject(hitCollider.ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
 
             if (ColliderInfo.Priority == hitCollider.ColliderInfo.Priority)
             {
-                Instantiate(BlackBoardBehaviour.Instance.ClashEffect, transform.position, Camera.main.transform.rotation);
+                ObjectPoolBehaviour.Instance.GetObject(BlackBoardBehaviour.Instance.ClashEffect.gameObject, transform.position, Camera.main.transform.rotation);
                 SoundManagerBehaviour.Instance.PlayClashSound();
                 //MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0.2f, 0.1f);
                 CameraBehaviour.ShakeBehaviour.ShakeRotation();
@@ -440,7 +440,7 @@ namespace Lodis.Gameplay
             if (!_playedSpawnEffects)
             {
                 if (ColliderInfo.SpawnEffect && Spawner != null && Spawner.UnityObject)
-                    Instantiate(ColliderInfo.SpawnEffect, transform.position + Spawner.UnityObject.transform.forward * ColliderInfo.SpawnEffectOffset, Camera.main.transform.rotation);
+                    ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.SpawnEffect, transform.position + Spawner.UnityObject.transform.forward * ColliderInfo.SpawnEffectOffset, Camera.main.transform.rotation);
 
                 SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.SpawnSound);
                 _playedSpawnEffects = true;
@@ -454,9 +454,9 @@ namespace Lodis.Gameplay
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)
             {
                 if (ColliderInfo.HitSpark)
-                    Instantiate(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+                    ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
 
-                ObjectPoolBehaviour.Instance.ReturnGameObject(gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(Entity);
             }
         }
     }

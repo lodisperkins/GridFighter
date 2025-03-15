@@ -103,7 +103,7 @@ Material:
     - _Noise: {r: 0.2, g: 25, b: 0.25, a: 0}
     - _NoiseDirection: {r: 0.1, g: 0.1, b: 0, a: 0}
     - _OnHitColor: {r: 0, g: 625.5223, b: 449.4201, a: 0}
-    - _Tiling: {r: 1, g: 1, b: 0, a: 0}
+    - _Tiling: {r: 3, g: 3, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2715569051175027221
 MonoBehaviour:

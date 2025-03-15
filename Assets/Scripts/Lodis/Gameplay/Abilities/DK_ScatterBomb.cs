@@ -78,7 +78,7 @@ namespace Lodis.Gameplay
 
             ClearBombEvent(entity);
 
-            ObjectPoolBehaviour.Instance.ReturnGameObject(entity.gameObject, _hitColliderData.TimeActive + 0.1f);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(entity.Entity, _hitColliderData.TimeActive + 0.1f);
 
             CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f);
         }

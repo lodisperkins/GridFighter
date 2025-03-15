@@ -55,7 +55,7 @@ namespace Lodis.Gameplay
 
         public void PlaySpawnEffect()
         {
-            Instantiate(_spawnEffect, transform.position, Camera.main.transform.rotation);
+            Instantiate(_spawnEffect, (Vector3)_movement.CurrentPanel.FixedWorldPosition, Camera.main.transform.rotation);
             SoundManagerBehaviour.Instance.PlaySound(_spawnSound);
             RoutineBehaviour.Instance.StartNewTimedAction(args => _characterVoice.PlaySpawnSound(), TimedActionCountType.SCALEDTIME, 0.1f);
         }
@@ -77,7 +77,8 @@ namespace Lodis.Gameplay
         {
             foreach (ColorObject colorObject in ColorManager.ObjectsToColor)
             {
-                colorObject.ObjectRenderer.material.DOKill();
+                if (colorObject.ObjectRenderer)
+                    colorObject.ObjectRenderer.material.DOKill();
             }
         }
 

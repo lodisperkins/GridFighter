@@ -74,6 +74,7 @@ namespace Lodis.Gameplay
         [SerializeField] private GridScripts.GridAlignment _alignment;
         [Tooltip("Select this if the grid alignment should be found using an attached movement component.")]
         [SerializeField] private bool _autoDetectAlignment;
+        [SerializeField] private bool _manuallySetColors;
         [Tooltip("The objects that will have their colors changed to match the alignment.")]
         [SerializeField] private ColorObject[] _objectsToColor;
         [SerializeField] private ColorManagerBehaviour _linkedManager;
@@ -221,13 +222,15 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
-            SetColors();
+            if (!_manuallySetColors)
+                SetColors();
         }
 
     }
 
+#if UNITY_EDITOR
 
-[CustomEditor(typeof(ColorManagerBehaviour))]
+    [CustomEditor(typeof(ColorManagerBehaviour))]
     public class ColorManagerEditor : Editor
     {
         private string objectPrefix = "";
@@ -296,4 +299,5 @@ namespace Lodis.Gameplay
             EditorUtility.SetDirty(colorManager);
         }
     }
+#endif
 }
