@@ -263,7 +263,10 @@ namespace Lodis.Gameplay
             if (otherCollider)
             {
                 if (otherCollider.Spawner == Spawner)
+                {
+                    Debug.LogError($"Collision did not occur because owner has not been set for collider {Entity.Data.Name}");
                     return;
+                }
 
                 //If it is a hit collider...
                 if (otherCollider is HitColliderBehaviour hitCollider)
@@ -284,22 +287,9 @@ namespace Lodis.Gameplay
             Fixed32 defaultAngle = newHitAngle;
 
             //Calculates new angle if this object should change trajectory based on direction of hit
-            if (ColliderInfo.AdjustAngleBasedOnAlignment)
+            if (ColliderInfo.AdjustAngleBasedOnAlignment && ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
             {
-                //Find the direction this collider was going to apply force originally
-                FVector3 currentForceDirection = new FVector3(Fixed32.Cos(newHitAngle), Fixed32.Sin(newHitAngle), 0);
-
-                //Find a new direction based the alignment
-                int direction = Spawner.GetComponent<GridMovementBehaviour>().Alignment == GridAlignment.LEFT ? 1 : -1;
-                currentForceDirection.X *= direction;
-
-                //Find the new angle based on the direction of the attack on the x axis
-                Fixed32 dotProduct = FVector3.Dot(currentForceDirection, FVector3.Right);
-                newHitAngle = Mathf.Acos(dotProduct);
-
-                //Find if the angle should be negative or positive
-                if (FVector3.Dot(currentForceDirection, FVector3.Up) < 0)
-                    newHitAngle *= -1;
+                newHitAngle = Fixed32.MirrorAngleAcrossYAxis(defaultAngle);
             }
 
             int attachedHash = attachedGameObject.GetHashCode();

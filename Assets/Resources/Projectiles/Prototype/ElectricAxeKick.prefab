@@ -1,5 +1,158 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &708453347972818200
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9071229532217549563}
+  - component: {fileID: 1860816741982660400}
+  - component: {fileID: 2856741039341308707}
+  m_Layer: 16
+  m_Name: HitBox(2,1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &9071229532217549563
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708453347972818200}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2625608556329051511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1860816741982660400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708453347972818200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _tagsToIgnore: []
+    _overlap: 1
+    _collideOnAnyRow: 0
+    _isAWall: 0
+    _width:
+      RawValue: 65536
+    _facingRight: 1
+    _height:
+      RawValue: 65536
+    _panelYOffset: 1
+    _panelXOffset: 2
+    _wallXOffset:
+      RawValue: 0
+    _worldYPosition:
+      RawValue: 0
+    debugID: 0
+  debuggingEnabled: 1
+  ColliderInfo:
+    Name: ElectricAxeKickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive:
+      RawValue: 16384
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 3991607
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 393216
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 65536
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 88473
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 6553
+    Priority:
+      RawValue: -65536
+    OwnerAlignement: 0
+    AbilityType: 5
+    AbilityID:
+      RawValue: -44761088
+    SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
+      type: 3}
+    HitEffectLevel: 2
+    HitStopShakeStrength:
+      RawValue: 104857
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 13107
+    CameraShakeFrequency: 1
+    ShakesCamera: 1
+    SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+--- !u!114 &2856741039341308707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708453347972818200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Marker: 2
+  _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _markCollider: 1
+  _markAtRange: 0
+  _markAtOffsetRange: 0
+  _markAtRadius: 0
+  _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 1860816741982660400}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1 &1672210285467654797
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,6 +304,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 0
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
@@ -303,6 +457,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 1
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 3556605455510110903}
@@ -439,6 +594,7 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
   clampPositionInBarriers: 0
@@ -463,11 +619,7 @@ MonoBehaviour:
       m_Calls: []
   _colliders:
   - {fileID: 3556605455510110903}
-  - {fileID: 5712276960567258736}
-  - {fileID: 2500919090096829159}
-  - {fileID: 6451030275633810592}
-  - {fileID: 5964733128889066971}
-  - {fileID: 1743547572888053483}
+  - {fileID: 5564975525042863486}
   _groupName: Axe Kick Colliders
   _isMultiHit: 0
   _despawnAfterTimeLimit: 1
@@ -497,7 +649,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6838175719026717242
 Transform:
   m_ObjectHideFlags: 0
@@ -626,6 +778,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 1
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 2500919090096829159}
@@ -662,165 +815,13 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1923578926838280114}
+  - {fileID: 119016866436499758}
   - {fileID: 2129368985443628261}
+  - {fileID: 9071229532217549563}
   - {fileID: 6838175719026717242}
-  - {fileID: 9125498183346349701}
-  - {fileID: 3939887390148437576}
-  - {fileID: 7283537289557430968}
+  - {fileID: 9178601571803503779}
   m_Father: {fileID: 7753967484100786593}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4173448780622490198
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7283537289557430968}
-  - component: {fileID: 1743547572888053483}
-  - component: {fileID: 5307010294486380648}
-  m_Layer: 16
-  m_Name: HitBox(2.-1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &7283537289557430968
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4173448780622490198}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2625608556329051511}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1743547572888053483
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4173448780622490198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _onSerialize:
-    m_PersistentCalls:
-      m_Calls: []
-  _onDeserialize:
-    m_PersistentCalls:
-      m_Calls: []
-  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
-  _onOverlapBegin:
-    m_PersistentCalls:
-      m_Calls: []
-  _onHitBegin:
-    m_PersistentCalls:
-      m_Calls: []
-  _entityCollider:
-    _layersToIgnore:
-      serializedVersion: 2
-      m_Bits: 0
-    _tagsToIgnore: []
-    _overlap: 1
-    _collideOnAnyRow: 0
-    _isAWall: 0
-    _width:
-      RawValue: 65536
-    _facingRight: 1
-    _height:
-      RawValue: 65536
-    _panelYOffset: -1
-    _panelXOffset: 2
-    _wallXOffset:
-      RawValue: 0
-    _worldYPosition:
-      RawValue: 0
-    debugID: 0
-  debuggingEnabled: 1
-  ColliderInfo:
-    Name: ElectricAxeKickCollider
-    DespawnAfterTimeLimit: 1
-    TimeActive:
-      RawValue: 16384
-    DestroyOnHit: 0
-    IsMultiHit: 0
-    LayersToIgnore:
-      serializedVersion: 2
-      m_Bits: 3991607
-    TagsToIgnore: []
-    MultiHitWaitTime:
-      RawValue: 0
-    Damage:
-      RawValue: 786432
-    BaseKnockBack:
-      RawValue: 262144
-    KnockBackScale:
-      RawValue: 65536
-    ClampForceWithinRing: 0
-    IgnoreMomentum: 0
-    HitAngle:
-      RawValue: 65536
-    AdjustAngleBasedOnAlignment: 1
-    TypeOfDamage: 0
-    HitStunTime:
-      RawValue: 6553
-    Priority:
-      RawValue: -65536
-    OwnerAlignement: 0
-    AbilityType: 5
-    AbilityID:
-      RawValue: -44761088
-    SpawnEffect: {fileID: 0}
-    SpawnEffectOffset:
-      RawValue: 0
-    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
-      type: 3}
-    HitEffectLevel: 2
-    HitStopShakeStrength:
-      RawValue: 104857
-    CameraShakeStrength:
-      RawValue: 3276
-    CameraShakeDuration:
-      RawValue: 13107
-    CameraShakeFrequency: 1
-    ShakesCamera: 1
-    SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
-    HitSound: {fileID: 0}
-    DespawnSound: {fileID: 0}
---- !u!114 &5307010294486380648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4173448780622490198}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Marker: 2
-  _markPanelsBasedOnCollision: 0
-  _markPanelAtGridLocation: 0
-  _markCollider: 1
-  _markAtRange: 0
-  _markAtRadius: 0
-  _movementToTrack: {fileID: 0}
-  _colliderToTrack: {fileID: 1743547572888053483}
-  _xRange: 0
-  _yRange: 0
-  _radius: 0
 --- !u!1 &4886488662551927163
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,7 +839,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2129368985443628261
 Transform:
   m_ObjectHideFlags: 0
@@ -967,13 +968,14 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 1
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 5712276960567258736}
   _xRange: 0
   _yRange: 0
   _radius: 0
---- !u!1 &6154804292956767076
+--- !u!1 &5836764498112474397
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -981,209 +983,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3939887390148437576}
-  - component: {fileID: 5964733128889066971}
-  - component: {fileID: 4985249139221704881}
-  m_Layer: 16
-  m_Name: HitBox(2,1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3939887390148437576
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6154804292956767076}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2625608556329051511}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5964733128889066971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6154804292956767076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _onSerialize:
-    m_PersistentCalls:
-      m_Calls: []
-  _onDeserialize:
-    m_PersistentCalls:
-      m_Calls: []
-  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
-  _onOverlapBegin:
-    m_PersistentCalls:
-      m_Calls: []
-  _onHitBegin:
-    m_PersistentCalls:
-      m_Calls: []
-  _entityCollider:
-    _layersToIgnore:
-      serializedVersion: 2
-      m_Bits: 0
-    _tagsToIgnore: []
-    _overlap: 1
-    _collideOnAnyRow: 0
-    _isAWall: 0
-    _width:
-      RawValue: 65536
-    _facingRight: 1
-    _height:
-      RawValue: 65536
-    _panelYOffset: 1
-    _panelXOffset: 2
-    _wallXOffset:
-      RawValue: 0
-    _worldYPosition:
-      RawValue: 0
-    debugID: 0
-  debuggingEnabled: 1
-  ColliderInfo:
-    Name: ElectricAxeKickCollider
-    DespawnAfterTimeLimit: 1
-    TimeActive:
-      RawValue: 16384
-    DestroyOnHit: 0
-    IsMultiHit: 0
-    LayersToIgnore:
-      serializedVersion: 2
-      m_Bits: 3991607
-    TagsToIgnore: []
-    MultiHitWaitTime:
-      RawValue: 0
-    Damage:
-      RawValue: 786432
-    BaseKnockBack:
-      RawValue: 262144
-    KnockBackScale:
-      RawValue: 65536
-    ClampForceWithinRing: 0
-    IgnoreMomentum: 0
-    HitAngle:
-      RawValue: 65536
-    AdjustAngleBasedOnAlignment: 1
-    TypeOfDamage: 0
-    HitStunTime:
-      RawValue: 6553
-    Priority:
-      RawValue: -65536
-    OwnerAlignement: 0
-    AbilityType: 5
-    AbilityID:
-      RawValue: -44761088
-    SpawnEffect: {fileID: 0}
-    SpawnEffectOffset:
-      RawValue: 0
-    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
-      type: 3}
-    HitEffectLevel: 2
-    HitStopShakeStrength:
-      RawValue: 104857
-    CameraShakeStrength:
-      RawValue: 3276
-    CameraShakeDuration:
-      RawValue: 13107
-    CameraShakeFrequency: 1
-    ShakesCamera: 1
-    SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
-    HitSound: {fileID: 0}
-    DespawnSound: {fileID: 0}
---- !u!114 &4985249139221704881
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6154804292956767076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Marker: 2
-  _markPanelsBasedOnCollision: 0
-  _markPanelAtGridLocation: 0
-  _markCollider: 1
-  _markAtRange: 0
-  _markAtRadius: 0
-  _movementToTrack: {fileID: 0}
-  _colliderToTrack: {fileID: 5964733128889066971}
-  _xRange: 0
-  _yRange: 0
-  _radius: 0
---- !u!1 &7114194045449134152
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 8813385785562142711}
-  - component: {fileID: 6233971495284038960}
-  m_Layer: 16
-  m_Name: PivotPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &8813385785562142711
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7114194045449134152}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7753967484100786593}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6233971495284038960
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7114194045449134152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c52846ec6a717c347ab6d490fc6b81c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _axis: {x: -1, y: 0, z: 0}
-  _speed: 10
-  _rotateOnSelf: 1
-  _resetOnDisable: 1
---- !u!1 &7520764935273478650
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 9125498183346349701}
-  - component: {fileID: 6451030275633810592}
-  - component: {fileID: 4894387623735258998}
+  - component: {fileID: 119016866436499758}
+  - component: {fileID: 5564975525042863486}
+  - component: {fileID: 6797130355077485526}
   m_Layer: 16
   m_Name: HitBox(2,0)
   m_TagString: Untagged
@@ -1191,13 +993,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &9125498183346349701
+--- !u!4 &119016866436499758
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7520764935273478650}
+  m_GameObject: {fileID: 5836764498112474397}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -1206,13 +1008,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2625608556329051511}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6451030275633810592
+--- !u!114 &5564975525042863486
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7520764935273478650}
+  m_GameObject: {fileID: 5836764498112474397}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
@@ -1266,15 +1068,15 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 0
     Damage:
-      RawValue: 786432
+      RawValue: 393216
     BaseKnockBack:
-      RawValue: 262144
+      RawValue: 131072
     KnockBackScale:
       RawValue: 65536
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 65536
+      RawValue: 88473
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -1302,13 +1104,13 @@ MonoBehaviour:
     SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
     HitSound: {fileID: 0}
     DespawnSound: {fileID: 0}
---- !u!114 &4894387623735258998
+--- !u!114 &6797130355077485526
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7520764935273478650}
+  m_GameObject: {fileID: 5836764498112474397}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
@@ -1319,12 +1121,61 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 1
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
-  _colliderToTrack: {fileID: 6451030275633810592}
+  _colliderToTrack: {fileID: 5564975525042863486}
   _xRange: 0
   _yRange: 0
   _radius: 0
+--- !u!1 &7114194045449134152
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8813385785562142711}
+  - component: {fileID: 6233971495284038960}
+  m_Layer: 16
+  m_Name: PivotPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &8813385785562142711
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114194045449134152}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7753967484100786593}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6233971495284038960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7114194045449134152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c52846ec6a717c347ab6d490fc6b81c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _axis: {x: -1, y: 0, z: 0}
+  _speed: 10
+  _rotateOnSelf: 1
+  _resetOnDisable: 1
 --- !u!1 &9189759815208285768
 GameObject:
   m_ObjectHideFlags: 0
@@ -1430,6 +1281,159 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &9219742245928677904
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9178601571803503779}
+  - component: {fileID: 3022321132935113490}
+  - component: {fileID: 5607860990882105153}
+  m_Layer: 16
+  m_Name: HitBox(2, -1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &9178601571803503779
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9219742245928677904}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2625608556329051511}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3022321132935113490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9219742245928677904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _entityCollider:
+    _layersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    _tagsToIgnore: []
+    _overlap: 1
+    _collideOnAnyRow: 0
+    _isAWall: 0
+    _width:
+      RawValue: 65536
+    _facingRight: 1
+    _height:
+      RawValue: 65536
+    _panelYOffset: -1
+    _panelXOffset: 1
+    _wallXOffset:
+      RawValue: 0
+    _worldYPosition:
+      RawValue: 0
+    debugID: 0
+  debuggingEnabled: 1
+  ColliderInfo:
+    Name: ElectricAxeKickCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive:
+      RawValue: 16384
+    DestroyOnHit: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 3991607
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 393216
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 65536
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 88473
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 6553
+    Priority:
+      RawValue: -65536
+    OwnerAlignement: 0
+    AbilityType: 5
+    AbilityID:
+      RawValue: -44761088
+    SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
+      type: 3}
+    HitEffectLevel: 2
+    HitStopShakeStrength:
+      RawValue: 104857
+    CameraShakeStrength:
+      RawValue: 3276
+    CameraShakeDuration:
+      RawValue: 13107
+    CameraShakeFrequency: 1
+    ShakesCamera: 1
+    SpawnSound: {fileID: 8300000, guid: c30b9ed0eb41f6c49ae05ac5da855864, type: 3}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+--- !u!114 &5607860990882105153
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9219742245928677904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a19e93a5d8dfe94c9a4b5afae908659, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Marker: 2
+  _markPanelsBasedOnCollision: 0
+  _markPanelAtGridLocation: 0
+  _markCollider: 1
+  _markAtRange: 0
+  _markAtOffsetRange: 0
+  _markAtRadius: 0
+  _movementToTrack: {fileID: 0}
+  _colliderToTrack: {fileID: 3022321132935113490}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!1001 &7630742807919799956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1595,13 +1599,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.88509
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.88509
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.88509
+      objectReference: {fileID: 0}
+    - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.109890744
+      value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
@@ -1611,37 +1630,37 @@ PrefabInstance:
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6551199
+      value: 0.6703048
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.6484513
+      value: -0.6232651
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.31353563
+      value: -0.36101833
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.22808813
+      value: -0.1786
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 279.793
+      value: 285.31
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 167.23401
+      value: 261.816
       objectReference: {fileID: 0}
     - target: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 57.586002
+      value: 52.897
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

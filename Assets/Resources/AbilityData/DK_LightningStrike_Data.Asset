@@ -117,6 +117,9 @@ MonoBehaviour:
   - name: OpponentBounciness
     value:
       RawValue: 65536
+  - name: BounceScale
+    value:
+      RawValue: 3276800
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 3433ce6b68ec77242a998e58082ac474, type: 3}
   _shouldMirror: 1

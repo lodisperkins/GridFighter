@@ -21,7 +21,7 @@ MonoBehaviour:
   recoverTime:
     RawValue: 19660
   startUpTime:
-    RawValue: 32768
+    RawValue: 19660
   maxActivationAmount: 0
   EnergyCost: 0
   CancellationRules: []
@@ -34,7 +34,7 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 2063756346932270615, guid: f2d8bc3ca04e8bc4aaac7874a094ac06,
+  visualPrefab: {fileID: 9125275198285931057, guid: 4cbc82360a861294aa59f0ac33164ab2,
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
@@ -47,7 +47,7 @@ MonoBehaviour:
   - Name: ChargeFlareLauncher
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 45875
+      RawValue: 65536
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
@@ -59,13 +59,13 @@ MonoBehaviour:
     Damage:
       RawValue: 98304
     BaseKnockBack:
-      RawValue: 65536
+      RawValue: 32768
     KnockBackScale:
       RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 1
     HitAngle:
-      RawValue: 65536
+      RawValue: 95027
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -79,7 +79,7 @@ MonoBehaviour:
     SpawnEffect: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
       type: 3}
     SpawnEffectOffset:
-      RawValue: 0
+      RawValue: 65536
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
       type: 3}
     HitEffectLevel: 2
@@ -97,8 +97,11 @@ MonoBehaviour:
   _customStats:
   - name: Speed
     value:
-      RawValue: 45875
+      RawValue: 327680
   - name: MaxInstances
+    value:
+      RawValue: 65536
+  - name: ShotAngle
     value:
       RawValue: 65536
   animationType: 3

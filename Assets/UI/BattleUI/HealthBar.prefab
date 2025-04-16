@@ -344,17 +344,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fill: {fileID: 4290014090330695836}
   _slider: {fileID: 4290014088950813181}
+  _defensiveEffect: {fileID: 8918989867302291952}
+  _offensiveEffect: {fileID: 5066443246738733495}
   _fullColor: {r: 1, g: 0.52006483, b: 0, a: 1}
   _halfFullColor: {r: 0, g: 0.48795986, b: 1, a: 1}
   _defaultColor: {r: 0.33962262, g: 0.33481663, b: 0.33481663, a: 1}
+  _offensiveBurstReady: {fileID: 8300000, guid: d727c483372d58a478d0b050f2185b51,
+    type: 3}
+  _defensiveBurstReady: {fileID: 8300000, guid: a07db685f9c9e0f4f96806a2b965af3c,
+    type: 3}
   _onFilled:
     m_PersistentCalls:
       m_Calls: []
   _onHalfFilled:
     m_PersistentCalls:
       m_Calls: []
-  _defensiveEffect: {fileID: 8918989867302291952}
-  _offensiveEffect: {fileID: 5066443246738733495}
 --- !u!1 &4290014088960272174
 GameObject:
   m_ObjectHideFlags: 0

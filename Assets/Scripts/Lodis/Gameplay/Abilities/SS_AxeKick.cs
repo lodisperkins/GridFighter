@@ -34,6 +34,8 @@ namespace Lodis.Gameplay
             foreach (HitColliderBehaviour collider in colliders)
             {
                 collider.Spawner = Owner;
+                collider.ColliderInfo = GetColliderData(0);
+                collider.ColliderInfo.OwnerAlignement = OwnerMoveScript.Alignment;
                 collider.ColliderInfo.AddOnHitEvent(OnHit);
             }
         }

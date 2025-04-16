@@ -23,7 +23,7 @@ MonoBehaviour:
   startUpTime:
     RawValue: 655
   maxActivationAmount: 1
-  EnergyCost: 1
+  EnergyCost: 2
   CancellationRules:
   - Phase: 6
     CanOnlyCancelOnOpponentHit: 0
@@ -56,7 +56,7 @@ MonoBehaviour:
   _customStats:
   - name: OwnershipTime
     value:
-      RawValue: 655360
+      RawValue: 196608
   - name: AmountOfRows
     value:
       RawValue: 65536

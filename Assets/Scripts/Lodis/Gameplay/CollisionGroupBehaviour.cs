@@ -86,4 +86,18 @@ public class CollisionGroupBehaviour : SimulationBehaviour
             FixedPointTimer.StartNewTimedAction(Entity.RemoveFromGame, _despawnTime);
         }
     }
+
+    public void SetHitCollisionInfo(HitColliderData info, EntityDataBehaviour spawner)
+    {
+        foreach (var collider in _colliders)
+        {
+            HitColliderBehaviour hitCollider = collider as HitColliderBehaviour;
+
+            if (hitCollider)
+            {
+                hitCollider.ColliderInfo = info;
+                hitCollider.Spawner = spawner;
+            }
+        }
+    }
 }

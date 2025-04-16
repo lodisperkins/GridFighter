@@ -1072,7 +1072,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.36841, y: -973.5}
+  m_AnchoredPosition: {x: 140.36841, y: -1024.4727}
   m_SizeDelta: {x: 260, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &121059497
@@ -1453,7 +1453,7 @@ PrefabInstance:
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -56.007843
+      value: -30.007843
       objectReference: {fileID: 0}
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -3193,7 +3193,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.36841, y: -88.5}
+  m_AnchoredPosition: {x: 140.36841, y: -93.13387}
   m_SizeDelta: {x: 260, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &281282064
@@ -6055,6 +6055,7 @@ GameObject:
   - component: {fileID: 505377980}
   - component: {fileID: 505377983}
   - component: {fileID: 505377984}
+  - component: {fileID: 505377985}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -6438,9 +6439,11 @@ MonoBehaviour:
           OnGoToParent:
             m_PersistentCalls:
               m_Calls: []
+          GoToParentCondition: {fileID: 0}
           OnGoToChild:
             m_PersistentCalls:
               m_Calls: []
+          GoToChildCondition: {fileID: 0}
         OnActive:
           m_PersistentCalls:
             m_Calls:
@@ -6546,9 +6549,11 @@ MonoBehaviour:
                 m_StringArgument: 
                 m_BoolArgument: 0
               m_CallState: 2
+        GoToParentCondition: {fileID: 0}
         OnGoToChild:
           m_PersistentCalls:
             m_Calls: []
+        GoToChildCondition: {fileID: 0}
       - PageRoot: {fileID: 1130930481}
         FirstSelected: {fileID: 0}
         KeepRootVisible: 0
@@ -6611,9 +6616,11 @@ MonoBehaviour:
         OnGoToParent:
           m_PersistentCalls:
             m_Calls: []
+        GoToParentCondition: {fileID: 0}
         OnGoToChild:
           m_PersistentCalls:
             m_Calls: []
+        GoToChildCondition: {fileID: 0}
       - PageRoot: {fileID: 1163496062}
         FirstSelected: {fileID: 593677617}
         KeepRootVisible: 0
@@ -6664,9 +6671,11 @@ MonoBehaviour:
         OnGoToParent:
           m_PersistentCalls:
             m_Calls: []
+        GoToParentCondition: {fileID: 0}
         OnGoToChild:
           m_PersistentCalls:
             m_Calls: []
+        GoToChildCondition: {fileID: 0}
       - PageRoot: {fileID: 565096572}
         FirstSelected: {fileID: 1996543956}
         KeepRootVisible: 0
@@ -6675,22 +6684,11 @@ MonoBehaviour:
         OnActive:
           m_PersistentCalls:
             m_Calls:
-            - m_Target: {fileID: 505377983}
-              m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
-              m_MethodName: set_defaultControlScheme
-              m_Mode: 5
-              m_Arguments:
-                m_ObjectArgument: {fileID: 0}
-                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-                m_IntArgument: 0
-                m_FloatArgument: 0
-                m_StringArgument: Gamepad
-                m_BoolArgument: 0
-              m_CallState: 2
-            - m_Target: {fileID: 505377983}
-              m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
-              m_MethodName: set_neverAutoSwitchControlSchemes
-              m_Mode: 6
+            - m_Target: {fileID: 2033525663}
+              m_TargetAssemblyTypeName: Lodis.UI.DeckBuildingUIManagerBehaviour,
+                Assembly-CSharp
+              m_MethodName: SetInputKeyboardOnly
+              m_Mode: 1
               m_Arguments:
                 m_ObjectArgument: {fileID: 0}
                 m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6729,10 +6727,11 @@ MonoBehaviour:
         OnGoToParent:
           m_PersistentCalls:
             m_Calls:
-            - m_Target: {fileID: 505377983}
-              m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
-              m_MethodName: set_defaultControlScheme
-              m_Mode: 5
+            - m_Target: {fileID: 2033525663}
+              m_TargetAssemblyTypeName: Lodis.UI.DeckBuildingUIManagerBehaviour,
+                Assembly-CSharp
+              m_MethodName: SetInputAny
+              m_Mode: 1
               m_Arguments:
                 m_ObjectArgument: {fileID: 0}
                 m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6741,21 +6740,11 @@ MonoBehaviour:
                 m_StringArgument: Any
                 m_BoolArgument: 0
               m_CallState: 2
-            - m_Target: {fileID: 505377983}
-              m_TargetAssemblyTypeName: UnityEngine.InputSystem.PlayerInput, Unity.InputSystem
-              m_MethodName: set_neverAutoSwitchControlSchemes
-              m_Mode: 6
-              m_Arguments:
-                m_ObjectArgument: {fileID: 0}
-                m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-                m_IntArgument: 0
-                m_FloatArgument: 0
-                m_StringArgument: 
-                m_BoolArgument: 0
-              m_CallState: 2
+        GoToParentCondition: {fileID: 0}
         OnGoToChild:
           m_PersistentCalls:
             m_Calls: []
+        GoToChildCondition: {fileID: 0}
       OnActive:
         m_PersistentCalls:
           m_Calls:
@@ -6795,30 +6784,6 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 1
             m_CallState: 2
-          - m_Target: {fileID: 1255703518}
-            m_TargetAssemblyTypeName: 
-            m_MethodName: SaveDecks
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 1
-            m_CallState: 2
-          - m_Target: {fileID: 1589256580}
-            m_TargetAssemblyTypeName: 
-            m_MethodName: SaveCharacter
-            m_Mode: 1
-            m_Arguments:
-              m_ObjectArgument: {fileID: 0}
-              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-              m_IntArgument: 0
-              m_FloatArgument: 0
-              m_StringArgument: 
-              m_BoolArgument: 1
-            m_CallState: 2
       OnInactive:
         m_PersistentCalls:
           m_Calls:
@@ -6849,9 +6814,12 @@ MonoBehaviour:
       OnGoToParent:
         m_PersistentCalls:
           m_Calls: []
+      GoToParentCondition: {fileID: 11400000, guid: 9d7ac1a75852e0c488097cd3842016de,
+        type: 2}
       OnGoToChild:
         m_PersistentCalls:
           m_Calls: []
+      GoToChildCondition: {fileID: 0}
     OnActive:
       m_PersistentCalls:
         m_Calls:
@@ -6933,15 +6901,57 @@ MonoBehaviour:
     OnGoToParent:
       m_PersistentCalls:
         m_Calls: []
+    GoToParentCondition: {fileID: 0}
     OnGoToChild:
       m_PersistentCalls:
-        m_Calls: []
+        m_Calls:
+        - m_Target: {fileID: 11400000, guid: 9d7ac1a75852e0c488097cd3842016de, type: 2}
+          m_TargetAssemblyTypeName: Lodis.ScriptableObjects.BoolVariable, Assembly-CSharp
+          m_MethodName: set_Value
+          m_Mode: 6
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 1
+          m_CallState: 2
+    GoToChildCondition: {fileID: 0}
   _eventSystem: {fileID: 505377981}
   _loadSceneOnFirstPage: 1
   _previousPageOnCancel: 1
   _sceneIndex: 1
   _changePageManually: 0
   _useEventSystemScheme: 1
+  _onPreviousPagePressed:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2070750648}
+        m_TargetAssemblyTypeName: SavePopupBehaviour, Assembly-CSharp
+        m_MethodName: TrySpawnPopup
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &505377985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505377979}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b565f7ccbcafe24eb66cc1fdfc76b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 505377983}
 --- !u!1 &505808901
 GameObject:
   m_ObjectHideFlags: 0
@@ -10182,6 +10192,12 @@ MonoBehaviour:
   - ObjectImage: {fileID: 321887070}
     OnlyChangeHue: 1
     SaturationThreshold: 0
+  - ObjectImage: {fileID: 321887070}
+    OnlyChangeHue: 1
+    SaturationThreshold: 0
+  - ObjectImage: {fileID: 925522267}
+    OnlyChangeHue: 1
+    SaturationThreshold: 0
   _textToColor: []
   _setColorsOnStart: 1
 --- !u!4 &743233165
@@ -10234,7 +10250,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.36841, y: -796.5}
+  m_AnchoredPosition: {x: 140.36841, y: -838.20483}
   m_SizeDelta: {x: 260, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &750834255
@@ -11703,6 +11719,7 @@ MonoBehaviour:
   _scrollSmooth: 1
   _scrollSmoothDuration: 0.1
   _useLocalPosition: 0
+  _viewportMargin: 10
 --- !u!1001 &849576217
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12424,7 +12441,7 @@ PrefabInstance:
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.size
-      value: 9
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
@@ -14195,7 +14212,7 @@ PrefabInstance:
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -160.00784
+      value: -134.00784
       objectReference: {fileID: 0}
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -20676,6 +20693,7 @@ MonoBehaviour:
   _scrollSmooth: 1
   _scrollSmoothDuration: 0.1
   _useLocalPosition: 0
+  _viewportMargin: 10
 --- !u!114 &1061863825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20997,10 +21015,11 @@ MonoBehaviour:
   _eventSystem: {fileID: 505377981}
   _content: {fileID: 1830027215}
   _scrollHorizontal: 0
-  _distanceToScroll: 120
+  _distanceToScroll: 200
   _scrollSmooth: 1
   _scrollSmoothDuration: 0.1
-  _useLocalPosition: 0
+  _useLocalPosition: 1
+  _viewportMargin: 100
 --- !u!114 &1130930484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21549,6 +21568,7 @@ MonoBehaviour:
   _scrollSmooth: 1
   _scrollSmoothDuration: 0.1
   _useLocalPosition: 0
+  _viewportMargin: 10
 --- !u!114 &1163496065
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22546,7 +22566,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.36841, y: -442.5}
+  m_AnchoredPosition: {x: 140.36841, y: -465.66937}
   m_SizeDelta: {x: 260, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1221319083
@@ -25562,7 +25582,7 @@ PrefabInstance:
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -212.00784
+      value: -186.00784
       objectReference: {fileID: 0}
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -26306,7 +26326,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.36841, y: -1150.5}
+  m_AnchoredPosition: {x: 140.36841, y: -1210.7404}
   m_SizeDelta: {x: 260, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1452087479
@@ -27340,7 +27360,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.36841, y: -619.5}
+  m_AnchoredPosition: {x: 140.36841, y: -651.9371}
   m_SizeDelta: {x: 260, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1521237831
@@ -27755,7 +27775,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 140.36842, y: -265.5}
+  m_AnchoredPosition: {x: 140.36842, y: -279.4016}
   m_SizeDelta: {x: 260, y: 177}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1546107958
@@ -28233,6 +28253,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08b4295337e11b488208fa24d397216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _eventSystem: {fileID: 505377981}
 --- !u!114 &1614149194 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 114484003548907840, guid: 25b74707566ea03478a6d7588c0bb4b6,
@@ -28608,7 +28629,7 @@ PrefabInstance:
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -264.00784
+      value: -290.00784
       objectReference: {fileID: 0}
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -31164,7 +31185,7 @@ PrefabInstance:
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -108.00784
+      value: -82.00784
       objectReference: {fileID: 0}
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -31263,8 +31284,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -1.8, y: -365.4878}
-  m_SizeDelta: {x: 280.73682, y: 1116.0422}
+  m_AnchoredPosition: {x: -1.8, y: -576.40375}
+  m_SizeDelta: {x: 280.7368, y: 1537.8743}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1830027216
 MonoBehaviour:
@@ -31555,7 +31576,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -31570,7 +31591,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -31586,7 +31607,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1255703518}
+      objectReference: {fileID: 2033525663}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
@@ -31596,7 +31617,8 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 11400000, guid: 9d7ac1a75852e0c488097cd3842016de,
+        type: 2}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
@@ -31619,6 +31641,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -31630,7 +31657,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SaveDecks
+      value: Save
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -31640,7 +31667,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: GoToNextPage
+      value: set_Value
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -31654,6 +31681,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.UI.DeckBuildingUIManagerBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: Lodis.ScriptableObjects.BoolVariable, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 0
       objectReference: {fileID: 0}
@@ -31661,6 +31698,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -31816,7 +31858,7 @@ PrefabInstance:
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -240.16194
+      value: -238.00784
       objectReference: {fileID: 0}
     - target: {fileID: 7997891042039204570, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -31841,7 +31883,7 @@ PrefabInstance:
     - target: {fileID: 7997891042039204573, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7997891043035845415, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -33736,6 +33778,8 @@ MonoBehaviour:
   _eventSystem: {fileID: 505377981}
   _pageManager: {fileID: 505377984}
   _colorManager: {fileID: 1409404535}
+  _playerInput: {fileID: 505377983}
+  _controlSchemeManager: {fileID: 505377985}
 --- !u!4 &2033525664
 Transform:
   m_ObjectHideFlags: 0
@@ -33848,6 +33892,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2070750647}
   - component: {fileID: 2070750646}
+  - component: {fileID: 2070750648}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -33895,6 +33940,56 @@ Transform:
   - {fileID: 1589256579}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2070750648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070750645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14b2ecfffa4c223499fe64d7909e92ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _saveBoolean: {fileID: 11400000, guid: 9d7ac1a75852e0c488097cd3842016de, type: 2}
+  _saveMessage: You have unsaved changes. Continue without saving?
+  _eventSystem: {fileID: 505377981}
+  _onContinueWithoutSaving:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 9d7ac1a75852e0c488097cd3842016de, type: 2}
+        m_TargetAssemblyTypeName: Lodis.ScriptableObjects.BoolVariable, Assembly-CSharp
+        m_MethodName: set_Value
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 505377984}
+        m_TargetAssemblyTypeName: Lodis.UI.PageManagerBehaviour, Assembly-CSharp
+        m_MethodName: GoToPageParent
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCancel:
+    m_PersistentCalls:
+      m_Calls: []
+  _pageManager: {fileID: 505377984}
+  _pageName: CustomizationChoice
+  _selectOnClose: {fileID: 0}
+  _selectOnContinue: {fileID: 2064447562}
+  _selectOnCancel: {fileID: 1248498003}
 --- !u!1 &2087905386
 GameObject:
   m_ObjectHideFlags: 0
@@ -35968,6 +36063,7 @@ MonoBehaviour:
   _scrollSmooth: 0
   _scrollSmoothDuration: 0
   _useLocalPosition: 0
+  _viewportMargin: 10
 --- !u!1001 &8784587485628114514
 PrefabInstance:
   m_ObjectHideFlags: 0

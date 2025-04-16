@@ -41,9 +41,6 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.Physics.CancelFreeze();
             OwnerKnockBackScript.Physics.IsKinematic = true;
             OwnerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-            OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
-            OwnerKnockBackScript.CancelHitStun();
-            OwnerKnockBackScript.CancelStun();
 
             //Disable ability benefits if the player is hit out of burst
             OnHit += collision =>
@@ -57,6 +54,14 @@ namespace Lodis.Gameplay
                 CameraBehaviour.Instance.ZoomAmount = 3;
                 _zoomAction = RoutineBehaviour.Instance.StartNewTimedAction(parameter => CameraBehaviour.Instance.ZoomAmount = 0, TimedActionCountType.SCALEDTIME, 0.7f);
                 AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(collision.OtherEntity.UnityObject), "Burst Drive");
+
+
+                GameObject opp = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner.gameObject);
+                MovesetBehaviour oppMoves = opp.GetComponent<MovesetBehaviour>();
+
+                //Time is 0.5
+                oppMoves.LockBurst(new Fixed32(32768));
+
                 if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
 

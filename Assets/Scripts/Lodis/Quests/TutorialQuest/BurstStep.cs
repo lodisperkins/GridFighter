@@ -24,10 +24,13 @@ namespace Lodis.Quest
 
         private void CheckComplete()
         {
-            if (Status == QuestStatus.ACTIVE && BlackBoardBehaviour.Instance.Player1State == "Tumbling")
+            if (Status == QuestStatus.ACTIVE && (BlackBoardBehaviour.Instance.Player1State == "Tumbling" || BlackBoardBehaviour.Instance.Player1State == "Flinching"))
+            {
                 Complete();
 
-            MatchManagerBehaviour.Instance.InfiniteBurst = false;
+                MatchManagerBehaviour.Instance.InfiniteBurst = false;
+                _ownerMoveset.OnBurst -= CheckComplete;
+            }
         }
     }
 }

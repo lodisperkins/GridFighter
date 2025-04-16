@@ -196,11 +196,17 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1c1614697f919a84bb00dee993f8db37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _character: {fileID: 0}
   _attackStrength: 1.5
   _maxRange: 10
@@ -218,7 +224,7 @@ MonoBehaviour:
   _saveStateDelay: 0.5
   _losePenalty: -2
   _winReward: 4
-  _recordingName: AI
+  _recordingName: AI(03302025)
   _useRecording: 1
   _randomDecisionConstant: 3
   _accuracyMinimum: 1
@@ -342,11 +348,15 @@ MonoBehaviour:
     RawValue: 32768
   _maxChargeTime:
     RawValue: 327680
-  _attackDirectionBufferClearTime: 0.05
+  _attackDirectionBufferClearTime:
+    RawValue: 3276
+  _bufferClearTime:
+    RawValue: 13107
   _canMove: 1
   _holdToMove: 1
   _inputEnabled: 1
   _abilityBuffered: 0
   _aiControlled: 0
+  _snapMovement: 0
   _onChargeStarted: {fileID: 11400000, guid: 0a1158f9dd9ab0f4b8dca57ab98000aa, type: 2}
   _onChargeEnded: {fileID: 11400000, guid: 5ef561623c994e44a91f274065867cf4, type: 2}

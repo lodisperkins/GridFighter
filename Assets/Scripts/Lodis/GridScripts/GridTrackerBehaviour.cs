@@ -29,15 +29,17 @@ namespace Lodis.GridScripts
         [SerializeField] private bool _markCollider;
         [Tooltip("If true, will mark all panels in cardinal directions at some given range.")]
         [SerializeField] private bool _markAtRange;
+        [Tooltip("If true, will mark all panels in cardinal directions at some given range.")]
+        [SerializeField] private bool _markAtOffsetRange;
         [Tooltip("If true, will mark all panels in all directions at some given range.")]
         [SerializeField] private bool _markAtRadius;
         [ShowIf("_markPanelAtGridLocation")]
         [SerializeField] private GridMovementBehaviour _movementToTrack;
         [ShowIf("_markCollider")]
         [SerializeField] private ColliderBehaviour _colliderToTrack;
-        [ShowIf("_markAtRange")]
+        [ShowIf(EConditionOperator.Or, "_markAtRange", "_markAtOffsetRange")]
         [SerializeField] private int _xRange;
-        [ShowIf("_markAtRange")]
+        [ShowIf(EConditionOperator.Or, "_markAtRange", "_markAtOffsetRange")]
         [SerializeField] private int _yRange;
         [ShowIf("_markAtRadius")]
         [SerializeField] private int _radius;
@@ -93,6 +95,10 @@ namespace Lodis.GridScripts
             {
                 MarkOtherPanelAtRadius(panel.Position.X, panel.Position.Y);
             }
+            else if (_markAtOffsetRange)
+            {
+                MarkOtherPanelAtoffsetRange(panel.Position.X, panel.Position.Y);
+            }
 
             return true;
         }
@@ -122,6 +128,11 @@ namespace Lodis.GridScripts
             {
                 MarkOtherPanelAtRadius(panel.Position.X, panel.Position.Y);
             }
+            else if (_markAtOffsetRange)
+            {
+                MarkOtherPanelAtoffsetRange(panel.Position.X, panel.Position.Y);
+            }
+
             return true;
         }
 
@@ -195,6 +206,31 @@ namespace Lodis.GridScripts
                 }
 
                 if (GridBehaviour.Grid.GetPanel(x, y - i, out panel))
+                {
+                    _panelsInRange.Add(panel);
+                    MarkPanel(panel);
+                }
+            }
+        }
+
+        private void MarkOtherPanelAtoffsetRange(int x, int y)
+        {
+            ClearPanelsInRange();
+
+            PanelBehaviour panel;
+
+            for (int i = 1; i <= _xRange; i++)
+            {
+                if (GridBehaviour.Grid.GetPanel(x + i, y, out panel))
+                {
+                    _panelsInRange.Add(panel);
+                    MarkPanel(panel);
+                }
+            }
+
+            for (int i = 1; i <= _yRange; i++)
+            {
+                if (GridBehaviour.Grid.GetPanel(x, y + i, out panel))
                 {
                     _panelsInRange.Add(panel);
                     MarkPanel(panel);

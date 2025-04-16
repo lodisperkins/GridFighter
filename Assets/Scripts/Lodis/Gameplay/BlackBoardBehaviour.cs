@@ -1,9 +1,11 @@
-﻿using Lodis.Input;
+﻿using Lodis.GridScripts;
+using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.UI;
 using Lodis.Utility;
 using System.Collections.Generic;
+using System.Security.Policy;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -26,6 +28,8 @@ namespace Lodis.Gameplay
         public IControllable Player2Controller;
         public IntVariable Player1ID;
         public IntVariable Player2ID;
+        public IntVariable Player1ComboLevel;
+        public IntVariable Player2ComboLevel;
         public RingBarrierBehaviour RingBarrierRHS;
         public RingBarrierBehaviour RingBarrierLHS;
         public ParticleSystem BlockEffect;
@@ -151,6 +155,16 @@ namespace Lodis.Gameplay
             {
                 ObjectPoolBehaviour.Instance.ReturnGameObject(collider.Entity, GridGame.FixedTimeStep);
             }
+        }
+
+        public IntVariable GetComboLevelForOpponent(GridAlignment alignment)
+        {
+            if (alignment == GridAlignment.LEFT)
+                return Player2ComboLevel;
+            else if (alignment == GridAlignment.RIGHT)
+                return Player1ComboLevel;
+
+            return null;
         }
 
         /// <summary>

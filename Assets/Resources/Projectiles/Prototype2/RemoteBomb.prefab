@@ -156,8 +156,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: 
@@ -238,7 +241,6 @@ MonoBehaviour:
     RawValue: 0
   _rangeToIgnoreUpAngle:
     RawValue: 13107
-  _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -246,6 +248,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 1
   _gridActive: 1
@@ -256,6 +259,7 @@ MonoBehaviour:
   _setGroundPosition: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &3646080817353548371
 MonoBehaviour:
@@ -365,6 +369,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2048251102281986096, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2048251102281986097, guid: 98aa7604b6c6b744295321daf61adbac,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -395,6 +404,21 @@ PrefabInstance:
       propertyPath: ColorModule.gradient.maxGradient.key0.r
       value: 0.94509804
       objectReference: {fileID: 0}
+    - target: {fileID: 2048251102322643820, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251102798125138, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251103700287630, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2048251103700287631, guid: 98aa7604b6c6b744295321daf61adbac,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
@@ -409,6 +433,36 @@ PrefabInstance:
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
       value: 0.8666667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251103753737381, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251104268184598, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251104346357404, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.54323184
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251104346357404, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.54323184
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251104346357404, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.54323184
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251104346357404, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.21
       objectReference: {fileID: 0}
     - target: {fileID: 2048251104346357404, guid: 98aa7604b6c6b744295321daf61adbac,
         type: 3}
@@ -434,6 +488,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251104346357406, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2048251104388778303, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3216243797895471855, guid: 98aa7604b6c6b744295321daf61adbac,
         type: 3}

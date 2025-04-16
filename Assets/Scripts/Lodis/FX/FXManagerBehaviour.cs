@@ -1,10 +1,12 @@
 ﻿using Lodis.Gameplay;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
 using Types;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Lodis.FX
 {
@@ -25,6 +27,9 @@ namespace Lodis.FX
         private bool _superMoveActive;
         private bool _environmentLightsEnabled;
         private bool _playerControlsEnabled;
+
+        private List<int> _originalLayers;
+        private GameObject[] _lastVisuals;
 
         private static FXManagerBehaviour _instance;
 
@@ -88,7 +93,35 @@ namespace Lodis.FX
             RenderTexture.active = renderTexture;
         }
 
-        public void StartSuperMoveVisual(int player, Fixed32 duration)
+        private void SetVisualsVisible(bool visible)
+        {
+            if (visible)
+            {
+                int layer = LayerMask.NameToLayer("LHSMesh");
+                _originalLayers = new();
+
+                for (int i = 0; i < _lastVisuals.Length; i++)
+                {
+                    _originalLayers.Add(_lastVisuals[i].layer);
+                    _lastVisuals[i].layer = layer;
+
+                    _lastVisuals[i].SetLayerRecursively(layer);
+                }
+            }
+            else if (_originalLayers?.Count > 0)
+            {
+                for (int i = 0; i < _lastVisuals.Length; i++)
+                {
+                    _lastVisuals[i].layer = _originalLayers[i];
+
+                    _lastVisuals[i].SetLayerRecursively(_originalLayers[i]);
+                }
+
+                _originalLayers.Clear();
+            }
+        }
+
+        public void StartSuperMoveVisual(int player, Fixed32 duration, params GameObject[] extraVisuals)
         {
             if (player != 0 && player != 1)
                 return;
@@ -101,23 +134,28 @@ namespace Lodis.FX
             {
                 currentCamera = _player1Camera;
                 currentAnimator = _player1Animator;
+                currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                _player2Animator.enabled = false;
                 direction = Vector3.back;
             }
             else if (player == 1)
             {
                 currentCamera = _player2Camera;
                 currentAnimator = _player2Animator;
+                currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+                _player1Animator.enabled = false;
                 direction = Vector3.forward;
             }
+            _lastVisuals = extraVisuals;
+            SetVisualsVisible(true);
             SetEnvironmentLightsEnabled(false);
-            currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
             MatchManagerBehaviour.Instance.ChangeSimulationTimeScale(0, 0, duration);
             currentCamera.LerpCamera(duration, _superMoveCurve);
 
             SuperMoveEffectActive = true;
         }
 
-        public void StartSuperMoveVisual(int player)
+        public void StartSuperMoveVisual(int player, params GameObject[] extraVisuals)
         {
             if (player != 1 && player != 2)
                 return;
@@ -130,17 +168,23 @@ namespace Lodis.FX
             {
                 currentCamera = _player1Camera;
                 currentAnimator = _player1Animator;
+
+                currentAnimator.updateMode = AnimatorUpdateMode.Normal;
+                _player2Animator.enabled = false;
+
                 direction = Vector3.right;
             }
             else
             {
                 currentCamera = _player2Camera;
                 currentAnimator = _player2Animator;
+                currentAnimator.updateMode = AnimatorUpdateMode.Normal;
+                _player1Animator.enabled = false;
                 direction = Vector3.left;
             }
 
+            SetVisualsVisible(true);
             SetEnvironmentLightsEnabled(false);
-            currentAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
             MatchManagerBehaviour.Instance.ChangeTimeScale(0, 0, currentCamera.LerpDuration);
             currentCamera.LerpCamera(currentCamera.LerpDuration, _superMoveCurve);
 
@@ -153,12 +197,16 @@ namespace Lodis.FX
 
             MatchManagerBehaviour.Instance.ResetTimeScale();
 
+            SetVisualsVisible(false);
+
             _player1Camera.StopLerpCamera();
             _player1Camera.SetCameraEnabled(false);
             _player1Animator.updateMode = AnimatorUpdateMode.Normal;
+            _player2Animator.enabled = true;
 
             _player2Camera.StopLerpCamera();
             _player2Animator.updateMode = AnimatorUpdateMode.Normal;
+            _player1Animator.enabled = true;
             _player2Camera.SetCameraEnabled(false);
 
             SuperMoveEffectActive = false;

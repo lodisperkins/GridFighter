@@ -1,4 +1,5 @@
-﻿using Lodis.Utility;
+﻿using Lodis.ScriptableObjects;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +24,9 @@ namespace Lodis.UI
         public UnityEvent OnActive;
         public UnityEvent OnInactive;
         public UnityEvent OnGoToParent;
+        public BoolVariable GoToParentCondition;
         public UnityEvent OnGoToChild;
+        public BoolVariable GoToChildCondition;
 
         public Page GetChildByName(string name)
         {
@@ -71,6 +74,7 @@ namespace Lodis.UI
         [Tooltip("If true pages will no longer turn on/off automatically. Use this if you are going to handle page visuals manually.")]
         private bool _changePageManually;
         [SerializeField] private bool _useEventSystemScheme;
+        [SerializeField] private UnityEvent _onPreviousPagePressed;
 
         //---
         private int _currentChildIndex;
@@ -95,6 +99,8 @@ namespace Lodis.UI
                 if (!_previousPageOnCancel)
                     return;
 
+                _onPreviousPagePressed?.Invoke();
+
                 // If UseEventSystemScheme is false, always allow going to the previous page
                 if (!UseEventSystemScheme)
                 {
@@ -116,6 +122,8 @@ namespace Lodis.UI
                 if (!binding.HasValue) return;
 
                 // Extract the control scheme name from the binding groups
+                if (binding.Value.groups == null) return;
+
                 string[] splitResult = binding.Value.groups.Split(';');
                 string activePlayerControlScheme = string.Empty;
 
@@ -184,7 +192,10 @@ namespace Lodis.UI
             Page targetPage = FindPage(RootPage, name);
 
             if (CurrentPage == null || targetPage == null)
+            {
+                Debug.LogError("Couldn't find page with name " + name);
                 return;
+            }
 
             if (!CurrentPage.KeepRootVisible || _changePageManually)
                 CurrentPage.PageRoot?.SetActive(false);
@@ -236,6 +247,11 @@ namespace Lodis.UI
             if (CurrentPage == null || !CurrentPage.Children.ContainsIndex(index))
                 return;
 
+            if (CurrentPage.GoToChildCondition?.Value == false)
+            {
+                return;
+            }
+
             if (!CurrentPage.KeepRootVisible && !_changePageManually)
                 CurrentPage.PageRoot?.SetActive(false);
 
@@ -260,6 +276,11 @@ namespace Lodis.UI
         {
             if (RootPage == null || (CurrentPage?.PageParent == null && CurrentPage != RootPage))
                 return;
+
+            if (CurrentPage.GoToParentCondition?.Value == false)
+            {
+                return;
+            }
 
             if (CurrentPage == RootPage && _loadSceneOnFirstPage)
             {

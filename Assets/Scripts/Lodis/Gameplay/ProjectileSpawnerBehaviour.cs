@@ -109,7 +109,7 @@ namespace Lodis.Gameplay
         /// <param name="hitColliderInfo">The hit collider info to attach to the projectile</param>
         /// <returns></returns>
         /// <param name="useGravity"></param>
-        public EntityDataBehaviour FireProjectile(float forceScale, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
+        public EntityDataBehaviour FireProjectile(Fixed32 forceScale, HitColliderData hitColliderInfo, bool useGravity = false, bool faceHeading = true)
         {
             if (!Projectile)
                 return null;

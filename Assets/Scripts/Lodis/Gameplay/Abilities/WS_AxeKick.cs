@@ -13,7 +13,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class WS_AxeKick : Ability
     {
-        private HitColliderBehaviour _hitColliderBehaviour;
+        private CollisionGroupBehaviour _hitColliderBehaviour;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -34,22 +34,30 @@ namespace Lodis.Gameplay
             //_hitColliderBehaviour = instance.GetComponent<HitColliderBehaviour>();
 
             //_hitColliderBehaviour.ColliderInfo = GetColliderData(0);
+            //_hitColliderBehaviour.Spawner = Owner;
 
-            HitColliderBehaviour[] colliders = instance.GetComponentsInChildren<HitColliderBehaviour>();
+            //HitColliderBehaviour[] colliders = instance.GetComponentsInChildren<HitColliderBehaviour>();
 
-            foreach (HitColliderBehaviour collider in colliders)
-            {
-                collider.Spawner = Owner;
-                collider.ColliderInfo.AddOnHitEvent(OnHit);
-            }
+            //foreach (HitColliderBehaviour collider in colliders)
+            //{
+            //    collider.Spawner = Owner;
+            //    collider.ColliderInfo.AddOnHitEvent(OnHit);
+            //}
+
+            _hitColliderBehaviour = instance.GetComponent<CollisionGroupBehaviour>();
+
+            _hitColliderBehaviour.SetHitCollisionInfo(GetColliderData(0), Owner);
         }
 
-        protected override void OnEnd()
+        protected override void OnRecover(params object[] args)
         {
-            base.OnRecover(null);
+            base.OnRecover(args);
 
             if (_hitColliderBehaviour)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitColliderBehaviour.gameObject);
+            {
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitColliderBehaviour.Entity);
+
+            }
         }
     }
 }

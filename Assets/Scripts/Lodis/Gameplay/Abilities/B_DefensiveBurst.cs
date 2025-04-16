@@ -38,10 +38,10 @@ namespace Lodis.Gameplay
             //Freezes all forces in the knockback and physics components
             OwnerKnockBackScript.Physics.CancelFreeze();
             OwnerKnockBackScript.Physics.IsKinematic = true;
-            OwnerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-            OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
             OwnerKnockBackScript.CancelHitStun();
             OwnerKnockBackScript.CancelStun();
+            OwnerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
+            OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
 
             //Disable ability benefits if the player is hit out of burst
             OnHit += collision =>
@@ -54,6 +54,13 @@ namespace Lodis.Gameplay
                 CameraBehaviour.Instance.ZoomAmount = 3;
                 _zoomAction = RoutineBehaviour.Instance.StartNewTimedAction(parameter => CameraBehaviour.Instance.ZoomAmount = 0, TimedActionCountType.SCALEDTIME, 0.7f);
                 AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner.gameObject), "Burst Counter");
+
+                GameObject opp = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner.gameObject);
+                MovesetBehaviour oppMoves = opp.GetComponent<MovesetBehaviour>();
+
+                //Time is 0.5
+                oppMoves.LockBurst(new Fixed32(32768));
+
                 if (OwnerKnockBackScript.CurrentAirState == AirState.NONE)
                     return;
 
@@ -73,6 +80,7 @@ namespace Lodis.Gameplay
                     OwnerKnockBackScript.CurrentAirState = AirState.NONE;
                 }
 
+                
             };
         }
 
@@ -97,10 +105,10 @@ namespace Lodis.Gameplay
             //Spawns a new particle effect at this player's position
             Object.Instantiate(_burstEffect, Owner.transform.position, Camera.main.transform.rotation);
 
-            //If the player isn't resting on the ground...
-            if (OwnerKnockBackScript.CurrentAirState != AirState.NONE && !OwnerKnockBackScript.Physics.IsGrounded)
-                //...put them in freefall
-                OwnerKnockBackScript.CurrentAirState = AirState.FREEFALL;
+            ////If the player isn't resting on the ground...
+            //if (OwnerKnockBackScript.CurrentAirState != AirState.NONE && !OwnerKnockBackScript.Physics.IsGrounded)
+            //    //...put them in freefall
+            //    OwnerKnockBackScript.CurrentAirState = AirState.FREEFALL;
 
             OwnerKnockBackScript.Physics.IsKinematic = false;
         }

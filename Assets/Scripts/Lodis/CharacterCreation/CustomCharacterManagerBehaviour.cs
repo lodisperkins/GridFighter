@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 using Newtonsoft.Json;
 using Lodis.Utility;
+using UnityEngine.EventSystems;
 
 namespace Lodis.CharacterCreation
 {
@@ -17,6 +17,7 @@ namespace Lodis.CharacterCreation
         private int _currentArmorType;
         private string _replacementName;
         private bool _creatingNewCharacter;
+        [SerializeField] private EventSystem _eventSystem;
 
         public int CurrentArmorType { get => _currentArmorType; set => _currentArmorType = value; }
         public string ReplacementName { get => _replacementName; set => _replacementName = value; }
@@ -65,26 +66,34 @@ namespace Lodis.CharacterCreation
 
         public void SetCharacterName(string name)
         {
-            if (name == "")
-                name = "Gladiator";
+            string finalName = string.IsNullOrEmpty(name) ? "Gladiator" : name;
 
-            _characterName = name;
+            // Only check for name collisions if the base name is Gladiator
+            if (finalName == "Gladiator")
+            {
+                int counter = 1;
+                string potentialName = finalName;
+
+                while (File.Exists(Path.Combine(_saveLoadPath, $"{potentialName}_ArmorSet.txt")))
+                {
+                    potentialName = $"Gladiator{counter}";
+                    counter++;
+                }
+
+                finalName = potentialName;
+            }
+
+
+            // Rename the file if it exists
+            if (File.Exists(ArmorPath))
+            {
+                string newPath = Path.Combine(_saveLoadPath, $"{finalName}_ArmorSet.txt");
+                File.Move(ArmorPath, newPath);
+            }
+
+            CharacterName = finalName;
         }
 
-        public void SetCharacterName(Text text)
-        {
-            string newName = text.text;
-
-            if (newName == "")
-                newName = "Gladiator";
-
-            string path = ArmorPath;
-
-            if (File.Exists(path))
-                File.Move(path, _saveLoadPath + "/" + newName + "_ArmorSet.txt");
-
-            CharacterName = text.text;
-        }
 
         public void LoadCustomCharacter(string characterName)
         {
@@ -136,16 +145,21 @@ namespace Lodis.CharacterCreation
             if (CurrentArmorType < 0)
                 Debug.LogError("Invalid type for armor replacement.");
 
+
+            SavePopupBehaviour.ChangesAreSaved.Value = false;
+
             CustomCharacter.ReplaceWearable(ID);
         }
 
         public void ReplaceFaceColor(Color color)
         {
+            SavePopupBehaviour.ChangesAreSaved.Value = false;
             CustomCharacter.FaceColor = color;
         }
 
         public void ReplaceHairColor(Color color)
         {
+            SavePopupBehaviour.ChangesAreSaved.Value = false;
             CustomCharacter.HairColor = color;
         }
 
@@ -168,8 +182,8 @@ namespace Lodis.CharacterCreation
 
         public void SaveCharacter()
         {
-            if (CustomCharacter.HasDefaultOutfit == true)
-                return;
+            //if (CustomCharacter.HasDefaultOutfit == true)
+            //    return;
 
             string path = _creatingNewCharacter ? CreateUniqueArmorPath() : ArmorPath;
 

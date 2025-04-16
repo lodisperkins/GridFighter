@@ -28,6 +28,7 @@ namespace Lodis.UI
         [SerializeField] private float _effectScale;
         [SerializeField] private float _effectDuration;
         [SerializeField] private AudioSource _announcer;
+        [SerializeField] private IntVariable _playerComboLevel;
         private int _minHitCount;
         private bool _canCount;
         private TimedAction _disableTextAction;
@@ -60,11 +61,13 @@ namespace Lodis.UI
                 ResetComboMessage();
                 HitCount = 0;
                 _nextComboMessageIndex = 0;
+                _playerComboLevel.Value = 0;
             });
 
             _ownerOpponent.AddOnTakeDamageAction(() => _canCount = true);
             _ownerOpponent.AddOnTakeDamageAction(UpdateComboMessage);
             _opponentStateMachine.AddOnStateChangedAction(DisplayComboMessage);
+            _playerComboLevel.Value = 0;
         }
 
         private void StartSpawnEffect()
@@ -93,6 +96,7 @@ namespace Lodis.UI
                 _currentColor = _comboMessages[_nextComboMessageIndex].MessageColor;
                 _currentClip = _comboMessages[_nextComboMessageIndex].AnnouncerClip;
                 _nextComboMessageIndex++;
+                _playerComboLevel.Value = _nextComboMessageIndex - 1;
                 _announcer.Stop();
             }
 
@@ -105,8 +109,7 @@ namespace Lodis.UI
 
         public void DisplayComboMessage(string state)
         {
-            string currentState = _opponentStateMachine.LastState;
-            if (!_comboText.enabled || currentState != "Idle" || _disableTextAction?.GetEnabled() == true)
+            if (!_comboText.enabled || state != "Idle" || _disableTextAction?.GetEnabled() == true)
                 return;
 
             _canCount = false;
@@ -120,6 +123,7 @@ namespace Lodis.UI
 
             HitCount = 0;
             _nextComboMessageIndex = 0;
+            _playerComboLevel.Value = 0;
         }
 
         public void DisplayComboMessage(int index)
@@ -142,6 +146,7 @@ namespace Lodis.UI
 
             HitCount = 0;
             _nextComboMessageIndex = 0;
+            _playerComboLevel.Value = 0;
         }
 
         private void ResetComboMessage()
@@ -153,6 +158,7 @@ namespace Lodis.UI
             _announcer.Stop();
             _currentComboMessage = _comboMessages[0].Message;
             _currentColor = _comboMessages[0].MessageColor;
+            _playerComboLevel.Value = 0;
         }
     }
 }

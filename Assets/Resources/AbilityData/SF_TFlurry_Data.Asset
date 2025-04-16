@@ -108,7 +108,7 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 9830
     Damage:
-      RawValue: 327680
+      RawValue: 524288
     BaseKnockBack:
       RawValue: 52428
     KnockBackScale:

@@ -86,7 +86,7 @@ namespace Lodis.Gameplay
 
                 GameObject explosion = Instantiate(_explosion, playerCharacter.transform.position, playerCharacter.transform.rotation);
                 ParticleColorManagerBehaviour colorManager = explosion.GetComponent<ParticleColorManagerBehaviour>();
-                colorManager.Alignment = playerID == 1 ? GridScripts.GridAlignment.LEFT : GridScripts.GridAlignment.RIGHT;
+                colorManager.Alignment = playerID == 0 ? GridScripts.GridAlignment.LEFT : GridScripts.GridAlignment.RIGHT;
                 colorManager.SetColors();
 
                 CameraBehaviour.ShakeBehaviour.ShakeRotation(1, 4, 90);

@@ -22,7 +22,7 @@ MonoBehaviour:
   recoverTime:
     RawValue: 19660
   startUpTime:
-    RawValue: 13107
+    RawValue: 6553
   maxActivationAmount: 1
   EnergyCost: 1
   CancellationRules:
@@ -72,7 +72,7 @@ MonoBehaviour:
     BaseKnockBack:
       RawValue: 131072
     KnockBackScale:
-      RawValue: 65536
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:

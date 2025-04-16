@@ -110,9 +110,6 @@ namespace Lodis.Gameplay
             _thalamusLayer = _thalamusInstance.layer;
             _thalamusInstance.GetComponent<ColorManagerBehaviour>().SetColors((int)OwnerMoveScript.Alignment);
 
-            //Put on this layer so that it appears in the super move visual.
-            _thalamusInstance.layer = LayerMask.NameToLayer("BattleOverlayEffect");
-
             _thalamusInstance.transform.rotation = _thalamusInstance.transform.parent.rotation;
 
             ProjectileColliderData = GetColliderData(2);
@@ -224,7 +221,7 @@ namespace Lodis.Gameplay
 
             IControllable controller = Owner.GetComponentInParent<IControllable>();
 
-            FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, 2);
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, 2, _thalamusInstance);
         }
 
         private void PrepareBlast()
@@ -432,6 +429,7 @@ namespace Lodis.Gameplay
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
 
             if (_thalamusInstance)
                 _thalamusInstance.layer = _thalamusLayer;

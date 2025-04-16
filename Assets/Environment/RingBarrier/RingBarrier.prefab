@@ -1255,6 +1255,7 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 1
   _groundPosition:
     RawValue: -65536
   clampPositionInBarriers: 0

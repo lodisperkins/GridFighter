@@ -339,18 +339,21 @@ namespace Lodis.Input
                 // Call the function related to Strong attack
                 BufferChargeNormalAbility();
             }
-            _special1Down = (inputs & (long)InputFlag.Special1) != 0;
-            if (_special1Down)
+            if (!_special1Down && (inputs & (long)InputFlag.Special1) != 0)
             {
                 // Call the function related to Special1
                 BufferSpecialAbility(0);
             }
-            _special2Down = (inputs & (long)InputFlag.Special2) != 0;
-            if (_special2Down)
+            _special1Down = (inputs & (long)InputFlag.Special1) != 0;
+
+            if (!_special2Down && (inputs & (long)InputFlag.Special2) != 0)
             {
                 // Call the function related to Special2
                 BufferSpecialAbility(1);
             }
+
+            _special2Down = (inputs & (long)InputFlag.Special2) != 0;
+
             if ((inputs & (long)InputFlag.Burst) != 0)
             {
                 // Call the function related to Burst
@@ -714,6 +717,9 @@ namespace Lodis.Input
         /// <param name="args">Any additional arguments to give to the ability. 
         public void BufferSpecialAbility(int abilityNum)
         {
+            if (_abilityBuffered)
+                return;
+
             object[] args = new object[2];
             AbilityType abilityType = AbilityType.SPECIAL;
             _attackDirection.X *= Mathf.Round(transform.forward.x);

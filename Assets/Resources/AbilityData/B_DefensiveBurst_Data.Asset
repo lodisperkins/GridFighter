@@ -17,7 +17,7 @@ MonoBehaviour:
   exampleClip: {fileID: 0}
   AbilityType: 10
   timeActive:
-    RawValue: 39321
+    RawValue: 32768
   recoverTime:
     RawValue: 52428
   startUpTime:
@@ -37,6 +37,7 @@ MonoBehaviour:
   CancelAllOnHit: 0
   CancelAllOnFlinch: 0
   CancelAllOnKnockback: 0
+  AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 1
   CanInputMovementWhileRecovering: 1
@@ -83,7 +84,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 10
     AbilityID:
-      RawValue: 0
+      RawValue: -1405157376
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0

@@ -23,7 +23,7 @@ MonoBehaviour:
   startUpTime:
     RawValue: 26214
   maxActivationAmount: 1
-  EnergyCost: 4
+  EnergyCost: 3
   CancellationRules:
   - Phase: 5
     CanOnlyCancelOnOpponentHit: 0
@@ -67,9 +67,9 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 0
     Damage:
-      RawValue: 3276800
+      RawValue: 1638400
     BaseKnockBack:
-      RawValue: 655360
+      RawValue: 327680
     KnockBackScale:
       RawValue: 196608
     ClampForceWithinRing: 0
@@ -104,13 +104,63 @@ MonoBehaviour:
     SpawnSound: {fileID: 0}
     HitSound: {fileID: 8300000, guid: 1ed3567acb1fa504f8f026962164e2f1, type: 3}
     DespawnSound: {fileID: 0}
+  - Name: LeadCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive:
+      RawValue: 13107
+    DestroyOnHit: 0
+    IsMultiHit: 1
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 3276
+    Damage:
+      RawValue: 65536
+    BaseKnockBack:
+      RawValue: 65536
+    KnockBackScale:
+      RawValue: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 85196
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 65
+    Priority:
+      RawValue: 262144
+    OwnerAlignement: 0
+    AbilityType: 8
+    AbilityID:
+      RawValue: -1322254336
+    SpawnEffect: {fileID: 1493204891009420812, guid: 67bf52d6da49f564e8176f83473f4340,
+      type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
+      type: 3}
+    HitEffectLevel: 1
+    HitStopShakeStrength:
+      RawValue: 0
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
+    CameraShakeFrequency: 45
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: 1ed3567acb1fa504f8f026962164e2f1, type: 3}
+    DespawnSound: {fileID: 0}
   _customStats:
   - name: TravelDistance
     value:
       RawValue: 196608
   - name: JumpHeight
     value:
-      RawValue: 131072
+      RawValue: 196608
   - name: HangTime
     value:
       RawValue: 45875
@@ -123,7 +173,10 @@ MonoBehaviour:
   - name: OpponentBounciness
     value:
       RawValue: 196608
-  - name: ColliderScale
+  - name: FistColliderScale
+    value:
+      RawValue: 196608
+  - name: BodyColliderScale
     value:
       RawValue: 131072
   animationType: 3

@@ -838,7 +838,7 @@ PrefabInstance:
     - target: {fileID: 1251192488738103914, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: _onDeselect.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1251192488738103914, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -6490,7 +6490,7 @@ PrefabInstance:
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.size
-      value: 4
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
@@ -6500,12 +6500,12 @@ PrefabInstance:
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
@@ -6521,17 +6521,17 @@ PrefabInstance:
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 41367768}
+      objectReference: {fileID: 2093031690}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
-      objectReference: {fileID: 834067891}
+      objectReference: {fileID: 723748765}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 834067891}
+      objectReference: {fileID: 723748765}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[3].m_Target
@@ -6540,17 +6540,17 @@ PrefabInstance:
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SetProfileName
+      value: SetName
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: GoToPageParent
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: GoToPageChild
+      value: SetActive
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
@@ -6569,8 +6569,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.UI.InputRebindingUIBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
+      propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_IntArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
+        type: 3}
       propertyPath: _onConfirm.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_IntArgument
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114165951547088164, guid: 25b74707566ea03478a6d7588c0bb4b6,
         type: 3}
@@ -12082,6 +12092,18 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1796131875}
+        m_TargetAssemblyTypeName: UnityEngine.Behaviour, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
       - m_Target: {fileID: 1796131875}
         m_TargetAssemblyTypeName: 
         m_MethodName: Play

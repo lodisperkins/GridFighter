@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class WB_FlareLauncher : Ability
     {
-        private HitColliderBehaviour _hitColliderBehaviour;
+        private CollisionGroupBehaviour _hitColliderBehaviour;
 
 	    //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -30,10 +30,9 @@ namespace Lodis.Gameplay
             else
                 instance.FixedTransform.WorldRotation = FQuaternion.Euler(0, 180, 0);
 
-            _hitColliderBehaviour = instance.GetComponent<HitColliderBehaviour>();
+            _hitColliderBehaviour = instance.GetComponent<CollisionGroupBehaviour>();
 
-            _hitColliderBehaviour.ColliderInfo = GetColliderData(0);
-            _hitColliderBehaviour.Spawner = Owner;
+            _hitColliderBehaviour.SetHitCollisionInfo(GetColliderData(0), Owner);
         }
 
         protected override void OnEnd()

@@ -47,7 +47,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects:
   - {fileID: 4592643921774826832, guid: e4ed04b1417b2d2478388f5b80ae8212, type: 3}
-  - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
+  - {fileID: 3161059397199619991, guid: 11100a5965b260b4c85176d109e09f0a, type: 3}
   Sounds:
   - {fileID: 8300000, guid: 8843d6cc097dd544da54836c69ac67c5, type: 3}
   DisplayIcon: {fileID: 21300000, guid: 45052ee0f03baad45ab08db0cba54cba, type: 3}
@@ -55,7 +55,7 @@ MonoBehaviour:
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
   ColliderData:
-  - Name: HookCollider
+  - Name: Hook1Collider
     DespawnAfterTimeLimit: 0
     TimeActive:
       RawValue: 0
@@ -70,7 +70,57 @@ MonoBehaviour:
     Damage:
       RawValue: 655360
     BaseKnockBack:
+      RawValue: 1966080
+    KnockBackScale:
+      RawValue: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 1
+    HitAngle:
+      RawValue: 65536
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 45875
+    Priority:
+      RawValue: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    AbilityID:
+      RawValue: -1531248640
+    SpawnEffect: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
+      type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength:
       RawValue: 32768
+    CameraShakeStrength:
+      RawValue: 65536
+    CameraShakeDuration:
+      RawValue: 32768
+    CameraShakeFrequency: 50
+    ShakesCamera: 1
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+    DespawnSound: {fileID: 0}
+  - Name: Hook2Collider
+    DespawnAfterTimeLimit: 0
+    TimeActive:
+      RawValue: 0
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 33549623
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 655360
+    BaseKnockBack:
+      RawValue: 6553
     KnockBackScale:
       RawValue: 0
     ClampForceWithinRing: 0
@@ -87,7 +137,8 @@ MonoBehaviour:
     AbilityType: 8
     AbilityID:
       RawValue: -1531248640
-    SpawnEffect: {fileID: 0}
+    SpawnEffect: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
+      type: 3}
     SpawnEffectOffset:
       RawValue: 0
     HitSpark: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,

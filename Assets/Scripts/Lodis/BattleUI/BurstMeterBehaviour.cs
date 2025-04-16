@@ -6,30 +6,34 @@ using UnityEngine.UI;
 using Lodis.Utility;
 using UnityEngine.Events;
 using DG.Tweening;
+using Lodis.Sound;
 
 public class BurstMeterBehaviour : MonoBehaviour
 {
-    private MovesetBehaviour _target;
-    [SerializeField]
-    private Image _fill;
-    [SerializeField]
-    private Slider _slider;
-    [SerializeField]
-    private Color _fullColor;
-    [SerializeField]
-    private Color _halfFullColor;
-    [SerializeField]
-    private Color _defaultColor;
-    [SerializeField]
-    private UnityEvent _onFilled;
-    [SerializeField]
-    private UnityEvent _onHalfFilled;
+    [Header("UI Scene References")]
+    [SerializeField] private Image _fill;
+    [SerializeField] private Slider _slider;
     [SerializeField] private GameObject _defensiveEffect;
     [SerializeField] private GameObject _offensiveEffect;
+
+    [Header("Color Options")]
+    [SerializeField] private Color _fullColor;
+    [SerializeField] private Color _halfFullColor;
+    [SerializeField] private Color _defaultColor;
+
+    [Header("Audio Feedback")]
+    [SerializeField] private AudioClip _offensiveBurstReady;
+    [SerializeField] private AudioClip _defensiveBurstReady;
+
+    [Header("Fill Events")]
+    [SerializeField] private UnityEvent _onFilled;
+    [SerializeField] private UnityEvent _onHalfFilled;
+
 
     //---
     private bool _filledEventCalled;
     private bool _halfFilledEventCalled;
+    private MovesetBehaviour _target;
 
     public MovesetBehaviour Target { get => _target; set => _target = value; }
 
@@ -55,7 +59,11 @@ public class BurstMeterBehaviour : MonoBehaviour
             _offensiveEffect.gameObject.SetActive(false);
 
             if (!_filledEventCalled)
+            {
                 _onFilled?.Invoke();
+                _filledEventCalled = true;
+                SoundManagerBehaviour.Instance.PlaySound(_defensiveBurstReady);
+            }
         }
         //In case it was set manually without the meter value being set.
         else if (Target.CanDefensiveBurst)
@@ -68,7 +76,11 @@ public class BurstMeterBehaviour : MonoBehaviour
             _offensiveEffect.gameObject.SetActive(false);
 
             if (!_filledEventCalled)
+            {
                 _onFilled?.Invoke();
+                _filledEventCalled = true;
+                SoundManagerBehaviour.Instance.PlaySound(_defensiveBurstReady);
+            }
         }
         else if (_slider.value >= _slider.maxValue / 2)
         {
@@ -79,7 +91,11 @@ public class BurstMeterBehaviour : MonoBehaviour
             _defensiveEffect.gameObject.SetActive(false);
 
             if (!_halfFilledEventCalled)
+            {
                 _onHalfFilled?.Invoke();
+                _halfFilledEventCalled = true;
+                SoundManagerBehaviour.Instance.PlaySound(_offensiveBurstReady);
+            }
         }
         //In case it was set manually without the meter value being set.
         else if (Target.CanOffensiveBurst)
@@ -93,7 +109,11 @@ public class BurstMeterBehaviour : MonoBehaviour
 
 
             if (!_halfFilledEventCalled)
+            {
                 _onHalfFilled?.Invoke();
+                _halfFilledEventCalled = true;
+                SoundManagerBehaviour.Instance.PlaySound(_offensiveBurstReady);
+            }
         }
         else
         {

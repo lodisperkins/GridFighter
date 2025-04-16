@@ -153,6 +153,7 @@ namespace Lodis.Gameplay
         public Renderer MeshRenderer { get => _meshRenderer; set => _meshRenderer = value; }
         public int DamageableAbilityID { get => _damageableAbilityID; private set => _damageableAbilityID = value; }
         public Condition AliveCondition { get => aliveCondition; set => aliveCondition = value; }
+        public Fixed32 TimeInCurrentStun { get; protected set; }
 
 
 
@@ -325,6 +326,7 @@ namespace Lodis.Gameplay
             }
 
             _stunTimer = FixedPointTimer.StartNewTimedAction(DeactivateStun, time);
+            TimeInCurrentStun = time;
             _onStunEnabled?.Invoke();
         }
 

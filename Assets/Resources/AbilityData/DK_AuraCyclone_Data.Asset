@@ -60,13 +60,13 @@ MonoBehaviour:
     Damage:
       RawValue: 393216
     BaseKnockBack:
-      RawValue: 65536
+      RawValue: 32768
     KnockBackScale:
       RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 91750
+      RawValue: 98304
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -98,7 +98,7 @@ MonoBehaviour:
   _customStats:
   - name: Speed
     value:
-      RawValue: 65536
+      RawValue: 131072
   animationType: 3
   _customAnimation: {fileID: -5711371977894514463, guid: 2a10415d6837d43418c9d8d26aff3063,
     type: 3}

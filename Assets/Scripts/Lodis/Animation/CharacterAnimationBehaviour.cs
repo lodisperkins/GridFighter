@@ -94,11 +94,13 @@ namespace Lodis.Gameplay
         [SerializeField]
         [Tooltip("How long it will take to move again after shuffling.")]
         private FloatVariable _manualShuffleRecoverTime;
+
+        //---
         private bool _animatingAbility;
         private float _targetSpeed = 1;
-
         private List<CustomAnimationEvent> _animationEvents = new List<CustomAnimationEvent>();
         private ConditionAction _winAnimCondition;
+        private CharacterFeedbackBehaviour _characterFeedbackBehaviour;
 
         // Start is called before the first frame update
         void Start()
@@ -108,6 +110,7 @@ namespace Lodis.Gameplay
             _animator.runtimeAnimatorController = _overrideController;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
+            _characterFeedbackBehaviour = GetComponent<CharacterFeedbackBehaviour>();
             //_animator.enabled = false;
 
             _characterStateManager.AddOnStateChangedAction(state =>
@@ -557,6 +560,28 @@ namespace Lodis.Gameplay
 
             _animatingMotion = true;
         }
+
+        public void PlayStunAnimation()
+        {
+            _targetSpeed = 1;
+            if (!_knockbackBehaviour.Stunned)
+                return;
+
+            _animationPhase = 0;
+
+            if (_knockbackBehaviour.FixedTransform.WorldPosition.Y <= new Fixed32(32768) && _knockbackBehaviour.CurrentAirState == Movement.AirState.NONE)
+            {
+                _animator.SetTrigger("Stunned");
+            }
+            else
+            {
+                _animator.SetTrigger("AirStunned");
+                //_characterFeedbackBehaviour.ShakeCharacter(_knockbackBehaviour.TimeInCurrentStun, 0.5f, 1000);
+            }
+
+            _animatingMotion = true;
+        }
+
 
         public void UpdateInAirMoveDirection()
         {

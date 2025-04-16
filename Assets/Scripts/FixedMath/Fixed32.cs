@@ -144,6 +144,10 @@ namespace Types
             return new Fixed32(roundedValue.WholeNumber << value.Scale);
         }
 
+        public static bool IsNaN(Fixed32 value)
+        {
+            return value.RawValue == long.MinValue;
+        }
 
 
         public static Fixed32 Clamp(Fixed32 value, Fixed32 a, Fixed32 b)
@@ -158,6 +162,11 @@ namespace Types
             }
 
             return value;   
+        }
+
+        public static bool WithinRange(Fixed32 value, Fixed32 a, Fixed32 b)
+        {
+            return value >= a && value <= b;
         }
 
         public static Fixed32 operator +(Fixed32 leftHandSide, Fixed32 rightHandSide)
@@ -253,7 +262,10 @@ namespace Types
 
             return sqrtTerm * result;
         }
-
+        public static Fixed32 MirrorAngleAcrossYAxis(Fixed32 angle)
+        {
+            return Fixed32.PI - angle;
+        }
 
         public static Fixed32 Tan(Fixed32 angle)
         {

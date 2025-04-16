@@ -202,6 +202,7 @@ namespace Lodis.UI
 
         public void ReplaceAbility()
         {
+            SavePopupBehaviour.ChangesAreSaved.Value = false;
             if (CurrentAbilityType < 0)
                 Debug.LogError("Invalid type for ability replacement.");
 
@@ -213,6 +214,7 @@ namespace Lodis.UI
 
         public void ReplaceAbility(string name)
         {
+            SavePopupBehaviour.ChangesAreSaved.Value = false;
             ReplacementName = name;
             if (CurrentAbilityType < 0)
                 Debug.LogError("Invalid type for ability replacement.");
@@ -261,16 +263,6 @@ namespace Lodis.UI
         public void SetDeckNames(string newName)
         {
             string uniquePath = _saveLoadPath + "/" + newName + "_Normals" + ".txt";
-            int num = 0;
-            string name = newName;
-
-            while (File.Exists(uniquePath))
-            {
-                num++;
-                newName = name + " " + num.ToString();
-                uniquePath = _saveLoadPath + "/" + newName + "_Normals" + ".txt";
-
-            }
 
             SpecialDeck.DeckName = newName + "_Specials";
             NormalDeck.DeckName = newName + "_Normals";

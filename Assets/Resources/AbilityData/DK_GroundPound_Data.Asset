@@ -24,9 +24,9 @@ MonoBehaviour:
   startUpTime:
     RawValue: 19660
   maxActivationAmount: 1
-  EnergyCost: 3
+  EnergyCost: 2
   CancellationRules: []
-  CancelAllOnHit: 0
+  CancelAllOnHit: 1
   CancelAllOnFlinch: 1
   CancelAllOnKnockback: 1
   AutoMovePhase: 1
@@ -62,11 +62,11 @@ MonoBehaviour:
     BaseKnockBack:
       RawValue: 131072
     KnockBackScale:
-      RawValue: 72089
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 131072
+      RawValue: 108134
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -155,7 +155,7 @@ MonoBehaviour:
       RawValue: 327680
   - name: Speed
     value:
-      RawValue: 1310720
+      RawValue: 2621440
   animationType: 3
   _customAnimation: {fileID: 7400000, guid: 2be0533620ce0d2469d23e63635edfdd, type: 2}
   _shouldMirror: 1

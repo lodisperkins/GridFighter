@@ -33,6 +33,7 @@ namespace Lodis.Gameplay
         private MovesetBehaviour _opponentMoveset;
         private FixedPoints.MoveAction _oppMoveAction;
         private Fixed32 defaultGravity;
+        private RingBarrierBehaviour _opponentRingBarrier;
 
         protected override void OnSerialize(BinaryWriter bw)
         {
@@ -68,16 +69,16 @@ namespace Lodis.Gameplay
                 CameraBehaviour.Instance.AlignmentFocus = OwnerMoveScript.Alignment;
                 CameraBehaviour.Instance.ZoomAmount = 2;
                 CameraBehaviour.Instance.ClampX = false;
-
+                SetAnimPaused(true);
             });
 
             OwnerAnimationScript.AddEventListener("Punch2", () => 
             {
                 //We should only continue if the first hit landed
-                if (_landedFirstHit)
+                if (_landedFirstHit && !MatchManagerBehaviour.Instance.PlayerOutOfRing)
                 {
                     //Spawn collider for punch 2
-                    SpawnCollider(0);
+                    SpawnCollider(1);
 
                     //Play effects for punch 2
                     OwnerVoiceScript.PlayLightAttackSound();
@@ -88,8 +89,10 @@ namespace Lodis.Gameplay
             });
             OwnerAnimationScript.AddEventListener("Punch3", () =>
             {
+                ReturnToFist();
+
                 //Spawn collider for punch 3
-                SpawnCollider(1);
+                SpawnCollider(2);
 
                 _opponentKnockback.Physics.Gravity /= 2;
 
@@ -116,19 +119,7 @@ namespace Lodis.Gameplay
                 _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], effectSpawn, true);
                 //0.01
                 MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, new Fixed32(655), _slowMotionTime);
-                _opponentKnockback.Physics.StopAllForces();
-                FVector3 oppLocation = OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition + FVector3.Up * 2;
-
-                if (_oppMoveAction == null)
-                {
-                    _oppMoveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentKnockback.FixedTransform, oppLocation, new Fixed32(6553));
-                    _oppMoveAction.onComplete += () => _opponentKnockback.Physics.UseGravity = true; 
-                }
-                else
-                {
-                    _oppMoveAction.Rewind();
-                    _oppMoveAction.ChangeValues(_opponentKnockback.FixedTransform.WorldPosition, oppLocation);
-                }
+                ReturnToFist();
 
                 CameraBehaviour.Instance.ZoomAmount = 4.2f;
             });
@@ -137,7 +128,7 @@ namespace Lodis.Gameplay
             OwnerAnimationScript.AddEventListener("Punch4", () =>
             {
                 //Spawn collider for the final blow
-                SpawnCollider(2);
+                SpawnCollider(3);
 
                 //Play effects for final blow
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
@@ -145,7 +136,7 @@ namespace Lodis.Gameplay
                 OwnerVoiceScript.PlayHeavyAttackSound();
 
                 CameraBehaviour.Instance.ZoomAmount = 1;
-                CameraBehaviour.ShakeBehaviour.ShakeRotation(1, 2, 90);
+                CameraBehaviour.ShakeBehaviour.ShakeRotation(0.5f, 2, 90);
             });
         }
 
@@ -156,6 +147,17 @@ namespace Lodis.Gameplay
             //Init values
             _comboStarted = false;
             _landedFirstHit = false;
+
+            if (OwnerMoveScript.Alignment == GridAlignment.LEFT)
+            {
+                _opponentRingBarrier = BlackBoardBehaviour.Instance.RingBarrierRHS;
+            }
+            else
+            {
+                _opponentRingBarrier = BlackBoardBehaviour.Instance.RingBarrierLHS;
+            }
+
+            _opponentRingBarrier.AddOnTakeDamageAction(() => SetAnimPaused(false));
 
             _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<Movement.GridMovementBehaviour>();
             _opponentKnockback = _opponentMovement.GetComponentInChildren<KnockbackBehaviour>();
@@ -175,6 +177,45 @@ namespace Lodis.Gameplay
             _opponentKnockback.IgnoreAdjustedGravity(arguments => !InUse);
             _opponentKnockback.SetDamageableAbilityID(abilityData.ID, arguments => !InUse);
             //RoutineBehaviour.Instance.StartNewConditionAction(args => ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect), condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
+        }
+
+        private void SetAnimPaused(bool animPaused)
+        {
+            if (!InUse)
+                return;
+
+            if (animPaused)
+            {
+                RoutineBehaviour.Instance.CharacterTimeScale = 0;
+            }
+            else
+            {
+                RoutineBehaviour.Instance.CharacterTimeScale = 1;
+                ReturnToFist();
+            }
+        }
+
+        private void ReturnToFist()
+        {
+            if (MatchManagerBehaviour.Instance.PlayerOutOfRing)
+            {
+                return;
+            }
+
+            FVector3 oppLocation = OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition + FVector3.Up * 2;
+
+            _opponentKnockback.Physics.StopAllForces();
+
+            if (_oppMoveAction == null)
+            {
+                _oppMoveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentKnockback.FixedTransform, oppLocation, new Fixed32(6));
+                _oppMoveAction.onComplete += () => _opponentKnockback.Physics.UseGravity = true;
+            }
+            else
+            {
+                _oppMoveAction.Rewind();
+                _oppMoveAction.ChangeValues(_opponentKnockback.FixedTransform.WorldPosition, oppLocation);
+            }
         }
 
         protected override void OnActivate(params object[] args)
@@ -219,11 +260,11 @@ namespace Lodis.Gameplay
         public void SpawnCollider(int colliderIndex)
         {
             FVector3 spawnPosition = Owner.FixedTransform.WorldPosition + (FVector3.Right * OwnerMoveScript.GetAlignmentX());
-            HitColliderBehaviour hitColliderBehaviour = HitColliderSpawner.SpawnCollider(spawnPosition, 1, 1, GetColliderData(colliderIndex), Owner);
+            HitColliderBehaviour hitColliderBehaviour = HitColliderSpawner.SpawnCollider(spawnPosition, 2, 4, GetColliderData(colliderIndex), Owner);
 
             hitColliderBehaviour.AddOpponentCollisionEvent(OnOpponentHit);
 
-            if (colliderIndex == 2)
+            if (colliderIndex == 3)
             {
                 hitColliderBehaviour.ColliderInfo.OnHit += args =>
                 {
@@ -242,7 +283,7 @@ namespace Lodis.Gameplay
                 if (!collider)
                     continue;
 
-                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.gameObject);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.Entity);
             }
 
             _colliders.Clear();
@@ -250,6 +291,11 @@ namespace Lodis.Gameplay
 
         public override void Tick(Fixed32 dt)
         {
+            if (MatchManagerBehaviour.Instance.PlayerOutOfRing)
+            {
+                EndAbility();
+            }
+
             if (CurrentAbilityPhase != AbilityPhase.ACTIVE)
                 return;
 

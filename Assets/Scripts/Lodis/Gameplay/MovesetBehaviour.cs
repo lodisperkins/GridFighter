@@ -154,6 +154,7 @@ namespace Lodis.Gameplay
         private FloatVariable _infiniteBurstEnergyRechargeRate;
         [SerializeField] private bool _canDefensiveBurst = true;
         [SerializeField] private bool _canOffensiveBurst = true;
+        [SerializeField] private bool _burstLocked;
 
         [Header("Sounds")]
         [SerializeField]
@@ -180,6 +181,7 @@ namespace Lodis.Gameplay
         private FixedTimeAction _rechargeAction;
         private FixedTimeAction _deckShuffleAction;
         private FixedTimeAction _burstAction;
+        private FixedTimeAction _burstLockAction;
 
         private FVector2 _lastAttackDirection;
         private Fixed32 _currentBurstRechargeRate;
@@ -244,6 +246,7 @@ namespace Lodis.Gameplay
             {
                 _burstEnergy = value;
                 _burstEnergy = Fixed32.Clamp(_burstEnergy, 0, _maxBurstEnergyRef.FixedValue);
+                Debug.Log("Burst energy set to" + _burstEnergy);
             }
         }
 
@@ -265,7 +268,7 @@ namespace Lodis.Gameplay
 
         public static Fixed32 DeckReloadTime { get; private set; }
         public FVector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
-
+        public bool BurstLocked { get => _burstLocked; private set => _burstLocked = value; }
 
         public override void Serialize(BinaryWriter bw)
         {
@@ -275,6 +278,7 @@ namespace Lodis.Gameplay
             bw.Write(_energyChargeEnabled);
             bw.Write(_canDefensiveBurst);
             bw.Write(_canOffensiveBurst);
+            bw.Write(BurstLocked);
             bw.Write(_loadingShuffle);
             bw.Write(_deckReloading);
 
@@ -297,6 +301,7 @@ namespace Lodis.Gameplay
             _energyChargeEnabled = br.ReadBoolean();
             _canDefensiveBurst = br.ReadBoolean();
             _canOffensiveBurst = br.ReadBoolean();
+            BurstLocked = br.ReadBoolean();
             _loadingShuffle = br.ReadBoolean();
             _deckReloading = br.ReadBoolean();
 
@@ -337,10 +342,14 @@ namespace Lodis.Gameplay
 
             if (MatchManagerBehaviour.Instance.InfiniteEnergy)
                 _energy = _maxEnergyRef.FixedValue;
+
+          
+
+           
+
         }
 
-        // Start is called before the first frame update
-        public override void Begin()
+        private void Start()
         {
             //Set up deck
             _normalDeck = Instantiate(NormalDeckRef);
@@ -366,7 +375,7 @@ namespace Lodis.Gameplay
 
             _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.FixedValue, 1).Loop();
 
-            SetBurstCharge();
+            //SetBurstCharge();
 
 
             //Set up other references and parameters
@@ -377,7 +386,6 @@ namespace Lodis.Gameplay
 
             _manualShuffleWaitTime = _manualShuffleStartTime + _manualShuffleActiveTime + _manualShuffleRecoverTime;
             OnUseAbility += _knockbackBehaviour.DisableInvincibility;
-
         }
 
         private void OnDisable()
@@ -465,19 +473,34 @@ namespace Lodis.Gameplay
                 _currentBurstRechargeRate = _burstEnergyRechargeRate.FixedValue;
             }
 
-            _burstAction?.Stop();
-
-            _burstAction = FixedPointTimer.StartNewTimedAction(() =>
+            if (_burstAction == null)
             {
-                BurstEnergy += _burstEnergyRechargeValue.FixedValue;
-
-                //Stop charging so it doesnt overflow.
-                if (BurstEnergy >= MaxBurstEnergy)
+                _burstAction = FixedPointTimer.StartNewTimedAction(() =>
                 {
-                    BurstEnergy = MaxBurstEnergy;
-                    _burstAction.Stop();
-                }
-            }, _currentBurstRechargeRate).Loop();
+                    BurstEnergy += _burstEnergyRechargeValue.FixedValue;
+
+                    //Stop charging so it doesnt overflow.
+                    if (BurstEnergy >= MaxBurstEnergy)
+                    {
+                        BurstEnergy = MaxBurstEnergy;
+                        _burstAction.Stop();
+                    }
+
+                    if (MatchManagerBehaviour.Instance.InfiniteBurst)
+                    {
+                        _burstAction.Duration = _infiniteBurstEnergyRechargeRate.FixedValue;
+                    }
+                    else
+                    {
+                        _burstAction.Duration = _burstEnergyRechargeRate.FixedValue;
+                    }
+
+                }, _currentBurstRechargeRate).Loop();
+            }
+            else
+            {
+                _burstAction.Reset();
+            }
         }
 
 
@@ -659,8 +682,6 @@ namespace Lodis.Gameplay
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && _stateMachineScript.StateMachine.CurrentState != "Moving" && ability.abilityData.AbilityType != AbilityType.BURST)
                 return null;
-            else if (ability.abilityData.AbilityType == AbilityType.BURST && !_canDefensiveBurst && !_canOffensiveBurst)
-                return null;
 
             if (ability.abilityData.abilityName == "Offensive Burst" && BurstEnergy < _offensiveBurstCost)
             {
@@ -670,6 +691,9 @@ namespace Lodis.Gameplay
             {
                 return null;
             }
+
+            if ((ability.abilityData.abilityName == "Defensive Burst" && !_canDefensiveBurst) || (ability.abilityData.abilityName == "Offensive Burst" && !_canOffensiveBurst))
+                return null;
 
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
@@ -736,8 +760,6 @@ namespace Lodis.Gameplay
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && _stateMachineScript.StateMachine.CurrentState != "Moving" && abilityType != AbilityType.BURST)
                 return null;
-            else if (abilityType == AbilityType.BURST && !_canDefensiveBurst && !_canOffensiveBurst)
-                return null;
 
             //Find the ability in the deck abd use it
             Ability currentAbility = null;
@@ -754,6 +776,9 @@ namespace Lodis.Gameplay
                 {
                     return null;
                 }
+
+                if ((currentAbility.abilityData.abilityName == "Defensive Burst" && !_canDefensiveBurst) || (currentAbility.abilityData.abilityName == "Offensive Burst" && !_canOffensiveBurst))
+                    return null;
             }
             else
             {
@@ -828,8 +853,6 @@ namespace Lodis.Gameplay
             //Ignore player input if they aren't in a state that can attack
             if (_stateMachineScript.StateMachine.CurrentState != "Idle" && _stateMachineScript.StateMachine.CurrentState != "Attacking" && abilityName != "EnergyBurst" && _stateMachineScript.StateMachine.CurrentState != "Moving")
                 return null;
-            else if ((abilityName == "Defensive Burst" && !_canDefensiveBurst) || (abilityName == "Offensive Burst" && !_canOffensiveBurst))
-                return null;
 
             //Find the ability in the deck and use it
             Ability ability = _normalDeck.GetAbilityByName(abilityName);
@@ -845,6 +868,12 @@ namespace Lodis.Gameplay
                 return null;
             }
 
+            if ((ability.abilityData.abilityName == "Defensive Burst" && !_canDefensiveBurst) || (ability.abilityData.abilityName == "Offensive Burst" && !_canOffensiveBurst))
+                return null;
+
+            if (LastAbilityInUse?.abilityData.AbilityType == AbilityType.BURST && ability.abilityData.AbilityType == AbilityType.BURST)
+                return null;
+
             ability.OnHitTemp += IncreaseEnergyFromDamage;
 
             ability.OnHitTemp += collisionArgs =>
@@ -855,9 +884,10 @@ namespace Lodis.Gameplay
 
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
+            {
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(ability))
                     return _lastAbilityInUse;
-
+            }
             
 
             ability.UseAbility(args);
@@ -868,13 +898,6 @@ namespace Lodis.Gameplay
                 _lastAttackStrength = (float)args[0];
 
             OnUseAbility?.Invoke();
-
-            if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
-            {
-                _specialDeck.ClearDeck();
-                RemoveAbilityFromSlot(0);
-                RemoveAbilityFromSlot(1);
-            }
 
             if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.BURST)
             {
@@ -1119,10 +1142,15 @@ namespace Lodis.Gameplay
             HealthBehaviour health = collision.OtherEntity.GetComponent<HealthBehaviour>();
             bool? invincible = health?.IsInvincible == true;
 
-            if (hitCollider.Spawner != Entity.Data || invincible.GetValueOrDefault()) return;
+            if (hitCollider.Spawner != Entity.Data || invincible.GetValueOrDefault() || collision.OtherEntity != _opponentMoveset.Entity.Data)
+            {
+                return;
+            }
 
             Energy += hitCollider.ColliderInfo.Damage / 50;
 
+
+            return;
             if (_opponentMoveset)
             {
                 _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 100;
@@ -1132,7 +1160,18 @@ namespace Lodis.Gameplay
             }
         }
 
-       
+        public void LockBurst(Fixed32 time)
+        {
+            BurstLocked = true;
+
+            if (_burstLockAction?.IsActive == true)
+            {
+                _burstLockAction.Reset();
+                return;
+            }
+
+            _burstLockAction = FixedPointTimer.StartNewTimedAction(() => BurstLocked = false, time);
+        }
 
         private void Update()
         {
@@ -1188,7 +1227,7 @@ namespace Lodis.Gameplay
                 CanOffensiveBurst = BurstEnergy >= _offensiveBurstCost;
             }
 
-            if (MatchManagerBehaviour.Instance.SuperInUse)
+            if (MatchManagerBehaviour.Instance.SuperInUse || BurstLocked)
             {
                 CanDefensiveBurst = false;
                 CanOffensiveBurst = false;

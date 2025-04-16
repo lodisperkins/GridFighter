@@ -160,6 +160,45 @@ namespace FixedPoints
             return current + toVector / dist * maxDistanceDelta;
         }
 
+        public static FVector3 RotateAroundAxis(FVector3 vector, FVector3 axis, Fixed32 angle)
+        {
+            axis = axis.GetNormalized(); // Normalize the axis to ensure proper rotation
+
+            Fixed32 cosTheta = Fixed32.Cos(angle);
+            Fixed32 sinTheta = Fixed32.Sin(angle);
+            Fixed32 oneMinusCosTheta = (Fixed32)1 - cosTheta;
+
+            FVector3 cross = FVector3.Cross(axis, vector);
+            Fixed32 dot = FVector3.Dot(axis, vector);
+
+            FVector3 term1 = vector * cosTheta; // Scaled original vector
+            FVector3 term2 = cross * sinTheta;  // Perpendicular component
+            FVector3 term3 = axis * (dot * oneMinusCosTheta); // Projection correction
+
+            return term1 + term2 + term3;
+        }
+
+        public static FVector3 RotateTowards(FVector3 current, FVector3 target, Fixed32 maxRadiansDelta)
+        {
+            // Normalize both vectors
+            FVector3 from = current.GetNormalized();
+            FVector3 to = target.GetNormalized();
+
+            // Compute the angle between the vectors
+            Fixed32 angle = FVector3.Angle(from, to);
+
+            // If the angle is already small enough, return the target
+            if (angle.RawValue == 0 || maxRadiansDelta >= angle)
+                return to;
+
+            // Compute the axis of rotation (cross product of vectors)
+            FVector3 rotationAxis = FVector3.Cross(from, to).GetNormalized();
+
+            // Rotate the vector by maxRadiansDelta around the computed axis
+            return RotateAroundAxis(from, rotationAxis, maxRadiansDelta);
+        }
+
+
         /// <summary>
         /// Projects a vector onto another vector.
         /// </summary>

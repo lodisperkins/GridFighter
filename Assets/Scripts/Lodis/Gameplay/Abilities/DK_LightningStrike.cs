@@ -4,6 +4,7 @@ using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -67,9 +68,11 @@ namespace Lodis.Gameplay
 
             KnockbackBehaviour opponentKnockback = _opponentPhysics.Entity.Data.GetComponent<KnockbackBehaviour>();
 
+            Fixed32 bounceMag = abilityData.GetCustomStatValue("BounceScale");
+
             if (!opponentKnockback.IsIntangible && !opponentKnockback.IsInvincible)
             {
-                _opponentPhysics.SetBounceForce(new GridPhysicsBehaviour.BounceForce(1, new FVector3(0, 25, 0)));
+                _opponentPhysics.SetBounceForce(new GridPhysicsBehaviour.BounceForce(1, new FVector3(0, bounceMag, 0), false, 0, true));
             }
             
         }

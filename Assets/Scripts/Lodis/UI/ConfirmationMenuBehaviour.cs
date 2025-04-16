@@ -13,28 +13,37 @@ namespace Lodis.UI
 {
     internal class ConfirmationMenuBehaviour : MonoBehaviour
     {
-        [SerializeField]
-        private EventButtonBehaviour _yesButton;
-        [SerializeField]
-        private EventButtonBehaviour _noButton;
-        [SerializeField]
-        private Text _promptText;
-        [SerializeField]
-        private Animator _animator;
+        [SerializeField] private EventButtonBehaviour _yesButton;
+        [SerializeField] private EventButtonBehaviour _noButton;
+        [SerializeField] private Text _promptText;
+        [SerializeField] private Animator _animator;
+
+        //---
         private GameObject _selectionOnClose;
+        private GameObject _selectionOnYes;
+        private GameObject _selectionOnNo;
         private bool _initialized;
         private EventSystem _eventSystem;
 
 
-        public void Init(UnityAction yes, UnityAction no, EventSystem eventSystem, string prompt, GameObject selectionOnClose)
+        public void Init(UnityAction yes, UnityAction no, EventSystem eventSystem, string prompt, GameObject selectionOnClose, string leftText = "Yes", string rightText = "No")
         {
             _promptText.text = prompt;
 
-            _yesButton.AddOnClickEvent(yes);
-            _noButton.AddOnClickEvent(no);
+            if (yes != null)
+                _yesButton.AddOnClickEvent(yes);
 
+            _yesButton.SetText(leftText);
             _yesButton.AddOnClickEvent(Close);
-            _noButton.AddOnClickEvent(Close);
+
+            _noButton.gameObject.SetActive(no != null);
+
+            if (no != null)
+            {
+                _noButton.AddOnClickEvent(no);
+                _noButton.AddOnClickEvent(Close);
+                _noButton.SetText(rightText);
+            }
 
             _eventSystem = eventSystem;
 
@@ -42,6 +51,37 @@ namespace Lodis.UI
             _yesButton.OnSelect();
 
             _selectionOnClose = selectionOnClose;
+            _initialized = true;
+        }
+
+        public void Init(UnityAction yes, UnityAction no, EventSystem eventSystem, string prompt, GameObject selectionOnYes, GameObject selectionOnNo, string leftText = "Yes", string rightText = "No")
+        {
+            _promptText.text = prompt;
+
+            if (yes != null)
+                _yesButton.AddOnClickEvent(yes);
+
+            _yesButton.SetText(leftText);
+            _yesButton.AddOnClickEvent(Close);
+            _yesButton.AddOnClickEvent(SelectYesOption);
+
+            _noButton.gameObject.SetActive(no != null);
+
+            if (no != null)
+            {
+                _noButton.AddOnClickEvent(no);
+                _noButton.AddOnClickEvent(Close);
+                _noButton.SetText(rightText);
+                _noButton.AddOnClickEvent(SelectNoOption);
+            }
+
+            _eventSystem = eventSystem;
+
+            _eventSystem.SetSelectedGameObject(_yesButton.gameObject);
+            _yesButton.OnSelect();
+
+            _selectionOnYes = selectionOnYes;
+            _selectionOnNo = selectionOnNo;
             _initialized = true;
         }
 
@@ -54,6 +94,18 @@ namespace Lodis.UI
             }
 
             _animator.Play("Open");
+        }
+
+        public void SelectYesOption()
+        {
+            if (_selectionOnYes)
+                _eventSystem.SetSelectedGameObject(_selectionOnYes);
+        }
+
+        public void SelectNoOption()
+        {
+            if (_selectionOnNo)
+                _eventSystem.SetSelectedGameObject(_selectionOnNo);
         }
 
         public void Close()

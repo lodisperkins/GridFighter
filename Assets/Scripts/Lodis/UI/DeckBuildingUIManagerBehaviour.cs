@@ -10,6 +10,8 @@ using System;
 using Lodis.CharacterCreation;
 using UnityEngine.Video;
 using DG.Tweening;
+using System.IO;
+using UnityEngine.InputSystem;
 
 namespace Lodis.UI
 {
@@ -39,26 +41,27 @@ namespace Lodis.UI
         private EventButtonBehaviour _forwardIconSlot;
         [SerializeField]
         private EventButtonBehaviour _neutralIconSlot;
-        [SerializeField]
-        private EventButtonBehaviour _upDownIconSlot;
+        [SerializeField] private EventButtonBehaviour _upDownIconSlot;
 
-        [SerializeField]
-        private EventButtonBehaviour[] _specialIcons;
+        [SerializeField] private EventButtonBehaviour[] _specialIcons;
 
-        [SerializeField]
-        private AbilitySectionBehaviour[] _abilitySections;
+        [SerializeField] private AbilitySectionBehaviour[] _abilitySections;
+
+        [SerializeField] private EventButtonBehaviour _abilityButton;
+        [SerializeField] private UnityEngine.EventSystems.EventSystem _eventSystem;
+        [SerializeField] private PageManagerBehaviour _pageManager;
+        [SerializeField] private PlayerColorManagerBehaviour _colorManager;
+
+
+        [SerializeField] private PlayerInput _playerInput;
+        [SerializeField] private ControlSchemeManager _controlSchemeManager;
 
         private List<EventButtonBehaviour> _deckChoices = new List<EventButtonBehaviour>();
-        [SerializeField]
-        private EventButtonBehaviour _abilityButton;
-        [SerializeField]
-        private UnityEngine.EventSystems.EventSystem _eventSystem;
-        [SerializeField]
-        private PageManagerBehaviour _pageManager;
-        [SerializeField]
-        private PlayerColorManagerBehaviour _colorManager;
         private GameObject _lastSelectedSpecial;
         private GameObject _lastSelected;
+        private string _originalName;
+        private string _potentialName;
+
 
 
         public GameObject Selected
@@ -77,6 +80,7 @@ namespace Lodis.UI
         // Start is called before the first frame update
         void Start()
         {
+            _playerInput = _eventSystem.GetComponent<PlayerInput>();
             UpdateLoadoutOptions();
         }
 
@@ -110,6 +114,7 @@ namespace Lodis.UI
                 buttonInstance.AddOnClickEvent(() =>
                 {
                     _buildManager.LoadCustomDeck(optionName);
+                    _originalName = optionName;
                     PageManager.GoToPageChild(0);
                 });
                 _deckChoices.Add(buttonInstance);
@@ -231,10 +236,57 @@ namespace Lodis.UI
             }
         }
 
+        public void SetCurrentName(string currentName)
+        {
+            _originalName = currentName;
+        }
+
+
+        public void Save()
+        {
+            string path = Application.persistentDataPath + "/CustomCharacters" + "/" + _potentialName + "_ArmorSet.txt";
+
+
+            if (File.Exists(path) && _potentialName != _originalName)
+            {
+                SetInputAny();
+                ConfirmationMenuSpawner.Spawn(() =>
+                        _pageManager.GoToPage("NameKeyboard"), null, _eventSystem,
+                        "A character has already been made using this name.", leftText: "Okay"
+                    );
+                return;
+            }
+
+            _customCharacterManager.SetCharacterName(_potentialName);
+            string name = _customCharacterManager.CharacterName;
+
+            _buildManager.Rename(name);
+            _buildManager.SetDeckNames(name);
+
+            _customCharacterManager.SaveCharacter();
+            _buildManager.SaveDecks();
+            SavePopupBehaviour.ChangesAreSaved.Value = true;
+        }
+
+        //need to handle saving changes to a name that already exists
         public void SetDeckNames(Text inputText)
         {
-            _buildManager.Rename(inputText.text);
-            _buildManager.SetDeckNames(inputText.text);
+            SavePopupBehaviour.ChangesAreSaved.Value = false;
+
+            _potentialName = inputText.text;
+            _pageManager.GoToPageParent();
+        }
+
+        public void SetInputKeyboardOnly()
+        {
+            _playerInput.neverAutoSwitchControlSchemes = true;
+            _controlSchemeManager.SwitchToGamepad(true);
+        }
+
+        public void SetInputAny()
+        {
+            _playerInput.neverAutoSwitchControlSchemes = false;
+            _playerInput.enabled = true;
         }
     }
 }

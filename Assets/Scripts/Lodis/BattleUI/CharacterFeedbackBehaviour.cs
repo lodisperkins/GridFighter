@@ -13,20 +13,37 @@ namespace Lodis.Gameplay
 {
     public class CharacterFeedbackBehaviour : FlashBehaviour
     {
+        [Header("Color Options")]
         [SerializeField] private Color _invincibleColor;
         [SerializeField] private Color _intangibleColor;
-        [SerializeField] private ParticleSystem _stunParticles;
-        [SerializeField] private HealthBehaviour _health;
-        private MovesetBehaviour _moveSet;
-        private GridMovementBehaviour _movement;
         [SerializeField] private ColorManagerBehaviour _colorManager;
+
+        [Header("UI Options")]
+        [SerializeField] private HealthBehaviour _health;
+        [SerializeField] private GameObject _characterUI;
+
+        [Header("Particle References")]
+        [SerializeField] private ParticleSystem _stunParticles;
+        [SerializeField] private ParticleSystem _stunSparks;
         [SerializeField] private ParticleSystem _deathSparks;
         [SerializeField] private ParticleSystem[] _additionalEffects;
-        [SerializeField] private AccessoryEffectBehaviour _accessory;
+        [SerializeField] private ParticleSystem[] _comboTrails;
         [SerializeField] private ParticleSystem _spawnEffect;
+
+        [Header("Audio Options")]
         [SerializeField] private AudioClip _spawnSound;
         [SerializeField] private CharacterVoiceBehaviour _characterVoice;
-        [SerializeField] private GameObject _characterUI;
+
+        [Header("Character Extras")]
+        [SerializeField] private AccessoryEffectBehaviour _accessory;
+
+        //---
+        private MovesetBehaviour _moveSet;
+        private GridMovementBehaviour _movement;
+        private CharacterStateMachineBehaviour _characterStateMachine;
+        private int lastComboTrailIndex;
+        private bool _comboTrailEnabled;
+        private ShakeBehaviour _shakeBehaviour;
 
         public ColorManagerBehaviour ColorManager { get => _colorManager; private set => _colorManager = value; }
 
@@ -34,14 +51,23 @@ namespace Lodis.Gameplay
         {
             _health.AddOnInvincibilityActiveAction(() => FlashAllRenderers(_invincibleColor));
             //_health.AddOnIntangibilityActiveAction(() => FlashAllRenderers(_intangibleColor));
-
             _health.AddOnInvincibilityInactiveAction(ResetAllRenderers);
             //_health.AddOnIntangibilityInactiveAction(ResetAllRenderers);
 
-            _health.AddOnStunAction(() => _stunParticles.gameObject.SetActive(true));
-            _health.AddOnStunDisabledAction(() => _stunParticles.gameObject.SetActive(false));
+            _health.AddOnStunAction(() => PlayStunParticles(true));
+            _health.AddOnStunDisabledAction(() => PlayStunParticles(false));
+
+            KnockbackBehaviour knockback = _health as KnockbackBehaviour;
+            if (knockback)
+            {
+                knockback.AddOnKnockBackAction(SetComboTrail);
+                knockback.LandingScript.AddOnLandingStartAction(DisableComboTrail);
+            }
+
             _moveSet = GetComponentInParent<MovesetBehaviour>();
             _movement = GetComponentInParent<GridMovementBehaviour>();
+            _shakeBehaviour = GetComponent<ShakeBehaviour>();
+            _characterStateMachine = GetComponentInParent<CharacterStateMachineBehaviour>();
 
             if (SceneManagerBehaviour.Instance.SceneIndex == 4)
             {
@@ -51,6 +77,32 @@ namespace Lodis.Gameplay
                 });
                 PlaySpawnEffect();
             }
+
+            MatchManagerBehaviour.Instance.AddOnRingoutAction(DisableComboTrail);
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(DisableComboTrail);
+        }
+
+        private void PlayStunParticles(bool active)
+        {
+            _stunParticles.gameObject.SetActive(active);
+            _stunSparks.gameObject.SetActive(active);
+        }
+
+        private void SetComboTrail()
+        {
+            int level = BlackBoardBehaviour.Instance.GetComboLevelForOpponent(_movement.Alignment);
+
+            _comboTrails[lastComboTrailIndex].gameObject.SetActive(false);
+            _comboTrails[level].gameObject.SetActive(true);
+
+            lastComboTrailIndex = level;
+            _comboTrailEnabled = true;
+        }
+
+        private void DisableComboTrail()
+        {
+            _comboTrails[lastComboTrailIndex].gameObject.SetActive(false);
+            _comboTrailEnabled = false;
         }
 
         public void PlaySpawnEffect()
@@ -156,9 +208,38 @@ namespace Lodis.Gameplay
                 _accessory.StopEffect();
         }
 
+        public void ShakeCharacter(float time, float strength, int frequency)
+        {
+            _shakeBehaviour.ShakePosition(time, strength, frequency);
+
+            KnockbackBehaviour knockback = _health as KnockbackBehaviour;
+
+            if (knockback)
+            {
+                knockback.AddOnKnockBackStartTempAction(_shakeBehaviour.StopShaking);
+            }
+        }
+
+        public void ShakeCharacter()
+        {
+            _shakeBehaviour.ShakePosition();
+
+            KnockbackBehaviour knockback = _health as KnockbackBehaviour;
+
+            if (knockback)
+            {
+                knockback.AddOnKnockBackStartTempAction(_shakeBehaviour.StopShaking);
+            }
+        }
+
         private void Update()
         {
             _deathSparks.gameObject.SetActive(Mathf.Ceil(_health.Health) == _health.MaxHealth.FixedValue);
+
+            if (_characterStateMachine.CurrentState != "Tumbling" && _comboTrailEnabled)
+            {
+                DisableComboTrail();
+            }
         }
     }
 }

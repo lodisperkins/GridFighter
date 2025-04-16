@@ -71,7 +71,7 @@ MonoBehaviour:
     _collideOnAnyRow: 0
     _isAWall: 0
     _width:
-      RawValue: 393216
+      RawValue: 262144
     _facingRight: 1
     _height:
       RawValue: 393216
@@ -149,10 +149,11 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 0
   _markAtRange: 1
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
-  _xRange: 2
+  _xRange: 1
   _yRange: 0
   _radius: 0
 --- !u!114 &8213508004223064958
@@ -201,6 +202,7 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
   clampPositionInBarriers: 0

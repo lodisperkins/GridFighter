@@ -47,6 +47,12 @@ namespace FixedPoints
             IsActive = false;
         }
 
+        public virtual void Init()
+        {
+            FixedPointTimer.Actions.Add(this);
+            IsActive = true;
+        }
+
         public bool CheckIfCanBeAddedToList()
         {
             return isActive && FrameStarted <= GridGameManager.FrameNumber;
@@ -78,6 +84,7 @@ namespace FixedPoints
         protected UnitOfTime unit;
         protected bool shouldLoop;
         protected int loopCount = 1;
+        protected int startingLoopCount;
         protected Condition loopCondition;
 
         public delegate void FixedTimeActionEvent();
@@ -105,7 +112,7 @@ namespace FixedPoints
         /// <summary>
         /// The amount of time this action has left. Value varies based on specified unit at start.
         /// </summary>
-        public Fixed32 Duration { get => duration; private set => duration = value; }
+        public Fixed32 Duration { get => duration;  set => duration = value; }
 
         /// <summary>
         /// The unit of time to use to measure the duration of this action.
@@ -138,6 +145,8 @@ namespace FixedPoints
         {
             shouldLoop = true;
 
+            startingLoopCount = count;
+
             if (count > 0)
                 loopCount += count;
             else if (count == -1) 
@@ -152,6 +161,7 @@ namespace FixedPoints
         /// <param name="condition">The loop will stop when this condition is true.</param>
         public FixedTimeAction LoopUntil(Condition condition)
         {
+            startingLoopCount = -1;
             shouldLoop = true;
             loopCondition = condition;
             loopCount = -1;
@@ -175,6 +185,20 @@ namespace FixedPoints
         public void Resume()
         {
             hasPaused = false;
+        }
+
+        /// <summary>
+        /// Sets the time started to be the time that this function is called and resets the loop count to what it was when this timer was started.
+        /// </summary>
+        public void Reset()
+        {
+            if (!IsActive)
+                Init();
+
+            TimeStarted = GridGame.Time;
+
+            if (startingLoopCount > 0)
+                loopCount = startingLoopCount - 1;
         }
 
         protected override void Serialize(BinaryWriter bw)

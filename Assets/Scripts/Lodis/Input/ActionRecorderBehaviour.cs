@@ -117,7 +117,8 @@ namespace Lodis.Input
 
         protected virtual void OnApplicationQuit()
         {
-            Save();
+            if (CanRecord)
+                Save();
         }
 
         public static List<ActionRecording> LoadRecording(string recordingName)

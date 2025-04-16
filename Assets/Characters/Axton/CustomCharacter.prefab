@@ -865,6 +865,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8172829524244689262, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _stunSparks
+      value: 
+      objectReference: {fileID: 6802022007067796167}
+    - target: {fileID: 8172829524244689262, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _deathSparks
       value: 
       objectReference: {fileID: 4074246129616135441}
@@ -1042,6 +1047,20 @@ MonoBehaviour:
     DisplayIcon: {fileID: 21300000, guid: ac10a17908cc4f942980a807cfdb8b56, type: 3}
     IsActive: 0
     IsHair: 0
+  - WearableItems:
+    - {fileID: 5403643465209333453}
+    - {fileID: 7278197154739968447}
+    - {fileID: 6212477591751765956}
+    - {fileID: 3325821692009187500}
+    - {fileID: 4330681151463789001}
+    - {fileID: 4508412021626917691}
+    - {fileID: 540173811781230992}
+    - {fileID: 4386762106974075891}
+    ID: Zyra Shoes
+    Section: 6
+    DisplayIcon: {fileID: 21300000, guid: 20945c67cd7d19841a60a8608ca5676a, type: 3}
+    IsActive: 0
+    IsHair: 0
   _setDefaultOnStart: 0
   _removeWearableSprite: {fileID: 21300000, guid: df44cd0dae961014e9f9a47d360a1474,
     type: 3}
@@ -1154,7 +1173,7 @@ MonoBehaviour:
     - {fileID: 9165794941593424433}
     ID: Shoes
     Section: 6
-    DisplayIcon: {fileID: 21300000, guid: 20945c67cd7d19841a60a8608ca5676a, type: 3}
+    DisplayIcon: {fileID: 21300000, guid: f11c060043c9e17488ba42a1781cbe7c, type: 3}
     IsActive: 0
     IsHair: 0
   - WearableItems:
@@ -1793,6 +1812,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4074246129616135442}
+    - targetCorrespondingSourceObject: {fileID: 2260370583821061022, guid: f27abcf27affe514389b878970d8e26a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5919664257794121790}
     - targetCorrespondingSourceObject: {fileID: 7135986947507491779, guid: f27abcf27affe514389b878970d8e26a,
         type: 3}
       insertIndex: -1
@@ -2487,4 +2510,104 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 49005405892683613, guid: 78a56f8f414c5004cb15829438d7f20e,
     type: 3}
   m_PrefabInstance: {fileID: 4045564441860309583}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5744516850215367328
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3960118926075329241}
+    m_Modifications:
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.10257413
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1025741
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.102574125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.12595937
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.33180356
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.33180353
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.8740407
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4631876230130101875, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_Name
+      value: StunSparks
+      objectReference: {fileID: 0}
+    - target: {fileID: 4631876230130101875, guid: 158b6b67012f5c1469475f55eb265db4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 158b6b67012f5c1469475f55eb265db4, type: 3}
+--- !u!4 &5919664257794121790 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2134214625379488414, guid: 158b6b67012f5c1469475f55eb265db4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5744516850215367328}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6802022007067796167 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1287252524096508007, guid: 158b6b67012f5c1469475f55eb265db4,
+    type: 3}
+  m_PrefabInstance: {fileID: 5744516850215367328}
   m_PrefabAsset: {fileID: 0}

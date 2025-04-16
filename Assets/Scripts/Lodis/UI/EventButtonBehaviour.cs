@@ -32,6 +32,7 @@ namespace Lodis.UI
         private Image _image;
         private int _counter;
         private bool _framePassed;
+        private Text _text;
 
         public Image ButtonImage { get => _image; private set => _image = value; }
         public Button UIButton { get => _button; set => _button = value; }
@@ -49,6 +50,7 @@ namespace Lodis.UI
         public void Init()
         {
             UIButton = GetComponent<Button>();
+            _text = GetComponentInChildren<Text>();
             UIButton.onClick.AddListener(() => SoundManagerBehaviour.Instance.PlaySound(_clickSound));
             ButtonImage = GetComponent<Image>();
         }
@@ -100,6 +102,11 @@ namespace Lodis.UI
         public void AddOnDeselectEvent(UnityAction action)
         {
             _onDeselect.AddListener(action);
+        }
+
+        public void SetText(string text)
+        {
+            _text.text = text;
         }
     }
 }

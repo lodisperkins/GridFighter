@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: e0a72ace05346f347954b87d8bb3f445
 ModelImporter:
-  serializedVersion: 19301
+  serializedVersion: 22200
   internalIDToNameTable:
   - first:
       74: -6543209201303009733
@@ -17,6 +17,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -63,32 +64,11 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.740332
-        functionName: IncrementAnimationPhase
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.824414
-        functionName: IncrementAnimationPhase
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
       - time: 0.002050782
         functionName: ChangeEyesToClosed
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0.5
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.7792968
-        functionName: ChangeEyesToIdle
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.002050782
@@ -99,18 +79,39 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.7792968
-        functionName: PlayEffectFromEvent
+      - time: 0.002050782
+        functionName: PlaySoundFromEvent
         data: 
-        objectReferenceParameter: {fileID: 11400000, guid: da60c907079cd7e409ac2fa66c81d212,
+        objectReferenceParameter: {fileID: 11400000, guid: 2cd1a0d32002ec742911f8e1fb361e0d,
           type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.002050782
-        functionName: PlaySoundFromEvent
+        functionName: PlayVoiceSound
         data: 
-        objectReferenceParameter: {fileID: 11400000, guid: 2cd1a0d32002ec742911f8e1fb361e0d,
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.22127043
+        functionName: IncrementAnimationPhase
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7792968
+        functionName: ChangeEyesToIdle
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7792968
+        functionName: PlayEffectFromEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: da60c907079cd7e409ac2fa66c81d212,
           type: 2}
         floatParameter: 0
         intParameter: 0
@@ -131,8 +132,8 @@ ModelImporter:
         floatParameter: 0
         intParameter: 1
         messageOptions: 0
-      - time: 0.002050782
-        functionName: PlayVoiceSound
+      - time: 0.824414
+        functionName: IncrementAnimationPhase
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -150,27 +151,35 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -1119,6 +1128,9 @@ ModelImporter:
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 2
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

@@ -1,8 +1,7 @@
 ﻿using DG.Tweening.Core.Easing;
 using Lodis.Input;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
@@ -16,7 +15,7 @@ namespace Lodis.UI
         [SerializeField]
         private InputRebindingBehaviour _rebindHandler;
         [SerializeField]
-        private Text _infoBoxText;
+        private UnityEngine.UI.Text _infoBoxText;
         [SerializeField]
         private Transform _profileOptions;
         [SerializeField]
@@ -162,6 +161,27 @@ namespace Lodis.UI
             });
             return buttonInstance;
         }
+
+        public void SetName(Text text)
+        {
+            string inputName = text.text;
+            string folderPath = Path.Combine(Application.persistentDataPath, "InputProfiles", inputName);
+
+            if (Directory.Exists(folderPath))
+            {
+                ConfirmationMenuSpawner.Spawn(
+                    _pageManager.GoToPageParent, null, _eventSystem,
+                    "A profile has already been made using that name.", leftText: "Okay"
+                );
+                return;
+            }
+
+            _rebindHandler.SetProfileName(text);
+            _pageManager.GoToPageParent();
+            _pageManager.GoToPageChild(1);
+        }
+
+
 
         private static EventButtonBehaviour MakeExplicitConnections(EventButtonBehaviour previousInstance, EventButtonBehaviour buttonInstance)
         {

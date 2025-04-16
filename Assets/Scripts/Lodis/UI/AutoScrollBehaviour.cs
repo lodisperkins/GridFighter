@@ -1,12 +1,9 @@
-﻿using PixelCrushers;
-using System.Collections;
-using System.Collections.Generic;
+﻿using DG.Tweening;
+using DG.Tweening.Core;
+using DG.Tweening.Plugins.Options;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using DG.Tweening;
-using DG.Tweening.Core;
-using DG.Tweening.Plugins.Options;
 
 namespace Lodis.UI
 {
@@ -14,100 +11,127 @@ namespace Lodis.UI
     {
         [Header("Window Contents")]
         [Tooltip("The object that has the mask for the viewing area.")]
-        [SerializeField]
-        private RectTransform _view;
+        [SerializeField] private RectTransform _view;
+
         [Tooltip("The event system needed in order to know which option is selected.")]
-        [SerializeField]
-        private EventSystem _eventSystem;
+        [SerializeField] private EventSystem _eventSystem;
+
         [Tooltip("The options that the player will scroll through.")]
-        [SerializeField]
-        private RectTransform _content;
+        [SerializeField] private RectTransform _content;
 
         [Header("Scroll Options")]
-        [SerializeField]
-        private bool _scrollHorizontal;
-        [Tooltip("How far to move the options when the selected option is not in view." +
-            "If the scroll behaviour is rapidly moving up and down, you may have the scroll distance too large." +
-            "If the scroll behaviour is slowly moving towards its destination, you may have the scroll distance too small.")]
-        [SerializeField]
-        private float _distanceToScroll;
+        [Tooltip("Scroll horizontally instead of vertically.")]
+        [SerializeField] private bool _scrollHorizontal;
+
+        [Tooltip("How far to move the options when the selected option is not in view.\n" +
+                 "If the scroll behaviour is rapidly moving up and down, you may have the scroll distance too large.\n" +
+                 "If the scroll behaviour is slowly moving towards its destination, you may have the scroll distance too small.")]
+        [SerializeField] private float _distanceToScroll = 50f;
+
         [Tooltip("Whether or not the window will snap or smoothly lerp to the new position.")]
-        [SerializeField]
-        private bool _scrollSmooth;
+        [SerializeField] private bool _scrollSmooth = true;
+
         [Tooltip("The amount of time it takes to scroll to the new option smoothly.")]
-        [SerializeField]
-        private float _scrollSmoothDuration;
-        [Tooltip("Scroll using the transforms local position instead of the global position.")]
-        [SerializeField]
-        private bool _useLocalPosition;
+        [SerializeField] private float _scrollSmoothDuration = 0.25f;
+
+        [Tooltip("Scroll using the transform's local position instead of the global position.")]
+        [SerializeField] private bool _useLocalPosition = true;
+
+        [Tooltip("Extra margin inside the viewport to avoid edge sensitivity.")]
+        [SerializeField] private float _viewportMargin = 10f;
+
         private RectTransform _currentItem;
         private TweenerCore<Vector3, Vector3, VectorOptions> _moveTween;
 
         public EventSystem EventSystem { get => _eventSystem; set => _eventSystem = value; }
 
-        private bool CheckInBoundsOfMask()
+        /// <summary>
+        /// Check if the currently selected UI item is within the visible bounds of the mask/view.
+        /// </summary>
+        private bool IsItemVisible()
         {
-            Vector2 position =  _currentItem.position;
+            if (_currentItem == null)
+                return true;
 
-            //Gets position of the view area's corners in the world space.
+            Rect itemRect = GetWorldRect(_currentItem);
+            Rect viewRect = GetWorldRect(_view);
+
+            // Expand view rect slightly to add a margin buffer
+            viewRect.xMin += _viewportMargin;
+            viewRect.xMax -= _viewportMargin;
+            viewRect.yMin += _viewportMargin;
+            viewRect.yMax -= _viewportMargin;
+
+            return viewRect.Overlaps(itemRect);
+        }
+
+        /// <summary>
+        /// Gets the world-space bounding rect of a RectTransform.
+        /// </summary>
+        private Rect GetWorldRect(RectTransform rectTransform)
+        {
             Vector3[] corners = new Vector3[4];
-            _view.GetWorldCorners(corners);
+            rectTransform.GetWorldCorners(corners);
+            return new Rect(corners[0], corners[2] - corners[0]);
+        }
 
-            Vector2 bottomLeft = corners[0];
-            Vector2 topRight = corners[2];
+        /// <summary>
+        /// Moves the scroll content smoothly using DOTween.
+        /// </summary>
+        private void ScrollSmoothly(Vector3 direction)
+        {
+            if (_moveTween != null && _moveTween.IsActive()) return;
 
-            //Return whether or not the position fits in the corners.
-            return position.x > bottomLeft.x && position.x < topRight.x
-                && position.y > bottomLeft.y && position.y < topRight.y;
+            Vector3 newPosition = _useLocalPosition
+                ? _content.localPosition + direction * _distanceToScroll
+                : _content.position + direction * _distanceToScroll;
+
+            // Kill any existing tweens on this target
+            DOTween.Kill(_content);
+
+            _moveTween = (_useLocalPosition
+                ? _content.DOLocalMove(newPosition, _scrollSmoothDuration)
+                : _content.DOMove(newPosition, _scrollSmoothDuration))
+                .SetEase(Ease.OutCubic)
+                .SetTarget(_content);
         }
 
         private void OnDisable()
         {
-            _content.DOKill();
+            if (_content != null)
+                DOTween.Kill(_content);
         }
 
-        private void ScrollSmoothly(Vector3 direction)
+        private void Update()
         {
-            if (_moveTween != null && _moveTween.active)
+            // Can't keep track of current selected without event system so return.
+            if (!_eventSystem)
                 return;
 
-            if (_useLocalPosition)
-            {
-                Vector3 newPosition = _content.localPosition + direction * _distanceToScroll;
-                _moveTween = _content.DOLocalMove(newPosition, _scrollSmoothDuration);
-            }
-            else
-            {
-                Vector3 newPosition = _content.position + direction * _distanceToScroll;
-                _moveTween = _content.DOMove(newPosition, _scrollSmoothDuration);
-            }
-        }
+            GameObject selectedObj = _eventSystem.currentSelectedGameObject;
 
-        // Update is called once per frame
-        void Update()
-        {
-            //Can't keep track of current selected without event system so return.
-            if (!EventSystem)
+            // Try to update the rect transform of the current item if needed.
+            if (selectedObj == null || !selectedObj.TryGetComponent(out RectTransform selectedRect))
                 return;
 
-            //Try to update the rect transform of the current item if needed.
-            if (_currentItem != EventSystem.currentSelectedGameObject)
-            {
-                _currentItem = EventSystem.currentSelectedGameObject.GetComponent<RectTransform>();
-            }
+            if (_currentItem != selectedRect)
+                _currentItem = selectedRect;
 
-            //If the item is inside the view area...
-            if (CheckInBoundsOfMask())
+            // If the item is inside the view area, no scrolling is needed.
+            if (IsItemVisible())
                 return;
 
-            //Find the direction to scroll to.
-
+            // Find the direction to scroll to.
             Vector3 direction = (_view.position - _currentItem.position).normalized;
             direction.z = 0f;
 
-            //Remove the x based on the option.
+            // Remove the x based on the option.
             if (!_scrollHorizontal)
                 direction.x = 0f;
+            else
+                direction.y = 0f;
+
+            direction = Vector3.ClampMagnitude(direction, 1f);
 
             if (_scrollSmooth)
             {
@@ -115,11 +139,12 @@ namespace Lodis.UI
                 return;
             }
 
-            if (_useLocalPosition)
-                _content.localPosition += direction * _distanceToScroll;
-            else
-                _content.position += direction * _distanceToScroll;
-        }
+            Vector3 delta = direction * _distanceToScroll;
 
+            if (_useLocalPosition)
+                _content.localPosition += delta;
+            else
+                _content.position += delta;
+        }
     }
 }

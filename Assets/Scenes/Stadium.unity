@@ -6184,7 +6184,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 213090869929638346, guid: 6dd25384fc364c5479b48017cbc82a3a,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: e743ffdfdf20d1f42a034e4d638736a4, type: 3}
+  m_audioClip: {fileID: 8300000, guid: ad5cbf4a8382e444ba934b1a213d050b, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.35
   m_Pitch: 1
@@ -17176,6 +17176,7 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
   clampPositionInBarriers: 0
@@ -17855,7 +17856,7 @@ MonoBehaviour:
   _matchTimeRemaining: 0
   _timeSinceRoundStart: 0
   _onTimerUp: {fileID: 11400000, guid: acaf75c9202905d46aa9744f5386428e, type: 2}
-  _isInfinite: 1
+  _isInfinite: 0
 --- !u!4 &1233098218
 Transform:
   m_ObjectHideFlags: 0
@@ -21588,6 +21589,7 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
   clampPositionInBarriers: 0
@@ -23509,6 +23511,7 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
   clampPositionInBarriers: 0
@@ -29071,6 +29074,12 @@ PrefabInstance:
       propertyPath: _stadiumMonitor
       value: 
       objectReference: {fileID: 1049088694}
+    - target: {fileID: 643524680384907169, guid: 4aebaf1929f274a4abe10801b9cffd07,
+        type: 3}
+      propertyPath: _playerComboLevel
+      value: 
+      objectReference: {fileID: 11400000, guid: c880268a6dcf74e48bb2aec963cf96b0,
+        type: 2}
     - target: {fileID: 643524680384907170, guid: 4aebaf1929f274a4abe10801b9cffd07,
         type: 3}
       propertyPath: m_Enabled
@@ -30237,6 +30246,12 @@ PrefabInstance:
       propertyPath: _stadiumMonitor
       value: 
       objectReference: {fileID: 1049088694}
+    - target: {fileID: 643524680384907169, guid: 4aebaf1929f274a4abe10801b9cffd07,
+        type: 3}
+      propertyPath: _playerComboLevel
+      value: 
+      objectReference: {fileID: 11400000, guid: 98682ca9b99623c4690c57b01f68ee3f,
+        type: 2}
     - target: {fileID: 643524680384907169, guid: 4aebaf1929f274a4abe10801b9cffd07,
         type: 3}
       propertyPath: _comboMessages.Array.data[0].Message
@@ -31654,9 +31669,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fill: {fileID: 5749295809914776089}
   _slider: {fileID: 8824671343393050857}
+  _defensiveEffect: {fileID: 0}
+  _offensiveEffect: {fileID: 0}
   _fullColor: {r: 1, g: 0.52006483, b: 0, a: 1}
   _halfFullColor: {r: 0, g: 0, b: 0, a: 0}
   _defaultColor: {r: 0.33962262, g: 0.33481663, b: 0.33481663, a: 1}
+  _offensiveBurstReady: {fileID: 0}
+  _defensiveBurstReady: {fileID: 0}
   _onFilled:
     m_PersistentCalls:
       m_Calls:
@@ -31675,8 +31694,6 @@ MonoBehaviour:
   _onHalfFilled:
     m_PersistentCalls:
       m_Calls: []
-  _defensiveEffect: {fileID: 0}
-  _offensiveEffect: {fileID: 0}
 --- !u!114 &3891085166801053043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31691,9 +31708,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _fill: {fileID: 5749295807862194354}
   _slider: {fileID: 8824671341880506946}
+  _defensiveEffect: {fileID: 0}
+  _offensiveEffect: {fileID: 0}
   _fullColor: {r: 1, g: 0.52006483, b: 0, a: 1}
   _halfFullColor: {r: 0, g: 0, b: 0, a: 0}
   _defaultColor: {r: 0.33962262, g: 0.33481663, b: 0.33481663, a: 1}
+  _offensiveBurstReady: {fileID: 0}
+  _defensiveBurstReady: {fileID: 0}
   _onFilled:
     m_PersistentCalls:
       m_Calls:
@@ -31712,8 +31733,6 @@ MonoBehaviour:
   _onHalfFilled:
     m_PersistentCalls:
       m_Calls: []
-  _defensiveEffect: {fileID: 0}
-  _offensiveEffect: {fileID: 0}
 --- !u!222 &4066039743171142658
 CanvasRenderer:
   m_ObjectHideFlags: 0

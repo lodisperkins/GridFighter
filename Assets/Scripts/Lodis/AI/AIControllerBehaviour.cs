@@ -17,10 +17,11 @@ using Lodis.Utility;
 using Assets.Scripts.Lodis.AI;
 using FixedPoints;
 using Types;
+using System.IO;
 
 namespace Lodis.AI
 {
-    public class AIControllerBehaviour : MonoBehaviour, IControllable
+    public class AIControllerBehaviour : SimulationBehaviour, IControllable
     {
         [SerializeField]
         private GameObject _character;
@@ -104,7 +105,7 @@ namespace Lodis.AI
         //---
         private GridPhysicsBehaviour _opponentGridPhysics;
         private bool _isPaused;
-        private TimedAction _playbackRoutine;
+        private FixedTimeAction _playbackRoutine;
         private bool _abilityBuffered;
 
         private MovesetBehaviour _opponentMoveset;
@@ -209,7 +210,7 @@ namespace Lodis.AI
             MatchManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _defenseDecisions?.Save(Character.name));
         }
 
-        private void Awake()
+        protected override void Awake()
         {
             _executor = GetComponent<BehaviorExecutor>();
             _aiMovementBehaviour = GetComponent<AIDummyMovementBehaviour>();
@@ -256,25 +257,38 @@ namespace Lodis.AI
             //    if (MatchManagerBehaviour.Instance.LastMatchResult != MatchResult.DRAW)
             //        MatchManagerBehaviour.Instance.Restart();
             //});
+
+            Entity = GetComponentInChildren<EntityDataBehaviour>();
+            Entity.Data.AddComponent(this);
         }
 
         private void OnEnable()
         {
             if (_useRecording)
+            {
+                UnpausePlayback();
                 return;
+            }
 
             if (_executor)
                 _executor.enabled = true;
 
             if (_aiMovementBehaviour)
                 _aiMovementBehaviour.enabled = true;
+
         }
 
         private void OnDisable()
         {
+            if (_useRecording)
+            {
+                PausePlayback();
+                _playbackRoutine?.Stop();
+                return;
+            }
+
             _executor.enabled = false;
             _aiMovementBehaviour.enabled = false;
-            RoutineBehaviour.Instance.StopAction(_playbackRoutine);
         }
 
         private void OnDestroy()
@@ -340,7 +354,7 @@ namespace Lodis.AI
             else if (Moveset.GetAbilityNamesInCurrentSlots()[1] == ability.abilityData.name)
                 Moveset.UseSpecialAbility(1, attackStrength, attackDirection);
             else if (ability.abilityData.AbilityType != AbilityType.SPECIAL)
-                Moveset.UseBasicAbility(ability.abilityData.abilityName, attackStrength, attackDirection);
+                Moveset.UseBasicAbility(ability, attackStrength, attackDirection);
             else return;
         }
 
@@ -409,6 +423,8 @@ namespace Lodis.AI
         private void PerformAction(ActionNode action)
         {
             FVector2 direction = action.CurrentAbilityID == -1 ? (FVector2)action.MoveDirection : (FVector2)action.AttackDirection;
+
+            direction.X *= _movementBehaviour.GetAlignmentX();
 
             //Set movement flags.
             if (direction != FVector2.Zero)
@@ -501,11 +517,11 @@ namespace Lodis.AI
 
         private void StartPlayback(float delayOffset = 0)
         {
-            _playbackRoutine = RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            _playbackRoutine = FixedPointTimer.StartNewTimedAction(() =>
             {
                 PerformAction(_currentRecording[_currentActionIndex]);
 
-            }, TimedActionCountType.SCALEDTIME, _currentRecording[_currentActionIndex].TimeDelay - delayOffset);
+            }, _currentRecording[_currentActionIndex].TimeDelay - delayOffset);
 
         }
 
@@ -515,7 +531,7 @@ namespace Lodis.AI
         /// </summary>
         public void PausePlayback()
         {
-            RoutineBehaviour.Instance.StopAction(_playbackRoutine);
+            _playbackRoutine?.Pause();
             _isPaused = true;
         }
 
@@ -524,6 +540,7 @@ namespace Lodis.AI
         /// </summary>
         public void UnpausePlayback()
         {
+            _playbackRoutine?.Resume();
             _isPaused = false;
         }
 
@@ -617,14 +634,15 @@ namespace Lodis.AI
 
             //Play the the action at the current index after storing  the amount of time it took to act in the previous action.
             //This is to be sure the last actions delay doesn't effect the next.
-            float time = _playbackRoutine == null ? 0 : _playbackRoutine.TimeLeft;
+            float time = _playbackRoutine == null ? 0 : _playbackRoutine.GetTimeLeft();
 
-            RoutineBehaviour.Instance.StopAction(_playbackRoutine);
+            _playbackRoutine?.Stop();
             StartPlayback(time);
         }
 
-        public void Update()
+        public override void Tick(Fixed32 dt)
         {
+            base.Tick(dt);
 
             if (_bufferedAction?.HasAction() == true)
                 _bufferedAction.UseAction();
@@ -665,7 +683,7 @@ namespace Lodis.AI
             }
 
             //If the AI is current performing an action return.
-            if (_playbackRoutine != null && _playbackRoutine.GetEnabled())
+            if (_playbackRoutine != null && _playbackRoutine.IsActive)
                 return;
 
             //If the AI isn't performing an action play the next action in the recording list.
@@ -675,6 +693,15 @@ namespace Lodis.AI
 
             if (_currentActionIndex >= _currentRecording.Count)
                 _currentActionIndex = 0;
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
         }
     }
 }

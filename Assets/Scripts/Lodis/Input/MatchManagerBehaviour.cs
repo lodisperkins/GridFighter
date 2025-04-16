@@ -17,6 +17,7 @@ using SharedGame;
 using Unity.Collections;
 using Types;
 using FixedPoints;
+using Lodis.FX;
 
 namespace Lodis.Gameplay
 {
@@ -337,6 +338,12 @@ namespace Lodis.Gameplay
             _isPaused = !_isPaused;
             Time.timeScale = Convert.ToInt32(!_isPaused);
             GridGame.TimeScale = Convert.ToInt32(!_isPaused);
+
+            if (FXManagerBehaviour.Instance.SuperMoveEffectActive)
+            {
+                GridGame.TimeScale = 0;
+            }
+
             GridGame.IsPaused = _isPaused;
             _timeScale = Time.timeScale;
 

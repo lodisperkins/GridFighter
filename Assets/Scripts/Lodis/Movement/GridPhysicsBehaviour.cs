@@ -49,20 +49,24 @@ namespace Lodis.Movement
                 }
             }
 
+            public bool ChangeVelocity { get; set; }
+
             public BounceForce(int bounces, FVector3 bounceVelocity)
             {
                 Bounces = bounces;
                 _bounceVelocity = bounceVelocity;
                 _decayOverTime = false;
                 _decayScale = 1;
+                ChangeVelocity = false;
             }
 
-            public BounceForce(int bounces, FVector3 bounceVelocity, Fixed32 decayScale)
+            public BounceForce(int bounces, FVector3 bounceVelocity, bool decayOverTime, Fixed32 decayScale, bool changeVelocity)
             {
                 Bounces = bounces;
                 _bounceVelocity = bounceVelocity;
-                _decayOverTime = true;
+                _decayOverTime = decayOverTime;
                 _decayScale = decayScale;
+                ChangeVelocity = changeVelocity;
             }
 
             public FVector3 GetBounceForce()
@@ -115,6 +119,8 @@ namespace Lodis.Movement
         [Tooltip("Whether or not this object should increase how much it bounces based on how fast it's going.")]
         [SerializeField] private bool _useVelocityForBounce;
         [SerializeField] private bool _setGroundPosition;
+        [Tooltip("If true, will not apply a force to the object it hard collided with.")]
+        [SerializeField] private bool _noForceOnHit;
         [ShowIf("_setGroundPosition")]
         [SerializeField] private Fixed32 _groundPosition = -1;
         [Tooltip("If true, the objects position will stay within the barriers while they are up.")]
@@ -534,11 +540,11 @@ namespace Lodis.Movement
         /// <param name="launchAngle">The angle to launch the object</param>
         /// <param name="clampForceWithinRing">Whether or not the grid force could push the object out of the ring.</param>
         /// <returns>The force needed to move the object to the panel destination</returns>
-        public FVector3 CalculateGridForce(float forceMagnitude, float launchAngle, bool clampForceWithinRing = false)
+        public FVector3 CalculateGridForce(Fixed32 forceMagnitude, Fixed32 launchAngle, bool clampForceWithinRing = false)
         {
             //Find the space between each panel and the panels size to use to find the total displacement
-            float panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
-            float panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
+            Fixed32 panelSize = BlackBoardBehaviour.Instance.Grid.PanelRef.transform.localScale.x;
+            Fixed32 panelSpacing = BlackBoardBehaviour.Instance.Grid.PanelSpacingX;
 
             //If the knockback was too weak return an empty vector
             if (forceMagnitude <= 0)
@@ -550,22 +556,22 @@ namespace Lodis.Movement
             }
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
-            if (Mathf.Abs(launchAngle - (Mathf.PI / 2)) <= _rangeToIgnoreUpAngle)
-                return FVector3.Up * Mathf.Sqrt(2 * Gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
+            if (launchAngle == new Fixed32(98304))
+                return FVector3.Up * Fixed32.Sqrt(2 * Gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
             //launchAngle = Mathf.Clamp(launchAngle, .2f, 3.0f);
 
             //Uses the total knockback and panel distance to find how far the object is travelling
-            float displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
+            Fixed32 displacement = (panelSize * forceMagnitude) + (panelSpacing * (forceMagnitude - 1));
             //Finds the magnitude of the force vector to be applied 
-            float val1 = displacement * Gravity;
-            float val2 = Mathf.Sin(2 * launchAngle);
-            float val3 = Mathf.Sqrt(val1 / Mathf.Abs(val2));
-            float magnitude = val3;
+            Fixed32 val1 = displacement * Gravity;
+            Fixed32 val2 = Fixed32.Sin(2 * launchAngle);
+            Fixed32 val3 = Fixed32.Sqrt(val1 / Fixed32.Abs(val2));
+            Fixed32 magnitude = val3;
 
             //If the magnitude is not a number the attack must be too weak. Return an empty vector
-            if (float.IsNaN(magnitude))
+            if (Fixed32.IsNaN(magnitude))
                 return new FVector3();
 
             //if (_maxMagnitude == null)
@@ -575,7 +581,7 @@ namespace Lodis.Movement
             //magnitude = Mathf.Clamp(magnitude, 0, _maxMagnitude.FixedValue);
 
             //Return the knockback force
-            return new FVector3(Mathf.Cos(launchAngle), Mathf.Sin(launchAngle), 0) * (magnitude * Mass);
+            return new FVector3(Fixed32.Cos(launchAngle), Fixed32.Sin(launchAngle), 0) * (magnitude * Mass);
         }
 
         /// <summary>
@@ -595,7 +601,7 @@ namespace Lodis.Movement
                 return new FVector3();
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
-            if (Fixed32.Abs(launchAngle - (Fixed32.PI / 2)) <= 0.2f)
+            if (launchAngle == new Fixed32(98304))
                 return FVector3.Up * Fixed32.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX));
 
             //Clamps hit angle to prevent completely horizontal movement
@@ -639,7 +645,7 @@ namespace Lodis.Movement
 
             //If the angle is within a certain range, ignore the angle and apply an upward force
             //Fixed values are 1.6 and 1.4
-            if (Fixed32.Abs(launchAngle) < new Fixed32(104857) && Fixed32.Abs(launchAngle) > new Fixed32(91750))
+            if (launchAngle == new Fixed32(98304))
                 return FVector3.Up * Fixed32.Sqrt(2 * gravity * forceMagnitude + (forceMagnitude * BlackBoardBehaviour.Instance.Grid.PanelSpacingX)) * launchAngle.Sign();
 
             //Clamps hit angle to prevent completely horizontal movement
@@ -705,6 +711,10 @@ namespace Lodis.Movement
             GridPhysicsBehaviour gridPhysicsBehaviour = otherEntity.GetComponent<GridPhysicsBehaviour>();
 
             _onCollision?.Invoke(collision);
+
+            if (_noForceOnHit)
+                return;
+
             float bounceDampening = BounceDampen;
 
             if (!gridPhysicsBehaviour || !damageScript)
@@ -724,14 +734,14 @@ namespace Lodis.Movement
                 knockBackScript = GetComponent<KnockbackBehaviour>();
 
             //Calculate the knockback and hit angle for the ricochet
-            Vector3 direction = new(collision.Normal.X, collision.Normal.Y, 0);
-            float dotProduct = Vector3.Dot(Vector3.right, -direction);
-            float hitAngle = Mathf.Acos(dotProduct);
-            float baseKnockBack = 1;
+            FVector3 direction = new(collision.Normal.X, collision.Normal.Y, 0);
+            Fixed32 dotProduct = Fixed32.Clamp(FVector3.Dot(FVector3.Right, direction), -1, 1);
+            Fixed32 hitAngle = Fixed32.Acos(dotProduct);
+            Fixed32 baseKnockBack = 1;
 
 
 
-            float velocityMagnitude;
+            Fixed32 velocityMagnitude;
             if (knockBackScript && _useVelocityForBounce)
             {
                 velocityMagnitude = knockBackScript.Physics.Velocity.Magnitude;
@@ -743,10 +753,10 @@ namespace Lodis.Movement
                 baseKnockBack = _lastForceAdded.Magnitude / velocityMagnitude + bounceDampening;
             }
 
-            if (baseKnockBack == 0 || float.IsNaN(baseKnockBack))
+            if (baseKnockBack == 0 || Fixed32.IsNaN(baseKnockBack))
                 return;
 
-            float bounce = 0;
+            Fixed32 bounce = 0;
 
             switch (_bounceCombination)
             {
@@ -1022,11 +1032,11 @@ namespace Lodis.Movement
             RingBarrierBehaviour lhs = BlackBoardBehaviour.Instance.RingBarrierLHS;
             RingBarrierBehaviour rhs = BlackBoardBehaviour.Instance.RingBarrierRHS;
 
-            if (lhs.IsAlive && FixedTransform.WorldPosition.X < lhs.FixedTransform.WorldPosition.X)
+            if (lhs.IsAlive && lhs.Activated && FixedTransform.WorldPosition.X < lhs.FixedTransform.WorldPosition.X)
             {
                 FixedTransform.WorldPosition = new FVector3(lhs.FixedTransform.WorldPosition.X, FixedTransform.WorldPosition.Y, FixedTransform.WorldPosition.Z);
             }
-            else if (rhs.IsAlive && FixedTransform.WorldPosition.X > rhs.FixedTransform.WorldPosition.X)
+            else if (rhs.IsAlive && rhs.Activated && FixedTransform.WorldPosition.X > rhs.FixedTransform.WorldPosition.X)
             {
                 FixedTransform.WorldPosition = new FVector3(rhs.FixedTransform.WorldPosition.X, FixedTransform.WorldPosition.Y, FixedTransform.WorldPosition.Z);
             }
@@ -1064,7 +1074,10 @@ namespace Lodis.Movement
             //--Bounces
             if (_currentBounce.CanBounce && _isGrounded && !_isFrozen)
             {
-                ApplyVelocityChange(_currentBounce.GetBounceForce());
+                if (_currentBounce.ChangeVelocity)
+                    ApplyVelocityChange(_currentBounce.GetBounceForce());
+                else
+                    ApplyImpulseForce(_currentBounce.GetBounceForce());
             }
 
             //Disable all forces if this object is actively moving on the grid or kinematic.
@@ -1112,14 +1125,14 @@ namespace Lodis.Movement
             }
 
             //Don't add a force if the object is traveling at a low speed
-            float dotProduct = FVector3.Dot(Velocity.GetNormalized(), FVector3.Up);
+            Fixed32 dotProduct = FVector3.Dot(Velocity.GetNormalized(), FVector3.Up);
             if (dotProduct > 0 || dotProduct == -1)
                 return;
 
             if (Fixed32.Abs(Velocity.X) > LandingBehaviour.LandingSpeed)
             {
                 //Calculate and apply friction force
-                ApplyForce(_friction * -(Velocity.X / Mathf.Abs(Velocity.X) * FVector3.Right));
+                ApplyForce(_friction * -(Velocity.X / Fixed32.Abs(Velocity.X) * FVector3.Right));
             }
         }
     }

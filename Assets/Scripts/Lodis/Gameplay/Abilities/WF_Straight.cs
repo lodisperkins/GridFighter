@@ -45,6 +45,7 @@ namespace Lodis.Gameplay
             }
 
             ProjectileSpawnerBehaviour projectileSpawner = OwnerMoveset.ProjectileSpawner;
+            projectileSpawner.Owner = Owner;
             projectileSpawner.Projectile = _projectile;
 
             //Fire laser

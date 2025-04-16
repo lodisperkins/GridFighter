@@ -973,7 +973,7 @@ MonoBehaviour:
   _testingLocalSaves: 0
   _aiFightEnabled: 0
   _fixed32TestConversion:
-    RawValue: 6553
+    RawValue: 6
   _testLatency: 0
   _saveDelay: 2
   _loadDelay: 7

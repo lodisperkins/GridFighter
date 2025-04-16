@@ -78,6 +78,21 @@ namespace Lodis.Utility
             return false;
         }
 
+        public static void SetLayerRecursively(this GameObject obj, int newLayer)
+        {
+            if (obj == null) return;
+
+            obj.layer = newLayer;
+
+            foreach (Transform child in obj.transform)
+            {
+                if (child != null)
+                {
+                    SetLayerRecursively(child.gameObject, newLayer);
+                }
+            }
+        }
+
         public static T[] Add<T>(this System.Array array, T item)
         {
             if (array == null)

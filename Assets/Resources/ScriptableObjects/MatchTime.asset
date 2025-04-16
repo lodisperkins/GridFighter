@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: MatchTime
   m_EditorClassIdentifier: 
   _val: 120
+  _fixedVal:
+    RawValue: 7864320

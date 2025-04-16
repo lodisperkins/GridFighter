@@ -56,11 +56,13 @@ namespace Lodis.Gameplay
         //---
         private bool _canHit = true;
         private EntityData _ownerData;
+        private bool _activated = true;
 
         /// <summary>
         /// The character that owns this ring barrier.
         /// </summary>
         public GameObject Owner { get => _owner; set => _owner = value; }
+        public bool Activated { get => _activated; private set => _activated = value; }
 
         protected override void Awake()
         {
@@ -152,13 +154,15 @@ namespace Lodis.Gameplay
 
             GridGame.IgnoreCollision(Entity.Data, _ownerData, false);
             _ringBarrierFeedbackBehaviour.ResetVisuals();
+            Activated = true;
         }
 
         public void Deactivate(bool spawnEffects = true)
         {
             GridGame.IgnoreCollision(Entity.Data, _ownerData);
-            _winCollider.SetActive(true);
+            FixedPointTimer.StartNewTimedAction(() => _winCollider.SetActive(true), new Fixed32(6553));
             _ringBarrierFeedbackBehaviour.DeactivateBarrier(spawnEffects);
+            Activated = false;
         }
 
         public override void OnOverlapEnter(Collision collision)
