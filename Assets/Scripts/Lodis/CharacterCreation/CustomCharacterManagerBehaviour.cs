@@ -9,6 +9,9 @@ using UnityEngine.EventSystems;
 
 namespace Lodis.CharacterCreation
 {
+    /// <summary>
+    /// The problem is that when a new character is created the character name isnt updated so the file is replaced with gladiator which is then replaced by a new name
+    /// </summary>
     public class CustomCharacterManagerBehaviour : MonoBehaviour
     {
         private MeshReplacementBehaviour _customCharacter;
@@ -66,34 +69,32 @@ namespace Lodis.CharacterCreation
 
         public void SetCharacterName(string name)
         {
-            string finalName = string.IsNullOrEmpty(name) ? "Gladiator" : name;
-
             // Only check for name collisions if the base name is Gladiator
-            if (finalName == "Gladiator")
-            {
-                int counter = 1;
-                string potentialName = finalName;
+            //if (finalName == "Gladiator")
+            //{
+            //    int counter = 1;
+            //    string potentialName = finalName;
 
-                while (File.Exists(Path.Combine(_saveLoadPath, $"{potentialName}_ArmorSet.txt")))
-                {
-                    potentialName = $"Gladiator{counter}";
-                    counter++;
-                }
+            //    while (File.Exists(Path.Combine(_saveLoadPath, $"{potentialName}_ArmorSet.txt")))
+            //    {
+            //        potentialName = $"Gladiator{counter}";
+            //        counter++;
+            //    }
 
-                finalName = potentialName;
-            }
+            //    finalName = potentialName;
+            //}
+            CharacterName = name;
+        }
 
-
+        public void RenameFile(string name)
+        {
             // Rename the file if it exists
             if (File.Exists(ArmorPath))
             {
-                string newPath = Path.Combine(_saveLoadPath, $"{finalName}_ArmorSet.txt");
+                string newPath = Path.Combine(_saveLoadPath, $"{name}_ArmorSet.txt");
                 File.Move(ArmorPath, newPath);
             }
-
-            CharacterName = finalName;
         }
-
 
         public void LoadCustomCharacter(string characterName)
         {
@@ -166,13 +167,6 @@ namespace Lodis.CharacterCreation
         private string CreateUniqueArmorPath()
         {
             string uniquePath = ArmorPath;
-            int num = 0;
-
-            while (File.Exists(uniquePath))
-            {
-                num++;
-                uniquePath = _saveLoadPath + "/" + CharacterName + " " + num.ToString() + "_ArmorSet.txt";
-            }
 
             FileStream stream = File.Create(uniquePath);
             stream.Close();
@@ -185,9 +179,9 @@ namespace Lodis.CharacterCreation
             //if (CustomCharacter.HasDefaultOutfit == true)
             //    return;
 
-            string path = _creatingNewCharacter ? CreateUniqueArmorPath() : ArmorPath;
+            string path = ArmorPath;
 
-            StreamWriter writer = new StreamWriter(path);
+            StreamWriter writer = new(path);
 
             CustomCharacter.SaveOutfit(writer);
 

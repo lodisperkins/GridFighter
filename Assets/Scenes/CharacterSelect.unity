@@ -1616,6 +1616,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3502820540727906541, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
+      propertyPath: _viewportMargin
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502820540727906541, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
       propertyPath: _distanceToScroll
       value: 90
       objectReference: {fileID: 0}
@@ -1804,6 +1809,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -11.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3502820540983786733, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: _viewportMargin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3502820540983786733, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
@@ -2760,6 +2770,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5238063871985424000, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}
+      propertyPath: _viewportMargin
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5238063871985424000, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
       propertyPath: _distanceToScroll
       value: 90
       objectReference: {fileID: 0}
@@ -2782,6 +2797,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _scrollSmooth
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5238063872718286058, guid: bc4c384ed9639d544b741e274fbd471d,
+        type: 3}
+      propertyPath: _viewportMargin
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5238063872718286058, guid: bc4c384ed9639d544b741e274fbd471d,
         type: 3}

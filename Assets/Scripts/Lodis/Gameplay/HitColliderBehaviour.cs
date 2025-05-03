@@ -392,6 +392,16 @@ namespace Lodis.Gameplay
             ResolveCollision(otherGameObject, collision);
         }
 
+        /// <summary>
+        /// Checks if the given grid position is within the range of the collider horizontally. Do not use for actual collision detection.
+        /// </summary>
+        public bool CheckInCollisionRange(FVector2 position)
+        {
+            Fixed32 distance = FVector2.Distance(GridPhysics.GetGridPosition(), position);
+
+            return distance <= EntityCollider.Width / 2;
+        }
+
         public override void OnOverlapStay(Collision collision)
         {
             if (collision.OtherCollider.OwnerPhysicsComponent == null)

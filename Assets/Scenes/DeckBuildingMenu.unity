@@ -6798,7 +6798,7 @@ MonoBehaviour:
               m_FloatArgument: 0
               m_StringArgument: 
               m_BoolArgument: 0
-            m_CallState: 2
+            m_CallState: 0
           - m_Target: {fileID: 1589256580}
             m_TargetAssemblyTypeName: 
             m_MethodName: SetCreatingNewCharacter
@@ -6810,7 +6810,7 @@ MonoBehaviour:
               m_FloatArgument: 0
               m_StringArgument: 
               m_BoolArgument: 0
-            m_CallState: 2
+            m_CallState: 0
       OnGoToParent:
         m_PersistentCalls:
           m_Calls: []
@@ -26712,7 +26712,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -26727,12 +26727,12 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -26742,7 +26742,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_Mode
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -26773,7 +26773,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Target
       value: 
-      objectReference: {fileID: 1589256580}
+      objectReference: {fileID: 2033525663}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
@@ -26783,12 +26783,12 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_Target
       value: 
-      objectReference: {fileID: 1255703518}
+      objectReference: {fileID: 1589256580}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_Target
       value: 
-      objectReference: {fileID: 1589256580}
+      objectReference: {fileID: 505377984}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[6].m_Target
@@ -26862,22 +26862,22 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_MethodName
-      value: SetCharacterName
+      value: SetNamesEmpty
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
-      value: SetDeckNames
-      objectReference: {fileID: 0}
-    - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetCreatingNewDeck
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[4].m_MethodName
       value: SetCreatingNewCharacter
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[5].m_MethodName
+      value: GoToPageChild
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -26896,6 +26896,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
+      value: Lodis.UI.DeckBuildingUIManagerBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 0
       objectReference: {fileID: 0}
@@ -26908,6 +26913,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
@@ -26967,7 +26977,7 @@ PrefabInstance:
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_StringArgument
-      value: Gladiator
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6066161032057997413, guid: cd44e3f1f47b4e844bb56c12bc030286,
         type: 3}

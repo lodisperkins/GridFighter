@@ -51,7 +51,7 @@ namespace Lodis.UI
         [SerializeField] private UnityEngine.EventSystems.EventSystem _eventSystem;
         [SerializeField] private PageManagerBehaviour _pageManager;
         [SerializeField] private PlayerColorManagerBehaviour _colorManager;
-
+        [SerializeField] private bool _makingNewCharacter;
 
         [SerializeField] private PlayerInput _playerInput;
         [SerializeField] private ControlSchemeManager _controlSchemeManager;
@@ -246,26 +246,45 @@ namespace Lodis.UI
         {
             string path = Application.persistentDataPath + "/CustomCharacters" + "/" + _potentialName + "_ArmorSet.txt";
 
-
-            if (File.Exists(path) && _potentialName != _originalName)
+            if (String.IsNullOrEmpty(_potentialName))
             {
-                SetInputAny();
-                ConfirmationMenuSpawner.Spawn(() =>
-                        _pageManager.GoToPage("NameKeyboard"), null, _eventSystem,
-                        "A character has already been made using this name.", leftText: "Okay"
-                    );
+                GoToNameKeyBoard("You must give your character a name first.");
                 return;
             }
 
+            if (File.Exists(path) && _potentialName != _originalName)
+            {
+                GoToNameKeyBoard("A character has already been made using this name.");
+                return;
+            }
+
+            _customCharacterManager.RenameFile(_potentialName);
             _customCharacterManager.SetCharacterName(_potentialName);
             string name = _customCharacterManager.CharacterName;
 
-            _buildManager.Rename(name);
+            _buildManager.RenameFile(name);
             _buildManager.SetDeckNames(name);
 
             _customCharacterManager.SaveCharacter();
             _buildManager.SaveDecks();
             SavePopupBehaviour.ChangesAreSaved.Value = true;
+        }
+
+        public void GoToNameKeyBoard(string prompt)
+        {
+            SetInputAny();
+            ConfirmationMenuSpawner.Spawn(() =>
+                    _pageManager.GoToPage("NameKeyboard"), null, _eventSystem,
+                    prompt, leftText: "Okay"
+                );
+        }
+
+        public void SetNamesEmpty()
+        {
+            _potentialName = string.Empty;
+            _originalName = string.Empty;
+            _customCharacterManager.SetCharacterName(_potentialName);
+            _buildManager.SetDeckNames(_potentialName);
         }
 
         //need to handle saving changes to a name that already exists
@@ -287,6 +306,11 @@ namespace Lodis.UI
         {
             _playerInput.neverAutoSwitchControlSchemes = false;
             _playerInput.enabled = true;
+        }
+
+        public void SetMakingNewCharacter(bool makingNewCharacter)
+        {
+            _makingNewCharacter = makingNewCharacter;
         }
     }
 }

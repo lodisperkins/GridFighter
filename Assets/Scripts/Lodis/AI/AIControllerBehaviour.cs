@@ -515,6 +515,11 @@ namespace Lodis.AI
 
         }
 
+        public void PerformAction(InputFlag action)
+        {
+            _inputBehaviour.AIFlags = action;
+        }
+
         private void StartPlayback(float delayOffset = 0)
         {
             _playbackRoutine = FixedPointTimer.StartNewTimedAction(() =>

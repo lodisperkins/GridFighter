@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using Types;
 using UnityEngine;
 
 namespace Lodis.AI
@@ -51,6 +52,9 @@ namespace Lodis.AI
         private ActionNode _currentSituation;
         private InputBehaviour _input;
         private CharacterStateMachineBehaviour _opponentStateMachine;
+        private float _recordingConfidenceThreshold = 0.5f;
+        private bool _opponentHitRecently;
+        private HitColliderBehaviour _lastHit;
 
         // Start is called before the first frame update
         protected override void Start()
@@ -70,6 +74,7 @@ namespace Lodis.AI
             _opponentGridPhysics = _opponent.GetComponent<GridPhysicsBehaviour>();
             _opponentMoveset = _opponent.GetComponent<MovesetBehaviour>();
             _opponentStateMachine = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject).GetComponent<CharacterStateMachineBehaviour>();
+            _opponentKnocback.AddOnTakeDamageTempAction(OnOpponentHit);
 
             MatchManagerBehaviour.Instance.AddOnMatchStartAction(AddNewRecording);
             _knockbackBehaviour.LandingScript.AddOnRecoverAction(AddNewRecording);
@@ -81,6 +86,13 @@ namespace Lodis.AI
 
             UpdateSituationNode();
         }
+
+        private void OnOpponentHit()
+        {
+            _opponentHitRecently = true;
+            _lastHit = _opponentKnocback.LastCollider;
+        }
+
 
         private void UpdateDecisions()
         {
@@ -294,11 +306,38 @@ namespace Lodis.AI
             action.TimeStamp = CurrentTime;
             action.TimeDelay = CurrentTimeDelay;
 
+            // Use confidence score to filter recordings
+            float score = CalculateActionConfidence(action);
+
+            // Only record if the action had impact
+            if (score >= _recordingConfidenceThreshold || _opponentStateMachine.StateMachine.CurrentState != "Tumbling")
+            {
+                _recordings[_recordings.Length - 1].Add(action);
+                _opponentHitRecently = false;
+            }
+
             CurrentTimeDelay = 0;
-            //_actionTree.AddDecision(action);
-            _recordings[_recordings.Length - 1].Add(action);
 
         }
+        private float CalculateActionConfidence(ActionNode action)
+        {
+            float score = 0;
+
+            if (_opponentHitRecently && _lastHit != null)
+            {
+                score += Fixed32.Clamp(_lastHit.ColliderInfo.Damage / 10.0f, 0, 1);
+            }
+
+            // Heuristic: if state changed (like leaving neutral), it's a good moment
+            if (action.CurrentState != "Idle")
+                score += 0.2f;
+
+            if (action.CurrentAbilityID > 0)
+                score += 0.2f;
+
+            return Mathf.Clamp01(score);
+        }
+
 
         protected override void Update()
         {

@@ -5,6 +5,7 @@ using Lodis.Movement;
 using Pada1.BBCore;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 [Condition("CustomConditions/OutOfRange")]
@@ -24,8 +25,8 @@ public class OutOfRangeCondition : GOCondition
         FVector2 dummyPos = _dummy.AIMovement.MovementBehaviour.CurrentPanel.Position;
         FVector2 enemyPos = _opponentMovement.CurrentPanel.Position;
         FVector3 directionToOpponent = (enemyPos - dummyPos);
-        float dot = Vector3.Dot(_dummy.Character.transform.forward, (Vector3)directionToOpponent);
+        Fixed32 dot = FVector3.Dot(_dummy.FixedTransform.Forward, directionToOpponent);
 
-        return Mathf.Abs(dummyPos.X - enemyPos.Y) > _dummy.MaxRange || dot < 0 || dummyPos.Y != _opponentMovement.Position.Y + _opponentMovement.MoveDirection.Y;
+        return _dummy.AIMovement.MovementBehaviour.Position.X != _dummy.MaxRange || dot < 0 || dummyPos.Y != _opponentMovement.Position.Y + _opponentMovement.MoveDirection.Y;
     }
 }

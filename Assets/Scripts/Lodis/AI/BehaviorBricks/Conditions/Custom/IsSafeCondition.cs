@@ -8,6 +8,7 @@ using Lodis.Movement;
 using Lodis.AI;
 using Lodis.Gameplay;
 using FixedPoints;
+using Types;
 
 [Condition("CustomConditions/IsSafe")]
 public class IsSafeCondition : GOCondition
@@ -22,17 +23,19 @@ public class IsSafeCondition : GOCondition
     /// <returns></returns>
     private bool CheckIfProjectilesWillHit()
     {
+        List<HitColliderBehaviour> attacksInRange = _dummy.GetAttacksInRange();
 
-        for (int i = 0; i < _dummy.GetAttacksInRange().Count; i++)
+        for (int i = 0; i < attacksInRange.Count; i++)
         {
-            GridPhysicsBehaviour physics = _dummy.GetAttacksInRange()[i].GetComponentInParent<GridPhysicsBehaviour>();
+            GridPhysicsBehaviour physics = attacksInRange[i].GetComponentInParent<GridPhysicsBehaviour>();
 
             if (physics == null) continue;
 
-            Vector3 direction = (physics.transform.position - _dummy.transform.position).normalized;
-            float dotProduct = FVector3.Dot((FVector3)direction, physics.Velocity.GetNormalized());
+            FVector3 direction = (physics.FixedTransform.WorldPosition - _dummy.FixedTransform.WorldPosition).GetNormalized();
+            Fixed32 dotProduct = FVector3.Dot(direction, physics.Velocity.GetNormalized());
 
-            if (Mathf.Abs(dotProduct) >= 0.8f)
+            //0.8
+            if (Fixed32.Abs(dotProduct) >= new Fixed32(52428) || physics.GetGridPosition() == _dummy.AIMovement.MovementBehaviour.Position || attacksInRange[i].CheckInCollisionRange(_dummy.AIMovement.MovementBehaviour.Position))
                 return true;
         }
 
@@ -46,14 +49,8 @@ public class IsSafeCondition : GOCondition
     /// <returns></returns>
     public override bool Check()
     {
-        List<HitColliderBehaviour> attacks = null;
-
-        attacks = _dummy.GetAttacksInRange();
-
-        if (attacks.Count > 0 || _dummy.Knockback.CurrentAirState == AirState.TUMBLING)
+        if (CheckIfProjectilesWillHit() || _dummy.Knockback.CurrentAirState == AirState.TUMBLING)
             return false;
-
-        _dummy.Defense.DeactivateShield();
 
         return true;
     }

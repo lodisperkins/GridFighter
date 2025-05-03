@@ -246,7 +246,7 @@ namespace Lodis.UI
             _specialDeck.AbilityData[_specialReplacementIndex] = data;
         }
 
-        public void Rename(string newName)
+        public void RenameFile(string newName)
         {
 
             string path = _saveLoadPath + "/" + NormalDeck.DeckName + ".txt";
