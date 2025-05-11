@@ -72,12 +72,14 @@ namespace Lodis.Input
             }
             );
 
-            MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => CanRecord = true);
+            //MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => CanRecord = true);
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => CanRecord = false);
         }
 
         protected virtual void RecordNewAction(int id)
         {
+            if (!CanRecord) return;
+
             FVector2 direction = FVector2.Zero;
 
             if (id == -1)

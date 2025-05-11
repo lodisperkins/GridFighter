@@ -24,6 +24,7 @@ namespace Lodis.AI
 
         private AIUtilities() { }
         private static AIUtilities _instance = null;
+        public delegate float Heuristic(PanelBehaviour panel, PanelBehaviour goal);
 
         /// <summary>
         /// The static instance of this class
@@ -144,7 +145,7 @@ namespace Lodis.AI
         /// <param name="allowOccupiedPanels">Whether or not the path should avoid panels that are occupied</param>
         /// <param name="alignment">The grid alignment this path can go through</param>
         /// <returns>A list containing the constructed path</returns>
-        public List<PanelBehaviour> GetPath(PanelBehaviour startPanel, PanelBehaviour endPanel, bool allowOccupiedPanels = false, GridAlignment alignment = GridAlignment.ANY, bool allowDiagonalMovement = false)
+        public List<PanelBehaviour> GetPath(PanelBehaviour startPanel, PanelBehaviour endPanel, bool allowOccupiedPanels = false, GridAlignment alignment = GridAlignment.ANY, bool allowDiagonalMovement = false, Heuristic heuristic = null)
         {
             PanelNode panelNode;
             List<PanelNode> openList = new List<PanelNode>();
@@ -187,7 +188,8 @@ namespace Lodis.AI
                     {
                         PanelNode newNode = new PanelNode { panel = neighbor };
                         newNode.gScore += panelNode.gScore;
-                        newNode.fScore = newNode.gScore + CalculateManhattanDistance(neighbor, endPanel);
+                        newNode.hScore = heuristic != null ? heuristic(neighbor, end.panel) : CalculateManhattanDistance(neighbor, end.panel);
+                        newNode.fScore = newNode.gScore + newNode.hScore;
                         newNode.parent = panelNode;
                         openList.Add(newNode);
                     }

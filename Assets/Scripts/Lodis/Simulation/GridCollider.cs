@@ -93,9 +93,9 @@ public class GridCollider
     public event CollisionEvent OnOverlapExit;
 
     /// <summary>
-    /// The current y position of this panel on the grid. Adds the y offset to the owner position.
+    /// The current y position of this panel on the grid in relation to its owner. Adds the y offset to the owner position. Mainly useful for melee abilities.
     /// </summary>
-    public int PanelY
+    public int LocalPanelY
     {
         get
         {
@@ -105,9 +105,9 @@ public class GridCollider
     }
 
     /// <summary>
-    /// The current x position of this panel on the grid. Adds the x offset to the owner position.
+    /// The current x position of this panel on the grid in relation to its owner. Adds the x offset to the owner position. Mainly useful for melee abilities.
     /// </summary>
-    public int PanelX
+    public int LocalPanelX
     {
         get
         {
@@ -125,7 +125,7 @@ public class GridCollider
         {
             if (PanelXOffset != 0 || PanelYOffset != 0)
             {
-                GridBehaviour.Grid.GetPanel(PanelX, PanelY, out PanelBehaviour panel);
+                GridBehaviour.Grid.GetPanel(LocalPanelX, LocalPanelY, out PanelBehaviour panel);
                 if (panel != null)
                 {
                     return panel.FixedWorldPosition + FVector3.Up * WorldYPosition;
@@ -280,6 +280,14 @@ public class GridCollider
         return ignoresLayer || ignoresTag;
     }
 
+    public FVector2 GetPanelPosition()
+    {
+        FVector2 coordinate;
+        GridBehaviour.Grid.GetGridCoordinateFromLocation((Vector3)Entity.FixedTransform.WorldPosition, out coordinate);
+
+        return coordinate;
+    }
+
     /// <summary>
     /// Removes a collider from the array of active collisions. Used with calling on collision exit events.
     /// </summary>
@@ -391,7 +399,7 @@ public class GridCollider
             //Checking horizontal collision
             collidingOnX &&
             //Check special collision params
-            (other.PanelY == PanelY || other._collideOnAnyRow || _collideOnAnyRow);
+            (other.LocalPanelY == LocalPanelY || other._collideOnAnyRow || _collideOnAnyRow);
 
 
         if (!collisionDetected)

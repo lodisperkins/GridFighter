@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FixedPoints;
+using static Lodis.AI.AIUtilities;
 
 namespace Lodis.AI
 {
@@ -22,6 +23,7 @@ namespace Lodis.AI
         private Movement.GridMovementBehaviour _movementBehaviour;
         private MovesetBehaviour _moveset;
         private StateMachine _stateMachine;
+        private Heuristic _pathFindHeuristic;
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
         public StateMachine StateMachine { get => _stateMachine; }
 
@@ -54,7 +56,7 @@ namespace Lodis.AI
             _needPath = true;
         }
 
-        public void MoveToLocation(FVector2 panelPosition)
+        public void MoveToLocation(FVector2 panelPosition, Heuristic heuristic = null)
         {
             if (_moveTarget.Position == panelPosition) return;
 
@@ -81,7 +83,7 @@ namespace Lodis.AI
 
             if (_needPath && (StateMachine.CurrentState == "Idle" || (StateMachine.CurrentState == "Attack" && _moveset.LastAbilityInUse.GetCurrentCancelRule()?.CanCancelOnMove == true)))
             {
-                _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment);
+                _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment, false, _pathFindHeuristic);
                 _needPath = false;
                 _currentPathIndex = 1;
 

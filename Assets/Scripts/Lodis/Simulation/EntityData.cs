@@ -293,7 +293,7 @@ public class EntityData : ISerializedListObject
         for (int i = 0; i < Transform.ChildCount; i++)
         {
             //Recursively calls the function so the game object adds its component and the components of its children.
-            T[] childComponentsFound = Transform.GetChild(i).Entity.GetComponentsInChildren<T>();
+            T[] childComponentsFound = Transform.GetChild(i).EntityData.GetComponentsInChildren<T>();
             componentsFound.AddRange(childComponentsFound);
         }
 
@@ -317,7 +317,7 @@ public class EntityData : ISerializedListObject
         for (int i = 0; i < Transform.ChildCount; i++)
         {
             //Recursively calls the function so the game object searches its components and the components of its children.
-            comp = Transform.GetChild(i).Entity.GetComponentInChildren<T>();
+            comp = Transform.GetChild(i).EntityData.GetComponentInChildren<T>();
 
             if (comp != null)
                 return comp;

@@ -357,6 +357,17 @@ namespace Lodis.GridScripts
             }
         }
 
+        public List<PanelBehaviour> GetPanelsForAlignment(GridAlignment alignment)
+        {
+            List<PanelBehaviour> panels = new List<PanelBehaviour>();
+            foreach (PanelBehaviour panel in _panels)
+            {
+                if (panel.Alignment == alignment)
+                    panels.Add(panel);
+            }
+            return panels;
+        }
+
         public bool CheckIfPositionInRange(FVector2 position)
         {
             return position.X >= 0 && position.X < Dimensions.x && position.Y >= 0 && position.Y < Dimensions.y;

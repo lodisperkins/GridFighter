@@ -53,7 +53,7 @@ namespace Lodis.Gameplay
             for (int i = 0; i < _visualPrefabInstanceTransforms[index].ChildCount; i++)
             {
                 FTransform child = _visualPrefabInstanceTransforms[index].GetChild(i);
-                child.Entity.Active = active;
+                child.EntityData.Active = active;
             }
         }
 
@@ -71,7 +71,7 @@ namespace Lodis.Gameplay
                 FVector3 targetPosition = _spawnPositions[i];
                 _visualPrefabInstanceTransforms[i] = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), targetPosition, new FQuaternion()).FixedTransform;
                 //Initialize hit collider
-                _collider = _visualPrefabInstanceTransforms[i].Entity.GetComponent<HitColliderBehaviour>();
+                _collider = _visualPrefabInstanceTransforms[i].EntityData.GetComponent<HitColliderBehaviour>();
                 _collider.ColliderInfo = GetColliderData(i);
                 _collider.Spawner = Owner;
 
@@ -81,7 +81,7 @@ namespace Lodis.Gameplay
                 }
 
                 //Make all hit boxes inactive by default
-                _visualPrefabInstanceTransforms[i].Entity.Active = false;
+                _visualPrefabInstanceTransforms[i].EntityData.Active = false;
             }
         }
 
@@ -127,7 +127,7 @@ namespace Lodis.Gameplay
             }
             count++;
             Debug.Log("Laser: " + count);
-            _visualPrefabInstanceTransforms[_currentSpawnIndex].Entity.Active = true;
+            _visualPrefabInstanceTransforms[_currentSpawnIndex].EntityData.Active = true;
             ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[0], (Vector3)_visualPrefabInstanceTransforms[_currentSpawnIndex].WorldPosition, new Quaternion());
             _currentSpawnIndex++;
         }

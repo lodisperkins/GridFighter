@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using FixedPoints;
+using Types;
 
 namespace Lodis.GridScripts
 {
@@ -23,18 +24,21 @@ namespace Lodis.GridScripts
         [SerializeField] private Color _neutralColor;
         [SerializeField] private float _emissionStrength;
         [SerializeField] private float _emissionFadeDuration;
-        private Color _positionLHSColor;
-        private Color _positionRHSColor;
         [SerializeField] private Color _warningColor;
         [SerializeField] private Color _dangerColor;
         [SerializeField] private Color _unblockableColor;
-        private Color _defaultColor;
         [SerializeField] private MeshRenderer _mesh;
+        
+        //---
+        private Color _positionLHSColor;
+        private Color _positionRHSColor;
+        private Color _defaultColor;
         private GameObject _markObject;
         private Movement.GridMovementBehaviour _markerMovement;
         private Vector2 _lastMarkPosition;
         private MarkerType _currentMarker;
         private FlashBehaviour _flashBehaviour;
+        private Fixed32 _safetyRating;
 
         /// <summary>
         /// The position of this panel on the grid.
@@ -90,6 +94,10 @@ namespace Lodis.GridScripts
         }
 
         public Panel PanelData { get => panelData; set => panelData = value; }
+        /// <summary>
+        /// Used for AI. The safety rating represents how close a hitcollider is to this panel. The lower the number the closer the danger is.
+        /// </summary>
+        public Fixed32 SafetyRating { get => _safetyRating; set => _safetyRating = value; }
 
         private void Awake()
         {

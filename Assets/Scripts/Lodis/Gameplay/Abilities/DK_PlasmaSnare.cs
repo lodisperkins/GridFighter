@@ -72,7 +72,7 @@ namespace Lodis.Gameplay
             base.OnStart(args);
             _spawnDistance = abilityData.GetCustomStatValue("SpawnDistance");
             _opponentTransform = _opponent.FixedTransform;
-            _opponentKnockback = _opponentTransform.Entity.GetComponent<KnockbackBehaviour>();
+            _opponentKnockback = _opponentTransform.EntityData.GetComponent<KnockbackBehaviour>();
             _targetFound = false;
 
             _spawnPosition = GetTarget();

@@ -196,8 +196,12 @@ namespace Lodis.Movement
 
         //Scene references
         private GridMovementBehaviour _movementBehaviour;
+        private GridPhysicsBehaviour _parentPhysics;
+
         public Collider BounceCollider { get => _bounceCollider; }
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
+
+
         /// <summary>
         /// Whether or not this object is currently moving on the grid instead of freely in the world.
         /// </summary>
@@ -287,6 +291,30 @@ namespace Lodis.Movement
         public void DisablePanelBounce()
         {
             _panelBounceEnabled = false;
+        }
+
+        /// <summary>
+        /// Gets the velocity of the object based on the parent entity's velocity.
+        /// </summary>
+        public FVector3 GetWorldVelocity()
+        {
+            FVector3 velocity = _velocity;
+
+            if (FixedTransform.Parent == null)
+                return velocity;
+
+            if (!_parentPhysics || _parentPhysics.Entity.Data != FixedTransform.Parent.EntityData)
+            {
+                _parentPhysics = FixedTransform.Parent.EntityData.GetComponent<GridPhysicsBehaviour>();
+
+                if (_parentPhysics)
+                {
+                    velocity = _parentPhysics.Velocity;
+                    velocity += _velocity;
+                }
+            }
+
+            return velocity;
         }
 
         /// <summary>
@@ -1100,7 +1128,6 @@ namespace Lodis.Movement
             
             //Code that ran in unity fixed update.
             _acceleration = (_lastVelocity - Velocity) / GridGame.FixedTimeStep;
-
             _objectAtRest = IsGrounded && _velocity.Magnitude <= 0.01f;
 
             ForceToApply = FVector3.Zero;

@@ -139,6 +139,8 @@ namespace Lodis.Gameplay
         public int RhsWins { get => _rhsWins; private set => _rhsWins = value; }
         public FloatVariable MatchStartTime { get => _matchStartTime; set => _matchStartTime = value; }
         public bool InfiniteBurst { get => _infiniteBurst; set => _infiniteBurst = value; }
+        public bool IsPaused { get => _isPaused; private set => _isPaused = value; }
+        public bool MatchStarted { get => _matchStarted; private set => _matchStarted = value; }
 
         private void Awake()
         {
@@ -198,7 +200,7 @@ namespace Lodis.Gameplay
             {
                 _canPause = true;
                 SetPlayerControlsActive(true);
-                _matchStarted = true;
+                MatchStarted = true;
                 _onMatchStart?.Invoke();
                 _matchStartEvent.Raise();
             }, TimedActionCountType.SCALEDTIME, MatchStartTime.FixedValue);
@@ -335,21 +337,21 @@ namespace Lodis.Gameplay
             if (!_canPause)
                 return;
 
-            _isPaused = !_isPaused;
-            Time.timeScale = Convert.ToInt32(!_isPaused);
-            GridGame.TimeScale = Convert.ToInt32(!_isPaused);
+            IsPaused = !IsPaused;
+            Time.timeScale = Convert.ToInt32(!IsPaused);
+            GridGame.TimeScale = Convert.ToInt32(!IsPaused);
 
             if (FXManagerBehaviour.Instance.SuperMoveEffectActive)
             {
                 GridGame.TimeScale = 0;
             }
 
-            GridGame.IsPaused = _isPaused;
+            GridGame.IsPaused = IsPaused;
             _timeScale = Time.timeScale;
 
-            SetPlayerControlsActive(!_isPaused);
+            SetPlayerControlsActive(!IsPaused);
 
-            if (_isPaused)
+            if (IsPaused)
             {
                 _onMatchPause?.Invoke();
                 _firstSelectedPauseButton.OnSelect(null);
@@ -368,7 +370,7 @@ namespace Lodis.Gameplay
 
             _onMatchRestart?.Invoke();
             _matchRestartEvent.Raise(gameObject);
-            _matchStarted = false;
+            MatchStarted = false;
             PlayerOutOfRing = false;
 
             if (suddenDeathActive)
@@ -377,7 +379,7 @@ namespace Lodis.Gameplay
                 _ringBarrierR.Deactivate(false);
             }
 
-            if (_isPaused)
+            if (IsPaused)
                 TogglePauseMenu();
 
             SetPlayerControlsActive(false);
@@ -389,7 +391,7 @@ namespace Lodis.Gameplay
 
                 _canPause = true;
                 SetPlayerControlsActive(true);
-                _matchStarted = true;
+                MatchStarted = true;
                 _onMatchStart?.Invoke();
                 _matchStartEvent.Raise();
             }, TimedActionCountType.SCALEDTIME, MatchStartTime.FixedValue);
@@ -409,13 +411,13 @@ namespace Lodis.Gameplay
 
         public void LoadCharacterSelect()
         {
-            _isPaused = false;
+            IsPaused = false;
             Time.timeScale = 1;
             GridGame.TimeScale = 1;
             GridGame.IsPaused = false;
             _timeScale = Time.timeScale;
 
-            if (_isPaused)
+            if (IsPaused)
             {
                 _onMatchPause?.Invoke();
                 _firstSelectedPauseButton.OnSelect(null);
@@ -430,13 +432,13 @@ namespace Lodis.Gameplay
 
         public void ReturnToMainMenu()
         {
-            _isPaused = false;
+            IsPaused = false;
             Time.timeScale = 1;
             GridGame.TimeScale = 1;
             GridGame.IsPaused = false;
             _timeScale = Time.timeScale;
 
-            if (_isPaused)
+            if (IsPaused)
             {
                 _onMatchPause?.Invoke();
                 _firstSelectedPauseButton.OnSelect(null);

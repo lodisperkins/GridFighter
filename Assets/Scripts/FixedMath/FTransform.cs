@@ -14,7 +14,7 @@ namespace FixedPoints
         [SerializeField] private FVector3 _localPosition;
         [SerializeField] private FQuaternion _localRotation;
         [SerializeField] private FVector3 _worldScale;
-        public EntityData Entity { get; private set; }
+        public EntityData EntityData { get; private set; }
 
         private FTransform parent;
         private List<FTransform> children;
@@ -24,12 +24,12 @@ namespace FixedPoints
             _localPosition = new FVector3();
             _localRotation = new FQuaternion(0, 0, 0, 1);
             _worldScale = new FVector3(1, 1, 1);
-            Entity = owner;
+            EntityData = owner;
         }
 
         public FTransform(FVector3 position, FQuaternion rotation, FVector3 scale, EntityData owner)
         {
-            Entity = owner;
+            EntityData = owner;
             WorldPosition = position;
             WorldRotation = rotation;
             WorldScale = scale;

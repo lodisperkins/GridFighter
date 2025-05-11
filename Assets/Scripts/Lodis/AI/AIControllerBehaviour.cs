@@ -23,6 +23,14 @@ namespace Lodis.AI
 {
     public class AIControllerBehaviour : SimulationBehaviour, IControllable
     {
+        public enum AIState
+        {
+            Idle,
+            Attacking,
+            Defending,
+            None
+        }
+
         [SerializeField]
         private GameObject _character;
         [Tooltip("Sets the value that amplifies the power of strong attacks when doing them randomly.")]
@@ -75,6 +83,9 @@ namespace Lodis.AI
         [SerializeField]
         [Tooltip("The last score found after comparing the current action situation to the current game state.")]
         private float _lastScore;
+        [SerializeField]
+        private AIState _currentState = AIState.Idle;
+
 
         [Header("Weights")]
         [SerializeField]
@@ -645,10 +656,145 @@ namespace Lodis.AI
             StartPlayback(time);
         }
 
+        /// <summary>
+        /// Gets a list of physics components from all attacks in range
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckIfProjectilesWillHit()
+        {
+            List<HitColliderBehaviour> attacksInRange = GetAttacksInRange();
+
+            for (int i = 0; i < attacksInRange.Count; i++)
+            {
+                GridPhysicsBehaviour physics = attacksInRange[i].GetComponentInParent<GridPhysicsBehaviour>();
+
+                if (physics == null) continue;
+
+                FVector3 direction = (physics.FixedTransform.WorldPosition - FixedTransform.WorldPosition).GetNormalized();
+                Fixed32 dotProduct = FVector3.Dot(direction, physics.Velocity.GetNormalized());
+
+                //0.8
+                if (Fixed32.Abs(dotProduct) >= new Fixed32(52428) || physics.GetGridPosition() == AIMovement.MovementBehaviour.Position || attacksInRange[i].CheckInCollisionRange(AIMovement.MovementBehaviour.Position))
+                    return true;
+            }
+
+            return false;
+        }
+
         public override void Tick(Fixed32 dt)
         {
             base.Tick(dt);
 
+            if (MatchManagerBehaviour.Instance.IsPaused || !MatchManagerBehaviour.Instance.MatchStarted || MatchManagerBehaviour.Instance.PlayerOutOfRing)
+                _currentState = AIState.Idle;
+
+            switch (_currentState)
+            {
+                case AIState.Idle:
+                    _currentState = CheckIfProjectilesWillHit() ? AIState.Defending : AIState.Attacking;
+                    break;
+                case AIState.Attacking:
+                    HandleActionPlayback();
+
+                    if (CheckIfProjectilesWillHit())
+                    {
+                        _currentState = AIState.Defending;
+                        _playbackRoutine?.Stop();
+                        _playbackRoutine = null;
+                        return;
+                    }
+                    break;
+                case AIState.Defending:
+                    HandleDefense();
+                    break;
+            }
+        }
+
+
+        /// <summary>
+        /// Calculate a rating for safety for each panel on the AI side. The rating is based on the projectiles on the row and how long it would take the projectile to touch the panel.
+        /// After that find the lowest rating and use A star to get a safe path. A star will need to know all the ratings and go to the best one.
+        /// </summary>
+        private void HandleDefense()
+        {
+            List<HitColliderBehaviour> hitColliders = GetAttacksInRange();
+
+            if (hitColliders.Count == 0)
+                return;
+
+            List<PanelBehaviour> panels = GridBehaviour.Grid.GetPanelsForAlignment(_movementBehaviour.Alignment);
+
+            // Variables to track the safest and closest panel
+            PanelBehaviour safestPanel = null;
+            Fixed32 lowestSafetyRating = 0;
+            Fixed32 shortestDistance = 0;
+
+            // Get the AI's current position
+            FVector2 currentPosition = _movementBehaviour.Position;
+
+            // Clean safety ratings for a fresh search and calculate safety ratings
+            foreach (PanelBehaviour panel in panels)
+            {
+                if (panel == null || !panel.gameObject.activeInHierarchy)
+                    continue;
+
+                // Reset the safety rating for this panel
+                panel.SafetyRating = 0;
+
+                foreach (HitColliderBehaviour hitCollider in hitColliders)
+                {
+                    if (hitCollider == null || !hitCollider.gameObject.activeInHierarchy)
+                        continue;
+
+                    if (hitCollider.EntityCollider.GetPanelPosition() == panel.Position)
+                    {
+                        panel.SafetyRating = -1; // Immediate danger
+                        break;
+                    }
+
+                    // Find how much the velocity direction lines up with the direction of the hit collider and the panel
+                    FVector3 direction = (panel.FixedWorldPosition - hitCollider.FixedTransform.WorldPosition).GetNormalized();
+                    Fixed32 dot = FVector3.Dot(direction, hitCollider.GridPhysics.Velocity.GetNormalized());
+
+                    // If the dot product is negative, the hit collider is moving away from the panel, so it is safe
+                    if (dot < 0)
+                        continue;
+
+                    Fixed32 distance = (panel.FixedWorldPosition - hitCollider.FixedTransform.WorldPosition).Magnitude;
+                    Fixed32 time = distance / hitCollider.GridPhysics.Velocity.Magnitude;
+
+                    if (time < panel.SafetyRating || panel.SafetyRating == 0)
+                    {
+                        panel.SafetyRating = time;
+                    }
+                }
+
+                // Skip panels with immediate danger
+                if (panel.SafetyRating == -1)
+                    continue;
+
+                // Calculate the distance to the panel
+                Fixed32 distanceToPanel = (panel.Position - currentPosition).Magnitude;
+
+                // Check if this panel is better (lower safety rating or closer if ratings are equal)
+                if (panel.SafetyRating < lowestSafetyRating ||
+                    (panel.SafetyRating == lowestSafetyRating && distanceToPanel < shortestDistance))
+                {
+                    safestPanel = panel;
+                    lowestSafetyRating = panel.SafetyRating;
+                    shortestDistance = distanceToPanel;
+                }
+            }
+
+            // Move to the safest panel if one is found
+            if (safestPanel != null)
+            {
+                _aiMovementBehaviour.MoveToLocation(safestPanel.Position, (panel, goal) => 3 - panel.SafetyRating);
+            }
+        }
+
+        private void HandleActionPlayback()
+        {
             if (_bufferedAction?.HasAction() == true)
                 _bufferedAction.UseAction();
             else

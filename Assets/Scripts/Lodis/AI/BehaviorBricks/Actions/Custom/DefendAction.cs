@@ -30,6 +30,7 @@ public class DefendAction : GOAction
     public override void OnStart()
     {
         base.OnStart();
+
     }
   
     public override TaskStatus OnUpdate()

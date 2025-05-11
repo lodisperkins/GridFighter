@@ -106,7 +106,7 @@ namespace Lodis.Gameplay
         public static HitColliderBehaviour SpawnCollider(FTransform parent, Fixed32 width, Fixed32 height, HitColliderData info, EntityDataBehaviour spawner = null, bool debuggingEnabled = true)
         {
             //Create a new grid collider in the simulation
-            EntityDataBehaviour colliderEntity = GridGame.SpawnEntity(parent.Entity);
+            EntityDataBehaviour colliderEntity = GridGame.SpawnEntity(parent.EntityData);
             colliderEntity.Data.Name = spawner.Data.Name + "Collider";
             colliderEntity.gameObject.layer = LayerMask.NameToLayer("Ability");
 

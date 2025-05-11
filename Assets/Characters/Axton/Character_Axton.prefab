@@ -1284,7 +1284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dad6cf1b42ec87d49b509d132a196c81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recordingName: AI(03302025)
+  _recordingName: AxtonAI
   _canRecord: 0
   _attackDirection: {x: 0, y: 0}
   _maxDecisionCount: 0

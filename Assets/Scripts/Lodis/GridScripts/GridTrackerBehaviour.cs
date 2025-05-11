@@ -63,6 +63,7 @@ namespace Lodis.GridScripts
         public bool MarkPanelAtGridLocation { get => _markPanelAtGridLocation; set => _markPanelAtGridLocation = value; }
         public bool MarkCollider { get => _markCollider; set => _markCollider = value; }
         public ColliderBehaviour ColliderToTrack { get => _colliderToTrack; set => _colliderToTrack = value; }
+        public List<PanelBehaviour> PanelsInRange { get => _panelsInRange; protected set => _panelsInRange = value; }
 
         private void OnDisable()
         {
@@ -186,13 +187,13 @@ namespace Lodis.GridScripts
             {
                 if (GridBehaviour.Grid.GetPanel(x + i, y, out panel))
                 {
-                    _panelsInRange.Add(panel);
+                    PanelsInRange.Add(panel);
                     MarkPanel(panel);
                 }
 
                 if (GridBehaviour.Grid.GetPanel(x - i, y, out panel))
                 {
-                    _panelsInRange.Add(panel);
+                    PanelsInRange.Add(panel);
                     MarkPanel(panel);
                 }
             }
@@ -201,13 +202,13 @@ namespace Lodis.GridScripts
             {
                 if (GridBehaviour.Grid.GetPanel(x, y + i, out panel))
                 {
-                    _panelsInRange.Add(panel);
+                    PanelsInRange.Add(panel);
                     MarkPanel(panel);
                 }
 
                 if (GridBehaviour.Grid.GetPanel(x, y - i, out panel))
                 {
-                    _panelsInRange.Add(panel);
+                    PanelsInRange.Add(panel);
                     MarkPanel(panel);
                 }
             }
@@ -223,7 +224,7 @@ namespace Lodis.GridScripts
             {
                 if (GridBehaviour.Grid.GetPanel(x + i, y, out panel))
                 {
-                    _panelsInRange.Add(panel);
+                    PanelsInRange.Add(panel);
                     MarkPanel(panel);
                 }
             }
@@ -232,7 +233,7 @@ namespace Lodis.GridScripts
             {
                 if (GridBehaviour.Grid.GetPanel(x, y + i, out panel))
                 {
-                    _panelsInRange.Add(panel);
+                    PanelsInRange.Add(panel);
                     MarkPanel(panel);
                 }
             }
@@ -246,14 +247,14 @@ namespace Lodis.GridScripts
 
             foreach (PanelBehaviour panel in panels)
             {
-                _panelsInRange.Add(panel);
+                PanelsInRange.Add(panel);
                 MarkPanel(panel);
             }
         }
 
         public void ClearPanelsInRange()
         {
-            foreach (PanelBehaviour panel in _panelsInRange)
+            foreach (PanelBehaviour panel in PanelsInRange)
             {
                 panel.RemoveMark();
             }
@@ -300,7 +301,7 @@ namespace Lodis.GridScripts
             else if (MarkCollider)
             {
                 if (ColliderToTrack)
-                    MarkPanelAtGridPosition(ColliderToTrack.EntityCollider.PanelX, ColliderToTrack.EntityCollider.PanelY, Marker);
+                    MarkPanelAtGridPosition(ColliderToTrack.EntityCollider.LocalPanelX, ColliderToTrack.EntityCollider.LocalPanelY, Marker);
             }
             else
                 MarkPanelAtLocation(transform.position, Marker);

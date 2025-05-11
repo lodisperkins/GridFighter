@@ -397,7 +397,7 @@ public struct GridGame : IGame
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
-            AddEntityToGame(entity.Transform.GetChild(i).Entity);
+            AddEntityToGame(entity.Transform.GetChild(i).EntityData);
         }
 
         if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
@@ -438,7 +438,7 @@ public struct GridGame : IGame
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
-            EntityData child = entity.Transform.GetChild(i).Entity;
+            EntityData child = entity.Transform.GetChild(i).EntityData;
             _entitiesToRemove.Add(child);
             child.End();
 
@@ -464,7 +464,7 @@ public struct GridGame : IGame
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
-            EntityData child = entity.Transform.GetChild(i).Entity;
+            EntityData child = entity.Transform.GetChild(i).EntityData;
             _entitiesToRemove.Add(child);
             child.End();
 
