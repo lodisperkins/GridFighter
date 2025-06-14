@@ -224,20 +224,17 @@ MonoBehaviour:
   _saveStateDelay: 0.5
   _losePenalty: -2
   _winReward: 4
-  _recordingName: AI(03302025)
+  _recordingName: AxtonAI
   _useRecording: 1
   _randomDecisionConstant: 3
   _accuracyMinimum: 1
   _actionScoreMax: 4
   _lastScore: 3.9716568
-  _directionWeight: 1.5
-  _opponentVelocityWeight: 1
-  _distanceWeight: 3
-  _avgHitBoxOffsetWeight: 1.5
-  _avgVelocityWeight: 1
-  _matchTimeRemainingWeight: 0
-  _opponentStateWeight: 0.7
-  _opponentHealthWeight: 1
+  _currentState: 0
+  _distanceAccuracyMinimum:
+    RawValue: 39321
+  _directionAccuracyMinimum:
+    RawValue: 39321
 --- !u!114 &7025333189879560728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -318,7 +315,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5680485170780137523}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7e867bf7b20b1ca4dbd0e6c6ca45a4f6, type: 3}
   m_Name: 

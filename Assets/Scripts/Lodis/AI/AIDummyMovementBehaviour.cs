@@ -58,7 +58,7 @@ namespace Lodis.AI
 
         public void MoveToLocation(FVector2 panelPosition, Heuristic heuristic = null)
         {
-            if (_moveTarget.Position == panelPosition) return;
+            if (_moveTarget?.Position == panelPosition) return;
 
             BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _moveTarget, false, _movementBehaviour.Alignment);
             _needPath = true;

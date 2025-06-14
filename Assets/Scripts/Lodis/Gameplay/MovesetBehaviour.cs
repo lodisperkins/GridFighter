@@ -263,6 +263,7 @@ namespace Lodis.Gameplay
         public CharacterAnimationBehaviour AnimationBehaviour { get => _animationBehaviour; set => _animationBehaviour = value; }
         public Deck NormalDeckRef { get => _normalDeckRef; set => _normalDeckRef = value; }
         public Deck SpecialDeckRef { get => _specialDeckRef; set => _specialDeckRef = value; }
+        public Deck SpecialDeck { get => _specialDeck; }
         public Transform HeldItemSpawnLeft { get => _heldItemSpawnLeft; private set => _heldItemSpawnLeft = value; }
         public Transform HeldItemSpawnRight { get => _heldItemSpawnRight; private set => _heldItemSpawnRight = value; }
 
@@ -486,7 +487,7 @@ namespace Lodis.Gameplay
                         _burstAction.Stop();
                     }
 
-                    if (MatchManagerBehaviour.Instance.InfiniteBurst)
+                    if (MatchManagerBehaviour.Instance != null && MatchManagerBehaviour.Instance.InfiniteBurst)
                     {
                         _burstAction.Duration = _infiniteBurstEnergyRechargeRate.FixedValue;
                     }
@@ -576,6 +577,16 @@ namespace Lodis.Gameplay
             return null;
         }
 
+        public bool CheckIfAbilityIDInCurrentSlots(int ID)
+        {
+            if (_specialAbilitySlots[0]?.abilityData.ID == ID)
+                return true;
+            else if (_specialAbilitySlots[1]?.abilityData.ID == ID)
+                return true;
+
+            return false;
+        }
+
         public void AddOnUpdateHandAction(UnityAction action)
         {
             OnUpdateHand += action;
@@ -627,6 +638,17 @@ namespace Lodis.Gameplay
         public Ability GetAbility(Condition condition)
         {
             Ability ability = _normalDeck.GetAbilityByCondition(condition);
+            
+            if (ability == null)
+            {
+                if (condition.Invoke(SpecialAbilitySlots[0]))
+                    return SpecialAbilitySlots[0];
+                else if (condition.Invoke(SpecialAbilitySlots[1]))
+                    return SpecialAbilitySlots[1];
+            }
+
+            if (ability == null && condition.Invoke(_nextAbilitySlot))
+                return _nextAbilitySlot;
 
             if (ability == null)
                 ability = _specialDeck.GetAbilityByCondition(condition);

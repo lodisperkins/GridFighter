@@ -90,8 +90,7 @@ MonoBehaviour:
       type: 3}
     SpawnEffectOffset:
       RawValue: 0
-    HitSpark: {fileID: 8482821253585752479, guid: b2d1a7e3c779c334183600eee56341df,
-      type: 3}
+    HitSpark: {fileID: 0}
     HitEffectLevel: 3
     HitStopShakeStrength:
       RawValue: 262144

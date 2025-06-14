@@ -44,7 +44,7 @@ namespace Lodis.Gameplay
         protected override void OnMatchRestart()
         {
             base.OnMatchRestart();
-            GridBehaviour.Grid.CancelRowExchange();
+            GridBehaviour.Instance.CancelRowExchange();
         }
     }
 }

@@ -21,7 +21,7 @@ MonoBehaviour:
   recoverTime:
     RawValue: 3276
   startUpTime:
-    RawValue: 655
+    RawValue: 6553
   maxActivationAmount: 1
   EnergyCost: 2
   CancellationRules:

@@ -145,14 +145,21 @@ namespace Lodis.Input
         private bool _special2Down;
         private bool _canTogglePause;
 
+        public delegate void OnInputReceived(InputFlag input, EntityDataBehaviour entity);
+        public static event OnInputReceived OnInputReceivedEvent;
+
         private BufferedInput[] _bufferedInputs = new BufferedInput[7];
         private int _currentBufferInputIndex;
 
         private InputFlag _aiFlags;
         private InputFlag _lastActionBuffered;
+
+        private UnityAction _onGetFlags;
+
         public static Queue<InputFlag> TestInputList = new Queue<InputFlag>();
 
         public static UnityAction OnApplicationQuit;
+        private InputFlag flags;
 
         public InputDevice[] Devices 
         {
@@ -188,6 +195,11 @@ namespace Lodis.Input
             {
                 return _attackDirection;
             }
+            set
+            {
+                _attackDirection = value;
+                _timeOfLastDirectionInput = GridGame.Time;
+            }
         }
 
         public GameObject Character { get => _character; set => _character = value; }
@@ -199,6 +211,9 @@ namespace Lodis.Input
 
         public static bool PlayerActionButtonDown { get => _playerActionButtonDown; private set => _playerActionButtonDown = value; }
         public PlayerControls PlayerControls { get => _playerControls; private set => _playerControls = value; }
+        public bool ChargingAttack { get => _chargingAttack; private set => _chargingAttack = value; }
+        public InputFlag Flags { get => flags; set => flags = value; }
+        public UnityAction OnGetFlags { get => _onGetFlags; set => _onGetFlags = value; }
 
         protected override void Awake()
         {
@@ -334,7 +349,7 @@ namespace Lodis.Input
             {
                 TryChargeAttack();
             }
-            else if (_chargingAttack)
+            else if (ChargingAttack)
             {
                 // Call the function related to Strong attack
                 BufferChargeNormalAbility();
@@ -399,39 +414,46 @@ namespace Lodis.Input
             //     Debug.Log("Player2 input polled.");
             // }
 
-            InputFlag flags = InputFlag.NONE;
+            Flags = InputFlag.NONE;
+
+            OnGetFlags?.Invoke();   
 
             if (!AIControlled)
             {
                 if (_playerControls.Player.MoveUp.IsPressed())
-                    flags |= InputFlag.Up;
+                    Flags |= InputFlag.Up;
                 if (_playerControls.Player.MoveDown.IsPressed())
-                    flags |= InputFlag.Down;
+                    Flags |= InputFlag.Down;
                 if (_playerControls.Player.MoveLeft.IsPressed())
-                    flags |= InputFlag.Left;
+                    Flags |= InputFlag.Left;
                 if (_playerControls.Player.MoveRight.IsPressed())
-                    flags |= InputFlag.Right;
+                    Flags |= InputFlag.Right;
                 if (_weakAttackButtonDown = _playerControls.Player.Attack.IsPressed())
-                    flags |= InputFlag.Weak;
+                    Flags |= InputFlag.Weak;
                 if (_playerControls.Player.Special1.IsPressed())
-                    flags |= InputFlag.Special1;
+                    Flags |= InputFlag.Special1;
                 if (_playerControls.Player.Special2.IsPressed())
-                    flags |= InputFlag.Special2;
+                    Flags |= InputFlag.Special2;
                 if (_playerControls.Player.Burst.IsPressed())
-                    flags |= InputFlag.Burst;
+                    Flags |= InputFlag.Burst;
                 if (_playerControls.Player.Shuffle.IsPressed())
-                    flags |= InputFlag.Shuffle;
+                    Flags |= InputFlag.Shuffle;
                 if (_playerControls.Player.ChargeAttack.IsPressed())
-                    flags |= InputFlag.Strong;
+                    Flags |= InputFlag.Strong;
                 if (_playerControls.Player.Pause.IsPressed())
-                    flags |= InputFlag.Pause;
+                    Flags |= InputFlag.Pause;
+
+                if (Flags != InputFlag.NONE)
+                {
+                    OnInputReceivedEvent?.Invoke(Flags, Entity);
+                }
             }
             else
             {
-                flags = AIFlags;
+                Flags = AIFlags;
             }
 
-            GridGame.SetPlayerInput(PlayerID, (long)flags);
+            GridGame.SetPlayerInput(PlayerID, (long)Flags);
 
             //---Debug commands
 
@@ -562,16 +584,16 @@ namespace Lodis.Input
 
         private void TryChargeAttack()
         {
-            if (!_stateMachineBehaviour.CompareState("Idle", "Moving", "Attacking") || _chargingAttack)
+            if (!_stateMachineBehaviour.CompareState("Idle", "Moving", "Attacking") || ChargingAttack)
             {
-                if (!_chargingAttack)
+                if (!ChargingAttack)
                     _canBufferAbility = false;
 
                 return;
             }
 
             _canBufferAbility = true;
-            _chargingAttack = true;
+            ChargingAttack = true;
             _chargeAction = FixedPointTimer.StartNewTimedAction(() => _onChargeStarted?.Raise(Character), _minChargeLimit);
         }
 
@@ -582,7 +604,7 @@ namespace Lodis.Input
             _chargeAction?.Stop();
             NormalAttackButtonDown = false;
             _abilityBuffered = false;
-            _chargingAttack = false;
+            ChargingAttack = false;
         }
 
         public bool GetSpecialButton(int buttonNum)
@@ -648,7 +670,7 @@ namespace Lodis.Input
         /// index 1 is always the direction of input.</param>
         public void BufferChargeNormalAbility()
         {
-            _chargingAttack = false;
+            ChargingAttack = false;
             _onChargeEnded?.Raise(Character);
             _chargeAction?.Stop();
 
@@ -1026,7 +1048,7 @@ namespace Lodis.Input
             if (Keyboard.current.tabKey.isPressed)
                 DecisionDisplayBehaviour.DisplayText = !DecisionDisplayBehaviour.DisplayText;
 
-            if (_chargingAttack)
+            if (ChargingAttack)
                 _chargeHoldTime += dt;
             else
                 _chargeHoldTime = 0;

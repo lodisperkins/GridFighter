@@ -139,7 +139,7 @@ namespace Lodis.GridScripts
 
         public int TempMaxColumns => _tempMaxColumns;
 
-        public static GridBehaviour Grid { get; private set; }
+        public static GridBehaviour Instance { get; private set; }
 
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.
@@ -206,7 +206,7 @@ namespace Lodis.GridScripts
             _width = (_dimensions.x * localScale.x) + (PanelSpacingX * _dimensions.x) + _panelSpacingMiddle;
             _height = (_dimensions.y * localScale.z) + (PanelSpacingZ * _dimensions.y);
 
-            Grid = this;
+            Instance = this;
 
             if (!_collisionPlaneRef)
                 return;
@@ -689,6 +689,64 @@ namespace Lodis.GridScripts
             }
 
             return neighbors;
+        }
+
+        /// <summary>
+        /// Gets the panel that is mirrored across the center of the grid.
+        /// </summary>
+        public PanelBehaviour GetMirroredPanelAcrossXY(int x, int y)
+        {
+            // Get the total number of rows and columns in the grid
+            int totalRows = (int)_dimensions.x;
+            int totalColumns = (int)_dimensions.y; // Replace with your grid's column count
+
+            // Calculate the mirrored position
+            int mirroredRow = totalRows - 1 - x;
+            int mirroredColumn = totalColumns - 1 - y;
+
+            PanelBehaviour panel;
+
+            GetPanel(mirroredRow, mirroredColumn, out panel);
+
+            return panel;
+        }
+
+        /// <summary>
+        /// Gets the panel that is mirrored across the center of the grid.
+        /// </summary>
+        public PanelBehaviour GetMirroredPanelAcrossX(int x, int y)
+        {
+            // Get the total number of rows and columns in the grid
+            int totalRows = (int)_dimensions.x;
+            int totalColumns = (int)_dimensions.y; // Replace with your grid's column count
+
+            // Calculate the mirrored position
+            int mirroredRow = totalRows - 1 - x;
+
+            PanelBehaviour panel;
+
+            GetPanel(mirroredRow, y, out panel);
+
+            return panel;
+        }
+
+        /// <summary>
+        /// Gets the panel that is mirrored across the center of the grid.
+        /// </summary>
+        public PanelBehaviour GetMirroredPanelAcrossY(int x, int y)
+        {
+            // Get the total number of rows and columns in the grid
+            int totalRows = (int)_dimensions.x;
+            int totalColumns = (int)_dimensions.y; // Replace with your grid's column count
+
+            // Calculate the mirrored position
+            int mirroredColumn = totalColumns - 1 - y;
+
+            PanelBehaviour panel;
+
+            GetPanel(x, mirroredColumn, out panel);
+
+            return panel;
         }
 
         /// <summary>

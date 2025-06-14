@@ -1012,11 +1012,11 @@ namespace Lodis.Movement
             condition => !IsMoving
             );
 
-            int maxSearch = GridBehaviour.Grid.GetAlignmentXScale(Alignment);
+            int maxSearch = GridBehaviour.Instance.GetAlignmentXScale(Alignment);
 
             //Get the current panel we are on. Doing this because current panel could be null here if it couldn't find one earlier.
             FVector2 position;
-            GridBehaviour.Grid.GetGridCoordinateFromLocation(transform.position, out position);
+            GridBehaviour.Instance.GetGridCoordinateFromLocation(transform.position, out position);
 
             for (int i = 0; i < maxSearch; i ++)
             {
@@ -1086,13 +1086,14 @@ namespace Lodis.Movement
 
                 return;
             }
+
             //Old update
             if (!_canMove || _health?.Stunned == true)
                 return;
 
             MoveToClosestAlignedPanelOnRow();
 
-            GridBehaviour.Grid.GetPanel(Position, out _currentPanel);
+            GridBehaviour.Instance.GetPanel(Position, out _currentPanel);
 
             if (!_currentPanel)
                 return;
@@ -1192,7 +1193,7 @@ namespace Lodis.Movement
             FVector2 previousPosition = new FVector2();
             previousPosition.Deserialize(br);
 
-            GridBehaviour.Grid.GetPanel(previousPosition, out _previousPanel);
+            GridBehaviour.Instance.GetPanel(previousPosition, out _previousPanel);
 
             //FVector2 targetPosition = new FVector2();
             //targetPosition.Deserialize(br);
@@ -1203,7 +1204,7 @@ namespace Lodis.Movement
             MoveDirection.Deserialize(br);
             _targetPosition.Deserialize(br);
 
-            GridBehaviour.Grid.GetPanelAtLocationInWorld((Vector3)_targetPosition, out _targetPanel);
+            GridBehaviour.Instance.GetPanelAtLocationInWorld((Vector3)_targetPosition, out _targetPanel);
 
             //UnityEngine.Debug.Log($"Target position deserialized {_targetPosition}");
 

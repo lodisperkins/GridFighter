@@ -185,13 +185,13 @@ namespace Lodis.GridScripts
 
             for (int i = 1; i <= _xRange; i++)
             {
-                if (GridBehaviour.Grid.GetPanel(x + i, y, out panel))
+                if (GridBehaviour.Instance.GetPanel(x + i, y, out panel))
                 {
                     PanelsInRange.Add(panel);
                     MarkPanel(panel);
                 }
 
-                if (GridBehaviour.Grid.GetPanel(x - i, y, out panel))
+                if (GridBehaviour.Instance.GetPanel(x - i, y, out panel))
                 {
                     PanelsInRange.Add(panel);
                     MarkPanel(panel);
@@ -200,13 +200,13 @@ namespace Lodis.GridScripts
 
             for (int i = 1; i <= _yRange; i++)
             {
-                if (GridBehaviour.Grid.GetPanel(x, y + i, out panel))
+                if (GridBehaviour.Instance.GetPanel(x, y + i, out panel))
                 {
                     PanelsInRange.Add(panel);
                     MarkPanel(panel);
                 }
 
-                if (GridBehaviour.Grid.GetPanel(x, y - i, out panel))
+                if (GridBehaviour.Instance.GetPanel(x, y - i, out panel))
                 {
                     PanelsInRange.Add(panel);
                     MarkPanel(panel);
@@ -222,7 +222,7 @@ namespace Lodis.GridScripts
 
             for (int i = 1; i <= _xRange; i++)
             {
-                if (GridBehaviour.Grid.GetPanel(x + i, y, out panel))
+                if (GridBehaviour.Instance.GetPanel(x + i, y, out panel))
                 {
                     PanelsInRange.Add(panel);
                     MarkPanel(panel);
@@ -231,7 +231,7 @@ namespace Lodis.GridScripts
 
             for (int i = 1; i <= _yRange; i++)
             {
-                if (GridBehaviour.Grid.GetPanel(x, y + i, out panel))
+                if (GridBehaviour.Instance.GetPanel(x, y + i, out panel))
                 {
                     PanelsInRange.Add(panel);
                     MarkPanel(panel);
@@ -243,7 +243,7 @@ namespace Lodis.GridScripts
         {
             ClearPanelsInRange();
 
-            List<PanelBehaviour> panels = GridBehaviour.Grid.GetPanelNeighbors(new FixedPoints.FVector2(x, y), _radius);
+            List<PanelBehaviour> panels = GridBehaviour.Instance.GetPanelNeighbors(new FixedPoints.FVector2(x, y), _radius);
 
             foreach (PanelBehaviour panel in panels)
             {

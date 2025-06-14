@@ -39,7 +39,7 @@ namespace Lodis.Gameplay
             //Flip the starting x position based on the side of the grid.
             if (OwnerMoveScript.Alignment == GridAlignment.LEFT)
             {
-                _startX = (int)(GridBehaviour.Grid.Dimensions.x - 2);
+                _startX = (int)(GridBehaviour.Instance.Dimensions.x - 2);
             }
 
             _bombs?.Clear();

@@ -205,7 +205,11 @@ namespace Lodis.Movement
         /// <summary>
         /// Whether or not this object is currently moving on the grid instead of freely in the world.
         /// </summary>
-        public bool GridActive { get => _gridActive; set => _gridActive = value; }
+        public bool GridActive 
+        {
+            get => _gridActive;
+            set => _gridActive = value;
+        }
         public bool BouncePending { get => _currentBounce.Bounces <= 0; }
 
         public override void Serialize(BinaryWriter bw)
@@ -357,9 +361,9 @@ namespace Lodis.Movement
             if (_isFrozen)
                 return;
 
-            _isFrozen = true;
+            _isFrozen = true; 
             bool gridActive = GridActive;
-            GridActive = false;
+            //GridActive = false;
 
             if (_jumpSequence?.IsPlaying() == true)
                 _jumpSequence?.Pause();
@@ -406,7 +410,7 @@ namespace Lodis.Movement
             FrozenVelocity = _velocity;
 
             bool gridActive = GridActive;
-            GridActive = false;
+            //GridActive = false;
 
             if (_jumpSequence?.IsPlaying() == true)
                 _jumpSequence?.Pause();
@@ -450,7 +454,7 @@ namespace Lodis.Movement
                 return;
             }
 
-            GridActive = wasGridActive;
+            //GridActive = wasGridActive;
 
             if (keepMomentum && FrozenVelocity.Magnitude > 0)
                 ApplyVelocityChange(FrozenVelocity);
@@ -1044,7 +1048,7 @@ namespace Lodis.Movement
 
             if (!_movementBehaviour)
             {
-                GridBehaviour.Grid.GetGridCoordinateFromLocation((Vector3)FixedTransform.WorldPosition, out position);
+                GridBehaviour.Instance.GetGridCoordinateFromLocation((Vector3)FixedTransform.WorldPosition, out position);
             }
             else
             {
@@ -1089,7 +1093,7 @@ namespace Lodis.Movement
                 if (MovementBehaviour != null)
                 {
                     FVector2 position;
-                    GridBehaviour.Grid.GetGridCoordinateFromLocation((Vector3)FixedTransform.WorldPosition, out position);
+                    GridBehaviour.Instance.GetGridCoordinateFromLocation((Vector3)FixedTransform.WorldPosition, out position);
                     MovementBehaviour.Position = position;
                 }
             }

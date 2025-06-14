@@ -101,6 +101,23 @@ namespace FixedPoints
             return new FVector3(X / magnitude, Y / magnitude, Z / magnitude);
         }
 
+        public FVector3 GetWithoutY()
+        {
+            return new FVector3(X, 0, Z);
+        }
+
+        public FVector3 GetWithoutX()
+        {
+            return new FVector3(0, Y, Z);
+        }
+
+        public FVector3 GetWithoutZ()
+        {
+            return new FVector3(X, Y, 0);
+        }
+
+
+
         /// <summary>
         /// Calculates the dot product of two vectors.
         /// </summary>

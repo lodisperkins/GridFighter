@@ -1,15 +1,19 @@
 ﻿using FixedPoints;
 using Lodis.AI;
 using Lodis.Gameplay;
+using Lodis.GridScripts;
+using Lodis.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Types;
 using UnityEngine;
 
 namespace Assets.Scripts.Lodis.AI
 {
+    [System.Serializable]
     public class ActionNode : TreeNode
     {
         private static float _directionWeight = 0.5f;
@@ -36,6 +40,7 @@ namespace Assets.Scripts.Lodis.AI
         public Vector2 MoveDirection;
         public bool IsGrounded;
         public int AlignmentX = 1;
+        public bool IsSpecialAttack;
 
         public bool AbilityInUse;
         public float Energy;
@@ -47,6 +52,7 @@ namespace Assets.Scripts.Lodis.AI
         public int Ability1ID = -1;
         public int Ability2ID = -1;
         public int NextAbilityID = -1;
+        public InputFlag InputAction;
 
         public float Health;
         public float BarrierHealth;
@@ -56,6 +62,7 @@ namespace Assets.Scripts.Lodis.AI
         public string CurrentState;
 
         public Vector2 PanelPosition;
+        public Vector2 OpponentPanelPosition;
         public Vector3 AverageHitBoxOffset;
         public Vector3 AverageVelocity;
 
@@ -107,26 +114,76 @@ namespace Assets.Scripts.Lodis.AI
             return (ActionNode)MemberwiseClone();
         }
 
+        public Fixed32 GetDistanceAccuracy(TreeNode situation)
+        {
+            ActionNode situationNode = (situation as ActionNode);
+
+            if (situationNode == null)
+                return 0;
+
+            // This code calculates the accuracy of the distance between the owner and the target in the context of the ActionNode class.
+            // It uses the Fixed32 type for precision arithmetic.
+            // The formula calculates the relative difference between the magnitudes of the vectors `OwnerToTarget` and `situationNode.OwnerToTarget`.
+            // The result is clamped between 0 and 1, where 1 represents perfect accuracy (no difference in distance) and 0 represents maximum inaccuracy.
+            FVector3 ownerToTarget = ((FVector3)OwnerToTarget).GetWithoutY();
+            FVector3 situationNodeOwnerToTarget = ((FVector3)situationNode.OwnerToTarget).GetWithoutY();
+
+            Fixed32 distanceAccuracy = Fixed32.Abs(ownerToTarget.Magnitude - situationNodeOwnerToTarget.Magnitude)
+                                      / ((ownerToTarget.Magnitude + situationNodeOwnerToTarget.Magnitude) / 2);
+
+            // The accuracy is then inverted (1 - distanceAccuracy) to represent higher accuracy as closer to 1.
+            // Finally, the value is clamped between 0 and 1 to ensure it remains within valid bounds.
+
+            return Fixed32.Clamp(1 - distanceAccuracy, 0, 1);
+        }
+
+        public Fixed32 GetDirectionAccuracy(TreeNode situation)
+        {
+            ActionNode situationNode = (situation as ActionNode);
+
+            if (situationNode == null)
+                return 0;
+
+            //Check direction to enemy accuracy
+            Vector3 adjustedOwnerToTarget = OwnerToTarget;
+            if (situationNode.AlignmentX == -1)
+                adjustedOwnerToTarget.x = -adjustedOwnerToTarget.x;
+
+            Fixed32 directionAccuracy = Vector3.Dot(situationNode.OwnerToTarget.normalized, adjustedOwnerToTarget.normalized);
+
+            if (directionAccuracy < 0)
+                directionAccuracy = 0;
+
+            return directionAccuracy;
+        }
+
         public override float Compare(TreeNode node)
         {
             ActionNode situationNode = (node as ActionNode);
 
-            float alignmentModifier = 1;
-
-            if (AlignmentX != situationNode.AlignmentX)
-                alignmentModifier = -1;
-
             if (situationNode == null)
                 return 400;
 
-            if (IsGrounded != situationNode.IsGrounded)
-                return 400;
+            float alignmentModifier = 1;
 
-            if (CurrentState != situationNode.CurrentState)
-                return 400;
+            //Check direction to enemy accuracy
+            float directionAccuracy = 1;
+            if (situationNode.OwnerToTarget.magnitude != 0 || OwnerToTarget.magnitude != 0)
+            {
+                Vector3 ownerToTarget = OwnerToTarget;
 
-            if (PanelPosition.y != situationNode.PanelPosition.y)
-                return 400;
+                directionAccuracy = Vector3.Dot(situationNode.OwnerToTarget.normalized * alignmentModifier, ownerToTarget.normalized);
+
+                if (directionAccuracy < 0)
+                    directionAccuracy = 0;
+            }
+
+            directionAccuracy = 1 - directionAccuracy;
+
+            //Check distance to opponent
+            float distanceAccuracy = Mathf.Abs(OwnerToTarget.magnitude - situationNode.OwnerToTarget.magnitude);
+
+            return directionAccuracy + distanceAccuracy;
 
             //Vector2 position = PanelPosition;
 
@@ -149,7 +206,7 @@ namespace Assets.Scripts.Lodis.AI
             //    return 4;
 
             //Check direction to enemy accuracy
-            float directionAccuracy = 1;
+            directionAccuracy = 1;
             if (situationNode.OwnerToTarget.magnitude != 0 || OwnerToTarget.magnitude != 0)
             {
                 Vector3 ownerToTarget = OwnerToTarget;
@@ -206,11 +263,10 @@ namespace Assets.Scripts.Lodis.AI
 
             //float energyAccuracy = GetPercentage(energy, Energy);
             //float opponentEnergyAccuracy = GetPercentage(OpponentEnergy, situationNode.OpponentEnergy);
-            //Check distance to opponent
-            float distanceAccuracy = Mathf.Abs(OwnerToTarget.magnitude - situationNode.OwnerToTarget.magnitude);
+            
 
             //Check hit box distance
-            float hitBoxPositionAccuracy = 1;
+            float hitBoxPositionAccuracy = 0;
             if (situationNode.AverageHitBoxOffset.magnitude != 0 && AverageHitBoxOffset.magnitude != 0)
             {
                 hitBoxPositionAccuracy = 1 - Vector3.Dot(situationNode.AverageHitBoxOffset.normalized * alignmentModifier, AverageHitBoxOffset.normalized);
@@ -222,15 +278,15 @@ namespace Assets.Scripts.Lodis.AI
 
             //float healthAccuracy = GetPercentage(Health, situationNode.Health);
             //float barrierHealthAccuracy = GetPercentage(BarrierHealth, situationNode.BarrierHealth);
-            float opponentHealthAccuracy = GetPercentage(OpponentHealth, situationNode.OpponentHealth);
+            float opponentHealthAccuracy = 1 - GetPercentage(OpponentHealth, situationNode.OpponentHealth);
             //float opponentBarrierHealthAccuracy = GetPercentage(OpponentBarrierHealth, situationNode.OpponentBarrierHealth + 1);
-            float matchTimeAccuracy = GetPercentage(MatchTimeRemaining, situationNode.MatchTimeRemaining);
+            float matchTimeAccuracy = 0; // GetPercentage(MatchTimeRemaining, situationNode.MatchTimeRemaining);
             float opponentState = OpponentState == situationNode.OpponentState ? 0 : 1;
 
             //if (float.IsNaN(hitBoxPositionAccuracy))
             //    hitBoxPositionAccuracy = 0;
 
-            float attackVelocityAccuracy = 1;
+            float attackVelocityAccuracy = 0;
 
             if (situationNode.AverageVelocity.magnitude != 0 && AverageVelocity.magnitude != 0)
             {

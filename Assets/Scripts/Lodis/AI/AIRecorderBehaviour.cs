@@ -12,13 +12,79 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Types;
 using UnityEngine;
 
 namespace Lodis.AI
 {
+    public class ActionPlaybackInfo
+    {
+        public ActionNode CurrentSituation = new ActionNode(null, null);
+        public List<ActionNode> Recording = new List<ActionNode>();
+        public List<ActionNode> SpecialAttackNodes = new List<ActionNode>();
+
+        public bool CheckCanPerformSpecials(MovesetBehaviour moveset)
+        {
+            if (SpecialAttackNodes == null || SpecialAttackNodes.Count == 0)
+            {
+                return true;
+            }
+
+            int currentIndex = 0;
+
+            ActionNode action = SpecialAttackNodes[currentIndex];
+
+            //If the first action is not in the current hand, we can't perform the action.
+            if (!moveset.CheckIfAbilityIDInCurrentSlots(action.CurrentAbilityID))
+                return false;
+
+            //Increment the index to move on to the next special ability that we want to use.
+            currentIndex++;
+
+            if (currentIndex >= SpecialAttackNodes.Count)
+                return true; //If we are at the end of the list, we can perform the action.
+
+            action = SpecialAttackNodes[currentIndex];
+
+            //If the second action is not in the current hand and isnt up next, we can't perform the action.
+            if (!moveset.CheckIfAbilityIDInCurrentSlots(action.CurrentAbilityID) && moveset.NextAbilitySlot.abilityData.ID != action.CurrentAbilityID)
+                return false;
+
+            //Increment the index to move on to the next special ability that we want to use.
+            currentIndex++;
+
+            if (currentIndex >= SpecialAttackNodes.Count)
+                return true; //If we are at the end of the list, we can perform the action.
+
+            action = SpecialAttackNodes[currentIndex];
+
+            //Go through the rest of the abilities in the deck in order to determine if we can perform the action.
+            //Starting at the end because the stack pops from the back.
+            for (int i = moveset.SpecialDeck.Count - 1; i >= 0; i--)
+            {
+                Ability ability = moveset.SpecialDeck[i];
+                if (ability.abilityData.ID != action.CurrentAbilityID)
+                {
+                    return false;
+                }
+
+                currentIndex++;
+
+                if (currentIndex >= SpecialAttackNodes.Count)
+                    break;
+
+                action = SpecialAttackNodes[currentIndex];
+            }
+
+            return true;
+        }
+    }
+
     public class AIRecorderBehaviour : ActionRecorderBehaviour
     {
+       
+
         private DecisionTree _actionTree;
 
         [Tooltip("The direction on the grid this dummy is looking in. Useful for changing the direction of attacks")]
@@ -26,7 +92,7 @@ namespace Lodis.AI
         private Vector2 _attackDirection;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
-        private List<ActionNode>[] _recordings; 
+        private ActionPlaybackInfo[] _recordings; 
 
         private GameObject _opponent;
         private GridMovementBehaviour _opponentMove;
@@ -76,8 +142,8 @@ namespace Lodis.AI
             _opponentStateMachine = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject).GetComponent<CharacterStateMachineBehaviour>();
             _opponentKnocback.AddOnTakeDamageTempAction(OnOpponentHit);
 
-            MatchManagerBehaviour.Instance.AddOnMatchStartAction(AddNewRecording);
-            _knockbackBehaviour.LandingScript.AddOnRecoverAction(AddNewRecording);
+            //MatchManagerBehaviour.Instance.AddOnMatchStartAction(AddNewRecording);
+            //_knockbackBehaviour.LandingScript.AddOnRecoverAction(AddNewRecording);
 
             _opponentBarrier = OwnerMovement.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
@@ -99,11 +165,11 @@ namespace Lodis.AI
             if (_recordings == null || _recordings.Length == 0)
                 return;
 
-            foreach (List<ActionNode> recording in _recordings)
+            foreach (ActionPlaybackInfo recording in _recordings)
             {
-                for (int i = 0; i < recording.Count; i++)
+                for (int i = 0; i < recording.Recording.Count; i++)
                 {
-                    _actionTree.AddDecision(recording[i]);
+                    _actionTree.AddDecision(recording.Recording[i]);
                 }
             }
         }
@@ -111,16 +177,16 @@ namespace Lodis.AI
         private void AddNewRecording()
         {
             if (_recordings == null)
-                _recordings = new List<ActionNode>[0];
+                _recordings = new ActionPlaybackInfo[0];
 
-            List<ActionNode>[] temp = new List<ActionNode>[_recordings.Length + 1];
+            ActionPlaybackInfo[] temp = new ActionPlaybackInfo[_recordings.Length + 1];
 
             for (int i = 0; i < _recordings.Length; i++)
             {
                 temp[i] = _recordings[i];
             }
 
-            temp[_recordings.Length] = new List<ActionNode>();
+            temp[_recordings.Length] = new ActionPlaybackInfo();
             _recordings = temp;
 
             CurrentTimeDelay = 0;
@@ -181,9 +247,11 @@ namespace Lodis.AI
 
             writer.Write(json);
             writer.Close();
+
+            Debug.Log($"Recording saved at {recordingPath}");
         }
 
-        public static List<ActionNode>[] Load(string recordingName)
+        public static ActionPlaybackInfo[] Load(string recordingName)
         {
 
             string recordingPath = "";
@@ -197,7 +265,7 @@ namespace Lodis.AI
                 return null;
 
             StreamReader reader = new StreamReader(recordingPath);
-            List<ActionNode>[] recordings = JsonConvert.DeserializeObject<List<ActionNode>[]>(reader.ReadToEnd(), Settings);
+            ActionPlaybackInfo[] recordings = JsonConvert.DeserializeObject<ActionPlaybackInfo[]>(reader.ReadToEnd(), Settings);
 
             Debug.Log("Loaded " + recordings?.Length + "recordings");
             reader.Close();
@@ -205,7 +273,7 @@ namespace Lodis.AI
             return recordings;
         }
 
-        public static List<ActionNode>[] Load(string recordingName, MovesetBehaviour ownerMoveset, int limit = -1)
+        public static ActionPlaybackInfo[] Load(string recordingName, MovesetBehaviour ownerMoveset, int limit = -1)
         {
 
             string recordingPath = "";
@@ -219,9 +287,9 @@ namespace Lodis.AI
                 return null;
 
             StreamReader reader = new StreamReader(recordingPath);
-            List<ActionNode>[] recordingData = JsonConvert.DeserializeObject<List<ActionNode>[]>(reader.ReadToEnd(), Settings);
+            ActionPlaybackInfo[] recordingData = JsonConvert.DeserializeObject<ActionPlaybackInfo[]>(reader.ReadToEnd(), Settings);
 
-            List<ActionNode>[] recordings = new List<ActionNode>[0];
+            ActionPlaybackInfo[] recordings = new ActionPlaybackInfo[0];
 
             bool recordingValid = false;
 
@@ -231,18 +299,18 @@ namespace Lodis.AI
             {
                 recordingValid = false;
 
-                List<ActionNode> recording = new List<ActionNode>();
+                ActionPlaybackInfo recording = new ActionPlaybackInfo();
 
-                List<ActionNode> currentData = recordingData[i];
+                ActionPlaybackInfo currentData = recordingData[i];
 
-                for (int j = 0; j < currentData.Count; j++)
+                for (int j = 0; j < currentData.Recording.Count; j++)
                 {
-                    int currentAction = currentData[j].CurrentAbilityID;
+                    int currentAction = currentData.Recording[j].CurrentAbilityID;
 
                     if (currentAction > 0 && !ownerMoveset.SpecialDeckRef.Contains(currentAction) && !ownerMoveset.NormalDeckRef.Contains(currentAction))
                         break;
 
-                    recording.Add(currentData[j]);
+                    recording.Recording.Add(currentData.Recording[j]);
                     recordingValid = true;
                 }
 
@@ -285,6 +353,8 @@ namespace Lodis.AI
             _currentSituation.BarrierHealth = _ownerBarrier.Health;
 
             _currentSituation.PanelPosition = (Vector2)OwnerMovement.Position;
+            _currentSituation.OpponentPanelPosition = (Vector2)_opponentMove.Position;
+
             _currentSituation.OwnerToTarget = _opponent.transform.position - transform.position;
 
             _currentSituation.OpponentVelocity = (Vector3)_opponentGridPhysics.Velocity;
@@ -295,57 +365,67 @@ namespace Lodis.AI
             _currentSituation.MatchTimeRemaining = MatchTimerBehaviour.Instance.MatchTimeRemaining;
         }
 
-        protected override void RecordNewAction(int id)
+        protected override void RecordNewAction(InputFlag input)
         {
+            if (_recordings.Length == 0 && input == InputFlag.NONE)
+                return;
+
             if (!CanRecord)
                 return;
 
             UpdateSituationNode();
             ActionNode action = _currentSituation.GetShallowCopy();
 
-            action.TimeStamp = CurrentTime;
-            action.TimeDelay = CurrentTimeDelay;
+            if (OwnerMoveset.AbilityInUse)
+                action.IsSpecialAttack = OwnerMoveset.LastAbilityInUse.abilityData.AbilityType == AbilityType.SPECIAL;
+            
 
-            // Use confidence score to filter recordings
-            float score = CalculateActionConfidence(action);
+            action.InputAction = input;
 
-            // Only record if the action had impact
-            if (score >= _recordingConfidenceThreshold || _opponentStateMachine.StateMachine.CurrentState != "Tumbling")
+            _recordings[_recordings.Length - 1].Recording.Add(action);
+
+            if (action.IsSpecialAttack)
             {
-                _recordings[_recordings.Length - 1].Add(action);
-                _opponentHitRecently = false;
+                List<ActionNode> specialNodes = _recordings[_recordings.Length - 1].SpecialAttackNodes;
+
+                if (specialNodes.Count > 0)
+                {
+                    ActionNode lastSpecialNode = specialNodes[specialNodes.Count - 1];
+
+                    if (lastSpecialNode.CurrentAbilityID != action.CurrentAbilityID)
+                    {
+                        _recordings[_recordings.Length - 1].SpecialAttackNodes.Add(action);
+                    }
+                }
+                else
+                {
+                    _recordings[_recordings.Length - 1].SpecialAttackNodes.Add(action);
+                }
             }
 
             CurrentTimeDelay = 0;
 
+            Debug.Log("Recorded action");
+
         }
-        private float CalculateActionConfidence(ActionNode action)
+
+        public override void SetRecordEnabled(bool enabled, bool saveLast = true)
         {
-            float score = 0;
-
-            if (_opponentHitRecently && _lastHit != null)
+            base.SetRecordEnabled(enabled, saveLast);
+            
+            if (enabled)
             {
-                score += Fixed32.Clamp(_lastHit.ColliderInfo.Damage / 10.0f, 0, 1);
+                AddNewRecording();
             }
-
-            // Heuristic: if state changed (like leaving neutral), it's a good moment
-            if (action.CurrentState != "Idle")
-                score += 0.2f;
-
-            if (action.CurrentAbilityID > 0)
-                score += 0.2f;
-
-            return Mathf.Clamp01(score);
         }
-
 
         protected override void Update()
         {
             base.Update();
-            if (CurrentTimeDelay >= _timeDelayMax && _timeDelayMax > 0 && CanRecord)
-            {
-                CurrentTimeDelay = 0;
-            }
+            if (!CanRecord)
+                return;
+
+            RecordNewAction(_input.Flags);
         }
     }
 }

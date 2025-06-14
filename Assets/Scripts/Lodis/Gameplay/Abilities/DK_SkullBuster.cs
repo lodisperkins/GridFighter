@@ -234,6 +234,11 @@ namespace Lodis.Gameplay
 
             if (_bodyHitScript)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity);
+
+            if (_fistHitScript)
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_fistHitScript.Entity);
+
+
         }
     }
 }

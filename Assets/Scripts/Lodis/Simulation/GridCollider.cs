@@ -125,7 +125,7 @@ public class GridCollider
         {
             if (PanelXOffset != 0 || PanelYOffset != 0)
             {
-                GridBehaviour.Grid.GetPanel(LocalPanelX, LocalPanelY, out PanelBehaviour panel);
+                GridBehaviour.Instance.GetPanel(LocalPanelX, LocalPanelY, out PanelBehaviour panel);
                 if (panel != null)
                 {
                     return panel.FixedWorldPosition + FVector3.Up * WorldYPosition;
@@ -283,7 +283,7 @@ public class GridCollider
     public FVector2 GetPanelPosition()
     {
         FVector2 coordinate;
-        GridBehaviour.Grid.GetGridCoordinateFromLocation((Vector3)Entity.FixedTransform.WorldPosition, out coordinate);
+        GridBehaviour.Instance.GetGridCoordinateFromLocation((Vector3)Entity.FixedTransform.WorldPosition, out coordinate);
 
         return coordinate;
     }

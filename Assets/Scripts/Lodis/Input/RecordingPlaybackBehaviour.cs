@@ -23,6 +23,7 @@ namespace Lodis.Input
         [SerializeField]
         private bool _autoPlayback = true;
         private float _currentDelay;
+        private InputBehaviour inputBehaviour;
 
         public MovesetBehaviour OwnerMoveset { get => _ownerMoveset; set => _ownerMoveset = value; }
         public GridMovementBehaviour OwnerMovement { get => _ownerMovement; set => _ownerMovement = value; }
@@ -32,6 +33,8 @@ namespace Lodis.Input
         void Awake()
         {
             _actions = ActionRecorderBehaviour.LoadRecording(_recordingName);
+            inputBehaviour = GetComponent<InputBehaviour>();
+
             OwnerMovement = GetComponentInChildren<GridMovementBehaviour>();
             OwnerMoveset = GetComponentInChildren<MovesetBehaviour>();
         }
@@ -58,18 +61,7 @@ namespace Lodis.Input
 
         private void PerformAction(ActionRecording action)
         {
-            if (action.ActionID == -1)
-            {
-                OwnerMovement.Move(action.ActionDirection);
-                return;
-            }
-            else if (action.ActionID == -2)
-            {
-                OwnerMoveset.ManualShuffle();
-                return;
-            }
-
-            OwnerMoveset.UseAbility(action.ActionID, 1.6f, action.ActionDirection);
+            inputBehaviour.AIFlags = action.InputAction;
         }
 
         private void StartPlayback(int index)

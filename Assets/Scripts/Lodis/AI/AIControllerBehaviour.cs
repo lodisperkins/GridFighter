@@ -18,6 +18,7 @@ using Assets.Scripts.Lodis.AI;
 using FixedPoints;
 using Types;
 using System.IO;
+using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
 
 namespace Lodis.AI
 {
@@ -86,32 +87,34 @@ namespace Lodis.AI
         [SerializeField]
         private AIState _currentState = AIState.Idle;
 
+        [SerializeField] private Fixed32 _distanceAccuracyMinimum;
+        [SerializeField] private Fixed32 _directionAccuracyMinimum;
 
-        [Header("Weights")]
-        [SerializeField]
-        [Tooltip("How important the direction the enemy is relative to the AI.")]
-        private float _directionWeight = 0.5f;
-        [SerializeField]
-        [Tooltip("How important the velocity the enemy is.")]
-        private float _opponentVelocityWeight = 0.8f;
-        [SerializeField]
-        [Tooltip("How important the distance between the enemy and the AI is")]
-        private float _distanceWeight = 0.7f;
-        [SerializeField]
-        [Tooltip("How important the direction and distance of enemy hit boxes are relative to the AI")]
-        private float _avgHitBoxOffsetWeight = 1.5f;
-        [SerializeField]
-        [Tooltip("How important the velocity of enemy hit boxes are relative to the AI")]
-        private float _avgVelocityWeight = 1.5f;
-        [SerializeField]
-        [Tooltip("How important the time remaining in the match is")]
-        private float _matchTimeRemainingWeight = 1;
-        [SerializeField]
-        [Tooltip("How important the opponent's current state is")]
-        private float _opponentStateWeight = 1;
-        [SerializeField]
-        [Tooltip("How important the opponent's current health is")]
-        private float _opponentHealthWeight = 1;
+        //[Header("Weights")]
+        //[SerializeField]
+        //[Tooltip("How important the direction the enemy is relative to the AI.")]
+        //private float _directionWeight = 0.5f;
+        //[SerializeField]
+        //[Tooltip("How important the velocity the enemy is.")]
+        //private float _opponentVelocityWeight = 0.8f;
+        //[SerializeField]
+        //[Tooltip("How important the distance between the enemy and the AI is")]
+        //private float _distanceWeight = 0.7f;
+        //[SerializeField]
+        //[Tooltip("How important the direction and distance of enemy hit boxes are relative to the AI")]
+        //private float _avgHitBoxOffsetWeight = 1.5f;
+        //[SerializeField]
+        //[Tooltip("How important the velocity of enemy hit boxes are relative to the AI")]
+        //private float _avgVelocityWeight = 1.5f;
+        //[SerializeField]
+        //[Tooltip("How important the time remaining in the match is")]
+        //private float _matchTimeRemainingWeight = 1;
+        //[SerializeField]
+        //[Tooltip("How important the opponent's current state is")]
+        //private float _opponentStateWeight = 1;
+        //[SerializeField]
+        //[Tooltip("How important the opponent's current health is")]
+        //private float _opponentHealthWeight = 1;
 
         //---
         private GridPhysicsBehaviour _opponentGridPhysics;
@@ -121,8 +124,8 @@ namespace Lodis.AI
 
         private MovesetBehaviour _opponentMoveset;
         private GridMovementBehaviour _movementBehaviour;
-        private List<ActionNode>[] _recordings;
-        private List<ActionNode> _currentRecording;
+        private ActionPlaybackInfo[] _playbackInfo;
+        private ActionPlaybackInfo _currentRecording;
         private int _currentActionIndex;
         private int _currentRecordingIndex;
         private ActionNode _currentSituation = new ActionNode(null, null);
@@ -145,14 +148,16 @@ namespace Lodis.AI
 
         private bool _touchingBarrier;
         private bool _touchingOpponentBarrier;
-        private bool _chargingAttack;
+        private bool _lastActionWasCharge;
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
         private StateMachine _stateMachine;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private int _lastSlot;
         private Gameplay.MovesetBehaviour _moveset;
         private InputBehaviour _inputBehaviour;
-
+        private FixedConditionAction changePlanAction;
+        private bool _waitingToChangePlans;
+        private bool _cantFindRecording;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
@@ -205,7 +210,7 @@ namespace Lodis.AI
             if (_useRecording)
             {
                 _executor.enabled = false;
-                _recordings = AIRecorderBehaviour.Load(_recordingName, _moveset);
+                _playbackInfo = AIRecorderBehaviour.Load(_recordingName, _moveset);
                 return;
             }
 
@@ -215,6 +220,7 @@ namespace Lodis.AI
             _defenseDecisions = new DefenseDecisionTree();
             _defenseDecisions.MaxDecisionsCount = _maxDecisionCount;
             _defenseDecisions.Load(Character.name);
+
             if (Application.isEditor) return;
 
             MatchManagerBehaviour.Instance.AddOnApplicationQuitAction(() => _attackDecisions?.Save(Character.name));
@@ -252,10 +258,20 @@ namespace Lodis.AI
             _opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
 
-
-            if (_useRecording && _recordings != null)
+            _opponentMoveset.OnBurst += () =>
             {
-                _currentRecording = _recordings[0];
+                if (!_useRecording)
+                    return;
+
+                StartNewRecording();
+            };
+
+            CleanRecordings();
+
+            if (_useRecording && _playbackInfo != null && _playbackInfo.Length > 0)
+            {
+                UpdateSituationNode();
+                StartNewRecording();
             }
             else
             {
@@ -271,6 +287,25 @@ namespace Lodis.AI
 
             Entity = GetComponentInChildren<EntityDataBehaviour>();
             Entity.Data.AddComponent(this);
+        }
+
+        private void CleanRecordings()
+        {
+            if (_playbackInfo == null || _playbackInfo.Length == 0)
+                return;
+
+            // Remove empty recordings from the playback info array
+            List<ActionPlaybackInfo> newRecordingArray = new();
+
+            for (int i = 0;  i < _playbackInfo.Length; i++)
+            {
+                if (_playbackInfo[i].Recording.Count > 0)
+                {
+                    newRecordingArray.Add(_playbackInfo[i]);
+                }
+            }
+
+            _playbackInfo = newRecordingArray.ToArray();
         }
 
         private void OnEnable()
@@ -347,14 +382,14 @@ namespace Lodis.AI
 
         public IEnumerator ChargeRoutine(float chargeTime, AbilityType type)
         {
-            _chargingAttack = true;
+            _lastActionWasCharge = true;
             yield return new WaitForSeconds(chargeTime);
 
             if ((StateMachine.CurrentState == "Idle" || StateMachine.CurrentState == "Attacking"))
             {
                 Moveset.UseBasicAbility(type, new object[] { _attackStrength, _attackDirection });
             }
-                _chargingAttack = false;
+            _lastActionWasCharge = false;
         }
 
         private void UseAbility(Ability ability, float attackStrength, Vector2 attackDirection)
@@ -431,8 +466,65 @@ namespace Lodis.AI
             return averageDirection;
         }
 
+        private void PerformChargeAttack(ActionNode action)
+        {
+
+            if (action.InputAction.HasFlag(InputFlag.Up))
+            {
+                _inputBehaviour.AttackDirection = FVector2.Up;
+            }
+            else if (action.InputAction.HasFlag(InputFlag.Down))
+            {
+                _inputBehaviour.AttackDirection = FVector2.Down;
+            }
+            else if (action.InputAction.HasFlag(InputFlag.Left))
+            {
+                _inputBehaviour.AttackDirection = FVector2.Left;
+            }
+            else if (action.InputAction.HasFlag(InputFlag.Right))
+            {
+                _inputBehaviour.AttackDirection = FVector2.Right;
+            }
+            else
+            {
+                _inputBehaviour.AttackDirection = FVector2.Zero;
+            }
+
+            _inputBehaviour.BufferChargeNormalAbility();
+        }
+
         private void PerformAction(ActionNode action)
         {
+            InputFlag flag = action.InputAction;
+
+            if (_gridPhysics.MovementBehaviour.Alignment == GridAlignment.RIGHT)
+            {
+                // Check if the action's input contains the flag for left and the grid alignment is right
+                if (flag.HasFlag(InputFlag.Left))
+                {
+                    flag &= ~InputFlag.Left; // Remove the Left flag
+                    flag |= InputFlag.Right; // Add the Right flag
+                }
+                // Check if the action's input contains the flag for right and the grid alignment is left
+                else if (flag.HasFlag(InputFlag.Right))
+                {
+                    flag &= ~InputFlag.Right; // Remove the Right flag
+                    flag |= InputFlag.Left; // Add the Left flag
+                }
+            }
+            //_lastActionWasCharge = flag.HasFlag(InputFlag.Strong);
+
+            ////If the action is a charge attack, perform it.
+            //if (_lastActionWasCharge)
+            //{
+            //    PerformChargeAttack(action);
+            //    return;
+            //}
+
+            
+            _inputBehaviour.AIFlags = flag;
+            return;
+
             FVector2 direction = action.CurrentAbilityID == -1 ? (FVector2)action.MoveDirection : (FVector2)action.AttackDirection;
 
             direction.X *= _movementBehaviour.GetAlignmentX();
@@ -440,7 +532,7 @@ namespace Lodis.AI
             //Set movement flags.
             if (direction != FVector2.Zero)
             {
-                if (direction == FVector2.Up)
+                if(direction == FVector2.Up)
                 {
                     _inputBehaviour.AIFlags |= InputFlag.Up;
                 }
@@ -533,11 +625,38 @@ namespace Lodis.AI
 
         private void StartPlayback(float delayOffset = 0)
         {
+            ActionNode nextAction = _currentRecording.Recording[_currentActionIndex];
+
+            //if (_lastActionWasCharge && (nextAction.InputAction == InputFlag.Left || 
+            //    nextAction.InputAction == InputFlag.Right || 
+            //    nextAction.InputAction == InputFlag.Up || 
+            //    nextAction.InputAction == InputFlag.Down))
+            //{
+            //    PerformChargeAttack(nextAction);
+            //    _currentActionIndex++;
+            //    return;
+            //}
+
+            //if (nextAction.TimeDelay <= GridGame.FixedTimeStep)
+            //{
+            //    PerformAction(_currentRecording.Recording[_currentActionIndex]);
+
+            //    _currentActionIndex++;
+            //    return;
+            //}
+
             _playbackRoutine = FixedPointTimer.StartNewTimedAction(() =>
             {
-                PerformAction(_currentRecording[_currentActionIndex]);
+                if (_currentActionIndex >= _currentRecording.Recording.Count)
+                {
+                    _playbackRoutine.Stop();
+                    return;
+                }
+                PerformAction(_currentRecording.Recording[_currentActionIndex]);
 
-            }, _currentRecording[_currentActionIndex].TimeDelay - delayOffset);
+                _currentActionIndex++;
+
+            }, _currentRecording.Recording[_currentActionIndex].TimeDelay - delayOffset);
 
         }
 
@@ -595,6 +714,7 @@ namespace Lodis.AI
             _currentSituation.OpponentHealth = _opponentKnocback.Health;
             _currentSituation.OpponentBarrierHealth = _opponentBarrier.Health;
             _currentSituation.PanelPosition = (Vector2)_movementBehaviour.Position;
+            _currentSituation.OpponentPanelPosition = (Vector2)_opponentMove.Position;
 
         }
 
@@ -603,17 +723,11 @@ namespace Lodis.AI
         /// </summary>
         /// <param name="ID">The ID of the action. -1 if movement, -2 if reshuffle. Anything else is assumed to be an ability.</param>
         /// <returns>Whether or not the action can be performed.</returns>
-        private bool ValidateAction(int ID)
+        private bool ValidateAction(ActionPlaybackInfo playbackInfo, int actionIndex)
         {
-            if (ID == -1 || ID == -2)
-                return true;
+            bool specialsOkay = playbackInfo.CheckCanPerformSpecials(Moveset);
 
-            Ability special = _moveset.GetAbilityInCurrentSlot(ID);
-
-            if (special != null && special.abilityData.EnergyCost > _moveset.Energy)
-                return false;
-
-            return special != null || _moveset.NormalDeckContains(ID);
+            return specialsOkay;
         }
 
         /// <summary>
@@ -624,17 +738,17 @@ namespace Lodis.AI
             float currentLowest = _actionScoreMax;
 
             //Iterate through recording list.
-            for (int i = 0; i < _recordings.Length; i++)
+            for (int i = 0; i < _playbackInfo.Length; i++)
             {
-                List<ActionNode> recording = _recordings[i];
+                ActionPlaybackInfo recording = _playbackInfo[i];
 
                 //Iterate through current recording actions.
-                for (int j = 0; j < recording.Count; j++)
+                for (int j = 0; j < recording.Recording.Count; j++)
                 {
-                    float compareVal = recording[j].Compare(_currentSituation);
+                    float compareVal = recording.Recording[j].Compare(_currentSituation);
 
                     //If the current action is valid and matches our situation more closely than the last action...
-                    if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + _randomDecisionConstant) < currentLowest && ValidateAction(recording[j].CurrentAbilityID))
+                    if (compareVal + UnityEngine.Random.Range(0, TreeNode.RandomDecisionConstant + _randomDecisionConstant) < currentLowest && ValidateAction(recording, j))
                     {
                         //...update the current action.
                         _currentRecording = recording;
@@ -653,7 +767,89 @@ namespace Lodis.AI
             float time = _playbackRoutine == null ? 0 : _playbackRoutine.GetTimeLeft();
 
             _playbackRoutine?.Stop();
-            StartPlayback(time);
+            StartPlayback();
+        }
+
+
+        /// <summary>
+        /// Returns all items in the playbackInfo array that match the current situation's panel position and opponent panel position.
+        /// </summary>
+        /// <returns>A list of ActionPlaybackInfo objects that match the current situation.</returns>
+        private List<ActionPlaybackInfo> GetMatchingPlaybackInfos()
+        {
+            List<ActionPlaybackInfo> matchingInfos = new List<ActionPlaybackInfo>();
+
+            foreach (ActionPlaybackInfo playbackInfo in _playbackInfo)
+            {
+                ActionNode action = playbackInfo.Recording[0];
+
+                Vector2 panelPosition = action.PanelPosition;
+                Vector2 opponentPanelPosition = action.OpponentPanelPosition;
+
+                if (action.AlignmentX != _currentSituation.AlignmentX)
+                {
+                    panelPosition = (Vector2)GridBehaviour.Instance.GetMirroredPanelAcrossX((int)panelPosition.x, (int)panelPosition.y).Position;
+                    opponentPanelPosition = (Vector2)GridBehaviour.Instance.GetMirroredPanelAcrossX((int)opponentPanelPosition.x, (int)opponentPanelPosition.y).Position;
+                }
+
+                if (panelPosition.y == _currentSituation.PanelPosition.y &&
+                    opponentPanelPosition.y == _currentSituation.OpponentPanelPosition.y)
+                {
+                    matchingInfos.Add(playbackInfo);
+                }
+            }
+
+            return matchingInfos;
+        }
+
+        private void StartNewRecording()
+        {
+            UpdateSituationNode();
+
+            float currentLowest = _actionScoreMax;
+            _currentActionIndex = 0; // Always the first action
+            bool foundRecording = false;
+            _waitingToChangePlans = false;
+
+            List<ActionPlaybackInfo> matchingInfos = GetMatchingPlaybackInfos();
+
+            if (matchingInfos.Count == 0)
+            {
+                //Debug.LogError("No recordings found that match the current panel positions.");
+                return;
+            }
+
+            // Iterate through recording list.
+            for (int i = 0; i < matchingInfos.Count; i++)
+            {
+                ActionPlaybackInfo recording = matchingInfos[i];
+
+                // Only compare the first action of the recording.
+                if (recording.Recording.Count > 0)
+                {
+                    // If the current action is valid and matches our situation more closely than the last action...
+                    if (ValidateAction(recording, 0) && CheckSituationSimilar(recording))
+                    {
+                        foundRecording = true; // Found a valid recording
+                        // ...update the current action.
+                        _currentRecording = recording;
+                        
+                        _currentRecordingIndex = i;
+                    }
+                }
+            }
+
+            if (foundRecording)
+            {
+                //_playbackRoutine?.Stop();
+                //StartPlayback();
+                _cantFindRecording = false;
+            }
+            else
+            {
+                //Debug.LogError("No valid recording found for the current situation.");
+                _cantFindRecording = true;
+            }
         }
 
         /// <summary>
@@ -691,25 +887,66 @@ namespace Lodis.AI
             switch (_currentState)
             {
                 case AIState.Idle:
-                    _currentState = CheckIfProjectilesWillHit() ? AIState.Defending : AIState.Attacking;
+
+                    if (CheckIfProjectilesWillHit())
+                    {
+                        _currentState = AIState.Defending;
+                    }
+                    else
+                    {
+                        _currentState = AIState.Attacking;
+                        _inputBehaviour.OnGetFlags += HandleActionPlayback;
+                    }
                     break;
                 case AIState.Attacking:
-                    HandleActionPlayback();
 
                     if (CheckIfProjectilesWillHit())
                     {
                         _currentState = AIState.Defending;
                         _playbackRoutine?.Stop();
                         _playbackRoutine = null;
+                        _inputBehaviour.OnGetFlags -= HandleActionPlayback;
                         return;
                     }
                     break;
                 case AIState.Defending:
                     HandleDefense();
+
+                    if (!CheckIfProjectilesWillHit())
+                    {
+                        _currentState = AIState.Attacking;
+                        _inputBehaviour.OnGetFlags += HandleActionPlayback;
+                        StartNewRecording();
+                    }
                     break;
             }
         }
 
+        private bool CheckSituationSimilar(ActionPlaybackInfo info = null)
+        {
+            UpdateSituationNode();
+
+            if (info == null)
+                info = _currentRecording;
+
+            Fixed32 distancePercentage = info.Recording[_currentActionIndex].GetDistanceAccuracy(_currentSituation);
+
+            if (distancePercentage < _distanceAccuracyMinimum)
+            {
+                //Debug.Log("Distance accuracy too low: " + distancePercentage + " for action: " + info.Recording[_currentActionIndex].CurrentAbilityID + " at index: " + _currentActionIndex + " in recording: " + _currentRecordingIndex + ". Starting new recording.)");
+                return false;
+            }
+
+            Fixed32 directionPercentage = info.Recording[_currentActionIndex].GetDirectionAccuracy(_currentSituation);
+
+            if (directionPercentage < _directionAccuracyMinimum)
+            {
+                //Debug.Log("Direction accuracy too low: " + directionPercentage + " for action: " + info.Recording[_currentActionIndex].CurrentAbilityID + " at index: " + _currentActionIndex + " in recording: " + _currentRecordingIndex + ". Starting new recording.)");
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Calculate a rating for safety for each panel on the AI side. The rating is based on the projectiles on the row and how long it would take the projectile to touch the panel.
@@ -722,11 +959,11 @@ namespace Lodis.AI
             if (hitColliders.Count == 0)
                 return;
 
-            List<PanelBehaviour> panels = GridBehaviour.Grid.GetPanelsForAlignment(_movementBehaviour.Alignment);
+            List<PanelBehaviour> panels = GridBehaviour.Instance.GetPanelsForAlignment(_movementBehaviour.Alignment);
 
             // Variables to track the safest and closest panel
             PanelBehaviour safestPanel = null;
-            Fixed32 lowestSafetyRating = 0;
+            Fixed32 highestSafetyRating = 0;
             Fixed32 shortestDistance = 0;
 
             // Get the AI's current position
@@ -753,21 +990,56 @@ namespace Lodis.AI
                     }
 
                     // Find how much the velocity direction lines up with the direction of the hit collider and the panel
-                    FVector3 direction = (panel.FixedWorldPosition - hitCollider.FixedTransform.WorldPosition).GetNormalized();
+                    FVector3 direction = (panel.FixedWorldPosition.GetWithoutY() - hitCollider.FixedTransform.WorldPosition.GetWithoutY()).GetNormalized();
                     Fixed32 dot = FVector3.Dot(direction, hitCollider.GridPhysics.Velocity.GetNormalized());
 
                     // If the dot product is negative, the hit collider is moving away from the panel, so it is safe
-                    if (dot < 0)
+                    if (dot < 1)
+                    {
+                        panel.SafetyRating = 10;
                         continue;
+                    }
+
+                    Fixed32 speed = hitCollider.GridPhysics.Velocity.Magnitude;
 
                     Fixed32 distance = (panel.FixedWorldPosition - hitCollider.FixedTransform.WorldPosition).Magnitude;
-                    Fixed32 time = distance / hitCollider.GridPhysics.Velocity.Magnitude;
+                    Fixed32 time = speed == 0 ? 0 : distance / speed;
 
-                    if (time < panel.SafetyRating || panel.SafetyRating == 0)
+                    if (time > panel.SafetyRating || panel.SafetyRating == 0)
                     {
                         panel.SafetyRating = time;
                     }
                 }
+
+                //Check the danger for the opponent themselves in case their down a melee attack.
+                if (BlackBoardBehaviour.Instance.GetPlayerState(_opponent) == "Attacking")
+                {
+                    if (_opponentMove.Position == panel.Position)
+                    {
+                        panel.SafetyRating = -1; // Immediate danger
+                        break;
+                    }
+
+                    // Find how much the velocity direction lines up with the direction of the hit collider and the panel
+                    FVector3 direction = (panel.FixedWorldPosition - _opponentMove.FixedTransform.WorldPosition).GetNormalized();
+                    Fixed32 dot = FVector3.Dot(direction, _opponentGridPhysics.Velocity.GetNormalized());
+
+                    //Only care if the opponent is coming towards us.
+                    if (dot > 0)
+                    {
+                        Fixed32 speed = _opponentGridPhysics.Velocity.Magnitude;
+
+                        Fixed32 distance = (panel.FixedWorldPosition - _opponentMove.FixedTransform.WorldPosition).Magnitude;
+                        Fixed32 time = speed == 0 ? 0 : distance / speed;
+
+                        if (time > panel.SafetyRating || panel.SafetyRating == 0)
+                        {
+                            panel.SafetyRating = time;
+                        }
+                    }
+                }
+
+                //TODO: Add logic for responding to panels with warnings
 
                 // Skip panels with immediate danger
                 if (panel.SafetyRating == -1)
@@ -777,11 +1049,11 @@ namespace Lodis.AI
                 Fixed32 distanceToPanel = (panel.Position - currentPosition).Magnitude;
 
                 // Check if this panel is better (lower safety rating or closer if ratings are equal)
-                if (panel.SafetyRating < lowestSafetyRating ||
-                    (panel.SafetyRating == lowestSafetyRating && distanceToPanel < shortestDistance))
+                if (panel.SafetyRating > highestSafetyRating ||
+                    (panel.SafetyRating == highestSafetyRating && distanceToPanel < shortestDistance))
                 {
                     safestPanel = panel;
-                    lowestSafetyRating = panel.SafetyRating;
+                    highestSafetyRating = panel.SafetyRating;
                     shortestDistance = distanceToPanel;
                 }
             }
@@ -795,55 +1067,65 @@ namespace Lodis.AI
 
         private void HandleActionPlayback()
         {
-            if (_bufferedAction?.HasAction() == true)
-                _bufferedAction.UseAction();
-            else
-                _abilityBuffered = false;
-
-            if (!_useRecording || _isPaused)
+            if (!_useRecording || _isPaused || _waitingToChangePlans)
                 return;
 
-            //If we are in the editor...
-            if (Application.isEditor)
-            {
-                //...update weights with inspector values
-                ActionNode.DirectionWeight = _directionWeight;
-                ActionNode.OpponentVelocityWeight = _opponentVelocityWeight;
-                ActionNode.DistanceWeight = _distanceWeight;
-                ActionNode.AvgHitBoxOffsetWeight = _avgHitBoxOffsetWeight;
-                ActionNode.AvgVelocityWeight = _avgVelocityWeight;
-                ActionNode.MatchTimeRemainingWeight = _matchTimeRemainingWeight;
-                ActionNode.OpponentStateWeight = _opponentStateWeight;
-                ActionNode.OpponentHealthWeight = _opponentHealthWeight;
-            }
 
-            //Update the current situation node to reflect the current game state.
-            UpdateSituationNode();
+            //Old code for updating weights in the editor
+            ////If we are in the editor...
+            //if (Application.isEditor)
+            //{
+            //    //...update weights with inspector values
+            //    ActionNode.DirectionWeight = _directionWeight;
+            //    ActionNode.OpponentVelocityWeight = _opponentVelocityWeight;
+            //    ActionNode.DistanceWeight = _distanceWeight;
+            //    ActionNode.AvgHitBoxOffsetWeight = _avgHitBoxOffsetWeight;
+            //    ActionNode.AvgVelocityWeight = _avgVelocityWeight;
+            //    ActionNode.MatchTimeRemainingWeight = _matchTimeRemainingWeight;
+            //    ActionNode.OpponentStateWeight = _opponentStateWeight;
+            //    ActionNode.OpponentHealthWeight = _opponentHealthWeight;
+            //}
 
-            //Compare the situation recorded for this action to the current situation.
-            _lastScore = _currentRecording[_currentActionIndex].Compare(_currentSituation);
-
-            //Debug.Log(score);
-
-            //If the action node's situation is too different from the current or if the action isn't possible...
-            if (_lastScore >= _actionScoreMax || !ValidateAction(_currentRecording[_currentActionIndex].CurrentAbilityID))
+            //If we are done with the most recent recording...
+            if (_currentRecording == null || _currentActionIndex >= _currentRecording.Recording.Count || _cantFindRecording)
             {
                 //...find a new action in the recording list.
-                StartNewAction();
+                StartNewRecording();
+                return;
+            }
+
+            if (_currentRecording == null)
+            {
+                return;
+            }
+
+            //Debug.Log("Current action index: " + _currentActionIndex + " in recording: " + _currentRecordingIndex + ". Current situation: " + _currentSituation.ToString() + " with score: " + _lastScore);
+
+
+            ////If the action node's situation is too different from the current or if the action isn't possible...
+            if (!CheckSituationSimilar() && _currentActionIndex >= _currentRecording.Recording.Count / 2)
+            {
+                //...find a new action in the recording list.
+
+                //This is on a delay to ensure inputs aren't eaten due to the AI not being in the proper state. So we wait for Idle before getting a new recording.
+                _waitingToChangePlans = true;
+                changePlanAction = FixedPointTimer.StartNewConditionAction(StartNewRecording, c => _stateMachine.CurrentState == "Idle");
                 return;
             }
 
             //If the AI is current performing an action return.
-            if (_playbackRoutine != null && _playbackRoutine.IsActive)
-                return;
+            //if (_playbackRoutine != null && _playbackRoutine.IsActive)
+            //    return;
 
             //If the AI isn't performing an action play the next action in the recording list.
-            StartPlayback();
+            //StartPlayback();
+
+            if (_currentActionIndex >= _currentRecording.Recording.Count)
+                _currentActionIndex = 0;
+
+            PerformAction(_currentRecording.Recording[_currentActionIndex]);
 
             _currentActionIndex++;
-
-            if (_currentActionIndex >= _currentRecording.Count)
-                _currentActionIndex = 0;
         }
 
         public override void Serialize(BinaryWriter bw)
@@ -854,5 +1136,6 @@ namespace Lodis.AI
         public override void Deserialize(BinaryReader br)
         {
         }
+
     }
 }
