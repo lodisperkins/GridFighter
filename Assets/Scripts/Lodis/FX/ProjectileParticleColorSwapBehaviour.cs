@@ -1,4 +1,5 @@
 using Lodis.Gameplay;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,8 +10,10 @@ public class ProjectileParticleColorSwapBehaviour : MonoBehaviour
     [SerializeField] private ParticleColorManagerBehaviour colorManager;
     [SerializeField] private ColliderBehaviour colliderBehaviour;
 
-    // Start is called before the first frame update
-    void Start()
+    //---
+    private bool _shouldUpdateColors;
+
+    private void Start()
     {
         if (colliderBehaviour == null)
         {
@@ -21,17 +24,38 @@ public class ProjectileParticleColorSwapBehaviour : MonoBehaviour
         {
             colliderBehaviour = GetComponentInChildren<ColliderBehaviour>();
         }
+    }
 
-        if (colliderBehaviour != null && colliderBehaviour.Spawner != null)
+    // Start is called before the first frame update
+    void OnEnable()
+    {
+        _shouldUpdateColors = true;
+    }
+
+    private void OnDisable()
+    {
+        _shouldUpdateColors = false;
+    }
+
+    public void SetColors(GridAlignment alignment)
+    {
+        if (colorManager != null)
         {
-            GridMovementBehaviour move = colliderBehaviour.Spawner.GetComponent<GridMovementBehaviour>();
-            colorManager.SetColors(move.Alignment);
+            colorManager.SetColors(alignment);
+        }
+        else
+        {
+            Debug.LogWarning("Color manager is not set on " + gameObject.name);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-
+        if (colliderBehaviour != null && colliderBehaviour.Spawner != null && _shouldUpdateColors)
+        {
+            GridMovementBehaviour move = colliderBehaviour.Spawner.GetComponent<GridMovementBehaviour>();
+            colorManager.SetColors(move.Alignment);
+            _shouldUpdateColors = false;
+        }
     }
 }

@@ -208,7 +208,16 @@ namespace Lodis.Movement
         public bool GridActive 
         {
             get => _gridActive;
-            set => _gridActive = value;
+            set
+            {
+
+                if (!_gridActive && value)
+                {
+                    UpdatePanelPosition();
+                }
+
+                _gridActive = value;
+            }
         }
         public bool BouncePending { get => _currentBounce.Bounces <= 0; }
 
@@ -265,10 +274,10 @@ namespace Lodis.Movement
                 stateMachine.AddOnStateChangedAction(SetGridActive);
             }
 
-            if (!_movementBehaviour)
-                return;
+            //if (!_movementBehaviour)
+            //    return;
 
-            _movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
+            //_movementBehaviour.AddOnMoveEnabledAction(UpdatePanelPosition);
         }
 
         private void SetGridActive(string state)
@@ -535,6 +544,8 @@ namespace Lodis.Movement
         /// </summary>
         private void UpdatePanelPosition()
         {
+            if (!_movementBehaviour)
+                return;
 
             if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out PanelBehaviour panel, false, clamp: true))
                 _movementBehaviour.Position = panel.Position;

@@ -72,7 +72,7 @@ MonoBehaviour:
     HitStunTime:
       RawValue: 9830
     Priority:
-      RawValue: 131072
+      RawValue: 196608
     OwnerAlignement: 0
     AbilityType: 4
     AbilityID:

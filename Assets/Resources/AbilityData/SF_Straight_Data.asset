@@ -47,7 +47,7 @@ MonoBehaviour:
   - Name: 
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 163840
+      RawValue: 98304
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:

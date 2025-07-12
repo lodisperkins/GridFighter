@@ -146,6 +146,7 @@ namespace Lodis.UI
                 _player2JoinInstruction.enabled = false;
                 _player2Root.SetActive(false);
                 _p2IsCustom.Value = false;
+                SceneManagerBehaviour.Instance.RhsRecordingName = "AxtonAI";
             }
             else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
             {
@@ -156,6 +157,7 @@ namespace Lodis.UI
                 _player2JoinInstruction.enabled = false;
                 _p2IsCustom.Value = false;
                 _player2Root.SetActive(false);
+                SceneManagerBehaviour.Instance.RhsRecordingName = "AxtonAI";
             }
             SetColor(2);
 

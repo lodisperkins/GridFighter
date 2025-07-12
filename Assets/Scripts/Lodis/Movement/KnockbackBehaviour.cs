@@ -514,7 +514,8 @@ namespace Lodis.Movement
             _onTakeDamageTemp = null;
             IsSlidingHit = false;
 
-            Fixed32 totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
+            //Fixed32 totalKnockback = GetTotalKnockback(info.BaseKnockBack, info.KnockBackScale, Health);
+            Fixed32 totalKnockback = info.BaseKnockBack;
 
             _lastTotalKnockBack = totalKnockback;
             //Calculates force and applies it to the rigidbody

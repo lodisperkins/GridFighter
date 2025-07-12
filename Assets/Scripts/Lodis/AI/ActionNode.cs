@@ -149,7 +149,11 @@ namespace Assets.Scripts.Lodis.AI
             if (situationNode.AlignmentX == -1)
                 adjustedOwnerToTarget.x = -adjustedOwnerToTarget.x;
 
-            Fixed32 directionAccuracy = Vector3.Dot(situationNode.OwnerToTarget.normalized, adjustedOwnerToTarget.normalized);
+            Vector3 ownerToTargetNormalized = situationNode.OwnerToTarget.normalized;
+            ownerToTargetNormalized.y = 0; // Ignore Y component for direction accuracy
+            adjustedOwnerToTarget.y = 0; // Ignore Y component for direction accuracy
+
+            Fixed32 directionAccuracy = Vector3.Dot(ownerToTargetNormalized, adjustedOwnerToTarget.normalized);
 
             if (directionAccuracy < 0)
                 directionAccuracy = 0;

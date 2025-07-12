@@ -171,17 +171,18 @@ namespace Lodis.Gameplay
 
             _despawnTimer?.Stop();
             UnpauseAbilityTimer();
-
             _opponentKnockback.RemoveOnKnockBackStartAction(DespawnSphere);
 
-            //Reset the opponent values to set them free.
-            _opponentTransform.Parent = _opponentParent;
-            _opponentTransform.WorldPosition = _auraSphere.FixedTransform.WorldPosition;
-            _opponentTransform.WorldRotation = FQuaternion.Euler(0, 90 * -OwnerMoveScript.GetAlignmentX(), 0);
-            _opponentKnockback.Physics.IsKinematic = false;
-            _opponentKnockback.Physics.UseGravity = true;
-            _opponentCaptured = false;
-
+            if (_opponentCaptured)
+            {
+                //Reset the opponent values to set them free.
+                _opponentTransform.Parent = _opponentParent;
+                _opponentTransform.WorldPosition = _auraSphere.FixedTransform.WorldPosition;
+                _opponentTransform.WorldRotation = FQuaternion.Euler(0, 90 * -OwnerMoveScript.GetAlignmentX(), 0);
+                _opponentKnockback.Physics.IsKinematic = false;
+                _opponentKnockback.Physics.UseGravity = true;
+                _opponentCaptured = false;
+            }
             //Handle vfx cleanup.
             ObjectPoolBehaviour.Instance.ReturnGameObject(_auraSphere);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
@@ -273,10 +274,6 @@ namespace Lodis.Gameplay
             else if (_auraSphere && OwnerInput)
             {
                 FVector3 direction = OwnerInput.AttackDirection;
-                if (OwnerMoveScript.Alignment == GridAlignment.RIGHT)
-                {
-                    direction.X *= -1;
-                }
 
                 //Calculate the new position based on input.
                 FVector3 position = _auraSphere.FixedTransform.WorldPosition + direction * dt * _moveSpeed;

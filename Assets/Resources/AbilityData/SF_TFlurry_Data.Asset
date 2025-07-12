@@ -48,7 +48,7 @@ MonoBehaviour:
   - Name: ChargeSwordCollider
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 26214
+      RawValue: 9830
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
@@ -116,7 +116,7 @@ MonoBehaviour:
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 39321
+      RawValue: 91750
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:

@@ -1118,6 +1118,41 @@ PrefabInstance:
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 3333362921062252507, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: graph.states.Array.data[13].onEnterState.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333362921062252507, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: graph.states.Array.data[13].onEnterState.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333362921062252507, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: graph.states.Array.data[13].onEnterState.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 727786197563518326}
+    - target: {fileID: 3333362921062252507, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: graph.states.Array.data[13].onEnterState.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333362921062252507, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: graph.states.Array.data[13].onEnterState.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ResetTargetSpeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333362921062252507, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: graph.states.Array.data[13].onEnterState.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Lodis.Gameplay.CharacterAnimationBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3333362921062252507, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: graph.states.Array.data[13].onEnterState.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3406130847468409652, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _defaultCastAnimation
@@ -1257,41 +1292,23 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7594208045173897942}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 561307191668043433, guid: c600a5779f55f8e44a90699633fe29a7,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 446172124052479303}
     - targetCorrespondingSourceObject: {fileID: 6089261164261432433, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 8189235522621799328}
   m_SourcePrefab: {fileID: 100100000, guid: c600a5779f55f8e44a90699633fe29a7, type: 3}
---- !u!1 &2492379211295133931 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 561307191668043433, guid: c600a5779f55f8e44a90699633fe29a7,
+--- !u!114 &727786197563518326 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3406130847468409652, guid: c600a5779f55f8e44a90699633fe29a7,
     type: 3}
   m_PrefabInstance: {fileID: 2692198498634202690}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &446172124052479303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2492379211295133931}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dad6cf1b42ec87d49b509d132a196c81, type: 3}
+  m_Script: {fileID: 11500000, guid: 3e61f6d2c3e95504abad56ee6888dead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _recordingName: AxtonAI
-  _canRecord: 0
-  OnRecordBegin: {fileID: 11400000, guid: eb2969cb7e6ebb948bde73e6ef735bf0, type: 2}
-  OnRecordFinish: {fileID: 11400000, guid: 947b391d287d5944e8cf789e1e124420, type: 2}
-  _attackDirection: {x: 0, y: 0}
-  _maxDecisionCount: 0
-  _timeDelayMax: 1
-  MovePosition: {x: 0, y: 0}
 --- !u!4 &6027930692785025906 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8573480685531974960, guid: c600a5779f55f8e44a90699633fe29a7,

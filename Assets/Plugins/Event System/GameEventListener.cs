@@ -39,6 +39,14 @@ namespace CustomEventSystem
             actions.AddListener(action);
         }
 
+        public void RemoveAction(UnityAction action)
+        {
+            if (actions == null)
+                return;
+
+            actions.RemoveListener(action);
+        }
+
         public void ClearActions()
         {
             actions.RemoveAllListeners();

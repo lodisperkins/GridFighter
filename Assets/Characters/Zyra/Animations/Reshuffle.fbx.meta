@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: b4421d34354a10e4fbc8a02e6217192a
 ModelImporter:
-  serializedVersion: 19301
+  serializedVersion: 22200
   internalIDToNameTable:
   - first:
       74: 4358703180778511629
@@ -26,6 +26,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -80,6 +81,14 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.38530028
+        functionName: PlaySoundFromEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.38530028
         functionName: PlayEffectOnLimb
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 63973f8e2ed95a14da314782eadc30f5,
@@ -87,10 +96,11 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.43126726
-        functionName: IncrementAnimationPhase
+      - time: 0.49120167
+        functionName: PlaySoundFromEvent
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -102,10 +112,11 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.5806221
-        functionName: IncrementAnimationPhase
+      - time: 0.6263948
+        functionName: PlaySoundFromEvent
         data: 
-        objectReferenceParameter: {instanceID: 0}
+        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
+          type: 2}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -118,10 +129,32 @@ ModelImporter:
         intParameter: 0
         messageOptions: 0
       - time: 0.84946346
+        functionName: PlaySoundFromEvent
+        data: 
+        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
+          type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.84946346
         functionName: PlayEffectOnLimb
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 63973f8e2ed95a14da314782eadc30f5,
           type: 2}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.8638733
+        functionName: IncrementAnimationPhase
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.9238781
+        functionName: IncrementAnimationPhase
+        data: 
+        objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
@@ -129,38 +162,6 @@ ModelImporter:
         functionName: StopAccessoryEffect
         data: 
         objectReferenceParameter: {fileID: 11400000, guid: 63973f8e2ed95a14da314782eadc30f5,
-          type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.38530028
-        functionName: PlaySoundFromEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
-          type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.49120167
-        functionName: PlaySoundFromEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
-          type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6263948
-        functionName: PlaySoundFromEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
-          type: 2}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.84946346
-        functionName: PlaySoundFromEvent
-        data: 
-        objectReferenceParameter: {fileID: 11400000, guid: bc861b469956a0647ab594e2ea7f2bce,
           type: 2}
         floatParameter: 0
         intParameter: 0
@@ -206,27 +207,35 @@ ModelImporter:
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
+    importPhysicalCameras: 1
     importVisibility: 1
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
+    bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
+    optimizeBones: 1
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
     secondaryUVAreaDistortion: 15.000001
     secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 0
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
     useFileScale: 1
+    strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
@@ -1175,6 +1184,9 @@ ModelImporter:
   animationType: 3
   humanoidOversampling: 1
   avatarSetup: 2
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

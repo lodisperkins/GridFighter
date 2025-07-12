@@ -9,6 +9,7 @@ using Lodis.UI;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -394,14 +395,7 @@ namespace Lodis.Gameplay
             _p2Knockback.LandingScript.CanCheckLanding = false;
             _p2Knockback.ResetHealth();
 
-            //Reset the position for the players
-            //Player 1
-            GridMovementBehaviour movement = _p1InputController.Character.GetComponent<GridMovementBehaviour>();
-            movement.CancelMovement();
-            movement.EnableMovement();
-            movement.CanMoveDiagonally = true;
-            movement.MoveToPanel(LHSSpawnLocation, true);
-            movement.CanMoveDiagonally = false;
+            
 
             KnockbackBehaviour knockback = _p1InputController.Character.GetComponent<KnockbackBehaviour>();
             knockback.CancelHitStun();
@@ -413,13 +407,6 @@ namespace Lodis.Gameplay
             if (input)
                 input.ClearBuffer();
 
-            //Player 2
-            movement = _p2InputController.Character.GetComponent<GridMovementBehaviour>();
-            movement.CancelMovement();
-            movement.EnableMovement();
-            movement.CanMoveDiagonally = true;
-            movement.MoveToPanel(RHSSpawnLocation, true);
-            movement.CanMoveDiagonally = false;
 
             knockback = _p2InputController.Character.GetComponent<KnockbackBehaviour>();
             knockback.CancelHitStun();
@@ -437,6 +424,24 @@ namespace Lodis.Gameplay
             moveset = _p2InputController.Character.GetComponent<MovesetBehaviour>();
             moveset.ResetAll();
 
+            //Reset the position for the players
+            //Player 1
+            GridMovementBehaviour movement = _p1InputController.Character.GetComponent<GridMovementBehaviour>();
+            movement.CancelMovement();
+            movement.EnableMovement();
+            movement.CanMoveDiagonally = true;
+            movement.MoveToPanel(LHSSpawnLocation, true);
+            movement.CanMoveDiagonally = false;
+
+
+            //Player 2
+            movement = _p2InputController.Character.GetComponent<GridMovementBehaviour>();
+            movement.CancelMovement();
+            movement.EnableMovement();
+            movement.CanMoveDiagonally = true;
+            movement.MoveToPanel(RHSSpawnLocation, true);
+            movement.CanMoveDiagonally = false;
+
             //Enable both players in case either are inactive
             _p1InputController.Character.SetActive(true);
             _p2InputController.Character.SetActive(true);
@@ -448,6 +453,7 @@ namespace Lodis.Gameplay
                 return;
 
             AIControllerBehaviour dummyController = BlackBoardBehaviour.Instance.Player2Controller as AIControllerBehaviour;
+
             dummyController.LoadDecisions();
 
             if (_mode == GameMode.SIMULATE)

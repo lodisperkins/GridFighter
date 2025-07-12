@@ -44,6 +44,10 @@ namespace Lodis.Gameplay
             flurryCollider.ColliderInfo = GetColliderData(1);
             flurryCollider.Spawner = Owner;
 
+            FollowBehaviour followBehaviour = _flurry.GetComponent<FollowBehaviour>();
+
+            followBehaviour.Target = collision.OtherEntity.UnityScript; 
+
             //Handle vfx. Disabling again in case something enabled it before hit.
             DisableAccessory();
             FixedPointTimer.StopAction(_spawnAccessoryAction);

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3093155966129070182}
   - component: {fileID: 6349474623555526385}
   - component: {fileID: 1136830179131863188}
+  - component: {fileID: 3877319484623847983}
   m_Layer: 16
   m_Name: ChargeSwordFlurry
   m_TagString: Untagged
@@ -55,6 +56,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 0
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
@@ -105,6 +107,7 @@ MonoBehaviour:
       RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: 
@@ -201,8 +204,10 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &3093155966129070182
 MonoBehaviour:
@@ -283,6 +288,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorManager: {fileID: 6349474623555526385}
   colliderBehaviour: {fileID: 9046630372321854497}
+--- !u!114 &3877319484623847983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4119813197417429166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ada17687eb06b41b2c1935decf9143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _target: {fileID: 0}
+  _snapToTarget: 1
+  _speed:
+    RawValue: 0
 --- !u!1001 &7776076755042341735
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -648,6 +675,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7392677078026108677, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7392677078026108677, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7392677078026108677, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7392677078026108677, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -695,6 +737,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7392677078026108677, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8430556375080416883, guid: 814d04ca1eb345b4e9a5b1c8f49cc7d6,
         type: 3}

@@ -14,6 +14,8 @@ namespace Lodis.AI
 {
     public class AIDummyMovementBehaviour : MonoBehaviour
     {
+        [SerializeField] private bool _cancelPathingOnHit;
+
         private AIControllerBehaviour _dummyBehaviour;
         private Coroutine _moveRoutine;
         private PanelBehaviour _moveTarget;
@@ -23,18 +25,35 @@ namespace Lodis.AI
         private Movement.GridMovementBehaviour _movementBehaviour;
         private MovesetBehaviour _moveset;
         private StateMachine _stateMachine;
+        private CharacterStateMachineBehaviour _characterStateMachine;
         private Heuristic _pathFindHeuristic;
+        private bool _reachedDestination;
+
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; }
         public StateMachine StateMachine { get => _stateMachine; }
+        public bool ReachedDestination { get => _reachedDestination; private set => _reachedDestination = value; }
+        public bool NeedPath
+        {
+            get => _needPath;
+            private set
+            { 
+                _needPath = value;
+
+                if (_needPath)
+                    _movementBehaviour.AddOnMoveEndAction(MoveToNextPanel);
+                else
+                    _movementBehaviour.RemoveOnMoveEndAction(MoveToNextPanel);
+            }
+        }
 
 
         // Start is called before the first frame update
         void Start()
         {
             _dummyBehaviour = GetComponent<AIControllerBehaviour>();
-            _stateMachine = _dummyBehaviour.Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
+            _characterStateMachine = _dummyBehaviour.Character.GetComponent<CharacterStateMachineBehaviour>();
+            _stateMachine = _characterStateMachine.StateMachine;
             _movementBehaviour = _dummyBehaviour.Character.GetComponent<Movement.GridMovementBehaviour>();
-            _movementBehaviour.AddOnMoveEndAction(MoveToNextPanel);
             _currentPath = new List<PanelBehaviour>();
             _moveset = _dummyBehaviour.Character.GetComponent<MovesetBehaviour>();
         }
@@ -52,8 +71,9 @@ namespace Lodis.AI
         {
             if (_moveTarget == panel) return;
 
+            _reachedDestination = false;
             _moveTarget = panel;
-            _needPath = true;
+            NeedPath = true;
         }
 
         public void MoveToLocation(FVector2 panelPosition, Heuristic heuristic = null)
@@ -61,7 +81,8 @@ namespace Lodis.AI
             if (_moveTarget?.Position == panelPosition) return;
 
             BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _moveTarget, false, _movementBehaviour.Alignment);
-            _needPath = true;
+            _reachedDestination = false;
+            NeedPath = true;
         }
 
         public void MoveToNextPanel()
@@ -69,7 +90,10 @@ namespace Lodis.AI
             _currentPathIndex++;
 
             if (_currentPathIndex >= _currentPath.Count || _currentPath.Count < 0)
+            {
+                ReachedDestination = true;
                 return;
+            }
 
             if (!_movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false))
                 Debug.Log(_dummyBehaviour.Character.name + " cannot move to panel at location " + _moveTarget.Position +
@@ -81,18 +105,34 @@ namespace Lodis.AI
         {
             PanelBehaviour start = _movementBehaviour.CurrentPanel;
 
-            if (_needPath && (StateMachine.CurrentState == "Idle" || (StateMachine.CurrentState == "Attack" && _moveset.LastAbilityInUse.GetCurrentCancelRule()?.CanCancelOnMove == true)))
+            if (NeedPath && (StateMachine.CurrentState == "Idle" || (StateMachine.CurrentState == "Attack" && _moveset.LastAbilityInUse.GetCurrentCancelRule()?.CanCancelOnMove == true)))
             {
+                if (_moveTarget == null || _moveTarget == null)
+                {
+                    return;
+                }
+
                 _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment, false, _pathFindHeuristic);
-                _needPath = false;
+                NeedPath = false;
                 _currentPathIndex = 1;
 
                 if (_currentPath.Count > 1)
                     _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
             }
 
-            if (StateMachine.CurrentState != "Idle" && StateMachine.CurrentState != "Moving" && _currentPath.Count > 0)
-                _needPath = true;
+            if (_characterStateMachine.CompareState("Tumbling", "Flinching") && _currentPath.Count > 0 && !ReachedDestination)
+            {
+                if (_cancelPathingOnHit)
+                {
+                    _currentPath.Clear();
+                    _currentPathIndex = 0;
+                    NeedPath = false;
+                }
+                else
+                {
+                    NeedPath = true;
+                }
+            }
         }
     }
 }

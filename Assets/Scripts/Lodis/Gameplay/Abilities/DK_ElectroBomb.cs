@@ -33,6 +33,7 @@ namespace Lodis.Gameplay
         private KnockbackBehaviour _opponentKnockback;
         private CharacterFeedbackBehaviour _characterFeedback;
         private CharacterFeedbackBehaviour _opponentFeedback;
+        private CharacterAnimationBehaviour _opponentAnimation;
         private Fixed32 _slowMotionTimeScale; // 0.05
         private Fixed32 _slowMotionTime; // 1.2
         private GameObject _thalamusInstance;
@@ -71,6 +72,7 @@ namespace Lodis.Gameplay
 
             _characterFeedback = Owner.GetComponentInChildren<CharacterFeedbackBehaviour>();
             _opponentFeedback = _opponentMovement.gameObject.GetComponentInChildren<CharacterFeedbackBehaviour>();
+            _opponentAnimation = _opponentMovement.gameObject.GetComponentInChildren<CharacterAnimationBehaviour>();
 
             _defaultCameraMoveSpeed = CameraBehaviour.Instance.CameraMoveSpeed;
         }
@@ -145,6 +147,7 @@ namespace Lodis.Gameplay
             OwnerAnimationScript.AddEventListener("ElectroKick", () =>
             {
                 HitColliderBehaviour kickCollider = HitColliderSpawner.SpawnCollider(_opponentMovement.FixedTransform.WorldPosition, 1, 1, GetColliderData(3), Owner);
+                _opponentAnimation.LockAirTravelAnim(new Vector3(3, 0));
             });
 
             OwnerAnimationScript.AddEventListener("ChargeElectroBomb", PrepareBlast);
@@ -198,6 +201,9 @@ namespace Lodis.Gameplay
                 CameraBehaviour.Instance.AlignmentFocus = oppCamAlignemnt;
 
                 UnpauseAbilityTimer();
+                _opponentAnimation.UnlockAirTravelAnim();
+
+                SoundManagerBehaviour.Instance.ResetMusicVolume();
                 //MatchManagerBehaviour.Instance.SuperInUse = false;
             });
         }
@@ -305,6 +311,8 @@ namespace Lodis.Gameplay
             MatchManagerBehaviour.Instance.SuperInUse = true;
             PauseAbilityTimer();
 
+            SoundManagerBehaviour.Instance.ScaleMusicVolume(.5f);
+
             OwnerKnockBackScript.SetIntagibilityByCondition(condition => !InUse);
 
             PanelBehaviour opponentPanel = null;
@@ -321,7 +329,7 @@ namespace Lodis.Gameplay
 
             opponentHealthBehaviour.Stun(2);
 
-            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_opponentMovement.transform.position, out opponentPanel);
+            BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(_opponentMovement.transform.position, out opponentPanel, clamp: true);
 
             FVector2 panelPosition = BlackBoardBehaviour.Instance.Grid.ClampPanelPosition(opponentPanel.Position + FVector2.Right * OwnerMoveScript.GetAlignmentX(), GridAlignment.ANY);
 
@@ -363,6 +371,7 @@ namespace Lodis.Gameplay
             OwnerAnimationScript.RemoveEventListener("ElectroKick");
             OwnerAnimationScript.RemoveEventListener("ChargeElectroBomb");
             OwnerAnimationScript.RemoveEventListener("ThrowElectroBomb");
+            _opponentAnimation.UnlockAirTravelAnim();
         }
 
         protected override void OnActivate(params object[] args)

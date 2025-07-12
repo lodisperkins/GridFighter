@@ -48,7 +48,7 @@ namespace Lodis.Gameplay
 
                 GameObject objectHit = collision.OtherEntity.UnityObject;
 
-                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(collision.OtherEntity.UnityObject))
+                if (objectHit != BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner))
                     return;
 
                 CameraBehaviour.Instance.ZoomAmount = 3;

@@ -12,7 +12,7 @@ namespace Lodis.Gameplay
     /// </summary>
     public class SS_AxeKick : Ability
     {
-        private HitColliderBehaviour _hitColliderBehaviour;
+        private HitColliderBehaviour[] colliders;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -29,7 +29,7 @@ namespace Lodis.Gameplay
                 instance.FixedTransform.WorldRotation = FQuaternion.Identity;
             else
                 instance.FixedTransform.WorldRotation = FQuaternion.Euler(0, 180, 0);
-            HitColliderBehaviour[] colliders = instance.GetComponentsInChildren<HitColliderBehaviour>();
+            colliders = instance.GetComponentsInChildren<HitColliderBehaviour>();
 
             foreach (HitColliderBehaviour collider in colliders)
             {
@@ -40,12 +40,22 @@ namespace Lodis.Gameplay
             }
         }
 
+        private void CleanUpColliders()
+        {
+            if (colliders == null || colliders.Length == 0)
+                return;
+
+            foreach (HitColliderBehaviour collider in colliders)
+            {
+                ObjectPoolBehaviour.Instance.ReturnGameObject(collider.Entity, true);
+            }
+        }
+
         protected override void OnEnd()
         {
             base.OnEnd();
 
-            if (_hitColliderBehaviour)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitColliderBehaviour.gameObject);
+            CleanUpColliders();
         }
     }
 }

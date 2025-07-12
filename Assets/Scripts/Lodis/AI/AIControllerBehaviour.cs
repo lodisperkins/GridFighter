@@ -19,6 +19,7 @@ using FixedPoints;
 using Types;
 using System.IO;
 using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
+using System.Threading.Tasks;
 
 namespace Lodis.AI
 {
@@ -150,7 +151,7 @@ namespace Lodis.AI
         private bool _touchingOpponentBarrier;
         private bool _lastActionWasCharge;
         private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
-        private StateMachine _stateMachine;
+        private CharacterStateMachineBehaviour _stateMachine;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private int _lastSlot;
         private Gameplay.MovesetBehaviour _moveset;
@@ -159,7 +160,7 @@ namespace Lodis.AI
         private bool _waitingToChangePlans;
         private bool _cantFindRecording;
 
-        public StateMachine StateMachine { get => _stateMachine; }
+        public CharacterStateMachineBehaviour StateMachine { get => _stateMachine; }
         public GameObject Opponent { get => _opponent; }
         public MovesetBehaviour Moveset { get => _moveset; set => _moveset = value; }
         public AIDummyMovementBehaviour AIMovement { get => _aiMovementBehaviour; }
@@ -210,7 +211,9 @@ namespace Lodis.AI
             if (_useRecording)
             {
                 _executor.enabled = false;
-                _playbackInfo = AIRecorderBehaviour.Load(_recordingName, _moveset);
+
+                _playbackInfo = SceneManagerBehaviour.Instance.GetRecordings(PlayerID);
+
                 return;
             }
 
@@ -239,7 +242,7 @@ namespace Lodis.AI
         private void Start()
         {
             Defense = Character.GetComponent<CharacterDefenseBehaviour>();
-            _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>().StateMachine;
+            _stateMachine = Character.GetComponent<Gameplay.CharacterStateMachineBehaviour>();
             Knockback = Character.GetComponent<Movement.KnockbackBehaviour>();
             _gridPhysics = Character.GetComponent<GridPhysicsBehaviour>();
             _movementBehaviour = Character.GetComponent<GridMovementBehaviour>();
@@ -258,20 +261,13 @@ namespace Lodis.AI
             _opponentBarrier = _movementBehaviour.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
 
-            _opponentMoveset.OnBurst += () =>
-            {
-                if (!_useRecording)
-                    return;
-
-                StartNewRecording();
-            };
 
             CleanRecordings();
 
             if (_useRecording && _playbackInfo != null && _playbackInfo.Length > 0)
             {
-                UpdateSituationNode();
-                StartNewRecording();
+                _inputBehaviour.OnGetFlags += HandleActionPlayback;
+                MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ResetRecordingActions);
             }
             else
             {
@@ -372,7 +368,7 @@ namespace Lodis.AI
                 _attacksInRange.RemoveAll(hitCollider =>
                 {
                     if ((object)hitCollider != null)
-                        return hitCollider == null || !hitCollider.gameObject.activeInHierarchy;
+                        return hitCollider == null || !hitCollider.gameObject.activeInHierarchy || hitCollider.Spawner == Entity.Data;
 
                     return true;
                 });
@@ -512,6 +508,19 @@ namespace Lodis.AI
                     flag |= InputFlag.Left; // Add the Left flag
                 }
             }
+
+            //If we have the special in one slot but the other special button was pressed in the recording swap it here.
+            if (action.InputAction.HasFlag(InputFlag.Special1) && _moveset.SpecialAbilitySlots[1]?.abilityData.ID == action.CurrentAbilityID)
+            {
+                flag &= ~InputFlag.Special1; // Remove the Special1 flag
+                flag |= InputFlag.Special2; // Add the Special2 flag
+            }
+            else if (action.InputAction.HasFlag(InputFlag.Special2) && _moveset.SpecialAbilitySlots[0]?.abilityData.ID == action.CurrentAbilityID)
+            {
+                flag &= ~InputFlag.Special2; // Remove the Special2 flag
+                flag |= InputFlag.Special1; // Add the Special1 flag
+            }
+
             //_lastActionWasCharge = flag.HasFlag(InputFlag.Strong);
 
             ////If the action is a charge attack, perform it.
@@ -521,7 +530,7 @@ namespace Lodis.AI
             //    return;
             //}
 
-            
+
             _inputBehaviour.AIFlags = flag;
             return;
 
@@ -788,18 +797,34 @@ namespace Lodis.AI
 
                 if (action.AlignmentX != _currentSituation.AlignmentX)
                 {
-                    panelPosition = (Vector2)GridBehaviour.Instance.GetMirroredPanelAcrossX((int)panelPosition.x, (int)panelPosition.y).Position;
-                    opponentPanelPosition = (Vector2)GridBehaviour.Instance.GetMirroredPanelAcrossX((int)opponentPanelPosition.x, (int)opponentPanelPosition.y).Position;
+                    int xPosClamped = (int)Math.Clamp(panelPosition.x, 0, GridBehaviour.Instance.Dimensions.x - 1);
+                    int yPosClamped = (int)Math.Clamp(panelPosition.y, 0, GridBehaviour.Instance.Dimensions.y - 1);
+
+                    int opponentXPosClamped = (int)Math.Clamp(opponentPanelPosition.x, 0, GridBehaviour.Instance.Dimensions.x - 1);
+                    int opponentYPosClamped = (int)Math.Clamp(opponentPanelPosition.y, 0, GridBehaviour.Instance.Dimensions.y - 1);
+
+                    panelPosition = (Vector2)GridBehaviour.Instance.GetMirroredPanelAcrossX(xPosClamped, yPosClamped).Position;
+                    opponentPanelPosition = (Vector2)GridBehaviour.Instance.GetMirroredPanelAcrossX(opponentXPosClamped, opponentYPosClamped).Position;
                 }
 
-                if (panelPosition.y == _currentSituation.PanelPosition.y &&
-                    opponentPanelPosition.y == _currentSituation.OpponentPanelPosition.y)
+                if (panelPosition == _currentSituation.PanelPosition &&
+                    opponentPanelPosition == _currentSituation.OpponentPanelPosition /*&& playbackInfo.SpecialAttackNodes?.Count > 0*/)
                 {
                     matchingInfos.Add(playbackInfo);
                 }
             }
 
             return matchingInfos;
+        }
+
+        private void ResetRecordingActions()
+        {
+            _currentActionIndex = 0;
+            _currentRecordingIndex = 0;
+            _currentRecording = null;
+            _currentState = AIState.Idle;
+            changePlanAction?.Stop();
+            _waitingToChangePlans = false;
         }
 
         private void StartNewRecording()
@@ -810,6 +835,7 @@ namespace Lodis.AI
             _currentActionIndex = 0; // Always the first action
             bool foundRecording = false;
             _waitingToChangePlans = false;
+            _currentRecording = null;
 
             List<ActionPlaybackInfo> matchingInfos = GetMatchingPlaybackInfos();
 
@@ -819,22 +845,31 @@ namespace Lodis.AI
                 return;
             }
 
-            // Iterate through recording list.
-            for (int i = 0; i < matchingInfos.Count; i++)
+            //Looping twice here since there's a chance that the randomization makes us skip all possible recordings.
+            for (int j = 0; j < 2; j++)
             {
-                ActionPlaybackInfo recording = matchingInfos[i];
-
-                // Only compare the first action of the recording.
-                if (recording.Recording.Count > 0)
+                // Iterate through recording list.
+                for (int i = 0; i < matchingInfos.Count; i++)
                 {
-                    // If the current action is valid and matches our situation more closely than the last action...
-                    if (ValidateAction(recording, 0) && CheckSituationSimilar(recording))
+                    ActionPlaybackInfo recording = matchingInfos[i];
+
+                    // Only compare the first action of the recording.
+                    if (recording.Recording.Count > 0)
                     {
-                        foundRecording = true; // Found a valid recording
-                        // ...update the current action.
-                        _currentRecording = recording;
-                        
-                        _currentRecordingIndex = i;
+                        //If we aren't on the second iteration where we NEED a valid recording we can try to randomize things to get a bit of variety.
+                        int chance = j == 1 ? 0 : UnityEngine.Random.Range(1, _randomDecisionConstant + 1); // Generate a random number between 1 and N
+
+                        // If the current action is valid and matches our situation more closely than the last action...
+                        if (chance != 1 && ValidateAction(recording, 0) && CheckSituationSimilar(recording))
+                        {
+                            foundRecording = true; // Found a valid recording
+                                                   // ...update the current action.
+                            _currentRecording = recording;
+
+                            _currentRecordingIndex = i;
+
+                            break;
+                        }
                     }
                 }
             }
@@ -881,31 +916,37 @@ namespace Lodis.AI
         {
             base.Tick(dt);
 
-            if (MatchManagerBehaviour.Instance.IsPaused || !MatchManagerBehaviour.Instance.MatchStarted || MatchManagerBehaviour.Instance.PlayerOutOfRing)
+            if (MatchManagerBehaviour.Instance.IsPaused || !MatchManagerBehaviour.Instance.MatchStarted || MatchManagerBehaviour.Instance.PlayerOutOfRing
+                || !_stateMachine.CompareState("Idle", "Moving", "Attacking", "Tumbling", "Flinching"))
+            {
                 _currentState = AIState.Idle;
+            }
 
             switch (_currentState)
             {
                 case AIState.Idle:
 
-                    if (CheckIfProjectilesWillHit())
+                    if (MatchManagerBehaviour.Instance.IsPaused || !MatchManagerBehaviour.Instance.MatchStarted || MatchManagerBehaviour.Instance.PlayerOutOfRing
+                || !_stateMachine.CompareState("Idle", "Moving", "Attacking", "Tumbling", "Flinching"))
+                    {
+                        break;
+                    }
+
+                    if (CheckIfProjectilesWillHit() || _stateMachine.CompareState("Tumbling", "Flinching"))
                     {
                         _currentState = AIState.Defending;
                     }
                     else
                     {
                         _currentState = AIState.Attacking;
-                        _inputBehaviour.OnGetFlags += HandleActionPlayback;
                     }
                     break;
                 case AIState.Attacking:
 
-                    if (CheckIfProjectilesWillHit())
+                    if (CheckIfProjectilesWillHit() || _stateMachine.CompareState("Tumbling", "Flinching"))
                     {
+                        ResetRecordingActions();
                         _currentState = AIState.Defending;
-                        _playbackRoutine?.Stop();
-                        _playbackRoutine = null;
-                        _inputBehaviour.OnGetFlags -= HandleActionPlayback;
                         return;
                     }
                     break;
@@ -915,8 +956,6 @@ namespace Lodis.AI
                     if (!CheckIfProjectilesWillHit())
                     {
                         _currentState = AIState.Attacking;
-                        _inputBehaviour.OnGetFlags += HandleActionPlayback;
-                        StartNewRecording();
                     }
                     break;
             }
@@ -948,12 +987,33 @@ namespace Lodis.AI
             return true;
         }
 
+        private bool CheckOpponentState()
+        {
+            if (_currentRecording == null || _currentRecording.Recording.Count == 0)
+                return false;
+
+            string recordedOpponentState = _currentRecording.Recording[_currentActionIndex].OpponentState;
+
+            if (recordedOpponentState != "Flinching" && recordedOpponentState != "Tumbling" && recordedOpponentState != "HardLanding")
+                return true;
+
+            string currentOpponentState = BlackBoardBehaviour.Instance.GetPlayerState(_opponent);
+
+            return currentOpponentState == "Flinching" || currentOpponentState == "Tumbling" || currentOpponentState == "HardLanding";
+        }
+
         /// <summary>
         /// Calculate a rating for safety for each panel on the AI side. The rating is based on the projectiles on the row and how long it would take the projectile to touch the panel.
         /// After that find the lowest rating and use A star to get a safe path. A star will need to know all the ratings and go to the best one.
         /// </summary>
         private void HandleDefense()
         {
+            if (_stateMachine.CompareState("Tumbling", "Flinching") && _knockbackBehaviour.Health >= _ownerBarrier.Health)
+            {
+                _moveset.UseBasicAbility(AbilityType.BURST);
+                return;
+            }
+
             List<HitColliderBehaviour> hitColliders = GetAttacksInRange();
 
             if (hitColliders.Count == 0)
@@ -1067,7 +1127,7 @@ namespace Lodis.AI
 
         private void HandleActionPlayback()
         {
-            if (!_useRecording || _isPaused || _waitingToChangePlans)
+            if (!_useRecording || _isPaused || _waitingToChangePlans || _currentState != AIState.Attacking || _opponentKnocback.IsInvincible)
                 return;
 
 
@@ -1090,7 +1150,9 @@ namespace Lodis.AI
             if (_currentRecording == null || _currentActionIndex >= _currentRecording.Recording.Count || _cantFindRecording)
             {
                 //...find a new action in the recording list.
-                StartNewRecording();
+                _waitingToChangePlans = true;
+                changePlanAction?.Stop();   
+                changePlanAction = FixedPointTimer.StartNewConditionAction(StartNewRecording, c => _stateMachine.CurrentState == "Idle");
                 return;
             }
 
@@ -1101,9 +1163,10 @@ namespace Lodis.AI
 
             //Debug.Log("Current action index: " + _currentActionIndex + " in recording: " + _currentRecordingIndex + ". Current situation: " + _currentSituation.ToString() + " with score: " + _lastScore);
 
+            string opponentState = BlackBoardBehaviour.Instance.GetPlayerState(_opponent);
 
             ////If the action node's situation is too different from the current or if the action isn't possible...
-            if (!CheckSituationSimilar() && _currentActionIndex >= _currentRecording.Recording.Count / 2)
+            if (!CheckOpponentState() && _currentActionIndex >= _currentRecording.Recording.Count / 2)
             {
                 //...find a new action in the recording list.
 

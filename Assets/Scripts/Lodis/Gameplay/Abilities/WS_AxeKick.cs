@@ -31,19 +31,6 @@ namespace Lodis.Gameplay
             else
                 instance.FixedTransform.WorldRotation = FQuaternion.Euler(0, 180, 0);
 
-            //_hitColliderBehaviour = instance.GetComponent<HitColliderBehaviour>();
-
-            //_hitColliderBehaviour.ColliderInfo = GetColliderData(0);
-            //_hitColliderBehaviour.Spawner = Owner;
-
-            //HitColliderBehaviour[] colliders = instance.GetComponentsInChildren<HitColliderBehaviour>();
-
-            //foreach (HitColliderBehaviour collider in colliders)
-            //{
-            //    collider.Spawner = Owner;
-            //    collider.ColliderInfo.AddOnHitEvent(OnHit);
-            //}
-
             _hitColliderBehaviour = instance.GetComponent<CollisionGroupBehaviour>();
 
             _hitColliderBehaviour.SetHitCollisionInfo(GetColliderData(0), Owner);
@@ -55,7 +42,7 @@ namespace Lodis.Gameplay
 
             if (_hitColliderBehaviour)
             {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitColliderBehaviour.Entity);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitColliderBehaviour.Entity, true);
 
             }
         }

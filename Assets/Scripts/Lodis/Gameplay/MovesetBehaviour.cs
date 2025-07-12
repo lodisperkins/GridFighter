@@ -569,9 +569,9 @@ namespace Lodis.Gameplay
         /// </summary>
         public Ability GetAbilityInCurrentSlotByID(int ID)
         {
-            if (_specialAbilitySlots[0].abilityData.ID == ID)
+            if (_specialAbilitySlots[0]?.abilityData.ID == ID)
                 return _specialAbilitySlots[0];
-            else if (_specialAbilitySlots[1].abilityData.ID == ID)
+            else if (_specialAbilitySlots[1]?.abilityData.ID == ID)
                 return _specialAbilitySlots[1];
 
             return null;

@@ -69,13 +69,13 @@ MonoBehaviour:
     Damage:
       RawValue: 327680
     BaseKnockBack:
-      RawValue: 65536
+      RawValue: 131072
     KnockBackScale:
       RawValue: 78643
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 98304
+      RawValue: 104857
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -116,7 +116,7 @@ MonoBehaviour:
       RawValue: 327680
   - name: SpeedMultiplier
     value:
-      RawValue: 65536
+      RawValue: 262144
   animationType: 0
   _customAnimation: {fileID: 7400000, guid: f2fdba8a6b7bbc540a4d208285dd348c, type: 3}
   _shouldMirror: 1

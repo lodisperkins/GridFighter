@@ -62,7 +62,7 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 3276
     Damage:
-      RawValue: 196608
+      RawValue: 131072
     BaseKnockBack:
       RawValue: 65536
     KnockBackScale:
@@ -93,10 +93,10 @@ MonoBehaviour:
       RawValue: 3276
     CameraShakeDuration:
       RawValue: 32768
-    CameraShakeFrequency: 1
+    CameraShakeFrequency: 15
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: f0ed882f4e2d81d469f1b8da33dedaf1, type: 3}
-    HitSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: d20e3b6d9f1185d4c834f8bc42ac9b39, type: 3}
     DespawnSound: {fileID: 0}
   - Name: ExplosionCollider
     DespawnAfterTimeLimit: 1
@@ -113,13 +113,13 @@ MonoBehaviour:
     Damage:
       RawValue: 1638400
     BaseKnockBack:
-      RawValue: 131072
+      RawValue: 1310720
     KnockBackScale:
       RawValue: 131072
     ClampForceWithinRing: 0
     IgnoreMomentum: 1
     HitAngle:
-      RawValue: 98304
+      RawValue: 32768
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
@@ -143,10 +143,10 @@ MonoBehaviour:
       RawValue: 52428
     CameraShakeDuration:
       RawValue: 45875
-    CameraShakeFrequency: 0
+    CameraShakeFrequency: 30
     ShakesCamera: 1
     SpawnSound: {fileID: 8300000, guid: 408bb1bb65309df4c9fda578b2f27a34, type: 3}
-    HitSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: 3246dc536f4b9ff49838c9428d53ac89, type: 3}
     DespawnSound: {fileID: 0}
   - Name: SwordCollider
     DespawnAfterTimeLimit: 1

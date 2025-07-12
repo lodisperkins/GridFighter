@@ -60,13 +60,13 @@ MonoBehaviour:
     Damage:
       RawValue: 524288
     BaseKnockBack:
-      RawValue: 196608
+      RawValue: 131072
     KnockBackScale:
       RawValue: 32768
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 163840
+      RawValue: 150732
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:

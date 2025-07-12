@@ -131,6 +131,7 @@ namespace Lodis.Input
 
             json = JsonConvert.SerializeObject(_recordedActions, Settings);
 
+
             writer.Write(json);
             writer.Close();
 
@@ -174,8 +175,8 @@ namespace Lodis.Input
 
             if (!CanRecord)
             {
-                if (saveLast)
-                    Save();
+                //if (saveLast)
+                //    Save();
 
                 _recordedActions.Clear();
             }

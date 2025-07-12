@@ -190,14 +190,26 @@ namespace Lodis.Gameplay
             Object.Destroy(_visualPrefabInstance);
         }
 
+        private void CleanUpColliders()
+        {
+            if (_bodyHitScript)
+            {
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity);
+                _bodyHitScript.Entity.FixedTransform.Parent = null;
+            }
+
+            if (_fistHitScript)
+            {
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_fistHitScript.Entity);
+                _fistHitScript.Entity.FixedTransform.Parent = null;
+            }
+        }
+
         protected override void OnRecover(params object[] args)
         {
             base.OnRecover(args);
 
-            if (_fistHitScript)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_fistHitScript.Entity);
-
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity);
+            CleanUpColliders();
 
             if (_visualPrefabInstance)
                 Object.Destroy(_visualPrefabInstance);
@@ -216,14 +228,10 @@ namespace Lodis.Gameplay
 
             RoutineBehaviour.Instance.StopAction(_hitLoopDespawnAction);
 
-            if (_bodyHitScript)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity);
+            CleanUpColliders();
 
             if (_hitEffectLoopInstance)
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitEffectLoopInstance);
-
-            if (_fistHitScript)
-                _fistHitScript.Entity.RemoveFromGame();
 
             CameraBehaviour.Instance.ZoomAmount = 0;
         }
@@ -232,11 +240,7 @@ namespace Lodis.Gameplay
         {
             base.OnMatchRestart();
 
-            if (_bodyHitScript)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity);
-
-            if (_fistHitScript)
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_fistHitScript.Entity);
+            CleanUpColliders();
 
 
         }

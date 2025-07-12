@@ -355,6 +355,16 @@ namespace Lodis.Movement
 
         /// <summary>
         /// Add a listener to the on move end event.
+        /// </summary>
+        /// <param name="action"></param>
+        public void RemoveOnMoveEndAction(UnityAction action)
+        {
+            if ((object)_onMoveEnd != null)
+                _onMoveEnd.RemoveAction(action);
+        }
+
+        /// <summary>
+        /// Add a listener to the on move end event.
         /// The listeners for this event are cleared after being invoked.
         /// </summary>
         /// <param name="action"></param>

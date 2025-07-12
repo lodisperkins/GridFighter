@@ -1,8 +1,11 @@
-﻿using Lodis.GridScripts;
+﻿using Lodis.AI;
+using Lodis.GridScripts;
 using Lodis.ScriptableObjects;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
@@ -50,6 +53,12 @@ namespace Lodis.Utility
         private IntVariable _currentIndex;
         private int _previousScene;
         private bool _moduleEventAdded;
+        private AsyncOperation _sceneOperation;
+        private string lhsRecordingName;
+        private string rhsRecordingName;
+        private ActionPlaybackInfo[] lhsRecordings;
+        private ActionPlaybackInfo[] rhsRecordings;
+
 
 
         public static SceneManagerBehaviour Instance
@@ -84,13 +93,16 @@ namespace Lodis.Utility
         public InputProfileData P2InputProfile { get => _p2InputProfile; private set => _p2InputProfile = value; }
         public UnityEvent OnStart { get => _onStart; set => _onStart = value; }
         public InputSystemUIInputModule Module { get => _module; set => _module = value; }
+        public AsyncOperation SceneOperation { get => _sceneOperation; private set => _sceneOperation = value; }
+        public string LhsRecordingName { get => lhsRecordingName; set => lhsRecordingName = value; }
+        public string RhsRecordingName { get => rhsRecordingName; set => rhsRecordingName = value; }
 
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
             _currentIndex = Resources.Load<IntVariable>("ScriptableObjects/CurrentScene");
 
-
+            GameMode.Value = -1;
             SceneManager.sceneLoaded += OnSceneLoaded;
 
             Cursor.visible = _showMouse;
@@ -157,7 +169,25 @@ namespace Lodis.Utility
 
         public void LoadScene(int index)
         {
-            SceneManager.LoadSceneAsync(index);
+            SceneOperation = SceneManager.LoadSceneAsync(index);
+
+            if ((_gameMode == 1 || _gameMode == 4) && index == 4)
+            {
+                SceneOperation.allowSceneActivation = false;
+
+                try
+                {
+                    LoadAIDecisions().ContinueWith(_ =>
+                    {
+                        SceneOperation.allowSceneActivation = true;
+                    });
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Failed to load AI decisions: {e.Message}");
+                }
+            }
+
             _loadScreen.SetActive(true);
 
             _previousScene = _currentIndex;
@@ -167,7 +197,22 @@ namespace Lodis.Utility
 
         public void LoadScene(string name)
         {
-            SceneManager.LoadSceneAsync(name);
+            SceneOperation = SceneManager.LoadSceneAsync(name);
+
+            if ((_gameMode == 1 || _gameMode == 4) && name == "Stadium")
+            {
+                SceneOperation.allowSceneActivation = false;
+
+                try
+                {
+                    Task loadDecisionTask = LoadAIDecisions();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Failed to load AI decisions: {e.Message}");
+                }
+            }
+
             _loadScreen.SetActive(true);
 
             _previousScene = _currentIndex;
@@ -175,9 +220,45 @@ namespace Lodis.Utility
             InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsManually;
         }
 
+        private async Task LoadAIDecisions()
+        {
+            if (!string.IsNullOrEmpty(LhsRecordingName))
+            {
+                lhsRecordings = await AIRecorderBehaviour.LoadAsync(LhsRecordingName);
+            }
+
+            if (!string.IsNullOrEmpty(RhsRecordingName))
+            {
+                rhsRecordings = await AIRecorderBehaviour.LoadAsync(RhsRecordingName);
+            }
+
+            while (SceneOperation.progress < 0.9f)
+            {
+                await System.Threading.Tasks.Task.Yield();
+            }
+
+            SceneOperation.allowSceneActivation = true;
+        }
+
+        public ActionPlaybackInfo[] GetRecordings(int playerID)
+        {
+            if (playerID == 0)
+            {
+                return lhsRecordings;
+            }
+            else if (playerID == 1)
+            {
+                return rhsRecordings;
+            }
+            else
+            {
+                throw new ArgumentException("Invalid player ID. Must be 0 or 1.");
+            }
+        }
+
         public void LoadPreviousScene()
         {
-            SceneManager.LoadSceneAsync(_previousScene);
+            SceneOperation = SceneManager.LoadSceneAsync(_previousScene);
             _loadScreen.SetActive(true);
         }
 
@@ -188,8 +269,6 @@ namespace Lodis.Utility
 
         private void Update()
         {
-
-
             if (_updateDeviceBasedOnUI && Module && !_moduleEventAdded)
             {
                 Module.submit.action.started += UpdateDeviceP1;

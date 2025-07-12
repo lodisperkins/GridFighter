@@ -31729,12 +31729,12 @@ PrefabInstance:
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _LHSSpawnLocation.x
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _RHSSpawnLocation.x
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6769407473129059388, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}

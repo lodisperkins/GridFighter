@@ -88,6 +88,8 @@ namespace Lodis.Gameplay
                 return;
             }
 
+            Fixed32 speed = _speedMultiplier;
+
             //Don't redirect the projectile if the player isn't standing still or just moving
             if (other == Owner)
             {
@@ -97,6 +99,8 @@ namespace Lodis.Gameplay
                 {
                     return;
                 }
+
+                speed = abilityData.GetCustomStatValue("Speed");
             }
 
             GridPhysicsBehaviour projectile = Projectile.Data.GetComponent<GridPhysicsBehaviour>();
@@ -109,7 +113,7 @@ namespace Lodis.Gameplay
 
                 if (projectile.Velocity.X.Sign() != movement.GetAlignmentX())
                 {
-                    projectile.ApplyVelocityChange(-projectile.Velocity * _speedMultiplier);
+                    projectile.ApplyVelocityChange(-projectile.Velocity.GetNormalized() * speed);
                 }
 
                 _reboundCount++;

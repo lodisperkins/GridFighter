@@ -471,7 +471,7 @@ namespace Lodis.Utility
         /// Makes the game object inactive in the seen and adds it back to the pool
         /// </summary>
         /// <param name="objectInstance">The instance of the game object to return to the pool</param>
-        public void ReturnGameObject(EntityDataBehaviour objectInstance)
+        public void ReturnGameObject(EntityDataBehaviour objectInstance, bool loseParent = false)
         {
             if (!objectInstance)
                 return;
@@ -502,6 +502,11 @@ namespace Lodis.Utility
             for (int i = 0; i < objectInstance.transform.childCount; i++)
             {
                 OnReturnToPool?.Raise(objectInstance.transform.GetChild(i).gameObject);
+            }
+
+            if (loseParent)
+            {
+                objectInstance.FixedTransform.Parent = null;
             }
         }
 

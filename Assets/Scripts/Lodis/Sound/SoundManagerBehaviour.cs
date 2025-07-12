@@ -14,10 +14,12 @@ namespace Lodis.Sound
         [SerializeField] private AudioSource _announcer;
         [SerializeField] private AudioClip[] _hitSounds;
         [SerializeField] private AudioClip _clashSound;
+        [SerializeField] private float _sameSoundDelay = 0.0001f;
+
         private AudioClip _lastClip;
         private bool _canPlaySameSFX;
         private TimedAction _enableSameSFXAction;
-        [SerializeField] private float _sameSoundDelay = 0.0001f;
+        private float _originalMusicVolume;
 
         /// <summary>
         /// Gets the static instance of the sound manager. Creates one if none exists
@@ -51,12 +53,28 @@ namespace Lodis.Sound
             }
         }
 
+        private void Awake()
+        {
+            _originalMusicVolume = _musicSource.volume;
+        }
+
         public void TogglePauseMusic()
         {
             if (_musicSource.isPlaying)
                 _musicSource.Pause();
             else
                 _musicSource.UnPause();
+        }
+
+        public void ScaleMusicVolume(float scaleAmount)
+        {
+            if (_musicSource)
+                _musicSource.volume = _originalMusicVolume * scaleAmount;
+        }
+
+        public void ResetMusicVolume()
+        {
+            _musicSource.volume = _originalMusicVolume;
         }
 
         public void StopSound(AudioClip clip)

@@ -79,6 +79,7 @@ namespace Lodis.Gameplay
                 {
                     //Spawn collider for punch 2
                     SpawnCollider(1);
+                    SoundManagerBehaviour.Instance.ScaleMusicVolume(.5f);
 
                     //Play effects for punch 2
                     OwnerVoiceScript.PlayLightAttackSound();
@@ -129,6 +130,7 @@ namespace Lodis.Gameplay
             {
                 //Spawn collider for the final blow
                 SpawnCollider(3);
+                SoundManagerBehaviour.Instance.ResetMusicVolume();
 
                 //Play effects for final blow
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);

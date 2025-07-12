@@ -97,6 +97,8 @@ namespace Lodis.Gameplay
 
         //---
         private bool _animatingAbility;
+        private bool _airTravelLocked;
+        private Vector2 _lockedAirDirection;
         private float _targetSpeed = 1;
         private List<CustomAnimationEvent> _animationEvents = new List<CustomAnimationEvent>();
         private ConditionAction _winAnimCondition;
@@ -478,6 +480,18 @@ namespace Lodis.Gameplay
             _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
         }
 
+        public void LockAirTravelAnim(Vector2 lockedDirection)
+        {
+            _lockedAirDirection = lockedDirection;
+            _airTravelLocked = true;
+        }
+
+        public void UnlockAirTravelAnim()
+        {
+            _airTravelLocked = false;
+            _lockedAirDirection = Vector2.zero;
+        }
+
         /// <summary>
         /// Plays the appropriate move clip based on the move direction
         /// </summary>
@@ -585,6 +599,13 @@ namespace Lodis.Gameplay
 
         public void UpdateInAirMoveDirection()
         {
+            if (_airTravelLocked)
+            {
+                _animator.SetFloat("VelocityInAirY", _lockedAirDirection.y);
+                _animator.SetFloat("VelocityInAirX", _lockedAirDirection.x);
+                return;
+            }
+
             _animator.SetFloat("VelocityInAirY", _knockbackBehaviour.Physics.Velocity.Y);
             _animator.SetFloat("VelocityInAirX", _knockbackBehaviour.Physics.Velocity.X * _moveBehaviour.GetAlignmentX());
         }

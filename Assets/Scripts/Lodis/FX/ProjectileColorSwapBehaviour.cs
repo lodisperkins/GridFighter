@@ -9,6 +9,20 @@ public class ProjectileColorSwapBehaviour : MonoBehaviour
     [SerializeField] private ColorManagerBehaviour colorManager;
     [SerializeField] private ColliderBehaviour colliderBehaviour;
 
+
+    //---
+    private bool _shouldUpdateColors;
+
+    private void OnEnable()
+    {
+        _shouldUpdateColors = true;
+    }
+
+    private void OnDisable()
+    {
+        _shouldUpdateColors = false;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -21,17 +35,27 @@ public class ProjectileColorSwapBehaviour : MonoBehaviour
         {
             colliderBehaviour = GetComponentInChildren<ColliderBehaviour>();
         }
+    }
 
-        if (colliderBehaviour != null && colliderBehaviour.Spawner != null)
+    public void SetColors(int alignment)
+    {
+        if (colorManager != null)
         {
-            GridMovementBehaviour move = colliderBehaviour.Spawner.GetComponent<GridMovementBehaviour>();
-            colorManager.SetColors((int)move.Alignment);
+            colorManager.SetColors(alignment);
+        }
+        else
+        {
+            Debug.LogWarning("Color manager is not set on " + gameObject.name);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void LateUpdate()
     {
-        
+        if (colliderBehaviour != null && colliderBehaviour.Spawner != null && _shouldUpdateColors)
+        {
+            GridMovementBehaviour move = colliderBehaviour.Spawner.GetComponent<GridMovementBehaviour>();
+            colorManager.SetColors((int)move.Alignment);
+            _shouldUpdateColors = false;
+        }
     }
 }

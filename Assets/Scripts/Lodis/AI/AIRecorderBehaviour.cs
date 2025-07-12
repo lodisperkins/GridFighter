@@ -13,6 +13,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Types;
 using UnityEngine;
 
@@ -38,6 +39,11 @@ namespace Lodis.AI
             //If the first action is not in the current hand, we can't perform the action.
             if (!moveset.CheckIfAbilityIDInCurrentSlots(action.CurrentAbilityID))
                 return false;
+
+            Ability abilityInSlot = moveset.GetAbilityInCurrentSlotByID(action.CurrentAbilityID);
+
+            if (abilityInSlot.abilityData.EnergyCost > moveset.Energy)
+                return false; //If the first action is not in the current hand and isn't up next, we can't perform the action.
 
             //Increment the index to move on to the next special ability that we want to use.
             currentIndex++;
@@ -79,6 +85,7 @@ namespace Lodis.AI
 
             return true;
         }
+
     }
 
     public class AIRecorderBehaviour : ActionRecorderBehaviour
@@ -129,6 +136,8 @@ namespace Lodis.AI
             _actionTree = new DecisionTree(0.98f);
             _actionTree.MaxDecisionsCount = _maxDecisionCount;
             _recordings = Load(RecordingName);
+            //_recordings = new ActionPlaybackInfo[0];
+
             UpdateDecisions();
 
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
@@ -172,6 +181,21 @@ namespace Lodis.AI
                     _actionTree.AddDecision(recording.Recording[i]);
                 }
             }
+        }
+
+        private void RemoveLastRecording()
+        {
+            if (_recordings == null || _recordings.Length == 0)
+                return;
+
+            ActionPlaybackInfo[] temp = new ActionPlaybackInfo[_recordings.Length - 1];
+
+            for (int i = 0; i < temp.Length; i++)
+            {
+                temp[i] = _recordings[i];
+            }
+
+            _recordings = temp;
         }
 
         private void AddNewRecording()
@@ -224,10 +248,37 @@ namespace Lodis.AI
             return averagePosition;
         }
 
+        protected void CleanRecordings()
+        {
+            if (_recordings == null || _recordings.Length == 0)
+                return;
+
+            List<ActionPlaybackInfo> validRecordings = new List<ActionPlaybackInfo>();
+
+            foreach (var recording in _recordings)
+            {
+                // Find the first and last meaningful action indices  
+                int firstMeaningfulIndex = recording.Recording.FindIndex(action => action.InputAction != InputFlag.NONE);
+                int lastMeaningfulIndex = recording.Recording.FindLastIndex(action => action.InputAction != InputFlag.NONE);
+
+                // If there are no meaningful actions, skip this recording  
+                if (firstMeaningfulIndex == -1 || lastMeaningfulIndex == -1)
+                    continue;
+
+                // Trim the recording to only include meaningful actions  
+                recording.Recording = recording.Recording.GetRange(firstMeaningfulIndex, lastMeaningfulIndex - firstMeaningfulIndex + 1);
+
+                validRecordings.Add(recording);
+            }
+
+            _recordings = validRecordings.ToArray();
+        }
+
         protected override void Save()
         {
             if (_recordings?.Length == 0) return;
 
+            CleanRecordings();
 
             string recordingPath = "";
 
@@ -273,9 +324,8 @@ namespace Lodis.AI
             return recordings;
         }
 
-        public static ActionPlaybackInfo[] Load(string recordingName, MovesetBehaviour ownerMoveset, int limit = -1)
+        public static async Task<ActionPlaybackInfo[]> LoadAsync(string recordingName, int limit = -1)
         {
-
             string recordingPath = "";
 
             if (Application.isEditor)
@@ -286,18 +336,21 @@ namespace Lodis.AI
             if (!File.Exists(recordingPath))
                 return null;
 
-            StreamReader reader = new StreamReader(recordingPath);
-            ActionPlaybackInfo[] recordingData = JsonConvert.DeserializeObject<ActionPlaybackInfo[]>(reader.ReadToEnd(), Settings);
+            string fileContent;
+            using (StreamReader reader = new StreamReader(recordingPath))
+            {
+                fileContent = await reader.ReadToEndAsync();
+            }
 
-            ActionPlaybackInfo[] recordings = new ActionPlaybackInfo[0];
+            ActionPlaybackInfo[] recordingData = await Task.Run(() => JsonConvert.DeserializeObject<ActionPlaybackInfo[]>(fileContent, Settings));
 
-            bool recordingValid = false;
+            List<ActionPlaybackInfo> recordings = new List<ActionPlaybackInfo>();
 
-            int recordingMax = limit == -1.0f ? recordingData.Length : limit;
+            int recordingMax = limit == -1 ? recordingData.Length : limit;
 
             for (int i = 0; i < recordingMax; i++)
             {
-                recordingValid = false;
+                bool recordingValid = false;
 
                 ActionPlaybackInfo recording = new ActionPlaybackInfo();
 
@@ -307,8 +360,9 @@ namespace Lodis.AI
                 {
                     int currentAction = currentData.Recording[j].CurrentAbilityID;
 
-                    if (currentAction > 0 && !ownerMoveset.SpecialDeckRef.Contains(currentAction) && !ownerMoveset.NormalDeckRef.Contains(currentAction))
-                        break;
+                    //Old code to check if the character had the action. Back when custom character recorded data was loaded.
+                    //if (currentAction > 0 && !ownerMoveset.SpecialDeckRef.Contains(currentAction) && !ownerMoveset.NormalDeckRef.Contains(currentAction))
+                    //    break;
 
                     recording.Recording.Add(currentData.Recording[j]);
                     recordingValid = true;
@@ -318,10 +372,9 @@ namespace Lodis.AI
                     recordings.Add(recording);
             }
 
-            Debug.Log("Loaded " + recordingData.Length + "recordings");
-            reader.Close();
+            Debug.Log("Loaded " + recordingData.Length + " recordings");
 
-            return recordingData;
+            return recordings.ToArray();
         }
 
         private void UpdateSituationNode()
@@ -409,10 +462,20 @@ namespace Lodis.AI
 
         }
 
+        private void OnDisable()
+        {
+            //Save();
+        }
+
         public override void SetRecordEnabled(bool enabled, bool saveLast = true)
         {
             base.SetRecordEnabled(enabled, saveLast);
             
+            if (!enabled && !saveLast)
+            {
+                RemoveLastRecording();
+            }
+
             if (enabled)
             {
                 AddNewRecording();

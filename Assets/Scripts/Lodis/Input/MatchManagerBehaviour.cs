@@ -18,6 +18,7 @@ using Unity.Collections;
 using Types;
 using FixedPoints;
 using Lodis.FX;
+using UnityEngine.InputSystem;
 
 namespace Lodis.Gameplay
 {
@@ -407,6 +408,8 @@ namespace Lodis.Gameplay
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
             },
             args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
+
+            SoundManagerBehaviour.Instance.ResetMusicVolume();
         }
 
         public void LoadCharacterSelect()
@@ -516,6 +519,18 @@ namespace Lodis.Gameplay
         public void AddOnP2LoseAction(UnityAction action)
         {
             _onP2Lose.AddListener(action);
+        }
+
+        private void Update()
+        {
+            if (Keyboard.current.hKey.wasPressedThisFrame)
+            {
+                _playerSpawner.P1HealthScript.ResetHealth();
+                _playerSpawner.P2HealthScript.ResetHealth();
+
+                _ringBarrierL.ResetHealth();
+                _ringBarrierR.ResetHealth();
+            }
         }
     }
 

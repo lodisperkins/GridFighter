@@ -3,10 +3,8 @@ using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Net.Http.Headers;
 using Types;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Lodis.FX
 {
