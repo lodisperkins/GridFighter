@@ -2,6 +2,7 @@
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -35,6 +36,7 @@ namespace Lodis.Gameplay
             {
                 collider.Spawner = Owner;
                 collider.ColliderInfo = GetColliderData(0);
+                collider.ColliderInfo = collider.ColliderInfo.ScaleStats((Fixed32)args[0]);
                 collider.ColliderInfo.OwnerAlignement = OwnerMoveScript.Alignment;
                 collider.ColliderInfo.AddOnHitEvent(OnHit);
             }

@@ -47,7 +47,9 @@ namespace Lodis.Gameplay
         {
             for (int i = 0; i < ActiveProjectiles.Count; i++)
             {
-                if (!ActiveProjectiles[i].Active || (ActiveProjectiles[i].name != ProjectileRef.name + "(" + abilityData.name + ")" && useName))
+                HitColliderBehaviour hitCollider = ActiveProjectiles[i].GetComponent<HitColliderBehaviour>();
+
+                if (!ActiveProjectiles[i].Active || hitCollider.Spawner != Owner.Data || (ActiveProjectiles[i].name != ProjectileRef.name + "(" + abilityData.name + ")" && useName))
                 {
                     ActiveProjectiles.RemoveAt(i);
                     i--;

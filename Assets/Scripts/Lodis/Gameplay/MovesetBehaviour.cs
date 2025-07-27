@@ -1,4 +1,5 @@
 ﻿using FixedPoints;
+using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.Utility;
@@ -169,11 +170,13 @@ namespace Lodis.Gameplay
         private UnityAction OnManualShuffle;
         private UnityAction _onAutoShuffle;
         private bool _loadingShuffle;
+        private bool _canBurstPredict;
 
         private CharacterStateMachineBehaviour _stateMachineScript;
         private bool _deckReloading;
         private Movement.GridMovementBehaviour _movementBehaviour;
         private KnockbackBehaviour _knockbackBehaviour;
+        private InputBehaviour _inputBehaviour;
         private MovesetBehaviour _opponentMoveset;
         private UnityAction _onUseAbility;
         private AbilityHitEvent _onHit;
@@ -338,6 +341,7 @@ namespace Lodis.Gameplay
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
+            _inputBehaviour = GetComponentInParent<InputBehaviour>();
 
             DeckReloadTime = _deckReloadTime;
 
@@ -504,7 +508,15 @@ namespace Lodis.Gameplay
             }
         }
 
+        private void HandleComboPrediction()
+        {
+            if (_inputBehaviour.ComboPrediction == AbilityType.SPECIAL || !_stateMachineScript.CompareState("Tumbling", "Flinching"))
+            {
+                return;
+            }
 
+
+        }
 
         /// <summary>
         /// Checks if the normal deck has an ability that matches the name

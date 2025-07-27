@@ -332,7 +332,7 @@ namespace Lodis.Gameplay
 
             OwnerMoveScript.EnableMovement();
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
-            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner));
             RoutineBehaviour.Instance.StopAction(_endTimer);
 
             if (_chargeEffect)
@@ -359,7 +359,7 @@ namespace Lodis.Gameplay
             RoutineBehaviour.Instance.StopAction(_endTimer);
 
             TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
-            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner));
             MatchManagerBehaviour.Instance.SuperInUse = false;
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;
 

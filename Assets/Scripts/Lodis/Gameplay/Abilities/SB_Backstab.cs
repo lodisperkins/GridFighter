@@ -3,6 +3,7 @@ using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -69,6 +70,7 @@ namespace Lodis.Gameplay
             _projectileSpawner.Projectile = ProjectileRef;
 
             ShotDirection =_projectileSpawner.FixedTransform.Forward;
+            ProjectileColliderData = ProjectileColliderData.ScaleStats((Fixed32)args[0]);
 
             //Fire projectile.
             Projectile = _projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), ProjectileColliderData, UseGravity);

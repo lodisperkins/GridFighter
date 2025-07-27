@@ -13,6 +13,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         [Tooltip("If true, only the hue will be effected by the color change.")]
         private bool _onlyChangeHue;
+        [SerializeField]
+        private bool _setColorOnStart = true;
 
         [Header("Color Change Toggles")]
 
@@ -37,9 +39,12 @@ namespace Lodis.Gameplay
         // Start is called before the first frame update
         void Start()
         {
-            //Initialize colors in start to be sure the alignment colors have been set up already.
-            _color = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(Alignment);
-            SetColors();
+            if (_setColorOnStart)
+            {
+                //Initialize colors in start to be sure the alignment colors have been set up already.
+                _color = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(Alignment);
+                SetColors();
+            }
         }
 
         /// <param name="oldColor">The current color of the property that is being changed.</param>
@@ -112,13 +117,16 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Changes the color of each property that is allowed to be changed in each particle system.
         /// </summary>
-        public void SetColors(GridAlignment alignment)
+        public void SetColors(GridAlignment alignment, bool clear = false)
         {
             _color = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(alignment);
 
             //Iterate through all systems to change the colors for each.
             foreach (ParticleSystem particleSystem in _particleSystems)
             {
+                if (clear)
+                    particleSystem.Clear();
+
                 //If allowed to change the start color...
                 if (_changeStartColor)
                 {

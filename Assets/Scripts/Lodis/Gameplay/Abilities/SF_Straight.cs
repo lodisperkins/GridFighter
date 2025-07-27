@@ -14,6 +14,8 @@ namespace Lodis.Gameplay
         public Transform spawnTransform = null;
         //Used to store a reference to the laser prefab
         private EntityDataBehaviour _projectile;
+        private Fixed32 _powerScale;
+
         //The collider attached to the laser
         private HitColliderData _projectileCollider;
         private Vector3 _defaultScale;
@@ -48,7 +50,7 @@ namespace Lodis.Gameplay
             projectileSpawner.Projectile = _projectile;
 
             //Fire laser
-            EntityDataBehaviour newProjectile = projectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed"), _projectileCollider);
+            EntityDataBehaviour newProjectile = projectileSpawner.FireProjectile(abilityData.GetCustomStatValue("Speed") * _powerScale, _projectileCollider);
 
             ActiveProjectiles.Add(newProjectile);
         }
@@ -57,9 +59,9 @@ namespace Lodis.Gameplay
         {
             //CameraBehaviour.ShakeBehaviour.ShakeRotation(0.2f);
             //Initialize collider stats
-            Fixed32 powerScale = (Fixed32)args[0];
+            _powerScale = (Fixed32)args[0];
             _projectileCollider = GetColliderData(0);
-            _projectileCollider = _projectileCollider.ScaleStats(powerScale);
+            _projectileCollider = _projectileCollider.ScaleStats(_powerScale);
 
             CleanProjectileList();
 

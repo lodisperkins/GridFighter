@@ -2,6 +2,7 @@
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -16,6 +17,7 @@ namespace Lodis.Gameplay
         private EntityDataBehaviour _flurryRef;
         private EntityDataBehaviour _flurry;
         private FixedConditionAction _spawnAccessoryAction;
+        private Fixed32 _scale;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -28,6 +30,7 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
             _swordCollider = GetColliderData(0);
+            _scale = (Fixed32)args[0];
         }
 
         private void SpawnFlurry(Collision collision)
@@ -41,7 +44,7 @@ namespace Lodis.Gameplay
             _flurry = ObjectPoolBehaviour.Instance.GetObject(_flurryRef, target.Transform.WorldPosition + FVector3.Up, Projectile.FixedTransform.WorldRotation);
             HitColliderBehaviour flurryCollider = _flurry.GetComponent<HitColliderBehaviour>();
 
-            flurryCollider.ColliderInfo = GetColliderData(1);
+            flurryCollider.ColliderInfo = GetColliderData(1).ScaleStats(_scale);
             flurryCollider.Spawner = Owner;
 
             FollowBehaviour followBehaviour = _flurry.GetComponent<FollowBehaviour>();

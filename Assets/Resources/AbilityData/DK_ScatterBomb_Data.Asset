@@ -100,7 +100,7 @@ MonoBehaviour:
       RawValue: 655360
   - name: BombTimer
     value:
-      RawValue: 1310720
+      RawValue: 327680
   - name: EntityCount
     value:
       RawValue: 196608

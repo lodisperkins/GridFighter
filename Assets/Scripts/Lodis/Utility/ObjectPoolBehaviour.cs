@@ -14,6 +14,9 @@ namespace Lodis.Utility
         private static ObjectPoolBehaviour _instance;
         private CustomEventSystem.Event _onReturnToPool;
 
+        public delegate void OnEntityAwake(EntityDataBehaviour entity);
+        public delegate void OnGameObjectAwake(GameObject entity);
+
         /// <summary>
         /// The only static instance of the object pool
         /// </summary>
@@ -129,7 +132,7 @@ namespace Lodis.Utility
         /// <param name="position">The new position of the object</param>
         /// <param name="rotation">The new rotation of the object</param>
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
-        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation)
+        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation, OnEntityAwake awakeEvent = null)
         {
             //If an object of this type has a queue in the dictionary...
             if (_entityObjectPool.TryGetValue(entity.Data.Name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
@@ -141,6 +144,7 @@ namespace Lodis.Utility
                     return null;
 
                 objectInstance.FixedTransform.SetPositionAndRotation(position, rotation);
+                awakeEvent?.Invoke(objectInstance);
                 objectInstance.AddToGame();
                 objectInstance.UpdateUnityTransform(GridGame.FixedTimeStep);
                 return objectInstance;
@@ -157,7 +161,7 @@ namespace Lodis.Utility
         /// <param name="position">The new position of the object</param>
         /// <param name="rotation">The new rotation of the object</param>
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
-        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FTransform parent)
+        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FTransform parent, OnEntityAwake awakeEvent = null)
         {
             //If an object of this type has a queue in the dictionary...
             if (_entityObjectPool.TryGetValue(entity.Data.Name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
@@ -171,6 +175,7 @@ namespace Lodis.Utility
                 objectInstance.FixedTransform.Parent = parent;
                 objectInstance.FixedTransform.LocalPosition = FVector3.Zero;
                 objectInstance.FixedTransform.LocalRotation = FQuaternion.Identity;
+                awakeEvent?.Invoke(objectInstance);
                 objectInstance.AddToGame();
                 objectInstance.UpdateUnityTransform(GridGame.FixedTimeStep);
                 return objectInstance;
@@ -219,7 +224,7 @@ namespace Lodis.Utility
         /// <param name="parent">The new parent of the object</param>
         /// <param name="resetPosition">Whether or not to make this game object match the position and rotation of its parent</param>
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
-        public GameObject GetObject(GameObject gameObject, Transform parent, bool resetPosition = false)
+        public GameObject GetObject(GameObject gameObject, Transform parent, bool resetPosition = false, OnGameObjectAwake onAwake = null)
         {
 #if UNITY_EDITOR
             if (gameObject.TryGetComponent<EntityDataBehaviour>(out _))
@@ -233,6 +238,7 @@ namespace Lodis.Utility
             {
                 //...set the first instance found active and return the object
                 GameObject objectInstance = objectQueue.Dequeue();
+                onAwake?.Invoke(objectInstance);
                 objectInstance.SetActive(true);
                 objectInstance.transform.parent = parent;
 
@@ -243,7 +249,7 @@ namespace Lodis.Utility
             }
             //...otherwise create a new instance of the object
             else
-                return CreateNewObject(gameObject, parent, resetPosition);
+                return CreateNewObject(gameObject, parent, resetPosition, onAwake);
         }
 
         /// <summary>
@@ -329,9 +335,10 @@ namespace Lodis.Utility
         /// </summary>
         /// <param name="gameObject">A reference to the prefab to instantiate</param>
         /// <returns>The newly instantiated prefab</returns>
-        private GameObject CreateNewObject(GameObject gameObject)
+        private GameObject CreateNewObject(GameObject gameObject, OnGameObjectAwake onAwake = null)
         {
             GameObject newObject = Instantiate(gameObject);
+            onAwake?.Invoke(newObject);
             newObject.name = gameObject.name;
             return newObject;
         }
@@ -343,9 +350,10 @@ namespace Lodis.Utility
         /// <param name="position">The new position of the object</param>
         /// <param name="rotation">The new rotation of the object</param>
         /// <returns>The newly instantiated prefab</returns>
-        private GameObject CreateNewObject(GameObject gameObject, Vector3 position, Quaternion rotation)
+        private GameObject CreateNewObject(GameObject gameObject, Vector3 position, Quaternion rotation, OnGameObjectAwake onAwake = null)
         {
             GameObject newObject = Instantiate(gameObject, position, rotation);
+            onAwake?.Invoke(newObject);
             newObject.name = gameObject.name;
             return newObject;
         }
@@ -393,10 +401,10 @@ namespace Lodis.Utility
         /// <param name="parent">The new parent of the object</param>
         /// <param name="resetPosition">Whether or not to make this game object match the position and rotation of its parent</param>
         /// <returns>The newly instantiated prefab</returns>
-        private GameObject CreateNewObject(GameObject gameObject, Transform parent, bool resetPosition = false)
+        private GameObject CreateNewObject(GameObject gameObject, Transform parent, bool resetPosition = false, OnGameObjectAwake onAwake = null)
         {
             GameObject newObject = Instantiate(gameObject, parent);
-
+            onAwake?.Invoke(newObject);
 
             if (resetPosition)
                 newObject.transform.localPosition = Vector3.zero;

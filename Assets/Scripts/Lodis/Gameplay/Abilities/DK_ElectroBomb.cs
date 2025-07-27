@@ -43,6 +43,7 @@ namespace Lodis.Gameplay
         private Vector3 _defaultCameraMoveSpeed;
         private bool _threwBlast;
         private FixedPoints.MoveAction _moveAction;
+        private IControllable _controller;
 
         protected override void OnSerialize(BinaryWriter bw)
         {
@@ -75,6 +76,8 @@ namespace Lodis.Gameplay
             _opponentAnimation = _opponentMovement.gameObject.GetComponentInChildren<CharacterAnimationBehaviour>();
 
             _defaultCameraMoveSpeed = CameraBehaviour.Instance.CameraMoveSpeed;
+
+            _controller = Owner.GetComponentInParent<IControllable>();
         }
 
         private void SpawnSword()
@@ -225,9 +228,17 @@ namespace Lodis.Gameplay
         private void StartSuperEffect()
         {
 
-            IControllable controller = Owner.GetComponentInParent<IControllable>();
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(_controller.PlayerID, 2, _thalamusInstance);
+        }
 
-            FXManagerBehaviour.Instance.StartSuperMoveVisual(controller.PlayerID, 2, _thalamusInstance);
+        protected void SetColor(GameObject entity)
+        {
+            ParticleColorManagerBehaviour particleColorManager = entity.GetComponentInChildren<ParticleColorManagerBehaviour>();
+
+            if (particleColorManager != null)
+            {
+                particleColorManager.SetColors(OwnerMoveScript.Alignment);
+            }
         }
 
         private void PrepareBlast()
@@ -255,7 +266,8 @@ namespace Lodis.Gameplay
             //MatchManagerBehaviour.Instance.SuperInUse = true;
 
             //Spawn the the holding effect.
-            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, OwnerMoveset.HeldItemSpawnLeft, true);
+            _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, OwnerMoveset.HeldItemSpawnLeft, true, SetColor);
+
             CameraBehaviour.Instance.ClampY = false;
             abilityData.GetAdditionalAnimation(1, out AnimationClip throwClip);
             ObjectPoolBehaviour.Instance.ReturnGameObject(_axeKick);
@@ -393,6 +405,11 @@ namespace Lodis.Gameplay
             {
                 _opponentMovement.FixedTransform.WorldPosition = Projectile.FixedTransform.WorldPosition;
             }
+
+            if (FXManagerBehaviour.Instance.LastPlayerSuper != _controller.PlayerID)
+            {
+                TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
+            }
         }
 
         protected override void OnEnd()
@@ -402,7 +419,7 @@ namespace Lodis.Gameplay
 
             if (!MatchManagerBehaviour.Instance.PlayerOutOfRing)
             {
-                FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+                FXManagerBehaviour.Instance.StopAllSuperMoveVisuals(_controller.PlayerID);
                 CameraBehaviour.Instance.ZoomAmount = 0;
                 CameraBehaviour.Instance.AlignmentFocus = GridAlignment.ANY;
             }
@@ -430,7 +447,7 @@ namespace Lodis.Gameplay
         {
             base.OnMatchRestart();
             TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
-            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals();
+            FXManagerBehaviour.Instance.StopAllSuperMoveVisuals(_controller.PlayerID);
             MatchManagerBehaviour.Instance.SuperInUse = false;
 
             CameraBehaviour.Instance.ZoomAmount = 0;

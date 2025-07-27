@@ -4906,6 +4906,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 0
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 8933557024063451494}
   _colliderToTrack: {fileID: 0}
@@ -5013,6 +5014,7 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
   clampPositionInBarriers: 0
@@ -5315,6 +5317,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2048251103753737383, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2048251104268184600, guid: 98aa7604b6c6b744295321daf61adbac,
         type: 3}
       propertyPath: m_IsActive
@@ -5378,6 +5385,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3186848665197522327}
+    - targetCorrespondingSourceObject: {fileID: 2048251104346357377, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5730393361424252068}
+    - targetCorrespondingSourceObject: {fileID: 2048251104346357377, guid: 98aa7604b6c6b744295321daf61adbac,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3456373306225215503}
   m_SourcePrefab: {fileID: 100100000, guid: 98aa7604b6c6b744295321daf61adbac, type: 3}
 --- !u!1 &6020096518095748058 stripped
 GameObject:
@@ -5411,6 +5426,51 @@ MonoBehaviour:
 --- !u!4 &7153142087132178345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2048251104346357404, guid: 98aa7604b6c6b744295321daf61adbac,
+    type: 3}
+  m_PrefabInstance: {fileID: 9163076273943435573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7153142087132178356 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2048251104346357377, guid: 98aa7604b6c6b744295321daf61adbac,
+    type: 3}
+  m_PrefabInstance: {fileID: 9163076273943435573}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5730393361424252068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7153142087132178356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 7153142087683034519}
+--- !u!114 &3456373306225215503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7153142087132178356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 5730393361424252068}
+  colliderBehaviour: {fileID: 2333084496316459318}
+--- !u!198 &7153142087683034519 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2048251103753737378, guid: 98aa7604b6c6b744295321daf61adbac,
     type: 3}
   m_PrefabInstance: {fileID: 9163076273943435573}
   m_PrefabAsset: {fileID: 0}

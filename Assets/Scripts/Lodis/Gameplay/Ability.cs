@@ -480,7 +480,7 @@ namespace Lodis.Gameplay
                 AutoMove(attackDirection);
             }
 
-            OnStart();
+            OnStart(args);
         }
 
         private void AutoMove(FVector2 attackDirection)

@@ -30,6 +30,7 @@ namespace Lodis.FX
         private GameObject[] _lastVisuals;
 
         private static FXManagerBehaviour _instance;
+        private int _lastPlayerSuper;
 
         public static FXManagerBehaviour Instance
         {
@@ -50,18 +51,19 @@ namespace Lodis.FX
         }
 
         public bool SuperMoveEffectActive { get => _superMoveActive; private set => _superMoveActive = value; }
+        public int LastPlayerSuper { get => _lastPlayerSuper; private set => _lastPlayerSuper = value; }
 
         // Start is called before the first frame update
         void Start()
         {
             _player1Camera = BlackBoardBehaviour.Instance.Player1.GetComponentInChildren<CharacterCameraBehaviour>();
             _player1Animator = BlackBoardBehaviour.Instance.Player1.GetComponentInChildren<Animator>();
-            _player1Camera.AddOnLerpCompleteAction(StopAllSuperMoveVisuals);
+            _player1Camera.AddOnLerpCompleteAction(() => StopAllSuperMoveVisuals(0));
             _player1Camera.CullingMask |= (1 << LayerMask.NameToLayer("LHSMesh"));
 
             _player2Camera = BlackBoardBehaviour.Instance.Player2.GetComponentInChildren<CharacterCameraBehaviour>();
             _player2Animator = BlackBoardBehaviour.Instance.Player2.GetComponentInChildren<Animator>();
-            _player2Camera.AddOnLerpCompleteAction(StopAllSuperMoveVisuals);
+            _player2Camera.AddOnLerpCompleteAction(() => StopAllSuperMoveVisuals(1));
             _player2Camera.transform.parent.localRotation = Quaternion.Euler(0, 180, 0);
             _player2Camera.FlipStartEndTransforms();
             _player2Camera.CullingMask |= (1 << LayerMask.NameToLayer("RHSMesh"));
@@ -124,6 +126,11 @@ namespace Lodis.FX
             if (player != 0 && player != 1)
                 return;
 
+            LastPlayerSuper = player;
+
+            if (SuperMoveEffectActive)
+                StopAllSuperMoveVisuals(LastPlayerSuper);
+
             CharacterCameraBehaviour currentCamera = null;
             Animator currentAnimator = null;
             Vector3 direction;
@@ -144,9 +151,12 @@ namespace Lodis.FX
                 _player1Animator.enabled = false;
                 direction = Vector3.forward;
             }
+
             _lastVisuals = extraVisuals;
+
             SetVisualsVisible(true);
             SetEnvironmentLightsEnabled(false);
+
             MatchManagerBehaviour.Instance.ChangeSimulationTimeScale(0, 0, duration);
             currentCamera.LerpCamera(duration, _superMoveCurve);
 
@@ -189,8 +199,11 @@ namespace Lodis.FX
             SuperMoveEffectActive = true;
         }
 
-        public void StopAllSuperMoveVisuals()
+        public void StopAllSuperMoveVisuals(int player)
         {
+            if (LastPlayerSuper != -1 && LastPlayerSuper != player)
+                return;
+
             SetEnvironmentLightsEnabled(true);
 
             MatchManagerBehaviour.Instance.ResetTimeScale();
@@ -208,6 +221,7 @@ namespace Lodis.FX
             _player2Camera.SetCameraEnabled(false);
 
             SuperMoveEffectActive = false;
+            LastPlayerSuper = -1;
         }
 
         public override void Serialize(BinaryWriter bw)
@@ -215,6 +229,7 @@ namespace Lodis.FX
             bw.Write(_superMoveActive);
             bw.Write(_environmentLightsEnabled);
             bw.Write(_playerControlsEnabled);
+            bw.Write(LastPlayerSuper);
         }
 
         public override void Deserialize(BinaryReader br)
@@ -222,6 +237,7 @@ namespace Lodis.FX
             _superMoveActive = br.ReadBoolean();
             bool environmentLightsWereEnabled = br.ReadBoolean();
             bool playerControlsWereEnabled = br.ReadBoolean();
+            LastPlayerSuper = br.ReadInt32();
 
             if (environmentLightsWereEnabled != _environmentLightsEnabled)
             {

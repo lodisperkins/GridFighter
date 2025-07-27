@@ -53,6 +53,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 0
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
@@ -99,8 +100,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 0
   ColliderInfo:
     Name: 
@@ -181,7 +185,6 @@ MonoBehaviour:
     RawValue: 0
   _rangeToIgnoreUpAngle:
     RawValue: 13107
-  _maxMagnitude: {fileID: 0}
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -189,6 +192,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 0
   _gridActive: 0
@@ -197,8 +201,10 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &3099468888253777472
 MonoBehaviour:
@@ -446,7 +452,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 114004161566773944, guid: d1ea8786f246b004d862eff8225c561b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2205483654846815351}
+    - targetCorrespondingSourceObject: {fileID: 114004161566773944, guid: d1ea8786f246b004d862eff8225c561b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7234876593756148185}
+    - targetCorrespondingSourceObject: {fileID: 114004161566773944, guid: d1ea8786f246b004d862eff8225c561b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5898719470894524659}
   m_SourcePrefab: {fileID: 100100000, guid: d1ea8786f246b004d862eff8225c561b, type: 3}
 --- !u!4 &2618351169135943831 stripped
 Transform:
@@ -454,3 +472,71 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7169159713137797065}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &5152017834144132638 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2594737670898698711, guid: d1ea8786f246b004d862eff8225c561b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7169159713137797065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7127226683345876337 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 114004161566773944, guid: d1ea8786f246b004d862eff8225c561b,
+    type: 3}
+  m_PrefabInstance: {fileID: 7169159713137797065}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2205483654846815351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7127226683345876337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d0eb7cc0176f341b936037bf2f5591, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _targetScale: {x: 1.1, y: 1.1, z: 1.1}
+  _resizeOnEnabled: 1
+  _loopYoYo: 1
+  _loopReset: 0
+  _scaleDuration: 0.05
+  _onEnable:
+    m_PersistentCalls:
+      m_Calls: []
+  _onResizeComplete:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7234876593756148185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7127226683345876337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 1
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 5152017834144132638}
+--- !u!114 &5898719470894524659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7127226683345876337}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 7234876593756148185}
+  colliderBehaviour: {fileID: 9013244371189880994}

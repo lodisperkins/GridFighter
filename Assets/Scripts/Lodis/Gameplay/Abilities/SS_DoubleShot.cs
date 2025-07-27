@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -52,7 +53,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
-            float powerScale = (float)args[0];
+            Fixed32 powerScale = (Fixed32)args[0];
 
             _projectileCollider = GetColliderData(0);
             _projectileCollider = _projectileCollider.ScaleStats(powerScale);

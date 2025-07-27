@@ -20,6 +20,7 @@ using Types;
 using System.IO;
 using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
 using System.Threading.Tasks;
+using PixelCrushers;
 
 namespace Lodis.AI
 {
@@ -297,7 +298,7 @@ namespace Lodis.AI
             {
                 if (_playbackInfo[i].Recording.Count > 0)
                 {
-                    newRecordingArray.Add(_playbackInfo[i]);
+                   newRecordingArray.Add(_playbackInfo[i]);
                 }
             }
 
@@ -784,7 +785,7 @@ namespace Lodis.AI
         /// Returns all items in the playbackInfo array that match the current situation's panel position and opponent panel position.
         /// </summary>
         /// <returns>A list of ActionPlaybackInfo objects that match the current situation.</returns>
-        private List<ActionPlaybackInfo> GetMatchingPlaybackInfos()
+        private List<ActionPlaybackInfo> GetMatchingPlaybackInfos(bool needSpecial = false)
         {
             List<ActionPlaybackInfo> matchingInfos = new List<ActionPlaybackInfo>();
 
@@ -808,11 +809,16 @@ namespace Lodis.AI
                 }
 
                 if (panelPosition == _currentSituation.PanelPosition &&
-                    opponentPanelPosition == _currentSituation.OpponentPanelPosition /*&& playbackInfo.SpecialAttackNodes?.Count > 0*/)
+                    opponentPanelPosition == _currentSituation.OpponentPanelPosition)
                 {
+                    if (needSpecial && playbackInfo.SpecialAttackNodes.Count == 0)
+                        continue;
+
                     matchingInfos.Add(playbackInfo);
                 }
             }
+
+            matchingInfos.Shuffle();
 
             return matchingInfos;
         }
@@ -836,54 +842,51 @@ namespace Lodis.AI
             bool foundRecording = false;
             _waitingToChangePlans = false;
             _currentRecording = null;
+            _cantFindRecording = true;
 
-            List<ActionPlaybackInfo> matchingInfos = GetMatchingPlaybackInfos();
+            List<ActionPlaybackInfo> matchingInfos = null;
 
-            if (matchingInfos.Count == 0)
+            if (Moveset.Energy == 5)
             {
-                //Debug.LogError("No recordings found that match the current panel positions.");
-                return;
-            }
+                matchingInfos = GetMatchingPlaybackInfos(true);
 
-            //Looping twice here since there's a chance that the randomization makes us skip all possible recordings.
-            for (int j = 0; j < 2; j++)
-            {
-                // Iterate through recording list.
-                for (int i = 0; i < matchingInfos.Count; i++)
-                {
-                    ActionPlaybackInfo recording = matchingInfos[i];
-
-                    // Only compare the first action of the recording.
-                    if (recording.Recording.Count > 0)
-                    {
-                        //If we aren't on the second iteration where we NEED a valid recording we can try to randomize things to get a bit of variety.
-                        int chance = j == 1 ? 0 : UnityEngine.Random.Range(1, _randomDecisionConstant + 1); // Generate a random number between 1 and N
-
-                        // If the current action is valid and matches our situation more closely than the last action...
-                        if (chance != 1 && ValidateAction(recording, 0) && CheckSituationSimilar(recording))
-                        {
-                            foundRecording = true; // Found a valid recording
-                                                   // ...update the current action.
-                            _currentRecording = recording;
-
-                            _currentRecordingIndex = i;
-
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (foundRecording)
-            {
-                //_playbackRoutine?.Stop();
-                //StartPlayback();
-                _cantFindRecording = false;
+                if (matchingInfos.Count == 0)
+                    matchingInfos = GetMatchingPlaybackInfos();
             }
             else
             {
-                //Debug.LogError("No valid recording found for the current situation.");
-                _cantFindRecording = true;
+                matchingInfos = GetMatchingPlaybackInfos();
+            }
+
+            if (matchingInfos.Count == 0)
+            {
+                Debug.LogError("No recordings found that match the current panel positions.");
+                return;
+            }
+
+            // Iterate through recording list.
+            for (int i = 0; i < matchingInfos.Count; i++)
+            {
+                ActionPlaybackInfo recording = matchingInfos[i];
+
+                // Only compare the first action of the recording.
+                if (recording.Recording.Count > 0)
+                {
+                    
+                    // If the current action is valid and matches our situation more closely than the last action...
+                    if (ValidateAction(recording, 0) && CheckSituationSimilar(recording))
+                    {
+                        foundRecording = true; // Found a valid recording
+                                               // ...update the current action.
+                        _currentRecording = recording;
+
+                        _currentRecordingIndex = i;
+
+                        _cantFindRecording = false;
+
+                        return;
+                    }
+                }
             }
         }
 
@@ -917,7 +920,7 @@ namespace Lodis.AI
             base.Tick(dt);
 
             if (MatchManagerBehaviour.Instance.IsPaused || !MatchManagerBehaviour.Instance.MatchStarted || MatchManagerBehaviour.Instance.PlayerOutOfRing
-                || !_stateMachine.CompareState("Idle", "Moving", "Attacking", "Tumbling", "Flinching"))
+                || _stateMachine.CompareState("Idle"))
             {
                 _currentState = AIState.Idle;
             }
@@ -927,18 +930,22 @@ namespace Lodis.AI
                 case AIState.Idle:
 
                     if (MatchManagerBehaviour.Instance.IsPaused || !MatchManagerBehaviour.Instance.MatchStarted || MatchManagerBehaviour.Instance.PlayerOutOfRing
-                || !_stateMachine.CompareState("Idle", "Moving", "Attacking", "Tumbling", "Flinching"))
+                || !_stateMachine.CompareState("Idle", "HardLanding", "Tumbling", "Flinching"))
                     {
                         break;
                     }
 
-                    if (CheckIfProjectilesWillHit() || _stateMachine.CompareState("Tumbling", "Flinching"))
+                    if (CheckIfProjectilesWillHit() || _stateMachine.CompareState("Tumbling", "Flinching", "HardLanding"))
                     {
                         _currentState = AIState.Defending;
                     }
                     else
                     {
                         _currentState = AIState.Attacking;
+                        if (_currentRecording == null)
+                        {
+                            StartNewRecording();
+                        }
                     }
                     break;
                 case AIState.Attacking:
@@ -1127,8 +1134,19 @@ namespace Lodis.AI
 
         private void HandleActionPlayback()
         {
-            if (!_useRecording || _isPaused || _waitingToChangePlans || _currentState != AIState.Attacking || _opponentKnocback.IsInvincible)
+            if (!_useRecording || _isPaused || _waitingToChangePlans || _currentState != AIState.Attacking /*|| _opponentKnocback.IsInvincible*/ || _currentRecording == null)
+            {
+                if (_currentRecording != null)
+                    ResetRecordingActions();
+
+                if (_currentRecording == null)
+                {
+                    //Debug.LogError("No recording found for AI: " + Character.name);
+                    StartNewRecording();
+                }
+
                 return;
+            }
 
 
             //Old code for updating weights in the editor
@@ -1147,7 +1165,7 @@ namespace Lodis.AI
             //}
 
             //If we are done with the most recent recording...
-            if (_currentRecording == null || _currentActionIndex >= _currentRecording.Recording.Count || _cantFindRecording)
+            if (_currentActionIndex >= _currentRecording.Recording.Count)
             {
                 //...find a new action in the recording list.
                 _waitingToChangePlans = true;
@@ -1166,7 +1184,7 @@ namespace Lodis.AI
             string opponentState = BlackBoardBehaviour.Instance.GetPlayerState(_opponent);
 
             ////If the action node's situation is too different from the current or if the action isn't possible...
-            if (!CheckOpponentState() && _currentActionIndex >= _currentRecording.Recording.Count / 2)
+            if ((!CheckOpponentState()) && _currentActionIndex >= _currentRecording.Recording.Count / 2)
             {
                 //...find a new action in the recording list.
 

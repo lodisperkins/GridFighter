@@ -47,14 +47,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
   _friction:
     RawValue: 0
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 0}
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -62,6 +72,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 0
   _gridActive: 0
@@ -70,8 +81,10 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &7645889464051049511
 MonoBehaviour:
@@ -90,6 +103,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 1
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
@@ -137,6 +151,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 3182570595452489212}
   _children: []
@@ -152,6 +167,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -174,8 +195,11 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 0
 --- !u!1 &976885807522926081
 GameObject:
@@ -24445,6 +24469,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 0
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
@@ -24463,14 +24488,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
   _friction:
     RawValue: 0
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 0}
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -24478,6 +24513,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 0
   _gridActive: 0
@@ -24486,8 +24522,10 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &5319704347991863122
 MonoBehaviour:
@@ -24501,6 +24539,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -24523,40 +24567,56 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 0
   ColliderInfo:
     Name: 
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 0
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 0
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0
+    HitAngle:
+      RawValue: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0
-    Priority: 0
+    HitStunTime:
+      RawValue: 0
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 0
-    AbilityID: 0
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopShakeStrength: 0
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 0
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
@@ -24603,6 +24663,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 6740710594312166089}
   _children:
@@ -24633,7 +24694,7 @@ PrefabInstance:
     - target: {fileID: 3965243821428242249, guid: 8eae9013a04e6f04abc5fa92d0bfae65,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.52179044
+      value: 0.52156866
       objectReference: {fileID: 0}
     - target: {fileID: 3965243821428242249, guid: 8eae9013a04e6f04abc5fa92d0bfae65,
         type: 3}
@@ -24767,11 +24828,64 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6232970189381653821}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7698013283381405128, guid: 8eae9013a04e6f04abc5fa92d0bfae65,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8355115363183019362}
+    - targetCorrespondingSourceObject: {fileID: 7698013283381405128, guid: 8eae9013a04e6f04abc5fa92d0bfae65,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8540372506094396416}
   m_SourcePrefab: {fileID: 100100000, guid: 8eae9013a04e6f04abc5fa92d0bfae65, type: 3}
 --- !u!4 &882639841477901718 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7698013283381405125, guid: 8eae9013a04e6f04abc5fa92d0bfae65,
+    type: 3}
+  m_PrefabInstance: {fileID: 7416041044611586131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &882639841477901723 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7698013283381405128, guid: 8eae9013a04e6f04abc5fa92d0bfae65,
+    type: 3}
+  m_PrefabInstance: {fileID: 7416041044611586131}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8355115363183019362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882639841477901723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 5903218791986278170}
+--- !u!114 &8540372506094396416
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882639841477901723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 8355115363183019362}
+  colliderBehaviour: {fileID: 5319704347991863122}
+--- !u!198 &5903218791986278170 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3965243821428242249, guid: 8eae9013a04e6f04abc5fa92d0bfae65,
     type: 3}
   m_PrefabInstance: {fileID: 7416041044611586131}
   m_PrefabAsset: {fileID: 0}

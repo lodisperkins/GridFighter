@@ -14838,6 +14838,7 @@ MonoBehaviour:
       RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: 
@@ -14905,6 +14906,7 @@ MonoBehaviour:
   _markPanelAtGridLocation: 0
   _markCollider: 0
   _markAtRange: 0
+  _markAtOffsetRange: 0
   _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
@@ -14957,8 +14959,10 @@ MonoBehaviour:
   _faceHeading: 1
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &7345495668650903756
 MonoBehaviour:
@@ -15018,7 +15022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _alignment: 0
-  _onlyChangeHue: 1
+  _onlyChangeHue: 0
   _changeStartColor: 1
   _changeColorOverLifetime: 0
   _changeColorBySpeed: 0

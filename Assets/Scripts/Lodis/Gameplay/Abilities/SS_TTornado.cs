@@ -2,6 +2,7 @@
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
@@ -44,7 +45,7 @@ namespace Lodis.Gameplay
 
             HitColliderBehaviour hitColliderBehaviour = _orbs.GetComponent<HitColliderBehaviour>();
 
-            hitColliderBehaviour.ColliderInfo = GetColliderData(0);
+            hitColliderBehaviour.ColliderInfo = GetColliderData(0).ScaleStats((Fixed32)args[0]);
             hitColliderBehaviour.Spawner = Owner;
 
             //Disabling the player visual here so it looks like they are in the tornado.

@@ -92,7 +92,7 @@ namespace Lodis.Input
         [Tooltip("The minimum amount of time needed to hold the button down to change it to the charge variation.")]
         [SerializeField] private Fixed32 _minChargeLimit = new Fixed32(32768);
         [Tooltip("The maximum amount of time needed before an attack is fully charged.")]
-        [SerializeField] private Fixed32 _maxChargeTime = 5;
+        [SerializeField] private Fixed32 _maxChargeTime = 1;
         [Tooltip("The amount of time needed to clear the buffer when a direction is pressed.")]
         [SerializeField] private Fixed32 _attackDirectionBufferClearTime = new Fixed32(3276);
         [Tooltip("The amount of time to wait before clearing the last input stored in the buffer.")]
@@ -160,6 +160,8 @@ namespace Lodis.Input
 
         public static UnityAction OnApplicationQuit;
         private InputFlag flags;
+        private AbilityType _comboPrediction;
+        private FixedTimeAction _comboPredictionClearTimer;
 
         public InputDevice[] Devices 
         {
@@ -169,6 +171,11 @@ namespace Lodis.Input
                 _devices = value;
                 PlayerControls.devices = _devices;
             }
+        }
+
+        public AbilityType ComboPrediction
+        {
+            get => _comboPrediction;
         }
 
         /// <summary>
@@ -262,7 +269,7 @@ namespace Lodis.Input
         {
             //print inputs with id
             //likely polling 0 for player2
-            if (id != PlayerID)
+            if (id != PlayerID || !MatchManagerBehaviour.Instance.MatchStarted)
                 return;
 
 
@@ -626,6 +633,27 @@ namespace Lodis.Input
         /// index 1 is always the direction of input.</param>
         public void BufferNormalAbility()
         {
+            if (_stateMachineBehaviour.CompareState("Tumbling", "Flinching") && _comboPredictionClearTimer?.IsActive == false)
+            {
+                FVector2 predictionDirection = _attackDirection;
+                predictionDirection.X *= -Mathf.Round(transform.forward.x);
+
+                //Decide which ability type to use based on the input
+                if (predictionDirection.Y != 0)
+                    _comboPrediction = AbilityType.WEAKSIDE;
+                else if (predictionDirection.X < 0)
+                    _comboPrediction = AbilityType.WEAKBACKWARD;
+                else if (predictionDirection.X > 0)
+                    _comboPrediction = AbilityType.WEAKFORWARD;
+                else
+                    _comboPrediction = AbilityType.WEAKNEUTRAL;
+
+                //This may need to be serialized for rollback
+                _comboPredictionClearTimer = FixedPointTimer.StartNewTimedAction(() => _comboPrediction = AbilityType.SPECIAL, _attackDirectionBufferClearTime);
+
+                return;
+            }
+
             if (!_stateMachineBehaviour.CompareState("Idle", "Moving", "Attacking"))
                 return;
 
@@ -696,13 +724,13 @@ namespace Lodis.Input
             args[1] = _attackDirection;
             args[0] = 0.0f;
             abilityType += 4;
-            Fixed32 powerScale = _minChargeLimit * 0.1f + 1;
+            Fixed32 powerScale = _minChargeLimit + 1;
 
             //Find the power scale based on the time the button was held to use a charge ability
             Fixed32 timeHeld = Fixed32.Clamp(_chargeHoldTime, 0, _maxChargeTime);
             if (timeHeld > _minChargeLimit)
             {
-                powerScale = timeHeld * 0.1f + 1;
+                powerScale = timeHeld + 1;
             }
 
             args[0] = powerScale;

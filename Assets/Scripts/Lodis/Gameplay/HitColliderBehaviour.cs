@@ -448,7 +448,7 @@ namespace Lodis.Gameplay
 
             _addedToActiveList = true;
             //Update the amount of current frames
-            CurrentTimeActive = GridGame.Time * GridGame.TimeScale - StartTime;
+            CurrentTimeActive = (GridGame.Time - StartTime) * GridGame.TimeScale;
 
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)

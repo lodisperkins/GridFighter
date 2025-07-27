@@ -60,6 +60,15 @@ public struct GridGame : IGame
         private set;
     }
 
+    /// <summary>
+    /// The amount of time that has passed since the simulation began.
+    /// </summary>
+    public static Fixed32 UnscaledTime
+    {
+        get;
+        private set;
+    }
+
     public delegate void InputPollCallback(int id);
     public delegate void InputProcessCallback(int id, long inputs);
     public delegate void SerializationCallback(BinaryWriter writer);
@@ -92,6 +101,7 @@ public struct GridGame : IGame
 
         OnSerialization?.Invoke(bw);
         Time.Serialize(bw);
+        UnscaledTime.Serialize(bw);
         TimeScale.Serialize(bw);
         _entityListHandler.Serialize(bw);
         OnLateSerialization?.Invoke(bw);
@@ -104,6 +114,7 @@ public struct GridGame : IGame
 
         OnDeserialization?.Invoke(br);
         Time.Deserialize(br);
+        UnscaledTime.Deserialize(br);
         TimeScale.Deserialize(br);
         _entityListHandler.Deserialize(br);
         OnLateDeserialization?.Invoke(br);
@@ -535,7 +546,9 @@ public struct GridGame : IGame
             return;
         }
 
-        Time += FixedTimeStep;
+        Time += FixedTimeStep * TimeScale;
+        UnscaledTime += FixedTimeStep;
+
         OnSimulationUpdate?.Invoke(FixedTimeStep);
 
         if (!GridGameManager.OnlineGameStarted)

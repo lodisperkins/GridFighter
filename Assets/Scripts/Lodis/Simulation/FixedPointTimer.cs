@@ -127,11 +127,11 @@ namespace FixedPoints
         {
             if (unit == UnitOfTime.Scaled)
             {
-                return GridGame.Time * GridGame.TimeScale - timeStarted;
+                return GridGame.Time - timeStarted;
             }
             else if (unit == UnitOfTime.Unscaled)
             {
-                return GridGame.Time - timeStarted;
+                return GridGame.UnscaledTime - timeStarted;
             }
 
             return -1;

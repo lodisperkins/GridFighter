@@ -77,7 +77,6 @@ namespace Lodis.Gameplay
             gridMovementBehaviour.CancelMovement();
             gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
             _timeSpawned = GridGame.Time;
-            ActiveProjectiles.Add(Projectile);
             HitColliderData data = _explosionColliderData.ScaleStats(_damage);
             //data.OnHit += a => SpawnExplosion();
 

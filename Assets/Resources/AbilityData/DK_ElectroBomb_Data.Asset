@@ -130,11 +130,11 @@ MonoBehaviour:
     AbilityType: 8
     AbilityID:
       RawValue: -246874112
-    SpawnEffect: {fileID: 3198923806287051063, guid: 442486026d7ae68428087e1cf03543fe,
+    SpawnEffect: {fileID: 3198923806287051063, guid: 17d8160d8a268824baf80ffc05cdaa53,
       type: 3}
     SpawnEffectOffset:
       RawValue: 0
-    HitSpark: {fileID: 8518192341572081556, guid: d10776942586398478a63c6485c7582e,
+    HitSpark: {fileID: 2679847134835226103, guid: 5f30ad8d2d666c64da2536bd2ecc6a05,
       type: 3}
     HitEffectLevel: 3
     HitStopShakeStrength:

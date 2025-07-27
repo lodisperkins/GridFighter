@@ -224,7 +224,7 @@ MonoBehaviour:
   _saveStateDelay: 0.5
   _losePenalty: -2
   _winReward: 4
-  _recordingName: AxtonAI
+  _recordingName: ZyraAI
   _useRecording: 1
   _randomDecisionConstant: 3
   _accuracyMinimum: 1
@@ -320,6 +320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e867bf7b20b1ca4dbd0e6c6ca45a4f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cancelPathingOnHit: 0
 --- !u!114 &-3951557503420391302
 MonoBehaviour:
   m_ObjectHideFlags: 0

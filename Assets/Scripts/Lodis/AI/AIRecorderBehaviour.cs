@@ -25,6 +25,20 @@ namespace Lodis.AI
         public List<ActionNode> Recording = new List<ActionNode>();
         public List<ActionNode> SpecialAttackNodes = new List<ActionNode>();
 
+        public void InitSpecialNodes()
+        {
+            foreach (ActionNode action in Recording)
+            {
+                if (action.InputAction.HasFlag(InputFlag.Special1) || action.InputAction.HasFlag(InputFlag.Special2) && !SpecialAttackNodes.Contains(action))
+                {
+                    SpecialAttackNodes.Add(action);
+                }
+            }
+
+            if (SpecialAttackNodes.Count > 1)
+                SpecialAttackNodes.RemoveRange(1, SpecialAttackNodes.Count - 1);
+        }
+
         public bool CheckCanPerformSpecials(MovesetBehaviour moveset)
         {
             if (SpecialAttackNodes == null || SpecialAttackNodes.Count == 0)
@@ -344,37 +358,48 @@ namespace Lodis.AI
 
             ActionPlaybackInfo[] recordingData = await Task.Run(() => JsonConvert.DeserializeObject<ActionPlaybackInfo[]>(fileContent, Settings));
 
-            List<ActionPlaybackInfo> recordings = new List<ActionPlaybackInfo>();
-
-            int recordingMax = limit == -1 ? recordingData.Length : limit;
-
-            for (int i = 0; i < recordingMax; i++)
+            await Task.Run(() =>
             {
-                bool recordingValid = false;
+                if (recordingData == null || recordingData.Length == 0)
+                    return;
 
-                ActionPlaybackInfo recording = new ActionPlaybackInfo();
-
-                ActionPlaybackInfo currentData = recordingData[i];
-
-                for (int j = 0; j < currentData.Recording.Count; j++)
+                foreach (var recording in recordingData)
                 {
-                    int currentAction = currentData.Recording[j].CurrentAbilityID;
-
-                    //Old code to check if the character had the action. Back when custom character recorded data was loaded.
-                    //if (currentAction > 0 && !ownerMoveset.SpecialDeckRef.Contains(currentAction) && !ownerMoveset.NormalDeckRef.Contains(currentAction))
-                    //    break;
-
-                    recording.Recording.Add(currentData.Recording[j]);
-                    recordingValid = true;
+                    recording.InitSpecialNodes();
                 }
+            });
 
-                if (recordingValid)
-                    recordings.Add(recording);
-            }
+            //Old code to check if the character had the action. Back when custom character recorded data was loaded.
+            //List<ActionPlaybackInfo> recordings = new List<ActionPlaybackInfo>();
+
+            //int recordingMax = limit == -1 ? recordingData.Length : limit;
+
+            //for (int i = 0; i < recordingMax; i++)
+            //{
+            //    bool recordingValid = false;
+
+            //    ActionPlaybackInfo recording = new ActionPlaybackInfo();
+
+            //    ActionPlaybackInfo currentData = recordingData[i];
+
+            //    for (int j = 0; j < currentData.Recording.Count; j++)
+            //    {
+            //        int currentAction = currentData.Recording[j].CurrentAbilityID;
+
+            //        if (currentAction > 0 && !ownerMoveset.SpecialDeckRef.Contains(currentAction) && !ownerMoveset.NormalDeckRef.Contains(currentAction))
+            //            break;
+
+            //        recording.Recording.Add(currentData.Recording[j]);
+            //        recordingValid = true;
+            //    }
+
+            //    if (recordingValid)
+            //        recordings.Add(recording);
+            //}
 
             Debug.Log("Loaded " + recordingData.Length + " recordings");
 
-            return recordings.ToArray();
+            return recordingData;
         }
 
         private void UpdateSituationNode()
@@ -429,9 +454,30 @@ namespace Lodis.AI
             UpdateSituationNode();
             ActionNode action = _currentSituation.GetShallowCopy();
 
-            if (OwnerMoveset.AbilityInUse)
-                action.IsSpecialAttack = OwnerMoveset.LastAbilityInUse.abilityData.AbilityType == AbilityType.SPECIAL;
-            
+            action.IsSpecialAttack = input.HasFlag(InputFlag.Special1 | InputFlag.Special2);
+
+            if (input.HasFlag(InputFlag.Special1))
+            {
+                Ability slot1Ability = OwnerMoveset.GetAbilityInCurrentSlot(0);
+
+                if (slot1Ability != null)
+                    action.CurrentAbilityID = slot1Ability.abilityData.ID;
+                else
+                    action.CurrentAbilityID = -1;
+            }
+            else if (input.HasFlag(InputFlag.Special2))
+            {
+                Ability slot2Ability = OwnerMoveset.GetAbilityInCurrentSlot(1);
+
+                if (slot2Ability != null)
+                    action.CurrentAbilityID = slot2Ability.abilityData.ID;
+                else
+                    action.CurrentAbilityID = -1;
+            }
+            else
+            {
+                action.CurrentAbilityID = -1;
+            }
 
             action.InputAction = input;
 
@@ -464,7 +510,7 @@ namespace Lodis.AI
 
         private void OnDisable()
         {
-            //Save();
+            Save();
         }
 
         public override void SetRecordEnabled(bool enabled, bool saveLast = true)
@@ -485,10 +531,11 @@ namespace Lodis.AI
         protected override void Update()
         {
             base.Update();
-            if (!CanRecord)
-                return;
 
-            RecordNewAction(_input.Flags);
+            if (CanRecord)
+            {
+                RecordNewAction(_input.Flags);
+            }
         }
     }
 }

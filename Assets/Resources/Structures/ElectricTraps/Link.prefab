@@ -34012,6 +34012,8 @@ GameObject:
   - component: {fileID: 8984287401829573312}
   - component: {fileID: 3463040372137839686}
   - component: {fileID: 5833426257940107578}
+  - component: {fileID: 195557761978712675}
+  - component: {fileID: 6054283132250708185}
   m_Layer: 13
   m_Name: Link
   m_TagString: Structure
@@ -34115,8 +34117,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b7a2504ee3a684aa241b2aeba55320, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedFloat: 50
-  _opponentPanelSpeedReductionFloat: 0
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _speed:
+    RawValue: 0
+  _opponentPanelSpeedReduction:
+    RawValue: 0
   _isMoving: 0
   _canMove: 1
   _canCancelMovement: 1
@@ -34132,8 +34142,6 @@ MonoBehaviour:
   _moveSound: {fileID: 0}
   _onTeleportStart: {fileID: 0}
   _onTeleportEnd: {fileID: 0}
-  rotateY: 0
-  rotateX: 0
 --- !u!114 &8984287401829573312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34146,6 +34154,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -34168,40 +34182,56 @@ MonoBehaviour:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 0
   ColliderInfo:
     Name: 
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 0
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 0
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0
+    HitAngle:
+      RawValue: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0
-    Priority: 0
+    HitStunTime:
+      RawValue: 0
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 0
-    AbilityID: 0
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
-    SpawnEffectOffset: 0
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopShakeStrength: 0
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 0
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
@@ -34248,8 +34278,10 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 4533291542635890406}
+  _children: []
 --- !u!114 &5833426257940107578
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34262,14 +34294,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
   _friction:
     RawValue: 0
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 0}
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -34277,6 +34319,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 1
   _gridActive: 1
@@ -34285,9 +34328,48 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
+--- !u!114 &195557761978712675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353001235416084576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dac4a0487bd52546bb87e3a03cb9124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _autoDetectAlignment: 0
+  _manuallySetColors: 1
+  _objectsToColor:
+  - ObjectRenderer: {fileID: 653150230779573244}
+    DefaultColors: []
+    ShaderProperties:
+    - _EmissionColor
+    OnlyChangeHue: 1
+    SaturationThreshold: 10
+  _linkedManager: {fileID: 0}
+--- !u!114 &6054283132250708185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4353001235416084576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd808ed60482fc44a169b000b6013b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 195557761978712675}
+  colliderBehaviour: {fileID: 8984287401829573312}
 --- !u!1 &6122963311987480769
 GameObject:
   m_ObjectHideFlags: 0

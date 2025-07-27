@@ -106,5 +106,71 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7009399175975268016, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8324523081197777245}
+    - targetCorrespondingSourceObject: {fileID: 7009399175975268016, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1981331197469444464}
   m_SourcePrefab: {fileID: 100100000, guid: c662ede171e2a26498c91a36fc787336, type: 3}
+--- !u!198 &5561253604829727335 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8393752405251270185, guid: c662ede171e2a26498c91a36fc787336,
+    type: 3}
+  m_PrefabInstance: {fileID: 4130104218183380046}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6347665958190072574 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7009399175975268016, guid: c662ede171e2a26498c91a36fc787336,
+    type: 3}
+  m_PrefabInstance: {fileID: 4130104218183380046}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8324523081197777245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6347665958190072574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 1981331197469444464}
+  colliderBehaviour: {fileID: 7304002394639253983}
+--- !u!114 &1981331197469444464
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6347665958190072574}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _setColorOnStart: 1
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 5561253604829727335}
+--- !u!114 &7304002394639253983 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6632699018725748113, guid: c662ede171e2a26498c91a36fc787336,
+    type: 3}
+  m_PrefabInstance: {fileID: 4130104218183380046}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
