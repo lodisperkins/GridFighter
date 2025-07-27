@@ -1,4 +1,5 @@
 ﻿using Lodis.Gameplay;
+using Lodis.UI;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,22 +11,21 @@ namespace Lodis.FX
 {
     public class FXManagerBehaviour : SimulationBehaviour
     {
-        private CharacterCameraBehaviour _player1Camera;
-        private CharacterCameraBehaviour _player2Camera;
-        private Animator _player1Animator;
-        private Animator _player2Animator;
-        [SerializeField]
-        private Light[] _environmentLights;
-        [SerializeField]
-        private Camera _mainCamera;
-        [SerializeField]
-        private float _onScreenDistance = 2.5f;
-        [SerializeField]
-        private AnimationCurve _superMoveCurve;
+        [SerializeField] private Light[] _environmentLights;
+        [SerializeField] private Camera _mainCamera;
+        [SerializeField] private float _onScreenDistance = 2.5f;
+        [SerializeField] private AnimationCurve _superMoveCurve;
+        [SerializeField] private BackgroundColorBehaviour _superBackground;
+
+        //---
         private bool _superMoveActive;
         private bool _environmentLightsEnabled;
         private bool _playerControlsEnabled;
 
+        private CharacterCameraBehaviour _player1Camera;
+        private CharacterCameraBehaviour _player2Camera;
+        private Animator _player1Animator;
+        private Animator _player2Animator;
         private List<int> _originalLayers;
         private GameObject[] _lastVisuals;
 
@@ -97,7 +97,7 @@ namespace Lodis.FX
         {
             if (visible)
             {
-                int layer = LayerMask.NameToLayer("LHSMesh");
+                int layer = _lastPlayerSuper == 0 ? LayerMask.NameToLayer("LHSMesh") : LayerMask.NameToLayer("RHSMesh");
                 _originalLayers = new();
 
                 for (int i = 0; i < _lastVisuals.Length; i++)
@@ -119,6 +119,27 @@ namespace Lodis.FX
 
                 _originalLayers.Clear();
             }
+        }
+
+        public void EnableSuperBackground(int player)
+        {
+            if (player == 0)
+            {
+                _superBackground.gameObject.SetActive(true);
+                _superBackground.SetPrimaryColor(BlackBoardBehaviour.Instance.Player1Color);
+                _superBackground.SetSecondaryColor(Color.white);
+            }
+            else if (player == 1)
+            {
+                _superBackground.gameObject.SetActive(true);
+                _superBackground.SetPrimaryColor(Color.white);
+                _superBackground.SetSecondaryColor(BlackBoardBehaviour.Instance.Player2Color);
+            }
+        }
+
+        public void DisableSuperBackground()
+        {
+            _superBackground.gameObject.SetActive(false);
         }
 
         public void StartSuperMoveVisual(int player, Fixed32 duration, params GameObject[] extraVisuals)

@@ -44,6 +44,7 @@ namespace Lodis.Gameplay
         private bool _threwBlast;
         private FixedPoints.MoveAction _moveAction;
         private IControllable _controller;
+        private FixedConditionAction _spawnExplosionAction;
 
         protected override void OnSerialize(BinaryWriter bw)
         {
@@ -78,13 +79,6 @@ namespace Lodis.Gameplay
             _defaultCameraMoveSpeed = CameraBehaviour.Instance.CameraMoveSpeed;
 
             _controller = Owner.GetComponentInParent<IControllable>();
-        }
-
-        private void SpawnSword()
-        {
-            DisableAccessory();
-
-            _spawnAccessoryAction = FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !Projectile.Active);
         }
 
         private IEnumerator SetTimeUnscaled()
@@ -194,8 +188,8 @@ namespace Lodis.Gameplay
                 ActiveProjectiles.Add(Projectile);
 
                 //Handles spawning the explosion once the blast hits the ground.
-                FixedConditionAction action = FixedPointTimer.StartNewConditionAction(SpawnExplosion, condition => Projectile.FixedTransform.WorldPosition.Y <= 1 && !_explosionSpawned);
-                FixedPointTimer.StartNewConditionAction(() => action.Stop(), condition => !Projectile.Data.Active);
+                _spawnExplosionAction = FixedPointTimer.StartNewConditionAction(SpawnExplosion, condition => Projectile.FixedTransform.WorldPosition.Y <= 1 && !_explosionSpawned);
+                
 
                 //Set up camera to focus on the blast by making it focus on the opponent.
                 CameraBehaviour.Instance.ZoomAmount = 1;
@@ -220,9 +214,11 @@ namespace Lodis.Gameplay
 
             BlackBoardBehaviour.Instance.Player2.GetComponent<GridPhysicsBehaviour>().StopVelocity();
             HitColliderSpawner.SpawnCollider(Projectile.FixedTransform.WorldPosition + FVector3.Up, explosionColliderWidth, explosionColliderHeight, GetColliderData(1), Owner);
+            
 
             CameraBehaviour.Instance.ZoomAmount = 0;
             CameraBehaviour.Instance.AlignmentFocus = GridAlignment.ANY;
+            FXManagerBehaviour.Instance.DisableSuperBackground();
         }
 
         private void StartSuperEffect()
@@ -285,6 +281,8 @@ namespace Lodis.Gameplay
             CameraBehaviour.Instance.AlignmentFocus = OwnerMoveScript.Alignment;
             _opponentKnockback.Physics.StopAllForces();
 
+            EnableAccessory();
+
             if (_moveAction == null)
             {
                 _moveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentMovement.FixedTransform, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, new Fixed32(98304) * 2, id: "Opponent Move");
@@ -321,6 +319,7 @@ namespace Lodis.Gameplay
             }
 
             MatchManagerBehaviour.Instance.SuperInUse = true;
+            FXManagerBehaviour.Instance.EnableSuperBackground(_controller.PlayerID);
             PauseAbilityTimer();
 
             SoundManagerBehaviour.Instance.ScaleMusicVolume(.5f);
@@ -394,7 +393,7 @@ namespace Lodis.Gameplay
             ProjectileColliderData.OnHit += StartCombo;
             base.OnActivate();
 
-            SpawnSword();
+            DisableAccessory();
         }
 
         public override void Tick(Fixed32 dt)
@@ -440,6 +439,8 @@ namespace Lodis.Gameplay
             _characterFeedback.SetCharacterUIEnabled(true);
             _opponentFeedback.SetCharacterUIEnabled(true);
 
+            EnableAccessory();
+
             ClearAnimationEvents();
         }
 
@@ -461,11 +462,16 @@ namespace Lodis.Gameplay
                 _thalamusInstance.layer = _thalamusLayer;
 
             OwnerKnockBackScript.Physics.IsKinematic = false;
+
             CameraBehaviour.Instance.ClampX = true;
             CameraBehaviour.Instance.ClampY = true;
             CameraBehaviour.Instance.CameraMoveSpeed = _defaultCameraMoveSpeed;
+
             _characterFeedback.SetCharacterUIEnabled(true);
             _opponentFeedback.SetCharacterUIEnabled(true);
+
+            _spawnExplosionAction?.Stop();
+            EnableAccessory();
 
             ClearAnimationEvents();
         }

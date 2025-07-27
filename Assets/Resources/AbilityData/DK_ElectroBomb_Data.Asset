@@ -52,7 +52,7 @@ MonoBehaviour:
   - Name: OrbCollider
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 98304
+      RawValue: 327680
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:

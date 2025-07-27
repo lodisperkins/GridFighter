@@ -80,6 +80,7 @@ namespace Lodis.Gameplay
                     //Spawn collider for punch 2
                     SpawnCollider(1);
                     SoundManagerBehaviour.Instance.ScaleMusicVolume(.5f);
+                    FXManagerBehaviour.Instance.EnableSuperBackground(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner));
 
                     //Play effects for punch 2
                     OwnerVoiceScript.PlayLightAttackSound();
@@ -134,6 +135,8 @@ namespace Lodis.Gameplay
 
                 //Play effects for final blow
                 FXManagerBehaviour.Instance.SetEnvironmentLightsEnabled(true);
+                FXManagerBehaviour.Instance.DisableSuperBackground();
+
                 _endTimer = RoutineBehaviour.Instance.StartNewTimedAction(args => EndAbility(), TimedActionCountType.SCALEDTIME, abilityData.recoverTime);
                 OwnerVoiceScript.PlayHeavyAttackSound();
 
