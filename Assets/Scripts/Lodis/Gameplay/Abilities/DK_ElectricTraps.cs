@@ -45,13 +45,20 @@ namespace Lodis.Gameplay
                 _linkMoveScripts.Clear();
         }
 
+        protected void SetColors(EntityDataBehaviour entity)
+        {
+            ProjectileColorSwapBehaviour colorSwap = entity.GetComponent<ProjectileColorSwapBehaviour>();
+
+            colorSwap.SetColors((int)OwnerMoveScript.Alignment);
+        }
+
         /// <summary>
         /// Deploys one of the links
         /// </summary>
         private void FireLink(FVector2 position)
         {
             //Creates copy of link prefab
-            EntityDataBehaviour visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), SpawnTransform.WorldPosition, FQuaternion.Identity);
+            EntityDataBehaviour visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), SpawnTransform.WorldPosition, FQuaternion.Identity, SetColors);
             //Get the movement script attached and add it to a list
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
 
@@ -60,6 +67,8 @@ namespace Lodis.Gameplay
             gridMovement.Speed = abilityData.GetCustomStatValue("Speed");
 
             visualPrefab.GetComponent<HitColliderBehaviour>().CollisionEnabled = false;
+
+
 
             _linkMoveScripts.Add(gridMovement);
         }

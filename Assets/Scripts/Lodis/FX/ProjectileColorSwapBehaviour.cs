@@ -8,6 +8,7 @@ public class ProjectileColorSwapBehaviour : MonoBehaviour
 {
     [SerializeField] private ColorManagerBehaviour colorManager;
     [SerializeField] private ColliderBehaviour colliderBehaviour;
+    [SerializeField] private bool manuallySetColors = false;
 
 
     //---
@@ -51,7 +52,7 @@ public class ProjectileColorSwapBehaviour : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (colliderBehaviour != null && colliderBehaviour.Spawner != null && _shouldUpdateColors)
+        if (colliderBehaviour != null && colliderBehaviour.Spawner != null && _shouldUpdateColors && !manuallySetColors)
         {
             GridMovementBehaviour move = colliderBehaviour.Spawner.GetComponent<GridMovementBehaviour>();
             colorManager.SetColors((int)move.Alignment);

@@ -9,6 +9,8 @@ public class ProjectileParticleColorSwapBehaviour : MonoBehaviour
 {
     [SerializeField] private ParticleColorManagerBehaviour colorManager;
     [SerializeField] private ColliderBehaviour colliderBehaviour;
+    [SerializeField] private bool clearParticles;
+    [SerializeField] private bool restartParticles;
 
     //---
     private bool _shouldUpdateColors;
@@ -54,7 +56,7 @@ public class ProjectileParticleColorSwapBehaviour : MonoBehaviour
         if (colliderBehaviour != null && colliderBehaviour.Spawner != null && _shouldUpdateColors)
         {
             GridMovementBehaviour move = colliderBehaviour.Spawner.GetComponent<GridMovementBehaviour>();
-            colorManager.SetColors(move.Alignment);
+            colorManager.SetColors(move.Alignment, clearParticles, restartParticles);
             _shouldUpdateColors = false;
         }
     }

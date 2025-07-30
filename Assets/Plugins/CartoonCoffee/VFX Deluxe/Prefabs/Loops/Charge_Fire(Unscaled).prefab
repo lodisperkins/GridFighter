@@ -49061,6 +49061,7 @@ GameObject:
   - component: {fileID: 8719786074536755382}
   - component: {fileID: 2478679206272589010}
   - component: {fileID: 5888331479560280120}
+  - component: {fileID: 5342201022075288707}
   m_Layer: 24
   m_Name: Charge_Fire(Unscaled)
   m_TagString: Untagged
@@ -53902,3 +53903,29 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &5342201022075288707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4592643921774826832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _setColorOnStart: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 1885604529827188182}
+  - {fileID: 1885604528493350080}
+  - {fileID: 1885604529115972327}
+  - {fileID: 1885604529924874500}
+  - {fileID: 3888044793396303899}
+  - {fileID: 1885604529898282052}
+  - {fileID: 1885604528475119346}

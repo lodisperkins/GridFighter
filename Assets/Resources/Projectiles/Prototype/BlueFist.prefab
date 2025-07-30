@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 4641103313446305388}
   - component: {fileID: 1652091589986752385}
   - component: {fileID: 1119427124819330315}
+  - component: {fileID: 2588566176158130802}
+  - component: {fileID: 5813556128147645075}
+  - component: {fileID: 8961072018579971790}
   m_Layer: 0
   m_Name: BlueFist
   m_TagString: Untagged
@@ -53,8 +56,14 @@ MonoBehaviour:
   _markPanelsBasedOnCollision: 0
   _markPanelAtGridLocation: 0
   _markCollider: 0
+  _markAtRange: 0
+  _markAtOffsetRange: 0
+  _markAtRadius: 0
   _movementToTrack: {fileID: 0}
   _colliderToTrack: {fileID: 0}
+  _xRange: 0
+  _yRange: 0
+  _radius: 0
 --- !u!114 &4641103313446305388
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -67,12 +76,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 0}
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
+  _friction:
+    RawValue: 0
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -80,15 +101,19 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 0
+  _gridActive: 1
   _isGrounded: 0
   _panelBounceEnabled: 0
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!114 &1652091589986752385
 MonoBehaviour:
@@ -102,7 +127,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
+  _onOverlapBegin:
+    m_PersistentCalls:
+      m_Calls: []
+  _onHitBegin:
+    m_PersistentCalls:
+      m_Calls: []
   _entityCollider:
     _layersToIgnore:
       serializedVersion: 2
@@ -110,45 +147,64 @@ MonoBehaviour:
     _tagsToIgnore: []
     _overlap: 1
     _collideOnAnyRow: 0
+    _isAWall: 0
     _width:
       RawValue: 65536
+    _facingRight: 1
     _height:
       RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: 
     DespawnAfterTimeLimit: 0
-    TimeActive: 0
+    TimeActive:
+      RawValue: 0
     DestroyOnHit: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
       m_Bits: 0
     TagsToIgnore: []
-    MultiHitWaitTime: 0
-    Damage: 0
-    BaseKnockBack: 0
-    KnockBackScale: 0
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 0
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
-    HitAngle: 0
+    HitAngle:
+      RawValue: 0
     AdjustAngleBasedOnAlignment: 0
     TypeOfDamage: 0
-    HitStunTime: 0
-    Priority: 0
+    HitStunTime:
+      RawValue: 0
+    Priority:
+      RawValue: 0
     OwnerAlignement: 0
     AbilityType: 0
-    AbilityID: 0
+    AbilityID:
+      RawValue: 0
     SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 0
-    HitStopShakeStrength: 0
-    CameraShakeStrength: 0
-    CameraShakeDuration: 0
+    HitStopShakeStrength:
+      RawValue: 0
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
     CameraShakeFrequency: 0
     ShakesCamera: 0
     SpawnSound: {fileID: 0}
@@ -169,14 +225,14 @@ MonoBehaviour:
   _entityData:
     Name: BlueFist
     Transform:
-      _worldPosition:
+      _localPosition:
         X:
           RawValue: 0
         Y:
           RawValue: 0
         Z:
           RawValue: 0
-      _worldRotation:
+      _localRotation:
         X:
           RawValue: 0
         Y:
@@ -195,8 +251,71 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 1060968803567983333}
+  _children: []
+--- !u!114 &2588566176158130802
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428546948933386335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dac4a0487bd52546bb87e3a03cb9124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _autoDetectAlignment: 0
+  _manuallySetColors: 0
+  _objectsToColor:
+  - ObjectRenderer: {fileID: 7699442213838218998}
+    DefaultColors: []
+    ShaderProperties:
+    - _BaseColor
+    OnlyChangeHue: 0
+    SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
+--- !u!114 &5813556128147645075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428546948933386335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd808ed60482fc44a169b000b6013b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 2588566176158130802}
+  colliderBehaviour: {fileID: 1652091589986752385}
+  manuallySetColors: 0
+--- !u!114 &8961072018579971790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 428546948933386335}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _setColorOnStart: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 8913634902785491879}
+  - {fileID: 1513047493055316917}
+  - {fileID: 3691541280040500454}
+  - {fileID: 5098192317570881686}
 --- !u!1 &2022724437972087765
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,6 +328,8 @@ GameObject:
   - component: {fileID: 5931911825729131868}
   - component: {fileID: 7699442213838218998}
   - component: {fileID: 6367539754377683207}
+  - component: {fileID: 6550114744649509353}
+  - component: {fileID: 1081304739443665246}
   m_Layer: 0
   m_Name: Fist
   m_TagString: Untagged
@@ -394,6 +515,44 @@ TrailRenderer:
   m_Autodestruct: 0
   m_Emitting: 1
   m_ApplyActiveColorSpace: 0
+--- !u!114 &6550114744649509353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022724437972087765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dac4a0487bd52546bb87e3a03cb9124, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _autoDetectAlignment: 0
+  _manuallySetColors: 0
+  _objectsToColor:
+  - ObjectRenderer: {fileID: 7699442213838218998}
+    DefaultColors: []
+    ShaderProperties:
+    - _BaseColor
+    OnlyChangeHue: 0
+    SaturationThreshold: 0
+  _linkedManager: {fileID: 0}
+--- !u!114 &1081304739443665246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022724437972087765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdd808ed60482fc44a169b000b6013b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 6550114744649509353}
+  colliderBehaviour: {fileID: 1652091589986752385}
+  manuallySetColors: 0
 --- !u!1001 &663129740534462776
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -405,12 +564,12 @@ PrefabInstance:
     - target: {fileID: 2147236610059942541, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.35686275
+      value: 0.30413443
       objectReference: {fileID: 0}
     - target: {fileID: 2147236610059942541, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.33157814
+      value: 0.35686275
       objectReference: {fileID: 0}
     - target: {fileID: 2147236610059942541, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
@@ -425,32 +584,32 @@ PrefabInstance:
     - target: {fileID: 3449214062633256714, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.7921569
+      value: 0.029592399
       objectReference: {fileID: 0}
     - target: {fileID: 3449214062633256714, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.44006458
+      value: 0.5577356
       objectReference: {fileID: 0}
     - target: {fileID: 3449214062633256714, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
-      value: 0.054901946
+      value: 0.8962264
       objectReference: {fileID: 0}
     - target: {fileID: 4181897643872257502, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b
-      value: 0.9254902
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4181897643872257502, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.g
-      value: 0.70113313
+      value: 0.47278154
       objectReference: {fileID: 0}
     - target: {fileID: 4181897643872257502, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.r
-      value: 0
+      value: 0.9254902
       objectReference: {fileID: 0}
     - target: {fileID: 4505686874856089091, guid: 59b817c42d4e2b74190166693df833e9,
         type: 3}
@@ -625,11 +784,93 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2177619107234995740, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 552628116358397322}
+    - targetCorrespondingSourceObject: {fileID: 2177619107234995740, guid: 59b817c42d4e2b74190166693df833e9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3389665160407570548}
   m_SourcePrefab: {fileID: 100100000, guid: 59b817c42d4e2b74190166693df833e9, type: 3}
+--- !u!198 &1513047493055316917 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2147236610059942541, guid: 59b817c42d4e2b74190166693df833e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 663129740534462776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1660594567744186148 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2177619107234995740, guid: 59b817c42d4e2b74190166693df833e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 663129740534462776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &552628116358397322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660594567744186148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _setColorOnStart: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 8913634902785491879}
+  - {fileID: 1513047493055316917}
+  - {fileID: 3691541280040500454}
+  - {fileID: 2805172016293101106}
+--- !u!114 &3389665160407570548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660594567744186148}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 552628116358397322}
+  colliderBehaviour: {fileID: 1652091589986752385}
+  clearParticles: 1
+--- !u!198 &2805172016293101106 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3449214062633256714, guid: 59b817c42d4e2b74190166693df833e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 663129740534462776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &3691541280040500454 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4181897643872257502, guid: 59b817c42d4e2b74190166693df833e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 663129740534462776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5098192317570881686 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5761091399034184110, guid: 59b817c42d4e2b74190166693df833e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 663129740534462776}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5887651232948056770 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6379009563274759162, guid: 59b817c42d4e2b74190166693df833e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 663129740534462776}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8913634902785491879 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8250734481309186719, guid: 59b817c42d4e2b74190166693df833e9,
     type: 3}
   m_PrefabInstance: {fileID: 663129740534462776}
   m_PrefabAsset: {fileID: 0}

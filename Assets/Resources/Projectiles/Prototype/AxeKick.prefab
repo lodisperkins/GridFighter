@@ -1708,8 +1708,62 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1462283702018711274, guid: a977d758164395145bb01826d494a9be,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3788782830019625885}
+    - targetCorrespondingSourceObject: {fileID: 1462283702018711274, guid: a977d758164395145bb01826d494a9be,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1165107745058801104}
   m_SourcePrefab: {fileID: 100100000, guid: a977d758164395145bb01826d494a9be, type: 3}
+--- !u!198 &172233881100082193 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1966937099750420409, guid: a977d758164395145bb01826d494a9be,
+    type: 3}
+  m_PrefabInstance: {fileID: 1812719824815059880}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &964615106380164418 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1462283702018711274, guid: a977d758164395145bb01826d494a9be,
+    type: 3}
+  m_PrefabInstance: {fileID: 1812719824815059880}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3788782830019625885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964615106380164418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _setColorOnStart: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 172233881100082193}
+--- !u!114 &1165107745058801104
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964615106380164418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 3788782830019625885}
+  colliderBehaviour: {fileID: 3556605455510110903}
 --- !u!4 &2074141430552017565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,

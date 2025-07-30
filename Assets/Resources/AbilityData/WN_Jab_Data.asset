@@ -95,11 +95,11 @@ MonoBehaviour:
     AbilityType: 0
     AbilityID:
       RawValue: -1778319360
-    SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
+    SpawnEffect: {fileID: 8867112169225384458, guid: 8797fa9ef868a0347ac094b25e936751,
       type: 3}
     SpawnEffectOffset:
       RawValue: 0
-    HitSpark: {fileID: 1493204891009420812, guid: 4fd7b1505062b0d4983e510a086c28ba,
+    HitSpark: {fileID: 1493204891009420812, guid: cb895fc98856222468b8bc1ac0edbd45,
       type: 3}
     HitEffectLevel: 1
     HitStopShakeStrength:

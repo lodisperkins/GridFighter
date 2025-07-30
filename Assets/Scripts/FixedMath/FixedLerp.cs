@@ -1,4 +1,5 @@
 using Assets.Scripts.Lodis.Simulation;
+using Lodis.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -187,6 +188,7 @@ namespace FixedPoints
         private bool _killed;
         private int _frameStarted;
         public string ID;
+        public FixedTimeAction.UnitOfTime Unit;
 
         public bool Killed
         {
@@ -303,6 +305,15 @@ namespace FixedPoints
             {
                 //Debug.Log($"Didnt update {ID} because it was paused or killed.");
                 return false;
+            }
+
+            if (Unit == FixedTimeAction.UnitOfTime.Scaled)
+            {
+                dt *= GridGame.TimeScale;
+            }
+            else if (Unit == FixedTimeAction.UnitOfTime.PauseScaled && GridGame.IsPaused)
+            {
+                dt = 0;
             }
 
             TimeElapsed += dt;

@@ -60,7 +60,7 @@ namespace Lodis.UI
             get { return EventManager.currentSelectedGameObject; }
             set
             {
-                EventManager.SetSelectedGameObject(value);
+                EventManager?.SetSelectedGameObject(value);
                 _lastSelected = value;
             }
         }

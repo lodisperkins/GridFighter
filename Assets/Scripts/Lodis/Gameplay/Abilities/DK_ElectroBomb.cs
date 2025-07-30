@@ -44,7 +44,7 @@ namespace Lodis.Gameplay
         private bool _threwBlast;
         private FixedPoints.MoveAction _moveAction;
         private IControllable _controller;
-        private FixedConditionAction _spawnExplosionAction;
+        private FixedTimeAction _spawnExplosionAction;
 
         protected override void OnSerialize(BinaryWriter bw)
         {
@@ -188,7 +188,7 @@ namespace Lodis.Gameplay
                 ActiveProjectiles.Add(Projectile);
 
                 //Handles spawning the explosion once the blast hits the ground.
-                _spawnExplosionAction = FixedPointTimer.StartNewConditionAction(SpawnExplosion, condition => Projectile.FixedTransform.WorldPosition.Y <= 1 && !_explosionSpawned);
+                _spawnExplosionAction = FixedPointTimer.StartNewTimedAction(SpawnExplosion, new Fixed32(58982));
                 
 
                 //Set up camera to focus on the blast by making it focus on the opponent.
@@ -285,7 +285,8 @@ namespace Lodis.Gameplay
 
             if (_moveAction == null)
             {
-                _moveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentMovement.FixedTransform, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, new Fixed32(98304) * 2, id: "Opponent Move");
+                //fixed value of 98304 is 1.5 seconds in fixed time.
+                _moveAction = (FixedPoints.MoveAction)FixedLerp.DoMove(_opponentMovement.FixedTransform, OwnerMoveset.ProjectileSpawner.FixedTransform.WorldPosition, new Fixed32(39321), id: "Opponent Move");
             }
             else
             {

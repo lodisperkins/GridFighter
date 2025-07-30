@@ -191,18 +191,25 @@ namespace Lodis.UI
         {
             Page targetPage = FindPage(RootPage, name);
 
-            if (CurrentPage == null || targetPage == null)
+            if (targetPage == null)
             {
                 Debug.LogError("Couldn't find page with name " + name);
                 return;
             }
 
-            if (!CurrentPage.KeepRootVisible || _changePageManually)
-                CurrentPage.PageRoot?.SetActive(false);
+            if (CurrentPage == null)
+            {
+                CurrentPage = targetPage;
+            }
+            else
+            {
+                if (!CurrentPage.KeepRootVisible || _changePageManually)
+                    CurrentPage.PageRoot?.SetActive(false);
 
-            CurrentPage.OnInactive?.Invoke();
+                CurrentPage.OnInactive?.Invoke();
 
-            CurrentPage = targetPage;
+                CurrentPage = targetPage;
+            }
 
             if (!_changePageManually)
                 CurrentPage.PageRoot.SetActive(true);

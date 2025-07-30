@@ -44103,6 +44103,7 @@ GameObject:
   - component: {fileID: 7881555165561090673}
   - component: {fileID: 3892242632751377941}
   - component: {fileID: 5032070949612055295}
+  - component: {fileID: 5268426290209249748}
   m_Layer: 0
   m_Name: Charge_Light(Unscaled)
   m_TagString: Untagged
@@ -48944,6 +48945,33 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!114 &5268426290209249748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3161059397199619991}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _setColorOnStart: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 1029368018365922552}
+  - {fileID: 1029368017960889987}
+  - {fileID: 1029368019213626421}
+  - {fileID: 1029368019325322205}
+  - {fileID: 1029368019231866375}
+  - {fileID: 1029368018302660640}
+  - {fileID: 1029368017526100931}
+  - {fileID: 5810262274115161885}
 --- !u!1 &4514396184604005685
 GameObject:
   m_ObjectHideFlags: 0

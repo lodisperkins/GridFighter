@@ -117,7 +117,7 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Changes the color of each property that is allowed to be changed in each particle system.
         /// </summary>
-        public void SetColors(GridAlignment alignment, bool clear = false)
+        public void SetColors(GridAlignment alignment, bool clear = false, bool restart = false)
         {
             _color = BlackBoardBehaviour.Instance.GetPlayerColorByAlignment(alignment);
 
@@ -126,6 +126,12 @@ namespace Lodis.Gameplay
             {
                 if (clear)
                     particleSystem.Clear();
+
+                if (restart)
+                {
+                    particleSystem.Stop();
+                    particleSystem.Play();
+                }
 
                 //If allowed to change the start color...
                 if (_changeStartColor)

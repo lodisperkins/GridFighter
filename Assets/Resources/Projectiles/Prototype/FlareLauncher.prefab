@@ -476,6 +476,8 @@ GameObject:
   - component: {fileID: 93135537273036670}
   - component: {fileID: 1747915125812401936}
   - component: {fileID: 3459770535773909266}
+  - component: {fileID: 133836195611580081}
+  - component: {fileID: 7504475521345406430}
   m_Layer: 16
   m_Name: FlareLauncher
   m_TagString: Untagged
@@ -656,6 +658,44 @@ MonoBehaviour:
   _despawnTime:
     RawValue: 0
   _rootEntity: {fileID: 0}
+--- !u!114 &133836195611580081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9125275198285931057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _setColorOnStart: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 5550997449801077714}
+  - {fileID: 8797423306882738611}
+  - {fileID: 5311852592648770069}
+--- !u!114 &7504475521345406430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9125275198285931057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 133836195611580081}
+  colliderBehaviour: {fileID: 1653245931474653999}
+  clearParticles: 0
+  restartParticles: 1
 --- !u!1001 &5884849705868169041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -917,6 +957,24 @@ PrefabInstance:
 --- !u!4 &5095634157879002076 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1665342181930175629, guid: 6e74f5fc4d71ec64e89dc440b7878630,
+    type: 3}
+  m_PrefabInstance: {fileID: 5884849705868169041}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5311852592648770069 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1737354175618276676, guid: 6e74f5fc4d71ec64e89dc440b7878630,
+    type: 3}
+  m_PrefabInstance: {fileID: 5884849705868169041}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &5550997449801077714 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 2063270291402628227, guid: 6e74f5fc4d71ec64e89dc440b7878630,
+    type: 3}
+  m_PrefabInstance: {fileID: 5884849705868169041}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8797423306882738611 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 3151840532421502690, guid: 6e74f5fc4d71ec64e89dc440b7878630,
     type: 3}
   m_PrefabInstance: {fileID: 5884849705868169041}
   m_PrefabAsset: {fileID: 0}

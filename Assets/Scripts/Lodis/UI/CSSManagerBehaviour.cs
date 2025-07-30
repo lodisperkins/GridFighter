@@ -1,7 +1,5 @@
 ﻿using Lodis.Gameplay;
 using Lodis.Utility;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
@@ -58,6 +56,12 @@ namespace Lodis.UI
         [SerializeField]
         private CSSCustomCharacterManager _p2CustomManager;
         [SerializeField]
+        private GameObject _p2CustomCharacterMenu;
+        [SerializeField]
+        private GameObject _p2ButtonPrompts;
+        [SerializeField]
+        private GameObject _p2ButtonScrollArrows;
+        [SerializeField]
         private PageManagerBehaviour _p2PageManager;
         [SerializeField]
         private GameObject _p2InputProfileMenu;
@@ -100,6 +104,7 @@ namespace Lodis.UI
 
         private bool _canSelectCharP1;
         private bool _canSelectCharP2;
+        private bool _AIModeActive;
 
         private void Start()
         {
@@ -136,19 +141,7 @@ namespace Lodis.UI
                 _player1Root.SetActive(false);
                 _currentPlayer = 2;
             }
-
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || GridGameManager.IsHost)
-            {
-                _colorManager.SetPlayerColor(2, 5);
-                _p2ColorIndex = 5;
-                _canSelectCharP2 = true;
-                SetDataP2(_defaultAICharacter);
-                _player2JoinInstruction.enabled = false;
-                _player2Root.SetActive(false);
-                _p2IsCustom.Value = false;
-                SceneManagerBehaviour.Instance.RhsRecordingName = "ZyraAI";
-            }
-            else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
+            else if (GridGameManager.IsHost)
             {
                 _colorManager.SetPlayerColor(2, 5);
                 _p2ColorIndex = 5;
@@ -157,7 +150,31 @@ namespace Lodis.UI
                 _player2JoinInstruction.enabled = false;
                 _p2IsCustom.Value = false;
                 _player2Root.SetActive(false);
-                SceneManagerBehaviour.Instance.RhsRecordingName = "ZyraAI";
+            }
+
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
+            {
+                _colorManager.SetPlayerColor(2, 5);
+                _p2ColorIndex = 5;
+
+                _canSelectCharP2 = true;
+
+                _player2JoinInstruction.enabled = false;
+                _player2Root.SetActive(true);
+
+                _p2IsCustom.Value = false;
+
+                //Disable all UI thats not needed for AI mode
+                _p2CustomCharacterMenu.SetActive(false);
+                _p2ButtonPrompts.SetActive(false);
+                _p2ButtonScrollArrows.SetActive(false);
+
+                _AIModeActive = true;
+            }
+            else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.MULTIPLAYER)
+            {
+                _canSelectCharP2 = true;
+                _p2CustomCharacterMenu.SetActive(true);
             }
             SetColor(2);
 
@@ -200,6 +217,13 @@ namespace Lodis.UI
                 _p1CustomManager.SetSelectedToFirstOption();
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices.Value = playerInput.devices.ToArray();
+
+                if (_AIModeActive)
+                {
+                    _p2PageManager.GoToPageParent();
+                    _p2CharacterSelected = false;
+                    _p2CustomCharacterMenu.SetActive(false);
+                }
 
                 _p1Rebinder.ResetToDefault();
             }
@@ -251,14 +275,14 @@ namespace Lodis.UI
                 _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
                 _backgroundImage.SetPrimaryColor(_colorManager.P1Color.Value / 2);
             }
-            else if (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER && !_p2CharacterSelected)
+            else if ((playerNum == 1 && _AIModeActive) || (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER && !_p2CharacterSelected))
             {
                 _p2ColorIndex++;
                 if (_p2ColorIndex == _p1ColorIndex && _p1CharacterSelected)
                     _p2ColorIndex++;
                 if (_p2ColorIndex >= _colorManager.PossibleColors.Length)
                     _p2ColorIndex = 0;
-                _colorManager.SetPlayerColor(playerNum, _p2ColorIndex);
+                _colorManager.SetPlayerColor(2, _p2ColorIndex);
                 _backgroundImage.SetSecondaryColor(_colorManager.P2Color.Value / 2);
             }
         }
@@ -425,19 +449,47 @@ namespace Lodis.UI
             _p1Data.CharacterReference = data.CharacterReference;
             _p1Data.HeadShot = data.HeadShot;
             _p1CharacterSelected = true;
-            _p1PageManager.GoToPage("ready");
+
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
+            {
+                _p1PageManager.GoToPage("AISelect");
+            }
+            else
+            {
+                _p1PageManager.GoToPage("ready");
+            }
 
             if (_p1ColorIndex == _p2ColorIndex && (!_p2CharacterSelected || SceneManagerBehaviour.Instance.GameMode != (int)GameMode.MULTIPLAYER))
                 SetColor(2);
         }
         public void SetDataP2(CharacterData data)
         {
-
             _p2Data.DisplayName = data.DisplayName;
             _p2Data.CharacterReference = data.CharacterReference;
             _p2Data.HeadShot = data.HeadShot;
             _p2CharacterSelected = true;
             _p2PageManager.GoToPage("ready");
+
+            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
+            {
+                _p1PageManager.GoToPage("ready");
+            }
+
+            if (_p2ColorIndex == _p1ColorIndex && !_p1CharacterSelected)
+                SetColor(1);
+        }
+
+        public void SetAIData(CharacterData data)
+        {
+            _p2Data.DisplayName = data.DisplayName;
+            _p2Data.CharacterReference = data.CharacterReference;
+            _p2Data.HeadShot = data.HeadShot;
+            _p2CharacterSelected = true;
+
+            _p1PageManager.GoToPage("ready");
+            _p2PageManager.GoToPage("ready");
+
+            SceneManagerBehaviour.Instance.RhsRecordingName = _p2Data.DisplayName + "AI";
 
             if (_p2ColorIndex == _p1ColorIndex && !_p1CharacterSelected)
                 SetColor(1);
@@ -537,7 +589,7 @@ namespace Lodis.UI
             Deck normal = null;
             Deck special = null;
 
-            if (playerNum == 1 && _p1PageManager.CurrentPage.PageName != "InputProfile")
+            if (playerNum == 1 && _p1PageManager.CurrentPage.PageName != "InputProfile" && _p1PageManager.CurrentPage.PageName != "AISelect")
             {
                 LoadMovesListDecks(out normal, out special, _player1SelectedCharacter, _player1HasCustomSelected);
                 _player1MovesList.UpdateUI(normal, special, _player1EventSystem);

@@ -1665,11 +1665,65 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2753802828734506385, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9026787241464446961}
+    - targetCorrespondingSourceObject: {fileID: 2753802828734506385, guid: 1ac1b242062a7e840bd686ad3d66f083,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7428575554702307278}
   m_SourcePrefab: {fileID: 100100000, guid: 1ac1b242062a7e840bd686ad3d66f083, type: 3}
+--- !u!198 &982901870142706534 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7225498028004703730, guid: 1ac1b242062a7e840bd686ad3d66f083,
+    type: 3}
+  m_PrefabInstance: {fileID: 7630742807919799956}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1944682832461572920 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8293729028846716332, guid: 1ac1b242062a7e840bd686ad3d66f083,
     type: 3}
   m_PrefabInstance: {fileID: 7630742807919799956}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &5751836912814033669 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2753802828734506385, guid: 1ac1b242062a7e840bd686ad3d66f083,
+    type: 3}
+  m_PrefabInstance: {fileID: 7630742807919799956}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &9026787241464446961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751836912814033669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 261b78d61b7724840b75da57ea1c417e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _alignment: 0
+  _onlyChangeHue: 0
+  _setColorOnStart: 0
+  _changeStartColor: 1
+  _changeColorOverLifetime: 0
+  _changeColorBySpeed: 0
+  _particleSystems:
+  - {fileID: 982901870142706534}
+--- !u!114 &7428575554702307278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5751836912814033669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f22ea1d92a623498f2c1bd9a111f7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorManager: {fileID: 9026787241464446961}
+  colliderBehaviour: {fileID: 3556605455510110903}

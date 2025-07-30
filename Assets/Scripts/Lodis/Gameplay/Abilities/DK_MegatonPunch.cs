@@ -119,6 +119,10 @@ namespace Lodis.Gameplay
                 Transform effectSpawn = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
 
                 _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(abilityData.Effects[1], effectSpawn, true);
+
+                ParticleColorManagerBehaviour particleColorManager = _chargeEffect.GetComponent<ParticleColorManagerBehaviour>();
+                particleColorManager.SetColors(OwnerMoveScript.Alignment);
+
                 //0.01
                 MatchManagerBehaviour.Instance.ChangeTimeScale(_slowMotionTimeScale, new Fixed32(655), _slowMotionTime);
                 ReturnToFist();
@@ -179,6 +183,10 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.SetIntagibilityByCondition(condition => CurrentAbilityPhase != AbilityPhase.STARTUP);
 
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, effectSpawn, true);
+
+            ParticleColorManagerBehaviour particleColorManager = _chargeEffect.GetComponent<ParticleColorManagerBehaviour>();
+            particleColorManager.SetColors(OwnerMoveScript.Alignment);
+
             _opponentKnockback.IgnoreAdjustedGravity(arguments => !InUse);
             _opponentKnockback.SetDamageableAbilityID(abilityData.ID, arguments => !InUse);
             //RoutineBehaviour.Instance.StartNewConditionAction(args => ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect), condition => !InUse || CurrentAbilityPhase != AbilityPhase.STARTUP);
