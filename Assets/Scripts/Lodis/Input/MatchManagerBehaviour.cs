@@ -43,6 +43,8 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Button _firstSelectedPauseButton;
         [SerializeField] private GameObject _pauseMenu;
+        [SerializeField] private Material _hitBoxMaterial;
+        [SerializeField] private Material _hurtBoxMaterial;
 
         [Header("Match Options")]
         [SerializeField]
@@ -94,16 +96,26 @@ namespace Lodis.Gameplay
         private PlayerSpawnBehaviour _playerSpawner;
         private bool _isPaused;
         private MatchResult _matchResult;
+
         private bool _canPause = true;
         private bool _suddenDeathActive;
         private bool _matchStarted;
         private bool _playerOutOfRing;
+        private bool _collidersEnabled;
+
+        public delegate void ColliderVisualEnableEvent(bool enabled);
+        public event ColliderVisualEnableEvent OnColliderVisualsEnabled;
+
+
         private TweenerCore<float, float, FloatOptions> _fxTimeScaleTween;
+
         private LerpAction _physicsTimeScaleLerp;
         private FixedAction _physicsTimeScaleAction;
         private DelayedAction _fxTimeScaleAction;
+
         private int _lhsWins;
         private int _rhsWins;
+
         private CharacterExplosionBehaviour _characterExplosionBehaviour;
 
         /// <summary>
@@ -142,10 +154,13 @@ namespace Lodis.Gameplay
         public bool InfiniteBurst { get => _infiniteBurst; set => _infiniteBurst = value; }
         public bool IsPaused { get => _isPaused; private set => _isPaused = value; }
         public bool MatchStarted { get => _matchStarted; private set => _matchStarted = value; }
+        public Material HitBoxMaterial { get => _hitBoxMaterial; }
+        public Material HurtBoxMaterial { get => _hurtBoxMaterial; }
+        public bool CollidersEnabled { get => _collidersEnabled; private set => _collidersEnabled = value; }
 
         private void Awake()
         {
-            _mode = (GameMode)SceneManagerBehaviour.Instance.GameMode.Value;
+            _mode = (GameMode)SceneManagerBehaviour.Instance.CurrentGameMode.Value;
 
             _characterExplosionBehaviour = GetComponent<CharacterExplosionBehaviour>();
             _characterExplosionBehaviour.OnCharacterExplosionStart += OnPlayerExplosionStart;
@@ -251,6 +266,18 @@ namespace Lodis.Gameplay
         {
             _matchResult = (MatchResult)resultID;
             SetMatchResult();
+        }
+
+        public void EnableColliderVisuals(bool enabled)
+        {
+            CollidersEnabled = enabled;
+            OnColliderVisualsEnabled?.Invoke(CollidersEnabled);
+        }
+
+        public void ToggleColliderVisuals()
+        {
+            CollidersEnabled = !CollidersEnabled;
+            OnColliderVisualsEnabled?.Invoke(CollidersEnabled);
         }
 
         /// <summary>

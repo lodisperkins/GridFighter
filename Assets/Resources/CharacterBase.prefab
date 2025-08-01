@@ -1399,6 +1399,7 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _isHurtBox: 1
   debuggingEnabled: 0
 --- !u!1 &3280269941161266660
 GameObject:
@@ -2904,6 +2905,7 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _isHurtBox: 0
   debuggingEnabled: 0
 --- !u!4 &5386106008844156196 stripped
 Transform:

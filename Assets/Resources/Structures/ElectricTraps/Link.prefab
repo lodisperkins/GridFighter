@@ -34188,6 +34188,7 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _isHurtBox: 0
   debuggingEnabled: 0
   ColliderInfo:
     Name: 
@@ -34348,7 +34349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 0
   _autoDetectAlignment: 0
-  _manuallySetColors: 0
+  _manuallySetColors: 1
   _objectsToColor:
   - ObjectRenderer: {fileID: 653150230779573244}
     DefaultColors: []

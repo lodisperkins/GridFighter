@@ -434,6 +434,8 @@ namespace Lodis.Gameplay
 
         public override void Tick(Fixed32 dt)
         {
+            base.Tick(dt);
+
             if (gameObject == null)
                 return;
 

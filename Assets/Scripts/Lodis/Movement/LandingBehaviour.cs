@@ -75,9 +75,13 @@ namespace Lodis.Movement
             _knockback = GetComponent<KnockbackBehaviour>();
             _characterAnimator = GetComponentInChildren<CharacterAnimationBehaviour>();
             _characterStateMachine = GetComponent<CharacterStateMachineBehaviour>();
+
             _knockback.AddOnStunAction(CancelLanding);
             _knockback.Physics.AddOnForceAddedEvent(args => TryCancelLanding());
+
             MatchManagerBehaviour.Instance.AddOnMatchRestartAction(CancelLanding);
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(() => _landingAction?.Stop());
+
             _onLand += _knockback.MovementBehaviour.SnapToTarget;
         }
 
@@ -123,12 +127,13 @@ namespace Lodis.Movement
             if (!Landing) return;
 
             _landingAction?.Stop();
-            _knockback.DisableInvincibility();
             //_knockback.Physics.RB.isKinematic = false;
             IsDown = false;
             Landing = false;
             //_knockback.Physics.GridActive = true;
             RecoveringFromFall = false;
+
+            _knockback.DisableInvincibility();
         }
         
         private void TumblingLanding()
@@ -246,6 +251,13 @@ namespace Lodis.Movement
             if (!Landing && IsLanding())
             {
                 StartLandingLag();
+            }
+            else if (Landing && _landingAction != null)
+            {
+                if (!_landingAction.IsActive && !RecoveringFromFall)
+                {
+                    TumblingRecover();
+                }
             }
 
             //if (!_knockback.Physics.IsGrounded || _knockback.CheckIfIdle())

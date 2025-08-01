@@ -81,7 +81,7 @@ namespace Lodis.Utility
             }
         }
 
-        public IntVariable GameMode { get => _gameMode; set => _gameMode = value; }
+        public IntVariable CurrentGameMode { get => _gameMode; set => _gameMode = value; }
         public string P1ControlScheme { get => _p1ControlScheme; set => _p1ControlScheme = value; }
         public string P2ControlScheme { get => _p2ControlScheme; set => _p2ControlScheme = value; }
         public InputDeviceData P1Devices { get => P1InputProfile.DeviceData; set => P1InputProfile.DeviceData = value; }
@@ -96,13 +96,26 @@ namespace Lodis.Utility
         public AsyncOperation SceneOperation { get => _sceneOperation; private set => _sceneOperation = value; }
         public string LhsRecordingName { get => lhsRecordingName; set => lhsRecordingName = value; }
         public string RhsRecordingName { get => rhsRecordingName; set => rhsRecordingName = value; }
+        public bool StartingFight { get; set; }
+
+
+        public bool IsAIGameMode
+        {
+            get
+            {
+                return _gameMode.Value == (int)GameMode.PlayerVSCPU ||
+                       _gameMode.Value == (int)GameMode.SIMULATE ||
+                       _gameMode.Value == (int)GameMode.PRACTICE ||
+                       _gameMode.Value == (int)GameMode.TUTORIAL;
+            }
+        }
 
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
             _currentIndex = Resources.Load<IntVariable>("ScriptableObjects/CurrentScene");
 
-            GameMode.Value = -1;
+            CurrentGameMode.Value = -1;
             SceneManager.sceneLoaded += OnSceneLoaded;
 
             Cursor.visible = _showMouse;
@@ -171,7 +184,17 @@ namespace Lodis.Utility
         {
             SceneOperation = SceneManager.LoadSceneAsync(index);
 
-            if ((_gameMode == 1 || _gameMode == 4) && index == 4)
+            //The tutorial skips the charcter select so we gotta set starting fight here.
+            if (index == 6)
+            {
+                StartingFight = true;
+            }
+            else if (_previousScene == 6)
+            {
+                StartingFight = false;
+            }
+
+            if (IsAIGameMode && StartingFight)
             {
                 SceneOperation.allowSceneActivation = false;
 
@@ -199,7 +222,17 @@ namespace Lodis.Utility
         {
             SceneOperation = SceneManager.LoadSceneAsync(name);
 
-            if ((_gameMode == 1 || _gameMode == 4) && name == "Stadium")
+            //The tutorial skips the charcter select so we gotta set starting fight here.
+            if (name == "Tutorial")
+            {
+                StartingFight = true;
+            }
+            else if (_previousScene == 6)
+            {
+                StartingFight = false;
+            }
+
+            if (IsAIGameMode && StartingFight)
             {
                 SceneOperation.allowSceneActivation = false;
 

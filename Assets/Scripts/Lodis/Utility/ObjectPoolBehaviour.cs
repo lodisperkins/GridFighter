@@ -151,7 +151,7 @@ namespace Lodis.Utility
             }
             //...otherwise create a new instance of the object
             else
-                return CreateNewObject(entity, position, rotation);
+                return CreateNewObject(entity, position, rotation, awakeEvent);
         }
 
         /// <summary>
@@ -365,13 +365,15 @@ namespace Lodis.Utility
         /// <param name="position">The new position of the object</param>
         /// <param name="rotation">The new rotation of the object</param>
         /// <returns>The newly instantiated prefab</returns>
-        private EntityDataBehaviour CreateNewObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation)
+        private EntityDataBehaviour CreateNewObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation, OnEntityAwake onAwake = null)
         {
             EntityDataBehaviour newObject = Instantiate(entity, (Vector3)position, (Quaternion)rotation);
 
             newObject.FixedTransform.SetPositionAndRotation(position, rotation);
             newObject.name = entity.Data.Name;
             newObject.Data.Name = entity.Data.Name;
+            onAwake?.Invoke(entity);
+
             return newObject;
         }
 

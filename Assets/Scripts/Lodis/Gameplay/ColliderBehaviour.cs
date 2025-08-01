@@ -18,6 +18,7 @@ namespace Lodis.Gameplay
         [SerializeField] private UnityEvent _onOverlapBegin;
         [SerializeField] private UnityEvent _onHitBegin;
         [SerializeField] private GridCollider _entityCollider;
+        [SerializeField] private bool _isHurtBox;
         [SerializeField] private bool debuggingEnabled;
         //---
         protected Dictionary<int, Fixed32> Collisions;
@@ -33,6 +34,9 @@ namespace Lodis.Gameplay
 
         private GridPhysicsBehaviour _gridPhysics;
         private EntityData _spawner;
+        private GameObject _visualCube;
+        private bool _createdCube;
+        protected bool _canDrawCollider;
 
         public LayerMask LayersToIgnore { get => EntityCollider.LayersToIgnore; set => EntityCollider.LayersToIgnore = value; }
         public string[] TagsToIgnore { get => EntityCollider.TagsToIgnore; set => EntityCollider.TagsToIgnore = value; }
@@ -177,6 +181,7 @@ namespace Lodis.Gameplay
             }
         }
 
+
         private void OnDrawGizmos()
         {
             if (!DebuggingEnabled) return;
@@ -214,6 +219,53 @@ namespace Lodis.Gameplay
             }
 
             _onHit?.Invoke(collision);
+        }
+
+        public override void End()
+        {
+            base.End(); 
+            
+            if (_visualCube != null)
+            {
+                _visualCube.SetActive(false);
+            }
+        }
+
+        public override void Tick(Fixed32 dt)
+        {
+            base.Tick(dt);
+
+            //Only draw the collider if its been enabled by the event fired off from the match manager.
+            if (MatchManagerBehaviour.Instance.CollidersEnabled)
+            {
+                //Only instantiate the cube once.
+                if (!_createdCube)
+                {
+                    _visualCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+                    //Get the material based on whether this is a hurtbox or hitbox.
+                    Material mat = _isHurtBox ? MatchManagerBehaviour.Instance.HurtBoxMaterial : MatchManagerBehaviour.Instance.HitBoxMaterial;
+                    _visualCube.GetComponent<MeshRenderer>().material = mat;
+
+                    _createdCube = true;
+                }
+
+                _visualCube.SetActive(true);
+
+                //Draw the rest of the owl.
+                float width = _entityCollider.IsAWall ? 0.1f : _entityCollider.Width;
+                Vector3 size = new Vector3(width, _entityCollider.Height, 1);
+                Vector3 offset = new Vector3(1.5f * _entityCollider.PanelXOffset, _entityCollider.WorldYPosition, 2 * _entityCollider.PanelYOffset);
+
+                Transform rootTransform = EntityCollider.Entity ? _entityCollider.Entity.transform : transform;
+
+                _visualCube.transform.position = rootTransform.position + offset;
+                _visualCube.transform.localScale = size;
+            }
+            else if (_visualCube != null)
+            {
+                _visualCube.SetActive(false);
+            }
         }
     }
 }

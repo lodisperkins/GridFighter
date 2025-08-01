@@ -47,6 +47,12 @@ namespace Lodis.AI
         /// <param name="goal">The panel the path ends</param>
         public float CalculateManhattanDistance(PanelBehaviour panel, PanelBehaviour goal)
         {
+            if (panel == null || goal == null)
+            {
+                Debug.LogError("Panel or goal is null in CalculateManhattanDistance method.");
+                return float.MaxValue; // Return a large value to indicate an error
+            }
+
             return Math.Abs(panel.Position.X - goal.Position.X) + Math.Abs(panel.Position.Y - goal.Position.Y);
         }
 

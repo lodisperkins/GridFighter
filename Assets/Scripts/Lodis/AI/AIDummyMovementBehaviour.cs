@@ -56,15 +56,8 @@ namespace Lodis.AI
             _movementBehaviour = _dummyBehaviour.Character.GetComponent<Movement.GridMovementBehaviour>();
             _currentPath = new List<PanelBehaviour>();
             _moveset = _dummyBehaviour.Character.GetComponent<MovesetBehaviour>();
-        }
 
-        private IEnumerator MoveRoutine(List<PanelBehaviour> path)
-        {
-            for (int i = 0; i < path.Count; i++)
-            {
-                _movementBehaviour.MoveToPanel(path[i], false, _movementBehaviour.Alignment);
-                yield return new WaitUntil(() => !_movementBehaviour.IsMoving);
-            }
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ClearPath);
         }
 
         public void MoveToLocation(PanelBehaviour panel)
@@ -95,8 +88,10 @@ namespace Lodis.AI
                 return;
             }
 
-            if (!_movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false))
-                Debug.Log(_dummyBehaviour.Character.name + " cannot move to panel at location " + _moveTarget.Position +
+            PanelBehaviour currentPanel = _currentPath[_currentPathIndex];
+
+            if (currentPanel == null || !_movementBehaviour.MoveToPanel(currentPanel, false))
+                Debug.Log(_dummyBehaviour.Character.name + " cannot move to panel at location " + _moveTarget?.Position +
                     ". Panel at location " + _currentPath[_currentPathIndex].Position + " cannot be reached.");
         }
 
@@ -124,15 +119,20 @@ namespace Lodis.AI
             {
                 if (_cancelPathingOnHit)
                 {
-                    _currentPath.Clear();
-                    _currentPathIndex = 0;
-                    NeedPath = false;
+                    ClearPath();
                 }
                 else
                 {
                     NeedPath = true;
                 }
             }
+        }
+
+        private void ClearPath()
+        {
+            _currentPath.Clear();
+            _currentPathIndex = 0;
+            NeedPath = false;
         }
     }
 }

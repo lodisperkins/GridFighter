@@ -58,7 +58,9 @@ namespace Lodis.Gameplay
         private void FireLink(FVector2 position)
         {
             //Creates copy of link prefab
-            EntityDataBehaviour visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), SpawnTransform.WorldPosition, FQuaternion.Identity, SetColors);
+            EntityDataBehaviour visualPrefab = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab.GetComponent<EntityDataBehaviour>(), SpawnTransform.WorldPosition, FQuaternion.Identity);
+            SetColors(visualPrefab);
+
             //Get the movement script attached and add it to a list
             Movement.GridMovementBehaviour gridMovement = visualPrefab.GetComponent<Movement.GridMovementBehaviour>();
 

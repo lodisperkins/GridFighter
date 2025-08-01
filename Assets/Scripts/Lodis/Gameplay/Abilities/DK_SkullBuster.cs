@@ -122,6 +122,7 @@ namespace Lodis.Gameplay
             _bodyHitScript = HitColliderSpawner.SpawnCollider(Owner.FixedTransform, bodyColliderScale, bodyColliderScale, _bodyCollider, Owner);
             _bodyHitScript.FixedTransform.LocalPosition = FVector3.Zero;
             _bodyHitScript.ColliderInfo.OnHit = OnHit;
+            _bodyHitScript.Entity.VisualRoot = _bodyHitScript.gameObject.transform;
         }
 
         //Called when ability is used
@@ -136,6 +137,9 @@ namespace Lodis.Gameplay
             //_visualPrefabInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.visualPrefab, OwnerMoveset.MeleeHitBoxSpawnTransform);
             _visualPrefabInstance = Object.Instantiate(abilityData.visualPrefab, _spawnTransform);
             _visualPrefabInstance.transform.localPosition += Vector3.back * 0.3f;
+
+            ParticleColorManagerBehaviour manager = _visualPrefabInstance.GetComponent<ParticleColorManagerBehaviour>();
+            manager.SetColors(OwnerMoveScript.Alignment);
 
             //Spawn a game object with the collider attached
             _fistHitScript = HitColliderSpawner.SpawnCollider(Owner.FixedTransform, _fistColliderScale, _fistColliderScale, _fistCollider, Owner);

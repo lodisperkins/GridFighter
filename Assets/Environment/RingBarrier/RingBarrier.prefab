@@ -235,6 +235,7 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _isHurtBox: 1
   debuggingEnabled: 0
 --- !u!1 &5842930448442093247
 GameObject:
@@ -737,6 +738,7 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _isHurtBox: 1
   debuggingEnabled: 0
 --- !u!1 &8188990938656268907
 GameObject:
@@ -787,6 +789,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 0
   _onlyChangeHue: 0
+  _setColorOnStart: 1
   _changeStartColor: 1
   _changeColorOverLifetime: 1
   _changeColorBySpeed: 0
@@ -1914,6 +1917,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8744172618015234542}
     m_Modifications:
+    - target: {fileID: 743758813837586620, guid: 5fe8caaa64d924f4c90db6376861d09f,
+        type: 3}
+      propertyPath: _isHurtBox
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 743758813837586620, guid: 5fe8caaa64d924f4c90db6376861d09f,
         type: 3}
       propertyPath: debuggingEnabled

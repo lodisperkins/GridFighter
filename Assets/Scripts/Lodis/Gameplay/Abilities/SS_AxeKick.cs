@@ -53,6 +53,18 @@ namespace Lodis.Gameplay
             }
         }
 
+        protected override void OnRecover(params object[] args)
+        {
+            base.OnRecover(args);
+            CleanUpColliders();
+        }
+
+        protected override void OnMatchRestart()
+        {
+            base.OnMatchRestart();
+            CleanUpColliders();
+        }
+
         protected override void OnEnd()
         {
             base.OnEnd();

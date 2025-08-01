@@ -135,11 +135,11 @@ namespace Lodis.Gameplay
                 RoutineBehaviour.Instance.StopAction(_winAnimCondition);
                 StopCurrentAnimation();
 
-                if (SceneManagerBehaviour.Instance.GameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.GameMode != (int)GameMode.TUTORIAL)
+                if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
                     RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Intro"), condition => _characterStateMachine.CurrentState == "Idle");
             });
 
-            if (SceneManagerBehaviour.Instance.GameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.GameMode != (int)GameMode.TUTORIAL)
+            if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
                 _animator.SetTrigger("Intro");
 
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
@@ -147,7 +147,7 @@ namespace Lodis.Gameplay
                 if (!gameObject.activeInHierarchy || MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.DRAW)
                     return;
 
-                if (SceneManagerBehaviour.Instance.GameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.GameMode != (int)GameMode.TUTORIAL)
+                if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
                     _winAnimCondition = RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Win"), condition => _characterStateMachine.CurrentState == "Idle");
             });
         }

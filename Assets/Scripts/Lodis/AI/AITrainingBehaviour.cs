@@ -24,6 +24,8 @@ namespace Lodis.AI
         private Text _invincibleText;
         [SerializeField]
         private Text _burstText;
+        [SerializeField]
+        private Text _colliderText;
         private int _currentState = -1;
         private bool _initialized;
 
@@ -64,6 +66,14 @@ namespace Lodis.AI
                 _burstText.text = "Infinite Burst : Off";
             else
                 _burstText.text = "Infinite Burst : On";
+        }
+
+        public void ToggleColliderText()
+        {
+            if (!MatchManagerBehaviour.Instance.CollidersEnabled)
+                _colliderText.text = "Collider Visuals : Off";
+            else
+                _colliderText.text = "Collider Visuals : On";
         }
 
         public void NextAIState()

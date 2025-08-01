@@ -65,7 +65,7 @@ namespace Lodis.UI
 
         public void ResetTimer()
         {
-            if (SceneManagerBehaviour.Instance.GameMode == (int)GameMode.TUTORIAL || SceneManagerBehaviour.Instance.GameMode == (int)GameMode.PRACTICE)
+            if (SceneManagerBehaviour.Instance.CurrentGameMode == (int)GameMode.TUTORIAL || SceneManagerBehaviour.Instance.CurrentGameMode == (int)GameMode.PRACTICE)
                 return;
 
             if (!IsInfinite)

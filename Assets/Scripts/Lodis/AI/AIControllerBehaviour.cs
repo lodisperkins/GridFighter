@@ -839,7 +839,7 @@ namespace Lodis.AI
 
             float currentLowest = _actionScoreMax;
             _currentActionIndex = 0; // Always the first action
-            bool foundRecording = false;
+
             _waitingToChangePlans = false;
             _currentRecording = null;
             _cantFindRecording = true;
@@ -876,8 +876,7 @@ namespace Lodis.AI
                     // If the current action is valid and matches our situation more closely than the last action...
                     if (ValidateAction(recording, 0) && CheckSituationSimilar(recording))
                     {
-                        foundRecording = true; // Found a valid recording
-                                               // ...update the current action.
+                        // ...update the current action.
                         _currentRecording = recording;
 
                         _currentRecordingIndex = i;

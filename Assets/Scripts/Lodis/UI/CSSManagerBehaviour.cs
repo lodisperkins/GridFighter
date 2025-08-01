@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 using Lodis.ScriptableObjects;
 using UnityEngine.Events;
 using Lodis.Input;
+using NaughtyAttributes.Test;
 
 namespace Lodis.UI
 {
@@ -152,7 +153,7 @@ namespace Lodis.UI
                 _player2Root.SetActive(false);
             }
 
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
+            if (IsAIMode())
             {
                 _colorManager.SetPlayerColor(2, 5);
                 _p2ColorIndex = 5;
@@ -171,7 +172,7 @@ namespace Lodis.UI
 
                 _AIModeActive = true;
             }
-            else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.MULTIPLAYER)
+            else if (SceneManagerBehaviour.Instance.CurrentGameMode.Value == (int)GameMode.MULTIPLAYER)
             {
                 _canSelectCharP2 = true;
                 _p2CustomCharacterMenu.SetActive(true);
@@ -251,7 +252,7 @@ namespace Lodis.UI
                 _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
                 _backgroundImage.SetPrimaryColor(_colorManager.P1Color.Value / 2);
             }
-            else if (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER)
+            else if (playerNum == 2 && SceneManagerBehaviour.Instance.CurrentGameMode.Value != (int)GameMode.SINGLEPLAYER)
             {
                 _colorManager.SetPlayerColor(playerNum, _p2ColorIndex);
                 _backgroundImage.SetSecondaryColor(_colorManager.P2Color.Value / 2);
@@ -275,7 +276,7 @@ namespace Lodis.UI
                 _colorManager.SetPlayerColor(playerNum, _p1ColorIndex);
                 _backgroundImage.SetPrimaryColor(_colorManager.P1Color.Value / 2);
             }
-            else if ((playerNum == 1 && _AIModeActive) || (playerNum == 2 && SceneManagerBehaviour.Instance.GameMode.Value != (int)GameMode.SINGLEPLAYER && !_p2CharacterSelected))
+            else if ((playerNum == 1 && _AIModeActive) || (playerNum == 2 && SceneManagerBehaviour.Instance.CurrentGameMode.Value != (int)GameMode.SINGLEPLAYER && !_p2CharacterSelected))
             {
                 _p2ColorIndex++;
                 if (_p2ColorIndex == _p1ColorIndex && _p1CharacterSelected)
@@ -404,6 +405,12 @@ namespace Lodis.UI
             _currentPlayer = 2;
         }
 
+        private bool IsAIMode()
+        {
+            return SceneManagerBehaviour.Instance.CurrentGameMode.Value == (int)GameMode.PlayerVSCPU ||
+                   SceneManagerBehaviour.Instance.CurrentGameMode.Value == (int)GameMode.PRACTICE;
+        }
+
         private void GoToPreviousPage(int playerNum)
         {
             PageManagerBehaviour pageManager = null;
@@ -450,7 +457,7 @@ namespace Lodis.UI
             _p1Data.HeadShot = data.HeadShot;
             _p1CharacterSelected = true;
 
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
+            if (IsAIMode())
             {
                 _p1PageManager.GoToPage("AISelect");
             }
@@ -459,7 +466,7 @@ namespace Lodis.UI
                 _p1PageManager.GoToPage("ready");
             }
 
-            if (_p1ColorIndex == _p2ColorIndex && (!_p2CharacterSelected || SceneManagerBehaviour.Instance.GameMode != (int)GameMode.MULTIPLAYER))
+            if (_p1ColorIndex == _p2ColorIndex && (!_p2CharacterSelected || SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.MULTIPLAYER))
                 SetColor(2);
         }
         public void SetDataP2(CharacterData data)
@@ -470,7 +477,7 @@ namespace Lodis.UI
             _p2CharacterSelected = true;
             _p2PageManager.GoToPage("ready");
 
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU)
+            if (IsAIMode())
             {
                 _p1PageManager.GoToPage("ready");
             }
@@ -628,14 +635,18 @@ namespace Lodis.UI
                 return;
             if (_p2CharacterSelected && playerNum == 2)
                 return;
+
             SceneManagerBehaviour.Instance.LoadScene(1);
+            SceneManagerBehaviour.Instance.StartingFight = false;
         }
         public void StartMatch()
         {
-            if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PlayerVSCPU || SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.MULTIPLAYER
-                || SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.ONLINE)
+            SceneManagerBehaviour.Instance.StartingFight = true;
+
+            if (SceneManagerBehaviour.Instance.CurrentGameMode.Value == (int)GameMode.PlayerVSCPU || SceneManagerBehaviour.Instance.CurrentGameMode.Value == (int)GameMode.MULTIPLAYER
+                || SceneManagerBehaviour.Instance.CurrentGameMode.Value == (int)GameMode.ONLINE)
                 SceneManagerBehaviour.Instance.LoadScene(4);
-            else if (SceneManagerBehaviour.Instance.GameMode.Value == (int)GameMode.PRACTICE)
+            else if (SceneManagerBehaviour.Instance.CurrentGameMode.Value == (int)GameMode.PRACTICE)
                 SceneManagerBehaviour.Instance.LoadScene(5);
         }
         void Update()
