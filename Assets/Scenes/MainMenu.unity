@@ -1810,6 +1810,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1250450188}
   m_SourcePrefab: {fileID: 100100000, guid: cd44e3f1f47b4e844bb56c12bc030286, type: 3}
+--- !u!114 &41786298 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1251192488738103914, guid: cd44e3f1f47b4e844bb56c12bc030286,
+    type: 3}
+  m_PrefabInstance: {fileID: 41786297}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1250450186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52b8283a4231a64986370c8fa4a80ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &85989382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9165,9 +9177,11 @@ MonoBehaviour:
       OnGoToParent:
         m_PersistentCalls:
           m_Calls: []
+      GoToParentCondition: {fileID: 0}
       OnGoToChild:
         m_PersistentCalls:
           m_Calls: []
+      GoToChildCondition: {fileID: 0}
     - PageRoot: {fileID: 2001925159}
       FirstSelected: {fileID: 1513512983}
       KeepRootVisible: 0
@@ -9230,9 +9244,11 @@ MonoBehaviour:
       OnGoToParent:
         m_PersistentCalls:
           m_Calls: []
+      GoToParentCondition: {fileID: 0}
       OnGoToChild:
         m_PersistentCalls:
           m_Calls: []
+      GoToChildCondition: {fileID: 0}
     - PageRoot: {fileID: 475971908}
       FirstSelected: {fileID: 582686927}
       KeepRootVisible: 0
@@ -9413,9 +9429,11 @@ MonoBehaviour:
                   m_StringArgument: 
                   m_BoolArgument: 0
                 m_CallState: 2
+          GoToParentCondition: {fileID: 0}
           OnGoToChild:
             m_PersistentCalls:
               m_Calls: []
+          GoToChildCondition: {fileID: 0}
         - PageRoot: {fileID: 572049436}
           FirstSelected: {fileID: 0}
           KeepRootVisible: 0
@@ -9610,9 +9628,11 @@ MonoBehaviour:
                   m_StringArgument: 
                   m_BoolArgument: 0
                 m_CallState: 2
+          GoToParentCondition: {fileID: 0}
           OnGoToChild:
             m_PersistentCalls:
               m_Calls: []
+          GoToChildCondition: {fileID: 0}
         OnActive:
           m_PersistentCalls:
             m_Calls:
@@ -9778,9 +9798,11 @@ MonoBehaviour:
                 m_StringArgument: 
                 m_BoolArgument: 0
               m_CallState: 2
+        GoToParentCondition: {fileID: 0}
         OnGoToChild:
           m_PersistentCalls:
             m_Calls: []
+        GoToChildCondition: {fileID: 0}
       - PageRoot: {fileID: 800705245}
         FirstSelected: {fileID: 0}
         KeepRootVisible: 0
@@ -9908,9 +9930,11 @@ MonoBehaviour:
                   m_StringArgument: 
                   m_BoolArgument: 0
                 m_CallState: 2
+          GoToParentCondition: {fileID: 0}
           OnGoToChild:
             m_PersistentCalls:
               m_Calls: []
+          GoToChildCondition: {fileID: 0}
         - PageRoot: {fileID: 572049436}
           FirstSelected: {fileID: 0}
           KeepRootVisible: 0
@@ -10105,9 +10129,11 @@ MonoBehaviour:
                   m_StringArgument: 
                   m_BoolArgument: 0
                 m_CallState: 2
+          GoToParentCondition: {fileID: 0}
           OnGoToChild:
             m_PersistentCalls:
               m_Calls: []
+          GoToChildCondition: {fileID: 0}
         OnActive:
           m_PersistentCalls:
             m_Calls:
@@ -10261,9 +10287,11 @@ MonoBehaviour:
                 m_StringArgument: 
                 m_BoolArgument: 1
               m_CallState: 2
+        GoToParentCondition: {fileID: 0}
         OnGoToChild:
           m_PersistentCalls:
             m_Calls: []
+        GoToChildCondition: {fileID: 0}
       OnActive:
         m_PersistentCalls:
           m_Calls:
@@ -10314,7 +10342,7 @@ MonoBehaviour:
             m_MethodName: SetSelectedGameObject
             m_Mode: 2
             m_Arguments:
-              m_ObjectArgument: {fileID: 1508005419}
+              m_ObjectArgument: {fileID: 1250450186}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
               m_IntArgument: 0
               m_FloatArgument: 0
@@ -10357,9 +10385,47 @@ MonoBehaviour:
               m_StringArgument: 
               m_BoolArgument: 1
             m_CallState: 2
+          - m_Target: {fileID: 41786298}
+            m_TargetAssemblyTypeName: Lodis.UI.EventButtonBehaviour, Assembly-CSharp
+            m_MethodName: OnSelect
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 1
+            m_CallState: 2
+          - m_Target: {fileID: 616894197}
+            m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+          - m_Target: {fileID: 1715711487}
+            m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+            m_MethodName: SetActive
+            m_Mode: 6
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      GoToParentCondition: {fileID: 0}
       OnGoToChild:
         m_PersistentCalls:
           m_Calls: []
+      GoToChildCondition: {fileID: 0}
     OnActive:
       m_PersistentCalls:
         m_Calls: []
@@ -10369,15 +10435,20 @@ MonoBehaviour:
     OnGoToParent:
       m_PersistentCalls:
         m_Calls: []
+    GoToParentCondition: {fileID: 0}
     OnGoToChild:
       m_PersistentCalls:
         m_Calls: []
+    GoToChildCondition: {fileID: 0}
   _eventSystem: {fileID: 834067889}
   _loadSceneOnFirstPage: 0
   _previousPageOnCancel: 1
   _sceneIndex: -1
   _changePageManually: 1
   _useEventSystemScheme: 1
+  _onPreviousPagePressed:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &834067892
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20258,54 +20329,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1796131875}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: Play
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 1
-          m_FloatArgument: 0
-          m_StringArgument: SettingsReverseTransition
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 834067889}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetSelectedGameObject
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1508005419}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1068591873}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetPrimaryColor
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 0200C3
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 1068591873}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetSecondaryColor
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 03C522
-          m_BoolArgument: 1
-        m_CallState: 2
       - m_Target: {fileID: 834067891}
         m_TargetAssemblyTypeName: 
         m_MethodName: GoToPageParent
@@ -20569,6 +20592,7 @@ MonoBehaviour:
   _scrollSmooth: 1
   _scrollSmoothDuration: 0.1
   _useLocalPosition: 0
+  _viewportMargin: 10
 --- !u!1001 &1884586695
 PrefabInstance:
   m_ObjectHideFlags: 0

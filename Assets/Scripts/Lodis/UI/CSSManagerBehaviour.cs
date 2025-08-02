@@ -341,6 +341,10 @@ namespace Lodis.UI
             //    BlackBoardBehaviour.Instance.Grid.CreateGrid();
             //    _gridCreated = true;
             //}
+
+            if (_currentPlayer == 2 && IsAIMode())
+                return;
+
             int num = _currentPlayer;
 
             PlayerControls controls = new PlayerControls();

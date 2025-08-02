@@ -286,8 +286,9 @@ namespace Lodis.Gameplay
             Fixed32 newHitAngle = ColliderInfo.HitAngle;
             Fixed32 defaultAngle = newHitAngle;
 
-            //Calculates new angle if this object should change trajectory based on direction of hit
-            if (ColliderInfo.AdjustAngleBasedOnAlignment && ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
+            //Calculates new angle if this object should change trajectory based on direction of hit.
+            //If the angle is 1.5 (meaning straight up) ignore it.
+            if (ColliderInfo.AdjustAngleBasedOnAlignment && ColliderInfo.OwnerAlignement == GridAlignment.RIGHT && defaultAngle != new Fixed32(98304))
             {
                 newHitAngle = Fixed32.MirrorAngleAcrossYAxis(defaultAngle);
             }

@@ -61,6 +61,7 @@ namespace Lodis.UI
                 UIButton = GetComponent<Button>();
 
             UIButton.OnSelect(null);
+            _onSelect?.Invoke();
         }
 
         public void OnDeselect(BaseEventData eventData)
