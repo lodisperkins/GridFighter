@@ -507,6 +507,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da0dfb7eed89f1648a522fb38e42c289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _accessoryData: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   _moveCurve:
     serializedVersion: 2
     m_Curve: []
@@ -587,3 +588,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorManager: {fileID: 8395803213616011205}
   colliderBehaviour: {fileID: 0}
+  manuallySetColors: 0

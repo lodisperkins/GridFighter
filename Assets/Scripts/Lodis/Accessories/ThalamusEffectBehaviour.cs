@@ -21,6 +21,13 @@ namespace Lodis.Accessories
             _hoverScipt = GetComponent<HoverBehaviour>();
             _health = Owner.GetComponentInChildren<HealthBehaviour>();
 
+            MatchManagerBehaviour manager = MatchManagerBehaviour.Instance;
+
+            if (manager)
+            {
+                manager.AddOnMatchStartAction(() => _hoverScipt.enabled = true);
+            }
+
             _health.AddOnTakeDamageAction(StopEffect);
 
             _rotation = transform.rotation;
@@ -53,6 +60,15 @@ namespace Lodis.Accessories
 
             if (_hoverScipt)
                 _hoverScipt.enabled = true;
+        }
+
+        public override void OnSetToWinPosition()
+        {
+            if (_hoverScipt)
+            {
+                _hoverScipt.enabled = false;
+                _hoverScipt.transform.localPosition = Vector3.zero;
+            }
         }
     }
 }

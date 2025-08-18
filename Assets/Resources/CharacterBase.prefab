@@ -1401,6 +1401,37 @@ MonoBehaviour:
     debugID: 0
   _isHurtBox: 1
   debuggingEnabled: 0
+--- !u!1 &2296372778538319251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1203836679383795925}
+  m_Layer: 9
+  m_Name: Thalumus
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1203836679383795925
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2296372778538319251}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.31963652, y: -0.627129, z: -0.659147, w: 0.2647013}
+  m_LocalPosition: {x: -0.222, y: 0.962, z: -0.201}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7488904356658200161}
+  m_LocalEulerAnglesHint: {x: -84.846, y: 84.197, z: -215.333}
 --- !u!1 &3280269941161266660
 GameObject:
   m_ObjectHideFlags: 0
@@ -2183,6 +2214,38 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &6686593360384137730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7488904356658200161}
+  m_Layer: 9
+  m_Name: AccessoryWinPositions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7488904356658200161
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6686593360384137730}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1203836679383795925}
+  m_Father: {fileID: 8573480685531974960}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6830890488698138160
 GameObject:
   m_ObjectHideFlags: 0
@@ -2250,6 +2313,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 755719142905574261}
+  - {fileID: 7488904356658200161}
   m_Father: {fileID: 561307191668043432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &2313499556558640970
@@ -2298,6 +2362,7 @@ MonoBehaviour:
   _animator: {fileID: 2313499556558640970}
   _runtimeController: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
   _characterStateManager: {fileID: 3205124130663625092}
+  _characterMesh: {fileID: 0}
   _moveAnimationStartUpTime: 0
   _moveAnimationRecoverTime: 0
   _flinchStartUpTime: 0
@@ -2368,6 +2433,9 @@ MonoBehaviour:
   _spawnSound: {fileID: 8300000, guid: dc6389869d48eb74a842e55a984c284b, type: 3}
   _characterVoice: {fileID: 6432807319471925545}
   _accessory: {fileID: 0}
+  _accessoryWinPositions:
+  - AccessoryName: Thalamus
+    AccessoryTransform: {fileID: 1203836679383795925}
 --- !u!114 &6183443034730705748
 MonoBehaviour:
   m_ObjectHideFlags: 0

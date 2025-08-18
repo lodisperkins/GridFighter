@@ -30,6 +30,7 @@ namespace Lodis.Movement
         private CharacterAnimationBehaviour _characterAnimator;
         private CharacterStateMachineBehaviour _characterStateMachine;
         private bool _canCheckLanding;
+        private bool _didRecoveryTimer;
         private FixedTimeAction _landingAction;
 
         public static Fixed32 LandingSpeed = new Fixed32(6553);
@@ -156,6 +157,7 @@ namespace Lodis.Movement
             //Start recovery from knock down
             _landingAction = FixedPointTimer.StartNewTimedAction(() =>
             {
+                _didRecoveryTimer = true;
                 RecoveringFromFall = false;
                 CanCheckLanding = false;
                 Landing = false;
@@ -172,6 +174,7 @@ namespace Lodis.Movement
             if (BlackBoardBehaviour.Instance.Grid.GetPanelAtLocationInWorld(transform.position, out panel, false))
                 _knockback.MovementBehaviour.Position = panel.Position;
 
+            _didRecoveryTimer = false;
             Landing = true;
             _onLandingStart?.Invoke();
             _knockback.MovementBehaviour.DisableMovement(condition => !Landing, false, true);
@@ -252,12 +255,13 @@ namespace Lodis.Movement
             {
                 StartLandingLag();
             }
-            else if (Landing && _landingAction != null)
+            else if (Landing && _didRecoveryTimer)
             {
-                if (!_landingAction.IsActive && !RecoveringFromFall)
-                {
-                    TumblingRecover();
-                }
+                RecoveringFromFall = false;
+                CanCheckLanding = false;
+                Landing = false;
+                _knockback.Physics.GridActive = true;
+                _knockback.CurrentAirState = AirState.NONE;
             }
 
             //if (!_knockback.Physics.IsGrounded || _knockback.CheckIfIdle())

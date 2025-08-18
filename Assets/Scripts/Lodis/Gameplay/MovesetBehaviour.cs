@@ -1003,7 +1003,7 @@ namespace Lodis.Gameplay
                 LastAttackDirection = (FVector2)args[1];
             ability.currentActivationAmount++;
 
-            if (ability.MaxActivationAmountReached)
+            if (!_discardDeck.Contains(_lastAbilityInUse))
                 _discardDeck.AddAbility(_lastAbilityInUse);
 
 

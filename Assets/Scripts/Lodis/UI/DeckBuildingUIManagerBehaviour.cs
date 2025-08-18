@@ -114,6 +114,7 @@ namespace Lodis.UI
                 buttonInstance.AddOnClickEvent(() =>
                 {
                     _buildManager.LoadCustomDeck(optionName);
+                    _potentialName = optionName;
                     _originalName = optionName;
                     PageManager.GoToPageChild(0);
                 });
@@ -185,9 +186,10 @@ namespace Lodis.UI
 
         public void UpdateIconChoicesWithType(int type, bool setSelected = false)
         {
-
+            // Get all the icons for the type that was chosen.
             Transform iconTransform = Array.Find(_abilitySections, section => section.AbilityType == (AbilityType)type).IconHolder;
 
+            //Clear out all of the old icons in the section.
             for (int i = iconTransform.childCount - 1; i >= 0; i--)
             {
                 Destroy(iconTransform.GetChild(i).gameObject);
@@ -196,21 +198,28 @@ namespace Lodis.UI
 
             List<AbilityData> data = _buildManager.ReplacementAbilities.AbilityData.FindAll(abilityData => abilityData.AbilityType == (AbilityType)type);
 
-
+            // Populate new icons in the section.
             for (int i = 0; i < data.Count; i++)
             {
                 AbilityData currentData = data[i];
 
+                // Don't display abilities that are already in the users deck.
                 if (_buildManager.NormalDeck.Contains(currentData) || _buildManager.SpecialDeck.Contains(currentData))
                     continue;
 
+                // Create a new button for the ability.
                 EventButtonBehaviour abilityButtonInstance = Instantiate(_abilityButton, iconTransform);
 
+                //Initialize all of the things so it appears correctly and updates info properly.
                 abilityButtonInstance.Init();
                 abilityButtonInstance.ButtonImage.sprite = currentData.DisplayIcon;
-                abilityButtonInstance.ButtonImage.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)currentData.EnergyCost];
                 abilityButtonInstance.name = currentData.abilityName;
 
+                MoveDescriptionBehaviour moveDescription = abilityButtonInstance.GetComponent<MoveDescriptionBehaviour>();
+
+                moveDescription.Init(_infoTextBox, _infoPlayer, currentData);
+
+                // When we select the ability as a replacement, add it to the deck and go back to the previous page.
                 abilityButtonInstance.AddOnClickEvent(() =>
                 {
                     _buildManager.CurrentAbilityType = type;
@@ -218,12 +227,6 @@ namespace Lodis.UI
                     UpdateDeck();
                     UpdateIconChoicesWithType(type, true);
                     _pageManager.GoToPageParent();
-                });
-
-                abilityButtonInstance.AddOnSelectEvent(() =>
-                {
-                    _infoTextBox.text = currentData.abilityDescription;
-                    _infoPlayer.clip = currentData.exampleClip;
                 });
 
                 if (setSelected)

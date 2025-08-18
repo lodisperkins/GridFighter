@@ -35,6 +35,7 @@ namespace Lodis.Gameplay
     [RequireComponent(typeof(Animator))]
     public class CharacterAnimationBehaviour : SimulationBehaviour
     {
+        [Header("Action Behaviour References")]
         [Tooltip("The move behaviour attached to the owner. Used to update movement animations")]
         [SerializeField]
         private Movement.GridMovementBehaviour _moveBehaviour;
@@ -46,21 +47,21 @@ namespace Lodis.Gameplay
         private CharacterDefenseBehaviour _defenseBehaviour;
         [SerializeField]
         private MovesetBehaviour _movesetBehaviour;
+
+        [Header("Animation References")]
         [SerializeField]
         private Animator _animator;
-        private Ability _currentAbilityAnimating;
-        private AnimationClip _currentClip;
         [SerializeField]
         private RuntimeAnimatorController _runtimeController;
-        private int _animationPhase;
-        private bool _animatingMotion;
         [SerializeField]
         private CharacterStateMachineBehaviour _characterStateManager;
-        private StateMachine _characterStateMachine;
-        [Tooltip("THe amount of time it takes the character to get into the move pose")]
+        [SerializeField] private Transform _characterMesh;
+
+        [Header("Animation Settings")]
+        [Tooltip("The amount of time it takes the character to get into the move pose")]
         [SerializeField]
         private float _moveAnimationStartUpTime;
-        [Tooltip("THe amount of time it takes the character to exit the move pose")]
+        [Tooltip("The amount of time it takes the character to exit the move pose")]
         [SerializeField]
         private float _moveAnimationRecoverTime;
         [SerializeField]
@@ -72,19 +73,11 @@ namespace Lodis.Gameplay
         [SerializeField]
         private AnimationClip _defaultMeleeAnimation;
         [SerializeField]
-        private  int _animationLayer = 0;
-        private AnimatorTransitionInfo _lastTransitionInfo;
-        public Coroutine AbilityAnimationRoutine;
-        private AnimatorOverrideController _overrideController;
-        private float _currentClipStartUpTime;
-        private float _currentClipActiveTime;
-        private float _currentClipRecoverTime;
-        private bool _bracedAgainstFloor;
-        private TimedAction _timedMoveAction;
+        private int _animationLayer = 0;
         [SerializeField]
         private float _moveAnimationHangTime;
-        private ConditionAction _bufferedAnimation;
 
+        [Header("Shuffle Settings")]
         [SerializeField]
         [Tooltip("How long it will take to start manually shuffling.")]
         private FloatVariable _manualShuffleStartTime;
@@ -96,6 +89,20 @@ namespace Lodis.Gameplay
         private FloatVariable _manualShuffleRecoverTime;
 
         //---
+        private int _animationPhase;
+        private bool _animatingMotion;
+        private Ability _currentAbilityAnimating;
+        private AnimationClip _currentClip;
+        private StateMachine _characterStateMachine;
+        private ConditionAction _bufferedAnimation;
+        private AnimatorTransitionInfo _lastTransitionInfo;
+        public Coroutine AbilityAnimationRoutine;
+        private AnimatorOverrideController _overrideController;
+        private float _currentClipStartUpTime;
+        private float _currentClipActiveTime;
+        private float _currentClipRecoverTime;
+        private bool _bracedAgainstFloor;
+        private TimedAction _timedMoveAction;
         private bool _animatingAbility;
         private bool _airTravelLocked;
         private Vector2 _lockedAirDirection;
@@ -148,7 +155,12 @@ namespace Lodis.Gameplay
                     return;
 
                 if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
-                    _winAnimCondition = RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Win"), condition => _characterStateMachine.CurrentState == "Idle");
+                {
+                    _winAnimCondition = RoutineBehaviour.Instance.StartNewConditionAction(args =>
+                    {
+                        _animator.SetTrigger("Win");
+                    }, condition => _characterStateMachine.CurrentState == "Idle");
+                }
             });
         }
 
@@ -203,6 +215,57 @@ namespace Lodis.Gameplay
         public void ResetAnimationPhase()
         {
             _animationPhase = 0;
+        }
+
+        public void SetCharacterModelEnabled(float delay)
+        {
+            _characterMesh.gameObject.SetActive(false);
+
+            RoutineBehaviour.Instance.StartNewTimedAction(a =>
+            {
+                _characterMesh.gameObject.SetActive(true);
+            }, TimedActionCountType.SCALEDTIME, delay);
+        }
+
+        public void SetCharacterModelEnabled()
+        {
+            _characterMesh.gameObject.SetActive(true);
+        }
+
+        public void SetCharacterModelDisabled()
+        {
+            _characterMesh.gameObject.SetActive(false);
+        }
+
+        public void SetAccessoryToWinPosition()
+        {
+            _characterFeedbackBehaviour.SetAccessoryToWinPosition();
+        }
+
+        public void SpawnObject(UnityEngine.Object unityObject)
+        {
+            GameObject spawnObject = Instantiate(unityObject as GameObject, transform.position, transform.rotation);
+
+            if (spawnObject == null)
+            {
+                Debug.LogError("Failed to spawn object: " + unityObject.name);
+                return;
+            }
+        }
+
+        public void EnableAccessory()
+        {
+            _characterFeedbackBehaviour.EnableAccessory();
+        }
+
+        public void DisableAccessory()
+        {
+            _characterFeedbackBehaviour.DisableAccessory();
+        }
+
+        public void SetRotationY(float rotation)
+        {
+            transform.rotation = Quaternion.Euler(0, rotation, 0);
         }
 
         public void CalculateAnimationSpeed()

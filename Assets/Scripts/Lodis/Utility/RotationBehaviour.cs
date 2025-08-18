@@ -28,16 +28,23 @@ public class RotationBehaviour : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (Time.timeScale == 0)
+        if (Time.timeScale == 0 || GridGame.TimeScale == 0)
         {
             return;
         }
+
         if (RotateOnSelf)
         {
             transform.Rotate(Axis, Space.Self);
-            return;
         }
-        transform.Rotate(Axis, Space.World);
+        else if (transform.parent != null)
+        {
+            transform.Rotate(transform.parent.TransformDirection(Axis), Space.World);
+        }
+        else
+        {
+            transform.Rotate(Axis, Space.World);
+        }
     }
 
     private void OnDisable()

@@ -8,11 +8,22 @@ using CustomEventSystem;
 using Lodis.Movement;
 using Lodis.Accessories;
 using Lodis.Sound;
+using Lodis.ScriptableObjects;
+using static UnityEngine.UI.GridLayoutGroup;
+using FixedPoints;
+using System;
 
 namespace Lodis.Gameplay
 {
     public class CharacterFeedbackBehaviour : FlashBehaviour
     {
+        [Serializable]
+        public class AccesoryPosition
+        {
+            public string AccessoryName;
+            public Transform AccessoryTransform;
+        }
+
         [Header("Color Options")]
         [SerializeField] private Color _invincibleColor;
         [SerializeField] private Color _intangibleColor;
@@ -36,6 +47,7 @@ namespace Lodis.Gameplay
 
         [Header("Character Extras")]
         [SerializeField] private AccessoryEffectBehaviour _accessory;
+        [SerializeField] private AccesoryPosition[] _accessoryWinPositions;
 
         //---
         private MovesetBehaviour _moveSet;
@@ -44,6 +56,8 @@ namespace Lodis.Gameplay
         private int lastComboTrailIndex;
         private bool _comboTrailEnabled;
         private ShakeBehaviour _shakeBehaviour;
+        private Vector3 _accessoryStartPosition;
+        private Quaternion _accessoryStartRotation;
 
         public ColorManagerBehaviour ColorManager { get => _colorManager; private set => _colorManager = value; }
 
@@ -78,8 +92,21 @@ namespace Lodis.Gameplay
                 PlaySpawnEffect();
             }
 
-            MatchManagerBehaviour.Instance.AddOnRingoutAction(DisableComboTrail);
-            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(DisableComboTrail);
+            MatchManagerBehaviour.Instance.AddOnRingoutAction(() => SetCharacterUIEnabled(false));
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ResetItems);
+
+
+            if (_accessory)
+            {
+                _accessoryStartPosition = _accessory.transform.localPosition;
+                _accessoryStartRotation = _accessory.transform.localRotation;
+            }
+        }
+
+        private void ResetItems()
+        {
+            SetCharacterUIEnabled(true);
+            ResetAccessory();
         }
 
         private void PlayStunParticles(bool active)
@@ -123,6 +150,115 @@ namespace Lodis.Gameplay
         public void SetCharacterUIEnabled(bool value)
         {
             _characterUI.SetActive(value);
+        }
+
+        public void ResetAccessory()
+        {
+            if (!_accessory)
+                return;
+
+            _accessory.transform.parent = transform;
+            _accessory.transform.localPosition = _accessoryStartPosition;
+            _accessory.transform.localRotation = _accessoryStartRotation;
+            EnableAccessory();
+        }
+
+        /// <summary>
+        /// Make the accessory appear and play the spawn effect.
+        /// </summary>
+        public void EnableAccessory()
+        {
+            if (!_accessory || _accessory.gameObject.activeInHierarchy)
+                return;
+
+            GameObject spawnEffect = _accessory.Data.SpawnEffect;
+
+            ObjectPoolBehaviour.Instance.GetObject(spawnEffect, _accessory.transform.position, _accessory.transform.rotation);
+
+            _accessory.gameObject.SetActive(true);
+        }
+
+        /// <summary>
+        /// Make the accessory appear and play the spawn effect.
+        /// </summary>
+        public void EnableAccessory(bool trySetColor)
+        {
+            if (!_accessory || _accessory.gameObject.activeInHierarchy)
+                return;
+
+            GameObject spawnEffect = _accessory.Data.SpawnEffect;
+
+            ObjectPoolBehaviour.Instance.GetObject(spawnEffect, _accessory.transform.position, _accessory.transform.rotation);
+
+            _accessory.gameObject.SetActive(true);
+
+            if (!trySetColor)
+                return;
+
+            ColorManagerBehaviour colorManager = _accessory.GetComponentInChildren<ColorManagerBehaviour>();
+
+            if (colorManager)
+            {
+                colorManager.SetColors((int)_movement.Alignment);
+            }
+        }
+
+        /// <summary>
+        /// Make the accessory disappear and play the despawn effect.
+        /// </summary>
+        public void DisableAccessory()
+        {
+            if (!_accessory || !_accessory.gameObject.activeInHierarchy)
+                return;
+
+            GameObject despawnEffect = _accessory.Data.DespawnEffect;
+
+            ObjectPoolBehaviour.Instance.GetObject(despawnEffect, _accessory.transform.position, _accessory.transform.rotation);
+
+            _accessory.gameObject.SetActive(false);
+        }
+
+        /// <summary>
+        /// Make the accessory disappear and play the despawn effect.
+        /// </summary>
+        /// <param name="condition">When the accessory is going to appear again.</param>
+        public void DisableAccessory(Condition condition)
+        {
+            if (!_accessory || !_accessory.gameObject.activeInHierarchy)
+                return;
+
+            GameObject despawnEffect = _accessory.Data.DespawnEffect;
+
+            ObjectPoolBehaviour.Instance.GetObject(despawnEffect, _accessory.transform.position, _accessory.transform.rotation);
+
+            _accessory.gameObject.SetActive(false);
+
+            FixedPointTimer.StartNewConditionAction(() => EnableAccessory(), condition);
+        }
+
+        public AccesoryPosition GetAccessoryWinPosition(string name)
+        {
+            foreach (AccesoryPosition position in _accessoryWinPositions)
+            {
+                if (position.AccessoryName == name)
+                    return position;
+            }
+
+            return null;
+        }
+
+        public void SetAccessoryToWinPosition()
+        {
+            AccesoryPosition position = GetAccessoryWinPosition(_accessory.Data.Name);
+
+            if (position != null)
+            {
+                _accessory.transform.parent = position.AccessoryTransform;
+                _accessory.transform.localPosition = Vector3.zero;
+                _accessory.transform.localRotation = Quaternion.identity;
+            }
+
+            _accessory.OnSetToWinPosition();
         }
 
         public void ResetAllRenderers()

@@ -283,6 +283,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &3283499087840557667
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8377901543796458268}
+  m_Layer: 9
+  m_Name: ThalumusWinTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8377901543796458268
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3283499087840557667}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.013134585, y: 0.99163496, z: -0.110859275, w: -0.06479029}
+  m_LocalPosition: {x: 0.047, y: -0.016, z: 0.147}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2042503076825194573}
+  m_LocalEulerAnglesHint: {x: -192.801, y: 7.399002, z: -540.687}
 --- !u!1 &5022200067893760852
 GameObject:
   m_ObjectHideFlags: 0
@@ -929,6 +960,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 1682157837091805656, guid: f27abcf27affe514389b878970d8e26a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8377901543796458268}
     - targetCorrespondingSourceObject: {fileID: 5696058662085655531, guid: f27abcf27affe514389b878970d8e26a,
         type: 3}
       insertIndex: -1
@@ -986,6 +1021,12 @@ SkinnedMeshRenderer:
 --- !u!137 &1687697686639068333 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2047937177872973112, guid: f27abcf27affe514389b878970d8e26a,
+    type: 3}
+  m_PrefabInstance: {fileID: 792726004613380501}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2042503076825194573 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1682157837091805656, guid: f27abcf27affe514389b878970d8e26a,
     type: 3}
   m_PrefabInstance: {fileID: 792726004613380501}
   m_PrefabAsset: {fileID: 0}
@@ -2402,6 +2443,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3406130847468409652, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
+      propertyPath: _characterMesh
+      value: 
+      objectReference: {fileID: 4993419220405788059}
+    - target: {fileID: 3406130847468409652, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
       propertyPath: _animationLayer
       value: 1
       objectReference: {fileID: 0}
@@ -2472,6 +2518,11 @@ PrefabInstance:
       propertyPath: _deathSparks
       value: 
       objectReference: {fileID: 1895933297059485229}
+    - target: {fileID: 8172829524244689262, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _accessoryWinPositions.Array.data[0].AccessoryTransform
+      value: 
+      objectReference: {fileID: 8377901543796458268}
     - target: {fileID: 8573480685531974960, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: m_LocalPosition.y

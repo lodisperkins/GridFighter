@@ -17,6 +17,7 @@ namespace Types
         public const int Epsilon = 1;
         private const int FractionMask = 0xffff;
         public static Fixed32 PI = (Fixed32)3.1415926535897932384626433832795;
+        public static Fixed32 One = (Fixed32)1;
         private const int DefaultScale = 16;
         private int _scale;
 
