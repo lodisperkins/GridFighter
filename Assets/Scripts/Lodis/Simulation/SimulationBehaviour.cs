@@ -24,6 +24,15 @@ public abstract class SimulationBehaviour : MonoBehaviour, ISerializedListObject
     public EntityDataBehaviour Entity { get => _entity;  set => _entity = value; }
 
     /// <summary>
+    /// Determines if this component should be updated during the rollback simulation's tick phase.
+    /// </summary>
+    public bool TickEnabled 
+    {
+        get;
+        set;
+    } = true;
+
+    /// <summary>
     /// The fixed point transform belonging to the rollback simulation entity.
     /// </summary>
     public FTransform FixedTransform { get => _entity.Data.Transform; }

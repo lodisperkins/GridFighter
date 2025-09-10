@@ -153,6 +153,8 @@ MonoBehaviour:
   _dangerColor: {r: 1, g: 0.44072777, b: 0, a: 0}
   _unblockableColor: {r: 0.63830453, g: 0, b: 0.9528302, a: 0}
   _mesh: {fileID: 5183677429573749598}
+  _explosionEffect: {fileID: 1562327961759149356, guid: 5148141cc15bf514ca3e30bdb962e638,
+    type: 3}
 --- !u!1001 &1903967098269224081
 PrefabInstance:
   m_ObjectHideFlags: 0

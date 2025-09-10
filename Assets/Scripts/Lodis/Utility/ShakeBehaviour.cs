@@ -25,7 +25,7 @@ public class ShakeBehaviour : MonoBehaviour
 
     public void ShakeRotation()
     {
-         _tweener = transform.DOShakeRotation(_duration, _strength, _frequency, 90);
+         _tweener = transform.DOShakeRotation(_duration, new Vector3(0,0, _strength), _frequency, 90);
         _tweener.onComplete += () => transform.rotation = _startRotation;
     }
 

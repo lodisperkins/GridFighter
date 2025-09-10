@@ -6,6 +6,7 @@ using UnityEngine;
 using DG.Tweening;
 using FixedPoints;
 using Types;
+using Lodis.FX;
 
 namespace Lodis.GridScripts
 {
@@ -39,6 +40,7 @@ namespace Lodis.GridScripts
         private MarkerType _currentMarker;
         private FlashBehaviour _flashBehaviour;
         private Fixed32 _safetyRating;
+        private bool _panelEnabled = true;
 
         /// <summary>
         /// The position of this panel on the grid.
@@ -67,6 +69,27 @@ namespace Lodis.GridScripts
             set
             {
                 panelData.Occupied = value;
+            }
+        }
+
+        public bool PanelEnabled
+        {
+            get
+            {
+                return _panelEnabled;
+            }
+            set
+            {
+                if (value == _panelEnabled)
+                    return;
+
+                if (!value)
+                {
+                    FXManagerBehaviour.Instance.SpawnExplosion(transform.position, 2);
+                }
+
+                gameObject.SetActive(value);
+                _panelEnabled = value;
             }
         }
 

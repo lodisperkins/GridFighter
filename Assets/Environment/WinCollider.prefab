@@ -75,6 +75,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 3991252713363413223}
   _children: []
@@ -90,6 +91,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -112,8 +119,13 @@ MonoBehaviour:
       RawValue: 1048576
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: 0
+    debugID: 0
+  _shouldDrawCollider: 0
+  _isHurtBox: 0
   debuggingEnabled: 1
 --- !u!114 &3514878893019201695
 MonoBehaviour:
@@ -127,14 +139,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
   _friction:
     RawValue: 0
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 0}
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -142,6 +164,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 0
   _gridActive: 0
@@ -150,8 +173,10 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!1 &2935876528870013264
 GameObject:
@@ -228,6 +253,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 2380304751625507806}
   _children: []
@@ -243,6 +269,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
   _onHitObject: {fileID: 11400000, guid: 07e1f56728f905f4ea28e14dfd7430f5, type: 2}
   _onOverlapBegin:
     m_PersistentCalls:
@@ -265,8 +297,13 @@ MonoBehaviour:
       RawValue: 32768
     _panelYOffset: 0
     _panelXOffset: 0
+    _wallXOffset:
+      RawValue: 0
     _worldYPosition:
       RawValue: -149422
+    debugID: 0
+  _shouldDrawCollider: 0
+  _isHurtBox: 0
   debuggingEnabled: 1
 --- !u!114 &287401731686049854
 MonoBehaviour:
@@ -280,14 +317,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43457ec934b16b148b42cedc7669d8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _mass: 1
-  _gravity: 9.81
-  _bounceDampen: 2
-  _bounciness: 0.8
+  _onSerialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _onDeserialize:
+    m_PersistentCalls:
+      m_Calls: []
+  _mass:
+    RawValue: 65536
+  _gravity:
+    RawValue: 642908
+  _bounceDampen:
+    RawValue: 131072
+  _bounciness:
+    RawValue: 52428
   _friction:
     RawValue: 0
-  _rangeToIgnoreUpAngle: 0.2
-  _maxMagnitude: {fileID: 0}
+  _rangeToIgnoreUpAngle:
+    RawValue: 13107
   _bounceCombination: 0
   _defaultJumpCurve:
     serializedVersion: 2
@@ -295,6 +342,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  _maxYPosition: {fileID: 0}
   _useGravity: 0
   _isKinematic: 1
   _gridActive: 1
@@ -303,8 +351,10 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
+  clampPositionInBarriers: 0
   _bounceCollider: {fileID: 0}
 --- !u!1 &7875047362911804311
 GameObject:
@@ -381,6 +431,7 @@ MonoBehaviour:
     X: 0
     Y: 0
     UnityObject: {fileID: 0}
+    UnityScript: {fileID: 0}
   _addToGameManually: 0
   _visualRoot: {fileID: 8679185744603700277}
   _children: []

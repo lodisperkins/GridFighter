@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8f6ea0244cac0b48925350657bf7b83, type: 3}
   m_Name: MatchTime
   m_EditorClassIdentifier: 
-  _val: 120
+  _val: 180
   _fixedVal:
-    RawValue: 7864320
+    RawValue: 11796480

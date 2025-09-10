@@ -119,6 +119,9 @@ MonoBehaviour:
   _debris: {fileID: 1880473100621522523, guid: fbc625ab2d5a4d84b84ad49efe7c6dfe, type: 3}
   _softLandingClip: {fileID: 8300000, guid: a39671ccb52009f468b0b3a1d4fc772d, type: 3}
   _hardLandingClip: {fileID: 8300000, guid: b67a009ce06a8d64b993865715a8645a, type: 3}
+  stagePieces:
+  - {fileID: 1707402101592324374}
+  - {fileID: 6304466512183719528}
 --- !u!114 &7365902263347966786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -210,6 +213,7 @@ MonoBehaviour:
   _faceHeading: 0
   _useVelocityForBounce: 0
   _setGroundPosition: 0
+  _noForceOnHit: 0
   _groundPosition:
     RawValue: -65536
   clampPositionInBarriers: 0
@@ -259,6 +263,8 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: -32768
     debugID: 0
+  _shouldDrawCollider: 0
+  _isHurtBox: 0
   debuggingEnabled: 0
 --- !u!65 &2586267583723468701
 BoxCollider:
@@ -333,6 +339,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 3866122990567341911, guid: c21f89c3d5be7514795c75594b77d7a2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4448009502903769396, guid: c21f89c3d5be7514795c75594b77d7a2,
         type: 3}
@@ -594,6 +605,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c21f89c3d5be7514795c75594b77d7a2, type: 3}
+--- !u!1 &1707402101592324374 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8275469041531511369, guid: c21f89c3d5be7514795c75594b77d7a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7307572072502270815}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &3819369963559012879 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 5794046585145610576, guid: c21f89c3d5be7514795c75594b77d7a2,
@@ -603,6 +620,12 @@ MeshRenderer:
 --- !u!4 &4562885733847766210 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6501815171904802717, guid: c21f89c3d5be7514795c75594b77d7a2,
+    type: 3}
+  m_PrefabInstance: {fileID: 7307572072502270815}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &6304466512183719528 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3608580630446501175, guid: c21f89c3d5be7514795c75594b77d7a2,
     type: 3}
   m_PrefabInstance: {fileID: 7307572072502270815}
   m_PrefabAsset: {fileID: 0}

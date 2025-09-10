@@ -8,10 +8,9 @@ using CustomEventSystem;
 using Lodis.Movement;
 using Lodis.Accessories;
 using Lodis.Sound;
-using Lodis.ScriptableObjects;
-using static UnityEngine.UI.GridLayoutGroup;
 using FixedPoints;
 using System;
+using NaughtyAttributes;
 
 namespace Lodis.Gameplay
 {
@@ -261,12 +260,16 @@ namespace Lodis.Gameplay
             _accessory.OnSetToWinPosition();
         }
 
+        [Button]
         public void ResetAllRenderers()
         {
             foreach (ColorObject colorObject in ColorManager.ObjectsToColor)
             {
                 if (colorObject.ObjectRenderer)
+                {
+                    colorObject.ObjectRenderer.material.DORewind();
                     colorObject.ObjectRenderer.material.DOKill();
+                }
             }
         }
 
@@ -321,6 +324,22 @@ namespace Lodis.Gameplay
                     break;
                 case 3:
                     _characterVoice.PlayHurtSound();
+                    break;
+            }
+        }
+
+        public void PlayVoiceSound(int clipType, bool alwaysPlay)
+        {
+            switch (clipType)
+            {
+                case 0:
+                    _characterVoice.PlayLightAttackSound(alwaysPlay);
+                    break;
+                case 1:
+                    _characterVoice.PlayHeavyAttackSound(alwaysPlay);
+                    break;
+                case 3:
+                    _characterVoice.PlayHurtSound(alwaysPlay);
                     break;
             }
         }

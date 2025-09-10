@@ -228,14 +228,16 @@ MonoBehaviour:
       RawValue: 65536
     _facingRight: 1
     _height:
-      RawValue: 131072
+      RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 0
     _wallXOffset:
       RawValue: 0
     _worldYPosition:
-      RawValue: 0
+      RawValue: 32768
     debugID: 0
+  _shouldDrawCollider: 1
+  _isHurtBox: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -557,6 +559,8 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _shouldDrawCollider: 1
+  _isHurtBox: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -747,6 +751,8 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _shouldDrawCollider: 1
+  _isHurtBox: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -899,6 +905,8 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _shouldDrawCollider: 1
+  _isHurtBox: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -1043,14 +1051,16 @@ MonoBehaviour:
       RawValue: 65536
     _facingRight: 1
     _height:
-      RawValue: 131072
+      RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 2
     _wallXOffset:
       RawValue: 0
     _worldYPosition:
-      RawValue: 0
+      RawValue: 32768
     debugID: 0
+  _shouldDrawCollider: 1
+  _isHurtBox: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -1203,6 +1213,8 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _shouldDrawCollider: 1
+  _isHurtBox: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -1395,14 +1407,16 @@ MonoBehaviour:
       RawValue: 65536
     _facingRight: 1
     _height:
-      RawValue: 131072
+      RawValue: 65536
     _panelYOffset: 0
     _panelXOffset: 1
     _wallXOffset:
       RawValue: 0
     _worldYPosition:
-      RawValue: 0
+      RawValue: 32768
     debugID: 0
+  _shouldDrawCollider: 1
+  _isHurtBox: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: AxeKickCollider
@@ -1764,6 +1778,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorManager: {fileID: 3788782830019625885}
   colliderBehaviour: {fileID: 3556605455510110903}
+  clearParticles: 0
+  restartParticles: 0
 --- !u!4 &2074141430552017565 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 423557957499865397, guid: a977d758164395145bb01826d494a9be,

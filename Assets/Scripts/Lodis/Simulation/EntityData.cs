@@ -205,7 +205,8 @@ public class EntityData : ISerializedListObject
     {
         for (int i = 0; i < _components.Count; i++)
         {
-            _components[i].Tick(dt);
+            if (_components[i].TickEnabled)
+                _components[i].Tick(dt);
         }
 
         OnTick?.Invoke(dt);

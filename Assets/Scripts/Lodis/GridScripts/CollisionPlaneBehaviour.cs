@@ -34,6 +34,7 @@ namespace Lodis.GridScripts
         private AudioClip _softLandingClip;
         [SerializeField]
         private AudioClip _hardLandingClip;
+        [SerializeField] private GameObject[] stagePieces;
 
         private GameObject _groundDustParticles;
 
@@ -46,6 +47,14 @@ namespace Lodis.GridScripts
 
         public override void Serialize(BinaryWriter bw)
         {
+        }
+
+        public void SetStagePiecesEnabled(bool enabled)
+        {
+            foreach (var piece in stagePieces)
+            {
+                piece.SetActive(enabled);
+            }
         }
 
         public override void OnOverlapEnter(Collision other)

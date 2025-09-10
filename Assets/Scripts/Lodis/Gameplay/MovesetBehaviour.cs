@@ -347,11 +347,6 @@ namespace Lodis.Gameplay
 
             if (MatchManagerBehaviour.Instance.InfiniteEnergy)
                 _energy = _maxEnergyRef.FixedValue;
-
-          
-
-           
-
         }
 
         private void Start()
@@ -1181,10 +1176,11 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            Energy += hitCollider.ColliderInfo.Damage / 50;
+            int decreaseRate =  health.Health == health.MaxHealth ?  10 : 50;
+
+            Energy += hitCollider.ColliderInfo.Damage / decreaseRate;
 
 
-            return;
             if (_opponentMoveset)
             {
                 _opponentMoveset.Energy += hitCollider.ColliderInfo.Damage / 100;

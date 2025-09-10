@@ -12,6 +12,8 @@ namespace Lodis.Sound
         [SerializeField] private AudioSource _voiceSource;
         [SerializeField] private AudioSource _musicSource;
         [SerializeField] private AudioSource _announcer;
+        [SerializeField] private AudioClip _fireExplosion;
+        [SerializeField] private AudioClip _electricExplosion;
         [SerializeField] private AudioClip[] _hitSounds;
         [SerializeField] private AudioClip _clashSound;
         [SerializeField] private float _sameSoundDelay = 0.0001f;
@@ -114,6 +116,16 @@ namespace Lodis.Sound
 
             RoutineBehaviour.Instance.StopAction(_enableSameSFXAction);
             _enableSameSFXAction = RoutineBehaviour.Instance.StartNewTimedAction(args => _canPlaySameSFX = true, TimedActionCountType.SCALEDTIME, _sameSoundDelay);
+        }
+
+        public void PlayFireExplosion()
+        {
+            PlaySound(_fireExplosion);
+        }
+
+        public void PlayElectricExplosion()
+        {
+            PlaySound(_electricExplosion);
         }
 
         public void PlayVoiceSound(AudioClip clip)

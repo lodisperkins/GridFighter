@@ -2579,6 +2579,7 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: -32768
     debugID: 0
+  _shouldDrawCollider: 1
   _isHurtBox: 0
   debuggingEnabled: 0
 --- !u!114 &162359212
@@ -2707,6 +2708,7 @@ MonoBehaviour:
   _debris: {fileID: 1880473100621522523, guid: fbc625ab2d5a4d84b84ad49efe7c6dfe, type: 3}
   _softLandingClip: {fileID: 8300000, guid: a39671ccb52009f468b0b3a1d4fc772d, type: 3}
   _hardLandingClip: {fileID: 8300000, guid: b67a009ce06a8d64b993865715a8645a, type: 3}
+  stagePieces: []
 --- !u!4 &162359215
 Transform:
   m_ObjectHideFlags: 0
@@ -9053,6 +9055,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _superBackground: {fileID: 270118641}
+  _explosionEffectSmall: {fileID: 0}
+  _explosionEffectMedium: {fileID: 0}
+  _explosionEffectLarge: {fileID: 0}
 --- !u!4 &793981809
 Transform:
   m_ObjectHideFlags: 0
@@ -15998,6 +16003,8 @@ MonoBehaviour:
   _voiceSource: {fileID: 0}
   _musicSource: {fileID: 402693612}
   _announcer: {fileID: 479321164}
+  _fireExplosion: {fileID: 0}
+  _electricExplosion: {fileID: 0}
   _hitSounds:
   - {fileID: 8300000, guid: bff4f9b7bbfd677488908428d1a79775, type: 3}
   - {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
@@ -25418,7 +25425,7 @@ PrefabInstance:
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
       propertyPath: _onMatchOver.m_PersistentCalls.m_Calls.Array.data[6].m_Mode
-      value: 6
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
@@ -26127,6 +26134,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}
+      propertyPath: _onMatchOver.m_PersistentCalls.m_Calls.Array.data[6].m_TargetAssemblyTypeName
+      value: Lodis.Gameplay.MatchManagerBehaviour, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
       propertyPath: _onMatchOver.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
       value: 1
       objectReference: {fileID: 0}
@@ -26139,6 +26151,11 @@ PrefabInstance:
         type: 3}
       propertyPath: _onMatchOver.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_BoolArgument
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
+        type: 3}
+      propertyPath: _onMatchOver.m_PersistentCalls.m_Calls.Array.data[6].m_Arguments.m_FloatArgument
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 3714706006734652312, guid: 20aac363db7700b4ab8da6581439054d,
         type: 3}

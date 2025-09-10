@@ -1,4 +1,5 @@
 ﻿using Lodis.Gameplay;
+using Lodis.Sound;
 using Lodis.UI;
 using Lodis.Utility;
 using System.Collections;
@@ -16,6 +17,9 @@ namespace Lodis.FX
         [SerializeField] private float _onScreenDistance = 2.5f;
         [SerializeField] private AnimationCurve _superMoveCurve;
         [SerializeField] private BackgroundColorBehaviour _superBackground;
+        [SerializeField] private GameObject _explosionEffectSmall;
+        [SerializeField] private GameObject _explosionEffectMedium;
+        [SerializeField] private GameObject _explosionEffectLarge;
 
         //---
         private bool _superMoveActive;
@@ -243,6 +247,25 @@ namespace Lodis.FX
 
             SuperMoveEffectActive = false;
             LastPlayerSuper = -1;
+        }
+
+        public void SpawnExplosion(Vector3 position, int size = 1)
+        {
+            if (size == 0)
+            {
+                Instantiate(_explosionEffectSmall, position, Camera.main.transform.rotation);
+            }
+            else if (size == 1)
+            {
+                Instantiate(_explosionEffectMedium, position, Camera.main.transform.rotation);
+            }
+            else if (size >= 2)
+            {
+                Instantiate(_explosionEffectLarge, position, Camera.main.transform.rotation);
+            }
+
+            SoundManagerBehaviour.Instance.PlayFireExplosion();
+            CameraBehaviour.ShakeBehaviour.ShakeRotation();
         }
 
         public override void Serialize(BinaryWriter bw)

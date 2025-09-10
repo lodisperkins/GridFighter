@@ -50,11 +50,11 @@ public class VoicePackData : ScriptableObject
     public AudioClip Burst { get => _burst; private set => _burst = value; }
     public AudioClip Spawn { get => _spawn; private set => _spawn = value; }
 
-    public AudioClip GetRandomHurtClip()
+    public AudioClip GetRandomHurtClip(bool alwaysPlay = false)
     {
         int choiceNum = Random.Range(1, 4);
 
-        if (choiceNum == _lastHurt)
+        if (choiceNum == _lastHurt && !alwaysPlay)
             choiceNum++;
 
         AudioClip choice = null;
@@ -70,11 +70,11 @@ public class VoicePackData : ScriptableObject
         return choice;
     }
 
-    public AudioClip GetRandomLightAttackClip()
+    public AudioClip GetRandomLightAttackClip(bool alwaysPlay = false)
     {
         int choiceNum = Random.Range(1, 4);
 
-        if (choiceNum == _lastLight)
+        if (choiceNum == _lastLight && !alwaysPlay)
             choiceNum++;
 
         AudioClip choice = null;
@@ -91,11 +91,11 @@ public class VoicePackData : ScriptableObject
         return choice;
     }
 
-    public AudioClip GetRandomHeavyAttackClip()
+    public AudioClip GetRandomHeavyAttackClip(bool alwaysPlay = false)
     {
         int choiceNum = Random.Range(1, 4);
 
-        if (choiceNum == _lastHeavy)
+        if (choiceNum == _lastHeavy && !alwaysPlay)
             choiceNum++;
 
         AudioClip choice = null;

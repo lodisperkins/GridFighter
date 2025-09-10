@@ -40,7 +40,7 @@ ModelImporter:
       takeName: rig|rigAction.001
       internalID: 4358703180778511629
       firstFrame: 0
-      lastFrame: 60
+      lastFrame: 75
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -60,8 +60,8 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.03431372
-        functionName: SetCharacterModelDisabled
+      - time: 0
+        functionName: PlayVoiceSound
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
@@ -74,6 +74,21 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
+      - time: 0.03431372
+        functionName: SetCharacterModelDisabled
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.035842296
+        functionName: PlaySound
+        data: 
+        objectReferenceParameter: {fileID: 8300000, guid: 9d46610105635f44eb9f7863784aaf9c,
+          type: 3}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       - time: 0.035842296
         functionName: SpawnObject
         data: 
@@ -82,21 +97,21 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.37360463
+      - time: 0.3025037
         functionName: SetCharacterModelEnabled
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.46321037
+      - time: 0.6054122
         functionName: EnableAccessory
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.47284696
+      - time: 0.6058745
         functionName: SetAccessoryToWinPosition
         data: 
         objectReferenceParameter: {instanceID: 0}

@@ -57,13 +57,15 @@ namespace Lodis.Input
 
     public class InputRebindingBehaviour : MonoBehaviour
     {
-        private InputAction _anyAction;
         [SerializeField]
         private InputProfileData _profileData;
         [SerializeField]
         private BindingType _currentBinding;
         [SerializeField]
         private bool _isListening;
+        [SerializeField] private SavePopupBehaviour _savePopup;
+        [SerializeField] private EventSystem _eventSystem;
+        [SerializeField] private GameObject _saveButton;
 
         [Header("Binding Events")]
 
@@ -82,6 +84,7 @@ namespace Lodis.Input
         [SerializeField]
         private InputProfileData _defaultXBox;
 
+        private InputAction _anyAction;
         private string _profileName;
         private bool _creatingNewProfile;
         private static string _saveLoadPath;
@@ -213,6 +216,21 @@ namespace Lodis.Input
             if (_profileData?.DeviceData == null)
                 return;
 
+            //Shouldn't be handling UI stuff here but this is the quickest way to set up a confirmation menu.
+            RebindData emptyBinding = _profileData.GetEmptyBinding();
+
+            if (emptyBinding != null && (int)emptyBinding.Binding > 3)
+            {
+                ConfirmationMenuSpawner.Spawn(WriteBindingsToFile, ConfirmationMenuSpawner.Close, _eventSystem, $"The action {emptyBinding.Binding.ToString()} is missing a button. Are you sure you want to save?", _saveButton);
+            }
+            else
+            {
+                WriteBindingsToFile();
+            }
+        }
+
+        private void WriteBindingsToFile()
+        {
             string path = _creatingNewProfile ? CreateUniqueProfilePath() : ProfilePath;
 
             StreamWriter writer = new StreamWriter(path);
@@ -222,6 +240,8 @@ namespace Lodis.Input
             writer.Write(bindingJson);
 
             writer.Close();
+
+            SavePopupBehaviour.ChangesAreSaved.Value = true;
         }
 
         private string CreateUniqueProfilePath()

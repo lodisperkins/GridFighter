@@ -74,6 +74,11 @@ public class CollisionGroupBehaviour : SimulationBehaviour
             Entity.Data.AddComponent(collider);
         }
 
+        foreach (var collider in _colliders)
+        {
+            collider.TickEnabled = true;
+        }
+
         if (_isMultiHit)
         {
             return;
@@ -98,6 +103,16 @@ public class CollisionGroupBehaviour : SimulationBehaviour
                 hitCollider.ColliderInfo = info;
                 hitCollider.Spawner = spawner;
             }
+        }
+    }
+
+    public override void End()
+    {
+        base.End();
+
+        foreach (var collider in _colliders)
+        {
+            collider.TickEnabled = false;
         }
     }
 }

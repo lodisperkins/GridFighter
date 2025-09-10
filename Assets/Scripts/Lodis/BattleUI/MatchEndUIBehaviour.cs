@@ -62,6 +62,20 @@ namespace Lodis.UI
                         _firstGameMenuButton.OnSelect(null);
                     }, TimedActionCountType.SCALEDTIME, _endTextDisplayDuration);
                     break;
+                case MatchResult.UNDECIDED:
+                    _endText.text = "Draw!";
+
+                    RoutineBehaviour.Instance.StartNewTimedAction(args =>
+                    {
+                        _endText.gameObject.SetActive(false);
+                        _gameMenu.SetActive(true);
+                        _eventSystem.SetSelectedGameObject(_firstGameMenuButton.gameObject);
+                        _firstGameMenuButton.OnSelect(null);
+                    }, TimedActionCountType.SCALEDTIME, _endTextDisplayDuration);
+
+                    _announcer.Stop();
+                    _announcer.PlayOneShot(_tieClip);
+                    break;
             }
         }
     }

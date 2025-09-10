@@ -2,6 +2,7 @@
 using FixedPoints;
 using Ilumisoft.VisualStateMachine;
 using Lodis.ScriptableObjects;
+using Lodis.Sound;
 using Lodis.Utility;
 using System;
 using System.Collections;
@@ -151,13 +152,14 @@ namespace Lodis.Gameplay
 
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
             {
-                if (!gameObject.activeInHierarchy || MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.DRAW)
+                if (!gameObject.activeInHierarchy || MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.DRAW || MatchManagerBehaviour.Instance.LastMatchResult == MatchResult.UNDECIDED)
                     return;
 
                 if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
                 {
                     _winAnimCondition = RoutineBehaviour.Instance.StartNewConditionAction(args =>
                     {
+                        StopCurrentAnimation();
                         _animator.SetTrigger("Win");
                     }, condition => _characterStateMachine.CurrentState == "Idle");
                 }
@@ -244,13 +246,27 @@ namespace Lodis.Gameplay
 
         public void SpawnObject(UnityEngine.Object unityObject)
         {
-            GameObject spawnObject = Instantiate(unityObject as GameObject, transform.position, transform.rotation);
-
+            GameObject spawnObject = Instantiate(unityObject as GameObject, transform.position, Camera.main.transform.rotation);
             if (spawnObject == null)
             {
                 Debug.LogError("Failed to spawn object: " + unityObject.name);
                 return;
             }
+        }
+
+        public void ShakeScreen()
+        {
+            CameraBehaviour.ShakeBehaviour.ShakeRotation();
+        }
+
+        public void PlaySound(UnityEngine.Object soundClip)
+        {
+            SoundManagerBehaviour.Instance.PlaySound(soundClip as AudioClip);
+        }
+
+        public void PlayVoiceSound(int clipType)
+        {
+            _characterFeedbackBehaviour.PlayVoiceSound(clipType, true);
         }
 
         public void EnableAccessory()

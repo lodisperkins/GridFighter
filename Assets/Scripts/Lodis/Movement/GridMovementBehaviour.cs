@@ -280,7 +280,7 @@ namespace Lodis.Movement
                 _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
         }
 
-        public override void Begin ()
+        public override void Begin()
         {
             //Set the starting panel to be occupied
             if (BlackBoardBehaviour.Instance.Grid.GetPanel(Position, out _currentPanel, true, Alignment))
@@ -300,6 +300,21 @@ namespace Lodis.Movement
             }
 
             _physics = Entity.GetComponent<GridPhysicsBehaviour>();
+
+            MatchManagerBehaviour manager = MatchManagerBehaviour.Instance;
+
+            if (manager)
+            {
+                manager.AddOnMatchRestartAction(() =>
+                {
+                    TickEnabled = true;
+                });
+
+                manager.AddOnMatchOverAction(() =>
+                {
+                    TickEnabled = false;
+                });
+            }
         }
 
         /// <summary>
@@ -570,6 +585,9 @@ namespace Lodis.Movement
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, Position == panelPosition || canBeOccupied, tempAlignment))
                 return false;
 
+            if (_targetPanel != null && !_targetPanel.PanelEnabled)
+                return false;
+
             _previousPanel = _currentPanel;
             //Sets the new position to be the position of the panel added to half the gameObjects height.
 
@@ -641,6 +659,10 @@ namespace Lodis.Movement
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _targetPanel, Position == panelPosition || canBeOccupied, tempAlignment))
                 return false;
 
+
+            if (_targetPanel != null && !_targetPanel.PanelEnabled)
+                return false;
+
             _previousPanel = _currentPanel;
             //Sets the new position to be the position of the panel added to half the gameObjects height.
 
@@ -697,6 +719,10 @@ namespace Lodis.Movement
 
             //If it's not possible to move to the panel at the given position, return false.
             if (!BlackBoardBehaviour.Instance.Grid.GetPanel(x, y, out _targetPanel, Position == new FVector2( x,y), tempAlignment))
+                return false;
+
+
+            if (_targetPanel != null && !_targetPanel.PanelEnabled)
                 return false;
 
             _previousPanel = _currentPanel;
@@ -765,6 +791,11 @@ namespace Lodis.Movement
                 if (!BlackBoardBehaviour.Instance.Grid.GetPanel((int)targetPosition.X, (int)targetPosition.Y, out targetPanel, Position == new FVector2(targetPosition.X, targetPosition.Y), tempAlignment))
                     return false;
             }
+
+
+            if (targetPanel != null && !targetPanel.PanelEnabled)
+                return false;
+
             _previousPanel = _currentPanel;
             _targetPanel = targetPanel;
 
@@ -817,7 +848,7 @@ namespace Lodis.Movement
         /// <returns>Returns false if the panel is null.</returns>
         public bool TeleportToPanel(PanelBehaviour panel)
         {
-            if (!panel || _health?.Stunned == true)
+            if (!panel || _health?.Stunned == true || !panel.PanelEnabled)
                 return false;
 
             //0.05
@@ -849,7 +880,7 @@ namespace Lodis.Movement
         /// <returns>Returns false if the panel is null.</returns>
         public bool TeleportToPanel(PanelBehaviour panel, Fixed32 travelTime)
         {
-            if (!panel || _health?.Stunned == true)
+            if (!panel || _health?.Stunned == true || !panel.PanelEnabled)
                 return false;
 
             _teleportAction?.Stop();
@@ -984,11 +1015,8 @@ namespace Lodis.Movement
         /// </summary>
         public void MoveToClosestAlignedPanelOnRow()
         {
-
-            if (!_moveToAlignedSideIfStuck || _currentPanel?.Alignment == Alignment /*|| TargetPanel?.Alignment == Alignment */
-                || !CanMove || Alignment == GridAlignment.ANY || _searchingForSafePanel || IsMoving)
+            if (_searchingForSafePanel)
                 return;
-
 
             _searchingForSafePanel = true;
             int offSet = 0;
@@ -1005,7 +1033,7 @@ namespace Lodis.Movement
 
                 _onTeleportStart?.Raise(gameObject);
                 SpawnTeleportEffect();
-                _renderer.enabled = false;
+                //_renderer.enabled = false;
             });
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
@@ -1017,7 +1045,7 @@ namespace Lodis.Movement
                     _onTeleportEnd?.Raise(gameObject);
                     SpawnTeleportEffect();
                 }
-                _renderer.enabled = true;
+                //_renderer.enabled = true;
             },
             condition => !IsMoving
             );
@@ -1036,7 +1064,25 @@ namespace Lodis.Movement
                 BlackBoardBehaviour.Instance.Grid.GetPanel(position.X + offSet, Position.Y, out panel, i == maxSearch - 1, Alignment);
 
                 //Move if we found a good panel.
-                if (panel != null)
+                if (panel != null && panel.PanelEnabled)
+                {
+                    MoveToPanel(panel);
+                    _searchingForSafePanel = false;
+                    return;
+                }
+            }
+
+            offSet = 0;
+
+            for (int i = 0; i < maxSearch; i ++)
+            {
+                //Calculate an offset to find the closest panel behind the player.
+                offSet += 1 * GetAlignmentX();
+                //Try to get the panel at the location. Only allow the panel to be occupied if we are searching the last possible option.
+                BlackBoardBehaviour.Instance.Grid.GetPanel(position.X + offSet, Position.Y, out panel, i == maxSearch - 1, Alignment);
+
+                //Move if we found a good panel.
+                if (panel != null && panel.PanelEnabled)
                 {
                     MoveToPanel(panel);
                     _searchingForSafePanel = false;
@@ -1087,6 +1133,12 @@ namespace Lodis.Movement
                 _currentPanel.Occupied = false;
         }
 
+        public bool IsEntityStuck()
+        {
+            return _moveToAlignedSideIfStuck && (_currentPanel?.Alignment) != Alignment
+                && CanMove && Alignment != GridAlignment.ANY && !IsMoving;
+        }
+
         public override void Tick(Fixed32 dt)
         {
             if (_physics?.GridActive == false)
@@ -1101,7 +1153,10 @@ namespace Lodis.Movement
             if (!_canMove || _health?.Stunned == true)
                 return;
 
-            MoveToClosestAlignedPanelOnRow();
+            if (IsEntityStuck() || !CurrentPanel.PanelEnabled)
+            {
+                MoveToClosestAlignedPanelOnRow();
+            }
 
             GridBehaviour.Instance.GetPanel(Position, out _currentPanel);
 

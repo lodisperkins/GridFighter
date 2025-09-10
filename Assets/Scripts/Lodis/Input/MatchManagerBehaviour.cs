@@ -19,6 +19,7 @@ using Types;
 using FixedPoints;
 using Lodis.FX;
 using UnityEngine.InputSystem;
+using Lodis.GridScripts;
 
 namespace Lodis.Gameplay
 {
@@ -26,7 +27,8 @@ namespace Lodis.Gameplay
     {
         DRAW,
         P1WINS,
-        P2WINS
+        P2WINS,
+        UNDECIDED
     }
 
     public class MatchManagerBehaviour : MonoBehaviour
@@ -45,6 +47,7 @@ namespace Lodis.Gameplay
         [SerializeField] private GameObject _pauseMenu;
         [SerializeField] private Material _hitBoxMaterial;
         [SerializeField] private Material _hurtBoxMaterial;
+        [SerializeField] private SuddenDeathBehaviour _suddenDeathManager;
 
         [Header("Match Options")]
         [SerializeField]
@@ -180,10 +183,15 @@ namespace Lodis.Gameplay
                 CameraBehaviour.Instance.AlignmentFocus = GridScripts.GridAlignment.ANY;
 
                 if (SuddenDeathActive)
+                {
                     SoundManagerBehaviour.Instance.SetMusic(_suddenDeathMusic);
+                    _suddenDeathManager?.BeginTimers();
+                }
                 else
+                {
                     SoundManagerBehaviour.Instance.SetMusic(_matchMusic);
-
+                    _suddenDeathManager?.ResetAll();
+                }
             });
 
             RoutineBehaviour.Instance.StartNewConditionAction(args =>
@@ -224,7 +232,15 @@ namespace Lodis.Gameplay
 
         private void SetMatchResult()
         {
-            if (PlayerSpawner.P2HealthScript.HasExploded)
+            if (PlayerSpawner.P1HealthScript.HasExploded && PlayerSpawner.P2HealthScript.HasExploded && _suddenDeathActive)
+            {
+                _matchResult = MatchResult.UNDECIDED;
+            }
+            else if (PlayerSpawner.P1HealthScript.HasExploded && PlayerSpawner.P2HealthScript.HasExploded)
+            {
+                _matchResult = MatchResult.DRAW;
+            }
+            else if (PlayerSpawner.P2HealthScript.HasExploded)
             {
                 _matchResult = MatchResult.P1WINS;
                 _lhsWins++;
@@ -242,16 +258,6 @@ namespace Lodis.Gameplay
             {
                 _matchResult = MatchResult.DRAW;
             }
-            //else if (!_ringBarrierR.IsAlive)
-            //{
-            //    _matchResult = MatchResult.P1WINS;
-            //    _lhsWins++;
-            //}
-            //else if (!_ringBarrierL.IsAlive)
-            //{
-            //    _matchResult = MatchResult.P2WINS;
-            //    _rhsWins++;
-            //}
         }
 
         private void OnPlayerExplosionStart(int index)
@@ -326,6 +332,17 @@ namespace Lodis.Gameplay
             _fxTimeScaleAction = RoutineBehaviour.Instance.StartNewConditionAction(args => Time.timeScale = 1, condition);
         }
 
+        private void StopTimeScale()
+        {
+            GridGame.TimeScale = 1;
+            Time.timeScale = 1;
+
+            _physicsTimeScaleLerp?.Kill();
+            _physicsTimeScaleAction?.Stop();
+            _fxTimeScaleTween?.Kill();
+            RoutineBehaviour.Instance.StopAction(_fxTimeScaleAction);
+        }
+
         public void ResetTimeScale()
         {
             Time.timeScale = 1;
@@ -362,7 +379,7 @@ namespace Lodis.Gameplay
 
         public void TogglePauseMenu()
         {
-            if (!_canPause)
+            if (!_canPause || (_characterExplosionBehaviour.ExplodingPlayer1 || _characterExplosionBehaviour.ExplodingPlayer2))
                 return;
 
             IsPaused = !IsPaused;
@@ -433,10 +450,24 @@ namespace Lodis.Gameplay
 
                 if (_matchResult == MatchResult.DRAW)
                     RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
-            },
-            args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
+            },CheckCanEndMatch);
 
             SoundManagerBehaviour.Instance.ResetMusicVolume();
+            StopTimeScale();
+        }
+
+        public void Restart(float delay)
+        {
+            RoutineBehaviour.Instance.StartNewTimedAction(args => Restart(), TimedActionCountType.UNSCALEDTIME, delay);
+        }
+
+        private bool CheckCanEndMatch(params object[] args)
+        {
+            bool p1Exploded = PlayerSpawner.P1HealthScript.HasExploded && !_characterExplosionBehaviour.ExplodingPlayer2;
+            bool p2Exploded = PlayerSpawner.P2HealthScript.HasExploded && !_characterExplosionBehaviour.ExplodingPlayer1;
+            bool timeUp = MatchTimerBehaviour.Instance.TimeUp;
+
+            return p1Exploded || p2Exploded || timeUp;
         }
 
         public void LoadCharacterSelect()

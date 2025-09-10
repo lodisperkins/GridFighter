@@ -705,6 +705,7 @@ MonoBehaviour:
   _debris: {fileID: 1880473100621522523, guid: fbc625ab2d5a4d84b84ad49efe7c6dfe, type: 3}
   _softLandingClip: {fileID: 8300000, guid: a39671ccb52009f468b0b3a1d4fc772d, type: 3}
   _hardLandingClip: {fileID: 8300000, guid: b67a009ce06a8d64b993865715a8645a, type: 3}
+  stagePieces: []
 --- !u!114 &3664538701826361110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -846,6 +847,8 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: -32768
     debugID: 0
+  _shouldDrawCollider: 0
+  _isHurtBox: 0
   debuggingEnabled: 0
 --- !u!65 &6027793285538481082
 BoxCollider:

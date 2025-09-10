@@ -72,6 +72,8 @@ namespace Lodis.GridScripts
         private float _width;
         private float _height;
         private bool _invincibleBarriers;
+        private CollisionPlaneBehaviour _collisionPlane;
+
         /// <summary>
         /// A reference to the panel object to use for building the grid
         /// </summary>
@@ -93,7 +95,7 @@ namespace Lodis.GridScripts
                 return _panelSpacingX;
             }
         }
-        
+
         /// <summary>
         /// The space in between each panel
         /// </summary>
@@ -110,7 +112,7 @@ namespace Lodis.GridScripts
         /// </summary>
         public Vector2 Dimensions
         {
-            get 
+            get
             {
                 return _dimensions;
             }
@@ -140,6 +142,10 @@ namespace Lodis.GridScripts
         public int TempMaxColumns => _tempMaxColumns;
 
         public static GridBehaviour Instance { get; private set; }
+        public FVector3 FixedPanelScale { get => _fixedPanelScale; set => _fixedPanelScale = value; }
+        public Fixed32 FixedPanelSpacingX { get => _fixedPanelSpacingX; set => _fixedPanelSpacingX = value; }
+        public Fixed32 FixedPanelSpacingZ { get => _fixedPanelSpacingZ; set => _fixedPanelSpacingZ = value; }
+        public CollisionPlaneBehaviour CollisionPlane { get => _collisionPlane; private set => _collisionPlane = value; }
 
         /// <summary>
         /// Creates a grid using the given dimensions and spacing.
@@ -180,14 +186,14 @@ namespace Lodis.GridScripts
                     spawnPosition.x = transform.position.x;
                     fixedSpawnPosition.X = _fixedGridTransform.WorldPosition.X;
                     yPos++;
-                    
+
                     spawnPosition.z += _panelRef.transform.localScale.z + _panelSpacingZ;
-                    fixedSpawnPosition.Z += 1 + _fixedPanelSpacingZ;
+                    fixedSpawnPosition.Z += 1 + FixedPanelSpacingZ;
                     continue;
                 }
 
                 spacingVal = xPos == _p1MaxColumns - 1 ? _panelSpacingMiddle : _panelSpacingX;
-                fixedSpacingVal = xPos == _p1MaxColumns - 1 ? _fixedPanelSpacingMiddle : _fixedPanelSpacingX;
+                fixedSpacingVal = xPos == _p1MaxColumns - 1 ? _fixedPanelSpacingMiddle : FixedPanelSpacingX;
 
                 //Increase x position
                 xPos++;
@@ -212,14 +218,14 @@ namespace Lodis.GridScripts
                 return;
 
             //Spawn the collision plane underneath the grid
-            EntityDataBehaviour collisionPlane = Instantiate(_collisionPlaneRef).GetComponent<EntityDataBehaviour>();
+            CollisionPlane = Instantiate(_collisionPlaneRef).GetComponent<CollisionPlaneBehaviour>();
 
 
             float collisionPlaneOffsetX = ((_dimensions.x - 1) * localScale.x) + (PanelSpacingX * (_dimensions.x - 2) + _panelSpacingMiddle);
             float collisionPlaneOffsetY = ((_dimensions.y - 1) * localScale.z) + (PanelSpacingZ * (_dimensions.y - 1));
 
-            collisionPlane.FixedTransform.LocalScale = new FVector3(_width / 10, collisionPlane.transform.localScale.y, _height / 11);
-            collisionPlane.FixedTransform.WorldPosition += new FVector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
+            CollisionPlane.FixedTransform.LocalScale = new FVector3(_width / 10, CollisionPlane.transform.localScale.y, _height / 11);
+            CollisionPlane.FixedTransform.WorldPosition += new FVector3(collisionPlaneOffsetX / 2, 0, collisionPlaneOffsetY / 2);
 
         }
 
@@ -515,7 +521,7 @@ namespace Lodis.GridScripts
         /// <param name="alignment">Will return false if the panel found doesn't match this alignment.</param>
         /// <returns>Returns true if the panel is found in the list and the canBeOccupied condition is met.</returns>
         public bool GetPanel(FVector2 position, out PanelBehaviour panel, bool canBeOccupied = true, GridAlignment alignment = GridAlignment.ANY)
-        { 
+        {
             panel = null;
 
             if (_panels == null)
@@ -529,7 +535,7 @@ namespace Lodis.GridScripts
             else if (_panels[(int)position.X, (int)position.Y].Alignment != alignment && alignment != GridAlignment.ANY)
                 return false;
 
-            
+
 
             panel = _panels[Mathf.RoundToInt(position.X), Mathf.RoundToInt(position.Y)];
 
@@ -543,7 +549,7 @@ namespace Lodis.GridScripts
         /// <param name="player">The player whose panels will be searched. Searches through all panels if null.</param>
         /// <returns>Returns true if the panel is found in the list and custom condition is met.</returns>
         public bool GetPanel(Condition customCondition, out PanelBehaviour panel, GameObject player = null)
-        { 
+        {
             panel = null;
 
             if (_panels == null)
@@ -561,15 +567,54 @@ namespace Lodis.GridScripts
             {
                 for (int y = 0; y < Dimensions.y; y++)
                 {
-                    if (customCondition(_panels[x,y]))
+                    if (customCondition(_panels[x, y]))
                     {
                         panel = _panels[x, y];
                         return true;
-                    }    
+                    }
                 }
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Finds and outputs the panel that makes the given condition true.
+        /// </summary>
+        /// <param name="panel">The panel reference to output to.</param>
+        /// <param name="player">The player whose panels will be searched. Searches through all panels if null.</param>
+        /// <returns>Returns true if the panel is found in the list and custom condition is met.</returns>
+        public bool GetAllPanels(Condition customCondition, out PanelBehaviour[] panels, GameObject player = null)
+        {
+            panels = null;
+
+            if (_panels == null)
+                return false;
+
+            List<PanelBehaviour> panelsFound = new List<PanelBehaviour>();
+
+            int xMin = 0;
+            int xMax = (int)Dimensions.x;
+
+            if (player == BlackBoardBehaviour.Instance.Player1 && player != null)
+                xMax = TempMaxColumns;
+            else if (player == BlackBoardBehaviour.Instance.Player2 && player != null)
+                xMin = TempMaxColumns;
+
+            for (int x = xMin; x < xMax; x++)
+            {
+                for (int y = 0; y < Dimensions.y; y++)
+                {
+                    if (customCondition(_panels[x, y]))
+                    {
+                        panelsFound.Add(_panels[x, y]);
+                    }
+                }
+            }
+
+            panels = panelsFound.ToArray();
+
+            return panelsFound.Count > 0;
         }
 
         /// <summary>
@@ -776,26 +821,34 @@ namespace Lodis.GridScripts
 
             return panelPosition;
         }
-    }
 
-#if UNITY_EDITOR
-    [CustomEditor(typeof(GridBehaviour))]
-    class GridEditor : Editor
-    {
-        private GridBehaviour _grid;
-        public override void OnInspectorGUI()
+        public void EnableAllPanels()
         {
-            DrawDefaultInspector();
-            _grid = (GridBehaviour)target;
-
-            if (GUILayout.Button("View Grid"))
+            foreach (PanelBehaviour panel in _panels)
             {
-                _grid.DestroyTempPanelsInEditor();
-                _grid.CreateGrid();
+                panel.PanelEnabled = true;
             }
         }
-    }
+
+#if UNITY_EDITOR
+        [CustomEditor(typeof(GridBehaviour))]
+        class GridEditor : Editor
+        {
+            private GridBehaviour _grid;
+            public override void OnInspectorGUI()
+            {
+                DrawDefaultInspector();
+                _grid = (GridBehaviour)target;
+
+                if (GUILayout.Button("View Grid"))
+                {
+                    _grid.DestroyTempPanelsInEditor();
+                    _grid.CreateGrid();
+                }
+            }
+        }
 
 #endif
+    }
 }
 

@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ae427968357f8949932dc4169433a0f, type: 3}
   m_Name: AxtonVoicePack
   m_EditorClassIdentifier: 
-  _hurt1: {fileID: 8300000, guid: af9d3ca4a732143f7a7d062bee8e6ddf, type: 3}
-  _hurt2: {fileID: 8300000, guid: 3140b145d7d8f40c9b91a0c5d03c9af7, type: 3}
-  _hurt3: {fileID: 8300000, guid: 98651b63336a642b3b616528fa214a54, type: 3}
-  _lightAttack1: {fileID: 8300000, guid: 856e8e80593384258bb01db696f8f45f, type: 3}
-  _lightAttack2: {fileID: 8300000, guid: 3d60a32c33526425d83cbdbcd36f4e01, type: 3}
-  _lightAttack3: {fileID: 8300000, guid: c4a12656102244647ac657997a0cb762, type: 3}
-  _heavyAttack1: {fileID: 8300000, guid: 0c6d9b48a694b4cf5b188fd2fae7f669, type: 3}
-  _heavyAttack2: {fileID: 8300000, guid: b51026e9aa17247218a6ccfe7a53ea4a, type: 3}
-  _heavyAttack3: {fileID: 8300000, guid: 930bcc7b736c14e60b85038f2244d677, type: 3}
-  _superAttack: {fileID: 8300000, guid: b51026e9aa17247218a6ccfe7a53ea4a, type: 3}
+  _hurt1: {fileID: 8300000, guid: e2fa2951e34e4e448a56f36f2691b6f4, type: 3}
+  _hurt2: {fileID: 8300000, guid: d2a8415462be56942987479cdedafbaa, type: 3}
+  _hurt3: {fileID: 8300000, guid: 222a841872bbb1b4d9c5705c9157a5c4, type: 3}
+  _lightAttack1: {fileID: 8300000, guid: bc55dff99ae81c14e934d921049d4755, type: 3}
+  _lightAttack2: {fileID: 8300000, guid: dc3d6924147f01746873df9fb26daa3b, type: 3}
+  _lightAttack3: {fileID: 8300000, guid: 897c87c04f87d0f47ab6808c5b5edbde, type: 3}
+  _heavyAttack1: {fileID: 8300000, guid: 1239d1d9a6e8e2b4f97e2aa18b676455, type: 3}
+  _heavyAttack2: {fileID: 8300000, guid: e8d445ee29c355e4596511cf948940c2, type: 3}
+  _heavyAttack3: {fileID: 8300000, guid: ba8b24e4991e65548bec7d2e5e3cb0d0, type: 3}
+  _superAttack: {fileID: 8300000, guid: 49db8f2f2181bd04db98c6dfdf850456, type: 3}
   _death: {fileID: 8300000, guid: d1fc4a516142a40729a898045c7aa619, type: 3}
-  _burst: {fileID: 8300000, guid: 7cffe7e794a9c4a1fb401fd46bd37f46, type: 3}
-  _spawn: {fileID: 8300000, guid: 57d85b2b069f74d18a2faaaa2c958b5e, type: 3}
+  _burst: {fileID: 8300000, guid: 0b50c6fed8533be45b9b722ac4eaae39, type: 3}
+  _spawn: {fileID: 8300000, guid: c94a6d832761fe64b805b3e262e35d84, type: 3}

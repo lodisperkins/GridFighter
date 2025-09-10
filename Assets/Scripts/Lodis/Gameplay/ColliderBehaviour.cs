@@ -18,8 +18,10 @@ namespace Lodis.Gameplay
         [SerializeField] private UnityEvent _onOverlapBegin;
         [SerializeField] private UnityEvent _onHitBegin;
         [SerializeField] private GridCollider _entityCollider;
+        [SerializeField] protected bool _shouldDrawCollider = true;
         [SerializeField] private bool _isHurtBox;
         [SerializeField] private bool debuggingEnabled;
+
         //---
         protected Dictionary<int, Fixed32> Collisions;
         protected CustomEventSystem.GameEventListener ReturnToPoolListener;
@@ -36,7 +38,6 @@ namespace Lodis.Gameplay
         private EntityData _spawner;
         private GameObject _visualCube;
         private bool _createdCube;
-        protected bool _canDrawCollider;
 
         public LayerMask LayersToIgnore { get => EntityCollider.LayersToIgnore; set => EntityCollider.LayersToIgnore = value; }
         public string[] TagsToIgnore { get => EntityCollider.TagsToIgnore; set => EntityCollider.TagsToIgnore = value; }
@@ -235,6 +236,9 @@ namespace Lodis.Gameplay
         {
             base.Tick(dt);
 
+            if (!_shouldDrawCollider)
+                return;
+
             //Only draw the collider if its been enabled by the event fired off from the match manager.
             if (MatchManagerBehaviour.Instance.CollidersEnabled)
             {
@@ -247,6 +251,7 @@ namespace Lodis.Gameplay
                     Material mat = _isHurtBox ? MatchManagerBehaviour.Instance.HurtBoxMaterial : MatchManagerBehaviour.Instance.HitBoxMaterial;
                     _visualCube.GetComponent<MeshRenderer>().material = mat;
 
+                    _visualCube.name = gameObject.name + " Visual Collider";
                     _createdCube = true;
                 }
 
@@ -255,7 +260,8 @@ namespace Lodis.Gameplay
                 //Draw the rest of the owl.
                 float width = _entityCollider.IsAWall ? 0.1f : _entityCollider.Width;
                 Vector3 size = new Vector3(width, _entityCollider.Height, 1);
-                Vector3 offset = new Vector3(1.5f * _entityCollider.PanelXOffset, _entityCollider.WorldYPosition, 2 * _entityCollider.PanelYOffset);
+                Fixed32 panelZSpacing = GridBehaviour.Instance.FixedPanelSpacingX + GridBehaviour.Instance.FixedPanelScale.X;
+                Vector3 offset = new Vector3(panelZSpacing * _entityCollider.PanelXOffset, _entityCollider.WorldYPosition, 2 * _entityCollider.PanelYOffset);
 
                 Transform rootTransform = EntityCollider.Entity ? _entityCollider.Entity.transform : transform;
 

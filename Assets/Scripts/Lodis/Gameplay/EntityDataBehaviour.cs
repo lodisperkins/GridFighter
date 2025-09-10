@@ -104,6 +104,13 @@ public class EntityDataBehaviour : MonoBehaviour
     {
         gameObject.SetActive(false);    
         GridGame.RemoveEntityFromGame(_entityData, destroy);
+
+        for (int i = 0; i < Data.Transform.ChildCount; i++)
+        {
+            EntityData child = Data.Transform.GetChild(i).EntityData;
+            
+            child.UnityObject.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -114,6 +121,14 @@ public class EntityDataBehaviour : MonoBehaviour
     {
         gameObject.SetActive(false);    
         GridGame.RemoveEntityFromGame(_entityData);
+
+
+        for (int i = 0; i < Data.Transform.ChildCount; i++)
+        {
+            EntityData child = Data.Transform.GetChild(i).EntityData;
+
+            child.UnityObject.SetActive(false);
+        }
     }
 
     public void UpdateUnityTransform(Fixed32 dt)

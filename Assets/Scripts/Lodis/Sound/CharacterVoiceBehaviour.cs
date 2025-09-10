@@ -17,10 +17,10 @@ namespace Lodis.Sound
         private void Start()
         {
             _knockback = GetComponentInParent<KnockbackBehaviour>();
-            _knockback?.AddOnTakeDamageAction(PlayHurtSound);
+            _knockback?.AddOnTakeDamageAction(() => PlayHurtSound(false));
         }
 
-        public void PlayHurtSound()
+        public void PlayHurtSound(bool alwaysPlay = false)
         {
             _source.Stop();
             AudioClip clip = _voicePack.GetRandomHurtClip();
@@ -29,19 +29,19 @@ namespace Lodis.Sound
                 _source.PlayOneShot(clip);
         }
 
-        public void PlayLightAttackSound()
+        public void PlayLightAttackSound(bool alwaysPlay = false)
         {
             _source.Stop();
-            AudioClip clip = _voicePack.GetRandomLightAttackClip();
+            AudioClip clip = _voicePack.GetRandomLightAttackClip(alwaysPlay);
 
             if (clip)
                 _source.PlayOneShot(clip);
         }
 
-        public void PlayHeavyAttackSound()
+        public void PlayHeavyAttackSound(bool alwaysPlay = false)
         {
             _source.Stop();
-            AudioClip clip = _voicePack.GetRandomHeavyAttackClip();
+            AudioClip clip = _voicePack.GetRandomHeavyAttackClip(alwaysPlay);
 
             if (clip)
                 _source.PlayOneShot(clip);

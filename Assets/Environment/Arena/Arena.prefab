@@ -7729,6 +7729,21 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 6227974346157413691, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.59
+      objectReference: {fileID: 0}
+    - target: {fileID: 6227974346157413691, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 6227974346157413691, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.41
+      objectReference: {fileID: 0}
     - target: {fileID: 6398574524370435088, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: m_Layer

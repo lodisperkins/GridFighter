@@ -49,7 +49,11 @@ public struct GridGame : IGame
     /// The decimal value is 0.01667.
     /// </summary>
     public static Fixed32 FixedTimeStep = new Fixed32(1092);
-    public static Fixed32 TimeScale = 1;
+    public static Fixed32 TimeScale
+    { get;
+     set;
+
+    } = 1;
     public static bool IsPaused;
     /// <summary>
     /// The amount of time that has passed since the simulation began.

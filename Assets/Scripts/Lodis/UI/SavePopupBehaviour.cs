@@ -33,6 +33,7 @@ public class SavePopupBehaviour : MonoBehaviour
         if (page == null)
         {
             Debug.LogError("Couldn't find page with the name " +  _pageName + " for the save confirmation popup.");
+            return;
         }
 
         page.GoToParentCondition = _saveBoolean;

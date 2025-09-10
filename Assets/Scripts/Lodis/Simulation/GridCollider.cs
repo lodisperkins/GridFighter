@@ -358,14 +358,16 @@ public class GridCollider
     {
         bool collidingOnX = false;
 
-        if (_facingRight)
-        {
-            collidingOnX = other.WorldPosition.X + WallXOffset <= WorldPosition.X;
-        }
-        else
-        {
-            collidingOnX = other.WorldPosition.X + WallXOffset >= WorldPosition.X;
-        }
+        //if (_facingRight)
+        //{
+        //    collidingOnX = other.WorldPosition.X + WallXOffset <= WorldPosition.X;
+        //}
+        //else
+        //{
+        //    collidingOnX = other.WorldPosition.X + WallXOffset >= WorldPosition.X;
+        //}
+
+        collidingOnX = Fixed32.WithinRange(WorldPosition.X, other.GetLeft(), other.GetRight());
 
         return collidingOnX;
     }

@@ -32,8 +32,15 @@ namespace Lodis.UI
         {
             foreach (Page child in Children)
             {
+                Page target;
                 if (child.PageName == name)
+                {
                     return child;
+                }
+                else if ((target = child.GetChildByName(name)) != null)
+                {
+                    return target;
+                }
             }
 
             return null;

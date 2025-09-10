@@ -108,6 +108,20 @@ namespace Lodis.ScriptableObjects
             }
         }
 
+        public RebindData GetEmptyBinding()
+        {
+            for (int i = 0; i < _val.Length; i++)
+            {
+                if ((int)_val[i].Binding <= 3)
+                    continue;
+
+                if (string.IsNullOrEmpty(_val[i].Path))
+                    return _val[i];
+            }
+
+            return null;
+        }
+
         public void ClearBindings()
         {
             for (int i = 0; i < _val.Length; i++)
@@ -115,6 +129,21 @@ namespace Lodis.ScriptableObjects
                 _val[i].DisplayName = "";
                 _val[i].Path = "";
             }
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object other)
+        {
+            return base.Equals(other);
+        }
+
+        public override string ToString()
+        {
+            return base.ToString();
         }
     }
 }
