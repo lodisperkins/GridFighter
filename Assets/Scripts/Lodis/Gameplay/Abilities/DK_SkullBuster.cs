@@ -117,6 +117,7 @@ namespace Lodis.Gameplay
             };
 
             _bodyCollider = GetColliderData(1);
+            OwnerKnockBackScript.EnableSuperArmor(HealthBehaviour.ArmorType.TimeToBreak, abilityData.startUpTime);
 
             Fixed32 bodyColliderScale = abilityData.GetCustomStatValue("BodyColliderScale");
             _bodyHitScript = HitColliderSpawner.SpawnCollider(Owner.FixedTransform, bodyColliderScale, bodyColliderScale, _bodyCollider, Owner);
@@ -238,6 +239,8 @@ namespace Lodis.Gameplay
                 ObjectPoolBehaviour.Instance.ReturnGameObject(_hitEffectLoopInstance);
 
             CameraBehaviour.Instance.ZoomAmount = 0;
+
+            OwnerKnockBackScript.DisableSuperArmor();
         }
 
         protected override void OnMatchRestart()
@@ -245,8 +248,6 @@ namespace Lodis.Gameplay
             base.OnMatchRestart();
 
             CleanUpColliders();
-
-
         }
     }
 }

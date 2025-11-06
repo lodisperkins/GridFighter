@@ -62,7 +62,7 @@ MonoBehaviour:
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 4091191
+      m_Bits: 4090167
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0

@@ -311,7 +311,7 @@ namespace Lodis.Gameplay
             bool damageDealt = false;
 
             //If the damage script wasn't null damage the object
-            if (damageScript != null && !damageScript.IsInvincible)
+            if (damageScript != null && !damageScript.IsInvincible && !damageScript.UpdateSuperArmor(ColliderInfo.Damage))
             {
                 damageScript.LastCollider = this;
                 KnockbackBehaviour knockback;
@@ -338,10 +338,11 @@ namespace Lodis.Gameplay
                     ObjectPoolBehaviour.Instance.GetObject(BlackBoardBehaviour.Instance.HitEffects[ColliderInfo.HitEffectLevel - 1].gameObject, attachedGameObject.transform.position + (.5f * Vector3.up), transform.rotation);
                     SoundManagerBehaviour.Instance.PlayHitSound(ColliderInfo.HitEffectLevel);
                 }
+
+                SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
+                ColliderInfo.OnHit?.Invoke(collision);
             }
 
-            SoundManagerBehaviour.Instance.PlaySound(ColliderInfo.HitSound);
-            ColliderInfo.OnHit?.Invoke(collision);
 
             ColliderInfo.HitAngle = defaultAngle;
             if (ColliderInfo.DestroyOnHit)

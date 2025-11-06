@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: DK_RiotShield_Data
+  m_EditorClassIdentifier: 
+  abilityName: Riot Shield
+  abilityDescription: None
+  exampleClip: {fileID: 0}
+  AbilityType: 8
+  timeActive:
+    RawValue: 6553
+  recoverTime:
+    RawValue: 6553
+  startUpTime:
+    RawValue: 6553
+  maxActivationAmount: 1
+  EnergyCost: 2
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
+  AutoMovePhase: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
+  useAbilityTimingForAnimation: 0
+  playAnimationManually: 0
+  visualPrefab: {fileID: 203704098823525876, guid: df73de9ad121e094f8c13ef9007ddd52,
+    type: 3}
+  Accessory: {fileID: 0}
+  Effects:
+  - {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b, type: 3}
+  Sounds: []
+  DisplayIcon: {fileID: 21300000, guid: 36f8496005e253f44ae2f7ec164ae9d5, type: 3}
+  ActivateSound: {fileID: 8300000, guid: 387b4526b02809b49b1835ed99cefb62, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData: []
+  _customStats:
+  - name: DamageThreshold
+    value:
+      RawValue: 655360
+  animationType: 0
+  _customAnimation: {fileID: 0}
+  _shouldMirror: 1
+  _additionalAnimations: []

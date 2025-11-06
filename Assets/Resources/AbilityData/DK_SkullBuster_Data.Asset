@@ -23,7 +23,7 @@ MonoBehaviour:
   startUpTime:
     RawValue: 26214
   maxActivationAmount: 1
-  EnergyCost: 3
+  EnergyCost: 4
   CancellationRules:
   - Phase: 5
     CanOnlyCancelOnOpponentHit: 0

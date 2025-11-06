@@ -196,9 +196,12 @@ namespace FixedPoints
                 Init();
 
             TimeStarted = GridGame.Time;
+            timeRemaining = duration;
 
             if (startingLoopCount > 0)
                 loopCount = startingLoopCount - 1;
+            else
+                loopCount = 1;
         }
 
         protected override void Serialize(BinaryWriter bw)

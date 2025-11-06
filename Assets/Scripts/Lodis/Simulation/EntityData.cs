@@ -288,7 +288,9 @@ public class EntityData : ISerializedListObject
 
         //Find the component attached to this entity.
         T comp = (T)_components.Find(c => c.GetType() == typeof(T));
-        componentsFound.Add(comp);
+
+        if (comp != null)
+            componentsFound.Add(comp);
 
         //Go through all the children and grab all of their components.
         for (int i = 0; i < Transform.ChildCount; i++)

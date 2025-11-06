@@ -25,6 +25,8 @@ namespace Lodis.Gameplay
 
         [Header("Color Options")]
         [SerializeField] private Color _invincibleColor;
+        [SerializeField] private Color _counterColor;
+        [SerializeField] private Color _armorColor;
         [SerializeField] private Color _intangibleColor;
         [SerializeField] private ColorManagerBehaviour _colorManager;
 
@@ -63,9 +65,20 @@ namespace Lodis.Gameplay
         void Start()
         {
             _health.AddOnInvincibilityActiveAction(() => FlashAllRenderers(_invincibleColor));
-            //_health.AddOnIntangibilityActiveAction(() => FlashAllRenderers(_intangibleColor));
+            _health.AddOnCounterStanceActiveAction(() => FlashAllRenderers(_counterColor));
+
+            _health.AddOnArmorActiveAction(() =>
+            {
+                if (!_health.CounterStanceActive)
+                    FlashAllRenderers(_armorColor); 
+            });
+
+            _health.AddOnIntangibilityActiveAction(() => FlashAllRenderers(_intangibleColor));
+
             _health.AddOnInvincibilityInactiveAction(ResetAllRenderers);
-            //_health.AddOnIntangibilityInactiveAction(ResetAllRenderers);
+            _health.AddOnIntangibilityInactiveAction(ResetAllRenderers);
+            _health.AddOnArmorInactiveAction(ResetAllRenderers);
+            _health.AddOnCounterStanceInactiveAction(ResetAllRenderers);
 
             _health.AddOnStunAction(() => PlayStunParticles(true));
             _health.AddOnStunDisabledAction(() => PlayStunParticles(false));

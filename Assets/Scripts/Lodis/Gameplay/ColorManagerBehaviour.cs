@@ -120,6 +120,9 @@ namespace Lodis.Gameplay
         {
             GridMovementBehaviour gridMovementBehaviour = transform.root.GetComponentInChildren<GridMovementBehaviour>();
 
+            if (!gridMovementBehaviour)
+                gridMovementBehaviour = GetComponentInParent<GridMovementBehaviour>();
+
             if (gridMovementBehaviour)
             {
                 _alignment = gridMovementBehaviour.Alignment;
@@ -237,6 +240,7 @@ namespace Lodis.Gameplay
         private List<string> shaderProperties = new List<string>();
         private GameObject searchTarget;
         private bool onlyChangeHue;
+        private bool mustBeActive;
 
         public override void OnInspectorGUI()
         {
@@ -266,6 +270,8 @@ namespace Lodis.Gameplay
                 EditorGUILayout.EndHorizontal();
             }
 
+            mustBeActive = EditorGUILayout.Toggle("Must Be Active In Hierarchy", mustBeActive);
+
             if (GUILayout.Button("Add Property"))
                 shaderProperties.Add("");
 
@@ -287,6 +293,10 @@ namespace Lodis.Gameplay
                     continue;
                 
                 Renderer renderer = child.GetComponentInChildren<Renderer>();
+
+                if (!child.gameObject.activeInHierarchy && mustBeActive)
+                    continue;
+
                 if (renderer != null)
                 {
                     ColorObject colorObject = new ColorObject(renderer, shaderProperties.ToArray(), false, 0);

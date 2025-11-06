@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
+  m_Name: P_Overclock_Normals
+  m_EditorClassIdentifier: 
+  _abilityData:
+  - {fileID: 11400000, guid: d05fb536f52f8c54294696484874c835, type: 2}
+  - {fileID: 11400000, guid: 88e9a2a52f84b5b4d9e9c5dba83613f3, type: 2}
+  - {fileID: 11400000, guid: 00a716460be07ec4e9432da99a4d6100, type: 2}
+  - {fileID: 11400000, guid: 65682ca91390f9947ad49602638556ef, type: 2}
+  - {fileID: 11400000, guid: c31a2cec7a40af04d82a3855f11b4b30, type: 2}
+  - {fileID: 11400000, guid: a30b2e354237c2641a702496caac3f14, type: 2}
+  - {fileID: 11400000, guid: 5d08d1f0ca2b38a4190abfc020013efa, type: 2}
+  - {fileID: 11400000, guid: f2372fde16872754081cea62bfb4083e, type: 2}
+  - {fileID: 11400000, guid: f1eae4620d77a6e40a6d019234970f3d, type: 2}
+  _deckName: OverclockNormals

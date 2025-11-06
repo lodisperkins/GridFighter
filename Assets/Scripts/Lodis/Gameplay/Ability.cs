@@ -246,8 +246,8 @@ namespace Lodis.Gameplay
             onBegin?.Invoke();
             CurrentAbilityPhase = AbilityPhase.STARTUP;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActivateSound);
+            _startUpTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args), abilityData.startUpTime, TimeUnit);
             Start(args);
-            _startUpTimer = FixedPointTimer.StartNewTimedAction(() => ActivePhase(args),  abilityData.startUpTime, TimeUnit);
         }
 
         /// <summary>
@@ -259,8 +259,8 @@ namespace Lodis.Gameplay
             onActivateStart?.Invoke();
             CurrentAbilityPhase = AbilityPhase.ACTIVE;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.ActiveSound);
-            Activate(args);
             _activeTimer = FixedPointTimer.StartNewTimedAction(() => RecoverPhase(args), abilityData.timeActive, TimeUnit);
+            Activate(args);
         }
 
         /// <summary>
@@ -273,11 +273,20 @@ namespace Lodis.Gameplay
             CurrentAbilityPhase = AbilityPhase.RECOVER;
             SoundManagerBehaviour.Instance.PlaySound(abilityData.DeactivateSound);
 
-            Recover(args);
             if (MaxActivationAmountReached)
+            {
                 _recoverTimer = FixedPointTimer.StartNewTimedAction(() => EndAbility(), abilityData.recoverTime, TimeUnit);
+            }
             else
-                _recoverTimer = FixedPointTimer.StartNewTimedAction(() => _inUse = false, abilityData.recoverTime, TimeUnit);
+            {
+                _recoverTimer = FixedPointTimer.StartNewTimedAction(() =>
+                {
+                    _inUse = false;
+                    OnEnd();
+                }, abilityData.recoverTime, TimeUnit);
+            }
+
+            Recover(args);
 
         }
 
@@ -610,6 +619,8 @@ namespace Lodis.Gameplay
         protected virtual void OnEnd(){ }
 
         protected virtual void OnMatchRestart(){ }
+
+        public virtual void OnDeckReshuffle() {}
 
         /// <summary>
         /// Called in every update for the ability owner

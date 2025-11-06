@@ -220,9 +220,11 @@ namespace Lodis.GridScripts
 
             PanelBehaviour panel;
 
+            int direction = transform.forward.x > 0 ? 1 : -1;
+
             for (int i = 1; i <= _xRange; i++)
             {
-                if (GridBehaviour.Instance.GetPanel(x + i, y, out panel))
+                if (GridBehaviour.Instance.GetPanel(x + (i * direction), y, out panel))
                 {
                     PanelsInRange.Add(panel);
                     MarkPanel(panel);

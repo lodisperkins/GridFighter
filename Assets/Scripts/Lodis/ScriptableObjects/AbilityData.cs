@@ -1,12 +1,7 @@
 ﻿using System;
 using Lodis.Gameplay;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.Assertions;
-using UnityEngine.UI;
 using UnityEngine.Video;
 using Lodis.Utility;
 using Types;

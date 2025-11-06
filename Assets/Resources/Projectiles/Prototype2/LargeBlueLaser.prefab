@@ -28,6 +28,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3660854074952908342, guid: 21e48ff7c2220634887d04ebcd36387a,
+        type: 3}
+      propertyPath: _entityData.Name
+      value: BigLaserShot
+      objectReference: {fileID: 0}
     - target: {fileID: 5492417697554311369, guid: 21e48ff7c2220634887d04ebcd36387a,
         type: 3}
       propertyPath: m_RootOrder
@@ -141,6 +146,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 0
   _onlyChangeHue: 0
+  _setColorOnStart: 1
   _changeStartColor: 1
   _changeColorOverLifetime: 0
   _changeColorBySpeed: 0
@@ -160,6 +166,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorManager: {fileID: 7217116222800413988}
   colliderBehaviour: {fileID: 8280561567682521267}
+  clearParticles: 0
+  restartParticles: 0
 --- !u!198 &6528806677454005003 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 7287907161667778891, guid: 21e48ff7c2220634887d04ebcd36387a,

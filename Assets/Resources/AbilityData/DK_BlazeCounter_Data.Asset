@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: DK_BlazeCounter_Data
+  m_EditorClassIdentifier: 
+  abilityName: Blaze Counter
+  abilityDescription: None
+  exampleClip: {fileID: 0}
+  AbilityType: 8
+  timeActive:
+    RawValue: 13107
+  recoverTime:
+    RawValue: 13107
+  startUpTime:
+    RawValue: 6553
+  maxActivationAmount: 1
+  EnergyCost: 2
+  CancellationRules:
+  - Phase: 6
+    CanOnlyCancelOnOpponentHit: 1
+    CanCancelOnMove: 0
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 1
+    cancelOnHit: 0
+    cancelOnFlinch: 1
+    cancelOnKnockback: 1
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
+  AutoMovePhase: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
+  useAbilityTimingForAnimation: 0
+  playAnimationManually: 0
+  visualPrefab: {fileID: 0}
+  Accessory: {fileID: 0}
+  Effects: []
+  Sounds: []
+  DisplayIcon: {fileID: 21300000, guid: 235985f8892779342b27582e8ea487f3, type: 3}
+  ActivateSound: {fileID: 8300000, guid: a89d5d07b7af33842b85e1009764daf5, type: 3}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: BlazeCounterCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive:
+      RawValue: 0
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 655360
+    BaseKnockBack:
+      RawValue: 262144
+    KnockBackScale:
+      RawValue: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 65536
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 65536
+    Priority:
+      RawValue: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    AbilityID:
+      RawValue: 1785069568
+    SpawnEffect: {fileID: 8482821253585752479, guid: b2d1a7e3c779c334183600eee56341df,
+      type: 3}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 9830
+    CameraShakeDuration:
+      RawValue: 32768
+    CameraShakeFrequency: 50
+    ShakesCamera: 1
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: CounterTime
+    value:
+      RawValue: 65536
+  - name: DashDistance
+    value:
+      RawValue: 327680
+  - name: DashRestTime
+    value:
+      RawValue: 65536
+  animationType: 3
+  _customAnimation: {fileID: 4358703180778511629, guid: e106b16d4f220f6458485d6d2a274a0a,
+    type: 3}
+  _shouldMirror: 1
+  _additionalAnimations:
+  - {fileID: -7899071121948126006, guid: 3f22158e12ff636468af81f5cf89f28c, type: 3}

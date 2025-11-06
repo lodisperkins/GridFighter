@@ -878,24 +878,44 @@ namespace Lodis.Movement
         /// <param name="panel">The panel to teleport to. Spawns the character on top of the panel using its height offset.</param>
         /// <param name="travelTime">The amount of time it will take for the object to appear again.</param>
         /// <returns>Returns false if the panel is null.</returns>
-        public bool TeleportToPanel(PanelBehaviour panel, Fixed32 travelTime)
+        public bool TeleportToPanel(PanelBehaviour panel, Fixed32 travelTime, bool setObjectInactive = true, GameObject teleportEffect = null)
         {
             if (!panel || _health?.Stunned == true || !panel.PanelEnabled)
                 return false;
 
+            if (teleportEffect == null)
+            {
+                teleportEffect = _returnEffect.gameObject;
+            }
+
             _teleportAction?.Stop();
 
             _onTeleportStart?.Raise(gameObject);
-            SpawnTeleportEffect();
-            gameObject.SetActive(false);
+            SpawnTeleportEffect(teleportEffect);
+            gameObject.SetActive(!setObjectInactive);
+            CancelMovement();
 
-            _teleportAction = FixedPointTimer.StartNewTimedAction(() =>
+            if (travelTime > 0)
+            {
+                _teleportAction = FixedPointTimer.StartNewTimedAction(() =>
+                {
+                    FixedTransform.WorldPosition = panel.FixedWorldPosition + FVector3.Up * HeightOffset;
+                    MoveToPanel(panel, true, GridAlignment.ANY);
+                    gameObject.SetActive(true);
+                    _onTeleportEnd?.Raise(gameObject);
+                    SpawnTeleportEffect(teleportEffect);
+                }, travelTime);
+            }
+            else
             {
                 FixedTransform.WorldPosition = panel.FixedWorldPosition + FVector3.Up * HeightOffset;
+                MoveToPanel(panel, true, GridAlignment.ANY);
                 gameObject.SetActive(true);
                 _onTeleportEnd?.Raise(gameObject);
-                SpawnTeleportEffect();
-            }, travelTime);
+
+                //Spawns the effect at the transform at the same time since the teleportation is instant.
+                SpawnTeleportEffect(panel.transform.position, teleportEffect);
+            }
 
             return true;
         }
@@ -971,8 +991,43 @@ namespace Lodis.Movement
             Position = _currentPanel.Position;
         }
 
-        private void SpawnTeleportEffect()
+        private void SpawnTeleportEffect(GameObject teleportEffect = null)
         {
+            if (teleportEffect == null)
+                teleportEffect = _returnEffect.gameObject;
+
+            ParticleColorManagerBehaviour colorManager = teleportEffect.GetComponent<ParticleColorManagerBehaviour>();
+
+            if (colorManager)
+            {
+                colorManager.SetColors(Alignment);
+            }
+
+            //Offset the particles so they spawn at the players location
+            FVector3 offset = (FVector3.Right * _targetTolerance * (Fixed32)transform.forward.x) + FVector3.Back * (Fixed32)0.2 + FVector3.Up;
+
+            //Sets the y position so that the effect is at the players center
+            if (!_meshFilter)
+                offset.Y = (Fixed32)(transform.localScale.y / 2);
+            else
+                offset.Y = (Fixed32)((_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2);
+
+            //Spawns the effect and makes it face the camera
+            Instantiate(teleportEffect, (Vector3)(FixedTransform.WorldPosition + offset), Camera.main.transform.rotation);
+        }
+
+        private void SpawnTeleportEffect(Vector3 position, GameObject teleportEffect = null)
+        {
+            if (teleportEffect == null)
+                teleportEffect = _returnEffect.gameObject;
+
+            ParticleColorManagerBehaviour colorManager = teleportEffect.GetComponent<ParticleColorManagerBehaviour>();
+
+            if (colorManager)
+            {
+                colorManager.SetColors(Alignment);
+            }
+
             //Offset the particles so they spawn at the players location
             FVector3 offset = (FVector3.Right * (Fixed32)_targetTolerance * (Fixed32)transform.forward.x) + FVector3.Back * (Fixed32)0.2 + FVector3.Up;
 
@@ -983,7 +1038,7 @@ namespace Lodis.Movement
                 offset.Y = (Fixed32)((_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2);
 
             //Spawns the effect and makes it face the camera
-            Instantiate(_returnEffect, transform.position + (Vector3)offset, Camera.main.transform.rotation);
+            Instantiate(teleportEffect, position + (Vector3)offset, Camera.main.transform.rotation);
         }
 
         /// <summary>
@@ -1139,6 +1194,14 @@ namespace Lodis.Movement
                 && CanMove && Alignment != GridAlignment.ANY && !IsMoving;
         }
 
+        public void SetAlignmentRotation()
+        {
+            if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
+                FixedTransform.WorldRotation = FQuaternion.Euler(0, -90, 0);
+            else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
+                FixedTransform.WorldRotation = FQuaternion.Euler(0, 90, 0);
+        }
+
         public override void Tick(Fixed32 dt)
         {
             if (_physics?.GridActive == false)
@@ -1174,10 +1237,7 @@ namespace Lodis.Movement
 
             if (state == "Idle" || _facingIgnoresState)
             {
-                if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.RIGHT)
-                    FixedTransform.WorldRotation = FQuaternion.Euler(0, -90, 0);
-                else if (_alwaysLookAtOpposingSide && _defaultAlignment == GridAlignment.LEFT)
-                    FixedTransform.WorldRotation = FQuaternion.Euler(0, 90, 0);
+                SetAlignmentRotation();
             }
 
             //Old fixed update

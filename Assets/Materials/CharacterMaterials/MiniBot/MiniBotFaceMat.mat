@@ -135,7 +135,7 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionOffset: {r: 1, g: 1.5, b: 0, a: 0}
+    - _EmissionOffset: {r: 1.5, g: 1.5, b: 0, a: 0}
     - _EmissionTiling: {r: 0.5, g: 0.5, b: 0, a: 0}
     - _FresnelColor: {r: 1, g: 1, b: 1, a: 0}
     - _Offset: {r: 1, g: 1.5, b: 0, a: 0}

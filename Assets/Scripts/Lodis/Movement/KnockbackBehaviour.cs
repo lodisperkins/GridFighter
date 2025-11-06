@@ -434,6 +434,9 @@ namespace Lodis.Movement
         }
         public override Fixed32 TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
+            if (UpdateSuperArmor(damage))
+                return 0;
+
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
 
@@ -498,6 +501,9 @@ namespace Lodis.Movement
         }
         public override Fixed32 TakeDamage(HitColliderData info, EntityData attacker)
         {
+            if (UpdateSuperArmor(info.Damage))
+                return 0;
+
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
 

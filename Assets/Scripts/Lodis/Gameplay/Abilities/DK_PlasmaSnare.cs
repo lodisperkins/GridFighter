@@ -132,7 +132,7 @@ namespace Lodis.Gameplay
         {
             //Only check knockback if a player was hit.
             GameObject other = collision.OtherEntity.UnityObject;
-            if (!other.CompareTag("Player"))
+            if (!other.CompareTag("Player") || !_opponentKnockback.CanBeHit())
                 return;
 
             _liftCondition = FixedPointTimer.StartNewConditionAction(BeginLift, c => !_opponentKnockback.Physics.IsFrozen);

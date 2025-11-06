@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
+  m_Name: SF_WhipPull_Data
+  m_EditorClassIdentifier: 
+  abilityName: Unassigned
+  abilityDescription: None
+  exampleClip: {fileID: 0}
+  AbilityType: 6
+  timeActive:
+    RawValue: 65536
+  recoverTime:
+    RawValue: 13107
+  startUpTime:
+    RawValue: 13107
+  maxActivationAmount: 1
+  EnergyCost: 0
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
+  AutoMovePhase: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 1446156717015989069, guid: 9794864b91cace04eb6a8a457402e2b5,
+    type: 3}
+  Accessory: {fileID: 11400000, guid: 4db829e6a6aee7746bc29cdc79ee9a4e, type: 2}
+  Effects:
+  - {fileID: 5708505094911903500, guid: 18cbb56a95a7f124881811ae56290ec4, type: 3}
+  Sounds: []
+  DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 0}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: WhipPopUpCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive:
+      RawValue: 6553
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 983040
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 111411
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 65536
+    Priority:
+      RawValue: 0
+    OwnerAlignement: 0
+    AbilityType: 6
+    AbilityID:
+      RawValue: -1394147328
+    SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength:
+      RawValue: 32768
+    CameraShakeStrength:
+      RawValue: 13107
+    CameraShakeDuration:
+      RawValue: 6553
+    CameraShakeFrequency: 50
+    ShakesCamera: 1
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  _customStats:
+  - name: Speed
+    value:
+      RawValue: 655360
+  - name: Lifetime
+    value:
+      RawValue: 196608
+  - name: MaxInstances
+    value:
+      RawValue: -65536
+  animationType: 3
+  _customAnimation: {fileID: 4358703180778511629, guid: d66f9a743ae6519428359b0161545067,
+    type: 3}
+  _shouldMirror: 1
+  _additionalAnimations:
+  - {fileID: 5180280961208456968, guid: 8e4cd2c42ea57534ab40d2a09debc242, type: 3}

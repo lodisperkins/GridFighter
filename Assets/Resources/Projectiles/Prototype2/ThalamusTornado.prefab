@@ -195,6 +195,7 @@ MonoBehaviour:
     UnityObject: {fileID: 7196514569071348718}
     UnityScript: {fileID: 0}
   _addToGameManually: 0
+  _updateEntityUsingUnityTransform: 0
   _visualRoot: {fileID: 2728582578077181541}
   _children: []
 --- !u!114 &465760841969545151
@@ -242,6 +243,8 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _shouldDrawCollider: 1
+  _isHurtBox: 0
   debuggingEnabled: 1
   ColliderInfo:
     Name: 
@@ -582,7 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c52846ec6a717c347ab6d490fc6b81c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _axis: {x: 0, y: 0, z: 1}
+  _axis: {x: 1, y: 0, z: 0}
   _speed: 100
   _rotateOnSelf: 0
   _resetOnDisable: 0
@@ -973,6 +976,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _alignment: 0
   _onlyChangeHue: 0
+  _setColorOnStart: 1
   _changeStartColor: 1
   _changeColorOverLifetime: 0
   _changeColorBySpeed: 0
@@ -995,6 +999,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorManager: {fileID: 365913627158987637}
   colliderBehaviour: {fileID: 465760841969545151}
+  clearParticles: 0
+  restartParticles: 0
 --- !u!1001 &6051724790818433695
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,0 +1,118 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: WB_VanishStrike_Data
+  m_EditorClassIdentifier: 
+  abilityName: Vanish Strike
+  abilityDescription: None
+  exampleClip: {fileID: 0}
+  AbilityType: 3
+  timeActive:
+    RawValue: 32768
+  recoverTime:
+    RawValue: 32768
+  startUpTime:
+    RawValue: 13107
+  maxActivationAmount: 1
+  EnergyCost: 0
+  CancellationRules:
+  - Phase: 6
+    CanOnlyCancelOnOpponentHit: 1
+    CanCancelOnMove: 0
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 0
+    cancelOnHit: 0
+    cancelOnFlinch: 0
+    cancelOnKnockback: 0
+  - Phase: 2
+    CanOnlyCancelOnOpponentHit: 1
+    CanCancelOnMove: 0
+    CanCancelIntoSelf: 0
+    CanCancelIntoSpecial: 1
+    CanCancelIntoNormal: 1
+    cancelOnHit: 0
+    cancelOnFlinch: 0
+    cancelOnKnockback: 0
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
+  AutoMovePhase: 0
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 0}
+  Accessory: {fileID: 0}
+  Effects:
+  - {fileID: 543745384379617035, guid: 2a32ab51b4faef049953cb7c18585d46, type: 3}
+  Sounds: []
+  DisplayIcon: {fileID: 0}
+  ActivateSound: {fileID: 0}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: VanishStrikeCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive:
+      RawValue: 0
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 327680
+    BaseKnockBack:
+      RawValue: 65536
+    KnockBackScale:
+      RawValue: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 131072
+    AdjustAngleBasedOnAlignment: 1
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 19660
+    Priority:
+      RawValue: 0
+    OwnerAlignement: 0
+    AbilityType: 3
+    AbilityID:
+      RawValue: 75563008
+    SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 2
+    HitStopShakeStrength:
+      RawValue: 13107
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
+  _customStats: []
+  animationType: 3
+  _customAnimation: {fileID: 1444733745673076434, guid: 00f74ebaf89f849408328ca9aa08d685,
+    type: 3}
+  _shouldMirror: 1
+  _additionalAnimations: []

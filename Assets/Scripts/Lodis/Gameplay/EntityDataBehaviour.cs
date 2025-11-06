@@ -16,6 +16,7 @@ public class EntityDataBehaviour : MonoBehaviour
     [SerializeField] private EntityData _entityData;
     [Tooltip("If true the entity will not be added to the rollback simulation when the game starts.")]
     [SerializeField] private bool _addToGameManually;
+    [SerializeField] private bool _updateEntityUsingUnityTransform;
     [Tooltip("The transform of the object that is the visual representation of this entity.")]
     [SerializeField] private Transform _visualRoot;
     [SerializeField] private EntityDataBehaviour[] _children;
@@ -133,8 +134,17 @@ public class EntityDataBehaviour : MonoBehaviour
 
     public void UpdateUnityTransform(Fixed32 dt)
     {
-        if (VisualRoot)
+        if (!VisualRoot)
+            return;
+
+        if (_updateEntityUsingUnityTransform)
+        {
+            FixedTransform.SetPositionAndRotation((FVector3)transform.position, (FQuaternion)transform.rotation);
+        }
+        else
+        {
             VisualRoot.SetPositionAndRotation((Vector3)Data.Transform.WorldPosition, (Quaternion)Data.Transform.WorldRotation);
+        }
     }
 
     private void OnEnable()

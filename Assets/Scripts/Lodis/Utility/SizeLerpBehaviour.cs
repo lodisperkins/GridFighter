@@ -18,10 +18,13 @@ namespace Lodis.Utility
         [Tooltip("Makes the object constantly resize. Lerps size to target size and lerps back to original when the target size is reached.")]
         [SerializeField]
         private bool _loopYoYo;
+        [SerializeField] private bool _punch;
 
         [Tooltip("Makes the object constantly resize. Lerps size to target size and snaps back to original when the target size is reached.")]
         [SerializeField]
         private bool _loopReset;
+        [SerializeField]
+        private int _loopCount = -1;
         [SerializeField]
         private float _scaleDuration;
         [SerializeField]
@@ -52,9 +55,11 @@ namespace Lodis.Utility
         public void StartResize()
         {
             if (_loopYoYo)
-                transform.DOScale(_targetScale, _scaleDuration).SetLoops(-1, LoopType.Yoyo).onComplete += () => _onResizeComplete?.Invoke();
+                transform.DOScale(_targetScale, _scaleDuration).SetLoops(_loopCount, LoopType.Yoyo).onComplete += () => _onResizeComplete?.Invoke();
             else if (_loopReset)
-                transform.DOScale(_targetScale, _scaleDuration).SetLoops(-1, LoopType.Restart).onComplete += () => _onResizeComplete?.Invoke();
+                transform.DOScale(_targetScale, _scaleDuration).SetLoops(_loopCount, LoopType.Restart).onComplete += () => _onResizeComplete?.Invoke();
+            else if (_punch)
+                transform.DOPunchScale(_targetScale, _scaleDuration).onComplete += () => _onResizeComplete?.Invoke();
             else
                 transform.DOScale(_targetScale, _scaleDuration).onComplete += () => _onResizeComplete?.Invoke();
         }

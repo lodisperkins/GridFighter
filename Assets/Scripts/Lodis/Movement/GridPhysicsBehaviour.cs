@@ -220,6 +220,7 @@ namespace Lodis.Movement
             }
         }
         public bool BouncePending { get => _currentBounce.Bounces <= 0; }
+        public bool ClampPositionInBarriers { get => clampPositionInBarriers; set => clampPositionInBarriers = value; }
 
         public override void Serialize(BinaryWriter bw)
         {
@@ -848,6 +849,7 @@ namespace Lodis.Movement
             //Store force data for later use.
             _lastForceAdded = force;
             ForceToApply = force;
+            _lastVelocity = _velocity;
 
             //Forces should be flipped upwards if applied directly downwards on a grounded object.
             if (_panelBounceEnabled && IsGrounded && force.Y < 0)
@@ -1149,14 +1151,17 @@ namespace Lodis.Movement
 
             FixedTransform.WorldPosition += Velocity * dt * GridGame.TimeScale;
 
-            if (clampPositionInBarriers)
+            if (ClampPositionInBarriers)
             {
                 ClampPositionWithinBarriers();
             }
 
             //---Gravity
             if (UseGravity && !IsKinematic && !IsGrounded)
+            {
+                _lastVelocity = _velocity;
                 _velocity += new FVector3(0, -Gravity * Mass * dt, 0);
+            }
 
             //---Friction
 

@@ -17,9 +17,9 @@ MonoBehaviour:
   exampleClip: {fileID: 0}
   AbilityType: 0
   timeActive:
-    RawValue: 32768
-  recoverTime:
     RawValue: 13107
+  recoverTime:
+    RawValue: 39321
   startUpTime:
     RawValue: 32768
   maxActivationAmount: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 237180737638273710, guid: 13a5f196f164a364fb1fcaacfcd934ec,
     type: 3}
-  Accessory: {fileID: 0}
+  Accessory: {fileID: 11400000, guid: 4db829e6a6aee7746bc29cdc79ee9a4e, type: 2}
   Effects: []
   Sounds: []
   DisplayIcon: {fileID: 0}
@@ -66,7 +66,7 @@ MonoBehaviour:
     MultiHitWaitTime:
       RawValue: 0
     Damage:
-      RawValue: 655360
+      RawValue: 327680
     BaseKnockBack:
       RawValue: 131072
     KnockBackScale:
@@ -74,11 +74,11 @@ MonoBehaviour:
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 65536
+      RawValue: 6553
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
-      RawValue: 65536
+      RawValue: 32768
     Priority:
       RawValue: 0
     OwnerAlignement: 0
@@ -111,7 +111,8 @@ MonoBehaviour:
   - name: MaxInstances
     value:
       RawValue: -65536
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  animationType: 3
+  _customAnimation: {fileID: 4358703180778511629, guid: c3049af6e94f1394fa28b87e5d81a632,
+    type: 3}
   _shouldMirror: 1
   _additionalAnimations: []

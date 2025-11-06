@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2563312103216996692, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: _entityData.Name
+      value: SmallLaserShot
+      objectReference: {fileID: 0}
     - target: {fileID: 4296703095717890468, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: _isKinematic
@@ -142,6 +147,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   colorManager: {fileID: 1981331197469444464}
   colliderBehaviour: {fileID: 7304002394639253983}
+  clearParticles: 0
+  restartParticles: 0
 --- !u!114 &1981331197469444464
 MonoBehaviour:
   m_ObjectHideFlags: 0

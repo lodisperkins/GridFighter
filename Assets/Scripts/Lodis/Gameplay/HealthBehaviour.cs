@@ -15,36 +15,42 @@ namespace Lodis.Gameplay
 {
     public class HealthBehaviour : SimulationBehaviour
     {
+        public enum ArmorType
+        {
+            HitsToBreak,
+            DamageThreshold,
+            TimeToBreak
+        }
+
         [Tooltip("The measurement of the amount of damage this object can take or has taken")]
-        [SerializeField]
-        private Fixed32 _health;
+        [SerializeField] private Fixed32 _health;
         [Tooltip("The starting amount of damage this object can take or has taken. Set to -1 to start with max health.")]
-        [SerializeField]
-        private float _startingHealth = -1;
+        [SerializeField] private float _startingHealth = -1;
         [Tooltip("The maximum amount of damage this object can take or has taken")]
-        [SerializeField]
-        private FloatVariable _maxHealth;
+        [SerializeField] private FloatVariable _maxHealth;
+
         [Tooltip("Whether or not this object should be deleted if the health is 0")]
-        [SerializeField]
-        private bool _destroyOnDeath;
-        [SerializeField]
-        private UnityEvent _onDeath;
+        [SerializeField] private bool _destroyOnDeath;
+        [SerializeField] protected UnityEvent _onTakeDamage;
+        [SerializeField] private UnityEvent _onDeath;
+
         [Tooltip("Whether or not the health value for this object is above 0")]
-        [SerializeField]
-        private bool _isAlive = true;
+        [SerializeField] private bool _isAlive = true;
         [Tooltip("Whether or not this object can be damaged or knocked back")]
-        [SerializeField]
-        private bool _isInvincible;
+        [SerializeField] private bool _isInvincible;
+        [Tooltip("Whether or not this object is in a stunned state")]
+        [SerializeField] private bool _stunned;
+        [SerializeField] private bool _isIntangible;
+        [SerializeField] private bool _hasArmor;
+        [SerializeField] private bool _counterStanceActive;
+
+
+        [SerializeField] private Renderer _meshRenderer;
+
+        //---
         private FixedTimeAction _invincibilityTimer;
         private Condition _invincibilityCondition;
         private Condition _intagibilityCondition;
-        [Tooltip("Whether or not this object is in a stunned state")]
-        [SerializeField]
-        private bool _stunned;
-        [SerializeField]
-        private bool _isIntangible;
-        [SerializeField]
-        private Renderer _meshRenderer;
         protected Material _material;
         private Color _defaultColor;
         private Coroutine _stunRoutine;
@@ -56,7 +62,18 @@ namespace Lodis.Gameplay
         private UnityAction _onIntagibilityDeactivated;
         private UnityAction _onStunEnabled;
         private UnityAction _onStunDisabled;
+        private UnityAction _onArmorActivated;
+        private UnityAction _onArmorDeactivated;
+        private UnityAction<Fixed32> _onArmorHit;
+        private UnityAction _onArmorBroken;
+        private UnityAction _onArmorBrokenTemp;
+        private UnityAction _onCounterStanceActive;
+        private UnityAction _onCounterStanceInactive;
         private int _damageableAbilityID = -1;
+
+        private Fixed32 _armorHealth;
+        private ArmorType _currentArmorType;
+
         private string _defaultLayer;
         private HitColliderBehaviour _lastCollider;
         private HitStopBehaviour _hitStop;
@@ -64,8 +81,9 @@ namespace Lodis.Gameplay
 
         protected GridMovementBehaviour _movement;
         private Condition aliveCondition;
-        protected UnityAction _onTakeDamage;
         private FixedTimeAction _stunTimer;
+        private FixedTimeAction _armorTimer;
+        private FixedTimeAction _counterTimer;
 
         public bool Stunned
         {
@@ -127,6 +145,35 @@ namespace Lodis.Gameplay
             }
         }
 
+        public bool HasArmor
+        {
+            get => _hasArmor;
+
+            protected set
+            {
+                if (!value && _hasArmor)
+                    _onArmorDeactivated?.Invoke();
+                else if (value && !_hasArmor)
+                    _onArmorActivated?.Invoke();
+
+                _hasArmor = value;
+            }
+        }
+
+        public bool CounterStanceActive
+        {
+            get => _counterStanceActive;
+            protected set
+            {
+                if (!value && _counterStanceActive)
+                    _onCounterStanceInactive?.Invoke();
+                else if (value && !_counterStanceActive)
+                    _onCounterStanceActive?.Invoke();
+
+                _counterStanceActive = value;
+            }
+        }
+
         public FloatVariable MaxHealth { get => _maxHealth; }
 
         public HitColliderBehaviour LastCollider
@@ -164,6 +211,8 @@ namespace Lodis.Gameplay
             bw.Write(_stunned);
             bw.Write(_isIntangible);
             bw.Write(DamageableAbilityID);
+            bw.Write(_hasArmor);
+            bw.Write(_counterStanceActive);
         }
 
         public override void Deserialize(BinaryReader br)
@@ -173,6 +222,8 @@ namespace Lodis.Gameplay
             _stunned = br.ReadBoolean();
             _isIntangible = br.ReadBoolean();
             DamageableAbilityID = br.ReadInt32();
+            _hasArmor = br.ReadBoolean();
+            _counterStanceActive = br.ReadBoolean();
         }
 
         protected override void Awake()
@@ -229,6 +280,9 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public virtual Fixed32 TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
+            if (UpdateSuperArmor(damage))
+                return 0;
+
             Fixed32 damageTaken = _health;
 
             Health -= damage;
@@ -254,6 +308,9 @@ namespace Lodis.Gameplay
         /// <param name="damageType">The type of damage this object will take</param>
         public virtual Fixed32 TakeDamage(HitColliderData info, EntityData attacker)
         {
+            if (UpdateSuperArmor(info.Damage))
+                return 0;
+
             Fixed32 damageTaken = _health;
 
             Health -= info.Damage;
@@ -280,6 +337,83 @@ namespace Lodis.Gameplay
 
             if (_stunned)
                 CancelStun();
+
+            DisableSuperArmor();
+        }
+
+        public bool CanBeHit()
+        {
+            return !IsInvincible && !IsIntangible && !HasArmor;
+        }
+
+        public bool UpdateSuperArmor(Fixed32 damage)
+        {
+            if (!HasArmor)
+                return false;
+
+            switch (_currentArmorType)
+            {
+                case ArmorType.HitsToBreak:
+                    _armorHealth--;
+                    _onArmorHit?.Invoke(_armorHealth);
+
+                    if (_armorHealth <= 0)
+                    {
+                        _onArmorBroken?.Invoke();
+                        _onArmorBrokenTemp?.Invoke();
+                        _onArmorBrokenTemp = null;
+                        HasArmor = false;
+                    }
+                    break;
+
+                case ArmorType.DamageThreshold:
+                    _armorHealth -= damage;
+                    _onArmorHit?.Invoke(damage);
+
+                    if (_armorHealth <= 0)
+                    {
+                        _onArmorBroken?.Invoke();
+                        _onArmorBrokenTemp?.Invoke();
+                        _onArmorBrokenTemp = null;
+                        HasArmor = false;
+                    }
+                    break;
+                default:
+                    _onArmorHit?.Invoke(damage);
+                    break;
+            }
+
+            return true;
+        }
+
+        public void EnableSuperArmor(ArmorType armorType, Fixed32 armorValue)
+        {
+            HasArmor = true;
+
+            _currentArmorType = armorType;
+            _armorHealth = armorValue;
+
+            if (_currentArmorType == ArmorType.TimeToBreak)
+            {
+                _armorTimer = FixedPointTimer.StartNewTimedAction(() => HasArmor = false, armorValue);
+            }
+        }
+
+        public void EnableCounterStance(Fixed32 time, UnityAction onCounterSuccess)
+        {
+            EnableSuperArmor(ArmorType.HitsToBreak, 1);
+            _counterTimer = FixedPointTimer.StartNewTimedAction(DisableSuperArmor, time);
+            _onArmorBrokenTemp += onCounterSuccess;
+            _onArmorBrokenTemp += () => CounterStanceActive = false;
+
+            CounterStanceActive = true;
+        }
+
+        public void DisableSuperArmor()
+        {
+            HasArmor = false;
+            CounterStanceActive = false;
+            _armorTimer?.Stop();
         }
 
         /// <summary>
@@ -302,7 +436,7 @@ namespace Lodis.Gameplay
         /// <param name="time">The amount of time to disable the components for</param>
         public virtual void Stun(Fixed32 time)
         {
-            if (Stunned || IsInvincible || _defenseBehaviour?.IsShielding == true || IsIntangible)
+            if (Stunned || IsInvincible || _defenseBehaviour?.IsShielding == true || IsIntangible || HasArmor)
                 return;
 
             Stunned = true;
@@ -360,7 +494,7 @@ namespace Lodis.Gameplay
         /// <param name="action">The new listener to to the event</param>
         public void AddOnTakeDamageAction(UnityAction action)
         {
-            _onTakeDamage += action;
+            _onTakeDamage.AddListener(action);
         }
 
         public void AddOnInvincibilityActiveAction(UnityAction action)
@@ -381,6 +515,46 @@ namespace Lodis.Gameplay
         public void AddOnIntangibilityInactiveAction(UnityAction action)
         {
             _onIntagibilityDeactivated += action;
+        }
+
+        public void AddOnArmorActiveAction(UnityAction action)
+        {
+            _onArmorActivated += action;
+        }
+
+        public void AddOnArmorHitAction(UnityAction<Fixed32> action)
+        {
+            _onArmorHit += action;
+        }
+
+        public void RemoveOnArmorHitAction(UnityAction<Fixed32> action)
+        {
+            _onArmorHit -= action;
+        }
+
+        public void AddOnArmorInactiveAction(UnityAction action)
+        {
+            _onArmorDeactivated += action;
+        }
+
+        public void AddOnArmorBrokenAction(UnityAction action)
+        {
+            _onArmorBroken += action;
+        }
+
+        public void RemoveOnArmorBrokenAction(UnityAction action)
+        {
+            _onArmorBroken -= action;
+        }
+
+        public void AddOnCounterStanceActiveAction(UnityAction action)
+        {
+            _onCounterStanceActive += action;
+        }
+
+        public void AddOnCounterStanceInactiveAction(UnityAction action)
+        {
+            _onCounterStanceInactive += action;
         }
 
         /// <summary>

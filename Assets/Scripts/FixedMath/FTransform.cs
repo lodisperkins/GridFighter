@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ namespace FixedPoints
         [SerializeField] private FQuaternion _localRotation;
         [SerializeField] private FVector3 _worldScale;
         public EntityData EntityData { get; private set; }
+        public bool TrackingEnabled { get; set; }
 
         private FTransform parent;
         private List<FTransform> children;
@@ -110,6 +112,12 @@ namespace FixedPoints
                     _localPosition = InverseTransformPoint(parent, value); // Directly update the private value
                 else
                     _localPosition = value;
+
+                if (TrackingEnabled)
+                {
+                    StackTrace stackTrace = new StackTrace(true);
+                    UnityEngine.Debug.Log($"[FTransform] WorldPosition set to {value} for Entity {EntityData?.Name}. Called from {stackTrace.GetFrame(1).GetMethod().Name} in {stackTrace.GetFrame(1).GetFileName()} at line {stackTrace.GetFrame(1).GetFileLineNumber()}");
+                }
             }
         }
 
@@ -133,6 +141,12 @@ namespace FixedPoints
                     _localRotation = InverseTransformRotation(parent, value); // Directly update the private value
                 else
                     _localRotation = value;
+
+                if (TrackingEnabled)
+                {
+                    StackTrace stackTrace = new StackTrace(true);
+                    UnityEngine.Debug.Log($"[FTransform] WorldRotation set to {value} for Entity {EntityData?.Name}. Called from {stackTrace.GetFrame(1).GetMethod().Name} in {stackTrace.GetFrame(1).GetFileName()} at line {stackTrace.GetFrame(1).GetFileLineNumber()}");
+                }
             }
         }
 
@@ -153,6 +167,13 @@ namespace FixedPoints
             set
             {
                 _worldScale = value; // Directly update the private value
+
+                if (TrackingEnabled)
+                {
+                    StackTrace stackTrace = new StackTrace(true);
+                    UnityEngine.Debug.Log($"[FTransform] WorldScale set to {value} for Entity {EntityData?.Name}. Called from {stackTrace.GetFrame(1).GetMethod().Name} in {stackTrace.GetFrame(1).GetFileName()} at line {stackTrace.GetFrame(1).GetFileLineNumber()}");
+
+                }
             }
         }
 
@@ -166,6 +187,13 @@ namespace FixedPoints
             set
             {
                 _localPosition = value;
+
+                if (TrackingEnabled)
+                {
+                    StackTrace stackTrace = new StackTrace(true);
+                    UnityEngine.Debug.Log($"[FTransform] LocalPosition set to {value} for Entity {EntityData?.Name}. Called from {stackTrace.GetFrame(1).GetMethod().Name} in {stackTrace.GetFrame(1).GetFileName()} at line {stackTrace.GetFrame(1).GetFileLineNumber()}");
+
+                }
             }
         }
 
@@ -178,6 +206,12 @@ namespace FixedPoints
             set
             {
                 _localRotation = value;
+                if (TrackingEnabled)
+                {
+                    StackTrace stackTrace = new StackTrace(true);
+                    UnityEngine.Debug.Log($"[FTransform] LocalRotation set to {value} for Entity {EntityData?.Name}. Called from {stackTrace.GetFrame(1).GetMethod().Name} in {stackTrace.GetFrame(1).GetFileName()} at line {stackTrace.GetFrame(1).GetFileLineNumber()}");
+
+                }
             }
         }
 
@@ -200,6 +234,13 @@ namespace FixedPoints
                     value.Y * parent.WorldScale.Y,
                     value.Z * parent.WorldScale.Z
                 );
+
+                if (TrackingEnabled)
+                {
+                    StackTrace stackTrace = new StackTrace(true);
+                    UnityEngine.Debug.Log($"[FTransform] LocalScale set to {value} for Entity {EntityData?.Name}. Called from {stackTrace.GetFrame(1).GetMethod().Name} in {stackTrace.GetFrame(1).GetFileName()} at line {stackTrace.GetFrame(1).GetFileLineNumber()}");
+
+                }
             }
         }
 
@@ -230,6 +271,21 @@ namespace FixedPoints
             WorldPosition = position;
             WorldRotation = rotation;
         }
+        /// <summary>
+        /// Rotates the transform to look at a target point in world space.
+        /// </summary>
+        /// <param name="target">The point to look at.</param>
+        /// <param name="up">The up direction to use. Defaults to FVector3.Up.</param>
+        public void LookAt(FVector3 target)
+        {
+            FVector3 direction = (target - WorldPosition).GetNormalized();
+            if (direction == FVector3.Zero)
+                return;
+
+            WorldRotation = FQuaternion.LookRotation(direction, FVector3.Up);
+        }
+
+
 
         /// <summary>
         /// Gets or sets the forward vector of the transform.

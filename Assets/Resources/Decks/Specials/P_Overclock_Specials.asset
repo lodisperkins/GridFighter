@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0b93acf88535894dbf73e6ad8cb3d7b, type: 3}
+  m_Name: P_Overclock_Specials
+  m_EditorClassIdentifier: 
+  _abilityData:
+  - {fileID: 11400000, guid: 27d4ae770d56c6c41b3768f844c47fb0, type: 2}
+  - {fileID: 11400000, guid: cc51b47a8873a5c448ce852165b25b1d, type: 2}
+  - {fileID: 11400000, guid: 4784549be1f237746bd2fd53c04beae7, type: 2}
+  - {fileID: 11400000, guid: 496865d782398c041bd57fc248ce9cb8, type: 2}
+  - {fileID: 11400000, guid: bf3c8dfce54584240ac9fa98243aff36, type: 2}
+  - {fileID: 11400000, guid: 09a82839703e0d14e93e0624580e8628, type: 2}
+  - {fileID: 11400000, guid: f1564f8bd8128f74e91700d356b75eab, type: 2}
+  - {fileID: 11400000, guid: e3603ce1e130fb040895169ddb06afdc, type: 2}
+  _deckName: Prototype2Specials

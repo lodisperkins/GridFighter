@@ -76,6 +76,7 @@ namespace Lodis.Gameplay
             }
             
         }
+
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {

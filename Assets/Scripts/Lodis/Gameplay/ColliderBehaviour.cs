@@ -26,7 +26,7 @@ namespace Lodis.Gameplay
         protected Dictionary<int, Fixed32> Collisions;
         protected CustomEventSystem.GameEventListener ReturnToPoolListener;
         protected float _lastHitFrame;
-        protected CollisionEvent _onHit;
+        private CollisionEvent onHit;
         protected CollisionEvent _onHitStay;
         protected CollisionEvent _onOverlap;
         protected CollisionEvent _onOverlapStay;
@@ -48,6 +48,7 @@ namespace Lodis.Gameplay
         public bool DebuggingEnabled { get => debuggingEnabled; set => debuggingEnabled = value; }
         public CollisionGroupBehaviour GroupManager { get => groupManager; set => groupManager = value; }
         public bool CollisionEnabled { get => _entityCollider.CollisionEnabled; set => _entityCollider.CollisionEnabled = value; }
+        public CollisionEvent OnHit { get => onHit; set => onHit = value; }
 
         public override void Init()
         {
@@ -102,7 +103,7 @@ namespace Lodis.Gameplay
 
         public virtual void AddCollisionEvent(CollisionEvent collisionEvent)
         {
-            _onHit += collisionEvent;
+            OnHit += collisionEvent;
         }
 
         public virtual void AddCollisionStayEvent(CollisionEvent collisionEvent)
@@ -127,12 +128,12 @@ namespace Lodis.Gameplay
 
         public virtual void RemoveCollisionEvent(CollisionEvent collisionEvent)
         {
-            _onHit -= collisionEvent;
+            OnHit -= collisionEvent;
         }
 
         public void ClearAllCollisionEvents()
         {
-            _onHit = null;
+            OnHit = null;
         }
 
         public override void Serialize(BinaryWriter bw)
@@ -219,7 +220,7 @@ namespace Lodis.Gameplay
                 _onOpponentHit?.Invoke(collision);
             }
 
-            _onHit?.Invoke(collision);
+            OnHit?.Invoke(collision);
         }
 
         public override void End()

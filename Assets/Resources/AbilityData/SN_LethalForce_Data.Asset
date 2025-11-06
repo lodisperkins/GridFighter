@@ -32,11 +32,11 @@ MonoBehaviour:
   CanInputMovementDuringStartUp: 0
   CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
-  useAbilityTimingForAnimation: 0
+  useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 1733027169142498989, guid: a73466a76f04a8049a2cab21c0bf1216,
     type: 3}
-  Accessory: {fileID: 0}
+  Accessory: {fileID: 11400000, guid: 4db829e6a6aee7746bc29cdc79ee9a4e, type: 2}
   Effects: []
   Sounds: []
   DisplayIcon: {fileID: 0}
@@ -47,7 +47,7 @@ MonoBehaviour:
   - Name: LethalForceStrongCollider
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 52428
+      RawValue: 39321
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
@@ -59,7 +59,7 @@ MonoBehaviour:
     Damage:
       RawValue: 327680
     BaseKnockBack:
-      RawValue: 131072
+      RawValue: 196608
     KnockBackScale:
       RawValue: 0
     ClampForceWithinRing: 0
@@ -103,7 +103,8 @@ MonoBehaviour:
   - name: MaxInstances
     value:
       RawValue: -65536
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  animationType: 3
+  _customAnimation: {fileID: 4358703180778511629, guid: c3049af6e94f1394fa28b87e5d81a632,
+    type: 3}
   _shouldMirror: 1
   _additionalAnimations: []

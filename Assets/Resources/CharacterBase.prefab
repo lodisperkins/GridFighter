@@ -225,6 +225,8 @@ MonoBehaviour:
   _isInvincible: 0
   _stunned: 0
   _isIntangible: 0
+  _hasArmor: 0
+  _counterStanceActive: 0
   _meshRenderer: {fileID: 0}
   _hasExploded: 0
   _outOfBounds: 0
@@ -1351,6 +1353,7 @@ MonoBehaviour:
     UnityObject: {fileID: 0}
     UnityScript: {fileID: 0}
   _addToGameManually: 0
+  _updateEntityUsingUnityTransform: 0
   _visualRoot: {fileID: 561307191668043432}
   _children:
   - {fileID: 9088445964086657447}
@@ -1399,6 +1402,7 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _shouldDrawCollider: 1
   _isHurtBox: 1
   debuggingEnabled: 0
 --- !u!1 &2296372778538319251
@@ -1915,6 +1919,7 @@ MonoBehaviour:
     UnityObject: {fileID: 5474204029689953125}
     UnityScript: {fileID: 0}
   _addToGameManually: 0
+  _updateEntityUsingUnityTransform: 0
   _visualRoot: {fileID: 5449818576778757990}
   _children: []
 --- !u!1 &5789836127144102983
@@ -2407,14 +2412,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77fe7df173b940b4fb146475bca37124, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeBetweenFlashes: 5
+  _timeBetweenFlashes: 0.5
   _color: {r: 0, g: 0, b: 0, a: 0}
   _useEmission: 1
-  _emissionStrength: 0.3
+  _emissionStrength: 0
   _loopAmount: -1
   _flashOnAwake: 0
-  _invincibleColor: {r: 0.3207547, g: 0.28595585, b: 0.28595585, a: 1}
-  _intangibleColor: {r: 0.084905684, g: 0.084905684, b: 0.084905684, a: 1}
+  _invincibleColor: {r: 0.5377358, g: 0.5377358, b: 0.5377358, a: 1}
+  _counterColor: {r: 0.2981133, g: 0, b: 0.745283, a: 1}
+  _armorColor: {r: 0.6981132, g: 0.034905657, b: 0, a: 1}
+  _intangibleColor: {r: 0.6886792, g: 0.6121593, b: 0, a: 1}
   _colorManager: {fileID: 1988483426190075038}
   _health: {fileID: 624667988152981373}
   _characterUI: {fileID: 9005602729061462553}
@@ -2973,6 +2980,7 @@ MonoBehaviour:
     _worldYPosition:
       RawValue: 0
     debugID: 0
+  _shouldDrawCollider: 1
   _isHurtBox: 0
   debuggingEnabled: 0
 --- !u!4 &5386106008844156196 stripped
