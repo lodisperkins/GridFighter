@@ -130,6 +130,9 @@ namespace Lodis.Gameplay
         [Tooltip("If true the character can charge energy passively")]
         [SerializeField]
         private bool _energyChargeEnabled = true;
+        [Tooltip("If true the character can increase their energy from dealing damage")]
+        [SerializeField]
+        private bool _increaseEnergyFromDamage = true;
 
         [Header("Burst Energy Settings")]
         [Tooltip("The amount of burst energy this character has")]
@@ -1173,6 +1176,9 @@ namespace Lodis.Gameplay
         /// </summary>
         public void IncreaseEnergyFromDamage(Collision collision)
         {
+            if (!_increaseEnergyFromDamage)
+                return;
+
             HitColliderBehaviour hitCollider = collision.Entity.GetComponent<HitColliderBehaviour>();
             HealthBehaviour health = collision.OtherEntity.GetComponent<HealthBehaviour>();
             bool? invincible = health?.IsInvincible == true;

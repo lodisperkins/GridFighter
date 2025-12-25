@@ -20,6 +20,11 @@ namespace Types
         public static Fixed32 One = (Fixed32)1;
         private const int DefaultScale = 16;
         private int _scale;
+        public static Fixed32 PointOne = new Fixed32(6553); // 0.1 in fixed point with scale 16
+        public static Fixed32 PointTwo = new Fixed32(13107); // 0.2 in fixed point with scale 16
+        public static Fixed32 PointThree = new Fixed32(19660); // 0.3 in fixed point with scale 16
+        public static Fixed32 PointFour = new Fixed32(26214); // 0.4 in fixed point with scale 16
+        public static Fixed32 PointFive = new Fixed32(32768); // 0.5 in fixed point with scale 16
 
         public long RawValue;
         public int Scale 

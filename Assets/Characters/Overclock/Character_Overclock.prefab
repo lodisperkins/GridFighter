@@ -472,6 +472,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character_Overclock
       objectReference: {fileID: 0}
+    - target: {fileID: 561307191668043444, guid: c600a5779f55f8e44a90699633fe29a7,
+        type: 3}
+      propertyPath: _speed.RawValue
+      value: 524288
+      objectReference: {fileID: 0}
     - target: {fileID: 1988483426190075038, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}
       propertyPath: _objectsToColor.Array.size
@@ -3624,7 +3629,7 @@ PrefabInstance:
         type: 3}
       propertyPath: _specialDeckRef
       value: 
-      objectReference: {fileID: 11400000, guid: 170150baa3f4a144584964a1c4e4cd26,
+      objectReference: {fileID: 11400000, guid: b09acf974f788704e9fdea19102c3dab,
         type: 2}
     - target: {fileID: 8801745021231139587, guid: c600a5779f55f8e44a90699633fe29a7,
         type: 3}

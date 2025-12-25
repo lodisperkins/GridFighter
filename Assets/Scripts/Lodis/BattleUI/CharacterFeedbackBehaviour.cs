@@ -290,7 +290,7 @@ namespace Lodis.Gameplay
         {
             bool shouldMirror = args.BoolArgs[0];
             int index = args.IntArgs[0];
-            if (shouldMirror)
+            if (shouldMirror && _movement)
             {
                 index = _movement.Alignment == GridScripts.GridAlignment.LEFT ? args.IntArgs[0] : args.IntArgs[0] + 2;
 

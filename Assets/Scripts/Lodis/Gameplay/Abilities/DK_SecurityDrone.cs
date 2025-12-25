@@ -1,3 +1,4 @@
+using FixedPoints;
 using System.Collections;
 using System.Collections.Generic;
 using Types;
@@ -38,6 +39,7 @@ namespace Lodis.Gameplay
             Fixed32 speed = abilityData.GetCustomStatValue("ProjectileSpeed");
 
             secur_T.Initialize(Owner, opp.GetComponent<EntityDataBehaviour>(), GetColliderData(0), speed);
+            secur_T.FollowSpeed = 5;
         }
 
         protected override void OnMatchRestart()

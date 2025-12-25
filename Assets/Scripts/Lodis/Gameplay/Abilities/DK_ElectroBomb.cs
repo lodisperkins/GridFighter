@@ -84,7 +84,7 @@ namespace Lodis.Gameplay
         private IEnumerator SetTimeUnscaled()
         {
             yield return new WaitUntil(() => !MatchManagerBehaviour.Instance.SuperInUse);
-            TimeUnit = FixedTimeAction.UnitOfTime.PauseScaled;
+            SetTimeUnit(FixedTimeAction.UnitOfTime.PauseScaled);
         }
 
         protected override void OnStart(params object[] args)
@@ -113,7 +113,7 @@ namespace Lodis.Gameplay
 
             ProjectileColliderData = GetColliderData(2);
 
-            TimeUnit = FixedTimeAction.UnitOfTime.PauseScaled;
+            SetTimeUnit(FixedTimeAction.UnitOfTime.PauseScaled);
 
             StartSuperEffect();
 
@@ -408,14 +408,14 @@ namespace Lodis.Gameplay
 
             if (FXManagerBehaviour.Instance.LastPlayerSuper != _controller.PlayerID)
             {
-                TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
+                SetTimeUnit(FixedTimeAction.UnitOfTime.Scaled);
             }
         }
 
         protected override void OnEnd()
         {
             base.OnEnd();
-            TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
+            SetTimeUnit(FixedTimeAction.UnitOfTime.Scaled);
 
             if (!MatchManagerBehaviour.Instance.PlayerOutOfRing)
             {
@@ -448,7 +448,7 @@ namespace Lodis.Gameplay
         protected override void OnMatchRestart()
         {
             base.OnMatchRestart();
-            TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
+            SetTimeUnit(FixedTimeAction.UnitOfTime.Scaled);
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals(_controller.PlayerID);
             MatchManagerBehaviour.Instance.SuperInUse = false;
 

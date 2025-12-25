@@ -78,6 +78,7 @@ namespace Lodis.Gameplay
         [Tooltip("The objects that will have their colors changed to match the alignment.")]
         [SerializeField] private ColorObject[] _objectsToColor;
         [SerializeField] private ColorManagerBehaviour _linkedManager;
+        [SerializeField] private ParticleColorManagerBehaviour _linkedParticleManager;
 
         private Light _specularLight;
 
@@ -131,6 +132,9 @@ namespace Lodis.Gameplay
                 if (_linkedManager)
                     _linkedManager._alignment = gridMovementBehaviour.Alignment;
 
+                if (_linkedParticleManager)
+                    _linkedParticleManager.Alignment = gridMovementBehaviour.Alignment;
+
                 return;
             }
             PanelBehaviour panel = null;
@@ -141,6 +145,9 @@ namespace Lodis.Gameplay
 
             if (_linkedManager)
                 _linkedManager._alignment = panel.Alignment;
+
+            if (_linkedParticleManager)
+                _linkedParticleManager.Alignment = panel.Alignment;
         }
 
         /// <summary>
@@ -177,6 +184,7 @@ namespace Lodis.Gameplay
             }
 
             _linkedManager?.SetColors();
+            _linkedParticleManager?.SetColors();
         }
 
         /// <summary>
@@ -207,6 +215,7 @@ namespace Lodis.Gameplay
             }
 
             _linkedManager?.SetColors(alignmentID);
+            _linkedParticleManager?.SetColors((GridAlignment)alignmentID);
         }
 
         public void AddObjectToColor(GameObject objectToColor, params string[] shaderProperties)

@@ -164,7 +164,11 @@ namespace Lodis.Gameplay
         /// <summary>
         /// The way the ability timers will have time applied to them. Use this to be in sync with the rollback simulation.
         /// </summary>
-        public FixedTimeAction.UnitOfTime TimeUnit { get; set; }
+        public FixedTimeAction.UnitOfTime TimeUnit 
+        {
+            get;
+            private set;
+        }
 
         public bool AbilityPaused { get => CurrentTimer?.IsActive == true; }
         public CharacterVoiceBehaviour OwnerVoiceScript { get => _ownerVoiceScript; private set => _ownerVoiceScript = value; }
@@ -345,7 +349,15 @@ namespace Lodis.Gameplay
                     return false;
             }
 
+            int currentUseCount = currentActivationAmount;
+
             EndAbility();
+
+            if (nextAbility == this)
+            {
+                currentActivationAmount = currentUseCount;
+            }
+
             return true;
         }
 
@@ -375,6 +387,20 @@ namespace Lodis.Gameplay
             onEnd?.Invoke();
             End();
             _inUse = false;
+        }
+
+        public void SetTimeUnit(FixedTimeAction.UnitOfTime timeUnit)
+        {
+            TimeUnit = timeUnit;
+
+            if (_startUpTimer != null)
+                _startUpTimer.Unit = timeUnit;
+
+            if (_activeTimer != null)
+                _activeTimer.Unit = timeUnit;
+
+            if (_recoverTimer != null)
+                _recoverTimer.Unit = timeUnit;
         }
 
         /// <summary>

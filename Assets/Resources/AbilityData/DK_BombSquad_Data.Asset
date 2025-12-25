@@ -1,0 +1,107 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72c3364c4180d584cab69c859992666c, type: 3}
+  m_Name: DK_BombSquad_Data
+  m_EditorClassIdentifier: 
+  abilityName: Bomb Squad
+  abilityDescription: None
+  exampleClip: {fileID: 0}
+  AbilityType: 8
+  timeActive:
+    RawValue: 13107
+  recoverTime:
+    RawValue: 6553
+  startUpTime:
+    RawValue: 6553
+  maxActivationAmount: 1
+  EnergyCost: 3
+  CancellationRules: []
+  CancelAllOnHit: 0
+  CancelAllOnFlinch: 1
+  CancelAllOnKnockback: 1
+  AutoMovePhase: 1
+  CanInputMovementDuringStartUp: 0
+  CanInputMovementWhileActive: 0
+  CanInputMovementWhileRecovering: 0
+  useAbilityTimingForAnimation: 1
+  playAnimationManually: 0
+  visualPrefab: {fileID: 8057830920710345144, guid: f0a9430f083589a489f8cccc35d732eb,
+    type: 3}
+  Accessory: {fileID: 0}
+  Effects:
+  - {fileID: 1996035907712742523, guid: 415f3bf38c73a1f4f9d19e2721eb9ea8, type: 3}
+  Sounds: []
+  DisplayIcon: {fileID: 21300000, guid: e1ad5027f3b05a74288aaa9b76b0054c, type: 3}
+  ActivateSound: {fileID: 0}
+  ActiveSound: {fileID: 0}
+  DeactivateSound: {fileID: 0}
+  ColliderData:
+  - Name: BombSquadCollider
+    DespawnAfterTimeLimit: 1
+    TimeActive:
+      RawValue: 327680
+    DestroyOnHit: 1
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 655360
+    BaseKnockBack:
+      RawValue: 131072
+    KnockBackScale:
+      RawValue: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 85196
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 32768
+    Priority:
+      RawValue: 0
+    OwnerAlignement: 0
+    AbilityType: 8
+    AbilityID:
+      RawValue: 862715904
+    SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 1562327961759149356, guid: 5148141cc15bf514ca3e30bdb962e638,
+      type: 3}
+    HitEffectLevel: 3
+    HitStopShakeStrength:
+      RawValue: 65536
+    CameraShakeStrength:
+      RawValue: 13107
+    CameraShakeDuration:
+      RawValue: 16384
+    CameraShakeFrequency: 50
+    ShakesCamera: 1
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 8300000, guid: b096f8c9c99d30d409a7e926657b504e, type: 3}
+    DespawnSound: {fileID: 8300000, guid: 80da96c0d1cc7c242b120e0653ba636d, type: 3}
+  _customStats:
+  - name: SpawnCount
+    value:
+      RawValue: 196608
+  - name: SpawnDelay
+    value:
+      RawValue: 65536
+  animationType: 0
+  _customAnimation: {fileID: 0}
+  _shouldMirror: 1
+  _additionalAnimations: []

@@ -140,12 +140,12 @@ namespace Lodis.Utility
                 //...set the first instance found active and return the object
                 EntityDataBehaviour objectInstance = objectQueue.Dequeue();
 
-                if (!objectInstance)
+                if ((object)objectInstance == null)
                     return null;
 
                 objectInstance.FixedTransform.SetPositionAndRotation(position, rotation);
                 awakeEvent?.Invoke(objectInstance);
-                objectInstance.AddToGame();
+                objectInstance.gameObject.SetActive(true);
                 objectInstance.UpdateUnityTransform(GridGame.FixedTimeStep);
                 return objectInstance;
             }
@@ -487,7 +487,7 @@ namespace Lodis.Utility
                 return;
 
             //If the object has a queue in the dictionary already...
-            if (_entityObjectPool.TryGetValue(objectInstance.name, out Queue<EntityDataBehaviour> queue) && !queue.Contains(objectInstance))
+            if (_entityObjectPool.TryGetValue(objectInstance.Data.Name, out Queue<EntityDataBehaviour> queue) && !queue.Contains(objectInstance))
             {
                 //...add the object back into the queue
                 queue.Enqueue(objectInstance);
@@ -502,7 +502,7 @@ namespace Lodis.Utility
                 //...add the object to a new queue
                 Queue<EntityDataBehaviour> newObjectQueue = new Queue<EntityDataBehaviour>();
                 newObjectQueue.Enqueue(objectInstance);
-                _entityObjectPool.Add(objectInstance.name, newObjectQueue);
+                _entityObjectPool.Add(objectInstance.Data.Name, newObjectQueue);
             }
 
             //Disable the object in the scene

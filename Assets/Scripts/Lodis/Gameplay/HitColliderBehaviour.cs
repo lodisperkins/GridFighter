@@ -434,6 +434,14 @@ namespace Lodis.Gameplay
             ResolveCollision(otherGameObject, collision);
         }
 
+        public void Despawn()
+        {
+            if (ColliderInfo.HitSpark)
+                ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
+
+            ObjectPoolBehaviour.Instance.ReturnGameObject(Entity);
+        }
+
         public override void Tick(Fixed32 dt)
         {
             base.Tick(dt);
@@ -457,10 +465,7 @@ namespace Lodis.Gameplay
             //Destroy the hit collider if it has exceeded or reach its maximum time active
             if (CurrentTimeActive >= ColliderInfo.TimeActive && ColliderInfo.DespawnAfterTimeLimit)
             {
-                if (ColliderInfo.HitSpark)
-                    ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, transform.position, Camera.main.transform.rotation);
-
-                ObjectPoolBehaviour.Instance.ReturnGameObject(Entity);
+                Despawn();
             }
         }
     }

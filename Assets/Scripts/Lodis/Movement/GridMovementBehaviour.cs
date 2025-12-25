@@ -278,6 +278,9 @@ namespace Lodis.Movement
                 _heightOffset = transform.localScale.y / 2;
             else
                 _heightOffset = (_meshFilter.mesh.bounds.size.y * transform.localScale.y) / 2;
+
+            if (MoveOnStart && _physics)
+                _physics.GridActive = true;
         }
 
         public override void Begin()

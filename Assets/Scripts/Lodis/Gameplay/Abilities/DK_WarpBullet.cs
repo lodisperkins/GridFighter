@@ -57,6 +57,7 @@ namespace Lodis.Gameplay
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            Debug.Log("DK_WarpBullet: " + currentActivationAmount);
             if (currentActivationAmount == 1)
             {
                 //The base activate func fires a single instance of the projectile when called
@@ -68,7 +69,10 @@ namespace Lodis.Gameplay
 
             FVector3 projectilePos = Projectile.FixedTransform.WorldPosition;
 
-            GridBehaviour.Instance.GetPanelAtLocationInWorld((Vector3)projectilePos, out projectilePanel, clamp: true);
+            GridBehaviour.Instance.GetPanelAtLocationInWorld((Vector3)projectilePos, out projectilePanel);
+
+            if (!projectilePanel)
+                return;
 
             GameObject teleportEffect = abilityData.Effects[0];
 

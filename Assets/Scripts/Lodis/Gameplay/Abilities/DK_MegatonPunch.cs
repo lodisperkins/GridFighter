@@ -171,7 +171,7 @@ namespace Lodis.Gameplay
             _opponentMovement = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<Movement.GridMovementBehaviour>();
             _opponentKnockback = _opponentMovement.GetComponentInChildren<KnockbackBehaviour>();
 
-            TimeUnit = FixedTimeAction.UnitOfTime.PauseScaled;
+            SetTimeUnit(FixedTimeAction.UnitOfTime.PauseScaled);
 
             //Start super move effects
 
@@ -350,7 +350,7 @@ namespace Lodis.Gameplay
                 _chargeEffect.transform.parent = null;
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_chargeEffect);
-            TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
+            SetTimeUnit(FixedTimeAction.UnitOfTime.Scaled);
             DestroyAllColliders();
 
             CameraBehaviour.Instance.ZoomAmount = 0;
@@ -369,7 +369,7 @@ namespace Lodis.Gameplay
             base.OnMatchRestart();
             RoutineBehaviour.Instance.StopAction(_endTimer);
 
-            TimeUnit = FixedTimeAction.UnitOfTime.Scaled;
+            SetTimeUnit(FixedTimeAction.UnitOfTime.Scaled);
             FXManagerBehaviour.Instance.StopAllSuperMoveVisuals(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner));
             MatchManagerBehaviour.Instance.SuperInUse = false;
             OwnerMoveScript.MoveToAlignedSideWhenStuck = true;

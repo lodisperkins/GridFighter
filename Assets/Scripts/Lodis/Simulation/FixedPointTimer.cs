@@ -117,7 +117,7 @@ namespace FixedPoints
         /// <summary>
         /// The unit of time to use to measure the duration of this action.
         /// </summary>
-        public UnitOfTime Unit { get => unit; private set => unit = value; }
+        public UnitOfTime Unit { get => unit; set => unit = value; }
 
         /// <summary>
         /// Gets the amount of time left before this action is performed. Value changes depending on the unit of time being used.

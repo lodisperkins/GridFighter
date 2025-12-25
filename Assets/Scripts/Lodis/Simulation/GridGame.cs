@@ -403,7 +403,7 @@ public struct GridGame : IGame
     {
         if (_activeEntities.Contains(entity))
         {
-            //Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
+            Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
             return;
         }
 

@@ -22,8 +22,6 @@ namespace Lodis.Gameplay
         public string Player1State = null;
         public string Player2State = null;
         public FloatVariable MaxKnockBackHealth;
-        public GameObject Player1;
-        public GameObject Player2;
         public IControllable Player1Controller;
         public IControllable Player2Controller;
         public IntVariable Player1ID;
@@ -36,12 +34,42 @@ namespace Lodis.Gameplay
         public ParticleSystem ReflectEffect;
         public ParticleSystem ClashEffect;
         public ParticleSystem[] HitEffects;
+        public GridMovementBehaviour Player1MovementBehaviour;
+        public GridMovementBehaviour Player2MovementBehaviour;
+
         public ComboCounterBehaviour Player1ComboCounter;
         public ComboCounterBehaviour Player2ComboCounter;
         private List<GridMovementBehaviour> _entitiesInGame = new List<GridMovementBehaviour>();
         private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
         private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();
         private static BlackBoardBehaviour _instance;
+        private GameObject _player1;
+        private GameObject _player2;
+
+        public GameObject Player1
+        {
+            get => _player1;
+
+            set
+            {
+                if (Player1MovementBehaviour == null && value != null)
+                    Player1MovementBehaviour = value.GetComponent<GridMovementBehaviour>();
+
+                _player1 = value;
+            }
+        }
+
+        public GameObject Player2
+        {
+            get => _player2;
+            set
+            {
+                if (Player2MovementBehaviour == null && value != null)
+                    Player2MovementBehaviour = value.GetComponent<GridMovementBehaviour>();
+
+                _player2 = value;
+            }
+        }
 
         /// <summary>
         /// Gets the static instance of the black board. Creates one if none exists
@@ -341,6 +369,19 @@ namespace Lodis.Gameplay
                 return Player2;
             else if (player.gameObject == Player2)
                 return Player1;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the current panel of the opponent of the given player.
+        /// </summary>
+        public PanelBehaviour GetOpponentPanel(EntityDataBehaviour player)
+        {
+            if (player.gameObject == Player1)
+                return Player2MovementBehaviour.CurrentPanel;
+            else if (player.gameObject == Player2)
+                return Player1MovementBehaviour.CurrentPanel;
 
             return null;
         }

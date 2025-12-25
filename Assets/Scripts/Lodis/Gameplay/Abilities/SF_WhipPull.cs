@@ -54,7 +54,7 @@ namespace Lodis.Gameplay
             //Inivincibility/intangible check
             _opponentKnockback = collision.OtherEntity.GetComponent<KnockbackBehaviour>();
 
-            if (_opponentKnockback.IsIntangible || _opponentKnockback.IsInvincible)
+            if (!_opponentKnockback || _opponentKnockback.IsIntangible || _opponentKnockback.IsInvincible)
                 return;
 
             //Set up opponent transform to be attached to whip

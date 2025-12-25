@@ -67,8 +67,8 @@ namespace Lodis.Gameplay
         {
             //Create a new grid collider in the simulation
             EntityDataBehaviour colliderEntity = GridGame.SpawnEntity(position);
-            colliderEntity.Data.Name = spawner.Data.Name + "Collider";
-            colliderEntity.gameObject.name = spawner.Data.Name + "Collider";
+            colliderEntity.Data.Name = info.Name;
+            colliderEntity.gameObject.name = info.Name;
             colliderEntity.gameObject.layer = LayerMask.NameToLayer("Ability");
 
             GridPhysicsBehaviour physics = colliderEntity.Data.AddComponent<GridPhysicsBehaviour>();
@@ -107,7 +107,7 @@ namespace Lodis.Gameplay
         {
             //Create a new grid collider in the simulation
             EntityDataBehaviour colliderEntity = GridGame.SpawnEntity(parent.EntityData);
-            colliderEntity.Data.Name = spawner != null ? spawner.Data.Name + "Collider" : "Collider";
+            colliderEntity.Data.Name = info.Name;
             colliderEntity.gameObject.layer = LayerMask.NameToLayer("Ability");
 
             GridPhysicsBehaviour physics = colliderEntity.Data.AddComponent<GridPhysicsBehaviour>();

@@ -92,7 +92,7 @@ namespace Lodis.Gameplay
             Projectile = projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), data, UseGravity, FaceHeading);
 
             //Fire projectile
-            Projectile.name += "(" + abilityData.name + ")";
+            //Projectile.name = "(" + abilityData.name + ")";
             ActiveProjectiles.Add(Projectile);
         }
 

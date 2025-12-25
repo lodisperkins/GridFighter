@@ -249,12 +249,12 @@ MonoBehaviour:
           RawValue: 65536
     X: 0
     Y: 0
-    UnityObject: {fileID: 0}
+    UnityObject: {fileID: 237180737638273710}
     UnityScript: {fileID: 0}
   _addToGameManually: 0
-  _visualRoot: {fileID: 0}
-  _children: []
   _updateEntityUsingUnityTransform: 0
+  _visualRoot: {fileID: 7482724866063580578}
+  _children: []
 --- !u!1 &867436947406002797
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,7 +925,9 @@ MonoBehaviour:
   _targetScale: {x: 0, y: 10, z: 0}
   _resizeOnEnabled: 1
   _loopYoYo: 0
+  _punch: 0
   _loopReset: 0
+  _loopCount: -1
   _scaleDuration: 0.5
   _onEnable:
     m_PersistentCalls:

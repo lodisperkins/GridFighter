@@ -12,19 +12,20 @@ public class Secur_TBehaviour : SimulationBehaviour
 {
     [Header("Shooting")]
     [SerializeField] protected Fixed32 _activeTime = 10;
-    [SerializeField] protected int _fireRange = 1;
+    [SerializeField] private int fireRange = 1;
     [SerializeField] protected Fixed32 _delayBetweenShots;
     [SerializeField] protected Fixed32 _cooldownTime;
     [SerializeField] protected ProjectileSpawnerBehaviour _projectileSpawner;
 
     [Header("Following")]
-    [SerializeField] protected Fixed32 _followSpeed;
+    [SerializeField] private Fixed32 followSpeed;
     [SerializeField] protected Fixed32 _followOffsetX;
     [SerializeField] protected Fixed32 _followOffsetY;
 
     [Header("Visuals")]
     [SerializeField] protected GameObject _chargingEffect;
     [SerializeField] protected ColorManagerBehaviour _colorManager;
+    [SerializeField] protected GridTrackerBehaviour _gridTracker;
 
     private EntityDataBehaviour _owner;
     private GridMovementBehaviour _ownerMovement;
@@ -40,6 +41,10 @@ public class Secur_TBehaviour : SimulationBehaviour
     private bool _firing;
     private bool _onCooldown;
     private bool _lockedOn;
+
+    public int FireRange { get => fireRange; set => fireRange = value; }
+    public bool LookAtTarget { get; set; } = true;
+    public Fixed32 FollowSpeed { get => followSpeed; set => followSpeed = value; }
 
     public override void Deserialize(BinaryReader br)
     {
@@ -57,8 +62,10 @@ public class Secur_TBehaviour : SimulationBehaviour
     {
         base.Begin();
 
-        _fireDistance = (GridBehaviour.Instance.FixedPanelScale.X + GridBehaviour.Instance.FixedPanelSpacingX) * _fireRange;
+        _fireDistance = (GridBehaviour.Instance.FixedPanelScale.X + GridBehaviour.Instance.FixedPanelSpacingX) * FireRange;
         _negOffsetX = -_followOffsetX;
+
+        _gridTracker.XRange = FireRange;
     }
 
     public override void Tick(Fixed32 dt)
@@ -66,26 +73,29 @@ public class Secur_TBehaviour : SimulationBehaviour
         base.Tick(dt);
 
         //Follow owner
-        Fixed32 currentOffsetX = _followOffsetX;
-
-        if (_ownerMovement.Position.X == 0 || _ownerMovement.Position.X == GridBehaviour.Instance.Dimensions.x - 1)
+        if (followSpeed > 0)
         {
-            currentOffsetX = _negOffsetX;
-        }
+            Fixed32 currentOffsetX = _followOffsetX;
 
-        FVector3 followPosition = _owner.FixedTransform.WorldPosition +
-            new FVector3(currentOffsetX * _ownerMovement.GetAlignmentX(), _followOffsetY, 0);
+            if (_ownerMovement.Position.X == 0 || _ownerMovement.Position.X == GridBehaviour.Instance.Dimensions.x - 1)
+            {
+                currentOffsetX = _negOffsetX;
+            }
 
-        if (FVector3.Distance(Entity.FixedTransform.WorldPosition, followPosition) > new Fixed32(6553))
-        {
-            FVector3 direction = (followPosition - Entity.FixedTransform.WorldPosition).GetNormalized();
-            Entity.FixedTransform.WorldPosition += direction * _followSpeed * dt;
+            FVector3 followPosition = _owner.FixedTransform.WorldPosition +
+                new FVector3(currentOffsetX * _ownerMovement.GetAlignmentX(), _followOffsetY, 0);
+
+            if (FVector3.Distance(Entity.FixedTransform.WorldPosition, followPosition) > new Fixed32(6553))
+            {
+                FVector3 direction = (followPosition - Entity.FixedTransform.WorldPosition).GetNormalized();
+                Entity.FixedTransform.WorldPosition += direction * FollowSpeed * dt;
+            }
         }
 
         // Fire at target if in range
         Fixed32 distanceToTarget = FVector3.Distance(_target.FixedTransform.WorldPosition, _owner.FixedTransform.WorldPosition);
 
-        if (_lockedOn)
+        if (_lockedOn && LookAtTarget)
         {
             FixedTransform.LookAt(_target.FixedTransform.WorldPosition);
         }
@@ -94,7 +104,7 @@ public class Secur_TBehaviour : SimulationBehaviour
             FixedTransform.Forward = _owner.FixedTransform.Forward;
         }
 
-        if (distanceToTarget <= _fireDistance)
+        if (distanceToTarget <= _fireDistance && _target.FixedTransform.WorldPosition.Z == FixedTransform.WorldPosition.Z)
         {
             if (!_firing && !_onCooldown)
             {

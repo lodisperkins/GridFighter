@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entityData:
-    Name: LethalForceLaser
+    Name: LethalForceLaserStrong
     Transform:
       _localPosition:
         X:
@@ -249,10 +249,11 @@ MonoBehaviour:
           RawValue: 65536
     X: 0
     Y: 0
-    UnityObject: {fileID: 0}
+    UnityObject: {fileID: 1733027169142498989}
     UnityScript: {fileID: 0}
   _addToGameManually: 0
-  _visualRoot: {fileID: 0}
+  _updateEntityUsingUnityTransform: 0
+  _visualRoot: {fileID: 1332255552618458139}
   _children: []
 --- !u!1 &3798735747577200391
 GameObject:
@@ -15867,7 +15868,9 @@ MonoBehaviour:
   _targetScale: {x: 0, y: 10, z: 0}
   _resizeOnEnabled: 1
   _loopYoYo: 0
+  _punch: 0
   _loopReset: 0
+  _loopCount: -1
   _scaleDuration: 1
   _onEnable:
     m_PersistentCalls:

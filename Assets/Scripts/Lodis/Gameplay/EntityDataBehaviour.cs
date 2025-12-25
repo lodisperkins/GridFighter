@@ -39,6 +39,8 @@ public class EntityDataBehaviour : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        inGame = false;
+
         //Adds all components to the entity so they can be updated by the rollback simulation.
         SimulationBehaviour[] simComponents = GetComponents<SimulationBehaviour>();
 
@@ -149,6 +151,8 @@ public class EntityDataBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
+        inGame = false;
+
         if (!inGame && !AddToGameManually)
         {
             AddToGame();

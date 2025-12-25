@@ -64,6 +64,9 @@ namespace Lodis.GridScripts
         public bool MarkCollider { get => _markCollider; set => _markCollider = value; }
         public ColliderBehaviour ColliderToTrack { get => _colliderToTrack; set => _colliderToTrack = value; }
         public List<PanelBehaviour> PanelsInRange { get => _panelsInRange; protected set => _panelsInRange = value; }
+        public int XRange { get => _xRange; set => _xRange = value; }
+        public int YRange { get => _yRange; set => _yRange = value; }
+        public int Radius { get => _radius; set => _radius = value; }
 
         private void OnDisable()
         {
@@ -183,7 +186,7 @@ namespace Lodis.GridScripts
 
             PanelBehaviour panel;
 
-            for (int i = 1; i <= _xRange; i++)
+            for (int i = 1; i <= XRange; i++)
             {
                 if (GridBehaviour.Instance.GetPanel(x + i, y, out panel))
                 {
@@ -198,7 +201,7 @@ namespace Lodis.GridScripts
                 }
             }
 
-            for (int i = 1; i <= _yRange; i++)
+            for (int i = 1; i <= YRange; i++)
             {
                 if (GridBehaviour.Instance.GetPanel(x, y + i, out panel))
                 {
@@ -222,7 +225,7 @@ namespace Lodis.GridScripts
 
             int direction = transform.forward.x > 0 ? 1 : -1;
 
-            for (int i = 1; i <= _xRange; i++)
+            for (int i = 1; i <= XRange; i++)
             {
                 if (GridBehaviour.Instance.GetPanel(x + (i * direction), y, out panel))
                 {
@@ -231,7 +234,7 @@ namespace Lodis.GridScripts
                 }
             }
 
-            for (int i = 1; i <= _yRange; i++)
+            for (int i = 1; i <= YRange; i++)
             {
                 if (GridBehaviour.Instance.GetPanel(x, y + i, out panel))
                 {
@@ -245,7 +248,7 @@ namespace Lodis.GridScripts
         {
             ClearPanelsInRange();
 
-            List<PanelBehaviour> panels = GridBehaviour.Instance.GetPanelNeighbors(new FixedPoints.FVector2(x, y), _radius);
+            List<PanelBehaviour> panels = GridBehaviour.Instance.GetPanelNeighbors(new FixedPoints.FVector2(x, y), Radius);
 
             foreach (PanelBehaviour panel in panels)
             {

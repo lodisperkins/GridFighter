@@ -612,20 +612,21 @@ MonoBehaviour:
       m_Calls: []
   _activeTime:
     RawValue: 983040
-  _fireRange: 1
+  fireRange: 1
   _delayBetweenShots:
     RawValue: 32768
   _cooldownTime:
     RawValue: 32768
   _projectileSpawner: {fileID: 6527395422604091039}
-  _followSpeed:
-    RawValue: 524288
+  followSpeed:
+    RawValue: 327680
   _followOffsetX:
     RawValue: -65536
   _followOffsetY:
     RawValue: 65536
   _chargingEffect: {fileID: 1287263640952975743}
   _colorManager: {fileID: 7529899804462349918}
+  _gridTracker: {fileID: 4137714327327950766}
 --- !u!114 &7529899804462349918 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 9083212896092705112, guid: 19eaea51be185b640b9c3a40c0b062d9,
