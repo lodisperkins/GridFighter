@@ -29,20 +29,23 @@ namespace Lodis.UI
         [SerializeField] private float _effectDuration;
         [SerializeField] private AudioSource _announcer;
         [SerializeField] private IntVariable _playerComboLevel;
-        private int _minHitCount;
-        private bool _canCount;
+        [SerializeField] private StadiumMonitorBehaviour _stadiumMonitor;
+
+        //---
         private TimedAction _disableTextAction;
         private KnockbackBehaviour _ownerOpponent;
+        private AudioClip _currentClip;
+        private CharacterStateMachineBehaviour _opponentStateMachine;
+
+        private int _minHitCount;
+        private bool _canCount;
         private int _nextComboMessageIndex;
         private int _hitCount;
         private string _currentComboMessage;
         private Color _currentColor;
-        private AudioClip _currentClip;
-        private CharacterStateMachineBehaviour _opponentStateMachine;
-        [SerializeField]
-        private StadiumMonitorBehaviour _stadiumMonitor;
 
         public int HitCount { get => _hitCount; private set => _hitCount = value; }
+        public IntVariable PlayerComboLevel { get => _playerComboLevel; private set => _playerComboLevel = value; }
 
         // Start is called before the first frame update
         void Awake()
@@ -61,13 +64,13 @@ namespace Lodis.UI
                 ResetComboMessage();
                 HitCount = 0;
                 _nextComboMessageIndex = 0;
-                _playerComboLevel.Value = 0;
+                PlayerComboLevel.Value = 0;
             });
 
             _ownerOpponent.AddOnTakeDamageAction(() => _canCount = true);
             _ownerOpponent.AddOnTakeDamageAction(UpdateComboMessage);
             _opponentStateMachine.AddOnStateChangedAction(DisplayComboMessage);
-            _playerComboLevel.Value = 0;
+            PlayerComboLevel.Value = 0;
         }
 
         private void StartSpawnEffect()
@@ -96,7 +99,7 @@ namespace Lodis.UI
                 _currentColor = _comboMessages[_nextComboMessageIndex].MessageColor;
                 _currentClip = _comboMessages[_nextComboMessageIndex].AnnouncerClip;
                 _nextComboMessageIndex++;
-                _playerComboLevel.Value = _nextComboMessageIndex - 1;
+                PlayerComboLevel.Value = _nextComboMessageIndex;
                 _announcer.Stop();
             }
 
@@ -123,7 +126,7 @@ namespace Lodis.UI
 
             HitCount = 0;
             _nextComboMessageIndex = 0;
-            _playerComboLevel.Value = 0;
+            PlayerComboLevel.Value = 0;
         }
 
         public void DisplayComboMessage(int index)
@@ -146,7 +149,7 @@ namespace Lodis.UI
 
             HitCount = 0;
             _nextComboMessageIndex = 0;
-            _playerComboLevel.Value = 0;
+            PlayerComboLevel.Value = 0;
         }
 
         private void ResetComboMessage()
@@ -158,7 +161,7 @@ namespace Lodis.UI
             _announcer.Stop();
             _currentComboMessage = _comboMessages[0].Message;
             _currentColor = _comboMessages[0].MessageColor;
-            _playerComboLevel.Value = 0;
+            PlayerComboLevel.Value = 0;
         }
     }
 }

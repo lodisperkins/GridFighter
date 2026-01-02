@@ -64,6 +64,8 @@ MonoBehaviour:
       RawValue: 0
     KnockBackScale:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:

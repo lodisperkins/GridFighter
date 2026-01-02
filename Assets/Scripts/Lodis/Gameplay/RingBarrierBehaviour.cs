@@ -178,7 +178,7 @@ namespace Lodis.Gameplay
             //Calculates the dot product to ensure the character is moving towards the barrier.
             float dot = FVector3.Dot((FVector3)transform.forward, knockback.Physics.Velocity.GetNormalized());
 
-            //Shatter the barrier if the pwner is being knocked back at the appropriate speed and damage.
+            //Shatter the barrier if the owner is being knocked back at the appropriate speed and damage.
             if (collision.OtherEntity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.FixedValue && dot < 0
                 && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.FixedValue)
                 TakeDamage(collision.OtherEntity, Health, 0, 0, DamageType.KNOCKBACK);
@@ -206,14 +206,25 @@ namespace Lodis.Gameplay
             //Stops velocity so momentum is shifted completely.
             //knockbackBehaviour.Physics.StopVelocity();
 
+            Fixed32 knockbackDistance = _knockBackDistance;
+
+            if (_alignment == GridAlignment.RIGHT && BlackBoardBehaviour.Instance.Player2SurgeMeter.SurgeMeterFull)
+            {
+                knockbackDistance = 0;
+            }
+            else if (_alignment == GridAlignment.LEFT && BlackBoardBehaviour.Instance.Player1SurgeMeter.SurgeMeterFull)
+            {
+                knockbackDistance = 0;
+            }
+
             //Creates a new hit collider to attack the character
-            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = _knockBackDistance, KnockBackScale = 0, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopShakeStrength = 1, };
+            HitColliderData info = new HitColliderData { Name = name, BaseKnockBack = knockbackDistance, KnockBackScale = 0, HitAngle = newAngle, HitStunTime = _hitStunOnCollision, HitStopShakeStrength = 1, };
             HitColliderBehaviour hitCollider = new HitColliderBehaviour();
             hitCollider.ColliderInfo = info;
 
             //Deal damage to the character.
             knockbackBehaviour.LastCollider = hitCollider;
-            knockbackBehaviour.TakeDamage(info,collision.OtherEntity);
+            knockbackBehaviour.TakeDamage(info, collision.OtherEntity);
 
             _canHit = false;
             FixedPointTimer.StartNewTimedAction(() => _canHit = true, _timeUntilNextHit);

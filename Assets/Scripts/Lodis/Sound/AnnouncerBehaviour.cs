@@ -88,7 +88,7 @@ namespace Lodis.Sound
                 SoundManagerBehaviour.Instance.PlayerAnnouncerSound(announcement.VoiceClip);
 
                 RoutineBehaviour.Instance.StopAction(_disableTextActionP1);
-                _disableTextActionP1 = RoutineBehaviour.Instance.StartNewTimedAction(args => DespawnMessage(playerID), TimedActionCountType.SCALEDTIME, _messageDespawnDelay);
+                _disableTextActionP1 = RoutineBehaviour.Instance.StartNewTimedAction(args => DespawnMessage(playerID), TimedActionCountType.UNSCALEDTIME, _messageDespawnDelay);
             }
             else if (playerID == 2)
             {
@@ -97,7 +97,7 @@ namespace Lodis.Sound
                 SoundManagerBehaviour.Instance.PlayerAnnouncerSound(announcement.VoiceClip);
 
                 RoutineBehaviour.Instance.StopAction(_disableTextActionP2);
-                _disableTextActionP2 = RoutineBehaviour.Instance.StartNewTimedAction(args => DespawnMessage(playerID), TimedActionCountType.SCALEDTIME, _messageDespawnDelay);
+                _disableTextActionP2 = RoutineBehaviour.Instance.StartNewTimedAction(args => DespawnMessage(playerID), TimedActionCountType.UNSCALEDTIME, _messageDespawnDelay);
             }
         }
 

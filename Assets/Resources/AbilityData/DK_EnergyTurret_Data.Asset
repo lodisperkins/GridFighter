@@ -65,6 +65,8 @@ MonoBehaviour:
       RawValue: 6553
     KnockBackScale:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -113,6 +115,8 @@ MonoBehaviour:
       RawValue: 196608
     KnockBackScale:
       RawValue: 65536
+    SurgeMeterValue: 0
+    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:

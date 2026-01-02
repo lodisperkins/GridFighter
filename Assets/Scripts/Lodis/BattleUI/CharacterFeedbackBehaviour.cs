@@ -83,12 +83,13 @@ namespace Lodis.Gameplay
             _health.AddOnStunAction(() => PlayStunParticles(true));
             _health.AddOnStunDisabledAction(() => PlayStunParticles(false));
 
-            KnockbackBehaviour knockback = _health as KnockbackBehaviour;
-            if (knockback)
-            {
-                knockback.AddOnKnockBackAction(SetComboTrail);
-                knockback.LandingScript.AddOnLandingStartAction(DisableComboTrail);
-            }
+            //Old code for combo trails
+            //KnockbackBehaviour knockback = _health as KnockbackBehaviour;
+            //if (knockback)
+            //{
+            //    knockback.AddOnKnockBackAction(SetComboTrail);
+            //    knockback.LandingScript.AddOnLandingStartAction(DisableComboTrail);
+            //}
 
             _moveSet = GetComponentInParent<MovesetBehaviour>();
             _movement = GetComponentInParent<GridMovementBehaviour>();

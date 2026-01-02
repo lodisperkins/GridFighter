@@ -56,7 +56,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   _mainCamera: {fileID: 0}
-  _onScreenDistance: 2.5
   _superMoveCurve:
     serializedVersion: 2
     m_Curve:
@@ -106,3 +105,8 @@ MonoBehaviour:
     type: 3}
   _explosionEffectLarge: {fileID: 1562327961759149356, guid: 5148141cc15bf514ca3e30bdb962e638,
     type: 3}
+  _surgeMeterScreenEffect: {fileID: 0}
+  _surgeMeterSloMoDuration: 0.6
+  _surgeMeterSloMoTimeScale: 0.1
+  _surgeMeterSloMoTransitionSpeed: 0.1
+  _surgeMeterStart: {fileID: 8300000, guid: 36494543bb7ac0b4cb249b8cfd2d9daa, type: 3}

@@ -25,12 +25,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5794674715085560519}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &5794674715085560512
 AudioSource:
@@ -154,6 +155,10 @@ MonoBehaviour:
     Text: Burst Drive
     TextColor: {r: 0.48317584, g: 0.43867922, b: 1, a: 1}
     VoiceClip: {fileID: 8300000, guid: 683e10cbe668444e9a47aeb76b05b041, type: 3}
+  - AnnouncementName: Surge Strike
+    Text: Surge Strike
+    TextColor: {r: 0, g: 1, b: 0.94729495, a: 1}
+    VoiceClip: {fileID: 8300000, guid: 9e0868500f57f4325ae5e486a8e397df, type: 3}
   _effectDuration: 0.3
   _effectScale: 0.2
   _messageDespawnDelay: 2

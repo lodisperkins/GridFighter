@@ -41,6 +41,10 @@ namespace Lodis.Gameplay
         public Fixed32 BaseKnockBack;
         [Tooltip("How much the knock back of this ability will scale based on the health of the object hit.")]
         public Fixed32 KnockBackScale;
+        [Tooltip("How much this attack will make the owners surge meter increase by.")]
+        public int SurgeMeterValue;
+        [Tooltip("Whether or not this attack will be able to properly end a combo with the surge meter.")]
+        public bool IsEnder;
         [Tooltip("Whether or not this move can knock opponents out of the ring.")]
         public bool ClampForceWithinRing;
         [Tooltip("Whether or not the force added will override the velocity of the object.")]

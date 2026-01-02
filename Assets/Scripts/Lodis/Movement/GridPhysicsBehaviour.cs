@@ -1149,18 +1149,19 @@ namespace Lodis.Movement
 
             ForceToApply = FVector3.Zero;
 
-            FixedTransform.WorldPosition += Velocity * dt * GridGame.TimeScale;
 
             if (ClampPositionInBarriers)
             {
                 ClampPositionWithinBarriers();
             }
 
+            FixedTransform.WorldPosition += Velocity * dt * GridGame.TimeScale;
+
             //---Gravity
             if (UseGravity && !IsKinematic && !IsGrounded)
             {
                 _lastVelocity = _velocity;
-                _velocity += new FVector3(0, -Gravity * Mass * dt, 0);
+                _velocity += new FVector3(0, -Gravity * Mass * dt * GridGame.TimeScale, 0);
             }
 
             //---Friction

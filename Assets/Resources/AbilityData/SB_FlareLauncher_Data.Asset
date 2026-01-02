@@ -62,6 +62,8 @@ MonoBehaviour:
       RawValue: 32768
     KnockBackScale:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 1
     HitAngle:
@@ -84,7 +86,7 @@ MonoBehaviour:
       type: 3}
     HitEffectLevel: 2
     HitStopShakeStrength:
-      RawValue: 104857
+      RawValue: 98304
     CameraShakeStrength:
       RawValue: 0
     CameraShakeDuration:

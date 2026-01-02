@@ -20,16 +20,29 @@ namespace Lodis.UI
         private bool _flashOnEnable;
         [SerializeField]
         private bool _flashActive;
+        [SerializeField]
+        private bool _useImage; // If true, flash Image; else, flash Text
+
         private Text _text;
+        private Image _image;
 
         public bool FlashActive { get => _flashActive; private set => _flashActive = value; }
         public Color BaseColor { get => _baseColor; set => _baseColor = value; }
 
-        // Start is called before the first frame update
         void Awake()
         {
-            _text = GetComponent<Text>();
-            BaseColor = _text.color;
+            if (_useImage)
+            {
+                _image = GetComponent<Image>();
+                if (_image != null)
+                    BaseColor = _image.color;
+            }
+            else
+            {
+                _text = GetComponent<Text>();
+                if (_text != null)
+                    BaseColor = _text.color;
+            }
         }
 
         private void Start()
@@ -54,17 +67,26 @@ namespace Lodis.UI
         {
             _flashActive = false;
             StopAllCoroutines();
+            SetColor(BaseColor);
         }
 
         private IEnumerator FlashRoutine()
         {
             while (_flashActive)
             {
-                _text.color = _flashColor;
+                SetColor(_flashColor);
                 yield return new WaitForSeconds(_flashActiveTime);
-                _text.color = BaseColor;
+                SetColor(BaseColor);
                 yield return new WaitForSeconds(_flashInactiveTime);
             }
+        }
+
+        private void SetColor(Color color)
+        {
+            if (_useImage && _image != null)
+                _image.color = color;
+            else if (!_useImage && _text != null)
+                _text.color = color;
         }
     }
 }

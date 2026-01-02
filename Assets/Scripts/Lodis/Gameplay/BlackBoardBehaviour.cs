@@ -36,6 +36,8 @@ namespace Lodis.Gameplay
         public ParticleSystem[] HitEffects;
         public GridMovementBehaviour Player1MovementBehaviour;
         public GridMovementBehaviour Player2MovementBehaviour;
+        public SurgeMeterBehaviour Player1SurgeMeter;
+        public SurgeMeterBehaviour Player2SurgeMeter;
 
         public ComboCounterBehaviour Player1ComboCounter;
         public ComboCounterBehaviour Player2ComboCounter;

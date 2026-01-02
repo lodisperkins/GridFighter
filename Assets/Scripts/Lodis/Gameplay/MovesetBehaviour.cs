@@ -642,7 +642,7 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Searches both decks for an ability that matches the condition.
+        /// Searches both decks and all slots for an ability that matches the condition.
         /// </summary>
         /// <param name="condition">The condition to use to find the ability. Will return the first ability to make this condition true.</param>
         public Ability GetAbility(Condition condition)
@@ -664,6 +664,29 @@ namespace Lodis.Gameplay
                 ability = _specialDeck.GetAbilityByCondition(condition);
 
             return ability;
+        }
+
+        /// <summary>
+        /// Searches both decks and all slots for an ability that matches the condition.
+        /// </summary>
+        /// <param name="id">The ID to use to find the ability. Will return the first ability to make this condition true.</param>
+        public Ability GetAbility(int id)
+        {
+            Ability ability = _normalDeck.GetAbilityByID(id);
+            
+            if (ability == null)
+            {
+                if (SpecialAbilitySlots[0].abilityData.ID == id)
+                    return SpecialAbilitySlots[0];
+                else if (SpecialAbilitySlots[1].abilityData.ID == id)
+                    return SpecialAbilitySlots[1];
+            }
+            else if (_nextAbilitySlot.abilityData.ID == id)
+            {
+                return _nextAbilitySlot;
+            }
+
+            return _specialDeck.GetAbilityByID(id);
         }
 
         public int GetSpecialAbilityIndex(Ability ability)

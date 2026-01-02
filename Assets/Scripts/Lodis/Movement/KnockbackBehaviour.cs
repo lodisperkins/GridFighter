@@ -504,6 +504,8 @@ namespace Lodis.Movement
             if (UpdateSuperArmor(info.Damage))
                 return 0;
 
+            LastAbilityID = info.AbilityID;
+
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
 

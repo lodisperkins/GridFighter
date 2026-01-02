@@ -77,9 +77,11 @@ MonoBehaviour:
     Damage:
       RawValue: 458752
     BaseKnockBack:
-      RawValue: 19660
+      RawValue: 98304
     KnockBackScale:
       RawValue: 98304
+    SurgeMeterValue: 5
+    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -121,7 +123,7 @@ MonoBehaviour:
       RawValue: 65536
   - name: TravelDistance
     value:
-      RawValue: 196608
+      RawValue: 65536
   - name: DespawnTime
     value:
       RawValue: 655360

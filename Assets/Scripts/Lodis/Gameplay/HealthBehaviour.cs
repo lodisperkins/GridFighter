@@ -201,6 +201,7 @@ namespace Lodis.Gameplay
         public int DamageableAbilityID { get => _damageableAbilityID; private set => _damageableAbilityID = value; }
         public Condition AliveCondition { get => aliveCondition; set => aliveCondition = value; }
         public Fixed32 TimeInCurrentStun { get; protected set; }
+        public Fixed32 LastAbilityID { get; protected set; }
 
 
 
@@ -213,6 +214,7 @@ namespace Lodis.Gameplay
             bw.Write(DamageableAbilityID);
             bw.Write(_hasArmor);
             bw.Write(_counterStanceActive);
+            LastAbilityID.Serialize(bw);
         }
 
         public override void Deserialize(BinaryReader br)
@@ -224,6 +226,7 @@ namespace Lodis.Gameplay
             DamageableAbilityID = br.ReadInt32();
             _hasArmor = br.ReadBoolean();
             _counterStanceActive = br.ReadBoolean();
+            LastAbilityID.Deserialize(br);
         }
 
         protected override void Awake()
@@ -320,6 +323,7 @@ namespace Lodis.Gameplay
             if (_health < 0)
                 _health = 0;
 
+            LastAbilityID = info.AbilityID;
             _onTakeDamage?.Invoke();
             return damageTaken;
         }

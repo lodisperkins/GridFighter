@@ -1,4 +1,5 @@
-﻿using Lodis.Gameplay;
+﻿using FixedPoints;
+using Lodis.Gameplay;
 using Lodis.Sound;
 using Lodis.UI;
 using Lodis.Utility;
@@ -12,14 +13,25 @@ namespace Lodis.FX
 {
     public class FXManagerBehaviour : SimulationBehaviour
     {
+        [Header("Scene References")]
         [SerializeField] private Light[] _environmentLights;
         [SerializeField] private Camera _mainCamera;
-        [SerializeField] private float _onScreenDistance = 2.5f;
+
+        [Header("Super Moves")]
         [SerializeField] private AnimationCurve _superMoveCurve;
         [SerializeField] private BackgroundColorBehaviour _superBackground;
+
+        [Header("General Explosions")]
         [SerializeField] private GameObject _explosionEffectSmall;
         [SerializeField] private GameObject _explosionEffectMedium;
         [SerializeField] private GameObject _explosionEffectLarge;
+
+        [Header("Surge Meter")]
+        [SerializeField] private GameObject _surgeMeterScreenEffect;
+        [SerializeField] private float _surgeMeterSloMoDuration = 1;
+        [SerializeField] private float _surgeMeterSloMoTimeScale = .5f;
+        [SerializeField] private float _surgeMeterSloMoTransitionSpeed = .2f;
+        [SerializeField] private AudioClip _surgeMeterStart;
 
         //---
         private bool _superMoveActive;
@@ -35,6 +47,7 @@ namespace Lodis.FX
 
         private static FXManagerBehaviour _instance;
         private int _lastPlayerSuper;
+        private FixedTimeAction _surgeStrikeEndTimer;
 
         public static FXManagerBehaviour Instance
         {
@@ -71,6 +84,13 @@ namespace Lodis.FX
             _player2Camera.transform.parent.localRotation = Quaternion.Euler(0, 180, 0);
             _player2Camera.FlipStartEndTransforms();
             _player2Camera.CullingMask |= (1 << LayerMask.NameToLayer("RHSMesh"));
+
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(() =>
+            {
+                EndSurgeStrikeVisual();
+                StopAllSuperMoveVisuals(0);
+                StopAllSuperMoveVisuals(1);
+            });
         }
 
         public void SetEnvironmentLightsEnabled(bool enabled)
@@ -186,6 +206,48 @@ namespace Lodis.FX
             currentCamera.LerpCamera(duration, _superMoveCurve);
 
             SuperMoveEffectActive = true;
+        }
+
+        public void StartSurgeStrikeVisual(int player)
+        {
+            if (player != 0 && player != 1)
+                return;
+
+            if (player == 0)
+            {
+                CameraBehaviour.Instance.AlignmentFocus = GridScripts.GridAlignment.RIGHT;
+            }
+            else if (player == 1)
+            {
+                CameraBehaviour.Instance.AlignmentFocus = GridScripts.GridAlignment.LEFT;
+            }
+            
+            CameraBehaviour.Instance.ZoomAmount = 4;
+
+            SetEnvironmentLightsEnabled(false);
+
+            SoundManagerBehaviour.Instance.PlaySound(_surgeMeterStart);
+
+            MatchManagerBehaviour.Instance.ChangeTimeScale(_surgeMeterSloMoTimeScale, _surgeMeterSloMoTransitionSpeed, _surgeMeterSloMoDuration);
+
+            _surgeMeterScreenEffect.SetActive(true);
+            AnnouncerBehaviour.Instance.MakeAnnouncement(player, "Surge Strike");
+
+            _surgeStrikeEndTimer = FixedPointTimer.StartNewTimedAction(EndSurgeStrikeVisual, _surgeMeterSloMoDuration);
+        }
+
+        public void EndSurgeStrikeVisual()
+        {
+            if (_surgeStrikeEndTimer != null)
+            {
+                _surgeStrikeEndTimer.Stop();
+            }
+
+            CameraBehaviour.Instance.AlignmentFocus = GridScripts.GridAlignment.ANY;
+            CameraBehaviour.Instance.ZoomAmount = 0;
+            _surgeMeterScreenEffect.SetActive(false);
+            SetEnvironmentLightsEnabled(true);
+            _surgeStrikeEndTimer = null;
         }
 
         public void StartSuperMoveVisual(int player, params GameObject[] extraVisuals)
