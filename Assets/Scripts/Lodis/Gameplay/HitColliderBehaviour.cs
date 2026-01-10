@@ -20,13 +20,15 @@ namespace Lodis.Gameplay
     {
         public string Name;
 
-        [Header("Collision Settings")]
+        [Header("Spawning/Despawning")]
         [Tooltip("If true, the hit collider will despawn after the amount of active frames have been surpassed.")]
         public bool DespawnAfterTimeLimit;
         [Tooltip("How long the hitbox will be active for.")]
         public Fixed32 TimeActive;
         [Tooltip("Whether or not this collider will be destroyed if it hits a valid object.")]
         public bool DestroyOnHit;
+
+        [Header("Collision Settings")]
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
         public bool IsMultiHit;
         [Tooltip("The collision layers to ignore when checking for valid collisions.")]
@@ -35,16 +37,14 @@ namespace Lodis.Gameplay
         public string[] TagsToIgnore;
         [Tooltip("If this collider can hit multiple times, this is how many seconds the object will have to wait before being able to register a collision with the same object.")]
         public Fixed32 MultiHitWaitTime;
+
+        [Header("Damage And Knockback")]
         [Tooltip("The amount of damage this attack will deal.")]
         public Fixed32 Damage;
         [Tooltip("How far back this attack will knock an object back.")]
         public Fixed32 BaseKnockBack;
         [Tooltip("How much the knock back of this ability will scale based on the health of the object hit.")]
         public Fixed32 KnockBackScale;
-        [Tooltip("How much this attack will make the owners surge meter increase by.")]
-        public int SurgeMeterValue;
-        [Tooltip("Whether or not this attack will be able to properly end a combo with the surge meter.")]
-        public bool IsEnder;
         [Tooltip("Whether or not this move can knock opponents out of the ring.")]
         public bool ClampForceWithinRing;
         [Tooltip("Whether or not the force added will override the velocity of the object.")]
@@ -59,6 +59,21 @@ namespace Lodis.Gameplay
         public Fixed32 HitStunTime;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public Fixed32 Priority;
+
+        [Header("Surge Meter")]
+        [Tooltip("How much this attack will make the owners surge meter increase by.")]
+        public int SurgeMeterValue;
+        [Tooltip("Whether or not this attack will be able to properly end a combo with the surge meter.")]
+        public bool IsEnder;
+
+        [Header("Status Effects")]
+        [Tooltip("The status effect that will be applied on hit")]
+        public StatusEffect.StatusEffectType AppliedStatusEffect;
+        [Tooltip("The number of stacks of the status effect that will be applied on hit")]
+        public int StatusEffectStacks;
+        [Tooltip("Whether or not collider will keep applying a stack every time it collides if it's multi-hit.")]
+        public bool AllowMultipleStackApplications;
+
         [HideInInspector]
         public GridAlignment OwnerAlignement;
         [HideInInspector]
@@ -66,7 +81,7 @@ namespace Lodis.Gameplay
         [HideInInspector]
         public Fixed32 AbilityID;
 
-        [Header("Collision Effects")]
+        [Header("Particle Effects")]
         [Tooltip("The effect that will spawn when the hit box is spawned.")]
         [JsonIgnore]
         public GameObject SpawnEffect;
@@ -78,6 +93,8 @@ namespace Lodis.Gameplay
         [Range(0,3)]
         [JsonIgnore]
         public int HitEffectLevel;
+
+        [Header("Camera Effects")]
         [Tooltip("The strength of the shake on the character being hit.")]
         [JsonIgnore]
         public Fixed32 HitStopShakeStrength;
@@ -96,12 +113,15 @@ namespace Lodis.Gameplay
         [Tooltip("Event called when this collider hits a valid object.")]
         [JsonIgnore]
         public CollisionEvent OnHit;
+
+        [Header("Sounds")]
         [JsonIgnore]
         public AudioClip SpawnSound;
         [JsonIgnore]
         public AudioClip HitSound;
         [JsonIgnore]
         public AudioClip DespawnSound;
+
         public void AddOnHitEvent(CollisionEvent collisionEvent)
         {
             OnHit += collisionEvent;
@@ -141,6 +161,7 @@ namespace Lodis.Gameplay
         public HitColliderData ColliderInfo;
         private bool _addedToActiveList;
         private bool _playedSpawnEffects;
+        private bool _appliedStatusEffect;
 
         public Fixed32 StartTime { get; private set; }
         public Fixed32 CurrentTimeActive { get; private set; }
@@ -182,6 +203,12 @@ namespace Lodis.Gameplay
             AddToActiveList();
             ResetActiveTime();
             Collisions.Clear();
+            _appliedStatusEffect = false;
+        }
+
+        private void OnDisable()
+        {
+            _appliedStatusEffect = false;
         }
 
         private void AddToActiveList()
@@ -268,9 +295,10 @@ namespace Lodis.Gameplay
             {
                 if (otherCollider.Spawner == Spawner)
                 {
-                    Debug.LogError($"Collision did not occur because owner has not been set for collider {Entity.Data.Name}");
+                    //Debug.LogError($"Collision did not occur because owner has not been set for collider {Entity.Data.Name}");
                     return;
                 }
+
 
                 //If it is a hit collider...
                 if (otherCollider is HitColliderBehaviour hitCollider)
@@ -318,7 +346,8 @@ namespace Lodis.Gameplay
             if (damageScript != null && !damageScript.IsInvincible && !damageScript.UpdateSuperArmor(ColliderInfo.Damage))
             {
                 damageScript.LastCollider = this;
-                KnockbackBehaviour knockback;
+                KnockbackBehaviour knockback = damageScript as KnockbackBehaviour;
+
 
                 if (ColliderInfo.Damage > 0 && damageScript.TakeDamage(ColliderInfo, Spawner) > 0)
                 {
@@ -327,14 +356,30 @@ namespace Lodis.Gameplay
                     else if (ColliderInfo.OwnerAlignement == GridAlignment.RIGHT)
                         BlackBoardBehaviour.Instance.RHSTotalDamage += ColliderInfo.Damage;
 
+                    //Apply status effects if applicable
+                    if (ColliderInfo.StatusEffectStacks > 0 && knockback)
+                    {
+                        if (ColliderInfo.IsMultiHit)
+                        {
+                            if (ColliderInfo.AllowMultipleStackApplications || !_appliedStatusEffect)
+                            {
+                                knockback.StatusEffectManager.ApplyStatusEffect(ColliderInfo.AppliedStatusEffect, ColliderInfo.StatusEffectStacks);
+                                _appliedStatusEffect = true;
+                            }
+                        }
+                        else
+                            knockback.StatusEffectManager.ApplyStatusEffect(ColliderInfo.AppliedStatusEffect, ColliderInfo.StatusEffectStacks);
+                    }
+
                     damageDealt = true;
                 }
-                else if (knockback = damageScript as KnockbackBehaviour)
+                else if (knockback)
                 {
                     Fixed32 totalKnockback = KnockbackBehaviour.GetTotalKnockback(ColliderInfo.BaseKnockBack, ColliderInfo.KnockBackScale, knockback.Health);
                     FVector3 force = knockback.Physics.CalculateGridForce(totalKnockback, newHitAngle, true);
                     knockback.Physics.ApplyImpulseForce(force);
                     damageDealt = true;
+
                 }
 
                 if (ColliderInfo.HitEffectLevel > 0 && damageDealt)

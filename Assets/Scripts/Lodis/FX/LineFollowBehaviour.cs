@@ -33,13 +33,18 @@ namespace Lodis.Gameplay
             if (IgnoreTeleporters)
                 return;
 
-            if (LastTeleporterUsed == teleporter)
+            EntityDataBehaviour entity = GetComponentInParent<EntityDataBehaviour>();
+            FTransform trans = entity.FixedTransform;
+
+            if (LastTeleporterUsed == linkedTeleporter)
             {
                 RemoveLinkedLine();
+
+                trans.WorldPosition = linkedTeleporter.FixedTransform.WorldPosition;
+                entity.UpdateUnityTransform(GridGame.FixedTimeStep);
                 return;
             }
 
-            EntityDataBehaviour entity = GetComponentInParent<EntityDataBehaviour>();
 
             if (linkedTeleporter != LastTeleporterUsed)
             {
@@ -47,7 +52,6 @@ namespace Lodis.Gameplay
                 teleporter.HoldTeleporterOpen(entity);
             }
 
-            FTransform trans = entity.FixedTransform;
             trans.WorldPosition = linkedTeleporter.FixedTransform.WorldPosition;
 
             AddLinkedLine(teleporter.transform, linkedTeleporter.transform);
@@ -75,6 +79,7 @@ namespace Lodis.Gameplay
             LineFollowBehaviour lineToRemove = _linkedLines.Pop();
             _target = lineToRemove.Target;
 
+            lineToRemove.gameObject.SetActive(false);
             Destroy(lineToRemove.gameObject);
         }
 
@@ -85,6 +90,11 @@ namespace Lodis.Gameplay
 
             _line.SetPosition(0, _start.position);
             _line.SetPosition(1, _target.position);
+        }
+
+        private void OnDisable()
+        {
+            LastTeleporterUsed = null;
         }
 
         // Update is called once per frame

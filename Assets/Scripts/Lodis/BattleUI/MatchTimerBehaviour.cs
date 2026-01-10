@@ -4,10 +4,13 @@ using UnityEngine;
 using Lodis.ScriptableObjects;
 using UnityEngine.UI;
 using Lodis.Utility;
+using System.IO;
+using Types;
+using NaughtyAttributes;
 
 namespace Lodis.UI
 {
-    public class MatchTimerBehaviour : MonoBehaviour
+    public class MatchTimerBehaviour : SimulationBehaviour
     {
         private static MatchTimerBehaviour _instance;
         [SerializeField]
@@ -15,9 +18,9 @@ namespace Lodis.UI
         [SerializeField]
         private FloatVariable _matchTime;
         [SerializeField]
-        private float _matchTimeRemaining;
+        private Fixed32 _matchTimeRemaining;
         [SerializeField]
-        private float _timeSinceRoundStart;
+        private Fixed32 _timeSinceRoundStart;
         [SerializeField]
         private CustomEventSystem.Event _onTimerUp;
         [SerializeField]
@@ -51,11 +54,33 @@ namespace Lodis.UI
 
         public bool IsInfinite { get => _isInfinite; set => _isInfinite = value; }
         public bool IsActive { get => _isActive; set => _isActive = value; }
-        public float MatchTimeRemaining { get => _matchTimeRemaining; private set => _matchTimeRemaining = value; }
-        public float TimeSinceRoundStart { get => _timeSinceRoundStart; private set => _timeSinceRoundStart = value; }
+        public Fixed32 MatchTimeRemaining { get => _matchTimeRemaining; private set => _matchTimeRemaining = value; }
+        public Fixed32 TimeSinceRoundStart { get => _timeSinceRoundStart; private set => _timeSinceRoundStart = value; }
+
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_isInfinite);
+            bw.Write(_isActive);
+            bw.Write(_timeUp);
+            bw.Write(_eventRaised);
+            _matchTimeRemaining.Serialize(bw);
+            _timeSinceRoundStart.Serialize(bw);
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            _isInfinite = br.ReadBoolean();
+            _isActive = br.ReadBoolean();
+            _timeUp = br.ReadBoolean();
+            _eventRaised = br.ReadBoolean();
+            _matchTimeRemaining.Deserialize(br);
+            _timeSinceRoundStart.Deserialize(br);
+        }
 
         // Start is called before the first frame update
-        void Start()
+        public override void Begin()
         {
             Gameplay.MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => IsActive = true);
             Gameplay.MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ResetTimer);
@@ -76,19 +101,34 @@ namespace Lodis.UI
             _eventRaised = false;
             _timeUp = false;
             TimeSinceRoundStart = 0;
+
+            string timeText = "";
+            int minutes = Mathf.FloorToInt(MatchTimeRemaining / 60f);
+            int seconds = Mathf.FloorToInt(MatchTimeRemaining - minutes * 60f);
+
+            string formattedTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+
+            timeText = formattedTime;
+            _timerText.text = timeText;
+        }
+
+        [Button]
+        private void SkipTimeForDebug()
+        {
+            MatchTimeRemaining = 1;
         }
 
         // Update is called once per frame
-        void Update()
+        public override void Tick(Fixed32 dt)
         {
-            TimeSinceRoundStart += Time.deltaTime;
+            TimeSinceRoundStart += dt;
             if (!IsActive)
                 return;
 
             string timeText = "";
             if (!IsInfinite)
             {
-                MatchTimeRemaining -= Time.deltaTime;
+                MatchTimeRemaining -= dt;
                 _timeUp = MatchTimeRemaining <= 0;
 
                 int minutes = Mathf.FloorToInt(MatchTimeRemaining / 60f);
@@ -103,7 +143,7 @@ namespace Lodis.UI
                 MatchTimeRemaining = float.PositiveInfinity;
                 _timeUp = false;
 
-                timeText = MatchTimeRemaining.ToString();
+                timeText = "Infinite";
             }
 
             if (_timeUp && !_eventRaised)

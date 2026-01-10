@@ -40,15 +40,16 @@ MonoBehaviour:
   CancelAllOnKnockback: 1
   AutoMovePhase: 1
   CanInputMovementDuringStartUp: 0
-  CanInputMovementWhileActive: 1
+  CanInputMovementWhileActive: 0
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
   visualPrefab: {fileID: 3784202472332545888, guid: 9ee7826ed3193114aba589cdc6158c14,
     type: 3}
-  Accessory: {fileID: 0}
+  Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects:
   - {fileID: 846684148593713026, guid: 6baabdccd42a7ee4cb5dd2a1fd99831b, type: 3}
+  - {fileID: 3235588669918962280, guid: fbc625ab2d5a4d84b84ad49efe7c6dfe, type: 3}
   Sounds: []
   DisplayIcon: {fileID: 21300000, guid: 79b3ba27eaa7872408b754c064ab2a1b, type: 3}
   ActivateSound: {fileID: 8300000, guid: 006e8658d3c9180448481354485967b5, type: 3}
@@ -73,8 +74,6 @@ MonoBehaviour:
       RawValue: 131072
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 0
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -85,6 +84,11 @@ MonoBehaviour:
       RawValue: 3932
     Priority:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -124,8 +128,6 @@ MonoBehaviour:
       RawValue: 262144
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 0
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -136,6 +138,11 @@ MonoBehaviour:
       RawValue: 3932
     Priority:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -175,8 +182,6 @@ MonoBehaviour:
       RawValue: 65536
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 0
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -187,6 +192,11 @@ MonoBehaviour:
       RawValue: 4587
     Priority:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -215,7 +225,8 @@ MonoBehaviour:
   - name: SpawnDelay
     value:
       RawValue: 9830
-  animationType: 0
-  _customAnimation: {fileID: 0}
+  animationType: 3
+  _customAnimation: {fileID: 4358703180778511629, guid: 57ab6b133538a2e418fef40b926d05bf,
+    type: 3}
   _shouldMirror: 1
   _additionalAnimations: []

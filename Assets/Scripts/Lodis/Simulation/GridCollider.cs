@@ -330,6 +330,9 @@ public class GridCollider
         return false;
     }
 
+    /// <summary>
+    /// Removes null or inactive entities from the collision list.
+    /// </summary>
     public void CleanCollisionList()
     {
         if (!_collisionListDirty)
@@ -346,6 +349,9 @@ public class GridCollider
         _collisionListDirty = false;
     }
 
+    /// <summary>
+    /// Clears all recently touched colliders allowing their collision events to be called again.
+    /// </summary>
     public void ClearCollisionExit()
     {
         for (int i = 0; i < _collisions.Length; i++)
@@ -354,22 +360,37 @@ public class GridCollider
         }
     }
 
+    /// <summary>
+    /// Removes the entity from the list of recently touched colliders allowing their collision events to be called again.
+    /// Useful for when the properties of the collider change like a swap of ownership.
+    /// </summary>
+    /// <param name="entity">The entity that will be removed from this colliders recents.</param>
+    public void ForgetCollidedWithEntity(EntityDataBehaviour entity)
+    {
+        for (int i = 0; i < _collisions.Length; i++)
+        {
+            if (_collisions[i].OtherCollider != null && _collisions[i].OtherCollider.Entity == entity)
+            {
+                _collisions[i] = default;
+            }
+        }
+    }
+
     private bool CheckWallCollisionOnX(GridCollider other)
     {
-        bool collidingOnX = false;
+        bool behindOnX = false;
 
-        //if (_facingRight)
-        //{
-        //    collidingOnX = other.WorldPosition.X + WallXOffset <= WorldPosition.X;
-        //}
-        //else
-        //{
-        //    collidingOnX = other.WorldPosition.X + WallXOffset >= WorldPosition.X;
-        //}
+        if (_facingRight)
+        {
+            behindOnX = other.GetLeft() + WallXOffset <= WorldPosition.X;
+        }
+        else
+        {
+            behindOnX = other.GetRight() + WallXOffset >= WorldPosition.X;
+        }
 
-        collidingOnX = Fixed32.WithinRange(WorldPosition.X, other.GetLeft(), other.GetRight());
 
-        return collidingOnX;
+        return behindOnX;
     }
 
     public bool CheckCollision(GridCollider other)

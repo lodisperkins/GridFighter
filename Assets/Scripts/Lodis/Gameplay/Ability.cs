@@ -13,6 +13,7 @@ using Lodis.Sound;
 using Lodis.Input;
 using FixedPoints;
 using Types;
+using Lodis.GridScripts;
 
 namespace Lodis.Gameplay
 {
@@ -752,6 +753,24 @@ namespace Lodis.Gameplay
             _accessoryInstance.SetActive(false);
 
             FixedPointTimer.StartNewConditionAction(() => EnableAccessory(), condition);
+        }
+
+        protected PanelBehaviour GetEnabledPanel(GridMovementBehaviour movebehaviour, FVector2 position)
+        {
+            PanelBehaviour targetPanel = null;
+
+            for (int i = 0; i < GridBehaviour.Instance.Width; i++)
+            {
+                FVector2 newPosition = position - FVector2.Right * i * OwnerMoveScript.GetAlignmentX();
+
+                if (GridBehaviour.Instance.GetPanel(newPosition, out targetPanel))
+                {
+                    if (targetPanel.PanelEnabled)
+                        return targetPanel;
+                }
+            }
+
+            return targetPanel;
         }
 
     }

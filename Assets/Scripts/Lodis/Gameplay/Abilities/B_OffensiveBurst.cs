@@ -53,7 +53,7 @@ namespace Lodis.Gameplay
 
                 CameraBehaviour.Instance.ZoomAmount = 3;
                 _zoomAction = RoutineBehaviour.Instance.StartNewTimedAction(parameter => CameraBehaviour.Instance.ZoomAmount = 0, TimedActionCountType.SCALEDTIME, 0.7f);
-                AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(collision.OtherEntity.UnityObject), "Burst Drive");
+                AnnouncerBehaviour.Instance.MakeAnnouncement(BlackBoardBehaviour.Instance.GetIDFromPlayer(Owner.gameObject), "Burst Drive");
 
 
                 GameObject opp = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner.gameObject);

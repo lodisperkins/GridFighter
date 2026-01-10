@@ -252,7 +252,7 @@ namespace Lodis.Gameplay
             {
                 _burstEnergy = value;
                 _burstEnergy = Fixed32.Clamp(_burstEnergy, 0, _maxBurstEnergyRef.FixedValue);
-                Debug.Log("Burst energy set to" + _burstEnergy);
+                //Debug.Log("Burst energy set to" + _burstEnergy);
             }
         }
 

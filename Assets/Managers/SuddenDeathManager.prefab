@@ -56,6 +56,8 @@ MonoBehaviour:
     RawValue: 1966080
   _thirdExplosionDelay:
     RawValue: 3932160
+  _moveBarrierDelay:
+    RawValue: 65536
   _objectsToDisable:
   - {fileID: 0}
   - {fileID: 0}

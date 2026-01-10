@@ -4,6 +4,7 @@ using UnityEngine;
 using Lodis.Movement;
 using FixedPoints;
 using Types;
+using Lodis.GridScripts;
 
 namespace Lodis.Gameplay
 {
@@ -34,20 +35,37 @@ namespace Lodis.Gameplay
         /// <param name="gameObject"></param>
         public void TryReflectProjectile(HitColliderBehaviour otherCollider)
         {
-            GridPhysicsBehaviour gridPhysics = otherCollider.transform.root.GetComponent<GridPhysicsBehaviour>();
+            GridMovementBehaviour gridMovementBehaviour = otherCollider.transform.root.GetComponent<GridMovementBehaviour>();
 
-            //Only reflect if this object has physics
-            if (!gridPhysics) return;
-            
             //Don't reflect if this is the owner's projectile
             if (otherCollider.Spawner == _collider.Spawner)
                 return;
 
-            //Change the projectiles owner and velocity
-            otherCollider.Spawner = _collider.Spawner;
-            otherCollider.ColliderInfo.OwnerAlignement = _collider.Spawner.GetComponent<GridMovementBehaviour>().Alignment;
-            otherCollider.ResetActiveTime();
-            gridPhysics.ApplyVelocityChange(-gridPhysics.Velocity * 2f);
+            otherCollider.EntityCollider.ClearCollisionExit();
+            otherCollider.Spawner.Colliders[0].ForgetCollidedWithEntity(otherCollider.Entity);
+
+            //Only reflect if this object has physics
+            if (gridMovementBehaviour)
+            {
+                //Change the projectiles owner and velocity
+                otherCollider.Spawner = _collider.Spawner;
+                otherCollider.ColliderInfo.OwnerAlignement = _collider.Spawner.GetComponent<GridMovementBehaviour>().Alignment;
+                otherCollider.ResetActiveTime();
+                PanelBehaviour newPanel = GridBehaviour.Instance.GetMirroredPanelAcrossX(gridMovementBehaviour.TargetPanel.Position.X, gridMovementBehaviour.TargetPanel.Position.Y);
+                gridMovementBehaviour.CancelMovement();
+                gridMovementBehaviour.MoveToPanel(newPanel);
+
+            }
+            else
+            {
+                GridPhysicsBehaviour gridPhysics = otherCollider.transform.root.GetComponent<GridPhysicsBehaviour>();
+                //Change the projectiles owner and velocity
+                otherCollider.Spawner = _collider.Spawner;
+                otherCollider.ColliderInfo.OwnerAlignement = _collider.Spawner.GetComponent<GridMovementBehaviour>().Alignment;
+                otherCollider.ResetActiveTime();
+                gridPhysics.ApplyVelocityChange(-gridPhysics.Velocity * 2f);
+            }
+
         }
 
         /// <summary>

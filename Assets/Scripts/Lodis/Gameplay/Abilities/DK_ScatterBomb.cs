@@ -6,6 +6,7 @@ using DG.Tweening;
 using Lodis.Utility;
 using Lodis.Movement;
 using FixedPoints;
+using Types;
 
 namespace Lodis.Gameplay
 {
@@ -17,7 +18,7 @@ namespace Lodis.Gameplay
     {
         List<PanelBehaviour> _targetPanels = new List<PanelBehaviour>();
         List<Transform> _bombs = new List<Transform>();
-        private float _bombTimer;
+        private Fixed32 _bombTimer;
         private GameObject _explosionEffect;
         private TimedAction _explosionTimer;
         private HitColliderData _hitColliderData;
@@ -65,10 +66,12 @@ namespace Lodis.Gameplay
         }
 
         /// <summary>
-        /// Spawns an explosion at returns the entity to the pool.
+        /// Spawns an explosion and returns the bomb to the entity to the pool.
         /// </summary>
         private void ExplodeBomb(GridMovementBehaviour entity)
         {
+            if (entity.Entity.Active == false) return;
+
             HitColliderBehaviour collider =  HitColliderSpawner.SpawnCollider(entity.FixedTransform.WorldPosition + FVector3.Up / 2, 1, 1, _hitColliderData, Owner);
 
             collider.Entity.Data.Name = "Explosion";

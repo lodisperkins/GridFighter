@@ -83,6 +83,11 @@ MonoBehaviour:
       RawValue: 45875
     Priority:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -133,6 +138,11 @@ MonoBehaviour:
       RawValue: 45875
     Priority:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -183,6 +193,11 @@ MonoBehaviour:
       RawValue: 45875
     Priority:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -232,6 +247,11 @@ MonoBehaviour:
       RawValue: 65536
     Priority:
       RawValue: -65536
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 1
+    StatusEffectStacks: 2
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -270,6 +290,9 @@ MonoBehaviour:
   - name: DashHitBoxY
     value:
       RawValue: 196608
+  - name: IntangibilityTime
+    value:
+      RawValue: 32768
   animationType: 3
   _customAnimation: {fileID: 5180280961208456968, guid: 25b35b330c85c834c934e3100e227351,
     type: 3}

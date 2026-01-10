@@ -123,7 +123,9 @@ namespace Lodis.Gameplay
                 //Update entities list.
                 ActiveEntities.Add(moveBehaviour);
 
-                moveBehaviour.MoveToPanel(_panelPositions[i], !SmoothMovement, Alignement, true, false, true);
+                PanelBehaviour panel = GetEnabledPanel(moveBehaviour, _panelPositions[i]);
+
+                moveBehaviour.MoveToPanel(panel.Position, !SmoothMovement, Alignement, true, false, true);
 
                 //If there's something that should happen when this entity stops, it is set here.
                 if (OnMoveEndAction != null)

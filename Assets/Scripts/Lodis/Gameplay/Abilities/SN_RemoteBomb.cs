@@ -75,7 +75,12 @@ namespace Lodis.Gameplay
             gridMovementBehaviour.Speed = abilityData.GetCustomStatValue("Speed");
             gridMovementBehaviour.MoveToAlignedSideWhenStuck = false;
             gridMovementBehaviour.CancelMovement();
-            gridMovementBehaviour.MoveToPanel(OwnerMoveScript.Position + direction * _travelDistance, false, GridAlignment.ANY, true, false, true);
+
+            FVector2 targetPosition = OwnerMoveScript.Position + direction * _travelDistance;
+
+            PanelBehaviour targetPanel = GetEnabledPanel(gridMovementBehaviour, targetPosition);
+
+            gridMovementBehaviour.MoveToPanel(targetPanel.Position, false, GridAlignment.ANY, true, false, true);
             _timeSpawned = GridGame.Time;
             HitColliderData data = _explosionColliderData.ScaleStats(_damage);
             //data.OnHit += a => SpawnExplosion();

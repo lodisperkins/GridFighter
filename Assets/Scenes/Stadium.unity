@@ -19256,6 +19256,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SurgeMeterLoopEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 7371023870177589819, guid: 41e76a1aecd59b84b95c08fe0afc6360,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20644,6 +20649,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 80aa92efa7a08ce4c8c7d05e98fb1965,
         type: 2}
+    - target: {fileID: 264758727458284056, guid: 5282bef0dac00f147973f3ab671f4de2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 302651233100818386, guid: 5282bef0dac00f147973f3ab671f4de2,
         type: 3}
       propertyPath: m_Camera
@@ -20677,6 +20687,11 @@ PrefabInstance:
     - target: {fileID: 2095263066098918646, guid: 5282bef0dac00f147973f3ab671f4de2,
         type: 3}
       propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2457176861286981022, guid: 5282bef0dac00f147973f3ab671f4de2,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2529044638518227500, guid: 5282bef0dac00f147973f3ab671f4de2,
@@ -20763,6 +20778,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6274593904627966148, guid: 5282bef0dac00f147973f3ab671f4de2,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6408621882065066275, guid: 5282bef0dac00f147973f3ab671f4de2,
         type: 3}
@@ -20919,6 +20939,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5282bef0dac00f147973f3ab671f4de2, type: 3}
+--- !u!1 &5014208875628784308 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1695292382548109370, guid: 5282bef0dac00f147973f3ab671f4de2,
+    type: 3}
+  m_PrefabInstance: {fileID: 5014208875628784307}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5553018275480173941
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21419,6 +21445,16 @@ PrefabInstance:
       objectReference: {fileID: 584009300066024479}
     - target: {fileID: 7202783918616149914, guid: 3bc6e81df7ed0c64bb862a8b37cd217e,
         type: 3}
+      propertyPath: _objectsToDisable.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202783918616149914, guid: 3bc6e81df7ed0c64bb862a8b37cd217e,
+        type: 3}
+      propertyPath: _firstExplosionDelay.RawValue
+      value: 1966080
+      objectReference: {fileID: 0}
+    - target: {fileID: 7202783918616149914, guid: 3bc6e81df7ed0c64bb862a8b37cd217e,
+        type: 3}
       propertyPath: _objectsToDisable.Array.data[0]
       value: 
       objectReference: {fileID: 432631024}
@@ -21427,6 +21463,11 @@ PrefabInstance:
       propertyPath: _objectsToDisable.Array.data[1]
       value: 
       objectReference: {fileID: 1408822220}
+    - target: {fileID: 7202783918616149914, guid: 3bc6e81df7ed0c64bb862a8b37cd217e,
+        type: 3}
+      propertyPath: _objectsToDisable.Array.data[2]
+      value: 
+      objectReference: {fileID: 5014208875628784308}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

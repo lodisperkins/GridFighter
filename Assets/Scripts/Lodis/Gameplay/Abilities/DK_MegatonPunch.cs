@@ -180,7 +180,7 @@ namespace Lodis.Gameplay
 
             Transform effectSpawn = OwnerMoveScript.Alignment == GridAlignment.LEFT ? OwnerMoveset.RightMeleeSpawns[1] : OwnerMoveset.LeftMeleeSpawns[1];
 
-            OwnerKnockBackScript.SetIntagibilityByCondition(condition => CurrentAbilityPhase != AbilityPhase.STARTUP);
+            OwnerKnockBackScript.SetIntagibilityByTimer(abilityData.startUpTime + abilityData.GetCustomStatValue("IntangibilityTime"));
 
             _chargeEffect = ObjectPoolBehaviour.Instance.GetObject(_chargeEffectRef, effectSpawn, true);
 

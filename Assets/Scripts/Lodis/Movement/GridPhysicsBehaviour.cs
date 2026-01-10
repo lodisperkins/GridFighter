@@ -1077,13 +1077,15 @@ namespace Lodis.Movement
             RingBarrierBehaviour lhs = BlackBoardBehaviour.Instance.RingBarrierLHS;
             RingBarrierBehaviour rhs = BlackBoardBehaviour.Instance.RingBarrierRHS;
 
+            ColliderBehaviour collider = GetComponent<ColliderBehaviour>();
+
             if (lhs.IsAlive && lhs.Activated && FixedTransform.WorldPosition.X < lhs.FixedTransform.WorldPosition.X)
             {
-                FixedTransform.WorldPosition = new FVector3(lhs.FixedTransform.WorldPosition.X, FixedTransform.WorldPosition.Y, FixedTransform.WorldPosition.Z);
+                FixedTransform.WorldPosition = new FVector3(lhs.FixedTransform.WorldPosition.X + (collider.EntityCollider.Width / 2), FixedTransform.WorldPosition.Y, FixedTransform.WorldPosition.Z);
             }
             else if (rhs.IsAlive && rhs.Activated && FixedTransform.WorldPosition.X > rhs.FixedTransform.WorldPosition.X)
             {
-                FixedTransform.WorldPosition = new FVector3(rhs.FixedTransform.WorldPosition.X, FixedTransform.WorldPosition.Y, FixedTransform.WorldPosition.Z);
+                FixedTransform.WorldPosition = new FVector3(rhs.FixedTransform.WorldPosition.X - (collider.EntityCollider.Width / 2), FixedTransform.WorldPosition.Y, FixedTransform.WorldPosition.Z);
             }
         }
 
@@ -1147,7 +1149,8 @@ namespace Lodis.Movement
             _acceleration = (_lastVelocity - Velocity) / GridGame.FixedTimeStep;
             _objectAtRest = IsGrounded && _velocity.Magnitude <= 0.01f;
 
-            ForceToApply = FVector3.Zero;
+            if (ObjectAtRest)
+                ForceToApply = FVector3.Zero;
 
 
             if (ClampPositionInBarriers)

@@ -99,7 +99,7 @@ namespace Lodis.AI
 
             if (NeedPath && (StateMachine.CurrentState == "Idle" || (StateMachine.CurrentState == "Attack" && _moveset.LastAbilityInUse.GetCurrentCancelRule()?.CanCancelOnMove == true)))
             {
-                if (_moveTarget == null || _moveTarget == null)
+                if (_moveTarget == null || start == null)
                 {
                     return;
                 }

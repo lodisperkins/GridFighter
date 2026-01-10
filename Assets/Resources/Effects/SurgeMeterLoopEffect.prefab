@@ -49,14 +49,14 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 1
   autoRandomSeed: 1
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 1
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -5410,7 +5410,7 @@ PrefabInstance:
     - target: {fileID: 114004161566773944, guid: d1ea8786f246b004d862eff8225c561b,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2039944698610719546, guid: d1ea8786f246b004d862eff8225c561b,
         type: 3}
@@ -5614,6 +5614,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2594737671816115954, guid: d1ea8786f246b004d862eff8225c561b,
         type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2594737671816115954, guid: d1ea8786f246b004d862eff8225c561b,
+        type: 3}
       propertyPath: playOnAwake
       value: 1
       objectReference: {fileID: 0}
@@ -5621,6 +5626,11 @@ PrefabInstance:
         type: 3}
       propertyPath: simulationSpeed
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2594737671816115954, guid: d1ea8786f246b004d862eff8225c561b,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2594737671816115954, guid: d1ea8786f246b004d862eff8225c561b,
         type: 3}
@@ -5749,6 +5759,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2594737672573667902, guid: d1ea8786f246b004d862eff8225c561b,
         type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2594737672573667902, guid: d1ea8786f246b004d862eff8225c561b,
+        type: 3}
       propertyPath: playOnAwake
       value: 1
       objectReference: {fileID: 0}
@@ -5761,6 +5776,11 @@ PrefabInstance:
         type: 3}
       propertyPath: ShapeModule.type
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 2594737672573667902, guid: d1ea8786f246b004d862eff8225c561b,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2594737672573667902, guid: d1ea8786f246b004d862eff8225c561b,
         type: 3}

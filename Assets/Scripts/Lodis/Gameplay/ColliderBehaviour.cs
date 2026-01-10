@@ -134,6 +134,9 @@ namespace Lodis.Gameplay
         public void ClearAllCollisionEvents()
         {
             OnHit = null;
+            _onOverlapBegin = null;
+            _onOverlapStay = null;
+            _onOpponentHit = null;
         }
 
         public override void Serialize(BinaryWriter bw)

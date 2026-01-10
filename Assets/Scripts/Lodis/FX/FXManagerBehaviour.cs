@@ -91,6 +91,13 @@ namespace Lodis.FX
                 StopAllSuperMoveVisuals(0);
                 StopAllSuperMoveVisuals(1);
             });
+
+            MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
+            {
+                //EndSurgeStrikeVisual();
+                StopAllSuperMoveVisuals(0);
+                StopAllSuperMoveVisuals(1);
+            });
         }
 
         public void SetEnvironmentLightsEnabled(bool enabled)

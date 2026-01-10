@@ -1,4 +1,5 @@
-﻿using Lodis.Movement;
+﻿using FixedPoints;
+using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
@@ -63,6 +64,9 @@ namespace Lodis.Gameplay
                 _reboundCollider.Spawner = Owner.Data;
             }
 
+            DisableAccessory();
+
+            FixedPointTimer.StartNewConditionAction(EnableAccessory, c => !Projectile.Active);
         }
 
         /// <summary>
@@ -88,44 +92,66 @@ namespace Lodis.Gameplay
                 return;
             }
 
-            Fixed32 speed = _speedMultiplier;
-
-            //Don't redirect the projectile if the player isn't standing still or just moving
-            if (other == Owner)
-            {
-                CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
-
-                if (!stateMachine.CompareState("Idle", "Moving", "Attacking"))
-                {
-                    return;
-                }
-
-                speed = abilityData.GetCustomStatValue("Speed");
-            }
+            Fixed32 speed = abilityData.GetCustomStatValue("Speed");
 
             GridPhysicsBehaviour projectile = Projectile.Data.GetComponent<GridPhysicsBehaviour>();
-            GridMovementBehaviour movement = collision.OtherEntity.GetComponent<GridMovementBehaviour>();
 
-            //If it hit a valid object...
-            if ((other.CompareTag("Player") || other.CompareTag("Entity")))
+            if (projectile.Velocity.X.Sign() != OwnerMoveScript.GetAlignmentX())
             {
-                //...reverse velocity
-
-                if (projectile.Velocity.X.Sign() != movement.GetAlignmentX())
+                //Don't redirect the projectile if the player isn't standing still or just moving
+                if (other == Owner.Data.UnityObject)
                 {
-                    projectile.ApplyVelocityChange(-projectile.Velocity.GetNormalized() * speed);
-                }
+                    CharacterStateMachineBehaviour stateMachine = other.GetComponent<CharacterStateMachineBehaviour>();
 
-                _reboundCount++;
-                _reboundCollider.Spawner = collision.OtherEntity;
+                    if (!stateMachine.CompareState("Idle", "Moving", "Attacking"))
+                    {
+                        return;
+                    }
+
+                    speed = abilityData.GetCustomStatValue("Speed");
+
+                    //...reverse velocity
+                    projectile.ApplyVelocityChange(-projectile.Velocity.GetNormalized() * speed);
+
+
+                    _reboundCount++;
+                    _reboundCollider.Spawner = collision.OtherEntity;
+                }
             }
-            //Otherwise if it hit a structure like a wall...
-            else if(other.CompareTag("Structure"))
+            else
             {
-                //...destroy it
-                ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
-                _reboundCount = 0;
+                //GridMovementBehaviour movement = collision.OtherEntity.GetComponent<GridMovementBehaviour>();
+
+                if (other.CompareTag("RingBarrier"))
+                {
+                    //...reverse velocity
+                    projectile.ApplyVelocityChange(-projectile.Velocity.GetNormalized() * speed);
+
+
+                    _reboundCount++;
+                    _reboundCollider.Spawner = collision.OtherEntity;
+                }
             }
+            ////If it hit a valid object...
+            //if ((other.CompareTag("Player") || other.CompareTag("Entity")))
+            //{
+            //    //...reverse velocity
+
+            //    if (projectile.Velocity.X.Sign() != movement.GetAlignmentX())
+            //    {
+            //        projectile.ApplyVelocityChange(-projectile.Velocity.GetNormalized() * speed);
+            //    }
+
+            //    _reboundCount++;
+            //    _reboundCollider.Spawner = collision.OtherEntity;
+            //}
+            ////Otherwise if it hit a structure like a wall...
+            //else if(other.CompareTag("Structure"))
+            //{
+            //    //...destroy it
+            //    ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
+            //    _reboundCount = 0;
+            //}
         }
 
         protected override void OnSerialize(BinaryWriter bw)

@@ -17,6 +17,7 @@ namespace Lodis.Gameplay
         protected override void OnStart(params object[] args)
         {
             base.OnStart(args);
+            DisableAccessory();
         }
 
         //Called when ability is used
@@ -56,6 +57,7 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             ObjectPoolBehaviour.Instance.ReturnGameObject(_shield);
+            EnableAccessory();
         }
     }
 }

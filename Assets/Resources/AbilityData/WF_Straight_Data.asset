@@ -81,8 +81,6 @@ MonoBehaviour:
       RawValue: 32768
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 1
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -93,6 +91,11 @@ MonoBehaviour:
       RawValue: 3276
     Priority:
       RawValue: 65536
+    SurgeMeterValue: 1
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 2
     AbilityID:

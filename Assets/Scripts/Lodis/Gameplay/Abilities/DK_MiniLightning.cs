@@ -25,6 +25,8 @@ namespace Lodis.Gameplay
         private FixedTimeAction _spawnAction;
         private Fixed32 _delay;
         private int _currentSpawnIndex;
+        private GameObject _thalamusInstance;
+        private Transform _heldItemSpawn;
 
 
         protected override void OnSerialize(BinaryWriter bw)
@@ -83,6 +85,19 @@ namespace Lodis.Gameplay
                 //Make all hit boxes inactive by default
                 _visualPrefabInstanceTransforms[i].EntityData.Active = false;
             }
+
+
+            //Placing the sword back in their hand.
+            _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
+            if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
+                _heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
+
+            DisableAccessory();
+            _thalamusInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true);
+            _thalamusInstance.transform.localRotation = Quaternion.Euler(0, 0,180);
+
+            FixedPointTimer.StartNewTimedAction(() =>
+            _thalamusInstance.GetComponent<ColorManagerBehaviour>().SetColors((int)OwnerMoveScript.Alignment), GridGame.FixedTimeStep);
         }
 
         /// <summary>
@@ -145,12 +160,25 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             _spawnAction = FixedPointTimer.StartNewTimedAction(Spawn, _delay).Loop(_visualPrefabInstanceTransforms.Length + 2);
+            Vector3 particleSpawnPos = new Vector3(_thalamusInstance.transform.position.x, _thalamusInstance.transform.position.y - 0.5f, _thalamusInstance.transform.position.z);
+            MonoBehaviour.Instantiate(abilityData.Effects[1], particleSpawnPos, Quaternion.identity);
+            CameraBehaviour.ShakeBehaviour.ShakeRotation();
         }
 
         protected override void OnMatchRestart()
         {
             base.OnMatchRestart();
             _spawnAction?.Stop();
+        }
+
+        protected override void OnEnd()
+        {
+            base.OnEnd();
+            if (_thalamusInstance != null)
+                _thalamusInstance.transform.localRotation = Quaternion.identity;
+
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
+            EnableAccessory();
         }
     }
 }

@@ -97,7 +97,17 @@ namespace Lodis.Movement
         public AirState CurrentAirState 
         {
             get => _currentAirState;
-            set => _currentAirState = value;
+            set
+            {
+                //If we are saying that this object is no longer in the air and should be idle...
+                if (value == AirState.NONE)
+                {
+                    //...reset the sliding hit flag for next time.
+                    IsSlidingHit = false;
+                }
+
+                _currentAirState = value;
+            }
         }
 
         public GridMovementBehaviour MovementBehaviour => _movementBehaviour;
@@ -111,6 +121,8 @@ namespace Lodis.Movement
         public LandingBehaviour LandingScript => _landingBehaviour;
 
         public FloatVariable MinimumLaunchMagnitude => _minimumLaunchMagnitude;
+
+        public StatusEffectManagerBehaviour StatusEffectManager { get; set; }
 
         public bool HasExploded 
         { 
@@ -432,6 +444,12 @@ namespace Lodis.Movement
         {
             return CurrentAirState == AirState.NONE && !Physics.IsFrozen && Physics.ObjectAtRest && !_landingBehaviour.Landing && !InHitStun &&!IsFlinching && !_landingBehaviour.IsDown && !Stunned && !_landingBehaviour.RecoveringFromFall;
         }
+
+        public override void TakeDamageRaw(Fixed32 damage)
+        {
+            Health += damage;
+        }
+
         public override Fixed32 TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
             if (UpdateSuperArmor(damage))
@@ -509,7 +527,7 @@ namespace Lodis.Movement
             _onTakeDamageStart?.Invoke();
             _onTakeDamageStartTemp?.Invoke();
 
-            //Return if there is no rigidbody or movement script attached
+            //Return if the entity is [Title Card] Invincible.
             if (IsInvincible)
                 return 0;
 

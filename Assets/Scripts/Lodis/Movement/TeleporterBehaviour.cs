@@ -104,6 +104,7 @@ public class TeleporterBehaviour : SimulationBehaviour
     private bool _activeCooldownStarted;
     private bool _canTeleportSameItem = true;
     private bool _isHeldOpen;
+    private FixedTimeAction _disableTimer;
     private bool _startedInactiveTimer;
     private EntityDataBehaviour _lastThingTeleported;
     private EntityDataBehaviour _entityHoldingOpen;
@@ -178,7 +179,7 @@ public class TeleporterBehaviour : SimulationBehaviour
         }
         else if (_active && !_startedInactiveTimer && _inactiveDelay != -1)
         {
-            FixedPointTimer.StartNewTimedAction(() =>
+            _disableTimer = FixedPointTimer.StartNewTimedAction(() =>
             {
                 DisableTeleporter();
             }, _inactiveDelay);
@@ -251,6 +252,8 @@ public class TeleporterBehaviour : SimulationBehaviour
         _activeCooldownStarted = false;
         _sameTeleportAction?.Stop();
         _linkedTeleporter = null;
+        _teleportedObjects.Clear();
+        _disableTimer?.Stop();  
     }
 
     /// <summary>

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4353518054060108119}
   - component: {fileID: 2857657005397603834}
   m_Layer: 0
-  m_Name: MiniLightningAttack
+  m_Name: LazerBarrageAttack
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

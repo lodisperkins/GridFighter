@@ -554,19 +554,19 @@ namespace Lodis.Movement
             {
                 if (IsMoving && !CanCancelMovement)
                 {
-                    UnityEngine.Debug.Log($"Condition failed: IsMoving={IsMoving} && !CanCancelMovement={CanCancelMovement}");
+                    //UnityEngine.Debug.Log($"Condition failed: IsMoving={IsMoving} && !CanCancelMovement={CanCancelMovement}");
                     return false;
                 }
 
                 if (!_canMove)
                 {
-                    UnityEngine.Debug.Log("Condition failed: _canMove is false.");
+                    //UnityEngine.Debug.Log("Condition failed: _canMove is false.");
                     return false;
                 }
 
                 if (_health?.Stunned == true)
                 {
-                    UnityEngine.Debug.Log("Condition failed: _health is stunned.");
+                    //UnityEngine.Debug.Log("Condition failed: _health is stunned.");
                     return false;
                 }
             }

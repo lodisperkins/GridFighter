@@ -328,6 +328,14 @@ namespace Lodis.Gameplay
             return damageTaken;
         }
 
+        /// <summary>
+        /// Doesnt call any events, don't do nothing fancy, just straight number go down.
+        /// </summary>
+        public virtual void TakeDamageRaw(Fixed32 damage)
+        {
+            Health -= damage;
+        }
+
         public virtual Fixed32 Heal(Fixed32 healthAmount)
         {
             _health = healthAmount;

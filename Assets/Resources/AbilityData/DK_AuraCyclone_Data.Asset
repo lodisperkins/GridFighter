@@ -48,7 +48,7 @@ MonoBehaviour:
   - Name: TornadoCollider
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 262144
+      RawValue: 393216
     DestroyOnHit: 0
     IsMultiHit: 1
     LayersToIgnore:
@@ -73,6 +73,11 @@ MonoBehaviour:
       RawValue: 4587
     Priority:
       RawValue: -65536
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -98,7 +103,7 @@ MonoBehaviour:
   _customStats:
   - name: Speed
     value:
-      RawValue: 131072
+      RawValue: 65536
   animationType: 3
   _customAnimation: {fileID: -5711371977894514463, guid: 2a10415d6837d43418c9d8d26aff3063,
     type: 3}

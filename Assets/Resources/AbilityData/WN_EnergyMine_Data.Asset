@@ -80,8 +80,6 @@ MonoBehaviour:
       RawValue: 98304
     KnockBackScale:
       RawValue: 98304
-    SurgeMeterValue: 5
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -92,6 +90,11 @@ MonoBehaviour:
       RawValue: 6553
     Priority:
       RawValue: 65536
+    SurgeMeterValue: 1
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 0
     AbilityID:
@@ -123,7 +126,7 @@ MonoBehaviour:
       RawValue: 65536
   - name: TravelDistance
     value:
-      RawValue: 65536
+      RawValue: 196608
   - name: DespawnTime
     value:
       RawValue: 655360

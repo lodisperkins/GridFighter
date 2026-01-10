@@ -421,6 +421,16 @@ namespace Lodis.Gameplay
 
             return Color.black;
         }
+
+        public RingBarrierBehaviour GetRingBarrierForPlayer(EntityDataBehaviour player)
+        {
+            if (player.gameObject == Player1)
+                return RingBarrierLHS;
+            else if (player.gameObject == Player2)
+                return RingBarrierRHS;
+
+            return null;
+        }
     }
 }
 

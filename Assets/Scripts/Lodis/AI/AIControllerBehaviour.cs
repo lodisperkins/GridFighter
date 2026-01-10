@@ -860,7 +860,7 @@ namespace Lodis.AI
 
             if (matchingInfos.Count == 0)
             {
-                Debug.LogError("No recordings found that match the current panel positions.");
+                Debug.LogError("No recordings found that match the current panel positions. Panel positions were: \n Opponent: " + _currentSituation.OpponentPanelPosition + "\n" + _currentSituation.PanelPosition);
                 return;
             }
 

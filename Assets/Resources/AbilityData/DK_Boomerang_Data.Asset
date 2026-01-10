@@ -46,7 +46,7 @@ MonoBehaviour:
   playAnimationManually: 0
   visualPrefab: {fileID: 6740710594312166088, guid: 5577a461f4e790348962e338d7d59427,
     type: 3}
-  Accessory: {fileID: 0}
+  Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects: []
   Sounds: []
   DisplayIcon: {fileID: 21300000, guid: abe8094b878a72349b923d2f6e4ac433, type: 3}
@@ -65,23 +65,28 @@ MonoBehaviour:
       m_Bits: 0
     TagsToIgnore: []
     MultiHitWaitTime:
-      RawValue: 6553
+      RawValue: 65536
     Damage:
       RawValue: 327680
     BaseKnockBack:
-      RawValue: 131072
+      RawValue: 65536
     KnockBackScale:
       RawValue: 78643
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 104857
+      RawValue: 91750
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
       RawValue: 3276
     Priority:
       RawValue: -65536
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 1
+    AllowMultipleStackApplications: 1
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -90,7 +95,7 @@ MonoBehaviour:
       type: 3}
     SpawnEffectOffset:
       RawValue: 0
-    HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,
+    HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 2
     HitStopShakeStrength:
@@ -107,7 +112,7 @@ MonoBehaviour:
   _customStats:
   - name: Speed
     value:
-      RawValue: 393216
+      RawValue: 655360
   - name: MaxInstances
     value:
       RawValue: 65536

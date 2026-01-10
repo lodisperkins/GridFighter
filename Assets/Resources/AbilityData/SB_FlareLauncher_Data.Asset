@@ -34,7 +34,7 @@ MonoBehaviour:
   CanInputMovementWhileRecovering: 0
   useAbilityTimingForAnimation: 1
   playAnimationManually: 0
-  visualPrefab: {fileID: 9125275198285931057, guid: 4cbc82360a861294aa59f0ac33164ab2,
+  visualPrefab: {fileID: 9125275198285931057, guid: ee2f2d17a81805a4abd49d9da5c3455e,
     type: 3}
   Accessory: {fileID: 0}
   Effects: []
@@ -59,27 +59,29 @@ MonoBehaviour:
     Damage:
       RawValue: 98304
     BaseKnockBack:
-      RawValue: 32768
+      RawValue: 196608
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 0
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 1
     HitAngle:
-      RawValue: 95027
+      RawValue: 111411
     AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
       RawValue: 4587
     Priority:
       RawValue: -65536
+    SurgeMeterValue: 5
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 7
     AbilityID:
       RawValue: -796459008
-    SpawnEffect: {fileID: 8633066563278409231, guid: 1526457a84ad9414e9e2326a834b3018,
-      type: 3}
+    SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 65536
     HitSpark: {fileID: 2002340249453518022, guid: 7a9ea55f99d70eb4c977f88fb8d34a93,

@@ -51,6 +51,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private Fixed32 _timeUntilNextHit;
         [SerializeField] private Event _takeDamageEvent;
+        [SerializeField] private ColliderBehaviour _barrierCollider;
 
 
         //---
@@ -88,6 +89,14 @@ namespace Lodis.Gameplay
 
             _ownerData = Owner.GetComponent<EntityDataBehaviour>().Data;
             _alignment = Owner.GetComponent<GridMovementBehaviour>().Alignment;
+
+            //Owner.GetComponent<KnockbackBehaviour>().AddOnKnockBackAction(() =>
+            //{
+            //    if (Activated)
+            //    {
+            //        _barrierCollider.EntityCollider.ForgetCollidedWithEntity(_ownerData.UnityScript);
+            //    }
+            //});
         }
 
         /// <summary>
@@ -106,7 +115,7 @@ namespace Lodis.Gameplay
         /// <param name="hitStun">The amount of time the object will be in hit stun</param>
         public override Fixed32 TakeDamage(EntityData attacker, Fixed32 damage, Fixed32 baseKnockBack = default, Fixed32 hitAngle = default, DamageType damageType = DamageType.DEFAULT, Fixed32 hitStun = default)
         {
-            if (!Owner || damageType != DamageType.KNOCKBACK || IsInvincible || (attacker.UnityObject != Owner) || damage < _minimumDamageSpeed)
+            if (!Owner || damageType != DamageType.KNOCKBACK || IsInvincible || (attacker.UnityObject != Owner))
                 return 0;
 
             //Apply damage and activate damage effects.
@@ -127,7 +136,7 @@ namespace Lodis.Gameplay
         /// <param name="attacker">The name of the object that damaged this object. Used for debugging</param>
         public override Fixed32 TakeDamage(HitColliderData info, EntityData attacker)
         {
-            if (!Owner || info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.UnityObject != Owner) || info.Damage < _minimumDamageSpeed)
+            if (!Owner || info.TypeOfDamage != DamageType.KNOCKBACK || (attacker.UnityObject != Owner))
                 return 0;
 
 
@@ -167,6 +176,33 @@ namespace Lodis.Gameplay
 
         public override void OnOverlapEnter(Collision collision)
         {
+            
+        }
+
+        private bool CheckForceOfObject(GridPhysicsBehaviour physics)
+        {
+            if (physics.Velocity.Magnitude < _minimumDamageSpeed)
+            {
+                if (physics.ForceToApply.Magnitude < _minimumDamageSpeed)
+                    return false;
+                else
+                    return true;
+            }
+
+            return true;
+        }
+
+        public override void OnHitEnter(Collision collision)
+        {
+            KnockbackBehaviour knockbackBehaviour = collision.OtherEntity.UnityObject.GetComponent<KnockbackBehaviour>();
+
+            if (!knockbackBehaviour || !CheckForceOfObject(knockbackBehaviour.Physics) || !_canHit)
+                return;
+
+            if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING || Health <= 0)
+                return;
+
+            //Logic for instant shatters
             if (!_canInstantShatter || collision.OtherEntity.UnityObject == null)
                 return;
 
@@ -181,18 +217,10 @@ namespace Lodis.Gameplay
             //Shatter the barrier if the owner is being knocked back at the appropriate speed and damage.
             if (collision.OtherEntity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.FixedValue && dot < 0
                 && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.FixedValue)
+            {
                 TakeDamage(collision.OtherEntity, Health, 0, 0, DamageType.KNOCKBACK);
-        }
-
-        public override void OnHitEnter(Collision collision)
-        {
-            KnockbackBehaviour knockbackBehaviour = collision.OtherEntity.UnityObject.GetComponent<KnockbackBehaviour>();
-
-            if (!knockbackBehaviour || knockbackBehaviour.Physics.Velocity.Magnitude < _minimumDamageSpeed || !_canHit)
                 return;
-
-            if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING)
-                return;
+            }
 
             Fixed32 dir = Owner.GetComponent<GridMovementBehaviour>().GetAlignmentX();
             

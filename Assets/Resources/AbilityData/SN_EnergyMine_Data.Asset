@@ -48,7 +48,7 @@ MonoBehaviour:
   - Name: ChargeRemoteBombCollider
     DespawnAfterTimeLimit: 1
     TimeActive:
-      RawValue: 6553
+      RawValue: 327680
     DestroyOnHit: 1
     IsMultiHit: 0
     LayersToIgnore:
@@ -63,8 +63,6 @@ MonoBehaviour:
       RawValue: 131072
     KnockBackScale:
       RawValue: 65536
-    SurgeMeterValue: 0
-    IsEnder: 1
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -75,6 +73,11 @@ MonoBehaviour:
       RawValue: 9830
     Priority:
       RawValue: 196608
+    SurgeMeterValue: 2
+    IsEnder: 1
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 4
     AbilityID:

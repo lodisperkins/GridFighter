@@ -13,6 +13,7 @@ public class SuddenDeathBehaviour : SimulationBehaviour
     [SerializeField] private Fixed32 _firstExplosionDelay;
     [SerializeField] private Fixed32 _secondExplosionDelay;
     [SerializeField] private Fixed32 _thirdExplosionDelay;
+    [SerializeField] private Fixed32 _moveBarrierDelay;
     [SerializeField] private GameObject[] _objectsToDisable;
     [SerializeField] private GameObject _deathbarrierL;
     [SerializeField] private GameObject _deathbarrierR;
@@ -22,6 +23,7 @@ public class SuddenDeathBehaviour : SimulationBehaviour
     [SerializeField] private GameObject _suddenDeathScreenEffect;
 
     private FixedTimeAction _currentTimer;
+    private FixedTimeAction _currentBarrierMoveTimer;
     private int _currentX;
     private bool _hasStarted;
     private Fixed32 _winMovementScale;
@@ -35,7 +37,7 @@ public class SuddenDeathBehaviour : SimulationBehaviour
         _lhsOriginalPos = _lhsWinCollider.FixedTransform.WorldPosition;
         _rhsOriginalPos = _rhsWinCollider.FixedTransform.WorldPosition;
         GridBehaviour grid = GridBehaviour.Instance;
-        _winMovementScale = (grid.FixedPanelScale.X + grid.FixedPanelSpacingX);
+        _winMovementScale = grid.FixedPanelScale.X;
 
         MatchManagerBehaviour.Instance.AddOnRingoutAction(OnSuddenDeathWon);
     }
@@ -69,6 +71,12 @@ public class SuddenDeathBehaviour : SimulationBehaviour
         GridBehaviour.Instance.CollisionPlane.SetStagePiecesEnabled(false);
     }
 
+    private void MoveBarriers()
+    {
+        _lhsWinCollider.FixedTransform.WorldPosition += (_lhsWinCollider.FixedTransform.Forward * _winMovementScale);
+        _rhsWinCollider.FixedTransform.WorldPosition += (_rhsWinCollider.FixedTransform.Forward * _winMovementScale);
+    }
+
     private void OnFirstExplosion()
     {
         //Disable panels for LHS
@@ -92,9 +100,10 @@ public class SuddenDeathBehaviour : SimulationBehaviour
             panel.PanelEnabled = false;
         }
 
-        _lhsWinCollider.FixedTransform.WorldPosition += (_lhsWinCollider.FixedTransform.Forward * _winMovementScale);
-        _rhsWinCollider.FixedTransform.WorldPosition += (_rhsWinCollider.FixedTransform.Forward * _winMovementScale);
+        _currentBarrierMoveTimer?.Stop();
+        _currentBarrierMoveTimer = FixedPointTimer.StartNewTimedAction(MoveBarriers, _moveBarrierDelay);
 
+        _currentTimer?.Stop();
         _currentTimer = FixedPointTimer.StartNewTimedAction(OnSecondExplosion, _secondExplosionDelay);
     }
 
@@ -122,9 +131,10 @@ public class SuddenDeathBehaviour : SimulationBehaviour
             panel.PanelEnabled = false;
         }
 
-        _lhsWinCollider.FixedTransform.WorldPosition += (_lhsWinCollider.FixedTransform.Forward * _winMovementScale);
-        _rhsWinCollider.FixedTransform.WorldPosition += (_rhsWinCollider.FixedTransform.Forward * _winMovementScale);
+        _currentBarrierMoveTimer?.Stop();
+        _currentBarrierMoveTimer = FixedPointTimer.StartNewTimedAction(MoveBarriers, _moveBarrierDelay);
 
+        _currentTimer?.Stop();
         _currentTimer = FixedPointTimer.StartNewTimedAction(OnThirdExplosion, _thirdExplosionDelay);
     }
 
@@ -152,8 +162,8 @@ public class SuddenDeathBehaviour : SimulationBehaviour
             panel.PanelEnabled = false;
         }
 
-        _lhsWinCollider.FixedTransform.WorldPosition += (_lhsWinCollider.FixedTransform.Forward * _winMovementScale * 2);
-        _rhsWinCollider.FixedTransform.WorldPosition += (_rhsWinCollider.FixedTransform.Forward * _winMovementScale * 2);
+        _currentBarrierMoveTimer?.Stop();
+        _currentBarrierMoveTimer = FixedPointTimer.StartNewTimedAction(MoveBarriers, _moveBarrierDelay);
     }
 
     public void ResetAll()
@@ -166,7 +176,6 @@ public class SuddenDeathBehaviour : SimulationBehaviour
 
         _hasStarted = false;
 
-        _currentTimer?.Stop();
 
         foreach (var obj in _objectsToDisable)
         {
@@ -178,6 +187,8 @@ public class SuddenDeathBehaviour : SimulationBehaviour
         _lhsWinCollider.FixedTransform.WorldPosition = _lhsOriginalPos;
         _rhsWinCollider.FixedTransform.WorldPosition = _rhsOriginalPos;
         GridBehaviour.Instance.CollisionPlane.SetStagePiecesEnabled(true);
+        _currentBarrierMoveTimer?.Stop();
+        _currentTimer?.Stop();
     }
 
     private bool CheckPanelOnCurrentX(params object[] args)

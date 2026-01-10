@@ -81,7 +81,7 @@ namespace Lodis.Sound
             Announcement announcement = _announcements.Find(value => value.AnnouncementName == announcementName);
             StartSpawnEffect(playerID);
 
-            if (playerID == 1)
+            if (playerID == 0)
             {
                 _p1AnnouncementText.text = announcement.Text;
                 _p1AnnouncementText.color = announcement.TextColor;
@@ -90,7 +90,7 @@ namespace Lodis.Sound
                 RoutineBehaviour.Instance.StopAction(_disableTextActionP1);
                 _disableTextActionP1 = RoutineBehaviour.Instance.StartNewTimedAction(args => DespawnMessage(playerID), TimedActionCountType.UNSCALEDTIME, _messageDespawnDelay);
             }
-            else if (playerID == 2)
+            else if (playerID == 1)
             {
                 _p2AnnouncementText.text = announcement.Text;
                 _p2AnnouncementText.color = announcement.TextColor;
@@ -103,21 +103,21 @@ namespace Lodis.Sound
 
         private void DespawnMessage(int playerID)
         {
-            if (playerID == 1)
+            if (playerID == 0)
                 _p1AnnouncementText.enabled = false;
-            else if (playerID == 2)
+            else if (playerID == 1)
                 _p2AnnouncementText.enabled = false;
         }
 
         private void StartSpawnEffect(int playerID)
         {
-            if (playerID == 1)
+            if (playerID == 0)
             {
                 _p1AnnouncementText.enabled = true;
                 _p1AnnouncementText.rectTransform.DOComplete();
                 _p1AnnouncementText.rectTransform.DOPunchScale(new Vector3(_effectScale, _effectScale, _effectScale), _effectDuration);
             }
-            else if (playerID == 2)
+            else if (playerID == 1)
             {
                 _p2AnnouncementText.enabled = true;
                 _p2AnnouncementText.rectTransform.DOComplete();

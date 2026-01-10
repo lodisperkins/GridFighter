@@ -269,7 +269,7 @@ namespace Lodis.Input
         {
             //print inputs with id
             //likely polling 0 for player2
-            if (id != PlayerID || !MatchManagerBehaviour.Instance.MatchStarted)
+            if (id != PlayerID || !MatchManagerBehaviour.Instance.MatchStarted || !_inputEnabled)
                 return;
 
 
@@ -1018,12 +1018,14 @@ namespace Lodis.Input
 
             //Checks to see if input can be enabled 
             if (_inputEnableCondition != null)
+            {
                 if (_inputEnableCondition.Invoke())
                 {
                     PlayerControls.Player.Enable();
                     _inputEnabled = true;
                     _inputEnableCondition = null;
                 }
+            }
 
             if (!_inputEnabled)
             {

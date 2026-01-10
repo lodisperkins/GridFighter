@@ -80,6 +80,10 @@ MonoBehaviour:
       RawValue: 65536
     Priority:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 1
+    StatusEffectStacks: 1
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:

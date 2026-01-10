@@ -7,6 +7,7 @@ using Lodis.Utility;
 using UnityEngine.Events;
 using DG.Tweening;
 using Lodis.Sound;
+using Types;
 
 public class BurstMeterBehaviour : MonoBehaviour
 {
@@ -34,6 +35,7 @@ public class BurstMeterBehaviour : MonoBehaviour
     private bool _filledEventCalled;
     private bool _halfFilledEventCalled;
     private MovesetBehaviour _target;
+    private Fixed32 _lastBurstEnergy;
 
     public MovesetBehaviour Target { get => _target; set => _target = value; }
 
@@ -48,7 +50,8 @@ public class BurstMeterBehaviour : MonoBehaviour
     {
         if (!Target) return;
 
-        _slider.DOValue(Target.BurstEnergy, 0.1f);
+        if (Target.BurstEnergy != _lastBurstEnergy)
+            _slider.DOValue(Target.BurstEnergy, 0.1f);
 
         //Handle displaying effects.
         if (_slider.IsFilled())
@@ -126,5 +129,6 @@ public class BurstMeterBehaviour : MonoBehaviour
             _halfFilledEventCalled = false;
         }
 
+        _lastBurstEnergy = Target.BurstEnergy;
     }
 }

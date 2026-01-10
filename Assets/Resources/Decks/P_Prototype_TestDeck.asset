@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: P_Prototype_TestDeck
   m_EditorClassIdentifier: 
   _abilityData:
-  - {fileID: 11400000, guid: bf3c8dfce54584240ac9fa98243aff36, type: 2}
-  - {fileID: 11400000, guid: bf3c8dfce54584240ac9fa98243aff36, type: 2}
+  - {fileID: 11400000, guid: 27d4ae770d56c6c41b3768f844c47fb0, type: 2}
+  - {fileID: 11400000, guid: 27d4ae770d56c6c41b3768f844c47fb0, type: 2}
   _deckName: TestDeck
