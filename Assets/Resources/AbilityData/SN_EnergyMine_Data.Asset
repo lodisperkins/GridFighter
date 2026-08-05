@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: Spawns a projectile that detonates after a few seconds.
   exampleClip: {fileID: 0}
   AbilityType: 4
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 6553
   recoverTime:
@@ -50,6 +51,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 327680
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -73,6 +75,7 @@ MonoBehaviour:
       RawValue: 9830
     Priority:
       RawValue: 196608
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 2
     IsEnder: 1
     AppliedStatusEffect: 0

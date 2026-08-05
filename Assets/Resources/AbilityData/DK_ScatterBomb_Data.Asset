@@ -17,6 +17,7 @@ MonoBehaviour:
     when they are touched.
   exampleClip: {fileID: 32900000, guid: 2b4490d45a425dc4891c31c7b43d068c, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 3276
   recoverTime:
@@ -40,7 +41,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: c23ed55da2c2ccb4da2bd179a61d2396, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: e467a888724a980458b7d0aaf1dd94ae, type: 3}
   ActivateSound: {fileID: 8300000, guid: ac68129427fe7154fbe40d25bd39c505, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -50,6 +51,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 3276
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -57,6 +59,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 983040
     BaseKnockBack:
@@ -73,6 +76,7 @@ MonoBehaviour:
       RawValue: 9830
     Priority:
       RawValue: -65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 1

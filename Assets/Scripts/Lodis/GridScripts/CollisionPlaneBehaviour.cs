@@ -40,6 +40,8 @@ namespace Lodis.GridScripts
 
         public float BounceDampening { get => _bounceDampening; set => _bounceDampening = value; }
 
+        public override string LogName => "CollisionPlaneBehaviour";
+
         public override void Deserialize(BinaryReader br)
         {
             
@@ -88,6 +90,15 @@ namespace Lodis.GridScripts
 
 
             _groundDustParticles = ObjectPoolBehaviour.Instance.GetObject(_groundDustParticlesRef.gameObject, (Vector3)particleSpawnPosition, Camera.main.transform.rotation);
+        }
+
+        /// <summary>
+        /// Hashes the serialized collision plane state, which is currently empty, so
+        /// the component still participates in per-behavior checksum reporting.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return null;
         }
     }
 }

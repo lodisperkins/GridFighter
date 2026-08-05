@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: Winds up and fires a powerful flaming punch projectile.
   exampleClip: {fileID: 0}
   AbilityType: 4
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 6553
   recoverTime:
@@ -49,6 +50,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 131072
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -56,6 +58,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 786432
     BaseKnockBack:
@@ -72,10 +75,12 @@ MonoBehaviour:
       RawValue: 13107
     Priority:
       RawValue: 196608
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 1
     AppliedStatusEffect: 1
     StatusEffectStacks: 1
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 4
     AbilityID:

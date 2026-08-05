@@ -17,6 +17,7 @@ namespace Lodis.Gameplay
         private FixedAction _shotAction;
         private Transform _heldItemSpawn;
         private AccessoryEffectBehaviour _enforcerInstance;
+        private FVector3 _originalPosition;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -38,11 +39,14 @@ namespace Lodis.Gameplay
 
             ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true);
             _enforcerInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true).GetComponent<AccessoryEffectBehaviour>();
+
+            _originalPosition = OwnerMoveset.ProjectileSpawner.Entity.FixedTransform.LocalPosition;
         }
 
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            OwnerMoveset.ProjectileSpawner.Entity.FixedTransform.WorldPosition = _enforcerInstance.ProjectileSpawnPoint.WorldPosition;
             //The base activate func fires a single instance of the projectile when called
             base.OnActivate(args);
 
@@ -66,12 +70,13 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             base.OnEnd();
+            OwnerMoveset.ProjectileSpawner.Entity.FixedTransform.LocalPosition = _originalPosition;
 
             ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true);
 
             if (_enforcerInstance != null)
             {
-                GridGame.RemoveEntityFromGame(_enforcerInstance.GetComponent<EntityDataBehaviour>(), true);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_enforcerInstance.GetComponent<EntityDataBehaviour>(), true);
                 _enforcerInstance = null;
             }
         }

@@ -41,7 +41,7 @@ namespace Lodis.Gameplay
             OwnerKnockBackScript.CancelHitStun();
             OwnerKnockBackScript.CancelStun();
             OwnerKnockBackScript.Physics.FreezeInPlaceByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse, false, true);
-            OwnerKnockBackScript.SetInvincibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
+            OwnerKnockBackScript.SetIntagibilityByCondition(condition => CurrentAbilityPhase == AbilityPhase.RECOVER || !InUse);
 
             //Disable ability benefits if the player is hit out of burst
             OnHit += collision =>
@@ -66,7 +66,7 @@ namespace Lodis.Gameplay
 
                 OwnerKnockBackScript.LandingScript.CancelLanding();
 
-                OwnerKnockBackScript.DisableInvincibility();
+                //OwnerKnockBackScript.DisableInvincibility();
                 OwnerKnockBackScript.Physics.CancelFreeze();
                 PanelBehaviour panel;
 
@@ -102,13 +102,14 @@ namespace Lodis.Gameplay
             instantiatedCollider.InitCollider(5, 5, Owner);
             instantiatedCollider.ColliderInfo = hitColliderData;
 
+
             //Spawns a new particle effect at this player's position
             Object.Instantiate(_burstEffect, Owner.transform.position, Camera.main.transform.rotation);
 
             ////If the player isn't resting on the ground...
-            //if (OwnerKnockBackScript.CurrentAirState != AirState.NONE && !OwnerKnockBackScript.Physics.IsGrounded)
-            //    //...put them in freefall
-            //    OwnerKnockBackScript.CurrentAirState = AirState.FREEFALL;
+            if (OwnerKnockBackScript.CurrentAirState != AirState.NONE /*&& !OwnerKnockBackScript.Physics.IsGrounded*/)
+                //...put them in freefall
+                OwnerKnockBackScript.CurrentAirState = AirState.FREEFALL;
 
             OwnerKnockBackScript.Physics.IsKinematic = false;
         }

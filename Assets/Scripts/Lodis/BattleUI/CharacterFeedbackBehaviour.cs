@@ -303,8 +303,8 @@ namespace Lodis.Gameplay
 
             for (int i = 0; i < args.UnityObjectArgs.Length; i++)
             {
-                GameObject instance = ObjectPoolBehaviour.Instance.GetObject(args.UnityObjectArgs[i] as GameObject, spawnTransform);
-                ObjectPoolBehaviour.Instance.ReturnGameObject(instance, args.FloatArgs[i]);
+                GameObject instance = Instantiate(args.UnityObjectArgs[i] as GameObject, spawnTransform);
+                Destroy(instance, args.FloatArgs[i]);
             }
         }
 

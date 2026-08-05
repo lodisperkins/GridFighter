@@ -73,7 +73,7 @@ namespace Lodis.Gameplay
             //Fire projectile.
             Projectile = _projectileSpawner.FireProjectile(ShotDirection * abilityData.GetCustomStatValue("Speed"), ProjectileColliderData, UseGravity);
 
-            DisableAccessory(c => !Projectile.Active);
+            DisableAccessory(c => !Projectile.gameObject.activeInHierarchy);
 
             ActiveProjectiles.Add(Projectile);
         }

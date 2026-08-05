@@ -72,7 +72,8 @@ namespace Lodis.Gameplay
             if (_hitCollider != null)
             {
                 _hitCollider.FixedTransform.Parent = null;
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitCollider.Entity);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_hitCollider.Entity, true);
+                _hitCollider = null;
             }
         }
 

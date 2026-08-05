@@ -508,6 +508,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _accessoryData: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
+  _projectileSpawnPoint: {fileID: 0}
+  _colorManager: {fileID: 0}
+  _setColorOnEnable: 0
   _moveCurve:
     serializedVersion: 2
     m_Curve: []
@@ -574,6 +577,7 @@ MonoBehaviour:
     OnlyChangeHue: 0
     SaturationThreshold: 0
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!114 &1763543978354593832
 MonoBehaviour:
   m_ObjectHideFlags: 0

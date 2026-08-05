@@ -130,7 +130,8 @@ namespace Lodis.Gameplay
         protected override void OnActivate(params object[] args)
         {
             Object.Destroy(_chargeEffect);
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity, true);
+            _bodyHitScript = null;
             //Create collider for character fists
             _fistCollider = GetColliderData(0);
 
@@ -199,14 +200,12 @@ namespace Lodis.Gameplay
         {
             if (_bodyHitScript)
             {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity);
-                _bodyHitScript.Entity.FixedTransform.Parent = null;
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_bodyHitScript.Entity, true);
             }
 
             if (_fistHitScript)
             {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_fistHitScript.Entity);
-                _fistHitScript.Entity.FixedTransform.Parent = null;
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_fistHitScript.Entity, true);
             }
         }
 

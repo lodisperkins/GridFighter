@@ -4,6 +4,7 @@ using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Types;
 using UnityEngine;
 using UnityEngine.Events;
@@ -31,6 +32,8 @@ public class CollisionGroupBehaviour : SimulationBehaviour
 
     public bool CollisionResolved { get => _collisionResolved; }
 
+    public override string LogName => "CollisionGroup";
+
     public override void Deserialize(BinaryReader br)
     {
         foreach (var collider in _colliders)
@@ -45,6 +48,32 @@ public class CollisionGroupBehaviour : SimulationBehaviour
         {
             collider.Serialize(bw);
         }
+    }
+
+    /// <summary>
+    /// Hashes the serialized collision-group data so group membership or collider
+    /// ordering issues can be isolated during sync diagnostics.
+    /// </summary>
+    protected override string[] GetLogItems()
+    {
+        if (_colliders == null || _colliders.Length == 0)
+        {
+            return System.Array.Empty<string>();
+        }
+
+        string[] logItems = new string[_colliders.Length];
+
+        for (int i = 0; i < _colliders.Length; i++)
+        {
+            ColliderBehaviour collider = _colliders[i];
+            GridCollider entityCollider = collider != null ? collider.EntityCollider : null;
+
+            logItems[i] = entityCollider == null
+                ? $"Collider[{i}]: null"
+                : $"Collider[{i}] Width={entityCollider.Width}, Height={entityCollider.Height}, PanelYOffset={entityCollider.PanelYOffset}";
+        }
+
+        return logItems;
     }
 
     public void TrySetCollisionFinish()
@@ -115,4 +144,5 @@ public class CollisionGroupBehaviour : SimulationBehaviour
             collider.TickEnabled = false;
         }
     }
+
 }

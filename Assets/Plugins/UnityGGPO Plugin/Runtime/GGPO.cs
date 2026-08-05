@@ -53,6 +53,8 @@ namespace UnityGGPO {
         public const int ERRORCODE_PLAYER_DISCONNECTED = 9;
         public const int ERRORCODE_TOO_MANY_SPECTATORS = 10;
         public const int ERRORCODE_INVALID_REQUEST = 11;
+        public const int ERRORCODE_TEST_FRAME_MISMATCH = 12;
+        public const int ERRORCODE_TEST_CHECKSUM_MISMATCH = 13;
 
         public const int EVENTCODE_CONNECTED_TO_PEER = 1000;
         public const int EVENTCODE_SYNCHRONIZING_WITH_PEER = 1001;
@@ -108,6 +110,12 @@ namespace UnityGGPO {
                 case ERRORCODE_INVALID_REQUEST:
                     return "ERRORCODE_INVALID_REQUEST";
 
+                case ERRORCODE_TEST_FRAME_MISMATCH:
+                    return "ERRORCODE_TEST_FRAME_MISMATCH";
+
+                case ERRORCODE_TEST_CHECKSUM_MISMATCH:
+                    return "ERRORCODE_TEST_CHECKSUM_MISMATCH";
+
                 default:
                     return "INVALID_ERRORCODE";
             }
@@ -141,6 +149,10 @@ namespace UnityGGPO {
 
         public delegate bool OnEventDelegate(IntPtr evt);
 
+        public delegate bool OnSyncErrorDelegate(int errorCode, string text);
+
+        public delegate bool OnLogMessageDelegate(string text);
+
         [DllImport(libraryName, CharSet = CharSet.Ansi)]
         private static extern IntPtr UggPluginVersion();
 
@@ -165,6 +177,7 @@ namespace UnityGGPO {
             IntPtr saveGameState,
             IntPtr freeBuffer,
             IntPtr onEvent,
+            IntPtr onLogMessage,
             string game, int num_players, int localport);
 
         [DllImport(libraryName)]
@@ -176,7 +189,21 @@ namespace UnityGGPO {
             IntPtr saveGameState,
             IntPtr freeBuffer,
             IntPtr onEvent,
+            IntPtr onLogMessage,
             string game, int num_players, int localport);
+
+        [DllImport(libraryName)]
+        private static extern int UggStartSyncTest(out IntPtr session,
+            IntPtr beginGame,
+            IntPtr advanceFrame,
+            IntPtr loadGameState,
+            IntPtr logGameState,
+            IntPtr saveGameState,
+            IntPtr freeBuffer,
+            IntPtr onEvent,
+            IntPtr onLogMessage,
+            IntPtr onSyncError,
+            string game, int num_players, int frames);
 
         [DllImport(libraryName)]
         private static extern int UggStartSpectating(out IntPtr session,
@@ -187,6 +214,7 @@ namespace UnityGGPO {
             IntPtr saveGameState,
             IntPtr freeBuffer,
             IntPtr onEvent,
+            IntPtr onLogMessage,
             string game, int num_players, int localport, string host_ip, int host_port);
 
         [DllImport(libraryName)]
@@ -248,8 +276,23 @@ namespace UnityGGPO {
                 IntPtr saveGameState,
                 IntPtr freeBuffer,
                 IntPtr onEvent,
+                IntPtr onLogMessage,
                 string game, int num_players, int localport) {
-            return UggStartSession(out session, beginGame, advanceFrame, loadGameState, logGameState, saveGameState, freeBuffer, onEvent, game, num_players, localport);
+            return UggStartSession(out session, beginGame, advanceFrame, loadGameState, logGameState, saveGameState, freeBuffer, onEvent, onLogMessage, game, num_players, localport);
+        }
+
+        public static int StartSyncTest(out IntPtr session,
+                IntPtr beginGame,
+                IntPtr advanceFrame,
+                IntPtr loadGameState,
+                IntPtr logGameState,
+                IntPtr saveGameState,
+                IntPtr freeBuffer,
+                IntPtr onEvent,
+                IntPtr onLogMessage,
+                IntPtr onSyncError,
+                string game, int num_players, int frames) {
+            return UggStartSyncTest(out session, beginGame, advanceFrame, loadGameState, logGameState, saveGameState, freeBuffer, onEvent, onLogMessage, onSyncError, game, num_players, frames);
         }
 
         public static int StartSpectating(out IntPtr session,
@@ -260,8 +303,9 @@ namespace UnityGGPO {
                 IntPtr saveGameState,
                 IntPtr freeBuffer,
                 IntPtr onEvent,
+                IntPtr onLogMessage,
                 string game, int num_players, int localport, string host_ip, int host_port) {
-            return UggStartSpectating(out session, beginGame, advanceFrame, loadGameState, logGameState, saveGameState, freeBuffer, onEvent, game, num_players, localport, host_ip, host_port);
+            return UggStartSpectating(out session, beginGame, advanceFrame, loadGameState, logGameState, saveGameState, freeBuffer, onEvent, onLogMessage, game, num_players, localport, host_ip, host_port);
         }
 
         public static int SetDisconnectNotifyStart(IntPtr ggpo, int timeout) {
@@ -334,8 +378,9 @@ namespace UnityGGPO {
                 IntPtr saveGameState,
                 IntPtr freeBuffer,
                 IntPtr onEvent,
+                IntPtr onLogMessage,
                 string game, int num_players, int localport) {
-            return UggTestStartSession(out session, beginGame, advanceFrame, loadGameState, logGameState, saveGameState, freeBuffer, onEvent, game, num_players, localport);
+            return UggTestStartSession(out session, beginGame, advanceFrame, loadGameState, logGameState, saveGameState, freeBuffer, onEvent, onLogMessage, game, num_players, localport);
         }
     }
 }

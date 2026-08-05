@@ -17,6 +17,7 @@ MonoBehaviour:
     the opponent on contact.
   exampleClip: {fileID: 32900000, guid: 664180eaf5c74414b962b5a55a5f98c2, type: 3}
   AbilityType: 2
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 19660
   recoverTime:
@@ -58,7 +59,7 @@ MonoBehaviour:
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 35b017d39116e3e4f99cf6544122d207, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 7af367563b8e7d04a9fe98d32ae8941c, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -68,6 +69,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 13107
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -75,6 +77,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 131072
     BaseKnockBack:
@@ -91,6 +94,7 @@ MonoBehaviour:
       RawValue: 4587
     Priority:
       RawValue: 65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 1
     IsEnder: 0
     AppliedStatusEffect: 0
@@ -123,6 +127,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 19660
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
@@ -130,6 +135,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 6553
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 32768
     BaseKnockBack:
@@ -146,6 +152,7 @@ MonoBehaviour:
       RawValue: 655
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 0

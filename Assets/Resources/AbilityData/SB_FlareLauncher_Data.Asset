@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: SB_FlareLauncher_Data
   m_EditorClassIdentifier: 
-  abilityName: Flare Wheel
+  abilityName: Charge Flare Launcher
   abilityDescription: Spawns a giant flame blade that deals massive damage.
   exampleClip: {fileID: 0}
   AbilityType: 7
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 26214
   recoverTime:
@@ -49,6 +50,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 65536
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
@@ -56,6 +58,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 6553
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 98304
     BaseKnockBack:
@@ -72,6 +75,7 @@ MonoBehaviour:
       RawValue: 4587
     Priority:
       RawValue: -65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 5
     IsEnder: 0
     AppliedStatusEffect: 0
@@ -80,7 +84,7 @@ MonoBehaviour:
     OwnerAlignement: 0
     AbilityType: 7
     AbilityID:
-      RawValue: -796459008
+      RawValue: -674365440
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 65536

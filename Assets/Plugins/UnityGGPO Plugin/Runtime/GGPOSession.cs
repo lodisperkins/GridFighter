@@ -32,14 +32,22 @@ namespace UnityGGPO {
 
             public delegate bool OnEventEventcodeTimesyncDelegate(int timesync_frames_ahead);
 
+            public delegate bool OnSyncErrorDelegate(int errorCode, string text);
+
             public delegate bool SafeLoadGameStateDelegate(NativeArray<byte> data);
 
             public delegate bool SafeLogGameStateDelegate(string filename, NativeArray<byte> data);
+
+            public delegate bool SafeLogMessageDelegate(string text);
 
             public delegate bool SafeSaveGameStateDelegate(out NativeArray<byte> data, out int checksum, int frame);
 
             public delegate void SafeFreeBufferDelegate(NativeArray<byte> data);
 
+            /// <summary>
+            /// This is a pointer to the current ggpo session. A session pointer is the same amount of bytes as an int pointer so we can treat them the same.
+            /// 
+            /// </summary>
             private static IntPtr ggpo;
             private static readonly Dictionary<long, NativeArray<byte>> cache = new Dictionary<long, NativeArray<byte>>();
 
@@ -48,6 +56,7 @@ namespace UnityGGPO {
 
             private static SafeLoadGameStateDelegate loadGameStateCallback;
             private static SafeLogGameStateDelegate logGameStateCallback;
+            private static SafeLogMessageDelegate logMessageCallback;
             private static SafeSaveGameStateDelegate saveGameStateCallback;
             private static SafeFreeBufferDelegate freeBufferCallback;
 
@@ -59,14 +68,17 @@ namespace UnityGGPO {
             private static OnEventConnectionResumedDelegate onEventConnectionResumed;
             private static OnEventDisconnectedFromPeerDelegate onEventDisconnectedFromPeer;
             private static OnEventEventcodeTimesyncDelegate onEventTimesync;
+            private static OnSyncErrorDelegate onSyncError;
 
             private static IntPtr _beginGameCallback;
             private static IntPtr _advanceFrameCallback;
             private static IntPtr _loadGameStateCallback;
             private static IntPtr _logGameStateCallback;
+            private static IntPtr _logMessageCallback;
             private static IntPtr _saveGameStateCallback;
             private static IntPtr _freeBufferCallback;
             private static IntPtr _onEventCallback;
+            private static IntPtr _onSyncErrorCallback;
 
             public static void Init(LogDelegate log) {
                 GGPO.SetLogDelegate(log);
@@ -81,6 +93,7 @@ namespace UnityGGPO {
                     AdvanceFrameDelegate advanceFrame,
                     SafeLoadGameStateDelegate loadGameState,
                     SafeLogGameStateDelegate logGameState,
+                    SafeLogMessageDelegate logMessage,
                     SafeSaveGameStateDelegate saveGameState,
                     SafeFreeBufferDelegate freeBuffer,
                     OnEventConnectedToPeerDelegate onEventConnectedToPeer,
@@ -96,6 +109,7 @@ namespace UnityGGPO {
                 advanceFrameCallback = advanceFrame;
                 loadGameStateCallback = loadGameState;
                 logGameStateCallback = logGameState;
+                logMessageCallback = logMessage;
                 saveGameStateCallback = saveGameState;
                 freeBufferCallback = freeBuffer;
 
@@ -113,6 +127,7 @@ namespace UnityGGPO {
                     _advanceFrameCallback = Marshal.GetFunctionPointerForDelegate<AdvanceFrameDelegate>(OnAdvanceFrame);
                     _loadGameStateCallback = Marshal.GetFunctionPointerForDelegate<LoadGameStateDelegate>(LoadGameState);
                     _logGameStateCallback = Marshal.GetFunctionPointerForDelegate<LogGameStateDelegate>(LogGameState);
+                    _logMessageCallback = Marshal.GetFunctionPointerForDelegate<GGPO.OnLogMessageDelegate>(OnLogMessage);
                     _saveGameStateCallback = Marshal.GetFunctionPointerForDelegate<SaveGameStateDelegate>(SaveGameState);
                     _freeBufferCallback = Marshal.GetFunctionPointerForDelegate<FreeBufferDelegate>(FreeBuffer);
                     _onEventCallback = Marshal.GetFunctionPointerForDelegate<OnEventDelegate>(OnEvent);
@@ -125,7 +140,70 @@ namespace UnityGGPO {
                     _saveGameStateCallback,
                     _freeBufferCallback,
                     _onEventCallback,
+                    _logMessageCallback,
                     gameName, numPlayers, localport);
+
+                return result;
+            }
+
+            public static int StartSyncTest(
+                    BeginGameDelegate beginGame,
+                    AdvanceFrameDelegate advanceFrame,
+                    SafeLoadGameStateDelegate loadGameState,
+                    SafeLogGameStateDelegate logGameState,
+                    SafeLogMessageDelegate logMessage,
+                    SafeSaveGameStateDelegate saveGameState,
+                    SafeFreeBufferDelegate freeBuffer,
+                    OnEventConnectedToPeerDelegate onEventConnectedToPeer,
+                    OnEventSynchronizingWithPeerDelegate onEventSynchronizingWithPeer,
+                    OnEventSynchronizedWithPeerDelegate onEventSynchronizedWithPeer,
+                    OnEventRunningDelegate onEventRunning,
+                    OnEventConnectionInterruptedDelegate onEventConnectionInterrupted,
+                    OnEventConnectionResumedDelegate onEventConnectionResumed,
+                    OnEventDisconnectedFromPeerDelegate onEventDisconnectedFromPeer,
+                    OnEventEventcodeTimesyncDelegate onEventTimesync,
+                    OnSyncErrorDelegate onSyncError,
+                    string gameName, int numPlayers, int frames) {
+                beginGameCallback = beginGame;
+                advanceFrameCallback = advanceFrame;
+                loadGameStateCallback = loadGameState;
+                logGameStateCallback = logGameState;
+                logMessageCallback = logMessage;
+                saveGameStateCallback = saveGameState;
+                freeBufferCallback = freeBuffer;
+
+                Session.onEventConnectedToPeer = onEventConnectedToPeer;
+                Session.onEventSynchronizingWithPeer = onEventSynchronizingWithPeer;
+                Session.onEventSynchronizedWithPeer = onEventSynchronizedWithPeer;
+                Session.onEventRunning = onEventRunning;
+                Session.onEventConnectionInterrupted = onEventConnectionInterrupted;
+                Session.onEventConnectionResumed = onEventConnectionResumed;
+                Session.onEventDisconnectedFromPeer = onEventDisconnectedFromPeer;
+                Session.onEventTimesync = onEventTimesync;
+                Session.onSyncError = onSyncError;
+
+                unsafe {
+                    _beginGameCallback = Marshal.GetFunctionPointerForDelegate<BeginGameDelegate>(OnBeginGame);
+                    _advanceFrameCallback = Marshal.GetFunctionPointerForDelegate<AdvanceFrameDelegate>(OnAdvanceFrame);
+                    _loadGameStateCallback = Marshal.GetFunctionPointerForDelegate<LoadGameStateDelegate>(LoadGameState);
+                    _logGameStateCallback = Marshal.GetFunctionPointerForDelegate<LogGameStateDelegate>(LogGameState);
+                    _logMessageCallback = Marshal.GetFunctionPointerForDelegate<GGPO.OnLogMessageDelegate>(OnLogMessage);
+                    _saveGameStateCallback = Marshal.GetFunctionPointerForDelegate<SaveGameStateDelegate>(SaveGameState);
+                    _freeBufferCallback = Marshal.GetFunctionPointerForDelegate<FreeBufferDelegate>(FreeBuffer);
+                    _onEventCallback = Marshal.GetFunctionPointerForDelegate<OnEventDelegate>(OnEvent);
+                    _onSyncErrorCallback = Marshal.GetFunctionPointerForDelegate<GGPO.OnSyncErrorDelegate>(OnSyncError);
+                }
+                var result = GGPO.StartSyncTest(out ggpo,
+                    _beginGameCallback,
+                    _advanceFrameCallback,
+                    _loadGameStateCallback,
+                    _logGameStateCallback,
+                    _saveGameStateCallback,
+                    _freeBufferCallback,
+                    _onEventCallback,
+                    _logMessageCallback,
+                    _onSyncErrorCallback,
+                    gameName, numPlayers, frames);
 
                 return result;
             }
@@ -135,6 +213,7 @@ namespace UnityGGPO {
                     AdvanceFrameDelegate advanceFrame,
                     SafeLoadGameStateDelegate loadGameState,
                     SafeLogGameStateDelegate logGameState,
+                    SafeLogMessageDelegate logMessage,
                     SafeSaveGameStateDelegate saveGameState,
                     SafeFreeBufferDelegate freeBuffer,
                     OnEventConnectedToPeerDelegate onEventConnectedToPeer,
@@ -150,6 +229,7 @@ namespace UnityGGPO {
                 advanceFrameCallback = advanceFrame;
                 loadGameStateCallback = loadGameState;
                 logGameStateCallback = logGameState;
+                logMessageCallback = logMessage;
                 saveGameStateCallback = saveGameState;
                 freeBufferCallback = freeBuffer;
 
@@ -167,6 +247,7 @@ namespace UnityGGPO {
                     _advanceFrameCallback = Marshal.GetFunctionPointerForDelegate<AdvanceFrameDelegate>(OnAdvanceFrame);
                     _loadGameStateCallback = Marshal.GetFunctionPointerForDelegate<LoadGameStateDelegate>(LoadGameState);
                     _logGameStateCallback = Marshal.GetFunctionPointerForDelegate<LogGameStateDelegate>(LogGameState);
+                    _logMessageCallback = Marshal.GetFunctionPointerForDelegate<GGPO.OnLogMessageDelegate>(OnLogMessage);
                     _saveGameStateCallback = Marshal.GetFunctionPointerForDelegate<SaveGameStateDelegate>(SaveGameState);
                     _freeBufferCallback = Marshal.GetFunctionPointerForDelegate<FreeBufferDelegate>(FreeBuffer);
                     _onEventCallback = Marshal.GetFunctionPointerForDelegate<OnEventDelegate>(OnEvent);
@@ -180,6 +261,7 @@ namespace UnityGGPO {
                     _saveGameStateCallback,
                     _freeBufferCallback,
                     _onEventCallback,
+                    _logMessageCallback,
                     gameName, numPlayers, localport, hostIp, hostPort);
                 return result;
             }
@@ -290,6 +372,10 @@ namespace UnityGGPO {
                 return logGameStateCallback(filename, Utils.ToArray(buffer, length));
             }
 
+            private static bool OnLogMessage(string text) {
+                return logMessageCallback == null || logMessageCallback.Invoke(text);
+            }
+
             private static unsafe bool LoadGameState(void* buffer, int length) {
                 return loadGameStateCallback(Utils.ToArray(buffer, length));
             }
@@ -300,6 +386,10 @@ namespace UnityGGPO {
 
             private static bool OnBeginGame(string name) {
                 return beginGameCallback.Invoke(name);
+            }
+
+            private static bool OnSyncError(int errorCode, string text) {
+                return onSyncError != null && onSyncError.Invoke(errorCode, text);
             }
 
             private static bool OnEvent(IntPtr evtPtr) {

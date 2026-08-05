@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: WB_VanishStrike_Data
   m_EditorClassIdentifier: 
   abilityName: Vanish Strike
-  abilityDescription: None
-  exampleClip: {fileID: 0}
+  abilityDescription: Teleport behind the enemy and deal a blow that knocks them
+    forward.
+  exampleClip: {fileID: 32900000, guid: faf8e92ec026a834bb1fc0d40fa8dd42, type: 3}
   AbilityType: 3
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 32768
   recoverTime:
@@ -57,7 +59,7 @@ MonoBehaviour:
   Effects:
   - {fileID: 543745384379617035, guid: 2a32ab51b4faef049953cb7c18585d46, type: 3}
   Sounds: []
-  DisplayIcon: {fileID: 0}
+  DisplayIcon: {fileID: 21300000, guid: aeb563509ec1c73438a855401610ce58, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -67,6 +69,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 0
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -74,14 +77,13 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 327680
     BaseKnockBack:
       RawValue: 65536
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 1
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -92,6 +94,12 @@ MonoBehaviour:
       RawValue: 19660
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 1
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 3
     AbilityID:

@@ -17,6 +17,7 @@ MonoBehaviour:
     tornado that can hit multiple times.
   exampleClip: {fileID: 0}
   AbilityType: 5
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 32768
   recoverTime:
@@ -52,6 +53,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 0
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
@@ -59,6 +61,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 13107
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 262144
     BaseKnockBack:
@@ -75,6 +78,7 @@ MonoBehaviour:
       RawValue: 6553
     Priority:
       RawValue: -65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 2
     IsEnder: 1
     AppliedStatusEffect: 0

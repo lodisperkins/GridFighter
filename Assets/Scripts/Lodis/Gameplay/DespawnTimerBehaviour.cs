@@ -13,6 +13,8 @@ public class DespawnTimerBehaviour : SimulationBehaviour
 
     private FixedTimeAction _timer;
 
+    public override string LogName => "DespawnTimer";
+
     public override void Deserialize(BinaryReader br) { }
 
     public override void Serialize(BinaryWriter bw) { }
@@ -31,5 +33,14 @@ public class DespawnTimerBehaviour : SimulationBehaviour
     private void OnDisable()
     {
         _timer.Stop();
+    }
+
+    /// <summary>
+    /// Hashes the serialized despawn timer state, which is currently empty, so the
+    /// component still exposes a consistent checksum surface.
+    /// </summary>
+    protected override string[] GetLogItems()
+    {
+        return null;
     }
 }

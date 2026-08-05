@@ -17,6 +17,9 @@ public class Wearable
     public Sprite DisplayIcon;
     public bool IsActive;
     public bool IsHair;
+    public bool HidesNose;
+    public bool HidesEars;
+    public bool HidesHair;
 
     public Wearable(GameObject[] wearableItems, string iD, BodySection section, Sprite displayIcon)
     {
@@ -277,9 +280,35 @@ public class MeshReplacementBehaviour : MonoBehaviour
         replacementWearable.SetAllItemsEnabled(true);
 
         if (activeWearable != null)
+        {
             activeWearable.SetAllItemsEnabled(false);
+            
+            if (activeWearable.HidesHair)
+                _hairRenderer.gameObject.SetActive(true);
+
+            if (activeWearable.HidesNose)
+                _noseRenderer.gameObject.SetActive(true);
+
+            if (activeWearable.HidesEars)
+            {
+                _lEarRenderer.gameObject.SetActive(true);
+                _rEarRenderer.gameObject.SetActive(true);
+            }
+        }
 
         SetCurrentWearable(replacementWearable);
+
+        if (replacementWearable.HidesHair)
+            _hairRenderer.gameObject.SetActive(false);
+
+        if (replacementWearable.HidesNose)
+            _noseRenderer.gameObject.SetActive(false);
+
+        if (replacementWearable.HidesEars)
+        {
+            _lEarRenderer.gameObject.SetActive(false);
+            _rEarRenderer.gameObject.SetActive(false);
+        }
 
         if (replacementWearable.Section == BodySection.HEAD && replacementWearable.IsHair)
             _hairRenderer = replacementWearable.GetComponentInItems<SkinnedMeshRenderer>();

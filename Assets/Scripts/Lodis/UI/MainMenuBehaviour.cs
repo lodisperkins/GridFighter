@@ -21,7 +21,8 @@ public class MainMenuBehaviour : MonoBehaviour
 
     public void LoadScene(int index)
     {
-        SceneManagerBehaviour.Instance.LoadScene(index);
+        if (!SceneManagerBehaviour.Instance.LoadingScene)
+            SceneManagerBehaviour.Instance.LoadScene(index);
     }
 
     public void SetGameMode(int mode)
@@ -31,7 +32,7 @@ public class MainMenuBehaviour : MonoBehaviour
 
     public void StartOnlineMode()
     {
-        GridGameManager.Instance.GetComponent<GridGameManager>().OnOnlineClick();
+        GridGameManager.Instance.GetComponent<GridGameManager>().OnOnlineClick(0);
     }
 
     public void Start()
@@ -41,6 +42,7 @@ public class MainMenuBehaviour : MonoBehaviour
     int count;
     public void Print()
     {
+        return;
         Debug.Log("Count " + count);
         count++;
     }

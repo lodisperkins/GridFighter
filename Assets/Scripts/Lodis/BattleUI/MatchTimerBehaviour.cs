@@ -57,7 +57,7 @@ namespace Lodis.UI
         public Fixed32 MatchTimeRemaining { get => _matchTimeRemaining; private set => _matchTimeRemaining = value; }
         public Fixed32 TimeSinceRoundStart { get => _timeSinceRoundStart; private set => _timeSinceRoundStart = value; }
 
-
+        public override string LogName => "MatchTimerBehaviour";
 
         public override void Serialize(BinaryWriter bw)
         {
@@ -75,8 +75,25 @@ namespace Lodis.UI
             _isActive = br.ReadBoolean();
             _timeUp = br.ReadBoolean();
             _eventRaised = br.ReadBoolean();
-            _matchTimeRemaining.Deserialize(br);
-            _timeSinceRoundStart.Deserialize(br);
+            _matchTimeRemaining = _matchTimeRemaining.Deserialize(br);
+            _timeSinceRoundStart = _timeSinceRoundStart.Deserialize(br);
+        }
+
+        /// <summary>
+        /// Hashes the serialized timer state so a match-clock divergence can be tied
+        /// back to this component immediately.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"IsInfinite={_isInfinite}",
+                $"IsActive={_isActive}",
+                $"TimeUp={_timeUp}",
+                $"EventRaised={_eventRaised}",
+                $"MatchTimeRemaining={_matchTimeRemaining}",
+                $"TimeSinceRoundStart={_timeSinceRoundStart}"
+            };
         }
 
         // Start is called before the first frame update
@@ -103,8 +120,8 @@ namespace Lodis.UI
             TimeSinceRoundStart = 0;
 
             string timeText = "";
-            int minutes = Mathf.FloorToInt(MatchTimeRemaining / 60f);
-            int seconds = Mathf.FloorToInt(MatchTimeRemaining - minutes * 60f);
+            int minutes = Fixed32.FloorToInt(MatchTimeRemaining / 60f);
+            int seconds = Fixed32.FloorToInt(MatchTimeRemaining - minutes * 60f);
 
             string formattedTime = string.Format("{0:0}:{1:00}", minutes, seconds);
 
@@ -131,8 +148,8 @@ namespace Lodis.UI
                 MatchTimeRemaining -= dt;
                 _timeUp = MatchTimeRemaining <= 0;
 
-                int minutes = Mathf.FloorToInt(MatchTimeRemaining / 60f);
-                int seconds = Mathf.FloorToInt(MatchTimeRemaining - minutes * 60f);
+                int minutes = Fixed32.FloorToInt(MatchTimeRemaining / 60f);
+                int seconds = Fixed32.FloorToInt(MatchTimeRemaining - minutes * 60f);
 
                 string formattedTime = string.Format("{0:0}:{1:00}", minutes, seconds);
 
@@ -154,5 +171,6 @@ namespace Lodis.UI
 
             _timerText.text = timeText;
         }
+
     }
 }

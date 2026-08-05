@@ -63,7 +63,7 @@ namespace Lodis.Gameplay
             //Set up opponent transform to be attached to whip
             _originalParent = collision.OtherEntity.Transform.Parent;
             _opponentTransform = collision.OtherEntity.Transform;
-            _opponentTransform.LocalRotation = FQuaternion.Identity;
+            //_opponentTransform.LocalRotation = FQuaternion.Identity;
 
             collision.OtherEntity.Transform.Parent = _whipTip.FixedTransform;
             collision.OtherEntity.Transform.LocalPosition = FVector3.Zero;
@@ -81,9 +81,11 @@ namespace Lodis.Gameplay
             if (!_goneThroughTeleporter)
             {
                 _line.IgnoreTeleporters = true;
+                _line.ShouldCancelTeleport = true;
             }
 
             //Make the whip return to the user.
+            Sound.SoundManagerBehaviour.Instance.PlaySound(abilityData.Sounds[0]);
             FlipWhipVelocity();
 
             _returning = true;
@@ -99,10 +101,18 @@ namespace Lodis.Gameplay
             GridPhysicsBehaviour physics = _whipTip.GetComponent<GridPhysicsBehaviour>();
 
             physics.Velocity = -physics.Velocity * 2;
+
+            if (_goneThroughTeleporter)
+            {
+                _line.IgnoreTeleporters = false;
+            }
         }
 
         protected void ResetOpponent()
         {
+            if (_whipTip == null)
+                return;
+
             _whipTip.FixedTransform.RemoveChild(_opponentTransform);
         }
 
@@ -115,6 +125,9 @@ namespace Lodis.Gameplay
             _opponentAttached = false;
             _goneThroughTeleporter = false;
             _canGrab = true;
+
+            if (_line)
+                _line.IgnoreTeleporters = false;
 
             //Find the panel to drop the opponent at when the whip is done.
             FVector2 dropPanelPos = OwnerMoveScript.Position + new FVector2(1, 0) * OwnerMoveScript.GetAlignmentX();
@@ -130,8 +143,8 @@ namespace Lodis.Gameplay
             if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
                 _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
 
-            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true);
-            _enforcerInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true).GetComponent<AccessoryEffectBehaviour>();
+            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true, alignment: OwnerMoveScript.Alignment);
+            _enforcerInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true, alignment: OwnerMoveScript.Alignment).GetComponent<AccessoryEffectBehaviour>();
 
         }
 
@@ -139,7 +152,11 @@ namespace Lodis.Gameplay
         {
             _goneThroughTeleporter = true;
             _canGrab = false;
-            FixedPointTimer.StartNewTimedAction(() => { _canGrab = true; }, GridGame.FixedTimeStep);
+            FixedPointTimer.StartNewTimedAction(() => 
+            {
+                _canGrab = true;
+                _line.IgnoreTeleporters = true;
+            }, GridGame.FixedTimeStep);
         }
 
         //Called when ability is used
@@ -153,8 +170,9 @@ namespace Lodis.Gameplay
             _line.Start = OwnerMoveset.ProjectileSpawner.transform;
             _line.OnTeleportedEvent += OnTeleported;
 
-            ColliderBehaviour hitCollider = _whipTip.GetComponent<ColliderBehaviour>();
+            HitColliderBehaviour hitCollider = _whipTip.GetComponent<HitColliderBehaviour>();
 
+            hitCollider.ColliderInfo = GetColliderData(0);
             hitCollider.Spawner = Owner;
 
             hitCollider.OnHit += OnCollision;
@@ -198,7 +216,9 @@ namespace Lodis.Gameplay
 
             //Be sure the opponent is dropped and tell the whip to not worry about dropping the opponent.
             ResetOpponent();
-            _whipTip.Data.ClearEndEvent();
+
+            if (_whipTip)
+                _whipTip.Data.ClearEndEvent();
 
             //If we caught the opponent drop them in front of us.
             if (_opponentAttached)
@@ -209,18 +229,19 @@ namespace Lodis.Gameplay
             }
 
             //Disable the whip and the stun.
-            ObjectPoolBehaviour.Instance.ReturnGameObject(_whipTip);
+            ObjectPoolBehaviour.Instance.ReturnGameObject(_whipTip, alignment: OwnerMoveScript.Alignment);
             OwnerMoveset.ProjectileSpawner.Entity.FixedTransform.LocalPosition = _originalPosition;
             ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true);
 
 
             if (_enforcerInstance != null)
             {
-                GridGame.RemoveEntityFromGame(_enforcerInstance.GetComponent<EntityDataBehaviour>(), true);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_enforcerInstance.GetComponent<EntityDataBehaviour>(), true);
                 _enforcerInstance = null;
             }
 
-            _line.OnTeleportedEvent -= OnTeleported;
+            if (_line)
+                _line.OnTeleportedEvent -= OnTeleported;
         }
 
         protected override void OnMatchRestart()

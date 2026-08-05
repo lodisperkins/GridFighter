@@ -50,6 +50,7 @@ namespace Lodis.Gameplay
 
             bombCollider.ColliderInfo = GetColliderData(0);
             bombCollider.Spawner = Owner;
+            bombCollider.Entity.AddToGame();
 
             //Handle movement setup.
             NetworkSimpleAIMovementBehaviour aiMovementBehaviour = spawnedBomb.GetComponent<NetworkSimpleAIMovementBehaviour>();

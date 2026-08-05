@@ -17,6 +17,7 @@ MonoBehaviour:
     through enemies.
   exampleClip: {fileID: 32900000, guid: f056bfbfb3fd6bc49a21290da043dd4b, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 13107
   recoverTime:
@@ -40,7 +41,7 @@ MonoBehaviour:
   Accessory: {fileID: 11400000, guid: 360a6367e82be4849a6edf48e917e19d, type: 2}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: d7721baa354b9d74eb8a6e566210bc31, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 38e03da0724a60c45b272c4522ecce20, type: 3}
   ActivateSound: {fileID: 8300000, guid: c70d041ebb56ad9478519facc92b9307, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -50,6 +51,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 393216
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
@@ -73,6 +75,7 @@ MonoBehaviour:
       RawValue: 4587
     Priority:
       RawValue: -65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 0

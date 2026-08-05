@@ -230,13 +230,17 @@ namespace Lodis.UI
             AbilityData data = ReplacementAbilities.GetAbilityDataByName(name);
             _normalDeck.SetAbilityDataByType((AbilityType)CurrentAbilityType, data);
 
-            if (CurrentAbilityType < (int)AbilityType.UNBLOCKABLE)
+            if (CurrentAbilityType < 4)
             {
                 string abilityName = data.name;
                 abilityName = abilityName.Remove(0, 1);
                 abilityName = abilityName.Insert(0, "S");
                 AbilityData strongData = Resources.Load<AbilityData>("AbilityData/" + abilityName);
                 _normalDeck.SetAbilityDataByType((AbilityType)(CurrentAbilityType + 4), strongData); 
+            }
+            else
+            {
+                Debug.LogError("Tried to replace strong ability without corresponding weak ability. This may be due to them having the same name which is not allowed.");
             }
         }
 

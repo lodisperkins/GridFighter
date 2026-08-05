@@ -204,7 +204,7 @@ namespace Lodis.UI
                 AbilityData currentData = data[i];
 
                 // Don't display abilities that are already in the users deck.
-                if (_buildManager.NormalDeck.Contains(currentData) || _buildManager.SpecialDeck.Contains(currentData))
+                if (_buildManager.NormalDeck.Contains(currentData) || _buildManager.SpecialDeck.Contains(currentData) || currentData.ShouldHideInMenu)
                     continue;
 
                 // Create a new button for the ability.

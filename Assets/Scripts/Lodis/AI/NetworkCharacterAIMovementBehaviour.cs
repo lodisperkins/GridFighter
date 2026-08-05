@@ -47,6 +47,8 @@ namespace Lodis.AI
             }
         }
 
+        public override string LogName => "NetworkCharacterAIMovementBehaviour";
+
         public override void Serialize(BinaryWriter bw)
         {
             bw.Write(_currentPathIndex);
@@ -61,6 +63,19 @@ namespace Lodis.AI
             _needPath = br.ReadBoolean();
         }
 
+        /// <summary>
+        /// Hashes the serialized path-following state so rollback mismatches can be
+        /// narrowed down to this movement controller.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Current Path Index: {_currentPathIndex}",
+                $"Reached Destination: {_reachedDestination}",
+                $"Need Path: {_needPath}"
+            };
+        }
 
         public override void Begin()
         {
@@ -147,5 +162,6 @@ namespace Lodis.AI
             _currentPathIndex = 0;
             NeedPath = false;
         }
+
     }
 }

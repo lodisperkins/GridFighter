@@ -5,6 +5,7 @@ using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Types;
 using UnityEngine;
 
@@ -41,10 +42,13 @@ public class Secur_TBehaviour : SimulationBehaviour
     private bool _firing;
     private bool _onCooldown;
     private bool _lockedOn;
+    private Fixed32 _startZ;
 
     public int FireRange { get => fireRange; set => fireRange = value; }
     public bool LookAtTarget { get; set; } = true;
     public Fixed32 FollowSpeed { get => followSpeed; set => followSpeed = value; }
+
+    public override string LogName => "Secur_TBehaviour";
 
     public override void Deserialize(BinaryReader br)
     {
@@ -58,6 +62,19 @@ public class Secur_TBehaviour : SimulationBehaviour
         bw.Write(_onCooldown);
     }
 
+    /// <summary>
+    /// Hashes the serialized turret state so NPC firing mismatches can be narrowed
+    /// down to this component.
+    /// </summary>
+    protected override string[] GetLogItems()
+    {
+        return new string[]
+        {
+            $"Firing={_firing}",
+            $"OnCooldown={_onCooldown}"
+        };
+    }
+
     public override void Begin()
     {
         base.Begin();
@@ -66,6 +83,7 @@ public class Secur_TBehaviour : SimulationBehaviour
         _negOffsetX = -_followOffsetX;
 
         _gridTracker.XRange = FireRange;
+        _startZ.RawValue = long.MinValue;
     }
 
     public override void Tick(Fixed32 dt)
@@ -97,14 +115,22 @@ public class Secur_TBehaviour : SimulationBehaviour
 
         if (_lockedOn && LookAtTarget)
         {
-            FixedTransform.LookAt(_target.FixedTransform.WorldPosition);
+            if (Fixed32.IsNaN(_startZ))
+            {
+                _startZ = FixedTransform.WorldPosition.Z;
+            }
+
+            FVector3 worldPositionXY = _target.FixedTransform.WorldPosition.GetWithoutZ();
+            worldPositionXY.Z = _startZ;
+            FixedTransform.LookAt(worldPositionXY);
         }
         else
         {
+            _startZ.RawValue = long.MinValue;
             FixedTransform.Forward = _owner.FixedTransform.Forward;
         }
 
-        if (distanceToTarget <= _fireDistance && _target.FixedTransform.WorldPosition.Z == FixedTransform.WorldPosition.Z)
+        if (distanceToTarget <= _fireDistance && _target.FixedTransform.WorldPosition.Z - FixedTransform.WorldPosition.Z < Fixed32.PointTwo && CheckOwnerState())
         {
             if (!_firing && !_onCooldown)
             {
@@ -130,6 +156,13 @@ public class Secur_TBehaviour : SimulationBehaviour
         int alignment = (int)_owner.GetComponent<GridMovementBehaviour>().Alignment;
 
         _colorManager.SetColors(alignment);
+    }
+
+    private bool CheckOwnerState()
+    {
+        string state = BlackBoardBehaviour.Instance.GetPlayerState(_owner.gameObject);
+
+        return state == "Idle" || state == "Moving" || state == "Attacking";
     }
 
     public void ResetTimer()
@@ -186,6 +219,6 @@ public class Secur_TBehaviour : SimulationBehaviour
     public void Deactivate()
     {
         GridGame.RemoveEntityFromGame(Entity);
+        _currentShotTimer?.Stop();
     }
-
 }

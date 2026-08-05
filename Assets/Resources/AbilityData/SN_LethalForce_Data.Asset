@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: SN_LethalForce_Data
   m_EditorClassIdentifier: 
-  abilityName: Lethal Force
+  abilityName: Charge Lethal Force
   abilityDescription: Charge up to fire a powerful piercing laser.
   exampleClip: {fileID: 0}
   AbilityType: 4
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 52428
   recoverTime:
@@ -49,10 +50,11 @@ MonoBehaviour:
     TimeActive:
       RawValue: 39321
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
-      m_Bits: 134212919
+      m_Bits: 134147383
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 6553
@@ -71,11 +73,17 @@ MonoBehaviour:
     HitStunTime:
       RawValue: 65536
     Priority:
-      RawValue: 0
+      RawValue: -65536
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 1
+    IsEnder: 1
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 4
     AbilityID:
-      RawValue: 1652097024
+      RawValue: -893714432
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0

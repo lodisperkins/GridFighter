@@ -199,9 +199,6 @@ namespace Lodis.Gameplay
             if (!knockbackBehaviour || !CheckForceOfObject(knockbackBehaviour.Physics) || !_canHit)
                 return;
 
-            if (knockbackBehaviour.CurrentAirState != AirState.TUMBLING || Health <= 0)
-                return;
-
             //Logic for instant shatters
             if (!_canInstantShatter || collision.OtherEntity.UnityObject == null)
                 return;
@@ -216,7 +213,7 @@ namespace Lodis.Gameplay
 
             //Shatter the barrier if the owner is being knocked back at the appropriate speed and damage.
             if (collision.OtherEntity.UnityObject == Owner && knockback.Physics.Velocity.Magnitude >= _shatterSpeed.FixedValue && dot < 0
-                && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.FixedValue)
+                && knockback.CurrentAirState == AirState.TUMBLING && knockback.Health == knockback.MaxHealth.FixedValue && Health > 0)
             {
                 TakeDamage(collision.OtherEntity, Health, 0, 0, DamageType.KNOCKBACK);
                 return;

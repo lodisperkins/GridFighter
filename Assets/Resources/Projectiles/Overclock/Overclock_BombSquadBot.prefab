@@ -143,6 +143,11 @@ MonoBehaviour:
       RawValue: 0
     Priority:
       RawValue: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 0
     AbilityID:
@@ -256,7 +261,7 @@ MonoBehaviour:
     Y: 0
     UnityObject: {fileID: 8057830920710345144}
     UnityScript: {fileID: 0}
-  _addToGameManually: 0
+  _addToGameManually: 1
   _updateEntityUsingUnityTransform: 0
   _visualRoot: {fileID: 12564110841549439}
   _children: []

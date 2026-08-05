@@ -17,6 +17,7 @@ MonoBehaviour:
     shockwave can knock enemies toward you.
   exampleClip: {fileID: 32900000, guid: 7bf223eb1ff5e3849850ca369b8470d8, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 32768
   recoverTime:
@@ -40,7 +41,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: cb23c604e9f980c48b38963cdd69f3bb, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 4f9e0da514c483b479f7a038a63c6ec7, type: 3}
   ActivateSound: {fileID: 8300000, guid: a6e80f4644431c74ba15232e360f8382, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -50,6 +51,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 65536
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -57,6 +59,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 983040
     BaseKnockBack:
@@ -73,6 +76,12 @@ MonoBehaviour:
       RawValue: 9830
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -99,6 +108,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 65536
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -106,6 +116,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 983040
     BaseKnockBack:
@@ -122,6 +133,12 @@ MonoBehaviour:
       RawValue: 9830
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:

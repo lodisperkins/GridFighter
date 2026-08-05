@@ -27,6 +27,8 @@ namespace Lodis.Gameplay
         public Fixed32 TimeActive;
         [Tooltip("Whether or not this collider will be destroyed if it hits a valid object.")]
         public bool DestroyOnHit;
+        [Tooltip("Whether or not this collider will be destroyed if it hits a ring barrier.")]
+        public bool DestroyOnHitBarrier;
 
         [Header("Collision Settings")]
         [Tooltip("If true, the hit collider will call the onHit event multiple times")]
@@ -37,6 +39,8 @@ namespace Lodis.Gameplay
         public string[] TagsToIgnore;
         [Tooltip("If this collider can hit multiple times, this is how many seconds the object will have to wait before being able to register a collision with the same object.")]
         public Fixed32 MultiHitWaitTime;
+        [Tooltip("If this collider should not have its velocity reversed when going through a portal.")]
+        public bool IgnoreTeleporterReversal;
 
         [Header("Damage And Knockback")]
         [Tooltip("The amount of damage this attack will deal.")]
@@ -59,6 +63,8 @@ namespace Lodis.Gameplay
         public Fixed32 HitStunTime;
         [Tooltip("The priority level of the collider. Colliders with higher levels destroy colliders with lower levels.")]
         public Fixed32 Priority;
+        [Tooltip("If true, this move wont charge the energy meter when the opponent is hit by it.")]
+        public bool DontGiveEnergyOnHit;
 
         [Header("Surge Meter")]
         [Tooltip("How much this attack will make the owners surge meter increase by.")]
@@ -156,15 +162,42 @@ namespace Lodis.Gameplay
     }
 
 
-    public class HitColliderBehaviour : ColliderBehaviour
+    public class HitColliderBehaviour : ColliderBehaviour, ITeleportable
     {
         public HitColliderData ColliderInfo;
         private bool _addedToActiveList;
         private bool _playedSpawnEffects;
         private bool _appliedStatusEffect;
+        private Fixed32 _tempHitAngle;
 
         public Fixed32 StartTime { get; private set; }
         public Fixed32 CurrentTimeActive { get; private set; }
+
+        public TeleporterBehaviour LastTeleporterUsed { get; set; }
+        public UnityAction<TeleporterBehaviour> OnTeleportedEvent { get; set; }
+        public bool IgnoreTeleporters { get; set; }
+        public bool ShouldCancelTeleport { get; set; }
+
+        public void OnTeleported(EntityDataBehaviour teleporterOwner, TeleporterBehaviour teleporter, TeleporterBehaviour linkedTeleporter)
+        {
+            // Move to the linked teleporter's position
+            Entity.FixedTransform.WorldPosition = linkedTeleporter.FixedTransform.WorldPosition;
+
+            // Reverse velocity
+            if (!ColliderInfo.IgnoreTeleporterReversal)
+                GridPhysics.Velocity = -GridPhysics.Velocity;
+
+            // Determine the current hit angle, applying the same alignment flip logic as ResolveCollision
+            Fixed32 angle = ColliderInfo.HitAngle;
+
+            if (ColliderInfo.AdjustAngleBasedOnAlignment && ColliderInfo.OwnerAlignement == GridAlignment.RIGHT && angle != new Fixed32(98304))
+            {
+                angle = Fixed32.MirrorAngleAcrossYAxis(angle);
+            }
+
+            // Flip the resolved angle so it matches the reversed direction
+            _tempHitAngle = Fixed32.MirrorAngleAcrossYAxis(angle);
+        }
 
         public override void InitCollider(Fixed32 width, Fixed32 height, EntityDataBehaviour spawner)
         {
@@ -315,12 +348,20 @@ namespace Lodis.Gameplay
             if (ColliderInfo.HitSpark)
                 ObjectPoolBehaviour.Instance.GetObject(ColliderInfo.HitSpark, hitEffectPosition, Camera.main.transform.rotation);
 
+            
+
             Fixed32 newHitAngle = ColliderInfo.HitAngle;
             Fixed32 defaultAngle = newHitAngle;
 
+            //If a temp angle has been set (e.g. from teleportation), use it instead of the normal angle logic.
+            if (_tempHitAngle != 0)
+            {
+                newHitAngle = _tempHitAngle;
+                _tempHitAngle = 0;
+            }
             //Calculates new angle if this object should change trajectory based on direction of hit.
             //If the angle is 1.5 (meaning straight up) ignore it.
-            if (ColliderInfo.AdjustAngleBasedOnAlignment && ColliderInfo.OwnerAlignement == GridAlignment.RIGHT && defaultAngle != new Fixed32(98304))
+            else if (ColliderInfo.AdjustAngleBasedOnAlignment && ColliderInfo.OwnerAlignement == GridAlignment.RIGHT && defaultAngle != new Fixed32(98304))
             {
                 newHitAngle = Fixed32.MirrorAngleAcrossYAxis(defaultAngle);
             }
@@ -394,8 +435,10 @@ namespace Lodis.Gameplay
 
 
             ColliderInfo.HitAngle = defaultAngle;
-            if (ColliderInfo.DestroyOnHit)
+            if (ColliderInfo.DestroyOnHit || (collision.OtherEntity.UnityObject.CompareTag("RingBarrier") && ColliderInfo.DestroyOnHitBarrier))
+            {
                 ObjectPoolBehaviour.Instance.ReturnGameObject(Entity);
+            }
 
             GroupManager?.TrySetCollisionFinish();
         }

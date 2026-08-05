@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: Spawns a blade behind the enemy to catch them by surprise.
   exampleClip: {fileID: 32900000, guid: 5daaf49a393b58841a15e3c7ae1acf3c, type: 3}
   AbilityType: 7
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 6553
   recoverTime:
@@ -50,6 +51,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 65536
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -57,14 +59,13 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 1
     Damage:
       RawValue: 524288
     BaseKnockBack:
       RawValue: 131072
     KnockBackScale:
       RawValue: 32768
-    SurgeMeterValue: 2
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -75,6 +76,12 @@ MonoBehaviour:
       RawValue: 6553
     Priority:
       RawValue: 196608
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 2
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 7
     AbilityID:

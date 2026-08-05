@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: SS_VanishShot_Data
   m_EditorClassIdentifier: 
-  abilityName: Vanish Shot
+  abilityName: Charge Vanish Shot
   abilityDescription: None
   exampleClip: {fileID: 0}
   AbilityType: 5
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 19660
   recoverTime:
@@ -50,6 +51,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 65536
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -57,6 +59,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 6553
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 327680
     BaseKnockBack:
@@ -66,21 +69,27 @@ MonoBehaviour:
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
-      RawValue: 32768
-    AdjustAngleBasedOnAlignment: 0
+      RawValue: 98304
+    AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
       RawValue: 6553
     Priority:
       RawValue: 196608
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 3
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 5
     AbilityID:
-      RawValue: -699465728
+      RawValue: -853737472
     SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
       type: 3}
     SpawnEffectOffset:
-      RawValue: 32768
+      RawValue: 0
     HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
       type: 3}
     HitEffectLevel: 2

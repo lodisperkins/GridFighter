@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
+using Types;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,15 +16,12 @@ namespace Lodis.Input
 
     public class ActionRecording
     {
-        public float TimeDelay;
-        public float TimeStamp;
+        public int FrameNumber;
         public InputFlag InputAction;
-        public FVector2 ActionDirection;
 
-        public ActionRecording(float timeDelay, float timeStamp, InputFlag actionID)
+        public ActionRecording(int frameNumber, InputFlag actionID)
         {
-            TimeStamp = timeStamp;
-            TimeDelay = timeDelay;
+            FrameNumber = frameNumber;
             InputAction = actionID;
         }
     }
@@ -45,57 +44,77 @@ namespace Lodis.Input
         private MovesetBehaviour _ownerMoveset;
         private CharacterStateMachineBehaviour _stateMachine;
 
-        private float _currentTimeDelay;
-        private float _currentTime;
-
         private static JsonSerializerSettings _settings;
+        private bool _startRecordingOnStart;
+        private bool _matchOverHookRegistered;
+        private bool _subscribedToInput;
 
         public string RecordingName { get => _recordingName; }
         public GridMovementBehaviour OwnerMovement { get => _ownerMovement; set => _ownerMovement = value; }
         public MovesetBehaviour OwnerMoveset { get => _ownerMoveset; set => _ownerMoveset = value; }
         public CharacterStateMachineBehaviour StateMachine { get => _stateMachine; set => _stateMachine = value; }
         public static JsonSerializerSettings Settings { get => _settings; set => _settings = value; }
-        public float CurrentTime { get => _currentTime; protected set => _currentTime = value; }
-        public float CurrentTimeDelay { get => _currentTimeDelay; protected set => _currentTimeDelay = value; }
+       
         public bool CanRecord { get => _canRecord; private set => _canRecord = value; }
+
+        public override string LogName => "ActionRecorderBehaviour";
+
+        private static void EnsureSettings()
+        {
+            if (_settings != null)
+                return;
+
+            Settings = new JsonSerializerSettings();
+            Settings.TypeNameHandling = TypeNameHandling.All;
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+            EnsureSettings();
+
+            OwnerMovement = GetComponentInChildren<GridMovementBehaviour>();
+            OwnerMovement.Entity.Data.AddComponent(this);
+
+            OwnerMoveset = GetComponentInChildren<MovesetBehaviour>();
+            StateMachine = GetComponentInChildren<CharacterStateMachineBehaviour>();
+            SubscribeToInput();
+        }
+
+        protected virtual void OnEnable()
+        {
+            SubscribeToInput();
+
+            if (!_matchOverHookRegistered && MatchManagerBehaviour.Instance != null)
+            {
+                MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => SetRecordEnabled(false));
+                _matchOverHookRegistered = true;
+            }
+
+            if (_startRecordingOnStart && !CanRecord)
+            {
+                SetRecordEnabled(true, false);
+            }
+        }
 
         // Start is called before the first frame update
         protected virtual void Start()
         {
-            Settings = new JsonSerializerSettings();
-            Settings.TypeNameHandling = TypeNameHandling.All;
+            EnsureSettings();
+        }
 
-            OwnerMovement = GetComponent<GridMovementBehaviour>();
-            OwnerMoveset = GetComponent<MovesetBehaviour>();
-            StateMachine = GetComponent<CharacterStateMachineBehaviour>();
+        private void SubscribeToInput()
+        {
+            if (_subscribedToInput)
+                return;
 
             InputBehaviour.OnInputReceivedEvent += OnInputReceived;
-
-            //--old way of recording actions
-            //OwnerMoveset.OnUseAbility += () => RecordNewAction(OwnerMoveset.LastAbilityInUse.abilityData.ID);
-
-            //OwnerMoveset.AddOnManualShuffleAction(() => RecordNewAction(-2));
-
-            //OwnerMovement.AddOnMoveBeginAction(() =>
-            //{
-            //    string lastState = StateMachine.LastState;
-            //    string currentState = StateMachine.StateMachine.CurrentState;
-
-            //    if (currentState != "Attacking" && (lastState == "Idle" || lastState == "Moving"))
-            //    {
-            //        RecordNewAction(-1);
-            //    };
-            //}
-            //);
-
-            //MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => CanRecord = true);
-            MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => CanRecord = false);
+            _subscribedToInput = true;
         }
 
         protected virtual void OnInputReceived(InputFlag input, EntityDataBehaviour entity)
         {
-            return;
-            if (entity == Entity)
+            if (entity == Entity && !GridGame.IsResimulating)
             {
                 RecordNewAction(input);
             }
@@ -105,11 +124,7 @@ namespace Lodis.Input
         {
             if (!CanRecord) return;
 
-            float delay = CurrentTimeDelay;
-            float stamp = _currentTime;
-
-            ActionRecording recording = new ActionRecording(delay, stamp, input);
-            CurrentTimeDelay = 0;
+            ActionRecording recording = new ActionRecording(GridGameManager.FrameNumber, input);
             _recordedActions.Add(recording);
         }
 
@@ -118,6 +133,13 @@ namespace Lodis.Input
             if (_recordedActions.Count == 0) return;
 
             string recordingPath = Application.persistentDataPath +"/Recordings/"+ RecordingName + ".txt";
+            string recordingDirectory = Path.GetDirectoryName(recordingPath);
+
+            if (!Directory.Exists(recordingDirectory))
+            {
+                Directory.CreateDirectory(recordingDirectory);
+            }
+
             if (!File.Exists(recordingPath))
             {
                 FileStream stream = File.Create(recordingPath);
@@ -140,12 +162,42 @@ namespace Lodis.Input
 
         protected virtual void OnApplicationQuit()
         {
-            if (CanRecord)
-                Save();
+            StopAndSaveRecordingIfNeeded();
+        }
+
+        protected virtual void OnDisable()
+        {
+            StopAndSaveRecordingIfNeeded();
+
+            if (_subscribedToInput)
+            {
+                InputBehaviour.OnInputReceivedEvent -= OnInputReceived;
+                _subscribedToInput = false;
+            }
+        }
+
+        protected virtual void OnDestroy()
+        {
+            StopAndSaveRecordingIfNeeded();
+
+            if (_subscribedToInput)
+            {
+                InputBehaviour.OnInputReceivedEvent -= OnInputReceived;
+                _subscribedToInput = false;
+            }
+        }
+
+        private void StopAndSaveRecordingIfNeeded()
+        {
+            if (!CanRecord)
+                return;
+
+            SetRecordEnabled(false);
         }
 
         public static List<ActionRecording> LoadRecording(string recordingName)
         {
+            EnsureSettings();
             string recordingPath = Application.persistentDataPath + "/Recordings/" + recordingName + ".txt";
 
             if (!File.Exists(recordingPath))
@@ -169,14 +221,13 @@ namespace Lodis.Input
 
         public virtual void SetRecordEnabled(bool enabled, bool saveLast = true)
         {
-            CurrentTime = 0;
-            CurrentTimeDelay = 0;
+            bool wasRecording = CanRecord;
             CanRecord = enabled;
 
             if (!CanRecord)
             {
-                //if (saveLast)
-                //    Save();
+                if (saveLast && wasRecording)
+                    Save();
 
                 _recordedActions.Clear();
             }
@@ -192,8 +243,20 @@ namespace Lodis.Input
 #endif
         }
 
-        public static Dictionary<float, ActionRecording> LoadRecordingDictionary(string recordingName)
+        public void InitializeRecording(string recordingName, bool startRecordingImmediately)
         {
+            _recordingName = recordingName;
+            _startRecordingOnStart = startRecordingImmediately;
+
+            if (isActiveAndEnabled)
+            {
+                SetRecordEnabled(startRecordingImmediately, false);
+            }
+        }
+
+        public static Dictionary<int, ActionRecording> LoadRecordingDictionary(string recordingName)
+        {
+            EnsureSettings();
             string recordingPath = Application.persistentDataPath + "/Recordings/" + recordingName + ".txt";
 
             if (!File.Exists(recordingPath))
@@ -203,17 +266,19 @@ namespace Lodis.Input
 
             StreamReader reader = new StreamReader(recordingPath);
 
-            recordedActions = JsonConvert.DeserializeObject<List<ActionRecording>>(reader.ReadToEnd(), Settings);
+            Deck.Seed = JsonConvert.DeserializeObject<int>(reader.ReadLine(), Settings);
+
+            recordedActions = JsonConvert.DeserializeObject<List<ActionRecording>>(reader.ReadLine(), Settings);
 
             reader.Close();
 
             if (recordedActions.Count == 0)
                 return null;
 
-            Dictionary<float, ActionRecording> recordingDictionary = new Dictionary<float, ActionRecording>();
+            Dictionary<int, ActionRecording> recordingDictionary = new Dictionary<int, ActionRecording>();
 
             foreach (ActionRecording recording in recordedActions)
-                recordingDictionary.Add(recording.TimeStamp, recording);
+                recordingDictionary.Add(recording.FrameNumber, recording);
 
             return recordingDictionary;
         }
@@ -226,22 +291,25 @@ namespace Lodis.Input
             else if (Keyboard.current.tKey.wasPressedThisFrame)
                 SetRecordEnabled(!CanRecord, false);
 
-            if (!CanRecord)
-                return;
-
-            CurrentTime += Time.deltaTime;
-            CurrentTimeDelay += Time.deltaTime;
-
-        }
-
-        public override void Serialize(BinaryWriter bw)
-        {
-            throw new System.NotImplementedException();
         }
 
         public override void Deserialize(BinaryReader br)
         {
-            throw new System.NotImplementedException();
+            
+        }
+
+        /// <summary>
+        /// Hashes the serialized action-recorder state, which is currently empty, so
+        /// this component can still be included in sync diagnostics consistently.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return null;
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+             
         }
     }
 }

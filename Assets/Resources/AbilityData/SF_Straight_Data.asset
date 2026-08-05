@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: Spawns a slow moving projectile thats good for applying pressure.
   exampleClip: {fileID: 0}
   AbilityType: 6
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 13107
   recoverTime:
@@ -49,6 +50,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 98304
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -56,6 +58,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 524288
     BaseKnockBack:
@@ -72,6 +75,7 @@ MonoBehaviour:
       RawValue: 4587
     Priority:
       RawValue: 196608
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 1
     AppliedStatusEffect: 0

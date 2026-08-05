@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Types;
 using UnityGGPO;
 using static FixedPoints.FixedAction;
@@ -14,6 +15,7 @@ namespace FixedPoints
 {
     public abstract class FixedAction : ISerializedListObject
     {
+        private static int _nextActionID = 1;
 
         public delegate void FixedDelayedEvent();
         protected FixedDelayedEvent onDelayComplete;
@@ -23,23 +25,25 @@ namespace FixedPoints
         public int FrameStarted;
         public int FrameFinished;
         public EntityData Target;
+        public int ActionID;
 
         public bool IsActive { get => isActive; set => isActive = value; }
         public ListEvent OnAddedToList { get; set; }
-        public int FrameSerialized { get; set; }
+        public int FrameAddedToSerializedList { get; set; }
         public ListEvent OnRemovedFromList { get; set; }
+
+        public string ListDisplayName => "FixedAction";
+
+        public int FrameRemoved { get; set; }
+        public static int NextActionID { get => _nextActionID; set => _nextActionID = value; }
 
         public abstract void TryPerformAction();
 
-        protected virtual void Serialize(BinaryWriter bw)
-        {
-            bw.Write(IsActive);
-        }
+        protected abstract void Serialize(BinaryWriter bw);
 
-        protected virtual void Deserialize(BinaryReader br)
-        {
-            IsActive = br.ReadBoolean();
-        }
+        protected abstract void Deserialize(BinaryReader br);
+
+        protected abstract void LogGameState(StringBuilder sb);
 
         public virtual void Stop()
         {
@@ -49,8 +53,34 @@ namespace FixedPoints
 
         public virtual void Init()
         {
+            EnsureDebugIdAssigned();
             FixedPointTimer.Actions.Add(this);
             IsActive = true;
+        }
+
+        internal static int ClaimNextActionId()
+        {
+            return _nextActionID++;
+        }
+
+        internal void EnsureDebugIdAssigned()
+        {
+            if (ActionID != 0)
+            {
+                return;
+            }
+
+            ActionID = ClaimNextActionId();
+        }
+
+        internal void SetActionID(int debugId)
+        {
+            ActionID = debugId;
+
+            if (ActionID >= _nextActionID)
+            {
+                _nextActionID = ActionID + 1;
+            }
         }
 
         public bool CheckIfCanBeAddedToList()
@@ -60,12 +90,69 @@ namespace FixedPoints
 
         public void OnSerialize(BinaryWriter bw)
         {
+            EnsureDebugIdAssigned();
+            bw.Write(ActionID);
+            bw.Write(IsActive);
             Serialize(bw);
         }
 
         public void OnDeserialize(BinaryReader br)
         {
+            ActionID = br.ReadInt32();
+            if (ActionID >= _nextActionID)
+            {
+                _nextActionID = ActionID + 1;
+            }
+
+            IsActive = br.ReadBoolean();
             Deserialize(br);
+        }
+
+        public void OnLogGameState(StringBuilder sb)
+        {
+            sb.AppendLine($"            FixedAction");
+            sb.AppendLine($"                  DebugId={ActionID}");
+            sb.AppendLine($"                  IsActive={IsActive}");
+            LogGameState(sb);
+        }
+
+        /// <summary>
+        /// Hashes this fixed action's rollback payload for debug game-state logging.
+        /// </summary>
+        public int CalculateChecksum()
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            using (BinaryWriter writer = new BinaryWriter(memoryStream))
+            {
+                WriteChecksumPayload(writer);
+                return CalcFletcher32(memoryStream.ToArray());
+            }
+        }
+
+        /// <summary>
+        /// Writes the rollback payload used to compare this fixed action's state in
+        /// the debug checksum log.
+        /// </summary>
+        public virtual void WriteChecksumPayload(BinaryWriter bw)
+        {
+            OnSerialize(bw);
+        }
+
+        /// <summary>
+        /// Produces a lightweight deterministic fingerprint of serialized timer data.
+        /// </summary>
+        private static int CalcFletcher32(byte[] data)
+        {
+            uint sum1 = 0;
+            uint sum2 = 0;
+
+            for (int i = 0; i < data.Length; ++i)
+            {
+                sum1 = (sum1 + data[i]) % 0xffff;
+                sum2 = (sum2 + sum1) % 0xffff;
+            }
+
+            return unchecked((int)((sum2 << 16) | sum1));
         }
     }
 
@@ -97,11 +184,7 @@ namespace FixedPoints
 
         public FixedTimeAction(FixedDelayedEvent action, Fixed32 duration, Fixed32 timeBegan, UnitOfTime unit = UnitOfTime.Scaled)
         {
-            TimeStarted = timeBegan;
-            onDelayComplete = action;
-            timeRemaining = duration;
-            this.duration = duration;
-            this.unit = unit;
+            Configure(action, duration, timeBegan, unit);
         }
 
         /// <summary>
@@ -135,6 +218,25 @@ namespace FixedPoints
             }
 
             return -1;
+        }
+
+        /// <summary>
+        /// Rehydrates a retained timed action with the same values a fresh allocation
+        /// would receive so rollback can reuse the pooled instance safely.
+        /// </summary>
+        internal void Configure(FixedDelayedEvent action, Fixed32 newDuration, Fixed32 timeBegan, UnitOfTime newUnit)
+        {
+            TimeStarted = timeBegan;
+            onDelayComplete = action;
+            timeRemaining = newDuration;
+            duration = newDuration;
+            unit = newUnit;
+            shouldLoop = false;
+            loopCount = 1;
+            startingLoopCount = 0;
+            loopCondition = null;
+            hasPaused = false;
+            OnComplete = null;
         }
 
         /// <summary>
@@ -174,8 +276,6 @@ namespace FixedPoints
         /// </summary>
         public void Pause()
         {
-            duration = GetTimeLeft();
-
             hasPaused = true;
         }
 
@@ -200,23 +300,31 @@ namespace FixedPoints
 
             if (startingLoopCount > 0)
                 loopCount = startingLoopCount - 1;
-            else
+            else if (startingLoopCount != -1)
                 loopCount = 1;
         }
 
         protected override void Serialize(BinaryWriter bw)
         {
-            base.Serialize(bw);
-            bw.Write(timeRemaining);
+            timeStarted.Serialize(bw);
+            duration.Serialize(bw);
+            timeRemaining.Serialize(bw);
+            bw.Write((int)unit);
+            bw.Write(shouldLoop);
             bw.Write(loopCount);
+            bw.Write(startingLoopCount);
             bw.Write(hasPaused);
         }
 
         protected override void Deserialize(BinaryReader br)
         {
-            base.Deserialize(br);
-            timeRemaining = br.ReadInt32();
+            timeStarted = timeStarted.Deserialize(br);
+            duration = duration.Deserialize(br);
+            timeRemaining = timeRemaining.Deserialize(br);
+            unit = (UnitOfTime)br.ReadInt32();
+            shouldLoop = br.ReadBoolean();
             loopCount = br.ReadInt32();
+            startingLoopCount = br.ReadInt32();
             hasPaused = br.ReadBoolean();
         }
 
@@ -269,6 +377,18 @@ namespace FixedPoints
                 }
             }
         }
+
+        protected override void LogGameState(StringBuilder sb)
+        {
+            sb.AppendLine($"TimeStarted: {TimeStarted}");
+            sb.AppendLine($"Duration: {Duration}");
+            sb.AppendLine($"TimeRemaining: {timeRemaining}");
+            sb.AppendLine($"Unit: {Unit}");
+            sb.AppendLine($"ShouldLoop: {shouldLoop}");
+            sb.AppendLine($"LoopCount: {loopCount}");
+            sb.AppendLine($"StartingLoopCount: {startingLoopCount}");
+            sb.AppendLine($"HasPaused: {hasPaused}");
+        }
     }
 
     public class FixedConditionAction : FixedAction
@@ -276,6 +396,15 @@ namespace FixedPoints
         private Condition _condition;
 
         public FixedConditionAction(FixedDelayedEvent action, Condition condition)
+        {
+            Configure(action, condition);
+        }
+
+        /// <summary>
+        /// Rehydrates a retained condition action with the same callback and predicate
+        /// a fresh allocation would receive for the current simulation pass.
+        /// </summary>
+        internal void Configure(FixedDelayedEvent action, Condition condition)
         {
             onDelayComplete = action;
             _condition = condition;
@@ -290,27 +419,48 @@ namespace FixedPoints
                 FixedPointTimer.Actions.Remove(this);
             }
         }
+
+        protected override void Deserialize(BinaryReader br)
+        {
+        }
+
+        protected override void LogGameState(StringBuilder sb)
+        {
+        }
+
+        protected override void Serialize(BinaryWriter bw)
+        {
+        }
     }
 
     public class FixedPointTimer
     {
-        private static List<FixedAction> _actions = new List<FixedAction>();
         private static List<FixedAction> _actionsToRemove = new List<FixedAction>();
-        private static SerializedListHandler<FixedAction> _serializedList;
+        private static SerializedListHandler<FixedAction> _actions = new SerializedListHandler<FixedAction>("Fixed Point Timer Actions");
 
-        public static List<FixedAction> Actions { get => _actions; private set => _actions = value; }
+        public static SerializedListHandler<FixedAction> Actions { get => _actions; private set => _actions = value; }
 
-        static FixedPointTimer()
+        public static void LogGameState(StringBuilder stringBuilder)
         {
-            GridGame.OnSerialization += SerializeActions;
-            GridGame.OnDeserialization += DeserializeActions;
-            _serializedList = new SerializedListHandler<FixedAction>(Actions);
-            _serializedList.Name = "Fixed Point Timer";
+            _actions.OnLogGameState(stringBuilder);
         }
 
         public static FixedTimeAction StartNewTimedAction(FixedDelayedEvent action, Fixed32 duration, UnitOfTime unit = UnitOfTime.Scaled)
         {
+            int debugId = FixedAction.ClaimNextActionId();
+
+            if (_actions.TryGetItem(item => item is FixedTimeAction && item.ActionID == debugId, out FixedAction retainedActionObject))
+            {
+                FixedTimeAction retainedAction = (FixedTimeAction)retainedActionObject;
+                retainedAction.SetActionID(debugId);
+                retainedAction.Configure(action, duration, GridGame.Time, unit);
+                retainedAction.FrameStarted = GridGameManager.FrameNumber;
+                retainedAction.IsActive = true;
+                return retainedAction;
+            }
+
             FixedTimeAction newAction = new FixedTimeAction(action, duration, GridGame.Time, unit);
+            newAction.SetActionID(debugId);
             newAction.FrameStarted = GridGameManager.FrameNumber;
             _actions.Add(newAction);
             newAction.IsActive = true;
@@ -319,7 +469,20 @@ namespace FixedPoints
 
         public static FixedConditionAction StartNewConditionAction(FixedDelayedEvent action, Condition condition)
         {
+            int debugId = FixedAction.ClaimNextActionId();
+
+            if (_actions.TryGetItem(item => item is FixedConditionAction && item.ActionID == debugId, out FixedAction retainedActionObject))
+            {
+                FixedConditionAction retainedAction = (FixedConditionAction)retainedActionObject;
+                retainedAction.SetActionID(debugId);
+                retainedAction.Configure(action, condition);
+                retainedAction.FrameStarted = GridGameManager.FrameNumber;
+                retainedAction.IsActive = true;
+                return retainedAction;
+            }
+
             FixedConditionAction fixedConditionAction = new FixedConditionAction(action, condition);
+            fixedConditionAction.SetActionID(debugId);
             fixedConditionAction.FrameStarted = GridGameManager.FrameNumber;
 
             _actions.Add(fixedConditionAction);
@@ -337,12 +500,14 @@ namespace FixedPoints
 
         public static void SerializeActions(BinaryWriter bw)
         {
-            _serializedList.Serialize(bw);
+            _actions.Serialize(bw);
+            bw.Write(FixedAction.NextActionID);
         }
          
         public static void DeserializeActions(BinaryReader br)
         {
-            _serializedList.Deserialize(br);
+            _actions.Deserialize(br);
+            NextActionID = br.ReadInt32();
         }
     }
 }

@@ -240,6 +240,8 @@ namespace Lodis.Movement
         public bool CanCancelMovement { get => _canCancelMovement; set => _canCancelMovement = value; }
         public static FloatVariable MaxYPosition { get => _maxYPosition; private set => _maxYPosition = value; }
 
+        public override string LogName => "GridMovementBehaviour";
+
         protected override void Awake()
         {
             base.Awake();
@@ -903,7 +905,9 @@ namespace Lodis.Movement
                 _teleportAction = FixedPointTimer.StartNewTimedAction(() =>
                 {
                     FixedTransform.WorldPosition = panel.FixedWorldPosition + FVector3.Up * HeightOffset;
+                    CanMoveDiagonally = true;
                     MoveToPanel(panel, true, GridAlignment.ANY);
+                    CanMoveDiagonally = false;
                     gameObject.SetActive(true);
                     _onTeleportEnd?.Raise(gameObject);
                     SpawnTeleportEffect(teleportEffect);
@@ -912,7 +916,9 @@ namespace Lodis.Movement
             else
             {
                 FixedTransform.WorldPosition = panel.FixedWorldPosition + FVector3.Up * HeightOffset;
+                CanMoveDiagonally = true;
                 MoveToPanel(panel, true, GridAlignment.ANY);
+                CanMoveDiagonally = false;
                 gameObject.SetActive(true);
                 _onTeleportEnd?.Raise(gameObject);
 
@@ -1277,77 +1283,64 @@ namespace Lodis.Movement
                 y.Serialize(bw);
             }
 
-            //if (_targetPanel != null)
-            //{
-            //    _targetPanel.Position.Serialize(bw);
-            //}
-            //else
-            //{
-            //    Fixed32 x = new Fixed32(16, -1);
-            //    x.Serialize(bw);
-            //    Fixed32 y = new Fixed32(16, -1);
-            //    y.Serialize(bw);
-            //}
+            if (_currentPanel != null)
+            {
+                _currentPanel.Position.Serialize(bw);
+            }
+            else
+            {
+                Fixed32 x = new Fixed32(16, -1);
+                x.Serialize(bw);
+                Fixed32 y = new Fixed32(16, -1);
+                y.Serialize(bw);
+            }
+
             MoveDirection.Serialize(bw);
             _targetPosition.Serialize(bw);
-
-            //UnityEngine.Debug.Log($"Target position serialized {_targetPosition}");
-
-            //if (_moveLerp != null)
-            //{
-            //    bw.Write(true);
-            //    _moveLerp.OnSerialize(bw);
-            //}
-            //else
-            //{
-            //    bw.Write(false);
-            //}
         }
 
         public override void Deserialize(BinaryReader br)
         {
-            //UnityEngine.Debug.Log($"Last deserialized positionn is {Position}");
-            CanMoveDiagonally = true;
-
-            //CancelMovement();
-            //MoveToCurrentPanel();
             _isMoving = br.ReadBoolean();
-            //_isMoving = false;
             _canMove = br.ReadBoolean();
             _canCancelMovement = br.ReadBoolean();
             _alwaysLookAtOpposingSide = br.ReadBoolean();
             _moveToAlignedSideIfStuck = br.ReadBoolean();
 
             FVector2 previousPosition = new FVector2();
-            previousPosition.Deserialize(br);
+            previousPosition = previousPosition.Deserialize(br);
 
             GridBehaviour.Instance.GetPanel(previousPosition, out _previousPanel);
 
-            //FVector2 targetPosition = new FVector2();
-            //targetPosition.Deserialize(br);
+            FVector2 currentPosition = new FVector2();
+            currentPosition = currentPosition.Deserialize(br);
 
-            //GridBehaviour.Grid.GetPanel(targetPosition, out _targetPanel);
+            GridBehaviour.Instance.GetPanel(currentPosition, out _currentPanel);
 
-
-            MoveDirection.Deserialize(br);
-            _targetPosition.Deserialize(br);
+            MoveDirection = MoveDirection.Deserialize(br);
+            _targetPosition = _targetPosition.Deserialize(br);
 
             GridBehaviour.Instance.GetPanelAtLocationInWorld((Vector3)_targetPosition, out _targetPanel);
+        }
 
-            //UnityEngine.Debug.Log($"Target position deserialized {_targetPosition}");
-
-            //bool savedMoveLerp = br.ReadBoolean();
-
-            //if (savedMoveLerp)
-            //    _moveLerp.OnDeserialize(br);
-
-            //MoveToPanel(Position, true);
-
-            //if (_isMoving)
-            //{
-            //    CancelMovement();
-            //    Move(MoveDirection);
-            //}
+        /// <summary>
+        /// Hashes the serialized movement state so pathing or locomotion mismatches
+        /// can be traced back to this behavior.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[] 
+            {
+                $"IsMoving: {IsMoving}",
+                $"CanMove: {_canMove}",
+                $"CanCancelMovement: {_canCancelMovement}",
+                $"AlwaysLookAtOpposingSide: {_alwaysLookAtOpposingSide}",
+                $"MoveToAlignedSideIfStuck: {_moveToAlignedSideIfStuck}",
+                $"PreviousPanel Position: {_previousPanel?.Position}",
+                $"CurrentPanel Position: {_currentPanel?.Position}",
+                $"MoveDirection: {MoveDirection}",
+                $"TargetPosition: {_targetPosition}"
+            };
         }
     }
 }

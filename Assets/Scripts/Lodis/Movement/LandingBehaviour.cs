@@ -51,6 +51,8 @@ namespace Lodis.Movement
             set => _canCheckLanding = value;
         }
 
+        public override string LogName => "LandingBehaviour";
+
         public override void Serialize(BinaryWriter bw)
         {
             bw.Write(Landing);
@@ -67,6 +69,21 @@ namespace Lodis.Movement
             RecoveringFromFall = br.ReadBoolean();
 
             CancelLanding();
+        }
+
+        /// <summary>
+        /// Hashes the serialized landing state so grounded-transition mismatches can
+        /// be attributed to this component.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Landing: {Landing}",
+                $"Grounded Hit Counter: {_groundedHitCounter}",
+                $"IsDown: {IsDown}",
+                $"RecoveringFromFall: {RecoveringFromFall}"
+            };
         }
 
         protected override void Awake()

@@ -131,8 +131,8 @@ namespace Lodis.Gameplay
 
         public void CancelHitStop(bool cancelFreeze)
         {
-            if (_moveset?.LastAbilityInUse?.abilityData.AbilityType == AbilityType.BURST)
-                return;
+            //if (_moveset?.LastAbilityInUse?.abilityData.AbilityType == AbilityType.BURST)
+            //    return;
 
 
             if (cancelFreeze)

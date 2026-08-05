@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: None
   exampleClip: {fileID: 0}
   AbilityType: 0
+  ShouldHideInMenu: 1
   timeActive:
     RawValue: 6553
   recoverTime:
@@ -49,6 +50,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 196608
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -72,6 +74,12 @@ MonoBehaviour:
       RawValue: 13107
     Priority:
       RawValue: 196608
+    DontGiveEnergyOnHit: 1
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 0
     AbilityID:

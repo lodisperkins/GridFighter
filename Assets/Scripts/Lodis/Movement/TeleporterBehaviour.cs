@@ -27,6 +27,16 @@ public interface ITeleportable
     public UnityAction<TeleporterBehaviour> OnTeleportedEvent { get; set; }
 
     /// <summary>
+    /// Whether the object should just pass through teleporters without raising events.
+    /// </summary>
+    public bool IgnoreTeleporters { get; set; }
+
+    /// <summary>
+    /// Whether the object will stop teleporting for the next attempt.
+    /// </summary>
+    public bool ShouldCancelTeleport { get; set; }
+
+    /// <summary>
     /// Called when the object is teleported.
     /// </summary>
     /// <param name="teleporterOwner">The character that casted this teleporter.</param>
@@ -125,6 +135,8 @@ public class TeleporterBehaviour : SimulationBehaviour
     /// </summary>
     public EntityDataBehaviour EntityHoldingOpen { get => _entityHoldingOpen; private set => _entityHoldingOpen = value; }
 
+    public override string LogName => "TeleporterBehaviour";
+
     /// <summary>
     /// Deserializes the teleporter's state from a binary reader.
     /// </summary>
@@ -151,6 +163,22 @@ public class TeleporterBehaviour : SimulationBehaviour
         bw.Write(_startedInactiveTimer);
     }
 
+    /// <summary>
+    /// Hashes the serialized teleporter state so charge/cooldown mismatches can be
+    /// isolated to this behavior.
+    /// </summary>
+    protected override string[] GetLogItems()
+    {
+        return new string[]
+        {
+            $"Teleportations Left: {_teleportationsLeft}",
+            $"Active: {_active}",
+            $"Active Cooldown Started: {_activeCooldownStarted}",
+            $"Can Teleport Same Item: {_canTeleportSameItem}",
+            $"Is Held Open: {IsHeldOpen}",
+            $"Started Inactive Timer: {_startedInactiveTimer}"
+        };
+    }
     public override void Init()
     {
         base.Init();
@@ -190,6 +218,13 @@ public class TeleporterBehaviour : SimulationBehaviour
         // Check if teleported objects have changed direction. Force them back through if they have.
         for (int i = 0; i < _teleportedObjects.Count; i++)
         {
+            if (!_teleportedObjects[i].EntityPhysics.Entity.Active)
+            {
+                _teleportedObjects.RemoveAt(i);
+                i--;
+                continue;
+            }
+
             GridPhysicsBehaviour gridPhysics = _teleportedObjects[i].EntityPhysics;
 
             if (gridPhysics.Velocity == _teleportedObjects[i].TeleportVelocity)
@@ -229,6 +264,9 @@ public class TeleporterBehaviour : SimulationBehaviour
 
         for (int i = 0; i < _teleportedObjects.Count; i++)
         {
+            if (_teleportedObjects[i] == null || !_teleportedObjects[i].EntityPhysics || collision.OtherEntity == null)
+                continue;
+
             if (_teleportedObjects[i].EntityPhysics.Entity == collision.OtherEntity.UnityScript)
             {
                 _teleportedObjects.RemoveAt(i);
@@ -363,21 +401,22 @@ public class TeleporterBehaviour : SimulationBehaviour
     /// </summary>
     private bool CheckTeleportValidity(EntityDataBehaviour entity)
     {
+        if (LinkedTeleporter == null)
+            return false;
+
         bool teleporterReady = _teleportationsLeft > 0 || _active;
         bool sameItemCheckValid = entity != LinkedTeleporter._lastThingTeleported || _canTeleportSameItem;
         bool notOwner = entity != _owner;
+        bool notBarrier = !entity.CompareTag("RingBarrier");
 
         TeleportedObject teleportedObj = _teleportedObjects.Find(t => t.EntityPhysics.Entity.FixedTransform == entity.FixedTransform.Parent);
 
         bool teleportedParent = teleportedObj != null;
 
-        return teleporterReady && sameItemCheckValid && notOwner && !teleportedParent;
+        return teleporterReady && sameItemCheckValid && notOwner && !teleportedParent && notBarrier;
     }
 
-    /// <summary>
-    /// Forces an entity to teleport to the linked teleporter.
-    /// </summary>
-    public void ForceTeleport(EntityData entityToTeleport)
+    private void DisableHeldOpen(EntityData entityToTeleport)
     {
         // If the entity being teleported is holding the teleporter open, release it.  
         if (entityToTeleport.UnityScript == EntityHoldingOpen)
@@ -387,19 +426,51 @@ public class TeleporterBehaviour : SimulationBehaviour
             LinkedTeleporter.IsHeldOpen = false;
             LinkedTeleporter.EntityHoldingOpen = null;
         }
+    }
 
-        // Check if the entity implements the ITeleportable interface and handle teleportation accordingly.  
-        ITeleportable teleportHandler = entityToTeleport.UnityObject.GetComponentInChildren<ITeleportable>();
+    /// <summary>
+    /// Forces an entity to teleport to the linked teleporter.
+    /// </summary>
+    public void ForceTeleport(EntityData entityToTeleport)
+    {
+        // Check if the entity implements the ITeleportable interface and handle teleportation accordingly.
+        ITeleportable[] teleportHandlers = entityToTeleport.UnityObject.GetComponentsInChildren<ITeleportable>();
 
-        if (teleportHandler != null)
+        if (teleportHandlers != null && teleportHandlers.Length > 0)
         {
-            // Trigger the OnTeleported event and update the last teleporter used.  
-            teleportHandler.OnTeleportedEvent?.Invoke(this);
-            teleportHandler.OnTeleported(_owner, this, LinkedTeleporter);
-            teleportHandler.LastTeleporterUsed = this;
+            // If any handler is ignoring teleporters, skip the entire teleport
+            for (int i = 0; i < teleportHandlers.Length; i++)
+            {
+                if (teleportHandlers[i].IgnoreTeleporters)
+                    return;
+            }
+
+            DisableHeldOpen(entityToTeleport);
+
+            bool cancelled = false;
+
+            for (int i = 0; i < teleportHandlers.Length; i++)
+            {
+                teleportHandlers[i].OnTeleportedEvent?.Invoke(this);
+                teleportHandlers[i].OnTeleported(_owner, this, LinkedTeleporter);
+
+                if (teleportHandlers[i].ShouldCancelTeleport)
+                {
+                    teleportHandlers[i].ShouldCancelTeleport = false;
+                    cancelled = true;
+                }
+
+                if (cancelled)
+                    return;
+
+                teleportHandlers[i].LastTeleporterUsed = this;
+            }
+
         }
         else
         {
+            DisableHeldOpen(entityToTeleport);
+
             // Handle teleportation for entities without the ITeleportable interface.  
             GridMovementBehaviour movement = entityToTeleport.GetComponentInChildren<GridMovementBehaviour>();
             KnockbackBehaviour health = entityToTeleport.GetComponentInChildren<KnockbackBehaviour>();
@@ -474,4 +545,5 @@ public class TeleporterBehaviour : SimulationBehaviour
             _canTeleportSameItem = true;
         }, _sameTeleportDelay);
     }
+
 }

@@ -71,6 +71,8 @@ namespace Lodis.AI
         public EntityDataBehaviour Owner { get; set; }
         public GridMovementBehaviour MovementBehaviour { get => _movementBehaviour; private set => _movementBehaviour = value; }
 
+        public override string LogName => "NetworkAttackNPCBehaviour";
+
         public override void Serialize(BinaryWriter bw)
         {
             _timeOfLastAttack.Serialize(bw);
@@ -80,9 +82,23 @@ namespace Lodis.AI
 
         public override void Deserialize(BinaryReader br)
         {
-            _timeOfLastAttack.Deserialize(br);
+            _timeOfLastAttack = _timeOfLastAttack.Deserialize(br);
             _lastSlot = br.ReadInt32();
             _chargingAttack = br.ReadBoolean();
+        }
+
+        /// <summary>
+        /// Hashes the serialized attack timing state so mismatches can be traced to
+        /// this NPC attack controller specifically.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Time Of Last Attack: {_timeOfLastAttack}",
+                $"Last Slot: {_lastSlot}",
+                $"Charging Attack: {_chargingAttack}"
+            };
         }
 
         public override void Init()
@@ -182,5 +198,6 @@ namespace Lodis.AI
 
             _timeOfLastAttack = GridGame.Time;
         }
+
     }
 }

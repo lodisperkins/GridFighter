@@ -1,4 +1,5 @@
 ﻿using FixedPoints;
+using Lodis.GridScripts;
 using System.Collections;
 using System.Collections.Generic;
 using Types;
@@ -9,8 +10,12 @@ namespace Lodis.Utility
 {
     public class ObjectPoolBehaviour : MonoBehaviour
     {
-        private Dictionary<string, Queue<GameObject>> _objectPool = new Dictionary<string, Queue<GameObject>>();
-        private Dictionary<string, Queue<EntityDataBehaviour>> _entityObjectPool = new Dictionary<string, Queue<EntityDataBehaviour>>();
+        private Dictionary<string, Queue<GameObject>> _anyObjectPool = new Dictionary<string, Queue<GameObject>>();
+        private Dictionary<string, Queue<EntityDataBehaviour>> _anyEntityObjectPool = new Dictionary<string, Queue<EntityDataBehaviour>>();
+        private Dictionary<string, Queue<GameObject>> _leftObjectPool = new Dictionary<string, Queue<GameObject>>();
+        private Dictionary<string, Queue<EntityDataBehaviour>> _leftEntityObjectPool = new Dictionary<string, Queue<EntityDataBehaviour>>();
+        private Dictionary<string, Queue<GameObject>> _rightObjectPool = new Dictionary<string, Queue<GameObject>>();
+        private Dictionary<string, Queue<EntityDataBehaviour>> _rightEntityObjectPool = new Dictionary<string, Queue<EntityDataBehaviour>>();
         private static ObjectPoolBehaviour _instance;
         private CustomEventSystem.Event _onReturnToPool;
 
@@ -44,12 +49,39 @@ namespace Lodis.Utility
             OnReturnToPool = Resources.Load<CustomEventSystem.Event>("Events/OnReturnToPool");
         }
 
+        private Dictionary<string, Queue<GameObject>> GetGameObjectPool(GridAlignment alignment)
+        {
+            switch (alignment)
+            {
+                case GridAlignment.LEFT:
+                    return _leftObjectPool;
+                case GridAlignment.RIGHT:
+                    return _rightObjectPool;
+                default:
+                    return _anyObjectPool;
+            }
+        }
+
+        private Dictionary<string, Queue<EntityDataBehaviour>> GetEntityPool(GridAlignment alignment)
+        {
+            switch (alignment)
+            {
+                case GridAlignment.LEFT:
+                    return _leftEntityObjectPool;
+                case GridAlignment.RIGHT:
+                    return _rightEntityObjectPool;
+                default:
+                    return _anyEntityObjectPool;
+            }
+        }
+
         /// <summary>
         /// Gets the first instance of the object found in the pool
         /// </summary>
         /// <param name="gameObject">A reference to the object</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
-        public GameObject GetObject(GameObject gameObject)
+        public GameObject GetObject(GameObject gameObject, GridAlignment alignment = GridAlignment.ANY)
         {
 #if UNITY_EDITOR
             if (gameObject.TryGetComponent<EntityDataBehaviour>(out _))
@@ -58,8 +90,10 @@ namespace Lodis.Utility
             }
 #endif
 
+            var pool = GetGameObjectPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_objectPool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 GameObject objectInstance = objectQueue.Dequeue();
@@ -75,11 +109,14 @@ namespace Lodis.Utility
         /// Gets the first instance of the object found in the pool
         /// </summary>
         /// <param name="name">The name of the object to search for</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Returns null otherwise</returns>
-        public GameObject GetObject(string name)
+        public GameObject GetObject(string name, GridAlignment alignment = GridAlignment.ANY)
         {
+            var pool = GetGameObjectPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_objectPool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 GameObject objectInstance = objectQueue.Dequeue();
@@ -97,8 +134,9 @@ namespace Lodis.Utility
         /// <param name="gameObject">A reference to the object</param>
         /// <param name="position">The new position of the object</param>
         /// <param name="rotation">The new rotation of the object</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
-        public GameObject GetObject(GameObject gameObject, Vector3 position, Quaternion rotation)
+        public GameObject GetObject(GameObject gameObject, Vector3 position, Quaternion rotation, GridAlignment alignment = GridAlignment.ANY)
         {
 #if UNITY_EDITOR
             if (gameObject.TryGetComponent<EntityDataBehaviour>(out _))
@@ -107,8 +145,10 @@ namespace Lodis.Utility
             }
 #endif
 
+            var pool = GetGameObjectPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_objectPool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 GameObject objectInstance = objectQueue.Dequeue();
@@ -128,14 +168,18 @@ namespace Lodis.Utility
         /// <summary>
         /// Gets the first instance of the object found in the pool
         /// </summary>
-        /// <param name="gameObject">A reference to the object</param>
+        /// <param name="entity">A reference to the object</param>
         /// <param name="position">The new position of the object</param>
         /// <param name="rotation">The new rotation of the object</param>
+        /// <param name="awakeEvent">Event to invoke when the object is retrieved</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
-        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation, OnEntityAwake awakeEvent = null)
+        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FVector3 position, FQuaternion rotation, OnEntityAwake awakeEvent = null, GridAlignment alignment = GridAlignment.ANY)
         {
+            var pool = GetEntityPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_entityObjectPool.TryGetValue(entity.Data.Name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(entity.Data.Name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 EntityDataBehaviour objectInstance = objectQueue.Dequeue();
@@ -157,14 +201,17 @@ namespace Lodis.Utility
         /// <summary>
         /// Gets the first instance of the object found in the pool
         /// </summary>
-        /// <param name="gameObject">A reference to the object</param>
-        /// <param name="position">The new position of the object</param>
-        /// <param name="rotation">The new rotation of the object</param>
+        /// <param name="entity">A reference to the object</param>
+        /// <param name="parent">The parent transform to attach to</param>
+        /// <param name="awakeEvent">Event to invoke when the object is retrieved</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
-        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FTransform parent, OnEntityAwake awakeEvent = null)
+        public EntityDataBehaviour GetObject(EntityDataBehaviour entity, FTransform parent, OnEntityAwake awakeEvent = null, GridAlignment alignment = GridAlignment.ANY)
         {
+            var pool = GetEntityPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_entityObjectPool.TryGetValue(entity.Data.Name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(entity.Data.Name, out Queue<EntityDataBehaviour> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 EntityDataBehaviour objectInstance = objectQueue.Dequeue();
@@ -192,11 +239,14 @@ namespace Lodis.Utility
         /// <param name="position">The new position of the object</param>
         /// <param name="rotation">The new rotation of the object</param>
         /// <param name="createNew">Whether or not to make a new object if one can't be found</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Returns null otherwise</returns>
-        public GameObject GetObject(string name, Vector3 position,  Quaternion rotation, bool createNew = false)
+        public GameObject GetObject(string name, Vector3 position, Quaternion rotation, bool createNew = false, GridAlignment alignment = GridAlignment.ANY)
         {
+            var pool = GetGameObjectPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_objectPool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 GameObject objectInstance = objectQueue.Dequeue();
@@ -208,7 +258,7 @@ namespace Lodis.Utility
             else if (createNew)
             {
                 GameObject newObject = new GameObject(name);
-                
+
                 newObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
 
                 return newObject;
@@ -223,8 +273,10 @@ namespace Lodis.Utility
         /// <param name="gameObject">A reference to the object</param>
         /// <param name="parent">The new parent of the object</param>
         /// <param name="resetPosition">Whether or not to make this game object match the position and rotation of its parent</param>
+        /// <param name="onAwake">Event to invoke when the object is retrieved</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Creates a new object otherwise</returns>
-        public GameObject GetObject(GameObject gameObject, Transform parent, bool resetPosition = false, OnGameObjectAwake onAwake = null)
+        public GameObject GetObject(GameObject gameObject, Transform parent, bool resetPosition = false, OnGameObjectAwake onAwake = null, GridAlignment alignment = GridAlignment.ANY)
         {
 #if UNITY_EDITOR
             if (gameObject.TryGetComponent<EntityDataBehaviour>(out _))
@@ -233,8 +285,10 @@ namespace Lodis.Utility
             }
 #endif
 
+            var pool = GetGameObjectPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_objectPool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(gameObject.name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 GameObject objectInstance = objectQueue.Dequeue();
@@ -259,11 +313,14 @@ namespace Lodis.Utility
         /// <param name="parent">The new parent of the object</param>
         /// <param name="resetPosition">Whether or not to make this game object match the position and rotation of its parent</param>
         /// <param name="createNew">Whether or not to make a new object if one can't be found</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Returns null otherwise</returns>
-        public GameObject GetObject(string name, Transform parent, bool resetPosition = false, bool createNew = false)
+        public GameObject GetObject(string name, Transform parent, bool resetPosition = false, bool createNew = false, GridAlignment alignment = GridAlignment.ANY)
         {
+            var pool = GetGameObjectPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_objectPool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 GameObject objectInstance = objectQueue.Dequeue();
@@ -293,17 +350,21 @@ namespace Lodis.Utility
         /// <summary>
         /// Gets the first instance of the object found in the pool
         /// </summary>
+        /// <param name="objectInstance">The output object instance</param>
         /// <param name="name">The name of the object to search for</param>
         /// <param name="parent">The new parent of the object</param>
         /// <param name="resetPosition">Whether or not to make this game object match the position and rotation of its parent</param>
         /// <param name="createNew">Whether or not to make a new object if one can't be found</param>
+        /// <param name="alignment">The alignment pool to pull from</param>
         /// <returns>The object instance if it is in the pool. Returns null otherwise</returns>
-        public bool GetObject(out GameObject objectInstance, string name, Transform parent, bool resetPosition = false, bool createNew = false)
+        public bool GetObject(out GameObject objectInstance, string name, Transform parent, bool resetPosition = false, bool createNew = false, GridAlignment alignment = GridAlignment.ANY)
         {
             objectInstance = null;
 
+            var pool = GetGameObjectPool(alignment);
+
             //If an object of this type has a queue in the dictionary...
-            if (_objectPool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
+            if (pool.TryGetValue(name, out Queue<GameObject> objectQueue) && objectQueue.Count > 0)
             {
                 //...set the first instance found active and return the object
                 objectInstance = objectQueue.Dequeue();
@@ -372,7 +433,7 @@ namespace Lodis.Utility
             newObject.FixedTransform.SetPositionAndRotation(position, rotation);
             newObject.name = entity.Data.Name;
             newObject.Data.Name = entity.Data.Name;
-            onAwake?.Invoke(entity);
+            onAwake?.Invoke(newObject);
 
             return newObject;
         }
@@ -416,10 +477,11 @@ namespace Lodis.Utility
         }
 
         /// <summary>
-        /// Makes the game object inactive in the seen and adds it back to the pool
+        /// Makes the game object inactive in the scene and adds it back to the pool
         /// </summary>
         /// <param name="objectInstance">The instance of the game object to return to the pool</param>
-        public void ReturnGameObject(GameObject objectInstance)
+        /// <param name="alignment">The alignment pool to return to</param>
+        public void ReturnGameObject(GameObject objectInstance, GridAlignment alignment = GridAlignment.ANY)
         {
             if (!objectInstance)
                 return;
@@ -431,9 +493,11 @@ namespace Lodis.Utility
             }
 #endif
 
+            var pool = GetGameObjectPool(alignment);
+
             Queue<GameObject> queue;
             //If the object has a queue in the dictionary already...
-            if (_objectPool.TryGetValue(objectInstance.name, out queue) && !queue.Contains(objectInstance))
+            if (pool.TryGetValue(objectInstance.name, out queue) && !queue.Contains(objectInstance))
             {
                 //...add the object back into the queue
                 queue.Enqueue(objectInstance);
@@ -441,14 +505,14 @@ namespace Lodis.Utility
             else if (queue?.Contains(objectInstance) == true)
             {
                 return;
-            }    
+            }
             //Otherwise...
             else
             {
                 //...add the object to a new queue
                 Queue<GameObject> newObjectQueue = new Queue<GameObject>();
                 newObjectQueue.Enqueue(objectInstance);
-                _objectPool.Add(objectInstance.name, newObjectQueue);
+                pool.Add(objectInstance.name, newObjectQueue);
             }
 
             //Disable the object in the scene
@@ -462,11 +526,12 @@ namespace Lodis.Utility
         }
 
         /// <summary>
-        /// Makes the game object inactive in the seen and adds it back to the pool
+        /// Makes the game object inactive in the scene and adds it back to the pool
         /// </summary>
         /// <param name="objectInstance">The instance of the game object to return to the pool</param>
         /// <param name="time">The amount of time in seconds to wait before returning the object</param>
-        public void ReturnGameObject(GameObject objectInstance, float time)
+        /// <param name="alignment">The alignment pool to return to</param>
+        public void ReturnGameObject(GameObject objectInstance, float time, GridAlignment alignment = GridAlignment.ANY)
         {
 #if UNITY_EDITOR
             if (objectInstance.TryGetComponent<EntityDataBehaviour>(out _))
@@ -474,26 +539,31 @@ namespace Lodis.Utility
                 Debug.LogError("Tried to return an object that has an entity data behaviour to the normal pool instead of the Entity pool. Object was " + objectInstance.name);
             }
 #endif
-            RoutineBehaviour.Instance.StartNewTimedAction(args => ReturnGameObject(objectInstance), TimedActionCountType.SCALEDTIME, time);
+            RoutineBehaviour.Instance.StartNewTimedAction(args => ReturnGameObject(objectInstance, alignment), TimedActionCountType.SCALEDTIME, time);
         }
 
         /// <summary>
-        /// Makes the game object inactive in the seen and adds it back to the pool
+        /// Makes the game object inactive in the scene and adds it back to the pool
         /// </summary>
         /// <param name="objectInstance">The instance of the game object to return to the pool</param>
-        public void ReturnGameObject(EntityDataBehaviour objectInstance, bool loseParent = false)
+        /// <param name="loseParent">Whether to clear the parent transform</param>
+        /// <param name="alignment">The alignment pool to return to</param>
+        public void ReturnGameObject(EntityDataBehaviour objectInstance, bool loseParent = true, GridAlignment alignment = GridAlignment.ANY)
         {
             if (!objectInstance)
                 return;
 
+            var pool = GetEntityPool(alignment);
+
             //If the object has a queue in the dictionary already...
-            if (_entityObjectPool.TryGetValue(objectInstance.Data.Name, out Queue<EntityDataBehaviour> queue) && !queue.Contains(objectInstance))
+            if (pool.TryGetValue(objectInstance.Data.Name, out Queue<EntityDataBehaviour> queue) && !queue.Contains(objectInstance))
             {
                 //...add the object back into the queue
                 queue.Enqueue(objectInstance);
             }
             else if (queue?.Contains(objectInstance) == true)
             {
+                Debug.LogWarning("Tried to return an object that was already in the queue. Object was " + objectInstance.Data.Name);
                 return;
             }
             //Otherwise...
@@ -502,7 +572,7 @@ namespace Lodis.Utility
                 //...add the object to a new queue
                 Queue<EntityDataBehaviour> newObjectQueue = new Queue<EntityDataBehaviour>();
                 newObjectQueue.Enqueue(objectInstance);
-                _entityObjectPool.Add(objectInstance.Data.Name, newObjectQueue);
+                pool.Add(objectInstance.Data.Name, newObjectQueue);
             }
 
             //Disable the object in the scene
@@ -521,13 +591,14 @@ namespace Lodis.Utility
         }
 
         /// <summary>
-        /// Makes the game object inactive in the seen and adds it back to the pool
+        /// Makes the game object inactive in the scene and adds it back to the pool
         /// </summary>
         /// <param name="objectInstance">The instance of the game object to return to the pool</param>
         /// <param name="time">The amount of time in seconds to wait before returning the object</param>
-        public void ReturnGameObject(EntityDataBehaviour objectInstance, Fixed32 time)
+        /// <param name="alignment">The alignment pool to return to</param>
+        public void ReturnGameObject(EntityDataBehaviour objectInstance, Fixed32 time, GridAlignment alignment = GridAlignment.ANY)
         {
-            FixedPointTimer.StartNewTimedAction(() => ReturnGameObject(objectInstance), time);
+            FixedPointTimer.StartNewTimedAction(() => ReturnGameObject(objectInstance, false, alignment), time);
         }
     }
 }

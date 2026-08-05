@@ -67,6 +67,8 @@ public class FollowBehaviour : SimulationBehaviour
         }
     }
 
+    public override string LogName => "FollowBehaviour";
+
     private void OnEnable()
     {
         if (_resetOnEnable && !_useSimulationUpdate)
@@ -162,11 +164,20 @@ public class FollowBehaviour : SimulationBehaviour
 
     public override void Deserialize(BinaryReader br)
     {
-
+        _simStart = _simStart.Deserialize(br);
     }
 
     public override void Serialize(BinaryWriter bw)
     {
+        _simStart.Serialize(bw);
+    }
 
+    /// <summary>
+    /// Hashes the serialized follow target state so replay mismatches caused by this
+    /// helper behavior can be isolated quickly.
+    /// </summary>
+    protected override string[] GetLogItems()
+    {
+        return new string[] { "Sim Start Position: " + _simStart };
     }
 }

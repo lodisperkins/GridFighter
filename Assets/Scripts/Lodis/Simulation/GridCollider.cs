@@ -7,10 +7,9 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Runtime.Remoting.Messaging;
+using System.Text;
 using Types;
 using UnityEngine;
-using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public struct Collision
 {
@@ -416,7 +415,7 @@ public class GridCollider
         }
 
         //Check collision for AABB.
-        bool collisionDetected = 
+        bool collisionDetected =
             //Check vertical AABB collision
             GetBottom() < other.GetTop() && GetTop() > other.GetBottom() &&
             //Checking horizontal collision
@@ -582,8 +581,13 @@ public class GridCollider
 
     public void Deserialize(BinaryReader br)
     {
-        _width.Deserialize(br);
-        _height.Deserialize(br);
+        _width = _width.Deserialize(br);
+        _height = _height.Deserialize(br);
         PanelYOffset = br.ReadInt32();
+    }
+
+    public void OnLogGameState(StringBuilder sb)
+    {
+        sb.AppendLine($"Collider of {Entity.Data.Name} Width={Width}, Height={Height}, PanelYOffset={PanelYOffset}");
     }
 }

@@ -277,6 +277,8 @@ namespace Lodis.Gameplay
         public FVector2 LastAttackDirection { get => _lastAttackDirection; private set => _lastAttackDirection = value; }
         public bool BurstLocked { get => _burstLocked; private set => _burstLocked = value; }
 
+        public override string LogName => "MovesetBehaviour";
+
         public override void Serialize(BinaryWriter bw)
         {
             _energy.Serialize(bw);
@@ -302,8 +304,8 @@ namespace Lodis.Gameplay
 
         public override void Deserialize(BinaryReader br)
         {
-            _energy.Deserialize(br);
-            _burstEnergy.Deserialize(br);
+            _energy = _energy.Deserialize(br);
+            _burstEnergy = _burstEnergy.Deserialize(br);
             _abilityInUse = br.ReadBoolean();
             _energyChargeEnabled = br.ReadBoolean();
             _canDefensiveBurst = br.ReadBoolean();
@@ -337,6 +339,32 @@ namespace Lodis.Gameplay
                 UseAbility(ID);
                 _lastAbilityInUse.Deserialize(br);
             }
+        }
+
+
+        /// <summary>
+        /// Hashes the serialized move-resource and cooldown state so ability-related
+        /// divergences can be isolated to this component.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            List<string> logItems = new List<string>
+            {
+                $"Energy: {_energy}",
+                $"Burst Energy: {_burstEnergy}",
+                $"Ability In Use: {_abilityInUse}",
+                $"Energy Charge Enabled: {_energyChargeEnabled}",
+                $"Can Defensive Burst: {_canDefensiveBurst}",
+                $"Can Offensive Burst: {_canOffensiveBurst}",
+                $"Burst Locked: {_burstLocked}",
+                $"Loading Shuffle: {_loadingShuffle}",
+                $"Deck Reloading: {_deckReloading}"
+            };
+
+            int serializedAbilityId = _abilityInUse && _lastAbilityInUse != null ? _lastAbilityInUse.abilityData.ID : 0;
+            logItems.Add($"Serialized Ability ID: {serializedAbilityId}");
+
+            return logItems.ToArray();
         }
 
         public override void Init()
@@ -504,16 +532,6 @@ namespace Lodis.Gameplay
             {
                 _burstAction.Reset();
             }
-        }
-
-        private void HandleComboPrediction()
-        {
-            if (_inputBehaviour.ComboPrediction == AbilityType.SPECIAL || !_stateMachineScript.CompareState("Tumbling", "Flinching"))
-            {
-                return;
-            }
-
-
         }
 
         /// <summary>
@@ -1206,7 +1224,7 @@ namespace Lodis.Gameplay
             HealthBehaviour health = collision.OtherEntity.GetComponent<HealthBehaviour>();
             bool? invincible = health?.IsInvincible == true;
 
-            if (hitCollider.Spawner != Entity.Data || invincible.GetValueOrDefault() || collision.OtherEntity != _opponentMoveset.Entity.Data)
+            if (hitCollider.Spawner != Entity.Data || invincible.GetValueOrDefault() || collision.OtherEntity != _opponentMoveset.Entity.Data || hitCollider.ColliderInfo.DontGiveEnergyOnHit)
             {
                 return;
             }
@@ -1320,5 +1338,6 @@ namespace Lodis.Gameplay
                 }
             }
         }
+
     }
 }

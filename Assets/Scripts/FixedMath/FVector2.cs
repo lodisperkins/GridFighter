@@ -46,10 +46,11 @@ namespace FixedPoints
             Y.Serialize(bw);
         }
 
-        public void Deserialize(BinaryReader br)
+        public FVector2 Deserialize(BinaryReader br)
         {
-            X.Deserialize(br);
-            Y.Deserialize(br);
+            X = X.Deserialize(br);
+            Y = Y.Deserialize(br);
+            return this;
         }
 
         /// <summary>

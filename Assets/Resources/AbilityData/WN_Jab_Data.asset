@@ -17,6 +17,7 @@ MonoBehaviour:
     good for building damage and disrupting attacks.\r"
   exampleClip: {fileID: 32900000, guid: 3884e68004dc993489b2e738342d5335, type: 3}
   AbilityType: 0
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 3276
   recoverTime:
@@ -58,7 +59,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 32c2d8d3ee627d54885a6303fb406e31, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 390d25990a26fea4283b3e3e5bd239de, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -68,6 +69,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 10485
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -75,6 +77,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 65536
     BaseKnockBack:
@@ -91,9 +94,10 @@ MonoBehaviour:
       RawValue: 13107
     Priority:
       RawValue: 65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 1
     IsEnder: 0
-    AppliedStatusEffect: 0
+    AppliedStatusEffect: 1
     StatusEffectStacks: 0
     AllowMultipleStackApplications: 0
     OwnerAlignement: 0

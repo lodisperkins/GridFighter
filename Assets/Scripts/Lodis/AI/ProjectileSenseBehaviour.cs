@@ -11,6 +11,8 @@ namespace Lodis.AI
     {
         [SerializeField] private AIControllerBehaviour _owner;
 
+        public override string LogName => "ProjectileSenseBehaviour";
+
         public override void Deserialize(BinaryReader br)
         {
            return;
@@ -19,6 +21,15 @@ namespace Lodis.AI
         public override void Serialize(BinaryWriter bw)
         {
             return;
+        }
+
+        /// <summary>
+        /// Hashes the serialized projectile sensing state, which is currently empty,
+        /// so this component still participates in the shared checksum surface.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return null;
         }
 
         //public override void OnOverlapEnter(Collision other)

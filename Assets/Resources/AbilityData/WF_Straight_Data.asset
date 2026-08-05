@@ -17,6 +17,7 @@ MonoBehaviour:
     a little knockback to the opponent when it lands.\r\n"
   exampleClip: {fileID: 32900000, guid: c24d1a1f2bcc5e34f804b933a07b9537, type: 3}
   AbilityType: 2
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 6553
   recoverTime:
@@ -68,6 +69,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 6553
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -75,6 +77,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 131072
     BaseKnockBack:
@@ -91,6 +94,7 @@ MonoBehaviour:
       RawValue: 3276
     Priority:
       RawValue: 65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 1
     IsEnder: 0
     AppliedStatusEffect: 0

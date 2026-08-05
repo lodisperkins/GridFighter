@@ -50,6 +50,8 @@ namespace Lodis.Gameplay
         public bool CollisionEnabled { get => _entityCollider.CollisionEnabled; set => _entityCollider.CollisionEnabled = value; }
         public CollisionEvent OnHit { get => onHit; set => onHit = value; }
 
+        public override string LogName => "ColliderBehaviour";
+
         public override void Init()
         {
             base.Init();
@@ -141,7 +143,6 @@ namespace Lodis.Gameplay
 
         public override void Serialize(BinaryWriter bw)
         {
-            return;
             //Tell the actual colliding object to serialize.
             _entityCollider.Serialize(bw);
 
@@ -159,7 +160,6 @@ namespace Lodis.Gameplay
 
         public override void Deserialize(BinaryReader br)
         {
-            return;
             //Tell the actual colliding object to deserialize.
             _entityCollider.Deserialize(br);
 
@@ -180,12 +180,33 @@ namespace Lodis.Gameplay
                 int hashKey = br.ReadInt32();
 
                 Fixed32 timeVal = new Fixed32();
-                timeVal.Deserialize(br);
+                timeVal = timeVal.Deserialize(br);
 
                 Collisions.Add(hashKey, timeVal);
             }
         }
 
+        /// <summary>
+        /// Hashes the serialized collider state so collision-volume mismatches can be
+        /// narrowed down to this behavior.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            List<string> logItems = new List<string>
+            {
+                $"Collider Width: {_entityCollider.Width}",
+                $"Collider Height: {_entityCollider.Height}",
+                $"Collider Panel Y Offset: {_entityCollider.PanelYOffset}",
+                $"Collision Count: {Collisions.Count}"
+            };
+
+            foreach (var collisionEntry in Collisions)
+            {
+                logItems.Add($"Collision[{collisionEntry.Key}]: {collisionEntry.Value}");
+            }
+
+            return logItems.ToArray();
+        }
 
         private void OnDrawGizmos()
         {
@@ -277,5 +298,6 @@ namespace Lodis.Gameplay
                 _visualCube.SetActive(false);
             }
         }
+
     }
 }

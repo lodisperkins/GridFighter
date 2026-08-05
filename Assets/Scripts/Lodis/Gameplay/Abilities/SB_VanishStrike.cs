@@ -46,6 +46,7 @@ namespace Lodis.Gameplay
 
             OwnerMoveScript.TeleportToPanel(_spawnPanel, 0, false, teleportEffect);
             OwnerMoveScript.Move(new FVector2(2, 0) * -OwnerMoveScript.GetAlignmentX(), tempAlignment: GridAlignment.ANY, canBeOccupied: true, reservePanel: false, clampPosition: true);
+            OwnerMoveScript.AddOnMoveEndTempAction(ReturnHitCollider);
 
             _hitCollider = HitColliderSpawner.SpawnCollider(Owner.FixedTransform, 1, 1, GetColliderData(0), Owner);
             _hitCollider.ColliderInfo.ScaleStats((Fixed32)args[0]);

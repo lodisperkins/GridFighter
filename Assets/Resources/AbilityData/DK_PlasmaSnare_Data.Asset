@@ -17,6 +17,7 @@ MonoBehaviour:
     Move them around while they are in the air to set up for a follow up attack.
   exampleClip: {fileID: 32900000, guid: 610d595b569bb6d4ea2024223ced08ef, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 39321
   recoverTime:
@@ -50,7 +51,7 @@ MonoBehaviour:
   Effects:
   - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: fb87cefd601f1954ea11392685522770, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: fef32ad1201b24b49b01285923bceccc, type: 3}
   ActivateSound: {fileID: 8300000, guid: 006e8658d3c9180448481354485967b5, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -60,6 +61,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 0
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -67,6 +69,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 65536
     BaseKnockBack:
@@ -83,6 +86,7 @@ MonoBehaviour:
       RawValue: 65
     Priority:
       RawValue: -65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 0

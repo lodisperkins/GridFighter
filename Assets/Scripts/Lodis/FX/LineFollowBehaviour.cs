@@ -1,5 +1,6 @@
 
 using FixedPoints;
+using Lodis.GridScripts;
 using NaughtyAttributes;
 using System.Collections;
 using System.Collections.Generic;
@@ -20,22 +21,31 @@ namespace Lodis.Gameplay
 
         [SerializeField] private Transform _target;
 
+        private Stack<LineFollowBehaviour> _linkedLines = new Stack<LineFollowBehaviour>();
+        private LineFollowBehaviour _lineParent;
+
         public Transform Start { get => _start; set => _start = value; }
         public Transform Target { get => _target; set => _target = value; }
         public TeleporterBehaviour LastTeleporterUsed { get; set; }
         public bool IgnoreTeleporters { get; set; } = false;
         public UnityAction<TeleporterBehaviour> OnTeleportedEvent { get; set; }
+        public bool ShouldCancelTeleport { get; set; } = false;
 
-        private Stack<LineFollowBehaviour> _linkedLines = new Stack<LineFollowBehaviour>();
+
 
         public void OnTeleported(EntityDataBehaviour teleporterOwner, TeleporterBehaviour teleporter, TeleporterBehaviour linkedTeleporter)
         {
-            if (IgnoreTeleporters)
-                return;
+            //If they are both on the back row then there nothing for the whip to even do so dont even teleport.
+            //if (!CheckTeleportersValid(linkedTeleporter) && !CheckTeleportersValid(teleporter))
+            //{
+            //    ShouldCancelTeleport = true;
+            //    return;
+            //}
 
             EntityDataBehaviour entity = GetComponentInParent<EntityDataBehaviour>();
             FTransform trans = entity.FixedTransform;
 
+            //If the last teleporter used is the same as the linked one, we are returning back through the teleporter chain.
             if (LastTeleporterUsed == linkedTeleporter)
             {
                 RemoveLinkedLine();
@@ -45,17 +55,32 @@ namespace Lodis.Gameplay
                 return;
             }
 
-
-            if (linkedTeleporter != LastTeleporterUsed)
+            //Otherwise we are going forward through the teleporter chain. We need to hold it open so it doesn't count our return trip.
+            if (linkedTeleporter != LastTeleporterUsed && !_lineParent)
             {
-                //This breaks because it holds it open on return
                 teleporter.HoldTeleporterOpen(entity);
             }
 
-            trans.WorldPosition = linkedTeleporter.FixedTransform.WorldPosition;
+            //trans.WorldPosition = linkedTeleporter.FixedTransform.WorldPosition;
 
             AddLinkedLine(teleporter.transform, linkedTeleporter.transform);
 
+        }
+
+        private bool CheckTeleportersValid(TeleporterBehaviour linkedTeleporter)
+        {
+            if (linkedTeleporter == null)
+                return false;
+
+            PanelBehaviour panel;
+
+            if (!GridBehaviour.Instance.GetPanelAtLocationInWorld(linkedTeleporter.transform.position, out panel))
+                return false;
+
+            if (panel.Position.X == 0 || GridBehaviour.Instance.Dimensions.x - 1 == panel.Position.X)
+                return false;
+
+            return true;
         }
 
         public void AddLinkedLine(Transform previousTarget, Transform newStart)
@@ -65,6 +90,7 @@ namespace Lodis.Gameplay
             newLine.Target = _target;
             _target = previousTarget;
             newLine.Start = newStart;
+            newLine._lineParent = this;
 
             _linkedLines.Push(newLine);
         }
@@ -90,6 +116,8 @@ namespace Lodis.Gameplay
 
             _line.SetPosition(0, _start.position);
             _line.SetPosition(1, _target.position);
+
+            IgnoreTeleporters = false;
         }
 
         private void OnDisable()

@@ -506,19 +506,19 @@ namespace Lodis.Gameplay
 
         private void Update()
         {
-            _isShielding = !_isParrying && _shieldCollider.gameObject.activeSelf;
+            //_isShielding = !_isParrying && _shieldCollider.gameObject.activeSelf;
 
-            _isDefending = _isShielding || _isPhaseShifting || _isParrying;
-            if (!_isShielding)
-            {
-                _moveset.EnergyChargeEnabled = true;
-                return;
-            }
+            //_isDefending = _isShielding || _isPhaseShifting || _isParrying;
+            //if (!_isShielding)
+            //{
+            //    _moveset.EnergyChargeEnabled = true;
+            //    return;
+            //}
 
-            _moveset.EnergyChargeEnabled = false;
+            //_moveset.EnergyChargeEnabled = false;
 
-            if (!_moveset.TryUseEnergy(_shieldDrainValue.FixedValue * Time.deltaTime))
-                DeactivateShield();
+            //if (!_moveset.TryUseEnergy(_shieldDrainValue.FixedValue * Time.deltaTime))
+            //    DeactivateShield();
         }
     }
 }

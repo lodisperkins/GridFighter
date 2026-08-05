@@ -831,6 +831,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
     SaturationThreshold: 0
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!1 &965301490467430834
 GameObject:
   m_ObjectHideFlags: 0
@@ -1443,6 +1444,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
     SaturationThreshold: 0
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!114 &1820454110
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3032,6 +3034,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
     SaturationThreshold: 0
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!114 &2090838970
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3727,6 +3730,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
     SaturationThreshold: 0
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!1 &4859955930615547508
 GameObject:
   m_ObjectHideFlags: 0
@@ -4581,6 +4585,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
     SaturationThreshold: 0
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!1 &5660476853438679181
 GameObject:
   m_ObjectHideFlags: 0
@@ -4996,6 +5001,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
     SaturationThreshold: 0
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!1 &6822297218417847282
 GameObject:
   m_ObjectHideFlags: 0
@@ -5753,6 +5759,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
     SaturationThreshold: 0.5
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!114 &1633531264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7014,6 +7021,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8858428560424583139, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
+      propertyPath: _entityData.Name
+      value: Win Collider R
+      objectReference: {fileID: 0}
+    - target: {fileID: 8858428560424583139, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
       propertyPath: _entityData.Transform._localPosition.Y.RawValue
       value: -131072
       objectReference: {fileID: 0}
@@ -7994,6 +8006,11 @@ PrefabInstance:
       propertyPath: _targetEmissionTextures.Array.data[2]
       value: 
       objectReference: {fileID: 2800000, guid: ba83bc458137dca4e919772861ee7c22, type: 3}
+    - target: {fileID: 8858428560424583139, guid: e447331d04560874e8eb89a06a5e656c,
+        type: 3}
+      propertyPath: _entityData.Name
+      value: Win Collider L
+      objectReference: {fileID: 0}
     - target: {fileID: 8858428560424583139, guid: e447331d04560874e8eb89a06a5e656c,
         type: 3}
       propertyPath: _entityData.Transform._localPosition.Y.RawValue

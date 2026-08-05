@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Types;
 using UnityEngine;
-using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
 
 
 namespace FixedPoints
@@ -83,11 +82,12 @@ namespace FixedPoints
             Z.Serialize(bw);
         }
 
-        public void Deserialize(BinaryReader br)
+        public FVector3 Deserialize(BinaryReader br)
         {
-            X.Deserialize(br);
-            Y.Deserialize(br);
-            Z.Deserialize(br);
+            X = X.Deserialize(br);
+            Y = Y.Deserialize(br);
+            Z = Z.Deserialize(br);
+            return this;
         }
 
         /// <summary>

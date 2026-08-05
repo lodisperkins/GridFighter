@@ -60,6 +60,7 @@ MonoBehaviour:
     OnlyChangeHue: 1
     SaturationThreshold: 10
   _linkedManager: {fileID: 0}
+  _linkedParticleManager: {fileID: 0}
 --- !u!114 &5287720227468763055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -250,7 +251,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6973814237279010968
 RectTransform:
   m_ObjectHideFlags: 0

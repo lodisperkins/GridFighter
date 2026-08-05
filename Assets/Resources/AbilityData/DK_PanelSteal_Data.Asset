@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: 'Temporarily takes a row of the opponent tiles. '
   exampleClip: {fileID: 32900000, guid: 0e620e65399a6564ab7e89b989d0e3e4, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 655
   recoverTime:
@@ -48,7 +49,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 940c465f0cc60c64b8a69cad5585d018, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 06d0691839069d2488a523b5a127c4c5, type: 3}
   ActivateSound: {fileID: 8300000, guid: 9d9bcff4b6c870642a2329d3406aac92, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}

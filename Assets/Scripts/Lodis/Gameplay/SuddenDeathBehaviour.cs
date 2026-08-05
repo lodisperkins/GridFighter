@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Types;
 using UnityEngine;
 
@@ -29,6 +30,39 @@ public class SuddenDeathBehaviour : SimulationBehaviour
     private Fixed32 _winMovementScale;
     private FVector3 _lhsOriginalPos;
     private FVector3 _rhsOriginalPos;
+
+    public override string LogName => "SuddenDeathBehaviour";
+
+    public override void Deserialize(BinaryReader br)
+    {
+        _currentX = br.ReadInt32();
+        _hasStarted = br.ReadBoolean();
+        _lhsOriginalPos = _lhsOriginalPos.Deserialize(br);
+        _rhsOriginalPos = _rhsOriginalPos.Deserialize(br);
+    }
+
+    public override void Serialize(BinaryWriter bw)
+    {
+        bw.Write(_currentX);
+        bw.Write(_hasStarted);
+        _lhsOriginalPos.Serialize(bw);
+        _rhsOriginalPos.Serialize(bw);
+    }
+
+    /// <summary>
+    /// Hashes the serialized sudden-death progression state so arena hazard
+    /// mismatches can be identified quickly.
+    /// </summary>
+    protected override string[] GetLogItems()
+    {
+        return new string[]
+        {
+            $"Current Sudden Death X: {_currentX}",
+            $"Has Sudden Death Started: {_hasStarted}",
+            $"LHS Original Pos: {_lhsOriginalPos}",
+            $"RHS Original Pos: {_rhsOriginalPos}"
+        };
+    }
 
     public override void Begin()
     {
@@ -196,13 +230,5 @@ public class SuddenDeathBehaviour : SimulationBehaviour
         PanelBehaviour panel = args[0] as PanelBehaviour;
 
         return panel != null && panel.Position.X == _currentX;
-    }
-
-    public override void Deserialize(BinaryReader br)
-    {
-    }
-
-    public override void Serialize(BinaryWriter bw)
-    {
     }
 }

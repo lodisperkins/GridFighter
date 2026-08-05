@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: DK_RiotShield_Data
   m_EditorClassIdentifier: 
   abilityName: Riot Shield
-  abilityDescription: None
-  exampleClip: {fileID: 0}
+  abilityDescription: Summon a shield that can block all incoming attacks. Breaks
+    after taking too much damage.
+  exampleClip: {fileID: 32900000, guid: e0b3e97f6b961ec4da6572355618735d, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 6553
   recoverTime:
@@ -40,7 +42,7 @@ MonoBehaviour:
   Effects:
   - {fileID: 774133484878984321, guid: e7c25c3a08b29774fb2fd6054766769b, type: 3}
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 36f8496005e253f44ae2f7ec164ae9d5, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 078954ceaac240041943dc311e0717cf, type: 3}
   ActivateSound: {fileID: 8300000, guid: 387b4526b02809b49b1835ed99cefb62, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -48,7 +50,7 @@ MonoBehaviour:
   _customStats:
   - name: DamageThreshold
     value:
-      RawValue: 655360
+      RawValue: 327680
   animationType: 0
   _customAnimation: {fileID: 0}
   _shouldMirror: 1

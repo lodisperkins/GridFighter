@@ -20,6 +20,7 @@ public class EntityDataBehaviour : MonoBehaviour
     [Tooltip("The transform of the object that is the visual representation of this entity.")]
     [SerializeField] private Transform _visualRoot;
     [SerializeField] private EntityDataBehaviour[] _children;
+    [SerializeField] private SimulationBehaviour[] _additionalComponents;
 
     //---
     protected bool inGame;
@@ -50,6 +51,17 @@ public class EntityDataBehaviour : MonoBehaviour
             sim.Entity = this;
         }
 
+        if (_additionalComponents != null)
+        {
+            foreach (SimulationBehaviour sim in _additionalComponents)
+            {
+                if (sim == null)
+                    continue;
+
+                Data.AddComponent(sim);
+                sim.Entity = this;
+            }
+        }
         //Adds all components to the entity so they can be updated by the rollback simulation.
 
         if (_children != null)
@@ -153,7 +165,7 @@ public class EntityDataBehaviour : MonoBehaviour
     {
         inGame = false;
 
-        if (!inGame && !AddToGameManually)
+        if (!AddToGameManually)
         {
             AddToGame();
         }

@@ -5,22 +5,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using BBUnity;
 using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.ScriptableObjects;
 using Lodis.FX;
-using UnityEngine.InputSystem;
-using UnityEngine.Events;
-using System.Runtime.Remoting.Messaging;
 using Lodis.Utility;
 using Assets.Scripts.Lodis.AI;
 using FixedPoints;
 using Types;
 using System.IO;
-using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
-using System.Threading.Tasks;
-using PixelCrushers;
 
 namespace Lodis.AI
 {
@@ -199,7 +192,10 @@ namespace Lodis.AI
         public bool TouchingOpponentBarrier { get => _touchingOpponentBarrier; set => _touchingOpponentBarrier = value; }
         public bool CopyAttacks { get => _copyAttacks; set => _copyAttacks = value; }
 
-        public bool HasBuffered { get => _bufferedAction?.HasAction() == true; }
+        public bool HasBuffered { get => _bufferedAction?.HasInput == true; }
+
+        public override string LogName => "AIControllerBehaviour";
+
         //public DefenseNode LastDefenseDecision { get => _lastDefenseDecision; set => _lastDefenseDecision = value; }
 
         public void LoadDecisions()
@@ -408,16 +404,17 @@ namespace Lodis.AI
         /// <param name="args">Any additional arguments to give to the ability. 
         public void BufferAction(Ability ability, float attackStrength, Vector2 attackDirection)
         {
-            AbilityType abilityType = AbilityType.SPECIAL;
-            _attackDirection.X *= Mathf.Round(transform.forward.x);
 
-            //Use a normal ability if it was not held long enough
-            _bufferedAction = new BufferedInput(() => UseAbility(ability, attackStrength, attackDirection), condition =>
-            {
-                _abilityBuffered = false;
-                return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
-            }, 0.2f);
-            _abilityBuffered = true;
+            //AbilityType abilityType = AbilityType.SPECIAL;
+            //_attackDirection.X *= Mathf.Round(transform.forward.x);
+
+            ////Use a normal ability if it was not held long enough
+            //_bufferedAction = new BufferedInput(() => UseAbility(ability, attackStrength, attackDirection), condition =>
+            //{
+            //    _abilityBuffered = false;
+            //    return _moveset.GetCanUseAbility() && !FXManagerBehaviour.Instance.SuperMoveEffectActive;
+            //}, 0.2f);
+            //_abilityBuffered = true;
         }
 
         private FVector3 GetAverageVelocity()
@@ -487,7 +484,7 @@ namespace Lodis.AI
                 _inputBehaviour.AttackDirection = FVector2.Zero;
             }
 
-            _inputBehaviour.BufferChargeNormalAbility();
+            _inputBehaviour.TryUseChargeNormalAbility();
         }
 
         private void PerformAction(ActionNode action)
@@ -1217,5 +1214,13 @@ namespace Lodis.AI
         {
         }
 
+        /// <summary>
+        /// Hashes the serialized AI controller state so sync-test can identify when
+        /// this component diverges from its replayed version.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return Array.Empty<string>();
+        }
     }
 }

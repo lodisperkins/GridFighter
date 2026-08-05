@@ -4,6 +4,7 @@ using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Types;
 using UnityEngine;
 
@@ -25,7 +26,7 @@ namespace Lodis.Gameplay
         {
 			base.Init(newOwner);
 
-            OwnerAnimationScript.AddEventListener("DK_WarpBullet_Teleport", SpawnKickHitBox);
+            //OwnerAnimationScript.AddEventListener("DK_WarpBullet_Teleport", SpawnKickHitBox);
             ObjectPoolBehaviour.Instance.OnReturnToPool.AddListener(RemoveHitColliderAsChild);
         }
 
@@ -33,6 +34,7 @@ namespace Lodis.Gameplay
         {
             base.OnStart(args);
 
+            OnHit += OnCollision;
             _heldItemSpawn = OwnerMoveset.HeldItemSpawnLeft;
             if (OwnerMoveScript.Alignment == GridScripts.GridAlignment.RIGHT)
                 _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
@@ -52,6 +54,14 @@ namespace Lodis.Gameplay
                 return;
 
             _hitCollider.FixedTransform.Parent = null;
+        }
+
+        private void OnCollision(Collision collision)
+        {
+            if (collision.OtherEntity.UnityObject.CompareTag("RingBarrier") && currentActivationAmount == 1)
+            {
+                EndAbility();
+            }
         }
 
         //Called when ability is used
@@ -99,6 +109,7 @@ namespace Lodis.Gameplay
                     _kickTimer.Reset();
 
                 OwnerAnimationScript.PlayAnimation(kickTime, clip);
+                FixedPointTimer.StartNewTimedAction(SpawnKickHitBox, GridGame.FixedTimeStep); 
             }
         }
 
@@ -113,7 +124,7 @@ namespace Lodis.Gameplay
 
             if (_enforcerInstance != null)
             {
-                GridGame.RemoveEntityFromGame(_enforcerInstance.GetComponent<EntityDataBehaviour>(), true);
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_enforcerInstance.GetComponent<EntityDataBehaviour>(), true);
                 _enforcerInstance = null;
             }
         }
@@ -122,6 +133,7 @@ namespace Lodis.Gameplay
         {
             base.OnMatchRestart();
 
+            currentActivationAmount = 0;
             _kickTimer?.Stop();
         }
     }

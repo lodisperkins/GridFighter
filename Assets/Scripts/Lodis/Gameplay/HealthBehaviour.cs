@@ -203,7 +203,7 @@ namespace Lodis.Gameplay
         public Fixed32 TimeInCurrentStun { get; protected set; }
         public Fixed32 LastAbilityID { get; protected set; }
 
-
+        public override string LogName => "HealthBehaviour";
 
         public override void Serialize(BinaryWriter bw)
         {
@@ -219,14 +219,33 @@ namespace Lodis.Gameplay
 
         public override void Deserialize(BinaryReader br)
         {
-            _health.Deserialize(br);
+            _health = _health.Deserialize(br);
             _isInvincible = br.ReadBoolean();
             _stunned = br.ReadBoolean();
             _isIntangible = br.ReadBoolean();
             DamageableAbilityID = br.ReadInt32();
             _hasArmor = br.ReadBoolean();
             _counterStanceActive = br.ReadBoolean();
-            LastAbilityID.Deserialize(br);
+            LastAbilityID = LastAbilityID.Deserialize(br);
+        }
+
+        /// <summary>
+        /// Hashes the serialized health and invincibility state so damage-related
+        /// mismatches can be tied to this behavior.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[] 
+            {
+                $"Health: {_health}",
+                $"IsInvincible: {_isInvincible}",
+                $"Stunned: {_stunned}",
+                $"IsIntangible: {_isIntangible}",
+                $"DamageableAbilityID: {_damageableAbilityID}",
+                $"HasArmor: {_hasArmor}",
+                $"CounterStanceActive: {_counterStanceActive}",
+                $"LastAbilityID: {LastAbilityID}"
+            };
         }
 
         protected override void Awake()
@@ -667,6 +686,7 @@ namespace Lodis.Gameplay
             if (Health > _maxHealth.FixedValue)
                 Health = _maxHealth.FixedValue;
         }
+
     }
 }
 

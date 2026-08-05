@@ -20,13 +20,15 @@ namespace Lodis.Gameplay
         private Movement.GridMovementBehaviour _movement;
         private CharacterDefenseBehaviour _characterDefense;
         [SerializeField]
-        private string _currentState;
-        private string _lastState;
+        private string _currentState = "";
+        private string _lastState = "";
         private UnityEvent<string> _onStateChanged;
 
         public StateMachine StateMachine { get => _stateMachine; }
         public string LastState { get => _lastState; private set => _lastState = value; }
         public string CurrentState { get => _stateMachine.CurrentState; }
+
+        public override string LogName => "CharacterStateMachineBehaviour";
 
         protected override void Awake()
         {
@@ -44,6 +46,7 @@ namespace Lodis.Gameplay
             _input = GetComponent<Input.InputBehaviour>();
             _movement = GetComponent<Movement.GridMovementBehaviour>();
             _characterDefense = GetComponent<CharacterDefenseBehaviour>();
+
             _stateMachine.SetTransitionCondition("Any-Stunned", args => _knockBack.Stunned);
             _stateMachine.SetTransitionConditionByLabel("Attack", args => _moveset.AbilityInUse);
             _stateMachine.SetTransitionCondition("Tumbling-BreakingFall", args => _characterDefense.BreakingFall);
@@ -60,6 +63,7 @@ namespace Lodis.Gameplay
             _stateMachine.SetTransitionConditionByLabel("Shuffling", args => _moveset.LoadingShuffle);
             _stateMachine.SetTransitionCondition("Any-Idle", args => _knockBack.CheckIfIdle() && !_movement.IsMoving && !_characterDefense.BreakingFall &&
             !_characterDefense.IsDefending && !_characterDefense.IsResting && !_moveset.AbilityInUse && !_moveset.LoadingShuffle);
+
         }
 
         public void AddOnStateChangedAction(UnityAction<string> action)
@@ -108,7 +112,21 @@ namespace Lodis.Gameplay
             _currentState = br.ReadString();
             _lastState = br.ReadString();
 
-            _stateMachine.ForceEnterState(_currentState);
+            if (_stateMachine.CurrentState != _currentState)
+                _stateMachine.ForceEnterState(_currentState);
+        }
+
+        /// <summary>
+        /// Hashes the serialized state machine values so character-state mismatches
+        /// can be attributed to this component.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                "Current State: " + _currentState,
+                "Last State: " + _lastState
+            };
         }
     }
 }

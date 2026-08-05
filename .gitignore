@@ -62,3 +62,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 *.zip
+/synclogs
+/serialize_logs
+*.log

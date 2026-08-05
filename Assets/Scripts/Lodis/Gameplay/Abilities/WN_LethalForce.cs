@@ -32,9 +32,14 @@ namespace Lodis.Gameplay
                 _heldItemSpawn = OwnerMoveset.HeldItemSpawnRight;
 
             ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true);
-            _enforcerInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual.GetComponent<EntityDataBehaviour>(), (FVector3)_heldItemSpawn.position, (FQuaternion)_heldItemSpawn.rotation).GetComponent<AccessoryEffectBehaviour>();
+            _enforcerInstance = ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.Visual, _heldItemSpawn, true, alignment: OwnerMoveScript.Alignment).GetComponent<AccessoryEffectBehaviour>();
+
+            _enforcerInstance.Owner = Owner.Data.UnityObject;
             _enforcerInstance.transform.parent = _heldItemSpawn;
+            _enforcerInstance.transform.localRotation = Quaternion.identity;
             _originalPosition = OwnerMoveset.ProjectileSpawner.Entity.FixedTransform.LocalPosition;
+            _enforcerInstance.GetComponent<ColorManagerBehaviour>().SetColors((int)OwnerMoveScript.Alignment);
+
         }
 
         //Called when ability is used
@@ -49,13 +54,13 @@ namespace Lodis.Gameplay
         protected override void OnEnd()
         {
             OwnerMoveset.ProjectileSpawner.Entity.FixedTransform.LocalPosition = _originalPosition;
-            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect, _heldItemSpawn, true);
+            ObjectPoolBehaviour.Instance.GetObject(abilityData.Accessory.SpawnEffect);
 
             base.OnEnd();
 
             if (_enforcerInstance != null)
             {
-                ObjectPoolBehaviour.Instance.ReturnGameObject(_enforcerInstance.GetComponent<EntityDataBehaviour>());
+                ObjectPoolBehaviour.Instance.ReturnGameObject(_enforcerInstance.GetComponent<EntityDataBehaviour>(), alignment: OwnerMoveScript.Alignment);
                 _enforcerInstance = null;
             }
         }

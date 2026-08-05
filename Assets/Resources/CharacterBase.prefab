@@ -10254,10 +10254,11 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2313499556558640970}
-            m_TargetAssemblyTypeName: 
-            m_MethodName: SetTrigger
-            m_Mode: 5
+          - m_Target: {fileID: 3406130847468409652}
+            m_TargetAssemblyTypeName: Lodis.Gameplay.CharacterAnimationBehaviour,
+              Assembly-CSharp
+            m_MethodName: PlayTumblingAnimation
+            m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10284,7 +10285,7 @@ MonoBehaviour:
       onUpdateState:
         m_PersistentCalls:
           m_Calls: []
-    - position: {x: 641.55566, y: 565.1109}
+    - position: {x: 642.66675, y: 565.1109}
       id: Attacking
       onEnterState:
         m_PersistentCalls:
@@ -10300,10 +10301,11 @@ MonoBehaviour:
       onEnterState:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2313499556558640970}
-            m_TargetAssemblyTypeName: 
-            m_MethodName: SetTrigger
-            m_Mode: 5
+          - m_Target: {fileID: 3406130847468409652}
+            m_TargetAssemblyTypeName: Lodis.Gameplay.CharacterAnimationBehaviour,
+              Assembly-CSharp
+            m_MethodName: PlayFreeFallAnimation
+            m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10543,10 +10545,11 @@ MonoBehaviour:
       onEnterTransition:
         m_PersistentCalls:
           m_Calls:
-          - m_Target: {fileID: 2313499556558640970}
-            m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
-            m_MethodName: Play
-            m_Mode: 5
+          - m_Target: {fileID: 3406130847468409652}
+            m_TargetAssemblyTypeName: Lodis.Gameplay.CharacterAnimationBehaviour,
+              Assembly-CSharp
+            m_MethodName: PlayIdleAnimation
+            m_Mode: 1
             m_Arguments:
               m_ObjectArgument: {fileID: 0}
               m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -11048,6 +11051,8 @@ MonoBehaviour:
   _visualRoot: {fileID: 561307191668043432}
   _children:
   - {fileID: 9088445964086657447}
+  _additionalComponents:
+  - {fileID: 3406130847468409652}
 --- !u!114 &8769265702160132241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16199,7 +16204,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1410480334696625155}
-  - component: {fileID: 4492341976395638836}
   m_Layer: 0
   m_Name: StatusEffectParticles
   m_TagString: Untagged
@@ -16224,20 +16228,6 @@ Transform:
   - {fileID: 5628185399352926715}
   m_Father: {fileID: 561307191668043432}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4492341976395638836
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3408153176536902828}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: daa6cb7825d05f04bbb53a7e77ecea90, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_yAxisOnly: 0
-  m_rotate180: 0
 --- !u!1 &3576377687171317274
 GameObject:
   m_ObjectHideFlags: 0
@@ -21456,6 +21446,7 @@ MonoBehaviour:
   _updateEntityUsingUnityTransform: 0
   _visualRoot: {fileID: 5449818576778757990}
   _children: []
+  _additionalComponents: []
 --- !u!1 &5675499867829757784
 GameObject:
   m_ObjectHideFlags: 0
@@ -50954,9 +50945,12 @@ MonoBehaviour:
   _runtimeController: {fileID: 9100000, guid: bf363af5ef1ed09458377392c74704f7, type: 2}
   _characterStateManager: {fileID: 3205124130663625092}
   _characterMesh: {fileID: 0}
-  _moveAnimationStartUpTime: 0
-  _moveAnimationRecoverTime: 0
-  _flinchStartUpTime: 0
+  _moveAnimationStartUpTime:
+    RawValue: 0
+  _moveAnimationRecoverTime:
+    RawValue: 0
+  _flinchStartUpTime:
+    RawValue: 0
   _defaultCastAnimation: {fileID: 7400000, guid: 2a309e7f9de89cc4b9a8ca00474660a7,
     type: 3}
   _defaultSummonAnimation: {fileID: 7400000, guid: ddf9c626b2ff100488528fffc61d472e,
@@ -50964,7 +50958,8 @@ MonoBehaviour:
   _defaultMeleeAnimation: {fileID: 7400000, guid: 635d947060dd41649bbcfe7bc1ebb900,
     type: 3}
   _animationLayer: 0
-  _moveAnimationHangTime: 0
+  _moveAnimationHangTime:
+    RawValue: 0
   _manualShuffleStartTime: {fileID: 11400000, guid: 0c367ef0ca043a54ba0b95e61339d657,
     type: 2}
   _manualShuffleActiveTime: {fileID: 11400000, guid: e0113aa2b9e6d7f42864c50ced5862d2,

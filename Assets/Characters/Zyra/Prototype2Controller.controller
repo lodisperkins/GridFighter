@@ -261,6 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc493d7acc34da46a04327130433dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _forceLeftRotation: 0
 --- !u!1101 &-5839272690317672558
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -373,6 +374,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc493d7acc34da46a04327130433dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _forceLeftRotation: 0
 --- !u!1107 &-5186238515601875021
 AnimatorStateMachine:
   serializedVersion: 6
@@ -396,10 +398,10 @@ AnimatorStateMachine:
     m_Position: {x: -20, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -4901685746222246159}
-    m_Position: {x: 780, y: 220, z: 0}
+    m_Position: {x: 740, y: 250, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1245146988074993085}
-    m_Position: {x: 530, y: 170, z: 0}
+    m_Position: {x: 540, y: 180, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8727068348883591611}
     m_Position: {x: 200, y: -90, z: 0}
@@ -423,7 +425,7 @@ AnimatorStateMachine:
     m_Position: {x: 430, y: -40, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5711968250193457630}
-    m_Position: {x: 430, y: 80, z: 0}
+    m_Position: {x: 460, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8530773362807673131}
     m_Position: {x: -20, y: -40, z: 0}
@@ -444,7 +446,7 @@ AnimatorStateMachine:
     m_Position: {x: 210, y: -170, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7285209538617319082}
-    m_Position: {x: 680, y: 20, z: 0}
+    m_Position: {x: 670, y: 20, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: 617923927693067058}
@@ -637,6 +639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc493d7acc34da46a04327130433dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _forceLeftRotation: 0
 --- !u!1102 &-2220347714702497475
 AnimatorState:
   serializedVersion: 6
@@ -815,6 +818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc493d7acc34da46a04327130433dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _forceLeftRotation: 0
 --- !u!1102 &-634517470550529
 AnimatorState:
   serializedVersion: 6
@@ -1025,24 +1029,6 @@ AnimatorController:
     m_DefaultWeight: 0
     m_IKPass: 0
     m_SyncedLayerAffectsTiming: 0
-    m_Controller: {fileID: 9100000}
-  - serializedVersion: 5
-    m_Name: Layer Mask
-    m_StateMachine: {fileID: 6304818230954255710}
-    m_Mask: {fileID: 101100000, guid: 12d4a8ff5f7951f429e12d0337087fd8, type: 2}
-    m_Motions:
-    - serializedVersion: 2
-      m_State: {fileID: 1245146988074993085}
-      m_Motion: {fileID: 0}
-    - serializedVersion: 2
-      m_State: {fileID: -5711968250193457630}
-      m_Motion: {fileID: 7400000, guid: c1857e4094b87fe40a724b81e470c20d, type: 3}
-    m_Behaviours: []
-    m_BlendingMode: 0
-    m_SyncedLayerIndex: 0
-    m_DefaultWeight: 0
-    m_IKPass: 0
-    m_SyncedLayerAffectsTiming: 1
     m_Controller: {fileID: 9100000}
 --- !u!1101 &359310337081421715
 AnimatorStateTransition:
@@ -1493,6 +1479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdc493d7acc34da46a04327130433dce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _forceLeftRotation: 0
 --- !u!1101 &4666572985719480317
 AnimatorStateTransition:
   m_ObjectHideFlags: 1

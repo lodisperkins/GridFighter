@@ -44,6 +44,11 @@ public class StatusEffect
         get { return _stackCount; }
     }
 
+    public Fixed32 Health
+    {
+        get { return _health; }
+    }
+
     public StatusEffect(StatusEffectType effectType, KnockbackBehaviour owner)
     {
         _effectType = effectType;
@@ -155,7 +160,7 @@ public class StatusEffect
     public virtual void Deserialize(BinaryReader br)
     {
         _stackCount = br.ReadInt32();
-        _health.Deserialize(br);
+        _health = _health.Deserialize(br);
     }
 
     public virtual void Serialize(BinaryWriter bw)

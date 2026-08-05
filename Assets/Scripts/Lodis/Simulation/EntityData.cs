@@ -4,6 +4,7 @@ using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Types;
 using UnityEngine;
 
@@ -13,8 +14,7 @@ using UnityEngine;
 [System.Serializable]
 public class EntityData : ISerializedListObject
 {
-    private readonly List<SimulationBehaviour> _components = new();
-    private readonly SerializedListHandler<SimulationBehaviour> _serializedComponents;
+    private readonly SerializedListHandler<SimulationBehaviour> _components = new();
     private bool _active;
     private GridCollider[] _gridColliders;
     private int _frameAdded;
@@ -74,9 +74,11 @@ public class EntityData : ISerializedListObject
 
     public int FrameAdded { get => _frameAdded; set => _frameAdded = value; }
     public int FrameRemoved { get => _frameRemoved; set => _frameRemoved = value; }
-    public int FrameSerialized { get; set; }
+    public int FrameAddedToSerializedList { get; set; }
     public ListEvent OnAddedToList { get; set; }
     public ListEvent OnRemovedFromList { get; set; }
+
+    public string ListDisplayName => Name;
 
     public delegate void EntityUpdateEvent(Fixed32 dt);
     public event EntityUpdateEvent OnTick;
@@ -92,10 +94,9 @@ public class EntityData : ISerializedListObject
         Name = "New Entity";
         Transform = new FTransform(this);
         Init();
-        _serializedComponents = new SerializedListHandler<SimulationBehaviour>(_components);
-        _serializedComponents.Name = Name + " Components";
-        OnAddedToList = AddDeserializedEntityToGame;
-        OnRemovedFromList = RemoveDeserializedEntityFromGame;
+
+        string name = UnityObject ? UnityObject.name : Name;
+        _components.Name = name + " Components";
     }
 
     public EntityData(string name) : this()
@@ -106,7 +107,7 @@ public class EntityData : ISerializedListObject
     private void AddDeserializedEntityToGame()
     {
         //Abilities need to be taken from the pool so they are reusable.
-        if (UnityObject.layer == LayerMask.NameToLayer("Ability"))
+        if (UnityObject && UnityObject.layer == LayerMask.NameToLayer("Ability"))
         {
             ObjectPoolBehaviour.Instance.GetObject(UnityScript, Transform.WorldPosition, Transform.WorldRotation);
         }
@@ -120,14 +121,14 @@ public class EntityData : ISerializedListObject
     private void RemoveDeserializedEntityFromGame()
     {
         //Abilities need to be added back to the pool so they are reusable.
-        if (UnityObject.layer == LayerMask.NameToLayer("Ability"))
+        if (UnityObject != null && UnityObject.layer == LayerMask.NameToLayer("Ability"))
         {
             ObjectPoolBehaviour.Instance.ReturnGameObject(UnityScript);
         }
         //Otherwise just remove them from the game as normal.
         else
         {
-            GridGame.RemoveEntityFromGame(this);
+            GridGame.RemoveEntityFromGameImmediate(this);
         }
     }
 
@@ -145,7 +146,7 @@ public class EntityData : ISerializedListObject
 
         Transform.Serialize(bw);
 
-        _serializedComponents.Serialize(bw);
+        _components.Serialize(bw);
 
         if (_gridColliders == null) return;
 
@@ -163,7 +164,7 @@ public class EntityData : ISerializedListObject
         Y = br.ReadInt32();
 
         Transform.Deserialize(br);
-        _serializedComponents.Deserialize(br);
+        _components.Deserialize(br);
 
         if (_gridColliders == null) return;
 
@@ -197,6 +198,11 @@ public class EntityData : ISerializedListObject
         {
             _components[i].Begin();
         }
+
+#if UNITY_EDITOR
+        _components.DebugItemFilter = _debugComponentFilter;
+        _components.ShouldIgnoreWhatsInItemFilter = _shouldIgnoreItemsInFilter;
+#endif
 
         OnBegin?.Invoke();
     }
@@ -239,7 +245,7 @@ public class EntityData : ISerializedListObject
 
         for (int i = 0; i < _components.Count; i++)
         {
-            _components[i].End();
+            _components[i]?.End();
         }
 
         OnEnd?.Invoke();
@@ -337,6 +343,11 @@ public class EntityData : ISerializedListObject
         return _components.Find(c => c.GetType() == typeof(T)) != null;
     }
 
+    public void DestroyComponents()
+    {
+        _components.Destroy();
+    }
+
     public void OnCollisionEnter(Collision collision)
     {
         foreach (var comp in _components)
@@ -385,7 +396,8 @@ public class EntityData : ISerializedListObject
 
     public bool CheckIfCanBeAddedToList()
     {
-        return Active || (FrameRemoved > GridGameManager.FrameNumber && FrameAdded <= GridGameManager.FrameNumber);
+        //return Active || (FrameRemoved > GridGameManager.FrameNumber && FrameAdded <= GridGameManager.FrameNumber);
+        return true;
     }
 
     public void OnSerialize(BinaryWriter bw)
@@ -397,10 +409,114 @@ public class EntityData : ISerializedListObject
     {
         Deserialize(br);
 
-        if (FrameAdded > GridGameManager.FrameNumber)
+        //if (FrameAdded > GridGameManager.FrameNumber)
+        //{
+        //   RemoveDeserializedEntityFromGame();
+        //}
+    }
+
+    public void OnLogGameState(StringBuilder sb)
+    {
+        sb.AppendLine($"      Entity: {Name}");
+        sb.AppendLine($"            Active: {Active} X: {X} Y: {Y}");
+        Transform.OnLogGameState(sb);
+
+        _components.OnLogGameState(sb);
+
+        if (_gridColliders == null) return;
+
+        foreach (var col in _gridColliders)
         {
-           RemoveDeserializedEntityFromGame();
+            col?.OnLogGameState(sb);
         }
+    }
+
+#if UNITY_EDITOR
+    private readonly string[] _debugComponentFilter = new string[]
+    {
+        "AIControllerBehaviour",
+        "NetworkAttackNPCBehaviour",
+        "NetworkCharacterAIMovementBehaviour",
+        "NetworkSimpleAIMovementBehaviour",
+        "ProjectileSenseBehaviour",
+        "CharacterAnimationBehaviour",
+        "MatchTimerBehaviour",
+        "SurgeMeterBehaviour",
+        "FXManagerBehaviour",
+        "CharacterStateMachineBehaviour",
+        "ColliderBehaviour",
+        "CollisionGroup",
+        "DespawnTimer",
+        "HealthBehaviour",
+        "MovesetBehaviour",
+        "ProjectileSpawnerBehaviour",
+        "SuddenDeathBehaviour",
+        "CollisionPlaneBehaviour",
+        "ActionRecorderBehaviour",
+        "InputBehaviour",
+        "GridMovementBehaviour",
+        "GridPhysicsBehaviour",
+        "LandingBehaviour",
+        "TeleporterBehaviour",
+        "Secur_TBehaviour",
+        "StatusEffectManagerBehavior",
+        "FollowBehaviour",
+    };
+
+    private bool _shouldIgnoreItemsInFilter = false;
+#endif 
+
+    /// <summary>
+    /// Hashes the entity's serialized rollback payload so the debug log can compare
+    /// whole-entity state in the same shape used by save/load.
+    /// </summary>
+    public int CalculateChecksum()
+    {
+        using (MemoryStream memoryStream = new MemoryStream())
+        using (BinaryWriter writer = new BinaryWriter(memoryStream))
+        {
+            WriteChecksumPayload(writer);
+            return CalcFletcher32(memoryStream.ToArray());
+        }
+    }
+
+    /// <summary>
+    /// Writes the entity payload used for debug checksum comparisons without
+    /// triggering logging-time serialize callbacks on nested list objects.
+    /// </summary>
+    public void WriteChecksumPayload(BinaryWriter bw)
+    {
+        bw.Write(Active);
+
+        bw.Write(X);
+        bw.Write(Y);
+
+        Transform.Serialize(bw);
+
+        if (_gridColliders == null) return;
+
+        foreach (var col in _gridColliders)
+        {
+            col?.Serialize(bw);
+        }
+    }
+
+    /// <summary>
+    /// Produces a lightweight deterministic fingerprint of serialized entity data
+    /// for sync-test diagnostics.
+    /// </summary>
+    private static int CalcFletcher32(byte[] data)
+    {
+        uint sum1 = 0;
+        uint sum2 = 0;
+
+        for (int i = 0; i < data.Length; ++i)
+        {
+            sum1 = (sum1 + data[i]) % 0xffff;
+            sum2 = (sum2 + sum1) % 0xffff;
+        }
+
+        return unchecked((int)((sum2 << 16) | sum1));
     }
 
     public static implicit operator EntityData(EntityDataBehaviour entity) => entity.Data;

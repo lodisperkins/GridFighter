@@ -37,12 +37,34 @@ public class SurgeMeterBehaviour : SimulationBehaviour
     public bool InHotSpotRange => _surgeMeterCurrent >= HotSpotMinimum && _surgeMeterCurrent < _surgeMeterMax;
     public bool SurgeMeterFull => _surgeMeterCurrent >= _surgeMeterMax;
 
+    public override string LogName => "SurgeMeterBehaviour";
+
     public override void Deserialize(BinaryReader br)
     {
+        _surgeMeterCurrent = br.ReadInt32();
+        _wasInHotSpotRange = br.ReadBoolean();
+        _applyingHotSpotBonus = br.ReadBoolean();
     }
 
     public override void Serialize(BinaryWriter bw)
     {
+        bw.Write(_surgeMeterCurrent);
+        bw.Write(_wasInHotSpotRange);
+        bw.Write(_applyingHotSpotBonus);
+    }
+
+    /// <summary>
+    /// Hashes the serialized surge meter state so meter-specific divergences can be
+    /// identified during sync-test investigation.
+    /// </summary>
+    protected override string[] GetLogItems()
+    {
+        return new string[]
+        {
+            $"Surge Meter Current: {_surgeMeterCurrent}",
+            $"Was In Hot Spot Range: {_wasInHotSpotRange}",
+            $"Applying Hot Spot Bonus: {_applyingHotSpotBonus}"
+        };
     }
 
     public override void Begin()
@@ -166,7 +188,7 @@ public class SurgeMeterBehaviour : SimulationBehaviour
         if (_opponentKnockback.CheckIfIdle())
         {
             _surgeMeterCurrent = 0;
-            _visualRoot.SetActive(false);
+            _visualRoot?.SetActive(false);
             UpdateSurgeMeterUI();
         }
     }

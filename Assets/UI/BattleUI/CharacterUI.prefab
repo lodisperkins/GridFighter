@@ -104,7 +104,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &5191783004353453445
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -546,6 +546,57 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6689084462440701614}
     m_Modifications:
+    - target: {fileID: 5919989055232476069, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6581850412873645525, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _backgroundImages.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _backgroundImages.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 587f04a8f80ac7f45b6bdc271ea82747,
+        type: 3}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _backgroundImages.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: 9f0fb2b0c4e5bf34aa3390166f558dd1,
+        type: 3}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _backgroundImages.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: b2b48941d4d72ae4991dce19a6efe96e,
+        type: 3}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _backgroundImages.Array.data[3]
+      value: 
+      objectReference: {fileID: 21300000, guid: 18c6756d48bfdad47a346676f6ea5e30,
+        type: 3}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _backgroundImages.Array.data[4]
+      value: 
+      objectReference: {fileID: 21300000, guid: d8f61a27bf5ebb146be353386d2c1f18,
+        type: 3}
+    - target: {fileID: 7641144697237450266, guid: 3eea4d536d3e5044296872429b4177b1,
+        type: 3}
+      propertyPath: _backgroundImages.Array.data[5]
+      value: 
+      objectReference: {fileID: 21300000, guid: 67e3b8ef8583b6d4ea009b8fe33fb313,
+        type: 3}
     - target: {fileID: 7641144697237450340, guid: 3eea4d536d3e5044296872429b4177b1,
         type: 3}
       propertyPath: m_Name

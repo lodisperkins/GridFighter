@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: WF_WhipPull_Data
   m_EditorClassIdentifier: 
   abilityName: WhipPull
-  abilityDescription: None
-  exampleClip: {fileID: 0}
+  abilityDescription: 'Fire a whip from the enforcer that can trap enemies and pull
+    them towards you. '
+  exampleClip: {fileID: 32900000, guid: ce90a67f1b5b8c14e8cb890f5b8db137, type: 3}
   AbilityType: 2
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 32768
   recoverTime:
@@ -47,10 +49,11 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 11400000, guid: 4db829e6a6aee7746bc29cdc79ee9a4e, type: 2}
   Effects: []
-  Sounds: []
-  DisplayIcon: {fileID: 0}
-  ActivateSound: {fileID: 0}
-  ActiveSound: {fileID: 0}
+  Sounds:
+  - {fileID: 8300000, guid: 8bb04fc919c802f4086b18d250bc1dc9, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 828ffe4fc6186604493e3ea3b16c0845, type: 3}
+  ActivateSound: {fileID: 8300000, guid: ac68129427fe7154fbe40d25bd39c505, type: 3}
+  ActiveSound: {fileID: 8300000, guid: bae5957b3ca84d54a89fee95d42064d4, type: 3}
   DeactivateSound: {fileID: 0}
   ColliderData:
   - Name: WhipPullCollider
@@ -58,6 +61,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 196608
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -65,14 +69,13 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 131072
     BaseKnockBack:
       RawValue: 32768
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 1
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -83,6 +86,12 @@ MonoBehaviour:
       RawValue: 6553
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 5
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 2
     AbilityID:

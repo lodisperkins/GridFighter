@@ -167,7 +167,7 @@ GameObject:
   - component: {fileID: 8557254640274237921}
   - component: {fileID: 8157293857336035462}
   - component: {fileID: 4255900452426243208}
-  - component: {fileID: 2787077708021005224}
+  - component: {fileID: 7358989707958098005}
   m_Layer: 0
   m_Name: OverclockWhip
   m_TagString: Untagged
@@ -313,7 +313,7 @@ MonoBehaviour:
   _xRange: 0
   _yRange: 0
   _radius: 0
---- !u!114 &2787077708021005224
+--- !u!114 &7358989707958098005
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -322,7 +322,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1446156717015989069}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5222571e5d57ad34aa03ed86d0c07e4d, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b64a18253765be4fac9ca71e473e1b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _onSerialize:
@@ -361,6 +361,62 @@ MonoBehaviour:
   _shouldDrawCollider: 1
   _isHurtBox: 0
   debuggingEnabled: 0
+  ColliderInfo:
+    Name: 
+    DespawnAfterTimeLimit: 0
+    TimeActive:
+      RawValue: 0
+    DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 0
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    Damage:
+      RawValue: 0
+    BaseKnockBack:
+      RawValue: 0
+    KnockBackScale:
+      RawValue: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 0
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 0
+    Priority:
+      RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
+    OwnerAlignement: 0
+    AbilityType: 0
+    AbilityID:
+      RawValue: 0
+    SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 0
+    HitStopShakeStrength:
+      RawValue: 0
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
 --- !u!1 &2288011225787671728
 GameObject:
   m_ObjectHideFlags: 0

@@ -126,17 +126,36 @@ namespace Lodis.Gameplay
         public void SpawnPlayer2()
         {
             //Spawn player 2 by mode.
+#if SYNC_TEST
+            //If we're doing a sync test will handle which type of player to spawn in the multiplayer condition.
+            bool p2InputCondition = true;
 
+            //We only need a special condition check if we set the sync test type to none. 
+            //If its local AI then the GridGameManager.AIFightEnabled check will be true and spawn the AI, if its local multiplayer, then the normal multiplayer check should handle it.
+            bool syncTestDummyEnabled = GridGameManager.CurrentSyncTestType == GridGameManager.SyncTestType.None;
+#else
+            bool p2InputCondition = _mode != GameMode.ONLINE;
+            bool syncTestDummyEnabled = false;
+#endif
             //Spawn AI by default.
             if ((_mode != GameMode.MULTIPLAYER && _mode != GameMode.ONLINE) || GridGameManager.AIFightEnabled)
             {
                 _player2 = Instantiate(_dummy.gameObject);
             }
             //Spawn the second player as normal in a local match.
-            else if (_mode != GameMode.ONLINE)
+            else if (p2InputCondition)
             {
-                _player2 = _inputManager.JoinPlayer(1, 1, _sceneManager.P2ControlScheme, _sceneManager.P2Devices).gameObject;
-                _player2.GetComponent<InputBehaviour>().Devices = _sceneManager.P2Devices;
+                //If we're doing a sync test and the type is set to none, spawn a dummy to just sit there.
+                if (syncTestDummyEnabled)
+                {
+                    _player2 = Instantiate(_onlinePlayerRef);
+                }
+                //Otherwise spawn a normal player 2.
+                else
+                {
+                    _player2 = _inputManager.JoinPlayer(1, 1, _sceneManager.P2ControlScheme, _sceneManager.P2Devices).gameObject;
+                    _player2.GetComponent<InputBehaviour>().Devices = _sceneManager.P2Devices;
+                }
             }
             //If we are in an online match...
             else if (_mode == GameMode.ONLINE)
@@ -218,19 +237,24 @@ namespace Lodis.Gameplay
                 Debug.LogError("Invalid spawn point for player 2. Spawn was " + RHSSpawnLocation);
 
             _p2Movement.Alignment = GridScripts.GridAlignment.RIGHT;
+            ConfigureRollbackDebugController(_player2, _player2Data, 2);
         }
 
         public void SpawnPlayer1()
         {
             //Spawn player 1 by mode.
-
+#if SYNC_TEST
+            bool p1InputCondition = true;
+#else
+            bool p1InputCondition = _mode != GameMode.ONLINE || GridGameManager.IsHost;
+#endif
             //Spawn AI if this is a CPU only battle.
             if (_mode == GameMode.SIMULATE)
             {
                 _player1 = Instantiate(_dummy.gameObject);
             }
             //Otherwise if we're playing locally or hosting just spawn player 1 in as normal.
-            else if (_mode != GameMode.ONLINE || GridGameManager.IsHost)
+            else if (p1InputCondition)
             {
                 Debug.Log("Is host is " + GridGameManager.IsHost);
                 Debug.Log("Gamemode is " + _mode);
@@ -293,6 +317,80 @@ namespace Lodis.Gameplay
                 Debug.LogError("Invalid spawn point for player 1. Spawn was " + LHSSpawnLocation);
 
             _p1Movement.Alignment = GridScripts.GridAlignment.LEFT;
+            ConfigureRollbackDebugController(_player1, _player1Data, 1);
+        }
+
+        /// <summary>
+        /// Attaches rollback debug helpers to spawned player controllers when a sync-test
+        /// session explicitly requests recording or playback. This leaves normal matches
+        /// and non-selected sync-test configurations untouched.
+        /// </summary>
+        private static void ConfigureRollbackDebugController(GameObject controllerRoot, CharacterData characterData, int playerNumber)
+        {
+            if (!GridGameManager.ShouldUseRollbackDebugSession || controllerRoot == null)
+                return;
+
+            if (controllerRoot.GetComponent<IControllable>() == null)
+                return;
+
+            string recordingName = GridGameManager.GetRollbackDebugRecordingName(playerNumber, characterData != null ? characterData.DisplayName : null);
+
+            switch (GridGameManager.CurrentRollbackDebugSessionMode)
+            {
+                case GridGameManager.RollbackDebugSessionMode.Record:
+                    RecordingPlaybackBehaviour playbackBehaviour = controllerRoot.GetComponent<RecordingPlaybackBehaviour>();
+
+                    if (playbackBehaviour != null)
+                    {
+                        playbackBehaviour.enabled = false;
+                    }
+
+                    ActionRecorderBehaviour recorder = controllerRoot.GetComponent<ActionRecorderBehaviour>();
+
+                    if (recorder == null)
+                    {
+                        recorder = controllerRoot.AddComponent<ActionRecorderBehaviour>();
+                    }
+
+                    recorder.InitializeRecording(recordingName, false);
+                    recorder.enabled = true;
+
+                    MatchManagerBehaviour.Instance?.AddOnMatchStartAction(() =>
+                    {
+                        if (recorder != null)
+                        {
+                            recorder.SetRecordEnabled(true, false);
+                        }
+                    });
+                    break;
+
+                case GridGameManager.RollbackDebugSessionMode.Playback:
+                    ActionRecorderBehaviour existingRecorder = controllerRoot.GetComponent<ActionRecorderBehaviour>();
+
+                    if (existingRecorder != null)
+                    {
+                        existingRecorder.enabled = false;
+                    }
+
+                    RecordingPlaybackBehaviour playback = controllerRoot.GetComponent<RecordingPlaybackBehaviour>();
+
+                    if (playback == null)
+                    {
+                        playback = controllerRoot.AddComponent<RecordingPlaybackBehaviour>();
+                    }
+
+                    playback.InitializePlayback(recordingName, false, GridGameManager.CurrentRollbackDebugPlaybackPlayOnce);
+                    playback.enabled = true;
+
+                    MatchManagerBehaviour.Instance?.AddOnMatchStartAction(() =>
+                    {
+                        if (playback != null)
+                        {
+                            playback.SetPlaybackEnabled(true);
+                        }
+                    });
+                    break;
+            }
         }
 
         private static void ApplyBindingOverrides(InputBehaviour playerInput, InputProfileData profile, string scheme, bool invertHorizontal = false)
@@ -403,9 +501,6 @@ namespace Lodis.Gameplay
             knockback.Physics.StopVelocity();
             knockback.Physics.GridActive = true;
 
-            InputBehaviour input = _player1.GetComponent<InputBehaviour>();
-            if (input)
-                input.ClearBuffer();
 
 
             knockback = _p2InputController.Character.GetComponent<KnockbackBehaviour>();
@@ -414,9 +509,6 @@ namespace Lodis.Gameplay
             knockback.Physics.StopVelocity();
             knockback.Physics.GridActive = true;
 
-            input = _player2.GetComponent<InputBehaviour>();
-            if (input)
-                input.ClearBuffer();
 
             MovesetBehaviour moveset = _p1InputController.Character.GetComponent<MovesetBehaviour>();
             moveset.ResetAll();

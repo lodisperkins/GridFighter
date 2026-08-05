@@ -45,7 +45,7 @@ namespace Types
         }
 
 
-        public Fixed32(int rawValue)
+        public Fixed32(long rawValue)
         {
             RawValue = rawValue;
             _scale = DefaultScale;
@@ -76,14 +76,12 @@ namespace Types
 
         public void Serialize(BinaryWriter bw)
         {
-            bw.Write(Scale);
             bw.Write(RawValue);
         }
 
-        public void Deserialize(BinaryReader br)
+        public Fixed32 Deserialize(BinaryReader br)
         {
-            Scale = br.ReadInt32();
-            RawValue = br.ReadInt64();
+            return new Fixed32(br.ReadInt64());
         }
 
         public int Sign()
@@ -150,6 +148,15 @@ namespace Types
             return new Fixed32(roundedValue.WholeNumber << value.Scale);
         }
 
+        /// <summary>
+        /// Returns the largest integer less than or equal to the value (rounds toward negative infinity).
+        /// </summary>
+        public static int FloorToInt(Fixed32 value)
+        {
+            // Shift right to get the integer part (truncates toward negative infinity for fixed-point)
+            return (int)(value.RawValue >> value.Scale);
+        }
+
         public static bool IsNaN(Fixed32 value)
         {
             return value.RawValue == long.MinValue;
@@ -168,6 +175,16 @@ namespace Types
             }
 
             return value;   
+        }
+
+        public static Fixed32 Min(Fixed32 a, Fixed32 b)
+        {
+            return a < b ? a : b;
+        }
+
+        public static Fixed32 Max(Fixed32 a, Fixed32 b)
+        {
+            return a > b ? a : b;
         }
 
         public static bool WithinRange(Fixed32 value, Fixed32 a, Fixed32 b)
@@ -232,19 +249,62 @@ namespace Types
 
         public override string ToString()
         {
+#if SYNC_TEST
+            return RawValue.ToString();
+#else
             return ((double)this).ToString();
+#endif
         }
 
-        // Trigonometric functions using Mathf approximations
+        private static Fixed32 HalfPI => PI / 2;
+        private static Fixed32 TwoPI => PI * 2;
+
+        /// <summary>
+        /// Wraps an angle in radians into the [-PI, PI] range so trig approximations stay stable.
+        /// </summary>
+        private static Fixed32 WrapRadians(Fixed32 radians)
+        {
+            Fixed32 wrapped = radians;
+            int turns = FloorToInt(wrapped / TwoPI);
+            wrapped -= turns * TwoPI;
+
+            if (wrapped > PI)
+                wrapped -= TwoPI;
+            else if (wrapped < -PI)
+                wrapped += TwoPI;
+
+            return wrapped;
+        }
+
+        // Deterministic trigonometric approximations that stay entirely in fixed-point math.
+        // These operate on radians like Mathf.Sin/Cos, but do not call into Unity floats.
+        // Sin uses the Bhaskara I approximation after range reduction to [0, PI], which gives
+        // a good balance between accuracy and deterministic integer-only operations.
 
         public static Fixed32 Sin(Fixed32 radians)
         {
-            return (Fixed32)Mathf.Sin(radians);
+            Fixed32 wrapped = WrapRadians(radians);
+
+            if (wrapped == 0)
+                return 0;
+
+            bool isNegative = wrapped < 0;
+            Fixed32 positiveAngle = isNegative ? -wrapped : wrapped;
+
+            Fixed32 numeratorBase = positiveAngle * (PI - positiveAngle);
+            Fixed32 numerator = 16 * numeratorBase;
+            Fixed32 denominator = 5 * PI * PI - 4 * numeratorBase;
+
+            if (denominator == 0)
+                return 0;
+
+            Fixed32 result = numerator / denominator;
+            return isNegative ? -result : result;
         }
 
         public static Fixed32 Cos(Fixed32 radians)
         {
-            return (Fixed32)Mathf.Cos(radians);
+            return Sin(radians + HalfPI);
         }
 
         public static Fixed32 Acos(Fixed32 x)

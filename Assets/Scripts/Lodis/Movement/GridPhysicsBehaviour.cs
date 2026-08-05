@@ -222,6 +222,8 @@ namespace Lodis.Movement
         public bool BouncePending { get => _currentBounce.Bounces <= 0; }
         public bool ClampPositionInBarriers { get => clampPositionInBarriers; set => clampPositionInBarriers = value; }
 
+        public override string LogName => "GridPhysicsBehaviour";
+
         public override void Serialize(BinaryWriter bw)
         {
             _velocity.Serialize(bw);
@@ -241,12 +243,12 @@ namespace Lodis.Movement
 
         public override void Deserialize(BinaryReader br)
         {
-            _velocity.Deserialize(br);
-            _lastVelocity.Deserialize(br);
-            _lastForceAdded.Deserialize(br);
-            _forceToApply.Deserialize(br);
-            _frozenStoredForce.Deserialize(br);
-            _frozenVelocity.Deserialize(br);
+            _velocity = _velocity.Deserialize(br);
+            _lastVelocity = _lastVelocity.Deserialize(br);
+            _lastForceAdded = _lastForceAdded.Deserialize(br);
+            _forceToApply = _forceToApply.Deserialize(br);
+            _frozenStoredForce = _frozenStoredForce.Deserialize(br);
+            _frozenVelocity = _frozenVelocity.Deserialize(br);
 
             _useGravity = br.ReadBoolean();
             _isFrozen = br.ReadBoolean();
@@ -254,6 +256,29 @@ namespace Lodis.Movement
             _isGrounded = br.ReadBoolean();
             _gridActive = br.ReadBoolean();
             _isKinematic = br.ReadBoolean();
+        }
+
+        /// <summary>
+        /// Hashes the serialized physics state so any derived physics behavior can
+        /// report a rollback checksum based on its exact serialized payload.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Velocity={_velocity}",
+                $"Last Velocity={_lastVelocity}",
+                $"Last Force Added={_lastForceAdded}",
+                $"Force To Apply={_forceToApply}",
+                $"Frozen Stored Force={_frozenStoredForce}",
+                $"Frozen Velocity={_frozenVelocity}",
+                $"Use Gravity={_useGravity}",
+                $"Is Frozen={_isFrozen}",
+                $"Panel Bounce Enabled={_panelBounceEnabled}",
+                $"Is Grounded={_isGrounded}",
+                $"Grid Active={_gridActive}",
+                $"Is Kinematic={_isKinematic}"
+            };
         }
 
         protected override void Awake()
@@ -1186,5 +1211,6 @@ namespace Lodis.Movement
                 ApplyForce(_friction * -(Velocity.X / Fixed32.Abs(Velocity.X) * FVector3.Right));
             }
         }
+
     }
 }

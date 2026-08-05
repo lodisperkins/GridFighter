@@ -70,7 +70,6 @@ public class AbilityDataSaver : EditorWindow
 
     private void LoadAllAbilities()
     {
-        return;
         if (!File.Exists(_saveFilePath))
         {
             Debug.LogError($"No file found at {_saveFilePath}");

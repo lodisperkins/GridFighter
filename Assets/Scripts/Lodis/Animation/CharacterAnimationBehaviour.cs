@@ -33,6 +33,18 @@ namespace Lodis.Gameplay
         INACTIVE
     }
 
+    // AI-generated note:
+    // This enum supports rollback-safe animation restoration. A saved frame needs to know
+    // whether the visible clip came from the controller directly, the attack override slot,
+    // or the generic custom-action override slot so deserialization can reapply the same source
+    // before jumping back into the saved animator state.
+    enum AnimationOverrideType
+    {
+        NONE,
+        ATTACK,
+        CUSTOM_ACTION
+    }
+
     [RequireComponent(typeof(Animator))]
     public class CharacterAnimationBehaviour : SimulationBehaviour
     {
@@ -61,12 +73,12 @@ namespace Lodis.Gameplay
         [Header("Animation Settings")]
         [Tooltip("The amount of time it takes the character to get into the move pose")]
         [SerializeField]
-        private float _moveAnimationStartUpTime;
+        private Fixed32 _moveAnimationStartUpTime;
         [Tooltip("The amount of time it takes the character to exit the move pose")]
         [SerializeField]
-        private float _moveAnimationRecoverTime;
+        private Fixed32 _moveAnimationRecoverTime;
         [SerializeField]
-        private float _flinchStartUpTime;
+        private Fixed32 _flinchStartUpTime;
         [SerializeField]
         private AnimationClip _defaultCastAnimation;
         [SerializeField]
@@ -76,7 +88,7 @@ namespace Lodis.Gameplay
         [SerializeField]
         private int _animationLayer = 0;
         [SerializeField]
-        private float _moveAnimationHangTime;
+        private Fixed32 _moveAnimationHangTime;
 
         [Header("Shuffle Settings")]
         [SerializeField]
@@ -99,29 +111,45 @@ namespace Lodis.Gameplay
         private AnimatorTransitionInfo _lastTransitionInfo;
         public Coroutine AbilityAnimationRoutine;
         private AnimatorOverrideController _overrideController;
-        private float _currentClipStartUpTime;
-        private float _currentClipActiveTime;
-        private float _currentClipRecoverTime;
+        private Fixed32 _currentClipStartUpTime;
+        private Fixed32 _currentClipActiveTime;
+        private Fixed32 _currentClipRecoverTime;
         private bool _bracedAgainstFloor;
         private TimedAction _timedMoveAction;
         private bool _animatingAbility;
         private bool _airTravelLocked;
         private Vector2 _lockedAirDirection;
-        private float _targetSpeed = 1;
+        private Fixed32 _targetSpeed = 1;
         private List<CustomAnimationEvent> _animationEvents = new List<CustomAnimationEvent>();
-        private ConditionAction _winAnimCondition;
+        private FixedConditionAction _winAnimCondition;
         private CharacterFeedbackBehaviour _characterFeedbackBehaviour;
+        private AnimationOverrideType _currentOverrideType;
+        private Fixed32 _savedPlaybackTime;
+        private string _savedStateName = string.Empty;
+        private AnimationOverrideType _savedOverrideType;
+        private string _savedClipName = string.Empty;
+        private bool _savedMirror;
+        private bool _hasSavedPlaybackState;
+        private bool _manuallyUpdatingAnimatorDuringResim;
+        private bool _evaluatingAnimatorState;
+
+        //Was thinking of maybe keeping track of the current character state machine and what the last animation played was through any playanimation func. Then just restoring the last thing played
+     
+        private Fixed32 _currentAnimationTime;
+
+        public override string LogName => "CharacterAnimationBehaviour";
 
         // Start is called before the first frame update
-        void Start()
+        public override void Begin()
         {
-            //Test
+            base.Begin();
+            //_animator.enabled = false;
+
             _overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
             _animator.runtimeAnimatorController = _overrideController;
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
             _characterFeedbackBehaviour = GetComponent<CharacterFeedbackBehaviour>();
-            //_animator.enabled = false;
 
             _characterStateManager.AddOnStateChangedAction(state =>
             {
@@ -140,15 +168,16 @@ namespace Lodis.Gameplay
 
             MatchManagerBehaviour.Instance.AddOnMatchCountdownStartAction(() =>
             {
-                RoutineBehaviour.Instance.StopAction(_winAnimCondition);
+                FixedPointTimer.StopAction(_winAnimCondition);
                 StopCurrentAnimation();
 
                 if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
-                    RoutineBehaviour.Instance.StartNewConditionAction(args => _animator.SetTrigger("Intro"), condition => _characterStateMachine.CurrentState == "Idle");
+                    FixedPointTimer.StartNewConditionAction(() => PlayState("Intro"), condition => _characterStateMachine.CurrentState == "Idle");
             });
 
+            //Adding a delay here to the intro anim since the animator needs to be updated before the intro anim is played. Otherwise, the intro anim will not play.
             if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
-                _animator.SetTrigger("Intro");
+                FixedPointTimer.StartNewTimedAction(() => PlayState("Intro"), Fixed32.PointOne);
 
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
             {
@@ -157,10 +186,10 @@ namespace Lodis.Gameplay
 
                 if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
                 {
-                    _winAnimCondition = RoutineBehaviour.Instance.StartNewConditionAction(args =>
+                    _winAnimCondition = FixedPointTimer.StartNewConditionAction(() =>
                     {
                         StopCurrentAnimation();
-                        _animator.SetTrigger("Win");
+                        PlayState("Win");
                     }, condition => _characterStateMachine.CurrentState == "Idle");
                 }
             });
@@ -169,7 +198,93 @@ namespace Lodis.Gameplay
         public void ResetTargetSpeed()
         {
             _targetSpeed = 1;
-            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+            ApplyAnimatorSpeed();
+        }
+
+        /// <summary>
+        /// Converts animator-facing float timing data into fixed-point so rollback math stays
+        /// deterministic even though Unity's animator API still expects float inputs.
+        /// </summary>
+        private static Fixed32 ToFixedTime(float value)
+        {
+            return (Fixed32)value;
+        }
+
+        /// <summary>
+        /// Returns the current clip length in fixed-point for deterministic speed calculations.
+        /// </summary>
+        private static Fixed32 GetClipLength(AnimationClip clip)
+        {
+            return clip ? ToFixedTime(clip.length) : 0;
+        }
+
+        /// <summary>
+        /// Returns a clip event timestamp in fixed-point so animation phase math does not depend on float arithmetic.
+        /// </summary>
+        private static Fixed32 GetEventTime(AnimationEvent animationEvent)
+        {
+            return ToFixedTime(animationEvent.time);
+        }
+
+        /// <summary>
+        /// Normalizes Unity's looping normalizedTime into a 0-1 range using fixed-point math.
+        /// </summary>
+        private static Fixed32 GetLoopedNormalizedTime(AnimatorStateInfo stateInfo)
+        {
+            Fixed32 normalizedTime = ToFixedTime(stateInfo.normalizedTime);
+            return normalizedTime - Fixed32.FloorToInt(normalizedTime);
+        }
+
+        /// <summary>
+        /// Applies the cached fixed-point playback speed to Unity's animator using an explicit float cast
+        /// only at the engine boundary.
+        /// </summary>
+        private void ApplyAnimatorSpeed(bool respectPause = false)
+        {
+            Fixed32 speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+
+            if (respectPause)
+                speed *= Convert.ToInt32(!GridGame.IsPaused);
+
+            _animator.speed = speed;
+        }
+
+        /// <summary>
+        /// Jumps directly to a named animator state and evaluates it immediately instead of relying on trigger transitions.
+        /// </summary>
+        private void PlayState(string stateName, Fixed32 normalizedTime = default)
+        {
+            _savedStateName = stateName;
+            _animator.Play(stateName, _animationLayer, normalizedTime);
+            _evaluatingAnimatorState = true;
+
+            try
+            {
+                _animator.Update(0f);
+            }
+            finally
+            {
+                _evaluatingAnimatorState = false;
+            }
+        }
+
+        /// <summary>
+        /// Jumps directly to a hashed animator state while still updating the saved debug state name.
+        /// </summary>
+        private void PlayState(int stateHash, string stateName, Fixed32 normalizedTime = default)
+        {
+            _savedStateName = stateName;
+            _animator.Play(stateHash, _animationLayer, normalizedTime);
+            _evaluatingAnimatorState = true;
+
+            try
+            {
+                _animator.Update(0f);
+            }
+            finally
+            {
+                _evaluatingAnimatorState = false;
+            }
         }
 
         /// <summary>
@@ -182,7 +297,7 @@ namespace Lodis.Gameplay
             CalculateAnimationSpeed();
         }
 
-        private int GetNextIncrementAnimationPhaseEvent(float currentAnimationTime = 0)
+        private int GetNextIncrementAnimationPhaseEvent(Fixed32 currentAnimationTime = default)
         {
             int eventIndex = 0;
 
@@ -190,7 +305,7 @@ namespace Lodis.Gameplay
             {
                 if (_currentClip.events[i].functionName == "IncrementAnimationPhase" && currentAnimationTime == 0)
                     break;
-                else if (_currentClip.events[i].functionName != "IncrementAnimationPhase" || Mathf.Abs(currentAnimationTime - _currentClip.events[i].time) > 0.05f)
+                else if (_currentClip.events[i].functionName != "IncrementAnimationPhase" || Fixed32.Abs(currentAnimationTime - GetEventTime(_currentClip.events[i])) > Fixed32.PointOne / 2)
                     eventIndex++;
                 else
                     break;
@@ -220,6 +335,11 @@ namespace Lodis.Gameplay
         }
 
         public void SetCharacterModelEnabled(float delay)
+        {
+            SetCharacterModelEnabled((Fixed32)delay);
+        }
+
+        public void SetCharacterModelEnabled(Fixed32 delay)
         {
             _characterMesh.gameObject.SetActive(false);
 
@@ -281,16 +401,24 @@ namespace Lodis.Gameplay
 
         public void SetRotationY(float rotation)
         {
+            SetRotationY((Fixed32)rotation);
+        }
+
+        public void SetRotationY(Fixed32 rotation)
+        {
             transform.rotation = Quaternion.Euler(0, rotation, 0);
         }
 
         public void CalculateAnimationSpeed()
         {
-            
+            if (_evaluatingAnimatorState)
+                return;
+
+             
             AnimatorStateInfo stateInfo;
 
             AnimationPhase phase = (AnimationPhase)_animationPhase;
-            float newSpeed = 1;
+            Fixed32 newSpeed = 1;
             int eventIndex = 0;
             
 
@@ -317,15 +445,15 @@ namespace Lodis.Gameplay
                     if (_currentClipStartUpTime <= 0 || _movesetBehaviour.LastAbilityInUse != null
                         && (int)_movesetBehaviour.LastAbilityInUse.CurrentAbilityPhase > 0 && _animatingAbility)
                     {
-                        _animator.Play(stateInfo.shortNameHash, _animationLayer, _currentClip.events[0].time);
+                        PlayState(stateInfo.shortNameHash, _savedStateName, GetEventTime(_currentClip.events[0]));
                         break;
                     }
 
-                    eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (stateInfo.normalizedTime % 1));
+                    eventIndex = GetNextIncrementAnimationPhaseEvent(GetClipLength(_currentClip) * GetLoopedNormalizedTime(stateInfo));
 
                     if (eventIndex < 0 || eventIndex >= _currentClip.events.Length)
                         break;
-                    newSpeed = (_currentClip.events[eventIndex].time / _currentClipStartUpTime);
+                    newSpeed = GetEventTime(_currentClip.events[eventIndex]) / _currentClipStartUpTime;
                     break;
 
                 case AnimationPhase.ACTIVE:
@@ -339,30 +467,30 @@ namespace Lodis.Gameplay
                         && _currentClip.events.Length >= 2 && _animatingAbility)
                     {
                         _animator.StartPlayback();
-                        _animator.playbackTime = _currentClip.events[1].time;
+                        _animator.playbackTime = GetEventTime(_currentClip.events[1]);
                         break;
                     }
 
                     stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
 
-                    float nextTimeStamp = _currentClip.length;
+                    Fixed32 nextTimeStamp = GetClipLength(_currentClip);
                     eventIndex = 0;
 
                     if (_currentClip.events.Length > 1)
                     {
-                        eventIndex = GetNextIncrementAnimationPhaseEvent(_currentClip.length * (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1));
+                        eventIndex = GetNextIncrementAnimationPhaseEvent(GetClipLength(_currentClip) * GetLoopedNormalizedTime(_animator.GetCurrentAnimatorStateInfo(0)));
                         int nextEventIndex = GetNextIncrementAnimationPhaseEvent(eventIndex);
 
                         if (nextEventIndex < 0 || nextEventIndex >= _currentClip.events.Length)
                             break;
 
-                        nextTimeStamp = _currentClip.events[nextEventIndex].time;
+                        nextTimeStamp = GetEventTime(_currentClip.events[nextEventIndex]);
                     }
 
                     if (eventIndex < 0 || eventIndex >= _currentClip.events.Length)
                         break;
 
-                    newSpeed = (nextTimeStamp - _currentClip.events[eventIndex].time) / _currentClipActiveTime;
+                    newSpeed = (nextTimeStamp - GetEventTime(_currentClip.events[eventIndex])) / _currentClipActiveTime;
                     break;
                 case AnimationPhase.INACTIVE:
 
@@ -373,19 +501,19 @@ namespace Lodis.Gameplay
                         break;
                     else if (_currentClipRecoverTime <= 0)
                     {
-                        _animator.playbackTime = _currentClip.length;
+                        _animator.playbackTime = GetClipLength(_currentClip);
                         break;
                     }
 
                     stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
                     eventIndex = GetNextIncrementAnimationPhaseEvent(eventIndex);
 
-                    newSpeed = (_currentClip.length - _currentClip.events[eventIndex].time) / _currentClipRecoverTime;
+                    newSpeed = (GetClipLength(_currentClip) - GetEventTime(_currentClip.events[eventIndex])) / _currentClipRecoverTime;
                     break;
             }
 
             _targetSpeed = newSpeed;
-            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+            ApplyAnimatorSpeed();
         }
         
         bool SetCurrentAnimationClip(string name)
@@ -417,36 +545,202 @@ namespace Lodis.Gameplay
             return lhs.weight > rhs.weight? -1 : 1;
         }
 
-        public void PlayAnimation(AnimationClip clip, float speed = 1, bool stopCurrentAnimation = false)
+      
+
+        /// <summary>
+        /// AI-generated:
+        /// Resolves the clip that belongs in the attack override slot for the currently active ability.
+        /// The important detail here is that the animator state alone is not enough to restore an attack.
+        /// Multiple abilities can drive the same "Attack" state, and some of them swap different clips
+        /// into the override controller at runtime. Rollback therefore needs a deterministic way to
+        /// reconstruct the exact clip that should be bound to the attack state before playback resumes.
+        /// </summary>
+        private bool TryGetAttackAnimationClip(Ability ability, out AnimationClip clip)
         {
-            if (stopCurrentAnimation)
-                StopCurrentAnimation();
+            clip = null;
 
-            _targetSpeed = speed;
-            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
-            _overrideController["rig|rigAction"] = clip;
+            if (ability?.abilityData == null)
+                return false;
 
-            _animator.SetTrigger("ActivateCustom");
+            switch (ability.abilityData.animationType)
+            {
+                case AnimationType.CAST:
+                    clip = _defaultCastAnimation;
+                    break;
+                case AnimationType.MELEE:
+                    clip = _defaultMeleeAnimation;
+                    break;
+                case AnimationType.SUMMON:
+                    clip = _defaultSummonAnimation;
+                    break;
+                case AnimationType.CUSTOM:
+                    return ability.abilityData.GetCustomAnimation(out clip);
+            }
+
+            return clip != null;
         }
 
-        public void PlayAnimation(AnimationClip clip, float speed = 1, bool stopCurrentAnimation = false, bool shouldMirror = true)
+        /// <summary>
+        /// AI-generated:
+        /// Searches for a clip by name across every location this component can reasonably source
+        /// animation clips from during gameplay.
+        ///
+        /// Why name-based lookup is used here:
+        /// rollback only stores lightweight playback data, not direct object references, so we need
+        /// to reconstruct the correct clip from serialized identity. Attack animations can come from
+        /// default attack clips, a custom ability clip, or an additional animation referenced directly
+        /// by ability scripts via PlayAnimation(...). Looking in all of those places lets deserialization
+        /// recover the same clip that was active when the frame was saved.
+        /// </summary>
+        private AnimationClip FindAnimationClip(string clipName)
+        {
+            if (string.IsNullOrEmpty(clipName))
+                return null;
+
+            if (_currentClip && _currentClip.name == clipName)
+                return _currentClip;
+
+            Ability[] abilitySources =
+            {
+                _currentAbilityAnimating,
+                _movesetBehaviour.LastAbilityInUse
+            };
+
+            for (int i = 0; i < abilitySources.Length; i++)
+            {
+                Ability ability = abilitySources[i];
+                if (ability?.abilityData == null)
+                    continue;
+
+                if (ability.abilityData.GetCustomAnimation(out AnimationClip customClip) && customClip && customClip.name == clipName)
+                    return customClip;
+
+                for (int animationIndex = 0; ability.abilityData.GetAdditionalAnimation(animationIndex, out AnimationClip additionalClip); animationIndex++)
+                {
+                    if (additionalClip && additionalClip.name == clipName)
+                        return additionalClip;
+                }
+            }
+
+            AnimationClip[] defaultAttackClips =
+            {
+                _defaultCastAnimation,
+                _defaultMeleeAnimation,
+                _defaultSummonAnimation
+            };
+
+            for (int i = 0; i < defaultAttackClips.Length; i++)
+            {
+                if (defaultAttackClips[i] && defaultAttackClips[i].name == clipName)
+                    return defaultAttackClips[i];
+            }
+
+            for (int i = 0; i < _runtimeController.animationClips.Length; i++)
+            {
+                AnimationClip runtimeClip = _runtimeController.animationClips[i];
+
+                if (runtimeClip && runtimeClip.name == clipName)
+                    return runtimeClip;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// AI-generated:
+        /// Applies a clip back into the same runtime override slot that originally produced the saved
+        /// animation state. This happens before Animator.Play(...) during deserialization so the state
+        /// hash points at the same motion source it did when the frame was serialized.
+        ///
+        /// Without this step, restoring the Attack state would only recover the controller state name,
+        /// while the actual clip playing inside that state could silently differ after rollback.
+        /// </summary>
+        private void ApplyOverrideClip(AnimationClip clip, AnimationOverrideType overrideType)
+        {
+            if (!clip || overrideType == AnimationOverrideType.NONE)
+                return;
+
+            _currentClip = clip;
+            _currentOverrideType = overrideType;
+
+            switch (overrideType)
+            {
+                case AnimationOverrideType.ATTACK:
+                    _overrideController["Cast"] = clip;
+                    break;
+                case AnimationOverrideType.CUSTOM_ACTION:
+                    _overrideController["rig|rigAction"] = clip;
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// AI-generated:
+        /// Rebuilds the timing context that attack playback depends on. Some attack animations do not
+        /// simply run at clip speed; their startup/active/recover pacing is derived from the current
+        /// ability data. If rollback restores the visible attack clip but not these timing fields,
+        /// later speed calculations can diverge even though the state and clip were restored correctly.
+        /// </summary>
+        private void CacheAttackAnimationState(Ability ability)
+        {
+            _currentAbilityAnimating = ability;
+
+            if (ability?.abilityData == null)
+                return;
+
+            _animationPhase = (int)ability.CurrentAbilityPhase;
+
+            if (ability.abilityData.useAbilityTimingForAnimation)
+            {
+                _currentClipStartUpTime = ability.abilityData.startUpTime;
+                _currentClipActiveTime = ability.abilityData.timeActive;
+                _currentClipRecoverTime = ability.abilityData.recoverTime;
+            }
+            else
+            {
+                _animationPhase = 3;
+            }
+        }
+
+        public void PlayAnimation(AnimationClip clip, Fixed32 speed, bool stopCurrentAnimation)
         {
             if (stopCurrentAnimation)
                 StopCurrentAnimation();
 
             _targetSpeed = speed;
-            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
-            _overrideController["rig|rigAction"] = clip;
+            ApplyAnimatorSpeed();
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
+            ApplyOverrideClip(clip, AnimationOverrideType.CUSTOM_ACTION);
+
+            PlayState("CustomFromScript");
+        }
+
+        public void PlayAnimation(AnimationClip clip, Fixed32 speed, bool stopCurrentAnimation, bool shouldMirror)
+        {
+            if (stopCurrentAnimation)
+                StopCurrentAnimation();
+
+            _targetSpeed = speed;
+            ApplyAnimatorSpeed();
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
+            ApplyOverrideClip(clip, AnimationOverrideType.CUSTOM_ACTION);
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT && shouldMirror);
-            _animator.SetTrigger("ActivateCustom");
+            PlayState("CustomFromScript");
         }
 
         public void PlayAnimation(float time, AnimationClip clip)
         {
+            PlayAnimation((Fixed32)time, clip);
+        }
+
+        public void PlayAnimation(Fixed32 time, AnimationClip clip)
+        {
             if (time <= 0)
               return;
 
-            float newSpeed = (clip.length / time );
+            Fixed32 newSpeed = GetClipLength(clip) / time;
 
             PlayAnimation(clip, newSpeed, false, true);
         }
@@ -456,81 +750,22 @@ namespace Lodis.Gameplay
 
             Ability ability = _movesetBehaviour.LastAbilityInUse;
 
+            StopCurrentAnimation();
             _currentAbilityAnimating = ability;
             _animationPhase = 0;
 
-            StopCurrentAnimation();
-
-            _animator.Update(Time.deltaTime);
+            _animator.Update(GridGame.FixedTimeStep);
 
             ///Play animation based on type
-            switch (_currentAbilityAnimating.abilityData.animationType)
+            if (!TryGetAttackAnimationClip(_currentAbilityAnimating, out AnimationClip attackClip))
             {
-                case AnimationType.CAST:
-                    //Set the clip for the animation graph attached
-                    if (_defaultCastAnimation)
-                    {
-                        ///Wait until the ability is allowed to play the animation.
-                        ///This is here in case the animation is activated manually
-                        _currentClip = _defaultCastAnimation;
-                        _overrideController["Cast"] = _defaultCastAnimation;
-                        _animatingMotion = false;
-                        _animationPhase = 0;
-                    }
-                    else
-                        Debug.LogError("Couldn't play Cast animation. Couldn't find the Cast clip for " + ability.abilityData.abilityName);
-                    break;
-
-                case AnimationType.MELEE:
-                    //Set the clip for the animation graph attached
-                    if (_defaultMeleeAnimation)
-                    {
-                        ///Wait until the ability is allowed to play the animation.
-                        ///This is here in case the animation is activated manually
-                        _currentClip = _defaultMeleeAnimation;
-
-                        _overrideController["Cast"] = _defaultMeleeAnimation;
-                        _animatingMotion = false;
-                        _animationPhase = 0;
-                    }
-                    else
-                        Debug.LogError("Couldn't play Melee animation. Couldn't find the Melee clip for " + ability.abilityData.abilityName);
-                    break;
-
-                case AnimationType.SUMMON:
-                    //Set the clip for the animation graph attached
-                    if (_defaultSummonAnimation)
-                    {
-                        ///Wait until the ability is allowed to play the animation.
-                        ///This is here in case the animation is activated manually
-
-                        _currentClip = _defaultSummonAnimation;
-                        _overrideController["Cast"] = _defaultSummonAnimation;
-                        _animatingMotion = false;
-                        _animationPhase = 0;
-                    }
-                    else
-                        Debug.LogError("Couldn't play Summon animation. Couldn't find the Summon clip for " + ability.abilityData.abilityName);
-                    break;
-
-                case AnimationType.CUSTOM:
-
-                    if (!_currentAbilityAnimating.abilityData.GetCustomAnimation(out _currentClip))
-                    {
-                        Debug.LogError("Can't play custom clip. No custom clip found for " + ability.abilityData.abilityName);
-                        return;
-                    }
-
-                    ///Wait until the ability is allowed to play the animation.
-                    ///This is here in case the animation is activated manually
-                    _overrideController["Cast"] = _currentClip;
-
-                    //Play custom clip with appropriate speed
-                    _animatingMotion = false;
-
-                    _animationPhase = 0;
-                    break;
+                Debug.LogError("Couldn't play attack animation. Couldn't find the attack clip for " + ability.abilityData.abilityName);
+                return;
             }
+
+            ApplyOverrideClip(attackClip, AnimationOverrideType.ATTACK);
+            _animatingMotion = false;
+            _animationPhase = 0;
 
             if (ability.abilityData.useAbilityTimingForAnimation)
             {
@@ -542,9 +777,7 @@ namespace Lodis.Gameplay
                 _animationPhase = 3;
 
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT && ability.abilityData.ShouldMirror);
-            _animator.ResetTrigger("Attack");
-            _animator.Update(Time.deltaTime);
-            _animator.SetTrigger("Attack");
+            PlayState("Attack");
         }
 
         /// <summary>
@@ -554,9 +787,13 @@ namespace Lodis.Gameplay
         {
             _animator.Rebind();
             _animator.StopPlayback();
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
+            _currentClip = null;
             _overrideController["Cast"] = _runtimeController.animationClips[0];
             _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
-            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale;
+            ApplyAnimatorSpeed();
         }
 
         public void LockAirTravelAnim(Vector2 lockedDirection)
@@ -576,6 +813,9 @@ namespace Lodis.Gameplay
         /// </summary>
         public void PlayMovementAnimation()
         {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
             _animatingMotion = true;
             _animationPhase = 0;
 
@@ -585,54 +825,65 @@ namespace Lodis.Gameplay
             if (_moveBehaviour.PreviousPanel)
                 oldPosition = _moveBehaviour.PreviousPanel.Position;
 
-            float travelDistance = (oldPosition - _moveBehaviour.CurrentPanel.Position).Magnitude;
-            float travelTime = travelDistance / _moveBehaviour.Speed;
+            Fixed32 travelDistance = (oldPosition - _moveBehaviour.CurrentPanel.Position).Magnitude;
+            Fixed32 travelTime = travelDistance / _moveBehaviour.Speed;
             _currentClipStartUpTime = _moveAnimationStartUpTime;
             _currentClipActiveTime = travelTime + _moveAnimationHangTime;
-            _currentClipRecoverTime = _defenseBehaviour.IsPhaseShifting? _moveAnimationRecoverTime + _defenseBehaviour.DefaultPhaseShiftRestTime.FixedValue : _moveAnimationRecoverTime;
-            float totalTime = _currentClipStartUpTime + _currentClipRecoverTime + _currentClipActiveTime;
+            _currentClipRecoverTime = _defenseBehaviour.IsPhaseShifting ? _moveAnimationRecoverTime + _defenseBehaviour.DefaultPhaseShiftRestTime.FixedValue : _moveAnimationRecoverTime;
 
             SetMoveAnimParameters();
 
-            _animator.SetTrigger("Movement");
+            PlayState("Movement");
         }
       
         public void PlayGroundRecoveryAnimation()
         {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
             _animationPhase = 0;
-            _animator.SetTrigger("GroundRecovery");
+            PlayState("GroundRecovery");
             AnimatorClipInfo[] info = _animator.GetCurrentAnimatorClipInfo(0);
 
             if (info.Length == 0)
                 return;
-            _targetSpeed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / (_knockbackBehaviour.LandingScript.KnockDownRecoverTime - 0.1f);
+            _targetSpeed = GetClipLength(_animator.GetCurrentAnimatorClipInfo(0)[0].clip) / (_knockbackBehaviour.LandingScript.KnockDownRecoverTime - Fixed32.PointOne);
         }
 
         public void PlayHardLandingAnimation()
         {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
             _animationPhase = 0;
-            _animator.SetTrigger("HardLanding");
+            PlayState("HardLanding");
             AnimatorClipInfo[] info = _animator.GetCurrentAnimatorClipInfo(0);
 
             if (info.Length == 0)
                 return;
 
-            _targetSpeed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingScript.KnockDownLandingTime;
+            _targetSpeed = GetClipLength(_animator.GetCurrentAnimatorClipInfo(0)[0].clip) / _knockbackBehaviour.LandingScript.KnockDownLandingTime;
         }
 
         public void PlaySoftLandingAnimation()
         {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
             _animationPhase = 0;
-            _animator.SetTrigger("SoftLanding");
+            PlayState("SoftLanding");
             AnimatorClipInfo[] info = _animator.GetCurrentAnimatorClipInfo(0);
 
             if (info.Length == 0)
                 return;
-            _targetSpeed = _animator.GetCurrentAnimatorClipInfo(0)[0].clip.length / _knockbackBehaviour.LandingScript.LandingTime;
+            _targetSpeed = GetClipLength(_animator.GetCurrentAnimatorClipInfo(0)[0].clip) / _knockbackBehaviour.LandingScript.LandingTime;
         }
 
         public void PlayDamageAnimation()
         {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
 
             _targetSpeed = 1;
             if (_knockbackBehaviour.TimeInCurrentHitStun <= 0)
@@ -643,9 +894,9 @@ namespace Lodis.Gameplay
             _currentClipStartUpTime = _flinchStartUpTime;
 
             if (_knockbackBehaviour.Physics.IsGrounded && _knockbackBehaviour.CurrentAirState == Movement.AirState.NONE)
-                _animator.SetTrigger("GroundedFlinching");
+                PlayState("GroundedFlinching");
             else
-                _animator.SetTrigger("InAirFlinching");
+                PlayState("InAirFlinching");
 
             AnimatorStateInfo nextState = _animator.GetNextAnimatorStateInfo(0);
             AnimationClip clip = GetCurrentAnimationClip();
@@ -656,6 +907,9 @@ namespace Lodis.Gameplay
 
         public void PlayStunAnimation()
         {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
             _targetSpeed = 1;
             if (!_knockbackBehaviour.Stunned)
                 return;
@@ -664,15 +918,57 @@ namespace Lodis.Gameplay
 
             if (_knockbackBehaviour.FixedTransform.WorldPosition.Y <= new Fixed32(32768) && _knockbackBehaviour.CurrentAirState == Movement.AirState.NONE)
             {
-                _animator.SetTrigger("Stunned");
+                PlayState("Stunned");
             }
             else
             {
-                _animator.SetTrigger("AirStunned");
+                PlayState("AirStun");
                 //_characterFeedbackBehaviour.ShakeCharacter(_knockbackBehaviour.TimeInCurrentStun, 0.5f, 1000);
             }
 
             _animatingMotion = true;
+        }
+
+        /// <summary>
+        /// Plays the tumbling animation when the character enters the tumbling air state.
+        /// </summary>
+        public void PlayTumblingAnimation()
+        {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
+            _targetSpeed = 1;
+            _animationPhase = 0;
+            PlayState("Tumbling");
+            _animatingMotion = true;
+        }
+
+        /// <summary>
+        /// Plays the free-fall animation when the character is airborne without entering tumbling.
+        /// </summary>
+        public void PlayFreeFallAnimation()
+        {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
+            _targetSpeed = 1;
+            _animationPhase = 0;
+            PlayState("FreeFall");
+            _animatingMotion = true;
+        }
+
+        /// <summary>
+        /// Returns the character to the idle animation state when no movement or knockback animation should be active.
+        /// </summary>
+        public void PlayIdleAnimation()
+        {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _targetSpeed = 1;
+            _animationPhase = 0;
+            PlayState("Idle");
+            _animatingMotion = false;
+            _animatingAbility = false;
         }
 
 
@@ -700,31 +996,37 @@ namespace Lodis.Gameplay
         /// </summary>
         public void PlayFallBreakAnimation()
         {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
             _animationPhase = 0;
 
             string animationName = "";
-            float techLength = 0;
+            Fixed32 techLength = 0;
             if (_bracedAgainstFloor)
             {
                 animationName = "GroundTech";
-                techLength = _defenseBehaviour.GroundTechLength;
+                techLength = (Fixed32)_defenseBehaviour.GroundTechLength;
             }
             else
             {
                 animationName = "WallTech";
-                techLength = _defenseBehaviour.WallTechJumpDuration;
+                techLength = (Fixed32)_defenseBehaviour.WallTechJumpDuration;
             }
 
             AnimatorClipInfo[] clipInfo = _animator.GetCurrentAnimatorClipInfo(0);
             if (clipInfo.Length <= 0) return;
 
-            _targetSpeed = clipInfo[0].clip.length / techLength;
-            _animator.SetTrigger(animationName);
+            _targetSpeed = GetClipLength(clipInfo[0].clip) / techLength;
+            PlayState(animationName);
             _animatingMotion = true;
         }
 
         public void PlayManualShuffleAnimation()
         {
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentAbilityAnimating = null;
+            _animatingAbility = false;
             _animationPhase = 0;
 
             _animatingMotion = false;
@@ -735,9 +1037,7 @@ namespace Lodis.Gameplay
             _currentClipActiveTime = _manualShuffleActiveTime;
             _currentClipRecoverTime = _manualShuffleRecoverTime;
 
-            _animator.ResetTrigger("Shuffle");
-            _animator.Update(Time.deltaTime);
-            _animator.SetTrigger("Shuffle");
+            PlayState("Shuffle");
         }
 
         /// <summary>
@@ -779,8 +1079,15 @@ namespace Lodis.Gameplay
             _animator.SetFloat("MoveDirectionY", _moveBehaviour.MoveDirection.Y);
         }    
 
-        private void Update()
+        public override void Tick(Fixed32 deltaTime)
         {
+            base.Tick(deltaTime);
+
+            //if (_animator.enabled)
+            //    _animator.enabled = false;
+
+            //_animator.Update(deltaTime);
+
             if (_characterStateMachine.CurrentState == "Moving")
                 SetMoveAnimParameters();
 
@@ -793,8 +1100,9 @@ namespace Lodis.Gameplay
             if (_lastTransitionInfo.nameHash != currentInfo.nameHash && currentInfo.nameHash != 0)
                 _lastTransitionInfo = _animator.GetAnimatorTransitionInfo(0);
 
-            _animator.speed = _targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale * Convert.ToInt32(!GridGame.IsPaused);
+            ApplyAnimatorSpeed(true);
 
+            _currentAnimationTime += deltaTime * (_targetSpeed * RoutineBehaviour.Instance.CharacterTimeScale);
             //Debug.Log("TimeScale: " + RoutineBehaviour.Instance.CharacterTimeScale);
 
             if (!_knockbackBehaviour.Physics.IsGrounded)
@@ -802,12 +1110,30 @@ namespace Lodis.Gameplay
         }
 
         // Update is called once per frame
-        void LateUpdate()
+        public override void LateTick(Fixed32 deltaTime)
         {
+            base.LateTick(deltaTime);
+
             if (_moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT)
                 _animator.SetBool("OnRightSide", true);
 
             _animatingAbility = _animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+
+            if (_animatingAbility)
+            {
+                _currentOverrideType = AnimationOverrideType.ATTACK;
+            }
+            else if (_currentOverrideType == AnimationOverrideType.ATTACK)
+            {
+                _currentOverrideType = AnimationOverrideType.NONE;
+            }
+            else if (_currentOverrideType == AnimationOverrideType.CUSTOM_ACTION)
+            {
+                AnimationClip currentClip = GetCurrentAnimationClip();
+
+                if (!currentClip || (_currentClip && currentClip != _currentClip))
+                    _currentOverrideType = AnimationOverrideType.NONE;
+            }
         }
 
         /// <summary>
@@ -815,10 +1141,23 @@ namespace Lodis.Gameplay
         /// </summary>
         public override void Serialize(BinaryWriter bw)
         {
-            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
-            // Save the name of the current animation clip and the playback time
-            bw.Write(stateInfo.shortNameHash); // Clip name
-            bw.Write(stateInfo.normalizedTime); // Current timestamp of the animation
+            //CaptureSerializedAnimationState();
+            //// AI-generated:
+            //// This save payload captures the minimum state needed to restore animation playback
+            //// deterministically after rollback:
+            //// 1. the exact animator state to jump back into
+            //// 2. the playback time within that state
+            //// 3. which runtime override slot supplied the motion, if any
+            //// 4. the concrete clip bound to that override slot
+            //// 5. the current mirroring flag, because some states visually depend on it
+            ////
+            //// Storing the clip name is especially important for attack animations and custom action
+            //// animations because those states can be reused while swapping clips at runtime.
+            //bw.Write(_savedStateName);
+            //_currentAnimationTime.Serialize(bw);
+            //bw.Write((int)_savedOverrideType);
+            //bw.Write(_savedClipName ?? string.Empty);
+            //bw.Write(_savedMirror);
         }
 
         /// <summary>
@@ -826,26 +1165,96 @@ namespace Lodis.Gameplay
         /// </summary>
         public override void Deserialize(BinaryReader br)
         {
-            // Load the name of the animation clip and the playback time
-            string clipName = br.ReadString();
-            float playbackTime = br.ReadSingle();
+            //_savedStateName = br.ReadString();
+            //_currentAnimationTime = _currentAnimationTime.Deserialize(br);
+            //_savedOverrideType = (AnimationOverrideType)br.ReadInt32();
+            //_savedClipName = br.ReadString();
+            //_savedMirror = br.ReadBoolean();
 
-            if (string.IsNullOrEmpty(clipName))
-            {
-                Debug.LogWarning("No animation clip was serialized.");
-                return;
-            }
+            //_hasSavedPlaybackState = true;
 
-            // Find the animation clip by name
-            foreach (AnimationClip clip in _animator.runtimeAnimatorController.animationClips)
+            //// AI-generated:
+            //// Deserialization intentionally rebuilds playback in this order:
+            //// 1. restore mirrored presentation flags
+            //// 2. restore/resolve the override clip identity
+            //// 3. rebuild any attack-specific timing context
+            //// 4. jump back into the saved animator state at the saved normalized time
+            ////
+            //// The ordering matters. If Animator.Play(...) runs before the correct override clip is rebound,
+            //// the animator can enter the correct state while still playing the wrong motion.
+            //ApplySavedAnimationState(_savedStateName, _currentAnimationTime, _savedOverrideType, _savedClipName, _savedMirror);
+        }
+
+        /// <summary>
+        /// Hashes the serialized animation playback state so desyncs caused by
+        /// animation rollback can be isolated to this component.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
             {
-                if (clip.name == clipName)
+                //$"Saved State Name: {_savedStateName}",
+                //$"Saved Playback Time: {_currentAnimationTime}",
+                //$"Saved Override Type: {_savedOverrideType}",
+                //$"Saved Clip Name: {_savedClipName}",
+                //$"Saved Mirror: {_savedMirror}",
+             };
+        }
+
+        /// <summary>
+        /// Reapplies the saved visual animation state in the same order used by rollback
+        /// deserialization so overrides are bound before the animator jumps to the
+        /// requested state and time.
+        /// </summary>
+        private void ApplySavedAnimationState(string saveStateName, Fixed32 playbackTime, AnimationOverrideType overrideType, string clipName, bool shouldMirror)
+        {
+            _animator.SetBool("OnRightSide", shouldMirror);
+            _currentOverrideType = AnimationOverrideType.NONE;
+            _currentClip = null;
+            _animatingAbility = overrideType == AnimationOverrideType.ATTACK;
+            _savedMirror = shouldMirror;
+
+            if (_animatingAbility)
+                CacheAttackAnimationState(_movesetBehaviour.LastAbilityInUse);
+
+            //TO DO: Should make a serialized list of all clips used. On deserialize, in addition to the state should restore the specific ability clip.
+            if (!string.IsNullOrEmpty(clipName))
+            {
+                AnimationClip clip = FindAnimationClip(clipName);
+
+                if (clip)
                 {
-                    // Play the animation from the saved playback time
-                    _animator.Play(clipName, _animationLayer, playbackTime);
-                    break;
+                    ApplyOverrideClip(clip, overrideType);
+                }
+                else
+                {
+                    Debug.LogWarning($"Failed to restore animation clip '{clipName}' on {name}.");
                 }
             }
+            else if (overrideType == AnimationOverrideType.ATTACK && TryGetAttackAnimationClip(_movesetBehaviour.LastAbilityInUse, out AnimationClip attackClip))
+            {
+                ApplyOverrideClip(attackClip, AnimationOverrideType.ATTACK);
+            }
+
+            PlayState(saveStateName, playbackTime);
+        }
+
+        /// <summary>
+        /// Captures the exact fields written by Serialize so logging and replay-complete
+        /// visual correction both work from the same payload shape.
+        /// </summary>
+        private void CaptureSerializedAnimationState()
+        {
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            AnimationClip currentClip = GetCurrentAnimationClip();
+            bool hasOverrideClip = _currentOverrideType != AnimationOverrideType.NONE && currentClip;
+
+            _savedStateName = _characterStateManager?.StateMachine?.CurrentState ?? _savedStateName;
+            _savedOverrideType = _currentOverrideType;
+            _savedClipName = currentClip ? currentClip.name : string.Empty;
+            _savedMirror = _animator.GetBool("OnRightSide");
+
+            _hasSavedPlaybackState = true;
         }
     }
 }

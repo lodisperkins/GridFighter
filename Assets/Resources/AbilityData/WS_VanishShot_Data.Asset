@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: WS_VanishShot_Data
   m_EditorClassIdentifier: 
   abilityName: Vanish Shot
-  abilityDescription: None
-  exampleClip: {fileID: 0}
+  abilityDescription: Fire one shot and then teleport to the top of the field to
+    fire another shot.
+  exampleClip: {fileID: 32900000, guid: 8f09e52485479f44095f072e6abded8d, type: 3}
   AbilityType: 1
   timeActive:
     RawValue: 19660
@@ -58,7 +59,7 @@ MonoBehaviour:
   Effects:
   - {fileID: 543745384379617035, guid: 2a32ab51b4faef049953cb7c18585d46, type: 3}
   Sounds: []
-  DisplayIcon: {fileID: 0}
+  DisplayIcon: {fileID: 21300000, guid: 160d6ae2d48bf5c4bba0a799d021c626, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -68,6 +69,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 65536
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -81,8 +83,6 @@ MonoBehaviour:
       RawValue: 0
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 1
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -93,6 +93,12 @@ MonoBehaviour:
       RawValue: 16384
     Priority:
       RawValue: 65536
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 1
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 1
     AbilityID:
@@ -100,7 +106,7 @@ MonoBehaviour:
     SpawnEffect: {fileID: 4516646809805453766, guid: ae4524474d1a5f34c859011dcef86e34,
       type: 3}
     SpawnEffectOffset:
-      RawValue: 32768
+      RawValue: 0
     HitSpark: {fileID: 0}
     HitEffectLevel: 1
     HitStopShakeStrength:

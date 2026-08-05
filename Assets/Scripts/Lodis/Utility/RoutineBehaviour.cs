@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Dynamic;
 using System;
 using Lodis.ScriptableObjects;
+using Types;
 
 namespace Lodis.Utility
 {
@@ -43,7 +44,7 @@ namespace Lodis.Utility
             }
         }
 
-        public float CharacterTimeScale { get => _characterTimeScale; set => _characterTimeScale.FixedValue = value; }
+        public Fixed32 CharacterTimeScale { get => _characterTimeScale.FixedValue; set => _characterTimeScale.FixedValue = value; }
         public float CharacterTime { get => _characterTime; private set => _characterTime = value; }
 
         private void Awake()

@@ -48,7 +48,7 @@ namespace Lodis.Gameplay
             DisableAccessory();
             FixedPointTimer.StopAction(_spawnAccessoryAction);
 
-            _spawnAccessoryAction = FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !_flurry.Active);
+            _spawnAccessoryAction = FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !_flurry.gameObject.activeInHierarchy);
 
             ActiveProjectiles.Add(_flurry);
         }
@@ -57,7 +57,7 @@ namespace Lodis.Gameplay
         {
             DisableAccessory();
 
-            _spawnAccessoryAction =  FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !Projectile.Active);
+            _spawnAccessoryAction =  FixedPointTimer.StartNewConditionAction(EnableAccessory, condition => !Projectile.gameObject.activeInHierarchy);
         }
 
 	    //Called when ability is used

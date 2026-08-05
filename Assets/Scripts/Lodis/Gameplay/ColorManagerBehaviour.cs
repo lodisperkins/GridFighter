@@ -5,6 +5,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -250,6 +251,8 @@ namespace Lodis.Gameplay
         private GameObject searchTarget;
         private bool onlyChangeHue;
         private bool mustBeActive;
+        private bool overwrite;
+        private string shaderPropertyToRemove = "";
 
         public override void OnInspectorGUI()
         {
@@ -280,6 +283,7 @@ namespace Lodis.Gameplay
             }
 
             mustBeActive = EditorGUILayout.Toggle("Must Be Active In Hierarchy", mustBeActive);
+            overwrite = EditorGUILayout.Toggle("Overwrite Existing Objects", overwrite);
 
             if (GUILayout.Button("Add Property"))
                 shaderProperties.Add("");
@@ -289,11 +293,18 @@ namespace Lodis.Gameplay
             {
                 AddObjectsToColor(colorManager);
             }
+
+            shaderPropertyToRemove = EditorGUILayout.TextField($"Property To Remove ", shaderPropertyToRemove);
+
+            if (GUILayout.Button("Remove Shader Property"))
+            {
+                RemoveShaderProperty(shaderPropertyToRemove, colorManager);
+            }
         }
 
         private void AddObjectsToColor(ColorManagerBehaviour colorManager)
         {
-            List<ColorObject> newColorObjects = new List<ColorObject>();
+            List<ColorObject> newColorObjects = overwrite ? new List<ColorObject>() : colorManager.ObjectsToColor.ToList();
             Transform parentTransform = searchTarget == null ? colorManager.transform : searchTarget.transform;
 
             foreach (Transform child in parentTransform)
@@ -310,11 +321,23 @@ namespace Lodis.Gameplay
                 {
                     ColorObject colorObject = new ColorObject(renderer, shaderProperties.ToArray(), false, 0);
                     colorObject.OnlyChangeHue = onlyChangeHue;
+                    colorObject.SaturationThreshold = 10;
                     newColorObjects.Add(colorObject);
                 }
             }
 
             colorManager.ObjectsToColor = newColorObjects.ToArray();
+            EditorUtility.SetDirty(colorManager);
+        }
+
+        private void RemoveShaderProperty(string shaderProperty, ColorManagerBehaviour colorManager)
+        {
+            foreach (ColorObject colorObject in colorManager.ObjectsToColor)
+            {
+                List<string> updatedProperties = colorObject.ShaderProperties.ToList();
+                updatedProperties.RemoveAll(prop => prop == shaderProperty);
+                colorObject.ShaderProperties = updatedProperties.ToArray();
+            }
             EditorUtility.SetDirty(colorManager);
         }
     }

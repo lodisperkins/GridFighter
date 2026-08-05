@@ -17,6 +17,7 @@ MonoBehaviour:
     deck and temporarily stuns them.
   exampleClip: {fileID: 32900000, guid: 51a3a5e6d8428614b87c334bc60c1852, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 6553
   recoverTime:
@@ -58,7 +59,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: a97c46372cc0b8541be08e3b31f34df9, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: e47a9570e4a44354abbb82d099ed0c5a, type: 3}
   ActivateSound: {fileID: 8300000, guid: 9d9bcff4b6c870642a2329d3406aac92, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -68,6 +69,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 131072
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -75,6 +77,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 131072
     BaseKnockBack:
@@ -91,10 +94,12 @@ MonoBehaviour:
       RawValue: 3276
     Priority:
       RawValue: -65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 0
     StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:

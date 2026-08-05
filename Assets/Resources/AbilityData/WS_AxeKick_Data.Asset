@@ -16,6 +16,7 @@ MonoBehaviour:
   abilityDescription: A quick spinning kick that has a wide range.
   exampleClip: {fileID: 32900000, guid: a0e6dd42d0e983b44a6263f00ab93b89, type: 3}
   AbilityType: 1
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 13107
   recoverTime:
@@ -57,7 +58,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 2542dee0566a0b54298d3bb6a9fefe81, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 7491f15aedc12c843b2e9f9883870ba4, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
   DeactivateSound: {fileID: 0}
@@ -67,6 +68,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 13107
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -74,6 +76,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 196608
     BaseKnockBack:
@@ -90,6 +93,7 @@ MonoBehaviour:
       RawValue: 3276
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 1
     IsEnder: 0
     AppliedStatusEffect: 0

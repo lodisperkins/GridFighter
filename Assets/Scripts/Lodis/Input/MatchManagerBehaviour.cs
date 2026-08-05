@@ -20,6 +20,7 @@ using FixedPoints;
 using Lodis.FX;
 using UnityEngine.InputSystem;
 using Lodis.GridScripts;
+using System.IO;
 
 namespace Lodis.Gameplay
 {
@@ -31,74 +32,88 @@ namespace Lodis.Gameplay
         UNDECIDED
     }
 
-    public class MatchManagerBehaviour : MonoBehaviour
+    /// <summary>
+    /// Handles player spawning, match state, and match events. Also contains some debug functions for testing purposes.
+    /// </summary>
+    public class MatchManagerBehaviour : SimulationBehaviour
     {
         private static MatchManagerBehaviour _instance;
-        [Header("Environment References")]
-        [SerializeField]
-        private GridScripts.GridBehaviour _grid;
-        private GameMode _mode;
-        [SerializeField]
-        private RingBarrierBehaviour _ringBarrierL;
-        [SerializeField]
-        private RingBarrierBehaviour _ringBarrierR;
-        [SerializeField]
-        private Button _firstSelectedPauseButton;
-        [SerializeField] private GameObject _pauseMenu;
-        [SerializeField] private Material _hitBoxMaterial;
-        [SerializeField] private Material _hurtBoxMaterial;
+
+        [Header("Grid Logic References")]
+        [Tooltip("Primary grid manager used to build and reset the arena for the match.")]
+        [SerializeField] private GridScripts.GridBehaviour _grid;
+        [Tooltip("Left ring barrier used for ring-out and sudden death transitions.")]
+        [SerializeField] private RingBarrierBehaviour _ringBarrierL;
+        [Tooltip("Right ring barrier used for ring-out and sudden death transitions.")]
+        [SerializeField] private RingBarrierBehaviour _ringBarrierR;
+        [Tooltip("Controller that manages sudden death rules and timers.")]
         [SerializeField] private SuddenDeathBehaviour _suddenDeathManager;
 
+        [Header("UI/Feedback References")]
+        [Tooltip("Pause-menu button that should be selected first when the match is paused.")]
+        [SerializeField] private Button _firstSelectedPauseButton;
+        [Tooltip("Pause menu root object toggled during pause flow.")]
+        [SerializeField] private GameObject _pauseMenu;
+        [Tooltip("Material used when collider hitboxes are visualized for debugging.")]
+        [SerializeField] private Material _hitBoxMaterial;
+        [Tooltip("Material used when collider hurtboxes are visualized for debugging.")]
+        [SerializeField] private Material _hurtBoxMaterial;
+
         [Header("Match Options")]
-        [SerializeField]
-        private int _targetFrameRate;
-        [SerializeField]
-        private FloatVariable _matchStartTime;
-        [SerializeField]
-        private bool _invincibleBarriers;
-        [SerializeField]
-        private bool _infiniteEnergy;
-        [SerializeField]
-        private bool _infiniteBurst;
-        [SerializeField]
-        private float _timeScale = 1;
+        [Tooltip("Target frame rate for the match scene.")]
+        [SerializeField] private int _targetFrameRate;
+        [Tooltip("Countdown duration before players gain control at the start of a round.")]
+        [SerializeField] private FloatVariable _matchStartTime;
+        [Tooltip("If enabled, ring barriers ignore damage and cannot be broken normally.")]
+        [SerializeField] private bool _invincibleBarriers;
+        [Tooltip("If enabled, gameplay systems may treat energy resources as always full.")]
+        [SerializeField] private bool _infiniteEnergy;
+        [Tooltip("If enabled, gameplay systems may treat burst resources as always full.")]
+        [SerializeField] private bool _infiniteBurst;
+        [Tooltip("Initial Unity time scale applied when the match scene starts.")]
+        [SerializeField] private float _timeScale = 1;
 
         [Header("Music")]
-        [SerializeField]
-        private AudioClip _matchMusic;
-        [SerializeField]
-        private AudioClip _suddenDeathMusic;
+        [Tooltip("Music track played during a normal round.")]
+        [SerializeField] private AudioClip _matchMusic;
+        [Tooltip("Music track played once sudden death begins.")]
+        [SerializeField] private AudioClip _suddenDeathMusic;
 
         [Header("Match Events")]
-        [SerializeField]
-        private UnityEvent _onApplicationQuit;
-        [SerializeField]
-        private UnityEvent _onMatchStart;
-        [SerializeField]
-        private UnityEvent _onMatchCountdownStart;
-        [SerializeField]
-        private UnityEvent _onMatchPause;
-        [SerializeField]
-        private UnityEvent _onMatchUnpause;
-        [SerializeField]
-        private UnityEvent _onMatchRestart;
-        [SerializeField]
-        private UnityEvent _onMatchOver;
+        [Tooltip("Invoked right before the application quits from this manager.")]
+        [SerializeField] private UnityEvent _onApplicationQuit;
+        [Tooltip("Invoked when player control is enabled and the round officially starts.")]
+        [SerializeField] private UnityEvent _onMatchStart;
+        [Tooltip("Invoked when a round countdown begins before players gain control.")]
+        [SerializeField] private UnityEvent _onMatchCountdownStart;
+        [Tooltip("Invoked when the match enters the paused state.")]
+        [SerializeField] private UnityEvent _onMatchPause;
+        [Tooltip("Invoked when the match leaves the paused state.")]
+        [SerializeField] private UnityEvent _onMatchUnpause;
+        [Tooltip("Invoked whenever the round is reset or restarted.")]
+        [SerializeField] private UnityEvent _onMatchRestart;
+        [Tooltip("Invoked when the manager decides the round has ended.")]
+        [SerializeField] private UnityEvent _onMatchOver;
+        [Tooltip("Invoked when player one rings out.")]
         [SerializeField] private UnityEvent _onP1RingOut;
+        [Tooltip("Invoked when player two rings out.")]
         [SerializeField] private UnityEvent _onP2RingOut;
+        [Tooltip("Invoked when player one loses the round.")]
         [SerializeField] private UnityEvent _onP1Lose;
+        [Tooltip("Invoked when player two loses the round.")]
         [SerializeField] private UnityEvent _onP2Lose;
 
-        [SerializeField]
-        private CustomEventSystem.Event _matchRestartEvent;
-        [SerializeField]
-        private CustomEventSystem.Event _matchStartEvent;
-        [SerializeField]
-        private CustomEventSystem.Event _matchOverEvent;
+        [Tooltip("Custom event raised when a match restart is triggered.")]
+        [SerializeField] private CustomEventSystem.Event _matchRestartEvent;
+        [Tooltip("Custom event raised when the active round officially starts.")]
+        [SerializeField] private CustomEventSystem.Event _matchStartEvent;
+        [Tooltip("Custom event raised when the active round ends.")]
+        [SerializeField] private CustomEventSystem.Event _matchOverEvent;
 
         private PlayerSpawnBehaviour _playerSpawner;
         private bool _isPaused;
         private MatchResult _matchResult;
+        private GameMode _mode;
 
         private bool _canPause = true;
         private bool _suddenDeathActive;
@@ -109,12 +124,11 @@ namespace Lodis.Gameplay
         public delegate void ColliderVisualEnableEvent(bool enabled);
         public event ColliderVisualEnableEvent OnColliderVisualsEnabled;
 
-
-        private TweenerCore<float, float, FloatOptions> _fxTimeScaleTween;
+        private LerpAction _fxTimeScaleTween;
 
         private LerpAction _physicsTimeScaleLerp;
         private FixedAction _physicsTimeScaleAction;
-        private DelayedAction _fxTimeScaleAction;
+        private FixedAction _fxTimeScaleAction;
 
         private int _lhsWins;
         private int _rhsWins;
@@ -122,7 +136,7 @@ namespace Lodis.Gameplay
         private CharacterExplosionBehaviour _characterExplosionBehaviour;
 
         /// <summary>
-        /// Gets the static instance of the black board. Creates one if none exists
+        /// Gets the active match manager instance in the scene.
         /// </summary>
         public static MatchManagerBehaviour Instance
         {
@@ -161,7 +175,9 @@ namespace Lodis.Gameplay
         public Material HurtBoxMaterial { get => _hurtBoxMaterial; }
         public bool CollidersEnabled { get => _collidersEnabled; private set => _collidersEnabled = value; }
 
-        private void Awake()
+        public override string LogName => "MatchManagerBehaviour";
+
+        protected override void Awake()
         {
             _mode = (GameMode)SceneManagerBehaviour.Instance.CurrentGameMode.Value;
 
@@ -194,14 +210,14 @@ namespace Lodis.Gameplay
                 }
             });
 
-            RoutineBehaviour.Instance.StartNewConditionAction(args =>
+            FixedPointTimer.StartNewConditionAction(() =>
             {
                 SetMatchResult();
                 _onMatchOver?.Invoke();
                 _matchOverEvent?.Raise(gameObject);
                 _canPause = false;
                 if (_matchResult == MatchResult.DRAW)
-                    RoutineBehaviour.Instance.StartNewTimedAction(values => Restart(true), TimedActionCountType.SCALEDTIME, 2);
+                    FixedPointTimer.StartNewTimedAction(() => Restart(true), 2);
             },
             args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
 
@@ -213,6 +229,9 @@ namespace Lodis.Gameplay
         }
 
 
+        /// <summary>
+        /// Starts the match countdown and enables player control when the countdown finishes.
+        /// </summary>
         private void Start()
         {
             SetPlayerControlsActive(false);
@@ -220,16 +239,19 @@ namespace Lodis.Gameplay
 
             _onMatchCountdownStart?.Invoke();
 
-            RoutineBehaviour.Instance.StartNewTimedAction(args =>
+            FixedPointTimer.StartNewTimedAction(() =>
             {
                 _canPause = true;
                 SetPlayerControlsActive(true);
                 MatchStarted = true;
                 _onMatchStart?.Invoke();
                 _matchStartEvent.Raise();
-            }, TimedActionCountType.SCALEDTIME, MatchStartTime.FixedValue);
+            }, MatchStartTime.FixedValue);
         }
 
+        /// <summary>
+        /// Evaluates the current match state and records the correct round result.
+        /// </summary>
         private void SetMatchResult()
         {
             if (PlayerSpawner.P1HealthScript.HasExploded && PlayerSpawner.P2HealthScript.HasExploded && _suddenDeathActive)
@@ -260,6 +282,10 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// Handles ring-out feedback when a character explosion begins.
+        /// </summary>
+        /// <param name="index">The exploded player index.</param>
         private void OnPlayerExplosionStart(int index)
         {
             if (index == 0)
@@ -268,18 +294,29 @@ namespace Lodis.Gameplay
                 _onP2RingOut?.Invoke();
         }
 
+        /// <summary>
+        /// Forces a match result value, then reevaluates the result side effects.
+        /// </summary>
+        /// <param name="resultID">Integer value matching the <see cref="MatchResult"/> enum.</param>
         public void SetMatchResult(int resultID)
         {
             _matchResult = (MatchResult)resultID;
             SetMatchResult();
         }
 
+        /// <summary>
+        /// Enables or disables collider debug visuals and notifies listeners.
+        /// </summary>
+        /// <param name="enabled">Whether collider visuals should be shown.</param>
         public void EnableColliderVisuals(bool enabled)
         {
             CollidersEnabled = enabled;
             OnColliderVisualsEnabled?.Invoke(CollidersEnabled);
         }
 
+        /// <summary>
+        /// Toggles collider debug visuals and notifies listeners of the new state.
+        /// </summary>
         public void ToggleColliderVisuals()
         {
             CollidersEnabled = !CollidersEnabled;
@@ -294,12 +331,12 @@ namespace Lodis.Gameplay
         /// <param name="duration">How long the timescale will be this speed.</param>
         public void ChangeTimeScale(Fixed32 newTimeScale, Fixed32 speed, Fixed32 duration)
         {
-            _fxTimeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
+            _fxTimeScaleTween = FixedLerp.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2);
+            _fxTimeScaleTween.Unit = FixedTimeAction.UnitOfTime.Unscaled;
 
             _physicsTimeScaleLerp = FixedLerp.To(() => GridGame.TimeScale, x => GridGame.TimeScale = x, newTimeScale, speed);
 
-
-            _fxTimeScaleAction = RoutineBehaviour.Instance.StartNewTimedAction(args => Time.timeScale = 1, TimedActionCountType.UNSCALEDTIME, duration);
+            _fxTimeScaleAction = FixedPointTimer.StartNewTimedAction(() => Time.timeScale = 1, duration, FixedTimeAction.UnitOfTime.Unscaled);
 
             _physicsTimeScaleAction = FixedPointTimer.StartNewTimedAction(() => GridGame.TimeScale = 1, duration, FixedTimeAction.UnitOfTime.Unscaled);
         }
@@ -317,21 +354,9 @@ namespace Lodis.Gameplay
             _physicsTimeScaleAction = FixedPointTimer.StartNewTimedAction(() => GridGame.TimeScale = 1, duration, FixedTimeAction.UnitOfTime.Unscaled);
         }
 
-
         /// <summary>
-        /// Temporarily changes the speed of time for the game.
+        /// Stops all active time-scale effects and restores both Unity and simulation time to normal.
         /// </summary>
-        /// <param name="newTimeScale">The new time scale. 0 being no time passes and 1 being the normal speed.</param>
-        /// <param name="speed">How long it takes to transition into the new time scale.</param>
-        /// <param name="duration">How long the timescale will be this speed.</param>
-        public void ChangeTimeScale(float newTimeScale, float speed, Condition condition)
-        {
-            _fxTimeScaleTween = DOTween.To(() => Time.timeScale, x => Time.timeScale = x, newTimeScale, speed / 2).SetUpdate(true);
-
-            _fxTimeScaleTween.onUpdate += () => GridGame.TimeScale = Time.timeScale;
-            _fxTimeScaleAction = RoutineBehaviour.Instance.StartNewConditionAction(args => Time.timeScale = 1, condition);
-        }
-
         private void StopTimeScale()
         {
             GridGame.TimeScale = 1;
@@ -340,28 +365,41 @@ namespace Lodis.Gameplay
             _physicsTimeScaleLerp?.Kill();
             _physicsTimeScaleAction?.Stop();
             _fxTimeScaleTween?.Kill();
-            RoutineBehaviour.Instance.StopAction(_fxTimeScaleAction);
+            FixedPointTimer.StopAction(_fxTimeScaleAction);
         }
 
+        /// <summary>
+        /// Restores Unity and simulation time to normal without restarting the round.
+        /// </summary>
         public void ResetTimeScale()
         {
             Time.timeScale = 1;
             GridGame.TimeScale = 1;
             _fxTimeScaleTween.Kill();
-            RoutineBehaviour.Instance.StopAction(_fxTimeScaleAction);
+            FixedPointTimer.StopAction(_fxTimeScaleAction);
         }
 
+        /// <summary>
+        /// Enables or disables player input controllers for both match participants.
+        /// </summary>
+        /// <param name="value">Whether player controls should be active.</param>
         public void SetPlayerControlsActive(bool value)
         {
             BlackBoardBehaviour.Instance.Player1Controller.Enabled = value;
             BlackBoardBehaviour.Instance.Player2Controller.Enabled = value;
         }
 
+        /// <summary>
+        /// Toggles the infinite energy debug option.
+        /// </summary>
         public void ToggleInfiniteEnergy()
         {
             InfiniteEnergy = !InfiniteEnergy;
         }
 
+        /// <summary>
+        /// Toggles barrier invincibility and updates the arena barriers to match.
+        /// </summary>
         public void ToggleInvincibleBarriers()
         {
             InvincibleBarriers = !InvincibleBarriers;
@@ -372,11 +410,18 @@ namespace Lodis.Gameplay
                 _ringBarrierR.SetInvincibilityByCondition(condition => !InvincibleBarriers);
             }
         }
+
+        /// <summary>
+        /// Toggles the infinite burst debug option.
+        /// </summary>
         public void ToggleInfiniteBurstEnergy()
         {
             InfiniteBurst = !InfiniteBurst;
         }
 
+        /// <summary>
+        /// Toggles the pause state, pause menu, and player control availability.
+        /// </summary>
         public void TogglePauseMenu()
         {
             if (!_canPause || (_characterExplosionBehaviour.ExplodingPlayer1 || _characterExplosionBehaviour.ExplodingPlayer2))
@@ -407,6 +452,10 @@ namespace Lodis.Gameplay
             }
         }
 
+        /// <summary>
+        /// Restarts the round and optionally starts it in sudden death mode.
+        /// </summary>
+        /// <param name="suddenDeathActive">Whether the restarted round should use sudden death rules.</param>
         public void Restart(bool suddenDeathActive = false)
         {
             PlayerSpawner.SuddenDeathActive = suddenDeathActive;
@@ -456,11 +505,20 @@ namespace Lodis.Gameplay
             StopTimeScale();
         }
 
+        /// <summary>
+        /// Restarts the round after an unscaled delay.
+        /// </summary>
+        /// <param name="delay">Delay before restarting the round.</param>
         public void Restart(float delay)
         {
             RoutineBehaviour.Instance.StartNewTimedAction(args => Restart(), TimedActionCountType.UNSCALEDTIME, delay);
         }
 
+        /// <summary>
+        /// Determines whether current round conditions allow the match to end.
+        /// </summary>
+        /// <param name="args">Unused condition callback arguments.</param>
+        /// <returns>True when a player has exploded or the timer has expired.</returns>
         private bool CheckCanEndMatch(params object[] args)
         {
             bool p1Exploded = PlayerSpawner.P1HealthScript.HasExploded && !_characterExplosionBehaviour.ExplodingPlayer2;
@@ -470,6 +528,9 @@ namespace Lodis.Gameplay
             return p1Exploded || p2Exploded || timeUp;
         }
 
+        /// <summary>
+        /// Leaves the match scene and loads the character select scene.
+        /// </summary>
         public void LoadCharacterSelect()
         {
             IsPaused = false;
@@ -491,6 +552,9 @@ namespace Lodis.Gameplay
             SceneManagerBehaviour.Instance.LoadScene("CharacterSelect");
         }
 
+        /// <summary>
+        /// Leaves the match scene and returns to the main menu scene.
+        /// </summary>
         public void ReturnToMainMenu()
         {
             IsPaused = false;
@@ -511,74 +575,116 @@ namespace Lodis.Gameplay
             SceneManagerBehaviour.Instance.LoadScene(1);
         }
 
+        /// <summary>
+        /// Invokes quit callbacks and requests the application to close.
+        /// </summary>
         public void QuitApplication()
         {
             _onApplicationQuit?.Invoke();
             Application.Quit();
         }
 
+        /// <summary>
+        /// Registers a callback for application quit.
+        /// </summary>
         public void AddOnApplicationQuitAction(UnityAction action)
         {
             _onApplicationQuit.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for match restarts.
+        /// </summary>
         public void AddOnMatchRestartAction(UnityAction action)
         {
             _onMatchRestart.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for match over events.
+        /// </summary>
         public void AddOnMatchOverAction(UnityAction action)
         {
             _onMatchOver.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for match start.
+        /// </summary>
         public void AddOnMatchStartAction(UnityAction action)
         {
             _onMatchStart.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for the round countdown start.
+        /// </summary>
         public void AddOnMatchCountdownStartAction(UnityAction action)
         {
             _onMatchCountdownStart.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for match pause.
+        /// </summary>
         public void AddOnMatchPauseAction(UnityAction action)
         {
             _onMatchPause.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for match unpause.
+        /// </summary>
         public void AddOnMatchUnpauseAction(UnityAction action)
         {
             _onMatchUnpause.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for player one ring-outs.
+        /// </summary>
         public void AddOnP1RingoutAction(UnityAction action)
         {
             _onP1RingOut.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for player two ring-outs.
+        /// </summary>
         public void AddOnP2RingoutAction(UnityAction action)
         {
             _onP2RingOut.AddListener(action);
         }
 
 
+        /// <summary>
+        /// Registers the same callback for both player ring-out events.
+        /// </summary>
         public void AddOnRingoutAction(UnityAction action)
         {
             _onP1RingOut.AddListener(action);
             _onP2RingOut.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for player one losses.
+        /// </summary>
         public void AddOnP1LoseAction(UnityAction action)
         {
             _onP1Lose.AddListener(action);
         }
 
+        /// <summary>
+        /// Registers a callback for player two losses.
+        /// </summary>
         public void AddOnP2LoseAction(UnityAction action)
         {
             _onP2Lose.AddListener(action);
         }
 
+        /// <summary>
+        /// Handles lightweight keyboard-only debug shortcuts while the match is running.
+        /// </summary>
         private void Update()
         {
             if (Keyboard.current.hKey.wasPressedThisFrame)
@@ -589,6 +695,39 @@ namespace Lodis.Gameplay
                 _ringBarrierL.ResetHealth();
                 _ringBarrierR.ResetHealth();
             }
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"SuddenDeathActive={_suddenDeathActive}",
+                $"MatchStarted={_matchStarted}",
+                $"PlayerOutOfRing={_playerOutOfRing}",
+                $"MatchResult={_matchResult}",
+                $"LhsWins={_lhsWins}",
+                $"RhsWins={_rhsWins}"
+            };
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_suddenDeathActive);
+            bw.Write(_matchStarted);
+            bw.Write(_playerOutOfRing);
+            bw.Write((int)_matchResult);
+            bw.Write(_lhsWins);
+            bw.Write(_rhsWins);
+        }
+
+        public override void Deserialize(BinaryReader br)
+        {
+            _suddenDeathActive = br.ReadBoolean();
+            _matchStarted = br.ReadBoolean();
+            _playerOutOfRing = br.ReadBoolean();
+            _matchResult = (MatchResult)br.ReadInt32();
+            _lhsWins = br.ReadInt32();
+            _rhsWins = br.ReadInt32();
         }
     }
 

@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Lethal Force
   abilityDescription: Charge up to fire a powerful piercing laser.
-  exampleClip: {fileID: 0}
+  exampleClip: {fileID: 32900000, guid: ad3a64ee5fa0cae4fa924c2872a0a5c3, type: 3}
   AbilityType: 0
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 13107
   recoverTime:
@@ -48,7 +49,7 @@ MonoBehaviour:
   Accessory: {fileID: 11400000, guid: 4db829e6a6aee7746bc29cdc79ee9a4e, type: 2}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 0}
+  DisplayIcon: {fileID: 21300000, guid: d94eac857c5579d40b212b78f0f178dd, type: 3}
   ActivateSound: {fileID: 8300000, guid: 94e1d2c647ed8d14c8899e3833976472, type: 3}
   ActiveSound: {fileID: 8300000, guid: 7a810e9250ffcde48bdb0a2fc78e759f, type: 3}
   DeactivateSound: {fileID: 0}
@@ -58,6 +59,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 32768
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -71,8 +73,6 @@ MonoBehaviour:
       RawValue: 131072
     KnockBackScale:
       RawValue: 0
-    SurgeMeterValue: 1
-    IsEnder: 0
     ClampForceWithinRing: 0
     IgnoreMomentum: 0
     HitAngle:
@@ -82,7 +82,13 @@ MonoBehaviour:
     HitStunTime:
       RawValue: 32768
     Priority:
-      RawValue: 0
+      RawValue: -65536
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 2
+    IsEnder: 1
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 0
     AbilityID:

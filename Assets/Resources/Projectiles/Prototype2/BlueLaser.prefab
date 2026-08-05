@@ -18,6 +18,21 @@ PrefabInstance:
       propertyPath: _isKinematic
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6632699018725748113, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: _isHurtBox
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632699018725748113, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: debuggingEnabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632699018725748113, guid: c662ede171e2a26498c91a36fc787336,
+        type: 3}
+      propertyPath: _entityCollider._height.RawValue
+      value: 131072
+      objectReference: {fileID: 0}
     - target: {fileID: 6676342820181627761, guid: c662ede171e2a26498c91a36fc787336,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b

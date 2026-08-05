@@ -41,6 +41,8 @@ namespace Lodis.ScriptableObjects
         [Tooltip("The type describes the strength and input value for the ability")]
         public AbilityType AbilityType;
 
+        public bool ShouldHideInMenu;
+
         [Header("Usage Timing")]
         [Tooltip("How long the ability should be active for")]
         public Fixed32 timeActive = 0;

@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8819adf3149d3a04da8b8184e496a7f5, type: 3}
   m_Name: SF_WhipPull_Data
   m_EditorClassIdentifier: 
-  abilityName: Unassigned
+  abilityName: Charge Whip Pull
   abilityDescription: None
   exampleClip: {fileID: 0}
   AbilityType: 6
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 65536
   recoverTime:
@@ -39,17 +40,75 @@ MonoBehaviour:
   Accessory: {fileID: 11400000, guid: 4db829e6a6aee7746bc29cdc79ee9a4e, type: 2}
   Effects:
   - {fileID: 5708505094911903500, guid: 18cbb56a95a7f124881811ae56290ec4, type: 3}
-  Sounds: []
+  Sounds:
+  - {fileID: 8300000, guid: 160fa2182f474b946ad119d08526942b, type: 3}
   DisplayIcon: {fileID: 0}
-  ActivateSound: {fileID: 0}
-  ActiveSound: {fileID: 0}
+  ActivateSound: {fileID: 8300000, guid: 3c8f811275cc78b4ba876a02987b0686, type: 3}
+  ActiveSound: {fileID: 8300000, guid: ae07fdbfcc3185847beedc32e8d2a324, type: 3}
   DeactivateSound: {fileID: 0}
   ColliderData:
+  - Name: WhipPullCollider
+    DespawnAfterTimeLimit: 0
+    TimeActive:
+      RawValue: 196608
+    DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
+    IsMultiHit: 0
+    LayersToIgnore:
+      serializedVersion: 2
+      m_Bits: 134217015
+    TagsToIgnore: []
+    MultiHitWaitTime:
+      RawValue: 0
+    IgnoreTeleporterReversal: 0
+    Damage:
+      RawValue: 131072
+    BaseKnockBack:
+      RawValue: 32768
+    KnockBackScale:
+      RawValue: 0
+    ClampForceWithinRing: 0
+    IgnoreMomentum: 0
+    HitAngle:
+      RawValue: 98304
+    AdjustAngleBasedOnAlignment: 0
+    TypeOfDamage: 0
+    HitStunTime:
+      RawValue: 6553
+    Priority:
+      RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 3
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
+    OwnerAlignement: 0
+    AbilityType: 6
+    AbilityID:
+      RawValue: 1584726016
+    SpawnEffect: {fileID: 0}
+    SpawnEffectOffset:
+      RawValue: 0
+    HitSpark: {fileID: 0}
+    HitEffectLevel: 1
+    HitStopShakeStrength:
+      RawValue: 6553
+    CameraShakeStrength:
+      RawValue: 0
+    CameraShakeDuration:
+      RawValue: 0
+    CameraShakeFrequency: 0
+    ShakesCamera: 0
+    SpawnSound: {fileID: 0}
+    HitSound: {fileID: 0}
+    DespawnSound: {fileID: 0}
   - Name: WhipPopUpCollider
     DespawnAfterTimeLimit: 1
     TimeActive:
       RawValue: 6553
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -57,6 +116,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 983040
     BaseKnockBack:
@@ -67,16 +127,22 @@ MonoBehaviour:
     IgnoreMomentum: 0
     HitAngle:
       RawValue: 111411
-    AdjustAngleBasedOnAlignment: 0
+    AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
       RawValue: 65536
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 2
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 6
     AbilityID:
-      RawValue: -1394147328
+      RawValue: 1584726016
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0

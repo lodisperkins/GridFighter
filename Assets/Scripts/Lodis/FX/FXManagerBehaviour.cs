@@ -70,6 +70,8 @@ namespace Lodis.FX
         public bool SuperMoveEffectActive { get => _superMoveActive; private set => _superMoveActive = value; }
         public int LastPlayerSuper { get => _lastPlayerSuper; private set => _lastPlayerSuper = value; }
 
+        public override string LogName => "FXManagerBehaviour";
+
         // Start is called before the first frame update
         void Start()
         {
@@ -259,14 +261,14 @@ namespace Lodis.FX
 
         public void StartSuperMoveVisual(int player, params GameObject[] extraVisuals)
         {
-            if (player != 1 && player != 2)
+            if (player != 0 && player != 1)
                 return;
 
             CharacterCameraBehaviour currentCamera = null;
             Animator currentAnimator = null;
             Vector3 direction;
 
-            if (player == 1)
+            if (player == 0)
             {
                 currentCamera = _player1Camera;
                 currentAnimator = _player1Animator;
@@ -361,6 +363,21 @@ namespace Lodis.FX
             {
                 SetPlayerControlsEnabled(playerControlsWereEnabled);
             }
+        }
+
+        /// <summary>
+        /// Hashes the serialized FX manager state so presentation-side rollback data
+        /// can still be traced when it contributes to a mismatch.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Super Move Effect Active: {SuperMoveEffectActive}",
+                $"Environment Lights Enabled: {_environmentLightsEnabled}",
+                $"Player Controls Enabled: {_playerControlsEnabled}",
+                $"Last Player Super: {LastPlayerSuper}"
+            };
         }
     }
 }

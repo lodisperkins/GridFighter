@@ -1,6 +1,8 @@
-﻿using Lodis.AI;
+﻿using FixedPoints;
+using Lodis.AI;
 using Lodis.GridScripts;
 using Lodis.ScriptableObjects;
+using SharedGame;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -58,6 +60,11 @@ namespace Lodis.Utility
         private string rhsRecordingName;
         private ActionPlaybackInfo[] lhsRecordings;
         private ActionPlaybackInfo[] rhsRecordings;
+        private Coroutine _sceneActivationGateRoutine;
+        private bool _loadingScene;
+
+        public delegate void LoadSceneEvent();
+        public event LoadSceneEvent OnLoadScene;
 
 
 
@@ -97,6 +104,7 @@ namespace Lodis.Utility
         public string LhsRecordingName { get => lhsRecordingName; set => lhsRecordingName = value; }
         public string RhsRecordingName { get => rhsRecordingName; set => rhsRecordingName = value; }
         public bool StartingFight { get; set; }
+        public bool LoadScreenActive { get => _loadScreen.activeSelf; set => _loadScreen.SetActive(value); }
 
 
         public bool IsAIGameMode
@@ -107,6 +115,28 @@ namespace Lodis.Utility
                        _gameMode.Value == (int)GameMode.SIMULATE ||
                        _gameMode.Value == (int)GameMode.PRACTICE ||
                        _gameMode.Value == (int)GameMode.TUTORIAL;
+            }
+        }
+
+        public bool IsOnlineGameMode
+        {
+            get
+            {
+                return _gameMode.Value == (int)GameMode.ONLINE;
+            }
+        }
+
+        public bool LoadingScene 
+        {
+            get => _loadingScene;
+            private set
+            {
+                if (_loadingScene != value && value)
+                {
+                    OnLoadScene?.Invoke();
+                }
+
+                _loadingScene = value;
             }
         }
 
@@ -125,7 +155,11 @@ namespace Lodis.Utility
 
         private void OnSceneLoaded(Scene arg0, LoadSceneMode arg1)
         {
-            _loadScreen.SetActive(false);
+            if (!GridGameManager.OnlineGameStarted)
+            {
+                _loadScreen.SetActive(false);
+            }
+            LoadingScene = false;
         }
 
         private void Start()
@@ -180,8 +214,20 @@ namespace Lodis.Utility
             _currentIndex.Value = 1;
         }
 
+        public void LoadCharacterSelectWithDelay(int time)
+        {
+            RoutineBehaviour.Instance.StartNewTimedAction(a =>
+            {
+                LoadScene(2);
+                _previousScene = _currentIndex;
+                _currentIndex.Value = 2;
+            }, TimedActionCountType.UNSCALEDTIME, time);
+        }
+
         public void LoadScene(int index)
         {
+            LoadingScene = true;
+
             SceneOperation = SceneManager.LoadSceneAsync(index);
 
             //The tutorial skips the charcter select so we gotta set starting fight here.
@@ -210,6 +256,10 @@ namespace Lodis.Utility
                     Debug.LogError($"Failed to load AI decisions: {e.Message}");
                 }
             }
+            else if (ShouldGateOnlineSceneActivation(index))
+            {
+                BeginOnlineSceneActivationGate();
+            }
 
             _loadScreen.SetActive(true);
 
@@ -220,9 +270,11 @@ namespace Lodis.Utility
 
         public void LoadScene(string name)
         {
+            LoadingScene = true;
+
             SceneOperation = SceneManager.LoadSceneAsync(name);
 
-            //The tutorial skips the charcter select so we gotta set starting fight here.
+            //The tutorial skips the character select so we gotta set starting fight here.
             if (name == "Tutorial")
             {
                 StartingFight = true;
@@ -244,6 +296,10 @@ namespace Lodis.Utility
                 {
                     Debug.LogError($"Failed to load AI decisions: {e.Message}");
                 }
+            }
+            else if (ShouldGateOnlineSceneActivation(name))
+            {
+                BeginOnlineSceneActivationGate();
             }
 
             _loadScreen.SetActive(true);
@@ -273,6 +329,88 @@ namespace Lodis.Utility
             SceneOperation.allowSceneActivation = true;
         }
 
+        /// <summary>
+        /// Returns true when the requested scene load should be held at Unity's
+        /// ready-to-activate stage until the online scene handshake completes.
+        /// </summary>
+        private bool ShouldGateOnlineSceneActivation(int index)
+        {
+            return _gameMode.Value == (int)GameMode.ONLINE && index == 1;
+        }
+
+        /// <summary>
+        /// Returns true when the requested named scene load should be held at
+        /// Unity's ready-to-activate stage until the online scene handshake completes.
+        /// </summary>
+        private bool ShouldGateOnlineSceneActivation(string name)
+        {
+            return _gameMode.Value == (int)GameMode.ONLINE && name == "Battle";
+        }
+
+        /// <summary>
+        /// Resolves the active game manager as a GridGameManager when the current
+        /// scene flow is using the grid-based online battle implementation.
+        /// </summary>
+        private GridGameManager GetGridGameManager()
+        {
+            return GameManager.Instance as GridGameManager;
+        }
+
+        /// <summary>
+        /// Starts the online scene activation gate so the loaded battle scene stays
+        /// inactive until both local and remote clients report ready.
+        /// </summary>
+        private void BeginOnlineSceneActivationGate()
+        {
+            var gridGameManager = GetGridGameManager();
+            if (gridGameManager == null)
+            {
+                Debug.LogError("Online scene activation gate could not find GridGameManager.");
+                return;
+            }
+
+            if (_sceneActivationGateRoutine != null)
+            {
+                StopCoroutine(_sceneActivationGateRoutine);
+            }
+
+            // Hold scene activation at 90% loaded until both clients report that
+            // their battle scenes are ready. This prevents Awake/Start from
+            // running on one side long before the other is prepared.
+            gridGameManager.ResetSceneReadyState();
+            SceneOperation.allowSceneActivation = false;
+            _sceneActivationGateRoutine = StartCoroutine(WaitForOnlineSceneReadyAndActivate());
+        }
+
+        /// <summary>
+        /// Waits for the local scene to finish loading to Unity's activation threshold,
+        /// reports local readiness, then activates the scene only after the remote
+        /// client is also ready.
+        /// </summary>
+        private IEnumerator WaitForOnlineSceneReadyAndActivate()
+        {
+            var gridGameManager = GetGridGameManager();
+            if (gridGameManager == null)
+            {
+                Debug.LogError("Online scene activation gate lost access to GridGameManager.");
+                yield break;
+            }
+
+            while (SceneOperation != null && SceneOperation.progress < 0.9f)
+            {
+                yield return null;
+            }
+
+            // The scene is fully loaded in memory but not yet activated, so this
+            // is the right moment to announce local readiness to the online flow.
+            gridGameManager.NotifyLocalSceneLoaded();
+
+            yield return new WaitUntil(() => gridGameManager.BothScenesReady);
+
+            SceneOperation.allowSceneActivation = true;
+            _sceneActivationGateRoutine = null;
+        }
+
         public ActionPlaybackInfo[] GetRecordings(int playerID)
         {
             if (playerID == 0)
@@ -291,6 +429,7 @@ namespace Lodis.Utility
 
         public void LoadPreviousScene()
         {
+            LoadingScene = true;
             SceneOperation = SceneManager.LoadSceneAsync(_previousScene);
             _loadScreen.SetActive(true);
         }

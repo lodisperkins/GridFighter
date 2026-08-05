@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: DK_BombSquad_Data
   m_EditorClassIdentifier: 
   abilityName: Bomb Squad
-  abilityDescription: None
-  exampleClip: {fileID: 0}
+  abilityDescription: Call in the bomb squad! Mini bots track your opponents position
+    and detonate on contact.
+  exampleClip: {fileID: 32900000, guid: 69d4740d76c641d4c9c9187afd8392ea, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 13107
   recoverTime:
@@ -40,7 +42,7 @@ MonoBehaviour:
   Effects:
   - {fileID: 1996035907712742523, guid: 415f3bf38c73a1f4f9d19e2721eb9ea8, type: 3}
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: e1ad5027f3b05a74288aaa9b76b0054c, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 803838c7b3939d142b12435c4ff25295, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -50,6 +52,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 327680
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -57,6 +60,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 655360
     BaseKnockBack:
@@ -67,12 +71,18 @@ MonoBehaviour:
     IgnoreMomentum: 0
     HitAngle:
       RawValue: 85196
-    AdjustAngleBasedOnAlignment: 0
+    AdjustAngleBasedOnAlignment: 1
     TypeOfDamage: 0
     HitStunTime:
       RawValue: 32768
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 1
+    StatusEffectStacks: 1
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:

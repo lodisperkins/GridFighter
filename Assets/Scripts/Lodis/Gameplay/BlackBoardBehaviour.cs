@@ -431,6 +431,15 @@ namespace Lodis.Gameplay
 
             return null;
         }
+
+        public void SetPlayerUIEnabled(bool enabled)
+        {
+            CharacterFeedbackBehaviour feedback1 = Player1.GetComponentInChildren<CharacterFeedbackBehaviour>();
+            CharacterFeedbackBehaviour feedback2 = Player2.GetComponentInChildren<CharacterFeedbackBehaviour>();
+
+            feedback1.SetCharacterUIEnabled(enabled);
+            feedback2.SetCharacterUIEnabled(enabled);
+        }
     }
 }
 

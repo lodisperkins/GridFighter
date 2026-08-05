@@ -49,7 +49,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 2d80d084ec5a51841a75f04d1aadb20c, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 3df9b16ada788594b852fbd42e030b00, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -59,6 +59,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 458752
     DestroyOnHit: 1
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -82,6 +83,7 @@ MonoBehaviour:
       RawValue: 3276
     Priority:
       RawValue: 131072
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 0

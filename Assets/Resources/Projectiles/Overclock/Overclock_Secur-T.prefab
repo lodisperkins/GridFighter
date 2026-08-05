@@ -611,7 +611,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _activeTime:
-    RawValue: 983040
+    RawValue: 655360
   fireRange: 1
   _delayBetweenShots:
     RawValue: 32768

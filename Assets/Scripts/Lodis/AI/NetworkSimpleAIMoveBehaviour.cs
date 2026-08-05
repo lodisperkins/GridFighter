@@ -52,6 +52,8 @@ namespace Lodis.AI
             }
         }
 
+        public override string LogName => "NetworkSimpleAIMovementBehaviour";
+
         public override void Serialize(BinaryWriter bw)
         {
             bw.Write(_currentPathIndex);
@@ -64,6 +66,20 @@ namespace Lodis.AI
             _currentPathIndex = br.ReadInt32();
             _reachedDestination = br.ReadBoolean();
             _needPath = br.ReadBoolean();
+        }
+
+        /// <summary>
+        /// Hashes the serialized simple AI movement state so this component can be
+        /// identified quickly during sync-test diagnostics.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                "CurrentPathIndex: " + _currentPathIndex,
+                "ReachedDestination: " + _reachedDestination,
+                "NeedPath: " + _needPath
+            };
         }
 
         private void OnValidate()
@@ -82,10 +98,7 @@ namespace Lodis.AI
         {
             base.End();
 
-            _currentPathIndex = 0;
-            _moveTarget = null;
-            NeedPath = false;
-            ReachedDestination = false;
+            ClearPath();
         }
 
         public void MoveToLocation(PanelBehaviour panel)
@@ -101,7 +114,10 @@ namespace Lodis.AI
         public void MoveToLocation(FVector2 panelPosition, Heuristic heuristic = null)
         {
             if (_moveTarget?.Position == panelPosition)
+            {
+                Debug.Log(Entity.Data.Name + " is already moving to panel at location " + panelPosition + ".");
                 return;
+            }
 
             BlackBoardBehaviour.Instance.Grid.GetPanel(panelPosition, out _moveTarget, false, _movementBehaviour.Alignment);
             _reachedDestination = false;
@@ -110,12 +126,16 @@ namespace Lodis.AI
 
         public void MoveToNextPanel()
         {
+            if (_currentPath?.Count == 0)
+                return;
+
             _currentPathIndex++;
 
-            if (_currentPathIndex >= _currentPath.Count || _currentPath.Count < 0)
+            if (_currentPathIndex >= _currentPath.Count)
             {
                 ReachedDestination = true;
                 _onReachedDestination?.Invoke();
+                Debug.Log(Entity.Data.Name + " has reached its destination at panel " + _moveTarget?.Position + ".");
                 return;
             }
 
@@ -126,9 +146,13 @@ namespace Lodis.AI
                     ". Panel at location " + _currentPath[_currentPathIndex].Position + " cannot be reached.");
         }
 
+        public void AddOnReachedDestinationEvent(UnityAction action)
+        {
+            _onReachedDestination.AddListener(action);
+        }
+
         public override void Tick(Fixed32 dt)
         {
-            PanelBehaviour start = _movementBehaviour.CurrentPanel;
 
             //Update pathing.
             if (NeedPath && !_movementBehaviour.IsMoving)
@@ -138,6 +162,7 @@ namespace Lodis.AI
                     return;
                 }
 
+                PanelBehaviour start = _movementBehaviour.CurrentPanel;
                 _currentPath = AI.AIUtilities.Instance.GetPath(start, _moveTarget, false, _movementBehaviour.Alignment, false, _pathFindHeuristic);
                 _needPath = false;
                 _currentPathIndex = 1;
@@ -147,6 +172,10 @@ namespace Lodis.AI
                     _movementBehaviour.MoveToPanel(_currentPath[_currentPathIndex], false);
                 }
             }
+
+            if (_currentPathIndex >= _currentPath.Count)
+                return;
+
             FVector2 direction = (_currentPath[_currentPathIndex].FixedWorldPosition - FixedTransform.WorldPosition).GetNormalized().GetWithoutY();
 
             //Update animation and facing.
@@ -165,8 +194,6 @@ namespace Lodis.AI
 
             if (_faceMovementDirection && !ReachedDestination)
             {
-                
-
                 if (direction != FVector2.Zero)
                 {
                     Entity.FixedTransform.Forward = direction;
@@ -178,7 +205,10 @@ namespace Lodis.AI
         {
             _currentPath.Clear();
             _currentPathIndex = 0;
+            _moveTarget = null;
             NeedPath = false;
+            ReachedDestination = false;
         }
+
     }
 }

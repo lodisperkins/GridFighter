@@ -4,7 +4,6 @@ using System;
 using System.IO;
 using Types;
 using UnityEngine;
-using static PixelCrushers.DialogueSystem.ActOnDialogueEvent;
 
 namespace FixedPoints
 {
@@ -96,7 +95,7 @@ namespace FixedPoints
             FQuaternion quaternion = new FQuaternion();
             if (num8 > 0f)
             {
-                Fixed32 num = (Fixed32)Math.Sqrt((double)(num8 + 1f));
+                Fixed32 num = Fixed32.Sqrt((num8 + 1f));
                 quaternion.W = num * 0.5f;
                 num = 0.5f / num;
                 quaternion.X = (m12 - m21) * num;
@@ -106,7 +105,7 @@ namespace FixedPoints
             }
             if ((m00 >= m11) && (m00 >= m22))
             {
-                Fixed32 num7 = (Fixed32)Math.Sqrt((double)(((1f + m00) - m11) - m22));
+                Fixed32 num7 = Fixed32.Sqrt((((1f + m00) - m11) - m22));
                 Fixed32 num4 = 0.5f / num7;
                 quaternion.X = 0.5f * num7;
                 quaternion.Y = (m01 + m10) * num4;
@@ -116,7 +115,7 @@ namespace FixedPoints
             }
             if (m11 > m22)
             {
-                Fixed32 num6 = (Fixed32)Math.Sqrt((double)(((1f + m11) - m00) - m22));
+                Fixed32 num6 = Fixed32.Sqrt((((1f + m11) - m00) - m22));
                 Fixed32 num3 = 0.5f / num6;
                 quaternion.X = (m10 + m01) * num3;
                 quaternion.Y = 0.5f * num6;
@@ -124,7 +123,7 @@ namespace FixedPoints
                 quaternion.W = (m20 - m02) * num3;
                 return quaternion;
             }
-            Fixed32 num5 = (Fixed32)Math.Sqrt((double)(((1f + m22) - m00) - m11));
+            Fixed32 num5 = Fixed32.Sqrt((((1f + m22) - m00) - m11));
             Fixed32 num2 = 0.5f / num5;
             quaternion.X = (m20 + m02) * num2;
             quaternion.Y = (m21 + m12) * num2;
@@ -184,7 +183,7 @@ namespace FixedPoints
         }
         public void Normalize()
         {
-            var magnitude = (Fixed32)Math.Sqrt((double)(X * X + Y * Y + Z * Z + W * W));
+            Fixed32 magnitude = Fixed32.Sqrt(X * X + Y * Y + Z * Z + W * W);
             if (magnitude > 0)
             {
                 X /= magnitude;
@@ -196,7 +195,17 @@ namespace FixedPoints
 
         public static FQuaternion Inverse(FQuaternion rotation)
         {
-            return new FQuaternion(-rotation.X, -rotation.Y, -rotation.Z, rotation.W);
+            Fixed32 sqrMagnitude = rotation.X * rotation.X + rotation.Y * rotation.Y + rotation.Z * rotation.Z + rotation.W * rotation.W;
+
+            if (sqrMagnitude <= 0)
+                return Identity;
+
+            return new FQuaternion(
+                -rotation.X / sqrMagnitude,
+                -rotation.Y / sqrMagnitude,
+                -rotation.Z / sqrMagnitude,
+                rotation.W / sqrMagnitude
+            );
         }
 
         // Explicit cast to UnityEngine.Quaternion
@@ -219,12 +228,25 @@ namespace FixedPoints
             W.Serialize(bw);
         }
 
-        public void Deserialize(BinaryReader br)
+        public FQuaternion Deserialize(BinaryReader br)
         {
-            X.Deserialize(br);
-            Y.Deserialize(br);
-            Z.Deserialize(br);
-            W.Deserialize(br);
+            X = X.Deserialize(br);
+            Y = Y.Deserialize(br);
+            Z = Z.Deserialize(br);
+            W = W.Deserialize(br);
+            return this;
         }
+
+        public static FQuaternion DeserializeQuaternion(BinaryReader br)
+        {
+            return new FQuaternion(
+                new Fixed32(br.ReadInt64()),
+                new Fixed32(br.ReadInt64()),
+                new Fixed32(br.ReadInt64()),
+                new Fixed32(br.ReadInt64())
+            );
+        }
+
+        public override string ToString() => $"({X}, {Y}, {Z}, {W})";
     }
 }

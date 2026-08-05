@@ -1,9 +1,12 @@
 using FixedPoints;
 using Lodis.AI;
+using Lodis.FX;
+using Lodis.Input;
 using System.Collections;
 using System.Collections.Generic;
 using Types;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 namespace Lodis.Gameplay
 {
@@ -13,18 +16,31 @@ namespace Lodis.Gameplay
     public class DK_RequestingBackup : Ability
     {
         private Secur_TBehaviour _secur_T;
-        private NetworkAttackNPCBehaviour _officer; 
+        private NetworkAttackNPCBehaviour _officer;
+        private IControllable _controller;
+        private FixedTimeAction _despawnTimer;
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
             base.Init(newOwner);
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(CleanUpBots);
+            _controller = Owner.GetComponentInParent<IControllable>();
+        }
+
+        protected override void OnStart(params object[] args)
+        {
+            base.OnStart(args);
+
+
+            SetTimeUnit(FixedTimeAction.UnitOfTime.PauseScaled);
+            FXManagerBehaviour.Instance.StartSuperMoveVisual(_controller.PlayerID, abilityData.startUpTime);
         }
 
         //Called when ability is used
         protected override void OnActivate(params object[] args)
         {
+            FXManagerBehaviour.Instance.EnableSuperBackground(_controller.PlayerID);
             if (_secur_T == null)
             {
                 GameObject botInstance = MonoBehaviour.Instantiate(abilityData.visualPrefab, Owner.transform.position, Quaternion.identity);
@@ -60,6 +76,15 @@ namespace Lodis.Gameplay
             _officer.Owner = Owner;
             _officer.MovementBehaviour.Position = OwnerMoveScript.CurrentPanel.Position + new FVector2(OwnerMoveScript.GetAlignmentX(), 0);
             _officer.MovementBehaviour.Alignment = OwnerMoveScript.Alignment;
+
+            if (_despawnTimer == null)
+            {
+                _despawnTimer = FixedPointTimer.StartNewTimedAction(CleanUpBots, 16);
+            }
+            else
+            {
+                _despawnTimer.Reset();
+            }
         }
 
         protected void CleanUpBots()
@@ -73,6 +98,8 @@ namespace Lodis.Gameplay
             {
                 _officer.Entity.RemoveFromGame();
             }
+
+            FXManagerBehaviour.Instance.DisableSuperBackground();
         }
 
         protected override void OnMatchRestart()

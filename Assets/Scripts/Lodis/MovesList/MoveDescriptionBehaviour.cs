@@ -12,8 +12,9 @@ namespace Lodis.UI
     {
         [SerializeField]
         private AbilityType _abilityType;
-        [SerializeField]
-        private Image _iconImage;
+        [SerializeField] private Image _iconImage;
+        [SerializeField] private Image _backgroundImage;
+        [SerializeField] private Sprite[] _backgroundSprites;
         private Text _description;
         private VideoPlayer _videoPlayer;
         private AbilityData _data;
@@ -35,6 +36,8 @@ namespace Lodis.UI
             _videoPlayer = videoPlayer;
             _iconImage.sprite = _data.DisplayIcon;
             _iconImage.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_data.EnergyCost];
+            _backgroundImage.sprite = _backgroundSprites[(int)_data.EnergyCost];
+            _backgroundImage.color = BlackBoardBehaviour.Instance.AbilityCostColors[(int)_data.EnergyCost];
         }
 
         public void SetAbility()

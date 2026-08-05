@@ -1,25 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityGGPO;
 using SharedGame;
 using Unity.Collections;
 using System.IO;
-using Lodis.Input;
 using static EntityData;
 using FixedPoints;
 using Types;
 using UnityEngine.InputSystem;
 using Lodis.ScriptableObjects;
-using System.Runtime.Remoting.Messaging;
 using Lodis.Gameplay;
-using UnityEngine.InputSystem.HID;
-using System.Linq;
-using Lodis.Utility;
-using NUnit.Framework.Interfaces;
-using System;
 using Assets.Scripts.Lodis.Simulation;
-using static UnityEngine.Rendering.DebugUI.Table;
+using System.Text;
 
 
 public class TagSelectorAttribute : PropertyAttribute
@@ -29,20 +21,21 @@ public class TagSelectorAttribute : PropertyAttribute
 
 public struct GridGame : IGame
 {
-    private static List<EntityData> _activeEntities = new();
+    private const string SerializeDebugLogDirectory = "serialize_logs";
     private static readonly List<EntityData> _activePhysicsEntities = new();
 
     private static List<EntityData> _entitiesToRemove = new();
     private static List<EntityData> _entitiesToDestroy = new();
     private static List<EntityData> _physicsEntitiesToRemove = new();
     private static List<EntityData> _serializedEntities = new();
-    private static SerializedListHandler<EntityData> _entityListHandler = new(_activeEntities);
+    private static SerializedListHandler<EntityData> _activeEntities = new("Entity List");
 
     //A dictionary of entity pairs that determines whether or not they collide. Used to ignore specific entities instead of layers.
     private static readonly Dictionary<(EntityData, EntityData), bool> _collisionPairs = new();
 
     private static long _p1Inputs;
     private static long _p2Inputs;
+    
 
     /// <summary>
     /// The timestep in which the rollback simulation updates.
@@ -50,11 +43,12 @@ public struct GridGame : IGame
     /// </summary>
     public static Fixed32 FixedTimeStep = new Fixed32(1092);
     public static Fixed32 TimeScale
-    { get;
-     set;
-
+    {
+        get;
+        set;
     } = 1;
     public static bool IsPaused;
+    public static bool IsResimulating { get; private set; }
     /// <summary>
     /// The amount of time that has passed since the simulation began.
     /// </summary>
@@ -77,20 +71,42 @@ public struct GridGame : IGame
     public delegate void InputProcessCallback(int id, long inputs);
     public delegate void SerializationCallback(BinaryWriter writer);
     public delegate void DeserializationCallback(BinaryReader reader);
+    public delegate void DebugCallback(StringBuilder stringBuilder);
     public delegate void ClearMemoryCallback();
+    public delegate void ResimulationStartedCallback(int rollbackFrame, int targetFrame);
+    public delegate void ResimulationCompleteCallback(int framesResimulated);
 
     public static event InputPollCallback OnPollInput;
     public static event InputProcessCallback OnProcessInput;
     public static event SerializationCallback OnSerialization;
     public static event DeserializationCallback OnDeserialization;
+    public static event DebugCallback OnLogGameState;
     public static event SerializationCallback OnLateSerialization;
     public static event DeserializationCallback OnLateDeserialization;
     public static event ClearMemoryCallback OnClearMemory;
     public static event EntityUpdateEvent OnSimulationUpdate;
+    /// <summary>
+    /// Relays GGPO replay-start notifications from the runner into GridGame so
+    /// gameplay-side systems can prepare for manual replay updates.
+    /// Args:
+    /// (int) The frame we deserialized to rollback to.
+    /// (int) The frame we are going to resimulate forward to get back to.
+    /// </summary>
+    public static event ResimulationStartedCallback OnResimulationStarted;
+    public static event ResimulationCompleteCallback OnResimulationComplete;
 
     public int Framenumber { get; private set; }
 
-    public readonly int Checksum => GetHashCode();
+    public readonly int Checksum => 0;
+
+    private static bool _hasSerialized;
+    Fixed32 test { get; set; }
+
+    static GridGame()
+    {
+        GGPORunner.OnResimulationStarted += RelayResimulationStarted;
+        GGPORunner.OnResimulationComplete += RelayResimulationComplete;
+    }
 
     public void Serialize(BinaryWriter bw)
     {
@@ -102,74 +118,124 @@ public struct GridGame : IGame
         //    _activeEntities[i].Serialize(bw);
         //    _serializedEntities.Add(_activeEntities[i]);
         //}
+        //test.Serialize(bw);
 
-        OnSerialization?.Invoke(bw);
+        bw.Write(Framenumber);
+
         Time.Serialize(bw);
         UnscaledTime.Serialize(bw);
         TimeScale.Serialize(bw);
-        _entityListHandler.Serialize(bw);
+
+        FixedPointTimer.SerializeActions(bw);
+        FixedLerp.SerializeActions(bw);
+
+        OnSerialization?.Invoke(bw);
+
+
+        _activeEntities.Serialize(bw);
+
         OnLateSerialization?.Invoke(bw);
 
+        //AppendSerializeDebugLog();
+        _hasSerialized = true;
     }
 
     public void Deserialize(BinaryReader br)
     {
+        //_physicsEntitiesToRemove.Clear();
+        //test.Deserialize(br);
         //Debug.Log($"Starting deserializing at position {br.BaseStream.Position}");
+        //int num = br.ReadInt32();
+
+        Framenumber = br.ReadInt32();
+
+        Time = Time.Deserialize(br);
+        UnscaledTime = UnscaledTime.Deserialize(br);
+        TimeScale = TimeScale.Deserialize(br);
+
+        FixedPointTimer.DeserializeActions(br);
+        FixedLerp.DeserializeActions(br);
 
         OnDeserialization?.Invoke(br);
-        Time.Deserialize(br);
-        UnscaledTime.Deserialize(br);
-        TimeScale.Deserialize(br);
-        _entityListHandler.Deserialize(br);
+
+        _activeEntities.Deserialize(br);
+
         OnLateDeserialization?.Invoke(br);
-
-
-        //for (int i = 0; i < _serializedEntities.Count; ++i)
-        //{
-        //    _serializedEntities[i].Deserialize(br);
-        //}
-
-        //for (int i = 0; i < _serializedEntities.Count; ++i)
-        //{
-        //    EntityData entity = _serializedEntities[i];
-        //    if (entity.FrameAdded > Framenumber)
-        //    {
-        //        //Abilities need to be added back to the pool so they are reusable.
-        //        if (entity.UnityObject.layer == LayerMask.NameToLayer("Ability"))
-        //        {
-        //            ObjectPoolBehaviour.Instance.ReturnGameObject(entity.UnityScript);
-        //        }
-        //        //Otherwise just remove them from the game as normal.
-        //        else
-        //        {
-        //            RemoveEntityFromGame(entity);
-        //        }
-        //    }
-        //}
-
-        //for (int i = 0; i < _entitiesToRemove.Count; i++)
-        //{
-        //    EntityData entityToRemove = _entitiesToRemove[i];
-
-        //    if (entityToRemove.FrameRemoved > Framenumber)
-        //    {
-        //        //Abilities need to be taken from the pool so they are reusable.
-        //        if (entityToRemove.UnityObject.layer == LayerMask.NameToLayer("Ability"))
-        //        {
-        //            ObjectPoolBehaviour.Instance.GetObject(entityToRemove.UnityScript, entityToRemove.Transform.WorldPosition, entityToRemove.Transform.WorldRotation);
-        //        }
-        //        //Otherwise just spawn them back into the game.
-        //        else
-        //        {
-        //            AddEntityToGame(entityToRemove);
-        //            _entitiesToRemove.RemoveAt(i);
-        //        }
-        //    }
-        //}
-        //HandleRemovalOfMarkedEntities();
-
     }
 
+
+
+    // GGPO checksums are most useful when they reflect the exact rollback state.
+    // To keep this aligned with save/load behavior, we serialize the same state
+    // that ToBytes/FromBytes use and hash those bytes instead of relying on
+    // GetHashCode, which would not meaningfully capture the simulation state.
+    private readonly int CalculateChecksum()
+    {
+        using (var memoryStream = new MemoryStream())
+        using (var writer = new BinaryWriter(memoryStream))
+        {
+            //Serialize(writer);
+            //return CalcFletcher32(memoryStream.ToArray());
+
+            return 0;
+        }
+    }
+
+    /// <summary>
+    /// Hashes the values GridGame writes directly in its own serialize path so the
+    /// sync log can compare the top-level serialized state as one grouped payload.
+    /// </summary>
+    private int CalculateCoreStateChecksum()
+    {
+        return CalculateSectionChecksum(bw =>
+        {
+            OnSerialization?.Invoke(bw);
+
+
+            Time.Serialize(bw);
+            UnscaledTime.Serialize(bw);
+            TimeScale.Serialize(bw);
+
+            //_entityListHandler.Serialize(bw);
+            FixedPointTimer.SerializeActions(bw);
+            FixedLerp.SerializeActions(bw);
+
+            OnLateSerialization?.Invoke(bw);
+
+        });
+    }
+
+    /// <summary>
+    /// Serializes a specific rollback section into a temporary buffer so the sync
+    /// logs can report a checksum for that exact portion of GridGame state.
+    /// </summary>
+    private static int CalculateSectionChecksum(System.Action<BinaryWriter> serializeSection)
+    {
+        using (var memoryStream = new MemoryStream())
+        using (var writer = new BinaryWriter(memoryStream))
+        {
+            serializeSection(writer);
+            return CalcFletcher32(memoryStream.ToArray());
+        }
+    }
+
+    // Fletcher-32 accumulates two running 16-bit sums over the serialized bytes
+    // and packs them into a single 32-bit value. It is inexpensive, deterministic,
+    // and good enough for sync-test mismatch detection where we want a stable
+    // fingerprint of the current serialized game state.
+    private static int CalcFletcher32(byte[] data)
+    {
+        uint sum1 = 0;
+        uint sum2 = 0;
+
+        for (int i = 0; i < data.Length; ++i)
+        {
+            sum1 = (sum1 + data[i]) % 0xffff;
+            sum2 = (sum2 + sum1) % 0xffff;
+        }
+
+        return unchecked((int)((sum2 << 16) | sum1));
+    }
     public NativeArray<byte> ToBytes()
     {
         //Allocates memory for a new array of bites that has the game state data and returns it.
@@ -219,15 +285,62 @@ public struct GridGame : IGame
         }
 
         OnClearMemory?.Invoke();
-    }
+    }  
+
 
     public void LogInfo(string filename)
     {
+        using (var stream = new FileStream(filename, FileMode.Create, FileAccess.Write))
+        {
+            using (var writer = new StreamWriter(stream))
+            {
+                WriteLogInfo(writer);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Appends a standalone per-serialize debug log entry so save-state generation
+    /// can be inspected without relying on GGPO synctest log dumps.
+    /// </summary>
+    private void AppendSerializeDebugLog()
+    {
+        string directory = Path.Combine(Application.dataPath, "..", SerializeDebugLogDirectory);
+        Directory.CreateDirectory(directory);
+
+        string filename = Path.Combine(directory, $"gridgame-serialize-{Framenumber:D6}.log");
+        using (var stream = new FileStream(filename, FileMode.Create, FileAccess.Write))
+        using (var writer = new StreamWriter(stream))
+        {
+            writer.WriteLine($"Serialize Timestamp: {System.DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}");
+            WriteLogInfo(writer);
+        }
+    }
+
+    /// <summary>
+    /// Writes the current rollback game state in the same human-readable format used
+    /// by both GGPO-triggered logs and the standalone serialize debug log.
+    /// </summary>
+    private void WriteLogInfo(TextWriter writer)
+    {
+        writer.WriteLine("GridGame Items");
+        writer.WriteLine($"Frame number: {Framenumber}");
+        writer.WriteLine($"Time: {Time.RawValue}");
+        writer.WriteLine($"Unscaled Time: {UnscaledTime.RawValue}");
+        writer.WriteLine($"Time Scale: {TimeScale.RawValue}");
+
+        StringBuilder sb = new StringBuilder();
+        _activeEntities.OnLogGameState(sb);
+        FixedPointTimer.LogGameState(sb);
+        FixedLerp.LogGameState(sb);
+
+        OnLogGameState?.Invoke(sb);
+
+        writer.WriteLine(sb.ToString());
     }
 
     public long ReadInputs(int controllerId)
     {
-
         if (OnPollInput == null)
             return 0;
 
@@ -401,9 +514,30 @@ public struct GridGame : IGame
     /// </summary>
     public static void AddEntityToGame(EntityData entity)
     {
+        //If this entity was marked for removal, unmark it.
+        if (_entitiesToRemove.Contains(entity))
+        {
+            _entitiesToRemove.Remove(entity);
+            entity.Begin();
+
+            for (int i = 0; i < entity.Transform.ChildCount; i++)
+            {
+                EntityData child = entity.Transform.GetChild(i).EntityData;
+                _entitiesToRemove.Remove(child);
+                child.Begin();
+
+                if (child.Colliders?.Length > 0)
+                    _physicsEntitiesToRemove.Remove(child);
+
+                child.FrameAdded = GridGameManager.FrameNumber;
+            }
+
+            entity.FrameAdded = GridGameManager.FrameNumber;
+        }
+
         if (_activeEntities.Contains(entity))
         {
-            Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
+            //Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
             return;
         }
 
@@ -416,8 +550,52 @@ public struct GridGame : IGame
         }
 
         if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
-            _activePhysicsEntities.Add(entity);
+            AddPhysicsEntity(entity);
 
+
+        //Debug.Log($"Added {entity.Name}");
+    }
+
+    /// <summary>
+    /// Adds the entity and all of its children to the rollback simulation without calling begin or setting frame added.
+    /// Doesn't add to unity scene. Mainly used to add entities back into the simulation on rollback.
+    /// </summary>
+    public static void AddEntityToGameWithoutEvents(EntityData entity)
+    {
+        //If this entity was marked for removal, unmark it.
+        if (_entitiesToRemove.Contains(entity))
+        {
+            _entitiesToRemove.Remove(entity);
+
+            for (int i = 0; i < entity.Transform.ChildCount; i++)
+            {
+                EntityData child = entity.Transform.GetChild(i).EntityData;
+                _entitiesToRemove.Remove(child);
+
+                if (child.Colliders?.Length > 0)
+                    _physicsEntitiesToRemove.Remove(child);
+
+                child.FrameAdded = GridGameManager.FrameNumber;
+            }
+
+            entity.FrameAdded = GridGameManager.FrameNumber;
+        }
+
+        if (_activeEntities.Contains(entity))
+        {
+            //Debug.LogWarning("Tried adding entity that was already in the game simulation. Entity was " + entity.Name);
+            return;
+        }
+
+        _activeEntities.Add(entity);
+
+        for (int i = 0; i < entity.Transform.ChildCount; i++)
+        {
+            AddEntityToGame(entity.Transform.GetChild(i).EntityData);
+        }
+
+        if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
+            AddPhysicsEntity(entity);
 
         //Debug.Log($"Added {entity.Name}");
     }
@@ -441,12 +619,25 @@ public struct GridGame : IGame
         CleanColliderArrays();
     }
 
+    public static void RemovePhysicsEntityImmediate(EntityData entity)
+    {
+        _physicsEntitiesToRemove.Remove(entity);
+        _activePhysicsEntities.Remove(entity);
+        CleanColliderArrays();
+    }
+
     /// <summary>
     /// Removes the entity and all of its children from the rollback simulation.
     /// Doesn't remove from unity scene.
     /// </summary>
     public static void RemoveEntityFromGame(EntityData entity)
     {
+        if (_entitiesToRemove.Contains(entity) || !_activeEntities.Contains(entity))
+        {
+            //Debug.LogWarning("Tried removing entity that was already marked for removal from the game simulation. Entity was " + entity.Name);
+            return;
+        }
+
         _entitiesToRemove.Add(entity);
         entity.End();
         entity.FrameRemoved = GridGameManager.FrameNumber;
@@ -466,11 +657,79 @@ public struct GridGame : IGame
     }
 
     /// <summary>
+    /// Removes the entity and all of its children from the rollback simulation immediately. Doesnt handle things cleanly so avoid using normally.
+    /// </summary>
+    public static void RemoveEntityFromGameImmediate(EntityData entity)
+    {
+        if (_entitiesToRemove.Contains(entity))
+        {
+            _entitiesToRemove.Remove(entity);
+        }
+
+        _activeEntities.Remove(entity);
+
+        entity.End();
+        entity.FrameRemoved = GridGameManager.FrameNumber;
+
+        for (int i = 0; i < entity.Transform.ChildCount; i++)
+        {
+            EntityData child = entity.Transform.GetChild(i).EntityData;
+
+            if (_entitiesToRemove.Contains(child))
+                _entitiesToRemove.Remove(child);
+
+            _activeEntities.Remove(child);
+            child.End();
+
+            if (child.Colliders?.Length > 0)
+                RemovePhysicsEntityImmediate(child);
+        }
+
+        if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
+            RemovePhysicsEntityImmediate(entity);
+    }
+
+    /// <summary>
+    /// Removes the entity and all of its children from the rollback simulation immediately. Doesnt handle things cleanly so avoid using normally.
+    /// Doesnt call events like End.
+    /// </summary>
+    public static void RemoveEntityFromGameImmediateWithoutEvents(EntityData entity)
+    {
+        if (_entitiesToRemove.Contains(entity))
+        {
+            _entitiesToRemove.Remove(entity);
+        }
+
+        _activeEntities.Remove(entity);
+
+        for (int i = 0; i < entity.Transform.ChildCount; i++)
+        {
+            EntityData child = entity.Transform.GetChild(i).EntityData;
+
+            if (_entitiesToRemove.Contains(child))
+                _entitiesToRemove.Remove(child);
+
+            _activeEntities.Remove(child);
+
+            if (child.Colliders?.Length > 0)
+                RemovePhysicsEntityImmediate(child);
+        }
+
+        if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
+            RemovePhysicsEntityImmediate(entity);
+    }
+
+    /// <summary>
     /// Removes the entity and all of its children from the rollback simulation.
     /// Doesn't remove from unity scene.
     /// </summary>
     public static void RemoveEntityFromGame(EntityData entity, bool destroy)
     {
+        if (_entitiesToRemove.Contains(entity))
+        {
+            //Debug.LogWarning("Tried removing entity that was already marked for removal from the game simulation. Entity was " + entity.Name);
+            return;
+        }
         _entitiesToRemove.Add(entity);
         entity.End();
 
@@ -505,6 +764,7 @@ public struct GridGame : IGame
 
         _collisionPairs.Add((entity1, entity2), ignore);
     }
+
 
     private void HandleRemovalOfMarkedEntities()
     {
@@ -550,17 +810,19 @@ public struct GridGame : IGame
             return;
         }
 
+        test += FixedTimeStep;
+
         Time += FixedTimeStep * TimeScale;
         UnscaledTime += FixedTimeStep;
 
         OnSimulationUpdate?.Invoke(FixedTimeStep);
 
-        if (!GridGameManager.OnlineGameStarted)
-        {
-            Framenumber++;
-        }
+        Framenumber++;
 
         HandleRemovalOfMarkedEntities();
+
+        UpdateInput(inputs);
+
         //Component update
         for (int i = 0; i < _activeEntities.Count; i++)
         {
@@ -573,7 +835,6 @@ public struct GridGame : IGame
             _activeEntities[i].Tick(FixedTimeStep);
         }
 
-        UpdateInput(inputs);
 
         //Timer update
         for (int i = 0; i < FixedPointTimer.Actions.Count; i++)
@@ -637,20 +898,56 @@ public struct GridGame : IGame
         //Debug.Log($"Entity count is {_activeEntities.Count}");
     }
 
+    private static int _lastInputUpdateFrame = -1;
+
     private static void UpdateInput(long[] inputs)
     {
-
-        //Input update
-        if (GridGameManager.Instance.inputEnabled)
+        //Input update - only once per Unity frame, not per simulation frame
+        if (GridGameManager.Instance.inputEnabled && UnityEngine.Time.frameCount != _lastInputUpdateFrame)
+        {
             InputSystem.Update();
+            _lastInputUpdateFrame = UnityEngine.Time.frameCount;
+        }
 
         OnProcessInput?.Invoke(0, inputs[0]);
         OnProcessInput?.Invoke(1, inputs[1]);
     }
 
-    public static void OnSceneUnloaded()
+    public static void OnSceneChange()
     {
-        _activeEntities.Clear();
+        _hasSerialized = false;
+
+        foreach (var entity in _activeEntities)
+        {
+            entity.DestroyComponents();
+        }
+
+        _activeEntities.Destroy(true);
         _activePhysicsEntities.Clear();
+        FixedPointTimer.Actions.Destroy(true);
+        FixedLerp.Actions.Destroy(true);
+    }
+
+    /// <summary>
+    /// Relays GGPO replay-start notifications from the runner into GridGame so
+    /// gameplay-side systems can prepare for manual replay updates.
+    /// </summary>
+    /// <param name="rollbackFrame">The frame we deserialized to rollback to.</param>
+    /// <param name="targetFrame">The frame we are going to resimulate forward to get back to.</param>
+    private static void RelayResimulationStarted(int rollbackFrame, int targetFrame)
+    {
+        IsResimulating = true;
+        OnResimulationStarted?.Invoke(rollbackFrame, targetFrame);
+    }
+
+    /// <summary>
+    /// Relays GGPO replay completion notifications from the runner into GridGame so
+    /// gameplay-side systems can subscribe without depending directly on the runner.
+    /// </summary>
+    /// <param name="framesResimulated">How many simulation frames were replayed.</param>
+    private static void RelayResimulationComplete(int framesResimulated)
+    {
+        IsResimulating = false;
+        OnResimulationComplete?.Invoke(framesResimulated);
     }
 }

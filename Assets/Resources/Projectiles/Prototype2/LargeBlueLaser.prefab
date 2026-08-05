@@ -88,6 +88,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5571890870670881523, guid: 21e48ff7c2220634887d04ebcd36387a,
+        type: 3}
+      propertyPath: _entityCollider._height.RawValue
+      value: 131072
+      objectReference: {fileID: 0}
     - target: {fileID: 5618350247585074195, guid: 21e48ff7c2220634887d04ebcd36387a,
         type: 3}
       propertyPath: InitialModule.startColor.maxColor.b

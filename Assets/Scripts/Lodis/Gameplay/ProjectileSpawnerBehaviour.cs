@@ -15,6 +15,8 @@ namespace Lodis.Gameplay
         public EntityDataBehaviour Projectile = null;
         public EntityDataBehaviour Owner = null;
 
+        public override string LogName => "ProjectileSpawnerBehaviour";
+
         public override void Deserialize(BinaryReader br)
         {
         }
@@ -144,6 +146,15 @@ namespace Lodis.Gameplay
 
         public override void Serialize(BinaryWriter bw)
         {
+        }
+
+        /// <summary>
+        /// Hashes the serialized projectile spawner state, which is currently empty,
+        /// so this behavior still fits the per-component checksum contract.
+        /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return null;
         }
     }
 }

@@ -13,9 +13,11 @@ MonoBehaviour:
   m_Name: DK_DancingFlame_Data
   m_EditorClassIdentifier: 
   abilityName: Dancing Flame
-  abilityDescription: Spawns a wave of fire that travels forwards
-  exampleClip: {fileID: 0}
+  abilityDescription: Spawns a wave of fire that travels forwards igniting any enemies
+    in its path.
+  exampleClip: {fileID: 32900000, guid: e38015baeddf5c94cb48f7007773ff69, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 26214
   recoverTime:
@@ -39,7 +41,7 @@ MonoBehaviour:
   Accessory: {fileID: 0}
   Effects: []
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: e463b2ce924b84942b8b3c27a21d5735, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 627e835e4948b204c955ace159717c5b, type: 3}
   ActivateSound: {fileID: 8300000, guid: 2292a753dfa58d94c8d884e956ff99c1, type: 3}
   ActiveSound: {fileID: 8300000, guid: 563489d7501241a4abaa1a1fe7b9d0eb, type: 3}
   DeactivateSound: {fileID: 0}
@@ -49,6 +51,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 65536
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
@@ -56,6 +59,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 6553
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 98304
     BaseKnockBack:
@@ -72,6 +76,7 @@ MonoBehaviour:
       RawValue: 4587
     Priority:
       RawValue: -65536
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 1

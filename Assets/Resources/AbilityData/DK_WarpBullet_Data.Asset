@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: DK_WarpBullet_Data
   m_EditorClassIdentifier: 
   abilityName: Warp Bullet
-  abilityDescription: None
-  exampleClip: {fileID: 0}
+  abilityDescription: Cast once to fire a projectile that does moderate knockback.
+    Cast again before the projectile disappears to teleport to the projectile and
+    unleash a wave of energy.
+  exampleClip: {fileID: 32900000, guid: 9ef0d5fe298858d48aa0a7fcb894bf9f, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 13107
   recoverTime:
@@ -28,7 +31,7 @@ MonoBehaviour:
   - Phase: 5
     CanOnlyCancelOnOpponentHit: 0
     CanCancelOnMove: 0
-    CanCancelIntoSelf: 0
+    CanCancelIntoSelf: 1
     CanCancelIntoSpecial: 1
     CanCancelIntoNormal: 0
     cancelOnHit: 0
@@ -47,9 +50,9 @@ MonoBehaviour:
     type: 3}
   Accessory: {fileID: 11400000, guid: 4db829e6a6aee7746bc29cdc79ee9a4e, type: 2}
   Effects:
-  - {fileID: 543745384379617035, guid: 2a32ab51b4faef049953cb7c18585d46, type: 3}
+  - {fileID: 4373392370162349823, guid: cd20213bd43e6bf45a2896f607c066a5, type: 3}
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 96542bb06dcea2247870a791bb2dd888, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 5f04941fc7a87e84abcfd84bdf6e43f2, type: 3}
   ActivateSound: {fileID: 0}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -59,6 +62,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 327680
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 1
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -66,6 +70,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 327680
     BaseKnockBack:
@@ -82,6 +87,12 @@ MonoBehaviour:
       RawValue: 13107
     Priority:
       RawValue: -65536
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 0
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -89,7 +100,8 @@ MonoBehaviour:
     SpawnEffect: {fileID: 0}
     SpawnEffectOffset:
       RawValue: 0
-    HitSpark: {fileID: 0}
+    HitSpark: {fileID: 774133484878984321, guid: 328664d9f0081b94e9103b2f9e7842f4,
+      type: 3}
     HitEffectLevel: 1
     HitStopShakeStrength:
       RawValue: 6553
@@ -107,6 +119,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 13107
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -114,6 +127,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 327680
     BaseKnockBack:
@@ -130,6 +144,12 @@ MonoBehaviour:
       RawValue: 32768
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
+    SurgeMeterValue: 0
+    IsEnder: 0
+    AppliedStatusEffect: 0
+    StatusEffectStacks: 1
+    AllowMultipleStackApplications: 0
     OwnerAlignement: 0
     AbilityType: 8
     AbilityID:
@@ -163,4 +183,4 @@ MonoBehaviour:
     type: 3}
   _shouldMirror: 1
   _additionalAnimations:
-  - {fileID: 1444733745673076434, guid: 00f74ebaf89f849408328ca9aa08d685, type: 3}
+  - {fileID: 3374748389425109202, guid: 43245c2ae594c814794547dcf5d2284b, type: 3}

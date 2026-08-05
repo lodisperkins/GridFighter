@@ -17,6 +17,7 @@ MonoBehaviour:
     that can hit multiple times.
   exampleClip: {fileID: 32900000, guid: 14d1a2b3020c1884f9680601cccdb9b2, type: 3}
   AbilityType: 1
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 32768
   recoverTime:
@@ -60,7 +61,7 @@ MonoBehaviour:
   - {fileID: 3161059397199619991, guid: 423c2f898bc25b440ba9acc643ece30e, type: 3}
   - {fileID: 873882979434857194, guid: 709bd4e03aa280b4f9fc10d0ab528252, type: 3}
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 28b2ce63411e58b4685f42a1c0b0cabd, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 31fdfa3873ea1c94d9d343af3d859b80, type: 3}
   ActivateSound: {fileID: 8300000, guid: 35290ff32b64d784cab6467dcefdd342, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -70,6 +71,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 0
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 1
     LayersToIgnore:
       serializedVersion: 2
@@ -77,6 +79,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 13107
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 131072
     BaseKnockBack:
@@ -93,6 +96,7 @@ MonoBehaviour:
       RawValue: 3276
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 1
     IsEnder: 0
     AppliedStatusEffect: 0

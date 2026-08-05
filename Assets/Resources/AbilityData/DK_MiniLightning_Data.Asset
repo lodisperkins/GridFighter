@@ -17,6 +17,7 @@ MonoBehaviour:
     away.
   exampleClip: {fileID: 32900000, guid: 2e21e9c62da077743985b007d7fb42c7, type: 3}
   AbilityType: 8
+  ShouldHideInMenu: 0
   timeActive:
     RawValue: 65536
   recoverTime:
@@ -51,7 +52,7 @@ MonoBehaviour:
   - {fileID: 846684148593713026, guid: 6baabdccd42a7ee4cb5dd2a1fd99831b, type: 3}
   - {fileID: 3235588669918962280, guid: fbc625ab2d5a4d84b84ad49efe7c6dfe, type: 3}
   Sounds: []
-  DisplayIcon: {fileID: 21300000, guid: 79b3ba27eaa7872408b754c064ab2a1b, type: 3}
+  DisplayIcon: {fileID: 21300000, guid: 46ea43d1417e6c04eab25cb65ea218a3, type: 3}
   ActivateSound: {fileID: 8300000, guid: 006e8658d3c9180448481354485967b5, type: 3}
   ActiveSound: {fileID: 0}
   DeactivateSound: {fileID: 0}
@@ -61,6 +62,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 32768
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -68,6 +70,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 131072
     BaseKnockBack:
@@ -84,6 +87,7 @@ MonoBehaviour:
       RawValue: 3932
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 0
@@ -115,6 +119,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 32768
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -122,6 +127,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 131072
     BaseKnockBack:
@@ -138,6 +144,7 @@ MonoBehaviour:
       RawValue: 3932
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 0
@@ -169,6 +176,7 @@ MonoBehaviour:
     TimeActive:
       RawValue: 32768
     DestroyOnHit: 0
+    DestroyOnHitBarrier: 0
     IsMultiHit: 0
     LayersToIgnore:
       serializedVersion: 2
@@ -176,6 +184,7 @@ MonoBehaviour:
     TagsToIgnore: []
     MultiHitWaitTime:
       RawValue: 0
+    IgnoreTeleporterReversal: 0
     Damage:
       RawValue: 131072
     BaseKnockBack:
@@ -192,6 +201,7 @@ MonoBehaviour:
       RawValue: 4587
     Priority:
       RawValue: 0
+    DontGiveEnergyOnHit: 0
     SurgeMeterValue: 0
     IsEnder: 0
     AppliedStatusEffect: 0

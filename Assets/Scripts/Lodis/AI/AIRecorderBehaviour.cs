@@ -171,7 +171,7 @@ namespace Lodis.AI
             _opponentBarrier = OwnerMovement.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ownerBarrier = _opponentMove.Alignment == GridAlignment.LEFT ? BlackBoardBehaviour.Instance.RingBarrierRHS : BlackBoardBehaviour.Instance.RingBarrierLHS;
 
-            _opponentMoveset.OnUseAbility += () => CurrentTimeDelay = 0;
+            //_opponentMoveset.OnUseAbility += () => CurrentTimeDelay = 0;
 
             UpdateSituationNode();
         }
@@ -227,8 +227,8 @@ namespace Lodis.AI
             temp[_recordings.Length] = new ActionPlaybackInfo();
             _recordings = temp;
 
-            CurrentTimeDelay = 0;
-            CurrentTime = 0;
+            //CurrentTimeDelay = 0;
+            //CurrentTime = 0;
         }
 
         private FVector3 GetAverageVelocity()
@@ -502,14 +502,15 @@ namespace Lodis.AI
                 }
             }
 
-            CurrentTimeDelay = 0;
+            //CurrentTimeDelay = 0;
 
             Debug.Log("Recorded action");
 
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             Save();
         }
 
@@ -532,10 +533,10 @@ namespace Lodis.AI
         {
             base.Update();
 
-            if (CanRecord)
-            {
-                RecordNewAction(_input.Flags);
-            }
+            //if (CanRecord)
+            //{
+            //    RecordNewAction(_input.Flags);
+            //}
         }
     }
 }

@@ -1,3 +1,4 @@
+using Lodis.Gameplay;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,11 @@ public class StatusEffectFeedbackBehaviour : MonoBehaviour
             if (countIndex >= 0)
                 ParticleEffects[LastStackEffectIndex].SetActive(true);
         }
+
+        public void DisableVisuals()
+        {
+            ParticleEffects[LastStackEffectIndex].SetActive(false);
+        }
     }
 
     [SerializeField] private StatusEffectManagerBehaviour _statusEffectManager;
@@ -42,11 +48,23 @@ public class StatusEffectFeedbackBehaviour : MonoBehaviour
     [Header("Status Effect Visuals")]
     [SerializeField] private StatusEffectVisual[] _statusEffectVisuals;
 
+    private StatusEffect.StatusEffectType _lastAddedStatusEffect;
+
     // Start is called before the first frame update
     void Start()
     {
         _statusEffectManager.AddOnStatusEffectAddedListener(UpdateVisuals);
         _statusEffectManager.AddOnStatusEffectRemovedListener(UpdateVisuals);
+
+        if (MatchManagerBehaviour.Instance)
+        {
+            MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ClearVisuals);
+        }
+    }
+
+    public void ClearVisuals()
+    {
+        _statusEffectVisuals[(int)_lastAddedStatusEffect].DisableVisuals();
     }
 
     /// <summary>
@@ -54,6 +72,12 @@ public class StatusEffectFeedbackBehaviour : MonoBehaviour
     /// </summary>
     private void UpdateVisuals(StatusEffect.StatusEffectType statusEffect)
     {
+        if (statusEffect != _lastAddedStatusEffect)
+        {
+            ClearVisuals();
+            _lastAddedStatusEffect = statusEffect;
+        }
+
         StatusEffectVisual visual = _statusEffectVisuals[(int)statusEffect];
 
         // Status effect type greater than Chilled are considered helpful effects.

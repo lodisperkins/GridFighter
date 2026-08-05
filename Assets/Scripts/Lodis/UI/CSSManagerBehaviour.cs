@@ -82,6 +82,13 @@ namespace Lodis.UI
         [SerializeField]
         private CharacterData _dummyCharacter;
 
+        [Header("Online")]
+
+        [SerializeField]
+        private CharacterData _onlineP1TestChar;
+        [SerializeField]
+        private CharacterData _onlineP2TestChar;
+
         private PlayerInputManager _inputManager;
 
         private bool _canStart;
@@ -132,12 +139,46 @@ namespace Lodis.UI
             //Invoke("StopListening", 10f);
 
             //Online code when connecting to host
-            if (!GridGameManager.IsHost && GridGameManager.OnlineGameStarted)
+
+            if (SceneManagerBehaviour.Instance.IsOnlineGameMode)
+            {
+                InputSystem.settings.updateMode = InputSettings.UpdateMode.ProcessEventsInDynamicUpdate;
+            }
+
+#if SYNC_TEST
+            if (IsAIMode() || GridGameManager.CurrentSyncTestType == GridGameManager.SyncTestType.LocalAI)
+            {
+                _colorManager.SetPlayerColor(2, 5);
+                _p2ColorIndex = 5;
+
+                _canSelectCharP2 = true;
+
+                _player2JoinInstruction.enabled = false;
+                _player2Root.SetActive(true);
+
+                _p2IsCustom.Value = false;
+
+                //Disable all UI thats not needed for AI mode
+                _p2CustomCharacterMenu.SetActive(false);
+                _p2ButtonPrompts.SetActive(false);
+                _p2ButtonScrollArrows.SetActive(false);
+
+                _AIModeActive = true;
+            }
+            else if (SceneManagerBehaviour.Instance.CurrentGameMode.Value == (int)GameMode.MULTIPLAYER || GridGameManager.CurrentSyncTestType == GridGameManager.SyncTestType.LocalMultiplayer)
+            {
+                _canSelectCharP2 = true;
+                _p2CustomCharacterMenu.SetActive(true);
+            }
+            SetColor(2);
+#else
+
+            if (!GridGameManager.IsHost && SceneManagerBehaviour.Instance.IsOnlineGameMode)
             {
                 _colorManager.SetPlayerColor(1, 5);
                 _p1ColorIndex = 5;
-                _canSelectCharP1 = true;
-                SetDataP1(_defaultAICharacter);
+                //_canSelectCharP1 = true;
+                SetDataP1(_onlineP1TestChar);
                 _player1JoinInstruction.enabled = false;
                 _player1Root.SetActive(false);
                 _currentPlayer = 2;
@@ -146,14 +187,13 @@ namespace Lodis.UI
             {
                 _colorManager.SetPlayerColor(2, 5);
                 _p2ColorIndex = 5;
-                _canSelectCharP2 = true;
-                SetDataP2(_dummyCharacter);
+                //_canSelectCharP2 = true;
+                SetDataP2(_onlineP2TestChar);
                 _player2JoinInstruction.enabled = false;
                 _p2IsCustom.Value = false;
                 _player2Root.SetActive(false);
             }
-
-            if (IsAIMode())
+            else if (IsAIMode())
             {
                 _colorManager.SetPlayerColor(2, 5);
                 _p2ColorIndex = 5;
@@ -178,7 +218,7 @@ namespace Lodis.UI
                 _p2CustomCharacterMenu.SetActive(true);
             }
             SetColor(2);
-
+#endif
         }
 
         void StopListening()
@@ -207,39 +247,69 @@ namespace Lodis.UI
             if (!playerInput)
                 return;
 
-            if (playerNum == 1 && (GridGameManager.IsHost || GridGameManager.LocalGameStarted))
+#if SYNC_TEST
+            bool joinConditionP1 = playerNum == 1;
+            bool joinConditionP2 = playerNum == 2;
+#else
+
+            bool joinConditionP1 = playerNum == 1 && (GridGameManager.IsHost || GridGameManager.LocalGameStarted);
+            bool joinConditionP2 = playerNum == 2 && (!GridGameManager.IsHost || GridGameManager.LocalGameStarted);
+#endif
+            if (joinConditionP1)
             {
+                //Tell the event system to use the left menu for the first player to choose their character.
                 _player1EventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
                 _player1EventSystem.playerRoot = _player1Root;
+
+                //Enable the left menu and set the bool to allow the player to select a character.
                 _player1Root.SetActive(true);
                 _p1CharacterSelected = false;
+
+                //Remove the "Press any button to join" text.
                 _player1JoinInstruction.gameObject.SetActive(false);
+
+                //Set up the custom character menu.
                 _p1CustomManager.SetEventSystems(_player1EventSystem);
                 _p1CustomManager.SetSelectedToFirstOption();
+
+                //Set the control scheme and devices for the player in the scene manager so it can be accessed by the input profile menu and the battle scene.
                 SceneManagerBehaviour.Instance.P1ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P1Devices.Value = playerInput.devices.ToArray();
 
+                //If we're fighting an AI...
                 if (_AIModeActive)
                 {
+                    //...then we'll remove the "press any button" text and go to character select without waiting for p2 input.
                     _p2PageManager.GoToPageParent();
                     _p2CharacterSelected = false;
                     _p2CustomCharacterMenu.SetActive(false);
                 }
 
+                //Set the binding to default when we enter the scene.
                 _p1Rebinder.ResetToDefault();
             }
-            else if (playerNum == 2 && (!GridGameManager.IsHost || GridGameManager.LocalGameStarted))
+            else if (joinConditionP2)
             {
+                //Tell the event system to use the right menu for the second player to choose their character.
                 _player2EventSystem = playerInput.GetComponent<MultiplayerEventSystem>();
                 _player2EventSystem.playerRoot = _player2Root;
+
+                //Enable the right menu and set the bool to allow the player to select a character.
                 _player2Root.SetActive(true);
                 _p2CharacterSelected = false;
+
+                //Remove the "Press any button to join" text.
                 _player2JoinInstruction.gameObject.SetActive(false);
+
+                //Set up the custom character menu.
                 _p2CustomManager.SetEventSystems(_player2EventSystem);
                 _p2CustomManager.SetSelectedToFirstOption();
+
+                //Set the control scheme and devices for the player in the scene manager so it can be accessed by the input profile menu and the battle scene.
                 SceneManagerBehaviour.Instance.P2ControlScheme = playerInput.currentControlScheme;
                 SceneManagerBehaviour.Instance.P2Devices.Value = playerInput.devices.ToArray();
 
+                //Set the binding to default when we enter the scene.
                 _p2Rebinder.ResetToDefault();
             }
         }
@@ -361,7 +431,7 @@ namespace Lodis.UI
 
                 //Online code to auto select character for testing
 
-                if (GridGameManager.OnlineGameStarted)
+                if (SceneManagerBehaviour.Instance.IsOnlineGameMode)
                 {
                     SetDataP1(_defaultAICharacter);
 

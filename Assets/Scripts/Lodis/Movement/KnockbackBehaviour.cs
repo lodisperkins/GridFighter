@@ -196,10 +196,10 @@ namespace Lodis.Movement
             _hasExploded = br.ReadBoolean();
             _outOfBounds = br.ReadBoolean();
             _currentAirState = (AirState)br.ReadInt32();
-            _launchForce.Deserialize(br);
+            _launchForce = _launchForce.Deserialize(br);
             _inHitStun = br.ReadBoolean();
             _isFlinching = br.ReadBoolean();
-            _timeInCurrentHitStun.Deserialize(br);
+            _timeInCurrentHitStun = _timeInCurrentHitStun.Deserialize(br);
             _isSlidingHit = br.ReadBoolean();
         }
 

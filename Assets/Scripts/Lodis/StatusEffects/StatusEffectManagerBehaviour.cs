@@ -3,6 +3,7 @@ using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Types;
 using UnityEngine;
 using UnityEngine.Events;
@@ -35,6 +36,8 @@ public class StatusEffectManagerBehaviour : SimulationBehaviour
     /// </summary>
     public StatusEffect CurrentHelpfulEffect { get => _currentHelpfulEffect; private set => _currentHelpfulEffect = value; }
 
+    public override string LogName => "StatusEffectManagerBehavior";
+
     public override void Deserialize(BinaryReader br)
     {
         _currentHarmfulEffect?.Deserialize(br);
@@ -51,6 +54,21 @@ public class StatusEffectManagerBehaviour : SimulationBehaviour
         bw.Write(lastHelpfulEffectStacks);
     }
 
+    /// <summary>
+    /// Hashes the serialized active status effects so effect-driven mismatches can
+    /// be traced back to this manager.
+    /// </summary>
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                "Current Harmful Effect: " + (CurrentHarmfulEffect != null ? CurrentHarmfulEffect.EffectType.ToString() + " Stacks: " + CurrentHarmfulEffect.StackCount + " Health: " + CurrentHarmfulEffect.Health : "None"),
+                "Current Helpful Effect: " + (CurrentHelpfulEffect != null ? CurrentHelpfulEffect.EffectType.ToString() + " Stacks: " + CurrentHelpfulEffect.StackCount + " Health: " + CurrentHelpfulEffect.Health : "None"),
+                $"Last Harmful Effect Stacks: {lastHarmfulEffectStacks}",
+                $"Last Helpful Effect Stacks: {lastHelpfulEffectStacks}"
+            };
+        }
+
     public override void Init()
     {
         base.Init();
@@ -59,7 +77,10 @@ public class StatusEffectManagerBehaviour : SimulationBehaviour
             _owner.StatusEffectManager = this;
 
         if (MatchManagerBehaviour.Instance)
+        {
             MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ClearAllStatusEffects);
+            MatchManagerBehaviour.Instance.AddOnMatchOverAction(ClearAllStatusEffects);
+        }
     }
 
     /// <summary>
