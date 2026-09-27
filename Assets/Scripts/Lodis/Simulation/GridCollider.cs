@@ -47,6 +47,22 @@ public delegate void CollisionEvent(Collision collision);
 [Serializable]
 public class GridCollider
 {
+    #region Simulation Functions
+    public void Serialize(BinaryWriter bw)
+    {
+        _width.Serialize(bw);
+        _height.Serialize(bw);
+        bw.Write(PanelYOffset);
+    }
+
+    public void Deserialize(Deserializer br)
+    {
+        _width = _width.Deserialize(br);
+        _height = _height.Deserialize(br);
+        PanelYOffset = br.ReadInt32();
+    }
+    #endregion
+
     [Tooltip("The layers this collider won't collide with.")]
     [SerializeField] private LayerMask _layersToIgnore;
     [Tooltip("The tags this collider won't collide with.")]
@@ -570,20 +586,6 @@ public class GridCollider
         }
 
         return normalFace * smallestPenetration;
-    }
-
-    public void Serialize(BinaryWriter bw)
-    {
-        _width.Serialize(bw);
-        _height.Serialize(bw);
-        bw.Write(PanelYOffset);
-    }
-
-    public void Deserialize(BinaryReader br)
-    {
-        _width = _width.Deserialize(br);
-        _height = _height.Deserialize(br);
-        PanelYOffset = br.ReadInt32();
     }
 
     public void OnLogGameState(StringBuilder sb)

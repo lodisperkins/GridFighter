@@ -1,9 +1,10 @@
-﻿using BBUnity.Actions;
+using BBUnity.Actions;
 using FixedPoints;
 using Lodis.GridScripts;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Types;
 
@@ -15,6 +16,22 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_EnergyTurret : SummonAbility
     {
+        #region Simulation Functions
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+
+            bw.Write(_currentShotCount);
+        }
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+
+            _currentShotCount = br.ReadInt32();
+        }
+        #endregion
+
         private EntityDataBehaviour _spawn;
         private FVector3 _spawnPosition;
         private ProjectileSpawnerBehaviour _projectileSpawner;
@@ -92,12 +109,22 @@ namespace Lodis.Gameplay
             FixedPointTimer.StartNewTimedAction(FireSmallShot, _shotDelay).Loop(_shotCount).OnComplete += FireLastShot;
         }
 
+
+
+
+
         protected override void OnMatchRestart()
         {
             if (_projectileSpawner)
                 _projectileSpawner.StopAllCoroutines();
 
             ObjectPoolBehaviour.Instance.ReturnGameObject(_spawn);
+        }
+
+        public override void OnLogGameState(System.Text.StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Current Shot Count: {_currentShotCount}");
         }
     }
 }

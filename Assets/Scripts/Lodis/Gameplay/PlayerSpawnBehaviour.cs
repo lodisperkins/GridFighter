@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.AI;
 using Lodis.CharacterCreation;
 using Lodis.GridScripts;
@@ -7,17 +7,42 @@ using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.UI;
 using Lodis.Utility;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using System.IO;
+using Types;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 namespace Lodis.Gameplay
 {
-    public class PlayerSpawnBehaviour : MonoBehaviour
+    public class PlayerSpawnBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        protected override string[] GetLogItems()
+        {
+            string[] logItems = new string[]
+            {
+                $"Energy: {_suddenDeathActive}",
+            };
+
+            return logItems;
+        }
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_suddenDeathActive);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _suddenDeathActive = br.ReadBoolean();
+        }
+
+        #endregion
+
         [Header("Spawn References")]
         [Tooltip("The AI to spawn when player vs cpu mode is active.")]
         [SerializeField] private AI.AIControllerBehaviour _dummy;
@@ -96,7 +121,9 @@ namespace Lodis.Gameplay
         public KnockbackBehaviour P2HealthScript { get => _p2Knockback; }
         public bool SuddenDeathActive { get => _suddenDeathActive; set => _suddenDeathActive = value; }
 
-        private void Awake()
+        public override string LogName => nameof(PlayerSpawnBehaviour);
+
+        protected override void Awake()
         {
             _ringBarrierL = BlackBoardBehaviour.Instance.RingBarrierLHS;
             _ringBarrierR = BlackBoardBehaviour.Instance.RingBarrierRHS;
@@ -125,6 +152,9 @@ namespace Lodis.Gameplay
 
         public void SpawnPlayer2()
         {
+            if (_player2 != null)
+                return;
+
             //Spawn player 2 by mode.
 #if SYNC_TEST
             //If we're doing a sync test will handle which type of player to spawn in the multiplayer condition.
@@ -242,6 +272,9 @@ namespace Lodis.Gameplay
 
         public void SpawnPlayer1()
         {
+            if (_player1 != null)
+                return;
+
             //Spawn player 1 by mode.
 #if SYNC_TEST
             bool p1InputCondition = true;
@@ -555,13 +588,15 @@ namespace Lodis.Gameplay
             }
         }
 
-        private void Update()
+        public override void Tick(Fixed32 dt)
         {
             BlackBoardBehaviour.Instance.Player1State = _p1StateManager.StateMachine.CurrentState;
-
 
             if (_mode != GameMode.SINGLEPLAYER)
                 BlackBoardBehaviour.Instance.Player2State = _p2StateManager?.StateMachine?.CurrentState;
         }
+
+
+
     }
 }

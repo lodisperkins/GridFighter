@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using FixedPoints;
@@ -13,6 +13,26 @@ namespace Lodis.GridScripts
 {
     public class CollisionPlaneBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Deserialize(Deserializer br)
+        {
+            
+        }
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return null;
+        }
+
+        #endregion
+
         [Tooltip("How quick objects bouncing on the plane stop bouncing")]
         [SerializeField]
         private float _bounceDampening = 3.0f;
@@ -42,14 +62,7 @@ namespace Lodis.GridScripts
 
         public override string LogName => "CollisionPlaneBehaviour";
 
-        public override void Deserialize(BinaryReader br)
-        {
-            
-        }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-        }
 
         public void SetStagePiecesEnabled(bool enabled)
         {
@@ -96,9 +109,6 @@ namespace Lodis.GridScripts
         /// Hashes the serialized collision plane state, which is currently empty, so
         /// the component still participates in per-behavior checksum reporting.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return null;
-        }
+
     }
 }

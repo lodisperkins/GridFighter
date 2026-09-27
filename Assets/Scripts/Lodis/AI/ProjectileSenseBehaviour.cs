@@ -1,4 +1,4 @@
-﻿using Lodis.Gameplay;
+using Lodis.Gameplay;
 using Lodis.Movement;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,28 +9,38 @@ namespace Lodis.AI
 {
     public class ProjectileSenseBehaviour : SimulationBehaviour
     {
-        [SerializeField] private AIControllerBehaviour _owner;
 
-        public override string LogName => "ProjectileSenseBehaviour";
+        #region Simulation Functions
 
-        public override void Deserialize(BinaryReader br)
+        public override void Deserialize(Deserializer br)
         {
            return;
         }
+
 
         public override void Serialize(BinaryWriter bw)
         {
             return;
         }
 
-        /// <summary>
-        /// Hashes the serialized projectile sensing state, which is currently empty,
-        /// so this component still participates in the shared checksum surface.
-        /// </summary>
         protected override string[] GetLogItems()
         {
             return null;
         }
+
+        #endregion
+
+        [SerializeField] private AIControllerBehaviour _owner;
+
+        public override string LogName => "ProjectileSenseBehaviour";
+
+
+
+        /// <summary>
+        /// Hashes the serialized projectile sensing state, which is currently empty,
+        /// so this component still participates in the shared checksum surface.
+        /// </summary>
+
 
         //public override void OnOverlapEnter(Collision other)
         //{

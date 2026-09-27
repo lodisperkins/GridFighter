@@ -124,7 +124,7 @@ namespace SharedGame {
 
             AdvanceFrame(inputs, disconnect_flags);
 
-            if (_isResimulating && Game.Framenumber >= _resimulationTargetFrame)
+            if (_isResimulating && Game.FrameNumber >= _resimulationTargetFrame)
             {
                 int framesResimulated = Math.Max(0, _resimulationTargetFrame - _loadedRollbackFrame);
                 _isResimulating = false;
@@ -140,9 +140,9 @@ namespace SharedGame {
         private bool OnLoadGameStateCallback(NativeArray<byte> data) {
             Log.Debug("OnLoadGameStateCallback {0}", data.Length);
             _isResimulating = true;
-            _resimulationTargetFrame = Game.Framenumber;
+            _resimulationTargetFrame = Game.FrameNumber;
             Game.FromBytes(data);
-            _loadedRollbackFrame = Game.Framenumber;
+            _loadedRollbackFrame = Game.FrameNumber;
             OnResimulationStarted?.Invoke(_loadedRollbackFrame, _resimulationTargetFrame);
             return true;
         }
@@ -159,11 +159,11 @@ namespace SharedGame {
          */
 
         private bool OnSaveGameStateCallback(out NativeArray<byte> data, out int checksum, int frame) {
-            Log.Verbose("OnSaveGameStateCallback {0}", frame);
-            data = Game.ToBytes();
-            checksum = Utils.CalcFletcher32(data);
-            //checksum = Game.Checksum;
-            return true;
+             Log.Verbose("OnSaveGameStateCallback {0}", frame);
+             data = Game.ToBytes();
+             checksum = Utils.CalcFletcher32(data);
+             //checksum = Game.Checksum;
+             return true;
         }
 
         /*
@@ -413,9 +413,9 @@ namespace SharedGame {
             Game.Update(inputs, disconnect_flags);
 
             // update the checksums to display in the top of the window. this helps to detect desyncs.
-            GameInfo.now.framenumber = Game.Framenumber;
+            GameInfo.now.framenumber = Game.FrameNumber;
             GameInfo.now.checksum = Game.Checksum;
-            if ((Game.Framenumber % 90) == 0) {
+            if ((Game.FrameNumber % 90) == 0) {
                 GameInfo.periodic = GameInfo.now;
             }
 
@@ -426,7 +426,7 @@ namespace SharedGame {
             }
             catch (Exception e)
             {
-                Log.Debug("Error while advancing frame: {0}", e);
+                Log.Debug("Error while advancing frame " + Game.FrameNumber + ":{0}", e);
 
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;

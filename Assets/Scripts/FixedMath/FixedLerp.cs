@@ -6,6 +6,7 @@ using System.IO;
 using System.Text;
 using Types;
 using UnityEngine;
+using UnityEngine.Pool;
 
 namespace FixedPoints
 {
@@ -15,6 +16,7 @@ namespace FixedPoints
     public static class FixedLerp
     {
         private static SerializedListHandler<LerpAction> _actions;
+        private static int _currentActionID;
         public static SerializedListHandler<LerpAction> Actions => _actions;
 
         static FixedLerp()
@@ -25,19 +27,20 @@ namespace FixedPoints
 
         public static void SerializeActions(BinaryWriter bw)
         {
-            //bw.Write(0);
             _actions.Serialize(bw);
+            bw.Write(_currentActionID);
         }
 
-        public static void DeserializeActions(BinaryReader br)
+        public static void DeserializeActions(Deserializer br)
         {
-            //br.ReadInt32();
             _actions.Deserialize(br);
+            _currentActionID = br.ReadInt32();
         }
 
         public static void LogGameState(StringBuilder stringBuilder)
         {
             _actions.OnLogGameState(stringBuilder);
+            stringBuilder.AppendLine($"CurrentActionID: {_currentActionID}");
         }
 
         /// <summary>
@@ -62,26 +65,40 @@ namespace FixedPoints
         }
 
         /// <summary>
+        /// Returns the active lerp action with the specified deterministic action ID.
+        /// This does not reactivate retained actions, so it is safe to use while
+        /// reconnecting component references after deserialization.
+        /// </summary>
+        public static LerpAction GetActionByID(int actionID)
+        {
+            _actions.TryGetSerializedItem(item => item.ActionID == actionID, out LerpAction action);
+            return action;
+        }
+
+        /// <summary>
         /// Changes the target entity's world position over time.
         /// </summary>
-        /// <param name="target">The transform of the rollback simulation entity.</param>
+        /// <param name="target">The transform of the rollback simulation entity.</param> 
         /// <param name="endValue">The stopping point of the movement lerp.</param>
         /// <param name="duration">How long it will take to reach the stopping point.</param>
         /// <param name="curve">A curve to use to alter the lerp.</param>
         /// <param name="id">Optional ID for the lerp action.</param>
         public static LerpAction DoMove(FTransform target, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
-            if (_actions.TryGetItem(item => item is MoveAction moveAction && moveAction.GetTarget() == target, out LerpAction retainedAction))
+            if (_actions.TryGetSerializedItem(item => item is MoveAction && item.ActionID == _currentActionID, out LerpAction retainedAction))
             {
                 MoveAction reusedAction = (MoveAction)retainedAction;
                 reusedAction.Reinitialize(target, target.WorldPosition, endValue, duration, curve);
-                reusedAction.ID = id;
+                reusedAction.Name = id;
+                _currentActionID++;
                 return reusedAction;
             }
 
             LerpAction action = new MoveAction(target, target.WorldPosition, endValue, duration, curve);
-            action.ID = id;
+            action.SetActionID(_currentActionID);
+            action.Name = id;
             _actions.Add(action);
+            _currentActionID++;
             return action;
         }
 
@@ -95,17 +112,20 @@ namespace FixedPoints
         /// <param name="id">Optional ID for the lerp action.</param>
         public static LerpAction DoRotate(FTransform target, FQuaternion endValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
-            if (_actions.TryGetItem(item => item is RotateAction rotateAction && rotateAction.GetTarget() == target, out LerpAction retainedAction))
+            if (_actions.TryGetSerializedItem(item => item is RotateAction && item.ActionID == _currentActionID, out LerpAction retainedAction))
             {
                 RotateAction reusedAction = (RotateAction)retainedAction;
                 reusedAction.Reinitialize(target, target.WorldRotation, endValue, duration, curve);
-                reusedAction.ID = id;
+                reusedAction.Name = id;
+                _currentActionID++;
                 return reusedAction;
             }
 
             LerpAction action = new RotateAction(target, target.WorldRotation, endValue, duration, curve);
-            action.ID = id;
+            action.SetActionID(_currentActionID);
+            action.Name = id;
             _actions.Add(action);
+            _currentActionID++;
             return action;
         }
 
@@ -119,17 +139,20 @@ namespace FixedPoints
         /// <param name="id">Optional ID for the lerp action.</param>
         public static LerpAction DoScale(FTransform target, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
-            if (_actions.TryGetItem(item => item is ScaleAction scaleAction && scaleAction.GetTarget() == target, out LerpAction retainedAction))
+            if (_actions.TryGetSerializedItem(item => item is ScaleAction && item.ActionID == _currentActionID, out LerpAction retainedAction))
             {
                 ScaleAction reusedAction = (ScaleAction)retainedAction;
                 reusedAction.Reinitialize(target, target.WorldScale, endValue, duration, curve);
-                reusedAction.ID = id;
+                reusedAction.Name = id;
+                _currentActionID++;
                 return reusedAction;
             }
 
             LerpAction action = new ScaleAction(target, target.WorldScale, endValue, duration, curve);
-            action.ID = id;
+            action.SetActionID(_currentActionID);
+            action.Name = id;
             _actions.Add(action);
+            _currentActionID++;
             return action;
         }
 
@@ -143,17 +166,20 @@ namespace FixedPoints
         /// <param name="id">Optional ID for the lerp action.</param>
         public static LerpAction DoPunch(FTransform target, FVector3 punchValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
-            if (_actions.TryGetItem(item => item is PunchAction punchAction && punchAction.GetTarget() == target, out LerpAction retainedAction))
+            if (_actions.TryGetSerializedItem(item => item is PunchAction && item.ActionID == _currentActionID, out LerpAction retainedAction))
             {
                 PunchAction reusedAction = (PunchAction)retainedAction;
                 reusedAction.Reinitialize(target, punchValue, duration, curve);
-                reusedAction.ID = id;
+                reusedAction.Name = id;
+                _currentActionID++;
                 return reusedAction;
             }
 
             LerpAction action = new PunchAction(target, punchValue, duration, curve);
-            action.ID = id;
+            action.SetActionID(_currentActionID);
+            action.Name = id;
             _actions.Add(action);
+            _currentActionID++;
             return action;
         }
 
@@ -169,17 +195,20 @@ namespace FixedPoints
         /// <param name="id">Optional ID for the lerp action.</param>
         public static LerpAction DoJump(FTransform target, FVector3 endValue, Fixed32 jumpPower, int numJumps, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
-            if (_actions.TryGetItem(item => item is JumpAction jumpAction && jumpAction.GetTarget() == target, out LerpAction retainedAction))
+            if (_actions.TryGetSerializedItem(item => item is JumpAction && item.ActionID == _currentActionID, out LerpAction retainedAction))
             {
                 JumpAction reusedAction = (JumpAction)retainedAction;
                 reusedAction.Reinitialize(target, target.WorldPosition, endValue, jumpPower, numJumps, duration, curve);
-                reusedAction.ID = id;
+                reusedAction.Name = id;
+                _currentActionID++;
                 return reusedAction;
             }
 
             LerpAction action = new JumpAction(target, target.WorldPosition, endValue, jumpPower, numJumps, duration, curve);
-            action.ID = id;
+            action.SetActionID(_currentActionID);
+            action.Name = id;
             _actions.Add(action);
+            _currentActionID++;
             return action;
         }
 
@@ -194,9 +223,20 @@ namespace FixedPoints
         /// <param name="id">Optional ID for the lerp action.</param>
         public static LerpAction To(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null, string id = null)
         {
+            if (_actions.TryGetSerializedItem(item => item is FixedTweenAction && item.ActionID == _currentActionID, out LerpAction retainedAction))
+            {
+                FixedTweenAction reusedAction = (FixedTweenAction)retainedAction;
+                reusedAction.Reinitialize(getter, setter, getter(), endValue, duration, curve);
+                reusedAction.Name = id;
+                _currentActionID++;
+                return reusedAction;
+            }
+
             LerpAction action = new FixedTweenAction(getter, setter, getter(), endValue, duration, curve);
-            action.ID = id;
+            action.SetActionID(_currentActionID);
+            action.Name = id;
             _actions.Add(action);
+            _currentActionID++;
             return action;
         }
 
@@ -211,8 +251,6 @@ namespace FixedPoints
         }
         public static void AddAction(LerpAction action)
         {
-            if (_actions?.Contains(action) == true) return;
-
             _actions.Add(action);
         }
     }
@@ -222,6 +260,32 @@ namespace FixedPoints
     /// </summary>
     public abstract class LerpAction : ISerializedListObject
     {
+
+        #region Simulation Functions
+
+        public virtual void OnSerialize(BinaryWriter bw)
+        {
+            bw.Write(ActionID);
+            TimeElapsed.Serialize(bw);
+            Duration.Serialize(bw);
+            bw.Write((int)Unit);
+            bw.Write(IsPaused);
+            bw.Write(_killed);
+        }
+
+
+        public virtual void OnDeserialize(Deserializer br)
+        {
+            ActionID = br.ReadInt32();
+            TimeElapsed = TimeElapsed.Deserialize(br);
+            Duration = Duration.Deserialize(br);
+            Unit = (FixedTimeAction.UnitOfTime)br.ReadInt32();
+            IsPaused = br.ReadBoolean();
+            _killed = br.ReadBoolean();
+        }
+
+        #endregion
+
         protected FTransform Target;
         protected Fixed32 Duration;
         protected FixedAnimationCurve Curve;
@@ -229,7 +293,8 @@ namespace FixedPoints
         protected bool IsPaused;
         private bool _killed;
         private int _frameStarted;
-        public string ID;
+        public int ActionID { get; private set; }
+        public string Name;
         public FixedTimeAction.UnitOfTime Unit;
 
         public bool Killed
@@ -243,11 +308,12 @@ namespace FixedPoints
         }
         public ListEvent OnAddedToList { get; set; }
         public int FrameAddedToSerializedList { get; set; }
+        public int SerializedChecksum { get; set; }
         public ListEvent OnRemovedFromList { get; set; }
 
-        public string ListDisplayName => ID == null ? "LerpAction" : ID;
+        public string ListDisplayName => Name == null ? "LerpAction" : Name;
 
-        public int FrameRemoved { get; set; }
+        public int FrameRemovedFromActiveList { get; set; }
 
         public delegate void LerpActionEvent();
         public event LerpActionEvent onKill;
@@ -260,6 +326,15 @@ namespace FixedPoints
         public LerpAction(FTransform target, Fixed32 duration, FixedAnimationCurve curve)
         {
             ResetState(target, duration, curve);
+        }
+
+        /// <summary>
+        /// Assigns the deterministic ID used to find this retained action when a
+        /// rollback replay creates the same lerp again.
+        /// </summary>
+        internal void SetActionID(int actionID)
+        {
+            ActionID = actionID;
         }
 
         protected void ResetState(FTransform target, Fixed32 duration, FixedAnimationCurve curve)
@@ -332,24 +407,15 @@ namespace FixedPoints
             FixedLerp.AddAction(this);
         }
 
-        public virtual void OnSerialize(BinaryWriter bw)
-        {
-            TimeElapsed.Serialize(bw);
-            bw.Write(IsPaused);
-            bw.Write(_killed);
-        }
 
-        public virtual void OnDeserialize(BinaryReader br)
-        {
-            TimeElapsed = TimeElapsed.Deserialize(br);
-            IsPaused = br.ReadBoolean();
-            _killed = br.ReadBoolean();
-        }
 
         public virtual void OnLogGameState(StringBuilder sb)
         {
             sb.AppendLine($"            {ListDisplayName}");
+            sb.AppendLine($"                  DebugId={ActionID}");
             sb.AppendLine($"                  TimeElapsed={TimeElapsed}");
+            sb.AppendLine($"                  Duration={Duration}");
+            sb.AppendLine($"                  Unit={Unit}");
             sb.AppendLine($"                  IsPaused={IsPaused}");
             sb.AppendLine($"                  Killed={_killed}");
         }
@@ -448,11 +514,6 @@ namespace FixedPoints
         /// <param name="t"></param>
         protected abstract void Apply(Fixed32 t);
 
-        public bool CheckIfCanBeAddedToList()
-        {
-            return !_killed/* && FrameStarted <= GridGameManager.FrameNumber*/;
-        }
-
     }
 
     /// <summary>
@@ -460,22 +521,8 @@ namespace FixedPoints
     /// </summary>
     public class MoveAction : LerpAction
     {
-        private FVector3 StartValue;
-        private FVector3 EndValue;
 
-        public MoveAction(FTransform target, FVector3 startValue, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
-            : base(target, duration, curve)
-        {
-            StartValue = startValue;
-            EndValue = endValue;
-        }
-
-
-        protected override void Apply(Fixed32 t)
-        {
-            FVector3 newPosition = StartValue + (EndValue - StartValue) * t;
-            Target.WorldPosition = newPosition;
-        }
+        #region Simulation Functions
 
         public override void OnSerialize(BinaryWriter bw)
         {
@@ -484,11 +531,32 @@ namespace FixedPoints
             EndValue.Serialize(bw);
         }
 
-        public override void OnDeserialize(BinaryReader br)
+        public override void OnDeserialize(Deserializer br)
         {
             base.OnDeserialize(br);
             StartValue = StartValue.Deserialize(br);
             EndValue = EndValue.Deserialize(br);
+        }
+
+        #endregion
+
+
+        private FVector3 StartValue;
+        private FVector3 EndValue;
+
+        //Need a way to serialize pool. Maybe swap to pool for all actions
+
+        public MoveAction(FTransform target, FVector3 startValue, FVector3 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+            : base(target, duration, curve)
+        {
+            StartValue = startValue;
+            EndValue = endValue;
+        }
+
+        protected override void Apply(Fixed32 t)
+        {
+            FVector3 newPosition = StartValue + (EndValue - StartValue) * t;
+            Target.WorldPosition = newPosition;
         }
 
         public override void OnLogGameState(StringBuilder sb)
@@ -503,7 +571,7 @@ namespace FixedPoints
             ResetState(target, duration, curve);
             StartValue = startValue;
             EndValue = endValue;
-            ID = null;
+            Name = null;
         }
 
         public void ChangeEndValue(FVector3 newEndValue)
@@ -531,6 +599,26 @@ namespace FixedPoints
     /// </summary>
     public class RotateAction : LerpAction
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            EndValue.Serialize(bw);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            StartValue = StartValue.Deserialize(br);
+            EndValue = EndValue.Deserialize(br);
+        }
+
+        #endregion
+
         private FQuaternion StartValue;
         private FQuaternion EndValue;
 
@@ -547,19 +635,7 @@ namespace FixedPoints
             Target.WorldRotation = newRotation;
         }
 
-        public override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            StartValue.Serialize(bw);
-            EndValue.Serialize(bw);
-        }
 
-        public override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            StartValue = StartValue.Deserialize(br);
-            EndValue = EndValue.Deserialize(br);
-        }
 
         public override void OnLogGameState(StringBuilder sb)
         {
@@ -573,7 +649,7 @@ namespace FixedPoints
             ResetState(target, duration, curve);
             StartValue = startValue;
             EndValue = endValue;
-            ID = null;
+            Name = null;
         }
 
         public void ChangeEndValue(FQuaternion newEndValue)
@@ -601,6 +677,26 @@ namespace FixedPoints
     /// </summary>
     public class ScaleAction : LerpAction
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            EndValue.Serialize(bw);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            StartValue = StartValue.Deserialize(br);
+            EndValue = EndValue.Deserialize(br);
+        }
+
+        #endregion
+
         private FVector3 StartValue;
         private FVector3 EndValue;
 
@@ -617,19 +713,7 @@ namespace FixedPoints
             Target.WorldScale = newScale;
         }
 
-        public override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            StartValue.Serialize(bw);
-            EndValue.Serialize(bw);
-        }
 
-        public override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            StartValue = StartValue.Deserialize(br);
-            EndValue = EndValue.Deserialize(br);
-        }
 
         public override void OnLogGameState(StringBuilder sb)
         {
@@ -643,7 +727,7 @@ namespace FixedPoints
             ResetState(target, duration, curve);
             StartValue = startValue;
             EndValue = endValue;
-            ID = null;
+            Name = null;
         }
 
         public void ChangeEndValue(FVector3 newEndValue)
@@ -669,6 +753,26 @@ namespace FixedPoints
 
     public class PunchAction : LerpAction
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            PunchValue.Serialize(bw);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            StartValue = StartValue.Deserialize(br);
+            PunchValue = PunchValue.Deserialize(br);
+        }
+
+        #endregion
+
         private FVector3 PunchValue;
         private FVector3 StartValue;
 
@@ -685,19 +789,7 @@ namespace FixedPoints
             Target.WorldPosition = newValue;
         }
 
-        public override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            StartValue.Serialize(bw);
-            PunchValue.Serialize(bw);
-        }
 
-        public override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            StartValue = StartValue.Deserialize(br);
-            PunchValue = PunchValue.Deserialize(br);
-        }
 
         public override void OnLogGameState(StringBuilder sb)
         {
@@ -711,7 +803,7 @@ namespace FixedPoints
             ResetState(target, duration, curve);
             StartValue = target.WorldPosition;
             PunchValue = punchValue;
-            ID = null;
+            Name = null;
         }
 
         public void ChangeEndValue(FVector3 newEndValue)
@@ -737,6 +829,26 @@ namespace FixedPoints
 
     public class JumpAction : LerpAction
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            StartValue.Serialize(bw);
+            EndValue.Serialize(bw);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            StartValue = StartValue.Deserialize(br);
+            EndValue = EndValue.Deserialize(br);
+        }
+
+        #endregion
+
         private FVector3 StartValue;
         private FVector3 EndValue;
         private Fixed32 JumpPower;
@@ -759,19 +871,7 @@ namespace FixedPoints
             Target.WorldPosition = newValue;
         }
 
-        public override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            StartValue.Serialize(bw);
-            EndValue.Serialize(bw);
-        }
 
-        public override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            StartValue = StartValue.Deserialize(br);
-            EndValue = EndValue.Deserialize(br);
-        }
 
         public override void OnLogGameState(StringBuilder sb)
         {
@@ -787,7 +887,7 @@ namespace FixedPoints
             EndValue = endValue;
             JumpPower = jumpPower;
             NumJumps = numJumps;
-            ID = null;
+            Name = null;
         }
 
         public void ChangeEndValue(FVector3 newEndValue)
@@ -816,25 +916,8 @@ namespace FixedPoints
     /// </summary>
     public class FixedTweenAction : LerpAction
     {
-        private readonly Func<Fixed32> _getter;
-        private readonly Action<Fixed32> _setter;
-        private Fixed32 _startValue;
-        private Fixed32 _endValue;
 
-        public FixedTweenAction(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 startValue, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
-            : base(null, duration, curve)
-        {
-            _getter = getter;
-            _setter = setter;
-            _startValue = startValue;
-            _endValue = endValue;
-        }
-
-        protected override void Apply(Fixed32 t)
-        {
-            Fixed32 currentValue = _startValue + (_endValue - _startValue) * t;
-            _setter(currentValue);
-        }
+        #region Simulation Functions
 
         public override void OnSerialize(BinaryWriter bw)
         {
@@ -843,18 +926,54 @@ namespace FixedPoints
             _endValue.Serialize(bw);
         }
 
-        public override void OnDeserialize(BinaryReader br)
+
+        public override void OnDeserialize(Deserializer br)
         {
             base.OnDeserialize(br);
             _startValue = _startValue.Deserialize(br);
             _endValue = _endValue.Deserialize(br);
         }
 
+        #endregion
+
+        private Func<Fixed32> _getter;
+        private Action<Fixed32> _setter;
+        private Fixed32 _startValue;
+        private Fixed32 _endValue;
+
+        public FixedTweenAction(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 startValue, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+            : base(null, duration, curve)
+        {
+            Reinitialize(getter, setter, startValue, endValue, duration, curve);
+        }
+
+        protected override void Apply(Fixed32 t)
+        {
+            Fixed32 currentValue = _startValue + (_endValue - _startValue) * t;
+            _setter(currentValue);
+        }
+
+
+
         public override void OnLogGameState(StringBuilder sb)
         {
             base.OnLogGameState(sb);
             sb.AppendLine($"                  StartValue={_startValue}");
             sb.AppendLine($"                  EndValue={_endValue}");
+        }
+
+        /// <summary>
+        /// Reconfigures a retained tween action when the same deterministic action
+        /// ID is created again during rollback replay.
+        /// </summary>
+        public void Reinitialize(Func<Fixed32> getter, Action<Fixed32> setter, Fixed32 startValue, Fixed32 endValue, Fixed32 duration, FixedAnimationCurve curve = null)
+        {
+            ResetState(null, duration, curve);
+            _getter = getter;
+            _setter = setter;
+            _startValue = startValue;
+            _endValue = endValue;
+            Name = null;
         }
 
 

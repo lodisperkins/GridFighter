@@ -50,6 +50,41 @@ public interface ITeleportable
 /// </summary>
 public class TeleporterBehaviour : SimulationBehaviour
 {
+    #region Simulation Functions
+    public override void Deserialize(Deserializer br)
+    {
+        _teleportationsLeft = br.ReadInt32();
+        _active = br.ReadBoolean();
+        _activeCooldownStarted = br.ReadBoolean();
+        _canTeleportSameItem = br.ReadBoolean();
+        IsHeldOpen = br.ReadBoolean();
+        _startedInactiveTimer = br.ReadBoolean();
+    }
+
+    public override void Serialize(BinaryWriter bw)
+    {
+        bw.Write(_teleportationsLeft);
+        bw.Write(_active);
+        bw.Write(_activeCooldownStarted);
+        bw.Write(_canTeleportSameItem);
+        bw.Write(IsHeldOpen);
+        bw.Write(_startedInactiveTimer);
+    }
+
+    protected override string[] GetLogItems()
+    {
+        return new string[]
+        {
+            $"Teleportations Left: {_teleportationsLeft}",
+            $"Active: {_active}",
+            $"Active Cooldown Started: {_activeCooldownStarted}",
+            $"Can Teleport Same Item: {_canTeleportSameItem}",
+            $"Is Held Open: {IsHeldOpen}",
+            $"Started Inactive Timer: {_startedInactiveTimer}"
+        };
+    }
+    #endregion
+
     /// <summary>
     /// Represents an object that has been teleported.
     /// </summary>
@@ -137,51 +172,8 @@ public class TeleporterBehaviour : SimulationBehaviour
 
     public override string LogName => "TeleporterBehaviour";
 
-    /// <summary>
-    /// Deserializes the teleporter's state from a binary reader.
-    /// </summary>
-    public override void Deserialize(BinaryReader br)
+    private void Start()
     {
-        _teleportationsLeft = br.ReadInt32();
-        _active = br.ReadBoolean();
-        _activeCooldownStarted = br.ReadBoolean();
-        _canTeleportSameItem = br.ReadBoolean();
-        IsHeldOpen = br.ReadBoolean();
-        _startedInactiveTimer = br.ReadBoolean();
-    }
-
-    /// <summary>
-    /// Serializes the teleporter's state to a binary writer.
-    /// </summary>
-    public override void Serialize(BinaryWriter bw)
-    {
-        bw.Write(_teleportationsLeft);
-        bw.Write(_active);
-        bw.Write(_activeCooldownStarted);
-        bw.Write(_canTeleportSameItem);
-        bw.Write(IsHeldOpen);
-        bw.Write(_startedInactiveTimer);
-    }
-
-    /// <summary>
-    /// Hashes the serialized teleporter state so charge/cooldown mismatches can be
-    /// isolated to this behavior.
-    /// </summary>
-    protected override string[] GetLogItems()
-    {
-        return new string[]
-        {
-            $"Teleportations Left: {_teleportationsLeft}",
-            $"Active: {_active}",
-            $"Active Cooldown Started: {_activeCooldownStarted}",
-            $"Can Teleport Same Item: {_canTeleportSameItem}",
-            $"Is Held Open: {IsHeldOpen}",
-            $"Started Inactive Timer: {_startedInactiveTimer}"
-        };
-    }
-    public override void Init()
-    {
-        base.Init();
         MatchManagerBehaviour.Instance.AddOnMatchRestartAction(DisableTeleporter);
     }
 

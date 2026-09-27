@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
@@ -9,7 +9,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using Types;
+using UnityEditor.Playables;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -54,6 +56,168 @@ namespace Lodis.Gameplay
 
     public class MovesetBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            //Serialize normal flags and values
+            _energy.Serialize(bw);
+            _burstEnergy.Serialize(bw);
+            bw.Write(AbilityInUse);
+            bw.Write(_energyChargeEnabled);
+            bw.Write(_canDefensiveBurst);
+            bw.Write(_canOffensiveBurst);
+            bw.Write(_burstLocked);
+            bw.Write(_loadingShuffle);
+            bw.Write(_deckReloading);
+            bw.Write(_canBurstPredict);
+            bw.Write(_lastAttackStrength);
+            _lastAttackDirection.Serialize(bw);
+            bw.Write(_initializedDecks);
+
+            //Serialize the decks.
+            _normalDeck.Serialize(bw);
+            _specialDeck.Serialize(bw);
+            _discardDeck.Serialize(bw);
+
+            // Serialize the last ability we used. If it is a special ability, serialize it as well.
+            bw.Write(_lastAbilityInUse != null ? _lastAbilityInUse.abilityData.ID : 0);
+
+            if (_lastAbilityInUse?.abilityData.AbilityType == AbilityType.SPECIAL)
+                _lastAbilityInUse?.OnSerialize(bw);
+
+
+            //Serialize the special ability slots.
+            bw.Write(_specialAbilitySlots[0] != null ? _specialAbilitySlots[0].abilityData.ID : 0);
+            _specialAbilitySlots[0]?.OnSerialize(bw);
+
+            bw.Write(_specialAbilitySlots[1] != null ? _specialAbilitySlots[1].abilityData.ID : 0);
+            _specialAbilitySlots[1]?.OnSerialize(bw);
+
+            bw.Write(_nextAbilitySlot != null ? _nextAbilitySlot.abilityData.ID : 0);
+            _nextAbilitySlot?.OnSerialize(bw);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            //Deserialize normal flags and values
+            _energy = _energy.Deserialize(br);
+            _burstEnergy = _burstEnergy.Deserialize(br);
+            _abilityInUse = br.ReadBoolean();
+            _energyChargeEnabled = br.ReadBoolean();
+            _canDefensiveBurst = br.ReadBoolean();
+            _canOffensiveBurst = br.ReadBoolean();
+            BurstLocked = br.ReadBoolean();
+            _loadingShuffle = br.ReadBoolean();
+            _deckReloading = br.ReadBoolean();
+            _canBurstPredict = br.ReadBoolean();
+            _lastAttackStrength = br.ReadInt32();
+            _lastAttackDirection = _lastAttackDirection.Deserialize(br);
+            _initializedDecks = br.ReadBoolean();
+
+            //Deserialize the decks.
+            _normalDeck.Deserialize(br);
+            _specialDeck.Deserialize(br);
+            _discardDeck.Deserialize(br);
+
+            //Deserialize the last ability we used.
+            int ID = br.ReadInt32();
+
+            if (ID != 0)
+            {
+                _lastAbilityInUse = GetSerializedAbility(ID);
+
+                //Only special abilities are deserialized.
+                //Normal abilities are always deserialized since they never leave the deck.
+                if (_lastAbilityInUse.abilityData.AbilityType == AbilityType.SPECIAL)
+                    _lastAbilityInUse?.OnDeserialize(br);
+            }
+            else
+            {
+                _lastAbilityInUse = null;
+            }
+
+
+            //Deserialize the special ability slots.
+            ID = br.ReadInt32();
+            if (ID != 0)
+            {
+                _specialAbilitySlots[0] = GetSerializedAbility(ID);
+                _specialAbilitySlots[0]?.OnDeserialize(br);
+            }
+            else
+            {
+                _specialAbilitySlots[0] = null;
+            }
+
+            ID = br.ReadInt32();
+            if (ID != 0)
+            {
+                _specialAbilitySlots[1] = GetSerializedAbility(ID);
+                _specialAbilitySlots[1]?.OnDeserialize(br);
+            }
+            else
+            {
+                _specialAbilitySlots[1] = null;
+            }
+
+            ID = br.ReadInt32();
+            if (ID != 0)
+            {
+                _nextAbilitySlot = GetSerializedAbility(ID);
+                _nextAbilitySlot?.OnDeserialize(br);
+            }
+            else
+            {
+                _nextAbilitySlot = null;
+            }
+        }
+
+
+
+        protected override string[] GetLogItems()
+        {
+            List<string> logItems = new List<string>
+            {
+                $"Energy: {_energy}",
+                $"Burst Energy: {_burstEnergy}",
+                $"Ability In Use: {_abilityInUse}",
+                $"Energy Charge Enabled: {_energyChargeEnabled}",
+                $"Can Defensive Burst: {_canDefensiveBurst}",
+                $"Can Offensive Burst: {_canOffensiveBurst}",
+                $"Burst Locked: {_burstLocked}",
+                $"Loading Shuffle: {_loadingShuffle}",
+                $"Deck Reloading: {_deckReloading}",
+                $"Can Burst Predict: {_canBurstPredict}",
+                $"Last Attack Strength: {_lastAttackStrength}",
+                $"Last Attack Direction: {_lastAttackDirection}",
+                $"Initialized Decks: {_initializedDecks}"
+            };
+
+            AddSerializedDeckLogItems(logItems, "Normal Deck", _normalDeck);
+            AddSerializedDeckLogItems(logItems, "Special Deck", _specialDeck);
+            // The discard deck is serialized with the other decks because it
+            // determines the contents of a later reshuffle.
+            AddSerializedDeckLogItems(logItems, "Discard Deck", _discardDeck);
+
+            // Keep this sequence aligned with Serialize. The last ability writes its
+            // base payload only when it is a special ability.
+            AddSerializedAbilityLogItems(logItems, "Last Ability In Use", _lastAbilityInUse,
+                _lastAbilityInUse?.abilityData.AbilityType == AbilityType.SPECIAL);
+
+            // Slots and the next slot always write their base Ability payload when
+            // present, regardless of ability type.
+            AddSerializedAbilityLogItems(logItems, "Special Ability Slot 0", _specialAbilitySlots[0], true, includeDisplayName: true);
+            AddSerializedAbilityLogItems(logItems, "Special Ability Slot 1", _specialAbilitySlots[1], true, includeDisplayName: true);
+            AddSerializedAbilityLogItems(logItems, "Next Ability Slot", _nextAbilitySlot, true, includeDisplayName: true);
+
+            return logItems.ToArray();
+        }
+
+        #endregion
+
         [Header("Deck Settings")]
         [Tooltip("The basic ability deck this character will be using.")]
         [SerializeField]
@@ -79,8 +243,6 @@ namespace Lodis.Gameplay
         [Tooltip("How long it will take to move again after shuffling.")]
         private FloatVariable _manualShuffleRecoverTime;
         private FloatVariable _manualShuffleWaitTime;
-
-        
 
         [Tooltip("The slots that store the two loaded abilities from the special deck")]
         [SerializeField]
@@ -174,6 +336,7 @@ namespace Lodis.Gameplay
         private UnityAction _onAutoShuffle;
         private bool _loadingShuffle;
         private bool _canBurstPredict;
+        private bool _initializedDecks;
 
         private CharacterStateMachineBehaviour _stateMachineScript;
         private bool _deckReloading;
@@ -279,100 +442,81 @@ namespace Lodis.Gameplay
 
         public override string LogName => "MovesetBehaviour";
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            _energy.Serialize(bw);
-            _burstEnergy.Serialize(bw);
-            bw.Write(_abilityInUse);
-            bw.Write(_energyChargeEnabled);
-            bw.Write(_canDefensiveBurst);
-            bw.Write(_canOffensiveBurst);
-            bw.Write(BurstLocked);
-            bw.Write(_loadingShuffle);
-            bw.Write(_deckReloading);
 
-            if (_abilityInUse)
-            {
-                bw.Write(_lastAbilityInUse.abilityData.ID);
-                _lastAbilityInUse.Serialize(bw);
-            }
-            else
-            {
-                bw.Write(0);
-            }
-        }
-
-        public override void Deserialize(BinaryReader br)
-        {
-            _energy = _energy.Deserialize(br);
-            _burstEnergy = _burstEnergy.Deserialize(br);
-            _abilityInUse = br.ReadBoolean();
-            _energyChargeEnabled = br.ReadBoolean();
-            _canDefensiveBurst = br.ReadBoolean();
-            _canOffensiveBurst = br.ReadBoolean();
-            BurstLocked = br.ReadBoolean();
-            _loadingShuffle = br.ReadBoolean();
-            _deckReloading = br.ReadBoolean();
-
-            //Return if the ID is 0 meaning we didn't serialize an ability for this frame.
-            int ID = br.ReadInt32();
-            if (ID == 0)
-            {
-                return;
-            }
-
-            //If we are using the same ability we serialized just deserialize it.
-            if (_abilityInUse && _lastAbilityInUse.abilityData.ID == ID)
-            {
-                _lastAbilityInUse.Deserialize(br);
-            }
-            //Otherwise....
-            else
-            {
-                //...end whats currently in use.
-                if (_abilityInUse)
-                {
-                    _lastAbilityInUse.EndAbility();
-                }
-
-                //And use the ability that is being deserialized.
-                UseAbility(ID);
-                _lastAbilityInUse.Deserialize(br);
-            }
-        }
 
 
         /// <summary>
-        /// Hashes the serialized move-resource and cooldown state so ability-related
-        /// divergences can be isolated to this component.
+        /// Adds an ability ID and, when Serialize writes one, its complete direct
+        /// payload to the moveset serialization log in the same order as the byte
+        /// stream. This uses the ability's virtual game-state log so subclass fields
+        /// written by OnSerialize are not omitted from the parent Moveset log.
         /// </summary>
-        protected override string[] GetLogItems()
+        private static void AddSerializedAbilityLogItems(List<string> logItems, string label, Ability ability, bool writesPayload, bool includeDisplayName = false)
         {
-            List<string> logItems = new List<string>
-            {
-                $"Energy: {_energy}",
-                $"Burst Energy: {_burstEnergy}",
-                $"Ability In Use: {_abilityInUse}",
-                $"Energy Charge Enabled: {_energyChargeEnabled}",
-                $"Can Defensive Burst: {_canDefensiveBurst}",
-                $"Can Offensive Burst: {_canOffensiveBurst}",
-                $"Burst Locked: {_burstLocked}",
-                $"Loading Shuffle: {_loadingShuffle}",
-                $"Deck Reloading: {_deckReloading}"
-            };
+            int abilityId = ability != null ? ability.abilityData.ID : 0;
+            logItems.Add($"{label} ID: {abilityId}");
 
-            int serializedAbilityId = _abilityInUse && _lastAbilityInUse != null ? _lastAbilityInUse.abilityData.ID : 0;
-            logItems.Add($"Serialized Ability ID: {serializedAbilityId}");
+            if (includeDisplayName)
+                logItems.Add($"{label} Display Name: {ability?.ListDisplayName ?? "None"}");
 
-            return logItems.ToArray();
+            if (!writesPayload || ability == null)
+                return;
+
+            StringBuilder abilityLog = new StringBuilder();
+            ability.OnLogGameState(abilityLog);
+
+            using StringReader reader = new StringReader(abilityLog.ToString());
+            // The Moveset log already writes this ability's ID and optional display
+            // name above. The remaining lines are the exact serialized state,
+            // including fields appended by concrete ability implementations.
+            reader.ReadLine();
+            reader.ReadLine();
+
+            string abilityLogItem;
+            while ((abilityLogItem = reader.ReadLine()) != null)
+                logItems.Add($"{label} {abilityLogItem}");
         }
 
-        public override void Init()
+        /// <summary>
+        /// Adds the deck's serialized list header, retained-slot order, and ability
+        /// payloads to the moveset log without changing deck serialization.
+        /// </summary>
+        private static void AddSerializedDeckLogItems(List<string> logItems, string label, Deck deck)
         {
+            logItems.Add($"{label}:");
+
+            foreach (string deckLogItem in deck.GetSerializedLogItems())
+                logItems.Add($"{label} {deckLogItem}");
+        }
+
+        protected override void Awake()
+        {
+            base.Awake();
+
             _movementBehaviour = GetComponent<Movement.GridMovementBehaviour>();
             _stateMachineScript = GetComponent<CharacterStateMachineBehaviour>();
             _knockbackBehaviour = GetComponent<KnockbackBehaviour>();
             _inputBehaviour = GetComponentInParent<InputBehaviour>();
+
+            _normalDeck = Instantiate(_normalDeckRef);
+            _specialDeck = Instantiate(_specialDeckRef);
+            _discardDeck = Deck.CreateInstance<Deck>();
+            OnUseAbility += _knockbackBehaviour.DisableInvincibility;
+            
+            _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_DefensiveBurst_Data"));
+            _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_OffensiveBurst_Data"));
+
+
+            //Set up other references and parameters
+            GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
+            if (!target) return;
+
+            _opponentMoveset = target.GetComponent<MovesetBehaviour>();
+
+        }
+
+        public override void Init()
+        {
 
             DeckReloadTime = _deckReloadTime;
 
@@ -380,19 +524,21 @@ namespace Lodis.Gameplay
                 _energy = _maxEnergyRef.FixedValue;
         }
 
-        private void Start()
+        public override void Begin()
         {
+            base.Begin();
+
+            if (!_initializedDecks)
+            {
+                _normalDeck.DestroyDeck(true);
+                _normalDeck.InitAbilities(Entity);
+                _specialDeck.DestroyDeck(true);
+                _specialDeck.InitAbilities(Entity);
+
+                _initializedDecks = true;
+            }
+
             //Set up deck
-            _normalDeck = Instantiate(NormalDeckRef);
-            _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_DefensiveBurst_Data"));
-            _normalDeck.AbilityData.Add((AbilityData)Resources.Load("AbilityData/B_OffensiveBurst_Data"));
-            _specialDeck = Instantiate(SpecialDeckRef);
-
-            _normalDeck.InitAbilities(Entity);
-            _specialDeck.InitAbilities(Entity);
-
-            _discardDeck = Deck.CreateInstance<Deck>();
-
             ResetSpecialDeck();
 
             //Set up energy meters
@@ -407,16 +553,7 @@ namespace Lodis.Gameplay
             _rechargeAction = FixedPointTimer.StartNewTimedAction(() => Energy += _energyRechargeValue.FixedValue, 1).Loop();
 
             //SetBurstCharge();
-
-
-            //Set up other references and parameters
-            GameObject target = BlackBoardBehaviour.Instance.GetOpponentForPlayer(gameObject);
-            if (!target) return;
-
-            _opponentMoveset = target.GetComponent<MovesetBehaviour>();
-
             _manualShuffleWaitTime = _manualShuffleStartTime + _manualShuffleActiveTime + _manualShuffleRecoverTime;
-            OnUseAbility += _knockbackBehaviour.DisableInvincibility;
         }
 
         private void OnDisable()
@@ -717,6 +854,16 @@ namespace Lodis.Gameplay
             return -1;
         }
 
+        public Ability GetSerializedAbility(int id)
+        {
+            Ability ability = _normalDeck.GetSerializedAbility(id);
+
+            if (ability == null)
+                ability = _specialDeck.GetSerializedAbility(id);
+
+            return ability;
+        }
+
         /// <summary>
         /// Uses a basic ability of the given type if one isn't already in use. If an ability is in use
         /// the ability to use will be activated if the current ability in use can be canceled.
@@ -773,9 +920,7 @@ namespace Lodis.Gameplay
                 if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(ability))
                     return _lastAbilityInUse;
 
-
-
-            
+            ability.ClearAbilityEvents();
 
             ability.OnHitTemp += IncreaseEnergyFromDamage;
             ability.OnHitTemp += collisionArgs =>
@@ -835,49 +980,50 @@ namespace Lodis.Gameplay
                 return null;
 
             //Find the ability in the deck abd use it
-            Ability currentAbility = null;
+            Ability ability = null;
 
             if (abilityType == AbilityType.BURST)
             {
-                currentAbility = _normalDeck.GetBurstAbility(_stateMachineScript.StateMachine.CurrentState);
+                ability = _normalDeck.GetBurstAbility(_stateMachineScript.StateMachine.CurrentState);
 
-                if (currentAbility.abilityData.abilityName == "Offensive Burst" && BurstEnergy < _offensiveBurstCost)
+                if (ability.abilityData.abilityName == "Offensive Burst" && BurstEnergy < _offensiveBurstCost)
                 {
                     return null;
                 }
-                else if (currentAbility.abilityData.abilityName == "Defensive Burst" && BurstEnergy != MaxBurstEnergy)
+                else if (ability.abilityData.abilityName == "Defensive Burst" && BurstEnergy != MaxBurstEnergy)
                 {
                     return null;
                 }
 
-                if ((currentAbility.abilityData.abilityName == "Defensive Burst" && !_canDefensiveBurst) || (currentAbility.abilityData.abilityName == "Offensive Burst" && !_canOffensiveBurst))
+                if ((ability.abilityData.abilityName == "Defensive Burst" && !_canDefensiveBurst) || (ability.abilityData.abilityName == "Offensive Burst" && !_canOffensiveBurst))
                     return null;
             }
             else
             {
-                currentAbility = _normalDeck.GetAbilityByType(abilityType);
+                ability = _normalDeck.GetAbilityByType(abilityType);
             }
 
-            if (currentAbility == null)
+            if (ability == null)
                 return null;
 
             //Return if there is an ability in use that can't be canceled
             if (_lastAbilityInUse != null)
-                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(currentAbility))
+                if (_lastAbilityInUse.InUse && !_lastAbilityInUse.TryCancel(ability))
                     return _lastAbilityInUse;
 
+            ability.ClearAbilityEvents();
 
-            currentAbility.OnHitTemp += IncreaseEnergyFromDamage;
+            ability.OnHitTemp += IncreaseEnergyFromDamage;
 
-            currentAbility.OnHitTemp += collisionArgs =>
+            ability.OnHitTemp += collisionArgs =>
             {
-                _onHit?.Invoke(currentAbility, collisionArgs);
-                _onHitTemp?.Invoke(currentAbility, collisionArgs);
+                _onHit?.Invoke(ability, collisionArgs);
+                _onHitTemp?.Invoke(ability, collisionArgs);
             };
 
-            currentAbility.UseAbility(args);
+            ability.UseAbility(args);
 
-            _lastAbilityInUse = currentAbility;
+            _lastAbilityInUse = ability;
             if (args?.Length > 1)
                 LastAttackDirection = (FVector2)args[1];
 
@@ -946,6 +1092,8 @@ namespace Lodis.Gameplay
 
             if (LastAbilityInUse?.abilityData.AbilityType == AbilityType.BURST && ability.abilityData.AbilityType == AbilityType.BURST)
                 return null;
+
+            ability.ClearAbilityEvents();
 
             ability.OnHitTemp += IncreaseEnergyFromDamage;
 
@@ -1027,6 +1175,8 @@ namespace Lodis.Gameplay
 
             if (ability.currentActivationAmount == 0 && !MatchManagerBehaviour.Instance.InfiniteEnergy)
                 _energy -= ability.abilityData.EnergyCost;
+
+            ability.ClearAbilityEvents();
 
             ability.OnHitTemp += IncreaseEnergyFromDamage;
             ability.OnHitTemp += collisionArgs =>

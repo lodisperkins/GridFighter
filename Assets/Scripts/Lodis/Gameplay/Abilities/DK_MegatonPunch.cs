@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.FX;
 using Lodis.GridScripts;
 using Lodis.Movement;
@@ -18,6 +18,25 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_MegatonPunch : Ability
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_comboStarted);
+            bw.Write(_landedFirstHit);
+        }
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            _comboStarted = br.ReadBoolean();
+            _landedFirstHit = br.ReadBoolean();
+        }
+
+        #endregion
+
         private Fixed32 _distance;
         private bool _comboStarted;
         private Movement.GridMovementBehaviour _opponentMovement;
@@ -35,18 +54,7 @@ namespace Lodis.Gameplay
         private Fixed32 defaultGravity;
         private RingBarrierBehaviour _opponentRingBarrier;
 
-        protected override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            bw.Write(_comboStarted);
-            bw.Write(_landedFirstHit);
-        }
-        protected override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            _comboStarted = br.ReadBoolean();
-            _landedFirstHit = br.ReadBoolean();
-        }
+
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -384,6 +392,13 @@ namespace Lodis.Gameplay
 
             if (_opponentKnockback != null)
                 _opponentKnockback.Physics.Gravity = defaultGravity;
+        }
+
+        public override void OnLogGameState(System.Text.StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Combo Started: {_comboStarted}");
+            sb.AppendLine($"Landed First Hit: {_landedFirstHit}");
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using FixedPoints;
 using Lodis.Gameplay;
@@ -13,6 +13,41 @@ namespace Lodis.Movement
     [RequireComponent(typeof(KnockbackBehaviour))]
     public class LandingBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(Landing);
+            bw.Write(_groundedHitCounter);
+            bw.Write(IsDown);
+            bw.Write(RecoveringFromFall);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            Landing = br.ReadBoolean();
+            _groundedHitCounter = br.ReadInt32();
+            IsDown = br.ReadBoolean();
+            RecoveringFromFall = br.ReadBoolean();
+
+            CancelLanding();
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Landing: {Landing}",
+                $"Grounded Hit Counter: {_groundedHitCounter}",
+                $"IsDown: {IsDown}",
+                $"RecoveringFromFall: {RecoveringFromFall}"
+            };
+        }
+
+        #endregion
+
         [Tooltip("The amount of time it takes for this object to regain footing after landing")]
         [SerializeField] private Fixed32 _landingTime;
         [SerializeField] private Fixed32 _knockDownTime;
@@ -53,38 +88,13 @@ namespace Lodis.Movement
 
         public override string LogName => "LandingBehaviour";
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            bw.Write(Landing);
-            bw.Write(_groundedHitCounter);
-            bw.Write(IsDown);
-            bw.Write(RecoveringFromFall);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            Landing = br.ReadBoolean();
-            _groundedHitCounter = br.ReadInt32();
-            IsDown = br.ReadBoolean();
-            RecoveringFromFall = br.ReadBoolean();
-
-            CancelLanding();
-        }
 
         /// <summary>
         /// Hashes the serialized landing state so grounded-transition mismatches can
         /// be attributed to this component.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                $"Landing: {Landing}",
-                $"Grounded Hit Counter: {_groundedHitCounter}",
-                $"IsDown: {IsDown}",
-                $"RecoveringFromFall: {RecoveringFromFall}"
-            };
-        }
+
 
         protected override void Awake()
         {

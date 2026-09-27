@@ -4,6 +4,7 @@ using UnityEngine;
 using Lodis.Gameplay;
 using Lodis.GridScripts;
 using Lodis.Movement;
+using Assets.Scripts.Lodis.Simulation;
 
 namespace Lodis
 {
@@ -86,7 +87,7 @@ namespace Lodis
         public Vector3 GetNewPosition()
         {
             Vector3 averagePosition = new Vector3();
-            List<GridMovementBehaviour> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
+            SerializedListHandler<GridMovementBehaviour> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
             int characterCount = 0;
 
             foreach (GridMovementBehaviour character in entities)
@@ -126,7 +127,7 @@ namespace Lodis
         public float GetAverageDistance(Vector3 center)
         {
             float averageDistance = 0;
-            List<GridMovementBehaviour> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
+            SerializedListHandler<GridMovementBehaviour> entities = BlackBoardBehaviour.Instance.GetEntitiesInGame();
             int characterCount = entities.Count;
 
             foreach (GridMovementBehaviour character in entities)

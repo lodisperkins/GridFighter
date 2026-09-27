@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
@@ -15,6 +15,51 @@ namespace Lodis.Gameplay
 {
     public class HealthBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            _health.Serialize(bw);
+            bw.Write(_isInvincible);
+            bw.Write(_stunned);
+            bw.Write(_isIntangible);
+            bw.Write(DamageableAbilityID);
+            bw.Write(_hasArmor);
+            bw.Write(_counterStanceActive);
+            LastAbilityID.Serialize(bw);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _health = _health.Deserialize(br);
+            _isInvincible = br.ReadBoolean();
+            _stunned = br.ReadBoolean();
+            _isIntangible = br.ReadBoolean();
+            DamageableAbilityID = br.ReadInt32();
+            _hasArmor = br.ReadBoolean();
+            _counterStanceActive = br.ReadBoolean();
+            LastAbilityID = LastAbilityID.Deserialize(br);
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[] 
+            {
+                $"Health: {_health}",
+                $"IsInvincible: {_isInvincible}",
+                $"Stunned: {_stunned}",
+                $"IsIntangible: {_isIntangible}",
+                $"DamageableAbilityID: {_damageableAbilityID}",
+                $"HasArmor: {_hasArmor}",
+                $"CounterStanceActive: {_counterStanceActive}",
+                $"LastAbilityID: {LastAbilityID}"
+            };
+        }
+
+        #endregion
+
         public enum ArmorType
         {
             HitsToBreak,
@@ -205,48 +250,13 @@ namespace Lodis.Gameplay
 
         public override string LogName => "HealthBehaviour";
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            _health.Serialize(bw);
-            bw.Write(_isInvincible);
-            bw.Write(_stunned);
-            bw.Write(_isIntangible);
-            bw.Write(DamageableAbilityID);
-            bw.Write(_hasArmor);
-            bw.Write(_counterStanceActive);
-            LastAbilityID.Serialize(bw);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _health = _health.Deserialize(br);
-            _isInvincible = br.ReadBoolean();
-            _stunned = br.ReadBoolean();
-            _isIntangible = br.ReadBoolean();
-            DamageableAbilityID = br.ReadInt32();
-            _hasArmor = br.ReadBoolean();
-            _counterStanceActive = br.ReadBoolean();
-            LastAbilityID = LastAbilityID.Deserialize(br);
-        }
 
         /// <summary>
         /// Hashes the serialized health and invincibility state so damage-related
         /// mismatches can be tied to this behavior.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[] 
-            {
-                $"Health: {_health}",
-                $"IsInvincible: {_isInvincible}",
-                $"Stunned: {_stunned}",
-                $"IsIntangible: {_isIntangible}",
-                $"DamageableAbilityID: {_damageableAbilityID}",
-                $"HasArmor: {_hasArmor}",
-                $"CounterStanceActive: {_counterStanceActive}",
-                $"LastAbilityID: {LastAbilityID}"
-            };
-        }
+
 
         protected override void Awake()
         {

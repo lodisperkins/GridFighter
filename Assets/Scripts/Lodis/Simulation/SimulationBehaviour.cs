@@ -13,6 +13,62 @@ using System;
 /// </summary>
 public abstract class SimulationBehaviour : MonoBehaviour, ISerializedListObject
 {
+
+    #region Simulation Functions
+
+    public void OnSerialize(BinaryWriter bw)
+    {
+        Serialize(bw);
+        _onSerialize?.Invoke();
+    }
+
+    public void OnDeserialize(Deserializer br)
+    {
+        Deserialize(br);
+        _onDeserialize?.Invoke();
+    }
+
+    protected abstract string[] GetLogItems();
+
+    /// <summary>
+    /// Writes information about this component to the provided StringBuilder for debugging purposes.
+    /// </summary>
+    public void OnLogGameState(StringBuilder sb)
+    {
+        sb.AppendLine($"            {LogName}");
+        //byte[] serializedPayload = GetSerializedPayload();
+        //sb.AppendLine($"                  {LogName} Checksum: {CalcFletcher32(serializedPayload)}");
+        //sb.AppendLine($"                  Serialized Payload: {BitConverter.ToString(serializedPayload)}");
+
+        string[] logItems = GetLogItems();
+
+        if (logItems == null || logItems.Length == 0)
+            return;
+
+        for (int i = 0; i < logItems.Length; i++)
+        {
+            sb.AppendLine($"                  {logItems[i]}");
+        }
+    }
+
+    public abstract void Serialize(BinaryWriter bw);
+
+    /// <summary>
+    /// Handles data that is loaded when a rollback happens.
+    /// </summary>
+    public abstract void Deserialize(Deserializer br);
+
+    /// <summary>
+    /// Serializes this component into a temporary buffer and hashes the bytes so
+    /// component checksums stay aligned with the exact rollback payload.
+    /// </summary>
+    protected int CalculateChecksum()
+    {
+        return CalcFletcher32(GetSerializedPayload());
+    }
+
+    #endregion
+
     [Tooltip("Called when the game state is saved.")]
     [SerializeField] private UnityEvent _onSerialize;
     [Tooltip("Called when the game state is loaded.")]
@@ -39,6 +95,7 @@ public abstract class SimulationBehaviour : MonoBehaviour, ISerializedListObject
     /// </summary>
     public FTransform FixedTransform { get => _entity.Data.Transform; }
     public int FrameAddedToSerializedList { get; set; }
+    public int SerializedChecksum { get; set; }
 
     public abstract string LogName { get; }
 
@@ -49,66 +106,16 @@ public abstract class SimulationBehaviour : MonoBehaviour, ISerializedListObject
     /// </summary>
     public virtual void Init() { }
 
-    public void OnSerialize(BinaryWriter bw)
-    {
-        Serialize(bw);
-        _onSerialize?.Invoke();
-    }
 
-    public void OnDeserialize(BinaryReader br)
-    {
-        Deserialize(br);
-        _onDeserialize?.Invoke();
-    }
-    protected abstract string[] GetLogItems();
 
-    /// <summary>
-    /// Writes information about this component to the provided StringBuilder for debugging purposes.
-    /// </summary>
-    public void OnLogGameState(StringBuilder sb)
-    {
-        sb.AppendLine($"            {LogName}");
-        //byte[] serializedPayload = GetSerializedPayload();
-        //sb.AppendLine($"                  {LogName} Checksum: {CalcFletcher32(serializedPayload)}");
-        //sb.AppendLine($"                  Serialized Payload: {BitConverter.ToString(serializedPayload)}");
 
-        string[] logItems = GetLogItems();
-
-        if (logItems == null || logItems.Length == 0)
-            return;
-
-        for (int i = 0; i < logItems.Length; i++)
-        {
-            sb.AppendLine($"                  {logItems[i]}");
-        }
-    }
 
     public ListEvent OnAddedToList { get; set; }
     public ListEvent OnRemovedFromList { get; set; }
-    public int FrameRemoved { get; set; }
+    public int FrameRemovedFromActiveList { get; set; }
 
     /// <summary>
     /// Handles data that is saved and sent across the network.
-    /// </summary>
-    public abstract void Serialize(BinaryWriter bw);
-
-    /// <summary>
-    /// Handles data that is loaded when a rollback happens.
-    /// </summary>
-    public abstract void Deserialize(BinaryReader br);
-
-    /// <summary>
-    /// Serializes this component into a temporary buffer and hashes the bytes so
-    /// component checksums stay aligned with the exact rollback payload.
-    /// </summary>
-    protected int CalculateChecksum()
-    {
-        return CalcFletcher32(GetSerializedPayload());
-    }
-
-    /// <summary>
-    /// Serializes the exact rollback payload for this component so debug logging and
-    /// checksums can both inspect the same byte representation the save state uses.
     /// </summary>
     private byte[] GetSerializedPayload()
     {
@@ -215,8 +222,4 @@ public abstract class SimulationBehaviour : MonoBehaviour, ISerializedListObject
         Entity?.Data.RemoveComponent(this);
     }
 
-    public bool CheckIfCanBeAddedToList()
-    {
-        return true;
-    }
 }

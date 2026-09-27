@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Lodis.AI;
+using Assets.Scripts.Lodis.Simulation;
 using FixedPoints;
 using Ilumisoft.VisualStateMachine;
 using Lodis.Gameplay;
@@ -112,7 +113,7 @@ namespace Lodis.AI
         [SerializeField]
         private Vector2 _attackDirection;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
-        private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
+        private SerializedListHandler<HitColliderBehaviour> _attacksInRange = new SerializedListHandler<HitColliderBehaviour>();
         private ActionPlaybackInfo[] _recordings; 
 
         private GameObject _opponent;

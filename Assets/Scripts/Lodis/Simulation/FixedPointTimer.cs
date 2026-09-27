@@ -15,7 +15,6 @@ namespace FixedPoints
 {
     public abstract class FixedAction : ISerializedListObject
     {
-        private static int _nextActionID = 1;
 
         public delegate void FixedDelayedEvent();
         protected FixedDelayedEvent onDelayComplete;
@@ -26,22 +25,34 @@ namespace FixedPoints
         public int FrameFinished;
         public EntityData Target;
         public int ActionID;
+        private string _displayName;
 
-        public bool IsActive { get => isActive; set => isActive = value; }
+        public bool IsActive 
+        {
+            get => isActive;
+            set
+            {
+                isActive = value;
+            }
+        }
         public ListEvent OnAddedToList { get; set; }
         public int FrameAddedToSerializedList { get; set; }
+        public int SerializedChecksum { get; set; }
         public ListEvent OnRemovedFromList { get; set; }
 
-        public string ListDisplayName => "FixedAction";
+        /// <summary>
+        /// The optional debug name shown for this action in serialized-list logs.
+        /// Defaults to FixedAction when the action was started without a name.
+        /// </summary>
+        public string ListDisplayName => string.IsNullOrEmpty(_displayName) ? "FixedAction" : _displayName;
 
-        public int FrameRemoved { get; set; }
-        public static int NextActionID { get => _nextActionID; set => _nextActionID = value; }
+        public int FrameRemovedFromActiveList { get; set; }
 
         public abstract void TryPerformAction();
 
         protected abstract void Serialize(BinaryWriter bw);
 
-        protected abstract void Deserialize(BinaryReader br);
+        protected abstract void Deserialize(Deserializer br);
 
         protected abstract void LogGameState(StringBuilder sb);
 
@@ -53,64 +64,41 @@ namespace FixedPoints
 
         public virtual void Init()
         {
-            EnsureDebugIdAssigned();
             FixedPointTimer.Actions.Add(this);
             IsActive = true;
-        }
-
-        internal static int ClaimNextActionId()
-        {
-            return _nextActionID++;
-        }
-
-        internal void EnsureDebugIdAssigned()
-        {
-            if (ActionID != 0)
-            {
-                return;
-            }
-
-            ActionID = ClaimNextActionId();
         }
 
         internal void SetActionID(int debugId)
         {
             ActionID = debugId;
-
-            if (ActionID >= _nextActionID)
-            {
-                _nextActionID = ActionID + 1;
-            }
         }
 
-        public bool CheckIfCanBeAddedToList()
+        /// <summary>
+        /// Sets the optional name used by rollback debug logs for this action.
+        /// </summary>
+        internal void SetDisplayName(string displayName)
         {
-            return isActive && FrameStarted <= GridGameManager.FrameNumber;
+            _displayName = displayName;
         }
 
+        #region Simulation Functions
         public void OnSerialize(BinaryWriter bw)
         {
-            EnsureDebugIdAssigned();
             bw.Write(ActionID);
             bw.Write(IsActive);
             Serialize(bw);
         }
 
-        public void OnDeserialize(BinaryReader br)
+        public void OnDeserialize(Deserializer br)
         {
             ActionID = br.ReadInt32();
-            if (ActionID >= _nextActionID)
-            {
-                _nextActionID = ActionID + 1;
-            }
-
             IsActive = br.ReadBoolean();
             Deserialize(br);
         }
 
         public void OnLogGameState(StringBuilder sb)
         {
-            sb.AppendLine($"            FixedAction");
+            sb.AppendLine($"            {ListDisplayName}");
             sb.AppendLine($"                  DebugId={ActionID}");
             sb.AppendLine($"                  IsActive={IsActive}");
             LogGameState(sb);
@@ -128,6 +116,7 @@ namespace FixedPoints
                 return CalcFletcher32(memoryStream.ToArray());
             }
         }
+        #endregion
 
         /// <summary>
         /// Writes the rollback payload used to compare this fixed action's state in
@@ -316,7 +305,7 @@ namespace FixedPoints
             bw.Write(hasPaused);
         }
 
-        protected override void Deserialize(BinaryReader br)
+        protected override void Deserialize(Deserializer br)
         {
             timeStarted = timeStarted.Deserialize(br);
             duration = duration.Deserialize(br);
@@ -420,7 +409,7 @@ namespace FixedPoints
             }
         }
 
-        protected override void Deserialize(BinaryReader br)
+        protected override void Deserialize(Deserializer br)
         {
         }
 
@@ -437,55 +426,76 @@ namespace FixedPoints
     {
         private static List<FixedAction> _actionsToRemove = new List<FixedAction>();
         private static SerializedListHandler<FixedAction> _actions = new SerializedListHandler<FixedAction>("Fixed Point Timer Actions");
+        private static int _currentActionID = 0;
 
         public static SerializedListHandler<FixedAction> Actions { get => _actions; private set => _actions = value; }
 
         public static void LogGameState(StringBuilder stringBuilder)
         {
             _actions.OnLogGameState(stringBuilder);
+            stringBuilder.AppendLine($"CurrentActionID: {_currentActionID}");
         }
 
-        public static FixedTimeAction StartNewTimedAction(FixedDelayedEvent action, Fixed32 duration, UnitOfTime unit = UnitOfTime.Scaled)
+        /// <summary>
+        /// Starts a timed fixed-point action. An optional display name appears in
+        /// serialized-list debug logs and does not affect simulation state.
+        /// </summary>
+        public static FixedTimeAction StartNewTimedAction(FixedDelayedEvent action, Fixed32 duration, UnitOfTime unit = UnitOfTime.Scaled, string displayName = null)
         {
-            int debugId = FixedAction.ClaimNextActionId();
-
-            if (_actions.TryGetItem(item => item is FixedTimeAction && item.ActionID == debugId, out FixedAction retainedActionObject))
+            //Check if the serialized list handler already has a this action.
+            if (_actions.TryGetSerializedItem(item => item is FixedTimeAction && item.ActionID == _currentActionID, out FixedAction retainedActionObject))
             {
                 FixedTimeAction retainedAction = (FixedTimeAction)retainedActionObject;
-                retainedAction.SetActionID(debugId);
+                retainedAction.SetDisplayName(displayName);
                 retainedAction.Configure(action, duration, GridGame.Time, unit);
                 retainedAction.FrameStarted = GridGameManager.FrameNumber;
                 retainedAction.IsActive = true;
+
+                _currentActionID++;
                 return retainedAction;
             }
 
+            //If it doesn't make a new one.
             FixedTimeAction newAction = new FixedTimeAction(action, duration, GridGame.Time, unit);
-            newAction.SetActionID(debugId);
+            newAction.SetActionID(_currentActionID);
+            newAction.SetDisplayName(displayName);
             newAction.FrameStarted = GridGameManager.FrameNumber;
             _actions.Add(newAction);
             newAction.IsActive = true;
+
+            _currentActionID++;
             return newAction;
         }
 
-        public static FixedConditionAction StartNewConditionAction(FixedDelayedEvent action, Condition condition)
+        /// <summary>
+        /// Starts a condition-based fixed-point action. An optional display name
+        /// appears in serialized-list debug logs and does not affect simulation state.
+        /// </summary>
+        public static FixedConditionAction StartNewConditionAction(FixedDelayedEvent action, Condition condition, string displayName = null)
         {
-            int debugId = FixedAction.ClaimNextActionId();
-
-            if (_actions.TryGetItem(item => item is FixedConditionAction && item.ActionID == debugId, out FixedAction retainedActionObject))
+            //Check if the serialized list handler already has a this action.
+            if (_actions.TryGetSerializedItem(item => item is FixedConditionAction && item.ActionID == _currentActionID, out FixedAction retainedActionObject))
             {
                 FixedConditionAction retainedAction = (FixedConditionAction)retainedActionObject;
-                retainedAction.SetActionID(debugId);
+                retainedAction.SetDisplayName(displayName);
                 retainedAction.Configure(action, condition);
                 retainedAction.FrameStarted = GridGameManager.FrameNumber;
                 retainedAction.IsActive = true;
+
+                _currentActionID++;
                 return retainedAction;
             }
 
+            //If it doesn't make a new one.
             FixedConditionAction fixedConditionAction = new FixedConditionAction(action, condition);
-            fixedConditionAction.SetActionID(debugId);
+            fixedConditionAction.SetActionID(_currentActionID);
+            fixedConditionAction.SetDisplayName(displayName);
             fixedConditionAction.FrameStarted = GridGameManager.FrameNumber;
+            fixedConditionAction.IsActive = true;
 
             _actions.Add(fixedConditionAction);
+
+            _currentActionID++;
             return fixedConditionAction;
         }
 
@@ -501,13 +511,13 @@ namespace FixedPoints
         public static void SerializeActions(BinaryWriter bw)
         {
             _actions.Serialize(bw);
-            bw.Write(FixedAction.NextActionID);
+            bw.Write(_currentActionID);
         }
          
-        public static void DeserializeActions(BinaryReader br)
+        public static void DeserializeActions(Deserializer br)
         {
             _actions.Deserialize(br);
-            NextActionID = br.ReadInt32();
+            _currentActionID = br.ReadInt32();
         }
     }
 }

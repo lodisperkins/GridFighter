@@ -10,6 +10,29 @@ namespace FixedPoints
     [Serializable]
     public struct FQuaternion
     {
+
+        #region Simulation Functions
+
+        public void Serialize(BinaryWriter bw)
+        {
+            X.Serialize(bw);
+            Y.Serialize(bw);
+            Z.Serialize(bw);
+            W.Serialize(bw);
+        }
+
+
+        public FQuaternion Deserialize(Deserializer br)
+        {
+            X = X.Deserialize(br);
+            Y = Y.Deserialize(br);
+            Z = Z.Deserialize(br);
+            W = W.Deserialize(br);
+            return this;
+        }
+
+        #endregion
+
         public Fixed32 X;
         public Fixed32 Y;
         public Fixed32 Z;
@@ -220,24 +243,9 @@ namespace FixedPoints
             return new FQuaternion(uq.x, uq.y, uq.z, uq.w);
         }
 
-        public void Serialize(BinaryWriter bw)
-        {
-            X.Serialize(bw);
-            Y.Serialize(bw);
-            Z.Serialize(bw);
-            W.Serialize(bw);
-        }
 
-        public FQuaternion Deserialize(BinaryReader br)
-        {
-            X = X.Deserialize(br);
-            Y = Y.Deserialize(br);
-            Z = Z.Deserialize(br);
-            W = W.Deserialize(br);
-            return this;
-        }
 
-        public static FQuaternion DeserializeQuaternion(BinaryReader br)
+        public static FQuaternion DeserializeQuaternion(Deserializer br)
         {
             return new FQuaternion(
                 new Fixed32(br.ReadInt64()),

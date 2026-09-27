@@ -10,7 +10,7 @@ namespace SharedGame {
     }
 
     public interface IGame {
-        int Framenumber { get; }
+        int FrameNumber { get; }
         int Checksum { get; }
 
         void Update(long[] inputs, int disconnectFlags);
@@ -18,6 +18,8 @@ namespace SharedGame {
         void FromBytes(NativeArray<byte> data);
 
         NativeArray<byte> ToBytes();
+
+        void SaveSnapshotDebugData(NativeArray<byte> data, int frame, int checksum);
 
         long ReadInputs(int controllerId);
 

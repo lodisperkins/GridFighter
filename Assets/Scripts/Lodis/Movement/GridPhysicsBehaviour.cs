@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -33,6 +33,65 @@ namespace Lodis.Movement
     /// </summary>
     public class GridPhysicsBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            _velocity.Serialize(bw);
+            _lastVelocity.Serialize(bw);
+            _lastForceAdded.Serialize(bw);
+            _forceToApply.Serialize(bw);
+            _frozenStoredForce.Serialize(bw);
+            _frozenVelocity.Serialize(bw);
+
+            bw.Write(_useGravity);
+            bw.Write(_isFrozen);
+            bw.Write(_panelBounceEnabled);
+            bw.Write(_isGrounded);
+            bw.Write(_gridActive);
+            bw.Write(_isKinematic);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _velocity = _velocity.Deserialize(br);
+            _lastVelocity = _lastVelocity.Deserialize(br);
+            _lastForceAdded = _lastForceAdded.Deserialize(br);
+            _forceToApply = _forceToApply.Deserialize(br);
+            _frozenStoredForce = _frozenStoredForce.Deserialize(br);
+            _frozenVelocity = _frozenVelocity.Deserialize(br);
+
+            _useGravity = br.ReadBoolean();
+            _isFrozen = br.ReadBoolean();
+            _panelBounceEnabled = br.ReadBoolean();
+            _isGrounded = br.ReadBoolean();
+            _gridActive = br.ReadBoolean();
+            _isKinematic = br.ReadBoolean();
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Velocity={_velocity}",
+                $"Last Velocity={_lastVelocity}",
+                $"Last Force Added={_lastForceAdded}",
+                $"Force To Apply={_forceToApply}",
+                $"Frozen Stored Force={_frozenStoredForce}",
+                $"Frozen Velocity={_frozenVelocity}",
+                $"Use Gravity={_useGravity}",
+                $"Is Frozen={_isFrozen}",
+                $"Panel Bounce Enabled={_panelBounceEnabled}",
+                $"Is Grounded={_isGrounded}",
+                $"Grid Active={_gridActive}",
+                $"Is Kinematic={_isKinematic}"
+            };
+        }
+
+        #endregion
+
         public struct BounceForce
         {
             private FVector3 _bounceVelocity;
@@ -224,62 +283,13 @@ namespace Lodis.Movement
 
         public override string LogName => "GridPhysicsBehaviour";
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            _velocity.Serialize(bw);
-            _lastVelocity.Serialize(bw);
-            _lastForceAdded.Serialize(bw);
-            _forceToApply.Serialize(bw);
-            _frozenStoredForce.Serialize(bw);
-            _frozenVelocity.Serialize(bw);
 
-            bw.Write(_useGravity);
-            bw.Write(_isFrozen);
-            bw.Write(_panelBounceEnabled);
-            bw.Write(_isGrounded);
-            bw.Write(_gridActive);
-            bw.Write(_isKinematic);
-        }
-
-        public override void Deserialize(BinaryReader br)
-        {
-            _velocity = _velocity.Deserialize(br);
-            _lastVelocity = _lastVelocity.Deserialize(br);
-            _lastForceAdded = _lastForceAdded.Deserialize(br);
-            _forceToApply = _forceToApply.Deserialize(br);
-            _frozenStoredForce = _frozenStoredForce.Deserialize(br);
-            _frozenVelocity = _frozenVelocity.Deserialize(br);
-
-            _useGravity = br.ReadBoolean();
-            _isFrozen = br.ReadBoolean();
-            _panelBounceEnabled = br.ReadBoolean();
-            _isGrounded = br.ReadBoolean();
-            _gridActive = br.ReadBoolean();
-            _isKinematic = br.ReadBoolean();
-        }
 
         /// <summary>
         /// Hashes the serialized physics state so any derived physics behavior can
         /// report a rollback checksum based on its exact serialized payload.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                $"Velocity={_velocity}",
-                $"Last Velocity={_lastVelocity}",
-                $"Last Force Added={_lastForceAdded}",
-                $"Force To Apply={_forceToApply}",
-                $"Frozen Stored Force={_frozenStoredForce}",
-                $"Frozen Velocity={_frozenVelocity}",
-                $"Use Gravity={_useGravity}",
-                $"Is Frozen={_isFrozen}",
-                $"Panel Bounce Enabled={_panelBounceEnabled}",
-                $"Is Grounded={_isGrounded}",
-                $"Grid Active={_gridActive}",
-                $"Is Kinematic={_isKinematic}"
-            };
-        }
+
 
         protected override void Awake()
         {

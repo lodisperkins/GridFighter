@@ -1,7 +1,9 @@
 using FixedPoints;
+using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Runtime.CompilerServices;
 using Types;
 using UnityEngine;
 
@@ -21,6 +23,8 @@ public class EntityDataBehaviour : MonoBehaviour
     [SerializeField] private Transform _visualRoot;
     [SerializeField] private EntityDataBehaviour[] _children;
     [SerializeField] private SimulationBehaviour[] _additionalComponents;
+    [Tooltip("If true, the simulation assumes the component list will not change and wont keep track of the list order during rollback simulation.")]
+    [SerializeField] private bool _componentsAreStatic;
 
     //---
     protected bool inGame;
@@ -39,6 +43,13 @@ public class EntityDataBehaviour : MonoBehaviour
 
     // Start is called before the first frame update
     void Awake()
+    {
+        OnInitializeInGame();
+
+        Data.OnTick += UpdateUnityTransform;
+    }
+
+    public void OnInitializeInGame()
     {
         inGame = false;
 
@@ -85,8 +96,8 @@ public class EntityDataBehaviour : MonoBehaviour
             _entityData.Name = gameObject.name;
         }
 
+        Data.SetListComponentsStatic(_componentsAreStatic);
         Data.Init();
-        Data.OnTick += UpdateUnityTransform;
 
         _entityData.UnityObject = gameObject;
         _entityData.UnityScript = this;
@@ -94,10 +105,23 @@ public class EntityDataBehaviour : MonoBehaviour
         //Try to add entity to game so it can be updated.
         if (!AddToGameManually)
         {
-            GridGame.AddEntityToGame(_entityData);
-            inGame = true;
+            //If we are playing online or in a sync test we have to wait until the old ggpo local game for the menu has ended before adding objects to the game.
+            if (SceneManagerBehaviour.Instance.IsOnlineGameMode && !GridGameManager.OnlineGameStarted)
+            {
+                RoutineBehaviour.Instance.StartNewConditionAction(AddToOnlineGameWhenStarted, c => GridGameManager.OnlineGameStarted);
+                return;
+            }
+
+            AddToOnlineGameWhenStarted();
         }
 
+        Data.UnityInitialized = true;
+    }
+
+    private void AddToOnlineGameWhenStarted(params object[] args)
+    {
+        GridGame.AddEntityToGame(_entityData);
+        inGame = true;
     }
 
     /// <summary>

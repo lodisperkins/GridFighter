@@ -9,6 +9,27 @@ namespace FixedPoints
     [Serializable]
     public struct FVector3
     {
+
+        #region Simulation Functions
+
+        public void Serialize(BinaryWriter bw)
+        {
+            X.Serialize(bw);
+            Y.Serialize(bw);
+            Z.Serialize(bw);
+        }
+
+
+        public FVector3 Deserialize(Deserializer br)
+        {
+            X = X.Deserialize(br);
+            Y = Y.Deserialize(br);
+            Z = Z.Deserialize(br);
+            return this;
+        }
+
+        #endregion
+
         public Fixed32 X;
         public Fixed32 Y;
         public Fixed32 Z;
@@ -75,20 +96,7 @@ namespace FixedPoints
             Z /= magnitude;
         }
 
-        public void Serialize(BinaryWriter bw)
-        {
-            X.Serialize(bw);
-            Y.Serialize(bw);
-            Z.Serialize(bw);
-        }
 
-        public FVector3 Deserialize(BinaryReader br)
-        {
-            X = X.Deserialize(br);
-            Y = Y.Deserialize(br);
-            Z = Z.Deserialize(br);
-            return this;
-        }
 
         /// <summary>
         /// Returns a new vector with a magnitude of one, without changing the original vector.

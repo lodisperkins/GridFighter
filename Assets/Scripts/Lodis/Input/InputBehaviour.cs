@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.InputSystem;
 using Lodis.Gameplay;
 using UnityEngine.Events;
@@ -84,6 +84,45 @@ namespace Lodis.Input
 
     public class InputBehaviour : SimulationBehaviour, IControllable
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_canMove);
+            bw.Write(_inputEnabled);
+            bw.Write((long)_bufferedAction.StoredInput);
+            bw.Write(_bufferedAction.BufferStartFrame);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _canMove = br.ReadBoolean();
+            _inputEnabled = br.ReadBoolean();
+            InputFlag storedInput = (InputFlag)br.ReadInt64();
+            int bufferStartFrame = br.ReadInt32();
+
+            _bufferedAction.Init(storedInput);
+            _bufferedAction.BufferStartFrame = bufferStartFrame;
+
+            _lastBufferedActionStartTime = bufferStartFrame;
+            _lastProcessedGridGameTime = GridGameManager.FrameNumber;
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Can Move: {_canMove}",
+                $"Input Enabled: {_inputEnabled}",
+                $"Buffered Action Input: {_bufferedAction.StoredInput}",
+                $"Buffered Action Start Frame: {_bufferedAction.BufferStartFrame}"
+            };
+        }
+
+        #endregion
+
         [Header("References")]
         [SerializeField] private IntVariable _playerID;
         [SerializeField] private GameObject _character;
@@ -581,45 +620,14 @@ namespace Lodis.Input
             //}
         }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_canMove);
-            bw.Write(_inputEnabled);
-            bw.Write((long)_bufferedAction.StoredInput);
-            bw.Write(_bufferedAction.BufferStartFrame);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _canMove = br.ReadBoolean();
-            _inputEnabled = br.ReadBoolean();
-            InputFlag storedInput = (InputFlag)br.ReadInt64();
-            int bufferStartFrame = br.ReadInt32();
-
-            _bufferedAction.Init(storedInput);
-            _bufferedAction.BufferStartFrame = bufferStartFrame;
-
-            _lastBufferedActionStartTime = bufferStartFrame;
-            _lastProcessedGridGameTime = GridGameManager.FrameNumber;
-        }
 
 
         /// <summary>
         /// Hashes the serialized input buffering and directional state so input-side
         /// divergences can be isolated during rollback debugging.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                $"Attack Direction={_attackDirection}",
-                $"Buffered Action Start Frame={_bufferedAction.BufferStartFrame}",
-                $"Buffered Action Input={_bufferedAction.StoredInput}",
-                $"Buffered Action Frames Left={_bufferedAction.FramesLeft}",
-                $"Last Buffered Action Start Time={_lastBufferedActionStartTime}",
-                $"Last GridGame Time={_lastProcessedGridGameTime}"
-            };
-        }
+
 
         private void TryChargeAttack()
         {

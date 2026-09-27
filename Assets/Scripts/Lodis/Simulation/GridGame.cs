@@ -12,6 +12,7 @@ using Lodis.ScriptableObjects;
 using Lodis.Gameplay;
 using Assets.Scripts.Lodis.Simulation;
 using System.Text;
+using Lodis.Utility;
 
 
 public class TagSelectorAttribute : PropertyAttribute
@@ -22,6 +23,7 @@ public class TagSelectorAttribute : PropertyAttribute
 public struct GridGame : IGame
 {
     private const string SerializeDebugLogDirectory = "serialize_logs";
+    private static StreamWriter _deepSerializeLogWriter;
     private static readonly List<EntityData> _activePhysicsEntities = new();
 
     private static List<EntityData> _entitiesToRemove = new();
@@ -35,6 +37,7 @@ public struct GridGame : IGame
 
     private static long _p1Inputs;
     private static long _p2Inputs;
+    private SerializedListHandler<EntityData> _starterEntities;
     
 
     /// <summary>
@@ -70,7 +73,7 @@ public struct GridGame : IGame
     public delegate void InputPollCallback(int id);
     public delegate void InputProcessCallback(int id, long inputs);
     public delegate void SerializationCallback(BinaryWriter writer);
-    public delegate void DeserializationCallback(BinaryReader reader);
+    public delegate void DeserializationCallback(Deserializer reader);
     public delegate void DebugCallback(StringBuilder stringBuilder);
     public delegate void ClearMemoryCallback();
     public delegate void ResimulationStartedCallback(int rollbackFrame, int targetFrame);
@@ -95,7 +98,7 @@ public struct GridGame : IGame
     public static event ResimulationStartedCallback OnResimulationStarted;
     public static event ResimulationCompleteCallback OnResimulationComplete;
 
-    public int Framenumber { get; private set; }
+    public int FrameNumber { get; private set; }
 
     public readonly int Checksum => 0;
 
@@ -108,6 +111,7 @@ public struct GridGame : IGame
         GGPORunner.OnResimulationComplete += RelayResimulationComplete;
     }
 
+    #region Simulation Functions
     public void Serialize(BinaryWriter bw)
     {
         //HandleRemovalOfMarkedEntities();
@@ -120,122 +124,50 @@ public struct GridGame : IGame
         //}
         //test.Serialize(bw);
 
-        bw.Write(Framenumber);
 
-        Time.Serialize(bw);
-        UnscaledTime.Serialize(bw);
-        TimeScale.Serialize(bw);
+        BeginDeepSerializeLog();
 
-        FixedPointTimer.SerializeActions(bw);
-        FixedLerp.SerializeActions(bw);
+        try
+        {
+            bw.Write(FrameNumber);
 
-        OnSerialization?.Invoke(bw);
+            Time.Serialize(bw);
+            UnscaledTime.Serialize(bw);
+            TimeScale.Serialize(bw);
 
-
-        _activeEntities.Serialize(bw);
-
-        OnLateSerialization?.Invoke(bw);
-
-        //AppendSerializeDebugLog();
-        _hasSerialized = true;
+            FixedPointTimer.SerializeActions(bw);
+            FixedLerp.SerializeActions(bw);
+            OnSerialization?.Invoke(bw);
+            _activeEntities.Serialize(bw);
+            OnLateSerialization?.Invoke(bw);
+            _hasSerialized = true;
+        }
+        finally
+        {
+            EndDeepSerializeLog();
+        }
     }
 
-    public void Deserialize(BinaryReader br)
+    public void Deserialize(Deserializer br)
     {
         //_physicsEntitiesToRemove.Clear();
         //test.Deserialize(br);
         //Debug.Log($"Starting deserializing at position {br.BaseStream.Position}");
         //int num = br.ReadInt32();
-
-        Framenumber = br.ReadInt32();
-
+        FrameNumber = br.ReadInt32();
+        br.LogMarker($"Frame Being Deserialized: {FrameNumber}");
         Time = Time.Deserialize(br);
         UnscaledTime = UnscaledTime.Deserialize(br);
         TimeScale = TimeScale.Deserialize(br);
 
         FixedPointTimer.DeserializeActions(br);
         FixedLerp.DeserializeActions(br);
-
         OnDeserialization?.Invoke(br);
-
         _activeEntities.Deserialize(br);
-
         OnLateDeserialization?.Invoke(br);
     }
+    #endregion
 
-
-
-    // GGPO checksums are most useful when they reflect the exact rollback state.
-    // To keep this aligned with save/load behavior, we serialize the same state
-    // that ToBytes/FromBytes use and hash those bytes instead of relying on
-    // GetHashCode, which would not meaningfully capture the simulation state.
-    private readonly int CalculateChecksum()
-    {
-        using (var memoryStream = new MemoryStream())
-        using (var writer = new BinaryWriter(memoryStream))
-        {
-            //Serialize(writer);
-            //return CalcFletcher32(memoryStream.ToArray());
-
-            return 0;
-        }
-    }
-
-    /// <summary>
-    /// Hashes the values GridGame writes directly in its own serialize path so the
-    /// sync log can compare the top-level serialized state as one grouped payload.
-    /// </summary>
-    private int CalculateCoreStateChecksum()
-    {
-        return CalculateSectionChecksum(bw =>
-        {
-            OnSerialization?.Invoke(bw);
-
-
-            Time.Serialize(bw);
-            UnscaledTime.Serialize(bw);
-            TimeScale.Serialize(bw);
-
-            //_entityListHandler.Serialize(bw);
-            FixedPointTimer.SerializeActions(bw);
-            FixedLerp.SerializeActions(bw);
-
-            OnLateSerialization?.Invoke(bw);
-
-        });
-    }
-
-    /// <summary>
-    /// Serializes a specific rollback section into a temporary buffer so the sync
-    /// logs can report a checksum for that exact portion of GridGame state.
-    /// </summary>
-    private static int CalculateSectionChecksum(System.Action<BinaryWriter> serializeSection)
-    {
-        using (var memoryStream = new MemoryStream())
-        using (var writer = new BinaryWriter(memoryStream))
-        {
-            serializeSection(writer);
-            return CalcFletcher32(memoryStream.ToArray());
-        }
-    }
-
-    // Fletcher-32 accumulates two running 16-bit sums over the serialized bytes
-    // and packs them into a single 32-bit value. It is inexpensive, deterministic,
-    // and good enough for sync-test mismatch detection where we want a stable
-    // fingerprint of the current serialized game state.
-    private static int CalcFletcher32(byte[] data)
-    {
-        uint sum1 = 0;
-        uint sum2 = 0;
-
-        for (int i = 0; i < data.Length; ++i)
-        {
-            sum1 = (sum1 + data[i]) % 0xffff;
-            sum2 = (sum2 + sum1) % 0xffff;
-        }
-
-        return unchecked((int)((sum2 << 16) | sum1));
-    }
     public NativeArray<byte> ToBytes()
     {
         //Allocates memory for a new array of bites that has the game state data and returns it.
@@ -253,23 +185,17 @@ public struct GridGame : IGame
                 long endPos = writer.BaseStream.Position;
                 //Debug.Log($"Wrote from {startPos} to {endPos}");
             }
+
             return new NativeArray<byte>(memoryStream.ToArray(), Allocator.Persistent);
         }
-    }
 
-    public static void SetPlayerInput(IntVariable playerID, long inputs)
-    {
-        if (playerID == 0)
-            _p1Inputs = inputs;
-        else if (playerID == 1)
-            _p2Inputs = inputs;
     }
 
     public void FromBytes(NativeArray<byte> bytes)
     {
         using (var memoryStream = new MemoryStream(bytes.ToArray()))
         {
-            using (var reader = new BinaryReader(memoryStream))
+            using (var reader = new Deserializer(memoryStream))
             {
                 Deserialize(reader);
             }
@@ -299,41 +225,96 @@ public struct GridGame : IGame
         }
     }
 
-    /// <summary>
-    /// Appends a standalone per-serialize debug log entry so save-state generation
-    /// can be inspected without relying on GGPO synctest log dumps.
-    /// </summary>
-    private void AppendSerializeDebugLog()
+    public static void SetPlayerInput(IntVariable playerID, long inputs)
     {
+        if (playerID == 0)
+            _p1Inputs = inputs;
+        else if (playerID == 1)
+            _p2Inputs = inputs;
+    }
+
+    /// <summary>
+    /// Starts one readable deep-log file for the current original serialization.
+    /// Individual list items append their own entries immediately after their
+    /// bounded payload has been written.
+    /// </summary>
+    private void BeginDeepSerializeLog()
+    {
+        if (!GridGameManager.DeepLogsEnabled || IsResimulating)
+            return;
+
         string directory = Path.Combine(Application.dataPath, "..", SerializeDebugLogDirectory);
         Directory.CreateDirectory(directory);
 
-        string filename = Path.Combine(directory, $"gridgame-serialize-{Framenumber:D6}.log");
-        using (var stream = new FileStream(filename, FileMode.Create, FileAccess.Write))
-        using (var writer = new StreamWriter(stream))
-        {
-            writer.WriteLine($"Serialize Timestamp: {System.DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}");
-            WriteLogInfo(writer);
-        }
+        string filename = Path.Combine(directory, $"gridgame-serialize-{FrameNumber:D6}.log");
+        _deepSerializeLogWriter = new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write, FileShare.Read));
+        _deepSerializeLogWriter.WriteLine($"Serialize Timestamp: {System.DateTime.Now:yyyy-MM-dd HH:mm:ss.fff}");
+        _deepSerializeLogWriter.WriteLine("GridGame Items");
+        _deepSerializeLogWriter.WriteLine($"Frame number: {FrameNumber}");
+        _deepSerializeLogWriter.WriteLine($"Time: {Time.RawValue}");
+        _deepSerializeLogWriter.WriteLine($"Unscaled Time: {UnscaledTime.RawValue}");
+        _deepSerializeLogWriter.WriteLine($"Time Scale: {TimeScale.RawValue}");
+        _deepSerializeLogWriter.WriteLine();
+    }
+
+    /// <summary>
+    /// Appends an item's readable state immediately after SerializedListHandler
+    /// has written its payload and checksum to the GGPO snapshot.
+    /// </summary>
+    public static void AppendDeepSerializeItemLog(string listName, ISerializedListObject item, int payloadLength, int checksum)
+    {
+        if (_deepSerializeLogWriter == null)
+            return;
+
+        string itemFilter = GridGameManager.DeepLogItemDisplayName;
+        if (!string.IsNullOrWhiteSpace(itemFilter) && item.ListDisplayName != itemFilter)
+            return;
+
+        _deepSerializeLogWriter.WriteLine($"{listName} > {item.ListDisplayName}");
+        _deepSerializeLogWriter.WriteLine($"Serialized Payload Length: {payloadLength}");
+        _deepSerializeLogWriter.WriteLine($"Serialized Checksum: {checksum}");
+
+        StringBuilder itemLog = new StringBuilder();
+        item.OnLogGameState(itemLog);
+        _deepSerializeLogWriter.Write(itemLog.ToString());
+        _deepSerializeLogWriter.WriteLine();
+        _deepSerializeLogWriter.Flush();
+    }
+
+    /// <summary>
+    /// Closes the per-serialization deep log even if an item serializer throws.
+    /// </summary>
+    private static void EndDeepSerializeLog()
+    {
+        _deepSerializeLogWriter?.Dispose();
+        _deepSerializeLogWriter = null;
+    }
+
+    /// <summary>
+    /// Retained for the shared runner interface. Readable deep logging now occurs
+    /// directly after <see cref="Serialize"/> so this callback no longer writes
+    /// a separate binary snapshot file.
+    /// </summary>
+    public void SaveSnapshotDebugData(NativeArray<byte> data, int frame, int checksum)
+    {
     }
 
     /// <summary>
     /// Writes the current rollback game state in the same human-readable format used
-    /// by both GGPO-triggered logs and the standalone serialize debug log.
+    /// by GGPO-triggered sync-test logs.
     /// </summary>
     private void WriteLogInfo(TextWriter writer)
     {
         writer.WriteLine("GridGame Items");
-        writer.WriteLine($"Frame number: {Framenumber}");
+        writer.WriteLine($"Frame number: {FrameNumber}");
         writer.WriteLine($"Time: {Time.RawValue}");
         writer.WriteLine($"Unscaled Time: {UnscaledTime.RawValue}");
         writer.WriteLine($"Time Scale: {TimeScale.RawValue}");
 
         StringBuilder sb = new StringBuilder();
-        _activeEntities.OnLogGameState(sb);
         FixedPointTimer.LogGameState(sb);
         FixedLerp.LogGameState(sb);
-
+        _activeEntities.OnLogGameState(sb);
         OnLogGameState?.Invoke(sb);
 
         writer.WriteLine(sb.ToString());
@@ -591,7 +572,7 @@ public struct GridGame : IGame
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
-            AddEntityToGame(entity.Transform.GetChild(i).EntityData);
+            AddEntityToGameWithoutEvents(entity.Transform.GetChild(i).EntityData);
         }
 
         if (entity.Colliders?.Length > 0 || entity.HasComponent<ColliderBehaviour>())
@@ -640,7 +621,7 @@ public struct GridGame : IGame
 
         _entitiesToRemove.Add(entity);
         entity.End();
-        entity.FrameRemoved = GridGameManager.FrameNumber;
+        entity.FrameRemovedFromActiveList = GridGameManager.FrameNumber;
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
@@ -669,7 +650,7 @@ public struct GridGame : IGame
         _activeEntities.Remove(entity);
 
         entity.End();
-        entity.FrameRemoved = GridGameManager.FrameNumber;
+        entity.FrameRemovedFromActiveList = GridGameManager.FrameNumber;
 
         for (int i = 0; i < entity.Transform.ChildCount; i++)
         {
@@ -804,7 +785,7 @@ public struct GridGame : IGame
 
     public void Update(long[] inputs, int disconnectFlags)
     {
-        if (IsPaused)
+        if (IsPaused || (SceneManagerBehaviour.Instance.IsOnlineGameMode && !GridGameManager.OnlineGameStarted))
         {
             UpdateInput(inputs);
             return;
@@ -817,7 +798,7 @@ public struct GridGame : IGame
 
         OnSimulationUpdate?.Invoke(FixedTimeStep);
 
-        Framenumber++;
+        FrameNumber++;
 
         HandleRemovalOfMarkedEntities();
 

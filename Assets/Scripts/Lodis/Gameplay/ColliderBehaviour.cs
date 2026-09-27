@@ -1,4 +1,4 @@
-﻿using Lodis.GridScripts;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
 using Newtonsoft.Json;
@@ -14,6 +14,75 @@ namespace Lodis.Gameplay
 {
     public class ColliderBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            //Tell the actual colliding object to serialize.
+            _entityCollider.Serialize(bw);
+
+            //Save the number of collisions to know how many to add again during deserialization.
+            bw.Write(Collisions.Count);
+
+
+            //Save the keys and values of each collision in case the objects collided with changes.
+            foreach (var entry in Collisions)
+            {
+                bw.Write(entry.Key);
+                entry.Value.Serialize(bw);
+            }
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            //Tell the actual colliding object to deserialize.
+            _entityCollider.Deserialize(br);
+
+            //Only try to add collisions if there were any serialized in the first place.
+            int count = br.ReadInt32();
+
+            if (count <= 0)
+            {
+                return;
+            }
+
+
+            //Load the old collisions.
+            Collisions.Clear();
+
+            for (int i = 0; i < count; i++)
+            {
+                int hashKey = br.ReadInt32();
+
+                Fixed32 timeVal = new Fixed32();
+                timeVal = timeVal.Deserialize(br);
+
+                Collisions.Add(hashKey, timeVal);
+            }
+        }
+
+        protected override string[] GetLogItems()
+        {
+            List<string> logItems = new List<string>
+            {
+                $"Collider Width: {_entityCollider.Width}",
+                $"Collider Height: {_entityCollider.Height}",
+                $"Collider Panel Y Offset: {_entityCollider.PanelYOffset}",
+                $"Collision Count: {Collisions.Count}"
+            };
+
+            foreach (var collisionEntry in Collisions)
+            {
+                logItems.Add($"Collision[{collisionEntry.Key}]: {collisionEntry.Value}");
+            }
+
+            return logItems.ToArray();
+        }
+
+        #endregion
+
         [SerializeField] private CustomEventSystem.Event _onHitObject;
         [SerializeField] private UnityEvent _onOverlapBegin;
         [SerializeField] private UnityEvent _onHitBegin;
@@ -52,17 +121,13 @@ namespace Lodis.Gameplay
 
         public override string LogName => "ColliderBehaviour";
 
-        public override void Init()
-        {
-            base.Init();
-
-            ReturnToPoolListener = gameObject?.AddComponent<CustomEventSystem.GameEventListener>();
-            ReturnToPoolListener.Init(ObjectPoolBehaviour.Instance.OnReturnToPool, gameObject);
-        }
 
         protected override void Awake()
         {
             base.Awake();
+            ReturnToPoolListener = gameObject?.AddComponent<CustomEventSystem.GameEventListener>();
+            ReturnToPoolListener.Init(ObjectPoolBehaviour.Instance.OnReturnToPool, gameObject);
+
             Collisions = new Dictionary<int, Fixed32>();
             GridPhysics = Entity.GetComponent<GridPhysicsBehaviour>();
 
@@ -141,72 +206,13 @@ namespace Lodis.Gameplay
             _onOpponentHit = null;
         }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            //Tell the actual colliding object to serialize.
-            _entityCollider.Serialize(bw);
 
-            //Save the number of collisions to know how many to add again during deserialization.
-            bw.Write(Collisions.Count);
-
-
-            //Save the keys and values of each collision in case the objects collided with changes.
-            foreach (var entry in Collisions)
-            {
-                bw.Write(entry.Key);
-                entry.Value.Serialize(bw);
-            }
-        }
-
-        public override void Deserialize(BinaryReader br)
-        {
-            //Tell the actual colliding object to deserialize.
-            _entityCollider.Deserialize(br);
-
-            //Only try to add collisions if there were any serialized in the first place.
-            int count = br.ReadInt32();
-
-            if (count <= 0)
-            {
-                return;
-            }
-
-
-            //Load the old collisions.
-            Collisions.Clear();
-
-            for (int i = 0; i < count; i++)
-            {
-                int hashKey = br.ReadInt32();
-
-                Fixed32 timeVal = new Fixed32();
-                timeVal = timeVal.Deserialize(br);
-
-                Collisions.Add(hashKey, timeVal);
-            }
-        }
 
         /// <summary>
         /// Hashes the serialized collider state so collision-volume mismatches can be
         /// narrowed down to this behavior.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            List<string> logItems = new List<string>
-            {
-                $"Collider Width: {_entityCollider.Width}",
-                $"Collider Height: {_entityCollider.Height}",
-                $"Collider Panel Y Offset: {_entityCollider.PanelYOffset}",
-                $"Collision Count: {Collisions.Count}"
-            };
 
-            foreach (var collisionEntry in Collisions)
-            {
-                logItems.Add($"Collision[{collisionEntry.Key}]: {collisionEntry.Value}");
-            }
-
-            return logItems.ToArray();
-        }
 
         private void OnDrawGizmos()
         {

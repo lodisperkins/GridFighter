@@ -1,5 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using Assets.Scripts.Lodis.Simulation;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Sound;
@@ -15,11 +18,44 @@ namespace Lodis.Gameplay
     /// </summary>
     public class B_DefensiveBurst : Ability
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+
+            bw.Write(_makeFreeFall);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+
+            _makeFreeFall = br.ReadBoolean();
+        }
+
+        public override void OnLogGameState(StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Make Free Fall: {_makeFreeFall}");
+        }
+
+        #endregion
+
         private EntityDataBehaviour _barrier;
         private GameObject _burstEffect;
         private float _defaultRestTime;
         private bool _makeFreeFall;
         private TimedAction _zoomAction;
+
+        public override ListEvent OnAddedToList { get; set; }
+        public override ListEvent OnRemovedFromList { get; set; }
+        public override int FrameAddedToSerializedList { get; set; }
+        public override int FrameRemovedFromActiveList { get; set; }
+
+        public override string ListDisplayName => nameof(B_DefensiveBurst);
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -149,5 +185,7 @@ namespace Lodis.Gameplay
             if (CurrentAbilityPhase == AbilityPhase.RECOVER && !OwnerKnockBackScript.Physics.IsGrounded && InUse)
                 EndAbility();
         }
+
+
     }
 }

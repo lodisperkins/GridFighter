@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -26,6 +26,38 @@ namespace Lodis.Movement
     [RequireComponent(typeof(GridPhysicsBehaviour))]
     public class KnockbackBehaviour : HealthBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            base.Serialize(bw);
+            bw.Write(_hasExploded);
+            bw.Write(_outOfBounds);
+            bw.Write((int)_currentAirState);
+            _launchForce.Serialize(bw);
+            bw.Write(_inHitStun);
+            bw.Write(_isFlinching);
+            _timeInCurrentHitStun.Serialize(bw);
+            bw.Write(_isSlidingHit);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            base.Deserialize(br);
+            _hasExploded = br.ReadBoolean();
+            _outOfBounds = br.ReadBoolean();
+            _currentAirState = (AirState)br.ReadInt32();
+            _launchForce = _launchForce.Deserialize(br);
+            _inHitStun = br.ReadBoolean();
+            _isFlinching = br.ReadBoolean();
+            _timeInCurrentHitStun = _timeInCurrentHitStun.Deserialize(br);
+            _isSlidingHit = br.ReadBoolean();
+        }
+
+        #endregion
+
         [Header("State Descriptors")]
         [Tooltip("Whether or not the character has died from being out of bounds.")]
         [SerializeField] private bool _hasExploded;
@@ -177,31 +209,7 @@ namespace Lodis.Movement
             _adjustedGravity = _startGravity;
         }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            base.Serialize(bw);
-            bw.Write(_hasExploded);
-            bw.Write(_outOfBounds);
-            bw.Write((int)_currentAirState);
-            _launchForce.Serialize(bw);
-            bw.Write(_inHitStun);
-            bw.Write(_isFlinching);
-            _timeInCurrentHitStun.Serialize(bw);
-            bw.Write(_isSlidingHit);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            base.Deserialize(br);
-            _hasExploded = br.ReadBoolean();
-            _outOfBounds = br.ReadBoolean();
-            _currentAirState = (AirState)br.ReadInt32();
-            _launchForce = _launchForce.Deserialize(br);
-            _inHitStun = br.ReadBoolean();
-            _isFlinching = br.ReadBoolean();
-            _timeInCurrentHitStun = _timeInCurrentHitStun.Deserialize(br);
-            _isSlidingHit = br.ReadBoolean();
-        }
 
         /// <summary>
         /// Add a listener to the onKnockBack event.

@@ -11,6 +11,39 @@ using UnityEngine;
 
 public class SuddenDeathBehaviour : SimulationBehaviour
 {
+
+    #region Simulation Functions
+
+    public override void Deserialize(Deserializer br)
+    {
+        _currentX = br.ReadInt32();
+        _hasStarted = br.ReadBoolean();
+        _lhsOriginalPos = _lhsOriginalPos.Deserialize(br);
+        _rhsOriginalPos = _rhsOriginalPos.Deserialize(br);
+    }
+
+
+    public override void Serialize(BinaryWriter bw)
+    {
+        bw.Write(_currentX);
+        bw.Write(_hasStarted);
+        _lhsOriginalPos.Serialize(bw);
+        _rhsOriginalPos.Serialize(bw);
+    }
+
+    protected override string[] GetLogItems()
+    {
+        return new string[]
+        {
+            $"Current Sudden Death X: {_currentX}",
+            $"Has Sudden Death Started: {_hasStarted}",
+            $"LHS Original Pos: {_lhsOriginalPos}",
+            $"RHS Original Pos: {_rhsOriginalPos}"
+        };
+    }
+
+    #endregion
+
     [SerializeField] private Fixed32 _firstExplosionDelay;
     [SerializeField] private Fixed32 _secondExplosionDelay;
     [SerializeField] private Fixed32 _thirdExplosionDelay;
@@ -33,35 +66,9 @@ public class SuddenDeathBehaviour : SimulationBehaviour
 
     public override string LogName => "SuddenDeathBehaviour";
 
-    public override void Deserialize(BinaryReader br)
+    private void Start()
     {
-        _currentX = br.ReadInt32();
-        _hasStarted = br.ReadBoolean();
-        _lhsOriginalPos = _lhsOriginalPos.Deserialize(br);
-        _rhsOriginalPos = _rhsOriginalPos.Deserialize(br);
-    }
-
-    public override void Serialize(BinaryWriter bw)
-    {
-        bw.Write(_currentX);
-        bw.Write(_hasStarted);
-        _lhsOriginalPos.Serialize(bw);
-        _rhsOriginalPos.Serialize(bw);
-    }
-
-    /// <summary>
-    /// Hashes the serialized sudden-death progression state so arena hazard
-    /// mismatches can be identified quickly.
-    /// </summary>
-    protected override string[] GetLogItems()
-    {
-        return new string[]
-        {
-            $"Current Sudden Death X: {_currentX}",
-            $"Has Sudden Death Started: {_hasStarted}",
-            $"LHS Original Pos: {_lhsOriginalPos}",
-            $"RHS Original Pos: {_rhsOriginalPos}"
-        };
+        MatchManagerBehaviour.Instance.AddOnRingoutAction(OnSuddenDeathWon);
     }
 
     public override void Begin()
@@ -73,7 +80,6 @@ public class SuddenDeathBehaviour : SimulationBehaviour
         GridBehaviour grid = GridBehaviour.Instance;
         _winMovementScale = grid.FixedPanelScale.X;
 
-        MatchManagerBehaviour.Instance.AddOnRingoutAction(OnSuddenDeathWon);
     }
 
     private void OnSuddenDeathWon()

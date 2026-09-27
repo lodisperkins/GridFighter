@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -12,14 +12,30 @@ namespace Lodis.Gameplay
 {
     public class ProjectileSpawnerBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Deserialize(Deserializer br)
+        {
+        }
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return null;
+        }
+
+        #endregion
+
         public EntityDataBehaviour Projectile = null;
         public EntityDataBehaviour Owner = null;
 
         public override string LogName => "ProjectileSpawnerBehaviour";
 
-        public override void Deserialize(BinaryReader br)
-        {
-        }
 
         /// <summary>
         /// Fires a projectile
@@ -144,18 +160,12 @@ namespace Lodis.Gameplay
             return temp;
         }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-        }
 
         /// <summary>
         /// Hashes the serialized projectile spawner state, which is currently empty,
         /// so this behavior still fits the per-component checksum contract.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return null;
-        }
+
     }
 }
 

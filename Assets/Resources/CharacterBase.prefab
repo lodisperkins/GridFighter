@@ -11053,6 +11053,7 @@ MonoBehaviour:
   - {fileID: 9088445964086657447}
   _additionalComponents:
   - {fileID: 3406130847468409652}
+  _componentsAreStatic: 0
 --- !u!114 &8769265702160132241
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21447,6 +21448,7 @@ MonoBehaviour:
   _visualRoot: {fileID: 5449818576778757990}
   _children: []
   _additionalComponents: []
+  _componentsAreStatic: 0
 --- !u!1 &5675499867829757784
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
@@ -18,6 +18,29 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_MiniLightning : Ability
     {
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_currentSpawnIndex);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            _currentSpawnIndex = br.ReadInt32();
+        }
+
+        public override void OnLogGameState(System.Text.StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Current Spawn Index: {_currentSpawnIndex}");
+        }
+
+        #endregion
+
         private FTransform[] _visualPrefabInstanceTransforms;
         private FVector3[] _spawnPositions;
         private HitColliderBehaviour _collider;
@@ -29,17 +52,6 @@ namespace Lodis.Gameplay
         private Transform _heldItemSpawn;
 
 
-        protected override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            bw.Write(_currentSpawnIndex);
-        }
-
-        protected override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            _currentSpawnIndex = br.ReadInt32();
-        }
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -180,5 +192,6 @@ namespace Lodis.Gameplay
             ObjectPoolBehaviour.Instance.ReturnGameObject(_thalamusInstance);
             EnableAccessory();
         }
+
     }
 }

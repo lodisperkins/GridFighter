@@ -11,6 +11,33 @@ using UnityEngine;
 
 public class Secur_TBehaviour : SimulationBehaviour
 {
+
+    #region Simulation Functions
+
+    public override void Deserialize(Deserializer br)
+    {
+        _firing = br.ReadBoolean();
+        _onCooldown = br.ReadBoolean();
+    }
+
+
+    public override void Serialize(BinaryWriter bw)
+    {
+        bw.Write(_firing);
+        bw.Write(_onCooldown);
+    }
+
+    protected override string[] GetLogItems()
+    {
+        return new string[]
+        {
+            $"Firing={_firing}",
+            $"OnCooldown={_onCooldown}"
+        };
+    }
+
+    #endregion
+
     [Header("Shooting")]
     [SerializeField] protected Fixed32 _activeTime = 10;
     [SerializeField] private int fireRange = 1;
@@ -50,30 +77,13 @@ public class Secur_TBehaviour : SimulationBehaviour
 
     public override string LogName => "Secur_TBehaviour";
 
-    public override void Deserialize(BinaryReader br)
-    {
-        _firing = br.ReadBoolean();
-        _onCooldown = br.ReadBoolean();
-    }
 
-    public override void Serialize(BinaryWriter bw)
-    {
-        bw.Write(_firing);
-        bw.Write(_onCooldown);
-    }
 
     /// <summary>
     /// Hashes the serialized turret state so NPC firing mismatches can be narrowed
     /// down to this component.
     /// </summary>
-    protected override string[] GetLogItems()
-    {
-        return new string[]
-        {
-            $"Firing={_firing}",
-            $"OnCooldown={_onCooldown}"
-        };
-    }
+
 
     public override void Begin()
     {

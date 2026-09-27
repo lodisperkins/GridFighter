@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Reflection;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,6 +14,8 @@ using Lodis.Input;
 using FixedPoints;
 using Types;
 using Lodis.GridScripts;
+using Assets.Scripts.Lodis.Simulation;
+using System.Text;
 
 namespace Lodis.Gameplay
 {
@@ -37,8 +39,67 @@ namespace Lodis.Gameplay
     /// Abstract class that all abilities inherit from
     /// </summary>
     [System.Serializable]
-    public abstract class Ability
+    public abstract class Ability : ISerializedListObject
     {
+
+        #region Simulation Functions
+
+        protected void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_inUse);
+            bw.Write(currentActivationAmount);
+            bw.Write(_opponentHit);
+            bw.Write((int)CurrentAbilityPhase);
+            if (_accessoryInstance != null)
+            {
+                bw.Write(_accessoryInstance.activeInHierarchy);
+            }
+            else
+            {
+                bw.Write(false);
+            }
+
+            //OnSerialize(bw);
+        }
+
+
+        protected void Deserialize(Deserializer br)
+        {
+            _inUse = br.ReadBoolean();
+            currentActivationAmount = br.ReadInt32();
+            _opponentHit = br.ReadBoolean();
+            CurrentAbilityPhase = (AbilityPhase)br.ReadInt32();
+            if (_accessoryInstance != null)
+            {
+                _accessoryInstance.SetActive(br.ReadBoolean());
+            }
+            else
+            {
+                br.ReadBoolean();
+            }
+
+            if (!_inUse)
+            {
+                EndAbility();
+            }
+
+            //OnDeserialize(br);
+        }
+
+
+        public virtual void OnSerialize(BinaryWriter bw)
+        {
+            Serialize(bw);
+        }
+
+
+        public virtual void OnDeserialize(Deserializer br)
+        {
+            Deserialize(br);
+        }
+
+        #endregion
+
         private bool _inUse;
         private bool _canPlayAnimation;
         private List<HitColliderData> _colliderInfo;
@@ -174,70 +235,44 @@ namespace Lodis.Gameplay
         public bool AbilityPaused { get => CurrentTimer?.IsActive == true; }
         public CharacterVoiceBehaviour OwnerVoiceScript { get => _ownerVoiceScript; private set => _ownerVoiceScript = value; }
         public EntityDataBehaviour Owner { get => owner; set => owner = value; }
+        public virtual ListEvent OnAddedToList { get; set; }
+        public virtual ListEvent OnRemovedFromList { get; set; }
+        public virtual int FrameAddedToSerializedList { get; set; }
+        public virtual int FrameRemovedFromActiveList { get; set; }
+        public virtual int SerializedChecksum { get; set; }
+        public virtual string ListDisplayName => GetType().Name;
 
-        public static void DummySerialize(BinaryWriter bw)
+
+        public virtual void OnLogGameState(StringBuilder sb)
         {
-            bw.Write(false);
-            bw.Write(0);
-            bw.Write(false);
-            bw.Write(0);
-            bw.Write(false);
+            sb.AppendLine($"Ability: {ListDisplayName}");
+            sb.AppendLine($"Ability ID: {abilityData.ID}");
+
+            foreach (string logItem in GetBaseSerializedLogItems())
+                sb.AppendLine(logItem);
         }
 
-        public static void DummyDeserialize(BinaryReader br)
+        /// <summary>
+        /// Returns the fields written by <see cref="Serialize"/> in their exact
+        /// serialization order. Callers that write an Ability payload directly can
+        /// use this without accidentally logging subclass-only data.
+        /// </summary>
+        public string[] GetBaseSerializedLogItems()
         {
-            br.ReadBoolean();
-            br.ReadInt32();
-            br.ReadBoolean();
-            br.ReadInt32();
-            br.ReadBoolean();
-        }
+            bool accessoryActive = _accessoryInstance != null && _accessoryInstance.activeInHierarchy;
 
-        public void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_inUse);
-            bw.Write(currentActivationAmount);
-            bw.Write(_opponentHit);
-            bw.Write((int)CurrentAbilityPhase);
-
-            if (_accessoryInstance != null)
+            return new[]
             {
-                bw.Write(_accessoryInstance.activeInHierarchy);
-            }
-            else
-            {
-                bw.Write(false);
-            }
-
-            OnSerialize(bw);
-        }
-
-        public void Deserialize(BinaryReader br) 
-        {
-            _inUse = br.ReadBoolean();
-            currentActivationAmount = br.ReadInt32();
-            _opponentHit = br.ReadBoolean();
-            CurrentAbilityPhase = (AbilityPhase)br.ReadInt32();
-
-            if (_accessoryInstance != null)
-            {
-                _accessoryInstance.SetActive(br.ReadBoolean());
-            }
-            else
-            {
-                br.ReadBoolean();
-            }
-
-            if (!_inUse)
-            {
-                EndAbility();
-            }
-
-            OnDeserialize(br);
+                $"In Use: {_inUse}",
+                $"Current Activation Amount: {currentActivationAmount}",
+                $"Opponent Hit: {_opponentHit}",
+                $"Current Phase: {CurrentAbilityPhase}",
+                $"Accessory Active: {accessoryActive}"
+            };
         }
         
-        protected virtual void OnSerialize(BinaryWriter bw) { }
-        protected virtual void OnDeserialize(BinaryReader br) { }
+        //protected virtual void OnSerialize(BinaryWriter bw) { }
+        //protected virtual void OnDeserialize(Deserializer br) { }
 
         /// <summary>
         /// The phase before an the ability is activated. This is where the character is building up
@@ -638,6 +673,16 @@ namespace Lodis.Gameplay
             
             //Debug.Log($"Ending ability {abilityData.abilityName}");
             OnEnd();
+        }
+
+        public void ClearAbilityEvents()
+        {
+            onEnd = null;
+            onActivateStart = null;
+            onBegin = null;
+            onRecover = null;
+            OnHit = null;
+            OnHitTemp = null;
         }
 
         /// <summary>

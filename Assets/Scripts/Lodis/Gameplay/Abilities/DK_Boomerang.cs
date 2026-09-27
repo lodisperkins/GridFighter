@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
@@ -17,6 +17,26 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_Boomerang : ProjectileAbility
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_reboundCount);
+            bw.Write(_firstCollisionHappened);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            _reboundCount = br.ReadInt32();
+            _firstCollisionHappened = br.ReadBoolean();
+        }
+
+        #endregion
+
         private Vector3 _originalTravelDirection;
         private int _reboundCount;
         private ColliderBehaviour _reboundCollider;
@@ -154,18 +174,12 @@ namespace Lodis.Gameplay
             //}
         }
 
-        protected override void OnSerialize(BinaryWriter bw)
+        public override void OnLogGameState(System.Text.StringBuilder sb)
         {
-            base.OnSerialize(bw);
-            bw.Write(_reboundCount);
-            bw.Write(_firstCollisionHappened);
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Rebound Count: {_reboundCount}");
+            sb.AppendLine($"First Collision Happened: {_firstCollisionHappened}");
         }
 
-        protected override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            _reboundCount = br.ReadInt32();
-            _firstCollisionHappened = br.ReadBoolean();
-        }
     }
 }

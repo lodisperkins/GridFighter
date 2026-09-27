@@ -1,4 +1,4 @@
-﻿   using System.Collections;
+   using System.Collections;
 using System.Collections.Generic;
 using Lodis.Utility;
 using UnityEngine;
@@ -12,6 +12,36 @@ namespace Lodis.Gameplay
 {
     public class CharacterStateMachineBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_currentState);
+            bw.Write(_lastState);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _currentState = br.ReadString();
+            _lastState = br.ReadString();
+
+            if (_stateMachine.CurrentState != _currentState)
+                _stateMachine.ForceEnterState(_currentState);
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                "Current State: " + _currentState,
+                "Last State: " + _lastState
+            };
+        }
+
+        #endregion
+
         [SerializeField]
         private StateMachine _stateMachine;
         private Movement.KnockbackBehaviour _knockBack;
@@ -101,32 +131,12 @@ namespace Lodis.Gameplay
             }
         }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_currentState);
-            bw.Write(_lastState);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _currentState = br.ReadString();
-            _lastState = br.ReadString();
-
-            if (_stateMachine.CurrentState != _currentState)
-                _stateMachine.ForceEnterState(_currentState);
-        }
 
         /// <summary>
         /// Hashes the serialized state machine values so character-state mismatches
         /// can be attributed to this component.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                "Current State: " + _currentState,
-                "Last State: " + _lastState
-            };
-        }
+
     }
 }

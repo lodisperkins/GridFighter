@@ -17,6 +17,28 @@ namespace Lodis.Gameplay
     /// </summary>
     public class WF_WhipPull : ProjectileAbility
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+
+            bw.Write(_returning);
+            bw.Write(_opponentAttached);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+
+            _returning = br.ReadBoolean();
+            _opponentAttached = br.ReadBoolean();
+        }
+
+        #endregion
+
         private LineFollowBehaviour _line;
         private EntityDataBehaviour _whipTip;
         private PanelBehaviour _dropPanel;
@@ -251,20 +273,13 @@ namespace Lodis.Gameplay
             OwnerMoveset.ProjectileSpawner.Entity.FixedTransform.LocalPosition = _originalPosition;
         }
 
-        protected override void OnSerialize(BinaryWriter bw)
+        public override void OnLogGameState(System.Text.StringBuilder sb)
         {
-            base.OnSerialize(bw);
-
-            bw.Write(_returning);
-            bw.Write(_opponentAttached);
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Returning: {_returning}");
+            sb.AppendLine($"Opponent Attached: {_opponentAttached}");
         }
 
-        protected override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
 
-            _returning = br.ReadBoolean();
-            _opponentAttached = br.ReadBoolean();
-        }
     }
 }

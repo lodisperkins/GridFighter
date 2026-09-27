@@ -4130,6 +4130,8 @@ MonoBehaviour:
   _updateEntityUsingUnityTransform: 0
   _visualRoot: {fileID: 0}
   _children: []
+  _additionalComponents: []
+  _componentsAreStatic: 0
 --- !u!1 &6801683131805383323
 GameObject:
   m_ObjectHideFlags: 0

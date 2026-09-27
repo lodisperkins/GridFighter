@@ -1,4 +1,5 @@
 using CustomEventSystem;
+using Assets.Scripts.Lodis.Simulation;
 using FixedPoints;
 using Lodis.Gameplay;
 using Lodis.Input;
@@ -44,7 +45,7 @@ public class GridGameManager : GameManager
     [SerializeField] private Event _onStartLookingForOnlineMatch;
     [SerializeField] private Event _onFoundOnlineMatch;
 
-    [Header("Debug")]
+    [Header("======Debug======")]
 
     [Tooltip("Enables certain features that are only active in online play.")]
     [SerializeField] private bool _testingLocalSaves;
@@ -59,6 +60,10 @@ public class GridGameManager : GameManager
     [SerializeField] private string _lhsRollbackDebugRecordingName = "SyncTestP1";
     [SerializeField] private string _rhsRollbackDebugRecordingName = "SyncTestP2";
     [SerializeField] private bool _rollbackDebugPlaybackPlayOnce;
+    [Tooltip("Writes one value-per-read deserialization log and the matching serialize debug log. This is expensive and should only be enabled while investigating rollback state mismatches.")]
+    [SerializeField] private bool _enableDeepLogs;
+    [Tooltip("Optional exact ListDisplayName to include in deep serialization logs. Leave blank to log every serialized item.")]
+    [SerializeField] private string _deepLogItemDisplayName;
 
     //---
     private GameManager _gameManager => GameManager.Instance;
@@ -90,10 +95,16 @@ public class GridGameManager : GameManager
     {
         get
         {
+            if (!Application.isPlaying)
+            {
+                return 0;
+            }
+
+
             if (OnlineGameStarted)
-                return _onlineGame.Game.Framenumber;
+                return _onlineGame.Game.FrameNumber;
             else
-                return _localGame.Game.Framenumber;
+                return _localGame.Game.FrameNumber;
         }
     }
 
@@ -129,6 +140,8 @@ public class GridGameManager : GameManager
     public static SyncTestType CurrentSyncTestType { get; set; }
     public static RollbackDebugSessionMode CurrentRollbackDebugSessionMode { get; private set; }
     public static bool CurrentRollbackDebugPlaybackPlayOnce { get; private set; }
+    public static bool DeepLogsEnabled { get; private set; }
+    public static string DeepLogItemDisplayName { get; private set; }
 
     public static bool ShouldUseRollbackDebugSession
     {
@@ -177,6 +190,8 @@ public class GridGameManager : GameManager
         CurrentSyncTestType = _syncTestType;
         CurrentRollbackDebugSessionMode = _rollbackDebugSessionMode;
         CurrentRollbackDebugPlaybackPlayOnce = _rollbackDebugPlaybackPlayOnce;
+        DeepLogsEnabled = _enableDeepLogs;
+        DeepLogItemDisplayName = _deepLogItemDisplayName;
 
         if (_startLocalGame)
         {
@@ -191,6 +206,8 @@ public class GridGameManager : GameManager
         _fixed32RawValueAsFloat = (float)(double)new Fixed32(_fixed32RawValueTestConversion);
         CurrentRollbackDebugSessionMode = _rollbackDebugSessionMode;
         CurrentRollbackDebugPlaybackPlayOnce = _rollbackDebugPlaybackPlayOnce;
+        DeepLogsEnabled = _enableDeepLogs;
+        DeepLogItemDisplayName = _deepLogItemDisplayName;
     }
 
     public static string GetRollbackDebugRecordingName(int playerNumber, string fallbackName = null)
@@ -219,7 +236,7 @@ public class GridGameManager : GameManager
     protected override void OnPreRunFrame()
     {
         base.OnPreRunFrame();
-        currentFrame = _localGame.Game.Framenumber;
+        currentFrame = _localGame.Game.FrameNumber;
     }
 
     //----Local Stuff

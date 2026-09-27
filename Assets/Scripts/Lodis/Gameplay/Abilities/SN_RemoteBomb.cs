@@ -4,6 +4,8 @@ using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using Types;
 using UnityEngine;
 
@@ -106,6 +108,27 @@ namespace Lodis.Gameplay
             base.OnEnd();
             _despawnAction?.Stop();
             ObjectPoolBehaviour.Instance.ReturnGameObject(Projectile);
+        }
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+
+            _timeSpawned.Serialize(bw);
+        }
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+
+            _timeSpawned = _timeSpawned.Deserialize(br);
+        }
+
+        public override void OnLogGameState(StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+
+            sb.AppendLine($"TimeSpawned: {_timeSpawned}");
         }
     }
 }

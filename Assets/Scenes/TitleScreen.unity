@@ -971,22 +971,25 @@ MonoBehaviour:
   updateType: 2
   inputEnabled: 1
   _startLocalGame: 1
-  _testingLocalSaves: 0
-  _aiFightEnabled: 0
-  _fixed32TestConversion:
-    RawValue: 6553
-  _fixed32RawValueTestConversion: -154793
-  _fixed32RawValueAsFloat: -2.3619537
-  _useLegacyRollbackTest: 0
-  _saveDelay: 2
-  _loadDelay: 7
   _opponentSceneLoaded: 0
   host: 1
   _onStartLookingForOnlineMatch: {fileID: 11400000, guid: cf398b698f8e57b4ba001388a624f154,
     type: 2}
   _onFoundOnlineMatch: {fileID: 11400000, guid: a79f1e7ef78cd9c47855c3c2e554a2b9,
     type: 2}
+  _testingLocalSaves: 0
+  _aiFightEnabled: 0
+  _fixed32TestConversion:
+    RawValue: 6553
+  _fixed32RawValueTestConversion: -154793
+  _fixed32RawValueAsFloat: -2.3619537
   _syncTestType: 0
+  _rollbackDebugSessionMode: 2
+  _lhsRollbackDebugRecordingName: SyncTestP1
+  _rhsRollbackDebugRecordingName: SyncTestP2
+  _rollbackDebugPlaybackPlayOnce: 0
+  _enableDeepLogs: 0
+  _deepLogItemDisplayName: GridMovementBehaviour
 --- !u!4 &1681571495
 Transform:
   m_ObjectHideFlags: 0

@@ -1,5 +1,6 @@
 using Assets.Scripts.Lodis.Simulation;
 using FixedPoints;
+using Lodis.Gameplay;
 using Lodis.Movement;
 using Lodis.Utility;
 using System.Collections.Generic;
@@ -14,11 +15,66 @@ using UnityEngine;
 [System.Serializable]
 public class EntityData : ISerializedListObject
 {
+
+    #region Simulation Functions
+
+    public virtual void Serialize(BinaryWriter bw)
+    {
+        bw.Write(UnityInitialized);
+        bw.Write(Active);
+        bw.Write(X);
+        bw.Write(Y);
+
+        Transform.Serialize(bw);
+        _components.Name = Name + " Components";
+        _components.Serialize(bw);
+
+        if (_gridColliders == null) return;
+
+        foreach (var col in _gridColliders)
+        {
+            col?.Serialize(bw);
+        }
+    }
+
+    public virtual void Deserialize(Deserializer br)
+    {
+        _unityInitialized = br.ReadBoolean();
+        _active = br.ReadBoolean();
+        X = br.ReadInt32();
+        Y = br.ReadInt32();
+
+        Transform.Deserialize(br);
+        _components.Deserialize(br);
+
+        if (_gridColliders == null) return;
+
+        foreach (var col in _gridColliders)
+        {
+            col?.Deserialize(br);
+        }
+    }
+
+
+    public void OnSerialize(BinaryWriter bw)
+    {
+        Serialize(bw);
+    }
+
+
+    public void OnDeserialize(Deserializer br)
+    {
+        Deserialize(br);
+    }
+
+    #endregion
+
     private readonly SerializedListHandler<SimulationBehaviour> _components = new();
     private bool _active;
     private GridCollider[] _gridColliders;
     private int _frameAdded;
     private int _frameRemoved;
+    private bool _unityInitialized;
 
     public string Name;
     public FTransform Transform;
@@ -73,12 +129,15 @@ public class EntityData : ISerializedListObject
     }
 
     public int FrameAdded { get => _frameAdded; set => _frameAdded = value; }
-    public int FrameRemoved { get => _frameRemoved; set => _frameRemoved = value; }
+    public int FrameRemovedFromActiveList { get => _frameRemoved; set => _frameRemoved = value; }
     public int FrameAddedToSerializedList { get; set; }
+    public int SerializedChecksum { get; set; }
     public ListEvent OnAddedToList { get; set; }
     public ListEvent OnRemovedFromList { get; set; }
 
     public string ListDisplayName => Name;
+
+    public bool UnityInitialized { get => _unityInitialized; set => _unityInitialized = value; }
 
     public delegate void EntityUpdateEvent(Fixed32 dt);
     public event EntityUpdateEvent OnTick;
@@ -137,42 +196,13 @@ public class EntityData : ISerializedListObject
         OnEnd = null;
     }
 
-    public virtual void Serialize(BinaryWriter bw)
+    public void SetListComponentsStatic(bool isStatic)
     {
-        bw.Write(Active);
-
-        bw.Write(X);
-        bw.Write(Y);
-
-        Transform.Serialize(bw);
-
-        _components.Serialize(bw);
-
-        if (_gridColliders == null) return;
-
-        foreach (var col in _gridColliders)
-        {
-            col?.Serialize(bw);
-        }
+        _components.IsStatic = isStatic;
     }
 
-    public virtual void Deserialize(BinaryReader br)
-    {
-        Active = br.ReadBoolean();
 
-        X = br.ReadInt32();
-        Y = br.ReadInt32();
 
-        Transform.Deserialize(br);
-        _components.Deserialize(br);
-
-        if (_gridColliders == null) return;
-
-        foreach (var col in _gridColliders)
-        {
-            col?.Deserialize(br);
-        }
-    }
 
     public void Init()
     {
@@ -340,7 +370,12 @@ public class EntityData : ISerializedListObject
 
     public bool HasComponent<T>() where T : SimulationBehaviour
     {
-        return _components.Find(c => c.GetType() == typeof(T)) != null;
+        return _components.Find(HasComponentCheck<T>) != null;
+    }
+
+    private bool HasComponentCheck<T>(SimulationBehaviour c) where T : SimulationBehaviour
+    {
+         return c.GetType() == typeof(T);
     }
 
     public void DestroyComponents()
@@ -394,30 +429,12 @@ public class EntityData : ISerializedListObject
         }
     }
 
-    public bool CheckIfCanBeAddedToList()
-    {
-        //return Active || (FrameRemoved > GridGameManager.FrameNumber && FrameAdded <= GridGameManager.FrameNumber);
-        return true;
-    }
 
-    public void OnSerialize(BinaryWriter bw)
-    {
-        Serialize(bw);
-    }
-
-    public void OnDeserialize(BinaryReader br)
-    {
-        Deserialize(br);
-
-        //if (FrameAdded > GridGameManager.FrameNumber)
-        //{
-        //   RemoveDeserializedEntityFromGame();
-        //}
-    }
 
     public void OnLogGameState(StringBuilder sb)
     {
         sb.AppendLine($"      Entity: {Name}");
+        sb.AppendLine($"         Initialized In Game: {UnityInitialized}");
         sb.AppendLine($"            Active: {Active} X: {X} Y: {Y}");
         Transform.OnLogGameState(sb);
 
@@ -434,36 +451,39 @@ public class EntityData : ISerializedListObject
 #if UNITY_EDITOR
     private readonly string[] _debugComponentFilter = new string[]
     {
-        "AIControllerBehaviour",
-        "NetworkAttackNPCBehaviour",
-        "NetworkCharacterAIMovementBehaviour",
-        "NetworkSimpleAIMovementBehaviour",
-        "ProjectileSenseBehaviour",
-        "CharacterAnimationBehaviour",
-        "MatchTimerBehaviour",
-        "SurgeMeterBehaviour",
-        "FXManagerBehaviour",
-        "CharacterStateMachineBehaviour",
-        "ColliderBehaviour",
-        "CollisionGroup",
-        "DespawnTimer",
-        "HealthBehaviour",
-        "MovesetBehaviour",
-        "ProjectileSpawnerBehaviour",
-        "SuddenDeathBehaviour",
-        "CollisionPlaneBehaviour",
-        "ActionRecorderBehaviour",
-        "InputBehaviour",
-        "GridMovementBehaviour",
-        "GridPhysicsBehaviour",
-        "LandingBehaviour",
-        "TeleporterBehaviour",
-        "Secur_TBehaviour",
-        "StatusEffectManagerBehavior",
-        "FollowBehaviour",
+        //"MatchManagerBehaviour",
+        //"PlayerSpawnBehaviour",
+        //"BlackBoardBehaviour",
+        //"AIControllerBehaviour",
+        //"NetworkAttackNPCBehaviour",
+        //"NetworkCharacterAIMovementBehaviour",
+        //"NetworkSimpleAIMovementBehaviour",
+        //"ProjectileSenseBehaviour",
+        //"CharacterAnimationBehaviour",
+        //"MatchTimerBehaviour",
+        //"SurgeMeterBehaviour",
+        //"FXManagerBehaviour",
+        //"CharacterStateMachineBehaviour",
+        //"ColliderBehaviour",
+        //"CollisionGroup",
+        //"DespawnTimer",
+        //"HealthBehaviour",
+        //"MovesetBehaviour",
+        //"ProjectileSpawnerBehaviour",
+        //"SuddenDeathBehaviour",
+        //"CollisionPlaneBehaviour",
+        //"ActionRecorderBehaviour",
+        //"InputBehaviour",
+        //"GridMovementBehaviour",
+        //"GridPhysicsBehaviour",
+        //"LandingBehaviour",
+        //"TeleporterBehaviour",
+        //"Secur_TBehaviour",
+        //"StatusEffectManagerBehavior",
+        //"FollowBehaviour",
     };
 
-    private bool _shouldIgnoreItemsInFilter = false;
+    private bool _shouldIgnoreItemsInFilter = true;
 #endif 
 
     /// <summary>

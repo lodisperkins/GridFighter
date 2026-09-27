@@ -14,6 +14,45 @@ namespace FixedPoints
     [Serializable]
     public class FTransform : ISerializedListObject
     {
+
+        #region Simulation Functions
+
+        public void Serialize(BinaryWriter bw)
+        {
+            _localPosition.Serialize(bw);
+            _localRotation.Serialize(bw);
+            LocalScale.Serialize(bw);
+        }
+
+
+        public void Deserialize(Deserializer br)
+        {
+            FVector3 localPosition = LocalPosition;
+            localPosition = localPosition.Deserialize(br);
+            _localPosition = localPosition;
+
+            FQuaternion localRotation = LocalRotation;
+            localRotation = localRotation.Deserialize(br);
+            _localRotation = localRotation;
+
+            FVector3 localScale = LocalScale;
+            localScale = localScale.Deserialize(br);
+            LocalScale = localScale;
+        }
+
+        public void OnSerialize(BinaryWriter bw)
+        {
+            //This is told to serialize by the entity that its attached to. Not by the serialized list handler.
+        }
+
+
+        public void OnDeserialize(Deserializer br)
+        {
+            //This is told to serialize by the entity that its attached to. Not by the serialized list handler.
+        }
+
+        #endregion
+
         [SerializeField] private FVector3 _localPosition;
         [SerializeField] private FQuaternion _localRotation;
         [SerializeField] private FVector3 _worldScale;
@@ -168,20 +207,30 @@ namespace FixedPoints
                 if (_parent == null) 
                     return WorldScale;
 
+                FVector3 parentScale = _parent.WorldScale;
+
                 return new FVector3(
-                    WorldScale.X / _parent.WorldScale.X,
-                    WorldScale.Y / _parent.WorldScale.Y,
-                    WorldScale.Z / _parent.WorldScale.Z
+                    parentScale.X == 0 ? WorldScale.X : WorldScale.X / parentScale.X,
+                    parentScale.Y == 0 ? WorldScale.Y : WorldScale.Y / parentScale.Y,
+                    parentScale.Z == 0 ? WorldScale.Z : WorldScale.Z / parentScale.Z
                 );
             }
             set
             {
-                if (_parent == null) _worldScale = value;
-                else _worldScale = new FVector3(
-                    value.X * _parent.WorldScale.X,
-                    value.Y * _parent.WorldScale.Y,
-                    value.Z * _parent.WorldScale.Z
-                );
+                if (_parent == null)
+                {
+                    _worldScale = value;
+                }
+                else
+                {
+                    FVector3 parentScale = _parent.WorldScale;
+                    _worldScale = new FVector3(
+                        parentScale.X == 0 ? value.X : value.X * parentScale.X,
+                        parentScale.Y == 0 ? value.Y : value.Y * parentScale.Y,
+                        parentScale.Z == 0 ? value.Z : value.Z * parentScale.Z
+                    );
+                }
+
                 MarkWorldTransformDirty();
 
                 if (TrackingEnabled)
@@ -228,10 +277,11 @@ namespace FixedPoints
         public ListEvent OnAddedToList { get; set; }
         public ListEvent OnRemovedFromList { get; set; }
         public int FrameAddedToSerializedList { get; set; }
+        public int SerializedChecksum { get; set; }
 
         public string ListDisplayName => $"{EntityData.Name}'s Transform";
 
-        public int FrameRemoved { get; set; }
+        public int FrameRemovedFromActiveList { get; set; }
         public FTransform Parent
         {
             get => _parent;
@@ -351,7 +401,7 @@ namespace FixedPoints
         /// <summary>
         /// Set the childrens parents to this after deserialization just in case the child had a different parent this frame.
         /// </summary>
-        private void CleanChildren(BinaryReader br)
+        private void CleanChildren(Deserializer br)
         {
             //If this transform doesn't have children just frame remove the extra call.
             if (_children == null || _children.Count == 0)
@@ -418,45 +468,13 @@ namespace FixedPoints
             WorldRotation = FQuaternion.LookRotation(direction, FVector3.Up);
         }
 
-        public void Serialize(BinaryWriter bw)
-        {
-            _localPosition.Serialize(bw);
-            _localRotation.Serialize(bw);
-            LocalScale.Serialize(bw);
-        }
 
-        public void Deserialize(BinaryReader br)
-        {
-            FVector3 localPosition = LocalPosition;
-            localPosition = localPosition.Deserialize(br);
-            _localPosition = localPosition;
-
-            FQuaternion localRotation = LocalRotation;
-            localRotation = localRotation.Deserialize(br);
-            _localRotation = localRotation;
-
-            FVector3 localScale = LocalScale;
-            localScale = localScale.Deserialize(br);
-            LocalScale = localScale;
-        }
 
         public void OnLogGameState(StringBuilder sb)
         {
             sb.AppendLine($"Entity: {EntityData?.Name}, LocalPosition: {LocalPosition}, LocalRotation: {LocalRotation}, LocalScale: {LocalScale}");
         }
-        public bool CheckIfCanBeAddedToList()
-        {
-            return true;
-        }
 
-        public void OnSerialize(BinaryWriter bw)
-        {
-            //This is told to serialize by the entity that its attached to. Not by the serialized list handler.
-        }
 
-        public void OnDeserialize(BinaryReader br)
-        {
-            //This is told to serialize by the entity that its attached to. Not by the serialized list handler.
-        }
     }
 }

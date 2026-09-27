@@ -12,7 +12,7 @@ public class ComponentData
     public virtual void Init() { }
 
     public virtual void Serialize(BinaryWriter bw) { }
-    public virtual void Deserialize(BinaryReader br) { }
+    public virtual void Deserialize(Deserializer br) { }
 
     public virtual void Update(float dt) 
     {

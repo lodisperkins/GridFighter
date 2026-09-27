@@ -126,6 +126,15 @@ namespace Lodis.Utility
             }
         }
 
+        public bool IsVersusGameMode
+        {
+            get
+            {
+                return _gameMode.Value == (int)GameMode.MULTIPLAYER ||
+                       _gameMode.Value == (int)GameMode.ONLINE;
+            }
+        }
+
         public bool LoadingScene 
         {
             get => _loadingScene;

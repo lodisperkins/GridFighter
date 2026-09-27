@@ -9,6 +9,7 @@ using Lodis.AI;
 using Lodis.Gameplay;
 using FixedPoints;
 using Types;
+using Assets.Scripts.Lodis.Simulation;
 
 [Condition("CustomConditions/IsSafe")]
 public class IsSafeCondition : GOCondition
@@ -23,7 +24,7 @@ public class IsSafeCondition : GOCondition
     /// <returns></returns>
     private bool CheckIfProjectilesWillHit()
     {
-        List<HitColliderBehaviour> attacksInRange = _dummy.GetAttacksInRange();
+        SerializedListHandler<HitColliderBehaviour> attacksInRange = _dummy.GetAttacksInRange();
 
         for (int i = 0; i < attacksInRange.Count; i++)
         {

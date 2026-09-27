@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.GridScripts;
@@ -15,6 +15,7 @@ using FixedPoints;
 using Types;
 using System.IO;
 using UnityEngine.Serialization;
+using System.Text;
 
 namespace Lodis.Movement
 {
@@ -22,6 +23,92 @@ namespace Lodis.Movement
     [RequireComponent(typeof(CustomEventSystem.GameEventListener))]
     public class GridMovementBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_isMoving);
+            bw.Write(_canMove);
+            bw.Write(_canCancelMovement);
+            bw.Write(_alwaysLookAtOpposingSide);
+            bw.Write(_moveToAlignedSideIfStuck);
+            _speed.Serialize(bw);
+
+
+            if (_previousPanel != null)
+            {
+                _previousPanel.Position.Serialize(bw);
+            }
+            else
+            {
+                Fixed32 x = new Fixed32(16, -1);
+                x.Serialize(bw);
+                Fixed32 y = new Fixed32(16, -1);
+                y.Serialize(bw);
+            }
+
+            Position.Serialize(bw);
+
+            MoveDirection.Serialize(bw);
+            _targetPosition.Serialize(bw);
+
+            int moveLerpID = _moveLerp == null ? -1 : _moveLerp.ActionID;
+            bw.Write(moveLerpID);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _isMoving = br.ReadBoolean();
+            _canMove = br.ReadBoolean();
+            _canCancelMovement = br.ReadBoolean();
+            _alwaysLookAtOpposingSide = br.ReadBoolean();
+            _moveToAlignedSideIfStuck = br.ReadBoolean();
+            _speed = _speed.Deserialize(br);
+
+            FVector2 previousPosition = new FVector2();
+            previousPosition = previousPosition.Deserialize(br);
+
+            GridBehaviour.Instance.GetPanel(previousPosition, out _previousPanel);
+
+            Position = Position.Deserialize(br);
+
+            GridBehaviour.Instance.GetPanel(Position, out _currentPanel);
+
+            MoveDirection = MoveDirection.Deserialize(br);
+            _targetPosition = _targetPosition.Deserialize(br);
+
+            int moveLerpID = br.ReadInt32();
+
+            if (moveLerpID == -1)
+                _moveLerp = null;
+            else
+                _moveLerp = (FixedPoints.MoveAction)FixedLerp.GetActionByID(moveLerpID);
+
+            GridBehaviour.Instance.GetPanelAtLocationInWorld((Vector3)_targetPosition, out _targetPanel);
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[] 
+            {
+                $"IsMoving: {IsMoving}",
+                $"CanMove: {_canMove}",
+                $"CanCancelMovement: {_canCancelMovement}",
+                $"AlwaysLookAtOpposingSide: {_alwaysLookAtOpposingSide}",
+                $"MoveToAlignedSideIfStuck: {_moveToAlignedSideIfStuck}",
+                $"Speed: {_speed}",
+                $"PreviousPanel Position: {(_previousPanel ? _previousPanel.Position : "Null Previous Panel")}",
+                $"CurrentPanel Position: {Position}",
+                $"MoveDirection: {MoveDirection}",
+                $"TargetPosition: {_targetPosition}",
+                $"MoveLerpID: {(_moveLerp == null ? -1 : _moveLerp.ActionID)}"
+            };
+        }
+
+        #endregion
+
         private FVector2 _moveDirection;
         private Fixed32 _targetTolerance = 0.1f;
 
@@ -68,6 +155,7 @@ namespace Lodis.Movement
         private PanelBehaviour _targetPanel = null;
         private PanelBehaviour _previousPanel;
         private PanelBehaviour _currentPanel;
+
         private GameEventListener _moveEnabledEventListener;
         private CustomEventSystem.GameEventListener _moveDisabledEventListener;
         private CustomEventSystem.GameEventListener _onMoveBegin;
@@ -283,6 +371,21 @@ namespace Lodis.Movement
 
             if (MoveOnStart && _physics)
                 _physics.GridActive = true;
+
+            MatchManagerBehaviour manager = MatchManagerBehaviour.Instance;
+
+            if (manager)
+            {
+                manager.AddOnMatchRestartAction(() =>
+                {
+                    TickEnabled = true;
+                });
+
+                manager.AddOnMatchOverAction(() =>
+                {
+                    TickEnabled = false;
+                });
+            }
         }
 
         public override void Begin()
@@ -305,21 +408,6 @@ namespace Lodis.Movement
             }
 
             _physics = Entity.GetComponent<GridPhysicsBehaviour>();
-
-            MatchManagerBehaviour manager = MatchManagerBehaviour.Instance;
-
-            if (manager)
-            {
-                manager.AddOnMatchRestartAction(() =>
-                {
-                    TickEnabled = true;
-                });
-
-                manager.AddOnMatchOverAction(() =>
-                {
-                    TickEnabled = false;
-                });
-            }
         }
 
         /// <summary>
@@ -812,7 +900,7 @@ namespace Lodis.Movement
             else
                 offset = (_meshFilter.mesh.bounds.size.y * FixedTransform.LocalScale.Y) / 2;
 
-            FVector3 newPosition = (FVector3)_targetPanel.transform.position + new FVector3(0, offset, 0);
+            FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, offset, 0);
             _targetPosition = newPosition;
 
 
@@ -962,8 +1050,10 @@ namespace Lodis.Movement
         /// </summary>
         private void MoveToCurrentPanel()
         {
-
-            if (IsMoving && !CanCancelMovement || !_canMove)
+            // A restored move action is authoritative even if the serialized flag
+            // was cleared on an earlier simulation tick.
+            bool moveLerpIsPlaying = _moveLerp?.IsPlaying() == true;
+            if ((IsMoving || moveLerpIsPlaying) && !CanCancelMovement || !_canMove)
                 return;
 
             //If it's not possible to move to the panel at the given position, return false.
@@ -982,8 +1072,6 @@ namespace Lodis.Movement
 
             FVector3 newPosition = _targetPanel.FixedWorldPosition + new FVector3(0, heightOffset, 0);
             _targetPosition = newPosition;
-
-            //LerpPosition(newPosition);
 
             FixedTransform.WorldPosition = newPosition;
             SetIsMoving(false);
@@ -1235,7 +1323,7 @@ namespace Lodis.Movement
             if (!_currentPanel)
                 return;
 
-            Fixed32 dist = FVector3.Distance(FixedTransform.WorldPosition, (FVector3)_currentPanel.transform.position + FVector3.Up * (Fixed32)_heightOffset);
+            Fixed32 dist = FVector3.Distance(FixedTransform.WorldPosition, _currentPanel.FixedWorldPosition + FVector3.Up * _heightOffset);
 
             if (dist >= _targetTolerance || _searchingForSafePanel)
                 MoveToCurrentPanel();
@@ -1263,85 +1351,6 @@ namespace Lodis.Movement
             //IsBehindBarrier = Physics.Raycast(transform.position, transform.forward, BlackBoardBehaviour.Instance.Grid.PanelSpacingX, LayerMask.GetMask("Structure"));
         }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_isMoving);
-            bw.Write(_canMove);
-            bw.Write(_canCancelMovement);
-            bw.Write(_alwaysLookAtOpposingSide);
-            bw.Write(_moveToAlignedSideIfStuck);
-
-            if (_previousPanel != null)
-            {
-                _previousPanel.Position.Serialize(bw);
-            }
-            else
-            {
-                Fixed32 x = new Fixed32(16, -1);
-                x.Serialize(bw);
-                Fixed32 y = new Fixed32(16, -1);
-                y.Serialize(bw);
-            }
-
-            if (_currentPanel != null)
-            {
-                _currentPanel.Position.Serialize(bw);
-            }
-            else
-            {
-                Fixed32 x = new Fixed32(16, -1);
-                x.Serialize(bw);
-                Fixed32 y = new Fixed32(16, -1);
-                y.Serialize(bw);
-            }
-
-            MoveDirection.Serialize(bw);
-            _targetPosition.Serialize(bw);
-        }
-
-        public override void Deserialize(BinaryReader br)
-        {
-            _isMoving = br.ReadBoolean();
-            _canMove = br.ReadBoolean();
-            _canCancelMovement = br.ReadBoolean();
-            _alwaysLookAtOpposingSide = br.ReadBoolean();
-            _moveToAlignedSideIfStuck = br.ReadBoolean();
-
-            FVector2 previousPosition = new FVector2();
-            previousPosition = previousPosition.Deserialize(br);
-
-            GridBehaviour.Instance.GetPanel(previousPosition, out _previousPanel);
-
-            FVector2 currentPosition = new FVector2();
-            currentPosition = currentPosition.Deserialize(br);
-
-            GridBehaviour.Instance.GetPanel(currentPosition, out _currentPanel);
-
-            MoveDirection = MoveDirection.Deserialize(br);
-            _targetPosition = _targetPosition.Deserialize(br);
-
-            GridBehaviour.Instance.GetPanelAtLocationInWorld((Vector3)_targetPosition, out _targetPanel);
-        }
-
-        /// <summary>
-        /// Hashes the serialized movement state so pathing or locomotion mismatches
-        /// can be traced back to this behavior.
-        /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[] 
-            {
-                $"IsMoving: {IsMoving}",
-                $"CanMove: {_canMove}",
-                $"CanCancelMovement: {_canCancelMovement}",
-                $"AlwaysLookAtOpposingSide: {_alwaysLookAtOpposingSide}",
-                $"MoveToAlignedSideIfStuck: {_moveToAlignedSideIfStuck}",
-                $"PreviousPanel Position: {_previousPanel?.Position}",
-                $"CurrentPanel Position: {_currentPanel?.Position}",
-                $"MoveDirection: {MoveDirection}",
-                $"TargetPosition: {_targetPosition}"
-            };
-        }
     }
 }
 

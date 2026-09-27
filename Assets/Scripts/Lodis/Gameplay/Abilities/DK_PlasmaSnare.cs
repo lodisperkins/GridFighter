@@ -1,4 +1,4 @@
-﻿using CustomEventSystem;
+using CustomEventSystem;
 using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Utility;
@@ -18,6 +18,26 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_PlasmaSnare : Ability
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_opponentCaptured);
+            bw.Write(_targetFound);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            _opponentCaptured = br.ReadBoolean();
+            _targetFound = br.ReadBoolean();
+        }
+
+        #endregion
+
         private FVector3 _spawnPosition;
         private FTransform _opponentTransform;
         private FTransform _panelTransform;
@@ -44,26 +64,18 @@ namespace Lodis.Gameplay
         private bool _targetFound;
         private FQuaternion _targetOriginalRotation;
 
-        protected override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            bw.Write(_opponentCaptured);
-            bw.Write(_targetFound);
-        }
 
-        protected override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            _opponentCaptured = br.ReadBoolean();
-            _targetFound = br.ReadBoolean();
-        }
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
         {
 			base.Init(newOwner);
+
             _chargeEffectRef = abilityData.Effects[0];
-            _opponent = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner).GetComponent<EntityDataBehaviour>();
+
+            GameObject opObject = BlackBoardBehaviour.Instance.GetOpponentForPlayer(Owner);
+            _opponent = opObject.GetComponent<EntityDataBehaviour>();
+
             _opponentParent = _opponent.FixedTransform.Parent;
         }
 
@@ -282,6 +294,13 @@ namespace Lodis.Gameplay
                 position.Y = Fixed32.Clamp(position.Y, 1, GridMovementBehaviour.MaxYPosition);
                 _auraSphere.FixedTransform.WorldPosition = position;
             }
+        }
+
+        public override void OnLogGameState(System.Text.StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Opponent Captured: {_opponentCaptured}");
+            sb.AppendLine($"Target Found: {_targetFound}");
         }
     }
 }

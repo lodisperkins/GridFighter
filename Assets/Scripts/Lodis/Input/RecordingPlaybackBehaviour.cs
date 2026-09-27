@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.AI;
 using Lodis.Gameplay;
 using Lodis.Movement;
@@ -12,6 +12,23 @@ namespace Lodis.Input
 {
     public class RecordingPlaybackBehaviour : SimulationBehaviour
     {
+        #region Simulation Functions
+        protected override string[] GetLogItems()
+        {
+            return null;
+        }
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+        }
+        #endregion
+
         [Tooltip("The file name of the recording to load and playback.")]
         [SerializeField] private string _recordingName;
         [Tooltip("Whether or not to start playing the recording immiediately.")]
@@ -120,18 +137,9 @@ namespace Lodis.Input
             _isPaused = false;
         }
 
-        protected override string[] GetLogItems()
-        {
-            return null;
-        }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-        }
+
 
         public void InitializePlayback(string recordingName, bool autoPlayback, bool playOnce = false)
         {

@@ -1,4 +1,4 @@
-﻿using CustomEventSystem;
+using CustomEventSystem;
 using FixedPoints;
 using Ilumisoft.VisualStateMachine;
 using Lodis.ScriptableObjects;
@@ -48,6 +48,63 @@ namespace Lodis.Gameplay
     [RequireComponent(typeof(Animator))]
     public class CharacterAnimationBehaviour : SimulationBehaviour
     {
+        #region Simulation Functions
+        public override void Serialize(BinaryWriter bw)
+        {
+            //CaptureSerializedAnimationState();
+            //// AI-generated:
+            //// This save payload captures the minimum state needed to restore animation playback
+            //// deterministically after rollback:
+            //// 1. the exact animator state to jump back into
+            //// 2. the playback time within that state
+            //// 3. which runtime override slot supplied the motion, if any
+            //// 4. the concrete clip bound to that override slot
+            //// 5. the current mirroring flag, because some states visually depend on it
+            ////
+            //// Storing the clip name is especially important for attack animations and custom action
+            //// animations because those states can be reused while swapping clips at runtime.
+            //bw.Write(_savedStateName);
+            //_currentAnimationTime.Serialize(bw);
+            //bw.Write((int)_savedOverrideType);
+            //bw.Write(_savedClipName ?? string.Empty);
+            //bw.Write(_savedMirror);
+        }
+
+        public override void Deserialize(Deserializer br)
+        {
+            //_savedStateName = br.ReadString();
+            //_currentAnimationTime = _currentAnimationTime.Deserialize(br);
+            //_savedOverrideType = (AnimationOverrideType)br.ReadInt32();
+            //_savedClipName = br.ReadString();
+            //_savedMirror = br.ReadBoolean();
+
+            //_hasSavedPlaybackState = true;
+
+            //// AI-generated:
+            //// Deserialization intentionally rebuilds playback in this order:
+            //// 1. restore mirrored presentation flags
+            //// 2. restore/resolve the override clip identity
+            //// 3. rebuild any attack-specific timing context
+            //// 4. jump back into the saved animator state at the saved normalized time
+            ////
+            //// The ordering matters. If Animator.Play(...) runs before the correct override clip is rebound,
+            //// the animator can enter the correct state while still playing the wrong motion.
+            //ApplySavedAnimationState(_savedStateName, _currentAnimationTime, _savedOverrideType, _savedClipName, _savedMirror);
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                //$"Saved State Name: {_savedStateName}",
+                //$"Saved Playback Time: {_currentAnimationTime}",
+                //$"Saved Override Type: {_savedOverrideType}",
+                //$"Saved Clip Name: {_savedClipName}",
+                //$"Saved Mirror: {_savedMirror}",
+             };
+        }
+        #endregion
+
         [Header("Action Behaviour References")]
         [Tooltip("The move behaviour attached to the owner. Used to update movement animations")]
         [SerializeField]
@@ -139,15 +196,12 @@ namespace Lodis.Gameplay
 
         public override string LogName => "CharacterAnimationBehaviour";
 
-        // Start is called before the first frame update
-        public override void Begin()
+        protected override void Awake()
         {
-            base.Begin();
-            //_animator.enabled = false;
+            base.Awake();
 
             _overrideController = new AnimatorOverrideController(_animator.runtimeAnimatorController);
             _animator.runtimeAnimatorController = _overrideController;
-            _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
             _characterStateMachine = _characterStateManager.StateMachine;
             _characterFeedbackBehaviour = GetComponent<CharacterFeedbackBehaviour>();
 
@@ -172,12 +226,9 @@ namespace Lodis.Gameplay
                 StopCurrentAnimation();
 
                 if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
-                    FixedPointTimer.StartNewConditionAction(() => PlayState("Intro"), condition => _characterStateMachine.CurrentState == "Idle");
+                    FixedPointTimer.StartNewConditionAction(() => PlayState("Intro"), condition => _characterStateMachine.CurrentState == "Idle", "Intro Animation Restart Condition");
             });
 
-            //Adding a delay here to the intro anim since the animator needs to be updated before the intro anim is played. Otherwise, the intro anim will not play.
-            if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
-                FixedPointTimer.StartNewTimedAction(() => PlayState("Intro"), Fixed32.PointOne);
 
             MatchManagerBehaviour.Instance.AddOnMatchOverAction(() =>
             {
@@ -193,6 +244,19 @@ namespace Lodis.Gameplay
                     }, condition => _characterStateMachine.CurrentState == "Idle");
                 }
             });
+        }
+
+        // Start is called before the first frame update
+        public override void Begin()
+        {
+            base.Begin();
+            //_animator.enabled = false;
+            _animator.SetBool("OnRightSide", _moveBehaviour.Alignment == GridScripts.GridAlignment.RIGHT);
+
+            //Adding a delay here to the intro anim since the animator needs to be updated before the intro anim is played. Otherwise, the intro anim will not play.
+            if (SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.PRACTICE && SceneManagerBehaviour.Instance.CurrentGameMode != (int)GameMode.TUTORIAL)
+                FixedPointTimer.StartNewTimedAction(() => PlayState("Intro"), Fixed32.PointOne, displayName: "Intro Animation Delay Timer");
+
         }
 
         public void ResetTargetSpeed()
@@ -1139,67 +1203,18 @@ namespace Lodis.Gameplay
         /// <summary>
         /// Saves the current animation state, including the current timestamp of the playing animation.
         /// </summary>
-        public override void Serialize(BinaryWriter bw)
-        {
-            //CaptureSerializedAnimationState();
-            //// AI-generated:
-            //// This save payload captures the minimum state needed to restore animation playback
-            //// deterministically after rollback:
-            //// 1. the exact animator state to jump back into
-            //// 2. the playback time within that state
-            //// 3. which runtime override slot supplied the motion, if any
-            //// 4. the concrete clip bound to that override slot
-            //// 5. the current mirroring flag, because some states visually depend on it
-            ////
-            //// Storing the clip name is especially important for attack animations and custom action
-            //// animations because those states can be reused while swapping clips at runtime.
-            //bw.Write(_savedStateName);
-            //_currentAnimationTime.Serialize(bw);
-            //bw.Write((int)_savedOverrideType);
-            //bw.Write(_savedClipName ?? string.Empty);
-            //bw.Write(_savedMirror);
-        }
+
 
         /// <summary>
         /// Loads the saved animation state and resumes the animation from the saved timestamp.
         /// </summary>
-        public override void Deserialize(BinaryReader br)
-        {
-            //_savedStateName = br.ReadString();
-            //_currentAnimationTime = _currentAnimationTime.Deserialize(br);
-            //_savedOverrideType = (AnimationOverrideType)br.ReadInt32();
-            //_savedClipName = br.ReadString();
-            //_savedMirror = br.ReadBoolean();
 
-            //_hasSavedPlaybackState = true;
-
-            //// AI-generated:
-            //// Deserialization intentionally rebuilds playback in this order:
-            //// 1. restore mirrored presentation flags
-            //// 2. restore/resolve the override clip identity
-            //// 3. rebuild any attack-specific timing context
-            //// 4. jump back into the saved animator state at the saved normalized time
-            ////
-            //// The ordering matters. If Animator.Play(...) runs before the correct override clip is rebound,
-            //// the animator can enter the correct state while still playing the wrong motion.
-            //ApplySavedAnimationState(_savedStateName, _currentAnimationTime, _savedOverrideType, _savedClipName, _savedMirror);
-        }
 
         /// <summary>
         /// Hashes the serialized animation playback state so desyncs caused by
         /// animation rollback can be isolated to this component.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                //$"Saved State Name: {_savedStateName}",
-                //$"Saved Playback Time: {_currentAnimationTime}",
-                //$"Saved Override Type: {_savedOverrideType}",
-                //$"Saved Clip Name: {_savedClipName}",
-                //$"Saved Mirror: {_savedMirror}",
-             };
-        }
+
 
         /// <summary>
         /// Reapplies the saved visual animation state in the same order used by rollback

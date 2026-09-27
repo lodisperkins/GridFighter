@@ -1,4 +1,4 @@
-﻿using NaughtyAttributes.Test;
+using NaughtyAttributes.Test;
 using System;
 using System.IO;
 using UnityEngine;
@@ -14,6 +14,22 @@ namespace Types
     [System.Serializable]
     public struct Fixed32
     {
+
+        #region Simulation Functions
+
+        public void Serialize(BinaryWriter bw)
+        {
+            bw.Write(RawValue);
+        }
+
+
+        public Fixed32 Deserialize(Deserializer br)
+        {
+            return new Fixed32(br.ReadInt64());
+        }
+
+        #endregion
+
         public const int Epsilon = 1;
         private const int FractionMask = 0xffff;
         public static Fixed32 PI = (Fixed32)3.1415926535897932384626433832795;
@@ -74,15 +90,7 @@ namespace Types
             }
         }
 
-        public void Serialize(BinaryWriter bw)
-        {
-            bw.Write(RawValue);
-        }
 
-        public Fixed32 Deserialize(BinaryReader br)
-        {
-            return new Fixed32(br.ReadInt64());
-        }
 
         public int Sign()
         {

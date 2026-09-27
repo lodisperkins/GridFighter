@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.ScriptableObjects;
@@ -12,6 +12,45 @@ namespace Lodis.UI
 {
     public class MatchTimerBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_isInfinite);
+            bw.Write(_isActive);
+            bw.Write(_timeUp);
+            bw.Write(_eventRaised);
+            _matchTimeRemaining.Serialize(bw);
+            _timeSinceRoundStart.Serialize(bw);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _isInfinite = br.ReadBoolean();
+            _isActive = br.ReadBoolean();
+            _timeUp = br.ReadBoolean();
+            _eventRaised = br.ReadBoolean();
+            _matchTimeRemaining = _matchTimeRemaining.Deserialize(br);
+            _timeSinceRoundStart = _timeSinceRoundStart.Deserialize(br);
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"IsInfinite={_isInfinite}",
+                $"IsActive={_isActive}",
+                $"TimeUp={_timeUp}",
+                $"EventRaised={_eventRaised}",
+                $"MatchTimeRemaining={_matchTimeRemaining}",
+                $"TimeSinceRoundStart={_timeSinceRoundStart}"
+            };
+        }
+
+        #endregion
+
         private static MatchTimerBehaviour _instance;
         [SerializeField]
         private Text _timerText;
@@ -59,49 +98,19 @@ namespace Lodis.UI
 
         public override string LogName => "MatchTimerBehaviour";
 
-        public override void Serialize(BinaryWriter bw)
+        protected override void Awake()
         {
-            bw.Write(_isInfinite);
-            bw.Write(_isActive);
-            bw.Write(_timeUp);
-            bw.Write(_eventRaised);
-            _matchTimeRemaining.Serialize(bw);
-            _timeSinceRoundStart.Serialize(bw);
+            base.Awake();
+            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => IsActive = true);
+            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ResetTimer);
+            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => IsActive = false);
         }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _isInfinite = br.ReadBoolean();
-            _isActive = br.ReadBoolean();
-            _timeUp = br.ReadBoolean();
-            _eventRaised = br.ReadBoolean();
-            _matchTimeRemaining = _matchTimeRemaining.Deserialize(br);
-            _timeSinceRoundStart = _timeSinceRoundStart.Deserialize(br);
-        }
-
-        /// <summary>
-        /// Hashes the serialized timer state so a match-clock divergence can be tied
-        /// back to this component immediately.
-        /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                $"IsInfinite={_isInfinite}",
-                $"IsActive={_isActive}",
-                $"TimeUp={_timeUp}",
-                $"EventRaised={_eventRaised}",
-                $"MatchTimeRemaining={_matchTimeRemaining}",
-                $"TimeSinceRoundStart={_timeSinceRoundStart}"
-            };
-        }
 
         // Start is called before the first frame update
         public override void Begin()
         {
-            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchStartAction(() => IsActive = true);
-            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchRestartAction(ResetTimer);
-            Gameplay.MatchManagerBehaviour.Instance.AddOnMatchOverAction(() => IsActive = false);
+            base.Begin();
             MatchTimeRemaining = _matchTime.FixedValue;
         }
 

@@ -8,6 +8,25 @@ namespace FixedPoints
     [Serializable]
     public struct FVector2
     {
+
+        #region Simulation Functions
+
+        public void Serialize(BinaryWriter bw)
+        {
+            X.Serialize(bw);
+            Y.Serialize(bw);
+        }
+
+
+        public FVector2 Deserialize(Deserializer br)
+        {
+            X = X.Deserialize(br);
+            Y = Y.Deserialize(br);
+            return this;
+        }
+
+        #endregion
+
         [SerializeField] private Fixed32 _x;
         [SerializeField] private Fixed32 _y;
 
@@ -40,18 +59,7 @@ namespace FixedPoints
             _y = y;
         }
 
-        public void Serialize(BinaryWriter bw)
-        {
-            X.Serialize(bw);
-            Y.Serialize(bw);
-        }
 
-        public FVector2 Deserialize(BinaryReader br)
-        {
-            X = X.Deserialize(br);
-            Y = Y.Deserialize(br);
-            return this;
-        }
 
         /// <summary>
         /// Gets the magnitude (length) of the vector.

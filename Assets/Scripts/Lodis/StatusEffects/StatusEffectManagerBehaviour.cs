@@ -13,6 +13,39 @@ using UnityEngine.Events;
 /// </summary>
 public class StatusEffectManagerBehaviour : SimulationBehaviour
 {
+
+    #region Simulation Functions
+
+    public override void Deserialize(Deserializer br)
+    {
+        _currentHarmfulEffect?.Deserialize(br);
+        _currentHelpfulEffect?.Deserialize(br);
+        lastHarmfulEffectStacks = br.ReadInt32();
+        lastHelpfulEffectStacks = br.ReadInt32();
+    }
+
+
+    public override void Serialize(BinaryWriter bw)
+    {
+        _currentHarmfulEffect?.Serialize(bw);
+        _currentHelpfulEffect?.Serialize(bw);
+        bw.Write(lastHarmfulEffectStacks);
+        bw.Write(lastHelpfulEffectStacks);
+    }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                "Current Harmful Effect: " + (CurrentHarmfulEffect != null ? CurrentHarmfulEffect.EffectType.ToString() + " Stacks: " + CurrentHarmfulEffect.StackCount + " Health: " + CurrentHarmfulEffect.Health : "None"),
+                "Current Helpful Effect: " + (CurrentHelpfulEffect != null ? CurrentHelpfulEffect.EffectType.ToString() + " Stacks: " + CurrentHelpfulEffect.StackCount + " Health: " + CurrentHelpfulEffect.Health : "None"),
+                $"Last Harmful Effect Stacks: {lastHarmfulEffectStacks}",
+                $"Last Helpful Effect Stacks: {lastHelpfulEffectStacks}"
+            };
+        }
+
+    #endregion
+
     [SerializeField] private KnockbackBehaviour _owner;
 
     //---
@@ -38,40 +71,9 @@ public class StatusEffectManagerBehaviour : SimulationBehaviour
 
     public override string LogName => "StatusEffectManagerBehavior";
 
-    public override void Deserialize(BinaryReader br)
+    protected override void Awake()
     {
-        _currentHarmfulEffect?.Deserialize(br);
-        _currentHelpfulEffect?.Deserialize(br);
-        lastHarmfulEffectStacks = br.ReadInt32();
-        lastHelpfulEffectStacks = br.ReadInt32();
-    }
-
-    public override void Serialize(BinaryWriter bw)
-    {
-        _currentHarmfulEffect?.Serialize(bw);
-        _currentHelpfulEffect?.Serialize(bw);
-        bw.Write(lastHarmfulEffectStacks);
-        bw.Write(lastHelpfulEffectStacks);
-    }
-
-    /// <summary>
-    /// Hashes the serialized active status effects so effect-driven mismatches can
-    /// be traced back to this manager.
-    /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                "Current Harmful Effect: " + (CurrentHarmfulEffect != null ? CurrentHarmfulEffect.EffectType.ToString() + " Stacks: " + CurrentHarmfulEffect.StackCount + " Health: " + CurrentHarmfulEffect.Health : "None"),
-                "Current Helpful Effect: " + (CurrentHelpfulEffect != null ? CurrentHelpfulEffect.EffectType.ToString() + " Stacks: " + CurrentHelpfulEffect.StackCount + " Health: " + CurrentHelpfulEffect.Health : "None"),
-                $"Last Harmful Effect Stacks: {lastHarmfulEffectStacks}",
-                $"Last Helpful Effect Stacks: {lastHelpfulEffectStacks}"
-            };
-        }
-
-    public override void Init()
-    {
-        base.Init();
+        base.Awake();
 
         if (_owner != null)
             _owner.StatusEffectManager = this;

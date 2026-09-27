@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Lodis.Utility;
@@ -7,6 +7,8 @@ using Lodis.Gameplay;
 using Lodis.Movement;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.IO;
+using FixedPoints;
 
 namespace Lodis.UI
 {
@@ -19,8 +21,46 @@ namespace Lodis.UI
         public AudioClip AnnouncerClip;
     }
 
-    public class ComboCounterBehaviour : MonoBehaviour
+    public class ComboCounterBehaviour : SimulationBehaviour
     {
+        #region Simulation Functions
+        protected override string[] GetLogItems()
+        {
+            return new string[] {
+                $"HitCount: {HitCount}",
+                $"CanCount: {_canCount}",
+                $"NextComboMessageIndex: {_nextComboMessageIndex}",
+                $"CurrentComboMessage: {_currentComboMessage}",
+                $"CurrentColor: {_currentColor}"
+            };
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_minHitCount);
+            bw.Write(_canCount);
+            bw.Write(_nextComboMessageIndex);
+            bw.Write(_hitCount);
+            bw.Write(_currentComboMessage);
+
+            FVector3 color = new FVector3(_currentColor.r, _currentColor.g, _currentColor.b);
+            color.Serialize(bw);
+        }
+
+        public override void Deserialize(Deserializer br)
+        {
+            _minHitCount = br.ReadInt32();
+            _canCount = br.ReadBoolean();
+            _nextComboMessageIndex = br.ReadInt32();
+            _hitCount = br.ReadInt32();
+            _currentComboMessage = br.ReadString();
+
+            FVector3 color = new FVector3();
+            color.Deserialize(br);
+            _currentColor = new Color(color.X, color.Y, color.Z);
+        }
+        #endregion
+
         [SerializeField] private IntVariable _playerID;
         [SerializeField] private ComboMessage[] _comboMessages;
         [SerializeField] private float _messageDespawnDelay;
@@ -47,8 +87,10 @@ namespace Lodis.UI
         public int HitCount { get => _hitCount; private set => _hitCount = value; }
         public IntVariable PlayerComboLevel { get => _playerComboLevel; private set => _playerComboLevel = value; }
 
+        public override string LogName => nameof(ComboCounterBehaviour);
+
         // Start is called before the first frame update
-        void Awake()
+        protected override void Awake()
         {
             _currentColor = Color.white;
             _minHitCount = _comboMessages[0].CountRequirement;

@@ -1,4 +1,4 @@
-﻿using CustomEventSystem;
+using CustomEventSystem;
 using FixedPoints;
 using Lodis.Gameplay;
 using Lodis.Movement;
@@ -28,6 +28,27 @@ namespace Lodis.Input
 
     public class ActionRecorderBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Deserialize(Deserializer br)
+        {
+            
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return null;
+        }
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+             
+        }
+
+        #endregion
+
         [SerializeField, Tooltip("The name of the recording.")]
         private string _recordingName;
         [SerializeField, Tooltip("Indicates whether recording is enabled.")]
@@ -293,23 +314,12 @@ namespace Lodis.Input
 
         }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            
-        }
 
         /// <summary>
         /// Hashes the serialized action-recorder state, which is currently empty, so
         /// this component can still be included in sync diagnostics consistently.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return null;
-        }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-             
-        }
+
     }
 }

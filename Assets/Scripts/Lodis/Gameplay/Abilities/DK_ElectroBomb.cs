@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.FX;
 using Lodis.GridScripts;
 using Lodis.Input;
@@ -25,6 +25,26 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_ElectroBomb : ProjectileAbility
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_explosionSpawned);
+            bw.Write(_threwBlast);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            _explosionSpawned = br.ReadBoolean();
+            _threwBlast = br.ReadBoolean();
+        }
+
+        #endregion
+
         private GameObject _chargeEffectRef;
         private GameObject _chargeEffect;
         private bool _explosionSpawned;
@@ -46,19 +66,7 @@ namespace Lodis.Gameplay
         private IControllable _controller;
         private FixedTimeAction _spawnExplosionAction;
 
-        protected override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            bw.Write(_explosionSpawned);
-            bw.Write(_threwBlast);
-        }
 
-        protected override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            _explosionSpawned = br.ReadBoolean();
-            _threwBlast = br.ReadBoolean();
-        }
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -475,6 +483,13 @@ namespace Lodis.Gameplay
             EnableAccessory();
 
             ClearAnimationEvents();
+        }
+
+        public override void OnLogGameState(System.Text.StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Explosion Spawned: {_explosionSpawned}");
+            sb.AppendLine($"Threw Blast: {_threwBlast}");
         }
     }
 }

@@ -14,6 +14,36 @@ namespace Lodis.AI
 {
     public class NetworkAttackNPCBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            _timeOfLastAttack.Serialize(bw);
+            bw.Write(_lastSlot);
+            bw.Write(_chargingAttack);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _timeOfLastAttack = _timeOfLastAttack.Deserialize(br);
+            _lastSlot = br.ReadInt32();
+            _chargingAttack = br.ReadBoolean();
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Time Of Last Attack: {_timeOfLastAttack}",
+                $"Last Slot: {_lastSlot}",
+                $"Charging Attack: {_chargingAttack}"
+            };
+        }
+
+        #endregion
+
         [SerializeField] private GameObject _character;
         [SerializeField] private NetworkCharacterAIMovementBehaviour _AIMovementBehaviour;
         [Tooltip("Pick the attack this NPC should perform")]
@@ -73,33 +103,13 @@ namespace Lodis.AI
 
         public override string LogName => "NetworkAttackNPCBehaviour";
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            _timeOfLastAttack.Serialize(bw);
-            bw.Write(_lastSlot);
-            bw.Write(_chargingAttack);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _timeOfLastAttack = _timeOfLastAttack.Deserialize(br);
-            _lastSlot = br.ReadInt32();
-            _chargingAttack = br.ReadBoolean();
-        }
 
         /// <summary>
         /// Hashes the serialized attack timing state so mismatches can be traced to
         /// this NPC attack controller specifically.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                $"Time Of Last Attack: {_timeOfLastAttack}",
-                $"Last Slot: {_lastSlot}",
-                $"Charging Attack: {_chargingAttack}"
-            };
-        }
+
 
         public override void Init()
         {

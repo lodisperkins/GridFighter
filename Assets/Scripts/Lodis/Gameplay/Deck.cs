@@ -1,10 +1,14 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System;
 using Lodis.ScriptableObjects;
+using Assets.Scripts.Lodis.Simulation;
+using System.IO;
+using System.Text;
+using Pada1.BBCore.DirtySerializer;
 
 namespace Lodis.Gameplay
 {
@@ -26,9 +30,28 @@ namespace Lodis.Gameplay
     [CreateAssetMenu(menuName = "Deck")]
     public class Deck : ScriptableObject
     {
+
+
+        #region Simulation Functions
+
+
+        public void Serialize(BinaryWriter bw)
+        {
+            _abilities.Serialize(bw);
+        }
+
+
+        public void Deserialize(Deserializer br)
+        {
+            _abilities.Deserialize(br);
+        }
+
+
+        #endregion
+
         private static int _seed = -1;
 
-        private List<Ability> _abilities = new List<Ability>();
+        private SerializedListHandler<Ability> _abilities = new SerializedListHandler<Ability>();
         [SerializeField]
         private List<AbilityData> _abilityData = new List<AbilityData>();
         [SerializeField]
@@ -103,7 +126,7 @@ namespace Lodis.Gameplay
         public void AddAbility(Ability ability)
         {
             if (_abilities == null)
-                _abilities = new List<Ability>();
+                _abilities = new SerializedListHandler<Ability>();
 
             _abilities.Add(ability);
         }
@@ -115,9 +138,14 @@ namespace Lodis.Gameplay
         public void AddAbilities(Deck abilityDeck)
         {
             if (_abilities == null)
-                _abilities = new List<Ability>();
+                _abilities = new SerializedListHandler<Ability>();
 
-            _abilities.AddRange(abilityDeck._abilities);
+            _abilities.SetList(abilityDeck._abilities);
+        }
+
+        public void DestroyDeck(bool reuseArray = false)
+        {
+            _abilities.Destroy(reuseArray);
         }
 
         /// <summary>
@@ -136,7 +164,7 @@ namespace Lodis.Gameplay
         /// <returns>False if the index is out of range</returns>
         public bool RemoveAbility(int index)
         {
-            if (index < 0 || index >= _abilities.Count)
+            if (index < 0 || index >= _abilities.Count())
                 return false;
 
             _abilities.RemoveAt(index);
@@ -149,10 +177,10 @@ namespace Lodis.Gameplay
         /// <returns>The last ability in the list</returns>
         public Ability PopBack()
         {
-            if (_abilities.Count == 0)
+            if (_abilities.Count() == 0)
                 return null;
 
-            Ability ability = _abilities[_abilities.Count - 1];
+            Ability ability = _abilities[_abilities.Count() - 1];
             RemoveAbility(ability);
 
             return ability;
@@ -227,6 +255,14 @@ namespace Lodis.Gameplay
             }
 
             return false;
+        }
+
+        public Ability GetSerializedAbility(int id)
+        {
+            Ability ability = null;
+            _abilities.TryGetSerializedItem(ability => ability?.abilityData.ID == id, out ability, false);
+
+            return ability;
         }
 
         public Ability GetBurstAbility(string state)
@@ -335,7 +371,7 @@ namespace Lodis.Gameplay
             if (name == null)
                 return false;
 
-            for(int i = 0; i < _abilities.Count; i++)
+            for (int i = 0; i < _abilities.Count(); i++)
             {
                 if (_abilities[i].abilityData.abilityName == name)
                     return true;
@@ -348,7 +384,7 @@ namespace Lodis.Gameplay
             if (name == null)
                 return false;
 
-            for(int i = 0; i < _abilities.Count; i++)
+            for (int i = 0; i < _abilities.Count(); i++)
             {
                 if (_abilities[i].abilityData.ID == ID)
                     return true;
@@ -361,7 +397,7 @@ namespace Lodis.Gameplay
             if (ability == null)
                 return false;
 
-            for(int i = 0; i < _abilities.Count; i++)
+            for (int i = 0; i < _abilities.Count(); i++)
             {
                 if (_abilities[i] == ability)
                     return true;
@@ -374,7 +410,7 @@ namespace Lodis.Gameplay
             if (abilityData == null)
                 return false;
 
-            for(int i = 0; i < _abilityData.Count; i++)
+            for (int i = 0; i < _abilityData.Count; i++)
             {
                 if (_abilityData[i].abilityName == abilityData.abilityName)
                     return true;
@@ -402,17 +438,36 @@ namespace Lodis.Gameplay
 
             random = new System.Random(Seed);
 
+            List<Ability> abilities = _abilities.ToList();
+
             //Yates shuffle algorithm
-            for (int i = _abilities.Count - 1; i > 0; i--)
+            for (int i = _abilities.Count() - 1; i > 0; i--)
             {
                 int j = random.Next(0, i);
 
-                Ability temp = _abilities[j];
-                _abilities[j] = _abilities[i];
-                _abilities[i] = temp;
+                Ability temp = abilities[j];
+                abilities[j] = abilities[i];
+                abilities[i] = temp;
             }
+
+            _abilities.SetList(abilities);
         }
 
+
+
+        /// <summary>
+        /// Returns a line-by-line representation of the exact serialized ability
+        /// list, including its ordered retained-slot indices and ability payloads.
+        /// </summary>
+        public string[] GetSerializedLogItems()
+        {
+            StringBuilder logBuilder = new StringBuilder();
+            _abilities.OnLogGameState(logBuilder);
+
+            return logBuilder
+                .ToString()
+                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+        }
     }
 }
 

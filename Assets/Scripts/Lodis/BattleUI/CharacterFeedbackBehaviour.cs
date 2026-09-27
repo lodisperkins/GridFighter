@@ -147,7 +147,7 @@ namespace Lodis.Gameplay
 
         public void PlaySpawnEffect()
         {
-            Instantiate(_spawnEffect, (Vector3)_movement.CurrentPanel.FixedWorldPosition, Camera.main.transform.rotation);
+            Instantiate(_spawnEffect, (Vector3)_movement.FixedTransform.WorldPosition, Camera.main.transform.rotation);
             SoundManagerBehaviour.Instance.PlaySound(_spawnSound);
             RoutineBehaviour.Instance.StartNewTimedAction(args => _characterVoice.PlaySpawnSound(), TimedActionCountType.SCALEDTIME, 0.1f);
         }

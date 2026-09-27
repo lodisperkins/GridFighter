@@ -1,23 +1,75 @@
-﻿using Lodis.GridScripts;
+using Assets.Scripts.Lodis.Simulation;
+using Lodis.GridScripts;
 using Lodis.Input;
 using Lodis.Movement;
 using Lodis.ScriptableObjects;
 using Lodis.UI;
 using Lodis.Utility;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Policy;
+using System.Text;
+using Types;
 using UnityEngine;
 
 namespace Lodis.Gameplay
 {
 
-    public class BlackBoardBehaviour : MonoBehaviour
+    public class BlackBoardBehaviour : SimulationBehaviour
     {
+        #region Simulation Functions
+
+        protected override string[] GetLogItems()
+        {
+            StringBuilder movableEntitiesString = new StringBuilder();
+            _movableEntitiesInGame.OnLogGameState(movableEntitiesString);
+
+            StringBuilder lhsActiveColliderString = new StringBuilder();
+            _lhsActiveColliders.OnLogGameState(lhsActiveColliderString);
+
+            StringBuilder rhsActiveColliderString = new StringBuilder();
+            _rhsActiveColliders.OnLogGameState(rhsActiveColliderString);
+
+            return new string[] {
+                $"LHSTotalDamage: {LHSTotalDamage}",
+                $"RHSTotalDamage: {RHSTotalDamage}",
+                $"Player1State: {Player1State}",
+                $"Player2State: {Player2State}",
+                movableEntitiesString.ToString(),
+                lhsActiveColliderString.ToString(),
+                rhsActiveColliderString.ToString()
+            };
+        }
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            LHSTotalDamage.Serialize(bw);
+            RHSTotalDamage.Serialize(bw);
+            bw.Write(Player1State);
+            bw.Write(Player2State);
+            _movableEntitiesInGame.Serialize(bw);
+            _lhsActiveColliders.Serialize(bw);
+            _rhsActiveColliders.Serialize(bw);
+        }
+
+        public override void Deserialize(Deserializer br)
+        {
+            LHSTotalDamage = LHSTotalDamage.Deserialize(br);
+            RHSTotalDamage = RHSTotalDamage.Deserialize(br);
+            Player1State = br.ReadString();
+            Player2State = br.ReadString();
+            _movableEntitiesInGame.Deserialize(br);
+            _lhsActiveColliders.Deserialize(br);
+            _rhsActiveColliders.Deserialize(br);
+        }
+
+        #endregion
+
         public List<Color> AbilityCostColors;
         public ColorVariable Player1Color;
         public ColorVariable Player2Color;
-        public float LHSTotalDamage;
-        public float RHSTotalDamage;
+        public Fixed32 LHSTotalDamage;
+        public Fixed32 RHSTotalDamage;
         public GridScripts.GridBehaviour Grid { get; private set; }
         public string Player1State = null;
         public string Player2State = null;
@@ -41,9 +93,9 @@ namespace Lodis.Gameplay
 
         public ComboCounterBehaviour Player1ComboCounter;
         public ComboCounterBehaviour Player2ComboCounter;
-        private List<GridMovementBehaviour> _entitiesInGame = new List<GridMovementBehaviour>();
-        private List<HitColliderBehaviour> _lhsActiveColliders = new List<HitColliderBehaviour>();
-        private List<HitColliderBehaviour> _rhsActiveColliders = new List<HitColliderBehaviour>();
+        private SerializedListHandler<GridMovementBehaviour> _movableEntitiesInGame = new SerializedListHandler<GridMovementBehaviour>();
+        private SerializedListHandler<HitColliderBehaviour> _lhsActiveColliders = new SerializedListHandler<HitColliderBehaviour>();
+        private SerializedListHandler<HitColliderBehaviour> _rhsActiveColliders = new SerializedListHandler<HitColliderBehaviour>();
         private static BlackBoardBehaviour _instance;
         private GameObject _player1;
         private GameObject _player2;
@@ -93,14 +145,16 @@ namespace Lodis.Gameplay
             }
         }
 
+        public override string LogName => nameof(BlackBoardBehaviour);
+
         /// <summary>
         /// Removes all null enemies from the entities list and returns the new list
         /// </summary>
         /// <returns>The list of in game entities</returns>
-        public List<GridMovementBehaviour> GetEntitiesInGame()
+        public SerializedListHandler<GridMovementBehaviour> GetEntitiesInGame()
         {
-            _entitiesInGame.RemoveAll(entity => entity == null || (!entity.gameObject.activeInHierarchy && !entity.CompareTag("Player")));
-            return _entitiesInGame;
+            _movableEntitiesInGame.RemoveAll(entity => entity == null || (!entity.gameObject.activeInHierarchy && !entity.CompareTag("Player")));
+            return _movableEntitiesInGame;
         }
 
         /// <summary>
@@ -118,7 +172,7 @@ namespace Lodis.Gameplay
         /// </summary>
         public void DisableAllNonPlayerEntities()
         {
-            foreach (GridMovementBehaviour entity in _entitiesInGame)
+            foreach (GridMovementBehaviour entity in _movableEntitiesInGame)
             {
                 if (!entity.CompareTag("Player"))
                     ObjectPoolBehaviour.Instance.ReturnGameObject(entity.Entity);
@@ -129,7 +183,7 @@ namespace Lodis.Gameplay
         /// Gets all ability colliders that are aligned with the left side
         /// </summary>
         /// <returns>A list of hit colliders</returns>
-        public List<HitColliderBehaviour> GetLHSActiveColliders()
+        public SerializedListHandler<HitColliderBehaviour> GetLHSActiveColliders()
         {
             if (_lhsActiveColliders.Count > 0)
                 _lhsActiveColliders.RemoveAll(hitCollider =>
@@ -147,7 +201,7 @@ namespace Lodis.Gameplay
         /// Gets all ability colliders that are aligned with the right side
         /// </summary>
         /// <returns>A list of hit colliders</returns>
-        public List<HitColliderBehaviour> GetRHSActiveColliders()
+        public SerializedListHandler<HitColliderBehaviour> GetRHSActiveColliders()
         {
             if (_rhsActiveColliders.Count > 0)
                 _rhsActiveColliders.RemoveAll(hitCollider =>
@@ -161,7 +215,7 @@ namespace Lodis.Gameplay
             return _rhsActiveColliders;
         }
 
-        public List<HitColliderBehaviour> GetActiveColliders(GridScripts.GridAlignment alignment)
+        public SerializedListHandler<HitColliderBehaviour> GetActiveColliders(GridScripts.GridAlignment alignment)
         {
             if (alignment == GridScripts.GridAlignment.LEFT)
                 return GetLHSActiveColliders();
@@ -330,7 +384,7 @@ namespace Lodis.Gameplay
         /// <param name="entity"></param>
         public void AddEntityToList(Movement.GridMovementBehaviour entity)
         {
-            _entitiesInGame.Add(entity);
+            _movableEntitiesInGame.Add(entity);
         }
 
 

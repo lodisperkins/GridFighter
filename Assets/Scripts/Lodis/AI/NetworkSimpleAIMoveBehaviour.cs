@@ -16,6 +16,36 @@ namespace Lodis.AI
     [RequireComponent(typeof(Movement.GridMovementBehaviour))]
     public class NetworkSimpleAIMovementBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_currentPathIndex);
+            bw.Write(_reachedDestination);
+            bw.Write(_needPath);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _currentPathIndex = br.ReadInt32();
+            _reachedDestination = br.ReadBoolean();
+            _needPath = br.ReadBoolean();
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                "CurrentPathIndex: " + _currentPathIndex,
+                "ReachedDestination: " + _reachedDestination,
+                "NeedPath: " + _needPath
+            };
+        }
+
+        #endregion
+
         [SerializeField] private Movement.GridMovementBehaviour _movementBehaviour;
         [SerializeField] private Animator _animator;
         [SerializeField] private bool _moveAnimParmIsDirection;
@@ -54,33 +84,13 @@ namespace Lodis.AI
 
         public override string LogName => "NetworkSimpleAIMovementBehaviour";
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_currentPathIndex);
-            bw.Write(_reachedDestination);
-            bw.Write(_needPath);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _currentPathIndex = br.ReadInt32();
-            _reachedDestination = br.ReadBoolean();
-            _needPath = br.ReadBoolean();
-        }
 
         /// <summary>
         /// Hashes the serialized simple AI movement state so this component can be
         /// identified quickly during sync-test diagnostics.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                "CurrentPathIndex: " + _currentPathIndex,
-                "ReachedDestination: " + _reachedDestination,
-                "NeedPath: " + _needPath
-            };
-        }
+
 
         private void OnValidate()
         {

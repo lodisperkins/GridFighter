@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.Utility;
 using SharedGame;
 using System;
@@ -22,10 +22,21 @@ namespace Assets.Scripts.Lodis.Simulation
     /// </summary>
     public class SerializedListHandler<T> : IEnumerable<T> where T : ISerializedListObject
     {
+
+        #region Simulation Functions
+
+        
+
+        #endregion
+
         private List<T> _list = new List<T>();
         private ISerializedListObject[] _serializedObjects;
-        private int _serializedCount;
-        private long _listMask;
+        // Debug metadata captured during the normal serialization pass so logging
+        // can show the bounded payload size without serializing the item again.
+        private readonly Dictionary<ISerializedListObject, int> _serializedPayloadLengths = new();
+        // Stores the retained-object slot for every active item in _list. Unlike a
+        // bitmask, this preserves the order the items had when the state was saved.
+        private readonly List<byte> _serializedObjectIndices = new List<byte>();
         /// <summary>
         /// Optional name for the list for debugging purposes.
         /// </summary>
@@ -37,8 +48,42 @@ namespace Assets.Scripts.Lodis.Simulation
         public bool ShouldSerializeItemsIndividually = true;
 
         public int Count => _list.Count;
-        public T this[int index] => _list[index];
+        public T this[int index]
+        {
+            get
+            {
+                return _list[index];
+            }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException(nameof(value));
+
+                if (ReferenceEquals(_list[index], value))
+                    return;
+
+                if (_list.Contains(value))
+                    throw new ArgumentException("The same object cannot occupy multiple positions in a serialized list.", nameof(value));
+
+                if (!IsStatic)
+                {
+                    int slotIndex = GetOrCreateSerializedSlotIndex(value);
+
+                    if (slotIndex < 0)
+                    {
+                        throw new Exception($"Serialized list {Name} has reached its 64-item retained-object limit while replacing list index {index}.");
+                    }
+
+                    _serializedObjectIndices[index] = (byte)slotIndex;
+                    value.FrameAddedToSerializedList = GridGameManager.FrameNumber;
+                }
+
+                _list[index] = value;
+            }
+        }
+
         public bool IsSerializedArrayEmpty => Array.TrueForAll(_serializedObjects, obj => obj == null);
+        public bool IsStatic { get; set; }
 
         /// <param name="list">The list of objects that needs to be potentially populated when the game state is deserialized.</param>
         public SerializedListHandler(string name = "")
@@ -71,8 +116,9 @@ namespace Assets.Scripts.Lodis.Simulation
         /// serialized object list. If the retained version is found, it is added back
         /// to the active list so callers can reuse it immediately.
         /// </summary>
-        public bool TryGetItem(Func<T, bool> predicate, out T item)
+        public bool TryGetSerializedItem(Func<T, bool> predicate, out T item, bool addRetainedToActive = true)
         {
+            //Check if the item is in the active list first.
             item = _list.FirstOrDefault(predicate);
 
             if (item != null)
@@ -80,17 +126,17 @@ namespace Assets.Scripts.Lodis.Simulation
                 return true;
             }
 
+            //Otherwise check and see if its in the serialized list and if it is add it back to the active list and return it.
             foreach (ISerializedListObject serializedObject in _serializedObjects)
             {
-                if (serializedObject is not T candidate)
-                    continue;
+                T candidate = (T)serializedObject;
 
                 if (!predicate(candidate))
                     continue;
 
-                if (!_list.Contains(candidate))
+                if (!_list.Contains(candidate) && addRetainedToActive)
                 {
-                    _list.Add(candidate);
+                    Add(candidate);
                 }
 
                 item = candidate;
@@ -100,20 +146,20 @@ namespace Assets.Scripts.Lodis.Simulation
             return false;
         }
 
-        private void AddToArray(T item)
+        private int GetOrCreateSerializedSlotIndex(T item)
         {
-            //Check and see if we can have an empty slot to put this item in.
-            int emptyIndex = Array.FindIndex(_serializedObjects, obj => obj == null);
+            if (IsStatic)
+                return -1;
 
-            //If we found an empty slot, add the item to it and return the index.
-            if (emptyIndex != -1)
-            {
-                _serializedObjects[emptyIndex] = item;
+            int slotIndex = Array.FindIndex(_serializedObjects, obj => ReferenceEquals(obj, item));
 
-                //Update the mask so we can save the state of the list for this frame.
-                _listMask |= 1L << emptyIndex;
-                return;
-            }
+            if (slotIndex < 0)
+                slotIndex = Array.FindIndex(_serializedObjects, obj => obj == null);
+
+            if (slotIndex >= 0)
+                _serializedObjects[slotIndex] = item;
+
+            return slotIndex;
         }
 
         public void Add(T item)
@@ -121,32 +167,29 @@ namespace Assets.Scripts.Lodis.Simulation
             if (item == null)
                 return;
 
-            if (!_list.Contains(item))
-            {
-                _list.Add(item);
-            }
-            else
-            {
+            if (_list.Contains(item))
                 return;
-            }
 
-#if SYNC_TEST
-            AddToArray(item);
-            item.FrameAddedToSerializedList = GridGameManager.FrameNumber;
-#else
-
-            if (GridGameManager.OnlineGameStarted)
+            if (!IsStatic)
             {
-                AddToArray(item);
+                int slotIndex = GetOrCreateSerializedSlotIndex(item);
+
+                if (slotIndex < 0)
+                {
+                    throw new Exception($"Serialized list {Name} has reached its 64-item retained-object limit while adding {item.ListDisplayName}.");
+                }
+
+                _serializedObjectIndices.Add((byte)slotIndex);
                 item.FrameAddedToSerializedList = GridGameManager.FrameNumber;
             }
-#endif
+
+            _list.Add(item);
             item.OnAddedToList?.Invoke();
         }
 
         public void Destroy(bool reuseArray = false)
         {
-            _listMask = 0;
+            _serializedObjectIndices.Clear();
             _list.Clear();
             _serializedObjects = reuseArray ? new ISerializedListObject[64] : null;
             GridGame.OnResimulationStarted -= CleanSerializedArray;
@@ -154,8 +197,52 @@ namespace Assets.Scripts.Lodis.Simulation
 
         public void Clear()
         {
-            _listMask = 0;
+            _serializedObjectIndices.Clear();
             _list.Clear();
+        }
+
+        /// <summary>
+        /// Replaces this handler's active list with the contents of another
+        /// serialized list and rebuilds its ordered retained-slot indices to match.
+        /// </summary>
+        public void SetList(SerializedListHandler<T> other)
+        {
+            SetList(other?._list);
+        }
+
+        /// <summary>
+        /// Replaces this handler's active list with the provided items and rebuilds
+        /// the current retained-slot order so it reflects the exact active-list order.
+        /// </summary>
+        public void SetList(IList<T> items)
+        {
+            _list.Clear();
+            _serializedObjectIndices.Clear();
+
+            if (items == null)
+                return;
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                T item = items[i];
+
+                if (item == null || _list.Contains(item))
+                    continue;
+
+                if (!IsStatic)
+                {
+                    int slotIndex = GetOrCreateSerializedSlotIndex(item);
+
+                    if (slotIndex < 0)
+                    {
+                        throw new Exception($"Serialized list {Name} could not find or create a retained slot for {item.ListDisplayName}.");
+                    }
+
+                    _serializedObjectIndices.Add((byte)slotIndex);
+                }
+
+                _list.Add(item);
+            }
         }
 
         public bool Contains(T item)
@@ -180,15 +267,23 @@ namespace Assets.Scripts.Lodis.Simulation
 
         public void Remove(T item)
         {
-            if (!_list.Contains(item))
+            int listIndex = _list.IndexOf(item);
+
+            if (listIndex < 0)
                 return;
              
-            _list.Remove(item);
+            _list.RemoveAt(listIndex);
 
-            _listMask &= ~(1L << Array.IndexOf(_serializedObjects, item));
+            if (!IsStatic)
+                _serializedObjectIndices.RemoveAt(listIndex);
 
             item.OnRemovedFromList?.Invoke();
-            item.FrameRemoved = GridGameManager.FrameNumber;
+            item.FrameRemovedFromActiveList = GridGameManager.FrameNumber;
+        }
+
+        public void RemoveAt(int index)
+        {
+            Remove(_list[index]);
         }
 
         public int RemoveAll(Predicate<T> match)
@@ -197,14 +292,10 @@ namespace Assets.Scripts.Lodis.Simulation
 
             foreach (T item in itemsToRemove)
             {
-                item.OnRemovedFromList();
-                item.FrameRemoved = GridGameManager.FrameNumber;
-
-
-                _listMask &= ~(1L << Array.IndexOf(_serializedObjects, item));
+                Remove(item);
             }
 
-            return _list.RemoveAll(match);
+            return itemsToRemove.Count;
         }
 
         public void Serialize(BinaryWriter bw)
@@ -217,23 +308,62 @@ namespace Assets.Scripts.Lodis.Simulation
             }
 #endif
 
-            bw.Write(_listMask);
-
-            foreach (ISerializedListObject obj in _list)
+            if (IsStatic)
             {
+                for (int i = 0; i < _list.Count; i++)
+                {
+                    T obj = _list[i];
+
+                    if (obj == null)
+                    {
+                        throw new Exception($"Serialized list {Name} found a null object at index {i} while serializing. Found on frame {GridGameManager.FrameNumber}.");
+                    }
+
+#if UNITY_EDITOR
+                    if (CheckShouldIgnoreItem(obj))
+                        continue;
+#endif
+
+                    if (ShouldSerializeItemsIndividually)
+                        SerializeItem(bw, obj);
+                }
+
+                return;
+            }
+
+            if (_serializedObjectIndices.Count > byte.MaxValue)
+            {
+                throw new Exception($"Serialized list {Name} cannot serialize more than {byte.MaxValue} active items.");
+            }
+
+            bw.Write((byte)_serializedObjectIndices.Count);
+
+            // Write every retained slot first so Deserialize can reconstruct the exact
+            // active-list order before it reads any object payloads.
+            for (int i = 0; i < _serializedObjectIndices.Count; i++)
+                bw.Write(_serializedObjectIndices[i]);
+
+            for (int i = 0; i < _serializedObjectIndices.Count; i++)
+            {
+                int slotIndex = _serializedObjectIndices[i];
+                ISerializedListObject obj = _serializedObjects[slotIndex];
+
+                if (obj == null)
+                {
+                    throw new Exception($"Serialized list {Name} found no retained object at slot {slotIndex} while serializing active list index {i}. Found on frame {GridGameManager.FrameNumber}.");
+                }
+
 #if UNITY_EDITOR
                 if (CheckShouldIgnoreItem(obj))
                     continue;
 #endif
-
-                //obj.FrameSerialized = GridGameManager.FrameNumber;
-
                 if (ShouldSerializeItemsIndividually)
-                    obj.OnSerialize(bw);
+                    SerializeItem(bw, obj);
             }
         }
 
-        public void Deserialize(BinaryReader br)
+
+        public void Deserialize(Deserializer br)
         {
 #if UNITY_EDITOR
             if (ShouldIgnoreListForSerialization())
@@ -241,29 +371,161 @@ namespace Assets.Scripts.Lodis.Simulation
                 return;
             }
 #endif
-            _listMask = br.ReadInt64();
-
-            _list.Clear();
-
-            for (int i = 0; i < 64; i++)
+            if (IsStatic)
             {
-                //If the bit for this index is not set, skip it.
-                if ((_listMask & (1L << i)) == 0)
+                for (int i = 0; i < _list.Count; i++)
                 {
-                    continue;
-                }
+                    T obj = _list[i];
 
-                //Otherwise lets get the item from the serialized objects array and add it to the list.
-                T obj = (T)_serializedObjects[i];
-
-                _list.Add(obj);
+                    if (obj == null)
+                    {
+                        throw new Exception($"Serialized list {Name} found a null object at index {i} while deserializing. Found on frame {GridGameManager.FrameNumber}.");
+                    }
 
 #if UNITY_EDITOR
+                    if (CheckShouldIgnoreItem(obj))
+                        continue;
+#endif
+
+                    if (ShouldSerializeItemsIndividually)
+                        DeserializeItem(br, obj);
+                }
+
+                return;
+            }
+
+            _list.Clear();
+            _serializedObjectIndices.Clear();
+
+            int serializedCount = br.ReadByte();
+
+            if (serializedCount > _serializedObjects.Length)
+            {
+                throw new Exception($"Serialized list {Name} deserialized invalid active item count {serializedCount}. The retained-object capacity is {_serializedObjects.Length}.");
+            }
+
+            for (int i = 0; i < serializedCount; i++)
+            {
+                byte slotIndex = br.ReadByte();
+
+                if (slotIndex >= _serializedObjects.Length)
+                {
+                    throw new Exception($"Serialized list {Name} deserialized invalid retained slot {slotIndex} at active list index {i}.");
+                }
+
+                if (_serializedObjectIndices.Contains(slotIndex))
+                {
+                    throw new Exception($"Serialized list {Name} deserialized retained slot {slotIndex} more than once in the same active-list snapshot.");
+                }
+
+                T obj = (T)_serializedObjects[slotIndex];
+
+                if (obj == null)
+                {
+                    throw new Exception($"Serialized list {Name} found no retained object at slot {slotIndex} while deserializing active list index {i}. Found on frame {GridGameManager.FrameNumber}.");
+                }
+
+                _serializedObjectIndices.Add(slotIndex);
+                _list.Add(obj);
+            }
+
+            for (int i = 0; i < _list.Count; i++)
+            {
+                T obj = _list[i];
+#if UNITY_EDITOR
                 if (CheckShouldIgnoreItem(obj))
+                {
+                    Debug.Log("<color=yellow>" + $"Not deserializing item: {obj.ListDisplayName} in list: {Name}" + "</color>");
                     continue;
+                }
 #endif
                 if (ShouldSerializeItemsIndividually)
-                    obj.OnDeserialize(br);
+                    DeserializeItem(br, obj);
+            }
+        }
+
+        /// <summary>
+        /// Writes an item's exact payload as a bounded block followed by its
+        /// Fletcher-32 checksum. The temporary buffer prevents checksum generation
+        /// from invoking the item's serializer a second time.
+        /// </summary>
+        private void SerializeItem(BinaryWriter writer, ISerializedListObject item)
+        {
+            using MemoryStream payloadStream = new MemoryStream();
+            using BinaryWriter payloadWriter = new BinaryWriter(payloadStream);
+
+            item.OnSerialize(payloadWriter);
+            payloadWriter.Flush();
+            byte[] payload = payloadStream.ToArray();
+            int checksum = CalcFletcher32(payload);
+            item.SerializedChecksum = checksum;
+            _serializedPayloadLengths[item] = payload.Length;
+
+            writer.Write(payload.Length);
+            writer.Write(payload);
+            writer.Write(checksum);
+
+            // Record this item at the exact point its payload is complete, before
+            // later serializers can alter the live state shown by the deep log.
+            GridGame.AppendDeepSerializeItemLog(Name, item, payload.Length, checksum);
+        }
+
+        /// <summary>
+        /// Reads and validates one bounded item payload before applying it. A bad
+        /// checksum or an item that consumes the wrong number of bytes identifies
+        /// the owning list and item before later list entries are corrupted.
+        /// </summary>
+        private void DeserializeItem(Deserializer reader, ISerializedListObject item)
+        {
+            // Read the byte count written before this item's serialized payload.
+            int payloadLength = reader.ReadInt32();
+
+            // Reject invalid lengths before they can make the stream read backwards or allocate incorrectly.
+            if (payloadLength < 0)
+            {
+                throw new Exception($"Serialized list {Name} read a negative payload length {payloadLength} for {item.ListDisplayName}. Frame: {GridGameManager.FrameNumber}.");
+            }
+
+            // Check that the outer stream still contains the declared payload and its checksum.
+            if (reader.BaseStream.CanSeek)
+            {
+                long remainingBytes = reader.BaseStream.Length - reader.BaseStream.Position;
+
+                if (payloadLength > remainingBytes - sizeof(int))
+                {
+                    throw new EndOfStreamException($"Serialized list {Name} read payload length {payloadLength} for {item.ListDisplayName}, but only {remainingBytes} bytes remain for its payload and checksum. Frame: {GridGameManager.FrameNumber}.");
+                }
+            }
+
+            // Read exactly this item's bounded payload so one bad item cannot shift later reads.
+            byte[] payload = reader.ReadBytes(payloadLength);
+
+            // Check that deserialization did not read fewer payload bytes than the saved size.
+            if (payload.Length != payloadLength)
+            {
+                throw new EndOfStreamException($"Serialized list {Name} could not read the full {payloadLength}-byte payload for {item.ListDisplayName}. Only {payload.Length} bytes were available. Frame: {GridGameManager.FrameNumber}.");
+            }
+
+            // Read the saved checksum and calculate the checksum of the bytes we actually received.
+            int serializedChecksum = reader.ReadInt32();
+            int calculatedChecksum = CalcFletcher32(payload);
+            item.SerializedChecksum = calculatedChecksum;
+
+            // Stop immediately when the payload differs from the bytes that were originally serialized.
+            if (calculatedChecksum != serializedChecksum)
+            {
+                throw new Exception($"Serialized list checksum mismatch. List: {Name}. Item: {item.ListDisplayName}. Expected: {serializedChecksum}. Actual: {calculatedChecksum}. Frame: {GridGameManager.FrameNumber}.");
+            }
+
+            // Limit the item to its own payload while it restores its fields.
+            using MemoryStream payloadStream = new MemoryStream(payload, writable: false);
+            using Deserializer payloadReader = reader.CreateChild(payloadStream, $"{Name} > {item.ListDisplayName}");
+            item.OnDeserialize(payloadReader);
+
+            // Verify that the item read every expected byte and did not leave fields unread.
+            if (payloadStream.Position != payloadStream.Length)
+            {
+                throw new Exception($"Serialized list {Name} item {item.ListDisplayName} consumed {payloadStream.Position} of {payloadStream.Length} payload bytes while deserializing. Frame: {GridGameManager.FrameNumber}.");
             }
         }
 
@@ -273,12 +535,13 @@ namespace Assets.Scripts.Lodis.Simulation
             {
                 ISerializedListObject obj = _serializedObjects[i];
 
-                if (obj == null)
+                //If the slot is already empty or if its still being used by the list we can skip it.
+                if (obj == null || _serializedObjectIndices.Contains((byte)i))
                     continue;
 
-                int timeDifference = Math.Abs(obj.FrameAddedToSerializedList - rollbackFrame);
+                int timeDifference = Math.Abs(obj.FrameRemovedFromActiveList - rollbackFrame);
 
-                if (timeDifference >= GetRollbackWindow() || obj.FrameAddedToSerializedList > rollbackFrame)
+                if (timeDifference >= GetRollbackWindow())
                 {
                     _serializedObjects[i] = null;
                 }
@@ -294,11 +557,15 @@ namespace Assets.Scripts.Lodis.Simulation
             }
 #endif
 
-            // Mirror the actual serialized shape: list header, then each active entry
-            // in order with the retained key that Serialize writes before payload data.
+            // Mirror the actual serialized shape: list header, ordered retained slots,
+            // then each active entry's payload in that same order.
             sb.AppendLine($"{Name}");
             sb.AppendLine($"Serialized Count: {_list.Count}");
-            sb.AppendLine($"Serialized Mask: {_listMask:X16}");
+
+            if (IsStatic)
+                sb.AppendLine($"Serialized List is Static, no retained indices are used.");
+            else
+                sb.AppendLine($"Serialized Indices: {string.Join(", ", _serializedObjectIndices)}");
 
             // Then log each active entry in the exact order Serialize iterates them.
             for (int i = 0; i < _list.Count; i++)
@@ -311,7 +578,14 @@ namespace Assets.Scripts.Lodis.Simulation
                     continue;
                 }
 #endif
-                sb.AppendLine($"Serialized Object {i}: {_list[i].ListDisplayName}");
+                string retainedSlot = IsStatic ? "Static" : _serializedObjectIndices[i].ToString();
+                sb.AppendLine($"Serialized Object {i} (Retained Slot {retainedSlot}): {_list[i].ListDisplayName}");
+                if (ShouldSerializeItemsIndividually)
+                {
+                    int payloadLength = _serializedPayloadLengths.TryGetValue(_list[i], out int value) ? value : 0;
+                    sb.AppendLine($"Serialized Payload Length: {payloadLength}");
+                    sb.AppendLine($"Serialized Checksum: {_list[i].SerializedChecksum}");
+                }
                 _list[i].OnLogGameState(sb);
             }
         }
@@ -339,6 +613,7 @@ namespace Assets.Scripts.Lodis.Simulation
             //"Entity List",
             //"Fixed Point Timer",
             //"FixedLerp",
+            //"New Entity Components"
         };
 
         private bool _shouldIgnoreWhatsInFilter = true;

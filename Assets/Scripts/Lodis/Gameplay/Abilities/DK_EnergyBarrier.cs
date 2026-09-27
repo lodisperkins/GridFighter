@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -12,23 +12,31 @@ namespace Lodis.Gameplay
     /// </summary>
     public class DK_EnergyBarrier : Ability
     {
+
+        #region Simulation Functions
+
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+            bw.Write(_reflected);
+        }
+
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+            _reflected = br.ReadBoolean();
+        }
+
+        #endregion
+
         private HitColliderData _barrierCollider;
         private GameObject _visualPrefabInstance;
         private Collider _prefabeInstanceCollider;
         private HealthBehaviour _ownerHealth;
         private bool _reflected;
 
-        protected override void OnSerialize(BinaryWriter bw)
-        {
-            base.OnSerialize(bw);
-            bw.Write(_reflected);
-        }
 
-        protected override void OnDeserialize(BinaryReader br)
-        {
-            base.OnDeserialize(br);
-            _reflected = br.ReadBoolean();
-        }
 
         //Called when ability is created
         public override void Init(EntityDataBehaviour newOwner)
@@ -109,6 +117,12 @@ namespace Lodis.Gameplay
             base.OnRecover(args);
             //Destroy the barrier
             Object.Destroy(_visualPrefabInstance);
+        }
+
+        public override void OnLogGameState(System.Text.StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Reflected: {_reflected}");
         }
     }
 }

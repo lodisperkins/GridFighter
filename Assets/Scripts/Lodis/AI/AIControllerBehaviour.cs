@@ -1,4 +1,4 @@
-﻿using Ilumisoft.VisualStateMachine;
+using Ilumisoft.VisualStateMachine;
 using Lodis.Gameplay;
 using Lodis.Movement;
 using System;
@@ -14,11 +14,32 @@ using Assets.Scripts.Lodis.AI;
 using FixedPoints;
 using Types;
 using System.IO;
+using Assets.Scripts.Lodis.Simulation;
 
 namespace Lodis.AI
 {
     public class AIControllerBehaviour : SimulationBehaviour, IControllable
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return Array.Empty<string>();
+        }
+
+        #endregion
+
         public enum AIState
         {
             Idle,
@@ -144,7 +165,7 @@ namespace Lodis.AI
         private bool _touchingBarrier;
         private bool _touchingOpponentBarrier;
         private bool _lastActionWasCharge;
-        private List<HitColliderBehaviour> _attacksInRange = new List<HitColliderBehaviour>();
+        private SerializedListHandler<HitColliderBehaviour> _attacksInRange = new SerializedListHandler<HitColliderBehaviour>();
         private CharacterStateMachineBehaviour _stateMachine;
         private Movement.KnockbackBehaviour _knockbackBehaviour;
         private int _lastSlot;
@@ -358,7 +379,7 @@ namespace Lodis.AI
             }
         }
 
-        public List<HitColliderBehaviour> GetAttacksInRange()
+        public SerializedListHandler<HitColliderBehaviour> GetAttacksInRange()
         {
             if (_attacksInRange.Count > 0)
             {
@@ -892,7 +913,7 @@ namespace Lodis.AI
         /// <returns></returns>
         private bool CheckIfProjectilesWillHit()
         {
-            List<HitColliderBehaviour> attacksInRange = GetAttacksInRange();
+            SerializedListHandler<HitColliderBehaviour> attacksInRange = GetAttacksInRange();
 
             for (int i = 0; i < attacksInRange.Count; i++)
             {
@@ -1017,7 +1038,7 @@ namespace Lodis.AI
                 return;
             }
 
-            List<HitColliderBehaviour> hitColliders = GetAttacksInRange();
+            SerializedListHandler<HitColliderBehaviour> hitColliders = GetAttacksInRange();
 
             if (hitColliders.Count == 0)
                 return;
@@ -1205,22 +1226,12 @@ namespace Lodis.AI
             _currentActionIndex++;
         }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-        }
 
         /// <summary>
         /// Hashes the serialized AI controller state so sync-test can identify when
         /// this component diverges from its replayed version.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return Array.Empty<string>();
-        }
+
     }
 }

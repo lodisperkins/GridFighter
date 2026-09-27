@@ -16,6 +16,36 @@ namespace Lodis.AI
 {
     public class NetworkCharacterAIMovementBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_currentPathIndex);
+            bw.Write(_reachedDestination);
+            bw.Write(_needPath);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _currentPathIndex = br.ReadInt32();
+            _reachedDestination = br.ReadBoolean();
+            _needPath = br.ReadBoolean();
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Current Path Index: {_currentPathIndex}",
+                $"Reached Destination: {_reachedDestination}",
+                $"Need Path: {_needPath}"
+            };
+        }
+
+        #endregion
+
         [SerializeField] private bool _cancelPathingOnHit;
 
         private PanelBehaviour _moveTarget;
@@ -49,33 +79,13 @@ namespace Lodis.AI
 
         public override string LogName => "NetworkCharacterAIMovementBehaviour";
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_currentPathIndex);
-            bw.Write(_reachedDestination);
-            bw.Write(_needPath);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _currentPathIndex = br.ReadInt32();
-            _reachedDestination = br.ReadBoolean();
-            _needPath = br.ReadBoolean();
-        }
 
         /// <summary>
         /// Hashes the serialized path-following state so rollback mismatches can be
         /// narrowed down to this movement controller.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                $"Current Path Index: {_currentPathIndex}",
-                $"Reached Destination: {_reachedDestination}",
-                $"Need Path: {_needPath}"
-            };
-        }
+
 
         public override void Begin()
         {

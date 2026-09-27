@@ -1,9 +1,11 @@
-﻿using Lodis.GridScripts;
+using Lodis.GridScripts;
 using Lodis.Movement;
 using Lodis.Sound;
 using Lodis.Utility;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using Types;
 using UnityEngine;
 
@@ -15,6 +17,27 @@ namespace Lodis.Gameplay
     /// </summary>
     public class B_OffensiveBurst : Ability
     {
+        #region Simulation Functions
+        public override void OnSerialize(BinaryWriter bw)
+        {
+            base.OnSerialize(bw);
+
+            bw.Write(_makeFreeFall);
+        }
+
+        public override void OnDeserialize(Deserializer br)
+        {
+            base.OnDeserialize(br);
+
+            _makeFreeFall = br.ReadBoolean();
+        }
+        public override void OnLogGameState(StringBuilder sb)
+        {
+            base.OnLogGameState(sb);
+            sb.AppendLine($"Make Free Fall: {_makeFreeFall}");
+        }
+        #endregion
+
         private EntityDataBehaviour _barrier;
         private GameObject _burstEffect;
         private float _defaultRestTime;
@@ -144,5 +167,9 @@ namespace Lodis.Gameplay
             if (CurrentAbilityPhase == AbilityPhase.RECOVER && !OwnerKnockBackScript.Physics.IsGrounded && InUse)
                 EndAbility();
         }
+
+
+
+
     }
 }

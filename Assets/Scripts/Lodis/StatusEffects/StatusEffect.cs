@@ -157,7 +157,7 @@ public class StatusEffect
     {
     }
 
-    public virtual void Deserialize(BinaryReader br)
+    public virtual void Deserialize(Deserializer br)
     {
         _stackCount = br.ReadInt32();
         _health = _health.Deserialize(br);

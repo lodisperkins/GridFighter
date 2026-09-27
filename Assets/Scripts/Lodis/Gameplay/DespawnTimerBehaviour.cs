@@ -7,6 +7,21 @@ using UnityEngine;
 
 public class DespawnTimerBehaviour : SimulationBehaviour
 {
+
+    #region Simulation Functions
+
+    public override void Deserialize(Deserializer br) { }
+
+
+    public override void Serialize(BinaryWriter bw) { }
+
+    protected override string[] GetLogItems()
+    {
+        return null;
+    }
+
+    #endregion
+
     [SerializeField] private Fixed32 _despawnTime;
     [SerializeField] private GameObject _despawnEffect;
     [SerializeField] private bool _destroyOnDespawn;
@@ -15,9 +30,7 @@ public class DespawnTimerBehaviour : SimulationBehaviour
 
     public override string LogName => "DespawnTimer";
 
-    public override void Deserialize(BinaryReader br) { }
 
-    public override void Serialize(BinaryWriter bw) { }
 
     private void OnEnable()
     {
@@ -39,8 +52,5 @@ public class DespawnTimerBehaviour : SimulationBehaviour
     /// Hashes the serialized despawn timer state, which is currently empty, so the
     /// component still exposes a consistent checksum surface.
     /// </summary>
-    protected override string[] GetLogItems()
-    {
-        return null;
-    }
+
 }

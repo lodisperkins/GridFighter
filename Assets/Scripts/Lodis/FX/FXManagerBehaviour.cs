@@ -1,4 +1,4 @@
-﻿using FixedPoints;
+using FixedPoints;
 using Lodis.Gameplay;
 using Lodis.Sound;
 using Lodis.UI;
@@ -13,6 +13,49 @@ namespace Lodis.FX
 {
     public class FXManagerBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_superMoveActive);
+            bw.Write(_environmentLightsEnabled);
+            bw.Write(_playerControlsEnabled);
+            bw.Write(LastPlayerSuper);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _superMoveActive = br.ReadBoolean();
+            bool environmentLightsWereEnabled = br.ReadBoolean();
+            bool playerControlsWereEnabled = br.ReadBoolean();
+            LastPlayerSuper = br.ReadInt32();
+
+            if (environmentLightsWereEnabled != _environmentLightsEnabled)
+            {
+                SetEnvironmentLightsEnabled(environmentLightsWereEnabled);
+            }
+
+            if (playerControlsWereEnabled != _playerControlsEnabled)
+            {
+                SetPlayerControlsEnabled(playerControlsWereEnabled);
+            }
+        }
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"Super Move Effect Active: {SuperMoveEffectActive}",
+                $"Environment Lights Enabled: {_environmentLightsEnabled}",
+                $"Player Controls Enabled: {_playerControlsEnabled}",
+                $"Last Player Super: {LastPlayerSuper}"
+            };
+        }
+
+        #endregion
+
         [Header("Scene References")]
         [SerializeField] private Light[] _environmentLights;
         [SerializeField] private Camera _mainCamera;
@@ -339,45 +382,12 @@ namespace Lodis.FX
             CameraBehaviour.ShakeBehaviour.ShakeRotation();
         }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_superMoveActive);
-            bw.Write(_environmentLightsEnabled);
-            bw.Write(_playerControlsEnabled);
-            bw.Write(LastPlayerSuper);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _superMoveActive = br.ReadBoolean();
-            bool environmentLightsWereEnabled = br.ReadBoolean();
-            bool playerControlsWereEnabled = br.ReadBoolean();
-            LastPlayerSuper = br.ReadInt32();
-
-            if (environmentLightsWereEnabled != _environmentLightsEnabled)
-            {
-                SetEnvironmentLightsEnabled(environmentLightsWereEnabled);
-            }
-
-            if (playerControlsWereEnabled != _playerControlsEnabled)
-            {
-                SetPlayerControlsEnabled(playerControlsWereEnabled);
-            }
-        }
 
         /// <summary>
         /// Hashes the serialized FX manager state so presentation-side rollback data
         /// can still be traced when it contributes to a mismatch.
         /// </summary>
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                $"Super Move Effect Active: {SuperMoveEffectActive}",
-                $"Environment Lights Enabled: {_environmentLightsEnabled}",
-                $"Player Controls Enabled: {_playerControlsEnabled}",
-                $"Last Player Super: {LastPlayerSuper}"
-            };
-        }
+
     }
 }

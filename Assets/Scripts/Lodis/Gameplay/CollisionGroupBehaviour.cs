@@ -15,32 +15,17 @@ using UnityEngine.UIElements;
 /// </summary>
 public class CollisionGroupBehaviour : SimulationBehaviour
 {
-    [SerializeField] private ColliderBehaviour[] _colliders;
-    [SerializeField] private string _groupName;
-    [SerializeField] private bool _isMultiHit;
-    [SerializeField] private bool _despawnAfterTimeLimit;
-    [SerializeField] private UnityEvent _onOverlapBegin;
-    [SerializeField] private UnityEvent _onHitBegin;
 
-    [ShowIf("_despawnAfterTimeLimit")]
-    [SerializeField] private Fixed32 _despawnTime;
-    [ShowIf("_despawnAfterTimeLimit")]
-    [SerializeField] private EntityDataBehaviour _rootEntity;
+    #region Simulation Functions
 
-    //---
-    private bool _collisionResolved;
-
-    public bool CollisionResolved { get => _collisionResolved; }
-
-    public override string LogName => "CollisionGroup";
-
-    public override void Deserialize(BinaryReader br)
+    public override void Deserialize(Deserializer br)
     {
         foreach (var collider in _colliders)
         {
             collider.Deserialize(br);
         }
     }
+
 
     public override void Serialize(BinaryWriter bw)
     {
@@ -50,10 +35,6 @@ public class CollisionGroupBehaviour : SimulationBehaviour
         }
     }
 
-    /// <summary>
-    /// Hashes the serialized collision-group data so group membership or collider
-    /// ordering issues can be isolated during sync diagnostics.
-    /// </summary>
     protected override string[] GetLogItems()
     {
         if (_colliders == null || _colliders.Length == 0)
@@ -76,14 +57,43 @@ public class CollisionGroupBehaviour : SimulationBehaviour
         return logItems;
     }
 
+    #endregion
+
+    [SerializeField] private ColliderBehaviour[] _colliders;
+    [SerializeField] private string _groupName;
+    [SerializeField] private bool _isMultiHit;
+    [SerializeField] private bool _despawnAfterTimeLimit;
+    [SerializeField] private UnityEvent _onOverlapBegin;
+    [SerializeField] private UnityEvent _onHitBegin;
+
+    [ShowIf("_despawnAfterTimeLimit")]
+    [SerializeField] private Fixed32 _despawnTime;
+    [ShowIf("_despawnAfterTimeLimit")]
+    [SerializeField] private EntityDataBehaviour _rootEntity;
+
+    //---
+    private bool _collisionResolved;
+
+    public bool CollisionResolved { get => _collisionResolved; }
+
+    public override string LogName => "CollisionGroup";
+
+
+
+    /// <summary>
+    /// Hashes the serialized collision-group data so group membership or collider
+    /// ordering issues can be isolated during sync diagnostics.
+    /// </summary>
+
+
     public void TrySetCollisionFinish()
     {
         _collisionResolved = !_isMultiHit;
     }
 
-    public override void Init()
+    protected override void Awake()
     {
-        base.Init();
+        base.Awake();
 
         foreach (var collider in _colliders)
         {

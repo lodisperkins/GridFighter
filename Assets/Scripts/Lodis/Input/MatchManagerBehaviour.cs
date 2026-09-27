@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
@@ -21,6 +21,7 @@ using Lodis.FX;
 using UnityEngine.InputSystem;
 using Lodis.GridScripts;
 using System.IO;
+using System.Text;
 
 namespace Lodis.Gameplay
 {
@@ -37,6 +38,46 @@ namespace Lodis.Gameplay
     /// </summary>
     public class MatchManagerBehaviour : SimulationBehaviour
     {
+
+        #region Simulation Functions
+
+        protected override string[] GetLogItems()
+        {
+            return new string[]
+            {
+                $"SuddenDeathActive={_suddenDeathActive}",
+                $"MatchStarted={_matchStarted}",
+                $"PlayerOutOfRing={_playerOutOfRing}",
+                $"MatchResult={_matchResult}",
+                $"LhsWins={_lhsWins}",
+                $"RhsWins={_rhsWins}"
+            };
+        }
+
+
+        public override void Serialize(BinaryWriter bw)
+        {
+            bw.Write(_suddenDeathActive);
+            bw.Write(_matchStarted);
+            bw.Write(_playerOutOfRing);
+            bw.Write((int)_matchResult);
+            bw.Write(_lhsWins);
+            bw.Write(_rhsWins);
+        }
+
+
+        public override void Deserialize(Deserializer br)
+        {
+            _suddenDeathActive = br.ReadBoolean();
+            _matchStarted = br.ReadBoolean();
+            _playerOutOfRing = br.ReadBoolean();
+            _matchResult = (MatchResult)br.ReadInt32();
+            _lhsWins = br.ReadInt32();
+            _rhsWins = br.ReadInt32();
+        }
+
+        #endregion
+
         private static MatchManagerBehaviour _instance;
 
         [Header("Grid Logic References")]
@@ -207,19 +248,8 @@ namespace Lodis.Gameplay
                 {
                     SoundManagerBehaviour.Instance.SetMusic(_matchMusic);
                     _suddenDeathManager?.ResetAll();
-                }
+                } 
             });
-
-            FixedPointTimer.StartNewConditionAction(() =>
-            {
-                SetMatchResult();
-                _onMatchOver?.Invoke();
-                _matchOverEvent?.Raise(gameObject);
-                _canPause = false;
-                if (_matchResult == MatchResult.DRAW)
-                    FixedPointTimer.StartNewTimedAction(() => Restart(true), 2);
-            },
-            args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp);
 
             AddOnRingoutAction(() => PlayerOutOfRing = true);
 
@@ -228,12 +258,24 @@ namespace Lodis.Gameplay
             Time.timeScale = _timeScale;
         }
 
-
         /// <summary>
         /// Starts the match countdown and enables player control when the countdown finishes.
         /// </summary>
-        private void Start()
+        public override void Begin()
         {
+            base.Begin();
+            FixedPointTimer.StartNewConditionAction(() =>
+            {
+                SetMatchResult();
+                _onMatchOver?.Invoke();
+                _matchOverEvent?.Raise(gameObject);
+                _canPause = false;
+
+                if (_matchResult == MatchResult.DRAW)
+                    FixedPointTimer.StartNewTimedAction(() => Restart(true), 2);
+            },
+            args => PlayerSpawner.P1HealthScript.HasExploded || PlayerSpawner.P2HealthScript.HasExploded || MatchTimerBehaviour.Instance.TimeUp, "Match Result Condition Action");
+
             SetPlayerControlsActive(false);
             _canPause = false;
 
@@ -246,7 +288,7 @@ namespace Lodis.Gameplay
                 MatchStarted = true;
                 _onMatchStart?.Invoke();
                 _matchStartEvent.Raise();
-            }, MatchStartTime.FixedValue);
+            }, MatchStartTime.FixedValue, displayName: "Match Start Time Action");
         }
 
         /// <summary>
@@ -375,7 +417,7 @@ namespace Lodis.Gameplay
         {
             Time.timeScale = 1;
             GridGame.TimeScale = 1;
-            _fxTimeScaleTween.Kill();
+            _fxTimeScaleTween?.Kill();
             FixedPointTimer.StopAction(_fxTimeScaleAction);
         }
 
@@ -697,38 +739,8 @@ namespace Lodis.Gameplay
             }
         }
 
-        protected override string[] GetLogItems()
-        {
-            return new string[]
-            {
-                $"SuddenDeathActive={_suddenDeathActive}",
-                $"MatchStarted={_matchStarted}",
-                $"PlayerOutOfRing={_playerOutOfRing}",
-                $"MatchResult={_matchResult}",
-                $"LhsWins={_lhsWins}",
-                $"RhsWins={_rhsWins}"
-            };
-        }
 
-        public override void Serialize(BinaryWriter bw)
-        {
-            bw.Write(_suddenDeathActive);
-            bw.Write(_matchStarted);
-            bw.Write(_playerOutOfRing);
-            bw.Write((int)_matchResult);
-            bw.Write(_lhsWins);
-            bw.Write(_rhsWins);
-        }
 
-        public override void Deserialize(BinaryReader br)
-        {
-            _suddenDeathActive = br.ReadBoolean();
-            _matchStarted = br.ReadBoolean();
-            _playerOutOfRing = br.ReadBoolean();
-            _matchResult = (MatchResult)br.ReadInt32();
-            _lhsWins = br.ReadInt32();
-            _rhsWins = br.ReadInt32();
-        }
     }
 
 #if UNITY_EDITOR
