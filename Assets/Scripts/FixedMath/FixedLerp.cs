@@ -69,9 +69,9 @@ namespace FixedPoints
         /// This does not reactivate retained actions, so it is safe to use while
         /// reconnecting component references after deserialization.
         /// </summary>
-        public static LerpAction GetActionByID(int actionID)
+        public static LerpAction GetSerializedActionByID(int actionID)
         {
-            _actions.TryGetSerializedItem(item => item.ActionID == actionID, out LerpAction action);
+            _actions.TryGetSerializedItem(item => item.ActionID == actionID, out LerpAction action, false);
             return action;
         }
 
@@ -306,6 +306,16 @@ namespace FixedPoints
         {
             get { return _frameStarted; }
         }
+
+        /// <summary>
+        /// Gets the serialized amount of time this action has already progressed.
+        /// </summary>
+        public Fixed32 ElapsedTime => TimeElapsed;
+
+        /// <summary>
+        /// Gets the serialized total duration of this action.
+        /// </summary>
+        public Fixed32 TotalDuration => Duration;
         public ListEvent OnAddedToList { get; set; }
         public int FrameAddedToSerializedList { get; set; }
         public int SerializedChecksum { get; set; }
@@ -543,6 +553,16 @@ namespace FixedPoints
 
         private FVector3 StartValue;
         private FVector3 EndValue;
+
+        /// <summary>
+        /// Gets the serialized position from which this move action interpolates.
+        /// </summary>
+        public FVector3 StartPosition => StartValue;
+
+        /// <summary>
+        /// Gets the serialized position this move action is interpolating toward.
+        /// </summary>
+        public FVector3 EndPosition => EndValue;
 
         //Need a way to serialize pool. Maybe swap to pool for all actions
 

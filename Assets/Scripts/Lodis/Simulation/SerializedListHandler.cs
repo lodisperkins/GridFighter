@@ -134,7 +134,7 @@ namespace Assets.Scripts.Lodis.Simulation
                 if (!predicate(candidate))
                     continue;
 
-                if (!_list.Contains(candidate) && addRetainedToActive)
+                if (addRetainedToActive && !_list.Contains(candidate))
                 {
                     Add(candidate);
                 }

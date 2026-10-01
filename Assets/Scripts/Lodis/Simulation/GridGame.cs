@@ -154,7 +154,15 @@ public struct GridGame : IGame
         //test.Deserialize(br);
         //Debug.Log($"Starting deserializing at position {br.BaseStream.Position}");
         //int num = br.ReadInt32();
+
+
         FrameNumber = br.ReadInt32();
+
+        if (FrameNumber == 400)
+        {
+            Debug.Log($"Deserializing at position {br.BaseStream.Position}");
+        }
+
         br.LogMarker($"Frame Being Deserialized: {FrameNumber}");
         Time = Time.Deserialize(br);
         UnscaledTime = UnscaledTime.Deserialize(br);

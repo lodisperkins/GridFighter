@@ -79,12 +79,16 @@ namespace Lodis.Movement
             MoveDirection = MoveDirection.Deserialize(br);
             _targetPosition = _targetPosition.Deserialize(br);
 
+            _moveLerp = null;
             int moveLerpID = br.ReadInt32();
 
-            if (moveLerpID == -1)
-                _moveLerp = null;
-            else
-                _moveLerp = (FixedPoints.MoveAction)FixedLerp.GetActionByID(moveLerpID);
+            if (moveLerpID != -1)
+            {
+                _moveLerp = (FixedPoints.MoveAction)FixedLerp.GetSerializedActionByID(moveLerpID);
+
+                if (_moveLerp == null)
+                    throw new System.Exception($"MoveLerp with ID {moveLerpID} not found. This may be due to the FixedLerp active list not deserializing correctly.");
+            }
 
             GridBehaviour.Instance.GetPanelAtLocationInWorld((Vector3)_targetPosition, out _targetPanel);
         }
@@ -93,7 +97,7 @@ namespace Lodis.Movement
         {
             return new string[] 
             {
-                $"IsMoving: {IsMoving}",
+                $"IsMoving: {_isMoving}",
                 $"CanMove: {_canMove}",
                 $"CanCancelMovement: {_canCancelMovement}",
                 $"AlwaysLookAtOpposingSide: {_alwaysLookAtOpposingSide}",
@@ -103,7 +107,11 @@ namespace Lodis.Movement
                 $"CurrentPanel Position: {Position}",
                 $"MoveDirection: {MoveDirection}",
                 $"TargetPosition: {_targetPosition}",
-                $"MoveLerpID: {(_moveLerp == null ? -1 : _moveLerp.ActionID)}"
+                $"MoveLerpID: {(_moveLerp == null ? -1 : _moveLerp.ActionID)}",
+                $"MoveLerp TimeElapsed: {(_moveLerp == null ? "Null" : _moveLerp.ElapsedTime.ToString())}",
+                $"MoveLerp Duration: {(_moveLerp == null ? "Null" : _moveLerp.TotalDuration.ToString())}",
+                $"MoveLerp StartValue: {(_moveLerp == null ? "Null" : _moveLerp.StartPosition.ToString())}",
+                $"MoveLerp EndValue: {(_moveLerp == null ? "Null" : _moveLerp.EndPosition.ToString())}"
             };
         }
 

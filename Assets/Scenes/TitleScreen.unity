@@ -988,7 +988,7 @@ MonoBehaviour:
   _lhsRollbackDebugRecordingName: SyncTestP1
   _rhsRollbackDebugRecordingName: SyncTestP2
   _rollbackDebugPlaybackPlayOnce: 0
-  _enableDeepLogs: 0
+  _enableDeepLogs: 1
   _deepLogItemDisplayName: GridMovementBehaviour
 --- !u!4 &1681571495
 Transform:
